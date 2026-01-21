@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,37 +22,36 @@ use Hubzero\Base\ServiceProvider;
  */
 class FilesystemServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['filesystem'] = function($app)
-		{
-			if ($app['config']->get('ftp_enable'))
-			{
-				$adapter = new Ftp(array(
-					'host'     => $app['config']->get('ftp_host'),
-					'port'     => $app['config']->get('ftp_port'),
-					'username' => $app['config']->get('ftp_user'),
-					'password' => $app['config']->get('ftp_pass'),
-					'root'     => $app['config']->get('ftp_root'),
-				));
-			}
-			else
-			{
-				$adapter = new Local($app['config']->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"));
-			}
+    /**
+     * Register the service provider.
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['filesystem'] = function ($app) {
+            if ($app['config']->get('ftp_enable')) {
+                $adapter = new Ftp(array(
+                    'host'     => $app['config']->get('ftp_host'),
+                    'port'     => $app['config']->get('ftp_port'),
+                    'username' => $app['config']->get('ftp_user'),
+                    'password' => $app['config']->get('ftp_pass'),
+                    'root'     => $app['config']->get('ftp_root'),
+                ));
+            } else {
+                $adapter = new Local($app['config']->get(
+                    'virus_scanner',
+                    "clamscan -i --no-summary --block-encrypted"
+                ));
+            }
 
-			$filesystem = new Filesystem($adapter);
-			$filesystem->addMacro(new EmptyDirectory)
-			           ->addMacro(new Directories)
-			           ->addMacro(new Files)
-			           ->addMacro(new DirectoryTree);
+            $filesystem = new Filesystem($adapter);
+            $filesystem->addMacro(new EmptyDirectory())
+                       ->addMacro(new Directories())
+                       ->addMacro(new Files())
+                       ->addMacro(new DirectoryTree());
 
-			return $filesystem;
-		};
-	}
+            return $filesystem;
+        };
+    }
 }

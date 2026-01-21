@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,26 +18,23 @@ use Hubzero\Base\ServiceProvider;
  */
 class EventServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['dispatcher'] = function($app)
-		{
-			$dispatcher = new Dispatcher();
+    /**
+     * Register the service provider.
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['dispatcher'] = function ($app) {
+            $dispatcher = new Dispatcher();
 
-			if ($app['config'] instanceof Repository)
-			{
-				if ($app['config']->get('debug'))
-				{
-					$dispatcher = new TraceableDispatcher($dispatcher);
-				}
-			}
+            if ($app['config'] instanceof Repository) {
+                if ($app['config']->get('debug')) {
+                    $dispatcher = new TraceableDispatcher($dispatcher);
+                }
+            }
 
-			return $dispatcher;
-		};
-	}
+            return $dispatcher;
+        };
+    }
 }

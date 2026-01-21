@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,9 +9,8 @@
 namespace Components\Modules\Admin;
 
 // Access check.
-if (!\User::authorise('core.manage', 'com_modules'))
-{
-	return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+if (!\User::authorise('core.manage', 'com_modules')) {
+    return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'modules.php';

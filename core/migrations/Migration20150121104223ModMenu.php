@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,29 +14,30 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for renaming admin menu module
- **/
+ *
+ */
 class Migration20150121104223ModMenu extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__modules'))
-		{
-			$query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_menu') . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_hubmenu');
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__modules')) {
+            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_menu')
+                . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_hubmenu');
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->deleteModuleEntry('mod_hubmenu');
-	}
+        $this->deleteModuleEntry('mod_hubmenu');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addModuleEntry('mod_hubmenu', 1, '', 1);
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addModuleEntry('mod_hubmenu', 1, '', 1);
+    }
 }

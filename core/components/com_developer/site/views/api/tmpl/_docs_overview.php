@@ -36,18 +36,18 @@ defined('_HZEXEC_') or die();
         <p>The HTTP response status in this example would be <code>422 Validation Failed</code>. It is included in the
             error response body since some clients have difficulty pulling the exact status message.</p>
         <pre><code class="json">{
-	"code"    : 422,
-	"message" : "Validation Failed",
-	"errors"  : [	
-		{
-			"field"   : "cn",
-			"message" : "Group cn cannot be empty."
-		},
-		{
-			"field"   : "cn",
-			"message" : "Invalid group ID. You may be using characters that are not allowed."
-		}
-	]
+    "code"    : 422,
+    "message" : "Validation Failed",
+    "errors"  : [   
+        {
+            "field"   : "cn",
+            "message" : "Group cn cannot be empty."
+        },
+        {
+            "field"   : "cn",
+            "message" : "Invalid group ID. You may be using characters that are not allowed."
+        }
+    ]
 }</code></pre>
     </div>
 </div>
@@ -159,9 +159,9 @@ X-RateLimit-Limit: 60
 X-RateLimit-Remaining: 0
 X-RateLimit-Reset: 1392321600</code></pre>
         <pre><code class="json">{
-	"code"    : 429,
-	"message" : "Too Many Requests",
-	"errors"  : []
+    "code"    : 429,
+    "message" : "Too Many Requests",
+    "errors"  : []
 }</code></pre>
         <p class="info"><strong>Note:</strong> If you are exceeding your rate limit, you can likely fix the issue by
             caching API responses. If you're caching and still exceeding your rate limit, please contact us to request a
@@ -179,19 +179,19 @@ X-RateLimit-Reset: 1392321600</code></pre>
 
         <pre><code class="http">GET /groups/?callback=FooBar</code></pre>
         <pre><code class="json">FooBar([
-	{
-		"gidNumber":   "1234",
-		"cn":          "testgroup",
-		"description": "Test Group",
-		"created":     "2015-01-29T19:58:07Z",
-		"created_by":  "1000"
-	},
-	...
+    {
+        "gidNumber":   "1234",
+        "cn":          "testgroup",
+        "description": "Test Group",
+        "created":     "2015-01-29T19:58:07Z",
+        "created_by":  "1000"
+    },
+    ...
 ]);</code></pre>
         <p>You can write a JavaScript handler to process the callback like this:</p>
         <pre><code class="javascript">function FooBar(groupsData)
 {
-	console.log(groupsData)
+    console.log(groupsData)
 }</code></pre>
     </div>
 </div>
@@ -204,19 +204,19 @@ X-RateLimit-Reset: 1392321600</code></pre>
 
         <pre><code class="http">GET /groups/12345?expand=created_by</code></pre>
         <pre><code class="json">{
-	"gidNumber"   : "12345",
-	"description" : "Test Group",
-	"public_desc" : "Test Group Description",
-	"logo"        : "/core/components/com_groups/site/assets/img/group_default_logo.png",
-	"created"     : "2015-01-29T19:58:07Z",
-	"created_by"  : {
-		"uidNumber"    : "1000",
-		"name"         : "John Doe",
-		"organization" : "Hubzero",
-		"url"          : "https://hubzero.org",
-		"phone"        : "123-123-1234",
-		"bio"          : "Donec ullamcorper nulla non metus auctor fringilla."
-	}
+    "gidNumber"   : "12345",
+    "description" : "Test Group",
+    "public_desc" : "Test Group Description",
+    "logo"        : "/core/components/com_groups/site/assets/img/group_default_logo.png",
+    "created"     : "2015-01-29T19:58:07Z",
+    "created_by"  : {
+        "uidNumber"    : "1000",
+        "name"         : "John Doe",
+        "organization" : "Hubzero",
+        "url"          : "https://hubzero.org",
+        "phone"        : "123-123-1234",
+        "bio"          : "Donec ullamcorper nulla non metus auctor fringilla."
+    }
 }</code></pre>
     </div>
 </div>

@@ -23,74 +23,68 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260603000000PlgAuthenticationPucas extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__extensions'))
-		{
-			return;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__extensions')) {
+            return;
+        }
 
-		$params = $this->currentParams();
+        $params = $this->currentParams();
 
-		if ($params === false)
-		{
-			// Plugin row not present yet; its manifest default applies.
-			return;
-		}
+        if ($params === false) {
+            // Plugin row not present yet; its manifest default applies.
+            return;
+        }
 
-		// Only set the default when the admin hasn't already configured it,
-		// so this is idempotent and never overrides an explicit choice.
-		if (!array_key_exists('passive_sso', $params))
-		{
-			$params['passive_sso'] = '0';
-			$this->saveParams('plg_authentication_pucas', $params);
-		}
-	}
+        // Only set the default when the admin hasn't already configured it,
+        // so this is idempotent and never overrides an explicit choice.
+        if (!array_key_exists('passive_sso', $params)) {
+            $params['passive_sso'] = '0';
+            $this->saveParams('plg_authentication_pucas', $params);
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$this->db->tableExists('#__extensions'))
-		{
-			return;
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$this->db->tableExists('#__extensions')) {
+            return;
+        }
 
-		$params = $this->currentParams();
+        $params = $this->currentParams();
 
-		if (is_array($params) && array_key_exists('passive_sso', $params))
-		{
-			unset($params['passive_sso']);
-			$this->saveParams('plg_authentication_pucas', $params);
-		}
-	}
+        if (is_array($params) && array_key_exists('passive_sso', $params)) {
+            unset($params['passive_sso']);
+            $this->saveParams('plg_authentication_pucas', $params);
+        }
+    }
 
-	/**
-	 * Load the current pucas plugin params as an associative array.
-	 *
-	 * @return  array|false  params array, or false if the plugin row is absent
-	 **/
-	protected function currentParams()
-	{
-		$query = "SELECT `params` FROM `#__extensions`
+    /**
+     * Load the current pucas plugin params as an associative array.
+     *
+     * @return  array|false  params array, or false if the plugin row is absent
+     **/
+    protected function currentParams()
+    {
+        $query = "SELECT `params` FROM `#__extensions`
 			WHERE `type` = 'plugin'
 			  AND `folder` = 'authentication'
 			  AND `element` = 'pucas'
 			LIMIT 1";
-		$this->db->setQuery($query);
-		$current = $this->db->loadResult();
+        $this->db->setQuery($query);
+        $current = $this->db->loadResult();
 
-		if ($current === null)
-		{
-			return false;
-		}
+        if ($current === null) {
+            return false;
+        }
 
-		$params = json_decode($current, true);
+        $params = json_decode($current, true);
 
-		return is_array($params) ? $params : array();
-	}
+        return is_array($params) ? $params : array();
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,325 +19,311 @@ use Lang;
  */
 class Attachment extends Obj
 {
-	/**
-	 * File size
-	 *
-	 * @var  string
-	 */
-	protected $size = null;
+    /**
+     * File size
+     *
+     * @var  string
+     */
+    protected $size = null;
 
-	/**
-	 * Dimensions for file (must be an image)
-	 *
-	 * @var  array
-	 */
-	protected $dimensions = null;
+    /**
+     * Dimensions for file (must be an image)
+     *
+     * @var  array
+     */
+    protected $dimensions = null;
 
-	/**
-	 * Upload directory (relative to PATH_APP)
-	 *
-	 * @var  string
-	 */
-	protected $uploadDir = null;
+    /**
+     * Upload directory (relative to PATH_APP)
+     *
+     * @var  string
+     */
+    protected $uploadDir = null;
 
-	/**
-	 * Set the upload path
-	 *
-	 * @param   string  $path  Path to set to
-	 * @return  object
-	 */
-	public function setUploadDir($path)
-	{
-		$path = str_replace(' ', '_', trim($path));
-		$path = Util::normalizePath($path);
+    /**
+     * Set the upload path
+     *
+     * @param   string  $path  Path to set to
+     * @return  object
+     */
+    public function setUploadDir($path)
+    {
+        $path = str_replace(' ', '_', trim($path));
+        $path = Util::normalizePath($path);
 
-		if (substr($path, 0, strlen(PATH_APP)) == PATH_APP)
-		{
-			$path = substr($path, strlen(PATH_APP));
-		}
+        if (substr($path, 0, strlen(PATH_APP)) == PATH_APP) {
+            $path = substr($path, strlen(PATH_APP));
+        }
 
-		$this->uploadDir = ($path ? $path : $this->uploadDir);
+        $this->uploadDir = ($path ? $path : $this->uploadDir);
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get the upload path
-	 *
-	 * @return  string
-	 */
-	public function getUploadDir()
-	{
-		return PATH_APP . $this->uploadDir;
-	}
+    /**
+     * Get the upload path
+     *
+     * @return  string
+     */
+    public function getUploadDir()
+    {
+        return PATH_APP . $this->uploadDir;
+    }
 
-	/**
-	 * Ensure no invalid characters
-	 *
-	 * @param   array  $data
-	 * @return  string
-	 */
-	public function automaticFilename($data)
-	{
-		$filename = $data['filename'];
-		$filename = preg_replace("/[^A-Za-z0-9.]/i", '-', $filename);
+    /**
+     * Ensure no invalid characters
+     *
+     * @param   array  $data
+     * @return  string
+     */
+    public function automaticFilename($data)
+    {
+        $filename = $data['filename'];
+        $filename = preg_replace("/[^A-Za-z0-9.]/i", '-', $filename);
 
-		$ext = strrchr($filename, '.');
-		$prefix = substr($filename, 0, -strlen($ext));
+        $ext = strrchr($filename, '.');
+        $prefix = substr($filename, 0, -strlen($ext));
 
-		if (strlen($prefix) > 240)
-		{
-			$prefix = substr($prefix, 0, 240);
-			$filename = $prefix . $ext;
-		}
+        if (strlen($prefix) > 240) {
+            $prefix = substr($prefix, 0, 240);
+            $filename = $prefix . $ext;
+        }
 
-		$data['filename'] = $filename;
+        $data['filename'] = $filename;
 
-		return $data['filename'];
-	}
+        return $data['filename'];
+    }
 
-	/**
-	 * Ensure no conflicting file names by
-	 * renaming the incoming file if the name
-	 * already exists
-	 *
-	 * @param   array  $data
-	 * @return  string
-	 */
-	public function uniqueFilename($data)
-	{
-		$filename = $this->automaticFilename($data);
+    /**
+     * Ensure no conflicting file names by
+     * renaming the incoming file if the name
+     * already exists
+     *
+     * @param   array  $data
+     * @return  string
+     */
+    public function uniqueFilename($data)
+    {
+        $filename = $this->automaticFilename($data);
 
-		if (file_exists($this->getUploadDir() . ($this->get('subdir') ? DS . $this->get('subdir') : '') . DS . $filename))
-		{
-			$ext = strrchr($filename, '.');
-			$prefix = substr($filename, 0, -strlen($ext));
+        $subdir = $this->get('subdir') ? DS . $this->get('subdir') : '';
+        $path = $this->getUploadDir() . $subdir . DS . $filename;
 
-			$i = 1;
+        if (file_exists($path)) {
+            $ext = strrchr($filename, '.');
+            $prefix = substr($filename, 0, -strlen($ext));
 
-			while (is_file($this->getUploadDir() . ($this->get('subdir') ? DS . $this->get('subdir') : '') . DS . $filename))
-			{
-				$filename = $prefix . ++$i . $ext;
-			}
-		}
+            $i = 1;
 
-		$data['filename'] = $filename;
+            while (is_file($this->getUploadDir() . $subdir . DS . $filename)) {
+                $filename = $prefix . ++$i . $ext;
+            }
+        }
 
-		return $data['filename'];
-	}
+        $data['filename'] = $filename;
 
-	/**
-	 * Delete record
-	 *
-	 * @return  boolean  True if successful, False if not
-	 */
-	public function destroy()
-	{
-		$path = $this->path();
+        return $data['filename'];
+    }
 
-		if (file_exists($path))
-		{
-			if (!Filesystem::delete($path))
-			{
-				$this->setError('Unable to delete file.');
+    /**
+     * Delete record
+     *
+     * @return  boolean  True if successful, False if not
+     */
+    public function destroy()
+    {
+        $path = $this->path();
 
-				return false;
-			}
-		}
+        if (file_exists($path)) {
+            if (!Filesystem::delete($path)) {
+                $this->setError('Unable to delete file.');
 
-		return true;
-	}
+                return false;
+            }
+        }
 
-	/**
-	 * Upload file
-	 *
-	 * @param   string  $name
-	 * @param   string  $temp
-	 * @param   integer $size
-	 * @return  bool
-	 */
-	public function upload($name, $temp, $size)
-	{
-		$destination = $this->getUploadDir() . ($this->get('subdir') ? DS . $this->get('subdir') : '');
+        return true;
+    }
 
-		// Make sure destination directory exists
-		if (!is_dir($destination))
-		{
-			if (!Filesystem::makeDirectory($destination))
-			{
-				$this->setError('COM_GROUPS_MEDIA_UNABLE_TO_CREATE_UPLOAD_PATH');
-				return false;
-			}
-		}
-		if (!is_writable($destination))
-		{
-			$this->setError(Lang::txt('COM_GROUPS_MEDIA_PATH_NOT_WRITABLE'));
-			return false;
-		}
+    /**
+     * Upload file
+     *
+     * @param   string  $name
+     * @param   string  $temp
+     * @param   integer $size
+     * @return  bool
+     */
+    public function upload($name, $temp, $size)
+    {
+        $destination = $this->getUploadDir() . ($this->get('subdir') ? DS . $this->get('subdir') : '');
 
-		$config = \Component::params('com_media');
+        // Make sure destination directory exists
+        if (!is_dir($destination)) {
+            if (!Filesystem::makeDirectory($destination)) {
+                $this->setError('COM_GROUPS_MEDIA_UNABLE_TO_CREATE_UPLOAD_PATH');
+                return false;
+            }
+        }
+        if (!is_writable($destination)) {
+            $this->setError(Lang::txt('COM_GROUPS_MEDIA_PATH_NOT_WRITABLE'));
+            return false;
+        }
 
-		// Check for allowed file types
-		$ext = Filesystem::extension($name);
+        $config = \Component::params('com_media');
 
-		$allowedExtensions = array_values(array_filter(explode(',', $config->get('upload_extensions'))));
-		if ($allowedExtensions && !in_array($ext, $allowedExtensions))
-		{
-			$this->setError(Lang::txt('COM_GROUPS_MEDIA_INVALID_FILE', implode(', ', $allowedExtensions)));
-			return false;
-		}
+        // Check for allowed file types
+        $ext = Filesystem::extension($name);
 
-		// Max upload size
-		$sizeLimit = $config->get('upload_maxsize');
-		$sizeLimit = $sizeLimit * 1024 * 1024;
+        $allowedExtensions = array_values(array_filter(explode(',', $config->get('upload_extensions'))));
+        if ($allowedExtensions && !in_array($ext, $allowedExtensions)) {
+            $this->setError(Lang::txt('COM_GROUPS_MEDIA_INVALID_FILE', implode(', ', $allowedExtensions)));
+            return false;
+        }
 
-		if ($size > $sizeLimit)
-		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
-			$this->setError(Lang::txt('COM_GROUPS_MEDIA_FILE_TOO_BIG', $max));
-			return false;
-		}
+        // Max upload size
+        $sizeLimit = $config->get('upload_maxsize');
+        $sizeLimit = $sizeLimit * 1024 * 1024;
 
-		// Make sure there are no filename conflicts
-		$filename = $this->uniqueFilename(array(
-			'filename' => $name,
-			'subdir'   => $this->get('subdir')
-		));
+        if ($size > $sizeLimit) {
+            $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
+            $this->setError(Lang::txt('COM_GROUPS_MEDIA_FILE_TOO_BIG', $max));
+            return false;
+        }
 
-		$destination .= DS . $filename;
+        // Make sure there are no filename conflicts
+        $filename = $this->uniqueFilename(array(
+            'filename' => $name,
+            'subdir'   => $this->get('subdir')
+        ));
 
-		if (!Filesystem::upload($temp, $destination))
-		{
-			$this->setError('COM_GROUPS_MEDIA_ERROR_UPLOADING');
-			return false;
-		}
+        $destination .= DS . $filename;
 
-		// Change file perm
-		chmod($destination, 0774);
+        if (!Filesystem::upload($temp, $destination)) {
+            $this->setError('COM_GROUPS_MEDIA_ERROR_UPLOADING');
+            return false;
+        }
 
-		// Scan file for viruses and other nasty bits
-		if (!Filesystem::isSafe($destination))
-		{
-			// Delete file
-			unlink($destination);
+        // Change file perm
+        chmod($destination, 0774);
 
-			$this->setError(Lang::txt('COM_GROUPS_MEDIA_FILE_CONTAINS_VIRUS'));
-			return false;
-		}
+        // Scan file for viruses and other nasty bits
+        if (!Filesystem::isSafe($destination)) {
+            // Delete file
+            unlink($destination);
 
-		$this->set('filename', $filename);
+            $this->setError(Lang::txt('COM_GROUPS_MEDIA_FILE_CONTAINS_VIRUS'));
+            return false;
+        }
 
-		return true;
-	}
+        $this->set('filename', $filename);
 
-	/**
-	 * File path
-	 *
-	 * @return  integer
-	 */
-	public function path()
-	{
-		return $this->getUploadDir() . DS . $this->get('filename');
-	}
+        return true;
+    }
 
-	/**
-	 * If file exists at the given path
-	 *
-	 * @return  bool
-	 */
-	public function exists()
-	{
-		return file_exists($this->path());
-	}
+    /**
+     * File path
+     *
+     * @return  integer
+     */
+    public function path()
+    {
+        return $this->getUploadDir() . DS . $this->get('filename');
+    }
 
-	/**
-	 * Is the file an image?
-	 *
-	 * @return  boolean
-	 */
-	public function isImage()
-	{
-		return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename'));
-	}
+    /**
+     * If file exists at the given path
+     *
+     * @return  bool
+     */
+    public function exists()
+    {
+        return file_exists($this->path());
+    }
 
-	/**
-	 * Is the file an image?
-	 *
-	 * @return  boolean
-	 */
-	public function size()
-	{
-		if ($this->size === null)
-		{
-			$this->size = 0;
+    /**
+     * Is the file an image?
+     *
+     * @return  boolean
+     */
+    public function isImage()
+    {
+        return preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $this->get('filename'));
+    }
 
-			$path = $this->path();
+    /**
+     * Is the file an image?
+     *
+     * @return  boolean
+     */
+    public function size()
+    {
+        if ($this->size === null) {
+            $this->size = 0;
 
-			if (file_exists($path))
-			{
-				$this->size = filesize($path);
-			}
-		}
+            $path = $this->path();
 
-		return $this->size;
-	}
+            if (file_exists($path)) {
+                $this->size = filesize($path);
+            }
+        }
 
-	/**
-	 * File width and height
-	 *
-	 * @return  array
-	 */
-	public function dimensions()
-	{
-		if (!$this->dimensions)
-		{
-			$this->dimensions = array(0, 0);
+        return $this->size;
+    }
 
-			if ($this->isImage() && file_exists($this->path()))
-			{
-				$this->dimensions = getimagesize($this->path());
-			}
-		}
+    /**
+     * File width and height
+     *
+     * @return  array
+     */
+    public function dimensions()
+    {
+        if (!$this->dimensions) {
+            $this->dimensions = array(0, 0);
 
-		return $this->dimensions;
-	}
+            if ($this->isImage() && file_exists($this->path())) {
+                $this->dimensions = getimagesize($this->path());
+            }
+        }
 
-	/**
-	 * File width
-	 *
-	 * @return  integer
-	 */
-	public function width()
-	{
-		$dimensions = $this->dimensions();
+        return $this->dimensions;
+    }
 
-		return $dimensions[0];
-	}
+    /**
+     * File width
+     *
+     * @return  integer
+     */
+    public function width()
+    {
+        $dimensions = $this->dimensions();
 
-	/**
-	 * File height
-	 *
-	 * @return  integer
-	 */
-	public function height()
-	{
-		$dimensions = $this->dimensions();
+        return $dimensions[0];
+    }
 
-		return $dimensions[1];
-	}
+    /**
+     * File height
+     *
+     * @return  integer
+     */
+    public function height()
+    {
+        $dimensions = $this->dimensions();
 
-	/**
-	 * File height
-	 *
-	 * @return  array
-	 */
-	public function toArray()
-	{
-		return array(
-			'filename'    => $this->get('filename'),
-			'path'        => $this->uploadDir,
-			'description' => $this->get('description'),
-			'subdir'      => $this->get('subdir')
-		);
-	}
+        return $dimensions[1];
+    }
+
+    /**
+     * File height
+     *
+     * @return  array
+     */
+    public function toArray()
+    {
+        return array(
+            'filename'    => $this->get('filename'),
+            'path'        => $this->uploadDir,
+            'description' => $this->get('description'),
+            'subdir'      => $this->get('subdir')
+        );
+    }
 }

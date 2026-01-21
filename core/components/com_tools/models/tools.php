@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,56 +15,51 @@ use Hubzero\Base\Obj;
  */
 class Tools extends Obj
 {
-	/**
-	 * Get application tools
-	 *
-	 * @return  array
-	 */
-	public function getApplicationTools()
-	{
-		$dh = @opendir('/opt/trac/tools');
-		$result = array();
+    /**
+     * Get application tools
+     *
+     * @return  array
+     */
+    public function getApplicationTools()
+    {
+        $dh = @opendir('/opt/trac/tools');
+        $result = array();
 
-		if (!empty($dh))
-		{
-			while (($file = readdir($dh)) !== false)
-			{
-				if (is_dir('/opt/trac/tools/' . $file))
-				{
-					if (strncmp($file, '.', 1) != 0)
-					{
-						$result[] = $file;
-					}
-				}
-			}
+        if (!empty($dh)) {
+            while (($file = readdir($dh)) !== false) {
+                if (is_dir('/opt/trac/tools/' . $file)) {
+                    if (strncmp($file, '.', 1) != 0) {
+                        $result[] = $file;
+                    }
+                }
+            }
 
-			closedir($dh);
+            closedir($dh);
 
-			sort($result);
+            sort($result);
 
-			if (count($result) > 0)
-			{
-				$database = \App::get('db');
+            if (count($result) > 0) {
+                $database = \App::get('db');
 
-				foreach ($result as $key => $val)
-				{
-					$result[$key] = $database->quote($val);
-				}
+                foreach ($result as $key => $val) {
+                    $result[$key] = $database->quote($val);
+                }
 
-				$query = "SELECT v.id, v.instance, v.toolname, v.title, MAX(v.revision), v.toolaccess, v.codeaccess, v.state, t.state AS tool_state
-							FROM `#__tool` as t, `#__tool_version` as v
-							WHERE v.toolname IN (" . implode(',', $result) . ") AND t.id=v.toolid
-							AND v.state IN ('1','3')
-							AND t.state != 9
-							GROUP BY toolname
-							ORDER BY v.toolname ASC";
+                $query = "SELECT v.id, v.instance, v.toolname, v.title, " .
+                    "MAX(v.revision), v.toolaccess, v.codeaccess, v.state, t.state AS tool_state
+                    FROM `#__tool` as t, `#__tool_version` as v
+                    WHERE v.toolname IN (" . implode(',', $result) . ") AND t.id=v.toolid
+                    AND v.state IN ('1','3')
+                    AND t.state != 9
+                    GROUP BY toolname
+                    ORDER BY v.toolname ASC";
 
-				$database->setQuery($query);
+                $database->setQuery($query);
 
-				return $database->loadObjectList();
-			}
-		}
+                return $database->loadObjectList();
+            }
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 }

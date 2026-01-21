@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,389 +23,361 @@ use App;
  */
 class Sections extends AdminController
 {
-	/**
-	 * Execute a task
-	 *
-	 * @return  void
-	 */
-	public function execute()
-	{
-		$this->registerTask('add', 'edit');
-		$this->registerTask('apply', 'save');
-		$this->registerTask('publish', 'state');
-		$this->registerTask('unpublish', 'state');
+    /**
+     * Execute a task
+     *
+     * @return  void
+     */
+    public function execute()
+    {
+        $this->registerTask('add', 'edit');
+        $this->registerTask('apply', 'save');
+        $this->registerTask('publish', 'state');
+        $this->registerTask('unpublish', 'state');
 
-		parent::execute();
-	}
+        parent::execute();
+    }
 
-	/**
-	 * Display all sections
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		// Filters
-		$filters = array(
-			'state' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.state',
-				'state',
-				'-1',
-				'int'
-			),
-			'access' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.access',
-				'access',
-				'-1',
-				'int'
-			),
-			'sort' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sort',
-				'filter_order',
-				'id'
-			),
-			'sort_Dir' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.sortdir',
-				'filter_order_Dir',
-				'DESC'
-			),
-			'search' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.search',
-				'search',
-				''
-			),
-			'scopeinfo' => Request::getState(
-				$this->_option . '.' . $this->_controller . '.scopeinfo',
-				'scopeinfo',
-				''
-			)
-		);
+    /**
+     * Display all sections
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        // Filters
+        $filters = array(
+            'state' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.state',
+                'state',
+                '-1',
+                'int'
+            ),
+            'access' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.access',
+                'access',
+                '-1',
+                'int'
+            ),
+            'sort' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sort',
+                'filter_order',
+                'id'
+            ),
+            'sort_Dir' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.sortdir',
+                'filter_order_Dir',
+                'DESC'
+            ),
+            'search' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.search',
+                'search',
+                ''
+            ),
+            'scopeinfo' => Request::getState(
+                $this->_option . '.' . $this->_controller . '.scopeinfo',
+                'scopeinfo',
+                ''
+            )
+        );
 
-		if (strstr($filters['scopeinfo'], ':'))
-		{
-			$bits = explode(':', $filters['scopeinfo']);
-			$filters['scope']    = $bits[0];
-			$filters['scope_id'] = intval(end($bits));
-		}
-		else
-		{
-			$filters['scope'] = '';
-			$filters['scope_id'] = -1;
-		}
+        if (strstr($filters['scopeinfo'], ':')) {
+            $bits = explode(':', $filters['scopeinfo']);
+            $filters['scope']    = $bits[0];
+            $filters['scope_id'] = intval(end($bits));
+        } else {
+            $filters['scope'] = '';
+            $filters['scope_id'] = -1;
+        }
 
-		$entries = Section::all()
-			->including(['categories', function ($category){
-				$category
-					->select('id')
-					->select('section_id');
-			}]);
+        $entries = Section::all()
+            ->including(['categories', function ($category) {
+                $category
+                    ->select('id')
+                    ->select('section_id');
+            }]);
 
-		if ($filters['search'])
-		{
-			$entries->whereLike('title', strtolower((string)$filters['search']));
-		}
+        if ($filters['search']) {
+            $entries->whereLike('title', strtolower((string)$filters['search']));
+        }
 
-		if ($filters['scope'])
-		{
-			$entries->whereEquals('scope', $filters['scope']);
-		}
+        if ($filters['scope']) {
+            $entries->whereEquals('scope', $filters['scope']);
+        }
 
-		if ($filters['scope_id'] >= 0)
-		{
-			$entries->whereEquals('scope_id', (int)$filters['scope_id']);
-		}
+        if ($filters['scope_id'] >= 0) {
+            $entries->whereEquals('scope_id', (int)$filters['scope_id']);
+        }
 
-		if ($filters['state'] >= 0)
-		{
-			$entries->whereEquals('state', (int)$filters['state']);
-		}
+        if ($filters['state'] >= 0) {
+            $entries->whereEquals('state', (int)$filters['state']);
+        }
 
-		if ($filters['access'] >= 0)
-		{
-			$entries->whereEquals('access', (int)$filters['access']);
-		}
+        if ($filters['access'] >= 0) {
+            $entries->whereEquals('access', (int)$filters['access']);
+        }
 
-		// Get records
-		$rows = $entries
-			->ordered('filter_order', 'filter_order_Dir')
-			->paginated('limitstart', 'limit')
-			->rows();
+        // Get records
+        $rows = $entries
+            ->ordered('filter_order', 'filter_order_Dir')
+            ->paginated('limitstart', 'limit')
+            ->rows();
 
-		$forum = new Manager($filters['scope'], $filters['scope_id']);
+        $forum = new Manager($filters['scope'], $filters['scope_id']);
 
-		// Output the HTML
-		$this->view
-			->set('rows', $rows)
-			->set('filters', $filters)
-			->set('scopes', $forum->scopes())
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('rows', $rows)
+            ->set('filters', $filters)
+            ->set('scopes', $forum->scopes())
+            ->display();
+    }
 
-	/**
-	 * Displays a form for editing or creating entries
-	 *
-	 * @param   object  $row
-	 * @return  void
-	 */
-	public function editTask($row=null)
-	{
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Displays a form for editing or creating entries
+     *
+     * @param   object  $row
+     * @return  void
+     */
+    public function editTask($row = null)
+    {
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		Request::setVar('hidemainmenu', 1);
+        Request::setVar('hidemainmenu', 1);
 
-		if (!is_object($row))
-		{
-			$id = Request::getArray('id', array(0));
-			if (is_array($id))
-			{
-				$id = (!empty($id) ? intval($id[0]) : 0);
-			}
+        if (!is_object($row)) {
+            $id = Request::getArray('id', array(0));
+            if (is_array($id)) {
+                $id = (!empty($id) ? intval($id[0]) : 0);
+            }
 
-			// load infor from database
-			$row = Section::oneOrNew($id);
-		}
+            // load infor from database
+            $row = Section::oneOrNew($id);
+        }
 
-		if ($row->isNew())
-		{
-			$row->set('created_by', User::get('id'));
-			$row->set('scope', 'site');
-			$row->set('scope_id', 0);
-		}
+        if ($row->isNew()) {
+            $row->set('created_by', User::get('id'));
+            $row->set('scope', 'site');
+            $row->set('scope_id', 0);
+        }
 
-		User::setState('com_forum.edit.section.data', array(
-			'id'       => $row->get('id'),
-			'asset_id' => $row->get('asset_id')
-		));
+        User::setState('com_forum.edit.section.data', array(
+            'id'       => $row->get('id'),
+            'asset_id' => $row->get('asset_id')
+        ));
 
-		$form = $row->getForm();
+        $form = $row->getForm();
 
-		// Output the HTML
-		$this->view
-			->set('row', $row)
-			->set('form', $form)
-			->setLayout('edit')
-			->display();
-	}
+        // Output the HTML
+        $this->view
+            ->set('row', $row)
+            ->set('form', $form)
+            ->setLayout('edit')
+            ->display();
+    }
 
-	/**
-	 * Saves an entry
-	 *
-	 * @return  void
-	 */
-	public function saveTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Saves an entry
+     *
+     * @return  void
+     */
+    public function saveTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.edit', $this->_option)
-		 && !User::authorise('core.create', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (
+            !User::authorise('core.edit', $this->_option)
+            && !User::authorise('core.create', $this->_option)
+        ) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		User::setState('com_forum.edit.section.data', null);
+        User::setState('com_forum.edit.section.data', null);
 
-		// Incoming
-		$fields = Request::getArray('fields', array(), 'post');
-		$fields = array_map('trim', $fields);
+        // Incoming
+        $fields = Request::getArray('fields', array(), 'post');
+        $fields = array_map('trim', $fields);
 
-		// Initiate extended database class
-		$section = Section::oneOrNew($fields['id'])->set($fields);
+        // Initiate extended database class
+        $section = Section::oneOrNew($fields['id'])->set($fields);
 
-		// Bind the rules.
-		$data = Request::getArray('data', array(), 'post');
-		if (isset($data['rules']) && is_array($data['rules']))
-		{
-			$form = $section->getForm($data);
-			$data = $form->filter($data);
-			if (!$form->validate($data))
-			{
-				Notify::error($form->getError());
-			}
+        // Bind the rules.
+        $data = Request::getArray('data', array(), 'post');
+        if (isset($data['rules']) && is_array($data['rules'])) {
+            $form = $section->getForm($data);
+            $data = $form->filter($data);
+            if (!$form->validate($data)) {
+                Notify::error($form->getError());
+            }
 
-			$section->assetRules = new \Hubzero\Access\Rules($data['rules']);
-		}
+            $section->assetRules = new \Hubzero\Access\Rules($data['rules']);
+        }
 
-		if (!$section->save())
-		{
-			Notify::error($section->getError());
-			return $this->editTask($section);
-		}
+        if (!$section->save()) {
+            Notify::error($section->getError());
+            return $this->editTask($section);
+        }
 
-		Notify::success(Lang::txt('COM_FORUM_SECTION_SAVED'));
+        Notify::success(Lang::txt('COM_FORUM_SECTION_SAVED'));
 
-		if ($this->getTask() == 'apply')
-		{
-			return $this->editTask($section);
-		}
+        if ($this->getTask() == 'apply') {
+            return $this->editTask($section);
+        }
 
-		// Redirect
-		$this->cancelTask();
-	}
+        // Redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Deletes one or more records and redirects to listing
-	 *
-	 * @return  void
-	 */
-	public function removeTask()
-	{
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Deletes one or more records and redirects to listing
+     *
+     * @return  void
+     */
+    public function removeTask()
+    {
+        // Check for request forgeries
+        Request::checkToken();
 
-		if (!User::authorise('core.delete', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.delete', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$i = 0;
+        $i = 0;
 
-		// Loop through each ID
-		foreach ($ids as $id)
-		{
-			$section = Section::oneOrFail(intval($id));
+        // Loop through each ID
+        foreach ($ids as $id) {
+            $section = Section::oneOrFail(intval($id));
 
-			// Remove this section
-			if (!$section->destroy())
-			{
-				Notify::error($section->getError());
-				continue;
-			}
+            // Remove this section
+            if (!$section->destroy()) {
+                Notify::error($section->getError());
+                continue;
+            }
 
-			$i++;
-		}
+            $i++;
+        }
 
-		if ($i)
-		{
-			Notify::success(Lang::txt('COM_FORUM_SECTIONS_DELETED'));
-		}
+        if ($i) {
+            Notify::success(Lang::txt('COM_FORUM_SECTIONS_DELETED'));
+        }
 
-		// Redirect
-		$this->cancelTask();
-	}
+        // Redirect
+        $this->cancelTask();
+    }
 
-	/**
-	 * Sets the state of one or more entries
-	 *
-	 * @return  void
-	 */
-	public function stateTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+    /**
+     * Sets the state of one or more entries
+     *
+     * @return  void
+     */
+    public function stateTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
 
-		if (!User::authorise('core.edit.state', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.edit.state', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$state = ($this->getTask() == 'publish' ? Section::STATE_PUBLISHED : Section::STATE_UNPUBLISHED);
+        $state = ($this->getTask() == 'publish' ? Section::STATE_PUBLISHED : Section::STATE_UNPUBLISHED);
 
-		// Check for an ID
-		if (count($ids) < 1)
-		{
-			$action = ($state == Section::STATE_PUBLISHED) ? Lang::txt('COM_FORUM_PUBLISH') : Lang::txt('COM_FORUM_UNPUBLISH');
+        // Check for an ID
+        if (count($ids) < 1) {
+            $action = ($state == Section::STATE_PUBLISHED)
+                ? Lang::txt('COM_FORUM_PUBLISH')
+                : Lang::txt('COM_FORUM_UNPUBLISH');
 
-			Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action));
-			return $this->cancelTask();
-		}
+            Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action));
+            return $this->cancelTask();
+        }
 
-		$i = 0;
+        $i = 0;
 
-		foreach ($ids as $id)
-		{
-			// Update record(s)
-			$row = Section::oneOrFail(intval($id));
-			$row->set('state', $state);
+        foreach ($ids as $id) {
+            // Update record(s)
+            $row = Section::oneOrFail(intval($id));
+            $row->set('state', $state);
 
-			if (!$row->save())
-			{
-				Notify::error($row->getError());
-				continue;
-			}
+            if (!$row->save()) {
+                Notify::error($row->getError());
+                continue;
+            }
 
-			$i++;
-		}
+            $i++;
+        }
 
-		// set message
-		if ($i)
-		{
-			if ($state == Section::STATE_PUBLISHED)
-			{
-				$message = Lang::txt('COM_FORUM_ITEMS_PUBLISHED', $i);
-			}
-			else
-			{
-				$message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', $i);
-			}
+        // set message
+        if ($i) {
+            if ($state == Section::STATE_PUBLISHED) {
+                $message = Lang::txt('COM_FORUM_ITEMS_PUBLISHED', $i);
+            } else {
+                $message = Lang::txt('COM_FORUM_ITEMS_UNPUBLISHED', $i);
+            }
 
-			Notify::success($message);
-		}
+            Notify::success($message);
+        }
 
-		$this->cancelTask();
-	}
+        $this->cancelTask();
+    }
 
-	/**
-	 * Sets the access of one or more entries
-	 *
-	 * @return  void
-	 */
-	public function accessTask()
-	{
-		// Check for request forgeries
-		Request::checkToken(['get', 'post']);
+    /**
+     * Sets the access of one or more entries
+     *
+     * @return  void
+     */
+    public function accessTask()
+    {
+        // Check for request forgeries
+        Request::checkToken(['get', 'post']);
 
-		if (!User::authorise('core.edit.state', $this->_option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if (!User::authorise('core.edit.state', $this->_option)) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Incoming
-		$state = Request::getInt('access', 0);
-		$ids = Request::getArray('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+        // Incoming
+        $state = Request::getInt('access', 0);
+        $ids = Request::getArray('id', array());
+        $ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Check for an ID
-		if (count($ids) < 1)
-		{
-			Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'));
-			return $this->cancelTask();
-		}
+        // Check for an ID
+        if (count($ids) < 1) {
+            Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'));
+            return $this->cancelTask();
+        }
 
-		$i = 0;
+        $i = 0;
 
-		foreach ($ids as $id)
-		{
-			// Update record(s)
-			$row = Section::oneOrFail(intval($id));
-			$row->set('access', $state);
+        foreach ($ids as $id) {
+            // Update record(s)
+            $row = Section::oneOrFail(intval($id));
+            $row->set('access', $state);
 
-			if (!$row->save())
-			{
-				Notify::error($row->getError());
-				continue;
-			}
+            if (!$row->save()) {
+                Notify::error($row->getError());
+                continue;
+            }
 
-			$i++;
-		}
+            $i++;
+        }
 
-		if ($i)
-		{
-			Notify::success(Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', $i));
-		}
+        if ($i) {
+            Notify::success(Lang::txt('COM_FORUM_ITEMS_ACCESS_CHANGED', $i));
+        }
 
-		$this->cancelTask();
-	}
+        $this->cancelTask();
+    }
 }

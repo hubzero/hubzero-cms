@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,22 +10,22 @@
 defined('_HZEXEC_') or die();
 
 $toolbarElements = [
-	'title' => [Lang::txt('COM_SEARCH_HEADING_BOOST_NEW')],
-	'apply' => ['create'],
-	'cancel' => ['list'],
-	'spacer' => [],
-	'help' => ['boost']
+    'title' => [Lang::txt('COM_SEARCH_HEADING_BOOST_NEW')],
+    'apply' => ['create'],
+    'cancel' => ['list'],
+    'spacer' => [],
+    'help' => ['boost']
 ];
 
 $this->view('_toolbar', 'shared')
-	->set('elements', $toolbarElements)
-	->display();
+    ->set('elements', $toolbarElements)
+    ->display();
 
 $boost = $this->boost;
 $typeOptions = $this->typeOptions;
 
 $this->view('_boost_form')
-	->set('boost', $boost)
-	->set('task', 'new')
-	->set('typeOptions', $typeOptions)
-	->display();
+    ->set('boost', $boost)
+    ->set('task', 'new')
+    ->set('typeOptions', $typeOptions)
+    ->display();

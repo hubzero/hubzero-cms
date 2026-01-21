@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,10 +13,10 @@ namespace Hubzero\Component;
  */
 interface ControllerInterface
 {
-	/**
-	 * Determines task being called and attempts to execute it
-	 *
-	 * @return  void
-	 */
-	public function execute();
+    /**
+     * Determines task being called and attempts to execute it
+     *
+     * @return  void
+     */
+    public function execute();
 }

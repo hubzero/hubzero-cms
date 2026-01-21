@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,313 +16,303 @@ use Exception;
  */
 class Oauth
 {
-	/**
-	 * API endpoint constants
-	 **/
-	const HOSTNAME  = 'scistarter.com';
-	const AUTHORIZE = 'authorize';
-	const TOKEN     = 'token';
+    /**
+     * API endpoint constants
+     **/
+    public const HOSTNAME  = 'scistarter.com';
+    public const AUTHORIZE = 'authorize';
+    public const TOKEN     = 'token';
 
-	/**
-	 * The http tranport object
-	 *
-	 * @var  object
-	 **/
-	private $http = null;
+    /**
+     * The http tranport object
+     *
+     * @var  object
+     **/
+    private $http = null;
 
-	/**
-	 * The API environment
-	 *
-	 * @var  string
-	 **/
-	private $environment = '';
+    /**
+     * The API environment
+     *
+     * @var  string
+     **/
+    private $environment = '';
 
-	/**
-	 * The oauth client ID
-	 *
-	 * @var  string
-	 **/
-	private $clientId = null;
+    /**
+     * The oauth client ID
+     *
+     * @var  string
+     **/
+    private $clientId = null;
 
-	/**
-	 * The oauth client secret
-	 *
-	 * @var  string
-	 **/
-	private $clientSecret = null;
+    /**
+     * The oauth client secret
+     *
+     * @var  string
+     **/
+    private $clientSecret = null;
 
-	/**
-	 * The oauth request scope
-	 *
-	 * @var  string
-	 **/
-	private $scope = 'login%20extensive';
+    /**
+     * The oauth request scope
+     *
+     * @var  string
+     **/
+    private $scope = 'login%20extensive';
 
-	/**
-	 * The oauth request state
-	 *
-	 * @var  string
-	 **/
-	private $state = null;
+    /**
+     * The oauth request state
+     *
+     * @var  string
+     **/
+    private $state = null;
 
-	/**
-	 * The oauth redirect URI
-	 *
-	 * @var  string
-	 **/
-	private $redirectUri = null;
+    /**
+     * The oauth redirect URI
+     *
+     * @var  string
+     **/
+    private $redirectUri = null;
 
-	/**
-	 * The oauth access token
-	 *
-	 * @var  string
-	 **/
-	private $accessToken = null;
+    /**
+     * The oauth access token
+     *
+     * @var  string
+     **/
+    private $accessToken = null;
 
-	/**
-	 * Constructs a new instance
-	 *
-	 * @param   object  $http  a request tranport object to inject
-	 * @return  void
-	 * @uses    SciStarter\Http\Curl
-	 **/
-	public function __construct($http = null)
-	{
-		$this->http = $http ?: new Curl;
-	}
+    /**
+     * Constructs a new instance
+     *
+     * @param   object  $http  a request tranport object to inject
+     * @return  void
+     * @uses    SciStarter\Http\Curl
+     **/
+    public function __construct($http = null)
+    {
+        $this->http = $http ?: new Curl();
+    }
 
-	/**
-	 * Sets the oauth instance to use the production environment
-	 *
-	 * @return  $this
-	 **/
-	public function useProductionEnvironment()
-	{
-		$this->environment = '';
+    /**
+     * Sets the oauth instance to use the production environment
+     *
+     * @return  $this
+     **/
+    public function useProductionEnvironment()
+    {
+        $this->environment = '';
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Sets the oauth instance to use the sandbox environment
-	 *
-	 * @return  $this
-	 **/
-	public function useSandboxEnvironment()
-	{
-		$this->environment = 'sandbox';
+    /**
+     * Sets the oauth instance to use the sandbox environment
+     *
+     * @return  $this
+     **/
+    public function useSandboxEnvironment()
+    {
+        $this->environment = 'sandbox';
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Sets the client ID for future use
-	 *
-	 * @param   string  $clientId  the client id
-	 * @return  $this
-	 **/
-	public function setClientId($clientId)
-	{
-		$this->clientId = $clientId;
+    /**
+     * Sets the client ID for future use
+     *
+     * @param   string  $clientId  the client id
+     * @return  $this
+     **/
+    public function setClientId($clientId)
+    {
+        $this->clientId = $clientId;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Sets the client secret for future use
-	 *
-	 * @param   string  $clientSecret  the client secret
-	 * @return  $this
-	 **/
-	public function setClientSecret($clientSecret)
-	{
-		$this->clientSecret = $clientSecret;
+    /**
+     * Sets the client secret for future use
+     *
+     * @param   string  $clientSecret  the client secret
+     * @return  $this
+     **/
+    public function setClientSecret($clientSecret)
+    {
+        $this->clientSecret = $clientSecret;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Sets the oauth scope
-	 *
-	 * This is the scope of the permissions you'll be requesting from the user.
-	 * See SciStarter documentation for options and more details. Most likely
-	 * this won't be any more than 'login'.
-	 *
-	 * @param   string  $scope  the request scope
-	 * @return  $this
-	 **/
-	public function setScope($scope)
-	{
-		$this->scope = $scope;
+    /**
+     * Sets the oauth scope
+     *
+     * This is the scope of the permissions you'll be requesting from the user.
+     * See SciStarter documentation for options and more details. Most likely
+     * this won't be any more than 'login'.
+     *
+     * @param   string  $scope  the request scope
+     * @return  $this
+     **/
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Sets the oauth redirect URI
-	 *
-	 * This is where the user will come back to after their interaction
-	 * with the SciStarter login/registration page
-	 *
-	 * @param   string  $redirectUri  the redirect uri
-	 * @return  $this
-	 **/
-	public function setRedirectUri($redirectUri)
-	{
-		$this->redirectUri = $redirectUri;
+    /**
+     * Sets the oauth redirect URI
+     *
+     * This is where the user will come back to after their interaction
+     * with the SciStarter login/registration page
+     *
+     * @param   string  $redirectUri  the redirect uri
+     * @return  $this
+     **/
+    public function setRedirectUri($redirectUri)
+    {
+        $this->redirectUri = $redirectUri;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Sets the oauth access token
-	 *
-	 * @param   string  $token  the access token to set
-	 * @return  $this
-	 **/
-	public function setAccessToken($token)
-	{
-		$this->accessToken = $token;
+    /**
+     * Sets the oauth access token
+     *
+     * @param   string  $token  the access token to set
+     * @return  $this
+     **/
+    public function setAccessToken($token)
+    {
+        $this->accessToken = $token;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Grabs the oauth access token
-	 *
-	 * @return  string
-	 **/
-	public function getAccessToken()
-	{
-		return $this->accessToken;
-	}
+    /**
+     * Grabs the oauth access token
+     *
+     * @return  string
+     **/
+    public function getAccessToken()
+    {
+        return $this->accessToken;
+    }
 
-	/**
-	 * Gets the authorization URL based on the instance parameters
-	 *
-	 * @return  string
-	 **/
-	public function getAuthorizationUrl()
-	{
-		if (!$this->redirectUri)
-		{
-			throw new Exception('Redirect URI is not set');
-		}
-		if (!$this->scope)
-		{
-			throw new Exception('Scope is required');
-		}
-		if (!$this->clientId)
-		{
-			throw new Exception('Client ID is not set');
-		}
+    /**
+     * Gets the authorization URL based on the instance parameters
+     *
+     * @return  string
+     **/
+    public function getAuthorizationUrl()
+    {
+        if (!$this->redirectUri) {
+            throw new Exception('Redirect URI is not set');
+        }
+        if (!$this->scope) {
+            throw new Exception('Scope is required');
+        }
+        if (!$this->clientId) {
+            throw new Exception('Client ID is not set');
+        }
 
-		$url  = 'https://';
-		$url .= (!empty($this->environment)) ? $this->environment . '.' : '';
-		$url .= self::HOSTNAME . '/' . self::AUTHORIZE;
-		$url .= '?client_id='    . $this->clientId;
-		$url .= '&scope='        . $this->scope;
-		$url .= '&redirect_uri=' . urlencode($this->redirectUri);
-		$url .= '&response_type=code';
+        $url  = 'https://';
+        $url .= (!empty($this->environment)) ? $this->environment . '.' : '';
+        $url .= self::HOSTNAME . '/' . self::AUTHORIZE;
+        $url .= '?client_id='    . $this->clientId;
+        $url .= '&scope='        . $this->scope;
+        $url .= '&redirect_uri=' . urlencode($this->redirectUri);
+        $url .= '&response_type=code';
 
-		return $url;
-	}
+        return $url;
+    }
 
-	/**
-	 * Takes the given code and requests an auth token
-	 *
-	 * @param   string  $code  the oauth code needed to request the access token
-	 * @return  $this
-	 * @throws  Exception
-	 **/
-	public function authenticate($code)
-	{
-		// Check for required items
-		if (!$this->clientId)
-		{
-			throw new Exception('Client ID is required');
-		}
-		if (!$this->clientSecret)
-		{
-			throw new Exception('Client secret is required');
-		}
-		if (!$this->redirectUri)
-		{
-			throw new Exception('Redirect URI is required');
-		}
+    /**
+     * Takes the given code and requests an auth token
+     *
+     * @param   string  $code  the oauth code needed to request the access token
+     * @return  $this
+     * @throws  Exception
+     **/
+    public function authenticate($code)
+    {
+        // Check for required items
+        if (!$this->clientId) {
+            throw new Exception('Client ID is required');
+        }
+        if (!$this->clientSecret) {
+            throw new Exception('Client secret is required');
+        }
+        if (!$this->redirectUri) {
+            throw new Exception('Redirect URI is required');
+        }
 
-		$url  = 'https://';
-		$url .= (!empty($this->environment)) ? $this->environment . '.' : '';
-		$url .= self::HOSTNAME . '/' . self::TOKEN . '?key=' . $this->clientSecret;
+        $url  = 'https://';
+        $url .= (!empty($this->environment)) ? $this->environment . '.' : '';
+        $url .= self::HOSTNAME . '/' . self::TOKEN . '?key=' . $this->clientSecret;
 
-		$fields = [
-			'client_id'     => $this->clientId,
-			'client_secret' => $this->clientSecret,
-			'code'          => $code,
-			'redirect_uri'  => urlencode($this->redirectUri),
-			'grant_type'    => 'authorization_code'
-		];
+        $fields = [
+            'client_id'     => $this->clientId,
+            'client_secret' => $this->clientSecret,
+            'code'          => $code,
+            'redirect_uri'  => urlencode($this->redirectUri),
+            'grant_type'    => 'authorization_code'
+        ];
 
-		$this->http->setUrl($url)
-				   ->setPostFields($fields)
-				   ->setHeader(['Accept' => 'application/json']);
+        $this->http->setUrl($url)
+                   ->setPostFields($fields)
+                   ->setHeader(['Accept' => 'application/json']);
 
-		$data = json_decode($this->http->execute());
+        $data = json_decode($this->http->execute());
 
-		if (isset($data->access_token))
-		{
-			$this->setAccessToken($data->access_token);
-		}
-		else
-		{
-			// Seems like the response format changes on occasion... not sure what's going on there?
-			$error = (isset($data->error)) ? $data->error : 'unknown error';
+        if (isset($data->access_token)) {
+            $this->setAccessToken($data->access_token);
+        } else {
+            // Seems like the response format changes on occasion... not sure what's going on there?
+            $error = (isset($data->error)) ? $data->error : 'unknown error';
 
-			throw new Exception($error);
-		}
+            throw new Exception($error);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Checks for access token to indicate authentication
-	 *
-	 * @return  bool
-	 **/
-	public function isAuthenticated()
-	{
-		return ($this->getAccessToken()) ? true : false;
-	}
+    /**
+     * Checks for access token to indicate authentication
+     *
+     * @return  bool
+     **/
+    public function isAuthenticated()
+    {
+        return ($this->getAccessToken()) ? true : false;
+    }
 
-	/**
-	 * Grabs the user's data
-	 *
-	 * You'll call this method after completing the proper oauth exchange.
-	 *
-	 * @return  object
-	 * @throws  Exception
-	 **/
-	public function getUserData()
-	{
-		$url  = 'https://';
-		$url .= (!empty($this->environment)) ? $this->environment . '.' : '';
-		$url .= self::HOSTNAME . '/api/user_data';
+    /**
+     * Grabs the user's data
+     *
+     * You'll call this method after completing the proper oauth exchange.
+     *
+     * @return  object
+     * @throws  Exception
+     **/
+    public function getUserData()
+    {
+        $url  = 'https://';
+        $url .= (!empty($this->environment)) ? $this->environment . '.' : '';
+        $url .= self::HOSTNAME . '/api/user_data';
 
-		$this->http->setUrl($url);
+        $this->http->setUrl($url);
 
-		// If using the members api, we have to have an access token set
-		if (!$this->getAccessToken())
-		{
-			throw new Exception('You must first set an access token or authenticate');
-		}
+        // If using the members api, we have to have an access token set
+        if (!$this->getAccessToken()) {
+            throw new Exception('You must first set an access token or authenticate');
+        }
 
-		$this->http->setHeader([
-			//'Content-Type'  => 'application/json',
-			'Accept'        => 'application/json',
-			'Authorization' => 'Bearer ' . $this->getAccessToken()
-		]);
+        $this->http->setHeader([
+            //'Content-Type'  => 'application/json',
+            'Accept'        => 'application/json',
+            'Authorization' => 'Bearer ' . $this->getAccessToken()
+        ]);
 
-		$account = json_decode($this->http->execute());
-		return $account;
-	}
+        $account = json_decode($this->http->execute());
+        return $account;
+    }
 }

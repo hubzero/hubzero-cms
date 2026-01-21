@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,21 +17,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140714201025ComTime extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__time_auth_tokens'))
-		{
-			$query = "DROP TABLE `#__time_auth_tokens`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__time_auth_tokens')) {
+            $query = "DROP TABLE `#__time_auth_tokens`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__time_hub_contacts'))
-		{
-			$query = "CREATE TABLE `#__time_hub_contacts` (
+        if (!$this->db->tableExists('#__time_hub_contacts')) {
+            $query = "CREATE TABLE `#__time_hub_contacts` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `name` varchar(255) NOT NULL DEFAULT '',
 				  `phone` varchar(255) DEFAULT '000-000-0000',
@@ -38,13 +38,12 @@ class Migration20140714201025ComTime extends Base
 				  `hub_id` int(11) NOT NULL,
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__time_hubs'))
-		{
-			$query = "CREATE TABLE `#__time_hubs` (
+        if (!$this->db->tableExists('#__time_hubs')) {
+            $query = "CREATE TABLE `#__time_hubs` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `name` varchar(255) NOT NULL DEFAULT '',
 				  `name_normalized` varchar(255) NOT NULL DEFAULT '',
@@ -55,13 +54,12 @@ class Migration20140714201025ComTime extends Base
 				  `notes` blob,
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__time_records'))
-		{
-			$query = "CREATE TABLE `#__time_records` (
+        if (!$this->db->tableExists('#__time_records')) {
+            $query = "CREATE TABLE `#__time_records` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `task_id` int(11) NOT NULL,
 				  `user_id` int(11) NOT NULL,
@@ -70,33 +68,28 @@ class Migration20140714201025ComTime extends Base
 				  `description` longtext,
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-		else if ($this->db->tableExists('#__time_records') && $this->db->tableHasField('#__time_records', 'billed'))
-		{
-			$query = "ALTER TABLE `#__time_records` DROP `billed`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        } elseif ($this->db->tableExists('#__time_records') && $this->db->tableHasField('#__time_records', 'billed')) {
+            $query = "ALTER TABLE `#__time_records` DROP `billed`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__time_reports'))
-		{
-			$query = "DROP TABLE `#__time_reports`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__time_reports')) {
+            $query = "DROP TABLE `#__time_reports`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__time_reports_records_assoc'))
-		{
-			$query = "DROP TABLE `#__time_reports_records_assoc`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__time_reports_records_assoc')) {
+            $query = "DROP TABLE `#__time_reports_records_assoc`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__time_tasks'))
-		{
-			$query = "CREATE TABLE `#__time_tasks` (
+        if (!$this->db->tableExists('#__time_tasks')) {
+            $query = "CREATE TABLE `#__time_tasks` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `name` varchar(255) NOT NULL DEFAULT '',
 				  `hub_id` int(11) NOT NULL,
@@ -109,24 +102,23 @@ class Migration20140714201025ComTime extends Base
 				  `liaison` int(11) DEFAULT NULL,
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__time_users'))
-		{
-			$query = "CREATE TABLE `#__time_users` (
+        if (!$this->db->tableExists('#__time_users')) {
+            $query = "CREATE TABLE `#__time_users` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `user_id` int(11) NOT NULL,
 				  `manager_id` int(11) NOT NULL,
 				  `liaison` int(1) DEFAULT '0',
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->addComponentEntry('Time', 'com_time', 0);
-		$this->deletePluginEntry('time');
-	}
+        $this->addComponentEntry('Time', 'com_time', 0);
+        $this->deletePluginEntry('time');
+    }
 }

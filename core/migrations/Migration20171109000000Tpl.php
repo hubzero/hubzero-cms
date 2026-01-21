@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,26 +14,27 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing tmeplates no longer supported
- **/
+ *
+ */
 class Migration20171109000000Tpl extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deleteTemplateEntry('hubbasic2012', 0);
-		$this->deleteTemplateEntry('hubbasic2013', 0);
-		$this->deleteTemplateEntry('baselayer', 0);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deleteTemplateEntry('hubbasic2012', 0);
+        $this->deleteTemplateEntry('hubbasic2013', 0);
+        $this->deleteTemplateEntry('baselayer', 0);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addTemplateEntry('hubbasic2012', 'hubbasic2012', 0, 0, 0, null, 1);
-		$this->addTemplateEntry('hubbasic2013', 'hubbasic2013', 0, 0, 0, null, 1);
-		$this->addTemplateEntry('baselayer', 'baselayer', 0, 0, 0, null, 1);
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addTemplateEntry('hubbasic2012', 'hubbasic2012', 0, 0, 0, null, 1);
+        $this->addTemplateEntry('hubbasic2013', 'hubbasic2013', 0, 0, 0, null, 1);
+        $this->addTemplateEntry('baselayer', 'baselayer', 0, 0, 0, null, 1);
+    }
 }

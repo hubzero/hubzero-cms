@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,30 +9,28 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 ?>
-<?php if (isset($this->comments) && count($this->comments) > 0): ?>
+<?php if (isset($this->comments) && count($this->comments) > 0) : ?>
 <ol class="comments" id="t<?php echo isset($this->parent) ? $this->parent : '0'; ?>">
-<?php
-{
-	$cls = 'odd';
-	if (isset($this->cls))
-	{
-		$cls = ($this->cls == 'odd') ? 'even' : 'odd';
-	}
+    <?php
+    {
+    $cls = 'odd';
+    if (isset($this->cls)) {
+        $cls = ($this->cls == 'odd') ? 'even' : 'odd';
+    }
 
-	$this->depth++;
+    $this->depth++;
 
-	foreach ($this->comments as $comment)
-	{
-		$this->view('_comment')
-		     ->set('option', $this->option)
-		     ->set('comment', $comment)
-		     ->set('depth', $this->depth)
-		     ->set('cls', $cls)
-		     ->set('wish', $this->wish)
-		     ->set('wishlist', $this->wishlist)
-		     ->display();
-	}
-}
-?>
+    foreach ($this->comments as $comment) {
+        $this->view('_comment')
+             ->set('option', $this->option)
+             ->set('comment', $comment)
+             ->set('depth', $this->depth)
+             ->set('cls', $cls)
+             ->set('wish', $this->wish)
+             ->set('wishlist', $this->wishlist)
+             ->display();
+    }
+    }
+    ?>
 </ol>
 <?php endif; ?>

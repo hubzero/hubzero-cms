@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,176 +17,175 @@ use Iterator;
  */
 class AssocList extends Assoc implements Iterator, Countable
 {
-	/**
-	 * Description for 'rows'
-	 *
-	 * @var array
-	 */
-	private $rows = array();
+    /**
+     * Description for 'rows'
+     *
+     * @var array
+     */
+    private $rows = array();
 
-	/**
-	 * Description for 'pos'
-	 *
-	 * @var integer
-	 */
-	private $pos = 0;
+    /**
+     * Description for 'pos'
+     *
+     * @var integer
+     */
+    private $pos = 0;
 
-	/**
-	 * Is this scalar?
-	 *
-	 * @return  boolean
-	 */
-	public function is_scalar()
-	{
-		return false;
-	}
+    /**
+     * Is this scalar?
+     *
+     * @return  boolean
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function is_scalar()
+    {
+        return false;
+    }
 
-	/**
-	 * Set the plugin on the list of items
-	 *
-	 * @param   string   $plugin
-	 * @param   boolean  $skip_cleanup
-	 * @return  void
-	 */
-	public function set_plugin($plugin, $skip_cleanup = false)
-	{
-		foreach ($this->rows as $row)
-		{
-			$row->set_plugin($plugin, $skip_cleanup);
-		}
-	}
+    /**
+     * Set the plugin on the list of items
+     *
+     * @param   string   $plugin
+     * @param   boolean  $skip_cleanup
+     * @return  void
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function set_plugin($plugin, $skip_cleanup = false)
+    {
+        foreach ($this->rows as $row) {
+            $row->set_plugin($plugin, $skip_cleanup);
+        }
+    }
 
-	/**
-	 * Constructor
-	 *
-	 * @param   array   $rows
-	 * @param   string  $plugin
-	 * @return  void
-	 */
-	public function __construct($rows, $plugin = null)
-	{
-		$this->rows = is_array($rows) ? $rows : array($rows);
-		$scale = 1;
-		foreach ($this->rows as $idx => &$row)
-		{
-			if (!($row instanceof SearchResult))
-			{
-				$row = new AssocScalar($row);
-				$row->set_plugin($plugin);
-			}
+    /**
+     * Constructor
+     *
+     * @param   array   $rows
+     * @param   string  $plugin
+     * @return  void
+     */
+    public function __construct($rows, $plugin = null)
+    {
+        $this->rows = is_array($rows) ? $rows : array($rows);
+        $scale = 1;
+        foreach ($this->rows as $idx => &$row) {
+            if (!($row instanceof SearchResult)) {
+                $row = new AssocScalar($row);
+                $row->set_plugin($plugin);
+            }
 
-			if ($idx == 0 && ($weight = $row->get_weight()) > 1)
-			{
-				$scale = $weight;
-			}
+            if ($idx == 0 && ($weight = $row->get_weight()) > 1) {
+                $scale = $weight;
+            }
 
-			if ($scale > 1)
-			{
-				$row->scale_weight($scale, 'normalizing within plugin');
-			}
-		}
-	}
+            if ($scale > 1) {
+                $row->scale_weight($scale, 'normalizing within plugin');
+            }
+        }
+    }
 
-	/**
-	 * Get an item at the selected position
-	 *
-	 * @param   integer  $idx
-	 * @return  mixed
-	 */
-	public function &at($idx)
-	{
-		return $this->rows[$idx];
-	}
+    /**
+     * Get an item at the selected position
+     *
+     * @param   integer  $idx
+     * @return  mixed
+     */
+    public function &at($idx)
+    {
+        return $this->rows[$idx];
+    }
 
-	/**
-	 * Get a list of items as an AssocList object
-	 *
-	 * @return  object
-	 */
-	public function to_associative()
-	{
-		return $this;
-	}
+    /**
+     * Get a list of items as an AssocList object
+     *
+     * @return  object
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function to_associative()
+    {
+        return $this;
+    }
 
-	/**
-	 * Get items
-	 *
-	 * @return  array
-	 */
-	public function get_items()
-	{
-		return $this->rows;
-	}
+    /**
+     * Get items
+     *
+     * @return  array
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function get_items()
+    {
+        return $this->rows;
+    }
 
-	/**
-	 * Reset position
-	 *
-	 * @return  void
-	 */
+    /**
+     * Reset position
+     *
+     * @return  void
+     */
 
-	#[\ReturnTypeWillChange]
-	public function rewind()
-	{
-		$this->pos = 0;
-	}
+    #[\ReturnTypeWillChange]
+    public function rewind()
+    {
+        $this->pos = 0;
+    }
 
-	/**
-	 * Get item for current position
-	 *
-	 * @return  mixed
-	 */
+    /**
+     * Get item for current position
+     *
+     * @return  mixed
+     */
 
-	#[\ReturnTypeWillChange]
-	public function current()
-	{
-		return $this->rows[$this->pos];
-	}
+    #[\ReturnTypeWillChange]
+    public function current()
+    {
+        return $this->rows[$this->pos];
+    }
 
-	/**
-	 * Get current position key
-	 *
-	 * @return  integer
-	 */
+    /**
+     * Get current position key
+     *
+     * @return  integer
+     */
 
-	#[\ReturnTypeWillChange]
-	public function key()
-	{
-		return $this->pos;
-	}
+    #[\ReturnTypeWillChange]
+    public function key()
+    {
+        return $this->pos;
+    }
 
-	/**
-	 * Get next position
-	 *
-	 * @return  void
-	 */
+    /**
+     * Get next position
+     *
+     * @return  void
+     */
 
-	#[\ReturnTypeWillChange]
-	public function next()
-	{
-		++$this->pos;
-	}
+    #[\ReturnTypeWillChange]
+    public function next()
+    {
+        ++$this->pos;
+    }
 
-	/**
-	 * Is current position valid?
-	 *
-	 * @return  boolean
-	 */
+    /**
+     * Is current position valid?
+     *
+     * @return  boolean
+     */
 
-	#[\ReturnTypeWillChange]
-	public function valid()
-	{
-		return isset($this->rows[$this->pos]);
-	}
+    #[\ReturnTypeWillChange]
+    public function valid()
+    {
+        return isset($this->rows[$this->pos]);
+    }
 
-	/**
-	 * Get a record count
-	 *
-	 * @return  integer
-	 */
+    /**
+     * Get a record count
+     *
+     * @return  integer
+     */
 
-	#[\ReturnTypeWillChange]
-	public function count()
-	{
-		return count($this->rows);
-	}
+    #[\ReturnTypeWillChange]
+    public function count()
+    {
+        return count($this->rows);
+    }
 }

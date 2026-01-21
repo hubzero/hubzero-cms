@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2025 The Regents of the University of California.
@@ -20,29 +21,24 @@
  * fixtures that legitimately declare their own classes of the same name.
  */
 
-if (!defined('_HZEXEC_'))
-{
-	define('_HZEXEC_', true);
+if (!defined('_HZEXEC_')) {
+    define('_HZEXEC_', true);
 }
 
-if (!defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
+if (!defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
 }
 
-if (!defined('PATH_ROOT'))
-{
-	define('PATH_ROOT', dirname(__DIR__, 2));
+if (!defined('PATH_ROOT')) {
+    define('PATH_ROOT', dirname(__DIR__, 2));
 }
 
-if (!defined('PATH_CORE'))
-{
-	define('PATH_CORE', dirname(__DIR__));
+if (!defined('PATH_CORE')) {
+    define('PATH_CORE', dirname(__DIR__));
 }
 
-if (!defined('PATH_APP'))
-{
-	define('PATH_APP', PATH_ROOT . DS . 'app');
+if (!defined('PATH_APP')) {
+    define('PATH_APP', PATH_ROOT . DS . 'app');
 }
 
 require dirname(__DIR__) . '/vendor/autoload.php';
@@ -55,39 +51,34 @@ $app = new Hubzero\Container\Container();
 // Hubzero\Base\Application registers itself.
 $app['app'] = $app;
 
-$app['dispatcher'] = function ()
-{
-	return new Hubzero\Events\Dispatcher();
+$app['dispatcher'] = function () {
+    return new Hubzero\Events\Dispatcher();
 };
 
 require_once __DIR__ . '/stubs.php';
 
 // See Hubzero\Test\Stubs\DatabaseStub for why queries throw but the datetime
 // format is answered for real.
-$app['db'] = function ()
-{
-	return new Hubzero\Test\Stubs\DatabaseStub();
+$app['db'] = function () {
+    return new Hubzero\Test\Stubs\DatabaseStub();
 };
 
-$app['language'] = function ()
-{
-	return new Hubzero\Test\Stubs\TranslatorStub();
+$app['language'] = function () {
+    return new Hubzero\Test\Stubs\TranslatorStub();
 };
 
-$app['component'] = function ($app)
-{
-	return new Hubzero\Component\Loader($app);
+$app['component'] = function ($app) {
+    return new Hubzero\Component\Loader($app);
 };
 
 Hubzero\Facades\Facade::setApplication($app);
 Hubzero\Facades\Facade::createAliases(
-	require dirname(__DIR__) . '/bootstrap/Cli/aliases.php'
+    require dirname(__DIR__) . '/bootstrap/Cli/aliases.php'
 );
 
 // Plugin tests ship their own bootstrap that requires the plugin class file,
 // because plugin classes live outside any autoloaded namespace. PHPUnit runs
 // a single bootstrap for the whole run, so pull each of those in here.
-foreach (glob(dirname(__DIR__) . '/plugins/*/*/tests/bootstrap.php') as $pluginBootstrap)
-{
-	require_once $pluginBootstrap;
+foreach (glob(dirname(__DIR__) . '/plugins/*/*/tests/bootstrap.php') as $pluginBootstrap) {
+    require_once $pluginBootstrap;
 }

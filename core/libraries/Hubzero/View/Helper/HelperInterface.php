@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,18 +15,18 @@ use Hubzero\View\View;
  */
 interface HelperInterface
 {
-	/**
-	 * Set the View object
-	 *
-	 * @param   object  $view
-	 * @return  object
-	 */
-	public function setView(View $view);
+    /**
+     * Set the View object
+     *
+     * @param   object  $view
+     * @return  object
+     */
+    public function setView(View $view);
 
-	/**
-	 * Get the View object
-	 *
-	 * @return  object
-	 */
-	public function getView();
+    /**
+     * Get the View object
+     *
+     * @return  object
+     */
+    public function getView();
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,36 +17,31 @@ $link = $base . '/' . trim($sef, '/');
 // Build message
 $message  = Lang::txt('PLG_CRON_RESOURCES_EMAIL_MEMBERS_EXPLANATION', $link, $this->member->get('name') . ' (' . $this->member->get('username') . ')');
 
-foreach ($this->rows as $row)
-{
-	$content = '';
-	if ($row->get('introtext'))
-	{
-		$content = $row->get('introtext');
-	}
-	else if ($row->get('fulltxt'))
-	{
-		$content = $row->get('fulltxt');
-		$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
-		$content = trim($content);
-	}
+foreach ($this->rows as $row) {
+    $content = '';
+    if ($row->get('introtext')) {
+        $content = $row->get('introtext');
+    } elseif ($row->get('fulltxt')) {
+        $content = $row->get('fulltxt');
+        $content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
+        $content = trim($content);
+    }
 
-	$content = html_entity_decode(strip_tags($content), ENT_COMPAT, 'UTF-8');
-	$content = preg_replace_callback(
-		"/(&#[0-9]+;)/",
-		function($m)
-		{
-			// mb_convert_encoding(..., 'HTML-ENTITIES') is deprecated; decode the
-			// numeric entity to its UTF-8 character with the supported function.
-			return mb_decode_numericentity($m[1], array(0x0, 0x10FFFF, 0, 0x10FFFF), 'UTF-8');
-		},
-		$content
-	);
+    $content = html_entity_decode(strip_tags($content), ENT_COMPAT, 'UTF-8');
+    $content = preg_replace_callback(
+        "/(&#[0-9]+;)/",
+        function ($m) {
+            // mb_convert_encoding(..., 'HTML-ENTITIES') is deprecated; decode the
+            // numeric entity to its UTF-8 character with the supported function.
+            return mb_decode_numericentity($m[1], array(0x0, 0x10FFFF, 0, 0x10FFFF), 'UTF-8');
+        },
+        $content
+    );
 
-	$message .= '------------' . "\n";
-	$message .= stripslashes($row->get('title')) . "\n\n";
-	$message .= $content . "\n\n";
-	$message .= $base . Route::urlForClient('site', $row->link(), false) . "\n\n";
+    $message .= '------------' . "\n";
+    $message .= stripslashes($row->get('title')) . "\n\n";
+    $message .= $content . "\n\n";
+    $message .= $base . Route::urlForClient('site', $row->link(), false) . "\n\n";
 }
 
 $message .= Lang::txt('PLG_CRON_RESOURCES_EMAIL_MEMBERS_MORE', Config::get('sitename'));

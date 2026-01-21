@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,20 +14,20 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for new member address fields
- **/
+ *
+ */
 class Migration20130507170000PlgMembersProfile extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = '';
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = '';
 
-		// create event calendars table
-		if (!$this->db->tableExists('#__xprofiles_address'))
-		{
-			$query .= "CREATE TABLE `#__xprofiles_address` (
+        // create event calendars table
+        if (!$this->db->tableExists('#__xprofiles_address')) {
+            $query .= "CREATE TABLE `#__xprofiles_address` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						`uidNumber` int(11) DEFAULT NULL,
 						`addressTo` varchar(200) DEFAULT NULL,
@@ -39,12 +41,11 @@ class Migration20130507170000PlgMembersProfile extends Base
 						`addressLongitude` float DEFAULT NULL,
 						PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		}
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

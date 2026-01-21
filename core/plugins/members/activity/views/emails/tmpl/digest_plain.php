@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,55 +14,49 @@ $sef  = Route::url($this->member->link());
 $link = $base . '/' . trim($sef, '/');
 
 // Build message
-$message  = Lang::txt('PLG_CRON_ACTIVITY_EMAIL_MEMBERS_EXPLANATION', $link, $this->member->get('name') . ' (' . $this->member->get('username') . ')');
+$message  = Lang::txt(
+    'PLG_CRON_ACTIVITY_EMAIL_MEMBERS_EXPLANATION',
+    $link,
+    $this->member->get('name') . ' (' . $this->member->get('username') . ')'
+);
 
-foreach ($this->rows as $row)
-{
-	$output = html_entity_decode(strip_tags($row->log->get('description')), ENT_COMPAT, 'UTF-8');
-	$output = preg_replace_callback(
-		"/(&#[0-9]+;)/",
-		function($m)
-		{
-			// mb_convert_encoding(..., 'HTML-ENTITIES') is deprecated; decode the
-			// numeric entity to its UTF-8 character with the supported function.
-			return mb_decode_numericentity($m[1], array(0x0, 0x10FFFF, 0, 0x10FFFF), 'UTF-8');
-		},
-		$output
-	);
+foreach ($this->rows as $row) {
+    $output = html_entity_decode(strip_tags($row->log->get('description')), ENT_COMPAT, 'UTF-8');
+    $output = preg_replace_callback(
+        "/(&#[0-9]+;)/",
+        function ($m) {
+            // mb_convert_encoding(..., 'HTML-ENTITIES') is deprecated; decode the
+            // numeric entity to its UTF-8 character with the supported function.
+            return mb_decode_numericentity($m[1], array(0x0, 0x10FFFF, 0, 0x10FFFF), 'UTF-8');
+        },
+        $output
+    );
 
-	$name = Lang::txt('JANONYMOUS');
+    $name = Lang::txt('JANONYMOUS');
 
-	if (!$row->log->get('anonymous'))
-	{
-		$creator = User::getInstance($row->log->get('created_by'));
-		$name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
-	}
+    if (!$row->log->get('anonymous')) {
+        $creator = User::getInstance($row->log->get('created_by'));
+        $name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
+    }
 
-	$dt = Date::of($row->get('created'));
-	$ct = Date::of('now');
+    $dt = Date::of($row->get('created'));
+    $ct = Date::of('now');
 
-	$lapsed = $ct->toUnix() - $dt->toUnix();
+    $lapsed = $ct->toUnix() - $dt->toUnix();
 
-	if ($lapsed < 30)
-	{
-		$timestamp = Lang::txt('PLG_MEMBERS_ACTIVITY_JUST_NOW');
-	}
-	elseif ($lapsed > 86400 && $ct->format('Y') != $dt->format('Y'))
-	{
-		$timestamp = $dt->toLocal('M j, Y');
-	}
-	elseif ($lapsed > 86400)
-	{
-		$timestamp = $dt->toLocal('M j') . ' @ ' . $dt->toLocal('g:i a');
-	}
-	else
-	{
-		$timestamp = $dt->relative();
-	}
+    if ($lapsed < 30) {
+        $timestamp = Lang::txt('PLG_MEMBERS_ACTIVITY_JUST_NOW');
+    } elseif ($lapsed > 86400 && $ct->format('Y') != $dt->format('Y')) {
+        $timestamp = $dt->toLocal('M j, Y');
+    } elseif ($lapsed > 86400) {
+        $timestamp = $dt->toLocal('M j') . ' @ ' . $dt->toLocal('g:i a');
+    } else {
+        $timestamp = $dt->relative();
+    }
 
-	$message .= '------------' . "\n";
-	$message .= $name . ' - ' . $timestamp . "\n";
-	$message .= $output . "\n\n";
+    $message .= '------------' . "\n";
+    $message .= $name . ' - ' . $timestamp . "\n";
+    $message .= $output . "\n\n";
 }
 
 $message = preg_replace('/\n{3,}/', "\n\n", $message);

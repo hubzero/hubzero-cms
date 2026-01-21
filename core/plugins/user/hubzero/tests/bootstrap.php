@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Minimal bootstrap for testing plgUserHubzero's pure helpers.
  *
@@ -7,9 +8,8 @@
  * User, or mail — only inspect the user array shape.
  */
 
-if (!defined('_HZEXEC_'))
-{
-	define('_HZEXEC_', true);
+if (!defined('_HZEXEC_')) {
+    define('_HZEXEC_', true);
 }
 
 require __DIR__ . '/../../../../vendor/autoload.php';

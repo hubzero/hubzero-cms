@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,25 +10,25 @@
 defined('_HZEXEC_') or die();
 
 if (count($this->items) > 0) {
-?>
+    ?>
 <div class="public-list-header">
-	<h3><?php echo ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')); ?> <?php echo Lang::txt('COM_PROJECTS_NOTES'); ?></h3>
+    <h3><?php echo ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')); ?> <?php echo Lang::txt('COM_PROJECTS_NOTES'); ?></h3>
 </div>
 <div class="public-list-wrap">
-	<ul>
-		<?php foreach ($this->items as $item) {
-			$ref = json_decode($item->reference);
+    <ul>
+        <?php foreach ($this->items as $item) {
+            $ref = json_decode($item->reference);
 
-			if (isset($ref->pageid))
-			{
-				$page = \Components\Wiki\Models\Page::one($ref->pageid);
-				if ($page && $page->get('id'))
-				{
-		?>
-		<li class="notes"><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>"><?php echo $page->get('title'); ?></li>
-		<?php }
-			}
-		} ?>
-	</ul>
+            if (isset($ref->pageid)) {
+                $page = \Components\Wiki\Models\Page::one($ref->pageid);
+                if ($page && $page->get('id')) {
+                    ?>
+        <li class="notes"><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>
+        "><?php echo $page->get('title');?></li>
+                    <?php
+                }
+            }
+        } ?>
+    </ul>
 </div>
 <?php }

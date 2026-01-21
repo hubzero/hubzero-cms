@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,16 +17,16 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150107022822PlgHubzeroRecaptcha extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$params = array(
-			'private' => '6Lf9IgATAAAAAAs_fYlomzK_HO6gbUVpSkGkDTRl',
-			'public'  => '6Lf9IgATAAAAAAl3WEw0hwpbsG9O2_EXY_-NH7xd'
-		);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $params = array(
+            'private' => '6Lf9IgATAAAAAAs_fYlomzK_HO6gbUVpSkGkDTRl',
+            'public'  => '6Lf9IgATAAAAAAl3WEw0hwpbsG9O2_EXY_-NH7xd'
+        );
 
-		$this->savePluginParams('hubzero', 'recaptcha', $params);
-	}
+        $this->savePluginParams('hubzero', 'recaptcha', $params);
+    }
 }

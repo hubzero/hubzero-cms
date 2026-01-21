@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,28 +18,27 @@ use Lang;
  */
 class Mailers extends Select
 {
-	/**
-	 * Element name
-	 *
-	 * @var  string
-	 */
-	public $type = 'Mailers';
+    /**
+     * Element name
+     *
+     * @var  string
+     */
+    public $type = 'Mailers';
 
-	/**
-	 * Method to get the field options for category
-	 *
-	 * @return  array
-	 */
-	protected function getOptions()
-	{
-		$options   = [];
-		$options[] = Html::select('option', '', Lang::txt('Site default'));
+    /**
+     * Method to get the field options for category
+     *
+     * @return  array
+     */
+    protected function getOptions()
+    {
+        $options   = [];
+        $options[] = Html::select('option', '', Lang::txt('Site default'));
 
-		foreach (Plugin::byType('mail') as $plugin)
-		{
-			$options[] = Html::select('option', $plugin->name, ucfirst($plugin->name));
-		}
+        foreach (Plugin::byType('mail') as $plugin) {
+            $options[] = Html::select('option', $plugin->name, ucfirst($plugin->name));
+        }
 
-		return $options;
-	}
+        return $options;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,83 +17,81 @@ use Hubzero\Database\Relational;
  */
 class Level extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'resource_taxonomy_audience';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'resource_taxonomy_audience';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'id';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'title' => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'title' => 'notempty'
+    );
 
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var  array
-	 */
-	public $always = array(
-		'label'
-	);
+    /**
+     * Automatically fillable fields
+     *
+     * @var  array
+     */
+    public $always = array(
+        'label'
+    );
 
-	/**
-	 * Generates automatic owned by field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticLabel($data)
-	{
-		$alias = (isset($data['label']) && $data['label'] ? $data['label'] : $data['title']);
-		$alias = strip_tags($alias);
-		$alias = trim($alias);
-		if (strlen($alias) > 11)
-		{
-			$alias = substr($alias . ' ', 0, 11);
-			$alias = substr($alias, 0, strrpos($alias, ' '));
-		}
-		$alias = str_replace(' ', '-', $alias);
+    /**
+     * Generates automatic owned by field value
+     *
+     * @param   array   $data  the data being saved
+     * @return  string
+     */
+    public function automaticLabel($data)
+    {
+        $alias = (isset($data['label']) && $data['label'] ? $data['label'] : $data['title']);
+        $alias = strip_tags($alias);
+        $alias = trim($alias);
+        if (strlen($alias) > 11) {
+            $alias = substr($alias . ' ', 0, 11);
+            $alias = substr($alias, 0, strrpos($alias, ' '));
+        }
+        $alias = str_replace(' ', '-', $alias);
 
-		return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
-	}
+        return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+    }
 
-	/**
-	 * Get field by label
-	 *
-	 * @param   string  $label
-	 * @return  object
-	 */
-	public static function oneByLabel($label)
-	{
-		$result = self::all()
-			->whereEquals('label', $label)
-			->row();
+    /**
+     * Get field by label
+     *
+     * @param   string  $label
+     * @return  object
+     */
+    public static function oneByLabel($label)
+    {
+        $result = self::all()
+            ->whereEquals('label', $label)
+            ->row();
 
-		if (!$result)
-		{
-			$result = self::blank();
-		}
+        if (!$result) {
+            $result = self::blank();
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 }

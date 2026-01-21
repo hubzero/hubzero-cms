@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,44 +18,53 @@ use Lang;
  */
 class Group extends Field
 {
-	/**
-	 * The field type.
-	 *
-	 * @var  string
-	 */
-	protected $type = 'Group';
+    /**
+     * The field type.
+     *
+     * @var  string
+     */
+    protected $type = 'Group';
 
-	/**
-	 * Method to get the field input.
-	 *
-	 * @return  string  The field input.
-	 */
-	protected function getInput()
-	{
-		$onchange = $this->element['onchange'] ? ' onchange="'.(string) $this->element['onchange'].'"' : '';
-		$options = array();
+    /**
+     * Method to get the field input.
+     *
+     * @return  string  The field input.
+     */
+    protected function getInput()
+    {
+        $onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
+        $options = array();
 
-		foreach ($this->element->children() as $option)
-		{
-			$options[] = Html::select('option', (string)$option->attributes()->value, Lang::txt(trim((string) $option)));
-		}
+        foreach ($this->element->children() as $option) {
+            $optVal = (string) $option->attributes()->value;
+            $optLabel = Lang::txt(trim((string) $option));
+            $options[] = Html::select('option', $optVal, $optLabel);
+        }
 
-		$folders = Extension::all()
-			->select('DISTINCT folder')
-			->where('folder', '!=', '')
-			->order('folder', 'asc')
-			->rows()
-			->fieldsByKey('folder');
+        $folders = Extension::all()
+            ->select('DISTINCT folder')
+            ->where('folder', '!=', '')
+            ->order('folder', 'asc')
+            ->rows()
+            ->fieldsByKey('folder');
 
-		$folders = array_unique($folders);
+        $folders = array_unique($folders);
 
-		foreach ($folders as $folder)
-		{
-			$options[] = Html::select('option', $folder, $folder);
-		}
+        foreach ($folders as $folder) {
+            $options[] = Html::select('option', $folder, $folder);
+        }
 
-		$return = Html::select('genericlist', $options, $this->name, $onchange, 'value', 'text', $this->value, $this->id);
+        $return = Html::select(
+            'genericlist',
+            $options,
+            $this->name,
+            $onchange,
+            'value',
+            'text',
+            $this->value,
+            $this->id
+        );
 
-		return $return;
-	}
+        return $return;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,156 +17,156 @@ use Lang;
  */
 class Element extends Obj
 {
-	/**
-	 * Element name
-	 *
-	 * This has to be set in the final
-	 * renderer classes.
-	 *
-	 * @var string
-	 */
-	protected $_name = null;
+    /**
+     * Element name
+     *
+     * This has to be set in the final
+     * renderer classes.
+     *
+     * @var string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_name = null;
 
-	/**
-	 * Reference to the object that instantiated the element
-	 *
-	 * @var object
-	 */
-	protected $_parent = null;
+    /**
+     * Reference to the object that instantiated the element
+     *
+     * @var object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_parent = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object  $parent
-	 * @return  void
-	 */
-	public function __construct($parent = null)
-	{
-		$this->_parent = $parent;
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  $parent
+     * @return  void
+     */
+    public function __construct($parent = null)
+    {
+        $this->_parent = $parent;
+    }
 
-	/**
-	 * Get the element name
-	 *
-	 * @return  string  Type of the parameter
-	 */
-	public function getName()
-	{
-		return $this->_name;
-	}
+    /**
+     * Get the element name
+     *
+     * @return  string  Type of the parameter
+     */
+    public function getName()
+    {
+        return $this->_name;
+    }
 
-	/**
-	 * Return any options this element may have
-	 *
-	 * @param   object  $element       Data Source Object.
-	 * @param   string  $value         Selected value for the element
-	 * @param   string  $control_name  Control name (eg, control[fieldname])
-	 * @return  object  An object populated with all the data and HTML for an element
-	 */
-	public function render(&$element, $value, $control_name = 'fields')
-	{
-		$name  = $element->name;
-		$label = isset($element->label) ? $element->label : $element->name;
-		$descr = isset($element->description) ? $element->description : '';
+    /**
+     * Return any options this element may have
+     *
+     * @param   object  $element       Data Source Object.
+     * @param   string  $value         Selected value for the element
+     * @param   string  $control_name  Control name (eg, control[fieldname])
+     * @return  object  An object populated with all the data and HTML for an element
+     */
+    public function render(&$element, $value, $control_name = 'fields')
+    {
+        $name  = $element->name;
+        $label = isset($element->label) ? $element->label : $element->name;
+        $descr = isset($element->description) ? $element->description : '';
 
-		// Make sure we have a valid label
-		$label = $label ? $label : $name;
+        // Make sure we have a valid label
+        $label = $label ? $label : $name;
 
-		$result = new stdClass;
-		$result->label = $this->fetchTooltip($label, $descr, $element, $control_name, $name);
-		$result->element = $this->fetchElement($name, $value, $element, $control_name);
-		$result->description = $descr;
-		$result->text  = $label;
-		$result->value = $value;
-		$result->name  = $name;
-		$result->type  = $element->type;
+        $result = new stdClass();
+        $result->label = $this->fetchTooltip($label, $descr, $element, $control_name, $name);
+        $result->element = $this->fetchElement($name, $value, $element, $control_name);
+        $result->description = $descr;
+        $result->text  = $label;
+        $result->value = $value;
+        $result->name  = $name;
+        $result->type  = $element->type;
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * Return any options this element may have
-	 *
-	 * @param   string  $label         Display name of the field
-	 * @param   string  $description   Description for the field
-	 * @param   object  $element       Data Source Object.
-	 * @param   string  $control_name  Control name (eg, control[fieldname])
-	 * @param   string  $name          Name of the field
-	 * @return  string  HTML
-	 */
-	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
-	{
-		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
-		if ($description)
-		{
-			$output .= ' class="hasTip" title="' . $label . '::' . $description . '">';
-		}
-		else
-		{
-			$output .= '>';
-		}
-		$output .= $label;
-		$output .= (isset($element->required) && $element->required) ? ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '';
-		$output .= '</label>';
+    /**
+     * Return any options this element may have
+     *
+     * @param   string  $label         Display name of the field
+     * @param   string  $description   Description for the field
+     * @param   object  $element       Data Source Object.
+     * @param   string  $control_name  Control name (eg, control[fieldname])
+     * @param   string  $name          Name of the field
+     * @return  string  HTML
+     */
+    public function fetchTooltip($label, $description, &$element, $control_name = '', $name = '')
+    {
+        $output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
+        if ($description) {
+            $output .= ' class="hasTip" title="' . $label . '::' . $description . '">';
+        } else {
+            $output .= '>';
+        }
+        $output .= $label;
+        $isRequired = isset($element->required) && $element->required;
+        $requiredSpan = ' <span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>';
+        $output .= $isRequired ? $requiredSpan : '';
+        $output .= '</label>';
 
-		return $output;
-	}
+        return $output;
+    }
 
-	/**
-	 * Return any options this element may have
-	 *
-	 * @param   string  $name          Name of the field
-	 * @param   string  $value         Value to check against
-	 * @param   object  $element       Data Source Object.
-	 * @param   string  $control_name  Control name (eg, control[fieldname])
-	 * @return  string  HTML
-	 */
-	public function fetchElement($name, $value, &$element, $control_name)
-	{
-		return '';
-	}
+    /**
+     * Return any options this element may have
+     *
+     * @param   string  $name          Name of the field
+     * @param   string  $value         Value to check against
+     * @param   object  $element       Data Source Object.
+     * @param   string  $control_name  Control name (eg, control[fieldname])
+     * @return  string  HTML
+     */
+    public function fetchElement($name, $value, &$element, $control_name)
+    {
+        return '';
+    }
 
-	/**
-	 * Return any options this element may have
-	 *
-	 * @param   string  $name          Name of the field
-	 * @param   string  $value         Value to check against
-	 * @param   object  $element       Data Source Object.
-	 * @param   string  $control_name  Control name (eg, control[fieldname])
-	 * @return  string  HTML
-	 */
-	public function fetchOptions($name, $value, &$element, $control_name)
-	{
-		return Lang::txt('COM_RESOURCES_NONE');
-	}
+    /**
+     * Return any options this element may have
+     *
+     * @param   string  $name          Name of the field
+     * @param   string  $value         Value to check against
+     * @param   object  $element       Data Source Object.
+     * @param   string  $control_name  Control name (eg, control[fieldname])
+     * @return  string  HTML
+     */
+    public function fetchOptions($name, $value, &$element, $control_name)
+    {
+        return Lang::txt('COM_RESOURCES_NONE');
+    }
 
-	/**
-	 * Display a value
-	 *
-	 * @param   string  $value  Data
-	 * @return  string  Formatted string.
-	 */
-	public function display($value)
-	{
-		return $value;
-	}
+    /**
+     * Display a value
+     *
+     * @param   string  $value  Data
+     * @return  string  Formatted string.
+     */
+    public function display($value)
+    {
+        return $value;
+    }
 
-	/**
-	 * Create html tag for element.
-	 *
-	 * @param   string  $tag     Tag Name
-	 * @param   sting   $value   Tag Value
-	 * @param   string  $prefix  Tag prefix
-	 * @return  string  HTML
-	 */
-	public function toHtmlTag($tag, $value, $prefix = 'nb:')
-	{
-		// Some value checking, apparently, the resource importer breaks this.
-		if (!is_object($value))
-		{
-			return "<{$prefix}{$tag}>{$value}</{$prefix}{$tag}>";
-		}
+    /**
+     * Create html tag for element.
+     *
+     * @param   string  $tag     Tag Name
+     * @param   sting   $value   Tag Value
+     * @param   string  $prefix  Tag prefix
+     * @return  string  HTML
+     */
+    public function toHtmlTag($tag, $value, $prefix = 'nb:')
+    {
+        // Some value checking, apparently, the resource importer breaks this.
+        if (!is_object($value)) {
+            return "<{$prefix}{$tag}>{$value}</{$prefix}{$tag}>";
+        }
 
-		return '';
-	}
+        return '';
+    }
 }

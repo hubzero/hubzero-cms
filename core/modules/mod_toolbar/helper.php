@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,22 +15,21 @@ use Hubzero\Module\Module;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module contents
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		if (!\App::isAdmin())
-		{
-			return;
-		}
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if (!\App::isAdmin()) {
+            return;
+        }
 
-		// Get the toolbar.
-		$toolbar = \Toolbar::render('toolbar');
+        // Get the toolbar.
+        $toolbar = \Toolbar::render('toolbar');
 
-		// Get the view
-		require $this->getLayoutPath($this->params->get('layout', 'default'));
-	}
+        // Get the view
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
 }

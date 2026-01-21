@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,6 +8,6 @@
 
 defined('_HZEXEC_') or die();
 
-if (!empty($version)):
-	echo '<p class="cms-version">' . $version . '</p>';
+if (!empty($version)) :
+    echo '<p class="cms-version">' . $version . '</p>';
 endif;

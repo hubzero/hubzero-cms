@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2025 The Regents of the University of California.
@@ -17,10 +18,10 @@ namespace Components\Search\Tests\Doubles;
  */
 class ControllerDouble
 {
-	/**
-	 * Controller name, assigned directly by the tests
-	 *
-	 * @var  string
-	 */
-	public $name;
+    /**
+     * Controller name, assigned directly by the tests
+     *
+     * @var  string
+     */
+    public $name;
 }

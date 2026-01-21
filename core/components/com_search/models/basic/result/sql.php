@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,48 +16,48 @@ use Exception;
  */
 class Sql extends SearchResult
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   string  $sql
-	 * @return  void
-	 */
-	public function __construct($sql = null)
-	{
-		$this->sql = $sql;
-	}
+    /**
+     * Constructor
+     *
+     * @param   string  $sql
+     * @return  void
+     */
+    public function __construct($sql = null)
+    {
+        $this->sql = $sql;
+    }
 
-	/**
-	 * Get the SQL
-	 *
-	 * @return  string
-	 */
-	public function get_sql()
-	{
-		return $this->sql;
-	}
+    /**
+     * Get the SQL
+     *
+     * @return  string
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function get_sql()
+    {
+        return $this->sql;
+    }
 
-	/**
-	 * Return results as associative array
-	 *
-	 * @return  object
-	 * @throws  SearchPluginError
-	 */
-	public function to_associative()
-	{
-		$db = \App::get('db');
-		$db->setQuery($this->sql);
+    /**
+     * Return results as associative array
+     *
+     * @return  object
+     * @throws  SearchPluginError
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function to_associative()
+    {
+        $db = \App::get('db');
+        $db->setQuery($this->sql);
 
-		if (!($rows = $db->loadAssocList()))
-		{
-			if ($error = $db->getErrorMsg())
-			{
-				throw new Exception('Invalid SQL in ' . $this->sql . ': ' . $error);
-			}
+        if (!($rows = $db->loadAssocList())) {
+            if ($error = $db->getErrorMsg()) {
+                throw new Exception('Invalid SQL in ' . $this->sql . ': ' . $error);
+            }
 
-			$rows = array();
-		}
+            $rows = array();
+        }
 
-		return new AssocList($rows, $this->get_plugin());
-	}
+        return new AssocList($rows, $this->get_plugin());
+    }
 }

@@ -141,70 +141,70 @@ namespace Hubzero\Component\Tests {
     // Guard the helper components so this file loads; the test self-skips in setUp().
     if (class_exists(AbstractComponent::class)) {
 
-    class EnabledHtmxComponent extends AbstractComponent implements HtmxComponentInterface
-    {
-        use UsesHtmxComponent;
-
-        public bool $registered = false;
-
-        public function registerHtmx(HtmxService $htmx): void
+        class EnabledHtmxComponent extends AbstractComponent implements HtmxComponentInterface
         {
-            $this->registered = true;
-            $htmx->state('marker', 'enabled');
+            use UsesHtmxComponent;
+
+            public bool $registered = false;
+
+            public function registerHtmx(HtmxService $htmx): void
+            {
+                $this->registered = true;
+                $htmx->state('marker', 'enabled');
+            }
+
+            protected function execute(): void
+            {
+            }
         }
 
-        protected function execute(): void
+        class DisabledHtmxComponent extends AbstractComponent implements HtmxComponentInterface
         {
+            use UsesHtmxComponent;
+
+            public bool $registered = false;
+
+            public function htmxEnabled(): bool
+            {
+                return false;
+            }
+
+            public function registerHtmx(HtmxService $htmx): void
+            {
+                $this->registered = true;
+            }
+
+            protected function execute(): void
+            {
+            }
         }
-    }
 
-    class DisabledHtmxComponent extends AbstractComponent implements HtmxComponentInterface
-    {
-        use UsesHtmxComponent;
-
-        public bool $registered = false;
-
-        public function htmxEnabled(): bool
+        class TraitDefaultHtmxComponent extends AbstractComponent implements HtmxComponentInterface
         {
-            return false;
+            use UsesHtmxComponent;
+
+            protected function execute(): void
+            {
+            }
         }
 
-        public function registerHtmx(HtmxService $htmx): void
+        class TraitCustomHtmxComponent extends AbstractComponent implements HtmxComponentInterface
         {
-            $this->registered = true;
-        }
+            use UsesHtmxComponent;
 
-        protected function execute(): void
-        {
-        }
-    }
-
-    class TraitDefaultHtmxComponent extends AbstractComponent implements HtmxComponentInterface
-    {
-        use UsesHtmxComponent;
-
-        protected function execute(): void
-        {
-        }
-    }
-
-    class TraitCustomHtmxComponent extends AbstractComponent implements HtmxComponentInterface
-    {
-        use UsesHtmxComponent;
-
-        protected function htmxSecurityConfig(): array
-        {
-            return array(
+            protected function htmxSecurityConfig(): array
+            {
+                return array(
                 'allowEval' => true,
                 'allowScriptTags' => true,
                 'historyCacheSize' => 5
-            );
-        }
+                );
+            }
 
-        protected function execute(): void
-        {
+            protected function execute(): void
+            {
+            }
         }
-    }
 
     } // end class_exists(AbstractComponent) guard
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,488 +16,464 @@ use Countable;
  */
 class Rows implements Iterator, Countable
 {
+    /*
+     * Errors trait for error handling
+     **/
+    use Traits\ErrorBag;
 
-	public function __construct($rows = array())
-	{
-		// While arrays are traversable with foreach,
-		// they will not return true as an instance of Traverable
-		if (is_array($rows) || $rows instanceof \Traversable)
-		{
-			foreach ($rows as $row)
-			{
-				$this->push($row);
-			}
-		}
-	}
+    public function __construct($rows = array())
+    {
+        // While arrays are traversable with foreach,
+        // they will not return true as an instance of Traverable
+        if (is_array($rows) || $rows instanceof \Traversable) {
+            foreach ($rows as $row) {
+                $this->push($row);
+            }
+        }
+    }
 
-	/*
-	 * Errors trait for error handling
-	 **/
-	use Traits\ErrorBag;
+    /**
+     * Internal array of iterable data
+     *
+     * @public array
+     **/
+    private $rows = array();
 
-	/**
-	 * Internal array of iterable data
-	 *
-	 * @var  array
-	 **/
-	private $rows = array();
+    /**
+     * Order by used to retrieve these rows
+     *
+     * @public string
+     **/
+    public $orderBy = 'id';
 
-	/**
-	 * Order by used to retrieve these rows
-	 *
-	 * @var  string
-	 **/
-	public $orderBy = 'id';
+    /**
+     * Order direction used to retrieve these rows
+     *
+     * @public string
+     **/
+    public $orderDir = 'asc';
 
-	/**
-	 * Order direction used to retrieve these rows
-	 *
-	 * @var  string
-	 **/
-	public $orderDir = 'asc';
+    /**
+     * The pagination object based on these rows
+     *
+     * @public \Hubzero\Database\Pagination
+     **/
+    public $pagination = null;
 
-	/**
-	 * The pagination object based on these rows
-	 *
-	 * @var  \Hubzero\Database\Pagination
-	 **/
-	public $pagination = null;
+    /**
+     * Calls the given array function on the rows object and attaches itself to the model
+     *
+     * @param   string $function
+     * @return  mixed
+     * @since   2.1.0
+     **/
+    private function callArrayFunc($function)
+    {
+        $row = $function($this->rows);
 
-	/**
-	 * Calls the given array function on the rows object and attaches itself to the model
-	 *
-	 * @param   string $function
-	 * @return  mixed
-	 * @since   2.1.0
-	 **/
-	private function callArrayFunc($function)
-	{
-		$row = $function($this->rows);
+        return ($row) ? $row->setIterator($this) : $row;
+    }
 
-		return ($row) ? $row->setIterator($this) : $row;
-	}
+    /**
+     * Pushes a new model on to the stack
+     *
+     * @param   \Hubzero\Database\Relational|static  $model  The model to add
+     * @return  void
+     * @since   2.0.0
+     **/
+    public function push(Relational $model)
+    {
+        // Index by primary key if possible, otherwise plain incremental array
+        // Also check to see if that key already exists.  If so, we'll just start
+        // appending items to the array.  This will result in a mixed array and
+        // subsequent items will not be seekable.
+        if ($model->getPkValue() && (!is_array($this->rows) || !array_key_exists($model->getPkValue(), $this->rows))) {
+            $this->rows[$model->getPkValue()] = $model;
+        } else {
+            $this->rows[] = $model;
+        }
+    }
 
-	/**
-	 * Pushes a new model on to the stack
-	 *
-	 * @param   \Hubzero\Database\Relational|static  $model  The model to add
-	 * @return  void
-	 * @since   2.0.0
-	 **/
-	public function push(Relational $model)
-	{
-		// Index by primary key if possible, otherwise plain incremental array
-		// Also check to see if that key already exists.  If so, we'll just start
-		// appending items to the array.  This will result in a mixed array and
-		// subsequent items will not be seekable.
-		if ($model->getPkValue() && (!is_array($this->rows) || !array_key_exists($model->getPkValue(), $this->rows)))
-		{
-			$this->rows[$model->getPkValue()] = $model;
-		}
-		else
-		{
-			$this->rows[] = $model;
-		}
-	}
+    /**
+     * Removes model from the stack
+     *
+     * @param   int $key
+     * @return  void
+     * @since   2.0.0
+     **/
+    public function drop($key)
+    {
+        unset($this->rows[$key]);
+    }
 
-	/**
-	 * Removes model from the stack
-	 *
-	 * @param   int $key
-	 * @return  void
-	 * @since   2.0.0
-	 **/
-	public function drop($key)
-	{
-		unset($this->rows[$key]);
-	}
+    /**
+     * Clears out any existing rows
+     *
+     * @return  void
+     * @since   2.0.0
+     **/
+    public function clear()
+    {
+        $this->rows = array();
+    }
 
-	/**
-	 * Clears out any existing rows
-	 *
-	 * @return  void
-	 * @since   2.0.0
-	 **/
-	public function clear()
-	{
-		$this->rows = array();
-	}
+    /**
+     * Selects a number of randomly selected rows
+     *
+     * @param   int  $n  The number of rows to randomly select
+     * @return  Rows
+     * @since   2.1.13
+     **/
+    public function pickRandom($n)
+    {
+        $rows = $this->rows;
 
-	/**
-	 * Selects a number of randomly selected rows
-	 *
-	 * @param   int  $n  The number of rows to randomly select
-	 * @return  Rows
-	 * @since   2.1.13
-	 **/
-	public function pickRandom($n)
-	{
-		$rows = $this->rows;
+        shuffle($rows);
+        $randomRows = array_slice($rows, 0, $n);
+        $rowsObject = new self($randomRows);
 
-		shuffle($rows);
-		$randomRows = array_slice($rows, 0, $n);
-		$rowsObject = new self($randomRows);
+        return $rowsObject;
+    }
 
-		return $rowsObject;
-	}
+    /**
+     * Transforms rows into a JSON array
+     *
+     * @return  array
+     * @since   2.0.0
+     **/
+    public function toJson()
+    {
+        return $this->to('json');
+    }
 
-	/**
-	 * Transforms rows into a JSON array
-	 *
-	 * @return  array
-	 * @since   2.0.0
-	 **/
-	public function toJson()
-	{
-		return $this->to('json');
-	}
+    /**
+     * Transforms rows into an object array
+     *
+     * @return  array
+     * @since   2.0.0
+     **/
+    public function toObject()
+    {
+        return $this->to('object');
+    }
 
-	/**
-	 * Transforms rows into an object array
-	 *
-	 * @return  array
-	 * @since   2.0.0
-	 **/
-	public function toObject()
-	{
-		return $this->to('object');
-	}
+    /**
+     * Transforms rows into an array of arrays
+     *
+     * @return  array
+     * @since   2.0.0
+     **/
+    public function toArray()
+    {
+        return $this->to();
+    }
 
-	/**
-	 * Transforms rows into an array of arrays
-	 *
-	 * @return  array
-	 * @since   2.0.0
-	 **/
-	public function toArray()
-	{
-		return $this->to();
-	}
+    /**
+     * Outputs rows as given type
+     *
+     * @return  array
+     * @since   2.0.0
+     **/
+    public function to($type = 'array')
+    {
+        $rows = [];
 
-	/**
-	 * Outputs rows as given type
-	 *
-	 * @return  array
-	 * @since   2.0.0
-	 **/
-	public function to($type = 'array')
-	{
-		$rows = [];
+        if ($this->rows && $this->count()) {
+            foreach ($this->rows as $row) {
+                $method = 'to' . ucfirst($type);
+                $rows[] = $row->$method();
+            }
+        }
 
-		if ($this->rows && $this->count())
-		{
-			foreach ($this->rows as $row)
-			{
-				$method = 'to' . ucfirst($type);
-				$rows[] = $row->$method();
-			}
-		}
+        return $rows;
+    }
 
-		return $rows;
-	}
+    /**
+     * Grabs the raw rows out of the iterator
+     *
+     * @return  array
+     * @since   2.0.0
+     **/
+    public function raw()
+    {
+        return $this->rows;
+    }
 
-	/**
-	 * Grabs the raw rows out of the iterator
-	 *
-	 * @return  array
-	 * @since   2.0.0
-	 **/
-	public function raw()
-	{
-		return $this->rows;
-	}
+    /**
+     * Gets current row in array of rows
+     *
+     * @return  mixed
+     * @since   2.0.0
+     **/
 
-	/**
-	 * Gets current row in array of rows
-	 *
-	 * @return  mixed
-	 * @since   2.0.0
-	 **/
+    #[\ReturnTypeWillChange]
+    public function current()
+    {
+        return $this->callArrayFunc('current');
+    }
 
-	#[\ReturnTypeWillChange]
-	public function current()
-	{
-		return $this->callArrayFunc('current');
-	}
+    /**
+     * Gets the current key
+     *
+     * @return  mixed
+     * @since   2.0.0
+     **/
 
-	/**
-	 * Gets the current key
-	 *
-	 * @return  mixed
-	 * @since   2.0.0
-	 **/
+    #[\ReturnTypeWillChange]
+    public function key()
+    {
+        if (isset($this->rows)) {
+            return key($this->rows);
+        }
+        return null;
+    }
 
-	#[\ReturnTypeWillChange]
-	public function key()
-	{
-		if (isset($this->rows))
-		{
-			return key($this->rows);
-		}
-		return null;
-	}
+    /**
+     * Returns the result keys for the current dataset
+     *
+     * @param   string  $key  The key for which to pull all values
+     * @return  array
+     * @since   2.0.0
+     **/
+    public function fieldsByKey($key)
+    {
+        $keys = array();
 
-	/**
-	 * Returns the result keys for the current dataset
-	 *
-	 * @param   string  $key  The key for which to pull all values
-	 * @return  array
-	 * @since   2.0.0
-	 **/
-	public function fieldsByKey($key)
-	{
-		$keys = array();
+        if ($this->rows && $this->count()) {
+            foreach ($this->rows as $row) {
+                $keys[] = $row->$key;
+            }
+        }
 
-		if ($this->rows && $this->count())
-		{
-			foreach ($this->rows as $row)
-			{
-				$keys[] = $row->$key;
-			}
-		}
+        return $keys;
+    }
 
-		return $keys;
-	}
+    /**
+     * Gets first item from rows property, if set
+     *
+     * @return  mixed
+     * @since   2.0.0
+     **/
+    public function first()
+    {
+        return $this->callArrayFunc('reset');
+    }
 
-	/**
-	 * Gets first item from rows property, if set
-	 *
-	 * @return  mixed
-	 * @since   2.0.0
-	 **/
-	public function first()
-	{
-		return $this->callArrayFunc('reset');
-	}
+    /**
+     * Gets previous item in iterable list
+     *
+     * @return  mixed
+     * @since   2.1.0
+     **/
+    public function prev()
+    {
+        return $this->callArrayFunc('prev');
+    }
 
-	/**
-	 * Gets previous item in iterable list
-	 *
-	 * @return  mixed
-	 * @since   2.1.0
-	 **/
-	public function prev()
-	{
-		return $this->callArrayFunc('prev');
-	}
+    /**
+     * Gets next item in iterable list
+     *
+     * @return  mixed
+     * @since   2.0.0
+     **/
 
-	/**
-	 * Gets next item in iterable list
-	 *
-	 * @return  mixed
-	 * @since   2.0.0
-	 **/
+    #[\ReturnTypeWillChange]
+    public function next()
+    {
+        $this->callArrayFunc('next');
+    }
 
-	#[\ReturnTypeWillChange]
-	public function next()
-	{
-		$this->callArrayFunc('next');
-	}
+    /**
+     * Rewinds rows back to start
+     *
+     * @return  void
+     * @since   2.0.0
+     **/
 
-	/**
-	 * Rewinds rows back to start
-	 *
-	 * @return  void
-	 * @since   2.0.0
-	 **/
+    #[\ReturnTypeWillChange]
+    public function rewind()
+    {
+        if (isset($this->rows)) {
+            reset($this->rows);
+        }
+    }
 
-	#[\ReturnTypeWillChange]
-	public function rewind()
-	{
-		if (isset($this->rows))
-		{
-			reset($this->rows);
-		}
-	}
+    /**
+     * Fast-forwards to the end of the iterable list
+     *
+     * @return  void
+     * @since   2.0.0
+     **/
+    public function last()
+    {
+        return $this->callArrayFunc('end');
+    }
 
-	/**
-	 * Fast-forwards to the end of the iterable list
-	 *
-	 * @return  void
-	 * @since   2.0.0
-	 **/
-	public function last()
-	{
-		return $this->callArrayFunc('end');
-	}
+    /**
+     * Checks to see if the current item is the first in the list
+     *
+     * @param   int  $key  The key to check against
+     * @return  bool
+     * @since   2.1.0
+     **/
+    public function isFirst($key)
+    {
+        if ($this->rows && $this->count()) {
+            return $key == array_slice($this->rows, 0, 1)[0]->getPkValue();
+        }
 
-	/**
-	 * Checks to see if the current item is the first in the list
-	 *
-	 * @param   int  $key  The key to check against
-	 * @return  bool
-	 * @since   2.1.0
-	 **/
-	public function isFirst($key)
-	{
-		if ($this->rows && $this->count())
-		{
-			return $key == array_slice($this->rows, 0, 1)[0]->getPkValue();
-		}
+        return false;
+    }
 
-		return false;
-	}
+    /**
+     * Checks to see if the current item is the last in the list
+     *
+     * @param   int  $key  The key to check against
+     * @return  bool
+     * @since   2.1.0
+     **/
+    public function isLast($key)
+    {
+        if ($this->rows && $this->count()) {
+            return $key == array_slice($this->rows, -1, 1)[0]->getPkValue();
+        }
 
-	/**
-	 * Checks to see if the current item is the last in the list
-	 *
-	 * @param   int  $key  The key to check against
-	 * @return  bool
-	 * @since   2.1.0
-	 **/
-	public function isLast($key)
-	{
-		if ($this->rows && $this->count())
-		{
-			return $key == array_slice($this->rows, -1, 1)[0]->getPkValue();
-		}
+        return false;
+    }
 
-		return false;
-	}
+    /**
+     * Validates current key
+     *
+     * @return  bool
+     * @since   2.0.0
+     **/
 
-	/**
-	 * Validates current key
-	 *
-	 * @return  bool
-	 * @since   2.0.0
-	 **/
+    #[\ReturnTypeWillChange]
+    public function valid()
+    {
+        $valid = false;
 
-	#[\ReturnTypeWillChange]
-	public function valid()
-	{
-		$valid = false;
+        if ($this->rows && $this->count()) {
+            $key   = key($this->rows);
+            $valid = ($key !== null && $key !== false);
+        }
 
-		if ($this->rows && $this->count())
-		{
-			$key   = key($this->rows);
-			$valid = ($key !== null && $key !== false);
-		}
+        return $valid;
+    }
 
-		return $valid;
-	}
+    /**
+     * Counts the number of rows
+     *
+     * @return  int  number of rows
+     * @since   2.0.0
+     **/
 
-	/**
-	 * Counts the number of rows
-	 *
-	 * @return  int  number of rows
-	 * @since   2.0.0
-	 **/
+    #[\ReturnTypeWillChange]
+    public function count()
+    {
+        return count($this->rows);
+    }
 
-	#[\ReturnTypeWillChange]
-	public function count()
-	{
-		return count($this->rows);
-	}
+    /**
+     * Seeks to the given key
+     *
+     * @param   mixed  $offset
+     * @return  mixed
+     * @since   2.0.0
+     **/
+    public function seek($offset)
+    {
+        return isset($this->rows[$offset]) ? $this->rows[$offset] : false;
+    }
 
-	/**
-	 * Seeks to the given key
-	 *
-	 * @param   mixed  $offset
-	 * @return  mixed
-	 * @since   2.0.0
-	 **/
-	public function seek($offset)
-	{
-		return isset($this->rows[$offset]) ? $this->rows[$offset] : false;
-	}
+    /**
+     * Search for the given key/value pair, returning false if not found
+     *
+     * @param   mixed $key
+     * @param   mixed $value
+     * @return  mixed
+     * @since   2.0.0
+     **/
+    public function search($key, $value)
+    {
+        foreach ($this->rows as $row) {
+            if ($row->$key == $value) {
+                return true;
+            }
+        }
 
-	/**
-	 * Search for the given key/value pair, returning false if not found
-	 *
-	 * @param   mixed $key
-	 * @param   mixed $value
-	 * @return  mixed
-	 * @since   2.0.0
-	 **/
-	public function search($key, $value)
-	{
-		foreach ($this->rows as $row)
-		{
-			if ($row->$key == $value)
-			{
-				return true;
-			}
-		}
+        return false;
+    }
 
-		return false;
-	}
+    /**
+     * Sorts the rows by a given field
+     *
+     * @param   string  $field  The field to sort by
+     * @param   bool    $asc    True if sort direction is ascending, false for descending
+     * @return  $this
+     * @since   2.0.0
+     **/
+    public function sort($field, $asc = true)
+    {
+        usort($this->rows, function ($a, $b) use ($field, $asc) {
+            $result = strcmp($a->$field, $b->$field);
 
-	/**
-	 * Sorts the rows by a given field
-	 *
-	 * @param   string  $field  The field to sort by
-	 * @param   bool    $asc    True if sort direction is ascending, false for descending
-	 * @return  $this
-	 * @since   2.0.0
-	 **/
-	public function sort($field, $asc = true)
-	{
-		usort($this->rows, function($a, $b) use ($field, $asc)
-		{
-			$result = strcmp($a->$field, $b->$field);
+            return ($asc) ? $result : $result * -1;
+        });
 
-			return ($asc) ? $result : $result * -1;
-		});
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * Retrieves only the most recent applicable row
+     *
+     * @param   string  $limiter  The column name to use to determine the latest row
+     * @return  \Hubzero\Database\Relational|static
+     * @since   2.0.0
+     **/
+    public function latest($limiter = 'created')
+    {
+        return $this->sort($limiter, false)->first();
+    }
 
-	/**
-	 * Retrieves only the most recent applicable row
-	 *
-	 * @param   string  $limiter  The column name to use to determine the latest row
-	 * @return  \Hubzero\Database\Relational|static
-	 * @since   2.0.0
-	 **/
-	public function latest($limiter = 'created')
-	{
-		return $this->sort($limiter, false)->first();
-	}
+    /**
+     * Saves a collection of models
+     *
+     * @return  bool
+     * @since   2.0.0
+     **/
+    public function save()
+    {
+        if ($this->count()) {
+            foreach ($this->rows as $model) {
+                if (!$model->save()) {
+                    $this->setErrors($model->getErrors());
+                    return false;
+                }
+            }
+        }
 
-	/**
-	 * Saves a collection of models
-	 *
-	 * @return  bool
-	 * @since   2.0.0
-	 **/
-	public function save()
-	{
-		if ($this->count())
-		{
-			foreach ($this->rows as $model)
-			{
-				if (!$model->save())
-				{
-					$this->setErrors($model->getErrors());
-					return false;
-				}
-			}
-		}
+        return true;
+    }
 
-		return true;
-	}
+    /**
+     * Deletes all models in this collection
+     *
+     * @return  bool
+     * @since   2.0.0
+     **/
+    public function destroyAll()
+    {
+        // @FIXME: could make this a single query...
+        if ($this->count()) {
+            foreach ($this->rows as $model) {
+                if (!$model->destroy()) {
+                    $this->setErrors($model->getErrors());
+                    return false;
+                }
+            }
+        }
 
-	/**
-	 * Deletes all models in this collection
-	 *
-	 * @return  bool
-	 * @since   2.0.0
-	 **/
-	public function destroyAll()
-	{
-		// @FIXME: could make this a single query...
-		if ($this->count())
-		{
-			foreach ($this->rows as $model)
-			{
-				if (!$model->destroy())
-				{
-					$this->setErrors($model->getErrors());
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
+        return true;
+    }
 }

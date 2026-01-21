@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,21 +18,20 @@ use Exception;
  */
 class DetectorException extends Service
 {
-	/**
-	 * Run content through spam detection
-	 *
-	 * @codeCoverageIgnore
-	 * @param   array  $data
-	 * @return  bool
-	 * @throws  Exception
-	 */
-	public function detect($data)
-	{
-		if (!is_array($data) || !isset($data['text']))
-		{
-			return false;
-		}
+    /**
+     * Run content through spam detection
+     *
+     * @codeCoverageIgnore
+     * @param   array  $data
+     * @return  bool
+     * @throws  Exception
+     */
+    public function detect($data)
+    {
+        if (!is_array($data) || !isset($data['text'])) {
+            return false;
+        }
 
-		throw new Exception('I always throw an exception.');
-	}
+        throw new Exception('I always throw an exception.');
+    }
 }

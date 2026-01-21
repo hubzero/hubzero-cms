@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,7 +10,7 @@
 defined('_HZEXEC_') or die();
 
 if ($this->poll->title) {
-	echo stripslashes($this->poll->title);
+    echo stripslashes($this->poll->title);
 } else {
-	echo stripslashes($this->params->get('message'));
+    echo stripslashes($this->params->get('message'));
 }

@@ -21,39 +21,35 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260603130000ComCron extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__cron_jobs'))
-		{
-			return;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__cron_jobs')) {
+            return;
+        }
 
-		if (!$this->db->tableHasField('#__cron_jobs', 'active_since'))
-		{
-			$query = "ALTER TABLE `#__cron_jobs` ADD `active_since` DATETIME NULL DEFAULT NULL AFTER `pid_host`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!$this->db->tableHasField('#__cron_jobs', 'active_since')) {
+            $query = "ALTER TABLE `#__cron_jobs` ADD `active_since` DATETIME NULL DEFAULT NULL AFTER `pid_host`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$this->db->tableExists('#__cron_jobs'))
-		{
-			return;
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$this->db->tableExists('#__cron_jobs')) {
+            return;
+        }
 
-		if ($this->db->tableHasField('#__cron_jobs', 'active_since'))
-		{
-			$query = "ALTER TABLE `#__cron_jobs` DROP COLUMN `active_since`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableHasField('#__cron_jobs', 'active_since')) {
+            $query = "ALTER TABLE `#__cron_jobs` DROP COLUMN `active_since`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

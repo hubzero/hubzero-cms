@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,83 +15,78 @@ use Hubzero\Database\Table;
  */
 class Log extends Table
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   object  &$db  Database
-	 * @return  void
-	 */
-	public function __construct(&$db)
-	{
-		parent::__construct('#__xgroups_log', 'id', $db);
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  &$db  Database
+     * @return  void
+     */
+    public function __construct(&$db)
+    {
+        parent::__construct('#__xgroups_log', 'id', $db);
+    }
 
-	/**
-	 * Validate data
-	 *
-	 * @return  boolean  True if data is valid
-	 */
-	public function check()
-	{
-		if (trim($this->gidNumber) == '')
-		{
-			$this->setError(\Lang::txt('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
-			return false;
-		}
+    /**
+     * Validate data
+     *
+     * @return  boolean  True if data is valid
+     */
+    public function check()
+    {
+        if (trim($this->gidNumber) == '') {
+            $this->setError(\Lang::txt('GROUPS_LOGS_MUST_HAVE_GROUP_ID'));
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Find all logs matching filters
-	 *
-	 * @param   array  $filters
-	 * @return  array
-	 */
-	public function find($filters = array())
-	{
-		$sql  = "SELECT * FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery($filters);
+    /**
+     * Find all logs matching filters
+     *
+     * @param   array  $filters
+     * @return  array
+     */
+    public function find($filters = array())
+    {
+        $sql  = "SELECT * FROM {$this->_tbl}";
+        $sql .= $this->buildQuery($filters);
 
-		$this->_db->setQuery($sql);
-		return $this->_db->loadObjectList();
-	}
+        $this->_db->setQuery($sql);
+        return $this->_db->loadObjectList();
+    }
 
-	/**
-	 * Build query string for getting list or count of pages
-	 *
-	 * @param   array   $filters
-	 * @return  string
-	 */
-	private function _buildQuery($filters = array())
-	{
-		// var to hold conditions
-		$where = array();
-		$sql   = '';
+    /**
+     * Build query string for getting list or count of pages
+     *
+     * @param   array   $filters
+     * @return  string
+     */
+    private function buildQuery($filters = array())
+    {
+        // var to hold conditions
+        $where = array();
+        $sql   = '';
 
-		// gidnumber
-		if (isset($filters['gidNumber']))
-		{
-			$where[] = "gidNumber=" . $this->_db->quote($filters['gidNumber']);
-		}
+        // gidnumber
+        if (isset($filters['gidNumber'])) {
+            $where[] = "gidNumber=" . $this->_db->quote($filters['gidNumber']);
+        }
 
-		// action
-		if (isset($filters['action']))
-		{
-			$where[] = "action=" . $this->_db->quote($filters['action']);
-		}
+        // action
+        if (isset($filters['action'])) {
+            $where[] = "action=" . $this->_db->quote($filters['action']);
+        }
 
-		// if we have and conditions
-		if (count($where) > 0)
-		{
-			$sql = " WHERE " . implode(" AND ", $where);
-		}
+        // if we have and conditions
+        if (count($where) > 0) {
+            $sql = " WHERE " . implode(" AND ", $where);
+        }
 
-		if (isset($filters['orderby']))
-		{
-			$sql .= " ORDER BY " . $filters['orderby'];
-		}
+        if (isset($filters['orderby'])) {
+            $sql .= " ORDER BY " . $filters['orderby'];
+        }
 
-		return $sql;
-	}
+        return $sql;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,27 +17,26 @@ use Hubzero\Routing\Manager;
  */
 class RouterServiceProvider extends Middleware
 {
-	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['router'] = function($app)
-		{
-			return new Manager($app, array(PATH_CORE, PATH_APP));
-		};
-	}
+    /**
+     * Register the service provider.
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['router'] = function ($app) {
+            return new Manager($app, array(PATH_CORE, PATH_APP));
+        };
+    }
 
-	/**
-	 * Handle request in HTTP stack
-	 * 
-	 * @param   object  $request  HTTP Request
-	 * @return  mixed
-	 */
-	public function handle(Request $request)
-	{
-		return $this->next($request);
-	}
+    /**
+     * Handle request in HTTP stack
+     *
+     * @param   object  $request  HTTP Request
+     * @return  mixed
+     */
+    public function handle(Request $request)
+    {
+        return $this->next($request);
+    }
 }

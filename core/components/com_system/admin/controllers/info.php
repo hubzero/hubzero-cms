@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,29 +19,28 @@ use App;
  */
 class Info extends AdminController
 {
-	/**
-	 * Outputs a list of available scripts
-	 *
-	 * @return  void
-	 */
-	public function displayTask()
-	{
-		if (!User::authorise('core.admin'))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Outputs a list of available scripts
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        if (!User::authorise('core.admin')) {
+            App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'info.php';
+        include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'info.php';
 
-		$model = new KnowItAll();
+        $model = new KnowItAll();
 
-		$this->view
-			->set('php_settings', $model->getPhpSettings())
-			->set('config', $model->getConfig())
-			->set('info', $model->getInfo())
-			->set('php_info', $model->getPhpInfo())
-			->set('directory', $model->getDirectory())
-			->setLayout('default')
-			->display();
-	}
+        $this->view
+            ->set('php_settings', $model->getPhpSettings())
+            ->set('config', $model->getConfig())
+            ->set('info', $model->getInfo())
+            ->set('php_info', $model->getPhpInfo())
+            ->set('directory', $model->getDirectory())
+            ->setLayout('default')
+            ->display();
+    }
 }

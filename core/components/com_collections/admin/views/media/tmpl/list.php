@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,25 +11,22 @@ defined('_HZEXEC_') or die();
 
 $no_html = Request::getInt('no_html', 0);
 
-if (!$no_html)
-{
-	$this->css();
+if (!$no_html) {
+    $this->css();
 }
 
 $assets = $this->item->assets();
-if ($assets->total() > 0)
-{
-	$i = 0;
-	foreach ($assets as $asset)
-	{
-		$this->view('_asset')
-		     ->set('i', $i)
-		     ->set('option', $this->option)
-		     ->set('controller', $this->controller)
-		     ->set('asset', $asset)
-		     ->set('no_html', $no_html)
-		     ->display();
+if ($assets->total() > 0) {
+    $i = 0;
+    foreach ($assets as $asset) {
+        $this->view('_asset')
+             ->set('i', $i)
+             ->set('option', $this->option)
+             ->set('controller', $this->controller)
+             ->set('asset', $asset)
+             ->set('no_html', $no_html)
+             ->display();
 
-		$i++;
-	}
+        $i++;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,294 +15,279 @@ use Exception;
  */
 class Passport implements ProviderInterface
 {
-	/**
-	 * API endpoint
-	 *
-	 * @var  string
-	 */
-	const PASSPORT_API_ENDPOINT = 'https://api.openpassport.org/1.0.0/';
+    /**
+     * API endpoint
+     *
+     * @var  string
+     */
+    public const PASSPORT_API_ENDPOINT = 'https://api.openpassport.org/1.0.0/';
 
-	/**
-	 * API claim URL
-	 *
-	 * @var  string
-	 */
-	const PASSPORT_CLAIM_URL    = 'https://www.openpassport.org/MyBadges/Pending';
+    /**
+     * API claim URL
+     *
+     * @var  string
+     */
+    public const PASSPORT_CLAIM_URL    = 'https://www.openpassport.org/MyBadges/Pending';
 
-	/**
-	 * API denied URL
-	 *
-	 * @var  string
-	 */
-	const PASSPORT_DENIED_URL   = 'https://www.openpassport.org/MyBadges/Denied';
+    /**
+     * API denied URL
+     *
+     * @var  string
+     */
+    public const PASSPORT_DENIED_URL   = 'https://www.openpassport.org/MyBadges/Denied';
 
-	/**
-	 * Credentials
-	 *
-	 * @var  array
-	 */
-	private $credentials = false;
+    /**
+     * Credentials
+     *
+     * @var  array
+     */
+    private $credentials = false;
 
-	/**
-	 * Request connection
-	 *
-	 * @var  resource
-	 */
-	private $request = null;
+    /**
+     * Request connection
+     *
+     * @var  resource
+     */
+    private $request = null;
 
-	/**
-	 * Request type
-	 *
-	 * @var  string
-	 */
-	private $request_type = 'oauth';
+    /**
+     * Request type
+     *
+     * @var  string
+     */
+    private $request_type = 'oauth';
 
-	/**
-	 * Constructor
-	 *
-	 * @param   string  $request_type  Request type
-	 * @return  void
-	 */
-	public function __construct($request_type = 'oauth')
-	{
-		$this->request_type = $request_type;
-	}
+    /**
+     * Constructor
+     *
+     * @param   string  $request_type  Request type
+     * @return  void
+     */
+    public function __construct($request_type = 'oauth')
+    {
+        $this->request_type = $request_type;
+    }
 
-	/**
-	 * Set credentials
-	 *
-	 * @param   object  $passportCredentials
-	 * @return  void
-	 */
-	public function setCredentials($passportCredentials)
-	{
-		$this->credentials = $passportCredentials;
+    /**
+     * Set credentials
+     *
+     * @param   object  $passportCredentials
+     * @return  void
+     */
+    public function setCredentials($passportCredentials)
+    {
+        $this->credentials = $passportCredentials;
+        $this->
+            request = new \OAuth($this->
+            credentials->
+            client_id, $this->
+            credentials->
+            client_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
+        $params['username'] = $this->credentials->username;
+        $params['password'] = $this->credentials->password;
+        $params['client_id'] = $this->credentials->client_id;
+        $params['client_secret'] = $this->credentials->client_secret;
+        $params['grant_type'] = 'password';
+        $userAgent = $_SERVER['HTTP_USER_AGENT'];
+        $this->request->fetch(
+            'https://www.openpassport.org/oauth/token',
+            $params,
+            OAUTH_HTTP_METHOD_POST,
+            array('user-agent' => $userAgent)
+        );
+        $access = json_decode($this->request->getLastResponse());
+        $this->credentials->access_token = $access->access_token;
+    }
 
-		$this->request = new \OAuth($this->credentials->client_id, $this->credentials->client_secret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_FORM);
+    /**
+     * Create a new badge
+     *
+     * @param   array    $data  badge info. Must have the following:
+     *                          $data['Name']          = 'Badge name';
+     *                          $data['Description']   = 'Badge description';
+     *                          $data['CriteriaUrl']   = 'Badge criteria URL';
+     *                          $data['Version']       = 'Version';
+     *                          $data['BadgeImageUrl'] = 'URL of the badge image: square at least 450px x 450px';
+     * @return  integer  Freshly created badge ID
+     */
+    public function createBadge($data)
+    {
+        if (!$this->credentialsSet()) {
+            throw new Exception('You need to set the credentials first.');
+        }
 
-		$params['username'] = $this->credentials->username;
-		$params['password'] = $this->credentials->password;
-		$params['client_id'] = $this->credentials->client_id;
-		$params['client_secret'] = $this->credentials->client_secret;
-		$params['grant_type'] = 'password';
-		$userAgent = $_SERVER['HTTP_USER_AGENT'];
+        $data['IssuerId'] = $this->credentials->issuerId;
+        $data = json_encode($data);
+        $accessToken = $this->credentials->access_token;
+        $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
-		$this->request->fetch('https://www.openpassport.org/oauth/token', $params, OAUTH_HTTP_METHOD_POST, array('user-agent' => $userAgent));
+        $headers = [
+            'Cache-Control: no-cache',
+            'Content-Type: application/json',
+            "Authorization: Bearer $accessToken",
+            "user-agent: $userAgent"
+        ];
 
-		$access = json_decode($this->request->getLastResponse());
-		$this->credentials->access_token = $access->access_token;
-	}
+        $request = curl_init();
+        curl_setopt($request, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($request, CURLOPT_URL, 'https://www.openpassport.org/1.0.0/badges');
+        curl_setopt($request, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($request, CURLOPT_POST, 1);
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($request, CURLOPT_VERBOSE, true);
 
-	/**
-	 * Create a new badge
-	 *
-	 * @param   array    $data  badge info. Must have the following:
-	 *                          $data['Name']          = 'Badge name';
-	 *                          $data['Description']   = 'Badge description';
-	 *                          $data['CriteriaUrl']   = 'Badge criteria URL';
-	 *                          $data['Version']       = 'Version';
-	 *                          $data['BadgeImageUrl'] = 'URL of the badge image: square at least 450px x 450px';
-	 * @return  integer  Freshly created badge ID
-	 */
-	public function createBadge($data)
-	{
-		if (!$this->credentialsSet())
-		{
-			throw new Exception('You need to set the credentials first.');
-		}
+        $response = curl_exec($request);
+        $badge = json_decode($response);
 
-		$data['IssuerId'] = $this->credentials->issuerId;
-		$data = json_encode($data);
-		$accessToken = $this->credentials->access_token;
-		$userAgent = $_SERVER['HTTP_USER_AGENT'];
+        if (empty($badge->Id) || !$badge->Id) {
+            throw new Exception($badge->message);
+        }
 
-		$headers = [
-			'Cache-Control: no-cache',
-			'Content-Type: application/json',
-			"Authorization: Bearer $accessToken",
-			"user-agent: $userAgent"
-		];
+        return $badge->Id;
+    }
 
-		$request = curl_init();
-		curl_setopt($request, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($request, CURLOPT_URL, 'https://www.openpassport.org/1.0.0/badges');
-		curl_setopt($request, CURLOPT_POSTFIELDS, $data);
-		curl_setopt($request, CURLOPT_POST, 1);
-		curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($request, CURLOPT_VERBOSE, true);
+    /**
+     * Grant badges to users
+     *
+     * @param   object  $badge  Badge info: ID, Evidence URL
+     * @param   mixed   $users  String (for single user) or array (for multiple users) of user email addresses
+     * @return  void
+     */
+    public function grantBadge($badge, $users)
+    {
+        if (!$this->credentialsSet()) {
+            throw new Exception('You need to set the credentials first.');
+        }
 
-		$response = curl_exec($request);
-		$badge = json_decode($response);
+        if (!is_array($users)) {
+            $users = array($users);
+        }
 
-		if (empty($badge->Id) || !$badge->Id)
-		{
-			throw new Exception($badge->message);
-		}
+        $assertions = array();
 
-		return $badge->Id;
-	}
+        foreach ($users as $user) {
+            $data = array();
 
-	/**
-	 * Grant badges to users
-	 *
-	 * @param   object  $badge  Badge info: ID, Evidence URL
-	 * @param   mixed   $users  String (for single user) or array (for multiple users) of user email addresses
-	 * @return  void
-	 */
-	public function grantBadge($badge, $users)
-	{
-		if (!$this->credentialsSet())
-		{
-			throw new Exception('You need to set the credentials first.');
-		}
+            $data['BadgeId']      = $badge->id;
+            $data['EvidenceUrl']  = $badge->evidenceUrl;
+            $data['EmailAddress'] = $user;
+            $data['ClientId']     = $this->credentials->clientId;
 
-		if (!is_array($users))
-		{
-			$users = array($users);
-		}
+            $assertions[] = $data;
+            unset($data);
+        }
 
-		$assertions = array();
+        $assertionsData = json_encode($assertions);
 
-		foreach ($users as $user)
-		{
-			$data = array();
+        if ($this->request_type == 'oauth' && is_a($this->request, 'oauth')) {
+            $this->request->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
+            try {
+                $this->request->fetch(
+                    self::PASSPORT_API_ENDPOINT .
+                    "assertions/",
+                    $assertionsData,
+                    OAUTH_HTTP_METHOD_POST,
+                    array('Content-Type' => 'application/json')
+                );
+            } catch (Exception $e) {
+                throw new Exception('Badge grant request failed.');
+            }
 
-			$data['BadgeId']      = $badge->id;
-			$data['EvidenceUrl']  = $badge->evidenceUrl;
-			$data['EmailAddress'] = $user;
-			$data['ClientId']     = $this->credentials->clientId;
+            $assertion = json_decode($this->request->getLastResponse());
+        } elseif ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl') {
+            curl_setopt($this->request, CURLOPT_URL, self::PASSPORT_API_ENDPOINT . "assertions/");
+            curl_setopt($this->request, CURLOPT_POSTFIELDS, $assertionsData);
+            curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
 
-			$assertions[] = $data;
-			unset($data);
-		}
+            $response  = curl_exec($this->request);
+            $assertion = json_decode($response);
+        } else {
+            throw new Exception('Unsupported request type');
+        }
 
-		$assertionsData = json_encode($assertions);
+        foreach ($assertion as $ass) {
+            if (empty($ass->Id) || !$ass->Id) {
+                throw new Exception($ass->message);
+            }
+        }
+    }
 
-		if ($this->request_type == 'oauth' && is_a($this->request, 'oauth'))
-		{
-			$this->request->setAuthType(OAUTH_AUTH_TYPE_AUTHORIZATION);
-			try
-			{
-				$this->request->fetch(self::PASSPORT_API_ENDPOINT . "assertions/", $assertionsData, OAUTH_HTTP_METHOD_POST, array('Content-Type' => 'application/json'));
-			}
-			catch (Exception $e)
-			{
-				throw new Exception('Badge grant request failed.');
-			}
+    /**
+     * Check if credentials are set
+     *
+     * @return  bool
+     */
+    private function credentialsSet()
+    {
+        if (empty($this->credentials)) {
+            return false;
+        }
 
-			$assertion = json_decode($this->request->getLastResponse());
-		}
-		else if ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl')
-		{
-			curl_setopt($this->request, CURLOPT_URL, self::PASSPORT_API_ENDPOINT . "assertions/");
-			curl_setopt($this->request, CURLOPT_POSTFIELDS, $assertionsData);
-			curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
+        return true;
+    }
 
-			$response  = curl_exec($this->request);
-			$assertion = json_decode($response);
-		}
-		else
-		{
-			throw new Exception('Unsupported request type');
-		}
+    /**
+     * Return a URL
+     *
+     * @param   string  $type
+     * @return  bool
+     */
+    public function getUrl($type = 'Claim')
+    {
+        switch ($type) {
+            case 'Denied':
+                return self::PASSPORT_DENIED_URL;
+            break;
 
-		foreach ($assertion as $ass)
-		{
-			if (empty($ass->Id) || !$ass->Id)
-			{
-				throw new Exception($ass->message);
-			}
-		}
-	}
+            case 'Badges':
+                return self::PASSPORT_BADGES_URL;
+            break;
 
-	/**
-	 * Check if credentials are set
-	 *
-	 * @return  bool
-	 */
-	private function credentialsSet()
-	{
-		if (empty($this->credentials))
-		{
-			return false;
-		}
+            default:
+                return self::PASSPORT_CLAIM_URL;
+            break;
+        }
+    }
 
-		return true;
-	}
+    /**
+     * Get assertions by email address
+     *
+     * @param   mixed  $emailAddresses  String (for single user) or array (for multiple users) of user email addresses
+     * @return  array
+     */
+    public function getAssertionsByEmailAddress($emailAddresses)
+    {
+        if (!$this->credentialsSet()) {
+            throw new Exception('You need to set the credentials first.');
+        }
 
-	/**
-	 * Return a URL
-	 *
-	 * @param   string  $type
-	 * @return  bool
-	 */
-	public function getUrl($type = 'Claim')
-	{
-		switch ($type)
-		{
-		case 'Denied':
-			return self::PASSPORT_DENIED_URL;
-			break;
+        if (!is_array($emailAddresses)) {
+            $emailAddresses = array($emailAddresses);
+        }
 
-		case 'Badges':
-			return self::PASSPORT_BADGES_URL;
-			break;
+        $query_params = implode('%20', $emailAddresses);
+        $url = self::PASSPORT_API_ENDPOINT . "assertions?emailAddresses=" . $query_params;
 
-		default:
-			return self::PASSPORT_CLAIM_URL;
-			break;
-		}
-	}
+        if ($this->request_type == 'oauth' && is_a($this->request, 'oauth')) {
+            $this->request->setAuthType(OAUTH_AUTH_TYPE_URI);
+            try {
+                $this->request->fetch($url, null, OAUTH_HTTP_METHOD_GET, array('Content-Type' => 'application/json'));
+            } catch (Exception $e) {
+                throw new Exception('Assertations by email request failed.');
+            }
 
-	/**
-	 * Get assertions by email address
-	 *
-	 * @param   mixed  $emailAddresses  String (for single user) or array (for multiple users) of user email addresses
-	 * @return  array
-	 */
-	public function getAssertionsByEmailAddress($emailAddresses)
-	{
-		if (!$this->credentialsSet())
-		{
-			throw new Exception('You need to set the credentials first.');
-		}
+            $response = json_decode($this->request->getLastResponse());
+        } elseif ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl') {
+            curl_setopt($this->request, CURLOPT_POST, false);
+            curl_setopt($this->request, CURLOPT_URL, $url);
+            curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
 
-		if (!is_array($emailAddresses))
-		{
-			$emailAddresses = array($emailAddresses);
-		}
+            $response = curl_exec($this->request);
+            $response = json_decode($response);
+        } else {
+            throw new Exception('Unsupported request type');
+        }
 
-		$query_params = implode('%20', $emailAddresses);
-		$url = self::PASSPORT_API_ENDPOINT . "assertions?emailAddresses=" . $query_params;
-
-		if ($this->request_type == 'oauth' && is_a($this->request, 'oauth'))
-		{
-			$this->request->setAuthType(OAUTH_AUTH_TYPE_URI);
-			try
-			{
-				$this->request->fetch($url, null, OAUTH_HTTP_METHOD_GET, array('Content-Type' => 'application/json'));
-			}
-			catch (Exception $e)
-			{
-				throw new Exception('Assertations by email request failed.');
-			}
-
-			$response = json_decode($this->request->getLastResponse());
-		}
-		else if ($this->request_type == 'curl' && get_resource_type($this->request) == 'curl')
-		{
-			curl_setopt($this->request, CURLOPT_POST, false);
-			curl_setopt($this->request, CURLOPT_URL, $url);
-			curl_setopt($this->request, CURLOPT_RETURNTRANSFER, true);
-
-			$response = curl_exec($this->request);
-			$response = json_decode($response);
-		}
-		else
-		{
-			throw new Exception('Unsupported request type');
-		}
-
-		return $response;
-	}
+        return $response;
+    }
 }

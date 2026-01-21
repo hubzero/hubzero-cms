@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,39 +15,40 @@ use Hubzero\Html\Toolbar\Button;
  */
 class Separator extends Button
 {
-	/**
-	 * Button type
-	 *
-	 * @var  string
-	 */
-	protected $_name = 'Separator';
+    /**
+     * Button type
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_name = 'Separator';
 
-	/**
-	 * Get the HTML for a separator in the toolbar
-	 *
-	 * @param   array  &$definition  Class name and custom width
-	 * @return  The HTML for the separator
-	 */
-	public function render(&$definition)
-	{
-		// Initialise variables.
-		$class = null;
-		$style = null;
+    /**
+     * Get the HTML for a separator in the toolbar
+     *
+     * @param   array  &$definition  Class name and custom width
+     * @return  The HTML for the separator
+     */
+    public function render(&$definition)
+    {
+        // Initialise variables.
+        $class = null;
+        $style = null;
 
-		// Separator class name
-		$class = (empty($definition[1])) ? 'spacer' : $definition[1];
-		// Custom width
-		$style = (empty($definition[2])) ? null : ' style="width:' . intval($definition[2]) . 'px;"';
+        // Separator class name
+        $class = (empty($definition[1])) ? 'spacer' : $definition[1];
+        // Custom width
+        $style = (empty($definition[2])) ? null : ' style="width:' . intval($definition[2]) . 'px;"';
 
-		return '<li class="' . $class . '"' . $style . ">\n</li>\n";
-	}
+        return '<li class="' . $class . '"' . $style . ">\n</li>\n";
+    }
 
-	/**
-	 * Empty implementation (not required for separator)
-	 *
-	 * @return  void
-	 */
-	public function fetchButton()
-	{
-	}
+    /**
+     * Empty implementation (not required for separator)
+     *
+     * @return  void
+     */
+    public function fetchButton()
+    {
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,32 +20,32 @@ use League\Flysystem\Filesystem;
  */
 class plgFilesystemAWSS3 extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Initializes the AWS S3 connection
-	 *
-	 * @param   array   $params  Any connection params needed
-	 * @return  object
-	 **/
-	public static function init($params = [])
-	{
-		// Get the params
-		$pparams = Plugin::params('filesystem', 'awss3');
+    /**
+     * Initializes the AWS S3 connection
+     *
+     * @param   array   $params  Any connection params needed
+     * @return  object
+     **/
+    public static function init($params = [])
+    {
+        // Get the params
+        $pparams = Plugin::params('filesystem', 'awss3');
 
-		$app_id = $params['app_id'];
-		$app_secret = $params['app_secret'];
-		$region = $params['region'];
-		$bucket = $params['bucket'];
-		$path = isset($params['path']) ? $params['path'] : '';
+        $app_id = $params['app_id'];
+        $app_secret = $params['app_secret'];
+        $region = $params['region'];
+        $bucket = $params['bucket'];
+        $path = isset($params['path']) ? $params['path'] : '';
 
-		$client = new S3Client([
-			'credentials' => [
-				'key'    => $app_id,
-				'secret' => $app_secret,
-			],
-			'region'  => $region,
-			'version' => 'latest',
-		]);
-		$adapter = new AwsS3Adapter($client, $bucket, $path);
-		return $adapter;
-	}
+        $client = new S3Client([
+            'credentials' => [
+                'key'    => $app_id,
+                'secret' => $app_secret,
+            ],
+            'region'  => $region,
+            'version' => 'latest',
+        ]);
+        $adapter = new AwsS3Adapter($client, $bucket, $path);
+        return $adapter;
+    }
 }

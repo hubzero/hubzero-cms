@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,82 +17,77 @@ use Lang;
  */
 class Comment extends ItemComment
 {
-	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 *
-	 * @param   string  $type  The type of link to return
-	 * @return  string
-	 */
-	public function link($type='')
-	{
-		if (!isset($this->base))
-		{
-			if (!$this->get('question_id'))
-			{
-				$answer = Response::oneOrNew($this->get('item_id'));
+    /**
+     * Generate and return various links to the entry
+     * Link will vary depending upon action desired, such as edit, delete, etc.
+     *
+     * @param   string  $type  The type of link to return
+     * @return  string
+     */
+    public function link($type = '')
+    {
+        if (!isset($this->base)) {
+            if (!$this->get('question_id')) {
+                $answer = Response::oneOrNew($this->get('item_id'));
 
-				$this->set('question_id', $answer->get('question_id'));
-			}
-			$this->base = 'index.php?option=com_answers&task=question&id=' . $this->get('question_id');
-		}
-		$link = $this->base;
+                $this->set('question_id', $answer->get('question_id'));
+            }
+            $this->base = 'index.php?option=com_answers&task=question&id=' . $this->get('question_id');
+        }
+        $link = $this->base;
 
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'edit':
-				$link .= '&action=edit&comment=' . $this->get('id');
-			break;
+        // If it doesn't exist or isn't published
+        switch (strtolower($type)) {
+            case 'edit':
+                $link .= '&action=edit&comment=' . $this->get('id');
+                break;
 
-			case 'delete':
-				$link .= '&action=delete&comment=' . $this->get('id');
-			break;
+            case 'delete':
+                $link .= '&action=delete&comment=' . $this->get('id');
+                break;
 
-			case 'reply':
-				$link .= '&reply=' . $this->get('id') . '#c' . $this->get('id');
-			break;
+            case 'reply':
+                $link .= '&reply=' . $this->get('id') . '#c' . $this->get('id');
+                break;
 
-			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->get('id') . '&parent=' . $this->get('question_id');
-			break;
+            case 'report':
+                $link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id='
+                    . $this->get('id') . '&parent=' . $this->get('question_id');
+                break;
 
-			case 'permalink':
-			default:
-				$link .= '#c' . $this->get('id');
-			break;
-		}
+            case 'permalink':
+            default:
+                $link .= '#c' . $this->get('id');
+                break;
+        }
 
-		return $link;
-	}
+        return $link;
+    }
 
-	/**
-	 * Validates the set data attributes against the model rules
-	 *
-	 * @return  bool
-	 **/
-	public function validate()
-	{
-		$valid = parent::validate();
+    /**
+     * Validates the set data attributes against the model rules
+     *
+     * @return  bool
+     **/
+    public function validate()
+    {
+        $valid = parent::validate();
 
-		if ($valid)
-		{
-			$results = Event::trigger('content.onContentBeforeSave', array(
-				'com_answers.comment.content',
-				&$this,
-				$this->isNew()
-			));
+        if ($valid) {
+            $results = Event::trigger('content.onContentBeforeSave', array(
+                'com_answers.comment.content',
+                &$this,
+                $this->isNew()
+            ));
 
-			foreach ($results as $result)
-			{
-				if ($result === false)
-				{
-					$this->addError(Lang::txt('Content failed validation.'));
-					$valid = false;
-				}
-			}
-		}
+            foreach ($results as $result) {
+                if ($result === false) {
+                    $this->addError(Lang::txt('Content failed validation.'));
+                    $valid = false;
+                }
+            }
+        }
 
-		return $valid;
-	}
+        return $valid;
+    }
 }

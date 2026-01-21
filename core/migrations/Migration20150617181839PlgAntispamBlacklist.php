@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,36 +14,35 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to add table for Blacklist antispam plugin
- **/
+ *
+ */
 class Migration20150617181839PlgAntispamBlacklist extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__antispam_words'))
-		{
-			$query = "CREATE TABLE `#__antispam_words` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__antispam_words')) {
+            $query = "CREATE TABLE `#__antispam_words` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `word` varchar(256) DEFAULT NULL,
 				  PRIMARY KEY (`id`)
 				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__antispam_words'))
-		{
-			$query = "DROP TABLE `#__antispam_words`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__antispam_words')) {
+            $query = "DROP TABLE `#__antispam_words`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,9 +9,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-if (!$this->ajax)
-{
-	$this->css('uploader');
+if (!$this->ajax) {
+    $this->css('uploader');
 }
 
 $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
@@ -19,141 +19,196 @@ $rUrl = $this->url . '?action=browse&a=1' . $subdirlink;
 // Incoming
 $basic = Request::getInt('basic', 0);
 
+$maxUploadHint = Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD')
+    . ' '
+    . \Hubzero\Utility\Number::formatBytes($this->sizelimit);
+$basePath = rtrim(Request::base(true), '/');
+$jsPath = $basePath
+    . '/core/plugins/projects/files/assets/js/';
+
+$basicUploadQuestion = Lang::txt(
+    'PLG_PROJECTS_FILES_BASIC_UPLOAD_QUESTION'
+);
+$basicUploadUrl = $this->url
+    . '?action=upload&amp;basic=1' . $subdirlink;
+$basicUploadLabel = Lang::txt(
+    'PLG_PROJECTS_FILES_BASIC_UPLOAD'
+);
+
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 
 ?>
 <?php if ($this->ajax) { ?>
 <div id="abox-content">
-	<h3><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></h3>
+    <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></h3>
 <?php } ?>
 
-<form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" method="post" enctype="multipart/form-data" action="<?php echo $rUrl; ?>">
-	<?php if (!$this->ajax) { ?>
-		<div id="plg-header">
-			<h3 class="files">
-				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $bc; ?><?php } ?>
-			&raquo; <span class="subheader"><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></span>
-			</h3>
-		</div>
-	<?php } ?>
-	<fieldset class="uploader">
-		<p id="upload-instruct"><?php echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD') . ' ';
-			if ($this->subdir)
-			{
-				echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR') . ' <span class="prominent">' . $this->subdir . '</span> ' . Lang::txt('PLG_PROJECTS_FILES_DIR') . ':';
-			}
-			else
-			{
-				echo ' ' . Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_HOME') . ' ' . Lang::txt('PLG_PROJECTS_FILES_DIR') . ':';
-			} ?>
-		</p>
+<form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>"
+    method="post"
+    enctype="multipart/form-data"
+    action="<?php echo $rUrl; ?>">
+    <?php if (!$this->ajax) { ?>
+        <div id="plg-header">
+            <h3 class="files">
+                <a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) {
+                    ?> <?php echo $bc; ?><?php
+                         } ?>
+            &raquo; <span class="subheader"><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></span>
+            </h3>
+        </div>
+    <?php } ?>
+    <fieldset class="uploader">
+        <p id="upload-instruct"><?php echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD') . ' ';
+        if ($this->subdir) {
+            echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR')
+                . ' <span class="prominent">'
+                . $this->subdir
+                . '</span> '
+                . Lang::txt('PLG_PROJECTS_FILES_DIR')
+                . ':';
+        } else {
+            echo ' '
+                . Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_HOME')
+                . ' '
+                . Lang::txt('PLG_PROJECTS_FILES_DIR')
+                . ':';
+        } ?>
+        </p>
 
-		<div class="field-wrap">
-			<div class="asset-uploader">
-		<?php if (!$basic) { ?>
-					<div id="ajax-uploader" data-action="<?php echo $this->url . '?action=save&amp;no_html=1&amp;ajax=1' . $subdirlink; ?>" >
-						<label class="addnew">
-							<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
-							<p class="hint ipadded"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($this->sizelimit); ?></p>
-						</label>
-						<div id="upload-body">
-							<ul id="u-selected" class="qq-upload-list" aria-label="Uploaded files" hidden>
-							</ul>
-						</div>
-					</div>
-					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/jquery.fileuploader.js"></script>
-					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/jquery.queueuploader.js"></script>
-					<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/fileupload.jquery.js"></script>
-					<?php
-						/* @TODO: this needs to be handle in a more standard site configuration way */
-						$acceptedFormatsJS = PATH_APP  . '/acceptedFormats.js';
-						if (file_exists($acceptedFormatsJS)): ?>
-						<script src="<?php echo rtrim(Request::base(true), '/'); ?>/app/site/acceptedFormats.js">"></script>
-					<?php endif; ?>
-		<?php } else {
-			// Basic (non-chunked) upload submits the file as a single
-			// multipart POST, so the real ceiling is post_max_size, not
-			// the chunked uploader's per-chunk maxUpload. Show the real
-			// limit and validate client-side; otherwise PHP silently
-			// returns 400 from "POST Content-Length exceeds the limit".
-			$basicLimit = isset($this->postLimit) && $this->postLimit > 0
-				? $this->postLimit
-				: $this->sizelimit;
-		?>
-				<label class="addnew">
-					<input name="upload[]" type="file" class="option uploader" id="uploader"
-					       data-max-bytes="<?php echo (int) $basicLimit; ?>"
-					       multiple="multiple" />
-					<p class="hint ipadded"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($basicLimit); ?></p>
-				</label>
-				<p class="hint mini faded"><?php echo Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_LARGE_HINT'); ?></p>
-				<script>
-				(function () {
-					var input = document.getElementById('uploader');
-					if (!input) return;
-					var maxBytes = parseInt(input.getAttribute('data-max-bytes'), 10) || 0;
-					var form = input.form;
-					if (!form || !maxBytes) return;
-					form.addEventListener('submit', function (e) {
-						var oversized = [];
-						for (var i = 0; i < input.files.length; i++) {
-							if (input.files[i].size > maxBytes) {
-								oversized.push(input.files[i].name + ' (' + (input.files[i].size / (1024*1024*1024)).toFixed(2) + ' GB)');
-							}
-						}
-						if (oversized.length) {
-							e.preventDefault();
-							alert(<?php echo json_encode(Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_TOO_LARGE')); ?>
-								+ '\n\n' + oversized.join('\n')
-								+ '\n\n' + <?php echo json_encode(Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_USE_CHUNKED')); ?>);
-						}
-					});
-				})();
-				</script>
-		<?php } ?>
-			</div>
-		</div>
-		<div id="upload-csize">
-		</div>
-		<?php if (!$this->ajax || $basic) { ?>
-		<div class="sharing-option-extra" id="archiveCheck">
-			<label class="sharing-option">
-				<input type="checkbox" name="expand_zip" id="expand_zip" value="1" />
-				<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_UNZIP_ARCHIVES'); ?>
-			</label>
-		</div>
-		<?php } ?>
+        <div class="field-wrap">
+            <div class="asset-uploader">
+        <?php if (!$basic) { ?>
+                    <div id="ajax-uploader"
+                        data-action="<?php echo $this->url . '?action=save&amp;no_html=1&amp;ajax=1' . $subdirlink; ?>">
+                        <label class="addnew">
+                            <input name="upload[]"
+                                type="file"
+                                class="option uploader"
+                                id="uploader"
+                                multiple="multiple"/>
+                            <p class="hint ipadded">
+                                <?php echo $maxUploadHint; ?>
+                            </p>
+                        </label>
+                        <div id="upload-body">
+                            <ul id="u-selected" class="qq-upload-list" aria-label="Uploaded files" hidden>
+                            </ul>
+                        </div>
+                    </div>
+                    <script src="<?php echo $jsPath; ?>jquery.fileuploader.js"></script>
+                    <script src="<?php echo $jsPath; ?>jquery.queueuploader.js"></script>
+                    <script src="<?php echo $jsPath; ?>fileupload.jquery.js"></script>
+                    <?php
+                        /* @TODO: handle in a more standard way */
+                        $acceptedFormatsJS = PATH_APP
+                            . '/acceptedFormats.js';
+                    if (file_exists($acceptedFormatsJS)) : ?>
+                        <script src="<?php echo $basePath; ?>/app/site/acceptedFormats.js">"></script>
+                    <?php endif; ?>
+        <?php } else {
+            // Basic (non-chunked) upload submits the file as a single
+            // multipart POST, so the real ceiling is post_max_size, not
+            // the chunked uploader's per-chunk maxUpload. Show the real
+            // limit and validate client-side; otherwise PHP silently
+            // returns 400 from "POST Content-Length exceeds the limit".
+            $basicLimit = isset($this->postLimit) && $this->postLimit > 0
+                ? $this->postLimit
+                : $this->sizelimit;
+            ?>
+                <label class="addnew">
+                    <input name="upload[]"
+                        type="file"
+                        class="option uploader"
+                        id="uploader"
+                        multiple="multiple" />
+                    <p class="hint ipadded">
+                        <?php echo $maxUploadHint; ?>
+                    </p>
+                </label>
+                <p class="hint mini faded"><?php echo Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_LARGE_HINT'); ?></p>
+                <script>
+                (function () {
+                    var input = document.getElementById('uploader');
+                    if (!input) return;
+                    var maxBytes = parseInt(input.getAttribute('data-max-bytes'), 10) || 0;
+                    var form = input.form;
+                    if (!form || !maxBytes) return;
+                    form.addEventListener('submit', function (e) {
+                        var oversized = [];
+                        for (var i = 0; i < input.files.length; i++) {
+                            if (input.files[i].size > maxBytes) {
+                                oversized.push(input.files[i].name + ' (' + (input.files[i].size / (1024*1024*1024)).toFixed(2) + ' GB)');
+                            }
+                        }
+                        if (oversized.length) {
+                            e.preventDefault();
+                            alert(<?php echo json_encode(Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_TOO_LARGE')); ?>
+                                + '\n\n' + oversized.join('\n')
+                                + '\n\n' + <?php echo json_encode(Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_USE_CHUNKED')); ?>);
+                        }
+                    });
+                })();
+                </script>
+        <?php } ?>
+            </div>
+        </div>
+        <div id="upload-csize">
+        </div>
+        <?php if (!$this->ajax || $basic) { ?>
+        <div class="sharing-option-extra" id="archiveCheck">
+            <label class="sharing-option">
+                <input type="checkbox" name="expand_zip" id="expand_zip" value="1" />
+                <?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_UNZIP_ARCHIVES'); ?>
+            </label>
+        </div>
+        <?php } ?>
 
-		<input type="hidden" name="MAX_FILE_SIZE" id="maxsize" value="<?php echo $this->params->get('maxUpload', '104857600'); ?>" />
-		<input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
-		<input type="hidden" name="action" id="formaction" value="save" />
-		<input type="hidden" name="failed" id="failed" value="0" />
-		<input type="hidden" name="uploaded" id="uploaded" value="0" />
-		<input type="hidden" name="updated" id="updated" value="0" />
-		<input type="hidden" name="queue" id="queue" value="" />
-		<input type="hidden" name="task" value="view" />
-		<input type="hidden" name="active" value="files" />
-		<input type="hidden" name="avail" id="avail" value="<?php echo $this->unused; ?>" />
-		<input type="hidden" name="repo" value="<?php echo $this->repo->get('name'); ?>" />
-		<input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
+        <input type="hidden"
+            name="MAX_FILE_SIZE"
+            id="maxsize"
+            value="<?php echo $this->params->get('maxUpload', '104857600'); ?>"/>
+        <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
+        <input type="hidden" name="action" id="formaction" value="save" />
+        <input type="hidden" name="failed" id="failed" value="0" />
+        <input type="hidden" name="uploaded" id="uploaded" value="0" />
+        <input type="hidden" name="updated" id="updated" value="0" />
+        <input type="hidden" name="queue" id="queue" value="" />
+        <input type="hidden" name="task" value="view" />
+        <input type="hidden" name="active" value="files" />
+        <input type="hidden" name="avail" id="avail" value="<?php echo $this->unused; ?>" />
+        <input type="hidden" name="repo" value="<?php echo $this->repo->get('name'); ?>" />
+        <input type="hidden" name="subdir" value="<?php echo $this->subdir; ?>" />
+        <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+        <input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
 
-		<div id="upload-submit">
-		<p class="submitarea">
-			<input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_NOW'); ?>" class="btn btn-success active" id="f-upload"  />
-			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
-			<?php } else {  ?>
-				<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
-			<?php } ?>
-		</p>
-		</div>
-		<?php if (!$basic) { ?>
-			<p class="hint rightfloat mini faded"><?php echo Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_QUESTION'); ?> <a href="<?php echo $this->url . '?action=upload&amp;basic=1' . $subdirlink; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD'); ?></a>.</p>
-		<?php } ?>
-	</fieldset>
+        <div id="upload-submit">
+        <p class="submitarea">
+            <input type="submit"
+                value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_NOW'); ?>"
+                class="btn btn-success active"
+                id="f-upload"/>
+            <?php if ($this->ajax) { ?>
+                <input type="reset"
+                    id="cancel-action"
+                    class="btn btn-cancel"
+                    value="<?php echo Lang::txt('JCANCEL'); ?>"/>
+            <?php } else {  ?>
+                <a id="cancel-action"
+                    class="btn btn-cancel"
+                    href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+            <?php } ?>
+        </p>
+        </div>
+        <?php if (!$basic) { ?>
+            <p class="hint rightfloat mini faded">
+                <?php echo $basicUploadQuestion; ?>
+                <a href="<?php echo $basicUploadUrl; ?>">
+                    <?php echo $basicUploadLabel; ?>
+                </a>.
+            </p>
+        <?php } ?>
+    </fieldset>
 </form>
 <?php if ($this->ajax) { ?>
 </div>

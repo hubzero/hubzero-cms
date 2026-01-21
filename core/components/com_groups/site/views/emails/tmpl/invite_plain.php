@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,21 +10,27 @@
 defined('_HZEXEC_') or die();
 
 // get base url
-$groupLink  = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')), '/');
-$acceptLink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept'), '/');
+$groupLink  = rtrim(Request::base(), '/') .
+    '/' .
+    ltrim(Route::url('index.php?option=com_groups&cn=' .
+    $this->group->get('cn')), '/');
+$acceptLink = rtrim(Request::base(), '/') .
+    '/' .
+    ltrim(Route::url('index.php?option=com_groups&cn=' .
+    $this->group->get('cn') .
+    '&task=accept'), '/');
 
 // tell who just invited them on which hub
-$message  = Lang::txt('COM_GROUPS_INVITE_EMAIL_INVITED_BY', $this->user->get('name'), $this->sitename)."\n\n";
+$message  = Lang::txt('COM_GROUPS_INVITE_EMAIL_INVITED_BY', $this->user->get('name'), $this->sitename) . "\n\n";
 
 // what group
-$message .= $this->group->get('description')."\n\n";
+$message .= $this->group->get('description') . "\n\n";
 
 // extra message
-if ($this->msg)
-{
-	$message .= '====================='."\n";
-	$message .= stripslashes($this->msg)."\n";
-	$message .= '====================='."\n\n";
+if ($this->msg) {
+    $message .= '=====================' . "\n";
+    $message .= stripslashes($this->msg) . "\n";
+    $message .= '=====================' . "\n\n";
 }
 
 // accept link
@@ -35,6 +42,6 @@ $message .= Lang::txt('To learn more or access the group after joining, please g
 $message .= $groupLink . "\n\n";
 
 // if questions email the invitor
-$message .= Lang::txt('COM_GROUPS_INVITE_EMAIL_QUESTIONS', $this->user->get('name'), $this->user->get('email'))."\n";
+$message .= Lang::txt('COM_GROUPS_INVITE_EMAIL_QUESTIONS', $this->user->get('name'), $this->user->get('email')) . "\n";
 
 echo $message;

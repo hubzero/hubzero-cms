@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,34 +15,34 @@ use Hubzero\Database\Table;
  */
 class Recent extends Table
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   object  &$db  Database
-	 * @return  void
-	 */
-	public function __construct(&$db)
-	{
-		parent::__construct('#__recent_tools', 'id', $db);
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  &$db  Database
+     * @return  void
+     */
+    public function __construct(&$db)
+    {
+        parent::__construct('#__recent_tools', 'id', $db);
+    }
 
-	/**
-	 * Get a list of recently used tools
-	 *
-	 * @param   integer  $uid  User ID
-	 * @return  array
-	 */
-	public function getRecords($uid=null)
-	{
-		if ($uid == null)
-		{
-			$uid = $this->uid;
-		}
-		if ($uid === null)
-		{
-			return false;
-		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->quote($uid) . " ORDER BY created DESC");
-		return $this->_db->loadObjectList();
-	}
+    /**
+     * Get a list of recently used tools
+     *
+     * @param   integer  $uid  User ID
+     * @return  array
+     */
+    public function getRecords($uid = null)
+    {
+        if ($uid == null) {
+            $uid = $this->uid;
+        }
+        if ($uid === null) {
+            return false;
+        }
+        $query = "SELECT * FROM $this->_tbl WHERE uid=" . $this->_db->quote($uid)
+            . " ORDER BY created DESC";
+        $this->_db->setQuery($query);
+        return $this->_db->loadObjectList();
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,58 +16,56 @@ use Components\Blog\Models\Entry;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module contents
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		if ($content = $this->getCacheContent())
-		{
-			echo $content;
-			return;
-		}
+    /**
+     * Display module contents
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if ($content = $this->getCacheContent()) {
+            echo $content;
+            return;
+        }
 
-		$this->run();
-	}
+        $this->run();
+    }
 
-	/**
-	 * Build module contents
-	 *
-	 * @return  void
-	 */
-	public function run()
-	{
-		include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
+    /**
+     * Build module contents
+     *
+     * @return  void
+     */
+    public function run()
+    {
+        include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
 
-		$this->row = null;
+        $this->row = null;
 
-		$filters = array(
-			'state'      => 1,
-			'access'     => 1,
-			'sort'       => "RAND()",
-			'sort_Dir'   => '',
-			'search'     => '',
-			'scope'      => 'member',
-			'scope_id'   => 0,
-			'authorized' => false
-		);
+        $filters = array(
+            'state'      => 1,
+            'access'     => 1,
+            'sort'       => "RAND()",
+            'sort_Dir'   => '',
+            'search'     => '',
+            'scope'      => 'member',
+            'scope_id'   => 0,
+            'authorized' => false
+        );
 
-		$row = Entry::all()
-			->whereEquals('scope', $filters['scope'])
-			->whereEquals('state', $filters['state'])
-			->whereEquals('access', $filters['access'])
-			->row();
+        $row = Entry::all()
+            ->whereEquals('scope', $filters['scope'])
+            ->whereEquals('state', $filters['state'])
+            ->whereEquals('access', $filters['access'])
+            ->row();
 
-		// Did we have a result to display?
-		if ($row->get('id'))
-		{
-			$this->row = $row;
-			$this->cls = trim($this->params->get('moduleclass_sfx',''));
-			$this->txt_length = trim($this->params->get('txt_length',''));
+        // Did we have a result to display?
+        if ($row->get('id')) {
+            $this->row = $row;
+            $this->cls = trim($this->params->get('moduleclass_sfx', ''));
+            $this->txt_length = trim($this->params->get('txt_length', ''));
 
-			require $this->getLayoutPath();
-		}
-	}
+            require $this->getLayoutPath();
+        }
+    }
 }

@@ -1,5 +1,4 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
 $nameVal = htmlspecialchars($_POST['name'] ?? ($existingAdmin['name'] ?? 'Site Administrator'));
 $emailVal = htmlspecialchars($_POST['email'] ?? ($existingAdmin['email'] ?? $defaultEmail));
 $adminExists = !empty($existingAdmin);

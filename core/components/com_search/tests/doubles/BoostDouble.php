@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2025 The Regents of the University of California.
@@ -17,13 +18,13 @@ namespace Components\Search\Tests\Doubles;
  */
 class BoostDouble
 {
-	/**
-	 * Stubbed by the tests to return a set of boosts
-	 *
-	 * @return  array
-	 */
-	public function all()
-	{
-		return [];
-	}
+    /**
+     * Stubbed by the tests to return a set of boosts
+     *
+     * @return  array
+     */
+    public function all()
+    {
+        return [];
+    }
 }

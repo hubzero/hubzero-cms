@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,24 +17,24 @@ use Hubzero\Database\Relational;
  */
 class Post extends Relational
 {
-	/**
-	 * Belongs to one relationship with user
-	 *
-	 * @return  \Hubzero\Database\Relationship\BelongToOne
-	 **/
-	public function user()
-	{
-		// Be explicit, otherwise it will find the User facade
-		return $this->belongsToOne('Hubzero\Database\Tests\Mock\User');
-	}
+    /**
+     * Belongs to one relationship with user
+     *
+     * @return  \Hubzero\Database\Relationship\BelongToOne
+     **/
+    public function user()
+    {
+        // Be explicit, otherwise it will find the User facade
+        return $this->belongsToOne('Hubzero\Database\Tests\Mock\User');
+    }
 
-	/**
-	 * Many to many relationship with tags
-	 *
-	 * @return  \Hubzero\Database\Relationship\ManyToMany
-	 **/
-	public function tags()
-	{
-		return $this->manyToMany('Tag');
-	}
+    /**
+     * Many to many relationship with tags
+     *
+     * @return  \Hubzero\Database\Relationship\ManyToMany
+     **/
+    public function tags()
+    {
+        return $this->manyToMany('Tag');
+    }
 }

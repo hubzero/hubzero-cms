@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,51 +17,51 @@ use Hubzero\Base\Obj;
  */
 class Image extends Obj
 {
-	/**
-	 * Title image attribute
-	 *
-	 * @var	 string
-	 */
-	public $title = '';
+    /**
+     * Title image attribute
+     *
+     * @var  string
+     */
+    public $title = '';
 
-	/**
-	 * URL image attribute
-	 *
-	 * @var	 string
-	 */
-	public $url = '';
+    /**
+     * URL image attribute
+     *
+     * @var  string
+     */
+    public $url = '';
 
-	/**
-	 * Link image attribute
-	 *
-	 * @var	 string
-	 */
-	public $link = '';
+    /**
+     * Link image attribute
+     *
+     * @var  string
+     */
+    public $link = '';
 
-	/**
-	 * Image width attribute
-	 *
-	 * optional
-	 *
-	 * @var	 string
-	 */
-	public $width;
+    /**
+     * Image width attribute
+     *
+     * optional
+     *
+     * @var  string
+     */
+    public $width;
 
-	/**
-	 * Image height attribute
-	 *
-	 * optional
-	 *
-	 * @var	 string
-	 */
-	public $height;
+    /**
+     * Image height attribute
+     *
+     * optional
+     *
+     * @var  string
+     */
+    public $height;
 
-	/**
-	 * Image description attribute
-	 *
-	 * optional
-	 *
-	 * @var	 string
-	 */
-	public $description;
+    /**
+     * Image description attribute
+     *
+     * optional
+     *
+     * @var  string
+     */
+    public $description;
 }

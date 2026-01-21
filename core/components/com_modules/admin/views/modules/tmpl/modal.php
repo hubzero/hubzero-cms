@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,11 +10,11 @@
 defined('_HZEXEC_') or die();
 ?>
 <div class="configuration">
-	<div class="configuration-options">
-		<button type="button" onclick="Hubzero.submitbutton('save');"><?php echo Lang::txt('JSAVE');?></button>
-		<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('JCANCEL');?></button>
-	</div>
-	<?php echo Lang::txt('COM_MODULES_MANAGER_MODULE', Lang::txt($this->item->module)) ?>
+    <div class="configuration-options">
+        <button type="button" onclick="Hubzero.submitbutton('save');"><?php echo Lang::txt('JSAVE');?></button>
+        <button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('JCANCEL');?></button>
+    </div>
+    <?php echo Lang::txt('COM_MODULES_MANAGER_MODULE', Lang::txt($this->item->module)) ?>
 </div>
 
 <?php

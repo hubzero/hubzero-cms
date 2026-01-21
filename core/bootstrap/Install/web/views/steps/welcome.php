@@ -1,4 +1,3 @@
-<?php // phpcs:disable Generic.Files.LineLength ?>
 <div class="welcome-content">
     <p class="lead">Welcome to the HUBzero installation wizard. This will guide you through setting up your new hub.</p>
 

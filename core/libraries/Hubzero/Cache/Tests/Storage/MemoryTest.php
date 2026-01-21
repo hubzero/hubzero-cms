@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,15 +13,15 @@ namespace Hubzero\Cache\Tests\Storage;
  */
 class MemoryTest extends AbstractCache
 {
-	/**
-	 * Test setup
-	 *
-	 * @return  void
-	 */
-	public function setUp(): void
-	{
-		parent::setup();
+    /**
+     * Test setup
+     *
+     * @return  void
+     */
+    public function setUp(): void
+    {
+        parent::setup();
 
-		$this->cache->setDefaultDriver('memory');
-	}
+        $this->cache->setDefaultDriver('memory');
+    }
 }

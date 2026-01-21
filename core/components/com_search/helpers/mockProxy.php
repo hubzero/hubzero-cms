@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @package   hubzero-cms
  * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,21 +10,19 @@ namespace Components\Search\Helpers;
 
 class MockProxy
 {
+    protected $class;
 
-	protected $class;
+    public function __construct($args = [])
+    {
+        $this->class = $args['class'];
+    }
 
-	public function __construct($args = [])
-	{
-		$this->class = $args['class'];
-	}
+    public function __call($name, $args)
+    {
+        $class = $this->class;
 
-	public function __call($name, $args)
-	{
-		$class = $this->class;
+        $result = $class::$name(...$args);
 
-		$result = $class::$name(...$args);
-
-		return $result;
-	}
-
+        return $result;
+    }
 }

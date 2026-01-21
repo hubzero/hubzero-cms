@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,31 +17,29 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20150306115852ComMembers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__xprofiles'))
-		{
-			$query = "UPDATE `#__xprofiles` SET `name` = REPlACE(`name`, 0xc2ad, '')";
-			$this->db->setQuery($query);
-			$this->db->query();
-			$query = "UPDATE `#__xprofiles` SET `givenName` = REPlACE(`givenName`, 0xc2ad, '')";
-			$this->db->setQuery($query);
-			$this->db->query();
-			$query = "UPDATE `#__xprofiles` SET `middleName` = REPlACE(`middleName`, 0xc2ad, '')";
-			$this->db->setQuery($query);
-			$this->db->query();
-			$query = "UPDATE `#__xprofiles` SET `surname` = REPlACE(`surname`, 0xc2ad, '')";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-		if ($this->db->tableExists('#__users'))
-		{
-			$query = "UPDATE `#__users` SET `name` = REPlACE(`name`, 0xc2ad, '')";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__xprofiles')) {
+            $query = "UPDATE `#__xprofiles` SET `name` = REPlACE(`name`, 0xc2ad, '')";
+            $this->db->setQuery($query);
+            $this->db->query();
+            $query = "UPDATE `#__xprofiles` SET `givenName` = REPlACE(`givenName`, 0xc2ad, '')";
+            $this->db->setQuery($query);
+            $this->db->query();
+            $query = "UPDATE `#__xprofiles` SET `middleName` = REPlACE(`middleName`, 0xc2ad, '')";
+            $this->db->setQuery($query);
+            $this->db->query();
+            $query = "UPDATE `#__xprofiles` SET `surname` = REPlACE(`surname`, 0xc2ad, '')";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+        if ($this->db->tableExists('#__users')) {
+            $query = "UPDATE `#__users` SET `name` = REPlACE(`name`, 0xc2ad, '')";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,42 +16,43 @@ use Exception;
  */
 class ContentLanguages extends Select
 {
-	/**
-	 * Element name
-	 *
-	 * @var  string
-	 */
-	protected $_name = 'ContentLanguages';
+    /**
+     * Element name
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_name = 'ContentLanguages';
 
-	/**
-	 * Get the options for the element
-	 *
-	 * @param   object  &$node  XMLElement node object containing the settings for the element
-	 * @return  array
-	 */
-	protected function _getOptions(&$node)
-	{
-		$db = \App::get('db');
+    /**
+     * Get the options for the element
+     *
+     * @param   object  &$node  XMLElement node object containing the settings for the element
+     * @return  array
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getOptions(&$node)
+    {
+        $db = \App::get('db');
 
-		$query = $db->getQuery()
-			->select('a.lang_code', 'value')
-			->select('a.title', 'title')
-			->select('a.title_native')
-			->from('#__languages', 'a')
-			->where('a.published', '>=', '0')
-			->order('a.title', 'asc');
+        $query = $db->getQuery()
+            ->select('a.lang_code', 'value')
+            ->select('a.title', 'title')
+            ->select('a.title_native')
+            ->from('#__languages', 'a')
+            ->where('a.published', '>=', '0')
+            ->order('a.title', 'asc');
 
-		// Get the options.
-		$db->setQuery($query->toString());
-		$options = $db->loadObjectList();
+        // Get the options.
+        $db->setQuery($query->toString());
+        $options = $db->loadObjectList();
 
-		// Check for a database error.
-		if ($db->getErrorNum())
-		{
-			throw new Exception($db->getErrorMsg(), 500);
-		}
+        // Check for a database error.
+        if ($db->getErrorNum()) {
+            throw new Exception($db->getErrorMsg(), 500);
+        }
 
-		// Merge any additional options in the XML definition.
-		return array_merge(parent::_getOptions($node), $options);
-	}
+        // Merge any additional options in the XML definition.
+        return array_merge(parent::_getOptions($node), $options);
+    }
 }

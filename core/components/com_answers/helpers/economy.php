@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,254 +23,244 @@ use User;
  */
 class Economy extends Obj
 {
-	/**
-	 * Database
-	 *
-	 * @var  object
-	 */
-	protected $_db = null;
+    /**
+     * Database
+     *
+     * @var  object
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_db = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param   object  &$db  Database
-	 * @return  void
-	 */
-	public function __construct(&$db)
-	{
-		$this->_db = $db;
-	}
+    /**
+     * Constructor
+     *
+     * @param   object  &$db  Database
+     * @return  void
+     */
+    public function __construct(&$db)
+    {
+        $this->_db = $db;
+    }
 
-	/**
-	 * Get questions
-	 *
-	 * @return  array
-	 */
-	public function getQuestions()
-	{
-		// get all closed questions
-		$this->_db->setQuery(
-			"SELECT q.id, q.created_by AS q_owner, a.created_by AS a_owner
+    /**
+     * Get questions
+     *
+     * @return  array
+     */
+    public function getQuestions()
+    {
+        // get all closed questions
+        $this->_db->setQuery(
+            "SELECT q.id, q.created_by AS q_owner, a.created_by AS a_owner
 			FROM `#__answers_questions` AS q
 			LEFT JOIN `#__answers_responses` AS a ON q.id=a.question_id AND a.state=1
 			WHERE q.state=1"
-		);
-		return $this->_db->loadObjectList();
-	}
+        );
+        return $this->_db->loadObjectList();
+    }
 
-	/**
-	 * Calculate the market value
-	 *
-	 * @param   integer  $id    Question ID
-	 * @param   string   $type  Transaction type
-	 * @return  mixed
-	 */
-	public function calculate_marketvalue($id, $type='regular')
-	{
-		if ($id === null)
-		{
-			$id = $this->qid;
-		}
-		if ($id === null)
-		{
-			return false;
-		}
+    /**
+     * Calculate the market value
+     *
+     * @param   integer  $id    Question ID
+     * @param   string   $type  Transaction type
+     * @return  mixed
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function calculate_marketvalue($id, $type = 'regular')
+    {
+        if ($id === null) {
+            $id = $this->qid;
+        }
+        if ($id === null) {
+            return false;
+        }
 
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
 
-		// Get point values for actions
-		$BC = Config::values();
-		$p_Q  = $BC->get('ask');
-		$p_A  = $BC->get('answer');
-		$p_R  = $BC->get('answervote');
-		$p_RQ = $BC->get('questionvote');
-		$p_A_accepted = $BC->get('accepted');
+        // Get point values for actions
+        $BC = Config::values();
+        $p_Q  = $BC->get('ask');
+        $p_A  = $BC->get('answer');
+        $p_R  = $BC->get('answervote');
+        $p_RQ = $BC->get('questionvote');
+        $p_A_accepted = $BC->get('accepted');
 
-		$calc = 0;
+        $calc = 0;
 
-		// Get actons and sum up
-		$results = Response::all()
-			->whereEquals('question_id', $id)
-			->where('state', '!=', 2)
-			->rows();
+        // Get actons and sum up
+        $results = Response::all()
+            ->whereEquals('question_id', $id)
+            ->where('state', '!=', 2)
+            ->rows();
 
-		if ($type != 'royalty')
-		{
-			$calc += $p_Q;  // ! this is different from version before code migration !
-			$calc += ($results->count()) * $p_A;
-		}
+        if ($type != 'royalty') {
+            $calc += $p_Q;  // ! this is different from version before code migration !
+            $calc += ($results->count()) * $p_A;
+        }
 
-		// Calculate as if there is at leat one answer
-		if ($type == 'maxaward' && $results->count() == 0)
-		{
-			$calc += $p_A;
-		}
+        // Calculate as if there is at leat one answer
+        if ($type == 'maxaward' && $results->count() == 0) {
+            $calc += $p_A;
+        }
 
-		foreach ($results as $result)
-		{
-			$calc += ($result->get('helpful')) * $p_R;
-			$calc += ($result->get('nothelpful')) * $p_R;
-			if ($result->get('state') == 1 && $type != 'royalty')
-			{
-				$accepted = 1;
-			}
-		}
+        foreach ($results as $result) {
+            $calc += ($result->get('helpful')) * $p_R;
+            $calc += ($result->get('nothelpful')) * $p_R;
+            if ($result->get('state') == 1 && $type != 'royalty') {
+                $accepted = 1;
+            }
+        }
 
-		if (isset($accepted) || $type == 'maxaward')
-		{
-			$calc += $p_A_accepted;
-		}
+        if (isset($accepted) || $type == 'maxaward') {
+            $calc += $p_A_accepted;
+        }
 
-		// Add question votes
-		$aq = Question::oneOrNew($id);
-		if ($aq->get('state') != 2)
-		{
-			$calc += $aq->get('helpful') * $p_RQ;
-		}
+        // Add question votes
+        $aq = Question::oneOrNew($id);
+        if ($aq->get('state') != 2) {
+            $calc += $aq->get('helpful') * $p_RQ;
+        }
 
-		$calc = ($calc) ? $calc : '0';
+        $calc = ($calc) ? $calc : '0';
 
-		return $calc;
-	}
+        return $calc;
+    }
 
-	/**
-	 * Distribute points
-	 *
-	 * @param   integer  $qid       Question ID
-	 * @param   integer  $Q_owner   Question owner
-	 * @param   integer  $BA_owner  Account owner
-	 * @param   string   $type      Transaction type
-	 * @return  void
-	 */
-	public function distribute_points($qid, $Q_owner, $BA_owner, $type)
-	{
-		if ($qid === null)
-		{
-			$qid = $this->qid;
-		}
-		$cat = 'answers';
+    /**
+     * Distribute points
+     *
+     * @param   integer  $qid       Question ID
+     * @param   integer  $Q_owner   Question owner
+     * @param   integer  $BA_owner  Account owner
+     * @param   string   $type      Transaction type
+     * @return  void
+     */
+    // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+    public function distribute_points($qid, $Q_owner, $BA_owner, $type)
+    {
+        if ($qid === null) {
+            $qid = $this->qid;
+        }
+        $cat = 'answers';
 
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
 
-		$points = $this->calculate_marketvalue($qid, $type);
+        $points = $this->calculate_marketvalue($qid, $type);
 
-		$reward = Transaction::getAmount($cat, 'hold', $qid);
-		$reward = ($reward) ? $reward : '0';
-		$share = $points/3;
+        $reward = Transaction::getAmount($cat, 'hold', $qid);
+        $reward = ($reward) ? $reward : '0';
+        $share = $points / 3;
 
-		$BA_owner_share = $share + $reward;
-		$A_owner_share  = 0;
+        $BA_owner_share = $share + $reward;
+        $A_owner_share  = 0;
 
-		// Calculate commissions for other answers
-		$results = Response::all()
-			->whereEquals('question_id', $qid)
-			->where('state', '!=', 2)
-			->rows();
+        // Calculate commissions for other answers
+        $results = Response::all()
+            ->whereEquals('question_id', $qid)
+            ->where('state', '!=', 2)
+            ->rows();
 
-		$n = $results->count();
-		$eligible = array();
+        $n = $results->count();
+        $eligible = array();
 
-		if ($n > 1)
-		{
-			// More than one answer found
-			foreach ($results as $result)
-			{
-				// Check if a regular answer has a good rating (at least 50% of positive votes)
-				if (($result->get('helpful') + $result->get('nothelpful')) >= 3
-				 && ($result->get('helpful') >= $result->get('nothelpful'))
-				 && $result->get('state') == 0)
-				{
-					$eligible[] = $result->get('created_by');
-				}
-			}
-			if (count($eligible) > 0)
-			{
-				// We have eligible answers
-				$A_owner_share = $share/$n;
-			}
-			else
-			{
-				// Best A owner gets remaining third
-				$BA_owner_share += $share;
-			}
-		}
-		else
-		{
-			// Best A owner gets remaining 3rd
-			$BA_owner_share += $share;
-		}
+        if ($n > 1) {
+            // More than one answer found
+            foreach ($results as $result) {
+                // Check if a regular answer has a good rating (at least 50% of positive votes)
+                if (
+                    ($result->get('helpful') + $result->get('nothelpful')) >= 3
+                    && ($result->get('helpful') >= $result->get('nothelpful'))
+                    && $result->get('state') == 0
+                ) {
+                    $eligible[] = $result->get('created_by');
+                }
+            }
+            if (count($eligible) > 0) {
+                // We have eligible answers
+                $A_owner_share = $share / $n;
+            } else {
+                // Best A owner gets remaining third
+                $BA_owner_share += $share;
+            }
+        } else {
+            // Best A owner gets remaining 3rd
+            $BA_owner_share += $share;
+        }
 
-		// Reward asker
-		$q_user = User::getInstance($Q_owner);
-		if (is_object($q_user) && $q_user->get('id'))
-		{
-			$BTL_Q = new Teller($q_user->get('id'));
-			//$BTL_Q->deposit($Q_owner_share, 'Commission for posting a question', $cat, $qid);
-			// Separate commission and reward payment
-			// Remove credit
-			$credit = $BTL_Q->credit_summary();
-			$adjusted = $credit - $reward;
-			$BTL_Q->credit_adjustment($adjusted);
+        // Reward asker
+        $q_user = User::getInstance($Q_owner);
+        if (is_object($q_user) && $q_user->get('id')) {
+            $BTL_Q = new Teller($q_user->get('id'));
+            //$BTL_Q->deposit($Q_owner_share, 'Commission for posting a question', $cat, $qid);
+            // Separate commission and reward payment
+            // Remove credit
+            $credit = $BTL_Q->credit_summary();
+            $adjusted = $credit - $reward;
+            $BTL_Q->credit_adjustment($adjusted);
 
-			if (intval($share) > 0)
-			{
-				$share_msg = ($type=='royalty') ? Lang::txt('Royalty payment for posting question #%s', $qid) : Lang::txt('Commission for posting question #%s', $qid);
-				$BTL_Q->deposit($share, $share_msg, $cat, $qid);
-			}
-			// withdraw reward amount
-			if ($reward)
-			{
-				$BTL_Q->withdraw($reward, Lang::txt('Reward payment for your question #%s', $qid), $cat, $qid);
-			}
-		}
+            if (intval($share) > 0) {
+                $share_msg = ($type == 'royalty')
+                    ? Lang::txt('Royalty payment for posting question #%s', $qid)
+                    : Lang::txt('Commission for posting question #%s', $qid);
+                $BTL_Q->deposit($share, $share_msg, $cat, $qid);
+            }
+            // withdraw reward amount
+            if ($reward) {
+                $BTL_Q->withdraw($reward, Lang::txt('Reward payment for your question #%s', $qid), $cat, $qid);
+            }
+        }
 
-		// Reward others
-		$ba_user = User::getInstance($BA_owner);
+        // Reward others
+        $ba_user = User::getInstance($BA_owner);
 
-		if (is_object($ba_user) && $ba_user->get('id'))
-		{
-			// Reward other responders
-			if (count($eligible) > 0)
-			{
-				foreach ($eligible as $e)
-				{
-					$auser = User::getInstance($e);
-					if (is_object($auser) && $auser->get('id') && is_object($ba_user) && $ba_user->get('id') && $ba_user->get('id') != $auser->get('id'))
-					{
-						$BTL_A = new Teller($auser->get('id'));
-						if (intval($A_owner_share) > 0)
-						{
-							$A_owner_share_msg = ($type=='royalty') ? Lang::txt('Royalty payment for answering question #%s', $qid) : Lang::txt('Answered question #%s that was recently closed', $qid);
-							$BTL_A->deposit($A_owner_share, $A_owner_share_msg, $cat, $qid);
-						}
-					}
-					// is best answer eligible for extra points?
-					if (is_object($auser) && $auser->get('id') &&  is_object($ba_user) && $ba_user->get('id') && ($ba_user->get('id') == $auser->get('id')))
-					{
-						$ba_extra = 1;
-					}
-				}
-			}
+        if (is_object($ba_user) && $ba_user->get('id')) {
+            // Reward other responders
+            if (count($eligible) > 0) {
+                foreach ($eligible as $e) {
+                    $auser = User::getInstance($e);
+                    if (
+                        is_object($auser) && $auser->get('id')
+                        && is_object($ba_user) && $ba_user->get('id')
+                        && $ba_user->get('id') != $auser->get('id')
+                    ) {
+                        $BTL_A = new Teller($auser->get('id'));
+                        if (intval($A_owner_share) > 0) {
+                            $A_owner_share_msg = ($type == 'royalty')
+                                ? Lang::txt('Royalty payment for answering question #%s', $qid)
+                                : Lang::txt('Answered question #%s that was recently closed', $qid);
+                            $BTL_A->deposit($A_owner_share, $A_owner_share_msg, $cat, $qid);
+                        }
+                    }
+                    // is best answer eligible for extra points?
+                    if (
+                        is_object($auser) && $auser->get('id')
+                        && is_object($ba_user) && $ba_user->get('id')
+                        && ($ba_user->get('id') == $auser->get('id'))
+                    ) {
+                        $ba_extra = 1;
+                    }
+                }
+            }
 
-			// Reward best answer
-			$BTL_BA = new Teller($ba_user->get('id'));
+            // Reward best answer
+            $BTL_BA = new Teller($ba_user->get('id'));
 
-			if (isset($ba_extra))
-			{
-				$BA_owner_share += $A_owner_share;
-			}
+            if (isset($ba_extra)) {
+                $BA_owner_share += $A_owner_share;
+            }
 
-			if (intval($BA_owner_share) > 0)
-			{
-				$BA_owner_share_msg = ($type=='royalty') ? Lang::txt('Royalty payment for answering question #%s', $qid) : Lang::txt('Answer for question #%s was accepted', $qid);
-				$BTL_BA->deposit($BA_owner_share, $BA_owner_share_msg, $cat, $qid);
-			}
-		}
+            if (intval($BA_owner_share) > 0) {
+                $BA_owner_share_msg = ($type == 'royalty')
+                    ? Lang::txt('Royalty payment for answering question #%s', $qid)
+                    : Lang::txt('Answer for question #%s was accepted', $qid);
+                $BTL_BA->deposit($BA_owner_share, $BA_owner_share_msg, $cat, $qid);
+            }
+        }
 
-		// Remove hold if exists
-		if ($reward)
-		{
-			$BT = Transaction::deleteRecords('answers', 'hold', $qid);
-		}
-	}
+        // Remove hold if exists
+        if ($reward) {
+            $BT = Transaction::deleteRecords('answers', 'hold', $qid);
+        }
+    }
 }

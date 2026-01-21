@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,105 +16,88 @@ use Hubzero\Language\Translator;
  */
 class TranslationServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['language'] = function($app)
-		{
-			$locale = $app['config']->get('locale', 'en-GB');
-			$debug  = $app['config']->get('debug_lang', false);
+    /**
+     * Register the service provider.
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['language'] = function ($app) {
+            $locale = $app['config']->get('locale', 'en-GB');
+            $debug  = $app['config']->get('debug_lang', false);
 
-			return new Translator($locale, $debug, ucfirst($app['client']->name));
-		};
+            return new Translator($locale, $debug, ucfirst($app['client']->name));
+        };
 
-		$this->app['language.filter'] = false;
-	}
+        $this->app['language.filter'] = false;
+    }
 
-	/**
-	 * Add the plugin loader to the event dispatcher.
-	 *
-	 * @return  void
-	 */
-	public function boot()
-	{
-		$translator = $this->app['language'];
+    /**
+     * Add the plugin loader to the event dispatcher.
+     *
+     * @return  void
+     */
+    public function boot()
+    {
+        $translator = $this->app['language'];
 
-		$language = null;
+        $language = null;
 
-		// If a language was specified it has priority
-		if (!$language && $this->app->has('request'))
-		{
-			$lang = $this->app['request']->getString('language', null);
+        // If a language was specified it has priority
+        if (!$language && $this->app->has('request')) {
+            $lang = $this->app['request']->getString('language', null);
 
-			if ($lang && $translator->exists($lang))
-			{
-				$language = $lang;
-			}
-		}
+            if ($lang && $translator->exists($lang)) {
+                $language = $lang;
+            }
+        }
 
-		// Detect user specified language
-		if (!$language && $this->app->has('user'))
-		{
-			try
-			{
-				$lang = \User::getParam('api_language');
-			}
-			catch (\Hubzero\Database\Exception\ConnectionFailedException $e)
-			{
-				$lang = null;
-			}
+        // Detect user specified language
+        if (!$language && $this->app->has('user')) {
+            try {
+                $lang = \User::getParam('api_language');
+            } catch (\Hubzero\Database\Exception\ConnectionFailedException $e) {
+                $lang = null;
+            }
 
-			if ($lang && $translator->exists($lang))
-			{
-				$language = $lang;
-			}
-		}
+            if ($lang && $translator->exists($lang)) {
+                $language = $lang;
+            }
+        }
 
-		// Detect default language
-		if (!$language && $this->app->has('component'))
-		{
-			try
-			{
-				$params = $this->app['component']->params('com_languages');
-			}
-			catch (\Hubzero\Database\Exception\QueryFailedException $e)
-			{
-				$params = new \Hubzero\Config\Registry;
-			}
-			catch (\Hubzero\Database\Exception\ConnectionFailedException $e)
-			{
-				$params = new \Hubzero\Config\Registry;
-			}
+        // Detect default language
+        if (!$language && $this->app->has('component')) {
+            try {
+                $params = $this->app['component']->params('com_languages');
+            } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                $params = new \Hubzero\Config\Registry();
+            } catch (\Hubzero\Database\Exception\ConnectionFailedException $e) {
+                $params = new \Hubzero\Config\Registry();
+            }
 
-			$language = $params->get(
-				$this->app['client']->name,
-				$this->app['config']->get('language', 'en-GB')
-			);
-		}
+            $language = $params->get(
+                $this->app['client']->name,
+                $this->app['config']->get('language', 'en-GB')
+            );
+        }
 
-		// One last check to make sure we have something
-		if (!$language || !$translator->exists($language))
-		{
-			$lang = $this->app['config']->get('language', 'en-GB');
+        // One last check to make sure we have something
+        if (!$language || !$translator->exists($language)) {
+            $lang = $this->app['config']->get('language', 'en-GB');
 
-			if ($translator->exists($lang))
-			{
-				$language = $lang;
-			}
-		}
+            if ($translator->exists($lang)) {
+                $language = $lang;
+            }
+        }
 
-		if ($language)
-		{
-			$translator->setLanguage($language);
-		}
+        if ($language) {
+            $translator->setLanguage($language);
+        }
 
-		$boot = DS . 'bootstrap' . DS . $this->app['client']->name;
+        $boot = DS . 'bootstrap' . DS . $this->app['client']->name;
 
-		$translator->load('lib_hubzero', PATH_APP . $boot, null, false, true) ||
-		$translator->load('lib_hubzero', dirname(__DIR__), null, false, true);
-	}
+        $translator->load('lib_hubzero', PATH_APP . $boot, null, false, true) ||
+        $translator->load('lib_hubzero', dirname(__DIR__), null, false, true);
+    }
 }

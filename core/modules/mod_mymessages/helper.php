@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,33 +19,29 @@ use Lang;
  */
 class Helper extends Module
 {
-	/**
-	 * Display module content
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		if (!Plugin::isEnabled('members', 'messages'))
-		{
-			$this->setError(Lang::txt('MOD_MYMESSAGES_REQUIRED_PLUGIN_DISABLED'));
-		}
-		else
-		{
-			$this->moduleclass = $this->params->get('moduleclass');
-			$this->limit = intval($this->params->get('limit', 10));
+    /**
+     * Display module content
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        if (!Plugin::isEnabled('members', 'messages')) {
+            $this->setError(Lang::txt('MOD_MYMESSAGES_REQUIRED_PLUGIN_DISABLED'));
+        } else {
+            $this->moduleclass = $this->params->get('moduleclass');
+            $this->limit = intval($this->params->get('limit', 10));
 
-			// Find the user's most recent support tickets
-			$recipient = Recipient::blank();
-			$this->rows  = $recipient->getUnreadMessages(User::get('id'), $this->limit);
-			$this->total = $recipient->getUnreadMessagesCount(User::get('id'));
+            // Find the user's most recent support tickets
+            $recipient = Recipient::blank();
+            $this->rows  = $recipient->getUnreadMessages(User::get('id'), $this->limit);
+            $this->total = $recipient->getUnreadMessagesCount(User::get('id'));
 
-			if ($recipient->getError())
-			{
-				$this->setError($recipient->getError());
-			}
-		}
+            if ($recipient->getError()) {
+                $this->setError($recipient->getError());
+            }
+        }
 
-		require $this->getLayoutPath();
-	}
+        require $this->getLayoutPath();
+    }
 }

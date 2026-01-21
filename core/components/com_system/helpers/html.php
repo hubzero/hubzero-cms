@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,40 +13,39 @@ namespace Components\System\Helpers;
  */
 class Html
 {
-	/**
-	 * Sortable table header in "scripts for this host" view
-	 *
-	 * @param  string  $key    Sort key
-	 * @param  string  $name   Link name
-	 * @param  string  $extra  Extra data to append to URL
-	 * @param  string
-	 */
-	public static function sortheader($MYREQUEST, $MY_SELF_WO_SORT, $key, $name, $extra='')
-	{
-		if ($MYREQUEST['SORT1'] == $key)
-		{
-			$MYREQUEST['SORT2'] = $MYREQUEST['SORT2']=='A' ? 'D' : 'A';
-		}
+    /**
+     * Sortable table header in "scripts for this host" view
+     *
+     * @param  string  $key    Sort key
+     * @param  string  $name   Link name
+     * @param  string  $extra  Extra data to append to URL
+     * @param  string
+     */
+    public static function sortheader($MYREQUEST, $MY_SELF_WO_SORT, $key, $name, $extra = '')
+    {
+        if ($MYREQUEST['SORT1'] == $key) {
+            $MYREQUEST['SORT2'] = $MYREQUEST['SORT2'] == 'A' ? 'D' : 'A';
+        }
 
-		return "<a class=\"sortable\" href=\"$MY_SELF_WO_SORT$extra&amp;SORT1=$key&amp;SORT2=" . $MYREQUEST['SORT2'] . "\">$name</a>";
-	}
+        $sort2 = $MYREQUEST['SORT2'];
+        $url = "{$MY_SELF_WO_SORT}{$extra}&amp;SORT1={$key}&amp;SORT2={$sort2}";
+        return "<a class=\"sortable\" href=\"{$url}\">{$name}</a>";
+    }
 
-	/**
-	 * Pretty printer for byte values
-	 *
-	 * @param   integer  $s  Byte value
-	 * @return  string
-	 */
-	public static function bsize($s)
-	{
-		foreach (array('', 'K', 'M', 'G') as $i => $k)
-		{
-			if ($s < 1024)
-			{
-				break;
-			}
-			$s/=1024;
-		}
-		return sprintf("%5.1f %sBytes", $s, $k);
-	}
+    /**
+     * Pretty printer for byte values
+     *
+     * @param   integer  $s  Byte value
+     * @return  string
+     */
+    public static function bsize($s)
+    {
+        foreach (array('', 'K', 'M', 'G') as $i => $k) {
+            if ($s < 1024) {
+                break;
+            }
+            $s /= 1024;
+        }
+        return sprintf("%5.1f %sBytes", $s, $k);
+    }
 }

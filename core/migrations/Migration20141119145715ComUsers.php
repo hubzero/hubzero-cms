@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,21 +17,19 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20141119145715ComUsers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__users') && $this->db->tableHasField('#__users', 'password'))
-		{
-			$info = $this->db->getTableColumns('#__users', false);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__users') && $this->db->tableHasField('#__users', 'password')) {
+            $info = $this->db->getTableColumns('#__users', false);
 
-			if ($info['password']->Type != "varchar(127)")
-			{
-				$query = "ALTER TABLE `#__users` CHANGE `password` `password` VARCHAR(127) NOT NULL DEFAULT ''";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if ($info['password']->Type != "varchar(127)") {
+                $query = "ALTER TABLE `#__users` CHANGE `password` `password` VARCHAR(127) NOT NULL DEFAULT ''";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

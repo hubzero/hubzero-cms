@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +17,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000ComFeedback extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__feedback'))
-		{
-			$query = "CREATE TABLE `#__feedback` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__feedback')) {
+            $query = "CREATE TABLE `#__feedback` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `user_id` int(11) DEFAULT NULL,
 			  `fullname` varchar(100) DEFAULT '',
@@ -40,21 +41,20 @@ class Migration20170901000000ComFeedback extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__feedback'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__feedback`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__feedback')) {
+            $query = "DROP TABLE IF EXISTS `#__feedback`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

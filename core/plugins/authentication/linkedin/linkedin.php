@@ -1,13 +1,13 @@
 <?php
 
-use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+use Hubzero\Plugin\Plugin;
+
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -368,21 +368,18 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
      */
     private function migrateLegacyLink($id, $email)
     {
-        if (empty($id) || empty($email))
-        {
+        if (empty($id) || empty($email)) {
             return;
         }
 
         $hzad = \Hubzero\Auth\Domain::find_or_create('authentication', $this->name, null);
 
-        if (!is_object($hzad) || !$hzad->get('id'))
-        {
+        if (!is_object($hzad) || !$hzad->get('id')) {
             return;
         }
 
         // Already keyed on the current member ID - nothing to migrate
-        if (\Hubzero\Auth\Link::getInstance($hzad->get('id'), $id))
-        {
+        if (\Hubzero\Auth\Link::getInstance($hzad->get('id'), $id)) {
             return;
         }
 
@@ -392,23 +389,20 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
             ->rows();
 
         // Only adopt an unambiguous match
-        if (!$rows || $rows->count() != 1)
-        {
+        if (!$rows || $rows->count() != 1) {
             return;
         }
 
         $row = $rows->first();
 
-        if (!$row->get('id') || $row->get('username') == $id)
-        {
+        if (!$row->get('id') || $row->get('username') == $id) {
             return;
         }
 
         $legacy = $row->get('username');
         $row->set('username', $id);
 
-        if ($row->update())
-        {
+        if ($row->update()) {
             Log::auth(sprintf(
                 'Re-keyed LinkedIn auth link %s from legacy member ID "%s" to "%s"',
                 $row->get('id'),
@@ -433,8 +427,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
     {
         $expected = Session::get('oauth2state', null, $this->name);
 
-        if (!is_string($state) || $state === '' || !is_string($expected) || $expected === '')
-        {
+        if (!is_string($state) || $state === '' || !is_string($expected) || $expected === '') {
             return false;
         }
 

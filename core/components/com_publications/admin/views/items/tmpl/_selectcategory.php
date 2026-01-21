@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,27 +9,25 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$html  = '<select name="' . $this->name . '" id="' . $this->name . '"' . (isset($this->attributes) && $this->attributes ? ' ' . $this->attributes : '') . '>' . "\n";
+$html  = '<select name="' . $this->name . '" id="' . $this->name . '"'
+    . (isset($this->attributes) && $this->attributes ? ' ' . $this->attributes : '') . '>' . "\n";
 
-if ($this->showNone != '')
-{
-	$html .= "\t".'<option value=""';
-	$html .= ($this->value == 0 || $this->value == '') ? ' selected="selected"' : '';
-	$html .= '>' . $this->showNone . '</option>'."\n";
+if ($this->showNone != '') {
+    $html .= "\t" . '<option value=""';
+    $html .= ($this->value == 0 || $this->value == '') ? ' selected="selected"' : '';
+    $html .= '>' . $this->showNone . '</option>' . "\n";
 }
 
 $skips = array();
 
-foreach ($this->categories as $anode)
-{
-	if (!in_array($anode->id, $skips))
-	{
-		$selected = ($this->value && ($anode->id == $this->value || $anode->name == $this->value))
-			  ? ' selected="selected"'
-			  : '';
-		$html .= "\t".'<option value="' . $anode->id . '"' . $selected.'>' . $anode->name . '</option>' . "\n";
-	}
+foreach ($this->categories as $anode) {
+    if (!in_array($anode->id, $skips)) {
+        $selected = ($this->value && ($anode->id == $this->value || $anode->name == $this->value))
+              ? ' selected="selected"'
+              : '';
+        $html .= "\t" . '<option value="' . $anode->id . '"' . $selected . '>' . $anode->name . '</option>' . "\n";
+    }
 }
-$html .= '</select>'."\n";
+$html .= '</select>' . "\n";
 
 echo $html;

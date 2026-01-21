@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,31 +15,31 @@ $sef = Route::url($this->model->link());
 
 // Set the display date
 $thedate = $this->model->datetime;
-if ($this->model->isTool() && $this->model->curtool)
-{
-	$thedate = $this->model->curtool->released;
+if ($this->model->isTool() && $this->model->curtool) {
+    $thedate = $this->model->curtool->released;
 }
-if ($thedate == '0000-00-00 00:00:00')
-{
-	$thedate = '';
+if ($thedate == '0000-00-00 00:00:00') {
+    $thedate = '';
 }
 
 $this->model->introtext = stripslashes($this->model->introtext);
 $this->model->fulltxt = stripslashes($this->model->fulltxt);
 $this->model->fulltxt = ($this->model->fulltxt) ? trim($this->model->fulltxt) : trim($this->model->introtext);
-$this->model->fulltxt = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $this->model->fulltxt);
+$this->model->fulltxt = str_replace(
+    '="/site',
+    '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site',
+    $this->model->fulltxt
+);
 
 // Parse for <nb:field> tags
 $type = $this->model->type;
 
 $data = array();
 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->fulltxt, $matches, PREG_SET_ORDER);
-if (count($matches) > 0)
-{
-	foreach ($matches as $match)
-	{
-		$data[$match[1]] = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $match[2]);
-	}
+if (count($matches) > 0) {
+    foreach ($matches as $match) {
+        $data[$match[1]] = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $match[2]);
+    }
 }
 //$fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $fulltxt);
 //$fulltxt = trim($fulltxt);
@@ -49,9 +50,8 @@ $elements = new \Components\Resources\Models\Elements($data, $this->model->type-
 $schema = $elements->getSchema();
 
 // Set the document description
-if ($this->model->introtext)
-{
-	Document::setDescription(strip_tags($this->model->introtext));
+if ($this->model->introtext) {
+    Document::setDescription(strip_tags($this->model->introtext));
 }
 
 $tab = Request::getCmd('active', 'about');  // The active tab (section)
@@ -61,246 +61,266 @@ $tab = Request::getCmd('active', 'about');  // The active tab (section)
 $maintext = $this->model->description;
 ?>
 <div class="subject abouttab">
-	<?php if ($this->model->isTool()) { ?>
-		<?php
-		if ($this->model->revision == 'dev' or !$this->model->toolpublished) {
-			//$shots = null;
-		} else {
-			// Screenshots
-			$ss = $this->model->screenshots()
-				->whereEquals('versionid', $this->model->versionid)
-				->ordered()
-				->rows();
+    <?php if ($this->model->isTool()) { ?>
+        <?php
+        if ($this->model->revision == 'dev' or !$this->model->toolpublished) {
+            //$shots = null;
+        } else {
+            // Screenshots
+            $ss = $this->model->screenshots()
+                ->whereEquals('versionid', $this->model->versionid)
+                ->ordered()
+                ->rows();
 
-			$this->view('_screenshots')
-			     ->set('id', $this->model->id)
-			     ->set('created', $this->model->created)
-			     ->set('upath', $this->model->params->get('uploadpath'))
-			     ->set('versionid', $this->model->versionid)
-			     ->set('sinfo', $ss)
-			     ->set('slidebar', 1)
-			     ->display();
-			?>
-		<?php } ?>
-	<?php } ?>
+            $this->view('_screenshots')
+                 ->set('id', $this->model->id)
+                 ->set('created', $this->model->created)
+                 ->set('upath', $this->model->params->get('uploadpath'))
+                 ->set('versionid', $this->model->versionid)
+                 ->set('sinfo', $ss)
+                 ->set('slidebar', 1)
+                 ->display();
+            ?>
+        <?php } ?>
+    <?php } ?>
 
-	<div class="resource">
-		<?php if ($thedate) { ?>
-			<div class="grid">
-				<div class="col span-half">
-		<?php } ?>
-					<h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_CATEGORY'); ?></h3>
-					<p class="resource-content">
-						<a href="<?php echo Route::url('index.php?option=' . $this->option . '&type=' . $this->model->type->get('alias')); ?>">
-							<?php echo $this->escape(stripslashes($this->model->type->get('type'))); ?>
-						</a>
-					</p>
-		<?php if ($thedate) { ?>
-				</div>
-				<div class="col span-half omega">
-					<h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_PUBLISHED_ON'); ?></h3>
-					<p class="resource-content">
-						<time datetime="<?php echo $thedate; ?>"><?php echo Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
-					</p>
-				</div>
-			</div>
-		<?php } ?>
+    <div class="resource">
+        <?php if ($thedate) { ?>
+            <div class="grid">
+                <div class="col span-half">
+        <?php } ?>
+                    <h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_CATEGORY'); ?></h4>
+                    <?php
+                    $categoryUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&type=' . $this->model->type->get('alias')
+                    );
+                    ?>
+                    <p class="resource-content">
+                        <a href="<?php echo $categoryUrl; ?>">
+                            <?php echo $this->escape(stripslashes($this->model->type->get('type'))); ?>
+                        </a>
+                    </p>
+        <?php if ($thedate) { ?>
+                </div>
+                <div class="col span-half omega">
+                    <h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_PUBLISHED_ON'); ?></h4>
+                    <?php
+                    $formattedDate = Date::of($thedate)->toLocal(
+                        Lang::txt('DATE_FORMAT_HZ1')
+                    );
+                    ?>
+                    <p class="resource-content">
+                        <time datetime="<?php echo $thedate; ?>">
+                            <?php echo $formattedDate; ?>
+                        </time>
+                    </p>
+                </div>
+            </div>
+        <?php } ?>
 
-		<?php if (!$this->model->access('view-all')) { // Protected - only show the introtext ?>
-			<h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h3>
-			<div class="resource-content">
-				<?php echo $maintext; ?>
-			</div>
-		<?php } else { ?>
-			<?php if (trim($maintext)) { ?>
-				<h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h3>
-				<div class="resource-content">
-					<?php echo $maintext; ?>
-				</div>
-			<?php } ?>
+        <?php if (!$this->model->access('view-all')) { // Protected - only show the introtext ?>
+            <h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h3>
+            <div class="resource-content">
+                <?php echo $maintext; ?>
+            </div>
+        <?php } else { ?>
+            <?php if (trim($maintext)) { ?>
+                <h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_ABSTRACT'); ?></h3>
+                <div class="resource-content">
+                    <?php echo $maintext; ?>
+                </div>
+            <?php } ?>
 
-			<?php
-			$citations = '';
-			if (is_object($schema))
-			{
-				if (!isset($schema->fields) || !is_array($schema->fields))
-				{
-					$schema->fields = array();
-				}
-				foreach ($schema->fields as $field)
-				{
-					if (isset($data[$field->name]))
-					{
-						if ($field->name == 'citations')
-						{
-							$citations = $data[$field->name];
-						}
-						else if ($elements->display($field->type, $data[$field->name]) && ((isset($field->display) && $field->display == $tab) || (!isset($field->display) && 'about' == $tab)))
-						{
-							?>
-							<h3><?php echo $field->label; ?></h3>
-							<div class="resource-content">
-								<?php
-								$fieldContent = $elements->display($field->type, $data[$field->name]);
-								// Wrap orphaned <li> items in <ul> for accessibility
-								if (preg_match('#<li\b#', $fieldContent) && !preg_match('#<[uo]l[\s>]#', $fieldContent))
-								{
-									$fieldContent = '<ul>' . $fieldContent . '</ul>';
-								}
-								echo $fieldContent;
-								?>
-							</div>
-							<?php
-						}
-					}
-				}
-			}
-			?>
+            <?php
+            $citations = '';
+            if (is_object($schema)) {
+                if (!isset($schema->fields) || !is_array($schema->fields)) {
+                    $schema->fields = array();
+                }
+                foreach ($schema->fields as $field) {
+                    if (isset($data[$field->name])) {
+                        if ($field->name == 'citations') {
+                            $citations = $data[$field->name];
+                        } elseif (
+                            $elements->display($field->type, $data[$field->name]) && ((isset($field->display) &&
+                            $field->display == $tab) || (!isset($field->display) && 'about' == $tab))
+                        ) {
+                            ?>
+                            <h3><?php echo $field->label; ?></h3>
+                            <div class="resource-content">
+                                <?php
+                                $fieldContent = $elements->display($field->type, $data[$field->name]);
+                                // Wrap orphaned <li> items in <ul> for accessibility
+                                if (preg_match('#<li\b#', $fieldContent) && !preg_match('#<[uo]l[\s>]#', $fieldContent)) {
+                                    $fieldContent = '<ul>' . $fieldContent . '</ul>';
+                                }
+                                echo $fieldContent;
+                                ?>
+                            </div>
+                            <?php
+                        }
+                    }
+                }
+            }
+            ?>
 
-			<?php if ($this->model->params->get('show_citation')) { ?>
-				<?php
-				$revision = 0;
+            <?php if ($this->model->params->get('show_citation')) { ?>
+                <?php
+                $revision = 0;
 
-				//auto generated
-				if ($this->model->params->get('show_citation') == 1 || $this->model->params->get('show_citation') == 2)
-				{
-					// Build our citation object
-					$cite = new stdClass();
-					$cite->title    = $this->model->title;
-					$cite->year     = ($thedate ? Date::of($thedate)->toLocal('Y') : Date::of('now')->toLocal('Y'));
-					$cite->location = Request::base() . ltrim($sef, '/');
-					$cite->date     = Date::toSql();
-					$cite->url      = '';
-					$cite->type     = '';
-					$authors = array();
-					$contributors = ($this->model->isTool() ? $this->model->contributors('tool') : $this->model->contributors('!submitter'));
-					if ($contributors)
-					{
-						foreach ($contributors as $contributor)
-						{
-							if ($contributor->role == 'submitter')
-							{
-								continue;
-							}
-							$authors[] = $contributor->name;
-						}
-					}
-					$cite->author = implode(';', $authors);
+                //auto generated
+                $showCitation = $this->model->params->get('show_citation');
+                if ($showCitation == 1 || $showCitation == 2) {
+                    // Build our citation object
+                    $cite = new stdClass();
+                    $cite->title    = $this->model->title;
+                    $cite->year     = ($thedate ? Date::of($thedate)->toLocal('Y') : Date::of('now')->toLocal('Y'));
+                    $cite->location = Request::base() . ltrim($sef, '/');
+                    $cite->date     = Date::toSql();
+                    $cite->url      = '';
+                    $cite->type     = '';
+                    $authors = array();
+                    $contributors = ($this->model->isTool() ? $this->model->contributors('tool') :
+                    $this->model->contributors('!submitter'));
+                    if ($contributors) {
+                        foreach ($contributors as $contributor) {
+                            if ($contributor->role == 'submitter') {
+                                continue;
+                            }
+                            $authors[] = $contributor->name;
+                        }
+                    }
+                    $cite->author = implode(';', $authors);
 
-					if ($this->model->isTool())
-					{
-						// Get contribtool params
-						$tconfig = Component::params('com_tools');
-						$doi = '';
+                    if ($this->model->isTool()) {
+                        // Get contribtool params
+                        $tconfig = Component::params('com_tools');
+                        $doi = '';
 
-						if ($this->model->doi && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder')))
-						{
-							$doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
-							$cite->doi = $doi;
-						}
+                        if ($this->model->doi && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder'))) {
+                            $doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder :
+                            $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
+                            $cite->doi = $doi;
+                        }
 
-						$revision = $this->model->revision ? $this->model->revision : '';
-					}
+                        $revision = $this->model->revision ? $this->model->revision : '';
+                    }
 
-					if ($this->model->params->get('show_citation') == 2)
-					{
-						$citations = '';
-					}
-				}
-				else
-				{
-					$cite = null;
-				}
+                    if ($this->model->params->get('show_citation') == 2) {
+                        $citations = '';
+                    }
+                } else {
+                    $cite = null;
+                }
 
-				$citeinstruct = \Components\Resources\Helpers\Html::citation($this->option, $cite, $this->model->id, $citations, $this->model->type, $revision);
-				?>
+                $citeinstruct = \Components\Resources\Helpers\Html::citation(
+                    $this->option,
+                    $cite,
+                    $this->model->id,
+                    $citations,
+                    $this->model->type,
+                    $revision
+                );
+                ?>
 
-				<?php if ($this->model->params->get('show_citation') == 3): ?>
-					<?php if (isset($citations) && ($citations != null || $citations != '')): ?>
-						<h3 id="citethis"><?php echo Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h3>
-						<div class="resource-content">
-							<?php echo $citeinstruct; ?>
-						</div>
-					<?php endif; ?>
-				<?php else: ?>
-					<?php if (isset($cite) && ($cite != null || $cite != '')): ?>
-						<h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h3>
-						<div class="resource-content">
-							<?php echo $citeinstruct; ?>
-						</div>
-					<?php endif; ?>
-				<?php endif; ?>
-			<?php } ?>
-		<?php } ?>
+                <?php
+                $hasCitations = isset($citations)
+                    && ($citations != null || $citations != '');
+                $citationsHeading = $hasCitations
+                    ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS')
+                    : '';
+                $citationsContent = $hasCitations
+                    ? $citeinstruct
+                    : '';
+                $hasCite = isset($cite)
+                    && ($cite != null || $cite != '');
+                $citeHeading = $hasCite
+                    ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS')
+                    : '';
+                $citeContent = $hasCite ? $citeinstruct : '';
+                ?>
 
-		<?php if ($this->model->attribs->get('timeof', '')) { ?>
-			<h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TIME'); ?></h3>
-			<p class="resource-content"><time><?php
-				// If the resource had a specific event date/time
-				if (substr($this->model->attribs->get('timeof', ''), -8, 8) == '00:00:00')
-				{
-					$exp = Lang::txt('DATE_FORMAT_HZ1'); //'%B %d %Y';
-				}
-				else
-				{
-					$exp = Lang::txt('TIME_FORMAT_HZ1') . ', ' . Lang::txt('DATE_FORMAT_HZ1'); //'%I:%M %p, %B %d %Y';
-				}
-				if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-')
-				{
-					$seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' && $this->model->attribs->get('timeof', '') != '')
-								  ? Date::of($this->model->attribs->get('timeof', ''))->toLocal($exp)
-								  : '';
-				}
-				else
-				{
-					$seminarTime = $this->model->attribs->get('timeof', '');
-				}
+                <?php if ($showCitation == 3) : ?>
+                <h4 id="citethis">
+                    <?php echo $citationsHeading; ?>
+                </h4>
 
-				echo $this->escape($seminarTime);
-				?></time></p>
-		<?php } ?>
+                <div class="resource-content">
+                    <?php echo $citationsContent; ?>
+                </div>
+                <?php else : ?>
+                    <h4><?php echo $citeHeading; ?></h4>
+                    <div class="resource-content">
+                        <?php echo $citeContent; ?>
+                    </div>
+                <?php endif; ?>
+            <?php } ?>
+        <?php } ?>
 
-		<?php if ($this->model->attribs->get('location', '')) { ?>
-			<h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_LOCATION'); ?></h3>
-			<p class="resource-content"><?php echo $this->escape($this->model->attribs->get('location', '')); ?></p>
-		<?php } ?>
+        <?php if ($this->model->attribs->get('timeof', '')) { ?>
+            <h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TIME'); ?></h3>
+            <p class="resource-content"><time><?php
+                // If the resource had a specific event date/time
+            if (substr($this->model->attribs->get('timeof', ''), -8, 8) == '00:00:00') {
+                $exp = Lang::txt('DATE_FORMAT_HZ1'); //'%B %d %Y';
+            } else {
+                $exp = Lang::txt('TIME_FORMAT_HZ1') . ', ' . Lang::txt('DATE_FORMAT_HZ1'); //'%I:%M %p, %B %d %Y';
+            }
+            if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-') {
+                $seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' &&
+                $this->model->attribs->get('timeof', '') != '')
+                              ? Date::of($this->model->attribs->get('timeof', ''))->toLocal($exp)
+                              : '';
+            } else {
+                $seminarTime = $this->model->attribs->get('timeof', '');
+            }
 
-		<?php if ($this->model->contributors('submitter')) { ?>
-			<h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_SUBMITTER'); ?></h3>
-			<div class="resource-content">
-				<div id="submitterlist">
-					<?php
-					$view = new \Hubzero\Component\View(array(
-						'base_path' => Component::path('com_resources') . DS . 'site',
-						'name'      => 'view',
-						'layout'    => '_submitters',
-					));
-					$view->set('option', $this->option);
-					$view->contributors = $this->model->contributors('submitter');
-					$view->badges       = $this->plugin->get('badges', 0);
-					$view->showorgs     = 1;
-					$view->display();
-					?>
-				</div>
-			</div>
-		<?php } ?>
+                echo $this->escape($seminarTime);
+            ?></time></p>
+        <?php } ?>
 
-			<?php if ($this->model->params->get('show_assocs')): ?>
-			<?php if ($this->tags->count()): ?>
-				<h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TAGS'); ?></h3>
-				<div class="resource-content">
-					<?php
-					$view = new Hubzero\Component\View(array(
-						'base_path' => Component::path('com_tags') . '/site',
-						'name'      => 'tags',
-						'layout'    => '_cloud'
-					));
-					$view->set('config', Component::params('com_tags'));
-					$view->set('tags', $this->tags);
-					$view->display();
-					?>
-				</div>
-			<?php endif; ?>
-		<?php endif; ?>
-	</div><!-- / .resource -->
+        <?php if ($this->model->attribs->get('location', '')) { ?>
+            <h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_LOCATION'); ?></h3>
+            <p class="resource-content"><?php echo $this->escape($this->model->attribs->get('location', '')); ?></p>
+        <?php } ?>
+
+        <?php if ($this->model->contributors('submitter')) { ?>
+            <h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_SUBMITTER'); ?></h3>
+            <div class="resource-content">
+                <div id="submitterlist">
+                    <?php
+                    $view = new \Hubzero\Component\View(array(
+                        'base_path' => Component::path('com_resources') . DS . 'site',
+                        'name'      => 'view',
+                        'layout'    => '_submitters',
+                    ));
+                    $view->set('option', $this->option);
+                    $view->contributors = $this->model->contributors('submitter');
+                    $view->badges       = $this->plugin->get('badges', 0);
+                    $view->showorgs     = 1;
+                    $view->display();
+                    ?>
+                </div>
+            </div>
+        <?php } ?>
+
+            <?php if ($this->model->params->get('show_assocs')) : ?>
+                <?php if ($this->tags->count()) : ?>
+                <h3><?php echo Lang::txt('PLG_RESOURCES_ABOUT_TAGS'); ?></h3>
+                <div class="resource-content">
+                    <?php
+                    $view = new Hubzero\Component\View(array(
+                        'base_path' => Component::path('com_tags') . '/site',
+                        'name'      => 'tags',
+                        'layout'    => '_cloud'
+                    ));
+                    $view->set('config', Component::params('com_tags'));
+                    $view->set('tags', $this->tags);
+                    $view->display();
+                    ?>
+                </div>
+                <?php endif; ?>
+            <?php endif; ?>
+    </div><!-- / .resource -->
 </div><!-- / .subject -->

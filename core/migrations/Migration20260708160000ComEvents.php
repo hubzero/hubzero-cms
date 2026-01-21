@@ -25,136 +25,126 @@ use Hubzero\Content\Migration\Base;
  */
 class Migration20260708160000ComEvents extends Base
 {
-	/**
-	 * Action => standard content group (by title) that stock root grants it to,
-	 * and that we deny at the component level to reproduce the old behavior.
-	 * Looked up by name so a hub with non-default group ids still matches.
-	 *
-	 * @var  array
-	 */
-	protected $actions = array(
-		'core.create'     => 'Author',
-		'core.edit'       => 'Editor',
-		'core.edit.state' => 'Publisher',
-		'core.edit.own'   => 'Author',
-	);
+    /**
+     * Action => standard content group (by title) that stock root grants it to,
+     * and that we deny at the component level to reproduce the old behavior.
+     * Looked up by name so a hub with non-default group ids still matches.
+     *
+     * @var  array
+     */
+    protected $actions = array(
+        'core.create'     => 'Author',
+        'core.edit'       => 'Editor',
+        'core.edit.state' => 'Publisher',
+        'core.edit.own'   => 'Author',
+    );
 
-	/**
-	 * Resolve a user group id by its title.
-	 *
-	 * @param   string   $title
-	 * @return  integer  group id, or 0 if not found
-	 */
-	protected function groupId($title)
-	{
-		$this->db->setQuery("SELECT `id` FROM `#__usergroups` WHERE `title` = " . $this->db->quote($title) . " LIMIT 1");
-		return (int) $this->db->loadResult();
-	}
+    /**
+     * Resolve a user group id by its title.
+     *
+     * @param   string   $title
+     * @return  integer  group id, or 0 if not found
+     */
+    protected function groupId($title)
+    {
+        $this->db->setQuery("SELECT `id` FROM `#__usergroups` WHERE `title` = " . $this->db->quote($title) . " LIMIT 1");
+        return (int) $this->db->loadResult();
+    }
 
-	/**
-	 * Load the com_events asset and its decoded rules.
-	 *
-	 * @return  object|null  {id, rules(array)} or null when unavailable
-	 */
-	protected function eventsAsset()
-	{
-		if (!$this->db->tableExists('#__assets'))
-		{
-			return null;
-		}
+    /**
+     * Load the com_events asset and its decoded rules.
+     *
+     * @return  object|null  {id, rules(array)} or null when unavailable
+     */
+    protected function eventsAsset()
+    {
+        if (!$this->db->tableExists('#__assets')) {
+            return null;
+        }
 
-		$this->db->setQuery("SELECT `id`, `rules` FROM `#__assets` WHERE `name` = 'com_events' LIMIT 1");
-		$asset = $this->db->loadObject();
+        $this->db->setQuery("SELECT `id`, `rules` FROM `#__assets` WHERE `name` = 'com_events' LIMIT 1");
+        $asset = $this->db->loadObject();
 
-		if (!$asset)
-		{
-			return null;
-		}
+        if (!$asset) {
+            return null;
+        }
 
-		$rules = json_decode($asset->rules, true);
-		$asset->rules = is_array($rules) ? $rules : array();
+        $rules = json_decode($asset->rules, true);
+        $asset->rules = is_array($rules) ? $rules : array();
 
-		return $asset;
-	}
+        return $asset;
+    }
 
-	/**
-	 * Persist decoded rules back to the com_events asset.
-	 *
-	 * @param   integer  $id
-	 * @param   array    $rules
-	 * @return  void
-	 */
-	protected function saveRules($id, $rules)
-	{
-		$this->db->setQuery("UPDATE `#__assets` SET `rules` = " . $this->db->quote(json_encode($rules)) . " WHERE `id` = " . $this->db->quote($id));
-		$this->db->query();
-	}
+    /**
+     * Persist decoded rules back to the com_events asset.
+     *
+     * @param   integer  $id
+     * @param   array    $rules
+     * @return  void
+     */
+    protected function saveRules($id, $rules)
+    {
+        $this->db->setQuery("UPDATE `#__assets` SET `rules` = " . $this->db->quote(json_encode($rules)) . " WHERE `id` = " . $this->db->quote($id));
+        $this->db->query();
+    }
 
-	/**
-	 * Up
-	 *
-	 * @return  void
-	 */
-	public function up()
-	{
-		if (!($asset = $this->eventsAsset()))
-		{
-			return;
-		}
+    /**
+     * Up
+     *
+     * @return  void
+     */
+    public function up()
+    {
+        if (!($asset = $this->eventsAsset())) {
+            return;
+        }
 
-		$rules = $asset->rules;
+        $rules = $asset->rules;
 
-		foreach ($this->actions as $action => $title)
-		{
-			// Only pin the default where the hub is still inheriting this action.
-			// A non-empty rule means an admin has already decided; leave it alone.
-			if (!empty($rules[$action]))
-			{
-				continue;
-			}
+        foreach ($this->actions as $action => $title) {
+            // Only pin the default where the hub is still inheriting this action.
+            // A non-empty rule means an admin has already decided; leave it alone.
+            if (!empty($rules[$action])) {
+                continue;
+            }
 
-			// Skip if the standard group isn't present (renamed/removed on this hub).
-			if (!($group = $this->groupId($title)))
-			{
-				continue;
-			}
+            // Skip if the standard group isn't present (renamed/removed on this hub).
+            if (!($group = $this->groupId($title))) {
+                continue;
+            }
 
-			$rules[$action] = array((string) $group => 0);
-		}
+            $rules[$action] = array((string) $group => 0);
+        }
 
-		$this->saveRules($asset->id, $rules);
-	}
+        $this->saveRules($asset->id, $rules);
+    }
 
-	/**
-	 * Down
-	 *
-	 * Reverses only the exact denies this migration added, so any later
-	 * customization survives a rollback.
-	 *
-	 * @return  void
-	 */
-	public function down()
-	{
-		if (!($asset = $this->eventsAsset()))
-		{
-			return;
-		}
+    /**
+     * Down
+     *
+     * Reverses only the exact denies this migration added, so any later
+     * customization survives a rollback.
+     *
+     * @return  void
+     */
+    public function down()
+    {
+        if (!($asset = $this->eventsAsset())) {
+            return;
+        }
 
-		$rules = $asset->rules;
+        $rules = $asset->rules;
 
-		foreach ($this->actions as $action => $title)
-		{
-			if (!($group = $this->groupId($title)))
-			{
-				continue;
-			}
+        foreach ($this->actions as $action => $title) {
+            if (!($group = $this->groupId($title))) {
+                continue;
+            }
 
-			if (isset($rules[$action]) && $rules[$action] === array((string) $group => 0))
-			{
-				$rules[$action] = array();
-			}
-		}
+            if (isset($rules[$action]) && $rules[$action] === array((string) $group => 0)) {
+                $rules[$action] = array();
+            }
+        }
 
-		$this->saveRules($asset->id, $rules);
-	}
+        $this->saveRules($asset->id, $rules);
+    }
 }

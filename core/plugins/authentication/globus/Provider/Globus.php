@@ -22,8 +22,8 @@ use Psr\Http\Message\ResponseInterface;
 
 class Globus extends AbstractProvider
 {
-
     use BearerAuthorizationTrait;
+
     /**
      * Returns the base URL for authorizing a client.
      *

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,14 +15,14 @@ use Hubzero\Session\Store;
  */
 class None extends Store
 {
-	/**
-	 * Register the functions of this class with PHP's session handler
-	 *
-	 * @param   array  $options  Optional parameters.
-	 * @return  void
-	 */
-	public function register($options = array())
-	{
-		// Let php handle the session storage
-	}
+    /**
+     * Register the functions of this class with PHP's session handler
+     *
+     * @param   array  $options  Optional parameters.
+     * @return  void
+     */
+    public function register($options = array())
+    {
+        // Let php handle the session storage
+    }
 }

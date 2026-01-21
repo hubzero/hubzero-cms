@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,100 +18,96 @@ use Exception;
  */
 class Xcache extends Store
 {
-	/**
-	 * Key prefix
-	 *
-	 * @var  string
-	 */
-	private $prefix  = 'sess_';
+    /**
+     * Key prefix
+     *
+     * @var  string
+     */
+    private $prefix  = 'sess_';
 
-	/**
-	 * Constructor
-	 *
-	 * @param   array  $options  Optional parameters.
-	 * @return  true
-	 */
-	public function __construct($options = array())
-	{
-		if (!self::isAvailable())
-		{
-			throw new Exception(\Lang::txt('JLIB_SESSION_XCACHE_EXTENSION_NOT_AVAILABLE'));
-		}
+    /**
+     * Constructor
+     *
+     * @param   array  $options  Optional parameters.
+     * @return  true
+     */
+    public function __construct($options = array())
+    {
+        if (!self::isAvailable()) {
+            throw new Exception(\Lang::txt('JLIB_SESSION_XCACHE_EXTENSION_NOT_AVAILABLE'));
+        }
 
-		if (isset($options['prefix']))
-		{
-			$this->prefix = $options['prefix'];
-		}
+        if (isset($options['prefix'])) {
+            $this->prefix = $options['prefix'];
+        }
 
-		parent::__construct($options);
-	}
+        parent::__construct($options);
+    }
 
-	/**
-	 * Read the data for a particular session identifier from the SessionHandler backend.
-	 *
-	 * @param   string  $id  The session identifier.
-	 * @return  string  The session data.
-	 */
-	#[\ReturnTypeWillChange]
-	public function read($id)
-	{
-		// Check if id exists
-		if (!xcache_isset($this->key($id)))
-		{
-			return;
-		}
+    /**
+     * Read the data for a particular session identifier from the SessionHandler backend.
+     *
+     * @param   string  $id  The session identifier.
+     * @return  string  The session data.
+     */
+    #[\ReturnTypeWillChange]
+    public function read($id)
+    {
+        // Check if id exists
+        if (!xcache_isset($this->key($id))) {
+            return;
+        }
 
-		return (string) xcache_get($this->key($id));
-	}
+        return (string) xcache_get($this->key($id));
+    }
 
-	/**
-	 * Write session data to the SessionHandler backend.
-	 *
-	 * @param   string   $id    The session identifier.
-	 * @param   string   $data  The session data.
-	 * @return  boolean  True on success, false otherwise.
-	 */
-	#[\ReturnTypeWillChange]
-	public function write($id, $data)
-	{
-		return xcache_set($this->key($id), $data, ini_get("session.gc_maxlifetime"));
-	}
+    /**
+     * Write session data to the SessionHandler backend.
+     *
+     * @param   string   $id    The session identifier.
+     * @param   string   $data  The session data.
+     * @return  boolean  True on success, false otherwise.
+     */
+    #[\ReturnTypeWillChange]
+    public function write($id, $data)
+    {
+        return xcache_set($this->key($id), $data, ini_get("session.gc_maxlifetime"));
+    }
 
-	/**
-	 * Destroy the data for a particular session identifier in the SessionHandler backend.
-	 *
-	 * @param   string   $id  The session identifier.
-	 * @return  boolean  True on success, false otherwise.
-	 */
-	#[\ReturnTypeWillChange]
-	public function destroy($id)
-	{
-		if (!xcache_isset($this->key($id)))
-		{
-			return true;
-		}
+    /**
+     * Destroy the data for a particular session identifier in the SessionHandler backend.
+     *
+     * @param   string   $id  The session identifier.
+     * @return  boolean  True on success, false otherwise.
+     */
+    #[\ReturnTypeWillChange]
+    public function destroy($id)
+    {
+        if (!xcache_isset($this->key($id))) {
+            return true;
+        }
 
-		return xcache_unset($this->key($id));
-	}
+        return xcache_unset($this->key($id));
+    }
 
-	/**
-	 * Build the storage key
-	 *
-	 * @param   string  $id  The session identifier.
-	 * @return  string
-	 */
-	protected function key($id)
-	{
-		return $this->prefix . $id;
-	}
+    /**
+     * Build the storage key
+     *
+     * @param   string  $id  The session identifier.
+     * @return  string
+     */
+    protected function key($id)
+    {
+        return $this->prefix . $id;
+    }
 
-	/**
-	 * Test to see if the SessionHandler is available.
-	 *
-	 * @return  boolean  True on success, false otherwise.
-	 */
-	public static function isAvailable()
-	{
-		return (extension_loaded('xcache'));
-	}
+    /**
+     * Test to see if the SessionHandler is available.
+     *
+     * @return  boolean  True on success, false otherwise.
+     */
+    public static function isAvailable()
+    {
+        return (extension_loaded('xcache'));
+    }
 }

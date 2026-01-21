@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,46 +20,48 @@ use Lang;
  */
 class Helper extends Module
 {
-	/**
-	 * Number of instances of the module
-	 *
-	 * @var  integer
-	 */
-	public static $instances = 0;
+    /**
+     * Number of instances of the module
+     *
+     * @var  integer
+     */
+    public static $instances = 0;
 
-	/**
-	 * Display the search form
-	 *
-	 * @return  void
-	 */
-	public function display()
-	{
-		self::$instances++;
+    /**
+     * Display the search form
+     *
+     * @return  void
+     */
+    public function display()
+    {
+        self::$instances++;
 
-		if ($this->params->get('opensearch', 0))
-		{
-			$ostitle = $this->params->get('opensearch_title', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . Config::get('sitename'));
+        if ($this->params->get('opensearch', 0)) {
+            $defaultTitle = Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT') . ' ' . Config::get('sitename');
+            $ostitle = $this->params->get('opensearch_title', $defaultTitle);
 
-			Document::addHeadLink(
-				Request::base() . Route::url('&option=com_search&format=opensearch'),
-				'search',
-				'rel',
-				array('title' => htmlspecialchars($ostitle), 'type' => 'application/opensearchdescription+xml')
-			);
-		}
+            Document::addHeadLink(
+                Request::base() . Route::url('&option=com_search&format=opensearch'),
+                'search',
+                'rel',
+                array('title' => htmlspecialchars($ostitle), 'type' => 'application/opensearchdescription+xml')
+            );
+        }
 
-		//$upper_limit = Lang::getUpperLimitSearchWord();
-		//$maxlength   = $upper_limit;
+        //$upper_limit = Lang::getUpperLimitSearchWord();
+        //$maxlength   = $upper_limit;
 
-		$params          = $this->params;
-		$button          = $this->params->get('button', '');
-		$button_pos      = $this->params->get('button_pos', 'right');
-		$button_text     = htmlspecialchars($this->params->get('button_text', Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT')));
-		$width           = intval($this->params->get('width', 20));
-		$text            = htmlspecialchars($this->params->get('text', Lang::txt('MOD_SEARCH_SEARCHBOX_TEXT')));
-		$label           = htmlspecialchars($this->params->get('label', Lang::txt('MOD_SEARCH_LABEL_TEXT')));
-		$moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx',''));
+        $params          = $this->params;
+        $button          = $this->params->get('button', '');
+        $button_pos      = $this->params->get('button_pos', 'right');
+        $defaultBtnText = Lang::txt('MOD_SEARCH_SEARCHBUTTON_TEXT');
+        $button_text = htmlspecialchars($this->params->get('button_text', $defaultBtnText));
+        $width = intval($this->params->get('width', 20));
+        $defaultText = Lang::txt('MOD_SEARCH_SEARCHBOX_TEXT');
+        $text = htmlspecialchars($this->params->get('text', $defaultText));
+        $label           = htmlspecialchars($this->params->get('label', Lang::txt('MOD_SEARCH_LABEL_TEXT')));
+        $moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx', ''));
 
-		require $this->getLayoutPath($this->params->get('layout', 'default'));
-	}
+        require $this->getLayoutPath($this->params->get('layout', 'default'));
+    }
 }

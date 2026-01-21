@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,23 +15,23 @@ use Hubzero\Base\Obj;
  */
 class Adapter extends Obj
 {
-	/**
-	 * Exec call
-	 *
-	 * @param   string  $call
-	 * @return  mixed   to be parsed
-	 */
-	protected function _exec($call = '')
-	{
-		if (!$call)
-		{
-			return false;
-		}
+    /**
+     * Exec call
+     *
+     * @param   string  $call
+     * @return  mixed   to be parsed
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _exec($call = '')
+    {
+        if (!$call) {
+            return false;
+        }
 
-		$result = array();
+        $result = array();
 
-		// exec call
-		exec($call, $result);
-		return $result;
-	}
+        // exec call
+        exec($call, $result);
+        return $result;
+    }
 }

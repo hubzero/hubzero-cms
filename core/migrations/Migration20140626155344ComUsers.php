@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +17,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20140626155344ComUsers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__users_merge_log'))
-		{
-			$query = "CREATE TABLE `#__users_merge_log` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__users_merge_log')) {
+            $query = "CREATE TABLE `#__users_merge_log` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `source` varchar(150) NOT NULL DEFAULT '',
 				  `destination` varchar(150) NOT NULL DEFAULT '',
@@ -33,21 +34,20 @@ class Migration20140626155344ComUsers extends Base
 				  `logged` datetime NOT NULL,
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__users_merge_log'))
-		{
-			$query = "DROP TABLE `#__users_merge_log`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__users_merge_log')) {
+            $query = "DROP TABLE `#__users_merge_log`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

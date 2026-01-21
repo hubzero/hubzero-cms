@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,54 +18,52 @@ use Hubzero\Console\Arguments;
  **/
 class Documentation extends Base implements CommandInterface
 {
-	/**
-	 * Default (required) command
-	 *
-	 * @return void
-	 **/
-	public function execute()
-	{
-		$this->output = $this->output->getHelpOutput();
-		$this->help();
-		$this->output->render();
-		return;
-	}
+    /**
+     * Default (required) command
+     *
+     * @return void
+     **/
+    public function execute()
+    {
+        $this->output = $this->output->getHelpOutput();
+        $this->help();
+        $this->output->render();
+        return;
+    }
 
-	/**
-	 * Generate documentation for API
-	 * 
-	 * @return void
-	 */
-	public function generate()
-	{
-		// Generate documentation
-		$generator     = new \Hubzero\Api\Doc\Generator();
-		$documentation = $generator->output('array', true);
+    /**
+     * Generate documentation for API
+     *
+     * @return void
+     */
+    public function generate()
+    {
+        // Generate documentation
+        $generator     = new \Hubzero\Api\Doc\Generator();
+        $documentation = $generator->output('array', true);
 
-		// Output error messages
-		foreach ($documentation['errors'] as $error)
-		{
-			$this->output->addLine($error, 'error');
-		}
+        // Output error messages
+        foreach ($documentation['errors'] as $error) {
+            $this->output->addLine($error, 'error');
+        }
 
-		// Successfully processed the following files
-		foreach ($documentation['files'] as $file)
-		{
-			$this->output->addLine('Successfully processed the file: ' . $file, 'success');
-		}
-	}
+        // Successfully processed the following files
+        foreach ($documentation['files'] as $file) {
+            $this->output->addLine('Successfully processed the file: ' . $file, 'success');
+        }
+    }
 
-	/**
-	 * Output help documentation
-	 *
-	 * @return void
-	 **/
-	public function help()
-	{
-		$this
-			->output
-			->addOverview(
-				'Api documentation related commands.'
-			);
-	}
+    /**
+     * Output help documentation
+     *
+     * @return void
+     **/
+    public function help()
+    {
+        $this
+            ->output
+            ->addOverview(
+                'Api documentation related commands.'
+            );
+    }
 }

@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +14,18 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding feedaggregator entry in disabled state
- **/
+ *
+ */
 class Migration20140417132300ComFeedaggregator extends Base
 {
-	public function up()
-	{
-		$this->deleteComponentEntry('feedaggregator');
-		$this->addComponentEntry('feedaggregator', null, 1, '', false);
-	}
+    public function up()
+    {
+        $this->deleteComponentEntry('feedaggregator');
+        $this->addComponentEntry('feedaggregator', null, 1, '', false);
+    }
 
-	public function down()
-	{
-		$this->deleteComponentEntry('feedaggregator');
-	}
+    public function down()
+    {
+        $this->deleteComponentEntry('feedaggregator');
+    }
 }

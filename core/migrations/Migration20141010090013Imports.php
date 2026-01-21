@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +14,17 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding content import tables
+  *
  **/
 class Migration20141010090013Imports extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__imports'))
-		{
-			$query = "CREATE TABLE `#__imports` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__imports')) {
+            $query = "CREATE TABLE `#__imports` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `type` varchar(150) NOT NULL,
 				  `name` varchar(150) DEFAULT NULL,
@@ -38,13 +40,12 @@ class Migration20141010090013Imports extends Base
 				  `fields` text NOT NULL,
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__import_hooks'))
-		{
-			$query = "CREATE TABLE `#__import_hooks` (
+        if (!$this->db->tableExists('#__import_hooks')) {
+            $query = "CREATE TABLE `#__import_hooks` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `event` varchar(25) DEFAULT NULL,
 				  `type` varchar(150) NOT NULL,
@@ -56,13 +57,12 @@ class Migration20141010090013Imports extends Base
 				  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__import_runs'))
-		{
-			$query = "CREATE TABLE `#__import_runs` (
+        if (!$this->db->tableExists('#__import_runs')) {
+            $query = "CREATE TABLE `#__import_runs` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `import_id` int(11) DEFAULT NULL,
 				  `processed` int(11) DEFAULT NULL,
@@ -72,35 +72,32 @@ class Migration20141010090013Imports extends Base
 				  `dry_run` int(11) DEFAULT '0',
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__imports'))
-		{
-			$query = "DROP TABLE `#__imports`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__imports')) {
+            $query = "DROP TABLE `#__imports`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__import_hooks'))
-		{
-			$query = "DROP TABLE `#__import_hooks`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__import_hooks')) {
+            $query = "DROP TABLE `#__import_hooks`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__import_runs'))
-		{
-			$query = "DROP TABLE `#__import_runs`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__import_runs')) {
+            $query = "DROP TABLE `#__import_runs`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

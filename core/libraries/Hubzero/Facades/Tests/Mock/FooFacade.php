@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,13 +17,13 @@ use Hubzero\Facades\Facade;
  */
 class FooFacade extends Facade
 {
-	/**
-	 * Get the registered name.
-	 *
-	 * @return  string
-	 */
-	protected static function getAccessor()
-	{
-		return 'foo';
-	}
+    /**
+     * Get the registered name.
+     *
+     * @return  string
+     */
+    protected static function getAccessor()
+    {
+        return 'foo';
+    }
 }

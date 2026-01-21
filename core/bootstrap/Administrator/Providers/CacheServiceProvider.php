@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,23 +16,21 @@ use Hubzero\Base\ServiceProvider;
  */
 class CacheServiceProvider extends ServiceProvider
 {
-	/**
-	 * Register the service provider.
-	 *
-	 * @return  void
-	 */
-	public function register()
-	{
-		$this->app['cache'] = function($app)
-		{
-			return new Manager($app);
-		};
+    /**
+     * Register the service provider.
+     *
+     * @return  void
+     */
+    public function register()
+    {
+        $this->app['cache'] = function ($app) {
+            return new Manager($app);
+        };
 
-		$this->app['cache.store'] = function($app)
-		{
-			$handler = 'none';
+        $this->app['cache.store'] = function ($app) {
+            $handler = 'none';
 
-			return $app['cache']->storage($handler);
-		};
-	}
+            return $app['cache']->storage($handler);
+        };
+    }
 }

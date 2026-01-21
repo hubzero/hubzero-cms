@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,22 +20,22 @@
 |
 | Remove the base URI path. This will strip everything up to the base
 */
-$router->rules('build')->append('base', function ($uri)
-{
-	// Get the path data
-	$route = $uri->getPath();
+$router->rules('build')->append('base', function ($uri) {
+    // Get the path data
+    $route = $uri->getPath();
 
-	$base = \App::get('request')->base(true);
-	if (substr($base, -strlen(\App::get('client')->name)) != \App::get('client')->name
-	 && substr($base, -strlen(\App::get('client')->url)) != \App::get('client')->url)
-	{
-		$base .= '/' . \App::get('client')->name;
-	}
+    $base = \App::get('request')->base(true);
+    if (
+        substr($base, -strlen(\App::get('client')->name)) != \App::get('client')->name
+        && substr($base, -strlen(\App::get('client')->url)) != \App::get('client')->url
+    ) {
+        $base .= '/' . \App::get('client')->name;
+    }
 
-	// Add basepath to the uri
-	$uri->setPath($base . '/' . $route);
+    // Add basepath to the uri
+    $uri->setPath($base . '/' . $route);
 
-	return $uri;
+    return $uri;
 });
 
 /*
@@ -51,59 +52,52 @@ $router->rules('build')->append('base', function ($uri)
 |
 | Remove the base URI path. This will strip everything up to the bas
 */
-$router->rules('parse')->append('prep', function ($uri)
-{
-	\App::get('router')->forget('option');
+$router->rules('parse')->append('prep', function ($uri) {
+    \App::get('router')->forget('option');
 
-	// Get the path
-	$path = $uri->getPath();
+    // Get the path
+    $path = $uri->getPath();
 
-	// Remove the base URI path.
-	$path = substr_replace($path, '', 0, strlen(\App::get('request')->base(true)));
+    // Remove the base URI path.
+    $path = substr_replace($path, '', 0, strlen(\App::get('request')->base(true)));
 
-	// Remove prefix
-	$path = str_replace('index.php', '', $path);
+    // Remove prefix
+    $path = str_replace('index.php', '', $path);
 
-	// Set the route
-	$uri->setPath(trim($path, '/'));
+    // Set the route
+    $uri->setPath(trim($path, '/'));
 
-	return null;
+    return null;
 });
 
 /*
 | Match by component
 |
-| Match the first segment of the URI by component name. If a match is 
+| Match the first segment of the URI by component name. If a match is
 | found, the component's router will be loaded to continue parsing any
 | further segments.
 */
-$router->rules('parse')->append('component', function ($uri)
-{
-	$option = $uri->getUriVar('option');
-	if (is_array($option))
-	{
-		$option = implode('', $option);
-	}
+$router->rules('parse')->append('component', function ($uri) {
+    $option = $uri->getUriVar('option');
+    if (is_array($option)) {
+        $option = implode('', $option);
+    }
 
-	if (\User::isGuest() || !\User::authorise('core.login.admin'))
-	{
-		$option = 'com_login';
-	}
+    if (\User::isGuest() || !\User::authorise('core.login.admin')) {
+        $option = 'com_login';
+    }
 
-	if (empty($option))
-	{
-		if (strtoupper(\App::get('request')->method()) == 'POST')
-		{
-			$option = \App::get('request')->getCmd('option', '', 'post');
-		}
-	}
+    if (empty($option)) {
+        if (strtoupper(\App::get('request')->method()) == 'POST') {
+            $option = \App::get('request')->getCmd('option', '', 'post');
+        }
+    }
 
-	if (empty($option))
-	{
-		$option = 'com_cpanel';
-	}
+    if (empty($option)) {
+        $option = 'com_cpanel';
+    }
 
-	$uri->setUriVar('option', $option);
+    $uri->setUriVar('option', $option);
 
-	return true;
+    return true;
 });

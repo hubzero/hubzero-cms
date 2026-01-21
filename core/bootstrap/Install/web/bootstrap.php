@@ -13,7 +13,6 @@
 
 namespace Bootstrap\Install\Web;
 
-// phpcs:disable PSR1.Files.SideEffects
 
 // Prevent direct access except through index.php
 if (!defined('PATH_ROOT')) {
@@ -43,7 +42,6 @@ class BootstrapInstaller
         'curl'      => 'Required for downloading packages',
     ];
 
-    // phpcs:disable Generic.Files.LineLength
     private const HELP_TEXT = [
         'php' => [
             'title' => 'PHP Version',
@@ -76,7 +74,6 @@ class BootstrapInstaller
             'mac' => 'sudo chown -R _www:_www /path/to/core\nsudo chmod -R 755 /path/to/core',
         ],
     ];
-    // phpcs:enable Generic.Files.LineLength
 
     private $corePath;
     private $checks = [];
@@ -423,7 +420,6 @@ class BootstrapInstaller
         return $protocol . '://' . $host . $uri;
     }
 
-    // phpcs:disable Generic.Files.LineLength
     /**
      * Render the bootstrap installer page
      */
@@ -926,7 +922,6 @@ tr.failed { background: #fef2f2; }
 </html>
         <?php
     }
-    // phpcs:enable Generic.Files.LineLength
 }
 
 // Run the bootstrap installer

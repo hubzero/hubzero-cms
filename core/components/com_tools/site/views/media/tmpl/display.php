@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,58 +12,86 @@ defined('_HZEXEC_') or die();
 Html::behavior('framework', true);
 
 $this->css('component.css')
-	->js('media.js');
+    ->js('media.js');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
-	<fieldset>
-		<label for="upload">
-			<input type="file" class="option" name="upload" id="upload" />
-			<input type="submit" class="option" value="<?php echo strtolower(Lang::txt('COM_TOOLS_UPLOAD')); ?>" />
-		</label>
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <label for="upload">
+            <input type="file" class="option" name="upload" id="upload" />
+            <input type="submit" class="option" value="<?php echo strtolower(Lang::txt('COM_TOOLS_UPLOAD')); ?>" />
+        </label>
 
-		<input type="hidden" name="tmpl" value="component" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="resource" value="<?php echo $this->resource; ?>" />
-		<input type="hidden" name="task" value="upload" />
-	</fieldset>
+        <input type="hidden" name="tmpl" value="component" />
+        <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+        <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+        <input type="hidden" name="resource" value="<?php echo $this->resource; ?>" />
+        <input type="hidden" name="task" value="upload" />
+    </fieldset>
 
-	<?php if ($this->getError()) { ?>
-		<p class="error">
-			<?php echo implode('<br />', $this->getErrors()); ?>
-		</p>
-	<?php } ?>
+    <?php if ($this->getError()) { ?>
+        <p class="error">
+            <?php echo implode('<br />', $this->getErrors()); ?>
+        </p>
+    <?php } ?>
 
-	<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
-		<p><?php echo Lang::txt('COM_TOOLS_SCREENSHOTS_ABOUT'); ?></p>
-	<?php } else { ?>
-		<table>
-			<tbody>
-			<?php
-			$docs = $this->docs;
-			for ($i=0; $i<count($docs); $i++)
-			{
-				$docName = key($docs);
+    <?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
+        <p><?php echo Lang::txt('COM_TOOLS_SCREENSHOTS_ABOUT'); ?></p>
+    <?php } else { ?>
+        <table>
+            <tbody>
+            <?php
+            $docs = $this->docs;
+            for ($i = 0; $i < count($docs); $i++) {
+                $docName = key($docs);
 
-				$subdird = ($this->subdir && $this->subdir != DS) ? $this->subdir . DS : DS;
-			?>
-				<tr>
-					<td width="100%">
-						<?php echo Route::url('index.php?option=com_resources&id=' . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file=' . $docs[$docName]); ?>
-					</td>
-					<td>
-						<a class="icon-delete delete delete-file" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo $docs[$docName]; ?>&amp;resource=<?php echo $this->resource; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo Session::getFormToken(); ?>=1" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
-							<span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
-						</a>
-					</td>
-				</tr>
-			<?php
-				next($docs);
-			}
-			?>
-			</tbody>
-		</table>
-	<?php } ?>
+                $subdird = ($this->subdir && $this->subdir != DS) ? $this->subdir . DS : DS;
+                ?>
+                <tr>
+                    <td width="100%">
+                        <?php
+                        $resId = $this->row->alias
+                            ? $this->row->alias
+                            : $this->resource;
+                        echo Route::url(
+                            'index.php?option=com_resources&id='
+                            . $resId . '&task=download&file='
+                            . $docs[$docName]
+                        );
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $deleteHref = 'index.php?option=' . $this->option
+                            . '&amp;controller=' . $this->controller
+                            . '&amp;task=delete&amp;file=' . $docs[$docName]
+                            . '&amp;resource=' . $this->resource
+                            . '&amp;tmpl=component&amp;subdir=' . $this->subdir
+                            . '&amp;' . Session::getFormToken() . '=1';
+                        $confirmMsg = Lang::txt(
+                            'Are you sure you want to delete the file "%s"?',
+                            $docs[$docName]
+                        );
+                        $deleteTitle = Lang::txt('JACTION_DELETE');
+                        ?>
+                        <a
+                            class="icon-delete delete delete-file"
+                            href="<?php echo $deleteHref; ?>"
+                            target="filer"
+                            data-confirm="<?php echo $confirmMsg; ?>"
+                            title="<?php echo $deleteTitle; ?>"
+                        >
+                            <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
+                        </a>
+                    </td>
+                </tr>
+                <?php
+                next($docs);
+            }
+            ?>
+            </tbody>
+        </table>
+    <?php } ?>
 
-	<?php echo Html::input('token'); ?>
+    <?php echo Html::input('token'); ?>
 </form>

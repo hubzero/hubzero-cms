@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,121 +15,117 @@ use Hubzero\Database\Relational;
  */
 class Block extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	public $namespace = 'publication';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    public $namespace = 'publication';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'label' => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'label' => 'notempty'
+    );
 
-	/**
-	 * Automatically fillable fields
-	 *
-	 * @var  array
-	 */
-	public $always = array(
-		'block'
-	);
+    /**
+     * Automatically fillable fields
+     *
+     * @var  array
+     */
+    public $always = array(
+        'block'
+    );
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'ordering'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = array(
+        'ordering'
+    );
 
-	/**
-	 * Configuration registry
-	 *
-	 * @var  object
-	 */
-	protected $paramsRegistry = null;
+    /**
+     * Configuration registry
+     *
+     * @var  object
+     */
+    protected $paramsRegistry = null;
 
-	/**
-	 * Decoded manifest
-	 *
-	 * @var  object
-	 */
-	protected $decodedManifest = null;
+    /**
+     * Decoded manifest
+     *
+     * @var  object
+     */
+    protected $decodedManifest = null;
 
-	/**
-	 * Generates automatic owned by field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticBlock($data)
-	{
-		$alias = (isset($data['block']) && $data['block'] ? $data['block'] : $data['label']);
-		$alias = strip_tags($alias);
-		$alias = trim($alias);
-		if (strlen($alias) > 100)
-		{
-			$alias = substr($alias . ' ', 0, 100);
-			$alias = substr($alias, 0, strrpos($alias, ' '));
-		}
-		$alias = str_replace(' ', '-', $alias);
+    /**
+     * Generates automatic owned by field value
+     *
+     * @param   array   $data  the data being saved
+     * @return  string
+     */
+    public function automaticBlock($data)
+    {
+        $alias = (isset($data['block']) && $data['block'] ? $data['block'] : $data['label']);
+        $alias = strip_tags($alias);
+        $alias = trim($alias);
+        if (strlen($alias) > 100) {
+            $alias = substr($alias . ' ', 0, 100);
+            $alias = substr($alias, 0, strrpos($alias, ' '));
+        }
+        $alias = str_replace(' ', '-', $alias);
 
-		return preg_replace("/[^a-zA-Z0-9\-_]/", '', strtolower($alias));
-	}
+        return preg_replace("/[^a-zA-Z0-9\-_]/", '', strtolower($alias));
+    }
 
-	/**
-	 * Generates automatic ordering field value
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticOrdering($data)
-	{
-		if (!isset($data['ordering']))
-		{
-			$last = self::all()
-				->select('ordering')
-				->order('ordering', 'desc')
-				->row();
+    /**
+     * Generates automatic ordering field value
+     *
+     * @param   array   $data  the data being saved
+     * @return  string
+     */
+    public function automaticOrdering($data)
+    {
+        if (!isset($data['ordering'])) {
+            $last = self::all()
+                ->select('ordering')
+                ->order('ordering', 'desc')
+                ->row();
 
-			$data['ordering'] = $last->ordering + 1;
-		}
+            $data['ordering'] = $last->ordering + 1;
+        }
 
-		return $data['ordering'];
-	}
+        return $data['ordering'];
+    }
 
-	/**
-	 * Get params as a Registry object
-	 *
-	 * @return  object
-	 */
-	public function transformParams()
-	{
-		if (!($this->paramsRegistry instanceof Registry))
-		{
-			$this->paramsRegistry = new Registry($this->get('params'));
-		}
-		return $this->paramsRegistry;
-	}
+    /**
+     * Get params as a Registry object
+     *
+     * @return  object
+     */
+    public function transformParams()
+    {
+        if (!($this->paramsRegistry instanceof Registry)) {
+            $this->paramsRegistry = new Registry($this->get('params'));
+        }
+        return $this->paramsRegistry;
+    }
 
-	/**
-	 * Get manifest as a json_decoded object
-	 *
-	 * @return  object
-	 */
-	public function transformManifest()
-	{
-		if (is_null($this->decodedManifest))
-		{
-			$this->decodedManifest = json_decode($this->get('manifest'));
-		}
-		return $this->decodedManifest;
-	}
+    /**
+     * Get manifest as a json_decoded object
+     *
+     * @return  object
+     */
+    public function transformManifest()
+    {
+        if (is_null($this->decodedManifest)) {
+            $this->decodedManifest = json_decode($this->get('manifest'));
+        }
+        return $this->decodedManifest;
+    }
 }
