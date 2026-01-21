@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,24 +15,25 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding tool plugins for session rendering
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20140818162220PlgTools extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('tools', 'java', 1);
-		$this->addPluginEntry('tools', 'novnc', 0);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('tools', 'java', 1);
+        $this->addPluginEntry('tools', 'novnc', 0);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('tools', 'java');
-		$this->deletePluginEntry('tools', 'novnc');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('tools', 'java');
+        $this->deletePluginEntry('tools', 'novnc');
+    }
 }

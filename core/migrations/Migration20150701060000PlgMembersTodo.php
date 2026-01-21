@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,22 +10,23 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding todo member plugin
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20150701060000PlgMembersTodo extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('members', 'todo', 0);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('members', 'todo', 0);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('members', 'todo');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('members', 'todo');
+    }
 }

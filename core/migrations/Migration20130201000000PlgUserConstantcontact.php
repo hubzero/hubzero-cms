@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,16 +15,18 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding constant contact plugin entry
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20130201000000PlgUserConstantcontact extends Base
 {
-	public function up()
-	{
-		$this->addPluginEntry('user', 'constantcontact');
-	}
+    public function up()
+    {
+        $this->addPluginEntry('user', 'constantcontact');
+    }
 
-	public function down()
-	{
-		$this->deletePluginEntry('user', 'constantcontact');
-	}
+    public function down()
+    {
+        $this->deletePluginEntry('user', 'constantcontact');
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +15,24 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding plugin entry for time summary
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20140721163818PlgTimeSummary extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('time', 'summary', 0);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('time', 'summary', 0);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('time', 'summary');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('time', 'summary');
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,19 +15,21 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for cleaning up some old component entries
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20140428183704Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deleteComponentEntry('apc');
-		$this->deleteComponentEntry('geodb');
-		$this->deleteComponentEntry('ldap');
-		$this->deleteComponentEntry('myhub');
-		$this->deleteComponentEntry('xflash');
-		$this->deleteComponentEntry('xpoll');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deleteComponentEntry('apc');
+        $this->deleteComponentEntry('geodb');
+        $this->deleteComponentEntry('ldap');
+        $this->deleteComponentEntry('myhub');
+        $this->deleteComponentEntry('xflash');
+        $this->deleteComponentEntry('xpoll');
+    }
 }

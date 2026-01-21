@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,45 +15,44 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for un-installing com_feedaggregator and associated extensions
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20190228000000ComFeedaggregator extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deleteComponentEntry('feedaggregator');
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deleteComponentEntry('feedaggregator');
 
-		if ($this->db->tableExists('#__feedaggregator_feeds'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__feedaggregator_feeds`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__feedaggregator_feeds')) {
+            $query = "DROP TABLE IF EXISTS `#__feedaggregator_feeds`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__feedaggregator_posts'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__feedaggregator_posts`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__feedaggregator_posts')) {
+            $query = "DROP TABLE IF EXISTS `#__feedaggregator_posts`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->deletePluginEntry('newsletter', 'feedaggregator');
+        $this->deletePluginEntry('newsletter', 'feedaggregator');
 
-		$this->deleteModuleEntry('mod_feedaggregator');
-	}
+        $this->deleteModuleEntry('mod_feedaggregator');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addComponentEntry('feedaggregator');
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addComponentEntry('feedaggregator');
 
-		if (!$this->db->tableExists('#__feedaggregator_feeds'))
-		{
-			$query = "CREATE TABLE `#__feedaggregator_feeds` (
+        if (!$this->db->tableExists('#__feedaggregator_feeds')) {
+            $query = "CREATE TABLE `#__feedaggregator_feeds` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `url` varchar(255) DEFAULT NULL,
 			  `created` date DEFAULT NULL,
@@ -61,13 +63,12 @@ class Migration20190228000000ComFeedaggregator extends Base
 			  UNIQUE KEY `id_UNIQUE` (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__feedaggregator_posts'))
-		{
-			$query = "CREATE TABLE `#__feedaggregator_posts` (
+        if (!$this->db->tableExists('#__feedaggregator_posts')) {
+            $query = "CREATE TABLE `#__feedaggregator_posts` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) DEFAULT NULL,
 			  `created` datetime DEFAULT NULL,
@@ -79,12 +80,12 @@ class Migration20190228000000ComFeedaggregator extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->addPluginEntry('newsletter', 'feedaggregator');
+        $this->addPluginEntry('newsletter', 'feedaggregator');
 
-		$this->addModuleEntry('mod_feedaggregator');
-	}
+        $this->addModuleEntry('mod_feedaggregator');
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,18 +15,19 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to create the `#__forum_users_categories` table
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 {
-	static $tableName = '#__forum_users_categories';
+    protected static $tableName = '#__forum_users_categories';
 
-	public function up()
-	{
-		$tableName = self::$tableName;
+    public function up()
+    {
+        $tableName = self::$tableName;
 
-		if (!$this->db->tableExists($tableName))
-		{
-			$createTable = "CREATE TABLE `{$tableName}` (
+        if (!$this->db->tableExists($tableName)) {
+            $createTable = "CREATE TABLE `{$tableName}` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`user_id` int(11) unsigned NOT NULL,
 				`category_id` int(11) unsigned	NOT NULL,
@@ -32,21 +36,20 @@ class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 				)
 				ENGINE=MyISAM
 				DEFAULT CHARSET=utf8;";
-		}
+        }
 
-		$this->db->setQuery($createTable);
-		$this->db->query();
-	}
+        $this->db->setQuery($createTable);
+        $this->db->query();
+    }
 
-	public function	down()
-	{
-		$tableName = self::$tableName;
+    public function down()
+    {
+        $tableName = self::$tableName;
 
-		if ($this->db->tableExists($tableName))
-		{
-			$dropTable = "DROP TABLE {$tableName};";
-			$this->db->setQuery($dropTable);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists($tableName)) {
+            $dropTable = "DROP TABLE {$tableName};";
+            $this->db->setQuery($dropTable);
+            $this->db->query();
+        }
+    }
 }

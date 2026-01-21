@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,46 +15,43 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing old venues tables in favor of zones
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20140421112851ComTools extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$mwdb = $this->getMWDBO())
-		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$mwdb = $this->getMWDBO()) {
+            $this->setError('Failed to connect to the middleware database', 'warning');
+            return false;
+        }
 
-		/* We can just drop the old tables because they were never used on a live hub */
+        /* We can just drop the old tables because they were never used on a live hub */
 
-		if ($mwdb->tableExists('venues'))
-		{
-			$query = "DROP TABLE `venues`;";
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
+        if ($mwdb->tableExists('venues')) {
+            $query = "DROP TABLE `venues`;";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
 
-		if ($mwdb->tableExists('venue_locations'))
-		{
-			$query = "DROP TABLE `venue_locations`;";
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
+        if ($mwdb->tableExists('venue_locations')) {
+            $query = "DROP TABLE `venue_locations`;";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
 
-		if ($mwdb->tableExists('venue_countries'))
-		{
-			$query = "DROP TABLE `venue_countries`;";
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
+        if ($mwdb->tableExists('venue_countries')) {
+            $query = "DROP TABLE `venue_countries`;";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
 
-		if (!$mwdb->tableExists('zones'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `zones` (
+        if (!$mwdb->tableExists('zones')) {
+            $query = "CREATE TABLE IF NOT EXISTS `zones` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `zone` varchar(40) DEFAULT NULL,
 			  `title` varchar(255) DEFAULT NULL,
@@ -64,19 +64,17 @@ class Migration20140421112851ComTools extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
-		if (!$mwdb->tableHasField('zones', 'title'))
-		{
-			$query = "ALTER TABLE `zones` ADD `title` varchar(255) DEFAULT NULL;";
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
+        if (!$mwdb->tableHasField('zones', 'title')) {
+            $query = "ALTER TABLE `zones` ADD `title` varchar(255) DEFAULT NULL;";
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
 
-		if (!$mwdb->tableExists('zone_locations'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `zone_locations` (
+        if (!$mwdb->tableExists('zone_locations')) {
+            $query = "CREATE TABLE IF NOT EXISTS `zone_locations` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `zone_id` int(11) NOT NULL,
 			  `ipFROM` int(10) unsigned zerofill NOT NULL DEFAULT '0000000000',
@@ -92,8 +90,8 @@ class Migration20140421112851ComTools extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$mwdb->setQuery($query);
-			$mwdb->query();
-		}
-	}
+            $mwdb->setQuery($query);
+            $mwdb->query();
+        }
+    }
 }

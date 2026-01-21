@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,17 +10,18 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for creating the facet table for Solr
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20170220041701ComSearch extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__solr_search_facets'))
-		{
-			$sql = "CREATE TABLE `#__solr_search_facets` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__solr_search_facets')) {
+            $sql = "CREATE TABLE `#__solr_search_facets` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`name` varchar(255) NOT NULL,
 				`facet` longtext,
@@ -29,11 +31,11 @@ class Migration20170220041701ComSearch extends Base
 				`parent_id` int(11) DEFAULT NULL,
 				PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($sql);
-			$this->db->query();
+            $this->db->setQuery($sql);
+            $this->db->query();
 
-			$insert = "
-				INSERT INTO `jos_solr_search_facets` (`id`,`name`,`facet`,`state`,`protected`,`ordering`,`parent_id`) VALUES
+            $insert = "INSERT INTO `jos_solr_search_facets` "
+                . "(`id`,`name`,`facet`,`state`,`protected`,`ordering`,`parent_id`) VALUES
 				(1,'Content','hubtype:content',1,1,'0',0), (2,'Resources','hubtype:resource',1,1,'0',0),
 				(3,'Collections','hubtype:collection',1,1,'0',0), (4,'Members','hubtype:member',1,1,'0',0),
 				(5,'Projects','hubtype:project',1,1,'0',0), (6,'Groups','hubtype:group',1,1,'0',0), 
@@ -43,21 +45,20 @@ class Migration20170220041701ComSearch extends Base
 				(13,'Publications','hubtype:publication',1,1,'0',0), (14,'Questions','hubtype:question',1,1,'0',0),
 				(15,'Citations','hubtype:citation',1,1,'0',0);";
 
-			$this->db->setQuery($insert);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($insert);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__solr_search_facets'))
-		{
-			$sql = "DROP TABLE #__solr_search_facets;";
-			$this->db->setQuery($sql);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__solr_search_facets')) {
+            $sql = "DROP TABLE #__solr_search_facets;";
+            $this->db->setQuery($sql);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,12 +15,13 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for creating centralized comments table
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20130311000000PlgHubzeroComments extends Base
 {
-	public function up()
-	{
-		$query = "CREATE TABLE IF NOT EXISTS `#__item_comments` (
+    public function up()
+    {
+        $query = "CREATE TABLE IF NOT EXISTS `#__item_comments` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`item_id` int(11) NOT NULL DEFAULT '0',
 				`item_type` varchar(150) NOT NULL,
@@ -55,17 +59,17 @@ class Migration20130311000000PlgHubzeroComments extends Base
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-		$this->db->setQuery($query);
-		$this->db->query();
-	}
+        $this->db->setQuery($query);
+        $this->db->query();
+    }
 
-	public function down()
-	{
-		$query = "DROP TABLE IF EXISTS `#__item_comments`;
+    public function down()
+    {
+        $query = "DROP TABLE IF EXISTS `#__item_comments`;
 				DROP TABLE IF EXISTS `#__item_comment_files`;
 				DROP TABLE IF EXISTS `#__item_votes`;";
 
-		$this->db->setQuery($query);
-		$this->db->query();
-	}
+        $this->db->setQuery($query);
+        $this->db->query();
+    }
 }

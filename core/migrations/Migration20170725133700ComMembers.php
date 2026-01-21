@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,38 +15,37 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding 'derivatives' field to publication licenses
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20170725133700ComMembers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__user_profile_fields'))
-		{
-			if (!$this->db->tableHasField('#__user_profile_fields', 'placeholder'))
-			{
-				$query = "ALTER TABLE `#__user_profile_fields` ADD COLUMN `placeholder` varchar(255) NOT NULL default 0;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__user_profile_fields')) {
+            if (!$this->db->tableHasField('#__user_profile_fields', 'placeholder')) {
+                $query = "ALTER TABLE `#__user_profile_fields` ADD COLUMN `placeholder` varchar(255) NOT NULL "
+                    . "default 0;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__user_profile_fields'))
-		{
-			if ($this->db->tableHasField('#__user_profile_fields', 'placeholder'))
-			{
-				$query = "ALTER TABLE `#__user_profile_fields` DROP `placeholder`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__user_profile_fields')) {
+            if ($this->db->tableHasField('#__user_profile_fields', 'placeholder')) {
+                $query = "ALTER TABLE `#__user_profile_fields` DROP `placeholder`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

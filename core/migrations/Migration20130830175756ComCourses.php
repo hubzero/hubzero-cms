@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +15,25 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updating form info to correspond to code changes
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20130830175756ComCourses extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$queries   = array();
-		$queries[] = "UPDATE `#__courses_assets` SET url = SUBSTRING(url, 30, 50) WHERE `type` = 'form' AND `url` LIKE '/courses/form/complete?crumb=%'";
-		$queries[] = "UPDATE `#__courses_assets` SET url = SUBSTRING(url, 22) WHERE `type` = 'form' AND `url` LIKE '/courses/form/layout/%'";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $queries   = array();
+        $queries[] = "UPDATE `#__courses_assets` SET url = SUBSTRING(url, 30, 50) "
+            . "WHERE `type` = 'form' AND `url` LIKE '/courses/form/complete?crumb=%'";
+        $queries[] = "UPDATE `#__courses_assets` SET url = SUBSTRING(url, 22) "
+            . "WHERE `type` = 'form' AND `url` LIKE '/courses/form/layout/%'";
 
-		foreach ($queries as $query)
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        foreach ($queries as $query) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

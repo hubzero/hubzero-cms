@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,67 +10,68 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for removing deprecaed disablecache plugin
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20161111173852PlgSystemCache extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__extensions'))
-		{
-			$query = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND `element`='disablecache'";
-			$this->db->setQuery($query);
-			if ($params = $this->db->loadResult())
-			{
-				$params = $this->params($params);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__extensions')) {
+            $query = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND "
+                . "`element`='disablecache'";
+            $this->db->setQuery($query);
+            if ($params = $this->db->loadResult()) {
+                $params = $this->params($params);
 
-				if (isset($params->definitions))
-				{
-					$query = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND `element`='cache'";
-					$this->db->setQuery($query);
-					$cparams = $this->db->loadResult();
-					$cparams = $this->params($cparams);
+                if (isset($params->definitions)) {
+                    $query = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND "
+                        . "`element`='cache'";
+                    $this->db->setQuery($query);
+                    $cparams = $this->db->loadResult();
+                    $cparams = $this->params($cparams);
 
-					$cparams->cacheexempt = $params->definitions;
-					$cparams = json_encode($cparams);
+                    $cparams->cacheexempt = $params->definitions;
+                    $cparams = json_encode($cparams);
 
-					$query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($cparams) . " WHERE `type`='plugin' AND `folder`='system' AND `element`='cache'";
-					$this->db->setQuery($query);
-					$this->db->execute();
-				}
-			}
-		}
+                    $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($cparams) . " WHERE "
+                        . "`type`='plugin' AND `folder`='system' AND `element`='cache'";
+                    $this->db->setQuery($query);
+                    $this->db->execute();
+                }
+            }
+        }
 
-		$this->deletePluginEntry('system', 'disablecache');
-	}
+        $this->deletePluginEntry('system', 'disablecache');
+    }
 
-	/**
-	 * Convert string to object
-	 *
-	 * @param   string  $params
-	 * @return  object
-	 **/
-	private function params($params)
-	{
-		$params = json_decode($params);
-		if (json_last_error() !== JSON_ERROR_NONE)
-		{
-			$params = parse_ini_string($params, false, INI_PARSER_RAW);
-		}
-		if (!isset($params) || !$params)
-		{
-			$params = new \stdClass;
-		}
-		return $params;
-	}
+    /**
+     * Convert string to object
+     *
+     * @param   string  $params
+     * @return  object
+     **/
+    private function params($params)
+    {
+        $original = $params;
+        $params = json_decode($params);
+        if (json_last_error() !== JSON_ERROR_NONE && $original !== null && $original !== '') {
+            $params = parse_ini_string($original, false, INI_SCANNER_RAW);
+        }
+        if (!isset($params) || !$params) {
+            $params = new \stdClass();
+        }
+        return $params;
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addPluginEntry('system', 'disablecache');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addPluginEntry('system', 'disablecache');
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,18 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to add table for resource related pages
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20160817174610PlgResourcesWindowstools extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__resource_pages'))
-		{
-			$query = "CREATE TABLE `#__resource_pages` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__resource_pages')) {
+            $query = "CREATE TABLE `#__resource_pages` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `title` varchar(255) NOT NULL DEFAULT '',
 			  `alias` varchar(255) NOT NULL DEFAULT '',
@@ -42,21 +46,20 @@ class Migration20160817174610PlgResourcesWindowstools extends Base
 			  KEY `idx_state` (`state`),
 			  KEY `idx_access` (`access`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__resource_pages'))
-		{
-			$query = "DROP TABLE `#__resource_pages`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__resource_pages')) {
+            $query = "DROP TABLE `#__resource_pages`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

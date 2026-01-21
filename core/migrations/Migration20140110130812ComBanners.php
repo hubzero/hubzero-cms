@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,67 +15,65 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for deleting com_banners
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20140110130812ComBanners extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_banners';";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_banners';";
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		if ($id = $this->db->loadResult())
-		{
-			$this->deleteComponentEntry('banners');
+        if ($id = $this->db->loadResult()) {
+            $this->deleteComponentEntry('banners');
 
-			$this->deleteModuleEntry('mod_banners');
+            $this->deleteModuleEntry('mod_banners');
 
-			$query = "SELECT `id` FROM `#__modules` WHERE `module`='mod_banners';";
-			$this->db->setQuery($query);
-			if ($results = $this->db->loadColumn())
-			{
-				$query = "DELETE FROM `#__modules_menu` WHERE `moduleid` IN (" . implode(',', $results) . ");";
-				$this->db->setQuery($query);
-				$this->db->query();
+            $query = "SELECT `id` FROM `#__modules` WHERE `module`='mod_banners';";
+            $this->db->setQuery($query);
+            if ($results = $this->db->loadColumn()) {
+                $query = "DELETE FROM `#__modules_menu` WHERE `moduleid` IN (" . implode(',', $results) . ");";
+                $this->db->setQuery($query);
+                $this->db->query();
 
-				$query = "DELETE FROM `#__modules` WHERE `module`='mod_banners';";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query = "DELETE FROM `#__modules` WHERE `module`='mod_banners';";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			$query = "DROP TABLE IF EXISTS `#__banner_clients`;";
-			$this->db->setQuery($query);
-			$this->db->query();
+            $query = "DROP TABLE IF EXISTS `#__banner_clients`;";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query = "DROP TABLE IF EXISTS `#__banner_tracks`;";
-			$this->db->setQuery($query);
-			$this->db->query();
+            $query = "DROP TABLE IF EXISTS `#__banner_tracks`;";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query = "DROP TABLE IF EXISTS `#__banners`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $query = "DROP TABLE IF EXISTS `#__banners`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_banners';";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_banners';";
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		if (!($id = $this->db->loadResult()))
-		{
-			$this->addComponentEntry('banners');
+        if (!($id = $this->db->loadResult())) {
+            $this->addComponentEntry('banners');
 
-			if (!$this->db->tableExists('#__banner_clients'))
-			{
-				$query = "CREATE TABLE `#__banner_clients` (
+            if (!$this->db->tableExists('#__banner_clients')) {
+                $query = "CREATE TABLE `#__banner_clients` (
 					  `id` int(11) NOT NULL AUTO_INCREMENT,
 					  `name` varchar(255) NOT NULL DEFAULT '',
 					  `contact` varchar(255) NOT NULL DEFAULT '',
@@ -91,13 +92,12 @@ class Migration20140110130812ComBanners extends Base
 					  KEY `idx_own_prefix` (`own_prefix`),
 					  KEY `idx_metakey_prefix` (`metakey_prefix`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableExists('#__banner_tracks'))
-			{
-				$query = "CREATE TABLE `#__banner_tracks` (
+            if (!$this->db->tableExists('#__banner_tracks')) {
+                $query = "CREATE TABLE `#__banner_tracks` (
 					  `track_date` datetime NOT NULL,
 					  `track_type` int(10) unsigned NOT NULL,
 					  `banner_id` int(10) unsigned NOT NULL,
@@ -107,13 +107,12 @@ class Migration20140110130812ComBanners extends Base
 					  KEY `idx_track_type` (`track_type`),
 					  KEY `idx_banner_id` (`banner_id`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableExists('#__banners'))
-			{
-				$query = "CREATE TABLE `#__banners` (
+            if (!$this->db->tableExists('#__banners')) {
+                $query = "CREATE TABLE `#__banners` (
 					  `id` int(11) NOT NULL AUTO_INCREMENT,
 					  `cid` int(11) NOT NULL DEFAULT '0',
 					  `type` int(11) NOT NULL DEFAULT '0',
@@ -150,9 +149,9 @@ class Migration20140110130812ComBanners extends Base
 					  KEY `idx_language` (`language`),
 					  KEY `idx_state` (`state`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

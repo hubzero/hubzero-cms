@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,65 +15,63 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script fixing dashboard migration stuff.
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20141202211549PlgMembersDashboard extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// get dashboard params
-		$pluginParams = $this->getParams('plg_members_dashboard');
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // get dashboard params
+        $pluginParams = $this->getParams('plg_members_dashboard');
 
-		if ($this->db->tableExists('#__xprofiles_dashboard_preferences'))
-		{
-			// delete all null user preferences
-			$sql = "DELETE FROM `#__xprofiles_dashboard_preferences` WHERE `preferences`='[]';";
-			$this->db->setQuery($sql);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__xprofiles_dashboard_preferences')) {
+            // delete all null user preferences
+            $sql = "DELETE FROM `#__xprofiles_dashboard_preferences` WHERE `preferences`='[]';";
+            $this->db->setQuery($sql);
+            $this->db->query();
+        }
 
-		// only continue if plugin defaults are NOT set
-		$defaults = $pluginParams->get('defaults', '');
-		if ($defaults != array())
-		{
-			return;
-		}
+        // only continue if plugin defaults are NOT set
+        $defaults = $pluginParams->get('defaults', '');
+        if ($defaults != array()) {
+            return;
+        }
 
-		// array to hold new defaults
-		$defaults = array();
+        // array to hold new defaults
+        $defaults = array();
 
-		if ($this->db->tableExists('#__modules'))
-		{
-			// get top 6 modules
-			$sql = "SELECT id FROM `#__modules` WHERE `position`='memberDashboard' AND `published`=1 AND `client_id`=0 ORDER BY `ordering` LIMIT 6;";
-			$this->db->setQuery($sql);
-			$modules = $this->db->loadColumn();
+        if ($this->db->tableExists('#__modules')) {
+            // get top 6 modules
+            $sql = "SELECT id FROM `#__modules` WHERE `position`='memberDashboard' "
+                . "AND `published`=1 AND `client_id`=0 ORDER BY `ordering` LIMIT 6;";
+            $this->db->setQuery($sql);
+            $modules = $this->db->loadColumn();
 
-			// create default
-			$col = 0;
-			$row = 1;
-			foreach ($modules as $k => $module)
-			{
-				$col = $col + 1;
-				if ($col > 3)
-				{
-					$col = 1;
-					$row = 3;
-				}
+            // create default
+            $col = 0;
+            $row = 1;
+            foreach ($modules as $k => $module) {
+                $col = $col + 1;
+                if ($col > 3) {
+                    $col = 1;
+                    $row = 3;
+                }
 
-				array_push($defaults, array(
-					'module' => $module,
-					'col'    => $col,
-					'row'    => $row,
-					'size_x' => 1,
-					'size_y' => 2
-				));
-			}
-		}
-		// update params & save
-		$pluginParams->set('defaults', $defaults);
-		$this->savePluginParams('members', 'dashboard', $pluginParams->toArray());
-	}
+                array_push($defaults, array(
+                    'module' => $module,
+                    'col'    => $col,
+                    'row'    => $row,
+                    'size_x' => 1,
+                    'size_y' => 2
+                ));
+            }
+        }
+        // update params & save
+        $pluginParams->set('defaults', $defaults);
+        $this->savePluginParams('members', 'dashboard', $pluginParams->toArray());
+    }
 }

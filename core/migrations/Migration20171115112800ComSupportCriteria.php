@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,18 +15,19 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to create the `#__support_criteria` table
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20171115112800ComSupportCriteria extends Base
 {
-	static $tableName = '#__support_criteria';
+    protected static $tableName = '#__support_criteria';
 
-	public function up()
-	{
-		$tableName = self::$tableName;
+    public function up()
+    {
+        $tableName = self::$tableName;
 
-		if (!$this->db->tableExists($tableName))
-		{
-			$createTable = "CREATE TABLE `{$tableName}` (
+        if (!$this->db->tableExists($tableName)) {
+            $createTable = "CREATE TABLE `{$tableName}` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`description` varchar(255) DEFAULT NULL,
 				`query` varchar(255) DEFAULT NULL,
@@ -32,23 +36,22 @@ class Migration20171115112800ComSupportCriteria extends Base
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($createTable);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($createTable);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$tableName = self::$tableName;
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $tableName = self::$tableName;
 
-		if ($this->db->tableExists($tableName))
-		{
-			$dropTable = "DROP TABLE {$tableName};";
-			$this->db->setQuery($dropTable);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists($tableName)) {
+            $dropTable = "DROP TABLE {$tableName};";
+            $this->db->setQuery($dropTable);
+            $this->db->query();
+        }
+    }
 }

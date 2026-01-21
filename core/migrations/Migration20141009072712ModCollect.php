@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,60 +15,57 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding the collect module and removing collect plugins
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20141009072712ModCollect extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deletePluginEntry('content', 'collect');
-		$this->deletePluginEntry('resources', 'collect');
-		$this->deletePluginEntry('wiki', 'collect');
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deletePluginEntry('content', 'collect');
+        $this->deletePluginEntry('resources', 'collect');
+        $this->deletePluginEntry('wiki', 'collect');
 
-		$this->addModuleEntry('mod_collect', 1, '', 0);
+        $this->addModuleEntry('mod_collect', 1, '', 0);
 
-		$query = "SELECT COUNT(*) FROM `#__modules` WHERE `module`='mod_collect'";
-		$this->db->setQuery($query);
-		if (!$this->db->loadResult())
-		{
-			$position = 'endpage';
-			$found = false;
+        $query = "SELECT COUNT(*) FROM `#__modules` WHERE `module`='mod_collect'";
+        $this->db->setQuery($query);
+        if (!$this->db->loadResult()) {
+            $position = 'endpage';
+            $found = false;
 
-			$query  = "SELECT COUNT(*) FROM `#__modules` WHERE `client_id`=0 AND `position`=";
-			$this->db->setQuery($query . $this->db->quote($position));
-			if ($this->db->loadResult())
-			{
-				$found = true;
-			}
+            $query  = "SELECT COUNT(*) FROM `#__modules` WHERE `client_id`=0 AND `position`=";
+            $this->db->setQuery($query . $this->db->quote($position));
+            if ($this->db->loadResult()) {
+                $found = true;
+            }
 
-			if (!$found)
-			{
-				$position = 'footer';
-				$this->db->setQuery($query . $this->db->quote($position));
-				if ($this->db->loadResult())
-				{
-					$found = true;
-				}
-			}
+            if (!$found) {
+                $position = 'footer';
+                $this->db->setQuery($query . $this->db->quote($position));
+                if ($this->db->loadResult()) {
+                    $found = true;
+                }
+            }
 
-			if ($found)
-			{
-				$this->installModule('collect', $position);
-			}
-		}
-	}
+            if ($found) {
+                $this->installModule('collect', $position);
+            }
+        }
+    }
 
-	/**
-	 * Up
-	 **/
-	public function down()
-	{
-		$this->addPluginEntry('content', 'collect');
-		$this->addPluginEntry('resources', 'collect');
-		$this->addPluginEntry('wiki', 'collect');
+    /**
+     * Up
+     **/
+    public function down()
+    {
+        $this->addPluginEntry('content', 'collect');
+        $this->addPluginEntry('resources', 'collect');
+        $this->addPluginEntry('wiki', 'collect');
 
-		$this->deleteModuleEntry('mod_collect');
-	}
+        $this->deleteModuleEntry('mod_collect');
+    }
 }

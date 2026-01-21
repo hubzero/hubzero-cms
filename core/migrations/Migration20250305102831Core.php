@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2025 The Regents of the University of California.
@@ -9,17 +10,18 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding ratelimit memory table
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20250305102831Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__ratelimit'))
-		{
-			$query = "CREATE TABLE `#__ratelimit` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__ratelimit')) {
+            $query = "CREATE TABLE `#__ratelimit` (
   `ratelimit_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ip` varbinary(16) NOT NULL,
   `rule_id` int(10) unsigned NOT NULL DEFAULT 0,
@@ -36,21 +38,20 @@ class Migration20250305102831Core extends Base
   UNIQUE KEY `uidx_ip_rule_id` (`ip`,`rule_id`)
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;";
 
-			$this->db->setQuery($query);
-			$this->db->execute();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->execute();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$this->db->tableExists('#__ratelimit'))
-		{
-			$query = "DROP TABLE #__ratelimit;";
-			$this->db->setQuery($query);
-			$this->db->execute();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$this->db->tableExists('#__ratelimit')) {
+            $query = "DROP TABLE #__ratelimit;";
+            $this->db->setQuery($query);
+            $this->db->execute();
+        }
+    }
 }

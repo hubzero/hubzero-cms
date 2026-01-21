@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,26 +10,26 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding projects tables to support filesystem connections
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20151202000001ComCart extends Base
 {
-	public function up()
-	{
-		if ($this->db->tableExists('#__cart_downloads') && !$this->db->tableHasField('#__cart_downloads', 'dIp'))
-		{
-			$query = "ALTER TABLE `#__cart_downloads` ADD `dIp` INT UNSIGNED";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    public function up()
+    {
+        if ($this->db->tableExists('#__cart_downloads') && !$this->db->tableHasField('#__cart_downloads', 'dIp')) {
+            $query = "ALTER TABLE `#__cart_downloads` ADD `dIp` INT UNSIGNED";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	public function down()
-	{
-		if ($this->db->tableExists('#__cart_downloads') && $this->db->tableHasField('#__cart_downloads', 'dIp'))
-		{
-			$query = "ALTER TABLE `#__cart_downloads` DROP COLUMN `dIp`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    public function down()
+    {
+        if ($this->db->tableExists('#__cart_downloads') && $this->db->tableHasField('#__cart_downloads', 'dIp')) {
+            $query = "ALTER TABLE `#__cart_downloads` DROP COLUMN `dIp`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

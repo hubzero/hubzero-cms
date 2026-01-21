@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +15,24 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for group pages module
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20140108233323ModGroupPages extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addModuleEntry('mod_grouppages');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addModuleEntry('mod_grouppages');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deleteModuleEntry('mod_grouppages');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deleteModuleEntry('mod_grouppages');
+    }
 }

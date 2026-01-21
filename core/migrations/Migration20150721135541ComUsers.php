@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,17 +10,18 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for creating table #__users_log_auth
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20150721135541ComUsers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__users_log_auth'))
-		{
-			$query = "CREATE TABLE `#__users_log_auth` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__users_log_auth')) {
+            $query = "CREATE TABLE `#__users_log_auth` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `user_id` int(11) NOT NULL,
 				  `username` varchar(150) DEFAULT NULL,
@@ -28,21 +30,20 @@ class Migration20150721135541ComUsers extends Base
 				  `logged` datetime DEFAULT NULL,
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__users_log_auth'))
-		{
-			$query = "DROP TABLE `#__users_log_auth`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__users_log_auth')) {
+            $query = "DROP TABLE `#__users_log_auth`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,36 +15,36 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for renaming migrations table
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20140502184454Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('migrations') && !$this->db->tableExists('#__migrations'))
-		{
-			$query = "RENAME TABLE `migrations` TO `#__migrations`";
-			$this->db->setQuery($query);
-			$this->db->query();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('migrations') && !$this->db->tableExists('#__migrations')) {
+            $query = "RENAME TABLE `migrations` TO `#__migrations`";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$this->callback('migration', 'setTableName', array('#__migrations'));
-		}
-	}
+            $this->callback('migration', 'setTableName', array('#__migrations'));
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$this->db->tableExists('migrations') && $this->db->tableExists('#__migrations'))
-		{
-			$query = "RENAME TABLE `#__migrations` TO `migrations`";
-			$this->db->setQuery($query);
-			$this->db->query();
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$this->db->tableExists('migrations') && $this->db->tableExists('#__migrations')) {
+            $query = "RENAME TABLE `#__migrations` TO `migrations`";
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$this->callback('migration', 'setTableName', array('migrations'));
-		}
-	}
+            $this->callback('migration', 'setTableName', array('migrations'));
+        }
+    }
 }

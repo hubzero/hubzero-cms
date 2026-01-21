@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,23 +15,24 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding newletter features
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20130716202127ComNewsletter extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// create component entry
-		$this->addComponentEntry('Newsletters', 'com_newsletter');
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // create component entry
+        $this->addComponentEntry('Newsletters', 'com_newsletter');
 
-		$query = "";
+        $query = "";
 
-		if (!$this->db->tableExists('#__newsletters'))
-		{
-			//add newsletter table
-			$query = "CREATE TABLE IF NOT EXISTS `#__newsletters` (
+        if (!$this->db->tableExists('#__newsletters')) {
+            //add newsletter table
+            $query = "CREATE TABLE IF NOT EXISTS `#__newsletters` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `alias` varchar(150) DEFAULT NULL,
 					  `name` varchar(150) DEFAULT NULL,
@@ -48,13 +52,12 @@ class Migration20130716202127ComNewsletter extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_templates'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__newsletter_templates` (
+        if (!$this->db->tableExists('#__newsletter_templates')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_templates` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `editable` int(11) DEFAULT '1',
 					  `name` varchar(100) DEFAULT NULL,
@@ -67,36 +70,125 @@ class Migration20130716202127ComNewsletter extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			// insert default templates
-			$query = "INSERT INTO `#__newsletter_templates` (`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, `secondary_title_color`, `secondary_text_color`, `deleted`)
-				       VALUES (0, 'Default HTML Email Template', '<html>\n	<head>\n		<title>{{TITLE}}</title>\n	</head>\n	<body>\n		<table width=\"100%\" border=\"0\" cellspacing=\"0\">\n			<tr>\n				<td align=\"center\">\n					\n					<table width=\"700\" border=\"0\" cellpadding=\"20\" cellspacing=\"0\">\n						<tr class=\"display-browser\">\n							<td colspan=\"2\" style=\"font-size:10px;padding:0 0 5px 0;\" align=\"center\">\n								Email not displaying correctly? <a href=\"{{LINK}}\">View in a Web Browser</a>\n							</td>\n						</tr>\n						<tr>\n							<td colspan=\"2\" style=\"background:#000000;\">\n								<h1 style=\"color:#FFFFFF;\">HUB Campaign Template</h1>\n								<h3 style=\"color:#888888;\">{{TITLE}}</h3>\n							</td>\n						<tr>\n							<td width=\"500\" valign=\"top\" style=\"font-size:14px;color:#222222;border-left:1px solid #000000;\">\n								<span style=\"display:block;color:#CCCCCC;margin-bottom:20px;\">Issue {{ISSUE}}</span>\n								{{PRIMARY_STORIES}}\n							</td>\n							<td width=\"200\" valign=\"top\" style=\"font-size:12px;color:#555555;border-left:1px solid #AAAAAA;border-right:1px solid #000000;\">\n								{{SECONDARY_STORIES}}\n							</td>\n						</tr>\n						<tr>\n							<td colspan=\"2\" align=\"center\" style=\"background:#000000;color:#FFFFFF;\">\n								Copyright &copy; {{COPYRIGHT}} HUB. All Rights reserved.\n							</td>\n						</tr>\n					</table>\n				\n				</td>\n			</tr>\n		</table>\n	</body>\n</html>	', '', '', '', '', 0);";
+            // insert default templates
+            $htmlTemplate = '<html>\n'
+                . '	<head>\n'
+                . '		<title>{{TITLE}}</title>\n'
+                . '	</head>\n'
+                . '	<body>\n'
+                . '		<table width="100%" border="0" cellspacing="0">\n'
+                . '			<tr>\n'
+                . '				<td align="center">\n'
+                . '					\n'
+                . '					<table width="700" border="0" cellpadding="20" cellspacing="0">\n'
+                . '						<tr class="display-browser">\n'
+                . '							<td colspan="2" style="font-size:10px;padding:0 0 5px 0;" align="center">\n'
+                . '								Email not displaying correctly? '
+                . '<a href="{{LINK}}">View in a Web Browser</a>\n'
+                . '							</td>\n'
+                . '						</tr>\n'
+                . '						<tr>\n'
+                . '							<td colspan="2" style="background:#000000;">\n'
+                . '								<h1 style="color:#FFFFFF;">HUB Campaign Template</h1>\n'
+                . '								<h3 style="color:#888888;">{{TITLE}}</h3>\n'
+                . '							</td>\n'
+                . '						<tr>\n'
+                . '							<td width="500" valign="top" '
+                . 'style="font-size:14px;color:#222222;border-left:1px solid #000000;">\n'
+                . '								<span style="display:block;color:#CCCCCC;margin-bottom:20px;">'
+                . 'Issue {{ISSUE}}</span>\n'
+                . '								{{PRIMARY_STORIES}}\n'
+                . '							</td>\n'
+                . '							<td width="200" valign="top" '
+                . 'style="font-size:12px;color:#555555;border-left:1px solid #AAAAAA;'
+                . 'border-right:1px solid #000000;">\n'
+                . '								{{SECONDARY_STORIES}}\n'
+                . '							</td>\n'
+                . '						</tr>\n'
+                . '						<tr>\n'
+                . '							<td colspan="2" align="center" style="background:#000000;color:#FFFFFF;">\n'
+                . '								Copyright &copy; {{COPYRIGHT}} HUB. All Rights reserved.\n'
+                . '							</td>\n'
+                . '						</tr>\n'
+                . '					</table>\n'
+                . '				\n'
+                . '				</td>\n'
+                . '			</tr>\n'
+                . '		</table>\n'
+                . '	</body>\n'
+                . '</html>	';
 
-			$query .= "INSERT INTO `#__newsletter_templates` (`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, `secondary_title_color`, `secondary_text_color`, `deleted`)
-				       VALUES
-					(0, 'Default Plain Text Email Template', 'View In Browser - {{LINK}}\n=====================================\n{{TITLE}} - {{ISSUE}}\n=====================================\n\n{{PRIMARY_STORIES}}\n\n--------------------------------------------------\n\n{{SECONDARY_STORIES}}\n\n--------------------------------------------------\n\nUnsubscribe - {{UNSUBSCRIBE_LINK}}\nCopyright - {{COPYRIGHT}}', NULL, NULL, NULL, NULL, 0);";
+            $query = "INSERT INTO `#__newsletter_templates` "
+                . "(`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, "
+                . "`secondary_title_color`, `secondary_text_color`, `deleted`) "
+                . "VALUES (0, 'Default HTML Email Template', "
+                . $this->db->quote($htmlTemplate) . ", '', '', '', '', 0);";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			//add newsletter cron jobs
-			$query = "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
-						SELECT 'Process Newsletter Mailings', 0, 'newsletter', 'processMailings', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, 'newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n\n'
-						FROM DUAL WHERE NOT EXISTS (SELECT `title` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Mailings');";
+            $plainTemplate = 'View In Browser - {{LINK}}\n'
+                . '=====================================\n'
+                . '{{TITLE}} - {{ISSUE}}\n'
+                . '=====================================\n'
+                . '\n'
+                . '{{PRIMARY_STORIES}}\n'
+                . '\n'
+                . '--------------------------------------------------\n'
+                . '\n'
+                . '{{SECONDARY_STORIES}}\n'
+                . '\n'
+                . '--------------------------------------------------\n'
+                . '\n'
+                . 'Unsubscribe - {{UNSUBSCRIBE_LINK}}\n'
+                . 'Copyright - {{COPYRIGHT}}';
 
-			$query .= "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
-						SELECT 'Process Newsletter Opens & Click IP Addresses', 0, 'newsletter', 'processIps', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', '2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, ''
-						FROM DUAL WHERE NOT EXISTS (SELECT `title` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Opens & Click IP Addresses');";
+            $query = "INSERT INTO `#__newsletter_templates` "
+                . "(`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, "
+                . "`secondary_title_color`, `secondary_text_color`, `deleted`) "
+                . "VALUES (0, 'Default Plain Text Email Template', "
+                . $this->db->quote($plainTemplate) . ", NULL, NULL, NULL, NULL, 0);";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
 
-		if (!$this->db->tableExists('#__newsletter_primary_story'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__newsletter_primary_story` (
+            // add newsletter cron jobs
+            $params1 = 'newsletter_queue_limit=2\n'
+                . 'support_ticketreminder_severity=all\n'
+                . 'support_ticketreminder_group=\n\n';
+
+            $query = "INSERT INTO `#__cron_jobs` "
+                . "(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, "
+                . "`created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) "
+                . "SELECT 'Process Newsletter Mailings', 0, 'newsletter', 'processMailings', "
+                . "'0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', "
+                . "'2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, "
+                . $this->db->quote($params1) . " "
+                . "FROM DUAL WHERE NOT EXISTS "
+                . "(SELECT `title` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Mailings');";
+
+            $this->db->setQuery($query);
+            $this->db->query();
+
+            $query = "INSERT INTO `#__cron_jobs` "
+                . "(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, "
+                . "`created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) "
+                . "SELECT 'Process Newsletter Opens & Click IP Addresses', 0, 'newsletter', 'processIps', "
+                . "'0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', "
+                . "'2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, '' "
+                . "FROM DUAL WHERE NOT EXISTS "
+                . "(SELECT `title` FROM `#__cron_jobs` "
+                . "WHERE `title` = 'Process Newsletter Opens & Click IP Addresses');";
+
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+
+        if (!$this->db->tableExists('#__newsletter_primary_story')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_primary_story` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `nid` int(11) NOT NULL,
 					  `title` varchar(150) DEFAULT NULL,
@@ -108,13 +200,12 @@ class Migration20130716202127ComNewsletter extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_secondary_story'))
-		{
-			$query= "CREATE TABLE IF NOT EXISTS `#__newsletter_secondary_story` (
+        if (!$this->db->tableExists('#__newsletter_secondary_story')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_secondary_story` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `nid` int(11) NOT NULL,
 					  `title` varchar(150) DEFAULT NULL,
@@ -126,13 +217,12 @@ class Migration20130716202127ComNewsletter extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_mailings'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailings` (
+        if (!$this->db->tableExists('#__newsletter_mailings')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailings` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `nid` int(11) DEFAULT NULL,
 					  `lid` int(11) DEFAULT NULL,
@@ -146,13 +236,12 @@ class Migration20130716202127ComNewsletter extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_mailinglists'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailinglists` (
+        if (!$this->db->tableExists('#__newsletter_mailinglists')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailinglists` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `name` varchar(150) DEFAULT NULL,
 					  `description` text,
@@ -161,13 +250,12 @@ class Migration20130716202127ComNewsletter extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_mailinglist_unsubscribes'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailinglist_unsubscribes` (
+        if (!$this->db->tableExists('#__newsletter_mailinglist_unsubscribes')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailinglist_unsubscribes` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `mid` int(11) DEFAULT NULL,
 					  `email` varchar(150) DEFAULT NULL,
@@ -175,13 +263,12 @@ class Migration20130716202127ComNewsletter extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_mailinglist_emails'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailinglist_emails` (
+        if (!$this->db->tableExists('#__newsletter_mailinglist_emails')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailinglist_emails` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `mid` int(11) DEFAULT NULL,
 					  `email` varchar(150) DEFAULT NULL,
@@ -192,13 +279,12 @@ class Migration20130716202127ComNewsletter extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_mailing_recipients'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailing_recipients` (
+        if (!$this->db->tableExists('#__newsletter_mailing_recipients')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailing_recipients` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `mid` int(11) DEFAULT NULL,
 					  `email` varchar(150) DEFAULT NULL,
@@ -208,13 +294,12 @@ class Migration20130716202127ComNewsletter extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__newsletter_mailing_emails_recipient_actions'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailing_recipient_actions` (
+        if (!$this->db->tableExists('#__newsletter_mailing_emails_recipient_actions')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailing_recipient_actions` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `mailingid` int(11) DEFAULT NULL,
 					  `action` varchar(100) DEFAULT NULL,
@@ -232,22 +317,22 @@ class Migration20130716202127ComNewsletter extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->addPluginEntry('cron', 'newsletter');
-	}
+        $this->addPluginEntry('cron', 'newsletter');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deleteComponentEntry('Newsletters');
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deleteComponentEntry('Newsletters');
 
-		// remove all newsletter tables
-		$query .= "
+        // remove all newsletter tables
+        $query .= "
 			DROP TABLE IF EXISTS `#__newsletters`;
 			DROP TABLE IF EXISTS `#__newsletter_templates`;
 			DROP TABLE IF EXISTS `#__newsletter_primary_story`;
@@ -259,16 +344,15 @@ class Migration20130716202127ComNewsletter extends Base
 			DROP TABLE IF EXISTS `#__newsletter_mailing_recipients`;
 			DROP TABLE IF EXISTS `#__newsletter_mailing_recipient_actions`;";
 
-		//remove newsletter cron jobs
-		$query .= "DELETE FROM `#__cron_jobs` WHERE `title`='Process Newsletter Mailings';";
-		$query .= "DELETE FROM `#__cron_jobs` WHERE `title`='Process Newsletter Opens & Click IP Addresses';";
+        //remove newsletter cron jobs
+        $query .= "DELETE FROM `#__cron_jobs` WHERE `title`='Process Newsletter Mailings';";
+        $query .= "DELETE FROM `#__cron_jobs` WHERE `title`='Process Newsletter Opens & Click IP Addresses';";
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->deletePluginEntry('cron', 'newsletter');
-	}
+        $this->deletePluginEntry('cron', 'newsletter');
+    }
 }

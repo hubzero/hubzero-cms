@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,17 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to add #__cart_downloads table
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20160620151602ComCart extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__cart_downloads'))
-		{
-			$query = "CREATE TABLE `#__cart_downloads` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__cart_downloads')) {
+            $query = "CREATE TABLE `#__cart_downloads` (
 			  `dId` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `uId` int(11) DEFAULT NULL,
 			  `sId` int(11) DEFAULT NULL,
@@ -33,22 +36,21 @@ class Migration20160620151602ComCart extends Base
 			  KEY `idx_uId` (`uId`),
 			  KEY `idx_sId` (`sId`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__cart_downloads'))
-		{
-			$query = "DROP TABLE `#__cart_downloads`";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__cart_downloads')) {
+            $query = "DROP TABLE `#__cart_downloads`";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

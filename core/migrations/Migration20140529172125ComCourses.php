@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,33 +15,34 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for making sure manual grade entries are of the proper type and subtype
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20140529172125ComCourses extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// Get the problem assets
-		$query =  "SELECT ca.id FROM `#__courses_assets` ca ";
-		$query .= "LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id ";
-		$query .= "LEFT JOIN `#__courses_forms` cf ON ca.id = cf.asset_id ";
-		$query .= "WHERE caa.id IS NULL ";
-		$query .= "AND cf.id IS NULL ";
-		$query .= "AND `type`='form'";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // Get the problem assets
+        $query =  "SELECT ca.id FROM `#__courses_assets` ca ";
+        $query .= "LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id ";
+        $query .= "LEFT JOIN `#__courses_forms` cf ON ca.id = cf.asset_id ";
+        $query .= "WHERE caa.id IS NULL ";
+        $query .= "AND cf.id IS NULL ";
+        $query .= "AND `type`='form'";
 
-		$this->db->setQuery($query);
-		$results = $this->db->loadObjectList();
+        $this->db->setQuery($query);
+        $results = $this->db->loadObjectList();
 
-		if ($results && count($results) > 0)
-		{
-			foreach ($results as $result)
-			{
-				$query = "UPDATE `#__courses_assets` SET `type` = 'gradebook', `subtype` = 'auxiliary' WHERE `id` = '{$result->id}'";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+        if ($results && count($results) > 0) {
+            foreach ($results as $result) {
+                $query = "UPDATE `#__courses_assets` SET `type` = 'gradebook', `subtype` = 'auxiliary' "
+                    . "WHERE `id` = '{$result->id}'";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

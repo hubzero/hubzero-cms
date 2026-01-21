@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +15,23 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for getting rid of duplicate section date entries
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20140314080012PlgSupportPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('support', 'publications');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('support', 'publications');
+    }
 
-	/**
-	 * Up
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('support', 'publications');
-	}
+    /**
+     * Up
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('support', 'publications');
+    }
 }

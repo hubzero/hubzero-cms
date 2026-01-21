@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,77 +15,75 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updating Discover page contents
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20150902104232ComContent extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__content'))
-		{
-			$query = "SELECT * FROM `#__content` WHERE `alias` = 'discover' LIMIT 1";
-			$this->db->setQuery($query);
-			$row = $this->db->loadObject();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__content')) {
+            $query = "SELECT * FROM `#__content` WHERE `alias` = 'discover' LIMIT 1";
+            $this->db->setQuery($query);
+            $row = $this->db->loadObject();
 
-			if ($row && $row->id)
-			{
-				$old = $this->previous;
+            if ($row && $row->id) {
+                $old = $this->previous;
 
-				$olddespaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $old);
-				$olddespaced = trim($olddespaced);
+                $olddespaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $old);
+                $olddespaced = trim($olddespaced);
 
-				$despaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $row->introtext);
-				$despaced = trim($despaced);
+                $despaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $row->introtext);
+                $despaced = trim($despaced);
 
-				if ($row->introtext == $old || $despaced == $olddespaced)
-				{
-					$query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->updated) . " WHERE `id`=" . $this->db->quote($row->id);
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
-		}
-	}
+                if ($row->introtext == $old || $despaced == $olddespaced) {
+                    $query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->updated)
+                        . " WHERE `id`=" . $this->db->quote($row->id);
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__content'))
-		{
-			$query = "SELECT * FROM `#__content` WHERE `alias` = 'discover' LIMIT 1";
-			$this->db->setQuery($query);
-			$row = $this->db->loadObject();
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__content')) {
+            $query = "SELECT * FROM `#__content` WHERE `alias` = 'discover' LIMIT 1";
+            $this->db->setQuery($query);
+            $row = $this->db->loadObject();
 
-			if ($row && $row->id)
-			{
-				$old = $this->updated;
+            if ($row && $row->id) {
+                $old = $this->updated;
 
-				$olddespaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $old);
-				$olddespaced = trim($olddespaced);
+                $olddespaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $old);
+                $olddespaced = trim($olddespaced);
 
-				$despaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $row->introtext);
-				$despaced = trim($despaced);
+                $despaced = str_replace(array('\r', '\n', '\t', "\n", "\r", "\t"), '', $row->introtext);
+                $despaced = trim($despaced);
 
-				if ($row->introtext == $old || $despaced == $olddespaced)
-				{
-					$query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->previous) . " WHERE `id`=" . $this->db->quote($row->id);
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
-		}
-	}
+                if ($row->introtext == $old || $despaced == $olddespaced) {
+                    $query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->previous)
+                        . " WHERE `id`=" . $this->db->quote($row->id);
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
+        }
+    }
 
-	/**
-	 * Previous Discover page content
-	 *
-	 * @var  string
-	 */
-	public $previous = '{xhub:include type="stylesheet" filename="pages/discover.css"}
+    /**
+     * Previous Discover page content
+     *
+     * @var  string
+     */
+    public $previous = '{xhub:include type="stylesheet" filename="pages/discover.css"}
 
 <div class="grid">
 	<div class="col span-quarter">
@@ -143,7 +144,8 @@ class Migration20150902104232ComContent extends Base
 	<div class="col span-quarter">
 		<div class="tool">
 			<h3><a href="/tools">Tool Forge</a></h3>
-			<p>The <a href="/tools">development area</a> for simulation tools. Sign up and manage your own software project!</p>
+			<p>The <a href="/tools">development area</a> for simulation tools. '
+                . 'Sign up and manage your own software project!</p>
 		</div>
 	</div>
 	<div class="col span-quarter omega">
@@ -161,7 +163,8 @@ class Migration20150902104232ComContent extends Base
 	<div class="col span-quarter">
 		<div class="event">
 			<h3><a href="/events">Events</a></h3>
-			<p>Find information about the many upcoming <a href="/events">public meetings and scientific symposia</a>.</p>
+			<p>Find information about the many upcoming '
+                . '<a href="/events">public meetings and scientific symposia</a>.</p>
 		</div>
 	</div>
 	<div class="col span-quarter">
@@ -178,12 +181,12 @@ class Migration20150902104232ComContent extends Base
 	</div>
 </div>';
 
-	/**
-	 * PUpdated Discover page content
-	 *
-	 * @var  string
-	 */
-	public $updated = '{xhub:include type="stylesheet" filename="pages/discover.css"}
+    /**
+     * PUpdated Discover page content
+     *
+     * @var  string
+     */
+    public $updated = '{xhub:include type="stylesheet" filename="pages/discover.css"}
 
 <section class="odd">
 	<h2>Do More</h2>
@@ -249,14 +252,16 @@ class Migration20150902104232ComContent extends Base
 		<div class="col span4">
 			<div class="block block-tools">
 				<h3><a href="/tools">Tool Forge</a></h3>
-				<p>The <a href="/tools">development area</a> for simulation tools. Sign up and manage your own software project!</p>
+				<p>The <a href="/tools">development area</a> for simulation tools. '
+                    . 'Sign up and manage your own software project!</p>
 			</div>
 		</div>
 
 		<div class="col span4 omega">
 			<div class="block block-store">
 				<h3><a href="/store">Store</a></h3>
-				<p><a href="/store">Purchase items</a> such as t-shirts using points you earn by helping out.</p>
+				<p><a href="/store">Purchase items</a> such as t-shirts '
+                    . 'using points you earn by helping out.</p>
 			</div>
 		</div>
 	</div>
@@ -269,14 +274,16 @@ class Migration20150902104232ComContent extends Base
 		<div class="col span4">
 			<div class="block block-events">
 				<h3><a href="/events">Events</a></h3>
-				<p>Find information about the many upcoming <a href="/events">public meetings and scientific symposia</a>.</p>
+				<p>Find information about the many upcoming '
+                    . '<a href="/events">public meetings and scientific symposia</a>.</p>
 			</div>
 		</div>
 
 		<div class="col span4">
 			<div class="block block-whatsnew">
 				<h3><a href="/whatsnew">What&#39;s New</a></h3>
-				<p>Find the latest content posted on the site with our <a href="/whatsnew">What&#39;s New</a> section.</p>
+				<p>Find the latest content posted on the site '
+                    . 'with our <a href="/whatsnew">What&#39;s New</a> section.</p>
 			</div>
 		</div>
 

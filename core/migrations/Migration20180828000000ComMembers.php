@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,67 +15,65 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing duplicate extended profile entries
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20180828000000ComMembers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__user_profiles'))
-		{
-			$query = "SELECT user_id, profile_key, profile_value, count(*) AS no_of_records, group_concat(id) AS duplicates
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__user_profiles')) {
+            $query = "SELECT user_id, profile_key, profile_value, count(*) AS no_of_records, "
+                . "group_concat(id) AS duplicates
 				FROM `#__user_profiles`
 				GROUP BY user_id, profile_key, profile_value
 				HAVING count(*) > 1
 				ORDER BY user_id ASC, profile_key ASC;";
-			$this->db->setQuery($query);
-			$rows = $this->db->loadObjectList();
+            $this->db->setQuery($query);
+            $rows = $this->db->loadObjectList();
 
-			$delete = array();
+            $delete = array();
 
-			foreach ($rows as $i => $row)
-			{
-				$dupes = explode(',', $row->duplicates);
+            foreach ($rows as $i => $row) {
+                $dupes = explode(',', $row->duplicates);
 
-				if (empty($dupes) || count($dupes) < 2)
-				{
-					unset($rows[$i]);
-					continue;
-				}
+                if (empty($dupes) || count($dupes) < 2) {
+                    unset($rows[$i]);
+                    continue;
+                }
 
-				$dupes = array_map('intval', $dupes);
+                $dupes = array_map('intval', $dupes);
 
-				// Sort lowest to highest
-				sort($dupes);
+                // Sort lowest to highest
+                sort($dupes);
 
-				// Discard the first (original/oldest record)
-				$first = array_shift($dupes);
+                // Discard the first (original/oldest record)
+                $first = array_shift($dupes);
 
-				// Add the other entries to the list ot delete
-				foreach ($dupes as $dupe)
-				{
-					$delete[] = $dupe;
-				}
+                // Add the other entries to the list ot delete
+                foreach ($dupes as $dupe) {
+                    $delete[] = $dupe;
+                }
 
-				unset($rows[$i]);
-			}
+                unset($rows[$i]);
+            }
 
-			if (!empty($delete))
-			{
-				$query = "DELETE FROM `#__user_profiles` WHERE `id` IN (" . implode(',', $delete) . ");";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if (!empty($delete)) {
+                $query = "DELETE FROM `#__user_profiles` WHERE `id` IN (" . implode(',', $delete) . ");";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		// Nothing here
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        // Nothing here
+    }
 }

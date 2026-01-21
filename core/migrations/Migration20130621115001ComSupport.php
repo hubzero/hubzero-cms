@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,96 +15,86 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for fixing wrong datatype on column
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20130621115001ComSupport extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "";
 
-		if (!$this->db->tableHasField('#__abuse_reports', 'reviewed'))
-		{
-			$query = "ALTER TABLE `#__abuse_reports` ADD `reviewed` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
-		}
+        if (!$this->db->tableHasField('#__abuse_reports', 'reviewed')) {
+            $query = "ALTER TABLE `#__abuse_reports` ADD `reviewed` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$query = "";
+        $query = "";
 
-		if (!$this->db->tableHasField('#__abuse_reports', 'reviewed_by'))
-		{
-			$query = "ALTER TABLE `#__abuse_reports` ADD `reviewed_by` INT(11)  NOT NULL  DEFAULT '0';";
-		}
+        if (!$this->db->tableHasField('#__abuse_reports', 'reviewed_by')) {
+            $query = "ALTER TABLE `#__abuse_reports` ADD `reviewed_by` INT(11)  NOT NULL  DEFAULT '0';";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$query = "";
+        $query = "";
 
-		if (!$this->db->tableHasField('#__abuse_reports', 'note'))
-		{
-			$query = "ALTER TABLE `#__abuse_reports` ADD `note` TEXT  NOT NULL;";
-		}
+        if (!$this->db->tableHasField('#__abuse_reports', 'note')) {
+            $query = "ALTER TABLE `#__abuse_reports` ADD `note` TEXT  NOT NULL;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "";
 
-		if ($this->db->tableHasField('#__abuse_reports', 'reviewed'))
-		{
-			$query .= "ALTER TABLE `#__abuse_reports` DROP `reviewed`;";
-		}
+        if ($this->db->tableHasField('#__abuse_reports', 'reviewed')) {
+            $query .= "ALTER TABLE `#__abuse_reports` DROP `reviewed`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$query = "";
+        $query = "";
 
-		if ($this->db->tableHasField('#__abuse_reports', 'reviewed_by'))
-		{
-			$query .= "ALTER TABLE `#__abuse_reports` DROP `reviewed_by`;";
-		}
+        if ($this->db->tableHasField('#__abuse_reports', 'reviewed_by')) {
+            $query .= "ALTER TABLE `#__abuse_reports` DROP `reviewed_by`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$query = "";
+        $query = "";
 
-		if ($this->db->tableHasField('#__abuse_reports', 'note'))
-		{
-			$query .= "ALTER TABLE `#__abuse_reports` DROP `note`;";
-		}
+        if ($this->db->tableHasField('#__abuse_reports', 'note')) {
+            $query .= "ALTER TABLE `#__abuse_reports` DROP `note`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

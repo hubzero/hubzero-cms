@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,34 +15,106 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for changing the default database driver
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20150330124145Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// Update configuration, replacing mysql with pdo
-		$configuration = file_get_contents(PATH_ROOT . DS . 'configuration.php');
-		$configuration = preg_replace('/(var \$dbtype[\s]*=[\s]*[\'"]*)mysql([\'"]*)/', '$1pdo$2', $configuration);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // Try old Joomla-style configuration.php format
+        $this->updateOldConfigFormat();
 
-		// The configuration file typically doesn't even give write permissions to the owner
-		// Change that and then write it out
-		$permissions = substr(decoct(fileperms(PATH_ROOT . DS . 'configuration.php')), 2);
+        // Try new app/config/database.php format
+        $this->updateNewConfigFormat();
+    }
 
-		if (substr($permissions, 1, 1) != '6')
-		{
-			\App::get('filesystem')->setPermissions(PATH_ROOT . DS . 'configuration.php', substr_replace($permissions, '6', 1, 1));
-		}
+    /**
+     * Update old Joomla-style configuration.php format
+     *
+     * @return void
+     **/
+    private function updateOldConfigFormat()
+    {
+        $configFile = PATH_ROOT . DS . 'configuration.php';
 
-		if (!file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration))
-		{
-			$this->setError('Unable to write out new configuration file: permission denied', 'warning');
-			return false;
-		}
+        // Skip if configuration.php doesn't exist or is empty
+        if (!file_exists($configFile) || filesize($configFile) === 0) {
+            return;
+        }
 
-		// Change permissions back to what they were before
-		\App::get('filesystem')->setPermissions(PATH_ROOT . DS . 'configuration.php', $permissions);
-	}
+        $configuration = file_get_contents($configFile);
+
+        // Skip if not using the old Joomla-style class format
+        if (strpos($configuration, 'var $dbtype') === false) {
+            return;
+        }
+
+        // Skip if already using pdo
+        if (preg_match('/var \$dbtype[\s]*=[\s]*[\'"]pdo[\'"]/', $configuration)) {
+            return;
+        }
+
+        $configuration = preg_replace('/(var \$dbtype[\s]*=[\s]*[\'"]*)mysql([\'"]*)/', '$1pdo$2', $configuration);
+
+        // The configuration file typically doesn't even give write permissions to the owner
+        $permissions = substr(decoct(fileperms($configFile)), 2);
+
+        if (substr($permissions, 1, 1) != '6') {
+            \App::get('filesystem')->setPermissions(
+                $configFile,
+                substr_replace($permissions, '6', 1, 1)
+            );
+        }
+
+        if (!file_put_contents($configFile, $configuration)) {
+            $this->setError('Unable to write configuration.php: permission denied', 'warning');
+            return;
+        }
+
+        // Change permissions back to what they were before
+        \App::get('filesystem')->setPermissions($configFile, $permissions);
+    }
+
+    /**
+     * Update new app/config/database.php format
+     *
+     * @return void
+     **/
+    private function updateNewConfigFormat()
+    {
+        $configFile = PATH_APP . DS . 'config' . DS . 'database.php';
+
+        // Skip if database.php doesn't exist
+        if (!file_exists($configFile)) {
+            return;
+        }
+
+        $configuration = file_get_contents($configFile);
+
+        // Skip if not using array format with dbtype
+        if (strpos($configuration, "'dbtype'") === false && strpos($configuration, '"dbtype"') === false) {
+            return;
+        }
+
+        // Skip if already using pdo
+        if (preg_match('/[\'"]dbtype[\'"]\s*=>\s*[\'"]pdo[\'"]/', $configuration)) {
+            return;
+        }
+
+        // Replace mysql with pdo in array format
+        $configuration = preg_replace(
+            '/([\'"]dbtype[\'"]\s*=>\s*[\'"])mysql([\'"])/',
+            '$1pdo$2',
+            $configuration
+        );
+
+        if (!file_put_contents($configFile, $configuration)) {
+            $this->setError('Unable to write app/config/database.php: permission denied', 'warning');
+            return;
+        }
+    }
 }

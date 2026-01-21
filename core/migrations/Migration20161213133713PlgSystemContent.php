@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,22 +10,24 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for enabling the system content plugin
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20161213133713PlgSystemContent extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('system', 'content');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('system', 'content');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->disablePlugin('system', 'content');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->disablePlugin('system', 'content');
+    }
 }

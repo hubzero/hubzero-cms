@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,20 +15,22 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for setting the com_update asset rules to only allow supers
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20141105142938ComUpdate extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$rules = array(
-			'core.admin' => array(
-				'Super Users' => 1
-			)
-		);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $rules = array(
+            'core.admin' => array(
+                'Super Users' => 1
+            )
+        );
 
-		$this->setAssetRules('com_update', $rules);
-	}
+        $this->setAssetRules('com_update', $rules);
+    }
 }

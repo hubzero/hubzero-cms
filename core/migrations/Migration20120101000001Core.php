@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,27 +15,26 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for 2011/12 create table statements
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20120101000001Core extends Base
 {
-	public function up()
-	{
-		if (!$this->db->tableExists('#__author_role_types'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__author_role_types` (
+    public function up()
+    {
+        if (!$this->db->tableExists('#__author_role_types')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__author_role_types` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `role_id` INT(11) NOT NULL DEFAULT '0' ,
 				  `type_id` INT(11) NOT NULL DEFAULT '0' ,
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__author_roles'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__author_roles` (
+        if (!$this->db->tableExists('#__author_roles')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__author_roles` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `title` VARCHAR(255) NULL DEFAULT NULL ,
 				  `alias` VARCHAR(255) NULL DEFAULT NULL ,
@@ -44,25 +46,23 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__billboard_collection'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__billboard_collection` (
+        if (!$this->db->tableExists('#__billboard_collection')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__billboard_collection` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `name` VARCHAR(255) NULL DEFAULT NULL ,
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__billboards'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__billboards` (
+        if (!$this->db->tableExists('#__billboards')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__billboards` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `collection_id` INT(11) NULL DEFAULT NULL ,
 				  `name` VARCHAR(255) NULL DEFAULT NULL ,
@@ -83,39 +83,36 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_sponsors'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__citations_sponsors` (
+        if (!$this->db->tableExists('#__citations_sponsors')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__citations_sponsors` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `sponsor` VARCHAR(150) NULL DEFAULT NULL ,
 				  `link` VARCHAR(200) NULL DEFAULT NULL ,
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_sponsors_assoc'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__citations_sponsors_assoc` (
+        if (!$this->db->tableExists('#__citations_sponsors_assoc')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__citations_sponsors_assoc` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `cid` INT(11) NULL DEFAULT NULL ,
 				  `sid` INT(11) NULL DEFAULT NULL ,
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__citations_types'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__citations_types` (
+        if (!$this->db->tableExists('#__citations_types')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__citations_types` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `type` VARCHAR(255) NULL DEFAULT NULL ,
 				  `type_title` VARCHAR(255) NULL DEFAULT NULL ,
@@ -125,28 +122,27 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__document_resource_rel'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__document_resource_rel` (
+        if (!$this->db->tableExists('#__document_resource_rel')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__document_resource_rel` (
 				  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `document_id` INT(11) NOT NULL ,
 				  `resource_id` INT(11) NOT NULL ,
 				  PRIMARY KEY (`id`) ,
 				  UNIQUE INDEX `id` (`id` ASC) ,
-				  UNIQUE INDEX `jos_document_resource_rel_document_id_resource_id_uidx` (`document_id` ASC, `resource_id` ASC) )
+				  UNIQUE INDEX `jos_document_resource_rel_document_id_resource_id_uidx` (`document_id` ASC,
+				  `resource_id` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__document_text_data'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__document_text_data` (
+        if (!$this->db->tableExists('#__document_text_data')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__document_text_data` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `body` TEXT NULL DEFAULT NULL ,
 				  `hash` CHAR(40) NOT NULL ,
@@ -155,13 +151,12 @@ class Migration20120101000001Core extends Base
 				  FULLTEXT INDEX `jos_document_text_data_body_ftidx` (`body` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__focus_area_resource_type_rel'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__focus_area_resource_type_rel` (
+        if (!$this->db->tableExists('#__focus_area_resource_type_rel')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__focus_area_resource_type_rel` (
 				  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `focus_area_id` INT(11) NOT NULL ,
 				  `resource_type_id` INT(11) NOT NULL ,
@@ -169,13 +164,12 @@ class Migration20120101000001Core extends Base
 				  UNIQUE INDEX `id` (`id` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__focus_areas'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__focus_areas` (
+        if (!$this->db->tableExists('#__focus_areas')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__focus_areas` (
 				  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `tag_id` INT(11) NOT NULL ,
 				  `mandatory_depth` INT(11) NULL DEFAULT NULL ,
@@ -184,13 +178,12 @@ class Migration20120101000001Core extends Base
 				  UNIQUE INDEX `id` (`id` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__forum_attachments'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__forum_attachments` (
+        if (!$this->db->tableExists('#__forum_attachments')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__forum_attachments` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `parent` INT(11) NOT NULL DEFAULT '0' ,
 				  `post_id` INT(11) NOT NULL DEFAULT '0' ,
@@ -199,13 +192,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__forum_categories'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__forum_categories` (
+        if (!$this->db->tableExists('#__forum_categories')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__forum_categories` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `title` VARCHAR(255) NULL DEFAULT NULL ,
 				  `alias` VARCHAR(255) NULL DEFAULT NULL ,
@@ -223,13 +215,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__forum_posts'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__forum_posts` (
+        if (!$this->db->tableExists('#__forum_posts')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__forum_posts` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `category_id` INT(11) NOT NULL DEFAULT '0' ,
 				  `title` VARCHAR(255) NULL DEFAULT NULL ,
@@ -252,13 +243,12 @@ class Migration20120101000001Core extends Base
 				  FULLTEXT INDEX `comment_title_fidx` (`comment` ASC, `title` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__forum_sections'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__forum_sections` (
+        if (!$this->db->tableExists('#__forum_sections')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__forum_sections` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `title` VARCHAR(255) NULL DEFAULT NULL ,
 				  `alias` VARCHAR(255) NULL DEFAULT NULL ,
@@ -271,13 +261,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__incremental_registration_group_label_rel'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__incremental_registration_group_label_rel` (
+        if (!$this->db->tableExists('#__incremental_registration_group_label_rel')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__incremental_registration_group_label_rel` (
 				  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `group_id` INT(11) NOT NULL ,
 				  `label_id` INT(11) NOT NULL ,
@@ -285,26 +274,24 @@ class Migration20120101000001Core extends Base
 				  UNIQUE INDEX `id` (`id` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__incremental_registration_groups'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__incremental_registration_groups` (
+        if (!$this->db->tableExists('#__incremental_registration_groups')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__incremental_registration_groups` (
 				  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `hours` INT(11) NOT NULL ,
 				  PRIMARY KEY (`id`) ,
 				  UNIQUE INDEX `id` (`id` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__incremental_registration_labels'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__incremental_registration_labels` (
+        if (!$this->db->tableExists('#__incremental_registration_labels')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__incremental_registration_labels` (
 				  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `field` VARCHAR(50) NOT NULL ,
 				  `label` VARCHAR(100) NOT NULL ,
@@ -312,37 +299,34 @@ class Migration20120101000001Core extends Base
 				  UNIQUE INDEX `id` (`id` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__incremental_registration_options'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__incremental_registration_options` (
+        if (!$this->db->tableExists('#__incremental_registration_options')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__incremental_registration_options` (
 				  `added` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
 				  `popover_text` TEXT NOT NULL ,
 				  `award_per` INT(11) NOT NULL ,
 				  `test_group` INT(11) NOT NULL )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__incremental_registration_popover_recurrence'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__incremental_registration_popover_recurrence` (
+        if (!$this->db->tableExists('#__incremental_registration_popover_recurrence')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__incremental_registration_popover_recurrence` (
 				  `idx` INT(11) NOT NULL ,
 				  `hours` INT(11) NOT NULL )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__metrics_ipgeo_cache'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__metrics_ipgeo_cache` (
+        if (!$this->db->tableExists('#__metrics_ipgeo_cache')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__metrics_ipgeo_cache` (
 				  `ip` INT(10) NOT NULL DEFAULT '0' ,
 				  `countrySHORT` CHAR(2) NOT NULL DEFAULT '' ,
 				  `countryLONG` VARCHAR(64) NOT NULL DEFAULT '' ,
@@ -355,13 +339,12 @@ class Migration20120101000001Core extends Base
 				  INDEX `lookup_datetime` (`lookup_datetime` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__oauthp_consumers'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__oauthp_consumers` (
+        if (!$this->db->tableExists('#__oauthp_consumers')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__oauthp_consumers` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `state` TINYINT(4) NOT NULL ,
 				  `token` VARCHAR(250) NOT NULL ,
@@ -372,13 +355,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__oauthp_nonces'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__oauthp_nonces` (
+        if (!$this->db->tableExists('#__oauthp_nonces')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__oauthp_nonces` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `nonce` VARCHAR(250) NOT NULL ,
 				  `stamp` INT(11) NOT NULL ,
@@ -387,13 +369,12 @@ class Migration20120101000001Core extends Base
 				  UNIQUE INDEX `unonce` (`nonce` ASC, `stamp` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__oauthp_tokens'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__oauthp_tokens` (
+        if (!$this->db->tableExists('#__oauthp_tokens')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__oauthp_tokens` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `consumer_id` INT(11) NOT NULL ,
 				  `user_id` INT(11) NOT NULL ,
@@ -406,13 +387,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__profile_completion_awards'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__profile_completion_awards` (
+        if (!$this->db->tableExists('#__profile_completion_awards')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__profile_completion_awards` (
 				  `user_id` INT(11) NOT NULL ,
 				  `name` TINYINT(4) NOT NULL DEFAULT '0' ,
 				  `orgtype` TINYINT(4) NOT NULL DEFAULT '0' ,
@@ -434,13 +414,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`user_id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__recommendation'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__recommendation` (
+        if (!$this->db->tableExists('#__recommendation')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__recommendation` (
 				  `fromID` INT(11) NOT NULL ,
 				  `toID` INT(11) NOT NULL ,
 				  `contentScore` FLOAT(10) UNSIGNED ZEROFILL NULL DEFAULT NULL ,
@@ -450,13 +429,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`fromID`, `toID`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_licenses'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__resource_licenses` (
+        if (!$this->db->tableExists('#__resource_licenses')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__resource_licenses` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `name` VARCHAR(100) NULL DEFAULT NULL ,
 				  `text` TEXT NULL DEFAULT NULL ,
@@ -471,13 +449,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_sponsors'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__resource_sponsors` (
+        if (!$this->db->tableExists('#__resource_sponsors')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__resource_sponsors` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `alias` VARCHAR(255) NULL DEFAULT NULL ,
 				  `title` VARCHAR(255) NULL DEFAULT NULL ,
@@ -490,13 +467,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__resource_stats_clusters'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__resource_stats_clusters` (
+        if (!$this->db->tableExists('#__resource_stats_clusters')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__resource_stats_clusters` (
 				  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `cluster` VARCHAR(255) NOT NULL DEFAULT '' ,
 				  `username` VARCHAR(32) NOT NULL DEFAULT '' ,
@@ -520,13 +496,12 @@ class Migration20120101000001Core extends Base
 				  INDEX `institution` (`institution` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__session_geo'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__session_geo` (
+        if (!$this->db->tableExists('#__session_geo')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__session_geo` (
 				  `session_id` VARCHAR(200) NOT NULL DEFAULT '0' ,
 				  `username` VARCHAR(150) NULL DEFAULT '' ,
 				  `time` VARCHAR(14) NULL DEFAULT '' ,
@@ -549,13 +524,12 @@ class Migration20120101000001Core extends Base
 				  INDEX `ip` (`ip` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__session_log'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__session_log` (
+        if (!$this->db->tableExists('#__session_log')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__session_log` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `clientid` TINYINT(4) NULL DEFAULT NULL ,
 				  `session_id` CHAR(64) NULL DEFAULT NULL ,
@@ -570,13 +544,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__support_queries'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__support_queries` (
+        if (!$this->db->tableExists('#__support_queries')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__support_queries` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `title` VARCHAR(250) NULL DEFAULT NULL ,
 				  `conditions` TEXT NULL DEFAULT NULL ,
@@ -589,13 +562,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__tags_log'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__tags_log` (
+        if (!$this->db->tableExists('#__tags_log')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__tags_log` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `tag_id` INT(11) NOT NULL DEFAULT '0' ,
 				  `timestamp` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
@@ -606,13 +578,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__tags_substitute'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__tags_substitute` (
+        if (!$this->db->tableExists('#__tags_substitute')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__tags_substitute` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `tag_id` INT(11) NOT NULL DEFAULT '0' ,
 				  `tag` VARCHAR(100) NULL DEFAULT NULL ,
@@ -622,13 +593,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__user_roles'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__user_roles` (
+        if (!$this->db->tableExists('#__user_roles')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__user_roles` (
 				  `user_id` INT(11) NOT NULL ,
 				  `role` VARCHAR(20) NOT NULL ,
 				  `group_id` INT(11) NULL DEFAULT NULL ,
@@ -637,26 +607,24 @@ class Migration20120101000001Core extends Base
 				  UNIQUE INDEX `uidx_role_user_id_group_id` (`role` ASC, `user_id` ASC, `group_id` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wiki_page_author'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__wiki_page_author` (
+        if (!$this->db->tableExists('#__wiki_page_author')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__wiki_page_author` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `user_id` INT(11) NULL DEFAULT '0' ,
 				  `page_id` INT(11) NULL DEFAULT '0' ,
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__wiki_page_metrics'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__wiki_page_metrics` (
+        if (!$this->db->tableExists('#__wiki_page_metrics')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__wiki_page_metrics` (
 				  `pageid` INT(11) NOT NULL DEFAULT '0' ,
 				  `pagename` VARCHAR(100) NULL DEFAULT NULL ,
 				  `hits` INT(11) NOT NULL DEFAULT '0' ,
@@ -665,13 +633,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`pageid`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__xgroups_memberoption'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__xgroups_memberoption` (
+        if (!$this->db->tableExists('#__xgroups_memberoption')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__xgroups_memberoption` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `gidNumber` INT(11) NULL DEFAULT NULL ,
 				  `userid` INT(11) NULL DEFAULT NULL ,
@@ -680,13 +647,12 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__xgroups_pages_hits'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__xgroups_pages_hits` (
+        if (!$this->db->tableExists('#__xgroups_pages_hits')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__xgroups_pages_hits` (
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  `gid` INT(11) NULL DEFAULT NULL ,
 				  `pid` INT(11) NULL DEFAULT NULL ,
@@ -696,21 +662,20 @@ class Migration20120101000001Core extends Base
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__xorganization_types'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__xorganization_types` (
+        if (!$this->db->tableExists('#__xorganization_types')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__xorganization_types` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
 				  `type` VARCHAR(150) NULL DEFAULT NULL ,
 				  `title` VARCHAR(255) NULL DEFAULT NULL ,
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

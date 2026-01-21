@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,21 +15,23 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing unused flag from publication_licenses
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20150722090000ComPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__publication_licenses')
-			&& $this->db->tableHasField('#__publication_licenses', 'apps_only')
-		)
-		{
-			$query = "ALTER TABLE `#__publication_licenses` DROP COLUMN `apps_only`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (
+            $this->db->tableExists('#__publication_licenses')
+            && $this->db->tableHasField('#__publication_licenses', 'apps_only')
+        ) {
+            $query = "ALTER TABLE `#__publication_licenses` DROP COLUMN `apps_only`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

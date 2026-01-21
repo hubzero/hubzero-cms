@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,24 +15,26 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing Quickicon plugins
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20171109000000PlgQuickicon extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deletePluginEntry('quickicon', 'extensionupdate');
-		$this->deletePluginEntry('quickicon', 'joomlaupdate');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deletePluginEntry('quickicon', 'extensionupdate');
+        $this->deletePluginEntry('quickicon', 'joomlaupdate');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addPluginEntry('quickicon', 'extensionupdate');
-		$this->addPluginEntry('quickicon', 'joomlaupdate');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addPluginEntry('quickicon', 'extensionupdate');
+        $this->addPluginEntry('quickicon', 'joomlaupdate');
+    }
 }

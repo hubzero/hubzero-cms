@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,18 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding item_watch table
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20150518181100ComPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__item_watch'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__item_watch` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__item_watch')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__item_watch` (
 				  `id` int(11) NOT NULL AUTO_INCREMENT,
 				  `item_id` int(11) NOT NULL DEFAULT '0',
 				  `item_type` varchar(150) NOT NULL,
@@ -35,21 +39,20 @@ class Migration20150518181100ComPublications extends Base
 				  KEY `idx_item_type_item_id` (`item_type`,`item_id`),
 				  KEY `idx_created_by_email` (`created_by`, `email`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__item_watch'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__item_watch`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__item_watch')) {
+            $query = "DROP TABLE IF EXISTS `#__item_watch`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,20 +15,21 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for setting up publication building blocks
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20140519120000ComPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$queries = array();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $queries = array();
 
-		// Set up curation
-		if (!$this->db->tableExists('#__publication_curation_history'))
-		{
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_curation_history` (
+        // Set up curation
+        if (!$this->db->tableExists('#__publication_curation_history')) {
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_curation_history` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`publication_version_id` int(11) NOT NULL DEFAULT '0',
 				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -36,40 +40,35 @@ class Migration20140519120000ComPublications extends Base
 				`newstatus` int(11) NOT NULL DEFAULT '0',
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		}
+        }
 
-		// Run queries
-		if (count($queries) > 0)
-		{
-			// Run queries
-			foreach ($queries as $query)
-			{
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+        // Run queries
+        if (count($queries) > 0) {
+            // Run queries
+            foreach ($queries as $query) {
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$queries = array();
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $queries = array();
 
-		if ($this->db->tableExists('#__publication_curation_history'))
-		{
-			$queries[] = "DROP TABLE IF EXISTS `#__publication_curation_history`";
-		}
+        if ($this->db->tableExists('#__publication_curation_history')) {
+            $queries[] = "DROP TABLE IF EXISTS `#__publication_curation_history`";
+        }
 
-		if (count($queries) > 0)
-		{
-			// Run queries
-			foreach ($queries as $query)
-			{
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+        if (count($queries) > 0) {
+            // Run queries
+            foreach ($queries as $query) {
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,17 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding table for tracking recently visited groups
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20160419144221ComGroups extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__xgroups_recents'))
-		{
-			$query = "CREATE TABLE `#__xgroups_recents` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__xgroups_recents')) {
+            $query = "CREATE TABLE `#__xgroups_recents` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
 				  `group_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -31,21 +34,20 @@ class Migration20160419144221ComGroups extends Base
 				  KEY `idx_user_id` (`user_id`),
 				  KEY `idx_group_id` (`group_id`)
 				) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__xgroups_recents'))
-		{
-			$query = "DROP TABLE `#__xgroups_recents`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__xgroups_recents')) {
+            $query = "DROP TABLE `#__xgroups_recents`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,34 +15,34 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for installing newsfeeds tables
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20180412000000ComNewsfeeds extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deleteComponentEntry('newsfeeds');
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deleteComponentEntry('newsfeeds');
 
-		if ($this->db->tableExists('#__newsfeeds'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__newsfeeds`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__newsfeeds')) {
+            $query = "DROP TABLE IF EXISTS `#__newsfeeds`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addComponentEntry('newsfeeds');
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addComponentEntry('newsfeeds');
 
-		if (!$this->db->tableExists('#__newsfeeds'))
-		{
-			$query = "CREATE TABLE `#__newsfeeds` (
+        if (!$this->db->tableExists('#__newsfeeds')) {
+            $query = "CREATE TABLE `#__newsfeeds` (
 			  `catid` integer NOT NULL default '0',
 			  `id` integer(10) UNSIGNED NOT NULL auto_increment,
 			  `name`  varchar(100) NOT NULL DEFAULT '',
@@ -79,8 +82,8 @@ class Migration20180412000000ComNewsfeeds extends Base
 
 			)  DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

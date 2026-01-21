@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,43 +15,55 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing embedded default passwords and excess escaping
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20150828152832Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__extensions'))
-		{
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__extensions')) {
+            $query[] = 'UPDATE `#__extensions` SET manifest_cache = '
+                . 'REPLACE(manifest_cache, "2013 Open Source Matters", "2014 Open Source Matters") '
+                . 'WHERE extension_id < 10000;';
+            $query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "_HUB0_nW_", "") '
+                . 'WHERE type="component" AND element="com_system";';
+            $query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "hubzero_network", "") '
+                . 'WHERE type="component" AND element="com_system";';
+            $query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "hubzero.org", "") '
+                . 'WHERE type="component" AND element="com_system";';
+            $query[] = 'UPDATE `#__extensions` SET params = '
+                . 'REPLACE(params, "ABQIAAAAPq8QOefNUw20Lc6RX2gKqhQkcPnh--THxGDMaCLza-8u_rvH7hQmdZgwooOYuo'
+                . 'IkEqFAtrnkoY4ElA","") WHERE type="component" AND element="com_usage";';
+            $query[] = 'UPDATE `#__extensions` SET manifest_cache = "" '
+                . 'WHERE type="file" AND element="joomla";';
+            $query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, ":10,", ":\"10\",") '
+                . 'WHERE type="component" AND element="com_media";';
+            $query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "site\\\\/media", "site/media") '
+                . 'WHERE type="component" AND element="com_media" ;';
+            $query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "media\\\\/images", "media/images") '
+                . 'WHERE type="component" AND element="com_media";';
+            $query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "image\\\\/", "image/") '
+                . 'WHERE type="component" AND element="com_media";';
+            $query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "application\\\\/", "application/") '
+                . 'WHERE type="component" AND element="com_media";';
+            $query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "text\\\\/", "text/") '
+                . 'WHERE type="component" AND element="com_media";';
 
-			$query[] = 'UPDATE `#__extensions` SET manifest_cache = REPLACE(manifest_cache, "2013 Open Source Matters", "2014 Open Source Matters") WHERE extension_id < 10000;';
-			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "_HUB0_nW_", "") WHERE type="component" AND element="com_system";';
-			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "hubzero_network", "") WHERE type="component" AND element="com_system";';
-			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "hubzero.org", "") WHERE type="component" AND element="com_system";';
-			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "ABQIAAAAPq8QOefNUw20Lc6RX2gKqhQkcPnh--THxGDMaCLza-8u_rvH7hQmdZgwooOYuoIkEqFAtrnkoY4ElA","") WHERE type="component" AND element="com_usage";';
-			$query[] = 'UPDATE `#__extensions` SET manifest_cache = "" WHERE type="file" AND element="joomla";';
-			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, ":10,", ":\"10\",") WHERE type="component" AND element="com_media";';
-			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "site\\\\/media", "site/media") WHERE type="component" AND element="com_media" ;';
-			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "media\\\\/images", "media/images") WHERE type="component" AND element="com_media";';
-			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "image\\\\/", "image/") WHERE type="component" AND element="com_media";';
-			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "application\\\\/", "application/") WHERE type="component" AND element="com_media";';
-			$query[] = 'UPDATE `#__extensions` SET params = REPLACE(params, "text\\\\/", "text/") WHERE type="component" AND element="com_media";';
+            foreach ($query as $q) {
+                $this->db->setQuery($q);
+                $this->db->query();
+            }
+        }
+    }
 
-			foreach ($query as $q)
-			{
-				$this->db->setQuery($q);
-				$this->db->query();
-			}
-		}
-	}
-
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,68 +15,66 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding objects and substitutes columns to tags table
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20160212200400ComTags extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__tags'))
-		{
-			if (!$this->db->tableHasField('#__tags', 'objects'))
-			{
-				$query = "ALTER TABLE `#__tags` ADD COLUMN `objects` int(11) NOT NULL default 0;";
-				$this->db->setQuery($query);
-				$this->db->query();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__tags')) {
+            if (!$this->db->tableHasField('#__tags', 'objects')) {
+                $query = "ALTER TABLE `#__tags` ADD COLUMN `objects` int(11) NOT NULL default 0;";
+                $this->db->setQuery($query);
+                $this->db->query();
 
-				$query = "ALTER TABLE `#__tags` ADD INDEX `idx_objects` (`objects`)";
-				$this->db->setQuery($query);
-				$this->db->query();
+                $query = "ALTER TABLE `#__tags` ADD INDEX `idx_objects` (`objects`)";
+                $this->db->setQuery($query);
+                $this->db->query();
 
-				$query = "UPDATE `#__tags` AS t SET t.`objects`=(SELECT COUNT(*) FROM `#__tags_object` AS o WHERE o.tagid=t.id)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query = "UPDATE `#__tags` AS t SET t.`objects`=(SELECT COUNT(*) FROM `#__tags_object` AS o WHERE "
+                    . "o.tagid=t.id)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableHasField('#__tags', 'substitutes'))
-			{
-				$query = "ALTER TABLE `#__tags` ADD COLUMN `substitutes` int(11) NOT NULL default 0;";
-				$this->db->setQuery($query);
-				$this->db->query();
+            if (!$this->db->tableHasField('#__tags', 'substitutes')) {
+                $query = "ALTER TABLE `#__tags` ADD COLUMN `substitutes` int(11) NOT NULL default 0;";
+                $this->db->setQuery($query);
+                $this->db->query();
 
-				$query = "ALTER TABLE `#__tags` ADD INDEX `idx_substitutes` (`substitutes`)";
-				$this->db->setQuery($query);
-				$this->db->query();
+                $query = "ALTER TABLE `#__tags` ADD INDEX `idx_substitutes` (`substitutes`)";
+                $this->db->setQuery($query);
+                $this->db->query();
 
-				$query = "UPDATE `#__tags` AS t SET t.`substitutes`=(SELECT COUNT(*) FROM `#__tags_substitute` AS o WHERE o.tag_id=t.id)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+                $query = "UPDATE `#__tags` AS t SET t.`substitutes`=(SELECT COUNT(*) FROM `#__tags_substitute` AS "
+                    . "o WHERE o.tag_id=t.id)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__tags'))
-		{
-			if ($this->db->tableHasField('#__tags', 'objects'))
-			{
-				$query = "ALTER TABLE `#__tags` DROP `objects`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__tags')) {
+            if ($this->db->tableHasField('#__tags', 'objects')) {
+                $query = "ALTER TABLE `#__tags` DROP `objects`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if ($this->db->tableHasField('#__tags', 'substitutes'))
-			{
-				$query = "ALTER TABLE `#__tags` DROP `substitutes`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if ($this->db->tableHasField('#__tags', 'substitutes')) {
+                $query = "ALTER TABLE `#__tags` DROP `substitutes`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

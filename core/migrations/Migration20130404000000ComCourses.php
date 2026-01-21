@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,54 +15,49 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding courses announcements publish up, down, and sticky
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20130404000000ComCourses extends Base
 {
-	public function up()
-	{
-		$query = '';
+    public function up()
+    {
+        $query = '';
 
-		if (!$this->db->tableHasField('#__courses_announcements', 'publish_up'))
-		{
-			$query .= "ALTER TABLE `#__courses_announcements` ADD `publish_up` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';\n";
-		}
-		if (!$this->db->tableHasField('#__courses_announcements', 'publish_down'))
-		{
-			$query .= "ALTER TABLE `#__courses_announcements` ADD `publish_down` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';\n";
-		}
-		if (!$this->db->tableHasField('#__courses_announcements', 'sticky'))
-		{
-			$query .= "ALTER TABLE `#__courses_announcements` ADD `sticky` TINYINT(2)  NOT NULL  DEFAULT '0';\n";
-		}
+        if (!$this->db->tableHasField('#__courses_announcements', 'publish_up')) {
+            $query .= "ALTER TABLE `#__courses_announcements` ADD `publish_up` DATETIME  NOT NULL  DEFAULT "
+                . "'0000-00-00 00:00:00';\n";
+        }
+        if (!$this->db->tableHasField('#__courses_announcements', 'publish_down')) {
+            $query .= "ALTER TABLE `#__courses_announcements` ADD `publish_down` DATETIME  NOT NULL  DEFAULT "
+                . "'0000-00-00 00:00:00';\n";
+        }
+        if (!$this->db->tableHasField('#__courses_announcements', 'sticky')) {
+            $query .= "ALTER TABLE `#__courses_announcements` ADD `sticky` TINYINT(2)  NOT NULL  DEFAULT '0';\n";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	public function down()
-	{
-		$query = '';
+    public function down()
+    {
+        $query = '';
 
-		if ($this->db->tableHasField('#__courses_announcements', 'publish_up'))
-		{
-			$query .= "ALTER TABLE `#__courses_announcements` DROP `publish_up`;\n";
-		}
-		if ($this->db->tableHasField('#__courses_announcements', 'publish_down'))
-		{
-			$query .= "ALTER TABLE `#__courses_announcements` DROP `publish_down`;\n";
-		}
-		if ($this->db->tableHasField('#__courses_announcements', 'sticky'))
-		{
-			$query .= "ALTER TABLE `#__courses_announcements` DROP `sticky`;\n";
-		}
+        if ($this->db->tableHasField('#__courses_announcements', 'publish_up')) {
+            $query .= "ALTER TABLE `#__courses_announcements` DROP `publish_up`;\n";
+        }
+        if ($this->db->tableHasField('#__courses_announcements', 'publish_down')) {
+            $query .= "ALTER TABLE `#__courses_announcements` DROP `publish_down`;\n";
+        }
+        if ($this->db->tableHasField('#__courses_announcements', 'sticky')) {
+            $query .= "ALTER TABLE `#__courses_announcements` DROP `sticky`;\n";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,23 +9,25 @@
 use Hubzero\Content\Migration\Base;
 
 /**
- * Migration script for installing mod_feedaggregator 
- **/
+ * Migration script for installing mod_feedaggregator
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20160104220531ModFeedaggregator extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addModuleEntry('mod_feedaggregator');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addModuleEntry('mod_feedaggregator');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deleteModuleEntry('mod_feedaggregator');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deleteModuleEntry('mod_feedaggregator');
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,90 +15,81 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing component entry for com_store
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20171218000000ComStore extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deleteComponentEntry('store');
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deleteComponentEntry('store');
 
-		if ($this->db->tableExists('#__store'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__store`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__store')) {
+            $query = "DROP TABLE IF EXISTS `#__store`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__orders'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__orders`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__orders')) {
+            $query = "DROP TABLE IF EXISTS `#__orders`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__order_items'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__order_items`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__order_items')) {
+            $query = "DROP TABLE IF EXISTS `#__order_items`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__cart'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__cart`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__cart')) {
+            $query = "DROP TABLE IF EXISTS `#__cart`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$path = PATH_APP . '/site/store';
+        $path = PATH_APP . '/site/store';
 
-		if (is_dir($path))
-		{
-			$this->rrmdir($path);
-		}
-	}
+        if (is_dir($path)) {
+            $this->rrmdir($path);
+        }
+    }
 
-	/**
-	 * Recursively remove a directory
-	 *
-	 * @param   string  $src
-	 * @return  void
-	 **/
-	private function rrmdir($src)
-	{
-		$dir = opendir($src);
-		while (false !== ($file = readdir($dir)))
-		{
-			if ($file != '.' && $file != '..')
-			{
-				$full = $src . '/' . $file;
-				if (is_dir($full))
-				{
-					$this->rrmdir($full);
-				}
-				else
-				{
-					@unlink($full);
-				}
-			}
-		}
-		closedir($dir);
-		@rmdir($src);
-	}
+    /**
+     * Recursively remove a directory
+     *
+     * @param   string  $src
+     * @return  void
+     **/
+    private function rrmdir($src)
+    {
+        $dir = opendir($src);
+        while (false !== ($file = readdir($dir))) {
+            if ($file != '.' && $file != '..') {
+                $full = $src . '/' . $file;
+                if (is_dir($full)) {
+                    $this->rrmdir($full);
+                } else {
+                    @unlink($full);
+                }
+            }
+        }
+        closedir($dir);
+        @rmdir($src);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->addComponentEntry('store');
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->addComponentEntry('store');
 
-		if (!$this->db->tableExists('#__store'))
-		{
-			$query = "CREATE TABLE `#__store` (
+        if (!$this->db->tableExists('#__store')) {
+            $query = "CREATE TABLE `#__store` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `title` varchar(127) NOT NULL DEFAULT '',
 			  `price` int(11) NOT NULL DEFAULT '0',
@@ -111,13 +105,12 @@ class Migration20171218000000ComStore extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__orders'))
-		{
-			$query = "CREATE TABLE `#__orders` (
+        if (!$this->db->tableExists('#__orders')) {
+            $query = "CREATE TABLE `#__orders` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) NOT NULL DEFAULT '0',
 			  `type` varchar(20) DEFAULT NULL,
@@ -131,13 +124,12 @@ class Migration20171218000000ComStore extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__order_items'))
-		{
-			$query = "CREATE TABLE `#__order_items` (
+        if (!$this->db->tableExists('#__order_items')) {
+            $query = "CREATE TABLE `#__order_items` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `oid` int(11) NOT NULL DEFAULT '0',
 			  `uid` int(11) NOT NULL DEFAULT '0',
@@ -148,13 +140,12 @@ class Migration20171218000000ComStore extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__cart'))
-		{
-			$query = "CREATE TABLE `#__cart` (
+        if (!$this->db->tableExists('#__cart')) {
+            $query = "CREATE TABLE `#__cart` (
 			  `id` int(10) NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) NOT NULL DEFAULT '0',
 			  `itemid` int(11) NOT NULL DEFAULT '0',
@@ -165,8 +156,8 @@ class Migration20171218000000ComStore extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,84 +15,93 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updating access values and normalizing state column names
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20160325174400ComForum extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__forum_sections')
-		 && $this->db->tableHasField('#__forum_sections', 'access'))
-		{
-			$query = "UPDATE `#__forum_sections` SET `access`=(`access` + 1)";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (
+            $this->db->tableExists('#__forum_sections')
+            && $this->db->tableHasField('#__forum_sections', 'access')
+        ) {
+            $query = "UPDATE `#__forum_sections` SET `access`=(`access` + 1)";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__forum_categories')
-		 && $this->db->tableHasField('#__forum_categories', 'access'))
-		{
-			$query = "UPDATE `#__forum_categories` SET `access`=(`access` + 1)";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (
+            $this->db->tableExists('#__forum_categories')
+            && $this->db->tableHasField('#__forum_categories', 'access')
+        ) {
+            $query = "UPDATE `#__forum_categories` SET `access`=(`access` + 1)";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__forum_posts')
-		 && $this->db->tableHasField('#__forum_posts', 'access'))
-		{
-			$query = "UPDATE `#__forum_posts` SET `access`=(`access`+ 1)";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (
+            $this->db->tableExists('#__forum_posts')
+            && $this->db->tableHasField('#__forum_posts', 'access')
+        ) {
+            $query = "UPDATE `#__forum_posts` SET `access`=(`access`+ 1)";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__forum_attachments')
-		 && $this->db->tableHasField('#__forum_attachments', 'status')
-		 && !$this->db->tableHasField('#__forum_attachments', 'state'))
-		{
-			$query = "ALTER TABLE `#__forum_attachments` CHANGE `status` `state` int(3) NOT NULL default 0;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (
+            $this->db->tableExists('#__forum_attachments')
+            && $this->db->tableHasField('#__forum_attachments', 'status')
+            && !$this->db->tableHasField('#__forum_attachments', 'state')
+        ) {
+            $query = "ALTER TABLE `#__forum_attachments` CHANGE `status` `state` int(3) NOT NULL default 0;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__forum_sections')
-		 && $this->db->tableHasField('#__forum_sections', 'access'))
-		{
-			$query = "UPDATE `#__forum_sections` SET `access`=(`access` - 1)";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (
+            $this->db->tableExists('#__forum_sections')
+            && $this->db->tableHasField('#__forum_sections', 'access')
+        ) {
+            $query = "UPDATE `#__forum_sections` SET `access`=(`access` - 1)";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__forum_categories')
-		 && $this->db->tableHasField('#__forum_categories', 'access'))
-		{
-			$query = "UPDATE `#__forum_categories` SET `access`=(`access` - 1)";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (
+            $this->db->tableExists('#__forum_categories')
+            && $this->db->tableHasField('#__forum_categories', 'access')
+        ) {
+            $query = "UPDATE `#__forum_categories` SET `access`=(`access` - 1)";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__forum_posts')
-		 && $this->db->tableHasField('#__forum_posts', 'access'))
-		{
-			$query = "UPDATE `#__forum_posts` SET `access`=(`access` - 1)";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (
+            $this->db->tableExists('#__forum_posts')
+            && $this->db->tableHasField('#__forum_posts', 'access')
+        ) {
+            $query = "UPDATE `#__forum_posts` SET `access`=(`access` - 1)";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__forum_attachments')
-		 && !$this->db->tableHasField('#__forum_attachments', 'status')
-		 && $this->db->tableHasField('#__forum_attachments', 'state'))
-		{
-			$query = "ALTER TABLE `#__forum_attachments` CHANGE `state` `status` int(11) NOT NULL default 0;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (
+            $this->db->tableExists('#__forum_attachments')
+            && !$this->db->tableHasField('#__forum_attachments', 'status')
+            && $this->db->tableHasField('#__forum_attachments', 'state')
+        ) {
+            $query = "ALTER TABLE `#__forum_attachments` CHANGE `state` `status` int(11) NOT NULL default 0;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

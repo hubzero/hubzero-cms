@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,35 +15,34 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for distinguishing between unanswered and no in profile mail preference column
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20130618144751PlgMembersProfile extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query  = "ALTER TABLE `#__xprofiles` ALTER COLUMN `mailPreferenceOption` SET DEFAULT -1;";
-		$query .= "UPDATE `#__xprofiles` SET `mailPreferenceOption`=1 WHERE `mailPreferenceOption`=2;";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query  = "ALTER TABLE `#__xprofiles` ALTER COLUMN `mailPreferenceOption` SET DEFAULT -1;";
+        $query .= "UPDATE `#__xprofiles` SET `mailPreferenceOption`=1 WHERE `mailPreferenceOption`=2;";
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "";
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

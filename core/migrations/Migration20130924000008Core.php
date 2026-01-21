@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,17 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for languages table addition
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20130924000008Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__languages'))
-		{
-			$query = "CREATE TABLE `#__languages` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__languages')) {
+            $query = "CREATE TABLE `#__languages` (
 							`lang_id` int(11) unsigned NOT NULL auto_increment,
 							`lang_code` char(7) NOT NULL,
 							`title` varchar(50) NOT NULL,
@@ -43,15 +46,16 @@ class Migration20130924000008Core extends Base
 							INDEX `idx_access` (`access` ASC),
 							INDEX `idx_ordering` (`ordering`)
 						)  DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query  = "INSERT INTO `#__languages` (`lang_id`,`lang_code`,`title`,`title_native`,`sef`,`image`,`description`,`metakey`,`metadesc`, `published`, `access`, `ordering`)";
-			$query .= " VALUES ";
-			$query .= "(1, 'en-GB', 'English (UK)', 'English (UK)', 'en', 'en', '', '', '', 1, 1, 1);";
+            $query  = "INSERT INTO `#__languages` (`lang_id`,`lang_code`,`title`,`title_native`,"
+                . "`sef`,`image`,`description`,`metakey`,`metadesc`, `published`, `access`, `ordering`)";
+            $query .= " VALUES ";
+            $query .= "(1, 'en-GB', 'English (UK)', 'English (UK)', 'en', 'en', '', '', '', 1, 1, 1);";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,20 +15,21 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding faq, store, and related plugins
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20130331000000ComCourses extends Base
 {
-	public function up()
-	{
-		$this->addPluginEntry('courses', 'faq');
-		$this->addPluginEntry('courses', 'related');
-		$this->addPluginEntry('courses', 'store');
-	}
+    public function up()
+    {
+        $this->addPluginEntry('courses', 'faq');
+        $this->addPluginEntry('courses', 'related');
+        $this->addPluginEntry('courses', 'store');
+    }
 
-	public function down()
-	{
-		$this->deletePluginEntry('courses', 'faq');
-		$this->deletePluginEntry('courses', 'related');
-		$this->deletePluginEntry('courses', 'store');
-	}
+    public function down()
+    {
+        $this->deletePluginEntry('courses', 'faq');
+        $this->deletePluginEntry('courses', 'related');
+        $this->deletePluginEntry('courses', 'store');
+    }
 }

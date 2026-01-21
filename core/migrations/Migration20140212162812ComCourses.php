@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,18 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding unity asset table
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20140212162812ComCourses extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__courses_asset_unity'))
-		{
-			$query = "CREATE TABLE `#__courses_asset_unity` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__courses_asset_unity')) {
+            $query = "CREATE TABLE `#__courses_asset_unity` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `member_id` int(11) NOT NULL,
 					  `asset_id` int(11) NOT NULL,
@@ -32,22 +36,21 @@ class Migration20140212162812ComCourses extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__courses_asset_unity'))
-		{
-			$query = "DROP TABLE `#__courses_asset_unity`";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__courses_asset_unity')) {
+            $query = "DROP TABLE `#__courses_asset_unity`";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

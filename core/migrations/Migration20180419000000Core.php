@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,18 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for installing #__auth_link_data table
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20180419000000Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__auth_link_data'))
-		{
-			$query = "CREATE TABLE `#__auth_link_data` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__auth_link_data')) {
+            $query = "CREATE TABLE `#__auth_link_data` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `link_id` int(11) NOT NULL DEFAULT '0',
 			  `modified` datetime DEFAULT NULL,
@@ -32,21 +36,20 @@ class Migration20180419000000Core extends Base
 			  KEY `idx_link_id` (`link_id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__auth_link_data'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__auth_link_data`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__auth_link_data')) {
+            $query = "DROP TABLE IF EXISTS `#__auth_link_data`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

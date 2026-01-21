@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,22 +10,24 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for enabling the Solr search plugin
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20161213132518PlgSearchSolr extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('search', 'solr', 0);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('search', 'solr', 0);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->disablePluginEntry('search', 'solr');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->disablePluginEntry('search', 'solr');
+    }
 }

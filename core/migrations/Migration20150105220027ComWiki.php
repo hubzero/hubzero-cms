@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,21 +15,21 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for resetting wiki page access value that Joomla auto-set
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20150105220027ComWiki extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__wiki_page'))
-		{
-			$query = "UPDATE `#__wiki_page`
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__wiki_page')) {
+            $query = "UPDATE `#__wiki_page`
 					SET `access`=0
 					WHERE `access`=1 AND `group_cn` NOT LIKE 'pr-%'";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

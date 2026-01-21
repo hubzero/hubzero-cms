@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +15,24 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding a My Curator Tasks module for the user dashboard
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20150119120000ModMycuration extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addModuleEntry('mod_mycuration', 1, '');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addModuleEntry('mod_mycuration', 1, '');
+    }
 
-	/**
-	 * Up
-	 **/
-	public function down()
-	{
-		$this->deleteModuleEntry('mod_mycuration');
-	}
+    /**
+     * Up
+     **/
+    public function down()
+    {
+        $this->deleteModuleEntry('mod_mycuration');
+    }
 }

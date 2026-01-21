@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,51 +15,47 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding levenshtein function to mysql
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20140325093000ComResources extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// make import path if doesnt exist
-		$params = $this->getParams('com_resources');
-		$upload = $params->get('uploadpath', '/site/resources');
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // make import path if doesnt exist
+        $params = $this->getParams('com_resources');
+        $upload = $params->get('uploadpath', '/site/resources');
 
-		$const = (defined('PATH_APP') ? PATH_APP : PATH_ROOT);
+        $const = (defined('PATH_APP') ? PATH_APP : PATH_ROOT);
 
-		if (!is_dir($const . DS . trim($upload, DS)))
-		{
-			mkdir($const . DS . trim($upload, DS), 0775, true);
-		}
+        if (!is_dir($const . DS . trim($upload, DS))) {
+            mkdir($const . DS . trim($upload, DS), 0775, true);
+        }
 
-		$path = $const . DS . trim($upload, DS) . DS . 'import' . DS;
-		if (!is_dir($path))
-		{
-			mkdir($path);
-		}
+        $path = $const . DS . trim($upload, DS) . DS . 'import' . DS;
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
 
-		$found = false;
+        $found = false;
 
-		$this->db->setQuery("SHOW FUNCTION STATUS");
-		$results = $this->db->loadObjectList();
-		if ($results)
-		{
-			foreach ($results as $result)
-			{
-				if ($result->Db == \App::get('config')->get('db') && $result->Name == 'LEVENSHTEIN')
-				{
-					$found = true;
-					break;
-				}
-			}
-		}
+        $this->db->setQuery("SHOW FUNCTION STATUS");
+        $results = $this->db->loadObjectList();
+        if ($results) {
+            foreach ($results as $result) {
+                if ($result->Db == \App::get('config')->get('db') && $result->Name == 'LEVENSHTEIN') {
+                    $found = true;
+                    break;
+                }
+            }
+        }
 
-		if (!$found)
-		{
-			// levenshtein func
-			$query = 'CREATE FUNCTION `LEVENSHTEIN`(s1 VARCHAR(255) CHARACTER SET utf8, s2 VARCHAR(255) CHARACTER SET utf8) RETURNS int(11)
+        if (!$found) {
+            // levenshtein func
+            $query = 'CREATE FUNCTION `LEVENSHTEIN`'
+                . '(s1 VARCHAR(255) CHARACTER SET utf8, s2 VARCHAR(255) CHARACTER SET utf8) RETURNS int(11)
 	DETERMINISTIC
 BEGIN
 	DECLARE s1_len, s2_len, i, j, c, c_temp, cost INT;
@@ -115,23 +114,22 @@ BEGIN
 	RETURN (c);
   END;';
 
-			if ($query != '')
-			{
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if ($query != '') {
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		// levenshtein func
-		$query = "DROP FUNCTION IF EXISTS LEVENSHTEIN;";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        // levenshtein func
+        $query = "DROP FUNCTION IF EXISTS LEVENSHTEIN;";
 
-		$this->db->setQuery($query);
-		$this->db->query();
-	}
+        $this->db->setQuery($query);
+        $this->db->query();
+    }
 }

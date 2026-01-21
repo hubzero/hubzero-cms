@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,18 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding com cron component
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20130426072033ComCron extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__cron_jobs'))
-		{
-			$query = "CREATE TABLE `#__cron_jobs` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__cron_jobs')) {
+            $query = "CREATE TABLE `#__cron_jobs` (
 						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						`title` varchar(255) NOT NULL DEFAULT '',
 						`state` tinyint(3) NOT NULL DEFAULT '0',
@@ -39,29 +43,28 @@ class Migration20130426072033ComCron extends Base
 						`ordering` int(11) NOT NULL DEFAULT '0',
 						PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->addComponentEntry('Cron');
-		$this->addPluginEntry('cron', 'support');
-		$this->addPluginEntry('cron', 'members');
-		$this->addPluginEntry('cron', 'cache');
-	}
+        $this->addComponentEntry('Cron');
+        $this->addPluginEntry('cron', 'support');
+        $this->addPluginEntry('cron', 'members');
+        $this->addPluginEntry('cron', 'cache');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__cron_jobs'))
-		{
-			$query = "DROP TABLE `#__cron_jobs`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__cron_jobs')) {
+            $query = "DROP TABLE `#__cron_jobs`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->deleteComponentEntry('Cron');
-		$this->deletePluginEntry('cron');
-	}
+        $this->deleteComponentEntry('Cron');
+        $this->deletePluginEntry('cron');
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,74 +15,71 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding geocode plugins
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20140114091331PlgGeocode extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "SELECT COUNT(*) FROM `#__extensions` WHERE `type`='plugin' AND `folder`='geocode';";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "SELECT COUNT(*) FROM `#__extensions` WHERE `type`='plugin' AND `folder`='geocode';";
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		if (!$this->db->loadResult())
-		{
-			$plugins = array(
-				'arcgisonline',
-				'baidu',
-				'bingmaps',
-				'cloudmade',
-				'datasciencetoolkit',
-				'freegeoip',
-				'geocoderca',
-				'geocoderus',
-				'geoip',
-				'geoips',
-				'geonames',
-				'geoplugin',
-				'googlemaps',
-				'googlemapsbusiness',
-				'hostip',
-				'ignopenls',
-				'ipgeobase',
-				'ipinfodb',
-				'local',
-				'mapquest',
-				'maxmind',
-				'maxmindbinary',
-				'nominatim',
-				'oiorest',
-				'openstreetmap',
-				'tomtom',
-				'yandex'
-			);
+        if (!$this->db->loadResult()) {
+            $plugins = array(
+                'arcgisonline',
+                'baidu',
+                'bingmaps',
+                'cloudmade',
+                'datasciencetoolkit',
+                'freegeoip',
+                'geocoderca',
+                'geocoderus',
+                'geoip',
+                'geoips',
+                'geonames',
+                'geoplugin',
+                'googlemaps',
+                'googlemapsbusiness',
+                'hostip',
+                'ignopenls',
+                'ipgeobase',
+                'ipinfodb',
+                'local',
+                'mapquest',
+                'maxmind',
+                'maxmindbinary',
+                'nominatim',
+                'oiorest',
+                'openstreetmap',
+                'tomtom',
+                'yandex'
+            );
 
-			foreach ($plugins as $plugin)
-			{
-				$enabled = 0;
-				if ($plugin == 'local')
-				{
-					$enabled = 1;
-				}
-				$this->addPluginEntry('geocode', $plugin, $enabled);
-			}
-		}
-	}
+            foreach ($plugins as $plugin) {
+                $enabled = 0;
+                if ($plugin == 'local') {
+                    $enabled = 1;
+                }
+                $this->addPluginEntry('geocode', $plugin, $enabled);
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "SELECT COUNT(*) FROM `#__extensions` WHERE `type`='plugin' AND `folder`='geocode';";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "SELECT COUNT(*) FROM `#__extensions` WHERE `type`='plugin' AND `folder`='geocode';";
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		if ($this->db->loadResult())
-		{
-			$this->deletePluginEntry('geocode');
-		}
-	}
+        if ($this->db->loadResult()) {
+            $this->deletePluginEntry('geocode');
+        }
+    }
 }

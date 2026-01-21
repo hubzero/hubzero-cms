@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,78 +15,72 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for dropping enused courses tables
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20131021090512ComCourses extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__courses_inviteemails'))
-		{
-			$query = "DROP TABLE `#__courses_inviteemails`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__courses_inviteemails')) {
+            $query = "DROP TABLE `#__courses_inviteemails`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_events'))
-		{
-			$query = "DROP TABLE `#__courses_events`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_events')) {
+            $query = "DROP TABLE `#__courses_events`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_enrollments') && $this->db->getDatabase() != 'nanohub')
-		{
-			$query = "DROP TABLE `#__courses_enrollments`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_enrollments') && $this->db->getDatabase() != 'nanohub') {
+            $query = "DROP TABLE `#__courses_enrollments`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_email'))
-		{
-			$query = "DROP TABLE `#__courses_email`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_email')) {
+            $query = "DROP TABLE `#__courses_email`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_email_log'))
-		{
-			$query = "DROP TABLE `#__courses_email_log`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__courses_email_log')) {
+            $query = "DROP TABLE `#__courses_email_log`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__courses_email_version'))
-		{
-			$query = "DROP TABLE `#__courses_email_version`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__courses_email_version')) {
+            $query = "DROP TABLE `#__courses_email_version`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$this->db->tableExists('#__courses_email'))
-		{
-			$query = "CREATE TABLE `#__courses_email` (
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$this->db->tableExists('#__courses_email')) {
+            $query = "CREATE TABLE `#__courses_email` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `offering_id` int(11) NOT NULL DEFAULT '0',
 					  `name` varchar(255) NOT NULL DEFAULT '',
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_email_log'))
-		{
-			$query = "CREATE TABLE `#__courses_email_log` (
+        if (!$this->db->tableExists('#__courses_email_log')) {
+            $query = "CREATE TABLE `#__courses_email_log` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `email_id` int(11) NOT NULL DEFAULT '0',
 					  `version_id` int(11) NOT NULL DEFAULT '0',
@@ -93,13 +90,12 @@ class Migration20131021090512ComCourses extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_email_version'))
-		{
-			$query = "CREATE TABLE `#__courses_email_version` (
+        if (!$this->db->tableExists('#__courses_email_version')) {
+            $query = "CREATE TABLE `#__courses_email_version` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `email_id` int(11) NOT NULL DEFAULT '0',
 					  `subject` varchar(255) NOT NULL DEFAULT '',
@@ -109,13 +105,12 @@ class Migration20131021090512ComCourses extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_enrollments'))
-		{
-			$query = "CREATE TABLE `#__courses_enrollments` (
+        if (!$this->db->tableExists('#__courses_enrollments')) {
+            $query = "CREATE TABLE `#__courses_enrollments` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `offering_id` int(11) NOT NULL DEFAULT '0',
 					  `user_id` int(11) NOT NULL DEFAULT '0',
@@ -130,13 +125,12 @@ class Migration20131021090512ComCourses extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_events'))
-		{
-			$query = "CREATE TABLE `#__courses_events` (
+        if (!$this->db->tableExists('#__courses_events')) {
+            $query = "CREATE TABLE `#__courses_events` (
 					  `id` int(11) NOT NULL AUTO_INCREMENT,
 					  `gidNumber` int(11) NOT NULL,
 					  `actorid` int(11) NOT NULL,
@@ -150,13 +144,12 @@ class Migration20131021090512ComCourses extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__courses_inviteemails'))
-		{
-			$query = "CREATE TABLE `#__courses_inviteemails` (
+        if (!$this->db->tableExists('#__courses_inviteemails')) {
+            $query = "CREATE TABLE `#__courses_inviteemails` (
 					  `id` int(11) NOT NULL AUTO_INCREMENT,
 					  `email` varchar(150) NOT NULL,
 					  `gidNumber` int(11) NOT NULL,
@@ -164,8 +157,8 @@ class Migration20131021090512ComCourses extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

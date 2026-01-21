@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,20 +15,21 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for setting up projects
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20130829203107ComProjects extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$queries = array();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $queries = array();
 
-		if (!$this->db->tableExists('#__projects'))
-		{
-			// Create #__projects
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__projects` (
+        if (!$this->db->tableExists('#__projects')) {
+            // Create #__projects
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__projects` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`alias` varchar(30) NOT NULL DEFAULT '',
 				`title` varchar(255) NOT NULL DEFAULT '',
@@ -48,18 +52,22 @@ class Migration20130829203107ComProjects extends Base
 				UNIQUE KEY `alias` (`alias`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-			// Make entries to enable HUB messaging
-			$queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES ('com_projects','projects_member_added','You were added or invited to a project')";
+            // Make entries to enable HUB messaging
+            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES "
+                . "('com_projects','projects_member_added','You were added or invited to a project')";
 
-			$queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES ('com_projects','projects_new_project_admin','Receive notifications about project(s) you monitor as an admin or reviewer')";
+            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES "
+                . "('com_projects','projects_new_project_admin',"
+                . "'Receive notifications about project(s) you monitor as an admin or reviewer')";
 
-			$queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES ('com_projects','projects_admin_message','Receive administrative messages about your project(s)')";
-		}
+            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES "
+                . "('com_projects','projects_admin_message',"
+                . "'Receive administrative messages about your project(s)')";
+        }
 
-		if (!$this->db->tableExists('#__project_activity'))
-		{
-			// Create #__project_activity
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_activity` (
+        if (!$this->db->tableExists('#__project_activity')) {
+            // Create #__project_activity
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_activity` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`projectid` int(11) NOT NULL DEFAULT '0',
 				`userid` int(11) NOT NULL DEFAULT '0',
@@ -75,12 +83,11 @@ class Migration20130829203107ComProjects extends Base
 				`class` varchar(150) DEFAULT NULL,
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		}
+        }
 
-		if (!$this->db->tableExists('#__project_comments'))
-		{
-			// Create #__project_comments
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_comments` (
+        if (!$this->db->tableExists('#__project_comments')) {
+            // Create #__project_comments
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_comments` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`itemid` int(11) NOT NULL DEFAULT '0',
 				`comment` text NOT NULL,
@@ -94,12 +101,11 @@ class Migration20130829203107ComProjects extends Base
 				`tbl` varchar(50) NOT NULL DEFAULT 'blog',
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		}
+        }
 
-		if (!$this->db->tableExists('#__project_microblog'))
-		{
-			// Create #__project_microblog
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_microblog` (
+        if (!$this->db->tableExists('#__project_microblog')) {
+            // Create #__project_microblog
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_microblog` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`blogentry` varchar(255) DEFAULT NULL,
 				`posted` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -112,12 +118,11 @@ class Migration20130829203107ComProjects extends Base
 				PRIMARY KEY (`id`),
 				FULLTEXT KEY `title` (`blogentry`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		}
+        }
 
-		if (!$this->db->tableExists('#__project_owners'))
-		{
-			// Create #__project_owners
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_owners` (
+        if (!$this->db->tableExists('#__project_owners')) {
+            // Create #__project_owners
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_owners` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`projectid` int(11) NOT NULL DEFAULT '0',
 				`userid` int(11) NOT NULL DEFAULT '0',
@@ -135,12 +140,11 @@ class Migration20130829203107ComProjects extends Base
 				`params` text,
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		}
+        }
 
-		if (!$this->db->tableExists('#__project_todo'))
-		{
-			// Create table #__project_todo
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_todo` (
+        if (!$this->db->tableExists('#__project_todo')) {
+            // Create table #__project_todo
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_todo` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`projectid` int(11) NOT NULL DEFAULT '0',
 				`todolist` varchar(255) DEFAULT NULL,
@@ -160,12 +164,11 @@ class Migration20130829203107ComProjects extends Base
 				`color` varchar(20) DEFAULT NULL,
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		}
+        }
 
-		if (!$this->db->tableExists('#__project_types'))
-		{
-			// Create #__project_types
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_types` (
+        if (!$this->db->tableExists('#__project_types')) {
+            // Create #__project_types
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_types` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`type` varchar(150) NOT NULL DEFAULT '',
 				`description` varchar(255) NOT NULL DEFAULT '',
@@ -173,20 +176,26 @@ class Migration20130829203107ComProjects extends Base
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
 
-			$queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`)
-							SELECT 'General','Individual or collaborative projects of general nature','apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0'
-							FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'General')";
-			$queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`)
-							SELECT 'Content publication','Projects created with the purpose to publish data as a resource or a collection of related resources','apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0'
-							FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'Content publication')";
-			$queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`)
-							SELECT 'Application development','Projects created with the purpose to develop and publish a simulation tool or a code library','apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0'
-							FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'Application development')";
-		}
+            $params1 = 'apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0';
+            $params2 = 'apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0';
+            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "
+                . "SELECT 'General','Individual or collaborative projects of general nature','$params1' "
+                . "FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'General')";
+            $desc2 = 'Projects created with the purpose to publish data as a resource '
+                . 'or a collection of related resources';
+            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "
+                . "SELECT 'Content publication','$desc2','$params1' "
+                . "FROM DUAL WHERE NOT EXISTS "
+                . "(SELECT `type` FROM `#__project_types` WHERE `type` = 'Content publication')";
+            $desc3 = 'Projects created with the purpose to develop and publish a simulation tool or a code library';
+            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "
+                . "SELECT 'Application development','$desc3','$params2' "
+                . "FROM DUAL WHERE NOT EXISTS "
+                . "(SELECT `type` FROM `#__project_types` WHERE `type` = 'Application development')";
+        }
 
-		if (!$this->db->tableExists('#__project_logs'))
-		{
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_logs` (
+        if (!$this->db->tableExists('#__project_logs')) {
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_logs` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`projectid` int(11) unsigned NOT NULL DEFAULT '0',
 				`userid` int(11) NOT NULL DEFAULT '0',
@@ -201,11 +210,10 @@ class Migration20130829203107ComProjects extends Base
 				PRIMARY KEY (`id`),
 				KEY `projectid` (`projectid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=UTF8";
-		}
+        }
 
-		if (!$this->db->tableExists('#__project_stats'))
-		{
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_stats` (
+        if (!$this->db->tableExists('#__project_stats')) {
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_stats` (
 				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				`month` int(2) DEFAULT NULL,
 				`year` int(2) DEFAULT NULL,
@@ -214,11 +222,10 @@ class Migration20130829203107ComProjects extends Base
 				`stats` text,
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		}
+        }
 
-		if (!$this->db->tableExists('#__project_public_stamps'))
-		{
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_public_stamps` (
+        if (!$this->db->tableExists('#__project_public_stamps')) {
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_public_stamps` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`stamp` varchar(30) NOT NULL DEFAULT '0',
 				`projectid` int(11) NOT NULL DEFAULT '0',
@@ -231,11 +238,10 @@ class Migration20130829203107ComProjects extends Base
 				PRIMARY KEY (`id`),
 				UNIQUE KEY `stamp` (`stamp`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		}
+        }
 
-		if (!$this->db->tableExists('#__project_remote_files'))
-		{
-			$queries[] = "CREATE TABLE IF NOT EXISTS `#__project_remote_files` (
+        if (!$this->db->tableExists('#__project_remote_files')) {
+            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_remote_files` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`projectid` int(11) NOT NULL DEFAULT '0',
 				`created_by` int(11) NOT NULL DEFAULT '0',
@@ -263,182 +269,166 @@ class Migration20130829203107ComProjects extends Base
 				`remote_modified` datetime DEFAULT NULL,
 				PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-		}
+        }
 
-		if (count($queries) > 0)
-		{
-			// Run queries
-			foreach ($queries as $query)
-			{
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
+        if (count($queries) > 0) {
+            // Run queries
+            foreach ($queries as $query) {
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
 
-		$componentParams = array(
-			"component_on" => "0",
-			"grantinfo" => "0",
-			"confirm_step" => "0",
-			"edit_settings" => "1",
-			"restricted_data" => "0",
-			"restricted_upfront" => "0",
-			"approve_restricted" => "0",
-			"privacylink" => "/legal/privacy",
-			"HIPAAlink" => "/legal/privacy",
-			"FERPAlink" => "/legal/privacy",
-			"creatorgroup" => "",
-			"admingroup" => "projectsadmin",
-			"sdata_group" => "hipaa_reviewers",
-			"ginfo_group" => "sps_reviewers",
-			"min_name_length" => "6",
-			"max_name_length" => "25",
-			"reserved_names" => "clone, temp, test",
-			"webpath" => "/srv/projects",
-			"offroot" => "1",
-			"gitpath" => "/usr/bin/git",
-			"gitclone" => "/site/projects/clone/.git",
-			"maxUpload" => "104857600",
-			"defaultQuota" => "1",
-			"premiumQuota" => "1",
-			"approachingQuota" => "90",
-			"pubQuota" => "1",
-			"premiumPubQuota" => "1",
-			"imagepath" => "/site/projects",
-			"defaultpic" => "/components/com_projects/assets/img/project.png",
-			"img_maxAllowed" => "5242880",
-			"img_file_ext" => "jpg,jpeg,jpe,bmp,tif,tiff,png,gif",
-			"logging" => "0",
-			"messaging" => "1",
-			"privacy" => "1",
-			"limit" => "25",
-			"sidebox_limit" => "3",
-			"group_prefix" => "pr-",
-			"use_alias" => "1",
-			"documentation" => "/projects/features",
-			"dbcheck" => "1"
-		);
-		$filesParams = array(
-			"maxUpload" => "104857600",
-			"maxDownload" => "1048576",
-			"reservedNames" => "google , dropbox, shared, temp",
-			"connectedProjects" => "",
-			"enable_google" => "0",
-			"google_clientId" => "",
-			"google_clientSecret" => "",
-			"google_appKey" => "",
-			"google_folder" => "Google",
-			"sync_lock" => "0",
-			"auto_sync" => "1",
-			"latex" => "1",
-			"texpath" => "/usr/bin/",
-			"gspath" => "/usr/bin/"
-		);
+        $componentParams = array(
+            "component_on" => "0",
+            "grantinfo" => "0",
+            "confirm_step" => "0",
+            "edit_settings" => "1",
+            "restricted_data" => "0",
+            "restricted_upfront" => "0",
+            "approve_restricted" => "0",
+            "privacylink" => "/legal/privacy",
+            "HIPAAlink" => "/legal/privacy",
+            "FERPAlink" => "/legal/privacy",
+            "creatorgroup" => "",
+            "admingroup" => "projectsadmin",
+            "sdata_group" => "hipaa_reviewers",
+            "ginfo_group" => "sps_reviewers",
+            "min_name_length" => "6",
+            "max_name_length" => "25",
+            "reserved_names" => "clone, temp, test",
+            "webpath" => "/srv/projects",
+            "offroot" => "1",
+            "gitpath" => "/usr/bin/git",
+            "gitclone" => "/site/projects/clone/.git",
+            "maxUpload" => "104857600",
+            "defaultQuota" => "1",
+            "premiumQuota" => "1",
+            "approachingQuota" => "90",
+            "pubQuota" => "1",
+            "premiumPubQuota" => "1",
+            "imagepath" => "/site/projects",
+            "defaultpic" => "/components/com_projects/assets/img/project.png",
+            "img_maxAllowed" => "5242880",
+            "img_file_ext" => "jpg,jpeg,jpe,bmp,tif,tiff,png,gif",
+            "logging" => "0",
+            "messaging" => "1",
+            "privacy" => "1",
+            "limit" => "25",
+            "sidebox_limit" => "3",
+            "group_prefix" => "pr-",
+            "use_alias" => "1",
+            "documentation" => "/projects/features",
+            "dbcheck" => "1"
+        );
+        $filesParams = array(
+            "maxUpload" => "104857600",
+            "maxDownload" => "1048576",
+            "reservedNames" => "google , dropbox, shared, temp",
+            "connectedProjects" => "",
+            "enable_google" => "0",
+            "google_clientId" => "",
+            "google_clientSecret" => "",
+            "google_appKey" => "",
+            "google_folder" => "Google",
+            "sync_lock" => "0",
+            "auto_sync" => "1",
+            "latex" => "1",
+            "texpath" => "/usr/bin/",
+            "gspath" => "/usr/bin/"
+        );
 
-		$this->addComponentEntry('Projects', 'com_projects', 1, $componentParams);
+        $this->addComponentEntry('Projects', 'com_projects', 1, $componentParams);
 
-		$this->addPluginEntry('projects', 'blog');
-		$this->addPluginEntry('projects', 'team');
-		$this->addPluginEntry('projects', 'files', 1, $filesParams);
-		$this->addPluginEntry('projects', 'todo');
-		$this->addPluginEntry('projects', 'notes');
-		$this->addPluginEntry('members', 'projects');
-		$this->addPluginEntry('groups', 'projects');
+        $this->addPluginEntry('projects', 'blog');
+        $this->addPluginEntry('projects', 'team');
+        $this->addPluginEntry('projects', 'files', 1, $filesParams);
+        $this->addPluginEntry('projects', 'todo');
+        $this->addPluginEntry('projects', 'notes');
+        $this->addPluginEntry('members', 'projects');
+        $this->addPluginEntry('groups', 'projects');
 
-		$this->addModuleEntry('mod_myprojects');
-	}
+        $this->addModuleEntry('mod_myprojects');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$queries = array();
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $queries = array();
 
-		if ($this->db->tableExists('#__projects'))
-		{
-			// Create #__projects
-			$queries[] = "DROP TABLE IF EXISTS `#__projects`";
-		}
+        if ($this->db->tableExists('#__projects')) {
+            // Create #__projects
+            $queries[] = "DROP TABLE IF EXISTS `#__projects`";
+        }
 
-		if ($this->db->tableExists('#__project_activity'))
-		{
-			// Create #__project_activity
-			$queries[] = "DROP TABLE IF EXISTS `#__project_activity`";
-		}
+        if ($this->db->tableExists('#__project_activity')) {
+            // Create #__project_activity
+            $queries[] = "DROP TABLE IF EXISTS `#__project_activity`";
+        }
 
-		if ($this->db->tableExists('#__project_comments'))
-		{
-			// Create #__project_comments
-			$queries[] = "DROP TABLE IF EXISTS `#__project_comments`";
-		}
+        if ($this->db->tableExists('#__project_comments')) {
+            // Create #__project_comments
+            $queries[] = "DROP TABLE IF EXISTS `#__project_comments`";
+        }
 
-		if ($this->db->tableExists('#__project_microblog'))
-		{
-			// Create #__project_microblog
-			$queries[] = "DROP TABLE IF EXISTS `#__project_microblog`";
-		}
+        if ($this->db->tableExists('#__project_microblog')) {
+            // Create #__project_microblog
+            $queries[] = "DROP TABLE IF EXISTS `#__project_microblog`";
+        }
 
-		if ($this->db->tableExists('#__project_owners'))
-		{
-			// Create #__project_owners
-			$queries[] = "DROP TABLE IF EXISTS `#__project_owners`";
-		}
+        if ($this->db->tableExists('#__project_owners')) {
+            // Create #__project_owners
+            $queries[] = "DROP TABLE IF EXISTS `#__project_owners`";
+        }
 
-		if ($this->db->tableExists('#__project_todo'))
-		{
-			// Create table #__project_todo
-			$queries[] = "DROP TABLE IF EXISTS `#__project_todo`";
-		}
+        if ($this->db->tableExists('#__project_todo')) {
+            // Create table #__project_todo
+            $queries[] = "DROP TABLE IF EXISTS `#__project_todo`";
+        }
 
-		if ($this->db->tableExists('#__project_types'))
-		{
-			// Create #__project_types
-			$queries[] = "DROP TABLE IF EXISTS `#__project_types`";
-		}
+        if ($this->db->tableExists('#__project_types')) {
+            // Create #__project_types
+            $queries[] = "DROP TABLE IF EXISTS `#__project_types`";
+        }
 
-		if ($this->db->tableExists('#__project_logs'))
-		{
-			$queries[] = "DROP TABLE IF EXISTS `#__project_logs`";
-		}
+        if ($this->db->tableExists('#__project_logs')) {
+            $queries[] = "DROP TABLE IF EXISTS `#__project_logs`";
+        }
 
-		if ($this->db->tableExists('#__project_stats'))
-		{
-			$queries[] = "DROP TABLE IF EXISTS `#__project_stats`";
-		}
+        if ($this->db->tableExists('#__project_stats')) {
+            $queries[] = "DROP TABLE IF EXISTS `#__project_stats`";
+        }
 
-		if ($this->db->tableExists('#__project_stats'))
-		{
-			$queries[] = "DROP TABLE IF EXISTS `#__project_stats`";
-		}
+        if ($this->db->tableExists('#__project_stats')) {
+            $queries[] = "DROP TABLE IF EXISTS `#__project_stats`";
+        }
 
-		if ($this->db->tableExists('#__project_public_stamps'))
-		{
-			$queries[] = "DROP TABLE IF EXISTS `#__project_public_stamps`";
-		}
+        if ($this->db->tableExists('#__project_public_stamps')) {
+            $queries[] = "DROP TABLE IF EXISTS `#__project_public_stamps`";
+        }
 
-		if ($this->db->tableExists('#__project_remote_files'))
-		{
-			$queries[] = "DROP TABLE IF EXISTS `#__project_remote_files`";
-		}
+        if ($this->db->tableExists('#__project_remote_files')) {
+            $queries[] = "DROP TABLE IF EXISTS `#__project_remote_files`";
+        }
 
-		$queries[] = "DELETE FROM `#__xmessage_component` WHERE `component` = 'com_projects'";
+        $queries[] = "DELETE FROM `#__xmessage_component` WHERE `component` = 'com_projects'";
 
-		if (count($queries) > 0)
-		{
-			// Run queries
-			foreach ($queries as $query)
-			{
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
+        if (count($queries) > 0) {
+            // Run queries
+            foreach ($queries as $query) {
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
 
-		$this->deleteComponentEntry('Projects');
+        $this->deleteComponentEntry('Projects');
 
-		$this->deletePluginEntry('projects');
-		$this->deletePluginEntry('members', 'projects');
-		$this->deletePluginEntry('groups', 'projects');
+        $this->deletePluginEntry('projects');
+        $this->deletePluginEntry('members', 'projects');
+        $this->deletePluginEntry('groups', 'projects');
 
-		$this->deleteModuleEntry('mod_myprojects');
-	}
+        $this->deleteModuleEntry('mod_myprojects');
+    }
 }

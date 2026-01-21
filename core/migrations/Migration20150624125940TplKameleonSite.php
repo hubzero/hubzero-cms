@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,27 +15,28 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing site Kameleon template
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20150624125940TplKameleonSite extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->deleteTemplateEntry('kameleon', 0);
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->deleteTemplateEntry('kameleon', 0);
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$styles = array(
-			'header' => 'dark',
-			'theme'  => 'salmon'
-		);
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $styles = array(
+            'header' => 'dark',
+            'theme'  => 'salmon'
+        );
 
-		$this->addTemplateEntry('kameleon', 'kameleon (site)', 0, 1, 0, $styles);
-	}
+        $this->addTemplateEntry('kameleon', 'kameleon (site)', 0, 1, 0, $styles);
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,54 +14,54 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for dropping the steps index when it was named automatically by the database and the name didn't match the previous migration
- **/
+ * Migration script for dropping the steps index when it was named
+ * automatically by the database and the name didn't match the previous migration
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20151030000001ComCart extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__cart_transaction_steps'))
-		{
-			$query = "SELECT DISTINCT INDEX_NAME FROM information_schema.statistics WHERE table_name = '" . $this->db->replacePrefix('#__cart_transaction_steps') . "' AND INDEX_NAME LIKE '%tId%'";
-			$this->db->setQuery($query);
-			$this->db->execute();
-			if ($this->db->getNumRows() > 0)
-			{
-				$indexname = $this->db->loadResult();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__cart_transaction_steps')) {
+            $query = "SELECT DISTINCT INDEX_NAME FROM information_schema.statistics WHERE table_name = '"
+                . $this->db->replacePrefix('#__cart_transaction_steps') . "' AND INDEX_NAME LIKE '%tId%'";
+            $this->db->setQuery($query);
+            $this->db->execute();
+            if ($this->db->getNumRows() > 0) {
+                $indexname = $this->db->loadResult();
 
-				$query = "SHOW INDEX FROM " . $this->db->replacePrefix('#__cart_transaction_steps') . " WHERE Key_name = '{$indexname}'";
-				$this->db->setQuery($query);
-				$this->db->execute();
-				if ($this->db->getNumRows() > 0)
-				{
-					$query = "DROP INDEX `{$indexname}` ON " . $this->db->replacePrefix('#__cart_transaction_steps');
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
+                $query = "SHOW INDEX FROM " . $this->db->replacePrefix('#__cart_transaction_steps') . " WHERE "
+                    . "Key_name = '{$indexname}'";
+                $this->db->setQuery($query);
+                $this->db->execute();
+                if ($this->db->getNumRows() > 0) {
+                    $query = "DROP INDEX `{$indexname}` ON " . $this->db->replacePrefix('#__cart_transaction_steps');
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
 
-			if ($this->db->tableExists('#__cart_transaction_steps') && !$this->db->tableHasField('#__cart_transaction_steps', 'tsMeta'))
-			{
-				$query = "ALTER TABLE `#__cart_transaction_steps` ADD `tsMeta` CHAR(255)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-			else if ($this->db->tableHasField('#__cart_transaction_steps', 'tsMeta'))
-			{
-				// Change tsMeta to 255 chars long
-				$query = "ALTER TABLE `#__cart_transaction_steps` MODIFY `tsMeta` CHAR(255)";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if (
+                $this->db->tableExists('#__cart_transaction_steps')
+                && !$this->db->tableHasField('#__cart_transaction_steps', 'tsMeta')
+            ) {
+                $query = "ALTER TABLE `#__cart_transaction_steps` ADD `tsMeta` CHAR(255)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            } elseif ($this->db->tableHasField('#__cart_transaction_steps', 'tsMeta')) {
+                // Change tsMeta to 255 chars long
+                $query = "ALTER TABLE `#__cart_transaction_steps` MODIFY `tsMeta` CHAR(255)";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	public function down()
-	{
-
-	}
-
+    public function down()
+    {
+    }
 }

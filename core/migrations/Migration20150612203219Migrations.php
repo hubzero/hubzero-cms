@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,32 +15,33 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for updating scope on existing migration entries
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20150612203219Migrations extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__migrations'))
-		{
-			$query = "UPDATE `#__migrations` SET `scope`=" . $this->db->quote('core/migrations') . " WHERE `scope`=" . $this->db->quote('migrations');
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__migrations')) {
+            $query = "UPDATE `#__migrations` SET `scope`=" . $this->db->quote('core/migrations')
+                . " WHERE `scope`=" . $this->db->quote('migrations');
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__migrations'))
-		{
-			$query = "UPDATE `#__migrations` SET `scope`=" . $this->db->quote('migrations') . " WHERE `scope`=" . $this->db->quote('core/migrations');
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__migrations')) {
+            $query = "UPDATE `#__migrations` SET `scope`=" . $this->db->quote('migrations')
+                . " WHERE `scope`=" . $this->db->quote('core/migrations');
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,30 +15,30 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for removing unused sites table
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20190305000000Sites extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__sites'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__sites`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__sites')) {
+            $query = "DROP TABLE IF EXISTS `#__sites`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if (!$this->db->tableExists('#__sites'))
-		{
-			$query = "CREATE TABLE `#__sites` (
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if (!$this->db->tableExists('#__sites')) {
+            $query = "CREATE TABLE `#__sites` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `title` varchar(100) DEFAULT NULL,
 			  `category` varchar(100) DEFAULT NULL,
@@ -52,8 +55,8 @@ class Migration20190305000000Sites extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

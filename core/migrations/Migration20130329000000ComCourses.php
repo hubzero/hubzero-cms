@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,12 +15,14 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding course member notes table
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20130329000000ComCourses extends Base
 {
-	public function up()
-	{
-		$query = "CREATE TABLE IF NOT EXISTS `#__courses_member_notes` (
+    public function up()
+    {
+        $query = "CREATE TABLE IF NOT EXISTS `#__courses_member_notes` (
 			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			`scope` varchar(255) NOT NULL DEFAULT '',
 			`scope_id` int(11) NOT NULL DEFAULT '0',
@@ -31,18 +36,18 @@ class Migration20130329000000ComCourses extends Base
 			`state` tinyint(2) NOT NULL DEFAULT '0',
 			PRIMARY KEY (`id`)
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		$this->db->setQuery($query);
-		$this->db->query();
+        $this->db->setQuery($query);
+        $this->db->query();
 
-		$this->addPluginEntry('courses', 'notes');
-	}
+        $this->addPluginEntry('courses', 'notes');
+    }
 
-	public function down()
-	{
-		$query = "DROP TABLE IF EXISTS `#__courses_member_notes`;";
-		$this->db->setQuery($query);
-		$this->db->query();
+    public function down()
+    {
+        $query = "DROP TABLE IF EXISTS `#__courses_member_notes`;";
+        $this->db->setQuery($query);
+        $this->db->query();
 
-		$this->deletePluginEntry('courses', 'notes');
-	}
+        $this->deletePluginEntry('courses', 'notes');
+    }
 }

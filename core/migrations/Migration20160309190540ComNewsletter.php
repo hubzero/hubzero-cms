@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,30 +11,29 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for enabling digest plugins
  * Specifically the event, feedaggregator, and resource plugins
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20160309190540ComNewsletter extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$elements = array('event', 'feedaggregator', 'resource');
-		foreach ($elements as $element)
-		{
-			$this->addPluginEntry('newsletter', $element);
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $elements = array('event', 'feedaggregator', 'resource');
+        foreach ($elements as $element) {
+            $this->addPluginEntry('newsletter', $element);
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$elements = array('event', 'feedaggregator', 'resource');
-		foreach ($elements as $element)
-		{
-			$this->deletePluginEntry('newsletter', $element);
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $elements = array('event', 'feedaggregator', 'resource');
+        foreach ($elements as $element) {
+            $this->deletePluginEntry('newsletter', $element);
+        }
+    }
 }

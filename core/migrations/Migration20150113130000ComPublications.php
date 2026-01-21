@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,38 +15,36 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to add 'curator' column to #__publication_versions
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20150113130000ComPublications extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__publication_versions'))
-		{
-			if (!$this->db->tableHasField('#__publication_versions', 'curator'))
-			{
-				$query = "ALTER TABLE `#__publication_versions` ADD COLUMN curator int(11);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__publication_versions')) {
+            if (!$this->db->tableHasField('#__publication_versions', 'curator')) {
+                $query = "ALTER TABLE `#__publication_versions` ADD COLUMN curator int(11);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__publication_versions'))
-		{
-			if ($this->db->tableHasField('#__publication_versions', 'curator'))
-			{
-				$query = "ALTER TABLE `#__publication_versions` DROP `curator`";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__publication_versions')) {
+            if ($this->db->tableHasField('#__publication_versions', 'curator')) {
+                $query = "ALTER TABLE `#__publication_versions` DROP `curator`";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

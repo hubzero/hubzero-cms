@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,40 +16,41 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for moving member manager notes to user notes table
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20131022144858ComMembers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__xprofiles_manager') && $this->db->tableExists('#__user_notes'))
-		{
-			// Get admin user id number (probabaly 62)
-			$query = "SELECT `id` FROM `#__users` WHERE username = 'admin'";
-			$this->db->setQuery($query);
-			$admin_id = (int) $this->db->loadResult();
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__xprofiles_manager') && $this->db->tableExists('#__user_notes')) {
+            // Get admin user id number (probabaly 62)
+            $query = "SELECT `id` FROM `#__users` WHERE username = 'admin'";
+            $this->db->setQuery($query);
+            $admin_id = (int) $this->db->loadResult();
 
-			// Start by grabbing all xprofile_manager entries
-			$query = "SELECT * FROM `#__xprofiles_manager`";
-			$this->db->setQuery($query);
-			$results = $this->db->loadObjectList();
+            // Start by grabbing all xprofile_manager entries
+            $query = "SELECT * FROM `#__xprofiles_manager`";
+            $this->db->setQuery($query);
+            $results = $this->db->loadObjectList();
 
-			if ($results && count($results) > 0)
-			{
-				foreach ($results as $r)
-				{
-					$query = "INSERT INTO `#__user_notes` (`user_id`, `subject`, `state`, `created_user_id`, `created_time`) VALUES ";
-					$query .= "('{$r->uidNumber}', ".$this->db->quote($r->manager).", '1', '{$admin_id}', '".with(new Date)->toSql()."')";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
+            if ($results && count($results) > 0) {
+                foreach ($results as $r) {
+                    $query = "INSERT INTO `#__user_notes` (`user_id`, `subject`, `state`, `created_user_id`,"
+                        . "`created_time`) VALUES";
+                    $query .= "('{$r->uidNumber}', " . $this->db->quote($r->manager) . ", '1', '{$admin_id}', '"
+                        . Date::toSql() . "')";
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
 
-			$query = "DROP TABLE `#__xprofiles_manager`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $query = "DROP TABLE `#__xprofiles_manager`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,51 +15,50 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for other changes
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20130924000013Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// Change config offset from '0' to 'UTC'!
-		// @FIXME: should we actually set this based on offset, or assume 0?
-		$configuration = file_get_contents(PATH_ROOT . DS . 'configuration.php');
-		$configuration = preg_replace('/(var \$offset[\s]*=[\s]*[\'"]*)([\-0-9]+)([\'"]*)/', '$1UTC$3', $configuration);
-		file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // Change config offset from '0' to 'UTC'!
+        // @FIXME: should we actually set this based on offset, or assume 0?
+        $configuration = file_get_contents(PATH_ROOT . DS . 'configuration.php');
+        $configuration = preg_replace('/(var \$offset[\s]*=[\s]*[\'"]*)([\-0-9]+)([\'"]*)/', '$1UTC$3', $configuration);
+        file_put_contents(PATH_ROOT . DS . 'configuration.php', $configuration);
 
-		$query = "ALTER TABLE `#__core_log_searches` ENGINE = MYISAM;\n";
-		$this->db->setQuery($query);
-		$this->db->query();
+        $query = "ALTER TABLE `#__core_log_searches` ENGINE = MYISAM;\n";
+        $this->db->setQuery($query);
+        $this->db->query();
 
-		if ($this->db->tableHasField('#__core_log_searches', 'hits'))
-		{
-			$query = "ALTER TABLE `#__core_log_searches` CHANGE COLUMN `hits` `hits` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableHasField('#__core_log_searches', 'hits')) {
+            $query = "ALTER TABLE `#__core_log_searches` CHANGE COLUMN `hits` `hits` INT(10) UNSIGNED NOT NULL "
+                . "DEFAULT '0';";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__sections'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__sections` ;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__sections')) {
+            $query = "DROP TABLE IF EXISTS `#__sections` ;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableHasField('#__categories', 'section'))
-		{
-			$query = "ALTER TABLE `#__categories` DROP COLUMN `section`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableHasField('#__categories', 'section')) {
+            $query = "ALTER TABLE `#__categories` DROP COLUMN `section`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		// Reset query
-		$query = "";
+        // Reset query
+        $query = "";
 
-		if (!$this->db->tableExists('#__redirect_links'))
-		{
-			$query .= "CREATE TABLE `#__redirect_links` (
+        if (!$this->db->tableExists('#__redirect_links')) {
+            $query .= "CREATE TABLE `#__redirect_links` (
 							`id` integer unsigned NOT NULL auto_increment,
 							`old_url` VARCHAR(255) NOT NULL,
 							`new_url` VARCHAR(255) NOT NULL,
@@ -70,11 +72,10 @@ class Migration20130924000013Core extends Base
 							UNIQUE KEY `idx_link_old` (`old_url`),
 							KEY `idx_link_modifed` (`modified_date`)
 						)  ENGINE=MYISAM DEFAULT CHARSET=utf8;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__user_notes'))
-		{
-			$query .= "CREATE TABLE IF NOT EXISTS `#__user_notes` (
+        if (!$this->db->tableExists('#__user_notes')) {
+            $query .= "CREATE TABLE IF NOT EXISTS `#__user_notes` (
 							`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
 							`user_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' ,
 							`catid` INT(10) UNSIGNED NOT NULL DEFAULT '0' ,
@@ -96,22 +97,21 @@ class Migration20130924000013Core extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__associations'))
-		{
-			$query .= "CREATE TABLE IF NOT EXISTS `#__associations` (
+        if (!$this->db->tableExists('#__associations')) {
+            $query .= "CREATE TABLE IF NOT EXISTS `#__associations` (
 						`id` VARCHAR(50) NOT NULL COMMENT 'A reference to the associated item.',
 						`context` VARCHAR(50) NOT NULL COMMENT 'The context of the associated item.',
-						`key` CHAR(32) NOT NULL COMMENT 'The key for the association computed from an md5 on associated ids.',
+						`key` CHAR(32) NOT NULL
+							COMMENT 'The key for the association computed from an md5 on associated ids.',
 						PRIMARY KEY `idx_context_id` (`context`, `id`),
 						INDEX `idx_key` (`key`)
 						) DEFAULT CHARSET=utf8;";
-		}
+        }
 
-		if (!$this->db->tableExists('#__overrider'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__overrider` (
+        if (!$this->db->tableExists('#__overrider')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__overrider` (
 							`id` INT(10) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key' ,
 							`constant` VARCHAR(255) NOT NULL ,
 							`string` TEXT NOT NULL ,
@@ -120,90 +120,84 @@ class Migration20130924000013Core extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;";
-		}
+        }
 
-		if ($this->db->tableExists('#__core_log_items'))
-		{
-			$query .= "DROP TABLE `#__core_log_items`;";
-		}
+        if ($this->db->tableExists('#__core_log_items')) {
+            $query .= "DROP TABLE `#__core_log_items`;";
+        }
 
-		if ($this->db->tableExists('#__stats_agents'))
-		{
-			$query .= "DROP TABLE `#__stats_agents`;";
-		}
+        if ($this->db->tableExists('#__stats_agents')) {
+            $query .= "DROP TABLE `#__stats_agents`;";
+        }
 
-		if ($this->db->tableExists('#__migration_backlinks'))
-		{
-			$query .= "DROP TABLE IF EXISTS `#__migration_backlinks` ;";
-		}
+        if ($this->db->tableExists('#__migration_backlinks')) {
+            $query .= "DROP TABLE IF EXISTS `#__migration_backlinks` ;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__schemas'))
-		{
-			$query = "CREATE TABLE `#__schemas` (
+        if (!$this->db->tableExists('#__schemas')) {
+            $query = "CREATE TABLE `#__schemas` (
 							`extension_id` INT(11) NOT NULL,
 							`version_id` VARCHAR(20) NOT NULL,
 							PRIMARY KEY (`extension_id`, `version_id`)
 						) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			$query = "INSERT INTO `#__schemas` (`extension_id`, `version_id`) VALUES (700, '2.5.11');";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $query = "INSERT INTO `#__schemas` (`extension_id`, `version_id`) VALUES (700, '2.5.11');";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$query = "ALTER TABLE `#__session` ENGINE = MYISAM;";
-		$this->db->setQuery($query);
-		$this->db->query();
+        $query = "ALTER TABLE `#__session` ENGINE = MYISAM;";
+        $this->db->setQuery($query);
+        $this->db->query();
 
-		if ($this->db->tableHasField('#__session', 'session_id'))
-		{
-			$query  = "ALTER TABLE `#__session` CHANGE COLUMN `session_id` `session_id` VARCHAR(200) NOT NULL DEFAULT '' FIRST;";
-			$query .= "ALTER TABLE `#__session` DROP PRIMARY KEY , ADD PRIMARY KEY (`session_id`);";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-		if ($this->db->tableHasField('#__session', 'client_id') && $this->db->tableHasField('#__session', 'session_id'))
-		{
-			$query = "ALTER TABLE `#__session` MODIFY COLUMN `client_id` TINYINT UNSIGNED NOT NULL DEFAULT 0 AFTER session_id;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-		if ($this->db->tableHasField('#__session', 'guest') && $this->db->tableHasField('#__session', 'client_id'))
-		{
-			$query = "ALTER TABLE `#__session` CHANGE COLUMN `guest` `guest` TINYINT(4) UNSIGNED NULL DEFAULT '1'  AFTER `client_id`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-		if ($this->db->tableHasField('#__session', 'username') && $this->db->tableHasField('#__session', 'userid'))
-		{
-			$query = "ALTER TABLE `#__session` MODIFY COLUMN `username` VARCHAR(150) DEFAULT '' AFTER userid;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-		if ($this->db->tableHasField('#__session', 'data') && $this->db->tableHasField('#__session', 'time'))
-		{
-			$query = "ALTER TABLE `#__session` CHANGE COLUMN `data` `data` MEDIUMTEXT NULL DEFAULT NULL AFTER time;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-		if ($this->db->tableHasField('#__session', 'gid'))
-		{
-			$query = "ALTER TABLE `#__session` DROP COLUMN `gid`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableHasField('#__session', 'session_id')) {
+            $query = "ALTER TABLE `#__session` CHANGE COLUMN `session_id` `session_id` VARCHAR(200) NOT NULL "
+                . "DEFAULT '' FIRST;";
+            $query .= "ALTER TABLE `#__session` DROP PRIMARY KEY , ADD PRIMARY KEY (`session_id`);";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+        if (
+            $this->db->tableHasField('#__session', 'client_id')
+            && $this->db->tableHasField('#__session', 'session_id')
+        ) {
+            $query = "ALTER TABLE `#__session` MODIFY COLUMN `client_id` TINYINT UNSIGNED NOT NULL DEFAULT 0 AFTER "
+                . "session_id;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+        if ($this->db->tableHasField('#__session', 'guest') && $this->db->tableHasField('#__session', 'client_id')) {
+            $query = "ALTER TABLE `#__session` CHANGE COLUMN `guest` `guest` TINYINT(4) UNSIGNED NULL DEFAULT '1' "
+                . "AFTER `client_id`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+        if ($this->db->tableHasField('#__session', 'username') && $this->db->tableHasField('#__session', 'userid')) {
+            $query = "ALTER TABLE `#__session` MODIFY COLUMN `username` VARCHAR(150) DEFAULT '' AFTER userid;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+        if ($this->db->tableHasField('#__session', 'data') && $this->db->tableHasField('#__session', 'time')) {
+            $query = "ALTER TABLE `#__session` CHANGE COLUMN `data` `data` MEDIUMTEXT NULL DEFAULT NULL AFTER time;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+        if ($this->db->tableHasField('#__session', 'gid')) {
+            $query = "ALTER TABLE `#__session` DROP COLUMN `gid`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__template_styles'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__template_styles` (
+        if (!$this->db->tableExists('#__template_styles')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__template_styles` (
 							`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 							`template` varchar(50) NOT NULL DEFAULT '',
 							`client_id` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -215,76 +209,81 @@ class Migration20130924000013Core extends Base
 							KEY `idx_home` (`home`)
 						) ENGINE=MYISAM  DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			if ($this->db->tableExists('#__templates_menu'))
-			{
-				$query = "INSERT INTO `#__template_styles` VALUES
-					(2, 'bluestork', '1', '0', 'Bluestork - Default', '{\"useRoundedCorners\":\"1\",\"showSiteName\":\"0\"}'),
-					(3, 'atomic', '0', '0', 'Atomic - Default', '{}'),
-					(4, 'beez_20', 0, 0, 'Beez2 - Default', '{\"wrapperSmall\":\"53\",\"wrapperLarge\":\"72\",\"logo\":\"images\\/joomla_black.gif\",\"sitetitle\":\"Joomla!\",\"sitedescription\":\"Open Source Content Management\",\"navposition\":\"left\",\"templatecolor\":\"personal\",\"html5\":\"0\"}'),
-					(5, 'hathor', '1', '0', 'Hathor - Default', '{\"showSiteName\":\"0\",\"colourChoice\":\"\",\"boldText\":\"0\"}'),
-					(6, 'beez5', 0, 0, 'Beez5 - Default', '{\"wrapperSmall\":\"53\",\"wrapperLarge\":\"72\",\"logo\":\"images\\/sampledata\\/fruitshop\\/fruits.gif\",\"sitetitle\":\"Joomla!\",\"sitedescription\":\"Open Source Content Management\",\"navposition\":\"left\",\"html5\":\"0\"}');";
+            if ($this->db->tableExists('#__templates_menu')) {
+                $beez20Params = '{"wrapperSmall":"53","wrapperLarge":"72",'
+                    . '"logo":"images\\/joomla_black.gif","sitetitle":"Joomla!",'
+                    . '"sitedescription":"Open Source Content Management",'
+                    . '"navposition":"left","templatecolor":"personal","html5":"0"}';
+                $beez5Params = '{"wrapperSmall":"53","wrapperLarge":"72",'
+                    . '"logo":"images\\/sampledata\\/fruitshop\\/fruits.gif","sitetitle":"Joomla!",'
+                    . '"sitedescription":"Open Source Content Management",'
+                    . '"navposition":"left","html5":"0"}';
+                $query = "INSERT INTO `#__template_styles` VALUES "
+                    . "(2, 'bluestork', '1', '0', 'Bluestork - Default', "
+                    . "'{\"useRoundedCorners\":\"1\",\"showSiteName\":\"0\"}'), "
+                    . "(3, 'atomic', '0', '0', 'Atomic - Default', '{}'), "
+                    . "(4, 'beez_20', 0, 0, 'Beez2 - Default', '" . $beez20Params . "'), "
+                    . "(5, 'hathor', '1', '0', 'Hathor - Default', "
+                    . "'{\"showSiteName\":\"0\",\"colourChoice\":\"\",\"boldText\":\"0\"}'), "
+                    . "(6, 'beez5', 0, 0, 'Beez5 - Default', '" . $beez5Params . "');";
 
-				$this->db->setQuery($query);
-				$this->db->query();
+                $this->db->setQuery($query);
+                $this->db->query();
 
-				// Insert all templates from extensions
-				$query = "SELECT * FROM `#__extensions` WHERE `type` = 'template';";
-				$this->db->setQuery($query);
-				$result = $this->db->loadObjectList();
+                // Insert all templates from extensions
+                $query = "SELECT * FROM `#__extensions` WHERE `type` = 'template';";
+                $this->db->setQuery($query);
+                $result = $this->db->loadObjectList();
 
-				foreach ($result as $r)
-				{
-					$query = "SELECT * FROM `#__template_styles` WHERE `template` = '{$r->element}';";
-					$this->db->setQuery($query);
-					if ($this->db->loadResult())
-					{
-						continue;
-					}
+                foreach ($result as $r) {
+                    $query = "SELECT * FROM `#__template_styles` WHERE `template` = '{$r->element}';";
+                    $this->db->setQuery($query);
+                    if ($this->db->loadResult()) {
+                        continue;
+                    }
 
-					$query = "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`, `params`) VALUES ('{$r->element}', '{$r->client_id}', '0', '".ucfirst($r->element)."', '{}');";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
+                    $query = "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`,"
+                        . "`params`) VALUES ('{$r->element}', '{$r->client_id}', '0', '" . ucfirst($r->element)
+                        . "', '{}');";
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
 
-				// Update current templates to have home = 1 (one for site and one for admin)
-				$query = "SELECT `template`, `client_id` FROM `#__templates_menu`;";
-				$this->db->setQuery($query);
-				$result = $this->db->loadObjectList();
+                // Update current templates to have home = 1 (one for site and one for admin)
+                $query = "SELECT `template`, `client_id` FROM `#__templates_menu`;";
+                $this->db->setQuery($query);
+                $result = $this->db->loadObjectList();
 
-				foreach ($result as $r)
-				{
-					$query = "UPDATE `#__template_styles` SET `home` = '1' WHERE `template` = '{$r->template}';";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
+                foreach ($result as $r) {
+                    $query = "UPDATE `#__template_styles` SET `home` = '1' WHERE `template` = '{$r->template}';";
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
 
-				// Now make sure something is set for the admin template
-				$query = "SELECT `id` FROM `#__template_styles` WHERE `client_id` = 1 AND `home` = 1";
-				$this->db->setQuery($query);
-				if (!$this->db->loadResult())
-				{
-					$query = "UPDATE `#__template_styles` SET `home` = '1' WHERE `template` = 'hubbasicadmin'";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
-		}
+                // Now make sure something is set for the admin template
+                $query = "SELECT `id` FROM `#__template_styles` WHERE `client_id` = 1 AND `home` = 1";
+                $this->db->setQuery($query);
+                if (!$this->db->loadResult()) {
+                    $query = "UPDATE `#__template_styles` SET `home` = '1' WHERE `template` = 'hubbasicadmin'";
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
+        }
 
-		if ($this->db->tableExists('#__templates_menu'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__templates_menu`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__templates_menu')) {
+            $query = "DROP TABLE IF EXISTS `#__templates_menu`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$query = "";
+        $query = "";
 
-		if (!$this->db->tableExists('#__updates'))
-		{
-			$query .= "CREATE TABLE  `#__updates` (
+        if (!$this->db->tableExists('#__updates')) {
+            $query .= "CREATE TABLE  `#__updates` (
 							`update_id` int(11) NOT NULL auto_increment,
 							`update_site_id` int(11) default '0',
 							`extension_id` int(11) default '0',
@@ -301,10 +300,9 @@ class Migration20130924000013Core extends Base
 							`infourl` TEXT NOT NULL,
 							PRIMARY KEY  (`update_id`)
 						) ENGINE=MYISAM DEFAULT CHARSET=utf8 COMMENT='Available Updates';\n";
-		}
-		if (!$this->db->tableExists('#__update_sites'))
-		{
-			$query .= "CREATE TABLE  `#__update_sites` (
+        }
+        if (!$this->db->tableExists('#__update_sites')) {
+            $query .= "CREATE TABLE  `#__update_sites` (
 							`update_site_id` int(11) NOT NULL auto_increment,
 							`name` varchar(100) default '',
 							`type` varchar(20) default '',
@@ -314,24 +312,23 @@ class Migration20130924000013Core extends Base
 							PRIMARY KEY  (`update_site_id`)
 						) ENGINE=MYISAM DEFAULT CHARSET=utf8 COMMENT='Update Sites';\n";
 
-			$query .= "INSERT INTO `#__update_sites` VALUES ";
-			$query .= "(1, 'Joomla Core', 'collection', 'http://update.joomla.org/core/list.xml', 1, 0),";
-			$query .= "(2, 'Joomla Extension Directory', 'collection', 'http://update.joomla.org/jed/list.xml', 1, 0),";
-			$query .= "(3, 'Accredited Joomla! Translations','collection','http://update.joomla.org/language/translationlist.xml', 1 ,0);";
-		}
-		if (!$this->db->tableExists('#__update_sites_extensions'))
-		{
-			$query .= "CREATE TABLE `#__update_sites_extensions` (
+            $query .= "INSERT INTO `#__update_sites` VALUES ";
+            $query .= "(1, 'Joomla Core', 'collection', 'http://update.joomla.org/core/list.xml', 1, 0),";
+            $query .= "(2, 'Joomla Extension Directory', 'collection', 'http://update.joomla.org/jed/list.xml', 1, 0),";
+            $query .= "(3, 'Accredited Joomla!"
+                . "Translations','collection','http://update.joomla.org/language/translationlist.xml', 1 ,0);";
+        }
+        if (!$this->db->tableExists('#__update_sites_extensions')) {
+            $query .= "CREATE TABLE `#__update_sites_extensions` (
 							`update_site_id` INT(11) NOT NULL DEFAULT '0',
 							`extension_id` INT(11) NOT NULL DEFAULT '0',
 							PRIMARY KEY (`update_site_id`, `extension_id`)
 						) ENGINE = MYISAM CHARACTER SET utf8 COMMENT = 'Links extensions to update sites';\n";
 
-			$query .= "INSERT INTO `#__update_sites_extensions` VALUES (1, 700), (2, 700), (3, 600);";
-		}
-		if (!$this->db->tableExists('#__update_categories'))
-		{
-			$query .= "CREATE TABLE  `#__update_categories` (
+            $query .= "INSERT INTO `#__update_sites_extensions` VALUES (1, 700), (2, 700), (3, 600);";
+        }
+        if (!$this->db->tableExists('#__update_categories')) {
+            $query .= "CREATE TABLE  `#__update_categories` (
 							`categoryid` int(11) NOT NULL auto_increment,
 							`name` varchar(20) default '',
 							`description` TEXT NOT NULL,
@@ -339,12 +336,11 @@ class Migration20130924000013Core extends Base
 							`updatesite` int(11) default '0',
 							PRIMARY KEY  (`categoryid`)
 						) ENGINE=MYISAM DEFAULT CHARSET=utf8 COMMENT='Update Categories';\n";
-		}
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

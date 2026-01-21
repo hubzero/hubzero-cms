@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,63 +15,61 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for deleting com_weblinks
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20140110132217ComWeblinks extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_weblinks';";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_weblinks';";
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		if ($id = $this->db->loadResult())
-		{
-			$this->deleteComponentEntry('weblinks');
+        if ($id = $this->db->loadResult()) {
+            $this->deleteComponentEntry('weblinks');
 
-			$this->deletePluginEntry('search', 'weblinks');
+            $this->deletePluginEntry('search', 'weblinks');
 
-			$this->deleteModuleEntry('mod_weblinks');
+            $this->deleteModuleEntry('mod_weblinks');
 
-			$query = "SELECT `id` FROM `#__modules` WHERE `module`='mod_weblinks';";
-			$this->db->setQuery($query);
-			if ($results = $this->db->loadColumn())
-			{
-				$query = "DELETE FROM `#__modules_menu` WHERE `moduleid` IN (" . implode(',', $results) . ");";
-				$this->db->setQuery($query);
-				$this->db->query();
+            $query = "SELECT `id` FROM `#__modules` WHERE `module`='mod_weblinks';";
+            $this->db->setQuery($query);
+            if ($results = $this->db->loadColumn()) {
+                $query = "DELETE FROM `#__modules_menu` WHERE `moduleid` IN (" . implode(',', $results) . ");";
+                $this->db->setQuery($query);
+                $this->db->query();
 
-				$query = "DELETE FROM `#__modules` WHERE `module`='mod_weblinks';";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query = "DELETE FROM `#__modules` WHERE `module`='mod_weblinks';";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			$query = "DROP TABLE IF EXISTS `#__weblinks`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $query = "DROP TABLE IF EXISTS `#__weblinks`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_weblinks';";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_weblinks';";
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		if (!($id = $this->db->loadResult()))
-		{
-			$this->addComponentEntry('weblinks');
+        if (!($id = $this->db->loadResult())) {
+            $this->addComponentEntry('weblinks');
 
-			$this->addPluginEntry('weblinks', 'contacts', 0);
+            $this->addPluginEntry('weblinks', 'contacts', 0);
 
-			if (!$this->db->tableExists('#__weblinks'))
-			{
-				$query = "CREATE TABLE `#__weblinks` (
+            if (!$this->db->tableExists('#__weblinks')) {
+                $query = "CREATE TABLE `#__weblinks` (
 					  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					  `catid` int(11) NOT NULL DEFAULT '0',
 					  `sid` int(11) NOT NULL DEFAULT '0',
@@ -109,9 +110,9 @@ class Migration20140110132217ComWeblinks extends Base
 					  KEY `idx_language` (`language`),
 					  KEY `idx_xreference` (`xreference`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

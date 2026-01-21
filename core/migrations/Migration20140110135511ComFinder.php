@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,246 +15,218 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for deleting com_finder
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20140110135511ComFinder extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_finder';";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_finder';";
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		if ($id = $this->db->loadResult())
-		{
-			$this->deleteComponentEntry('finder');
+        if ($id = $this->db->loadResult()) {
+            $this->deleteComponentEntry('finder');
 
-			$this->deleteModuleEntry('mod_finder');
+            $this->deleteModuleEntry('mod_finder');
 
-			$query = "SELECT `id` FROM `#__modules` WHERE `module`='mod_finder';";
-			$this->db->setQuery($query);
-			if ($results = $this->db->loadColumn())
-			{
-				$query = "DELETE FROM `#__modules_menu` WHERE `moduleid` IN (" . implode(',', $results) . ");";
-				$this->db->setQuery($query);
-				$this->db->query();
+            $query = "SELECT `id` FROM `#__modules` WHERE `module`='mod_finder';";
+            $this->db->setQuery($query);
+            if ($results = $this->db->loadColumn()) {
+                $query = "DELETE FROM `#__modules_menu` WHERE `moduleid` IN (" . implode(',', $results) . ");";
+                $this->db->setQuery($query);
+                $this->db->query();
 
-				$query = "DELETE FROM `#__modules` WHERE `module`='mod_finder';";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $query = "DELETE FROM `#__modules` WHERE `module`='mod_finder';";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			$this->deletePluginEntry('content', 'finder');
+            $this->deletePluginEntry('content', 'finder');
 
-			$this->deletePluginEntry('finder', 'categories');
-			$this->deletePluginEntry('finder', 'contacts');
-			$this->deletePluginEntry('finder', 'content');
-			$this->deletePluginEntry('finder', 'newsfeeds');
-			$this->deletePluginEntry('finder', 'weblinks');
-		}
+            $this->deletePluginEntry('finder', 'categories');
+            $this->deletePluginEntry('finder', 'contacts');
+            $this->deletePluginEntry('finder', 'content');
+            $this->deletePluginEntry('finder', 'newsfeeds');
+            $this->deletePluginEntry('finder', 'weblinks');
+        }
 
-		if ($this->db->tableExists('#__finder_filters'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_filters`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_filters')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_filters`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_terms0'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_terms0`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_terms0')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_terms0`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_terms1'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_terms1`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_terms1')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_terms1`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_terms2'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_terms2`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_terms2')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_terms2`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_terms3'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_terms3`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_terms3')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_terms3`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_terms4'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_terms4`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_terms4')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_terms4`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_terms5'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_terms5`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_terms5')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_terms5`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_terms6'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_terms6`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_terms6')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_terms6`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_terms7'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_terms7`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_terms7')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_terms7`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_terms8'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_terms8`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_terms8')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_terms8`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_terms9'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_terms9`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_terms9')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_terms9`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_termsa'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_termsa`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_termsa')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_termsa`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_termsb'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_termsb`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_termsb')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_termsb`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_termsc'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_termsc`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_termsc')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_termsc`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_termsd'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_termsd`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_termsd')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_termsd`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_termse'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_termse`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_termse')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_termse`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_links_termsf'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_links_termsf`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_links_termsf')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_links_termsf`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_taxonomy'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_taxonomy`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_taxonomy')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_taxonomy`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_taxonomy_map'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_taxonomy_map`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_taxonomy_map')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_taxonomy_map`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_terms'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_terms`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_terms')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_terms`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_terms_common'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_terms_common`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_terms_common')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_terms_common`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_tokens'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_tokens`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_tokens')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_tokens`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_tokens_aggregate'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_tokens_aggregate`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+        if ($this->db->tableExists('#__finder_tokens_aggregate')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_tokens_aggregate`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__finder_types'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__finder_types`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__finder_types')) {
+            $query = "DROP TABLE IF EXISTS `#__finder_types`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_finder';";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_finder';";
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		if (!($id = $this->db->loadResult()))
-		{
-			$this->addComponentEntry('finder');
+        if (!($id = $this->db->loadResult())) {
+            $this->addComponentEntry('finder');
 
-			$this->addPluginEntry('content', 'finder', 0);
+            $this->addPluginEntry('content', 'finder', 0);
 
-			$this->addPluginEntry('finder', 'categories', 0);
-			$this->addPluginEntry('finder', 'contacts', 0);
-			$this->addPluginEntry('finder', 'content', 0);
-			$this->addPluginEntry('finder', 'newsfeeds', 0);
-			$this->addPluginEntry('finder', 'weblinks', 0);
+            $this->addPluginEntry('finder', 'categories', 0);
+            $this->addPluginEntry('finder', 'contacts', 0);
+            $this->addPluginEntry('finder', 'content', 0);
+            $this->addPluginEntry('finder', 'newsfeeds', 0);
+            $this->addPluginEntry('finder', 'weblinks', 0);
 
-			if (!$this->db->tableExists('#__finder_details'))
-			{
-				$query = "CREATE TABLE `#__finder_filters` (
+            if (!$this->db->tableExists('#__finder_details')) {
+                $query = "CREATE TABLE `#__finder_filters` (
 					  `filter_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					  `title` varchar(255) NOT NULL,
 					  `alias` varchar(255) NOT NULL,
@@ -268,13 +243,12 @@ class Migration20140110135511ComFinder extends Base
 					  `params` mediumtext,
 					  PRIMARY KEY (`filter_id`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableExists('#__finder_links'))
-			{
-				$query = "CREATE TABLE `#__finder_links` (
+            if (!$this->db->tableExists('#__finder_links')) {
+                $query = "CREATE TABLE `#__finder_links` (
 					  `link_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					  `url` varchar(255) NOT NULL,
 					  `route` varchar(255) NOT NULL,
@@ -299,18 +273,18 @@ class Migration20140110135511ComFinder extends Base
 					  KEY `idx_title` (`title`),
 					  KEY `idx_md5` (`md5sum`),
 					  KEY `idx_url` (`url`(75)),
-					  KEY `idx_published_list` (`published`,`state`,`access`,`publish_start_date`,`publish_end_date`,`list_price`),
-					  KEY `idx_published_sale` (`published`,`state`,`access`,`publish_start_date`,`publish_end_date`,`sale_price`)
+					  KEY `idx_published_list` (`published`,`state`,`access`,
+					      `publish_start_date`,`publish_end_date`,`list_price`),
+					  KEY `idx_published_sale` (`published`,`state`,`access`,
+					      `publish_start_date`,`publish_end_date`,`sale_price`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			for ($i = 0; $i < 10; $i++)
-			{
-				if (!$this->db->tableExists('#__finder_links_terms' . $i))
-				{
-					$query = "CREATE TABLE `#__finder_links_terms$i` (
+            for ($i = 0; $i < 10; $i++) {
+                if (!$this->db->tableExists('#__finder_links_terms' . $i)) {
+                    $query = "CREATE TABLE `#__finder_links_terms$i` (
 						  `link_id` int(10) unsigned NOT NULL,
 						  `term_id` int(10) unsigned NOT NULL,
 						  `weight` float unsigned NOT NULL,
@@ -318,18 +292,16 @@ class Migration20140110135511ComFinder extends Base
 						  KEY `idx_term_weight` (`term_id`,`weight`),
 						  KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
 						) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
 
-			$alpha = array('a', 'b', 'c', 'd', 'e', 'f');
+            $alpha = array('a', 'b', 'c', 'd', 'e', 'f');
 
-			foreach ($alpha as $beta)
-			{
-				if (!$this->db->tableExists('#__finder_links_terms' . $beta))
-				{
-					$query = "CREATE TABLE `#__finder_links_terms$beta` (
+            foreach ($alpha as $beta) {
+                if (!$this->db->tableExists('#__finder_links_terms' . $beta)) {
+                    $query = "CREATE TABLE `#__finder_links_terms$beta` (
 						  `link_id` int(10) unsigned NOT NULL,
 						  `term_id` int(10) unsigned NOT NULL,
 						  `weight` float unsigned NOT NULL,
@@ -337,14 +309,13 @@ class Migration20140110135511ComFinder extends Base
 						  KEY `idx_term_weight` (`term_id`,`weight`),
 						  KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
 						) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
 
-			if (!$this->db->tableExists('#__finder_taxonomy'))
-			{
-				$query = "CREATE TABLE `#__finder_taxonomy` (
+            if (!$this->db->tableExists('#__finder_taxonomy')) {
+                $query = "CREATE TABLE `#__finder_taxonomy` (
 					  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					  `parent_id` int(10) unsigned NOT NULL DEFAULT '0',
 					  `title` varchar(255) NOT NULL,
@@ -358,26 +329,24 @@ class Migration20140110135511ComFinder extends Base
 					  KEY `access` (`access`),
 					  KEY `idx_parent_published` (`parent_id`,`state`,`access`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableExists('#__finder_taxonomy_map'))
-			{
-				$query = "CREATE TABLE `#__finder_taxonomy_map` (
+            if (!$this->db->tableExists('#__finder_taxonomy_map')) {
+                $query = "CREATE TABLE `#__finder_taxonomy_map` (
 					  `link_id` int(10) unsigned NOT NULL,
 					  `node_id` int(10) unsigned NOT NULL,
 					  PRIMARY KEY (`link_id`,`node_id`),
 					  KEY `link_id` (`link_id`),
 					  KEY `node_id` (`node_id`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableExists('#__finder_terms'))
-			{
-				$query = "CREATE TABLE `#__finder_terms` (
+            if (!$this->db->tableExists('#__finder_terms')) {
+                $query = "CREATE TABLE `#__finder_terms` (
 					  `term_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					  `term` varchar(75) NOT NULL,
 					  `stem` varchar(75) NOT NULL,
@@ -392,25 +361,23 @@ class Migration20140110135511ComFinder extends Base
 					  KEY `idx_stem_phrase` (`stem`,`phrase`),
 					  KEY `idx_soundex_phrase` (`soundex`,`phrase`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableExists('#__finder_terms_common'))
-			{
-				$query = "CREATE TABLE `#__finder_terms_common` (
+            if (!$this->db->tableExists('#__finder_terms_common')) {
+                $query = "CREATE TABLE `#__finder_terms_common` (
 					  `term` varchar(75) NOT NULL,
 					  `language` varchar(3) NOT NULL,
 					  KEY `idx_word_lang` (`term`,`language`),
 					  KEY `idx_lang` (`language`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableExists('#__finder_tokens'))
-			{
-				$query = "CREATE TABLE `#__finder_tokens` (
+            if (!$this->db->tableExists('#__finder_tokens')) {
+                $query = "CREATE TABLE `#__finder_tokens` (
 					  `term` varchar(75) NOT NULL,
 					  `stem` varchar(75) NOT NULL,
 					  `common` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -420,13 +387,12 @@ class Migration20140110135511ComFinder extends Base
 					  KEY `idx_word` (`term`),
 					  KEY `idx_context` (`context`)
 					) ENGINE=MEMORY DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableExists('#__finder_tokens_aggregate'))
-			{
-				$query = "CREATE TABLE `#__finder_tokens_aggregate` (
+            if (!$this->db->tableExists('#__finder_tokens_aggregate')) {
+                $query = "CREATE TABLE `#__finder_tokens_aggregate` (
 					  `term_id` int(10) unsigned NOT NULL,
 					  `map_suffix` char(1) NOT NULL,
 					  `term` varchar(75) NOT NULL,
@@ -440,22 +406,21 @@ class Migration20140110135511ComFinder extends Base
 					  KEY `token` (`term`),
 					  KEY `keyword_id` (`term_id`)
 					) ENGINE=MEMORY DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableExists('#__finder_types'))
-			{
-				$query = "CREATE TABLE `#__finder_types` (
+            if (!$this->db->tableExists('#__finder_types')) {
+                $query = "CREATE TABLE `#__finder_types` (
 					  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					  `title` varchar(100) NOT NULL,
 					  `mime` varchar(100) NOT NULL,
 					  PRIMARY KEY (`id`),
 					  UNIQUE KEY `title` (`title`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

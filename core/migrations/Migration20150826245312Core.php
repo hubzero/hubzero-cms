@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,19 +15,20 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for languages table addition
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20150826245312Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__languages'))
-		{
-			$query = "UPDATE `#__languages` SET access=1 WHERE lang_id=1 AND access=0;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__languages')) {
+            $query = "UPDATE `#__languages` SET access=1 WHERE lang_id=1 AND access=0;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

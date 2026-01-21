@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +15,24 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding a "My To-Do Items" module contributed by Shaun Einolf <einolfs@mail.nih.gov>
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20141121132012ModMytodos extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addModuleEntry('mod_mytodos', 1, '');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addModuleEntry('mod_mytodos', 1, '');
+    }
 
-	/**
-	 * Up
-	 **/
-	public function down()
-	{
-		$this->deleteModuleEntry('mod_mytodos');
-	}
+    /**
+     * Up
+     **/
+    public function down()
+    {
+        $this->deleteModuleEntry('mod_mytodos');
+    }
 }

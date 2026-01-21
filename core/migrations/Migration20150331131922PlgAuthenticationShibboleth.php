@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,25 +14,30 @@ use Hubzero\Content\Migration\Base;
 defined('_HZEXEC_') or die();
 
 /**
- * Migration script for Shibboleth session data that needs to survive a logout during account linking 
- **/
+ * Migration script for Shibboleth session data that needs to survive a logout during account linking
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20150331131922PlgAuthenticationShibboleth extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->db->setQuery('create table if not exists #__shibboleth_sessions(id serial not null primary key, session_key varchar(200) not null unique key, data text not null, created timestamp not null default current_timestamp)');
-		$this->db->query();
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = 'create table if not exists #__shibboleth_sessions(id serial not null primary key,'
+            . 'session_key varchar(200) not null unique key, data text not null, created timestamp not null '
+            . 'default current_timestamp)';
+        $this->db->setQuery($query);
+        $this->db->query();
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->db->setQuery('drop table #__shibboleth_sessions');
-		$this->db->query();
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->db->setQuery('drop table #__shibboleth_sessions');
+        $this->db->query();
+    }
 }

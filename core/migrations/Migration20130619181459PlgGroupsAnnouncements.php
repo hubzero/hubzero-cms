@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,15 +15,17 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding general announcements table and hiding group messaging tab
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20130619181459PlgGroupsAnnouncements extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "CREATE TABLE IF NOT EXISTS `#__announcements` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "CREATE TABLE IF NOT EXISTS `#__announcements` (
 					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					`scope` varchar(100) DEFAULT NULL,
 					`scope_id` int(11) DEFAULT NULL,
@@ -34,60 +39,56 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
 					`sticky` tinyint(2) NOT NULL DEFAULT '0',
 					PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		$this->db->setQuery($query);
-		$this->db->query();
+        $this->db->setQuery($query);
+        $this->db->query();
 
-		$params = array(
-			'plugin_access' => 'members',
-			'display_tab'   => 1
-		);
+        $params = array(
+            'plugin_access' => 'members',
+            'display_tab'   => 1
+        );
 
-		$this->addPluginEntry('groups', 'announcements', 1, $params);
+        $this->addPluginEntry('groups', 'announcements', 1, $params);
 
-		// get citation params
-		if ($this->db->tableExists('#__extensions'))
-		{
-			$sql = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `element`='messages' AND `folder` = 'groups'";
-		}
-		else
-		{
-			$sql = "SELECT `params` FROM `#__plugins` WHERE `element`='messages' AND `folder`='groups'";
-		}
+        // get citation params
+        if ($this->db->tableExists('#__extensions')) {
+            $sql = "SELECT `params` FROM `#__extensions` "
+                . "WHERE `type`='plugin' AND `element`='messages' AND `folder` = 'groups'";
+        } else {
+            $sql = "SELECT `params` FROM `#__plugins` WHERE `element`='messages' AND `folder`='groups'";
+        }
 
-		$this->db->setQuery($sql);
-		$p = $this->db->loadResult();
+        $this->db->setQuery($sql);
+        $p = $this->db->loadResult();
 
-		// load params object
-		$params = new \Hubzero\Config\Registry($p);
+        // load params object
+        $params = new \Hubzero\Config\Registry($p);
 
-		// set param to hide messages tab
-		$params->set('display_tab', 0);
+        // set param to hide messages tab
+        $params->set('display_tab', 0);
 
-		// save new params
-		if ($this->db->tableExists('#__extensions'))
-		{
-			$query = "UPDATE `#__extensions` SET `params`=".$this->db->quote(json_encode($params->toArray()))." WHERE `element`='messages' AND `folder`='groups'";
-		}
-		else
-		{
-			$query = "UPDATE `#__plugins` SET `params`='" . $params->toString() . "' WHERE `element`='messages' AND `folder`='groups'";
-		}
-		$this->db->setQuery($query);
-		$this->db->query();
-	}
+        // save new params
+        if ($this->db->tableExists('#__extensions')) {
+            $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote(json_encode($params->toArray()))
+                . " WHERE `element`='messages' AND `folder`='groups'";
+        } else {
+            $query = "UPDATE `#__plugins` SET `params`='" . $params->toString() . "' WHERE `element`='messages' "
+                . "AND `folder`='groups'";
+        }
+        $this->db->setQuery($query);
+        $this->db->query();
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__announcements'))
-		{
-			$query = "DROP TABLE `#__announcements`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__announcements')) {
+            $query = "DROP TABLE `#__announcements`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		$this->deletePluginEntry('groups', 'announcements');
-	}
+        $this->deletePluginEntry('groups', 'announcements');
+    }
 }

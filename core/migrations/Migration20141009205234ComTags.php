@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,24 +15,24 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for fixing up tags tag field data type
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20141009205234ComTags extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__tags'))
-		{
-			$info = $this->db->getTableColumns('#__tags', false);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__tags')) {
+            $info = $this->db->getTableColumns('#__tags', false);
 
-			if ($this->db->tableHasField('#__tags', 'tag') && $info['tag']->Null != "NO")
-			{
-				$query = "ALTER TABLE `#__tags` CHANGE COLUMN `tag` `tag` VARCHAR(100) NOT NULL DEFAULT '' ";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if ($this->db->tableHasField('#__tags', 'tag') && $info['tag']->Null != "NO") {
+                $query = "ALTER TABLE `#__tags` CHANGE COLUMN `tag` `tag` VARCHAR(100) NOT NULL DEFAULT '' ";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

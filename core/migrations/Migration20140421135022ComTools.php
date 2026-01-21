@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,18 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script to add #__tool_version_zone table
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20140421135022ComTools extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__tool_version_zone'))
-		{
-			$query = "CREATE TABLE IF NOT EXISTS `#__tool_version_zone` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__tool_version_zone')) {
+            $query = "CREATE TABLE IF NOT EXISTS `#__tool_version_zone` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `tool_version_id` int(11) NOT NULL,
 			  `zone_id` int(11) NOT NULL,
@@ -31,8 +35,8 @@ class Migration20140421135022ComTools extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

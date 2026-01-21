@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,17 +10,18 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding activity log tables
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20160415105038CoreActivity extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__activity_logs'))
-		{
-			$query = "CREATE TABLE `#__activity_logs` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__activity_logs')) {
+            $query = "CREATE TABLE `#__activity_logs` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `created` datetime DEFAULT '0000-00-00 00:00:00',
 				  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
@@ -34,13 +36,12 @@ class Migration20160415105038CoreActivity extends Base
 				  KEY `idx_action` (`action`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__activity_recipients'))
-		{
-			$query = "CREATE TABLE `#__activity_recipients` (
+        if (!$this->db->tableExists('#__activity_recipients')) {
+            $query = "CREATE TABLE `#__activity_recipients` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `log_id` int(11) unsigned NOT NULL DEFAULT '0',
 				  `scope` varchar(250) NOT NULL,
@@ -54,13 +55,12 @@ class Migration20160415105038CoreActivity extends Base
 				  KEY `idx_state` (`state`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__activity_subscriptions'))
-		{
-			$query = "CREATE TABLE `#__activity_subscriptions` (
+        if (!$this->db->tableExists('#__activity_subscriptions')) {
+            $query = "CREATE TABLE `#__activity_subscriptions` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
 				  `scope` varchar(250) NOT NULL DEFAULT '',
@@ -71,38 +71,35 @@ class Migration20160415105038CoreActivity extends Base
 				  KEY `idx_scope_scope_id` (`scope`,`scope_id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__activity_logs'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__activity_logs`;";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__activity_logs')) {
+            $query = "DROP TABLE IF EXISTS `#__activity_logs`;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__activity_recipients'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__activity_recipients`;";
+        if ($this->db->tableExists('#__activity_recipients')) {
+            $query = "DROP TABLE IF EXISTS `#__activity_recipients`;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__activity_subscriptions'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__activity_subscriptions`;";
+        if ($this->db->tableExists('#__activity_subscriptions')) {
+            $query = "DROP TABLE IF EXISTS `#__activity_subscriptions`;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,50 +15,48 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for deleting com_contact
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20140110132511ComContact extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_contact';";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_contact';";
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		if ($id = $this->db->loadResult())
-		{
-			$this->deleteComponentEntry('contact');
+        if ($id = $this->db->loadResult()) {
+            $this->deleteComponentEntry('contact');
 
-			$this->deletePluginEntry('search', 'contacts');
-			$this->deletePluginEntry('user', 'contactcreator');
+            $this->deletePluginEntry('search', 'contacts');
+            $this->deletePluginEntry('user', 'contactcreator');
 
-			$query = "DROP TABLE IF EXISTS `#__contact_details`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $query = "DROP TABLE IF EXISTS `#__contact_details`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_contact';";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_contact';";
 
-		$this->db->setQuery($query);
+        $this->db->setQuery($query);
 
-		if (!($id = $this->db->loadResult()))
-		{
-			$this->addComponentEntry('contact');
+        if (!($id = $this->db->loadResult())) {
+            $this->addComponentEntry('contact');
 
-			$this->addPluginEntry('search', 'contacts', 0);
-			$this->addPluginEntry('user', 'contactcreator');
+            $this->addPluginEntry('search', 'contacts', 0);
+            $this->addPluginEntry('user', 'contactcreator');
 
-			if (!$this->db->tableExists('#__contact_details'))
-			{
-				$query = "CREATE TABLE `#__contact_details` (
+            if (!$this->db->tableExists('#__contact_details')) {
+                $query = "CREATE TABLE `#__contact_details` (
 					  `id` int(11) NOT NULL AUTO_INCREMENT,
 					  `name` varchar(255) NOT NULL DEFAULT '',
 					  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
@@ -108,9 +109,9 @@ class Migration20140110132511ComContact extends Base
 					  KEY `idx_language` (`language`),
 					  KEY `idx_xreference` (`xreference`)
 					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,16 +15,18 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for clearing old recapta keys
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20150107021244PlgHubzeroRecaptcha extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		// delete and then add to clear old keys
-		$this->deletePluginEntry('hubzero', 'recaptcha');
-		$this->addPluginEntry('hubzero', 'recaptcha');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        // delete and then add to clear old keys
+        $this->deletePluginEntry('hubzero', 'recaptcha');
+        $this->addPluginEntry('hubzero', 'recaptcha');
+    }
 }

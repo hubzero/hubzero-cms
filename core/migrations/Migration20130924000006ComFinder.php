@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,19 +15,20 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for new joomla search/finder tables
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20130924000006ComFinder extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "";
 
-		if (!$this->db->tableExists('#__finder_filters'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_filters` (
+        if (!$this->db->tableExists('#__finder_filters')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_filters` (
 							`filter_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
 							`title` VARCHAR(255) NOT NULL ,
 							`alias` VARCHAR(255) NOT NULL ,
@@ -43,11 +47,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links` (
+        if (!$this->db->tableExists('#__finder_links')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links` (
 							`link_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
 							`url` VARCHAR(255) NOT NULL ,
 							`route` VARCHAR(255) NOT NULL ,
@@ -72,16 +75,17 @@ class Migration20130924000006ComFinder extends Base
 							INDEX `idx_title` (`title` ASC) ,
 							INDEX `idx_md5` (`md5sum` ASC) ,
 							INDEX `idx_url` (`url`(75) ASC) ,
-							INDEX `idx_published_list` (`published` ASC, `state` ASC, `access` ASC, `publish_start_date` ASC, `publish_end_date` ASC, `list_price` ASC) ,
-							INDEX `idx_published_sale` (`published` ASC, `state` ASC, `access` ASC, `publish_start_date` ASC, `publish_end_date` ASC, `sale_price` ASC) )
+							INDEX `idx_published_list` (`published` ASC, `state` ASC, `access` ASC,
+								`publish_start_date` ASC, `publish_end_date` ASC, `list_price` ASC) ,
+							INDEX `idx_published_sale` (`published` ASC, `state` ASC, `access` ASC,
+								`publish_start_date` ASC, `publish_end_date` ASC, `sale_price` ASC) )
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_terms0'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms0` (
+        if (!$this->db->tableExists('#__finder_links_terms0')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms0` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -91,11 +95,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_terms1'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms1` (
+        if (!$this->db->tableExists('#__finder_links_terms1')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms1` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -105,11 +108,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_terms2'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms2` (
+        if (!$this->db->tableExists('#__finder_links_terms2')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms2` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -119,11 +121,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_terms3'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms3` (
+        if (!$this->db->tableExists('#__finder_links_terms3')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms3` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -133,11 +134,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_terms4'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms4` (
+        if (!$this->db->tableExists('#__finder_links_terms4')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms4` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -147,11 +147,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_terms5'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms5` (
+        if (!$this->db->tableExists('#__finder_links_terms5')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms5` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -161,11 +160,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_terms6'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms6` (
+        if (!$this->db->tableExists('#__finder_links_terms6')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms6` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -175,11 +173,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_terms7'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms7` (
+        if (!$this->db->tableExists('#__finder_links_terms7')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms7` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -189,11 +186,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_terms8'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms8` (
+        if (!$this->db->tableExists('#__finder_links_terms8')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms8` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -203,11 +199,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_terms9'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms9` (
+        if (!$this->db->tableExists('#__finder_links_terms9')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms9` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -217,11 +212,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_termsa'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsa` (
+        if (!$this->db->tableExists('#__finder_links_termsa')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsa` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -231,11 +225,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_termsb'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsb` (
+        if (!$this->db->tableExists('#__finder_links_termsb')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsb` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -245,11 +238,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_termsc'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsc` (
+        if (!$this->db->tableExists('#__finder_links_termsc')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsc` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -259,11 +251,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_termsd'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsd` (
+        if (!$this->db->tableExists('#__finder_links_termsd')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsd` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -273,11 +264,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_termse'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termse` (
+        if (!$this->db->tableExists('#__finder_links_termse')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termse` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -287,11 +277,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_links_termsf'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsf` (
+        if (!$this->db->tableExists('#__finder_links_termsf')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsf` (
 							`link_id` INT(10) UNSIGNED NOT NULL ,
 							`term_id` INT(10) UNSIGNED NOT NULL ,
 							`weight` FLOAT(10) UNSIGNED NOT NULL ,
@@ -301,11 +290,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_taxonomy'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_taxonomy` (
+        if (!$this->db->tableExists('#__finder_taxonomy')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_taxonomy` (
 						`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
 						`parent_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' ,
 						`title` VARCHAR(255) NOT NULL ,
@@ -323,13 +311,12 @@ class Migration20130924000006ComFinder extends Base
 						COLLATE = utf8_general_ci;\n";
 
 
-			$query .= "INSERT INTO `#__finder_taxonomy` (`id`, `parent_id`, `title`, `state`, `access`, `ordering`) VALUES (1, 0, 'ROOT', 0, 0, 0);";
+            $query .= "INSERT INTO `#__finder_taxonomy` (`id`, `parent_id`, `title`, `state`, `access`,"
+                . "`ordering`) VALUES (1, 0, 'ROOT', 0, 0, 0);";
+        }
 
-		}
-
-		if (!$this->db->tableExists('#__finder_taxonomy_map'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_taxonomy_map` (
+        if (!$this->db->tableExists('#__finder_taxonomy_map')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_taxonomy_map` (
 						`link_id` INT(10) UNSIGNED NOT NULL ,
 						`node_id` INT(10) UNSIGNED NOT NULL ,
 						PRIMARY KEY (`link_id`, `node_id`) ,
@@ -338,11 +325,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_terms'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_terms` (
+        if (!$this->db->tableExists('#__finder_terms')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_terms` (
 						`term_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
 						`term` VARCHAR(75) NOT NULL ,
 						`stem` VARCHAR(75) NOT NULL ,
@@ -359,11 +345,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_terms_common'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_terms_common` (
+        if (!$this->db->tableExists('#__finder_terms_common')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_terms_common` (
 						`term` VARCHAR(75) NOT NULL ,
 						`language` VARCHAR(3) NOT NULL ,
 						INDEX `idx_word_lang` (`term` ASC, `language` ASC) ,
@@ -372,7 +357,7 @@ class Migration20130924000006ComFinder extends Base
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 
-			$query .= "INSERT INTO `#__finder_terms_common` (`term`, `language`) VALUES
+            $query .= "INSERT INTO `#__finder_terms_common` (`term`, `language`) VALUES
 						('a', 'en'),
 						('about', 'en'),
 						('after', 'en'),
@@ -488,11 +473,10 @@ class Migration20130924000006ComFinder extends Base
 						('you', 'en'),
 						('your', 'en'),
 						('yours', 'en');";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_tokens'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_tokens` (
+        if (!$this->db->tableExists('#__finder_tokens')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_tokens` (
 						`term` VARCHAR(75) NOT NULL ,
 						`stem` VARCHAR(75) NOT NULL ,
 						`common` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ,
@@ -504,11 +488,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MEMORY
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_tokens_aggregate'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_tokens_aggregate` (
+        if (!$this->db->tableExists('#__finder_tokens_aggregate')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_tokens_aggregate` (
 						`term_id` INT(10) UNSIGNED NOT NULL ,
 						`map_suffix` CHAR(1) NOT NULL ,
 						`term` VARCHAR(75) NOT NULL ,
@@ -524,11 +507,10 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MEMORY
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!$this->db->tableExists('#__finder_types'))
-		{
-			$query .= "CREATE  TABLE IF NOT EXISTS `#__finder_types` (
+        if (!$this->db->tableExists('#__finder_types')) {
+            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_types` (
 						`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
 						`title` VARCHAR(100) NOT NULL ,
 						`mime` VARCHAR(100) NOT NULL ,
@@ -537,12 +519,11 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-		}
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

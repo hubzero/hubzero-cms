@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,26 +10,27 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for replacing HUBADDRESS references in KB article
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20151026173235ComKb extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__faq'))
-		{
-			$query = "UPDATE `#__faq` SET `fulltxt` = REPLACE(`fulltxt`, 'HUBADDRESS', '{xhub:getcfg hubHostname}')";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__faq')) {
+            $query = "UPDATE `#__faq` SET `fulltxt` = REPLACE(`fulltxt`, 'HUBADDRESS', '{xhub:getcfg hubHostname}')";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__kb_articles'))
-		{
-			$query = "UPDATE `#__kb_articles` SET `fulltxt` = REPLACE(`fulltxt`, 'HUBADDRESS', '{xhub:getcfg hubHostname}')";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__kb_articles')) {
+            $query = "UPDATE `#__kb_articles` SET `fulltxt` = REPLACE(`fulltxt`, 'HUBADDRESS', '{xhub:getcfg"
+                . "hubHostname}')";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,17 +10,18 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for creating table #__audit_results
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20160205162525Core extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__audit_results'))
-		{
-			$query = "CREATE TABLE `#__audit_results` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__audit_results')) {
+            $query = "CREATE TABLE `#__audit_results` (
 				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 				  `scope` varchar(100) NOT NULL DEFAULT '',
 				  `scope_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -32,21 +34,20 @@ class Migration20160205162525Core extends Base
 				  KEY `idx_status` (`status`),
 				  KEY `idx_test_id` (`test_id`)
 				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__audit_results'))
-		{
-			$query = "DROP TABLE `#__audit_results`";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__audit_results')) {
+            $query = "DROP TABLE `#__audit_results`";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

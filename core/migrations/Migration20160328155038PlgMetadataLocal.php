@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,19 +10,20 @@ use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding local metadata support
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20160328155038PlgMetadataLocal extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('metadata', 'local', 0);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('metadata', 'local', 0);
 
-		if (!$this->db->tableExists('#__file_metadata'))
-		{
-			$query = "CREATE TABLE `#__file_metadata` (
+        if (!$this->db->tableExists('#__file_metadata')) {
+            $query = "CREATE TABLE `#__file_metadata` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `path` varchar(255) NOT NULL DEFAULT '',
 					  `key` varchar(255) NOT NULL DEFAULT '',
@@ -29,21 +31,20 @@ class Migration20160328155038PlgMetadataLocal extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('metadata', 'local');
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('metadata', 'local');
 
-		if (!$this->db->tableExists('#__file_metadata'))
-		{
-			$query = "CREATE TABLE `#__file_metadata` (
+        if (!$this->db->tableExists('#__file_metadata')) {
+            $query = "CREATE TABLE `#__file_metadata` (
 					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 					  `path` varchar(255) NOT NULL DEFAULT '',
 					  `key` varchar(255) NOT NULL DEFAULT '',
@@ -51,8 +52,8 @@ class Migration20160328155038PlgMetadataLocal extends Base
 					  PRIMARY KEY (`id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

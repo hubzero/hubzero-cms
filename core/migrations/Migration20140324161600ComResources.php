@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,20 +15,21 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for resource import tables
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20140324161600ComResources extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = '';
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = '';
 
-		// imports table
-		if (!$this->db->tableExists('#__resource_imports'))
-		{
-			$query .= "CREATE TABLE IF NOT EXISTS `#__resource_imports` (
+        // imports table
+        if (!$this->db->tableExists('#__resource_imports')) {
+            $query .= "CREATE TABLE IF NOT EXISTS `#__resource_imports` (
 						  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `name` varchar(150) DEFAULT NULL,
 						  `notes` text,
@@ -39,12 +43,11 @@ class Migration20140324161600ComResources extends Base
 						  `hooks` text,
 						  PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
-		}
+        }
 
-		// runs table
-		if (!$this->db->tableExists('#__resource_import_runs'))
-		{
-			$query .= "CREATE TABLE IF NOT EXISTS `#__resource_import_runs` (
+        // runs table
+        if (!$this->db->tableExists('#__resource_import_runs')) {
+            $query .= "CREATE TABLE IF NOT EXISTS `#__resource_import_runs` (
 						  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `import_id` int(11) DEFAULT NULL,
 						  `processed` int(11) DEFAULT NULL,
@@ -54,12 +57,11 @@ class Migration20140324161600ComResources extends Base
 						  `dry_run` int(11) DEFAULT '0',
 						  PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
-		}
+        }
 
-		// hooks table
-		if (!$this->db->tableExists('#__resource_import_hooks'))
-		{
-			$query .= "CREATE TABLE IF NOT EXISTS `#__resource_import_hooks` (
+        // hooks table
+        if (!$this->db->tableExists('#__resource_import_hooks')) {
+            $query .= "CREATE TABLE IF NOT EXISTS `#__resource_import_hooks` (
 						  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `type` varchar(25) DEFAULT NULL,
 						  `name` varchar(255) DEFAULT NULL,
@@ -70,44 +72,39 @@ class Migration20140324161600ComResources extends Base
 						  `created_by` int(11) DEFAULT NULL,
 						  PRIMARY KEY (`id`)
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
-		}
+        }
 
-		if ($query != '')
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($query != '') {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = '';
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = '';
 
-		// imports table
-		if ($this->db->tableExists('#__resource_imports'))
-		{
-			$query .= "DROP TABLE IF EXISTS `#__resource_imports`;\n";
-		}
+        // imports table
+        if ($this->db->tableExists('#__resource_imports')) {
+            $query .= "DROP TABLE IF EXISTS `#__resource_imports`;\n";
+        }
 
-		// runs table
-		if ($this->db->tableExists('#__resource_import_runs'))
-		{
-			$query .= "DROP TABLE IF EXISTS `#__resource_import_runs`;\n";
-		}
+        // runs table
+        if ($this->db->tableExists('#__resource_import_runs')) {
+            $query .= "DROP TABLE IF EXISTS `#__resource_import_runs`;\n";
+        }
 
-		// hooks table
-		if ($this->db->tableExists('#__resource_import_hooks'))
-		{
-			$query .= "DROP TABLE IF EXISTS `#__resource_import_hooks`;\n";
-		}
+        // hooks table
+        if ($this->db->tableExists('#__resource_import_hooks')) {
+            $query .= "DROP TABLE IF EXISTS `#__resource_import_hooks`;\n";
+        }
 
-		if ($query != '')
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($query != '') {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

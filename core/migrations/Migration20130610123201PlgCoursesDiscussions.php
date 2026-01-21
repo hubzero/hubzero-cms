@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,44 +15,43 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for fixing wrong datatype on column
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20130610123201PlgCoursesDiscussions extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$query = "";
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $query = "";
 
-		if (!$this->db->tableHasField('#__forum_posts', 'scope_sub_id'))
-		{
-			$query = "ALTER TABLE `#__forum_posts` ADD `scope_sub_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `scope_id`;";
-		}
+        if (!$this->db->tableHasField('#__forum_posts', 'scope_sub_id')) {
+            $query = "ALTER TABLE `#__forum_posts` ADD `scope_sub_id` "
+                . "INT(11) NOT NULL DEFAULT '0' AFTER `scope_id`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$query = "";
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $query = "";
 
-		if ($this->db->tableHasField('#__forum_posts', 'scope_sub_id'))
-		{
-			$query .= "ALTER TABLE `#__forum_posts` DROP `scope_sub_id`;";
-		}
+        if ($this->db->tableHasField('#__forum_posts', 'scope_sub_id')) {
+            $query .= "ALTER TABLE `#__forum_posts` DROP `scope_sub_id`;";
+        }
 
-		if (!empty($query))
-		{
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if (!empty($query)) {
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

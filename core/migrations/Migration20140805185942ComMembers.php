@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,32 +15,33 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding fulltext index to xprofiles giveName, middleName, and surname fields.
- **/
+ *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+ */
 class Migration20140805185942ComMembers extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx'))
-		{
-			$query = "ALTER TABLE `#__xprofiles` ADD FULLTEXT jos_xprofiles_fullname_ftidx (givenName, middleName, surname);";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx')) {
+            $query = "ALTER TABLE `#__xprofiles` "
+                . "ADD FULLTEXT jos_xprofiles_fullname_ftidx (givenName, middleName, surname);";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx'))
-		{
-			$query = "ALTER TABLE `#__xprofiles` DROP INDEX jos_xprofiles_fullname_ftidx;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx')) {
+            $query = "ALTER TABLE `#__xprofiles` DROP INDEX jos_xprofiles_fullname_ftidx;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

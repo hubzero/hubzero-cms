@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,17 +15,18 @@ defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding indices and setting default field value
+  *
+ * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  **/
 class Migration20131108091700ComBlog extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if ($this->db->tableExists('#__blog_entries'))
-		{
-			$query = "ALTER TABLE `#__blog_entries`
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if ($this->db->tableExists('#__blog_entries')) {
+            $query = "ALTER TABLE `#__blog_entries`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `created_by` `created_by` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `state` `state` TINYINT(2)  NOT NULL  DEFAULT '0',
@@ -36,41 +40,36 @@ class Migration20131108091700ComBlog extends Base
 					CHANGE `alias` `alias` VARCHAR(255)  NOT NULL  DEFAULT '',
 					CHANGE `title` `title` VARCHAR(255)  NOT NULL  DEFAULT ''
 			;";
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			if ($this->db->tableHasField('#__blog_entries', 'group_id'))
-			{
-				$query = "ALTER TABLE `#__blog_entries` CHANGE `group_id` `group_id` INT(11)  NOT NULL  DEFAULT '0';";
-				$this->db->setQuery($query);
-				$this->db->query();
+            if ($this->db->tableHasField('#__blog_entries', 'group_id')) {
+                $query = "ALTER TABLE `#__blog_entries` CHANGE `group_id` `group_id` INT(11)  NOT NULL  DEFAULT '0';";
+                $this->db->setQuery($query);
+                $this->db->query();
 
-				if (!$this->db->tableHasKey('#__blog_entries', 'idx_group_id'))
-				{
-					$query = "ALTER TABLE `#__blog_entries` ADD INDEX `idx_group_id` (`group_id`);";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}
+                if (!$this->db->tableHasKey('#__blog_entries', 'idx_group_id')) {
+                    $query = "ALTER TABLE `#__blog_entries` ADD INDEX `idx_group_id` (`group_id`);";
+                    $this->db->setQuery($query);
+                    $this->db->query();
+                }
+            }
 
-			if (!$this->db->tableHasKey('#__blog_entries', 'idx_created_by'))
-			{
-				$query = "ALTER TABLE `#__blog_entries` ADD INDEX `idx_created_by` (`created_by`);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+            if (!$this->db->tableHasKey('#__blog_entries', 'idx_created_by')) {
+                $query = "ALTER TABLE `#__blog_entries` ADD INDEX `idx_created_by` (`created_by`);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableHasKey('#__blog_entries', 'idx_alias'))
-			{
-				$query = "ALTER TABLE `#__blog_entries` ADD INDEX `idx_alias` (`alias`);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
+            if (!$this->db->tableHasKey('#__blog_entries', 'idx_alias')) {
+                $query = "ALTER TABLE `#__blog_entries` ADD INDEX `idx_alias` (`alias`);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
 
-		if ($this->db->tableExists('#__blog_comments'))
-		{
-			$query = "ALTER TABLE `#__blog_comments`
+        if ($this->db->tableExists('#__blog_comments')) {
+            $query = "ALTER TABLE `#__blog_comments`
 					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
 					CHANGE `parent` `parent` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `created_by` `created_by` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
@@ -78,69 +77,60 @@ class Migration20131108091700ComBlog extends Base
 					CHANGE `entry_id` `entry_id` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
 					CHANGE `content` `content` TEXT  NOT NULL
 			;";
-			$this->db->setQuery($query);
-			$this->db->query();
+            $this->db->setQuery($query);
+            $this->db->query();
 
-			if (!$this->db->tableHasKey('#__blog_comments', 'idx_created_by'))
-			{
-				$query = "ALTER TABLE `#__blog_comments` ADD INDEX `idx_created_by` (`created_by`);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+            if (!$this->db->tableHasKey('#__blog_comments', 'idx_created_by')) {
+                $query = "ALTER TABLE `#__blog_comments` ADD INDEX `idx_created_by` (`created_by`);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if (!$this->db->tableHasKey('#__blog_comments', 'idx_parent'))
-			{
-				$query = "ALTER TABLE `#__blog_comments` ADD INDEX `idx_parent` (`parent`);";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if (!$this->db->tableHasKey('#__blog_comments', 'idx_parent')) {
+                $query = "ALTER TABLE `#__blog_comments` ADD INDEX `idx_parent` (`parent`);";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__blog_entries'))
-		{
-			if ($this->db->tableHasKey('#__blog_entries', 'idx_created_by'))
-			{
-				$query = "ALTER TABLE `#__blog_entries` DROP INDEX `idx_created_by`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__blog_entries')) {
+            if ($this->db->tableHasKey('#__blog_entries', 'idx_created_by')) {
+                $query = "ALTER TABLE `#__blog_entries` DROP INDEX `idx_created_by`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if ($this->db->tableHasKey('#__blog_entries', 'idx_group_id'))
-			{
-				$query = "ALTER TABLE `#__blog_entries` DROP INDEX `idx_group_id`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+            if ($this->db->tableHasKey('#__blog_entries', 'idx_group_id')) {
+                $query = "ALTER TABLE `#__blog_entries` DROP INDEX `idx_group_id`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if ($this->db->tableHasKey('#__blog_entries', 'idx_alias'))
-			{
-				$query = "ALTER TABLE `#__blog_entries` DROP INDEX `idx_alias`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
+            if ($this->db->tableHasKey('#__blog_entries', 'idx_alias')) {
+                $query = "ALTER TABLE `#__blog_entries` DROP INDEX `idx_alias`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
 
-		if ($this->db->tableExists('#__blog_comments'))
-		{
-			if ($this->db->tableHasKey('#__blog_comments', 'idx_created_by'))
-			{
-				$query = "ALTER TABLE `#__blog_comments` DROP INDEX `idx_created_by`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
+        if ($this->db->tableExists('#__blog_comments')) {
+            if ($this->db->tableHasKey('#__blog_comments', 'idx_created_by')) {
+                $query = "ALTER TABLE `#__blog_comments` DROP INDEX `idx_created_by`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
 
-			if ($this->db->tableHasKey('#__blog_comments', 'idx_parent'))
-			{
-				$query = "ALTER TABLE `#__blog_comments` DROP INDEX `idx_parent`;";
-				$this->db->setQuery($query);
-				$this->db->query();
-			}
-		}
-	}
+            if ($this->db->tableHasKey('#__blog_comments', 'idx_parent')) {
+                $query = "ALTER TABLE `#__blog_comments` DROP INDEX `idx_parent`;";
+                $this->db->setQuery($query);
+                $this->db->query();
+            }
+        }
+    }
 }
