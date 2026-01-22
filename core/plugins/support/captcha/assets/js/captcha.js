@@ -5,12 +5,12 @@
  */
 
 if (!jq) {
-	var jq = $;
+    var jq = $;
 }
 
 // Initialize script
-jQuery(document).ready(function(jq){
-	var $ = jq;
-	// Nothing here. 
-	// All scripts are inline at the moment.
+jQuery(document).ready(function (jq) {
+    var $ = jq;
+    // Nothing here.
+    // All scripts are inline at the moment.
 });
