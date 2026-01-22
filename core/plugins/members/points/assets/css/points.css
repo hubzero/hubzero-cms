@@ -6,57 +6,57 @@
 
 /*
 
-	-- -- -- -- -- -- --
-	Members Points plugin CSS
-	-- -- -- -- -- -- --
+    -- -- -- -- -- -- --
+    Members Points plugin CSS
+    -- -- -- -- -- -- --
 
 */
 
 /* Point Balance Box */
-	.point-balance-container {
-		margin: 1em 0;
-		padding: 1.618em;
-		border: 0.27em solid #e1e1e1;
-		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
-		background: #f5f5f5;
-	}
-	.point-balance-container h4 {
-		display: none;
-	}
-	.point-balance {
-		text-align: center;
-	}
-	.point-balance strong {
-		font-size: 1.8em;
-		font-weight: bold;
-	}
-	.point-balance span {
-		color:#888;
-	}
-	.point-balance .spend {
-		display: block;
-		font-size: 1em;
-		color: #888;
-		margin: 1em 0 0 0;
-	}
+    .point-balance-container {
+        margin: 1em 0;
+        padding: 1.618em;
+        border: 0.27em solid #e1e1e1;
+        -webkit-border-radius: 0.25em;
+        -moz-border-radius: 0.25em;
+        -ms-border-radius: 0.25em;
+        -o-border-radius: 0.25em;
+        border-radius: 0.25em;
+        background: #f5f5f5;
+    }
+    .point-balance-container h4 {
+        display: none;
+    }
+    .point-balance {
+        text-align: center;
+    }
+    .point-balance strong {
+        font-size: 1.8em;
+        font-weight: bold;
+    }
+    .point-balance span {
+        color:#888;
+    }
+    .point-balance .spend {
+        display: block;
+        font-size: 1em;
+        color: #888;
+        margin: 1em 0 0 0;
+    }
 
 /* Point transactions table */
-	.com_members .transactions thead th {
-		text-align: left;
-	}
-	.com_members .transactions .withdraw {
-		color: red;
-	}
-	.com_members .transactions .deposit {
-		color: green;
-	}
-	.com_members .transactions .textual-data {
-		text-align: left;
-	}
-	.com_members .transactions .numerical-data {
-		text-align: right;
-	}
+    .com_members .transactions thead th {
+        text-align: left;
+    }
+    .com_members .transactions .withdraw {
+        color: red;
+    }
+    .com_members .transactions .deposit {
+        color: green;
+    }
+    .com_members .transactions .textual-data {
+        text-align: left;
+    }
+    .com_members .transactions .numerical-data {
+        text-align: right;
+    }

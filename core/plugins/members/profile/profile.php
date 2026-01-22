@@ -1,8 +1,11 @@
 <?php
+
+// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 // No direct access
@@ -11,382 +14,376 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for profile
  */
-class plgMembersProfile extends \Hubzero\Plugin\Plugin
+class PlgMembersProfile extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var boolean
+     */
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_autoloadLanguage = true;
 
-	/**
-	 * Event call to determine if this plugin should return data
-	 *
-	 * @param   object  $user    User
-	 * @param   object  $member  Profile
-	 * @return  array   Plugin name
-	 */
-	public function &onMembersAreas($user, $member)
-	{
-		$areas = array(
-			'profile' => Lang::txt('PLG_MEMBERS_PROFILE'),
-			'icon'    => 'f007',
-			'icon-class'    => 'icon-user',
-			'menu'    => $this->params->get('display_tab', 1)
-		);
-		return $areas;
-	}
+    /**
+     * Event call to determine if this plugin should return data
+     *
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @return array   Plugin name
+     */
+    public function &onMembersAreas($user, $member)
+    {
+        $areas = array(
+            'profile' => Lang::txt('PLG_MEMBERS_PROFILE'),
+            'icon' => 'f007',
+            'icon-class' => 'icon-user',
+            'menu' => $this->params->get('display_tab', 1)
+        );
+        return $areas;
+    }
 
-	/**
-	 * Event call to return data for a specific member
-	 *
-	 * @param   object  $user    User
-	 * @param   object  $member  Profile
-	 * @param   string  $option  Component name
-	 * @param   string  $areas   Plugins to return data
-	 * @return  array   Return array of html
-	 */
-	public function onMembers($user, $member, $option, $areas)
-	{
-		$returnhtml = true;
-		$returnmeta = true;
+    /**
+     * Event call to return data for a specific member
+     *
+     * @param  object $user   User
+     * @param  object $member Profile
+     * @param  string $option Component name
+     * @param  string $areas  Plugins to return data
+     * @return array   Return array of html
+     */
+    public function onMembers($user, $member, $option, $areas)
+    {
+        $returnhtml = true;
+        $returnmeta = true;
 
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas))
-		{
-			if (!array_intersect($areas, $this->onMembersAreas($user, $member))
-			 && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member))))
-			{
-				$returnhtml = false;
-			}
-		}
+        // Check if our area is in the array of areas we want to return results for
+        if (is_array($areas)) {
+            if (
+                !array_intersect($areas, $this->onMembersAreas($user, $member))
+                && !array_intersect($areas, array_keys($this->onMembersAreas($user, $member)))
+            ) {
+                $returnhtml = false;
+            }
+        }
 
-		require_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
+        include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
-		$arr = array(
-			'html' => '',
-			'metadata' => ''
-		);
+        $arr = array(
+            'html' => '',
+            'metadata' => ''
+        );
 
-		// Build the final HTML
-		if ($returnhtml)
-		{
-			$this->user   = $user;
-			$this->member = $member;
-			$this->option = $option;
-			$this->areas  = $areas;
+        // Build the final HTML
+        if ($returnhtml) {
+            $this->user = $user;
+            $this->member = $member;
+            $this->option = $option;
+            $this->areas = $areas;
 
-			//get task
-			$this->task = Request::getCmd('action', 'view');
-			switch ($this->task)
-			{
-				case 'addaddress':
-					$arr['html'] = $this->addAddress();
-				break;
-				case 'editaddress':
-					$arr['html'] = $this->editAddress();
-				break;
-				case 'saveaddress':
-					$arr['html'] = $this->saveAddress();
-				break;
-				case 'deleteaddress':
-					$arr['html'] = $this->deleteAddress();
-				break;
-				case 'view':
-				default:
-					$arr['html'] = $this->display();
-			}
-		}
+            //get task
+            $this->task = Request::getCmd('action', 'view');
+            switch ($this->task) {
+                case 'addaddress':
+                    $arr['html'] = $this->addAddress();
+                    break;
+                case 'editaddress':
+                    $arr['html'] = $this->editAddress();
+                    break;
+                case 'saveaddress':
+                    $arr['html'] = $this->saveAddress();
+                    break;
+                case 'deleteaddress':
+                    $arr['html'] = $this->deleteAddress();
+                    break;
+                case 'view':
+                default:
+                    $arr['html'] = $this->display();
+            }
+        }
 
-		return $arr;
-	}
+        return $arr;
+    }
 
-	/**
-	 * View the profile page
-	 *
-	 * @return  string
-	 */
-	private function display()
-	{
-		//get member params
-		$rparams = new \Hubzero\Config\Registry($this->member->get('params'));
+    /**
+     * View the profile page
+     *
+     * @return string
+     */
+    private function display()
+    {
+        //get member params
+        $rparams = new \Hubzero\Config\Registry($this->member->get('params'));
 
-		//get profile plugin's params
-		$params = $this->params;
-		$params->merge($rparams);
+        //get profile plugin's params
+        $params = $this->params;
+        $params->merge($rparams);
 
-		$xreg = null;
+        $xreg = null;
 
-		$fields = Components\Members\Models\Profile\Field::all()
-			->including(['options', function ($option){
-				$option
-					->select('*')
-					->ordered();
-			}])
-			->where('action_edit', '!=', Components\Members\Models\Profile\Field::STATE_HIDDEN)
-			->ordered()
-			->rows();
+        $fields = Components\Members\Models\Profile\Field::all()
+            ->including(
+                [
+                'options',
+                function ($option) {
+                    $option
+                        ->select('*')
+                        ->ordered();
+                }
+                ]
+            )
 
-		if (App::get('session')->get('registration.incomplete'))
-		{
-			$xreg = new \Components\Members\Models\Registration();
-			$xreg->loadProfile($this->member);
+            ->where(
+                'action_edit',
+                '!=',
+                Components\Members\Models\Profile\Field::STATE_HIDDEN
+            )
+            ->ordered()
+            ->rows();
 
-			$check = $xreg->check('update');
+        if (App::get('session')->get('registration.incomplete')) {
+            $xreg = new \Components\Members\Models\Registration();
+            $xreg->loadProfile($this->member);
 
-			// Validate profile data
-			// @TODO  Move this to central validation model (e.g., registraiton)?
+            $check = $xreg->check('update');
 
-			// Compile profile data
-			$profile = array();
-			foreach ($fields as $field)
-			{
-				$profile[$field->get('name')] = $this->member->get($field->get('name'));
-			}
+            // Validate profile data
+            // @TODO  Move this to central validation model (e.g., registraiton)?
 
-			// Validate profile fields
-			$form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
-			$form->load(Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile));
-			$form->bind(new Hubzero\Config\Registry($profile));
+            // Compile profile data
+            $profile = array();
+            foreach ($fields as $field) {
+                $profile[$field->get('name')] = $this->member->get($field->get('name'));
+            }
 
-			if (!$form->validate($profile))
-			{
-				$check = false;
+            // Validate profile fields
+            $form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+            $form->load(
+                Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile)
+            );
+            $form->bind(new Hubzero\Config\Registry($profile));
 
-				foreach ($form->getErrors() as $key => $error)
-				{
-					if ($error instanceof Hubzero\Form\Exception\MissingData)
-					{
-						$xreg->_missing[$key] = (string)$error;
-					}
+            if (!$form->validate($profile)) {
+                $check = false;
 
-					$xreg->_invalid[$key] = (string)$error;
-				}
-			}
+                foreach ($form->getErrors() as $key => $error) {
+                    if ($error instanceof Hubzero\Form\Exception\MissingData) {
+                        $xreg->_missing[$key] = (string) $error;
+                    }
 
-			// If no errors, redirect to where they were going
-			if ($check)
-			{
-				App::get('session')->set('registration.incomplete', 0);
-				App::redirect($_SERVER['REQUEST_URI']);
-			}
-		}
+                    $xreg->_invalid[$key] = (string) $error;
+                }
+            }
 
-		$view = $this->view('default', 'index')
-			->set('params', $params)
-			->set('option', 'com_members')
-			->set('profile', $this->member)
-			->set('fields', $fields)
-			->set('completeness', $this->getProfileCompleteness($fields, $this->member))
-			->set('registration_update', $xreg);
+            // If no errors, redirect to where they were going
+            if ($check) {
+                App::get('session')->set('registration.incomplete', 0);
+                App::redirect($_SERVER['REQUEST_URI']);
+            }
+        }
 
-		return $view
-			->setErrors($this->getErrors())
-			->loadTemplate();
-	}
+        $view = $this->view('default', 'index')
+            ->set('params', $params)
+            ->set('option', 'com_members')
+            ->set('profile', $this->member)
+            ->set('fields', $fields)
+            ->set('completeness', $this->getProfileCompleteness($fields, $this->member))
+            ->set('registration_update', $xreg);
 
-	/**
-	 * Event call to determine if this plugin should return data
-	 *
-	 * @param   array    $fields   Fields filled in
-	 * @param   object   $profile  Profile
-	 * @return  integer
-	 */
-	public function getProfileCompleteness($fields, $profile)
-	{
-		$data = array();
-		foreach ($fields as $field)
-		{
-			$data[$field->get('name')] = $profile->get($field->get('name'));
-		}
+        return $view
+            ->setErrors($this->getErrors())
+            ->loadTemplate();
+    }
 
-		$skip = array();
+    /**
+     * Event call to determine if this plugin should return data
+     *
+     * @param  array  $fields  Fields filled in
+     * @param  object $profile Profile
+     * @return integer
+     */
+    public function getProfileCompleteness($fields, $profile)
+    {
+        $data = array();
+        foreach ($fields as $field) {
+            $data[$field->get('name')] = $profile->get($field->get('name'));
+        }
 
-		foreach ($fields as $field)
-		{
-			foreach ($field->options as $option)
-			{
-				$selected = false;
+        $skip = array();
 
-				if (!$option->get('dependents'))
-				{
-					continue;
-				}
+        foreach ($fields as $field) {
+            foreach ($field->options as $option) {
+                $selected = false;
 
-				$events = json_decode($option->get('dependents', '[]'));
+                if (!$option->get('dependents')) {
+                    continue;
+                }
 
-				if (empty($events))
-				{
-					continue;
-				}
+                $events = json_decode($option->get('dependents', '[]'));
 
-				if (isset($data[$field->get('name')]))
-				{
-					$values = $data[$field->get('name')];
+                if (empty($events)) {
+                    continue;
+                }
 
-					if (is_array($values) && in_array($option->get('value'), $values))
-					{
-						$selected = true;
-					}
-					else if ($values == $option->get('value'))
-					{
-						$selected = true;
-					}
-				}
+                if (isset($data[$field->get('name')])) {
+                    $values = $data[$field->get('name')];
 
-				// If the option was chosen...
-				// pass its dependents through validation
-				if ($selected)
-				{
-					continue;
-				}
+                    if (is_array($values) && in_array($option->get('value'), $values)) {
+                        $selected = true;
+                    } elseif ($values == $option->get('value')) {
+                        $selected = true;
+                    }
+                }
 
-				// If the option was NOT chosen...
-				// skip its dependents (no validation)
-				$skip = array_merge($skip, $events);
-			}
-		}
+                // If the option was chosen...
+                // pass its dependents through validation
+                if ($selected) {
+                    continue;
+                }
 
-		//----
+                // If the option was NOT chosen...
+                // skip its dependents (no validation)
+                $skip = array_merge($skip, $events);
+            }
+        }
 
-		//default vars
-		$num_fields = 0;
-		$num_filled_fields = 0;
+        //----
 
-		//loop through each field to see if we want to count it
-		foreach ($fields as $field)
-		{
-			// if the field is anything button hidden we want to count it
-			if ($field->get('type') != 'hidden' && !in_array($field->get('name'), $skip))
-			{
-				//add to the number of fields count
-				$num_fields++;
+        //default vars
+        $num_fields = 0;
+        $num_filled_fields = 0;
 
-				//check to see if we have it filled in
-				$value = $profile->get($field->get('name'));
-				$type = gettype($value);
+        //loop through each field to see if we want to count it
+        foreach ($fields as $field) {
+            // if the field is anything button hidden we want to count it
+            if ($field->get('type') != 'hidden' && !in_array($field->get('name'), $skip)) {
+                //add to the number of fields count
+                $num_fields++;
 
-				if (($type == 'array' && !empty($value)) || ($type == 'string' && $value != ''))
-				{
-					$num_filled_fields++;
-				}
-			}
-		}
+                //check to see if we have it filled in
+                $value = $profile->get($field->get('name'));
+                $type = gettype($value);
 
-		// return percentage
-		return ($num_fields ? number_format(($num_filled_fields/$num_fields) * 100, 0) : 100);
-	}
+                if (
+                    ($type == 'array' && !empty($value))
+                    || ($type == 'string' && $value != '')
+                ) {
+                    $num_filled_fields++;
+                }
+            }
+        }
 
-	/**
-	 * Method to add a user address
-	 *
-	 * @return  void
-	 */
-	public function addAddress()
-	{
-		return $this->editAddress();
-	}
+        // return percentage
+        return ($num_fields ? number_format(($num_filled_fields / $num_fields) * 100, 0) : 100);
+    }
 
-	/**
-	 * Method to edit a user address
-	 *
-	 * @param   objct  $address
-	 * @return  void
-	 */
-	public function editAddress($address = null)
-	{
-		require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
+    /**
+     * Method to add a user address
+     *
+     * @return void
+     */
+    public function addAddress()
+    {
+        return $this->editAddress();
+    }
 
-		// get member addresses
-		if (!$address)
-		{
-			//get request vars
-			$addressId = Request::getInt('addressid', 0);
+    /**
+     * Method to edit a user address
+     *
+     * @param  objct $address
+     * @return void
+     */
+    public function editAddress($address = null)
+    {
+        include_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
-			$address = Components\Members\Models\Address::oneOrNew($addressId);
-		}
+        // get member addresses
+        if (!$address) {
+            //get request vars
+            $addressId = Request::getInt('addressid', 0);
 
-		//set vars for view
-		$view = $this->view('edit', 'address')
-			->set('member', $this->member)
-			->set('address', $address)
-			->setErrors($this->getErrors());
+            $address = Components\Members\Models\Address::oneOrNew($addressId);
+        }
 
-		return $view->loadTemplate();
-	}
+        //set vars for view
+        $view = $this->view('edit', 'address')
+            ->set('member', $this->member)
+            ->set('address', $address)
+            ->setErrors($this->getErrors());
 
-	/**
-	 * Method to save a user address
-	 *
-	 * @return  void
-	 */
-	public function saveAddress()
-	{
-		require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
+        return $view->loadTemplate();
+    }
 
-		// get request vars
-		$data = Request::getArray('address', array());
-		$data['uidNumber'] = User::get('id');
+    /**
+     * Method to save a user address
+     *
+     * @return void
+     */
+    public function saveAddress()
+    {
+        include_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
-		// set up objects
-		$address = Components\Members\Models\Address::blank()->set($data);
+        // get request vars
+        $data = Request::getArray('address', array());
+        $data['uidNumber'] = User::get('id');
 
-		// attempt to save
-		if (!$address->save())
-		{
-			$this->setError($address->getError());
-			return $this->editAddress($address);
-		}
+        // set up objects
+        $address = Components\Members\Models\Address::blank()->set($data);
 
-		//inform and redirect
-		App::redirect(
-			Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'),
-			Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_SAVED'),
-			'passed'
-		);
-	}
+        // attempt to save
+        if (!$address->save()) {
+            $this->setError($address->getError());
+            return $this->editAddress($address);
+        }
 
-	/**
-	 * Method to delete a user address
-	 *
-	 * @return  void
-	 */
-	public function deleteAddress()
-	{
-		require_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
+        //inform and redirect
+        App::redirect(
+            Route::url(
+                'index.php?option=com_members&id=' . User::get('id') . '&active=profile'
+            ),
+            Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_SAVED'),
+            'passed'
+        );
+    }
 
-		// get request vars
-		$addressId = Request::getInt('addressid', 0);
+    /**
+     * Method to delete a user address
+     *
+     * @return void
+     */
+    public function deleteAddress()
+    {
+        include_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
-		// set up objects
-		$address = Components\Members\Models\Address::oneOrNew($addressId);
+        // get request vars
+        $addressId = Request::getInt('addressid', 0);
 
-		// make sure we have a valid member address object
-		if (!$address->get('id'))
-		{
-			return $this->view();
-		}
+        // set up objects
+        $address = Components\Members\Models\Address::oneOrNew($addressId);
 
-		// make sure user can delete this address
-		if ($address->get('uidNumber') != User::get('id'))
-		{
-			$this->setError(Lang::txt('PLG_MEMBERS_PROFILE_ERROR_PERMISSION_DENIED'));
-			return $this->view();
-		}
+        // make sure we have a valid member address object
+        if (!$address->get('id')) {
+            return $this->view();
+        }
 
-		// attempt to delete address
-		if (!$address->destroy())
-		{
-			$this->setErrror($address->getError());
-			return $this->view();
-		}
+        // make sure user can delete this address
+        if ($address->get('uidNumber') != User::get('id')) {
+            $this->setError(Lang::txt('PLG_MEMBERS_PROFILE_ERROR_PERMISSION_DENIED'));
+            return $this->view();
+        }
 
-		// inform and redirect
-		App::redirect(
-			Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile'),
-			Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_REMOVED'),
-			'passed'
-		);
-	}
+        // attempt to delete address
+        if (!$address->destroy()) {
+            $this->setErrror($address->getError());
+            return $this->view();
+        }
+
+        // inform and redirect
+        App::redirect(
+            Route::url(
+                'index.php?option=com_members&id=' . User::get('id') . '&active=profile'
+            ),
+            Lang::txt('PLG_MEMBERS_PROFILE_ADDRESS_REMOVED'),
+            'passed'
+        );
+    }
 }

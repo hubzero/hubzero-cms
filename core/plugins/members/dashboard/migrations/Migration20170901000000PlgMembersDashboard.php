@@ -1,8 +1,11 @@
 <?php
+
+// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+
 /**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 
 use Hubzero\Content\Migration\Base;
@@ -15,14 +18,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000PlgMembersDashboard extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__xprofiles_dashboard_preferences'))
-		{
-			$query = "CREATE TABLE `#__xprofiles_dashboard_preferences` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__xprofiles_dashboard_preferences')) {
+            $query = "CREATE TABLE `#__xprofiles_dashboard_preferences` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `uidNumber` int(11) unsigned NOT NULL,
 			  `preferences` text,
@@ -31,21 +33,20 @@ class Migration20170901000000PlgMembersDashboard extends Base
 			  UNIQUE KEY `uidNumber` (`uidNumber`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__xprofiles_dashboard_preferences'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__xprofiles_dashboard_preferences`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__xprofiles_dashboard_preferences')) {
+            $query = "DROP TABLE IF EXISTS `#__xprofiles_dashboard_preferences`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
