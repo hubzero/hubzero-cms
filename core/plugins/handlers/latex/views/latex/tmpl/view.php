@@ -1,4 +1,6 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,21 +17,21 @@ $source = with(new \Hubzero\Content\Moderator($this->compiled->getAbsolutePath()
 ?>
 
 <?php if ($this->getError()) : ?>
-	<h3>
-		<?php echo Lang::txt('PLG_HANDLERS_LATEX_PREVIEW_FAILED'); ?>
-	</h3>
-	<p class="witherror">
-		<?php echo $this->getError(); ?>
-		<pre>
-			<?php if (!empty($this->log)) : ?>
-				<?php echo $this->log; ?>
-			<?php endif; ?>
-		</pre>
-	</div>
+    <h3>
+        <?php echo Lang::txt('PLG_HANDLERS_LATEX_PREVIEW_FAILED'); ?>
+    </h3>
+    <p class="witherror">
+        <?php echo $this->getError(); ?>
+        <pre>
+            <?php if (!empty($this->log)) : ?>
+                <?php echo $this->log; ?>
+            <?php endif; ?>
+        </pre>
+    </div>
 <?php endif; ?>
 
 <div id="compiled-doc" embed-src="<?php echo $source; ?>" embed-width="<?php echo $width; ?>" embed-height="<?php echo $height; ?>">
-	<object class="width-container" width="<?php echo $width; ?>" height="<?php echo $height; ?>" type="<?php echo $this->compiled->getMimetype(); ?>" data="<?php echo $source; ?>" id="pdf_content">
-		<embed src="<?php echo $source; ?>" type="<?php echo $this->compiled->getMimetype(); ?>" />
-	</object>
+    <object class="width-container" width="<?php echo $width; ?>" height="<?php echo $height; ?>" type="<?php echo $this->compiled->getMimetype(); ?>" data="<?php echo $source; ?>" id="pdf_content">
+        <embed src="<?php echo $source; ?>" type="<?php echo $this->compiled->getMimetype(); ?>" />
+    </object>
 </div>

@@ -1,4 +1,6 @@
 <?php
+
+// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,98 +15,94 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for MD file handling
  */
-class plgHandlersMarkdown extends Plugin
+class PlgHandlersMarkdown extends Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_autoloadLanguage = true;
 
-	/**
-	 * Determines if the given collection can be handled by this plugin
-	 *
-	 * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to assess
-	 * @return  void
-	 **/
-	public function canHandle(Hubzero\Filesystem\Collection $collection)
-	{
-		$need = [
-			'md' => 1
-		];
+    /**
+     * Determines if the given collection can be handled by this plugin
+     *
+     * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to assess
+     * @return  void
+     **/
+    public function canHandle(Hubzero\Filesystem\Collection $collection)
+    {
+        $need = [
+            'md' => 1
+        ];
 
-		// Check extension to make sure we can proceed
-		if (!$collection->hasExtensions($need))
-		{
-			return false;
-		}
+        // Check extension to make sure we can proceed
+        if (!$collection->hasExtensions($need)) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Handles view events for files
-	 *
-	 * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to view
-	 * @return  void
-	 **/
-	public function onHandleView(Hubzero\Filesystem\Collection $collection)
-	{
-		if (!$this->canHandle($collection))
-		{
-			return false;
-		}
+    /**
+     * Handles view events for files
+     *
+     * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to view
+     * @return  void
+     **/
+    public function onHandleView(Hubzero\Filesystem\Collection $collection)
+    {
+        if (!$this->canHandle($collection)) {
+            return false;
+        }
 
-		$file = $collection->findFirstWithExtension('md');
+        $file = $collection->findFirstWithExtension('md');
 
-		if (!$file || !($file instanceof Hubzero\Filesystem\File))
-		{
-			return false;
-		}
+        if (!$file || !($file instanceof Hubzero\Filesystem\File)) {
+            return false;
+        }
 
-		$source = rtrim($file->read());
+        $source = rtrim($file->read());
 
-		$md = array(
-			'block/CodeTrait.php',
-			'block/FencedCodeTrait.php',
-			'block/HeadlineTrait.php',
-			'block/HtmlTrait.php',
-			'block/ListTrait.php',
-			'block/QuoteTrait.php',
-			'block/RuleTrait.php',
-			'block/TableTrait.php',
-			'inline/CodeTrait.php',
-			'inline/EmphStrongTrait.php',
-			'inline/LinkTrait.php',
-			'inline/StrikeoutTrait.php',
-			'inline/UrlLinkTrait.php',
-			'Parser.php',
-			'Markdown.php',
-			'MarkdownExtra.php',
-			'GithubMarkdown.php'
-		);
-		foreach ($md as $mdfile)
-		{
-			include_once __DIR__ . '/markdown/' . $mdfile;
-		}
+        $md = array(
+            'block/CodeTrait.php',
+            'block/FencedCodeTrait.php',
+            'block/HeadlineTrait.php',
+            'block/HtmlTrait.php',
+            'block/ListTrait.php',
+            'block/QuoteTrait.php',
+            'block/RuleTrait.php',
+            'block/TableTrait.php',
+            'inline/CodeTrait.php',
+            'inline/EmphStrongTrait.php',
+            'inline/LinkTrait.php',
+            'inline/StrikeoutTrait.php',
+            'inline/UrlLinkTrait.php',
+            'Parser.php',
+            'Markdown.php',
+            'MarkdownExtra.php',
+            'GithubMarkdown.php'
+        );
+        foreach ($md as $mdfile) {
+            include_once __DIR__ . '/markdown/' . $mdfile;
+        }
 
-		$cls = '\\cebe\\markdown\\' . $this->params->get('style', 'Markdown');
+        $cls = '\\cebe\\markdown\\' . $this->params->get('style', 'Markdown');
 
-		$parser = new $cls();
+        $parser = new $cls();
 
-		$rendered = $parser->parse($source);
+        $rendered = $parser->parse($source);
 
-		$view = $this->view('view', 'markdown');
+        $view = $this->view('view', 'markdown');
 
-		if (!$rendered)
-		{
-			$view->setError(Lang::txt('PLG_HANDLERS_MARKDOWN_ERROR_RENDER_FAILED'));
-			$rendered = $source;
-		}
+        if (!$rendered) {
+            $view->setError(Lang::txt('PLG_HANDLERS_MARKDOWN_ERROR_RENDER_FAILED'));
+            $rendered = $source;
+        }
 
-		$view->rendered = $rendered;
+        $view->rendered = $rendered;
 
-		return $view;
-	}
+        return $view;
+    }
 }

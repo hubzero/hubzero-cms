@@ -1,4 +1,6 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,13 +11,13 @@
 defined('_HZEXEC_') or die();
 ?>
 <div class="file-preview markdown">
-	<?php if ($this->getError()): ?>
-		<div class="error">
-			<?php echo $this->getError(); ?>
-		</div>
-	<?php endif; ?>
+    <?php if ($this->getError()) : ?>
+        <div class="error">
+            <?php echo $this->getError(); ?>
+        </div>
+    <?php endif; ?>
 
-	<div class="file-preview-rendered">
-		<?php echo $this->rendered; ?>
-	</div>
+    <div class="file-preview-rendered">
+        <?php echo $this->rendered; ?>
+    </div>
 </div>

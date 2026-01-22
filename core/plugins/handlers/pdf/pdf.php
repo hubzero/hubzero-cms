@@ -1,4 +1,6 @@
 <?php
+
+// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,60 +15,59 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for pdf file handling
  */
-class plgHandlersPdf extends Plugin
+class PlgHandlersPdf extends Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_autoloadLanguage = true;
 
-	/**
-	 * Determines if the given collection can be handled by this plugin
-	 *
-	 * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to assess
-	 * @return  void
-	 **/
-	public function canHandle(\Hubzero\Filesystem\Collection $collection)
-	{
-		// We can handle 1 pdf file
-		$need = [
-			'pdf' => 1
-		];
+    /**
+     * Determines if the given collection can be handled by this plugin
+     *
+     * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to assess
+     * @return  void
+     **/
+    public function canHandle(\Hubzero\Filesystem\Collection $collection)
+    {
+        // We can handle 1 pdf file
+        $need = [
+            'pdf' => 1
+        ];
 
-		// Check extension to make sure we can proceed
-		if (!$collection->hasExtensions($need))
-		{
-			return false;
-		}
+        // Check extension to make sure we can proceed
+        if (!$collection->hasExtensions($need)) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Handles view events for pdf files
-	 *
-	 * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to view
-	 * @return  void
-	 **/
-	public function onHandleView(\Hubzero\Filesystem\Collection $collection)
-	{
-		if (!$this->canHandle($collection))
-		{
-			return false;
-		}
+    /**
+     * Handles view events for pdf files
+     *
+     * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to view
+     * @return  void
+     **/
+    public function onHandleView(\Hubzero\Filesystem\Collection $collection)
+    {
+        if (!$this->canHandle($collection)) {
+            return false;
+        }
 
-		// Create view
-		$view = new \Hubzero\Plugin\View([
-			'folder'  => 'handlers',
-			'element' => 'pdf',
-			'name'    => 'pdf',
-			'layout'  => 'view'
-		]);
+        // Create view
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'handlers',
+            'element' => 'pdf',
+            'name'    => 'pdf',
+            'layout'  => 'view'
+        ]);
 
-		$view->file = $collection->findFirstWithExtension('pdf');
+        $view->file = $collection->findFirstWithExtension('pdf');
 
-		return $view;
-	}
+        return $view;
+    }
 }
