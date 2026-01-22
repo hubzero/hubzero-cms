@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,22 +29,22 @@ $connected = (($google && $this->oparams->get('google_token')) || ($dropbox && $
 ?>
 <?php if ($on && (($google || $dropbox) && $active || (!$active && $creator && $authorized))) { ?>
 <p id="connector">
-	<span>
-		<?php if (!$active || !$connected) {  ?>
-		<?php if ($google) { ?>
-		<span class="google"></span>
-		<?php } ?>
-		<?php if ($dropbox) { ?>
-		<span class="dropbox"></span>
-		<?php } ?>
-		<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=connect'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT'); ?></a>
-		<?php }
-			// Connected to Google
-			if ($this->oparams->get('google_token') && $active) {  ?>
-				<span class="connect-email"><span class="google"></span> <?php echo $this->oparams->get('google_email'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files') . '?action=connect'; ?>">[&raquo;]</a></span>
-		<?php } ?>
-	</span>
+    <span>
+        <?php if (!$active || !$connected) {  ?>
+            <?php if ($google) { ?>
+        <span class="google"></span>
+            <?php } ?>
+            <?php if ($dropbox) { ?>
+        <span class="dropbox"></span>
+            <?php } ?>
+        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=connect'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT'); ?></a>
+        <?php }
+            // Connected to Google
+        if ($this->oparams->get('google_token') && $active) {  ?>
+                <span class="connect-email"><span class="google"></span> <?php echo $this->oparams->get('google_email'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files') . '?action=connect'; ?>">[&raquo;]</a></span>
+        <?php } ?>
+    </span>
 </p>
 <?php } else { ?>
-	<p class="editing mini pale"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . $this->sizelimit; ?></p>
+    <p class="editing mini pale"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . $this->sizelimit; ?></p>
 <?php }

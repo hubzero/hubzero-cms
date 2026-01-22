@@ -1,9 +1,12 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
- * @package		HUBzero CMS
- * @author		Sudheera R. Fernando <sudheera@xconsole.org>
- * @copyright	Copyright (c) 2012-2020 The Regents of the University of California.
- * @license		http://opensource.org/licenses/MIT MIT
+ * @package     HUBzero CMS
+ * @author      Sudheera R. Fernando <sudheera@xconsole.org>
+ * @copyright   Copyright (c) 2012-2020 The Regents of the University of California.
+ * @license     http://opensource.org/licenses/MIT MIT
  *
  * Copyright (c) 2012-2020 The Regents of the University of California.
  * All rights reserved.
@@ -28,15 +31,15 @@ defined('_HZEXEC_') or die();
 
 <div id="system-message-container">
 <dl id="system-message">
-	<dt class="error">Error</dt>
-	<dd class="error message">
-		<ul>
-			<li>CONFIGURATION ERROR</li>
-		</ul>
-	</dd>
+    <dt class="error">Error</dt>
+    <dd class="error message">
+        <ul>
+            <li>CONFIGURATION ERROR</li>
+        </ul>
+    </dd>
 </dl>
 <h3>Please contact the HUB Administrator.</h3>
-	<p>The <strong>projects databases plugin parameters<sup>[**]</sup></strong> need to be updated with the correct mysql server host, usernames and passwords.
-	<br /><br />
-	** Administrator Backend -> <a rel="noopener noreferrer" target="_blank" href="/administrator/index.php?option=com_plugins">Plugin Manager</a> -> search for "projects - databases"</p>
+    <p>The <strong>projects databases plugin parameters<sup>[**]</sup></strong> need to be updated with the correct mysql server host, usernames and passwords.
+    <br /><br />
+    ** Administrator Backend -> <a rel="noopener noreferrer" target="_blank" href="/administrator/index.php?option=com_plugins">Plugin Manager</a> -> search for "projects - databases"</p>
 </div>

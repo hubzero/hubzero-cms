@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,16 +18,16 @@ $details = $row->title ? $row->object_name : null;
 $viewer  = $this->data->viewer;
 
 ?>
-	<li>
-		<span class="item-options">
-		<?php if ($viewer == 'edit') { ?>
-			<span>
-				<a href="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
-			</span>
-		<?php } ?>
-		</span>
-		<span class="item-title data-type">
-			 <a href="<?php echo $row->path; ?>" rel="external"><?php echo $title; ?></a>
-			<span class="item-details"><?php echo $details; ?></span>
-		</span>
-	</li>
+    <li>
+        <span class="item-options">
+        <?php if ($viewer == 'edit') { ?>
+            <span>
+                <a href="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+            </span>
+        <?php } ?>
+        </span>
+        <span class="item-title data-type">
+             <a href="<?php echo $row->path; ?>" rel="external"><?php echo $title; ?></a>
+            <span class="item-details"><?php echo $details; ?></span>
+        </span>
+    </li>

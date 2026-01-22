@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,17 +16,17 @@ $isComplete = $this->isComplete;
 $todo = $this->todo;
 $overdue = $todo->isOverdue();
 
-$overdueNotice = $overdue ? ' ('.Lang::txt('PLG_PROJECTS_TODO_OVERDUE').')' : '';
+$overdueNotice = $overdue ? ' (' . Lang::txt('PLG_PROJECTS_TODO_OVERDUE') . ')' : '';
 
-if ($isComplete): ?>
-	<span class="todo-assigned"><?php echo $todo->closer('name'); ?></span>
-	<span class="todo-due"><?php echo Lang::txt('PLG_PROJECTS_TODO_CHECKED_OFF') . ' ' . $todo->closed('date'); ?></span>
-<?php else: ?>
-	<span class="todo-assigned" id="<?php echo "td-assigned-$id"; ?>"><?php echo $todo->owner('name'); ?></span>
-	<?php if ($todo->due()): ?>
-		<span class="todo-due" id="<?php echo "td-due-$id"; ?>">
-			<?php
-			echo Lang::txt('PLG_PROJECTS_TODO_DUE') . ' ' . $todo->due('date') . $overdueNotice; ?>
-		</span>
-	<?php	endif; ?>
+if ($isComplete) : ?>
+    <span class="todo-assigned"><?php echo $todo->closer('name'); ?></span>
+    <span class="todo-due"><?php echo Lang::txt('PLG_PROJECTS_TODO_CHECKED_OFF') . ' ' . $todo->closed('date'); ?></span>
+<?php else : ?>
+    <span class="todo-assigned" id="<?php echo "td-assigned-$id"; ?>"><?php echo $todo->owner('name'); ?></span>
+    <?php if ($todo->due()) : ?>
+        <span class="todo-due" id="<?php echo "td-due-$id"; ?>">
+            <?php
+            echo Lang::txt('PLG_PROJECTS_TODO_DUE') . ' ' . $todo->due('date') . $overdueNotice; ?>
+        </span>
+    <?php	endif; ?>
 <?php endif; ?>

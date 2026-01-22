@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,13 +16,13 @@ $pagename = Request::getString('pagename', '');
 
 ?>
 <section class="main section">
-	<p class="s-notes">	
-		<?php if ($this->project->access('content')) { ?>
-			<a href="<?php echo Route::url($url . '&action=new'); ?>">
-				<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
-			</a>
-		<?php } else { ?>
-			<?php echo Lang::txt('This project has no notes.'); ?>
-		<?php } ?>
-	</p>
+    <p class="s-notes"> 
+        <?php if ($this->project->access('content')) { ?>
+            <a href="<?php echo Route::url($url . '&action=new'); ?>">
+                <?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
+            </a>
+        <?php } else { ?>
+            <?php echo Lang::txt('This project has no notes.'); ?>
+        <?php } ?>
+    </p>
 </section><!-- / .main section -->

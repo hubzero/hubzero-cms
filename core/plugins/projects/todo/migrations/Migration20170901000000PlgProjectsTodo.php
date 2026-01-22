@@ -1,11 +1,12 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Content\Migration\Base;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -13,16 +14,15 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing projects todo table
  **/
-class Migration20170901000000PlgProjectsTodo extends Base
+class Migration20170901000000PlgProjectsTodo extends \Hubzero\Content\Migration\Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__project_todo'))
-		{
-			$query = "CREATE TABLE `#__project_todo` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__project_todo')) {
+            $query = "CREATE TABLE `#__project_todo` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `projectid` int(11) NOT NULL DEFAULT '0',
 			  `todolist` varchar(255) DEFAULT NULL,
@@ -43,21 +43,20 @@ class Migration20170901000000PlgProjectsTodo extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__project_todo'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_todo`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__project_todo')) {
+            $query = "DROP TABLE IF EXISTS `#__project_todo`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

@@ -1,11 +1,12 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Content\Migration\Base;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -13,16 +14,15 @@ defined('_HZEXEC_') or die();
 /**
  * Migration script for installing projects databases table
  **/
-class Migration20170901000000PlgProjectsDatabases extends Base
+class Migration20170901000000PlgProjectsDatabases extends \Hubzero\Content\Migration\Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__project_databases'))
-		{
-			$query = "CREATE TABLE `#__project_databases` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__project_databases')) {
+            $query = "CREATE TABLE `#__project_databases` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `project` int(11) NOT NULL,
 			  `database_name` varchar(64) NOT NULL,
@@ -40,13 +40,12 @@ class Migration20170901000000PlgProjectsDatabases extends Base
 			  PRIMARY KEY (`id`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if (!$this->db->tableExists('#__project_database_versions'))
-		{
-			$query = "CREATE TABLE `#__project_database_versions` (
+        if (!$this->db->tableExists('#__project_database_versions')) {
+            $query = "CREATE TABLE `#__project_database_versions` (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `database_name` varchar(64) NOT NULL,
 			  `version` int(11) NOT NULL DEFAULT '1',
@@ -54,28 +53,26 @@ class Migration20170901000000PlgProjectsDatabases extends Base
 			  PRIMARY KEY (`id`,`database_name`,`version`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__project_databases'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_databases`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__project_databases')) {
+            $query = "DROP TABLE IF EXISTS `#__project_databases`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
 
-		if ($this->db->tableExists('#__project_database_versions'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__project_database_versions`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+        if ($this->db->tableExists('#__project_database_versions')) {
+            $query = "DROP TABLE IF EXISTS `#__project_database_versions`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }

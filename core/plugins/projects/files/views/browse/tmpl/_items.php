@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,16 +11,17 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-if (is_array($this->items)) foreach ($this->items as $item)
-{
-	$this->view('_item')
-		 ->set('option', $this->option)
-		 ->set('model', $this->model)
-		 ->set('subdir', $this->subdir)
-		 ->set('item', $item)
-		 ->set('repo', $this->repo)
-		 ->set('params', $this->params)
-		 ->set('fileparams', $this->fileparams)
-		 ->set('publishing', $this->publishing)
-		 ->display();
+if (is_array($this->items)) {
+    foreach ($this->items as $item) {
+        $this->view('_item')
+         ->set('option', $this->option)
+         ->set('model', $this->model)
+         ->set('subdir', $this->subdir)
+         ->set('item', $item)
+         ->set('repo', $this->repo)
+         ->set('params', $this->params)
+         ->set('fileparams', $this->fileparams)
+         ->set('publishing', $this->publishing)
+         ->display();
+    }
 }

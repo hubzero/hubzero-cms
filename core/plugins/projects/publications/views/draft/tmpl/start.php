@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,37 +21,36 @@ defined('_HZEXEC_') or die();
 </div>
 <?php if ($this->project->isProvisioned()) { ?>
 <div class="grid">
-	<div class="col span9">
+    <div class="col span9">
 <?php } ?>
 <div class="welcome">
-	<h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_WHAT'); ?></h3>
-	<div id="suggestions" class="suggestions">
-		<?php for ($i = 0; $i < count($this->choices); $i++)
-		{
-			$current = $this->choices[$i];
-			$action = 'publication';
+    <h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_WHAT'); ?></h3>
+    <div id="suggestions" class="suggestions">
+        <?php for ($i = 0; $i < count($this->choices); $i++) {
+            $current = $this->choices[$i];
+            $action = 'publication';
 
-		?>		
-		<div class="s-<?php echo $current->alias; ?>">
-			<p>
-				<a href="<?php echo Route::url($this->route . '&action=' . $action . '&base=' . $current->alias); ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a>
-				<?php if(!empty($this->pubConfig->get('contact_email')) && !empty($this->pubConfig->get('doi_publisher'))) { ?>
-				<span class="pubType"><?php echo ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES_DESCRIPTION') : ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES_DESCRIPTION', $this->pubConfig->get('contact_email'), $this->pubConfig->get('doi_publisher')) : ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES_DESCRIPTION', $this->pubConfig->get('contact_email'), $this->pubConfig->get('doi_publisher')) : ''))); ?></span>
-				<?php } ?>
-			</p>
-		</div>
-		<?php } ?>
-		<div class="clear"></div>
-	</div>
+            ?>      
+        <div class="s-<?php echo $current->alias; ?>">
+            <p>
+                <a href="<?php echo Route::url($this->route . '&action=' . $action . '&base=' . $current->alias); ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a>
+                <?php if (!empty($this->pubConfig->get('contact_email')) && !empty($this->pubConfig->get('doi_publisher'))) { ?>
+                <span class="pubType"><?php echo ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES_DESCRIPTION') : ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES_DESCRIPTION', $this->pubConfig->get('contact_email'), $this->pubConfig->get('doi_publisher')) : ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES_DESCRIPTION', $this->pubConfig->get('contact_email'), $this->pubConfig->get('doi_publisher')) : ''))); ?></span>
+                <?php } ?>
+            </p>
+        </div>
+        <?php } ?>
+        <div class="clear"></div>
+    </div>
 </div>
 <?php if ($this->project->isProvisioned()) { ?>
-	</div><!-- / .subject -->
-	<div class="col span3 omega">
-		<div id="start-projectnote">
-			<h4><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEED_PROJECT'); ?></h4>
-			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
-			<p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <a href="/projects/start" class="addnew"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></p>
-		</div>
-	</div><!-- / .aside -->
+    </div><!-- / .subject -->
+    <div class="col span3 omega">
+        <div id="start-projectnote">
+            <h4><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEED_PROJECT'); ?></h4>
+            <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
+            <p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <a href="/projects/start" class="addnew"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></p>
+        </div>
+    </div><!-- / .aside -->
 </div>
 <?php }

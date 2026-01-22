@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,12 +14,12 @@ defined('_HZEXEC_') or die();
 ?>
 <?php if ($this->title) { ?>
 <div id="content-header" class="full">
-	<h2><?php echo $this->title; ?></h2>
+    <h2><?php echo $this->title; ?></h2>
 </div>
 <?php } ?>
 
 <div class="main section">
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
+    <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 </div><!-- / .section -->

@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,31 +12,32 @@
 defined('_HZEXEC_') or die();
 
 ?>
-<div class="sidebox<?php if (!$this->files || count($this->files) == 0) { echo ' suggestions'; } ?>">
-		<h4><a href="<?php echo Route::url($this->model->link('files')); ?>" class="hlink"><?php echo (!$this->files || count($this->files) == 0) ? Lang::txt('COM_PROJECTS_FILES') : Lang::txt('PLG_PROJECTS_FILES_RECENTLY_ADDED'); ?></a>
+<div class="sidebox<?php if (!$this->files || count($this->files) == 0) {
+    echo ' suggestions';
+                   } ?>">
+        <h4><a href="<?php echo Route::url($this->model->link('files')); ?>" class="hlink"><?php echo (!$this->files || count($this->files) == 0) ? Lang::txt('COM_PROJECTS_FILES') : Lang::txt('PLG_PROJECTS_FILES_RECENTLY_ADDED'); ?></a>
 </h4>
 <?php if (!$this->files || count($this->files) == 0) { ?>
-	<p class="s-files">
-		<a href="<?php echo Route::url($this->model->link('files')); ?>"><?php echo Lang::txt('COM_PROJECTS_WELCOME_UPLOAD_FILES'); ?></a>
-	</p>
+    <p class="s-files">
+        <a href="<?php echo Route::url($this->model->link('files')); ?>"><?php echo Lang::txt('COM_PROJECTS_WELCOME_UPLOAD_FILES'); ?></a>
+    </p>
 <?php } else { ?>
-	<ul>
-		<?php foreach ($this->files as $file) {
-			$ext = 'folder';
-			$url = $this->model->link('files') . '&action=browse&subdir=' . urlencode($file->get('localPath'));
-			if ($file->get('type') == 'file')
-			{
-				$url = $this->model->link('files') . '&action=download&asset=' . urlencode($file->get('localPath'));
-				$ext = $file->get('ext');
-			}
-		?>
-			<li>
-				<a href="<?php echo Route::url($url); ?>" title="<?php echo $this->escape($file->get('name')); ?>"><?php echo $file->drawIcon($ext); ?> <?php echo \Components\Projects\Helpers\Html::shortenFileName($file->get('name')); ?></a>
-				<span class="block faded mini">
-					<?php echo $file->getSize('formatted'); ?> &middot; <?php echo Date::of($file->get('date'))->toLocal('M d, Y'); ?> &middot; <?php echo \Components\Projects\Helpers\Html::shortenName($file->get('author')); ?>
-				</span>
-			</li>
-		<?php } ?>
-	</ul>
+    <ul>
+        <?php foreach ($this->files as $file) {
+            $ext = 'folder';
+            $url = $this->model->link('files') . '&action=browse&subdir=' . urlencode($file->get('localPath'));
+            if ($file->get('type') == 'file') {
+                $url = $this->model->link('files') . '&action=download&asset=' . urlencode($file->get('localPath'));
+                $ext = $file->get('ext');
+            }
+            ?>
+            <li>
+                <a href="<?php echo Route::url($url); ?>" title="<?php echo $this->escape($file->get('name')); ?>"><?php echo $file->drawIcon($ext); ?> <?php echo \Components\Projects\Helpers\Html::shortenFileName($file->get('name')); ?></a>
+                <span class="block faded mini">
+                    <?php echo $file->getSize('formatted'); ?> &middot; <?php echo Date::of($file->get('date'))->toLocal('M d, Y'); ?> &middot; <?php echo \Components\Projects\Helpers\Html::shortenName($file->get('author')); ?>
+                </span>
+            </li>
+        <?php } ?>
+    </ul>
 <?php } ?>
 </div>

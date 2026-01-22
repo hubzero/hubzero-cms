@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,23 +12,21 @@
 defined('_HZEXEC_') or die();
 
 shuffle($this->suggestions);
-$i= 0;
+$i = 0;
 
 ?>
 <div class="sidebox suggestions">
-	<h4><?php echo Lang::txt('COM_PROJECTS_SUGGESTIONS'); ?>:</h4>
-	<?php
-	foreach ($this->suggestions as $suggestion)
-	{
-		$i++;
-		if ($i <= 3)
-		{
-			?>
-			<p class="<?php echo $suggestion['class']; ?>">
-				<a href="<?php echo $suggestion['url']; ?>"><?php echo $suggestion['text']; ?></a>
-			</p>
-			<?php
-		}
-	}
-	?>
+    <h4><?php echo Lang::txt('COM_PROJECTS_SUGGESTIONS'); ?>:</h4>
+    <?php
+    foreach ($this->suggestions as $suggestion) {
+        $i++;
+        if ($i <= 3) {
+            ?>
+            <p class="<?php echo $suggestion['class']; ?>">
+                <a href="<?php echo $suggestion['url']; ?>"><?php echo $suggestion['text']; ?></a>
+            </p>
+            <?php
+        }
+    }
+    ?>
 </div>

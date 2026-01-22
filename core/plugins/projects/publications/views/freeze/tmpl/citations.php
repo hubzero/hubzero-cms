@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,25 +23,25 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
 <div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
 echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 <?php if (count($this->pub->_citations) > 0) {
-	$i= 1;
-	$formatter = new \Components\Citations\Helpers\Format;
-	$formatter->setTemplate($citationFormat);
-	?>
-	<div class="list-wrapper">
-		<ul class="itemlist" id="citations-list">
-		<?php foreach ($this->pub->_citations as $cite) {
-
-				$citeText = $cite->formatted
-							? '<p>' . $cite->formatted . '</p>'
-							: \Components\Citations\Helpers\Format::formatReference($cite, '');
-			 ?>
-			<li>
-				<span class="item-title citation-formatted"><?php echo $citeText; ?></span>
-			</li>
-	<?php	$i++; } ?>
-		</ul>
-	</div>
-	<?php  } else {
-		echo '<p class="nocontent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE') . '</p>';
-	} ?>
+    $i = 1;
+    $formatter = new \Components\Citations\Helpers\Format();
+    $formatter->setTemplate($citationFormat);
+    ?>
+    <div class="list-wrapper">
+        <ul class="itemlist" id="citations-list">
+        <?php foreach ($this->pub->_citations as $cite) {
+                $citeText = $cite->formatted
+                            ? '<p>' . $cite->formatted . '</p>'
+                            : \Components\Citations\Helpers\Format::formatReference($cite, '');
+            ?>
+            <li>
+                <span class="item-title citation-formatted"><?php echo $citeText; ?></span>
+            </li>
+            <?php	$i++;
+        } ?>
+        </ul>
+    </div>
+<?php  } else {
+        echo '<p class="nocontent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NONE') . '</p>';
+} ?>
 </div>

@@ -1,4 +1,7 @@
 <?php
+
+// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,21 +22,21 @@ $class  = $this->pub->getStatusCss();
 $blockcontent = $this->pub->_curationModel->parseBlock('edit');
 
 ?>
-<?php 
+<?php
 // Write title
-echo \Components\Publications\Helpers\Html::showPubTitle( $this->pub, $this->title);
+echo \Components\Publications\Helpers\Html::showPubTitle($this->pub, $this->title);
 
 // Draw status bar
 echo $this->pub->_curationModel->drawStatusBar();
 ?>
 <div id="pub-body">
-	<?php echo $blockcontent; ?>
+    <?php echo $blockcontent; ?>
 </div>
 <p class="rightfloat">
-	<a href="<?php echo Route::url($this->pub->link('version')); ?>" class="public-page" rel="external" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
+    <a href="<?php echo Route::url($this->pub->link('version')); ?>" class="public-page" rel="external" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
 </p>
 <script>
 jQuery(document).ready(function($) {
-	HUB.ProjectPublicationsDraft.initialize();
+    HUB.ProjectPublicationsDraft.initialize();
 });
 </script>
