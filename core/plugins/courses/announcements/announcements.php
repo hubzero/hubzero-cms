@@ -1,315 +1,319 @@
 <?php
+
+// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Utility\Date;
+use Hubzero\Plugin\Plugin;
 
 /**
  * Plugin class for course announcements
  */
-class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
+class PlgCoursesAnnouncements extends Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_autoloadLanguage = true;
 
-	/**
-	 * Return data on a course view (this will be some form of HTML)
-	 *
-	 * @param   object   $course    Current course
-	 * @param   object   $offering  Name of the component
-	 * @param   boolean  $describe  Return plugin description only?
-	 * @return  object
-	 */
-	public function onCourse($course, $offering, $describe=false)
-	{
-		$response = with(new \Hubzero\Base\Obj)
-			->set('name', $this->_name)
-			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
-			->set('default_access', $this->params->get('plugin_access', 'members'))
-			->set('display_menu_tab', true)
-			->set('icon', 'f095');
+    /**
+     * Course object
+     *
+     * @var  object
+     */
+    protected $course = null;
 
-		if ($describe)
-		{
-			return $response;
-		}
+    /**
+     * Offering object
+     *
+     * @var  object
+     */
+    protected $offering = null;
 
-		if (!($active = Request::getString('active')))
-		{
-			Request::setVar('active', ($active = $this->_name));
-		}
+    /**
+     * Option declaration
+     *
+     * @var  string
+     */
+    protected $option = null;
 
-		// Get a student count
-		$response->set('meta_count', $offering->announcements(array('count' => true)));
+    /**
+     * Return data on a course view (this will be some form of HTML)
+     *
+     * @param   object   $course    Current course
+     * @param   object   $offering  Name of the component
+     * @param   boolean  $describe  Return plugin description only?
+     * @return  object
+     */
+    public function onCourse($course, $offering, $describe = false)
+    {
+        $response = with(new \Hubzero\Base\Obj())
+            ->set('name', $this->_name)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
+            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
+            ->set('default_access', $this->params->get('plugin_access', 'members'))
+            ->set('display_menu_tab', true)
+            ->set('icon', 'f095');
 
-		// Check if our area is in the array of areas we want to return results for
-		if ($response->get('name') == $active)
-		{
-			// Set some variables so other functions have access
-			$this->option   = Request::getCmd('option', 'com_courses');
-			$this->course   = $course;
-			$this->offering = $offering;
+        if ($describe) {
+            return $response;
+        }
 
-			// Set the page title
-			Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_COURSES_ANNOUNCEMENTS'));
+        if (!($active = Request::getString('active'))) {
+            Request::setVar('active', ($active = $this->_name));
+        }
 
-			Pathway::append(
-				Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
-				$this->offering->link() . '&active=' . $this->_name
-			);
+        // Get a student count
+        $response->set('meta_count', $offering->announcements(array('count' => true)));
 
-			require_once Component::path('com_courses') . DS . 'models' . DS . 'announcement.php';
+        // Check if our area is in the array of areas we want to return results for
+        if ($response->get('name') == $active) {
+            // Set some variables so other functions have access
+            $this->option = Request::getCmd('option', 'com_courses');
+            $this->course = $course;
+            $this->offering = $offering;
 
-			$action = Request::getWord('action', '');
+            // Set the page title
+            Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_COURSES_ANNOUNCEMENTS'));
 
-			switch (strtolower($action))
-			{
-				case 'save':
-					$response->set('html', $this->_save());
-					break;
-				case 'new':
-					$response->set('html', $this->_edit());
-					break;
-				case 'edit':
-					$response->set('html', $this->_edit());
-					break;
-				case 'delete':
-					$response->set('html', $this->_delete());
-					break;
-				default:
-					$response->set('html', $this->_list());
-					break;
-			}
-		}
+            Pathway::append(
+                Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
+                $this->offering->link() . '&active=' . $this->_name
+            );
 
-		// Return the output
-		return $response;
-	}
+            require_once Component::path('com_courses') . DS . 'models' . DS . 'announcement.php';
 
-	/**
-	 * Set redirect and message
-	 *
-	 * @param   object  $course
-	 * @param   object  $offering
-	 * @return  void
-	 */
-	public function onCourseBeforeOutline($course, $offering)
-	{
-		return $this->view('default', 'latest')
-					->set('course', $course)
-					->set('offering', $offering)
-					->set('params', $this->params)
-					->loadTemplate();
-	}
+            $action = Request::getWord('action', '');
 
-	/**
-	 * Administrative dashboard info
-	 *
-	 * @param   object  $course    \Components\Courses\Models\Course
-	 * @param   object  $offering  \Components\Courses\Models\Offering
-	 * @return  string
-	 */
-	public function onCourseDashboard($course, $offering)
-	{
-		$view = with($this->view('dashboard', 'browse'))
-			->set('course', $course)
-			->set('offering', $offering)
-			->set('option', Request::getCmd('option', 'com_courses'))
-			->set('config', $course->config())
-			->set('params', $this->params);
+            switch (strtolower($action)) {
+                case 'save':
+                    $response->set('html', $this->saveEntry());
+                    break;
+                case 'new':
+                    $response->set('html', $this->editEntry());
+                    break;
+                case 'edit':
+                    $response->set('html', $this->editEntry());
+                    break;
+                case 'delete':
+                    $response->set('html', $this->deleteEntry());
+                    break;
+                default:
+                    $response->set('html', $this->listEntries());
+                    break;
+            }
+        }
 
-		// Set any errors
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+        // Return the output
+        return $response;
+    }
 
-		return $view->loadTemplate();
-	}
+    /**
+     * Set redirect and message
+     *
+     * @param   object  $course
+     * @param   object  $offering
+     * @return  string
+     */
+    public function onCourseBeforeOutline($course, $offering)
+    {
+        return $this->view('default', 'latest')
+            ->set('course', $course)
+            ->set('offering', $offering)
+            ->set('params', $this->params)
+            ->loadTemplate();
+    }
 
-	/**
-	 * Display a list of all entries
-	 *
-	 * @return  string  HTML
-	 */
-	private function _list()
-	{
-		$view = with($this->view('default', 'browse'))
-			->set('course', $this->course)
-			->set('offering', $this->offering)
-			->set('option', $this->option)
-			->set('config', $this->course->config())
-			->set('params', $this->params)
-			->set('no_html', Request::getInt('no_html', 0));
+    /**
+     * Administrative dashboard info
+     *
+     * @param   object  $course    \Components\Courses\Models\Course
+     * @param   object  $offering  \Components\Courses\Models\Offering
+     * @return  string
+     */
+    public function onCourseDashboard($course, $offering)
+    {
+        $view = with($this->view('dashboard', 'browse'))
+            ->set('course', $course)
+            ->set('offering', $offering)
+            ->set('option', Request::getCmd('option', 'com_courses'))
+            ->set('config', $course->config())
+            ->set('params', $this->params);
 
-		// Get filters for the entries list
-		$filters = array(
-			'search' => Request::getString('q', ''),
-			'limit'  => Request::getInt('limit', Config::get('list_limit', 25)),
-			'start'  => Request::getInt('limitstart', 0)
-		);
-		$filters['start'] = ($filters['limit'] == 0 ? 0 : $filters['start']);
+        // Set any errors
+        foreach ($this->getErrors() as $error) {
+            $view->setError($error);
+        }
 
-		$view->set('filters', $filters);
+        return $view->loadTemplate();
+    }
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+    /**
+     * Display a list of all entries
+     *
+     * @return  string  HTML
+     */
+    private function listEntries()
+    {
+        $view = with($this->view('default', 'browse'))
+            ->set('course', $this->course)
+            ->set('offering', $this->offering)
+            ->set('option', $this->option)
+            ->set('config', $this->course->config())
+            ->set('params', $this->params)
+            ->set('no_html', Request::getInt('no_html', 0));
 
-		return $view->loadTemplate();
-	}
+        // Get filters for the entries list
+        $filters = array(
+            'search' => Request::getString('q', ''),
+            'limit' => Request::getInt('limit', Config::get('list_limit', 25)),
+            'start' => Request::getInt('limitstart', 0)
+        );
+        $filters['start'] = ($filters['limit'] == 0 ? 0 : $filters['start']);
 
-	/**
-	 * Display a form for editing or creating an entry
-	 *
-	 * @param   object  $model
-	 * @return  string  HTML
-	 */
-	private function _edit($model=null)
-	{
-		// Permissions check
-		if (!$this->offering->access('manage', 'section'))
-		{
-			return $this->_list();
-		}
+        $view->set('filters', $filters);
 
-		$view = with($this->view('default', 'edit'))
-			->set('course', $this->course)
-			->set('offering', $this->offering)
-			->set('option', $this->option)
-			->set('params', $this->params);
+        foreach ($this->getErrors() as $error) {
+            $view->setError($error);
+        }
 
-		if (!($model instanceof \Components\Courses\Models\Announcement))
-		{
-			$model = \Components\Courses\Models\Announcement::getInstance(Request::getInt('entry', 0));
-		}
+        return $view->loadTemplate();
+    }
 
-		$view->set('model', $model);
+    /**
+     * Display a form for editing or creating an entry
+     *
+     * @param   object  $model
+     * @return  string  HTML
+     */
+    private function editEntry($model = null)
+    {
+        // Permissions check
+        if (!$this->offering->access('manage', 'section')) {
+            return $this->listEntries();
+        }
 
-		foreach ($this->getErrors() as $error)
-		{
-			$view->setError($error);
-		}
+        $view = with($this->view('default', 'edit'))
+            ->set('course', $this->course)
+            ->set('offering', $this->offering)
+            ->set('option', $this->option)
+            ->set('params', $this->params);
 
-		// Display edit form
-		return $view->loadTemplate();
-	}
+        if (!($model instanceof \Components\Courses\Models\Announcement)) {
+            $model = \Components\Courses\Models\Announcement::getInstance(Request::getInt('entry', 0));
+        }
 
-	/**
-	 * Save an entry
-	 *
-	 * @return  string  HTML
-	 */
-	private function _save()
-	{
-		// Permissions check
-		if (!$this->offering->access('manage', 'section'))
-		{
-			return $this->_list();
-		}
+        $view->set('model', $model);
 
-		// Check for request forgeries
-		Request::checkToken();
+        foreach ($this->getErrors() as $error) {
+            $view->setError($error);
+        }
 
-		$no_html = Request::getInt('no_html', 0);
+        // Display edit form
+        return $view->loadTemplate();
+    }
 
-		$response = new stdClass;
-		$response->code = 0;
+    /**
+     * Save an entry
+     *
+     * @return  string  HTML
+     */
+    private function saveEntry()
+    {
+        // Permissions check
+        if (!$this->offering->access('manage', 'section')) {
+            return $this->listEntries();
+        }
 
-		// Incoming
-		$fields = Request::getArray('fields', array(), 'post');
-		$fields = array_map('trim', $fields);
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Get the model and bind the data
-		$model = new \Components\Courses\Models\Announcement(0);
-		if (!$model->bind($fields))
-		{
-			$this->setError($model->getError());
-			return $this->_edit($model);
-		}
+        $no_html = Request::getInt('no_html', 0);
 
-		// Incoming dates are in local time. We need to convert to UTC
-		if ($model->get('publish_up') && $model->get('publish_up') != '0000-00-00 00:00:00')
-		{
-			$model->set('publish_up', Date::of($model->get('publish_up'), Config::get('offset'))->toSql());
-		}
+        $response = new stdClass();
+        $response->code = 0;
 
-		// Incoming dates are in local time. We need to convert to UTC
-		if ($model->get('publish_down') && $model->get('publish_down') != '0000-00-00 00:00:00')
-		{
-			$model->set('publish_down', Date::of($model->get('publish_down'), Config::get('offset'))->toSql());
-		}
+        // Incoming
+        $fields = Request::getArray('fields', array(), 'post');
+        $fields = array_map('trim', $fields);
 
-		if (!isset($fields['priority']) || !$fields['priority'])
-		{
-			$model->set('priority', 0);
-		}
+        // Get the model and bind the data
+        $model = new \Components\Courses\Models\Announcement(0);
+        if (!$model->bind($fields)) {
+            $this->setError($model->getError());
+            return $this->editEntry($model);
+        }
 
-		// Store content
-		if (!$model->store(true))
-		{
-			$this->setError($model->getError());
-			if (!$no_html)
-			{
-				return $this->_edit($model);
-			}
-		}
+        // Incoming dates are in local time. We need to convert to UTC
+        if ($model->get('publish_up') && $model->get('publish_up') != '0000-00-00 00:00:00') {
+            $model->set('publish_up', Date::of($model->get('publish_up'), Config::get('offset'))->toSql());
+        }
 
-		if ($no_html)
-		{
-			if ($this->getError())
-			{
-				$response->code   = 1;
-				$response->errors = $this->getErrors();
-				$response->data   = $fields;
-			}
-			ob_clean();
-			header('Content-type: text/plain');
-			echo json_encode($response);
-			exit();
-		}
+        // Incoming dates are in local time. We need to convert to UTC
+        if ($model->get('publish_down') && $model->get('publish_down') != '0000-00-00 00:00:00') {
+            $model->set('publish_down', Date::of($model->get('publish_down'), Config::get('offset'))->toSql());
+        }
 
-		// Display listing
-		return $this->_list();
-	}
+        if (!isset($fields['priority']) || !$fields['priority']) {
+            $model->set('priority', 0);
+        }
 
-	/**
-	 * Mark an entry as deleted
-	 *
-	 * @return  string  HTML
-	 */
-	private function _delete()
-	{
-		// Permissions check
-		if (!$this->offering->access('manage', 'section'))
-		{
-			return $this->_list();
-		}
+        // Store content
+        if (!$model->store(true)) {
+            $this->setError($model->getError());
+            if (!$no_html) {
+                return $this->editEntry($model);
+            }
+        }
 
-		// Incoming
-		$id = Request::getInt('entry', 0);
+        if ($no_html) {
+            if ($this->getError()) {
+                $response->code = 1;
+                $response->errors = $this->getErrors();
+                $response->data = $fields;
+            }
+            ob_clean();
+            header('Content-type: text/plain');
+            echo json_encode($response);
+            exit();
+        }
 
-		// Get the model and set the state to "deleted"
-		$model = \Components\Courses\Models\Announcement::getInstance($id);
-		$model->set('state', 2);
+        // Display listing
+        return $this->listEntries();
+    }
 
-		// Store content
-		if (!$model->store())
-		{
-			$this->setError($model->getError());
-		}
+    /**
+     * Mark an entry as deleted
+     *
+     * @return  string  HTML
+     */
+    private function deleteEntry()
+    {
+        // Permissions check
+        if (!$this->offering->access('manage', 'section')) {
+            return $this->listEntries();
+        }
 
-		// Display listing
-		return $this->_list();
-	}
+        // Incoming
+        $id = Request::getInt('entry', 0);
+
+        // Get the model and set the state to "deleted"
+        $model = \Components\Courses\Models\Announcement::getInstance($id);
+        $model->set('state', 2);
+
+        // Store content
+        if (!$model->store()) {
+            $this->setError($model->getError());
+        }
+
+        // Display listing
+        return $this->listEntries();
+    }
 }

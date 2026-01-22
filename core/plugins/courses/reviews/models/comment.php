@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,65 +16,65 @@ use Components\Courses\Models\Course;
  */
 class Comment extends ItemComment
 {
-	/**
-	 * Flagged state
-	 *
-	 * @var  integer
-	 */
-	const STATE_FLAGGED = 3;
+    /**
+     * Flagged state
+     *
+     * @var  integer
+     */
+    public const STATE_FLAGGED = 3;
 
-	/**
-	 * URL for this entry
-	 *
-	 * @var  string
-	 */
-	private $_base = null;
+    /**
+     * URL for this entry
+     *
+     * @var  string
+     */
+    // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+    private $_base = null;
+    // @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 
-	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 *
-	 * @param   string  $type  The type of link to return
-	 * @return  string
-	 */
-	public function link($type='')
-	{
-		if (!isset($this->_base))
-		{
-			if (!$this->get('course'))
-			{
-				$course = Course::getInstance($this->get('item_id'));
-				$this->set('course', $course->get('alias'));
-			}
-			$this->_base = 'index.php?option=com_courses&gid=' . $this->get('course') . '&active=reviews';
-		}
-		$link = $this->_base;
+    /**
+     * Generate and return various links to the entry
+     * Link will vary depending upon action desired, such as edit, delete, etc.
+     *
+     * @param   string  $type  The type of link to return
+     * @return  string
+     */
+    public function link($type = '')
+    {
+        if (!isset($this->_base)) {
+            if (!$this->get('course')) {
+                $course = Course::getInstance($this->get('item_id'));
+                $this->set('course', $course->get('alias'));
+            }
+            $this->_base = 'index.php?option=com_courses&gid=' . $this->get('course') . '&active=reviews';
+        }
+        $link = $this->_base;
 
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'edit':
-				$link .= '&action=edit&comment=' . $this->get('id');
-			break;
+        // If it doesn't exist or isn't published
+        switch (strtolower($type)) {
+            case 'edit':
+                $link .= '&action=edit&comment=' . $this->get('id');
+                break;
 
-			case 'delete':
-				$link .= '&action=delete&comment=' . $this->get('id');
-			break;
+            case 'delete':
+                $link .= '&action=delete&comment=' . $this->get('id');
+                break;
 
-			case 'reply':
-				$link .= '&action=reply&comment=' . $this->get('id');
-			break;
+            case 'reply':
+                $link .= '&action=reply&comment=' . $this->get('id');
+                break;
 
-			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->get('id') . '&parent=' . $this->get('item_id');
-			break;
+            case 'report':
+                $link = 'index.php?option=com_support&task=reportabuse&category=itemcomment&id='
+                    . $this->get('id') . '&parent=' . $this->get('item_id');
+                break;
 
-			case 'permalink':
-			default:
-				$link .= '#c' . $this->get('id');
-			break;
-		}
+            case 'permalink':
+            default:
+                $link .= '#c' . $this->get('id');
+                break;
+        }
 
-		return $link;
-	}
+        return $link;
+    }
 }

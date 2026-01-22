@@ -1,9 +1,13 @@
 <?php
+
+// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+use Hubzero\Plugin\Plugin;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -13,410 +17,414 @@ include_once __DIR__ . DS . 'models' . DS . 'comment.php';
 /**
  * Courses Plugin class for review
  */
-class plgCoursesReviews extends \Hubzero\Plugin\Plugin
+class PlgCoursesReviews extends Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Constructor
+     *
+     * @param   object  &$subject  The object to observe
+     * @param   array   $config    An optional associative array of configuration settings
+     */
+    public function __construct(&$subject, $config)
+    {
+        parent::__construct($subject, $config);
+    }
 
-	/**
-	 * Return data on a resource view (this will be some form of HTML)
-	 *
-	 * @param   object  $course
-	 * @param   string  $active
-	 * @return  array
-	 */
-	public function onCourseView($course, $active=null)
-	{
-		// Prepare the response
-		$response = with(new \Hubzero\Base\Obj)
-			->set('name', $this->_name)
-			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_autoloadLanguage = true;
 
-		$this->option     = Request::getCmd('option', 'com_courses');
-		$this->controller = Request::getWord('controller', 'course');
+    /**
+     * Return data on a resource view (this will be some form of HTML)
+     *
+     * @param   object  $course
+     * @param   string  $active
+     * @return  array
+     */
+    public function onCourseView($course, $active = null)
+    {
+        // Prepare the response
+        $response = with(new \Hubzero\Base\Obj())
+            ->set('name', $this->_name)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
 
-		$tbl = new \Components\Courses\Models\Comment();
+        $this->option = Request::getCmd('option', 'com_courses');
+        $this->controller = Request::getWord('controller', 'course');
 
-		// Build the HTML meant for the tab's metadata overview
-		$view = $this->view('default', 'metadata')
-			->set('option', $this->option)
-			->set('controller', $this->controller)
-			->set('course', $course)
-			->set('tbl', $tbl);
+        $tbl = new \Components\Courses\Models\Comment();
 
-		$response->set('metadata', $view->loadTemplate());
+        // Build the HTML meant for the tab's metadata overview
+        $view = $this->view('default', 'metadata')
+            ->set('option', $this->option)
+            ->set('controller', $this->controller)
+            ->set('course', $course)
+            ->set('tbl', $tbl);
 
-		// Check if our area is in the array of areas we want to return results for
-		if ($response->get('name') == $active)
-		{
-			$database = App::get('db');
+        $response->set('metadata', $view->loadTemplate());
 
-			$this->view = $this->view('default', 'view');
-			$this->view->database = $this->database = $database;
-			$this->view->option   = $this->option;
-			$this->view->controller = $this->controller;
-			$this->view->obj      = $this->obj      = $course;
-			$this->view->obj_type = $this->obj_type = substr($this->option, 4);
-			$this->view->url      = $this->url      = Route::url($course->link() . '&active=' . $this->_name, false, true);
-			$this->view->depth    = 0;
-			$this->view->tbl      = $tbl;
+        // Check if our area is in the array of areas we want to return results for
+        if ($response->get('name') == $active) {
+            $database = App::get('db');
 
-			$this->_authorize();
+            $this->view = $this->view('default', 'view');
+            $this->view->database = $this->database = $database;
+            $this->view->option = $this->option;
+            $this->view->controller = $this->controller;
+            $this->view->obj = $this->obj = $course;
+            $this->view->obj_type = $this->obj_type = substr($this->option, 4);
+            $this->view->url = $this->url = Route::url($course->link() . '&active=' . $this->_name, false, true);
+            $this->view->depth = 0;
+            $this->view->tbl = $tbl;
 
-			$this->view->params   = $this->params;
-			$this->view->task     = $this->task    = Request::getString('action', '');
+            $this->_authorize();
 
-			switch ($this->task)
-			{
-				// Entries
-				case 'save':
-					$this->_save();
-					break;
-				case 'new':
-					$this->_view();
-					break;
-				case 'edit':
-					$this->_view();
-					break;
-				case 'delete':
-					$this->_delete();
-					break;
-				case 'view':
-					$this->_view();
-					break;
-				case 'vote':
-					$this->_vote();
-					break;
+            $this->view->params = $this->params;
+            $this->view->task = $this->task = Request::getString('action', '');
 
-				default:
-					$this->_view();
-					break;
-			}
+            switch ($this->task) {
+                // Entries
+                case 'save':
+                    $this->_save();
+                    break;
+                case 'new':
+                    $this->_view();
+                    break;
+                case 'edit':
+                    $this->_view();
+                    break;
+                case 'delete':
+                    $this->_delete();
+                    break;
+                case 'view':
+                    $this->_view();
+                    break;
+                case 'vote':
+                    $this->_vote();
+                    break;
 
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+                default:
+                    $this->_view();
+                    break;
+            }
 
-			// Return the output
-			$response->set('html', $this->view->loadTemplate());
-		}
+            foreach ($this->getErrors() as $error) {
+                $this->view->setError($error);
+            }
 
-		return $response;
-	}
+            // Return the output
+            $response->set('html', $this->view->loadTemplate());
+        }
 
-	/**
-	 * Set permissions
-	 *
-	 * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
-	 * @param   integer  $assetId    Specific object to check permissions for
-	 * @return  void
-	 */
-	protected function _authorize($assetType='comment', $assetId=null)
-	{
-		// Are comments public or registered members only?
-		if ($this->params->get('comments_viewable', 0) <= 0)
-		{
-			// Public
-			$this->params->set('access-view-' . $assetType, true);
-		}
+        return $response;
+    }
 
-		// Logged in?
-		if (!User::isGuest())
-		{
-			// Set comments to viewable
-			$this->params->set('access-view-' . $assetType, true);
+    /**
+     * Set permissions
+     *
+     * @param   string   $assetType  Type of asset to set permissions for (component, section, category, thread, post)
+     * @param   integer  $assetId    Specific object to check permissions for
+     * @return  void
+     */
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _authorize($assetType = 'comment', $assetId = null)
+    {
+        // Are comments public or registered members only?
+        if ($this->params->get('comments_viewable', 0) <= 0) {
+            // Public
+            $this->params->set('access-view-' . $assetType, true);
+        }
 
-			$actions = array(
-				'admin', 'manage', 'edit', 'edit-own', 'create', 'delete'
-			);
+        // Logged in?
+        if (!User::isGuest()) {
+            // Set comments to viewable
+            $this->params->set('access-view-' . $assetType, true);
 
-			$yearFormat  = "Y";
-			$monthFormat = "m";
-			$dayFormat   = "d";
+            $actions = array(
+                'admin',
+                'manage',
+                'edit',
+                'edit-own',
+                'create',
+                'delete'
+            );
 
-			if ($this->obj->isManager())
-			{
-				foreach ($actions as $action)
-				{
-					$this->params->set('access-' . $action . '-' . $assetType, true);
-				}
-			}
+            $yearFormat = "Y";
+            $monthFormat = "m";
+            $dayFormat = "d";
 
-			if (!$this->obj->isStudent())
-			{
-				return;
-			}
+            if ($this->obj->isManager()) {
+                foreach ($actions as $action) {
+                    $this->params->set('access-' . $action . '-' . $assetType, true);
+                }
+            }
 
-			$d = $this->obj->get('created');
+            if (!$this->obj->isStudent()) {
+                return;
+            }
 
-			$year  = intval(substr($d, 0, 4));
-			$month = intval(substr($d, 5, 2));
-			$day   = intval(substr($d, 8, 2));
+            $d = $this->obj->get('created');
 
-			switch ($this->params->get('comments_close', 'never'))
-			{
-				case 'day':
-					$dt = mktime(0, 0, 0, $month, ($day+1), $year);
-				break;
-				case 'week':
-					$dt = mktime(0, 0, 0, $month, ($day+7), $year);
-				break;
-				case 'month':
-					$dt = mktime(0, 0, 0, ($month+1), $day, $year);
-				break;
-				case '6months':
-					$dt = mktime(0, 0, 0, ($month+6), $day, $year);
-				break;
-				case 'year':
-					$dt = mktime(0, 0, 0, $month, $day, ($year+1));
-				break;
-				case 'never':
-				default:
-					$dt =mktime(0, 0, 0, $month, $day, $year);
-				break;
-			}
+            $year = intval(substr($d, 0, 4));
+            $month = intval(substr($d, 5, 2));
+            $day = intval(substr($d, 8, 2));
 
-			$pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt) . ' 00:00:00';
-			$today = Date::toSql();
+            switch ($this->params->get('comments_close', 'never')) {
+                case 'day':
+                    $dt = mktime(0, 0, 0, $month, ($day + 1), $year);
+                    break;
+                case 'week':
+                    $dt = mktime(0, 0, 0, $month, ($day + 7), $year);
+                    break;
+                case 'month':
+                    $dt = mktime(0, 0, 0, ($month + 1), $day, $year);
+                    break;
+                case '6months':
+                    $dt = mktime(0, 0, 0, ($month + 6), $day, $year);
+                    break;
+                case 'year':
+                    $dt = mktime(0, 0, 0, $month, $day, ($year + 1));
+                    break;
+                case 'never':
+                default:
+                    $dt = mktime(0, 0, 0, $month, $day, $year);
+                    break;
+            }
 
-			// Can users create comments?
-			if ($this->params->get('comments_close', 'never') == 'never'
-			 || ($this->params->get('comments_close', 'never') != 'now' && $today < $pdt))
-			{
-				$this->params->set('access-create-' . $assetType, true);
-				$this->params->set('access-review-' . $assetType, true);
-			}
-			// Can users edit comments?
-			if ($this->params->get('comments_editable', 1))
-			{
-				$this->params->set('access-edit-' . $assetType, true);
-			}
-			// Can users delete comments?
-			if ($this->params->get('comments_deletable', 0))
-			{
-				$this->params->set('access-delete-' . $assetType, true);
-			}
-		}
-	}
+            $pdt = strftime($yearFormat, $dt) . '-' . strftime($monthFormat, $dt) . '-' . strftime($dayFormat, $dt)
+                . ' 00:00:00';
+            $today = Date::toSql();
 
-	/**
-	 * Method to add a message to the component message que
-	 *
-	 * @param   string  $url      URL
-	 * @param   string  $msg      The message to add
-	 * @param   string  $msgType  Type of message
-	 * @return  void
-	 */
-	public function redirect($url, $msg='', $msgType='')
-	{
-		$url = ($url != '') ? $url : Request::getString('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews'), 'server');
+            // Can users create comments?
+            if (
+                $this->params->get('comments_close', 'never') == 'never'
+                || ($this->params->get('comments_close', 'never') != 'now' && $today < $pdt)
+            ) {
+                $this->params->set('access-create-' . $assetType, true);
+                $this->params->set('access-review-' . $assetType, true);
+            }
+            // Can users edit comments?
+            if ($this->params->get('comments_editable', 1)) {
+                $this->params->set('access-edit-' . $assetType, true);
+            }
+            // Can users delete comments?
+            if ($this->params->get('comments_deletable', 0)) {
+                $this->params->set('access-delete-' . $assetType, true);
+            }
+        }
+    }
 
-		App::redirect($url, $msg, $msgType);
-	}
+    /**
+     * Method to add a message to the component message que
+     *
+     * @param   string  $url      URL
+     * @param   string  $msg      The message to add
+     * @param   string  $msgType  Type of message
+     * @return  void
+     */
+    public function redirect($url, $msg = '', $msgType = '')
+    {
+        $url = ($url != '')
+            ? $url
+            : Request::getString('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews'), 'server');
 
-	/**
-	 * Redirect to login page
-	 *
-	 * @return  void
-	 */
-	protected function _login()
-	{
-		$return = base64_encode(Request::getString('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews', false, true), 'server'));
+        App::redirect($url, $msg, $msgType);
+    }
 
-		App::redirect(
-			Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-			Lang::txt('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
-			'warning'
-		);
-	}
+    /**
+     * Redirect to login page
+     *
+     * @return  void
+     */
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _login()
+    {
+        $return = base64_encode(
+            Request::getString('REQUEST_URI', Route::url($this->obj->link() . '&active=reviews', false, true), 'server')
+        );
 
-	/**
-	 * Vote on a comment
-	 *
-	 * @return  void
-	 */
-	protected function _vote()
-	{
-		// Ensure the user is logged in
-		if (User::isGuest())
-		{
-			$this->setError(Lang::txt('PLG_COURSES_REVIEWS_LOGIN_NOTICE'));
-			return $this->_login();
-		}
+        App::redirect(
+            Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+            Lang::txt('PLG_COURSES_REVIEWS_LOGIN_NOTICE'),
+            'warning'
+        );
+    }
 
-		$no_html = Request::getInt('no_html', 0);
+    /**
+     * Vote on a comment
+     *
+     * @return  void
+     */
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _vote()
+    {
+        // Ensure the user is logged in
+        if (User::isGuest()) {
+            $this->setError(Lang::txt('PLG_COURSES_REVIEWS_LOGIN_NOTICE'));
+            return $this->_login();
+        }
 
-		// Record the vote
-		if ($item_id = Request::getInt('voteup', 0))
-		{
-			$how = 1;
-		}
-		else if ($item_id = Request::getInt('votedown', 0))
-		{
-			$how = -1;
-		}
+        $no_html = Request::getInt('no_html', 0);
 
-		$item = \Components\Courses\Models\Comment::oneOrFail($item_id);
+        // Record the vote
+        if ($item_id = Request::getInt('voteup', 0)) {
+            $how = 1;
+        } elseif ($item_id = Request::getInt('votedown', 0)) {
+            $how = -1;
+        }
 
-		if (!$item->vote($how, User::get('id')))
-		{
-			$this->setError($item->getError());
-		}
+        $item = \Components\Courses\Models\Comment::oneOrFail($item_id);
 
-		if ($this->getError() && !$no_html)
-		{
-			App::redirect(
-				$this->url,
-				$this->getError(),
-				'error'
-			);
-			return;
-		}
+        if (!$item->vote($how, User::get('id'))) {
+            $this->setError($item->getError());
+        }
 
-		$item->set('vote', $how);
+        if ($this->getError() && !$no_html) {
+            App::redirect(
+                $this->url,
+                $this->getError(),
+                'error'
+            );
+            return;
+        }
 
-		$this->view->setLayout('vote');
-		$this->view->set('item', $item);
+        $item->set('vote', $how);
 
-		if (!$no_html)
-		{
-			App::redirect(
-				$this->url,
-				Lang::txt('PLG_COURSES_REVIEWS_VOTE_SAVED'),
-				'message'
-			);
-			return;
-		}
+        $this->view->setLayout('vote');
+        $this->view->set('item', $item);
 
-		$this->view->setErrors($this->getErrors());
+        if (!$no_html) {
+            App::redirect(
+                $this->url,
+                Lang::txt('PLG_COURSES_REVIEWS_VOTE_SAVED'),
+                'message'
+            );
+            return;
+        }
 
-		// Ugly brute force method of cleaning output
-		ob_clean();
-		echo $this->view->loadTemplate();
-		exit();
-	}
+        $this->view->setErrors($this->getErrors());
 
-	/**
-	 * Show a list of comments
-	 *
-	 * @return  void
-	 */
-	protected function _view()
-	{
-		// Get comments on this article
-		$comments = $this->view->tbl
-			->whereEquals('item_type', $this->obj_type)
-			->whereEquals('item_id', $this->obj->get('id'))
-			->whereEquals('parent', 0)
-			->whereIn('state', array(
-				Components\Courses\Models\Comment::STATE_PUBLISHED,
-				Components\Courses\Models\Comment::STATE_FLAGGED
-			))
-			->limit($this->params->get('display_limit', 25))
-			->ordered()
-			->rows();
+        // Ugly brute force method of cleaning output
+        ob_clean();
+        echo $this->view->loadTemplate();
+        exit();
+    }
 
-		$this->view->set('comments', $comments);
+    /**
+     * Show a list of comments
+     *
+     * @return  void
+     */
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _view()
+    {
+        // Get comments on this article
+        $comments = $this->view->tbl
+            ->whereEquals('item_type', $this->obj_type)
+            ->whereEquals('item_id', $this->obj->get('id'))
+            ->whereEquals('parent', 0)
+            ->whereIn('state', array(
+                Components\Courses\Models\Comment::STATE_PUBLISHED,
+                Components\Courses\Models\Comment::STATE_FLAGGED
+            ))
+            ->limit($this->params->get('display_limit', 25))
+            ->ordered()
+            ->rows();
 
-		$this->view->setErrors($this->getErrors());
-	}
+        $this->view->set('comments', $comments);
 
-	/**
-	 * Save an entry
-	 *
-	 * @return  void
-	 */
-	protected function _save()
-	{
-		// Ensure the user is logged in
-		if (User::isGuest())
-		{
-			return $this->_login();
-		}
+        $this->view->setErrors($this->getErrors());
+    }
 
-		// Check for request forgeries
-		Request::checkToken();
+    /**
+     * Save an entry
+     *
+     * @return  void
+     */
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _save()
+    {
+        // Ensure the user is logged in
+        if (User::isGuest()) {
+            return $this->_login();
+        }
 
-		// Incoming
-		$comment = Request::getArray('comment', array(), 'post');
+        // Check for request forgeries
+        Request::checkToken();
 
-		// Instantiate a new comment object and pass it the data
-		$row = \Components\Courses\Models\Comment::blank()->set($comment);
+        // Incoming
+        $comment = Request::getArray('comment', array(), 'post');
 
-		$row->setUploadDir($this->params->get('comments_uploadpath', '/site/comments'));
+        // Instantiate a new comment object and pass it the data
+        $row = \Components\Courses\Models\Comment::blank()->set($comment);
 
-		if ($row->get('id') && !$this->params->get('access-edit-comment'))
-		{
-			App::redirect(
-				$this->url,
-				Lang::txt('PLG_COURSES_REVIEWS_NOTAUTH'),
-				'warning'
-			);
-		}
+        $row->setUploadDir($this->params->get('comments_uploadpath', '/site/comments'));
 
-		// Store new content
-		if (!$row->save())
-		{
-			App::redirect(
-				$this->url,
-				$row->getError(),
-				'error'
-			);
-		}
+        if ($row->get('id') && !$this->params->get('access-edit-comment')) {
+            App::redirect(
+                $this->url,
+                Lang::txt('PLG_COURSES_REVIEWS_NOTAUTH'),
+                'warning'
+            );
+        }
 
-		App::redirect(
-			$this->url,
-			Lang::txt('PLG_COURSES_REVIEWS_SAVED'),
-			'message'
-		);
-	}
+        // Store new content
+        if (!$row->save()) {
+            App::redirect(
+                $this->url,
+                $row->getError(),
+                'error'
+            );
+        }
 
-	/**
-	 * Mark a comment as deleted
-	 * NOTE: Does not actually delete data. Simply marks record.
-	 *
-	 * @return  void
-	 */
-	protected function _delete()
-	{
-		// Ensure the user is logged in
-		if (User::isGuest())
-		{
-			$this->_login();
-		}
+        App::redirect(
+            $this->url,
+            Lang::txt('PLG_COURSES_REVIEWS_SAVED'),
+            'message'
+        );
+    }
 
-		// Incoming
-		$id = Request::getInt('comment', 0);
-		if (!$id)
-		{
-			return $this->_redirect();
-		}
+    /**
+     * Mark a comment as deleted
+     * NOTE: Does not actually delete data. Simply marks record.
+     *
+     * @return  void
+     */
+    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _delete()
+    {
+        // Ensure the user is logged in
+        if (User::isGuest()) {
+            $this->_login();
+        }
 
-		// Initiate a comment object
-		$comment = \Components\Courses\Models\Comment::oneOrFail($id);
+        // Incoming
+        $id = Request::getInt('comment', 0);
+        if (!$id) {
+            return $this->_redirect();
+        }
 
-		if (User::get('id') != $comment->get('created_by') && !$this->params->get('access-delete-comment'))
-		{
-			App::redirect($this->url);
-		}
+        // Initiate a comment object
+        $comment = \Components\Courses\Models\Comment::oneOrFail($id);
 
-		$comment->set('state', $comment::STATE_DELETED);
+        if (User::get('id') != $comment->get('created_by') && !$this->params->get('access-delete-comment')) {
+            App::redirect($this->url);
+        }
 
-		// Delete the entry itself
-		if (!$comment->save())
-		{
-			$this->setError($comment->getError());
-		}
+        $comment->set('state', $comment::STATE_DELETED);
 
-		App::redirect(
-			$this->url,
-			Lang::txt('PLG_COURSES_REVIEWS_REMOVED'),
-			'message'
-		);
-	}
+        // Delete the entry itself
+        if (!$comment->save()) {
+            $this->setError($comment->getError());
+        }
+
+        App::redirect(
+            $this->url,
+            Lang::txt('PLG_COURSES_REVIEWS_REMOVED'),
+            'message'
+        );
+    }
 }

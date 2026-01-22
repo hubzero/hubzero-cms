@@ -1,296 +1,306 @@
 <?php
+
+// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
-require_once __DIR__ . DS . 'models' . DS . 'note.php';
+use Hubzero\Utility\Date;
+use Hubzero\Plugin\Plugin;
 
 /**
- * Courses Plugin class for user notes
+ * Courses Plugin class for notes
  */
-class plgCoursesNotes extends \Hubzero\Plugin\Plugin
+class PlgCoursesNotes extends Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Constructor
+     *
+     * @param   object  &$subject  The object to observe
+     * @param   array   $config    An optional associative array of configuration settings
+     */
+    public function __construct(&$subject, $config)
+    {
+        parent::__construct($subject, $config);
+        require_once __DIR__ . DS . 'models' . DS . 'note.php';
+    }
 
-	/**
-	 * Return data on a course view (this will be some form of HTML)
-	 *
-	 * @param   object   $course    Current course
-	 * @param   object   $offering  Name of the component
-	 * @param   boolean  $describe  Return plugin description only?
-	 * @return  object
-	 */
-	public function onCourse($course, $offering, $describe=false)
-	{
-		$response = with(new \Hubzero\Base\Obj)
-			->set('name', $this->_name)
-			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-			->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
-			->set('default_access', $this->params->get('plugin_access', 'members'))
-			->set('display_menu_tab', true)
-			->set('icon', '270D');
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_autoloadLanguage = true;
 
-		if ($describe)
-		{
-			return $response;
-		}
+    /**
+     * View object
+     *
+     * @var object
+     */
+    public $view = null;
 
-		if (!($active = Request::getString('active')))
-		{
-			Request::setVar('active', ($active = $this->_name));
-		}
+    /**
+     * Course object
+     *
+     * @var object
+     */
+    protected $course = null;
 
-		if ($response->get('name') == $active)
-		{
-			$this->course   = $course;
-			$this->offering = $offering;
+    /**
+     * Offering object
+     *
+     * @var object
+     */
+    protected $offering = null;
 
-			$this->view = $this->view('default', 'notes')
-				->set('option', Request::getCmd('option', 'com_courses'))
-				->set('controller', Request::getWord('controller', 'course'))
-				->set('course', $course)
-				->set('offering', $offering)
-				->set('no_html', Request::getInt('no_html', 0));
+    /**
+     * Return data on a course view (this will be some form of HTML)
+     *
+     * @param   object   $course    Current course
+     * @param   object   $offering  Name of the component
+     * @param   boolean  $describe  Return plugin description only?
+     * @return  object
+     */
+    public function onCourse($course, $offering, $describe = false)
+    {
+        $response = with(new \Hubzero\Base\Obj())
+            ->set('name', $this->_name)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
+            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
+            ->set('default_access', $this->params->get('plugin_access', 'members'))
+            ->set('display_menu_tab', true)
+            ->set('icon', '270D');
 
-			$this->view->filters = array(
-				'section_id' => $offering->section()->get('id'),
-				'search'     => Request::getString('search', '')
-			);
+        if ($describe) {
+            return $response;
+        }
 
-			if ($action = strtolower(Request::getWord('action', '')))
-			{
-				switch ($action)
-				{
-					case 'add':
-						$result = $this->_edit();
-						break;
-					case 'edit':
-						$result = $this->_edit();
-						break;
-					case 'save':
-						$result = $this->_save();
-						break;
-					case 'delete':
-						$result = $this->_delete();
-						break;
-					case 'download':
-						$result = $this->_download();
-						break;
+        if (!($active = Request::getString('active'))) {
+            Request::setVar('active', ($active = $this->_name));
+        }
 
-					default:
-						$result = $this->_list();
-						break;
-				}
-			}
+        if ($response->get('name') == $active) {
+            $this->course = $course;
+            $this->offering = $offering;
 
-			if ($this->view->no_html && $result)
-			{
-				$note = new stdClass;
-				$note->id = $result;
-				$note->success = true;
-				if ($this->getError())
-				{
-					$note->success = false;
-					$note->error = $this->getError();
-				}
+            $this->view = $this->view('default', 'notes')
+                ->set('option', Request::getCmd('option', 'com_courses'))
+                ->set('controller', Request::getWord('controller', 'course'))
+                ->set('course', $course)
+                ->set('offering', $offering)
+                ->set('no_html', Request::getInt('no_html', 0));
 
-				ob_clean();
-				echo json_encode($note);
-				return;
-			}
+            $this->view->filters = array(
+                'section_id' => $offering->section()->get('id'),
+                'search' => Request::getString('search', '')
+            );
 
-			$response->set('html', $this->view->loadTemplate());
-		}
+            if ($action = strtolower(Request::getWord('action', ''))) {
+                switch ($action) {
+                    case 'add':
+                        $result = $this->edit();
+                        break;
+                    case 'edit':
+                        $result = $this->edit();
+                        break;
+                    case 'save':
+                        $result = $this->_save();
+                        break;
+                    case 'delete':
+                        $result = $this->_delete();
+                        break;
+                    case 'download':
+                        $result = $this->_download();
+                        break;
 
-		// Return the output
-		return $response;
-	}
+                    default:
+                        $result = $this->listNotes();
+                        break;
+                }
+            }
 
-	/**
-	 * After lecture event
-	 *
-	 * @param   object  $course
-	 * @param   object  $unit
-	 * @param   object  $lecture
-	 * @return  string
-	 */
-	public function onCourseAfterLecture($course, $unit, $lecture)
-	{
-		if (!$course->offering()->section()->access('view'))
-		{
-			return;
-		}
+            if ($this->view->no_html && $result) {
+                $note = new stdClass();
+                $note->id = $result;
+                $note->success = true;
+                if ($this->getError()) {
+                    $note->success = false;
+                    $note->error = $this->getError();
+                }
 
-		$this->view = $this->view('default', 'lecture')
-			->set('course', $course)
-			->set('offering', $course->offering())
-			->set('unit', $unit)
-			->set('lecture', $lecture);
+                ob_clean();
+                return $response;
+            }
 
-		return $this->view->loadTemplate();
-	}
+            $response->set('html', $this->view->loadTemplate());
+        }
 
-	/**
-	 * Set layout to the listing
-	 *
-	 * @return  void
-	 */
-	public function _list()
-	{
-		if (!$this->view->no_html)
-		{
-			$this->view->setLayout('default');
-		}
-	}
+        // Return the output
+        return $response;
+    }
 
-	/**
-	 * Download
-	 *
-	 * @return  void
-	 */
-	public function _download()
-	{
-		$format = strtolower(Request::getWord('frmt', 'txt'));
-		if (!in_array($format, array('txt', 'csv')))
-		{
-			$format = 'txt';
-		}
-		$this->view->setLayout('download_' . $format);
+    /**
+     * After lecture event
+     *
+     * @param   object  $course
+     * @param   object  $unit
+     * @param   object  $lecture
+     * @return  string
+     */
+    public function onCourseAfterLecture($course, $unit, $lecture)
+    {
+        if (!$course->offering()->section()->access('view')) {
+            return '';
+        }
 
-		@ob_end_clean();
+        $this->view = $this->view('default', 'lecture')
+            ->set('course', $course)
+            ->set('offering', $course->offering())
+            ->set('unit', $unit)
+            ->set('lecture', $lecture);
 
-		header("Pragma: public");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Expires: 0");
+        return $this->view->loadTemplate();
+    }
 
-		header("Content-Transfer-Encoding: binary");
-		header('Content-Disposition:attachment; filename="notes.' . $format . '";'); //RFC2183
-		header("Content-Type: text/plain"); // MIME type
+    /**
+     * Set layout to the listing
+     *
+     * @return  void
+     */
+    public function listNotes()
+    {
+        if (!$this->view->no_html) {
+            $this->view->setLayout('default');
+        }
+    }
 
-		echo $this->view->loadTemplate();
-		die();
-	}
+    /**
+     * Download
+     *
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _download()
+    {
+        $format = strtolower(Request::getWord('frmt', 'txt'));
+        if (!in_array($format, array('txt', 'csv'))) {
+            $format = 'txt';
+        }
+        $this->view->setLayout('download_' . $format);
 
-	/**
-	 * Set layout to the edit view
-	 *
-	 * @param   mixed  $model
-	 * @return  void
-	 */
-	public function _edit($model=null)
-	{
-		if (!($model instanceof \Plugins\Courses\Notes\Models\Note))
-		{
-			$note_id = Request::getInt('note', 0);
+        @ob_end_clean();
 
-			$model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
-		}
+        header("Pragma: public");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Expires: 0");
 
-		$this->view->set('model', $model);
+        header("Content-Transfer-Encoding: binary");
+        header('Content-Disposition:attachment; filename="notes.' . $format . '";'); //RFC2183
+        header("Content-Type: text/plain"); // MIME type
 
-		if (!$this->view->no_html)
-		{
-			$this->view->setLayout('edit');
-		}
-	}
+        echo $this->view->loadTemplate();
+        die();
+    }
 
-	/**
-	 * Save a record
-	 *
-	 * @return  mixed
-	 */
-	public function _save()
-	{
-		$note_id = Request::getInt('note', 0);
+    /**
+     * Set layout to the edit view
+     *
+     * @param   mixed  $model
+     * @return  void
+     */
+    public function edit($model = null)
+    {
+        if (!($model instanceof \Plugins\Courses\Notes\Models\Note)) {
+            $note_id = Request::getInt('note', 0);
 
-		$model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
+            $model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
+        }
 
-		if ($scope = Request::getWord('scope', 'lecture'))
-		{
-			$model->set('scope', $scope);
-		}
-		if ($scope_id = Request::getInt('scope_id', 0))
-		{
-			$model->set('scope_id', $scope_id);
-		}
-		if ($pos_x = Request::getInt('x', 0))
-		{
-			$model->set('pos_x', $pos_x);
-		}
-		if ($pos_y = Request::getInt('y', 0))
-		{
-			$model->set('pos_y', $pos_y);
-		}
-		if ($width = Request::getInt('w', 0))
-		{
-			$model->set('width', $width);
-		}
-		if ($height = Request::getInt('h', 0))
-		{
-			$model->set('height', $height);
-		}
-		if ($state = Request::getInt('state', 0))
-		{
-			$model->set('state', $state);
-		}
-		if ($timestamp = Request::getString('time', ''))
-		{
-			$model->set('timestamp', $timestamp);
-		}
-		if ($content = Request::getString('txt', ''))
-		{
-			$model->set('content', $content);
-		}
-		$model->set('access', Request::getInt('access', 0));
-		$model->set('section_id', $this->view->offering->section()->get('id'));
+        $this->view->set('model', $model);
 
-		if (!$model->save())
-		{
-			$this->setError($model->getError());
-			if (!$this->view->no_html)
-			{
-				return $this->_edit($model);
-			}
-		}
+        if (!$this->view->no_html) {
+            $this->view->setLayout('edit');
+        }
+    }
 
-		if (!$this->view->no_html)
-		{
-			return $this->_list();
-		}
+    /**
+     * Save a record
+     *
+     * @return  mixed
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _save()
+    {
+        $note_id = Request::getInt('note', 0);
 
-		return $model->get('id');
-	}
+        $model = \Plugins\Courses\Notes\Models\Note::oneOrNew($note_id);
 
-	/**
-	 * Delete a record
-	 *
-	 * @return  mixed
-	 */
-	public function _delete()
-	{
-		$note_id = Request::getInt('note', 0);
+        if ($scope = Request::getWord('scope', 'lecture')) {
+            $model->set('scope', $scope);
+        }
+        if ($scope_id = Request::getInt('scope_id', 0)) {
+            $model->set('scope_id', $scope_id);
+        }
+        if ($pos_x = Request::getInt('x', 0)) {
+            $model->set('pos_x', $pos_x);
+        }
+        if ($pos_y = Request::getInt('y', 0)) {
+            $model->set('pos_y', $pos_y);
+        }
+        if ($width = Request::getInt('w', 0)) {
+            $model->set('width', $width);
+        }
+        if ($height = Request::getInt('h', 0)) {
+            $model->set('height', $height);
+        }
+        if ($state = Request::getInt('state', 0)) {
+            $model->set('state', $state);
+        }
+        if ($timestamp = Request::getString('time', '')) {
+            $model->set('timestamp', $timestamp);
+        }
+        if ($content = Request::getString('txt', '')) {
+            $model->set('content', $content);
+        }
+        $model->set('access', Request::getInt('access', 0));
+        $model->set('section_id', $this->view->offering->section()->get('id'));
 
-		$model = \Plugins\Courses\Notes\Models\Note::oneOrFail($note_id);
-		$model->set('state', 2);
-		if (!$model->save())
-		{
-			$this->setError($model->getError());
-		}
+        if (!$model->save()) {
+            $this->setError($model->getError());
+            if (!$this->view->no_html) {
+                return $this->edit($model);
+            }
+        }
 
-		if (!$this->view->no_html)
-		{
-			return $this->_list();
-		}
-		return $note_id;
-	}
+        if (!$this->view->no_html) {
+            return $this->listNotes();
+        }
+
+        return $model->get('id');
+    }
+
+    /**
+     * Delete a record
+     *
+     * @return  mixed
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _delete()
+    {
+        $note_id = Request::getInt('note', 0);
+
+        $model = \Plugins\Courses\Notes\Models\Note::oneOrFail($note_id);
+        $model->set('state', 2);
+        if (!$model->save()) {
+            $this->setError($model->getError());
+        }
+
+        if (!$this->view->no_html) {
+            return $this->listNotes();
+        }
+        return $note_id;
+    }
 }

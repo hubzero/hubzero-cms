@@ -1,177 +1,176 @@
 <?php
+
+// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Utility\Date;
+use Hubzero\Plugin\Plugin;
 
 /**
  * Courses Plugin class for intro guide
  */
-class plgCoursesGuide extends \Hubzero\Plugin\Plugin
+class PlgCoursesGuide extends Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_autoloadLanguage = true;
 
-	/**
-	 * Event call after course outline
-	 *
-	 * @param   object  $course    Current course
-	 * @param   object  $offering  Current offering
-	 * @return  void
-	 */
-	public function onCourseAfterOutline($course, $offering)
-	{
-		$member = $offering->member(User::get('id'));
-		if ($member->get('first_visit') && $member->get('first_visit') != '0000-00-00 00:00:00')
-		{
-			return;
-		}
-		elseif (!$member->get('id')
-			&& is_object(\Hubzero\Utility\Cookie::eat('plugin.courses.guide'))
-			&& isset(\Hubzero\Utility\Cookie::eat('plugin.courses.guide')->first_visit))
-		{
-			return;
-		}
+    /**
+     * View object
+     *
+     * @var object
+     */
+    public $view = null;
 
-		$this->view = with($this->view('overlay', $this->_name))
-			->set('option', Request::getCmd('option', 'com_courses'))
-			->set('controller', Request::getWord('controller', 'course'))
-			->set('course', $course)
-			->set('offering', $offering)
-			->set('plugin', $this->_name);
+    /**
+     * Event call after course outline
+     *
+     * @param   object  $course    Current course
+     * @param   object  $offering  Current offering
+     * @return  string|null
+     */
+    public function onCourseAfterOutline($course, $offering)
+    {
+        $member = $offering->member(User::get('id'));
+        if ($member->get('first_visit') && $member->get('first_visit') != '0000-00-00 00:00:00') {
+            return;
+        } elseif (
+            !$member->get('id')
+            && is_object(\Hubzero\Utility\Cookie::eat('plugin.courses.guide'))
+            && isset(\Hubzero\Utility\Cookie::eat('plugin.courses.guide')->first_visit)
+        ) {
+            return;
+        }
 
-		return $this->view->loadTemplate();
-	}
+        $this->view = with($this->view('overlay', $this->_name))
+            ->set('option', Request::getCmd('option', 'com_courses'))
+            ->set('controller', Request::getWord('controller', 'course'))
+            ->set('course', $course)
+            ->set('offering', $offering)
+            ->set('plugin', $this->_name);
 
-	/**
-	 * Return data on a course view (this will be some form of HTML)
-	 *
-	 * @param   object   $course    Current course
-	 * @param   object   $offering  Name of the component
-	 * @param   boolean  $describe  Return plugin description only?
-	 * @return  object
-	 */
-	public function onCourse($course, $offering, $describe=false)
-	{
-		$response = with(new \Hubzero\Base\Obj)
-			->set('name', $this->_name)
-			->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-			->set('default_access', $this->params->get('plugin_access', 'members'))
-			->set('display_menu_tab', true)
-			->set('icon', 'f059');
+        return $this->view->loadTemplate();
+    }
 
-		if ($describe)
-		{
-			return $response;
-		}
+    /**
+     * Return data on a course view (this will be some form of HTML)
+     *
+     * @param   object   $course    Current course
+     * @param   object   $offering  Name of the component
+     * @param   boolean  $describe  Return plugin description only?
+     * @return  object
+     */
+    public function onCourse($course, $offering, $describe = false)
+    {
+        $response = with(new \Hubzero\Base\Obj())
+            ->set('name', $this->_name)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
+            ->set('default_access', $this->params->get('plugin_access', 'members'))
+            ->set('display_menu_tab', true)
+            ->set('icon', 'f059');
 
-		$tmpl = Request::getWord('tmpl', null);
-		if (!isset($tmpl) || $tmpl != 'component')
-		{
-			$this->css()
-			     ->js('jquery.fancybox', 'system')
-			     ->js('guide.overlay');
-		}
+        if ($describe) {
+            return $response;
+        }
 
-		if (!($active = Request::getString('active')))
-		{
-			Request::setVar('active', ($active = $this->_name));
-		}
+        $tmpl = Request::getWord('tmpl', null);
+        if (!isset($tmpl) || $tmpl != 'component') {
+            $this->css()
+                ->js('jquery.fancybox', 'system')
+                ->js('guide.overlay');
+        }
 
-		// Determine if we need to return any HTML (meaning this is the active plugin)
-		if ($response->get('name') == $active)
-		{
-			$active = strtolower(Request::getWord('unit', ''));
+        if (!($active = Request::getString('active'))) {
+            Request::setVar('active', ($active = $this->_name));
+        }
 
-			$action = '';
-			if ($active == 'mark')
-			{
-				$action = 'mark';
-			}
-			if ($act = strtolower(Request::getWord('action', '')))
-			{
-				$action = $act;
-			}
+        // Determine if we need to return any HTML (meaning this is the active plugin)
+        if ($response->get('name') == $active) {
+            $active = strtolower(Request::getWord('unit', ''));
 
-			$this->view = $this->view('default', $this->_name);
-			$this->view->option     = Request::getCmd('option', 'com_courses');
-			$this->view->controller = Request::getWord('controller', 'course');
-			$this->view->course     = $course;
-			$this->view->offering   = $offering;
-			$this->view->config     = $this->params;
-			$this->view->plugin     = $this->_name;
+            $action = '';
+            if ($active == 'mark') {
+                $action = 'mark';
+            }
+            if ($act = strtolower(Request::getWord('action', ''))) {
+                $action = $act;
+            }
 
-			switch ($action)
-			{
-				case 'mark':
-					$this->_mark();
-					break;
+            $this->view = $this->view('default', $this->_name);
+            $this->view->option = Request::getCmd('option', 'com_courses');
+            $this->view->controller = Request::getWord('controller', 'course');
+            $this->view->course = $course;
+            $this->view->offering = $offering;
+            $this->view->config = $this->params;
+            $this->view->plugin = $this->_name;
 
-				default:
-					$this->_default();
-					break;
-			}
+            switch ($action) {
+                case 'mark':
+                    $this->_mark();
+                    break;
 
-			if (Request::getInt('no_html', 0))
-			{
-				ob_clean();
-				header('Content-type: text/plain');
-				echo $this->view->loadTemplate();
-				exit();
-			}
-			$response->set('html', $this->view->loadTemplate());
-		}
+                default:
+                    $this->_default();
+                    break;
+            }
 
-		// Return the output
-		return $response;
-	}
+            if (Request::getInt('no_html', 0)) {
+                ob_clean();
+                header('Content-type: text/plain');
+                echo $this->view->loadTemplate();
+                exit();
+            }
+            $response->set('html', $this->view->loadTemplate());
+        }
 
-	/**
-	 * Set default layout
-	 *
-	 * @return  void
-	 */
-	public function _default()
-	{
-		$this->view->setLayout('overlay');
-	}
+        // Return the output
+        return $response;
+    }
 
-	/**
-	 * Mark the overlay as having been viewed
-	 *
-	 * @return  void
-	 */
-	public function _mark()
-	{
-		$this->view->setLayout('mark');
+    /**
+     * Set default layout
+     *
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _default()
+    {
+        $this->view->setLayout('overlay');
+    }
 
-		$member = $this->view->offering->member(User::get('id'));
-		if ($member->get('first_visit') && $member->get('first_visit') != '0000-00-00 00:00:00')
-		{
-			return;
-		}
-		elseif (!$member->get('id'))
-		{
-			$cookie = \Hubzero\Utility\Cookie::eat('plugin.courses.guide');
-			if (!is_object($cookie) || !isset($cookie->first_visit))
-			{
-				// Drop cookie
-				$lifetime = time() + 365*24*60*60;
+    /**
+     * Mark the overlay as having been viewed
+     *
+     * @return  void
+     */
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _mark()
+    {
+        $this->view->setLayout('mark');
 
-				\Hubzero\Utility\Cookie::bake('plugin.courses.guide', $lifetime, array(
-					'first_visit' => Date::toSql()
-				));
-			}
-		}
-		$member->set('first_visit', Date::toSql());
-		$member->store();
-	}
+        $member = $this->view->offering->member(User::get('id'));
+        if ($member->get('first_visit') && $member->get('first_visit') != '0000-00-00 00:00:00') {
+            return;
+        } elseif (!$member->get('id')) {
+            $cookie = \Hubzero\Utility\Cookie::eat('plugin.courses.guide');
+            if (!is_object($cookie) || !isset($cookie->first_visit)) {
+                // Drop cookie
+                $lifetime = time() + 365 * 24 * 60 * 60;
+
+                \Hubzero\Utility\Cookie::bake('plugin.courses.guide', $lifetime, array(
+                    'first_visit' => Date::of()->toSql()
+                ));
+            }
+        }
+        $member->set('first_visit', Date::of()->toSql());
+        $member->store();
+    }
 }
