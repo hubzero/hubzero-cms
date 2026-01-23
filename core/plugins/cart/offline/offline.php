@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,135 +15,131 @@ require_once Component::path('com_cart') . DS . 'models' . DS . 'Cart.php';
 /**
  * Cart plugin for Payment: Offline
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class plgCartOffline extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_autoloadLanguage = true;
 
-	/**
-	 * Render payment options
-	 *
-	 * @param   object  $transaction
-	 * @param   object  $user
-	 * @return  array
-	 */
-	public function onRenderPaymentOptions($transaction, $user)
-	{
-		$view = $this->view('default', 'payment')
-			->set('url', Route::url('index.php?option=com_cart&controller=checkout/confirm'));
+    /**
+     * Render payment options
+     *
+     * @param   object  $transaction
+     * @param   object  $user
+     * @return  array
+     */
+    public function onRenderPaymentOptions($transaction, $user)
+    {
+        $view = $this->view('default', 'payment')
+            ->set('url', Route::url('index.php?option=com_cart&controller=checkout/confirm'));
 
-		$payment = array();
-		$payment['options'] = $view->loadTemplate();
-		$payment['title'] = $this->params->get('title', 'Offline');
+        $payment = array();
+        $payment['options'] = $view->loadTemplate();
+        $payment['title'] = $this->params->get('title', 'Offline');
 
-		return $payment;
-	}
+        return $payment;
+    }
 
-	/**
-	 * On selected payment
-	 *
-	 * @param   object  $transaction
-	 * @param   object  $user
-	 * @return  bool
-	 */
-	public function onSelectedPayment($transaction, $user)
-	{
-		$provider = Request::getWord('paymentProvider', false, 'post');
+    /**
+     * On selected payment
+     *
+     * @param   object  $transaction
+     * @param   object  $user
+     * @return  bool
+     */
+    public function onSelectedPayment($transaction, $user)
+    {
+        $provider = Request::getWord('paymentProvider', false, 'post');
 
-		if ($provider != 'offline')
-		{
-			return false;
-		}
+        if ($provider != 'offline') {
+            return false;
+        }
 
-		// Payment selected mark transaction as awaiting payment
-		Cart::updateTransactionStatus('awaiting payment', $transaction->info->tId);
+        // Payment selected mark transaction as awaiting payment
+        Cart::updateTransactionStatus('awaiting payment', $transaction->info->tId);
 
-		$view = $this->view('code', 'payment')
-			->set('user', $user)
-			->set('transaction', $transaction);
+        $view = $this->view('code', 'payment')
+            ->set('user', $user)
+            ->set('transaction', $transaction);
 
-		$payment = array();
-		$payment['status'] = 'ok';
-		$payment['paymentInfo'] = 'Offline testing payment provider';
-		$payment['response'] = $view->loadTemplate();
-		$payment['title'] = $this->params->get('title', 'Offline');
+        $payment = array();
+        $payment['status'] = 'ok';
+        $payment['paymentInfo'] = 'Offline testing payment provider';
+        $payment['response'] = $view->loadTemplate();
+        $payment['title'] = $this->params->get('title', 'Offline');
 
-		return $payment;
-	}
+        return $payment;
+    }
 
-	/**
-	 * Return a list of filters that can be applied
-	 *
-	 * @param   object  $transaction
-	 * @param   object  $user
-	 * @return  bool
-	 */
-	public function onPostback($postData)
-	{
-		$provider = Request::getWord('provider', false, 'post');
-		if ($provider != 'offline')
-		{
-			return false;
-		}
+    /**
+     * Return a list of filters that can be applied
+     *
+     * @param   object  $transaction
+     * @param   object  $user
+     * @return  bool
+     */
+    public function onPostback($postData)
+    {
+        $provider = Request::getWord('provider', false, 'post');
+        if ($provider != 'offline') {
+            return false;
+        }
 
-		// get the transaction Id
-		// Get transaction ID
-		$customData = explode('-', $postData['custom']);
-		$tId = $customData[1];
+        // get the transaction Id
+        // Get transaction ID
+        $customData = explode('-', $postData['custom']);
+        $tId = $customData[1];
 
-		$response = array();
-		$response['status'] = 'ok';
+        $response = array();
+        $response['status'] = 'ok';
 
-		if (!$tId)
-		{
-			// Transaction id couldn't be extracted
-			$response['status'] = 'error';
-			$response['error'] = 'Postback did not have the valid transaction ID ';
-		}
+        if (!$tId) {
+            // Transaction id couldn't be extracted
+            $response['status'] = 'error';
+            $response['error'] = 'Postback did not have the valid transaction ID ';
+        }
 
-		$tInfo = Cart::getTransactionFacts($tId);
+        $tInfo = Cart::getTransactionFacts($tId);
 
-		if (!$tInfo)
-		{
-			// Transaction doesn't exist, set error
-			$response['status'] = 'error';
-			$response['error'] =  'Incoming payment for the transaction that does not exist: ' . $tId;
-		}
+        if (!$tInfo) {
+            // Transaction doesn't exist, set error
+            $response['status'] = 'error';
+            $response['error'] =  'Incoming payment for the transaction that does not exist: ' . $tId;
+        }
 
-		// Some verification would take place here...
+        // Some verification would take place here...
 
-		if ($response['status'] == 'ok')
-		{
-			$message = 'Transaction completed. ';
-			$message .= 'Transaction ID: ' . $tId;
-			$response['msg'] = $message;
+        if ($response['status'] == 'ok') {
+            $message = 'Transaction completed. ';
+            $message .= 'Transaction ID: ' . $tId;
+            $response['msg'] = $message;
 
-			$response['tInfo'] = $tInfo;
-			$response['payment'] = array('Offline', false);
-		}
+            $response['tInfo'] = $tInfo;
+            $response['payment'] = array('Offline', false);
+        }
 
-		return $response;
-	}
+        return $response;
+    }
 
-	/**
-	 * On complete
-	 *
-	 * @param   string  $provider
-	 * @return  mixed
-	 */
-	public function onComplete($provider)
-	{
-		if ($provider != 'offline')
-		{
-			return false;
-		}
+    /**
+     * On complete
+     *
+     * @param   string  $provider
+     * @return  mixed
+     */
+    public function onComplete($provider)
+    {
+        if ($provider != 'offline') {
+            return false;
+        }
 
-		$response = array();
-		$response['verificationVar'] = 'custom';
-		return $response;
-	}
+        $response = array();
+        $response['verificationVar'] = 'custom';
+        return $response;
+    }
 }

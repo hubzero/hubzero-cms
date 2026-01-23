@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,6 +10,6 @@
 defined('_HZEXEC_') or die();
 ?>
 <form action="<?php echo $this->get('url'); ?>" method="post">
-	<input type="hidden" name="paymentProvider" value="upay">
-	<input type="submit" class="btn" name="paymentSelect" value="Use UPay payment" />
+    <input type="hidden" name="paymentProvider" value="upay">
+    <input type="submit" class="btn" name="paymentSelect" value="Use UPay payment" />
 </form>
