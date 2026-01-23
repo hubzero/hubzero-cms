@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,45 +15,45 @@ use Hubzero\Database\Relational;
  */
 class Formula extends Relational
 {
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'wiki';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    protected $namespace = 'wiki';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'id';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'id';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'asc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'asc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'inputhash'  => 'notempty',
-		'outputhash' => 'notempty'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'inputhash'  => 'notempty',
+        'outputhash' => 'notempty'
+    );
 
-	/**
-	 * Load a record by inputhash and bind to $this
-	 *
-	 * @param   string  $inputhash  Hash to load
-	 * @return  object
-	 */
-	public static function oneByInputhash($inputhash)
-	{
-		return self::blank()->whereEquals('inputhash', $inputhash)->row();
-	}
+    /**
+     * Load a record by inputhash and bind to $this
+     *
+     * @param   string  $inputhash  Hash to load
+     * @return  object
+     */
+    public static function oneByInputhash($inputhash)
+    {
+        return self::blank()->whereEquals('inputhash', $inputhash)->row();
+    }
 }
