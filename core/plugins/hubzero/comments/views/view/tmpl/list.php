@@ -1,4 +1,6 @@
 <?php
+
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,30 +11,28 @@
 defined('_HZEXEC_') or die();
 
 if ($this->comments) { ?>
-	<ol class="comments">
-		<?php
-		$cls = 'odd';
-		if (isset($this->cls))
-		{
-			$cls = ($this->cls == 'odd') ? 'even' : 'odd';
-		}
+    <ol class="comments">
+        <?php
+        $cls = 'odd';
+        if (isset($this->cls)) {
+            $cls = ($this->cls == 'odd') ? 'even' : 'odd';
+        }
 
-		$this->depth++;
+        $this->depth++;
 
-		foreach ($this->comments as $comment)
-		{
-			$this->view('item')
-			     ->set('option', $this->option)
-			     ->set('comment', $comment)
-			     ->set('obj_type', $this->obj_type)
-			     ->set('obj_id', $this->obj_id)
-			     ->set('obj', $this->obj)
-			     ->set('params', $this->params)
-			     ->set('depth', $this->depth)
-			     ->set('cls', $cls)
-			     ->set('url', $this->url)
-			     ->display();
-		}
-		?>
-	</ol>
+        foreach ($this->comments as $comment) {
+            $this->view('item')
+                 ->set('option', $this->option)
+                 ->set('comment', $comment)
+                 ->set('obj_type', $this->obj_type)
+                 ->set('obj_id', $this->obj_id)
+                 ->set('obj', $this->obj)
+                 ->set('params', $this->params)
+                 ->set('depth', $this->depth)
+                 ->set('cls', $cls)
+                 ->set('url', $this->url)
+                 ->display();
+        }
+        ?>
+    </ol>
 <?php }

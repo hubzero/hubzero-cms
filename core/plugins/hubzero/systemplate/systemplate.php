@@ -1,104 +1,104 @@
 <?php
+
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * HUBzero plugin class for system overview
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Return information about this hub
-	 *
-	 * @param   string  $values
-	 * @return  array
-	 */
-	public function onSystemOverview($values = 'all')
-	{
-		if ($values != 'all')
-		{
-			return;
-		}
+    /**
+     * Return information about this hub
+     *
+     * @param   string  $values
+     * @return  array
+     */
+    public function onSystemOverview($values = 'all')
+    {
+        if ($values != 'all') {
+            return;
+        }
 
-		$response = new stdClass;
-		$response->name  = 'template';
-		$response->label = 'Template';
-		$response->data  = array();
+        $response = new stdClass();
+        $response->name  = 'template';
+        $response->label = 'Template';
+        $response->data  = array();
 
-		$tmpl = 'system';
+        $tmpl = 'system';
 
-		// Get the active site template
-		$db = App::get('db');
-		$query = $db->getQuery()
-			->select('s.id')
-			->select('s.home')
-			->select('s.template')
-			->select('s.params')
-			->select('e.protected')
-			->from('#__template_styles', 's')
-			->whereEquals('s.client_id', '0')
-			->whereEquals('e.enabled', '1')
-			->joinRaw('#__extensions as e', 'e.element=s.template AND e.type=' . $db->quote('template') . ' AND e.client_id=s.client_id', 'left');
+        // Get the active site template
+        $db = App::get('db');
+        $query = $db->getQuery()
+            ->select('s.id')
+            ->select('s.home')
+            ->select('s.template')
+            ->select('s.params')
+            ->select('e.protected')
+            ->from('#__template_styles', 's')
+            ->whereEquals('s.client_id', '0')
+            ->whereEquals('e.enabled', '1')
+            ->joinRaw(
+                '#__extensions as e',
+                'e.element=s.template AND e.type=' . $db->quote('template') . ' AND e.client_id=s.client_id',
+                'left'
+            );
 
-		$path = PATH_APP;
+        $path = PATH_APP;
 
-		$db->setQuery($query->toString());
-		$templates = $db->loadObjectList('id');
-		foreach ($templates as $template)
-		{
-			if ($template->home == 1)
-			{
-				if ($template->protected)
-				{
-					$path = PATH_CORE;
-				}
-				$tmpl = $template->template;
-			}
-		}
+        $db->setQuery($query->toString());
+        $templates = $db->loadObjectList('id');
+        foreach ($templates as $template) {
+            if ($template->home == 1) {
+                if ($template->protected) {
+                    $path = PATH_CORE;
+                }
+                $tmpl = $template->template;
+            }
+        }
 
-		$response->data['site'] = $this->_obj('Name', $tmpl);
+        $response->data['site'] = $this->obj('Name', $tmpl);
 
-		$overrides = array();
-		$path .= '/templates/' . $tmpl . '/html';
+        $overrides = array();
+        $path .= '/templates/' . $tmpl . '/html';
 
-		if (is_dir($path))
-		{
-			$objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::SELF_FIRST);
-			foreach ($objects as $name => $file)
-			{
-				if ($file->isDir())
-				{
-					continue;
-				}
+        if (is_dir($path)) {
+            $objects = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path),
+                RecursiveIteratorIterator::SELF_FIRST
+            );
+            foreach ($objects as $name => $file) {
+                if ($file->isDir()) {
+                    continue;
+                }
 
-				$overrides[] = str_replace(PATH_CORE . '/templates/' . $tmpl . '/html', '', $name);
-			}
-		}
+                $overrides[] = str_replace(PATH_CORE . '/templates/' . $tmpl . '/html', '', $name);
+            }
+        }
 
-		$response->data['overrides'] = $this->_obj('Overrides', $overrides);
+        $response->data['overrides'] = $this->obj('Overrides', $overrides);
 
-		return $response;
-	}
+        return $response;
+    }
 
-	/**
-	 * Assign label and data to an object
-	 *
-	 * @param   string $label
-	 * @param   mixed  $value
-	 * @return  object
-	 */
-	private function _obj($label, $value)
-	{
-		$obj = new stdClass;
-		$obj->label = $label;
-		$obj->value = $value;
+    /**
+     * Assign label and data to an object
+     *
+     * @param   string $label
+     * @param   mixed  $value
+     * @return  object
+     */
+    private function obj($label, $value)
+    {
+        $obj = new stdClass();
+        $obj->label = $label;
+        $obj->value = $value;
 
-		return $obj;
-	}
+        return $obj;
+    }
 }
