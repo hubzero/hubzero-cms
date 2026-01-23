@@ -34,136 +34,146 @@ Customizations:
 */
 
 ; (function ($, Canvas2Image) {
-	var imageCreated = null;
-	var mergedCanvas = null;
-	var theClasses = null;
+    var imageCreated = null;
+    var mergedCanvas = null;
+    var theClasses = null;
 
-	function init(plot, classes) {
-		theClasses = classes;
-		plot.hooks.bindEvents.push(bindEvents);
-		plot.hooks.shutdown.push(shutdown);
+    function init(plot, classes)
+    {
+        theClasses = classes;
+        plot.hooks.bindEvents.push(bindEvents);
+        plot.hooks.shutdown.push(shutdown);
 
-		function bindEvents(plot, eventHolder) {
-			eventHolder.mousedown(onMouseDown);
-		}
+        function bindEvents(plot, eventHolder)
+        {
+            eventHolder.mousedown(onMouseDown);
+        }
 
-		function shutdown(plot, eventHolder) {
-			eventHolder.unbind("mousedown", onMouseDown);
-		}
+        function shutdown(plot, eventHolder)
+        {
+            eventHolder.unbind("mousedown", onMouseDown);
+        }
 
-		function onMouseDown(e) {
-			if (e.button == 2) {
-				// Open an API in Canvas2Image, in case you would need to call
-				// it to delete the dynamically created image.
-				//Canvas2Image.deleteStaleCanvasImage = deleteStaleCanvasImage;
-				deleteStaleCanvasImage(plot, mergedCanvas);
-				mergedCanvas = mergeCanvases(plot);
-				createImageFromCanvas(mergedCanvas, plot, plot.getOptions().imageFormat);
-				// For ubuntu chrome:
-				setTimeout(function () { deleteStaleCanvasImage(plot, mergedCanvas); }, 500);
-			}
-		}
-	}
+        function onMouseDown(e)
+        {
+            if (e.button == 2) {
+                // Open an API in Canvas2Image, in case you would need to call
+                // it to delete the dynamically created image.
+                //Canvas2Image.deleteStaleCanvasImage = deleteStaleCanvasImage;
+                deleteStaleCanvasImage(plot, mergedCanvas);
+                mergedCanvas = mergeCanvases(plot);
+                createImageFromCanvas(mergedCanvas, plot, plot.getOptions().imageFormat);
+                // For ubuntu chrome:
+                setTimeout(function () {
+                    deleteStaleCanvasImage(plot, mergedCanvas); }, 500);
+            }
+        }
+    }
 
-	function onMouseUp(plot) {
-		setTimeout(function () { deleteStaleCanvasImage(plot, mergedCanvas); }, 100);
-	}
+    function onMouseUp(plot)
+    {
+        setTimeout(function () {
+            deleteStaleCanvasImage(plot, mergedCanvas); }, 100);
+    }
 
-	function deleteStaleCanvasImage(plot, mergedCanvas) {
-		//$(plot.getCanvas()).parent().find("img." + plot.getOptions().imageClassName).unbind("mouseup", onMouseUp).remove();
-		$(imageCreated).unbind("mouseup", onMouseUp).remove();
-		if (!!mergedCanvas) {
-			$(mergedCanvas).remove();
-		}
-		$(".mergedCanvas").remove();
-	}
+    function deleteStaleCanvasImage(plot, mergedCanvas)
+    {
+        //$(plot.getCanvas()).parent().find("img." + plot.getOptions().imageClassName).unbind("mouseup", onMouseUp).remove();
+        $(imageCreated).unbind("mouseup", onMouseUp).remove();
+        if (!!mergedCanvas) {
+            $(mergedCanvas).remove();
+        }
+        $(".mergedCanvas").remove();
+    }
 
-	function mergeCanvases(plot) {
+    function mergeCanvases(plot)
+    {
 
-		var theMergedCanvas = plot.getCanvas();
+        var theMergedCanvas = plot.getCanvas();
 
-		if (!!theClasses) {
-			theMergedCanvas = new theClasses.Canvas("mergedCanvas", plot.getPlaceholder());
-			var mergedContext = theMergedCanvas.context;
-			var plotCanvas = plot.getCanvas();
+        if (!!theClasses) {
+            theMergedCanvas = new theClasses.Canvas("mergedCanvas", plot.getPlaceholder());
+            var mergedContext = theMergedCanvas.context;
+            var plotCanvas = plot.getCanvas();
 
-			theMergedCanvas.element.height = plotCanvas.height;
-			theMergedCanvas.element.width = plotCanvas.width;
+            theMergedCanvas.element.height = plotCanvas.height;
+            theMergedCanvas.element.width = plotCanvas.width;
 
-			mergedContext.restore();
+            mergedContext.restore();
 
-			$(theMergedCanvas).css({
-				"visibility": "hidden",
-				"z-index": "-100",
-				"position": "absolute"
-			});
+            $(theMergedCanvas).css({
+                "visibility": "hidden",
+                "z-index": "-100",
+                "position": "absolute"
+            });
 
-			var $canvases = $(plot.getPlaceholder()).find("canvas").not('.mergedCanvas');
-			$canvases.each(function(index, canvas) {
-				mergedContext.drawImage(canvas, 0, 0);
-			});
+            var $canvases = $(plot.getPlaceholder()).find("canvas").not('.mergedCanvas');
+            $canvases.each(function (index, canvas) {
+                mergedContext.drawImage(canvas, 0, 0);
+            });
 
-			return theMergedCanvas.element;
-		}
+            return theMergedCanvas.element;
+        }
 
-		return theMergedCanvas;
-	}
+        return theMergedCanvas;
+    }
 
-	function createImageFromCanvas(canvas, plot, format) {
-		if (!canvas) {
-			canvas = plot.getCanvas();
-		}
+    function createImageFromCanvas(canvas, plot, format)
+    {
+        if (!canvas) {
+            canvas = plot.getCanvas();
+        }
 
-		var img = null;
-		switch (format.toLowerCase()) {
-			case "png":
-				img = Canvas2Image.saveAsPNG(canvas, format);
-				break;
-			case "bmp":
-				img = Canvas2Image.saveAsBMP(canvas, format);
-				break;
-			case "jpeg":
-				img = Canvas2Image.saveAsJPEG(canvas, format);
-				break;
-			default:
-				break;
-		}
+        var img = null;
+        switch (format.toLowerCase()) {
+            case "png":
+                img = Canvas2Image.saveAsPNG(canvas, format);
+                break;
+            case "bmp":
+                img = Canvas2Image.saveAsBMP(canvas, format);
+                break;
+            case "jpeg":
+                img = Canvas2Image.saveAsJPEG(canvas, format);
+                break;
+            default:
+                break;
+        }
 
-		if (!img) {
-			img = Canvas2Image.saveAsPNG(canvas, "png");
-		}
+        if (!img) {
+            img = Canvas2Image.saveAsPNG(canvas, "png");
+        }
 
-		if (!img) {
-			img = Canvas2Image.saveAsPNG(canvas, "bmp");
-		}
+        if (!img) {
+            img = Canvas2Image.saveAsPNG(canvas, "bmp");
+        }
 
-		if (!img) {
-			img = Canvas2Image.saveAsJPEG(canvas, "jpeg");
-		}
+        if (!img) {
+            img = Canvas2Image.saveAsJPEG(canvas, "jpeg");
+        }
 
-		if (!img) {
-			alert(plot.getOptions().notSupportMessage || "Oh Sorry, but this browser is not capable of creating image files, please use PRINT SCREEN key instead!");
-			return false;
-		}
+        if (!img) {
+            alert(plot.getOptions().notSupportMessage || "Oh Sorry, but this browser is not capable of creating image files, please use PRINT SCREEN key instead!");
+            return false;
+        }
 
-		$(img).attr("class", plot.getOptions().imageClassName);
-		$(img).css({ "border": $(canvas).css("border"), "z-index": "9999", "position": "absolute" });
-		$(img).insertBefore($(canvas));
-		$(img).mouseup(plot, onMouseUp);
+        $(img).attr("class", plot.getOptions().imageClassName);
+        $(img).css({ "border": $(canvas).css("border"), "z-index": "9999", "position": "absolute" });
+        $(img).insertBefore($(canvas));
+        $(img).mouseup(plot, onMouseUp);
 
-		imageCreated = img;
-	}
+        imageCreated = img;
+    }
 
-	var options = {
-		imageClassName: "canvas-image",
-		imageFormat: "png"
-	};
+    var options = {
+        imageClassName: "canvas-image",
+        imageFormat: "png"
+    };
 
-	$.plot.plugins.push({
-		init: init,
-		options: options,
-		name: 'saveAsImage',
-		version: '1.6'
-	});
+    $.plot.plugins.push({
+        init: init,
+        options: options,
+        name: 'saveAsImage',
+        version: '1.6'
+    });
 
 })(jQuery, Canvas2Image);

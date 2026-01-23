@@ -5,23 +5,23 @@
  */
 
 if (!jq) {
-	var jq = $;
+    var jq = $;
 }
 
-jQuery(document).ready(function(jq){
-	var $ = jq;
+jQuery(document).ready(function (jq) {
+    var $ = jq;
 
-	// Share links info pop-up
-	var metadata = $('.metadata'),
-		shareinfo = $('.shareinfo');
+    // Share links info pop-up
+    var metadata = $('.metadata'),
+        shareinfo = $('.shareinfo');
 
-	if (shareinfo.length > 0) {
-		$('.share')
-			.on('mouseover', function() {
-				shareinfo.addClass('active');
-			})
-			.on('mouseout', function() {
-				shareinfo.removeClass('active');
-			});
-	}
+    if (shareinfo.length > 0) {
+        $('.share')
+            .on('mouseover', function () {
+                shareinfo.addClass('active');
+            })
+            .on('mouseout', function () {
+                shareinfo.removeClass('active');
+            });
+    }
 });

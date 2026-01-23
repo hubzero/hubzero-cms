@@ -1,29 +1,28 @@
 <?php
+
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 ?>
 <p class="answer">
-	<?php if ($this->publication->alias) : ?>
-		<a href="<?php echo Route::url($this->publication->link('questions')); ?>">
-	<?php else : ?>
-		<a href="<?php echo Route::url($this->publication->link('questions')); ?>">
-	<?php endif; ?>
-		<?php
-			if ($this->count == 1)
-			{
-				echo Lang::txt('PLG_PUBLICATION_QUESTIONS_NUM_QUESTION', $this->count);
-			}
-			else
-			{
-				echo Lang::txt('PLG_PUBLICATION_QUESTIONS_NUM_QUESTIONS', $this->count);
-			}
-		?>
-	</a>
-	(<a href="<?php echo Route::url($this->publication->link('questions') . '&action=new#ask'); ?>"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>)
+    <?php if ($this->publication->alias) : ?>
+        <a href="<?php echo Route::url($this->publication->link('questions')); ?>">
+    <?php else : ?>
+        <a href="<?php echo Route::url($this->publication->link('questions')); ?>">
+    <?php endif; ?>
+        <?php
+        if ($this->count == 1) {
+            echo Lang::txt('PLG_PUBLICATION_QUESTIONS_NUM_QUESTION', $this->count);
+        } else {
+            echo Lang::txt('PLG_PUBLICATION_QUESTIONS_NUM_QUESTIONS', $this->count);
+        }
+        ?>
+    </a>
+    (<a href="<?php echo Route::url($this->publication->link('questions') . '&action=new#ask'); ?>"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>)
 </p>

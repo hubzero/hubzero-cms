@@ -1,49 +1,54 @@
 <?php
+
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Publications Plugin class for adding Open Graph metadata to the document
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class plgPublicationsOpengraph extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Return data on a resource view (this will be some form of HTML)
-	 *
-	 * @param   object   $publication  Current publication
-	 * @param   string   $option       Name of the component
-	 * @param   array    $areas        Active area(s)
-	 * @param   string   $rtrn         Data to be returned
-	 * @param   string   $version      Version name
-	 * @param   boolean  $extended     Whether or not to show panel
-	 * @return  array
-	 */
-	public function onPublication($publication, $option, $areas, $rtrn='all', $version = 'default', $extended = true)
-	{
-		if (!App::isSite()
-		 || Request::getWord('format') == 'raw'
-		 || Request::getInt('no_html'))
-		{
-			return;
-		}
+    /**
+     * Return data on a resource view (this will be some form of HTML)
+     *
+     * @param   object   $publication  Current publication
+     * @param   string   $option       Name of the component
+     * @param   array    $areas        Active area(s)
+     * @param   string   $rtrn         Data to be returned
+     * @param   string   $version      Version name
+     * @param   boolean  $extended     Whether or not to show panel
+     * @return  array
+     */
+    public function onPublication($publication, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
+    {
+        if (
+            !App::isSite()
+            || Request::getWord('format') == 'raw'
+            || Request::getInt('no_html')
+        ) {
+            return;
+        }
 
-		$view = $this->view();
+        $view = $this->view();
 
-		Document::addCustomTag('<meta property="og:title" content="' . $view->escape($publication->title) . '" />');
+        Document::addCustomTag('<meta property="og:title" content="' . $view->escape($publication->title) . '" />');
 
-		Document::addCustomTag('<meta property="og:description" content="' . $view->escape($publication->abstract) . '" />');
+        Document::addCustomTag('<meta property="og:description" content="' .
+                    $view->escape($publication->abstract) .
+                    '" />');
 
-		Document::addCustomTag('<meta property="og:type" content="article" />');
+        Document::addCustomTag('<meta property="og:type" content="article" />');
 
-		$url = Route::url($publication->link());
-		$url = rtrim(Request::root(), '/') . '/' . trim($url, '/');
+        $url = Route::url($publication->link());
+        $url = rtrim(Request::root(), '/') . '/' . trim($url, '/');
 
-		Document::addCustomTag('<meta property="og:url" content="' . $url . '" />');
-	}
+        Document::addCustomTag('<meta property="og:url" content="' . $url . '" />');
+    }
 }

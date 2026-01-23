@@ -6,26 +6,26 @@
 
 /*
 
-	-- -- -- -- -- -- --
-	Publications Watch plugin CSS
-	-- -- -- -- -- -- --
+    -- -- -- -- -- -- --
+    Publications Watch plugin CSS
+    -- -- -- -- -- -- --
 
 */
 
 .item-watch {
-	background: rgba(0, 0, 0, 0.05);
-	padding: 1em;
-	margin: 2em 0;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 1em;
+    margin: 2em 0;
 }
 .item-watch p:first-child {
-	margin-top: 0;
+    margin-top: 0;
 }
 .item-watch p:last-child {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 .item-watch.watching {
-	background-color: #f8ffff;
+    background-color: #f8ffff;
 }
 .item-watch .btn {
-	display: block;
+    display: block;
 }
