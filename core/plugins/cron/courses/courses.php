@@ -1,312 +1,275 @@
 <?php
+
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Cron plugin for courses
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class plgCronCourses extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Return a list of events
-	 *
-	 * @return  array
-	 */
-	public function onCronEvents()
-	{
-		$this->loadLanguage();
+    /**
+     * Return a list of events
+     *
+     * @return  array
+     */
+    public function onCronEvents()
+    {
+        $this->loadLanguage();
 
-		$obj = new stdClass();
-		$obj->plugin = $this->_name;
-		$obj->events = array(
-			array(
-				'name'   => 'syncPassportBadgeStatus',
-				'label'  => Lang::txt('PLG_CRON_COURSES_SYNC_PASSPORT_BADGE_STATUS'),
-				'params' => ''
-			),
-			array(
-				'name'   => 'emailInstructorDigest',
-				'label'  => Lang::txt('PLG_CRON_COURSES_EMAIL_INSTRUCTOR_DIGEST'),
-				'params' => 'emaildigest'
-			),
-		);
+        $obj = new stdClass();
+        $obj->plugin = $this->_name;
+        $obj->events = array(
+            array(
+                'name'   => 'syncPassportBadgeStatus',
+                'label'  => Lang::txt('PLG_CRON_COURSES_SYNC_PASSPORT_BADGE_STATUS'),
+                'params' => ''
+            ),
+            array(
+                'name'   => 'emailInstructorDigest',
+                'label'  => Lang::txt('PLG_CRON_COURSES_EMAIL_INSTRUCTOR_DIGEST'),
+                'params' => 'emaildigest'
+            ),
+        );
 
-		return $obj;
-	}
+        return $obj;
+    }
 
-	/**
-	 * Sync claimed/denied passport badges
-	 *
-	 * @param   object   $job  \Components\Cron\Models\Job
-	 * @return  boolean
-	 */
-	public function syncPassportBadgeStatus(\Components\Cron\Models\Job $job)
-	{
-		$params = Component::params('com_courses');
+    /**
+     * Sync claimed/denied passport badges
+     *
+     * @param   object   $job  \Components\Cron\Models\Job
+     * @return  boolean
+     */
+    public function syncPassportBadgeStatus(\Components\Cron\Models\Job $job)
+    {
+        $params = Component::params('com_courses');
 
-		$badgesHandler  = new Hubzero\Badges\Wallet('passport', $params->get('badges_request_type'));
-		$badgesProvider = $badgesHandler->getProvider();
+        $badgesHandler  = new Hubzero\Badges\Wallet('passport', $params->get('badges_request_type'));
+        $badgesProvider = $badgesHandler->getProvider();
 
-		$creds = new \stdClass();
-		$creds->consumer_key    = $params->get('passport_consumer_key');
-		$creds->consumer_secret = $params->get('passport_consumer_secret');
+        $creds = new \stdClass();
+        $creds->consumer_key    = $params->get('passport_consumer_key');
+        $creds->consumer_secret = $params->get('passport_consumer_secret');
 
-		$badgesProvider->setCredentials($creds);
+        $badgesProvider->setCredentials($creds);
 
-		require_once Component::path('com_courses') . '/models/courses.php';
-		require_once Component::path('com_courses') . '/models/memberBadge.php';
+        require_once Component::path('com_courses') . '/models/courses.php';
+        require_once Component::path('com_courses') . '/models/memberBadge.php';
 
-		$coursesObj = new \Components\Courses\Models\Courses();
-		$courses    = $coursesObj->courses();
+        $coursesObj = new \Components\Courses\Models\Courses();
+        $courses    = $coursesObj->courses();
 
-		if (isset($courses) && count($courses) > 0)
-		{
-			foreach ($courses as $course)
-			{
-				if (!$course->isAvailable())
-				{
-					continue;
-				}
+        if (isset($courses) && count($courses) > 0) {
+            foreach ($courses as $course) {
+                if (!$course->isAvailable()) {
+                    continue;
+                }
 
-				$students = $course->students();
-				$emails   = array();
+                $students = $course->students();
+                $emails   = array();
 
-				if ($students && count($students) > 0)
-				{
-					foreach ($students as $student)
-					{
-						$emails[] = User::getInstance($student->get('user_id'))->get('email');
-					}
-				}
+                if ($students && count($students) > 0) {
+                    foreach ($students as $student) {
+                        $emails[] = User::getInstance($student->get('user_id'))->get('email');
+                    }
+                }
 
-				if (count($emails) > 0)
-				{
-					$assertions = $badgesProvider->getAssertionsByEmailAddress($emails);
+                if (count($emails) > 0) {
+                    $assertions = $badgesProvider->getAssertionsByEmailAddress($emails);
 
-					if (isset($assertions) && count($assertions) > 0)
-					{
-						foreach ($assertions as $assertion)
-						{
-							$status = false;
-							if ($assertion->IsPending)
-							{
-								$status = false;
-							}
-							else if ($assertion->IsAccepted)
-							{
-								$status = 'accept';
-							}
-							else
-							{
-								$status = 'deny';
-							}
+                    if (isset($assertions) && count($assertions) > 0) {
+                        foreach ($assertions as $assertion) {
+                            $status = false;
+                            if ($assertion->IsPending) {
+                                $status = false;
+                            } elseif ($assertion->IsAccepted) {
+                                $status = 'accept';
+                            } else {
+                                $status = 'deny';
+                            }
 
-							if ($status)
-							{
-								preg_match('/validation\/([[:alnum:]-]{20})/', $assertion->EvidenceUrl, $match);
+                            if ($status) {
+                                preg_match('/validation\/([[:alnum:]-]{20})/', $assertion->EvidenceUrl, $match);
 
-								if (isset($match[1]))
-								{
-									$badge = \Components\Courses\Models\MemberBadge::loadByToken($match[1]);
+                                if (isset($match[1])) {
+                                    $badge = \Components\Courses\Models\MemberBadge::loadByToken($match[1]);
 
-									if ($badge && !$badge->get('action'))
-									{
-										$badge->set('action', $status);
-										$badge->set('action_on', Date::toSql());
-										$badge->store();
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+                                    if ($badge && !$badge->get('action')) {
+                                        $badge->set('action', $status);
+                                        $badge->set('action_on', Date::toSql());
+                                        $badge->store();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-		// Job is no longer active
-		return true;
-	}
+        // Job is no longer active
+        return true;
+    }
 
-	/**
-	 * Email instructor course digest
-	 *
-	 * @param   object   $job  \Components\Cron\Models\Job
-	 * @return  boolean
-	 */
-	public function emailInstructorDigest(\Components\Cron\Models\Job $job)
-	{
-		$database = \App::get('db');
-		$cconfig  = Component::params('com_courses');
+    /**
+     * Email instructor course digest
+     *
+     * @param   object   $job  \Components\Cron\Models\Job
+     * @return  boolean
+     */
+    public function emailInstructorDigest(\Components\Cron\Models\Job $job)
+    {
+        $database = \App::get('db');
+        $cconfig  = Component::params('com_courses');
 
-		Lang::load('com_courses') ||
-		Lang::load('com_courses', Component::path('com_courses') . '/site');
+        Lang::load('com_courses') ||
+        Lang::load('com_courses', Component::path('com_courses') . '/site');
 
-		$from = array(
-			'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_COURSES'),
-			'email' => Config::get('mailfrom')
-		);
+        $from = array(
+            'name'  => Config::get('sitename') . ' ' . Lang::txt('COM_COURSES'),
+            'email' => Config::get('mailfrom')
+        );
 
-		$subject = Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SUBJECT_EMAIL_DIGEST');
+        $subject = Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SUBJECT_EMAIL_DIGEST');
 
-		require_once Component::path('com_courses') . '/models/courses.php';
+        require_once Component::path('com_courses') . '/models/courses.php';
 
-		$course_id = 0;
+        $course_id = 0;
 
-		$params = $job->params;
-		if (isset($params) && is_object($params))
-		{
-			$course_id = $params->get('course');
-		}
+        $params = $job->params;
+        if (isset($params) && is_object($params)) {
+            $course_id = $params->get('course');
+        }
 
-		$coursesObj = new \Components\Courses\Models\Courses();
+        $coursesObj = new \Components\Courses\Models\Courses();
 
-		if ($course_id)
-		{
-			$courses = array($coursesObj->course($course_id));
-		}
-		else
-		{
-			$courses = $coursesObj->courses();
-		}
+        if ($course_id) {
+            $courses = array($coursesObj->course($course_id));
+        } else {
+            $courses = $coursesObj->courses();
+        }
 
-		if (isset($courses) && count($courses) > 0)
-		{
-			foreach ($courses as $course)
-			{
-				if (!$course->isAvailable())
-				{
-					continue;
-				}
+        if (isset($courses) && count($courses) > 0) {
+            foreach ($courses as $course) {
+                if (!$course->isAvailable()) {
+                    continue;
+                }
 
-				$mailed      = array();
-				$managers    = $course->managers();
-				$enrollments = $course->students(array('count'=>true));
-				$offerings   = $course->offerings();
+                $mailed      = array();
+                $managers    = $course->managers();
+                $enrollments = $course->students(array('count' => true));
+                $offerings   = $course->offerings();
 
-				if (isset($offerings) && count($offerings) > 0)
-				{
-					foreach ($offerings as $offering)
-					{
-						if (!$offering->isAvailable())
-						{
-							continue;
-						}
+                if (isset($offerings) && count($offerings) > 0) {
+                    foreach ($offerings as $offering) {
+                        if (!$offering->isAvailable()) {
+                            continue;
+                        }
 
-						$offering->gradebook()->refresh();
-						$passing = $offering->gradebook()->countPassing(false);
-						$failing = $offering->gradebook()->countFailing(false);
+                        $offering->gradebook()->refresh();
+                        $passing = $offering->gradebook()->countPassing(false);
+                        $failing = $offering->gradebook()->countFailing(false);
 
-						if (isset($managers) && count($managers) > 0)
-						{
-							require_once Component::path('com_forum') . '/models/manager.php';
+                        if (isset($managers) && count($managers) > 0) {
+                            require_once Component::path('com_forum') . '/models/manager.php';
 
-							foreach ($managers as $manager)
-							{
-								// Get the user's account
-								$user = User::getInstance($manager->get('user_id'));
-								if (!$user->get('id'))
-								{
-									continue;
-								}
+                            foreach ($managers as $manager) {
+                                // Get the user's account
+                                $user = User::getInstance($manager->get('user_id'));
+                                if (!$user->get('id')) {
+                                    continue;
+                                }
 
-								// Try to ensure no duplicates
-								if (in_array($user->get('username'), $mailed))
-								{
-									continue;
-								}
+                                // Try to ensure no duplicates
+                                if (in_array($user->get('username'), $mailed)) {
+                                    continue;
+                                }
 
-								// Only mail instructors (i.e. not managers)
-								if ($manager->get('role_alias') != 'instructor')
-								{
-									continue;
-								}
+                                // Only mail instructors (i.e. not managers)
+                                if ($manager->get('role_alias') != 'instructor') {
+                                    continue;
+                                }
 
-								// Get discussion stats and posts
-								$posts = \Components\Forum\Models\Post::all()
-									->whereEquals('scope', 'course')
-									->whereEquals('scope_id', $offering->get('id'))
-									->whereEquals('state', \Components\Forum\Models\Post::STATE_PUBLISHED)
-									->order('created', 'desc')
-									->limit(100)
-									->rows();
-								$posts_cnt  = $posts->count();
-								$latest     = array();
-								$latest_cnt = 0;
+                                // Get discussion stats and posts
+                                $posts = \Components\Forum\Models\Post::all()
+                                    ->whereEquals('scope', 'course')
+                                    ->whereEquals('scope_id', $offering->get('id'))
+                                    ->whereEquals('state', \Components\Forum\Models\Post::STATE_PUBLISHED)
+                                    ->order('created', 'desc')
+                                    ->limit(100)
+                                    ->rows();
+                                $posts_cnt  = $posts->count();
+                                $latest     = array();
+                                $latest_cnt = 0;
 
-								if (isset($posts) && $posts_cnt > 0)
-								{
-									foreach ($posts as $post)
-									{
-										if (strtotime($post->created) > strtotime('-1 day'))
-										{
-											$latest[] = $post;
-										}
-										else
-										{
-											break;
-										}
-									}
+                                if (isset($posts) && $posts_cnt > 0) {
+                                    foreach ($posts as $post) {
+                                        if (strtotime($post->created) > strtotime('-1 day')) {
+                                            $latest[] = $post;
+                                        } else {
+                                            break;
+                                        }
+                                    }
 
-									$latest_cnt = count($latest);
-								}
+                                    $latest_cnt = count($latest);
+                                }
 
-								$eview = new \Hubzero\Mail\View(array(
-									'base_path' => Component::path('com_courses') . '/site',
-									'name'      => 'emails',
-									'layout'    => 'digest_plain'
-								));
-								$eview->option      = 'com_courses';
-								$eview->controller  = 'courses';
-								$eview->delimiter   = '~!~!~!~!~!~!~!~!~!~!';
-								$eview->course      = $course;
-								$eview->enrollments = $enrollments;
-								$eview->passing     = $passing;
-								$eview->failing     = $failing;
-								$eview->offering    = $offering;
-								$eview->posts_cnt   = $posts_cnt;
-								$eview->latest      = $latest;
-								$eview->latest_cnt  = $latest_cnt;
+                                $eview = new \Hubzero\Mail\View(array(
+                                    'base_path' => Component::path('com_courses') . '/site',
+                                    'name'      => 'emails',
+                                    'layout'    => 'digest_plain'
+                                ));
+                                $eview->option      = 'com_courses';
+                                $eview->controller  = 'courses';
+                                $eview->delimiter   = '~!~!~!~!~!~!~!~!~!~!';
+                                $eview->course      = $course;
+                                $eview->enrollments = $enrollments;
+                                $eview->passing     = $passing;
+                                $eview->failing     = $failing;
+                                $eview->offering    = $offering;
+                                $eview->posts_cnt   = $posts_cnt;
+                                $eview->latest      = $latest;
+                                $eview->latest_cnt  = $latest_cnt;
 
-								$plain = $eview->loadTemplate();
-								$plain = str_replace("\n", "\r\n", $plain);
+                                $plain = $eview->loadTemplate();
+                                $plain = str_replace("\n", "\r\n", $plain);
 
-								// HTML
-								$eview->setLayout('digest_html');
+                                // HTML
+                                $eview->setLayout('digest_html');
 
-								$html = $eview->loadTemplate();
-								$html = str_replace("\n", "\r\n", $html);
+                                $html = $eview->loadTemplate();
+                                $html = str_replace("\n", "\r\n", $html);
 
-								// Build message
-								$message = new \Hubzero\Mail\Message();
-								$message->setSubject($subject)
-										->addFrom($from['email'], $from['name'])
-										->addTo($user->get('email'), $user->get('name'))
-										->addHeader('X-Component', 'com_courses')
-										->addHeader('X-Component-Object', 'courses_instructor_digest');
+                                // Build message
+                                $message = new \Hubzero\Mail\Message();
+                                $message->setSubject($subject)
+                                        ->addFrom($from['email'], $from['name'])
+                                        ->addTo($user->get('email'), $user->get('name'))
+                                        ->addHeader('X-Component', 'com_courses')
+                                        ->addHeader('X-Component-Object', 'courses_instructor_digest');
 
-								$message->addPart($plain, 'text/plain');
-								$message->addPart($html, 'text/html');
+                                $message->addPart($plain, 'text/plain');
+                                $message->addPart($html, 'text/html');
 
-								// Send mail
-								if (!$message->send())
-								{
-									$this->setError('Failed to mail %s', $user->get('email'));
-								}
+                                // Send mail
+                                if (!$message->send()) {
+                                    $this->setError('Failed to mail %s', $user->get('email'));
+                                }
 
-								$mailed[] = $user->get('username');
-							}
-						}
-					}
-				}
-			}
-		}
+                                $mailed[] = $user->get('username');
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 }
