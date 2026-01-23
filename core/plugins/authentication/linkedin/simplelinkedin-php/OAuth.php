@@ -1,4 +1,9 @@
 <?php
+
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+// phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 include_once __DIR__ . '/LinkedInOAuthException.php';
 include_once __DIR__ . '/OAuthConsumer.php';
 include_once __DIR__ . '/OAuthToken.php';

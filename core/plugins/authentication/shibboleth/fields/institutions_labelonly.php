@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -6,7 +7,7 @@
  */
 
 if (PHP_SAPI !== 'cli') {
-	exit();
+    exit();
 }
 
 $mdPath = '/etc/shibboleth/metadata/federation-metadata.xml';
@@ -14,9 +15,8 @@ $mdSource = 'https://md.incommon.org/InCommon/InCommon-metadata.xml';
 $cache = '/www/tmp/incommon-rs-entities.json';
 
 
-if (!($xml = simplexml_load_file($mdPath)))
-{
-	print "Failed to parse XML from this path\n";
+if (!($xml = simplexml_load_file($mdPath))) {
+    print "Failed to parse XML from this path\n";
 }
 
 // $xml->registerXPathNamespace('shib', 'urn:mace:shibboleth:2.0:native:sp:config');
@@ -28,8 +28,7 @@ $xml->registerXPathNamespace('shib', 'urn:oasis:names:tc:SAML:2.0:metadata');
 
 $curl = curl_init();
 $rv = array();
-foreach ($xml->xpath('//shib:EntityDescriptor') as $idp)
-{
-	print (string) $idp->Organization->OrganizationDisplayName;
-	print "\n";
+foreach ($xml->xpath('//shib:EntityDescriptor') as $idp) {
+    print (string) $idp->Organization->OrganizationDisplayName;
+    print "\n";
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +18,13 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20170901000000PlgAuthenticationShibboleth extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__shibboleth_sessions'))
-		{
-			$query = "CREATE TABLE `#__shibboleth_sessions` (
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__shibboleth_sessions')) {
+            $query = "CREATE TABLE `#__shibboleth_sessions` (
 			  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			  `session_key` varchar(200) NOT NULL,
 			  `data` text NOT NULL,
@@ -32,21 +34,20 @@ class Migration20170901000000PlgAuthenticationShibboleth extends Base
 			  UNIQUE KEY `session_key` (`session_key`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__shibboleth_sessions'))
-		{
-			$query = "DROP TABLE IF EXISTS `#__shibboleth_sessions`;";
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__shibboleth_sessions')) {
+            $query = "DROP TABLE IF EXISTS `#__shibboleth_sessions`;";
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 }
