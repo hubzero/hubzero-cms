@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore Generic.Files.SideEffects
 
 /*
  * This file is part of the Sonata Project package.
@@ -10,35 +10,37 @@
  */
 
 namespace Sonata\GoogleAuthenticator;
+
 //include_once 'GoogleAuthenticatorInterface.php';
 
 interface GoogleAuthenticatorInterface
 {
-	/**
-	 * @param string $secret
-	 * @param string $code
-	 */
-	public function checkCode($secret, $code, $discrepancy = 1);
+    /**
+     * @param string $secret
+     * @param string $code
+     */
+    public function checkCode($secret, $code, $discrepancy = 1);
 
-	/**
-	 * NEXT_MAJOR: add the interface typehint to $time and remove deprecation.
-	 *
-	 * @param string                                   $secret
-	 * @param float|string|int|\DateTimeInterface|null $time
-	 */
-	//public function getCode($secret, /* \DateTimeInterface */$time = null)
-	public function getCode($secret, $time = null);
+    /**
+     * NEXT_MAJOR: add the interface typehint to $time and remove deprecation.
+     *
+     * @param string                                   $secret
+     * @param float|string|int|\DateTimeInterface|null $time
+     */
+    //public function getCode($secret, /* \DateTimeInterface */$time = null)
+    public function getCode($secret, $time = null);
 
-	/**
-	 * NEXT_MAJOR: Remove this method.
-	 *
-	 * @param string $user
-	 * @param string $hostname
-	 * @param string $secret
-	 *
-	 * @deprecated deprecated as of 2.1 and will be removed in 3.0. Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.
-	 */
-	public function getUrl($user, $hostname, $secret);
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @param string $user
+     * @param string $hostname
+     * @param string $secret
+     *
+     * @deprecated deprecated as of 2.1 and will be removed in 3.0.
+     *             Use Sonata\GoogleAuthenticator\GoogleQrUrl::generate() instead.
+     */
+    public function getUrl($user, $hostname, $secret);
 
-	public function generateSecret();
+    public function generateSecret();
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,24 +10,20 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for adding Authfactors - Authy plugin
  **/
 class Migration20200804000000PlgAuthfactorsGoogle extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('authfactors', 'google', 0);
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('authfactors', 'google', 0);
 
-		if (!$this->db->tableExists('#__auth_factors'))
-		{
-			$query = "CREATE TABLE `#__auth_factors` (
+        if (!$this->db->tableExists('#__auth_factors')) {
+            $query = "CREATE TABLE `#__auth_factors` (
                                 `id` int(11) NOT NULL AUTO_INCREMENT,
                                 `user_id` int(11) NOT NULL DEFAULT '0',
                                 `enrolled` tinyint(1) DEFAULT NULL,
@@ -35,16 +34,16 @@ class Migration20200804000000PlgAuthfactorsGoogle extends Base
                                 UNIQUE KEY `id` (`id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
-			$this->db->setQuery($query);
-			$this->db->query();
-		}
-	}
+            $this->db->setQuery($query);
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('authfactors', 'google');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('authfactors', 'google');
+    }
 }

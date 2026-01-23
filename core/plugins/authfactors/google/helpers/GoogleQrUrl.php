@@ -1,4 +1,4 @@
-<?php
+<?php // phpcs:ignore Generic.Files.SideEffects
 
 /*
  * This file is part of the Sonata Project package.
@@ -22,69 +22,69 @@ namespace Sonata\GoogleAuthenticator;
  */
 final class GoogleQrUrl
 {
-	/**
-	 * Private by design.
-	 */
-	private function __construct()
-	{
-	}
+    /**
+     * Private by design.
+     */
+    private function __construct()
+    {
+    }
 
-	/**
-	 * Generates a URL that is used to show a QR code.
-	 *
-	 * Account names may not contain a double colon (:). Valid account name
-	 * examples:
-	 *  - "John.Doe@gmail.com"
-	 *  - "John Doe"
-	 *  - "John_Doe_976"
-	 *
-	 * The Issuer may not contain a double colon (:). The issuer is recommended
-	 * to pass along. If used, it will also be appended before the accountName.
-	 *
-	 * The previous examples with the issuer "Acme inc" would result in label:
-	 *  - "Acme inc:John.Doe@gmail.com"
-	 *  - "Acme inc:John Doe"
-	 *  - "Acme inc:John_Doe_976"
-	 *
-	 * The contents of the label, issuer and secret will be encoded to generate
-	 * a valid URL.
-	 *
-	 * @param string      $accountName The account name to show and identify
-	 * @param string      $secret      The secret is the generated secret unique to that user
-	 * @param string|null $issuer      Where you log in to
-	 * @param int         $size        Image size in pixels, 200 will make it 200x200
-	 */
-	public static function generate($accountName, $secret, $issuer = null, $size = 200)
-	{
-		if ('' === $accountName || false !== strpos($accountName, ':')) {
-			throw RuntimeException::InvalidAccountName($accountName);
-		}
+    /**
+     * Generates a URL that is used to show a QR code.
+     *
+     * Account names may not contain a double colon (:). Valid account name
+     * examples:
+     *  - "John.Doe@gmail.com"
+     *  - "John Doe"
+     *  - "John_Doe_976"
+     *
+     * The Issuer may not contain a double colon (:). The issuer is recommended
+     * to pass along. If used, it will also be appended before the accountName.
+     *
+     * The previous examples with the issuer "Acme inc" would result in label:
+     *  - "Acme inc:John.Doe@gmail.com"
+     *  - "Acme inc:John Doe"
+     *  - "Acme inc:John_Doe_976"
+     *
+     * The contents of the label, issuer and secret will be encoded to generate
+     * a valid URL.
+     *
+     * @param string      $accountName The account name to show and identify
+     * @param string      $secret      The secret is the generated secret unique to that user
+     * @param string|null $issuer      Where you log in to
+     * @param int         $size        Image size in pixels, 200 will make it 200x200
+     */
+    public static function generate($accountName, $secret, $issuer = null, $size = 200)
+    {
+        if ('' === $accountName || false !== strpos($accountName, ':')) {
+            throw RuntimeException::invalidAccountName($accountName);
+        }
 
-		if ('' === $secret) {
-			throw RuntimeException(InvalidSecret());
-		}
+        if ('' === $secret) {
+            throw RuntimeException::invalidSecret();
+        }
 
-		$label = $accountName;
-		$otpauthString = 'otpauth://totp/%s?secret=%s';
+        $label = $accountName;
+        $otpauthString = 'otpauth://totp/%s?secret=%s';
 
-		if (null !== $issuer) {
-			if ('' === $issuer || false !== strpos($issuer, ':')) {
-				throw RuntimeException::InvalidIssuer($issuer);
-			}
+        if (null !== $issuer) {
+            if ('' === $issuer || false !== strpos($issuer, ':')) {
+                throw RuntimeException::invalidIssuer($issuer);
+            }
 
-			// use both the issuer parameter and label prefix as recommended by Google for BC reasons
-			$label = $issuer.':'.$label;
-			$otpauthString .= '&issuer=%s';
-		}
+            // use both the issuer parameter and label prefix as recommended by Google for BC reasons
+            $label = $issuer . ':' . $label;
+            $otpauthString .= '&issuer=%s';
+        }
 
-		$otpauthString = rawurlencode(sprintf($otpauthString, $label, $secret, $issuer));
+        $otpauthString = rawurlencode(sprintf($otpauthString, $label, $secret, $issuer));
 
-		return sprintf(
-			'https://api.qrserver.com/v1/create-qr-code/?size=%1$dx%1$d&data=%2$s&ecc=M',
-			$size,
-			$otpauthString
-		);
-	}
+        return sprintf(
+            'https://api.qrserver.com/v1/create-qr-code/?size=%1$dx%1$d&data=%2$s&ecc=M',
+            $size,
+            $otpauthString
+        );
+    }
 }
 
 // NEXT_MAJOR: Remove class alias
