@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,19 +11,16 @@
 define('_HZEXEC_', 1);
 define('DS', DIRECTORY_SEPARATOR);
 
-if (!defined('PATH_ROOT'))
-{
-	define('PATH_ROOT', dirname(dirname(__DIR__)));
+if (!defined('PATH_ROOT')) {
+    define('PATH_ROOT', dirname(dirname(__DIR__)));
 }
 
-if (!defined('PATH_CORE'))
-{
-	define('PATH_CORE', PATH_ROOT . '/core');
+if (!defined('PATH_CORE')) {
+    define('PATH_CORE', PATH_ROOT . '/core');
 }
 
-if (!defined('PATH_APP'))
-{
-	define('PATH_APP', PATH_ROOT . '/app');
+if (!defined('PATH_APP')) {
+    define('PATH_APP', PATH_ROOT . '/app');
 }
 
 define('JPATH_BASE', PATH_ROOT);
@@ -47,18 +47,16 @@ mb_internal_encoding('UTF-8');
 // GH-10869 https://github.com/php/php-src/issues/10869 fixed in 8.1.18
 // Don't overrite ORIG_SCRIPT_NAME if already set (e.g. between above versions)
 
-if (PHP_VERSION_ID < 80216 && strpos($_SERVER['PATH_INFO'], '%') !== false)
-{
-	if (!isset($_SERVER['ORIG_SCRIPT_NAME']))
-	{
-		$_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'];
-	}
+if (PHP_VERSION_ID < 80216 && strpos($_SERVER['PATH_INFO'], '%') !== false) {
+    if (!isset($_SERVER['ORIG_SCRIPT_NAME'])) {
+        $_SERVER['ORIG_SCRIPT_NAME'] = $_SERVER['SCRIPT_NAME'];
+    }
 
-	$_SERVER['SCRIPT_NAME'] = str_replace(rawurldecode($_SERVER['PATH_INFO']), '', $_SERVER['SCRIPT_NAME']);
-	$_SERVER['PHP_SELF'] = str_replace(rawurldecode($_SERVER['PATH_INFO']), '', $_SERVER['PHP_SELF']);
+    $_SERVER['SCRIPT_NAME'] = str_replace(rawurldecode($_SERVER['PATH_INFO']), '', $_SERVER['SCRIPT_NAME']);
+    $_SERVER['PHP_SELF'] = str_replace(rawurldecode($_SERVER['PATH_INFO']), '', $_SERVER['PHP_SELF']);
 }
 
-Hubzero\Base\ClassLoader::addDirectories(array(	PATH_APP,	PATH_CORE));
+Hubzero\Base\ClassLoader::addDirectories(array( PATH_APP,   PATH_CORE));
 Hubzero\Base\ClassLoader::register();
 
 /**
@@ -71,12 +69,11 @@ Hubzero\Base\ClassLoader::register();
  */
 function app($key = null)
 {
-	if (!is_null($key))
-	{
-		return app()->get($key);
-	}
+    if (!is_null($key)) {
+        return app()->get($key);
+    }
 
-	return \Hubzero\Facades\Facade::getApplication();
+    return \Hubzero\Facades\Facade::getApplication();
 }
 
 /**
@@ -90,12 +87,11 @@ function app($key = null)
  */
 function config($key = null, $default = null)
 {
-	if (is_null($key))
-	{
-		return app('config');
-	}
+    if (is_null($key)) {
+        return app('config');
+    }
 
-	return app('config')->get($key, $default);
+    return app('config')->get($key, $default);
 }
 
 /**
@@ -106,11 +102,10 @@ function config($key = null, $default = null)
  */
 function ddie($var)
 {
-	foreach (func_get_args() as $var)
-	{
-		\Hubzero\Debug\Dumper::dump($var);
-	}
-	die();
+    foreach (func_get_args() as $var) {
+        \Hubzero\Debug\Dumper::dump($var);
+    }
+    die();
 }
 
 /**
@@ -121,27 +116,24 @@ function ddie($var)
  */
 function dlog()
 {
-	foreach (func_get_args() as $var)
-	{
-		\Hubzero\Debug\Dumper::log($var);
-	}
+    foreach (func_get_args() as $var) {
+        \Hubzero\Debug\Dumper::log($var);
+    }
 }
 
-if (!function_exists('dump'))
-{
-	/**
-	 * Dump the passed variables.
-	 *
-	 * @param   mixed
-	 * @return  void
-	 */
-	function dump($var)
-	{
-		foreach (func_get_args() as $var)
-		{
-			\Hubzero\Debug\Dumper::dump($var);
-		}
-	}
+if (!function_exists('dump')) {
+    /**
+     * Dump the passed variables.
+     *
+     * @param   mixed
+     * @return  void
+     */
+    function dump($var)
+    {
+        foreach (func_get_args() as $var) {
+            \Hubzero\Debug\Dumper::dump($var);
+        }
+    }
 }
 
 /**
@@ -154,7 +146,7 @@ if (!function_exists('dump'))
  */
 function with($object)
 {
-	return $object;
+    return $object;
 }
 
 /**
@@ -166,29 +158,24 @@ function with($object)
  **/
 function classExists($classname)
 {
-	$result = false;
+    $result = false;
 
-	foreach (spl_autoload_functions() as $loader)
-	{
-		if (is_array($loader) && isset($loader[0]) && $loader[0] == 'Hubzero\Facades\Facade')
-		{
-			$autoloader = $loader;
-			break;
-		}
-	}
+    foreach (spl_autoload_functions() as $loader) {
+        if (is_array($loader) && isset($loader[0]) && $loader[0] == 'Hubzero\Facades\Facade') {
+            $autoloader = $loader;
+            break;
+        }
+    }
 
-	if (isset($autoloader))
-	{
-		spl_autoload_unregister($autoloader);
+    if (isset($autoloader)) {
+        spl_autoload_unregister($autoloader);
 
-		$result = class_exists($classname);
+        $result = class_exists($classname);
 
-		spl_autoload_register($autoloader);
-	}
-	else
-	{
-		$result = class_exists($classname);
-	}
+        spl_autoload_register($autoloader);
+    } else {
+        $result = class_exists($classname);
+    }
 
-	return $result;
+    return $result;
 }
