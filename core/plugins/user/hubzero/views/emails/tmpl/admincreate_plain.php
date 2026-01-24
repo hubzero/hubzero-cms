@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
@@ -7,6 +8,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+// phpcs:disable Generic.Files.LineLength
 
 $base = str_replace('/administrator', '', Request::base());
 ?>

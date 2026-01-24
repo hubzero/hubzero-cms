@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/Components/CCObject.php';
 require_once __DIR__ . '/Components/ContactList.php';
 require_once __DIR__ . '/Components/Contact.php';
