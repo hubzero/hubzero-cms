@@ -1,12 +1,12 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 $this->css()
      ->js();
@@ -22,31 +22,28 @@ $metadata .= "\t" . Lang::txt('PLG_RESOURCES_SHARE') . ': ';
 // Available options
 $sharing = array('facebook', 'twitter', 'google', 'pinterest', 'linkedin', 'delicious', 'reddit');
 
-foreach ($sharing as $shared)
-{
-	if ($this->_params->get('share_' . $shared, 1))
-	{
-		// Show activity
-		$link = $this->view('_item')
-		     ->set('option', $this->option)
-		     ->set('resource', $this->resource)
-		     ->set('name', $shared)
-		     ->loadTemplate();
+foreach ($sharing as $shared) {
+    if ($this->_params->get('share_' . $shared, 1)) {
+        // Show activity
+        $link = $this->view('_item')
+             ->set('option', $this->option)
+             ->set('resource', $this->resource)
+             ->set('name', $shared)
+             ->loadTemplate();
 
-		$metadata .= (!$limit || $i <= $limit) ? $link : '';
+        $metadata .= (!$limit || $i <= $limit) ? $link : '';
 
-		$popup    .= '<li class="';
-		$popup    .= ($i % 2) ? 'odd' : 'even';
-		$popup    .= '">' . $link . '</li>';
+        $popup    .= '<li class="';
+        $popup    .= ($i % 2) ? 'odd' : 'even';
+        $popup    .= '">' . $link . '</li>';
 
-		$i++;
-	}
+        $i++;
+    }
 }
 
 // Pop up more
-if (($i+2) > $limit)
-{
-	$metadata .= '...';
+if (($i + 2) > $limit) {
+    $metadata .= '...';
 }
 
 $popup .= '</ol>';

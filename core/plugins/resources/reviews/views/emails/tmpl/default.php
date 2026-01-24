@@ -1,12 +1,12 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 $sef = Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews');
 

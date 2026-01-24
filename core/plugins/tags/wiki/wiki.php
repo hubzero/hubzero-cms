@@ -1,234 +1,216 @@
 <?php
+
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR2.Methods.MethodDeclaration.Underscore
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Tags plugin class for wiki pages
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class plgTagsWiki extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_autoloadLanguage = true;
 
-	/**
-	 * Retrieve records for items tagged with specific tags
-	 *
-	 * @param   array    $tags        Tags to match records against
-	 * @param   mixed    $limit       SQL record limit
-	 * @param   integer  $limitstart  SQL record limit start
-	 * @param   string   $sort        The field to sort records by
-	 * @param   mixed    $areas       An array or string of areas that should retrieve records
-	 * @return  mixed    Returns integer when counting records, array when retrieving records
-	 */
-	public function onTagView($tags, $limit=0, $limitstart=0, $sort='', $areas=null)
-	{
-		$response = array(
-			'name'    => $this->_name,
-			'title'   => Lang::txt('PLG_TAGS_WIKI'),
-			'total'   => 0,
-			'results' => null,
-			'sql'     => ''
-		);
+    /**
+     * Retrieve records for items tagged with specific tags
+     *
+     * @param   array    $tags        Tags to match records against
+     * @param   mixed    $limit       SQL record limit
+     * @param   integer  $limitstart  SQL record limit start
+     * @param   string   $sort        The field to sort records by
+     * @param   mixed    $areas       An array or string of areas that should retrieve records
+     * @return  mixed    Returns integer when counting records, array when retrieving records
+     */
+    public function onTagView($tags, $limit = 0, $limitstart = 0, $sort = '', $areas = null)
+    {
+        $response = array(
+            'name'    => $this->_name,
+            'title'   => Lang::txt('PLG_TAGS_WIKI'),
+            'total'   => 0,
+            'results' => null,
+            'sql'     => ''
+        );
 
-		if (empty($tags))
-		{
-			return $response;
-		}
+        if (empty($tags)) {
+            return $response;
+        }
 
-		$database = App::get('db');
+        $database = App::get('db');
 
-		$ids = array();
-		foreach ($tags as $tag)
-		{
-			$ids[] = $tag->get('id');
-		}
+        $ids = array();
+        foreach ($tags as $tag) {
+            $ids[] = $tag->get('id');
+        }
 
-		// Build query
-		$filters = array();
-		$filters['tags'] = $ids;
-		$filters['sortby'] = ($sort) ? $sort : 'date';
-		$filters['authorized'] = $this->_authorize();
+        // Build query
+        $filters = array();
+        $filters['tags'] = $ids;
+        $filters['sortby'] = ($sort) ? $sort : 'date';
+        $filters['authorized'] = $this->authorize();
 
-		$filters['select'] = 'count';
-		$filters['limit']  = 'all';
+        $filters['select'] = 'count';
+        $filters['limit']  = 'all';
 
-		$database->setQuery($this->_buildPluginQuery($filters));
-		$response['total'] = $database->loadResult();
+        $database->setQuery($this->buildPluginQuery($filters));
+        $response['total'] = $database->loadResult();
 
-		if ($areas && $areas == $response['name'])
-		{
-			$filters['select']     = 'records';
-			$filters['limit']      = $limit;
-			$filters['limitstart'] = $limitstart;
+        if ($areas && $areas == $response['name']) {
+            $filters['select']     = 'records';
+            $filters['limit']      = $limit;
+            $filters['limitstart'] = $limitstart;
 
-			$database->setQuery($this->_buildPluginQuery($filters));
-			$response['results'] = $database->loadObjectList();
+            $database->setQuery($this->buildPluginQuery($filters));
+            $response['results'] = $database->loadObjectList();
 
-			// Did we get any results?
-			if ($response['results'])
-			{
-				// Loop through the results and set each item's HREF
-				foreach ($response['results'] as $key => $row)
-				{
-					$response['results'][$key]->href = Route::url($response['results'][$key]->href);
-					$response['results'][$key]->text = $response['results'][$key]->itext;
-				}
-			}
-		}
-		else
-		{
-			$filters['select']     = 'records';
-			$filters['limitstart'] = $limitstart;
+            // Did we get any results?
+            if ($response['results']) {
+                // Loop through the results and set each item's HREF
+                foreach ($response['results'] as $key => $row) {
+                    $response['results'][$key]->href = Route::url($response['results'][$key]->href);
+                    $response['results'][$key]->text = $response['results'][$key]->itext;
+                }
+            }
+        } else {
+            $filters['select']     = 'records';
+            $filters['limitstart'] = $limitstart;
 
-			$response['sql'] = $this->_buildPluginQuery($filters);
-		}
+            $response['sql'] = $this->buildPluginQuery($filters);
+        }
 
-		return $response;
-	}
+        return $response;
+    }
 
-	/**
-	 * Build a database query
-	 *
-	 * @param   array   $filters  Options for building the query
-	 * @return  string  SQL
-	 */
-	private function _buildPluginQuery($filters=array())
-	{
-		if (isset($filters['search']) && $filters['search'] != '')
-		{
-			$searchquery = $filters['search'];
-			$phrases = $searchquery->searchPhrases;
-		}
+    /**
+     * Build a database query
+     *
+     * @param   array   $filters  Options for building the query
+     * @return  string  SQL
+     */
+    private function buildPluginQuery($filters = array())
+    {
+        if (isset($filters['search']) && $filters['search'] != '') {
+            $searchquery = $filters['search'];
+            $phrases = $searchquery->searchPhrases;
+        }
 
-		$groupAuth = array();
-		$groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
-		if (!User::isGuest())
-		{
-			$groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
-			$gids = array();
-			foreach (User::groups() as $group)
-			{
-				$gids[] = $group->gidNumber;
-			}
-			if (count($gids) > 0)
-			{
-				$groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN (' . join(',', $gids) . '))';
-			}
-		}
+        $groupAuth = array();
+        $groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
+        if (!User::isGuest()) {
+            $groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
+            $gids = array();
+            foreach (User::groups() as $group) {
+                $gids[] = $group->gidNumber;
+            }
+            if (count($gids) > 0) {
+                $groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN (' . join(',', $gids) . '))';
+            }
+        }
 
-		if (isset($filters['select']) && $filters['select'] == 'count')
-		{
-			if (isset($filters['tags']))
-			{
-				$query = "SELECT COUNT(f.id) FROM (SELECT v.page_id AS id, COUNT(DISTINCT t.tagid) AS uniques ";
-			}
-			else
-			{
-				$query = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.page_id) ";
-			}
-		}
-		else
-		{
-			$query = "SELECT v.page_id AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by,
-						v.created AS modified, v.created AS publish_up, NULL AS publish_down,
-						CASE
-							WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&alias=', xp.alias, '&active=notes&pagename=', w.path, '/', w.pagename)
-							WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&cn=', xg.cn, '&active=wiki&pagename=', w.path, '/', w.pagename)
-							ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
-						END AS href,
-						'wiki' AS section ";
-			if (isset($filters['tags']))
-			{
-				$query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
-			}
-			$query .= ", w.params, NULL AS rcount, w.scope AS data1, NULL AS data2, NULL AS data3 ";
-		}
-		$query .= "FROM #__wiki_pages AS w
-					INNER JOIN #__wiki_versions AS v ON v.id=w.version_id
-					LEFT JOIN `#__xgroups` xg ON xg.gidNumber = w.scope_id AND w.scope='group'
-					LEFT JOIN `#__projects` xp ON xp.id = w.scope_id AND w.scope='project'";
-		if (isset($filters['tags']))
-		{
-			$query .= ", #__tags_object AS t ";
-		}
-		$query .= "WHERE w.id=v.page_id AND v.approved=1 AND w.state < 2 AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))";
-		if (isset($filters['tags']))
-		{
-			$ids = implode(',', $filters['tags']);
-			$query .= "AND w.id=t.objectid AND t.tbl='wiki' AND t.tagid IN ($ids) ";
-		}
+        if (isset($filters['select']) && $filters['select'] == 'count') {
+            if (isset($filters['tags'])) {
+                $query = "SELECT COUNT(f.id) FROM (SELECT v.page_id AS id, COUNT(DISTINCT t.tagid) AS uniques ";
+            } else {
+                $query = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.page_id) ";
+            }
+        } else {
+            $query = "SELECT v.page_id AS id,
+                 w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created,
+                        v.created_by,
+                        v.created AS modified, v.created AS publish_up, NULL AS publish_down,
+                        CASE
+                            WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&alias=',
+                                 xp.alias, '&active=notes&pagename=', w.path, '/', w.pagename)
+                            WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&cn=',
+                                 xg.cn, '&active=wiki&pagename=', w.path, '/', w.pagename)
+                            ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
+                        END AS href,
+                        'wiki' AS section ";
+            if (isset($filters['tags'])) {
+                $query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
+            }
+            $query .= ", w.params, NULL AS rcount, w.scope AS data1, NULL AS data2, NULL AS data3 ";
+        }
+        $query .= "FROM #__wiki_pages AS w
+                    INNER JOIN #__wiki_versions AS v ON v.id=w.version_id
+                    LEFT JOIN `#__xgroups` xg ON xg.gidNumber = w.scope_id AND w.scope='group'
+                    LEFT JOIN `#__projects` xp ON xp.id = w.scope_id AND w.scope='project'";
+        if (isset($filters['tags'])) {
+            $query .= ", #__tags_object AS t ";
+        }
+        $query .= "WHERE w.id=v.page_id AND v.approved=1 AND w.state < 2 AND (xg.gidNumber IS NULL OR (" . implode(
+            ' OR ',
+            $groupAuth
+        ) . "))";
+        if (isset($filters['tags'])) {
+            $ids = implode(',', $filters['tags']);
+            $query .= "AND w.id=t.objectid AND t.tbl='wiki' AND t.tagid IN ($ids) ";
+        }
 
-		$query .= "GROUP BY page_id ";
-		if (isset($filters['tags']))
-		{
-			$query .= "HAVING uniques=" . count($filters['tags']) . " ";
-		}
-		if (isset($filters['select']) && $filters['select'] != 'count')
-		{
-			if (isset($filters['sortby']))
-			{
-				$query .= "ORDER BY ";
-				switch ($filters['sortby'])
-				{
-					case 'title':
-						$query .= 'title ASC';
-						break;
-					case 'id':
-						$query .= "id DESC";
-						break;
-					case 'rating':
-						$query .= "rating DESC";
-						break;
-					case 'ranking':
-						$query .= "ranking DESC";
-						break;
-					case 'relevance':
-						$query .= "relevance DESC";
-						break;
-					case 'usage':
-					case 'hits':
-						$query .= 'hits DESC';
-						break;
-					case 'date':
-					default:
-						$query .= 'created DESC';
-						break;
-				}
-			}
-			if (isset($filters['limit']) && $filters['limit'] != 'all')
-			{
-				$query .= " LIMIT " . $filters['limitstart'] . "," . $filters['limit'];
-			}
-		}
-		if (isset($filters['select']) && $filters['select'] == 'count')
-		{
-			$query .= ") AS f";
-		}
-		return $query;
-	}
+        $query .= "GROUP BY page_id ";
+        if (isset($filters['tags'])) {
+            $query .= "HAVING uniques=" . count($filters['tags']) . " ";
+        }
+        if (isset($filters['select']) && $filters['select'] != 'count') {
+            if (isset($filters['sortby'])) {
+                $query .= "ORDER BY ";
+                switch ($filters['sortby']) {
+                    case 'title':
+                        $query .= 'title ASC';
+                        break;
+                    case 'id':
+                        $query .= "id DESC";
+                        break;
+                    case 'rating':
+                        $query .= "rating DESC";
+                        break;
+                    case 'ranking':
+                        $query .= "ranking DESC";
+                        break;
+                    case 'relevance':
+                        $query .= "relevance DESC";
+                        break;
+                    case 'usage':
+                    case 'hits':
+                        $query .= 'hits DESC';
+                        break;
+                    case 'date':
+                    default:
+                        $query .= 'created DESC';
+                        break;
+                }
+            }
+            if (isset($filters['limit']) && $filters['limit'] != 'all') {
+                $query .= " LIMIT " . $filters['limitstart'] . "," . $filters['limit'];
+            }
+        }
+        if (isset($filters['select']) && $filters['select'] == 'count') {
+            $query .= ") AS f";
+        }
+        return $query;
+    }
 
-	/**
-	 * Check if a user is logged in
-	 *
-	 * @return  boolean  True if logged in
-	 */
-	private function _authorize()
-	{
-		// Check if they are logged in
-		if (User::isGuest())
-		{
-			return false;
-		}
-		return true;
-	}
+    /**
+     * Check if a user is logged in
+     *
+     * @return  boolean  True if logged in
+     */
+    private function authorize()
+    {
+        // Check if they are logged in
+        if (User::isGuest()) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -1,12 +1,14 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 require_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 require_once Component::path('com_tools') . DS . 'tables' . DS . 'session.php';
@@ -14,313 +16,299 @@ require_once Component::path('com_tools') . DS . 'tables' . DS . 'session.php';
 /**
  * Resources Plugin class for Windows tools
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $_autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_autoloadLanguage = true;
 
-	/**
-	 * Generate a Windows tool invoke URL to redirect to
-	 *
-	 * @param   string  $option  Name of the component
-	 * @return  void
-	 */
-	public function invoke($option)
-	{
-		$no_html = Request::getInt('no_html', 0);
+    /**
+     * Generate a Windows tool invoke URL to redirect to
+     *
+     * @param   string  $option  Name of the component
+     * @return  void
+     */
+    public function invoke($option)
+    {
+        $no_html = Request::getInt('no_html', 0);
 
-		$response = new StdClass;
-		$response->success = false;
-		$response->message = Lang::txt('No invoke URL found.');
+        $response = new StdClass();
+        $response->success = false;
+        $response->message = Lang::txt('No invoke URL found.');
 
-		// Check for an imconing token.
-		if ($token = Request::getString('token', '', 'get'))
-		{
-			$dtoken = base64_decode($token);
+        // Check for an imconing token.
+        if ($token = Request::getString('token', '', 'get')) {
+            $dtoken = base64_decode($token);
 
-			$key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
-			$crypter = new \Hubzero\Encryption\Encrypter(
-				new \Hubzero\Encryption\Cipher\Simple,
-				new \Hubzero\Encryption\Key('simple', $key, $key)
-			);
-			$session_id = $crypter->decrypt($dtoken);
+            $key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
+            $crypter = new \Hubzero\Encryption\Encrypter(
+                new \Hubzero\Encryption\Cipher\Simple(),
+                new \Hubzero\Encryption\Key('simple', $key, $key)
+            );
+            $session_id = $crypter->decrypt($dtoken);
 
-			$session = \Hubzero\Session\Helper::getSession($session_id);
+            $session = \Hubzero\Session\Helper::getSession($session_id);
 
-			$user = User::getInstance($session->userid);
-			$user->set('guest', 0);
-			$user->set('id', $session->userid);
-			$user->set('username', $session->username);
+            $user = User::getInstance($session->userid);
+            $user->set('guest', 0);
+            $user->set('id', $session->userid);
+            $user->set('username', $session->username);
 
-			$ip = $session->ip;
-		}
-		// No token, get the user the standard way
-		else
-		{
-			$user = User::getInstance();
+            $ip = $session->ip;
+        } else {
+            $user = User::getInstance();
 
-			$ip = Request::ip();
-		}
+            $ip = Request::ip();
+        }
 
-		// Is the user validated?
-		if ($user->isGuest())
-		{
-			$response->message = Lang::txt('Login is required to perform this action.');
-		}
-		else
-		{
-			$appid = Request::getString('appid');
+        // Is the user validated?
+        if ($user->isGuest()) {
+            $response->message = Lang::txt('Login is required to perform this action.');
+        } else {
+            $appid = Request::getString('appid');
 
-			// Generate the URL
-			$url = $this->generateInvokeUrl($option, $appid, $user, $ip);
+            // Generate the URL
+            $url = $this->generateInvokeUrl($option, $appid, $user, $ip);
 
-			if ($url)
-			{
-				if (!$token)
-				{
-					$session = App::get('session');
+            if ($url) {
+                if (!$token) {
+                    $session = App::get('session');
 
-					$session_id = $session->getId();
+                    $session_id = $session->getId();
 
-					$key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
-					$crypter = new \Hubzero\Encryption\Encrypter(
-						new \Hubzero\Encryption\Cipher\Simple,
-						new \Hubzero\Encryption\Key('simple', $key, $key)
-					);
-					$token = base64_encode($crypter->encrypt($session_id));
-				}
+                    $key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
+                    $crypter = new \Hubzero\Encryption\Encrypter(
+                        new \Hubzero\Encryption\Cipher\Simple(),
+                        new \Hubzero\Encryption\Key('simple', $key, $key)
+                    );
+                    $token = base64_encode($crypter->encrypt($session_id));
+                }
 
-				$rurl  = rtrim($this->params->get('invoke_url', 'http://wapps.hubzero.org'), '/') . '/v1?'; //standaloneUrl=' . $url;
-				$params = array();
-				$params[] = 'token=' . $token;
-				if ($appid)
-				{
-					$params[] = 'appid=' . $appid;
-				}
-				$params[] = 'standaloneUrl=' . $url;
-				$rurl .= implode('&', $params);
+                $rurl = rtrim($this->params->get('invoke_url', 'http://wapps.hubzero.org'), '/')
+                    . '/v1?'; //standaloneUrl=' . $url;
+                $params = array();
+                $params[] = 'token=' . $token;
+                if ($appid) {
+                    $params[] = 'appid=' . $appid;
+                }
+                $params[] = 'standaloneUrl=' . $url;
+                $rurl .= implode('&', $params);
 
-				$response->success = true;
-				$response->message = $rurl;
+                $response->success = true;
+                $response->message = $rurl;
 
-				if (!$no_html)
-				{
-					$this->view('invoke', 'display')
-						->set('url', $rurl)
-						->set('rurl', $_SERVER['HTTP_REFERER'])
-						->display();
+                if (!$no_html) {
+                    $this->view('invoke', 'display')
+                        ->set('url', $rurl)
+                        ->set('rurl', $_SERVER['HTTP_REFERER'])
+                        ->display();
 
-					exit();
+                    exit();
 
-					App::redirect($url);
-				}
-			}
-		}
+                    App::redirect($url);
+                }
+            }
+        }
 
-		if (!$no_html)
-		{
-			App::abort(404, Lang::txt('No invoke URL found.'));
-		}
+        if (!$no_html) {
+            App::abort(404, Lang::txt('No invoke URL found.'));
+        }
 
-		$response = json_encode($response);
+        $response = json_encode($response);
 
-		if ($callback = Request::getString('callback'))
-		{
-			$response = $callback . '(' . $response . ')';
-		}
+        if ($callback = Request::getString('callback')) {
+            $response = $callback . '(' . $response . ')';
+        }
 
-		echo $response;
-		exit();
-	}
+        echo $response;
+        exit();
+    }
 
-	/**
-	 * Generate a Windows tool invoke URL to redirect to
-	 *
-	 * @param   string  $option  Name of the component
-	 * @param   string  $appid
-	 * @param   object  $user
-	 * @param   string  $ip
-	 * @return  string
-	 */
-	public function generateInvokeUrl($option, $appid = null, $user = null, $ip = null)
-	{
-		$appid = $appid ?: Request::getString('appid');
+    /**
+     * Generate a Windows tool invoke URL to redirect to
+     *
+     * @param   string  $option  Name of the component
+     * @param   string  $appid
+     * @param   object  $user
+     * @param   string  $ip
+     * @return  string
+     */
+    public function generateInvokeUrl($option, $appid = null, $user = null, $ip = null)
+    {
+        $appid = $appid ?: Request::getString('appid');
 
-		if (!$appid)
-		{
-			return '';
-		}
+        if (!$appid) {
+            return '';
+        }
 
-		$user  = $user  ?: User::getInstance();
-		$ip    = $ip    ?: Request::ip();
+        $user  = $user  ?: User::getInstance();
+        $ip    = $ip    ?: Request::ip();
 
-		// Get summary usage data
-		$startdate = new \DateTime('midnight first day of this month');
-		$enddate   = new \DateTime('midnight first day of next month');
+        // Get summary usage data
+        $startdate = new \DateTime('midnight first day of this month');
+        $enddate   = new \DateTime('midnight first day of next month');
 
-		$db = App::get('db');
-		$sql  = 'SELECT truncate(sum(walltime)/60/60,3) as totalhours FROM `sessionlog` ';
-		$sql .= 'WHERE start >' . $db->quote($startdate->format('Y-m-d H:i:s')) . ' ';
-		$sql .= 'AND start <' . $db->quote($enddate->format('Y-m-d H:i:s'));
-		$db->setQuery($sql);
-		$totalUsageFigure = $db->loadObjectList();
+        $db = App::get('db');
+        $sql  = 'SELECT truncate(sum(walltime)/60/60,3) as totalhours FROM `sessionlog` ';
+        $sql .= 'WHERE start >' . $db->quote($startdate->format('Y-m-d H:i:s')) . ' ';
+        $sql .= 'AND start <' . $db->quote($enddate->format('Y-m-d H:i:s'));
+        $db->setQuery($sql);
+        $totalUsageFigure = $db->loadObjectList();
 
-		$params = Component::params('com_tools');
-		$maxhours = $params->get('windows_monthly_max_hours', '100');
+        $params = Component::params('com_tools');
+        $maxhours = $params->get('windows_monthly_max_hours', '100');
 
-		if (floatval($totalUsageFigure[0]->totalhours) > floatval($maxhours))
-		{
-			return '';
-		}
+        if (floatval($totalUsageFigure[0]->totalhours) > floatval($maxhours)) {
+            return '';
+        }
 
-		// Get the middleware database
-		$mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
+        // Get the middleware database
+        $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 
-		// Get the session table
-		$ms = new \Components\Tools\Tables\Session($mwdb);
-		$ms->bind(array(
-			'username' => $user->get('username'),
-			'remoteip' => $ip
-		));
+        // Get the session table
+        $ms = new \Components\Tools\Tables\Session($mwdb);
+        $ms->bind(array(
+            'username' => $user->get('username'),
+            'remoteip' => $ip
+        ));
 
-		// Save the entry
-		$ms->store();
+        // Save the entry
+        $ms->store();
 
-		// Get back the ID
-		$sessionID = $ms->sessnum;
+        // Get back the ID
+        $sessionID = $ms->sessnum;
 
-		// Opaque data
-		$od = "username=" . $user->get('username');
-		$od = $od . ",email=" . $user->get('email');
-		$od = $od . ",userip=" . $ip;
-		$od = $od . ",sessionid=" . $sessionID;
-		$od = $od . ",ts=" . (new \DateTime())->format('Y.m.d.H.i.s');
+        // Opaque data
+        $od = "username=" . $user->get('username');
+        $od = $od . ",email=" . $user->get('email');
+        $od = $od . ",userip=" . $ip;
+        $od = $od . ",sessionid=" . $sessionID;
+        $od = $od . ",ts=" . (new \DateTime())->format('Y.m.d.H.i.s');
 
-		$eurl = exec("/usr/bin/hz-aws-appstream getentitlementurl --appid '" . $appid . "' --opaquedata '" . $od . "'");
+        $eurl = exec("/usr/bin/hz-aws-appstream getentitlementurl --appid '" . $appid . "' --opaquedata '" . $od . "'");
 
-		return $eurl;
-	}
+        return $eurl;
+    }
 
-	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @param   object  $model  Current model
-	 * @return  array
-	 */
-	public function &onResourcesAreas($model)
-	{
-		$areas = array();
+    /**
+     * Return the alias and name for this category of content
+     *
+     * @param   object  $model  Current model
+     * @return  array
+     */
+    public function &onResourcesAreas($model)
+    {
+        $areas = array();
 
-		if ($model->type->params->get('plg_' . $this->_name))
-		{
-			$areas['windowstools'] = Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_SETUP');
-		}
+        if ($model->type->params->get('plg_' . $this->_name)) {
+            $areas['windowstools'] = Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_SETUP');
+        }
 
-		return $areas;
-	}
+        return $areas;
+    }
 
-	/**
-	 * Return data on a resource view (this will be some form of HTML)
-	 *
-	 * @param   object  $model   Current model
-	 * @param   string  $option  Name of the component
-	 * @param   array   $areas   Active area(s)
-	 * @param   string  $rtrn    Data to be returned
-	 * @return  array
-	 */
-	public function onResources($model, $option, $areas, $rtrn='all')
-	{
-		$arr = array(
-			'area'     => $this->_name,
-			'html'     => '',
-			'metadata' => ''
-		);
+    /**
+     * Return data on a resource view (this will be some form of HTML)
+     *
+     * @param   object  $model   Current model
+     * @param   string  $option  Name of the component
+     * @param   array   $areas   Active area(s)
+     * @param   string  $rtrn    Data to be returned
+     * @return  array
+     */
+    public function onResources($model, $option, $areas, $rtrn = 'all')
+    {
+        $arr = array(
+            'area'     => $this->_name,
+            'html'     => '',
+            'metadata' => ''
+        );
 
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas))
-		{
-			if (!array_intersect($areas, $this->onResourcesAreas($model))
-			 && !array_intersect($areas, array_keys($this->onResourcesAreas($model))))
-			{
-				$rtrn = 'metadata';
-			}
-		}
+        // Check if our area is in the array of areas we want to return results for
+        if (is_array($areas)) {
+            if (
+                !array_intersect($areas, $this->onResourcesAreas($model))
+                && !array_intersect($areas, array_keys($this->onResourcesAreas($model)))
+            ) {
+                $rtrn = 'metadata';
+            }
+        }
 
-		if ($rtrn == 'all' || $rtrn == 'html')
-		{
-			// Check admin access
-			$isAuthorised = User::authorise('core.manage', 'com_resources');
+        if ($rtrn == 'all' || $rtrn == 'html') {
+            // Check admin access
+            $isAuthorised = User::authorise('core.manage', 'com_resources');
 
-			// Get the current page
-			include_once __DIR__ . DS . 'models' . DS . 'page.php';
+            // Get the current page
+            include_once __DIR__ . DS . 'models' . DS . 'page.php';
 
-			$page = Plugins\Resources\Windowstools\Models\Page::all()
-				->whereIn('access', User::getAuthorisedViewLevels())
-				->whereEquals('state', Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED)
-				->whereEquals('plugin', $this->_name)
-				->order('ordering', 'asc')
-				->row();
+            $page = Plugins\Resources\Windowstools\Models\Page::all()
+                ->whereIn('access', User::getAuthorisedViewLevels())
+                ->whereEquals('state', Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED)
+                ->whereEquals('plugin', $this->_name)
+                ->order('ordering', 'asc')
+                ->row();
 
-			if (!$page->get('id'))
-			{
-				if (file_exists(__DIR__ . DS . 'assets' . DS . 'txt' . DS . 'default.txt'))
-				{
-					$contents = file_get_contents(__DIR__ . DS . 'assets' . DS . 'txt' . DS . 'default.txt');
+            if (!$page->get('id')) {
+                if (file_exists(__DIR__ . DS . 'assets' . DS . 'txt' . DS . 'default.txt')) {
+                    $contents = file_get_contents(__DIR__ . DS . 'assets' . DS . 'txt' . DS . 'default.txt');
 
-					$page->set('content', $contents);
-					$page->set('title', Lang::txt('PLG_RESOURCES_WINDOWSTOOLS'));
-					$page->set('state', Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED);
-					$page->set('plugin', $this->_name);
-					$page->set('access', 1);
-					$page->save();
-				}
-			}
+                    $page->set('content', $contents);
+                    $page->set('title', Lang::txt('PLG_RESOURCES_WINDOWSTOOLS'));
+                    $page->set('state', Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED);
+                    $page->set('plugin', $this->_name);
+                    $page->set('access', 1);
+                    $page->save();
+                }
+            }
 
-			// Instantiate a view
-			$view = $this->view('default', 'display')
-				->set('option', $option)
-				->set('resource', $model->resource)
-				->set('page', $page)
-				->set('name', $this->_name)
-				->set('isAuthorised', $isAuthorised)
-				->set('base', 'index.php?option=' . $option . '&' . ($model->resource->alias ? 'alias=' . $model->resource->alias : '&id=' . $model->resource->id) . '&active=' . $this->_name);
+            // Instantiate a view
+            $view = $this->view('default', 'display')
+                ->set('option', $option)
+                ->set('resource', $model->resource)
+                ->set('page', $page)
+                ->set('name', $this->_name)
+                ->set('isAuthorised', $isAuthorised)
+                ->set(
+                    'base',
+                    'index.php?option=' . $option . '&'
+                    . ($model->resource->alias ? 'alias=' . $model->resource->alias : '&id=' . $model->resource->id)
+                    . '&active=' . $this->_name
+                );
 
-			$action = Request::getCmd('action');
+            $action = Request::getCmd('action');
 
-			if ($action && $isAuthorised)
-			{
-				switch ($action)
-				{
-					case 'edit':
-						// Show the edit form
-						$view->setLayout('edit');
-					break;
+            if ($action && $isAuthorised) {
+                switch ($action) {
+                    case 'edit':
+                        // Show the edit form
+                        $view->setLayout('edit');
+                        break;
 
-					case 'save':
-						// Save changes
-						// This will fall through to the default page
-						Request::checkToken();
+                    case 'save':
+                        // Save changes
+                        // This will fall through to the default page
+                        Request::checkToken();
 
-						$fields = Request::getArray('fields', array(), 'post');
+                        $fields = Request::getArray('fields', array(), 'post');
 
-						$page->set($fields);
+                        $page->set($fields);
 
-						if (!$page->save())
-						{
-							Notify::error($page->getError());
-						}
-					break;
-				}
-			}
+                        if (!$page->save()) {
+                            Notify::error($page->getError());
+                        }
+                        break;
+                }
+            }
 
-			// Return the output
-			$arr['html'] = $view->loadTemplate();
-		}
+            // Return the output
+            $arr['html'] = $view->loadTemplate();
+        }
 
-		return $arr;
-	}
+        return $arr;
+    }
 }

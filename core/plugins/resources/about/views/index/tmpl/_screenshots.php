@@ -1,12 +1,12 @@
 <?php
+
+// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 $upath = (isset($this->upath) ? $this->upath : '');
 $sinfo = (isset($this->sinfo) ? $this->sinfo : array());
@@ -18,17 +18,15 @@ $url = \Components\Resources\Helpers\html::build_url($this->id, '');
 $tconfig = Component::params('com_tools');
 $allowversions = $tconfig->get('screenshot_edit');
 
-if ($versionid && $allowversions)
-{
-	// Add version directory
-	$url .= DS . $versionid;
-	$path .= DS . $versionid;
+if ($versionid && $allowversions) {
+    // Add version directory
+    $url .= DS . $versionid;
+    $path .= DS . $versionid;
 }
 
 $d = '';
-if (is_dir(PATH_APP . $upath . $path))
-{
-	$d = dir(PATH_APP . $upath . $path);
+if (is_dir(PATH_APP . $upath . $path)) {
+    $d = dir(PATH_APP . $upath . $path);
 }
 
 $images = array();
@@ -37,119 +35,103 @@ $all = array();
 $ordering = array();
 $html = '';
 
-if ($d)
-{
-	while (false !== ($entry = $d->read()))
-	{
-		$img_file = $entry;
-		if (is_file(PATH_APP . $upath . $path . DS . $img_file)
-		 && substr($entry, 0, 1) != '.'
-		 && strtolower($entry) !== 'index.html')
-		{
-			if (preg_match("#bmp|gif|jpg|png|swf|mov#i", $img_file))
-			{
-				$images[] = $img_file;
-			}
-			if (preg_match("/-tn/i", $img_file))
-			{
-				$tns[] = $img_file;
-			}
-			$images = array_diff($images, $tns);
-		}
-	}
+if ($d) {
+    while (false !== ($entry = $d->read())) {
+        $img_file = $entry;
+        if (
+            is_file(PATH_APP . $upath . $path . DS . $img_file)
+            && substr($entry, 0, 1) != '.'
+            && strtolower($entry) !== 'index.html'
+        ) {
+            if (preg_match("#bmp|gif|jpg|png|swf|mov#i", $img_file)) {
+                $images[] = $img_file;
+            }
+            if (preg_match("/-tn/i", $img_file)) {
+                $tns[] = $img_file;
+            }
+            $images = array_diff($images, $tns);
+        }
+    }
 
-	$d->close();
+    $d->close();
 }
 
 $b = 0;
-if ($images)
-{
-	foreach ($images as $ima)
-	{
-		$new = array();
-		$new['img'] = $ima;
-		$new['type'] = explode('.', $new['img']);
+if ($images) {
+    foreach ($images as $ima) {
+        $new = array();
+        $new['img'] = $ima;
+        $new['type'] = explode('.', $new['img']);
 
-		// get title and ordering info from the database, if available
-		if (count($sinfo) > 0)
-		{
-			foreach ($sinfo as $si)
-			{
-				if ($si->filename == $ima)
-				{
-					$new['title'] = stripslashes($si->title);
-					$new['title'] = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $new['title']);
-					$new['ordering'] = $si->ordering;
-				}
-			}
-		}
+        // get title and ordering info from the database, if available
+        if (count($sinfo) > 0) {
+            foreach ($sinfo as $si) {
+                if ($si->filename == $ima) {
+                    $new['title'] = stripslashes($si->title);
+                    $new['title'] = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $new['title']);
+                    $new['ordering'] = $si->ordering;
+                }
+            }
+        }
 
-		$ordering[] = isset($new['ordering']) ? $new['ordering'] : $b;
-		$b++;
-		$all[] = $new;
-	}
+        $ordering[] = isset($new['ordering']) ? $new['ordering'] : $b;
+        $b++;
+        $all[] = $new;
+    }
 }
 
-if (count($sinfo) > 0)
-{
-	// Sort by ordering
-	array_multisort($ordering, $all);
-}
-else
-{
-	// Sort by name
-	sort($all);
+if (count($sinfo) > 0) {
+    // Sort by ordering
+    array_multisort($ordering, $all);
+} else {
+    // Sort by name
+    sort($all);
 }
 $images = $all;
 
 $els = '';
 $k = 0;
 $g = 0;
-for ($i=0, $n=count($images); $i < $n; $i++)
-{
-	$tn = \Components\Resources\Helpers\Html::thumbnail($images[$i]['img']);
-	$els .=  ($this->slidebar && $i==0) ? '<div class="showcase-pane">' . "\n" : '';
+for ($i = 0, $n = count($images); $i < $n; $i++) {
+    $tn = \Components\Resources\Helpers\Html::thumbnail($images[$i]['img']);
+    $els .=  ($this->slidebar && $i == 0) ? '<div class="showcase-pane">' . "\n" : '';
 
-	if (is_file(PATH_APP . $upath . $path . DS . $tn))
-	{
-		if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov')
-		{
-			$g++;
-			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : Lang::txt('DEMO') . ' #' . $g;
-			$els .= $this->slidebar ? '' : '<li>';
-			$els .= ' <a class="popup" href="/resources' . $url . DS . $images[$i]['img'] . '" title="' . $title . '">';
-			$els .= '<img src="/resources' . $url . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
-			$els .= $this->slidebar ? '' : '</li>' . "\n";
-		}
-		else
-		{
-			$k++;
-			$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: Lang::txt('SCREENSHOT') . ' #' . $k;
-			$els .= $this->slidebar ? '' : '<li>';
-			$els .= ' <a rel="lightbox" href="/resources' . $url . DS . $images[$i]['img'] . '" title="' . $title . '">';
-			$els .= '<img src="/resources' . $url . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
-			$els .= $this->slidebar ? '' : '</li>' . "\n";
-		}
-	}
-	$els .=  ($this->slidebar && $i == ($n - 1)) ? '</div>' . "\n" : '';
+    if (is_file(PATH_APP . $upath . $path . DS . $tn)) {
+        if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov') {
+            $g++;
+            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '') ? $images[$i]['title'] : Lang::txt('DEMO') . ' #' . $g;
+            $els .= $this->slidebar ? '' : '<li>';
+            $els .= ' <a class="popup" href="/resources' . $url . DS . $images[$i]['img'] . '" title="' . $title . '">';
+            $els .= '<img src="/resources' . $url . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
+            $els .= $this->slidebar ? '' : '</li>' . "\n";
+        } else {
+            $k++;
+            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '')  ? $images[$i]['title'] : Lang::txt('SCREENSHOT') . ' #' . $k;
+            $els .= $this->slidebar ? '' : '<li>';
+            $els .= ' <a rel="lightbox" href="/resources' . $url . DS . $images[$i]['img'] . '" title="' . $title . '">';
+            $els .= '<img src="/resources' . $url . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
+            $els .= $this->slidebar ? '' : '</li>' . "\n";
+        }
+    }
+    $els .=  ($this->slidebar && $i == ($n - 1)) ? '</div>' . "\n" : '';
 }
 
 if ($els) { ?>
-	<div class="sscontainer">
-		<?php if ($this->slidebar) { ?>
-		<div id="showcase">
-			<div id="showcase-prev" ></div>
-			<div id="showcase-window">
-				<ul class="screenshots">
-		<?php } ?>
+    <div class="sscontainer">
+        <?php if ($this->slidebar) { ?>
+        <div id="showcase">
+            <div id="showcase-prev" ></div>
+            <div id="showcase-window">
+                <ul class="screenshots">
+        <?php } ?>
 
-		<?php echo $els; ?>
+        <?php echo $els; ?>
 
-		<?php if ($this->slidebar) { ?>
-				</ul>
-			</div>
-			<div id="showcase-next" ></div>
-		</div>
-		<?php } ?>
-	</div><!-- / .sscontainer -->
+        <?php if ($this->slidebar) { ?>
+                </ul>
+            </div>
+            <div id="showcase-next" ></div>
+        </div>
+        <?php } ?>
+    </div><!-- / .sscontainer -->
 <?php }

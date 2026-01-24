@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,6 +15,7 @@ use Hubzero\Item\Vote;
 use Request;
 use Lang;
 use Date;
+
 //use User;
 
 require_once __DIR__ . DS . 'comment.php';
@@ -19,412 +23,396 @@ require_once __DIR__ . DS . 'comment.php';
 /**
  * Resource review
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Review extends Relational
 {
-	/**
-	 * Flagged state
-	 *
-	 * @var  integer
-	 */
-	const STATE_FLAGGED = 3;
+    /**
+     * Flagged state
+     *
+     * @var  integer
+     */
+    public const STATE_FLAGGED = 3;
 
-	/**
-	 * The table namespace
-	 *
-	 * @var  string
-	 */
-	protected $namespace = 'resource';
+    /**
+     * The table namespace
+     *
+     * @var  string
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_namespace = 'resource';
 
-	/**
-	 * The table to which the class pertains
-	 *
-	 * This will default to #__{namespace}_{modelName} unless otherwise
-	 * overwritten by a given subclass. Definition of this property likely
-	 * indicates some derivation from standard naming conventions.
-	 *
-	 * @var  string
-	 */
-	protected $table = '#__resource_ratings';
+    /**
+     * The table to which the class pertains
+     *
+     * This will default to #__{namespace}_{modelName} unless otherwise
+     * overwritten by a given subclass. Definition of this property likely
+     * indicates some derivation from standard naming conventions.
+     *
+     * @var  string
+     */
+    protected $table = '#__resource_ratings';
 
-	/**
-	 * Default order by for model
-	 *
-	 * @var  string
-	 */
-	public $orderBy = 'created';
+    /**
+     * Default order by for model
+     *
+     * @var  string
+     */
+    public $orderBy = 'created';
 
-	/**
-	 * Default order direction for select queries
-	 *
-	 * @var  string
-	 */
-	public $orderDir = 'desc';
+    /**
+     * Default order direction for select queries
+     *
+     * @var  string
+     */
+    public $orderDir = 'desc';
 
-	/**
-	 * Fields and their validation criteria
-	 *
-	 * @var  array
-	 */
-	protected $rules = array(
-		'comment'     => 'notempty',
-		'resource_id' => 'positive|nonzero'
-	);
+    /**
+     * Fields and their validation criteria
+     *
+     * @var  array
+     */
+    protected $rules = array(
+        'comment'     => 'notempty',
+        'resource_id' => 'positive|nonzero'
+    );
 
-	/**
-	 * Automatic fields to populate every time a row is created
-	 *
-	 * @var  array
-	 */
-	public $initiate = array(
-		'created',
-		'user_id'
-	);
+    /**
+     * Automatic fields to populate every time a row is created
+     *
+     * @var  array
+     */
+    public $initiate = array(
+        'created',
+        'user_id'
+    );
 
-	/**
-	 * Fields to be parsed
-	 *
-	 * @var array
-	 */
-	protected $parsed = array(
-		'comment'
-	);
+    /**
+     * Fields to be parsed
+     *
+     * @var array
+     */
+    protected $parsed = array(
+        'comment'
+    );
 
-	/**
-	 * Base URL
-	 *
-	 * @var  string
-	 */
-	protected $base = null;
+    /**
+     * Base URL
+     *
+     * @var  string
+     */
+    protected $base = null;
 
-	/**
-	 * Generates automatic user_id field value
-	 *
-	 * @return  int
-	 * @since   2.0.0
-	 **/
-	public function automaticUserId()
-	{
-		return (int)User::get('id', 0);
-	}
+    /**
+     * Generates automatic user_id field value
+     *
+     * @return  int
+     * @since   2.0.0
+     **/
+    public function automaticUserId()
+    {
+        return (int)User::get('id', 0);
+    }
 
-	/**
-	 * Is the question open?
-	 *
-	 * @return  boolean
-	 */
-	public function isReported()
-	{
-		return ($this->get('state') == self::STATE_FLAGGED);
-	}
+    /**
+     * Is the question open?
+     *
+     * @return  boolean
+     */
+    public function isReported()
+    {
+        return ($this->get('state') == self::STATE_FLAGGED);
+    }
 
-	/**
-	 * Return a formatted timestamp for created date
-	 *
-	 * @param   string  $as  What data to return
-	 * @return  string
-	 */
-	public function created($as='')
-	{
-		$as = strtolower($as);
+    /**
+     * Return a formatted timestamp for created date
+     *
+     * @param   string  $as  What data to return
+     * @return  string
+     */
+    public function created($as = '')
+    {
+        $as = strtolower($as);
 
-		if ($as == 'date')
-		{
-			return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-		}
+        if ($as == 'date') {
+            return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+        }
 
-		if ($as == 'time')
-		{
-			return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-		}
+        if ($as == 'time') {
+            return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+        }
 
-		return $this->get('created');
-	}
+        return $this->get('created');
+    }
 
-	/**
-	 * Defines a belongs to one relationship between response and user
-	 *
-	 * @return  object
-	 */
-	public function creator()
-	{
-		return $this->belongsToOne('Hubzero\User\User', 'user_id');
-	}
+    /**
+     * Defines a belongs to one relationship between response and user
+     *
+     * @return  object
+     */
+    public function creator()
+    {
+        return $this->belongsToOne('Hubzero\User\User', 'user_id');
+    }
 
-	/**
-	 * Get a list of comments
-	 *
-	 * @return  object
-	 */
-	public function replies()
-	{
-		return $this->oneShiftsToMany('Comment', 'item_id', 'item_type');
-	}
+    /**
+     * Get a list of comments
+     *
+     * @return  object
+     */
+    public function replies()
+    {
+        return $this->oneShiftsToMany('Comment', 'item_id', 'item_type');
+    }
 
-	/**
-	 * Get a list of votes
-	 *
-	 * @return  object
-	 */
-	public function votes()
-	{
-		return $this->oneShiftsToMany('Hubzero\Item\Vote', 'item_id', 'item_type');
-	}
+    /**
+     * Get a list of votes
+     *
+     * @return  object
+     */
+    public function votes()
+    {
+        return $this->oneShiftsToMany('Hubzero\Item\Vote', 'item_id', 'item_type');
+    }
 
-	/**
-	 * Check if a user has voted for this entry
-	 *
-	 * @param   integer  $user_id  Optinal user ID to set as voter
-	 * @param   string   $ip       IP Address
-	 * @return  integer
-	 */
-	public function ballot($user_id = 0, $ip = null)
-	{
-		if (User::isGuest())
-		{
-			$vote = new Vote();
-			$vote->set('item_type', 'review');
-			$vote->set('item_id', $this->get('id'));
-			$vote->set('created_by', $user_id);
-			$vote->set('ip', $ip);
+    /**
+     * Check if a user has voted for this entry
+     *
+     * @param   integer  $user_id  Optinal user ID to set as voter
+     * @param   string   $ip       IP Address
+     * @return  integer
+     */
+    public function ballot($user_id = 0, $ip = null)
+    {
+        if (User::isGuest()) {
+            $vote = new Vote();
+            $vote->set('item_type', 'review');
+            $vote->set('item_id', $this->get('id'));
+            $vote->set('created_by', $user_id);
+            $vote->set('ip', $ip);
 
-			return $vote;
-		}
+            return $vote;
+        }
 
-		$user = $user_id ? User::getInstance($user_id) : User::getInstance();
-		$ip   = $ip ?: Request::ip();
+        $user = $user_id ? User::getInstance($user_id) : User::getInstance();
+        $ip   = $ip ?: Request::ip();
 
-		// See if a person from this IP has already voted in the last week
-		$votes = $this->votes();
+        // See if a person from this IP has already voted in the last week
+        $votes = $this->votes();
 
-		if ($user->get('id'))
-		{
-			$votes->whereEquals('created_by', $user->get('id'));
-		}
-		elseif ($ip)
-		{
-			$votes->whereEquals('ip', $ip);
-		}
+        if ($user->get('id')) {
+            $votes->whereEquals('created_by', $user->get('id'));
+        } elseif ($ip) {
+            $votes->whereEquals('ip', $ip);
+        }
 
-		$vote = $votes
-			->ordered()
-			->limit(1)
-			->row();
+        $vote = $votes
+            ->ordered()
+            ->limit(1)
+            ->row();
 
-		if (!$vote || !$vote->get('id'))
-		{
-			$vote = new Vote();
-			$vote->set('item_type', 'review');
-			$vote->set('item_id', $this->get('id'));
-			$vote->set('created_by', $user_id);
-			$vote->set('ip', $ip);
-		}
+        if (!$vote || !$vote->get('id')) {
+            $vote = new Vote();
+            $vote->set('item_type', 'review');
+            $vote->set('item_id', $this->get('id'));
+            $vote->set('created_by', $user_id);
+            $vote->set('ip', $ip);
+        }
 
-		return $vote;
-	}
+        return $vote;
+    }
 
-	/**
-	 * Vote for the entry
-	 *
-	 * @param   integer  $vote     The vote [0, 1]
-	 * @param   integer  $user_id  Optinal user ID to set as voter
-	 * @param   string   $ip       IP address
-	 * @return  boolean            False if error, True on success
-	 */
-	public function vote($vote = 0, $user_id = 0, $ip = null)
-	{
-		if (!$this->get('id'))
-		{
-			$this->addError(Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_NO_VOTE_FOUND'));
-			return false;
-		}
+    /**
+     * Vote for the entry
+     *
+     * @param   integer  $vote     The vote [0, 1]
+     * @param   integer  $user_id  Optinal user ID to set as voter
+     * @param   string   $ip       IP address
+     * @return  boolean            False if error, True on success
+     */
+    public function vote($vote = 0, $user_id = 0, $ip = null)
+    {
+        if (!$this->get('id')) {
+            $this->addError(Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_NO_VOTE_FOUND'));
+            return false;
+        }
 
-		if (!$vote)
-		{
-			$this->addError(Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_NO_VOTE_PROVIDED'));
-			return false;
-		}
+        if (!$vote) {
+            $this->addError(Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_NO_VOTE_PROVIDED'));
+            return false;
+        }
 
-		$al = $this->ballot($user_id, $ip);
-		$al->set('item_type', 'review');
-		$al->set('item_id', $this->get('id'));
-		$al->set('created_by', $user_id);
-		$al->set('ip', $ip);
+        $al = $this->ballot($user_id, $ip);
+        $al->set('item_type', 'review');
+        $al->set('item_id', $this->get('id'));
+        $al->set('created_by', $user_id);
+        $al->set('ip', $ip);
 
-		$vote = $al->automaticVote(['vote' => $vote]);
+        $vote = $al->automaticVote(['vote' => $vote]);
 
-		if ($this->get('created_by') == $user_id)
-		{
-			$this->addError(Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_RECOMMEND_OWN'));
-			return false;
-		}
+        if ($this->get('created_by') == $user_id) {
+            $this->addError(Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_RECOMMEND_OWN'));
+            return false;
+        }
 
-		if ($vote != $al->get('vote', 0))
-		{
-			/*if ($vote > 0)
-			{
-				$this->set('helpful', (int) $this->get('helpful') + 1);
-				if ($al->get('id'))
-				{
-					$this->set('nothelpful', (int) $this->get('nothelpful') - 1);
-				}
-			}
-			else
-			{
-				if ($al->get('id'))
-				{
-					$this->set('helpful', (int) $this->get('helpful') - 1);
-				}
-				$this->set('nothelpful', (int) $this->get('nothelpful') + 1);
-			}
+        if ($vote != $al->get('vote', 0)) {
+            /*if ($vote > 0)
+            {
+                $this->set('helpful', (int) $this->get('helpful') + 1);
+                if ($al->get('id'))
+                {
+                    $this->set('nothelpful', (int) $this->get('nothelpful') - 1);
+                }
+            }
+            else
+            {
+                if ($al->get('id'))
+                {
+                    $this->set('helpful', (int) $this->get('helpful') - 1);
+                }
+                $this->set('nothelpful', (int) $this->get('nothelpful') + 1);
+            }
 
-			if (!$this->save())
-			{
-				return false;
-			}*/
+            if (!$this->save())
+            {
+                return false;
+            }*/
 
-			$al->set('vote', $vote);
+            $al->set('vote', $vote);
 
-			if (!$al->save())
-			{
-				$this->addError($al->getError());
-				return false;
-			}
-		}
+            if (!$al->save()) {
+                $this->addError($al->getError());
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Transform comment
-	 *
-	 * @return  string
-	 */
-	public function transformContent()
-	{
-		return $this->comment;
-	}
+    /**
+     * Transform comment
+     *
+     * @return  string
+     */
+    public function transformContent()
+    {
+        return $this->comment;
+    }
 
-	/**
-	 * Load a record by resource_id and user_id
-	 *
-	 * @param   integer  $resource_id
-	 * @param   integer  $user_id
-	 * @return  object
-	 */
-	public static function oneByUser($resource_id, $user_id)
-	{
-		return self::all()
-			->whereEquals('resource_id', $resource_id)
-			->whereEquals('user_id', $user_id)
-			->row();
-	}
+    /**
+     * Load a record by resource_id and user_id
+     *
+     * @param   integer  $resource_id
+     * @param   integer  $user_id
+     * @return  object
+     */
+    public static function oneByUser($resource_id, $user_id)
+    {
+        return self::all()
+            ->whereEquals('resource_id', $resource_id)
+            ->whereEquals('user_id', $user_id)
+            ->row();
+    }
 
-	/**
-	 * Delete the record and all associated data
-	 *
-	 * @return  boolean  False if error, True on success
-	 */
-	public function destroy()
-	{
-		// Remove comments
-		foreach ($this->replies()->rows() as $comment)
-		{
-			if (!$comment->destroy())
-			{
-				$this->addError($comment->getError());
-				return false;
-			}
-		}
+    /**
+     * Delete the record and all associated data
+     *
+     * @return  boolean  False if error, True on success
+     */
+    public function destroy()
+    {
+        // Remove comments
+        foreach ($this->replies()->rows() as $comment) {
+            if (!$comment->destroy()) {
+                $this->addError($comment->getError());
+                return false;
+            }
+        }
 
-		// Remove vote logs
-		foreach ($this->votes()->rows() as $vote)
-		{
-			if (!$vote->destroy())
-			{
-				$this->addError($vote->getError());
-				return false;
-			}
-		}
+        // Remove vote logs
+        foreach ($this->votes()->rows() as $vote) {
+            if (!$vote->destroy()) {
+                $this->addError($vote->getError());
+                return false;
+            }
+        }
 
-		// Attempt to delete the record
-		return parent::destroy();
-	}
+        // Attempt to delete the record
+        return parent::destroy();
+    }
 
-	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
-	 *
-	 * @param   string  $type  The type of link to return
-	 * @return  string
-	 */
-	public function link($type='')
-	{
-		if (!isset($this->base))
-		{
-			$this->base = 'index.php?option=com_resources&id=' . $this->get('item_id') . '&active=reviews';
-		}
-		$link = $this->base;
+    /**
+     * Generate and return various links to the entry
+     * Link will vary depending upon action desired, such as edit, delete, etc.
+     *
+     * @param   string  $type  The type of link to return
+     * @return  string
+     */
+    public function link($type = '')
+    {
+        if (!isset($this->base)) {
+            $this->base = 'index.php?option=com_resources&id=' . $this->get('item_id') . '&active=reviews';
+        }
+        $link = $this->base;
 
-		// If it doesn't exist or isn't published
-		switch (strtolower($type))
-		{
-			case 'edit':
-				$link .= '&action=edit&comment=' . $this->get('id');
-			break;
+        // If it doesn't exist or isn't published
+        switch (strtolower($type)) {
+            case 'edit':
+                $link .= '&action=edit&comment=' . $this->get('id');
+                break;
 
-			case 'delete':
-				$link .= '&action=delete&comment=' . $this->get('id');
-			break;
+            case 'delete':
+                $link .= '&action=delete&comment=' . $this->get('id');
+                break;
 
-			case 'reply':
-				$link .= '&action=reply&category=review&refid=' . $this->get('id');
-			break;
+            case 'reply':
+                $link .= '&action=reply&category=review&refid=' . $this->get('id');
+                break;
 
-			case 'report':
-				$link = 'index.php?option=com_support&task=reportabuse&category=review&id=' . $this->get('id') . '&parent=' . $this->get('resource_id');
-			break;
+            case 'report':
+                $link = 'index.php?option=com_support&task=reportabuse&category=review&id=' . $this
+                    ->get('id') . '&parent=' . $this->get('resource_id');
+                break;
 
-			case 'permalink':
-			default:
-				$link .= '#c' . $this->get('id');
-			break;
-		}
+            case 'permalink':
+            default:
+                $link .= '#c' . $this->get('id');
+                break;
+        }
 
-		return $link;
-	}
+        return $link;
+    }
 
-	/**
-	 * Calculate the average rating for a resource
-	 *
-	 * @param   integer  $id
-	 * @return  array
-	 */
-	public static function averageByResource($id)
-	{
-		// Calculate the new average rating for the parent resource
-		$ratings = self::all()
-			->whereEquals('resource_id', $id)
-			->rows()
-			->fieldsByKey('rating');
+    /**
+     * Calculate the average rating for a resource
+     *
+     * @param   integer  $id
+     * @return  array
+     */
+    public static function averageByResource($id)
+    {
+        // Calculate the new average rating for the parent resource
+        $ratings = self::all()
+            ->whereEquals('resource_id', $id)
+            ->rows()
+            ->fieldsByKey('rating');
 
-		$totalcount = count($ratings);
-		$totalvalue = 0;
+        $totalcount = count($ratings);
+        $totalvalue = 0;
 
-		// Add the ratings up
-		foreach ($ratings as $rating)
-		{
-			$totalvalue = $totalvalue + $rating;
-		}
+        // Add the ratings up
+        foreach ($ratings as $rating) {
+            $totalvalue = $totalvalue + $rating;
+        }
 
-		// Find the average of all ratings
-		$newrating = ($totalcount > 0) ? $totalvalue / $totalcount : 0;
+        // Find the average of all ratings
+        $newrating = ($totalcount > 0) ? $totalvalue / $totalcount : 0;
 
-		// Round to the nearest half
-		$newrating = ($newrating > 0) ? round($newrating*2)/2 : 0;
+        // Round to the nearest half
+        $newrating = ($newrating > 0) ? round($newrating * 2) / 2 : 0;
 
-		return array(
-			'rating' => $newrating,
-			'times_rated' => $totalcount
-		);
-	}
+        return array(
+            'rating' => $newrating,
+            'times_rated' => $totalcount
+        );
+    }
 }
