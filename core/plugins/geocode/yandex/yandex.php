@@ -1,12 +1,12 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 /**
  * Yandex plugin for geocode
@@ -18,30 +18,29 @@ defined('_HZEXEC_') or die();
  * possible to precise the toponym to get more accurate result for reverse
  * geocoding: house, street, metro, district and locality.
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class plgGeocodeYandex extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Return a geocode provider
-	 *
-	 * @param  string  $context
-	 * @param  object  $adapter
-	 * @param  boolean $ip
-	 * @return object
-	 */
-	public function onGeocodeProvider($context, $adapter, $ip=false)
-	{
-		if ($context != 'geocode.locate' && $context != 'geocode.address')
-		{
-			return;
-		}
+    /**
+     * Return a geocode provider
+     *
+     * @param  string  $context
+     * @param  object  $adapter
+     * @param  boolean $ip
+     * @return object
+     */
+    public function onGeocodeProvider($context, $adapter, $ip = false)
+    {
+        if ($context != 'geocode.locate' && $context != 'geocode.address') {
+            return;
+        }
 
-		if ($ip)
-		{
-			return;
-		}
+        if ($ip) {
+            return;
+        }
 
-		return new \Geocoder\Provider\Yandex\Yandex(
-			$adapter
-		);
-	}
+        return new \Geocoder\Provider\Yandex\Yandex(
+            $adapter
+        );
+    }
 }
