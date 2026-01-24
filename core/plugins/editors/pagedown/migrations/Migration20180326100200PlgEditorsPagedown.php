@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,27 +8,26 @@
 
 use Hubzero\Content\Migration\Base;
 
-// No direct access
-defined('_HZEXEC_') or die();
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 /**
  * Migration script for adding Editors - Pagedown plugin
  **/
 class Migration20180326100200PlgEditorsPagedown extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		$this->addPluginEntry('editors', 'pagedown');
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        $this->addPluginEntry('editors', 'pagedown');
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		$this->deletePluginEntry('editors', 'pagedown');
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        $this->deletePluginEntry('editors', 'pagedown');
+    }
 }

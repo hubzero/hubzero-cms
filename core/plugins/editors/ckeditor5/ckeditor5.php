@@ -1,249 +1,251 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// no direct access
-defined('_HZEXEC_') or die;
-
-Html::behavior('core');
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 /**
  * CKEditor Plugin
  */
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
 {
-	/**
-	 * Base path for editor files
-	 */
-	protected $_basePath = 'core/plugins/editors/ckeditor5/assets/';
+    /**
+     * Base path for editor files
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_basePath = 'core/plugins/editors/ckeditor5/assets/';
 
-	/**
-	 * Method to handle the onInitEditor event.
-	 *  - Initialises the Editor
-	 *
-	 * @return  string JavaScript Initialization string
-	 */
-	public function onInit()
-	{
-		// Add ckeditor
-		Document::addScript(str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'js/ckeditor.js' );
-	}
+    /**
+     * Method to handle the onInitEditor event.
+     *  - Initialises the Editor
+     *
+     * @return  string JavaScript Initialization string
+     */
+    public function onInit()
+    {
+        Html::behavior('core');
 
-	/**
-	 * Copy editor content to form field.
-	 *
-	 * Not applicable in this editor.
-	 *
-	 * @return  void
-	 */
-	public function onSave()
-	{
-	}
+        // Add ckeditor
+        Document::addScript(
+            str_replace('/administrator', '', Request::base(true)) . '/' . $this->_basePath . 'js/ckeditor.js'
+        );
+    }
 
-	/**
-	 * Get the editor content.
-	 * 
-	 * Not applicable in this editor
-	 *
-	 * @param   string $id The id of the editor field.
-	 * @return  string
-	 */
-	public function onGetContent($id)
-	{
-		return "";
-	}
+    /**
+     * Copy editor content to form field.
+     *
+     * Not applicable in this editor.
+     *
+     * @return  void
+     */
+    public function onSave()
+    {
+    }
 
-	/**
-	 * Set the editor content.
-	 * 
-	 * Not applicable in this editor
-	 *
-	 * @param   string $id   The id of the editor field.
-	 * @param   string $html The content to set.
-	 * @return  string
-	 */
-	public function onSetContent($id, $html)
-	{
-		return "";
-	}
+    /**
+     * Get the editor content.
+     *
+     * Not applicable in this editor
+     *
+     * @param   string $id The id of the editor field.
+     * @return  string
+     */
+    public function onGetContent($id)
+    {
+        return "";
+    }
 
-	/**
-	 * Inserts text
-	 * 
-	 * Not applicable in this editor
-	 *
-	 * @param	string	$id
-	 * @return	string
-	 */
-	public function onGetInsertMethod($id)
-	{
-		return "";
-	}
+    /**
+     * Set the editor content.
+     *
+     * Not applicable in this editor
+     *
+     * @param   string $id   The id of the editor field.
+     * @param   string $html The content to set.
+     * @return  string
+     */
+    public function onSetContent($id, $html)
+    {
+        return "";
+    }
 
-	/**
-	 * Display the editor area.
-	 *
-	 * @param   string   $name     The control name.
-	 * @param   string   $content  The contents of the text area.
-	 * @param   string   $width    The width of the text area (px or %).
-	 * @param   string   $height   The height of the text area (px or %).
-	 * @param   int      $col      The number of columns for the textarea.
-	 * @param   int      $row      The number of rows for the textarea.
-	 * @param   boolean  $buttons  True and the editor buttons will be displayed.
-	 * @param   string   $id       An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
-	 * @param   string   $asset
-	 * @param   object   $author
-	 * @param   array    $params  Associative array of editor parameters.
-	 * @return  string
-	 */
-	public function onDisplay($name, $content, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array())
-	{
-		// Make sure we have an id too
-		if (empty($id))
-		{
-			$id = $name;
-		}
+    /**
+     * Inserts text
+     *
+     * Not applicable in this editor
+     *
+     * @param   string  $id
+     * @return  string
+     */
+    public function onGetInsertMethod($id)
+    {
+        return "";
+    }
 
-		$col = $col ?: 35;
-		$row = $row ?: 10;
+    /**
+     * Display the editor area.
+     *
+     * @param   string   $name     The control name.
+     * @param   string   $content  The contents of the text area.
+     * @param   string   $width    The width of the text area (px or %).
+     * @param   string   $height   The height of the text area (px or %).
+     * @param   int      $col      The number of columns for the textarea.
+     * @param   int      $row      The number of rows for the textarea.
+     * @param   boolean  $buttons  True and the editor buttons will be displayed.
+     * @param   string   $id       An optional ID for the textarea (note: since 1.6). If not supplied the name is used.
+     * @param   string   $asset
+     * @param   object   $author
+     * @param   array    $params  Associative array of editor parameters.
+     * @return  string
+     */
+    public function onDisplay(
+        $name,
+        $content,
+        $width,
+        $height,
+        $col,
+        $row,
+        $buttons = true,
+        $id = null,
+        $asset = null,
+        $author = null,
+        $params = array()
+    ) {
+        // Make sure we have an id too
+        if (empty($id)) {
+            $id = $name;
+        }
 
-		if (!isset($params['class']))
-		{
-			$params['class'] = array();
-		}
-		if (!is_array($params['class']))
-		{
-			//$params['class'] = array($params['class']);
-			$cls = $params['class'];
-			$params['class'] = array();
-			foreach ($this->_split(' ', $cls) as $piece)
-			{
-				$params['class'][] = $piece;
-			}
-		}
-		$params['class'][] = 'ckeditor-content';
+        $col = $col ?: 35;
+        $row = $row ?: 10;
 
-		// Set default height to a rough approximation of the height
-		// of the textarea (rows * 1.5em of 12px font)
-		if (!isset($params['height']))
-		{
-			$params['height'] = intval($row) . 'em';
-		}
+        if (!isset($params['class'])) {
+            $params['class'] = array();
+        }
+        if (!is_array($params['class'])) {
+            //$params['class'] = array($params['class']);
+            $cls = $params['class'];
+            $params['class'] = array();
+            foreach ($this->split(' ', $cls) as $piece) {
+                $params['class'][] = $piece;
+            }
+        }
+        $params['class'][] = 'ckeditor-content';
 
-		// Fix script and php protected source
-		$config = "{ }";
+        // Set default height to a rough approximation of the height
+        // of the textarea (rows * 1.5em of 12px font)
+        if (!isset($params['height'])) {
+            $params['height'] = intval($row) . 'em';
+        }
 
-		// Script to actually make ckeditor
-		$script = '<script type="text/javascript">';
-		$script .= 'ClassicEditor';
-		$script .= '.create(document.querySelector("#'.$id.'"), '.$config.')';
-		$script .= '.catch( error => { console.error( error ); } );';
-		$script .= '</script>';
+        // Fix script and php protected source
+        $config = "{ }";
 
-		$params['class'] = implode(' ', $params['class']);
+        // Script to actually make ckeditor
+        $script = '<script type="text/javascript">';
+        $script .= 'ClassicEditor';
+        $script .= '.create(document.querySelector("#' . $id . '"), ' . $config . ')';
+        $script .= '.catch( error => { console.error( error ); } );';
+        $script .= '</script>';
 
-		$atts = array();
-		foreach ($params as $key => $value)
-		{
-			if (is_array($value))
-			{
-				$value = implode(';', $value);
-			}
-			$atts[] = $key .'="' . $value . '"';
-		}
+        $params['class'] = implode(' ', $params['class']);
 
-		// Couldn't find a better way to do this for the timebeing - CK5 documentation is lacking at the moment
-		// Puts the style in multiple times and overwrites when there are multiple textareas
-		$this->css('.ck-content { height: ' . $row . 'em; }');
+        $atts = array();
+        foreach ($params as $key => $value) {
+            if (is_array($value)) {
+                $value = implode(';', $value);
+            }
+            $atts[] = $key . '="' . $value . '"';
+        }
 
-		// Output html and script
-		$editor  = '<textarea name="' . $name . '" id="' . $id . '" '. implode(' ', $atts) . '>' . $content . '</textarea>' . $script;
-		if (App::isAdmin())
-		{
-			$editor .= $this->_displayButtons($id, $buttons, $asset, $author);
-		}
-		return $editor;
-	}
+        // Couldn't find a better way to do this for the timebeing - CK5 documentation is lacking at the moment
+        // Puts the style in multiple times and overwrites when there are multiple textareas
+        $this->css('.ck-content { height: ' . $row . 'em; }');
 
-	/**
-	 * Displays buttons
-	 *
-	 * @param   string  $name
-	 * @param   array   $buttons
-	 * @param   string  $asset
-	 * @param   string  $string
-	 * @return  string
-	 */
-	private function _displayButtons($name, $buttons, $asset, $author)
-	{
-		// Load modal popup behavior
-		Html::behavior('modal', 'a.modal-button');
+        // Output html and script
+        $editor  = '<textarea name="' . $name . '" id="' . $id . '" ' . implode(' ', $atts) . '>'
+            . $content . '</textarea>' . $script;
+        if (App::isAdmin()) {
+            $editor .= $this->displayButtons($id, $buttons, $asset, $author);
+        }
+        return $editor;
+    }
 
-		$return = '';
-		$results[] = $this->onGetInsertMethod($name);
+    /**
+     * Displays buttons
+     *
+     * @param   string  $name
+     * @param   array   $buttons
+     * @param   string  $asset
+     * @param   string  $string
+     * @return  string
+     */
+    private function displayButtons($name, $buttons, $asset, $author)
+    {
+        // Load modal popup behavior
+        Html::behavior('modal', 'a.modal-button');
 
-		foreach ($results as $result)
-		{
-			if (is_string($result) && trim($result))
-			{
-				$return .= $result;
-			}
-		}
+        $return = '';
+        $results[] = $this->onGetInsertMethod($name);
 
-		if (is_array($buttons) || (is_bool($buttons) && $buttons))
-		{
-			$results = $this->_subject->getButtons($name, $buttons, $asset, $author);
+        foreach ($results as $result) {
+            if (is_string($result) && trim($result)) {
+                $return .= $result;
+            }
+        }
 
-			// This will allow plugins to attach buttons or change the behavior on the fly using AJAX
-			$return .= "\n<div id=\"editor-xtd-buttons\">\n";
+        if (is_array($buttons) || (is_bool($buttons) && $buttons)) {
+            $results = $this->_subject->getButtons($name, $buttons, $asset, $author);
 
-			foreach ($results as $button)
-			{
-				// Results should be an object
-				if ($button->get('name'))
-				{
-					$modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
-					$href    = ($button->get('link')) ? ' href="'.Request::base().$button->get('link').'"' : null;
-					$onclick = ($button->get('onclick')) ? ' onclick="'.$button->get('onclick').'"' : 'onclick="return false;"';
-					$title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
-					$return .= '<div class="button2-left"><div class="' . $button->get('name') . '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="' . $button->get('options') . '">' . $button->get('text') . "</a></div></div>\n";
-				}
-			}
+            // This will allow plugins to attach buttons or change the behavior on the fly using AJAX
+            $return .= "\n<div id=\"editor-xtd-buttons\">\n";
 
-			$return .= "</div>\n";
-		}
+            foreach ($results as $button) {
+                // Results should be an object
+                if ($button->get('name')) {
+                    $modal   = ($button->get('modal')) ? ' class="modal-button"' : null;
+                    $href    = ($button->get('link')) ? ' href="' . Request::base() . $button->get('link') . '"' : null;
+                    $onclick = ($button->get('onclick')) ? ' onclick="' . $button->get('onclick') . '"'
+                        : 'onclick="return false;"';
+                    $title   = ($button->get('title')) ? $button->get('title') : $button->get('text');
+                    $return .= '<div class="button2-left"><div class="' . $button->get('name')
+                        . '"><a' . $modal . ' title="' . $title . '"' . $href . $onclick . ' rel="'
+                        . $button->get('options') . '">' . $button->get('text') . "</a></div></div>\n";
+                }
+            }
 
-		return $return;
-	}
+            $return .= "</div>\n";
+        }
 
-	/**
-	 * Build a config object
-	 *
-	 * @param   string $delimiter
-	 * @param   string $input
-	 * @return  array
-	 */
-	private function _split($delimiter, $input)
-	{
-		$even = array();
+        return $return;
+    }
 
-		if (is_array($input))
-		{
-			foreach ($input as $el)
-			{
-				$even = array_merge($even, $this->_split($delimiter, $el));
-			}
-		}
-		else
-		{
-			$pieces = explode($delimiter, $input);
-			$pieces = array_map('trim', $pieces);
+    /**
+     * Build a config object
+     *
+     * @param   string $delimiter
+     * @param   string $input
+     * @return  array
+     */
+    private function split($delimiter, $input)
+    {
+        $even = array();
 
-			$even = array_merge($even, $pieces);
-		}
-		return $even;
-	}
+        if (is_array($input)) {
+            foreach ($input as $el) {
+                $even = array_merge($even, $this->split($delimiter, $el));
+            }
+        } else {
+            $pieces = explode($delimiter, $input);
+            $pieces = array_map('trim', $pieces);
+
+            $even = array_merge($even, $pieces);
+        }
+        return $even;
+    }
 }
