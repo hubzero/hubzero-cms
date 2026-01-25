@@ -815,11 +815,11 @@ class Pages extends Base
 		// output page version
 		if ($escape)
 		{
-			echo '<pre>' . utf8_decode($this->view->escape($pageVersion->get('content'))) . '</pre>';
+			echo '<pre>' . $this->view->escape($pageVersion->get('content')) . '</pre>';
 		}
 		else
 		{
-			echo utf8_decode($pageVersion->get('content'));
+			echo $pageVersion->get('content');
 		}
 		exit();
 	}

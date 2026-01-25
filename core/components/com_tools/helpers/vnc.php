@@ -524,12 +524,12 @@ class Vnc
 
 function genrandpassword()
 {
-	$len = mt_rand(0, 8);
+	$len = random_int(0, 8);
 	$password = ''; // "\0\0\0\0\0\0\0\0";
 
 	for ($i=0; $i<$len; $i++)
 	{
-		$c = mt_rand(32, 255);
+		$c = random_int(32, 255);
 
 		if ($c == ord("'"))
 		{

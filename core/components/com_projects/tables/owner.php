@@ -437,7 +437,7 @@ class Owner extends Table
 		foreach ($results as $result)
 		{
 			$params = new \Hubzero\Config\Registry($result->params);
-			$name   = utf8_decode($params->get($service . '_name', ''));
+			$name   = $params->get($service . '_name', '');
 			$email  = $params->get($service . '_email', '');
 
 			if ($name && $email)

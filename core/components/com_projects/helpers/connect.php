@@ -1495,7 +1495,7 @@ class Connect extends Obj
 
 				if (!$author && $order == 'last')
 				{
-					$author = utf8_decode($lastModifiedBy);
+					$author = $lastModifiedBy;
 				}
 
 				$revision = array(
