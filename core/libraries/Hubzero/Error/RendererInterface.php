@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,10 +15,10 @@ use Exception;
  */
 interface RendererInterface
 {
-	/**
-	 * Display the given exception to the user.
-	 *
-	 * @param  object  $error
-	 */
-	public function render($error);
+    /**
+     * Display the given exception to the user.
+     *
+     * @param  object  $error
+     */
+    public function render($error);
 }

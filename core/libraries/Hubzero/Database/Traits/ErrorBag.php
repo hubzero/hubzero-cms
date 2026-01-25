@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,58 +13,58 @@ namespace Hubzero\Database\Traits;
  */
 trait ErrorBag
 {
-	/**
-	 * Errors that have been declared
-	 *
-	 * @var  array
-	 **/
-	private $errors = array();
+    /**
+     * Errors that have been declared
+     *
+     * @var  array
+     **/
+    private $errors = array();
 
-	/**
-	 * Sets all errors at once, overwritting any existing errors
-	 *
-	 * @param   array  $errors  The errors to set
-	 * @return  $this
-	 * @since   2.0.0
-	 **/
-	public function setErrors($errors)
-	{
-		$this->errors = $errors;
-		return $this;
-	}
+    /**
+     * Sets all errors at once, overwritting any existing errors
+     *
+     * @param   array  $errors  The errors to set
+     * @return  $this
+     * @since   2.0.0
+     **/
+    public function setErrors($errors)
+    {
+        $this->errors = $errors;
+        return $this;
+    }
 
-	/**
-	 * Adds error to the existing set
-	 *
-	 * @param   string  $error  The error to add
-	 * @return  $this
-	 * @since   2.0.0
-	 **/
-	public function addError($error)
-	{
-		$this->errors[] = $error;
-		return $this;
-	}
+    /**
+     * Adds error to the existing set
+     *
+     * @param   string  $error  The error to add
+     * @return  $this
+     * @since   2.0.0
+     **/
+    public function addError($error)
+    {
+        $this->errors[] = $error;
+        return $this;
+    }
 
-	/**
-	 * Returns all errors
-	 *
-	 * @return  array
-	 * @since   2.0.0
-	 **/
-	public function getErrors()
-	{
-		return $this->errors;
-	}
+    /**
+     * Returns all errors
+     *
+     * @return  array
+     * @since   2.0.0
+     **/
+    public function getErrors()
+    {
+        return $this->errors;
+    }
 
-	/**
-	 * Returns the first error
-	 *
-	 * @return  string
-	 * @since   2.0.0
-	 **/
-	public function getError()
-	{
-		return (isset($this->errors[0])) ? $this->errors[0] : '';
-	}
+    /**
+     * Returns the first error
+     *
+     * @return  string
+     * @since   2.0.0
+     **/
+    public function getError()
+    {
+        return (isset($this->errors[0])) ? $this->errors[0] : '';
+    }
 }

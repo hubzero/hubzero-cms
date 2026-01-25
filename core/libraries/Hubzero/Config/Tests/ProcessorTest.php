@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,74 +16,72 @@ use Hubzero\Config\Processor;
  */
 class ProcessorTest extends Basic
 {
-	/**
-	 * Tests all()
-	 *
-	 * @covers  \Hubzero\Config\Processor::all
-	 * @return  void
-	 **/
-	public function testAll()
-	{
-		$instances = Processor::all();
+    /**
+     * Tests all()
+     *
+     * @covers  \Hubzero\Config\Processor::all
+     * @return  void
+     **/
+    public function testAll()
+    {
+        $instances = Processor::all();
 
-		$this->assertCount(5, $instances);
+        $this->assertCount(5, $instances);
 
-		foreach ($instances as $instance)
-		{
-			$this->assertInstanceOf(Processor::class, $instance);
-		}
-	}
+        foreach ($instances as $instance) {
+            $this->assertInstanceOf(Processor::class, $instance);
+        }
+    }
 
-	/**
-	 * Tests the instance() method
-	 *
-	 * @covers  \Hubzero\Config\Processor::instance
-	 * @return  void
-	 **/
-	public function testInstance()
-	{
-		foreach (array('ini', 'yaml', 'json', 'php', 'xml') as $type)
-		{
-			$result = Processor::instance($type);
+    /**
+     * Tests the instance() method
+     *
+     * @covers  \Hubzero\Config\Processor::instance
+     * @return  void
+     **/
+    public function testInstance()
+    {
+        foreach (array('ini', 'yaml', 'json', 'php', 'xml') as $type) {
+            $result = Processor::instance($type);
 
-			$this->assertInstanceOf(Processor::class, $result);
-		}
+            $this->assertInstanceOf(Processor::class, $result);
+        }
 
-		$this->expectException(\Hubzero\Error\Exception\InvalidArgumentException::class);
+        $this->expectException(\Hubzero\Error\Exception\InvalidArgumentException::class);
 
-		$result = Processor::instance('py');
-	}
+        $result = Processor::instance('py');
+    }
 
-	/**
-	 * Tests getSupportedExtensions()
-	 *
-	 * @covers  \Hubzero\Config\Processor::getSupportedExtensions
-	 * @return  void
-	 **/
-	public function testGetSupportedExtensions()
-	{
-		$stub = $this->getMockForAbstractClass('Hubzero\Config\Processor');
-		$stub->expects($this->any())
-			->method('getSupportedExtensions')
-			->will($this->returnValue(array()));
+    /**
+     * Tests getSupportedExtensions()
+     *
+     * @covers  \Hubzero\Config\Processor::getSupportedExtensions
+     * @return  void
+     **/
+    public function testGetSupportedExtensions()
+    {
+        $stub = $this->getMockForAbstractClass('Hubzero\Config\Processor');
+        $stub->expects($this->any())
+            ->method('getSupportedExtensions')
+            ->will($this->returnValue(array()));
 
-		$this->assertEquals(array(), $stub->getSupportedExtensions());
-	}
+        $this->assertEquals(array(), $stub->getSupportedExtensions());
+    }
 
-	/**
-	 * Tests parse()
-	 *
-	 * @covers  \Hubzero\Config\Processor::parse
-	 * @return  void
-	 **/
-	public function testParse()
-	{
-		$stub = $this->getMockForAbstractClass('Hubzero\Config\Processor');
-		$stub->expects($this->any())
-			->method('parse')
-			->with($this->isType('string'))
-			->will($this->returnValue(array()));
+    /**
+     * Tests parse()
+     *
+     * @covers  \Hubzero\Config\Processor::parse
+     * @return  void
+     **/
+    public function testParse()
+    {
+        $stub = $this->getMockForAbstractClass('Hubzero\Config\Processor');
+        $stub->expects($this->any())
+            ->method('parse')
+            ->with($this->isType('string'))
+            ->will($this->returnValue(array()));
 
-		$this->assertEquals(array(), $stub->parse(__DIR__ . '/Tests/Files/test.json'));
-	}
+        $this->assertEquals(array(), $stub->parse(__DIR__ . '/Tests/Files/test.json'));
+    }
 }

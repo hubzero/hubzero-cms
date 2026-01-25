@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,28 +13,26 @@ namespace Hubzero\Cache\Tests\Storage;
  */
 class WincacheTest extends AbstractCache
 {
-	/**
-	 * Test setup
-	 *
-	 * @return  void
-	 */
-	public function setUp(): void
-	{
-		if (!extension_loaded('wincache') || !function_exists('wincache_ucache_get'))
-		{
-			$this->markTestSkipped(
-				'The wincache library is not available.'
-			);
-		}
-		if (!ini_get('wincache.ucenabled'))
-		{
-			$this->markTestSkipped(
-				'You need to enable wincache.ucenabled'
-			);
-		}
+    /**
+     * Test setup
+     *
+     * @return  void
+     */
+    public function setUp(): void
+    {
+        if (!extension_loaded('wincache') || !function_exists('wincache_ucache_get')) {
+            $this->markTestSkipped(
+                'The wincache library is not available.'
+            );
+        }
+        if (!ini_get('wincache.ucenabled')) {
+            $this->markTestSkipped(
+                'You need to enable wincache.ucenabled'
+            );
+        }
 
-		parent::setup();
+        parent::setup();
 
-		$this->cache->setDefaultDriver('wincache');
-	}
+        $this->cache->setDefaultDriver('wincache');
+    }
 }

@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,104 +19,104 @@ use Components\Courses\Helpers\QueryAddColumnStatement;
 
 class QueryAddColumnStatementTest extends Basic
 {
-	/**
-	 * Test toString returns correct string when name and type provided
-	 *
-	 * @return  void
-	 */
-	public function testToStringReturnsCorrectStringWhenNameAndTypeProvided()
-	{
-		$columnData = [
-			'name' => 'test',
-			'type' => 'varchar(255)'
-		];
-		$addColumnStatement = new QueryAddColumnStatement($columnData);
-		$expectedStatement = 'ADD COLUMN test varchar(255)';
+    /**
+     * Test toString returns correct string when name and type provided
+     *
+     * @return  void
+     */
+    public function testToStringReturnsCorrectStringWhenNameAndTypeProvided()
+    {
+        $columnData = [
+            'name' => 'test',
+            'type' => 'varchar(255)'
+        ];
+        $addColumnStatement = new QueryAddColumnStatement($columnData);
+        $expectedStatement = 'ADD COLUMN test varchar(255)';
 
-		$actualStatement = $addColumnStatement->toString();
+        $actualStatement = $addColumnStatement->toString();
 
-		$this->assertEquals($expectedStatement, $actualStatement);
-	}
+        $this->assertEquals($expectedStatement, $actualStatement);
+    }
 
-	/**
-	 * Test toString returns correct string when restriction provided
-	 *
-	 * @return  void
-	 */
-	public function testToStringReturnsCorrectStringWhenRestrictionProvided()
-	{
-		$columnData = [
-			'name' => 'test',
-			'type' => 'varchar(255)',
-			'restriction' => 'NOT NULL'
-		];
-		$addColumnStatement = new QueryAddColumnStatement($columnData);
-		$expectedStatement = 'ADD COLUMN test varchar(255) NOT NULL';
+    /**
+     * Test toString returns correct string when restriction provided
+     *
+     * @return  void
+     */
+    public function testToStringReturnsCorrectStringWhenRestrictionProvided()
+    {
+        $columnData = [
+            'name' => 'test',
+            'type' => 'varchar(255)',
+            'restriction' => 'NOT NULL'
+        ];
+        $addColumnStatement = new QueryAddColumnStatement($columnData);
+        $expectedStatement = 'ADD COLUMN test varchar(255) NOT NULL';
 
-		$actualStatement = $addColumnStatement->toString();
+        $actualStatement = $addColumnStatement->toString();
 
-		$this->assertEquals($expectedStatement, $actualStatement);
-	}
+        $this->assertEquals($expectedStatement, $actualStatement);
+    }
 
-	/**
-	 * Test toString returns correct string when default provided
-	 *
-	 * @return  void
-	 */
-	public function testToStringReturnsCorrectStringWhenDefaultProvided()
-	{
-		$columnData = [
-			'name' => 'test',
-			'type' => 'varchar(255)',
-			'default' => "'foo'"
-		];
-		$addColumnStatement = new QueryAddColumnStatement($columnData);
-		$expectedStatement = "ADD COLUMN test varchar(255) DEFAULT 'foo'";
+    /**
+     * Test toString returns correct string when default provided
+     *
+     * @return  void
+     */
+    public function testToStringReturnsCorrectStringWhenDefaultProvided()
+    {
+        $columnData = [
+            'name' => 'test',
+            'type' => 'varchar(255)',
+            'default' => "'foo'"
+        ];
+        $addColumnStatement = new QueryAddColumnStatement($columnData);
+        $expectedStatement = "ADD COLUMN test varchar(255) DEFAULT 'foo'";
 
-		$actualStatement = $addColumnStatement->toString();
+        $actualStatement = $addColumnStatement->toString();
 
-		$this->assertEquals($expectedStatement, $actualStatement);
-	}
+        $this->assertEquals($expectedStatement, $actualStatement);
+    }
 
-	/**
-	 * Test toString returns correct string when restriction and default provided
-	 *
-	 * @return  void
-	 */
-	public function testToStringReturnsCorrectStringWhenRestrictionAndDefaultProvided()
-	{
-		$columnData = [
-			'name' => 'test',
-			'type' => 'varchar(255)',
-			'restriction' => 'NOT NULL',
-			'default' => "'foo'"
-		];
-		$addColumnStatement = new QueryAddColumnStatement($columnData);
-		$expectedStatement = "ADD COLUMN test varchar(255) NOT NULL DEFAULT 'foo'";
+    /**
+     * Test toString returns correct string when restriction and default provided
+     *
+     * @return  void
+     */
+    public function testToStringReturnsCorrectStringWhenRestrictionAndDefaultProvided()
+    {
+        $columnData = [
+            'name' => 'test',
+            'type' => 'varchar(255)',
+            'restriction' => 'NOT NULL',
+            'default' => "'foo'"
+        ];
+        $addColumnStatement = new QueryAddColumnStatement($columnData);
+        $expectedStatement = "ADD COLUMN test varchar(255) NOT NULL DEFAULT 'foo'";
 
-		$actualStatement = $addColumnStatement->toString();
+        $actualStatement = $addColumnStatement->toString();
 
-		$this->assertEquals($expectedStatement, $actualStatement);
-	}
+        $this->assertEquals($expectedStatement, $actualStatement);
+    }
 
-	/**
-	 * Test toString returns correct string when restriction and default 0
-	 *
-	 * @return  void
-	 */
-	public function testToStringReturnsCorrectStringWhenRestrictionAndDefaultZero()
-	{
-		$columnData = [
-			'name' => 'test',
-			'type' => 'varchar(255)',
-			'restriction' => 'NOT NULL',
-			'default' => 0
-		];
-		$addColumnStatement = new QueryAddColumnStatement($columnData);
-		$expectedStatement = "ADD COLUMN test varchar(255) NOT NULL DEFAULT 0";
+    /**
+     * Test toString returns correct string when restriction and default 0
+     *
+     * @return  void
+     */
+    public function testToStringReturnsCorrectStringWhenRestrictionAndDefaultZero()
+    {
+        $columnData = [
+            'name' => 'test',
+            'type' => 'varchar(255)',
+            'restriction' => 'NOT NULL',
+            'default' => 0
+        ];
+        $addColumnStatement = new QueryAddColumnStatement($columnData);
+        $expectedStatement = "ADD COLUMN test varchar(255) NOT NULL DEFAULT 0";
 
-		$actualStatement = $addColumnStatement->toString();
+        $actualStatement = $addColumnStatement->toString();
 
-		$this->assertEquals($expectedStatement, $actualStatement);
-	}
+        $this->assertEquals($expectedStatement, $actualStatement);
+    }
 }

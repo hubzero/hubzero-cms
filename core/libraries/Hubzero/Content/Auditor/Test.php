@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,11 +13,11 @@ namespace Hubzero\Content\Auditor;
  */
 interface Test
 {
-	/**
-	 * Run content through test
-	 *
-	 * @param   array  $data
-	 * @return  bool
-	 */
-	public function examine(array $data, array $options = []);
+    /**
+     * Run content through test
+     *
+     * @param   array  $data
+     * @return  bool
+     */
+    public function examine(array $data, array $options = []);
 }

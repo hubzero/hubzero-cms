@@ -1,4 +1,7 @@
 <?php
+
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,19 +19,19 @@ use Components\Courses\Helpers\QueryDropColumnStatement;
 
 class QueryDropColumnStatementTest extends Basic
 {
-	/**
-	 * Test toString()
-	 *
-	 * @return  void
-	 */
-	public function testToStringReturnsCorrectStringWhenNameAndTypeProvided()
-	{
-		$columnData = ['name' => 'test'];
-		$dropColumnStatement = new QueryDropColumnStatement($columnData);
-		$expectedStatement = 'DROP COLUMN test';
+    /**
+     * Test toString()
+     *
+     * @return  void
+     */
+    public function testToStringReturnsCorrectStringWhenNameAndTypeProvided()
+    {
+        $columnData = ['name' => 'test'];
+        $dropColumnStatement = new QueryDropColumnStatement($columnData);
+        $expectedStatement = 'DROP COLUMN test';
 
-		$actualStatement = $dropColumnStatement->toString();
+        $actualStatement = $dropColumnStatement->toString();
 
-		$this->assertEquals($expectedStatement, $actualStatement);
-	}
+        $this->assertEquals($expectedStatement, $actualStatement);
+    }
 }

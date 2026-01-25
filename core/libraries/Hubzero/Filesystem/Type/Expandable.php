@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,42 +15,38 @@ use Hubzero\Filesystem\File;
  */
 class Expandable extends File
 {
-	/**
-	 * Expand archive
-	 *
-	 * @param   bool  $cleanup  Whether or not to clean up after expansion (i.e. removing known OS files, etc...)
-	 * @return  bool
-	 */
-	public function expand($cleanup = true)
-	{
-		if ($cleanup)
-		{
-			return $this->cleanup();
-		}
+    /**
+     * Expand archive
+     *
+     * @param   bool  $cleanup  Whether or not to clean up after expansion (i.e. removing known OS files, etc...)
+     * @return  bool
+     */
+    public function expand($cleanup = true)
+    {
+        if ($cleanup) {
+            return $this->cleanup();
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Cleans the archive of OS-specific files
-	 *
-	 * @return  bool
-	 **/
-	protected function cleanup()
-	{
-		$items = $this->getParent(false)->listContents();
+    /**
+     * Cleans the archive of OS-specific files
+     *
+     * @return  bool
+     **/
+    protected function cleanup()
+    {
+        $items = $this->getParent(false)->listContents();
 
-		foreach ($items as $item)
-		{
-			if (in_array($item->getName(), ['.svn', 'CVS', '.DS_Store', '__MACOSX']))
-			{
-				if (!$item->delete())
-				{
-					return false;
-				}
-			}
-		}
+        foreach ($items as $item) {
+            if (in_array($item->getName(), ['.svn', 'CVS', '.DS_Store', '__MACOSX'])) {
+                if (!$item->delete()) {
+                    return false;
+                }
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

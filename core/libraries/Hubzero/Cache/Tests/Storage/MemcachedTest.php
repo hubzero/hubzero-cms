@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,22 +13,21 @@ namespace Hubzero\Cache\Tests\Storage;
  */
 class MemcachedTest extends AbstractCache
 {
-	/**
-	 * Test setup
-	 *
-	 * @return  void
-	 */
-	public function setUp(): void
-	{
-		if (!extension_loaded('memcached') || !class_exists('\Memcached'))
-		{
-			$this->markTestSkipped(
-				'The Memcached extension is not available.'
-			);
-		}
+    /**
+     * Test setup
+     *
+     * @return  void
+     */
+    public function setUp(): void
+    {
+        if (!extension_loaded('memcached') || !class_exists('\Memcached')) {
+            $this->markTestSkipped(
+                'The Memcached extension is not available.'
+            );
+        }
 
-		parent::setup();
+        parent::setup();
 
-		$this->cache->setDefaultDriver('memcached');
-	}
+        $this->cache->setDefaultDriver('memcached');
+    }
 }

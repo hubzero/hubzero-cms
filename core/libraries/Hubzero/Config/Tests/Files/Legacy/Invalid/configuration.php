@@ -1,10 +1,12 @@
 <?php
+
 // @codeCoverageIgnoreStart
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Config
 {
-	var $access = '1';
-	var $api_server = '1';
-	var $application_env = 'production';
-	var $captcha = '0';
+    public $access = '1';
+    public $api_server = '1';
+    public $application_env = 'production';
+    public $captcha = '0';
 }
 // @codeCoverageIgnoreEnd

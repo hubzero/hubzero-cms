@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,263 +16,247 @@ use Hubzero\Cache\Auditor;
  */
 class Memcache extends None
 {
-	/**
-	 * Memcached engine
-	 *
-	 * @var  object
-	 */
-	protected $engine;
+    /**
+     * Memcached engine
+     *
+     * @var  object
+     */
+    protected $engine;
 
-	/**
-	 * Create a new file cache store instance.
-	 *
-	 * @param   array  $options
-	 * @return  void
-	 */
-	public function __construct(array $options = array())
-	{
-		parent::__construct($options);
+    /**
+     * Create a new file cache store instance.
+     *
+     * @param   array  $options
+     * @return  void
+     */
+    public function __construct(array $options = array())
+    {
+        parent::__construct($options);
 
-		if (!self::isAvailable())
-		{
-			throw new RuntimeException('Cannot use memcached cache storage. Memcached extension is not loaded.');
-		}
+        if (!self::isAvailable()) {
+            throw new RuntimeException('Cannot use memcached cache storage. Memcached extension is not loaded.');
+        }
 
-		if (isset($this->options['engine']))
-		{
-			$this->engine = $this->options['engine'];
-		}
+        if (isset($this->options['engine'])) {
+            $this->engine = $this->options['engine'];
+        }
 
-		if (!$this->engine)
-		{
-			if (!isset($this->options['servers']) || empty($this->options['servers']))
-			{
-				$conf = new \Hubzero\Config\Repository('site');
+        if (!$this->engine) {
+            if (!isset($this->options['servers']) || empty($this->options['servers'])) {
+                $conf = new \Hubzero\Config\Repository('site');
+                $this->
+                    options['compress'] = $config->
+                    get('memcache_compress', false) == false ? 0 : MEMCACHE_COMPRESSED;
+                $this->options['servers'] = array(
+                    array(
+                        'host'    => $config->get('memcache_server_host', 'localhost'),
+                        'port'    => $config->get('memcache_server_port', 11211),
+                        'persist' => $config->get('memcache_persist', true)
+                    )
+                );
+            }
 
-				$this->options['compress'] = $config->get('memcache_compress', false) == false ? 0 : MEMCACHE_COMPRESSED;
+            $this->engine = $this->connect($this->options['servers']);
+        }
+    }
 
-				$this->options['servers'] = array(
-					array(
-						'host'    => $config->get('memcache_server_host', 'localhost'),
-						'port'    => $config->get('memcache_server_port', 11211),
-						'persist' => $config->get('memcache_persist', true)
-					)
-				);
-			}
+    /**
+     * Test to see if the cache storage is available.
+     *
+     * @return  boolean  True on success, false otherwise.
+     */
+    public static function isAvailable()
+    {
+        if ((extension_loaded('memcache') && class_exists('Memcache')) != true) {
+            return false;
+        }
+        return true;
+    }
 
-			$this->engine = $this->connect($this->options['servers']);
-		}
-	}
+    /**
+     * Create a new Memcached connection.
+     *
+     * @param   array   $servers
+     * @return  object  \Memcached
+     * @throws  \RuntimeException
+     */
+    public function connect(array $servers)
+    {
+        $memcache = $this->getEngine();
 
-	/**
-	 * Test to see if the cache storage is available.
-	 *
-	 * @return  boolean  True on success, false otherwise.
-	 */
-	public static function isAvailable()
-	{
-		if ((extension_loaded('memcache') && class_exists('Memcache')) != true)
-		{
-			return false;
-		}
-		return true;
-	}
+        // For each server in the array, we'll just extract the configuration and add
+        // the server to the Memcached connection. Once we have added all of these
+        // servers we'll verify the connection is successful and return it back.
+        foreach ($servers as $server) {
+            $memcache->addServer(
+                $server['host'],
+                $server['port'],
+                $server['weight']
+            );
+        }
 
-	/**
-	 * Create a new Memcached connection.
-	 *
-	 * @param   array   $servers
-	 * @return  object  \Memcached
-	 * @throws  \RuntimeException
-	 */
-	public function connect(array $servers)
-	{
-		$memcache = $this->getEngine();
+        if ($memcache->getVersion() === false) {
+            throw new RuntimeException('Could not establish Memcached connection.');
+        }
 
-		// For each server in the array, we'll just extract the configuration and add
-		// the server to the Memcached connection. Once we have added all of these
-		// servers we'll verify the connection is successful and return it back.
-		foreach ($servers as $server)
-		{
-			$memcache->addServer(
-				$server['host'], $server['port'], $server['weight']
-			);
-		}
+        // Memcahed has no list keys, we do our own accounting, initialise key index
+        if ($memcache->get($this->options['hash'] . '-index') === false) {
+            $empty = array();
+            $this->engine->set($this->options['hash'] . '-index', $empty, $this->options['compress'], 0);
+        }
 
-		if ($memcache->getVersion() === false)
-		{
-			throw new RuntimeException('Could not establish Memcached connection.');
-		}
+        return $memcache;
+    }
 
-		// Memcahed has no list keys, we do our own accounting, initialise key index
-		if ($memcache->get($this->options['hash'] . '-index') === false)
-		{
-			$empty = array();
-			$this->engine->set($this->options['hash'] . '-index', $empty, $this->options['compress'], 0);
-		}
+    /**
+     * Get a new Memcached instance.
+     *
+     * @return  object  \Memcache
+     */
+    public function getEngine()
+    {
+        return new \Memcache();
+    }
 
-		return $memcache;
-	}
+    /**
+     * Add an item to the cache only if it doesn't already exist
+     *
+     * @param   string  $key
+     * @param   mixed   $value
+     * @param   int     $minutes
+     * @return  void
+     */
+    public function add($key, $value, $minutes)
+    {
+        return $this->engine->add($this->id($key), $value, $minutes * 60);
+    }
 
-	/**
-	 * Get a new Memcached instance.
-	 *
-	 * @return  object  \Memcache
-	 */
-	public function getEngine()
-	{
-		return new \Memcache;
-	}
+    /**
+     * Store an item in the cache for a given number of minutes.
+     *
+     * @param   string  $key
+     * @param   mixed   $value
+     * @param   int     $minutes
+     * @return  void
+     */
+    public function put($key, $value, $minutes)
+    {
+        return $this->engine->set($this->id($key), $value, $minutes * 60);
+    }
 
-	/**
-	 * Add an item to the cache only if it doesn't already exist
-	 *
-	 * @param   string  $key
-	 * @param   mixed   $value
-	 * @param   int     $minutes
-	 * @return  void
-	 */
-	public function add($key, $value, $minutes)
-	{
-		return $this->engine->add($this->id($key), $value, $minutes * 60);
-	}
+    /**
+     * Store an item in the cache indefinitely.
+     *
+     * @param   string  $key
+     * @param   mixed   $value
+     * @return  void
+     */
+    public function forever($key, $value)
+    {
+        return $this->put($key, $value, 0);
+    }
 
-	/**
-	 * Store an item in the cache for a given number of minutes.
-	 *
-	 * @param   string  $key
-	 * @param   mixed   $value
-	 * @param   int     $minutes
-	 * @return  void
-	 */
-	public function put($key, $value, $minutes)
-	{
-		return $this->engine->set($this->id($key), $value, $minutes * 60);
-	}
+    /**
+     * Retrieve an item from the cache by key.
+     *
+     * @param   string  $key
+     * @return  mixed
+     */
+    public function get($key)
+    {
+        $value = $this->engine->get($this->id($key));
 
-	/**
-	 * Store an item in the cache indefinitely.
-	 *
-	 * @param   string  $key
-	 * @param   mixed   $value
-	 * @return  void
-	 */
-	public function forever($key, $value)
-	{
-		return $this->put($key, $value, 0);
-	}
+        if ($this->engine->getResultCode() == 0) {
+            return $value;
+        }
 
-	/**
-	 * Retrieve an item from the cache by key.
-	 *
-	 * @param   string  $key
-	 * @return  mixed
-	 */
-	public function get($key)
-	{
-		$value = $this->engine->get($this->id($key));
+        return null;
+    }
 
-		if ($this->engine->getResultCode() == 0)
-		{
-			return $value;
-		}
+    /**
+     * Check if an item exists in the cache
+     *
+     * @param   string  $key
+     * @return  bool
+     */
+    public function has($key)
+    {
+        return $this->engine->get($this->id($key)) !== false ||
+            $this->engine->getResultCode() != \Memcached::RES_NOTFOUND;
+    }
 
-		return null;
-	}
+    /**
+     * Remove an item from the cache.
+     *
+     * @param   string  $key
+     * @return  bool
+     */
+    public function forget($key)
+    {
+        return $this->engine->delete($this->id($key));
+    }
 
-	/**
-	 * Check if an item exists in the cache
-	 *
-	 * @param   string  $key
-	 * @return  bool
-	 */
-	public function has($key)
-	{
-		return $this->engine->get($this->id($key)) !== false || $this->engine->getResultCode() != \Memcached::RES_NOTFOUND;
-	}
+    /**
+     * Remove all items from the cache.
+     *
+     * @param   string  $group
+     * @return  void
+     */
+    public function clean($group = null)
+    {
+        $hash = $this->options['hash'];
 
-	/**
-	 * Remove an item from the cache.
-	 *
-	 * @param   string  $key
-	 * @return  bool
-	 */
-	public function forget($key)
-	{
-		return $this->engine->delete($this->id($key));
-	}
+        $index = $this->engine->get($hash . '-index');
+        if ($index === false) {
+            $index = array();
+        }
 
-	/**
-	 * Remove all items from the cache.
-	 *
-	 * @param   string  $group
-	 * @return  void
-	 */
-	public function clean($group = null)
-	{
-		$hash = $this->options['hash'];
+        foreach ($index as $key => $value) {
+            if (strpos($value->name, $hash . '-cache-' . $group . '-') === 0) { // xor $mode != 'group')
+                $this->engine->delete($value->name, 0);
+                unset($index[$key]);
+            }
+        }
 
-		$index = $this->engine->get($hash . '-index');
-		if ($index === false)
-		{
-			$index = array();
-		}
+        $this->engine->replace($hash . '-index', $index, 0);
+    }
 
-		foreach ($index as $key => $value)
-		{
-			if (strpos($value->name, $hash . '-cache-' . $group . '-') === 0) // xor $mode != 'group')
-			{
-				$this->engine->delete($value->name, 0);
-				unset($index[$key]);
-			}
-		}
+    /**
+     * Get all cached data
+     *
+     * @return  array
+     */
+    public function all()
+    {
+        $hash  = $this->options['hash'];
 
-		$this->engine->replace($hash . '-index', $index, 0);
-	}
+        $index = $this->engine->get($hash . '-index');
+        if ($index === false) {
+            $index = array();
+        }
 
-	/**
-	 * Get all cached data
-	 *
-	 * @return  array
-	 */
-	public function all()
-	{
-		$hash  = $this->options['hash'];
+        foreach ($index as $key) {
+            if (empty($key)) {
+                continue;
+            }
 
-		$index = $this->engine->get($hash . '-index');
-		if ($index === false)
-		{
-			$index = array();
-		}
+            $namearr = explode('-', $key->name);
 
-		foreach ($index as $key)
-		{
-			if (empty($key))
-			{
-				continue;
-			}
+            if ($namearr !== false && $namearr[0] == $hash && $namearr[1] == 'cache') {
+                $group = $namearr[2];
 
-			$namearr = explode('-', $key->name);
+                if (!isset($data[$group])) {
+                    $item = new Auditor($group);
+                } else {
+                    $item = $data[$group];
+                }
 
-			if ($namearr !== false && $namearr[0] == $hash && $namearr[1] == 'cache')
-			{
-				$group = $namearr[2];
+                $item->tally($key->size / 1024);
 
-				if (!isset($data[$group]))
-				{
-					$item = new Auditor($group);
-				}
-				else
-				{
-					$item = $data[$group];
-				}
+                $data[$group] = $item;
+            }
+        }
 
-				$item->tally($key->size / 1024);
-
-				$data[$group] = $item;
-			}
-		}
-
-		return $data;
-	}
+        return $data;
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,120 +15,123 @@ use Hubzero\Component\Loader as Base;
  */
 class Loader extends Base
 {
-	/**
-	 * Render the component.
-	 *
-	 * @param   string  $option  The component option.
-	 * @param   array   $params  The component parameters
-	 * @return  bool
-	 */
-	public function render($option, $params = array())
-	{
-		$lang = $this->app['language'];
+    /**
+     * Render the component.
+     *
+     * @param   string  $option  The component option.
+     * @param   array   $params  The component parameters
+     * @return  bool
+     */
+    public function render($option, $params = array())
+    {
+        $lang = $this->app['language'];
 
-		$option = $this->canonical($option);
-		
-		if (empty($option))
-		{
-			// Throw 404 if no component
-			$this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
-		}
+        $option = $this->canonical($option);
 
-		// Record the scope
-		$scope = $this->app->has('scope') ? $this->app->get('scope') : null;
+        if (empty($option)) {
+            // Throw 404 if no component
+            $this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
+        }
 
-		// Set scope to component name
-		$this->app->set('scope', $option);
+        // Record the scope
+        $scope = $this->app->has('scope') ? $this->app->get('scope') : null;
 
-		// Build the component path.
-		$client = (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
-		$found      = false;
+        // Set scope to component name
+        $this->app->set('scope', $option);
 
-		$version    = Request::getVar('version');
-		$controller = Request::getCmd('controller', Request::segment(3, 'api'));
-		$controllerClass = '\\Hubzero\\Component\\ApiController';
+        // Build the component path.
+        $client = (isset($this->app['client']->alias) ? $this->app['client']->alias : $this->app['client']->name);
+        $found      = false;
 
-		// Make sure the component is enabled
-		if ($this->isEnabled($option) && is_dir($this->path($option)))
-		{
-			// Set path and constants
-			define('PATH_COMPONENT', $this->path($option) . DIRECTORY_SEPARATOR . $client);
-			define('PATH_COMPONENT_SITE', $this->path($option) . DIRECTORY_SEPARATOR . 'site');
-			define('PATH_COMPONENT_ADMINISTRATOR', $this->path($option) . DIRECTORY_SEPARATOR . 'admin');
+        $version    = Request::getVar('version');
+        $controller = Request::getCmd('controller', Request::segment(3, 'api'));
+        $controllerClass = '\\Hubzero\\Component\\ApiController';
 
-			// Legacy compatibility
-			// @TODO: Deprecate this!
-			define('JPATH_COMPONENT', PATH_COMPONENT);
-			define('JPATH_COMPONENT_SITE', PATH_COMPONENT_SITE);
-			define('JPATH_COMPONENT_ADMINISTRATOR', PATH_COMPONENT_ADMINISTRATOR);
+        // Make sure the component is enabled
+        if ($this->isEnabled($option) && is_dir($this->path($option))) {
+            // Set path and constants
+            define('PATH_COMPONENT', $this->path($option) . DIRECTORY_SEPARATOR . $client);
+            define('PATH_COMPONENT_SITE', $this->path($option) . DIRECTORY_SEPARATOR . 'site');
+            define('PATH_COMPONENT_ADMINISTRATOR', $this->path($option) . DIRECTORY_SEPARATOR . 'admin');
 
-			if (is_dir(PATH_COMPONENT))
-			{
-				// If no version is specified, try to determine the most
-				// recent version from the available controllers
-				if (!$version)
-				{
-					$files = glob(PATH_COMPONENT . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $controller . 'v*.php');
+            // Legacy compatibility
+            // @TODO: Deprecate this!
+            define('JPATH_COMPONENT', PATH_COMPONENT);
+            define('JPATH_COMPONENT_SITE', PATH_COMPONENT_SITE);
+            define('JPATH_COMPONENT_ADMINISTRATOR', PATH_COMPONENT_ADMINISTRATOR);
 
-					if (!empty($files))
-					{
-						natsort($files);
+            if (is_dir(PATH_COMPONENT)) {
+                // If no version is specified, try to determine the most
+                // recent version from the available controllers
+                if (!$version) {
+                    $files = glob(PATH_COMPONENT .
+                        DIRECTORY_SEPARATOR .
+                        'controllers' .
+                        DIRECTORY_SEPARATOR .
+                        $controller .
+                        'v*.php');
 
-						$file = end($files);
-						$controller = basename($file, '.php');
-					}
-				}
-				else
-				{
-					$controller .= 'v' . str_replace('.', '_', $version);
-				}
+                    if (!empty($files)) {
+                        natsort($files);
 
-				$path       = PATH_COMPONENT . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $controller . '.php';
-				$controllerClass = '\\Components\\' . ucfirst(substr($option, 4)) . '\\Api\\Controllers\\' . ucfirst($controller);
+                        $file = end($files);
+                        $controller = basename($file, '.php');
+                    }
+                } else {
+                    $controller .= 'v' . str_replace('.', '_', $version);
+                }
 
-				// Include the file
-				if (file_exists($path))
-				{
-					require_once $path;
-				}
-			}
+                $path       = PATH_COMPONENT .
+                    DIRECTORY_SEPARATOR .
+                    'controllers' .
+                    DIRECTORY_SEPARATOR .
+                    $controller .
+                    '.php';
+                $controllerClass = '\\Components\\' .
+                    ucfirst(substr($option, 4)) .
+                    '\\Api\\Controllers\\' .
+                    ucfirst($controller);
 
-			// Check to see if the class exists
-			if ($controllerClass && class_exists($controllerClass))
-			{
-				$found = true;
+                // Include the file
+                if (file_exists($path)) {
+                    require_once $path;
+                }
+            }
 
-				$lang->load($option, PATH_COMPONENT, null, false, true);
-			}
-		}
+            // Check to see if the class exists
+            if ($controllerClass && class_exists($controllerClass)) {
+                $found = true;
 
-		if (!$found)
-		{
-			$this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
-		}
+                $lang->load($option, PATH_COMPONENT, null, false, true);
+            }
+        }
 
-		// Handle template preview outlining.
-		$action = new $controllerClass($this->app->get('response'), array(
-			'name'       => substr($option, 4),
-			'controller' => $controller
-		));
-		$action->execute();
+        if (!$found) {
+            $this->app->abort(404, $lang->translate('JLIB_APPLICATION_ERROR_COMPONENT_NOT_FOUND'));
+        }
 
-		// Revert the scope
-		$this->app->forget('scope');
-		$this->app->set('scope', $scope);
+        // Handle template preview outlining.
+        $action = new $controllerClass($this->app->get('response'), array(
+            'name'       => substr($option, 4),
+            'controller' => $controller
+        ));
+        $action->execute();
 
-		return true;
-	}
+        // Revert the scope
+        $this->app->forget('scope');
+        $this->app->set('scope', $scope);
 
-	/**
-	 * Execute the component.
-	 *
-	 * @param   string  $path  The component path.
-	 * @return  string  The component output
-	 */
-	protected function execute($path, $type = 'path')
-	{
-		return '';
-	}
+        return true;
+    }
+
+    /**
+     * Execute the component.
+     *
+     * @param   string  $path  The component path.
+     * @return  string  The component output
+     */
+    protected function execute($path, $type = 'path')
+    {
+        return '';
+    }
 }

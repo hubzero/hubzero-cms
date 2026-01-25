@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,15 +15,15 @@ use Hubzero\Html\Builder\Asset;
  */
 class Icon extends AbstractHelper
 {
-	/**
-	 * Generate asset path
-	 *
-	 * @param   string  $symbol
-	 * @param   bool    $ariahidden
-	 * @return  string
-	 */
-	public function __invoke($symbol, $ariahidden = true)
-	{
-		return Asset::icon($symbol, $ariahidden);
-	}
+    /**
+     * Generate asset path
+     *
+     * @param   string  $symbol
+     * @param   bool    $ariahidden
+     * @return  string
+     */
+    public function __invoke($symbol, $ariahidden = true)
+    {
+        return Asset::icon($symbol, $ariahidden);
+    }
 }
