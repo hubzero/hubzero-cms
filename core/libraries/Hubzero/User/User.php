@@ -205,7 +205,7 @@ class User extends \Hubzero\Database\Relational
 			}
 
 			if (preg_match('#[<>"\'%;()&\\\\]|\\.\\./#', $username)
-			 || strlen(utf8_decode($username)) < 2
+			 || mb_strlen($username, 'UTF-8') < 2
 			 || trim($username) != $username)
 			{
 				return \Lang::txt('JLIB_DATABASE_ERROR_VALID_AZ09', 2);

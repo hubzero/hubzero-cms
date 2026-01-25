@@ -891,7 +891,7 @@ class Password
 				}
 				else
 				{
-					return substr(md5(mt_rand()), 0, 2);
+					return substr(bin2hex(random_bytes(16)), 0, 2);
 				}
 			break;
 
@@ -902,7 +902,7 @@ class Password
 				}
 				else
 				{
-					return '$1$' . substr(md5(mt_rand()), 0, 8) . '$';
+					return '$1$' . substr(bin2hex(random_bytes(16)), 0, 8) . '$';
 				}
 			break;
 
@@ -913,7 +913,7 @@ class Password
 				}
 				else
 				{
-					return '$2$' . substr(md5(mt_rand()), 0, 12) . '$';
+					return '$2$' . substr(bin2hex(random_bytes(16)), 0, 12) . '$';
 				}
 			break;
 
@@ -924,7 +924,7 @@ class Password
 				}
 				else
 				{
-					return '$6$' . substr(md5(mt_rand()), 0, 8) . '$';
+					return '$6$' . substr(bin2hex(random_bytes(16)), 0, 8) . '$';
 				}
 			break;
 
@@ -935,7 +935,8 @@ class Password
 				}
 				else
 				{
-					return mhash_keygen_s2k(MHASH_SHA1, $plaintext, substr(pack('h*', md5(mt_rand())), 0, 8), 4);
+					$salt = substr(pack('h*', bin2hex(random_bytes(16))), 0, 8);
+					return mhash_keygen_s2k(MHASH_SHA1, $plaintext, $salt, 4);
 				}
 			break;
 
@@ -946,7 +947,8 @@ class Password
 				}
 				else
 				{
-					return mhash_keygen_s2k(MHASH_MD5, $plaintext, substr(pack('h*', md5(mt_rand())), 0, 8), 4);
+					$salt = substr(pack('h*', bin2hex(random_bytes(16))), 0, 8);
+					return mhash_keygen_s2k(MHASH_MD5, $plaintext, $salt, 4);
 				}
 			break;
 
