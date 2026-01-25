@@ -488,7 +488,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
             while (true) {
                 $this->keystring = '';
                 for ($i = 0; $i < $length; $i++) {
-                    $this->keystring .= $allowed_symbols[mt_rand(0, strlen($allowed_symbols) - 1)];
+                    $this->keystring .= $allowed_symbols[random_int(0, strlen($allowed_symbols) - 1)];
                 }
                 if (!preg_match('/cp|cb|ck|c6|c9|rn|rm|mm|co|do|cl|db|qp|qb|dp|ww/', $this->keystring)) {
                     break;
@@ -534,7 +534,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
             for ($i = 0; $i < $length; $i++) {
                 $m = $font_metrics[$this->keystring[$i]];
 
-                $y = mt_rand(-$fluctuation_amplitude, $fluctuation_amplitude) + ($height - $fontfile_height) / 2 + 2;
+                $y = random_int(-$fluctuation_amplitude, $fluctuation_amplitude) + ($height - $fontfile_height) / 2 + 2;
 
                 if ($no_spaces) {
                     $shift = 0;
@@ -564,7 +564,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
                             }
                         }
                         if ($shift == 10000) {
-                            $shift = mt_rand(4, 6);
+                            $shift = random_int(4, 6);
                         }
                     }
                 } else {
@@ -584,18 +584,18 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
         imagefilledrectangle($img2, 0, $height, $width - 1, $height + 12, $foreground);
 
         // Periods
-        $rand1 = mt_rand(750000, 1200000) / 10000000;
-        $rand2 = mt_rand(750000, 1200000) / 10000000;
-        $rand3 = mt_rand(750000, 1200000) / 10000000;
-        $rand4 = mt_rand(750000, 1200000) / 10000000;
+        $rand1 = random_int(750000, 1200000) / 10000000;
+        $rand2 = random_int(750000, 1200000) / 10000000;
+        $rand3 = random_int(750000, 1200000) / 10000000;
+        $rand4 = random_int(750000, 1200000) / 10000000;
         // Phases
-        $rand5 = mt_rand(0, 31415926) / 10000000;
-        $rand6 = mt_rand(0, 31415926) / 10000000;
-        $rand7 = mt_rand(0, 31415926) / 10000000;
-        $rand8 = mt_rand(0, 31415926) / 10000000;
+        $rand5 = random_int(0, 31415926) / 10000000;
+        $rand6 = random_int(0, 31415926) / 10000000;
+        $rand7 = random_int(0, 31415926) / 10000000;
+        $rand8 = random_int(0, 31415926) / 10000000;
         // Amplitudes
-        $rand9 = mt_rand(330, 420) / 110;
-        $rand10 = mt_rand(330, 450) / 110;
+        $rand9 = random_int(330, 420) / 110;
+        $rand10 = random_int(330, 450) / 110;
 
         // Wave distortion
         for ($x = 0; $x < $width; $x++) {
