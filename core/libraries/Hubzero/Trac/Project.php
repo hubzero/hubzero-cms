@@ -32,6 +32,7 @@ class Project
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_updatedkeys = array();
 
     /**
@@ -39,6 +40,7 @@ class Project
      *
      * @var  array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_list_keys = array();
 
     /**

@@ -178,6 +178,7 @@ class Group extends Obj
      *
      * @public array
      */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_updatedkeys = array();
 
     /**

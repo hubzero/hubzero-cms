@@ -662,13 +662,7 @@ class Manager extends Obj
      */
     protected function createId()
     {
-        $id = 0;
-
-        while (strlen($id) < 32) {
-            $id .= mt_rand(0, mt_getrandmax());
-        }
-
-        return md5(uniqid($id, true));
+        return bin2hex(random_bytes(16));
     }
 
     /**
