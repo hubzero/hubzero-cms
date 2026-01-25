@@ -225,7 +225,7 @@ class Page extends Model
 
             // Append random number if page already exists
             while (in_array($this->url(), $aliasUrls)) {
-                $alias .= mt_rand(1, 9);
+                $alias .= random_int(1, 9);
                 $this->set('alias', $alias);
                 $pageUrl = $page->url();
             }

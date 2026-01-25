@@ -690,7 +690,7 @@ class Section extends Base
         $chars = '023456789ABCDEFGHJKLMNOPQRSTUVWXYZ'; // no 1 or I
         $res = '';
         for ($i = 0; $i < 10; $i++) {
-            $res .= $chars[mt_rand(0, strlen($chars) - 1)];
+            $res .= $chars[random_int(0, strlen($chars) - 1)];
         }
         return $res;
     }

@@ -430,12 +430,12 @@ class Html extends Obj
             $charset .= "~@#$%^*()_+-={}|][";
         }
         if ($minlength > $maxlength) {
-            $length = mt_rand($maxlength, $minlength);
+            $length = random_int($maxlength, $minlength);
         } else {
-            $length = mt_rand($minlength, $maxlength);
+            $length = random_int($minlength, $maxlength);
         }
         for ($i = 0; $i < $length; $i++) {
-            $key .= $charset[(mt_rand(0, (strlen($charset) - 1)))];
+            $key .= $charset[(random_int(0, (strlen($charset) - 1)))];
         }
         return $key;
     }
