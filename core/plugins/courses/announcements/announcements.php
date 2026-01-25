@@ -42,7 +42,7 @@ class PlgCoursesAnnouncements extends Plugin
      *
      * @var  string
      */
-    protected $option = null;
+    public $option = null;
 
     /**
      * Return data on a course view (this will be some form of HTML)

@@ -386,9 +386,11 @@ class Section extends Base
      */
     public function date($scope = null, $scope_id = null)
     {
-        $scopeMismatch = (int) $this->_date->get('scope_id') != (int) $scope_id
-            || (string) $this->_date->get('scope') != (string) $scope;
-        if (!isset($this->_date) || $scopeMismatch) {
+        if (
+            !isset($this->_date)
+            || ((int) $this->_date->get('scope_id') != (int) $scope_id
+                || (string) $this->_date->get('scope') != (string) $scope)
+        ) {
             $this->_date = new Section\Date(null);
 
             foreach ($this->dates() as $dt) {

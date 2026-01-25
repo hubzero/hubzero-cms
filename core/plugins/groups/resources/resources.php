@@ -291,7 +291,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
                 $hasIdOrAlias = Request::getString('id', Request::getString('alias', null));
                 if ($hasIdOrAlias && $this->group->type == 3) {
                     // Load neccesities for com_resources controller
-        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
+                    $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
                     $lang = App::get('language');
                     $lang->load('com_resources', Component::path('com_resources') . DS . 'site');
 

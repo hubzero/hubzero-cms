@@ -1409,7 +1409,6 @@ class Html
                     $mimer = new  \Hubzero\Content\Mimetypes();
                                         $mimeType = $mimer->getMimeType($file, true);
                 } else {
-                    error_log("1: calling mime_content_type($file)");
                     $mimeType = mime_content_type($file);
                 }
                 if ($mimeType && !in_array($mimeType, $mimeTypes)) {
@@ -1462,7 +1461,6 @@ class Html
                 $mimer = new  \Hubzero\Content\Mimetypes();
                                 $mimeType = $mimer->getMimeType($file, true);
             } else {
-                error_log("2: calling mime_content_type($file)");
                 $mimeType = mime_content_type($file);
             }
 

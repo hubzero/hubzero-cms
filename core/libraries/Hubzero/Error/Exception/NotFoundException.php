@@ -22,7 +22,7 @@ class NotFoundException extends \Exception
      * @param   object   $previous  The previous exception used for the exception chaining.
      * @return  void
      */
-    public function __construct($message = '', $code = 404, Exception $previous = null)
+    public function __construct($message = '', $code = 404, ?\Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

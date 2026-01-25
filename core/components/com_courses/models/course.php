@@ -211,10 +211,12 @@ class Course extends Base
     {
         // If the current offering isn't set
         //    OR the ID passed doesn't equal the current offering's ID or alias
-        $idMismatch = $id !== null
-            && (int) $this->_offering->get('id') != $id
-            && (string) $this->_offering->get('alias') != $id;
-        if (!isset($this->_offering) || $idMismatch) {
+        if (
+            !isset($this->_offering)
+            || ($id !== null
+                && (int) $this->_offering->get('id') != $id
+                && (string) $this->_offering->get('alias') != $id)
+        ) {
             // Reset current offering
             $this->_offering = null;
 

@@ -253,7 +253,7 @@ class Post extends Base
      */
     public function link($type = '', $params = null)
     {
-        return $this->adapterInstance()->build($type, $params);
+        return $this->adapter()->build($type, $params);
     }
 
     /**

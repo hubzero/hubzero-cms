@@ -11,8 +11,8 @@
 $upath = (isset($this->upath) ? $this->upath : '');
 $sinfo = (isset($this->sinfo) ? $this->sinfo : array());
 $versionid = (isset($this->versionid) ? $this->versionid : 0);
-$path = \Components\Resources\Helpers\html::build_path($this->created, $this->id, '');
-$url = \Components\Resources\Helpers\html::build_url($this->id, '');
+$path = \Components\Resources\Helpers\Html::buildPath($this->created, $this->id, '');
+$url = \Components\Resources\Helpers\Html::buildUrl($this->id, '');
 
 // Get contribtool parameters
 $tconfig = Component::params('com_tools');

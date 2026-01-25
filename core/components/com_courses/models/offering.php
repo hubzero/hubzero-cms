@@ -291,10 +291,12 @@ class Offering extends Base
             return $this->_section;
         }
 
-        $idMismatch = $id !== null
-            && (int) $this->_section->get('id') != $id
-            && (string) $this->_section->get('alias') != $id;
-        if (!isset($this->_section) || $idMismatch) {
+        if (
+            !isset($this->_section)
+            || ($id !== null
+                && (int) $this->_section->get('id') != $id
+                && (string) $this->_section->get('alias') != $id)
+        ) {
             $this->_section = null;
             $this->_link = null; // Clear any potential existing data that may have another (prevous) section's info
 

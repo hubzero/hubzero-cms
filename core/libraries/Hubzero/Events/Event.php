@@ -17,7 +17,7 @@ use Countable;
 /**
  * Default Event class.
  */
-class Event implements ArrayAccess, Serializable, Countable
+class Event implements ArrayAccess, Countable
 {
     use ErrorBag;
 

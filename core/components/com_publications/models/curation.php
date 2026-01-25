@@ -72,7 +72,7 @@ class Curation extends Obj
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_manifest = null;
+    public $_manifest = null;
 
     /**
      * Blocks
@@ -80,7 +80,7 @@ class Curation extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_blocks = array();
+    public $_blocks = array();
 
     /**
      * Total blocks
@@ -120,7 +120,8 @@ class Curation extends Obj
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_progress = null;
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    public $_progress = null;
 
     /**
      * Message

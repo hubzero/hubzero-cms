@@ -53,7 +53,7 @@ class DiffFormatter
      * @param   object  $diff  A Diff object.
      * @return  string  The formatted output.
      */
-    public function format($diff, Closure $formatContextOutput = null)
+    public function format($diff, ?Closure $formatContextOutput = null)
     {
         $xi = $yi = 1;
         $block = false;

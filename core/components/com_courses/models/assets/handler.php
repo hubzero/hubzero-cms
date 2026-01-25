@@ -140,7 +140,7 @@ class Handler
 
         // Loop through the added classes
         foreach ($diff as $class) {
-            if ($class != get_class()) {
+            if ($class != __CLASS__) {
                 // Check to see if this handler responds to our current extension
                 if (method_exists($class, 'getExtensions')) {
                     $extensions = $class::getExtensions();

@@ -148,7 +148,7 @@ class WikiMacro
             if (isset($config['name'])) {
                 $name = $config['name'];
             } else {
-                $name = get_class();
+                $name = static::class;
             }
             self::$thisInstance = new $name();
         }

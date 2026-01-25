@@ -147,7 +147,6 @@ class Handler
             case E_DEPRECATED:
             case E_USER_WARNING:
             case E_USER_DEPRECATED:
-            case E_STRICT:
                 return("warning");
 
             case E_NOTICE:
