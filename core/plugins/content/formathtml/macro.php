@@ -165,7 +165,7 @@ class Macro
 			}
 			else
 			{
-				$name = get_class();
+				$name = static::class;
 			}
 			self::$thisInstance = new $name();
 		}

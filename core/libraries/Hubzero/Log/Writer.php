@@ -55,7 +55,7 @@ class Writer
 	 * @param   object  $dispatcher
 	 * @return  void
 	 */
-	public function __construct(MonologLogger $monolog, DispatcherInterface $dispatcher = null)
+	public function __construct(MonologLogger $monolog, ?DispatcherInterface $dispatcher = null)
 	{
 		$this->monolog = $monolog;
 

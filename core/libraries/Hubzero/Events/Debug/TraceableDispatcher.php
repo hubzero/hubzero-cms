@@ -56,7 +56,7 @@ class TraceableDispatcher implements DispatcherInterface
 	 * @param   LoggerInterface          $logger     A LoggerInterface instance
 	 * @return  void
 	 */
-	public function __construct(DispatcherInterface $dispatcher, $stopwatch = null, Logger $logger = null)
+	public function __construct(DispatcherInterface $dispatcher, $stopwatch = null, ?Logger $logger = null)
 	{
 		$this->dispatcher = $dispatcher;
 		$this->stopwatch = $stopwatch;

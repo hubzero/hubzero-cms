@@ -64,7 +64,7 @@ class Application extends Container
 	 * @param   object  $response  Response object
 	 * @return  void
 	 */
-	public function __construct($client = '', Request $request = null, Response $response = null)
+	public function __construct($client = '', ?Request $request = null, ?Response $response = null)
 	{
 		$this->startms = microtime(true);
 

@@ -451,7 +451,7 @@ class ConstantContact
 	 * @param VerifiedAddress $replyEmail - OPTIONAL: reply email if different than fromEmail
 	 * @return Campaign
 	 */
-	public function addCampaign(Campaign $Campaign, VerifiedAddress $fromEmail, VerifiedAddress $replyEmail = null)
+	public function addCampaign(Campaign $Campaign, VerifiedAddress $fromEmail, ?VerifiedAddress $replyEmail = null)
 	{
 		$replyEmail = ($replyEmail) ? $replyEmail : $fromEmail;
 		$Campaign->fromAddress = $fromEmail;
