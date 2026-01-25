@@ -538,7 +538,7 @@ class Sync extends \Hubzero\Base\Obj
 
 				// Get change author for Git
 				$email = 'sync@sync.org';
-				$name  = utf8_decode($remote['author']);
+				$name  = $remote['author'];
 				if ($connected && ($key = array_search($name, $connected)))
 				{
 					$email = $key;

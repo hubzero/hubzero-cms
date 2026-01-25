@@ -231,7 +231,7 @@ class WikiParser
 	 */
 	private function _randomString()
 	{
-		return dechex(mt_rand(0, 0x7fffffff)) . dechex(mt_rand(0, 0x7fffffff));
+		return bin2hex(random_bytes(8));
 	}
 
 	/**
