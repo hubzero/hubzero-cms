@@ -57,7 +57,7 @@ class Helper extends Module
 		$height = $params->get('height');
 
 		$i      = count($images);
-		$random = mt_rand(0, $i - 1);
+		$random = random_int(0, $i - 1);
 		$image  = $images[$random];
 		$size   = getimagesize(PATH_APP . DS . $image->folder . DS . $image->name);
 
