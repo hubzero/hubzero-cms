@@ -1512,7 +1512,7 @@ class Curation extends Obj
 			$status->lastupdate = $record->updated;
 			$status->updated_by = $record->updated_by;
 		}
-		if ($record->review_status == 3 || ($record->reviewed && $record->update && strtotime($record->updated) > strtotime($record->reviewed)))
+		if ($record->review_status == 3 || ($record->reviewed && $record->update && strtotime($record->updated ?? '') > strtotime($record->reviewed ?? '')))
 		{
 			$status->message = $record->update;
 		}
