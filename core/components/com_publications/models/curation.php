@@ -1381,7 +1381,7 @@ class Curation extends Obj
         }
         $reviewStatusSkipped = $record->review_status == 3;
         $hasReviewedAndUpdate = $record->reviewed && $record->update;
-        $updatedAfterReview = strtotime($record->updated) > strtotime($record->reviewed);
+        $updatedAfterReview = strtotime($record->updated ?? '') > strtotime($record->reviewed ?? '');
         if ($reviewStatusSkipped || ($hasReviewedAndUpdate && $updatedAfterReview)) {
             $status->message = $record->update;
         }
