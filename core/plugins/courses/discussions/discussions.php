@@ -15,6 +15,8 @@ use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
 use Hubzero\Plugin\Plugin;
 
+require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
+
 /**
  * Courses Plugin class for forum entries
  */

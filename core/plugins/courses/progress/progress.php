@@ -10,6 +10,9 @@
 
 use Hubzero\Plugin\Plugin;
 
+require_once Component::path('com_courses') . DS . 'models' . DS . 'gradepolicies.php';
+require_once Component::path('com_courses') . DS . 'models' . DS . 'gradebook.php';
+
 /**
  * Courses Plugin class for user progress
  */
