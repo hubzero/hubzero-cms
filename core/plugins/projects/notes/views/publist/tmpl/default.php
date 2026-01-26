@@ -21,10 +21,13 @@ if (count($this->items) > 0) {
         <?php foreach ($this->items as $item) {
             $ref = json_decode($item->reference);
 
-            if (isset($ref->pageid) && $this->page->loadById($ref->pageid)) {
-                ?>
-        <li class="notes"><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>"><?php echo $this->page->title; ?></li>
-                <?php
+            if (isset($ref->pageid)) {
+                $page = \Components\Wiki\Models\Page::one($ref->pageid);
+                if ($page && $page->get('id')) {
+                    ?>
+        <li class="notes"><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>"><?php echo $page->get('title'); ?></li>
+                    <?php
+                }
             }
         } ?>
     </ul>
