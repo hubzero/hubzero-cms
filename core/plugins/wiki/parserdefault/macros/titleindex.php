@@ -116,7 +116,7 @@ class TitleIndexMacro extends WikiMacro
                 }
 
                 $html .= '<li><a href="' . Route::url($row->link()) . '">';
-                $html .= stripslashes($row->get('title', $row->get('pagename')));
+                $html .= stripslashes($row->get('title', $row->get('pagename')) ?? '');
                 $html .= '</a></li>' . "\n";
             }
             $html .= '</ul>';
