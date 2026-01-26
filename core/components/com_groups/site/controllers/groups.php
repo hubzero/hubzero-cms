@@ -193,7 +193,7 @@ class Groups extends Base
             ->set('groups', $groups)
             ->set('filters', $filters)
             ->set('title', $this->_title)
-            ->set('authorized', $this->authorize())
+            ->set('authorized', $this->_authorize())
             ->set('notifications', $notifications)
             ->setLayout('browse')
             ->display();
@@ -448,7 +448,7 @@ class Groups extends Base
 
             // Check authorization
             // Published = 2 = archived. Archived is a read-only mode.
-            $notManager = $this->authorize() != 'manager'
+            $notManager = $this->_authorize() != 'manager'
                 && !$this->authorizedForTask('group.edit');
             if ($this->view->group->published == 2 || $notManager) {
                 $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
@@ -585,7 +585,7 @@ class Groups extends Base
 
         // Check authorization
         // Published = 2 = archived. Archived is a read-only mode.
-        $notAuthorized = $this->authorize() != 'manager'
+        $notAuthorized = $this->_authorize() != 'manager'
             && $g_gidNumber != 0
             && !$this->authorizedForTask('group.edit');
         if ($group->published == 2 || $notAuthorized) {
@@ -928,7 +928,7 @@ class Groups extends Base
         }
 
         // Check authorization
-        if ($this->authorize() != 'manager') {
+        if ($this->_authorize() != 'manager') {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -994,7 +994,7 @@ class Groups extends Base
         }
 
         // Check authorization
-        if ($this->authorize() != 'manager') {
+        if ($this->_authorize() != 'manager') {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
@@ -1334,7 +1334,7 @@ class Groups extends Base
         }
 
         // Authorize
-        $authorized = $this->authorize();
+        $authorized = $this->_authorize();
 
         // Get the file name
         if (substr(strtolower($filename), 0, 5) == 'image') {

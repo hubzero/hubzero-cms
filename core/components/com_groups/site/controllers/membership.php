@@ -95,7 +95,7 @@ class Membership extends Base
         }
 
         // Check authorization
-        $notAuthorized = $this->authorize() != 'manager'
+        $notAuthorized = $this->_authorize() != 'manager'
             && !$this->authorizedForTask('group.invite');
         if ($this->view->group->published == 2 || $notAuthorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
@@ -167,7 +167,7 @@ class Membership extends Base
         }
 
         // Check authorization
-        $notAuthorized = $this->authorize() != 'manager'
+        $notAuthorized = $this->_authorize() != 'manager'
             && !$this->authorizedForTask('group.invite');
         if ($this->view->group->published == 2 || $notAuthorized) {
             $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
