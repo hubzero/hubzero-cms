@@ -32,7 +32,7 @@ class PlgCoursesRelated extends Plugin
     {
         $instructors = $course->instructors();
         if (count($instructors) <= 0) {
-            return array();
+            return '';
         }
 
         $ids = array();
@@ -64,11 +64,9 @@ class PlgCoursesRelated extends Plugin
             $view->ids = $ids;
 
             // Return the output
-            return array(
-                'html' => $view->loadTemplate()
-            );
+            return $view->loadTemplate();
         }
 
-        return array();
+        return '';
     }
 }
