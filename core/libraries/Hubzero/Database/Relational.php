@@ -284,8 +284,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $plural      = \Hubzero\Utility\Inflector::pluralize(strtolower($this->getModelName()));
         $this->table = $this->table ?: '#__' . $namespace . $plural;
 
-        // Set up connection and query object
-        $this->newQuery();
+        // Note: Query object is now lazy-loaded to avoid database connection
+        // during construction. Methods that need the query check for null
+        // and call newQuery() if needed.
 
         // Store methods for later
         //
@@ -334,7 +335,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             return $this->parse($name, (isset($arguments[0])) ? $arguments[0] : 'parsed');
         }
 
-        // See if we need to call a query method
+        // See if we need to call a query method (lazy-load query if needed)
+        if ($this->query === null) {
+            $this->newQuery();
+        }
         if (in_array($name, get_class_methods($this->query))) {
             // @FIXME: hack to fully qualify field names in one location...is there a better way/location?
             if (
@@ -464,7 +468,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function __clone()
     {
-        $this->query = clone $this->query;
+        if ($this->query !== null) {
+            $this->query = clone $this->query;
+        }
     }
 
     /**
@@ -578,8 +584,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function purgeCache()
     {
-        $query = $this->query;
-        $query::purgeCache();
+        if ($this->query === null) {
+            $this->newQuery();
+        }
+        $this->query::purgeCache();
 
         return $this;
     }
@@ -1147,6 +1155,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function rows($parseIncludes = true)
     {
         // Fetch the results
+        if ($this->query === null) {
+            $this->newQuery();
+        }
         $rows = $this->rowsFromRaw($this->query->fetch('rows', $this->noCache));
 
         if ($parseIncludes) {
@@ -1171,6 +1182,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function row()
     {
+        if ($this->query === null) {
+            $this->newQuery();
+        }
         $row = $this->query->fetch('row');
 
         return ($row) ? self::newFromResults($row) : self::blank();
@@ -1463,6 +1477,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         $data = $this->getTableColumnsOnly();
 
+        if ($this->query === null) {
+            $this->newQuery();
+        }
         return $this->query->push($this->getTableName(), $data);
     }
 
@@ -1480,6 +1497,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $data = $this->getTableColumnsOnly();
 
         // Return the result of the query
+        if ($this->query === null) {
+            $this->newQuery();
+        }
         return $this->query->alter(
             $this->getTableName(),
             $this->getPrimaryKey(),
@@ -1560,6 +1580,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         \Event::trigger('system.onContentDestroy', array($this->getTableName(), $this));
 
+        if ($this->query === null) {
+            $this->newQuery();
+        }
         return $this->query->remove(
             $this->getTableName(),
             $this->getPrimaryKey(),
