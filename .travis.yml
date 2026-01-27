@@ -1,15 +1,18 @@
 language: php
 php:
-- 7.0
+  - 8.2
+  - 8.3
 git:
   depth: 30
+cache:
+  directories:
+    - core/vendor
 before_script:
-  - composer require squizlabs/php_codesniffer:2.*
-  - mkdir -p ~/build
-  - git clone --branch hubzero-cms-2.1 --depth=1 https://github.com/hubzero/standards ~/build/standards
+  - cd core && composer install --no-interaction --prefer-dist
+  - cd ..
   - git config diff.renameLimit 0
-  - changed_files=`git diff --diff-filter=ACMRTUXB --name-only $TRAVIS_COMMIT_RANGE`
+  - changed_files=$(git diff --diff-filter=ACMRTUXB --name-only $TRAVIS_COMMIT_RANGE)
   - echo "The following will be tested:"
   - echo $changed_files
 script:
-- core/bin/php_tests.sh $changed_files
+  - core/bin/php_tests.sh $changed_files
