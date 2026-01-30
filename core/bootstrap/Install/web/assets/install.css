@@ -1,0 +1,645 @@
+/**
+ * HUBzero Installation Wizard Styles
+ */
+:root {
+    --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
+    --success-color: #16a34a;
+    --warning-color: #ca8a04;
+    --error-color: #dc2626;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-900: #111827;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--gray-700);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.installer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Header */
+.installer-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.logo svg {
+    width: 180px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.installer-header h1 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+/* Steps Navigation */
+.installer-steps {
+    background: rgba(255,255,255,0.1);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.installer-steps ol {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    counter-reset: step;
+}
+
+.installer-steps li {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    color: rgba(255,255,255,0.5);
+    font-size: 0.875rem;
+}
+
+.installer-steps li::after {
+    content: '';
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: rgba(255,255,255,0.2);
+}
+
+.installer-steps li:last-child::after {
+    display: none;
+}
+
+.step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+}
+
+.step-name {
+    display: block;
+    font-size: 0.75rem;
+}
+
+.installer-steps li.current {
+    color: white;
+}
+
+.installer-steps li.current .step-number {
+    background: white;
+    color: var(--primary-color);
+}
+
+.installer-steps li.complete {
+    color: rgba(255,255,255,0.8);
+}
+
+.installer-steps li.complete .step-number {
+    background: var(--success-color);
+    color: white;
+}
+
+/* Clickable step links */
+.step-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    cursor: pointer;
+}
+
+.step-link:hover .step-number {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
+}
+
+.step-link:hover .step-name {
+    text-decoration: underline;
+}
+
+.installer-steps li .step-number {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Main Content */
+.installer-content {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    padding: 2rem;
+}
+
+.step-content h2 {
+    font-size: 1.5rem;
+    color: var(--gray-900);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+/* Messages */
+.messages {
+    margin-bottom: 1.5rem;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.message-error {
+    background: #fef2f2;
+    color: var(--error-color);
+    border: 1px solid #fecaca;
+}
+
+.message-success {
+    background: #f0fdf4;
+    color: var(--success-color);
+    border: 1px solid #bbf7d0;
+}
+
+.message-warning {
+    background: #fffbeb;
+    color: var(--warning-color);
+    border: 1px solid #fde68a;
+}
+
+/* Forms */
+.step-form {
+    /* No max-width here - let form-actions span full width */
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--gray-900);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="url"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 0.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--gray-500);
+    font-size: 0.875rem;
+}
+
+.form-group .error {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--error-color);
+    font-size: 0.875rem;
+}
+
+.form-group.has-error input,
+.form-group.has-error select {
+    border-color: var(--error-color);
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.125rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    background: var(--gray-100);
+    color: var(--gray-700);
+}
+
+.btn-secondary:hover {
+    background: var(--gray-200);
+}
+
+.btn-link {
+    background: none;
+    color: var(--primary-color);
+    padding: 0;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-200);
+}
+
+.form-actions.center {
+    justify-content: center;
+}
+
+/* Info Boxes */
+.info-box {
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+}
+
+.info-box h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.info-box ul {
+    margin-left: 1.5rem;
+}
+
+.info-box.success {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+.info-box.warning {
+    background: #fffbeb;
+    border-color: #fde68a;
+}
+
+.info-box.error {
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+/* License Box */
+.license-box {
+    margin: 1.5rem 0;
+}
+
+.license-text {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 1rem;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.license-text p {
+    margin-bottom: 0.75rem;
+}
+
+/* Requirements Table */
+.requirements-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+.requirements-table th,
+.requirements-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.requirements-table th {
+    background: var(--gray-50);
+    font-weight: 500;
+}
+
+.requirements-table tr.passed {
+    background: #f0fdf4;
+}
+
+.requirements-table tr.failed {
+    background: #fef2f2;
+}
+
+.requirements-table tr.warning {
+    background: #fffbeb;
+}
+
+.status-pass { color: var(--success-color); font-size: 1.25rem; }
+.status-fail { color: var(--error-color); font-size: 1.25rem; }
+.status-warn { color: var(--warning-color); font-size: 1.25rem; }
+
+/* Advanced Options */
+.advanced-options {
+    margin-top: 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.5rem;
+}
+
+.advanced-options summary {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    background: var(--gray-50);
+}
+
+.advanced-content {
+    padding: 1rem;
+}
+
+/* Connection Test */
+.connection-result {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+}
+
+.connection-result.testing {
+    background: var(--gray-100);
+}
+
+.connection-result.success {
+    background: #f0fdf4;
+    color: var(--success-color);
+}
+
+.connection-result.error {
+    background: #fef2f2;
+    color: var(--error-color);
+}
+
+/* Schema Status */
+.schema-status {
+    margin: 1.5rem 0;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.status-item:last-child {
+    border-bottom: none;
+}
+
+.status-item.complete .status-icon {
+    color: var(--success-color);
+}
+
+.status-item.pending .status-icon {
+    color: var(--gray-300);
+}
+
+.status-text {
+    font-weight: 500;
+}
+
+.status-info {
+    color: var(--gray-500);
+    font-size: 0.875rem;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading-content {
+    background: white;
+    padding: 2rem 3rem;
+    border-radius: 1rem;
+    text-align: center;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--gray-200);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-note {
+    color: var(--gray-500);
+    font-size: 0.875rem;
+}
+
+/* Complete Page */
+.success-banner {
+    text-align: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+}
+
+.success-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.success-banner h2 {
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: white;
+}
+
+.summary-box {
+    background: var(--gray-50);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-box h3 {
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+}
+
+.summary-box dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1rem;
+}
+
+.summary-box dt {
+    color: var(--gray-500);
+}
+
+.next-steps {
+    margin: 2rem 0;
+}
+
+.next-steps ol {
+    margin-left: 1.5rem;
+}
+
+.next-steps li {
+    margin-bottom: 1rem;
+}
+
+.next-steps p {
+    margin-top: 0.25rem;
+}
+
+.security-notice {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.security-notice h3 {
+    color: var(--warning-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Footer */
+.installer-footer {
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    margin-top: 2rem;
+    font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .installer-steps ol {
+        flex-wrap: wrap;
+    }
+
+    .installer-steps li {
+        flex: none;
+        width: 33.33%;
+        margin-bottom: 1rem;
+    }
+
+    .installer-steps li::after {
+        display: none;
+    }
+
+    .step-name {
+        display: none;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+}
