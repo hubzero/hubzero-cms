@@ -79,10 +79,8 @@
         "squizlabs/php_codesniffer": "3.11.*"
     },
     "autoload": {
-        "psr-0": {
-            "Hubzero": "libraries/"
-        },
         "psr-4": {
+            "Hubzero\\": "libraries/Hubzero/",
             "Bootstrap\\": "bootstrap/"
         },
         "files": [
