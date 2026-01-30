@@ -446,9 +446,23 @@ class Migration
             $classname = $info['filename'];
 
             // Make sure file and classname match
+            // First try unqualified (backward compatible with non-namespaced migrations)
             if (!class_exists($classname)) {
-                $this->log("{$info['filename']} does not have a class of the same name", 'warning');
-                continue;
+                // Derive the expected namespace from the file path
+                $namespace = $this->deriveNamespaceFromPath($fullpath);
+
+                if ($namespace) {
+                    $fqcn = $namespace . '\\' . $classname;
+                    if (class_exists($fqcn)) {
+                        $classname = $fqcn;
+                    } else {
+                        $this->log("{$info['filename']} class not found (expected {$fqcn})", 'warning');
+                        continue;
+                    }
+                } else {
+                    $this->log("{$info['filename']} does not have a class of the same name", 'warning');
+                    continue;
+                }
             }
 
             // We've made it this far, add this file to list of affected files
@@ -492,7 +506,10 @@ class Migration
                                         {$error['message']}", 'info');
                                 } elseif ($error['type'] == 'skipped') {
                                     // Migration chose to skip - will retry on next run
-                                    $this->log("Skipped {$direction}() in {$scope}/{$file}: {$error['message']}", 'info');
+                                    $this->log(
+                                        "Skipped {$direction}() in {$scope}/{$file}: {$error['message']}",
+                                        'info'
+                                    );
                                     $status = 'skipped';
                                 }
                             }
@@ -574,6 +591,21 @@ class Migration
                 // Set classname
                 $info      = pathinfo($hook['name']);
                 $classname = $info['filename'];
+
+                // Support namespaced hooks
+                if (!class_exists($classname)) {
+                    $namespace = $this->deriveNamespaceFromPath($fullpath);
+                    if ($namespace) {
+                        $fqcn = $namespace . '\\' . $classname;
+                        if (class_exists($fqcn)) {
+                            $classname = $fqcn;
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        continue;
+                    }
+                }
 
                 // Instantiate our class
                 $class = new $classname($this->db, $this->callbacks);
@@ -724,6 +756,103 @@ class Migration
     public function registerCallback($name, $callback)
     {
         $this->callbacks[$name] = $callback;
+    }
+
+    /**
+     * Derive the expected namespace from a migration file path
+     *
+     * @param   string  $path  Full path to migration file
+     * @return  string|null  Expected namespace or null if cannot determine
+     */
+    private function deriveNamespaceFromPath($path)
+    {
+        // Get the path relative to PATH_ROOT
+        $relativePath = str_replace(PATH_ROOT . DS, '', $path);
+        $parts = explode(DS, $relativePath);
+
+        // Skip core/app prefix
+        $prefix = array_shift($parts);
+        if (!in_array($prefix, ['core', 'app'])) {
+            return null;
+        }
+
+        if (empty($parts)) {
+            return null;
+        }
+
+        $namespace = [];
+        $type = $parts[0];
+
+        switch ($type) {
+            case 'migrations':
+                // Core/app migrations: core/migrations/MigrationXXX.php
+                // Check if this is a hook
+                if (isset($parts[1]) && $parts[1] === 'hooks') {
+                    $namespace[] = 'Migrations';
+                    $namespace[] = 'Hooks';
+                } else {
+                    $namespace[] = 'Migrations';
+                }
+                break;
+
+            case 'components':
+                // Component: core/components/com_blog/migrations/MigrationXXX.php
+                $namespace[] = 'Components';
+                if (isset($parts[1])) {
+                    $name = preg_replace('/^com_/', '', $parts[1]);
+                    $namespace[] = $this->studlyCase($name);
+                }
+                $namespace[] = 'Migrations';
+                break;
+
+            case 'modules':
+                // Module: core/modules/mod_menu/migrations/MigrationXXX.php
+                $namespace[] = 'Modules';
+                if (isset($parts[1])) {
+                    $name = preg_replace('/^mod_/', '', $parts[1]);
+                    $namespace[] = $this->studlyCase($name);
+                }
+                $namespace[] = 'Migrations';
+                break;
+
+            case 'plugins':
+                // Plugin: core/plugins/system/cache/migrations/MigrationXXX.php
+                $namespace[] = 'Plugins';
+                if (isset($parts[1])) {
+                    $namespace[] = $this->studlyCase($parts[1]);
+                }
+                if (isset($parts[2])) {
+                    $namespace[] = $this->studlyCase($parts[2]);
+                }
+                $namespace[] = 'Migrations';
+                break;
+
+            case 'templates':
+                // Template: core/templates/protostar/migrations/MigrationXXX.php
+                $namespace[] = 'Templates';
+                if (isset($parts[1])) {
+                    $namespace[] = $this->studlyCase($parts[1]);
+                }
+                $namespace[] = 'Migrations';
+                break;
+
+            default:
+                return null;
+        }
+
+        return implode('\\', $namespace);
+    }
+
+    /**
+     * Convert a string to StudlyCase
+     *
+     * @param   string  $value  The string to convert
+     * @return  string
+     */
+    private function studlyCase($value)
+    {
+        $value = ucwords(str_replace(['-', '_'], ' ', $value));
+        return str_replace(' ', '', $value);
     }
 
     /**
