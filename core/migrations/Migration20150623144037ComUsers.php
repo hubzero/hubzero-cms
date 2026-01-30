@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for users reputation table
- **/
+**/
 class Migration20150623144037ComUsers extends Base
 {
     /**

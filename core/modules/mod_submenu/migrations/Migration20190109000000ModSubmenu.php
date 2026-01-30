@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Submenu\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing submenu module
  *
- */
+*/
 class Migration20190109000000ModSubmenu extends Base
 {
     /**

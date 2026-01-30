@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Adminlogin\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Admin login module
  *
- */
+*/
 class Migration20190109000000ModAdminlogin extends Base
 {
     /**

@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for fixing incorrect plugin name
- **/
+**/
 class Migration20160725142238PlgResourcesWatch extends Base
 {
     /**

@@ -1,15 +1,14 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\User\Hubzero\Migrations;
 
-// No direct access
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding User - HUBzero plugin

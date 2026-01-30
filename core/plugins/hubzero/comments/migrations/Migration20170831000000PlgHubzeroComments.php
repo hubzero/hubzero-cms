@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Hubzero\Comments\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**

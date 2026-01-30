@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding todo member plugin
- **/
+**/
 class Migration20150701060000PlgMembersTodo extends Base
 {
     /**

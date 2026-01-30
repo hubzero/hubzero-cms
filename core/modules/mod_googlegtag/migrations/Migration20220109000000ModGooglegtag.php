@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Googlegtag\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing google gtag module
  *
- */
+*/
 class Migration20220109000000ModGooglegtag extends Base
 {
     /**

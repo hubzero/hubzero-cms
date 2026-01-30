@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\RapidContact\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing rapid_contact module
  *
- */
+*/
 class Migration20190109000000ModRapidContact extends Base
 {
     /**

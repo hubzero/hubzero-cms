@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Mypublications\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mypublications module
  *
- */
+*/
 class Migration20190625000000ModMyPublications extends Base
 {
     /**

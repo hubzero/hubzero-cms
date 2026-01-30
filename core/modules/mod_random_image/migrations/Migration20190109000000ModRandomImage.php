@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\RandomImage\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing random_image module
  *
- */
+*/
 class Migration20190109000000ModRandomImage extends Base
 {
     /**

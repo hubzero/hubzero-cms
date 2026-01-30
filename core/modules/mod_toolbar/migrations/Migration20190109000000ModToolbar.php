@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Toolbar\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing toolbar module
  *
- */
+*/
 class Migration20190109000000ModToolbar extends Base
 {
     /**

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding an owner field to project connection entries
   *
- **/
+**/
 class Migration20160307191342PlgProjectsFiles extends Base
 {
     /**

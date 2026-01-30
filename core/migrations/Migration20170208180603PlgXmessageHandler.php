@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding anonymous flag to xmessage table
  *
- */
+*/
 class Migration20170208180603PlgXmessageHandler extends Base
 {
     /**

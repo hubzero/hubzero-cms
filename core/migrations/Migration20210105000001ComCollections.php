@@ -1,15 +1,14 @@
 <?php
 
+namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
 
 // no direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for updating Collections params.
   *
- **/
+**/
 class Migration20210105000001ComCollections extends Base
 {
     public function up()

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Newsletter\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Newsletter module
  *
- */
+*/
 class Migration20190109000000ModNewsletter extends Base
 {
     /**

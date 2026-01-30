@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Footer\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Footer module
  *
- */
+*/
 class Migration20190109000000ModFooter extends Base
 {
     /**

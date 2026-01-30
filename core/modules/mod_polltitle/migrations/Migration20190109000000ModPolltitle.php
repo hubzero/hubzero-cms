@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Polltitle\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing polltitle module
  *
- */
+*/
 class Migration20190109000000ModPolltitle extends Base
 {
     /**

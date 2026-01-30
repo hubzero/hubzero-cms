@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Newsletter\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 class Migration20240210000000DropTableReplyAccessCode extends Base

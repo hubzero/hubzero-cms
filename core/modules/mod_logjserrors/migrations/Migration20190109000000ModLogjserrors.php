@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Logjserrors\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Logjserrors module
  *
- */
+*/
 class Migration20190109000000ModLogjserrors extends Base
 {
     /**

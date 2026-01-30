@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for creating the facet table for Solr
   *
- **/
+**/
 class Migration20170220041701ComSearch extends Base
 {
     /**

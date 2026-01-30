@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Reportproblems\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing reportproblems module
  *
- */
+*/
 class Migration20190109000000ModReportproblems extends Base
 {
     /**

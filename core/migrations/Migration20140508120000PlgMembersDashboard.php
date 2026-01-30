@@ -1,21 +1,19 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Migrations;
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for updates to member dashboard features
  *
- */
+*/
 class Migration20140508120000PlgMembersDashboard extends Base
 {
     /**
@@ -81,7 +79,6 @@ class Migration20140508120000PlgMembersDashboard extends Base
 						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
             $this->db->setQuery($query);
             $this->db->query();
-
 
             // move over exxisting preferences
             $this->db->setQuery("SELECT * FROM `#__myhub` GROUP BY uid");
@@ -154,7 +151,6 @@ class Migration20140508120000PlgMembersDashboard extends Base
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
         $this->db->setQuery($query);
         $this->db->query();
-
 
         // remove new table
         $query = "DROP TABLE IF EXISTS `#__xprofiles_dashboard_preferences`;";

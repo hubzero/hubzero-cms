@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Toptags\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing toptags module
  *
- */
+*/
 class Migration20190109000000ModToptags extends Base
 {
     /**

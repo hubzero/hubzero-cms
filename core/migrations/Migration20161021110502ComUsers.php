@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for syncing loginShell and ftpShell between users and xprofiles
  *
- */
+*/
 class Migration20161021110502ComUsers extends Base
 {
     /**

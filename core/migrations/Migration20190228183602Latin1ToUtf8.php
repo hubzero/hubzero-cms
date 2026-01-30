@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for setting character set on tables to UTF8
  *
- */
+*/
 class Migration20190228183602Latin1ToUtf8 extends Base
 {
     /**

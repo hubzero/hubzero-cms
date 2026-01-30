@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Stats\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing stats module
  *
- */
+*/
 class Migration20190109000000ModStats extends Base
 {
     /**

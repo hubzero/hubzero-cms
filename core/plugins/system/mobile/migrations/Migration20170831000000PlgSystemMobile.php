@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Mobile\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**

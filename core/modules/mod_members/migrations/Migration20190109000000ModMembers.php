@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Members\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Members module
  *
- */
+*/
 class Migration20190109000000ModMembers extends Base
 {
     /**

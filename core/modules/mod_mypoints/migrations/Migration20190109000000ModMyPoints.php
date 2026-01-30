@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Mypoints\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mypoints module
  *
- */
+*/
 class Migration20190109000000ModMyPoints extends Base
 {
     /**

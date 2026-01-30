@@ -1,5 +1,7 @@
 <?php
 
+namespace Components\Newsletter\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 class Migration20240207000000AlterEmailSubscriptionsTable extends Base

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Whatsnew\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Whatsnew module
  *
- */
+*/
 class Migration20190109000000ModWhatsnew extends Base
 {
     /**

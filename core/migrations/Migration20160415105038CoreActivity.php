@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding activity log tables
  *
- */
+*/
 class Migration20160415105038CoreActivity extends Base
 {
     /**

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Latestgroups\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Latest Groups module
  *
- */
+*/
 class Migration20190109000000ModLatestGroups extends Base
 {
     /**

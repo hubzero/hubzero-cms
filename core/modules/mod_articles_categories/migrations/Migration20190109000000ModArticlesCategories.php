@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\ArticlesCategories\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing articles_categories module
  *
- */
+*/
 class Migration20190109000000ModArticlesCategories extends Base
 {
     /**
