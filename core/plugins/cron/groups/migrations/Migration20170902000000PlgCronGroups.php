@@ -27,8 +27,8 @@ class Migration20170902000000PlgCronGroups extends Base
             if (!$id) {
                 $query = "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `last_run`, `next_run`,"
                     . " `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`,"
-                    . " `params`) VALUES ('Group Announcements', 1, 'groups', 'sendGroupAnnouncements', NULL, NULL,"
-                    . " '*/5 * * * *', NULL, 0, NULL, 0, 0, 0, '');";
+                    . " `params`) VALUES ('Group Announcements', 1, 'groups', 'sendGroupAnnouncements',"
+                    . " '0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', NOW(), 0, NOW(), 0, 0, 0, '');";
 
                 $this->db->setQuery($query);
                 $this->db->query();
