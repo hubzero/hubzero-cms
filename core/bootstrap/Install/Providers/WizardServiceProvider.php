@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,137 +13,62 @@ use Hubzero\Http\Request;
 use Hubzero\Base\Traits\ErrorBag;
 
 /**
- * Wiard service provider
+ * Web Installation Wizard Service Provider
+ *
+ * Handles the multi-step web-based installation wizard.
  */
 class WizardServiceProvider extends Middleware
 {
-	use ErrorBag;
+    use ErrorBag;
 
-	/**
-	 * Handle request in HTTP stack
-	 * 
-	 * @param   object  $request  HTTP Request
-	 * @return  mixed
-	 */
-	public function handle(Request $request)
-	{
-		$response = $this->next($request);
+    /**
+     * Handle request in HTTP stack
+     *
+     * @param   object  $request  HTTP Request
+     * @return  mixed
+     */
+    public function handle(Request $request)
+    {
+        $response = $this->next($request);
 
-		if ($this->app['config']->get('dbtype')
-		 && $this->app['config']->get('user')
-		 && $this->app['config']->get('password'))
-		{
-			$this->app->redirect($this->app['request']->root());
-		}
+        // Check for Windows - HUBzero does not support Windows
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            http_response_code(500);
+            ob_start();
+            include dirname(__DIR__) . '/web/views/windows-error.php';
+            $response->setContent(ob_get_clean());
+            return $response;
+        }
 
-		$referrer = $request->getString('REQUEST_URI', '', 'server');
+        // Note: Don't redirect when installed - let the web installer
+        // handle showing the completion page instead
 
-		if ($request->method() == 'POST' && \Hubzero\Utility\Uri::isInternal($referrer))
-		{
-			$data = $request->getArray('database', array(), 'post');
+        // Start session for wizard state if not already started
+        if (session_status() === PHP_SESSION_NONE) {
+            session_name('hubzero_install');
+            session_start();
+        }
 
-			if (!empty($data))
-			{
-				// Load the defualt config from core
-				$config = new \Hubzero\Config\Repository(
-					'site',
-					new \Hubzero\Config\FileLoader(dirname(__DIR__) . '/config')
-				);
+        // Define constants needed by the installer
+        if (!defined('HUBZERO_INSTALL')) {
+            define('HUBZERO_INSTALL', 1);
+        }
+        if (!defined('INSTALL_ROOT')) {
+            define('INSTALL_ROOT', dirname(__DIR__));
+        }
+        // PATH_CORE, PATH_ROOT, PATH_APP are already defined by the framework
 
-				// Apply the POSTed values
-				foreach ($data as $key => $value)
-				{
-					$config->set('database.' . $key, $value);
-				}
+        // Load and run the installer
+        require_once dirname(__DIR__) . '/web/Installer.php';
 
-				$config->set('app.log_path', PATH_ROOT . '/app/logs');
-				$config->set('app.tmp_path', PATH_ROOT . '/app/tmp');
+        ob_start();
+        $installer = new \Bootstrap\Install\Web\Installer();
+        $installer->run();
+        $contents = ob_get_contents();
+        ob_end_clean();
 
-				$data = $config->toArray();
-				$path = PATH_APP . '/config';
-				$format = 'php';
+        $response->setContent($contents);
 
-				if (!is_dir($path))
-				{
-					if (!@mkdir($path, 0750))
-					{
-						$this->setError(sprintf(
-							'Failed to create <code>%s</code> directory.',
-							$path
-						));
-
-						if (!is_writable(PATH_APP))
-						{
-							$this->setError(sprintf(
-								'Path <code>%s</code> is not writable.',
-								PATH_APP
-							));
-						}
-					}
-				}
-
-				if (!is_writable($path))
-				{
-					$this->setError(sprintf(
-						'Path <code>%s</code> is not writable.',
-						$path
-					));
-				}
-
-				if (!$this->getError())
-				{
-					// Attempt to write the configuration files
-					$writer = new \Hubzero\Config\FileWriter(
-						$format,
-						$path
-					);
-
-					$client = null;
-
-					foreach ($data as $group => $values)
-					{
-						if (isset($values['secret']))
-						{
-							$length = 30;
-							$x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-							$values['secret'] = substr(str_shuffle(str_repeat($x, ceil($length/strlen($x)))), 1, $length);
-						}
-
-						if (!$writer->write($values, $group, $client))
-						{
-							$this->setError(sprintf(
-								'Failed to write configuration file <code>%s</code>.',
-								$path . '/' . ($client ? $client . '/' : '') . $group . '.' . $format)
-							);
-						}
-					}
-				}
-
-				if (!$this->getError())
-				{
-					$this->app->redirect($request->root());
-				}
-			}
-		}
-
-		$contents = 'Database not configured.';
-
-		$path = dirname(__DIR__) . '/Wizard/index.php';
-
-		ob_start();
-
-		if (file_exists($path))
-		{
-			$errors = $this->getErrors();
-
-			include_once $path;
-		}
-
-		$contents = ob_get_contents();
-		ob_end_clean();
-
-		$response->setContent($contents);
-
-		return $response;
-	}
+        return $response;
+    }
 }
