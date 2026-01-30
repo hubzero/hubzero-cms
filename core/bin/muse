@@ -7,14 +7,42 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// Load system classes (before autoloading is available)
+require_once dirname(__DIR__) . '/libraries/Hubzero/System/UserEnvironment.php';
+require_once dirname(__DIR__) . '/libraries/Hubzero/System/PrivilegeManager.php';
+require_once dirname(__DIR__) . '/libraries/Hubzero/Console/PrivilegeNotifier.php';
+
+use Hubzero\System\UserEnvironment;
+use Hubzero\System\PrivilegeManager;
+use Hubzero\Console\PrivilegeNotifier;
+
+// Check for Windows - HUBzero does not support Windows
+if (UserEnvironment::getInstance()->isWindows()) {
+    fwrite(STDERR, UserEnvironment::getInstance()->renderUnsupportedOsError(true));
+    exit(1);
+}
+
+// Handle privilege detection and user prompts
+if (!(new PrivilegeNotifier())->handleStartup()) {
+    // User declined to continue as root
+    exit(1);
+}
+
+// Suppress session warnings in CLI mode when output has already been sent
+// (session operations warn about "headers already sent" but work fine in CLI)
+if (PrivilegeManager::getInstance()->isSudo() || PrivilegeManager::getInstance()->isRoot()) {
+    error_reporting(E_ALL & ~E_WARNING);
+}
+
 if (@include(dirname(__DIR__) . '/vendor/autoload.php'))
 {
     (new Hubzero\Base\Application())->run();
 }
 else // Start Minimal Muse
 {
-    define('HVERSION', '2.4.1');
-    define('HDATE', '2025-02-09 11:51:22');
+    // Use local variables instead of constants to avoid conflicts with app.php
+    $minimalVersion = '2.4.1';
+    $minimalDate = '2025-02-09 11:51:22';
 
     $ansi = true;
     $help = false;
@@ -133,7 +161,7 @@ else // Start Minimal Muse
 
     if ($version)
     {
-        aecho("\e[32mMuse: HUBzero Command Line Interface\e[39m version \e[33m" . HVERSION . " (minimal)\e[39m " . HDATE . "\n");
+        aecho("\e[32mMuse: HUBzero Command Line Interface\e[39m version \e[33m" . $minimalVersion . " (minimal)\e[39m " . $minimalDate . "\n");
     }
     else if ($argv[1] == 'help')
     {
@@ -183,15 +211,68 @@ else // Start Minimal Muse
             aecho("    \e[32mmuse list test\e[39m\n");
             aecho("\n");
         }
-        else if ($argc > 1 && $argv[2] == 'vendor:install')
+        else if ($argc > 1 && $argv[2] == 'install')
         {
-            echo "\n";
-            echo "Overview:\n";
-            echo "  Core Management\n";
-            echo "\n";
-            echo "Namespaces:\n";
-            echo "  vendor  Tasks for managing composer packages in the vendor directory\n";
-            echo "\n";
+            // Check if next arg is 'vendor', 'check', or 'appdir' for subcommand help
+            $subcommand = isset($argv[3]) ? $argv[3] : null;
+
+            aecho("\e[33mDescription:\e[39m\n");
+            if ($subcommand == 'vendor')
+            {
+                aecho("  Install composer dependencies only\n");
+            }
+            else if ($subcommand == 'check')
+            {
+                aecho("  Run pre-flight checks without installing\n");
+            }
+            else if ($subcommand == 'appdir')
+            {
+                aecho("  Create the app directory structure only\n");
+            }
+            else if ($subcommand == 'database')
+            {
+                aecho("  Configure database connection only\n");
+            }
+            else
+            {
+                aecho("  Run the HUBzero installation process\n");
+            }
+            aecho("\n");
+            aecho("\e[33mUsage:\e[39m\n");
+            aecho("  install [vendor|check|appdir|database] [options]\n");
+            aecho("\n");
+            aecho("\e[33mArguments:\e[39m\n");
+            aecho("  \e[32mvendor\e[39m                          Install only composer dependencies\n");
+            aecho("  \e[32mcheck\e[39m                           Run pre-flight checks without installing\n");
+            aecho("  \e[32mappdir\e[39m                          Create the app directory structure only\n");
+            aecho("  \e[32mdatabase\e[39m                        Configure database connection only\n");
+            aecho("\n");
+            options();
+            aecho("\n");
+            aecho("\e[33mHelp:\e[39m\n");
+            aecho("  The \e[32minstall\e[39m command runs the full HUBzero installation:\n");
+            aecho("\n");
+            aecho("    \e[32mmuse install\e[39m\n");
+            aecho("\n");
+            aecho("  To install only composer dependencies:\n");
+            aecho("\n");
+            aecho("    \e[32mmuse install vendor\e[39m\n");
+            aecho("\n");
+            aecho("  To run pre-flight checks without installing:\n");
+            aecho("\n");
+            aecho("    \e[32mmuse install check\e[39m\n");
+            aecho("\n");
+            aecho("  To create just the app directory structure:\n");
+            aecho("\n");
+            aecho("    \e[32mmuse install appdir\e[39m\n");
+            aecho("\n");
+            aecho("  To configure the database connection:\n");
+            aecho("\n");
+            aecho("    \e[32mmuse install database\e[39m\n");
+            aecho("\n");
+            aecho("  If composer dependencies are not installed, they will be installed automatically\n");
+            aecho("  before running the full installation.\n");
+            aecho("\n");
         }
         else
         {
@@ -213,7 +294,7 @@ else // Start Minimal Muse
         aecho("/_/  /_/\__,_/____/\___/\n");
         aecho("\n");
 
-        aecho("\e[32mMuse: HUBzero Command Line Interface\e[39m version \e[33m" . HVERSION . " (minimal)\e[39m " . HDATE . "\n");
+        aecho("\e[32mMuse: HUBzero Command Line Interface\e[39m version \e[33m" . $minimalVersion . " (minimal)\e[39m " . $minimalDate . "\n");
         aecho("\n");
 
         aecho("\e[33mUsage:\e[39m\n");
@@ -228,16 +309,24 @@ else // Start Minimal Muse
             aecho("\e[33mAvailable Commands:\e[39m\n");
             aecho("  \e[32mhelp\e[39m                            Display help for a command\n");
             aecho("  \e[32mlist\e[39m                            List commands\n");
-            aecho(" \e[33mvendor\e[39m\n");
-            aecho("  \e[32mvendor:install\e[39m                  Install the project dependencies from the composer.lock file if present, or falls back on the composer.json\n");
+            aecho(" \e[33minstall\e[39m\n");
+            aecho("  \e[32minstall\e[39m                         Run the full HUBzero installation process\n");
+            aecho("  \e[32minstall appdir\e[39m                  Create the app directory structure only\n");
+            aecho("  \e[32minstall check\e[39m                   Run pre-flight checks without installing\n");
+            aecho("  \e[32minstall database\e[39m                Configure database connection only\n");
+            aecho("  \e[32minstall vendor\e[39m                  Install composer dependencies only\n");
         }
         else if ($argc == 3)
         {
-            if ($argv[2] == 'vendor')
+            if ($argv[2] == 'install')
             {
                 aecho("\n");
-                aecho("\e[33mAvailable commands for the \"vendor\" namespace:\e[39m\n");
-                aecho("   \e[32mvendor:install\e[39m  Install the project dependencies from the composer.lock file if present, or falls back on the composer.json\n");
+                aecho("\e[33mAvailable commands for the \"install\" namespace:\e[39m\n");
+                aecho("  \e[32minstall\e[39m          Run the full HUBzero installation process\n");
+                aecho("  \e[32minstall appdir\e[39m   Create the app directory structure only\n");
+                aecho("  \e[32minstall check\e[39m    Run pre-flight checks without installing\n");
+                aecho("  \e[32minstall database\e[39m Configure database connection only\n");
+                aecho("  \e[32minstall vendor\e[39m   Install composer dependencies only\n");
             }
             else
             {
@@ -257,56 +346,123 @@ else // Start Minimal Muse
             aecho("\n",true);
         }
     }
-    else if ($argv[1] == "vendor:install")
+    // Handle install command
+    if ($argv[1] == "install")
     {
-        if ($ansi)
+        // In minimal mode, only certain subcommands are valid
+        // Any other subcommand requires full muse
+        $validSubcommands = ['vendor', 'check', 'appdir', 'database'];
+        if (isset($argv[2]) && !in_array($argv[2], $validSubcommands))
         {
-            $options = " --ansi";
-        }
-        else
-        {
-            $options = " --no-ansi";
+            aecho("\n", true);
+            aecho("\e[37;41mERROR:\e[39;49m Command \"install {$argv[2]}\" is not available.\n", true);
+            aecho("\n", true);
+            aecho("Only \e[32mmuse install\e[39m, \e[32mmuse install check\e[39m, \e[32mmuse install vendor\e[39m, \e[32mmuse install appdir\e[39m, and \e[32mmuse install database\e[39m are available before dependencies are installed.\n", true);
+            aecho("\n", true);
+            exit(1);
         }
 
-        if ($quiet)
-        {
-            $options .= " --quiet";
-        }
+        $vendorOnly = (isset($argv[2]) && $argv[2] == "vendor");
+        $checkOnly = (isset($argv[2]) && $argv[2] == "check");
+        $appdirOnly = (isset($argv[2]) && $argv[2] == "appdir");
+        $databaseOnly = (isset($argv[2]) && $argv[2] == "database");
+        $vendorPath = dirname(__DIR__) . '/vendor/autoload.php';
+        $force = in_array('--force', $argv);
 
-        if ($verbose)
+        // For check-only mode, run all preflight checks (including vendor)
+        if ($checkOnly)
         {
-            $options .= "-v";
+            require_once dirname(__DIR__) . '/libraries/Hubzero/Console/Command/Install/Preflight.php';
 
-            if ($verbose > 1)
+            $passed = Hubzero\Console\Command\Install\Preflight::check($ansi, dirname(dirname(__DIR__)), $force);
+
+            aecho("\n");
+            if ($passed)
             {
-                $options = ($verbose == 2) ? 'v' : 'vv';
+                aecho("\e[32mAll pre-flight checks passed!\e[39m\n");
+            }
+            else
+            {
+                aecho("\e[31mSome pre-flight checks failed.\e[39m\n", true);
+            }
+            aecho("\n");
+            exit($passed ? 0 : 1);
+        }
+
+        // For appdir-only mode, create the app directory structure
+        if ($appdirOnly)
+        {
+            require_once dirname(__DIR__) . '/libraries/Hubzero/Console/Command/Install/AppDirectory.php';
+
+            $success = Hubzero\Console\Command\Install\AppDirectory::create($ansi, dirname(dirname(__DIR__)) . '/app');
+
+            exit($success ? 0 : 1);
+        }
+
+        // For database-only mode, configure the database
+        if ($databaseOnly)
+        {
+            require_once dirname(__DIR__) . '/libraries/Hubzero/Console/Command/Install/Database.php';
+
+            $success = Hubzero\Console\Command\Install\Database::configure($ansi, dirname(dirname(__DIR__)) . '/app');
+
+            exit($success ? 0 : 1);
+        }
+
+        // Install vendor dependencies if needed or if explicitly requested
+        if (!file_exists($vendorPath) || $vendorOnly)
+        {
+            // Use shared vendor installation class
+            require_once dirname(__DIR__) . '/libraries/Hubzero/Console/Command/Install/Vendor.php';
+
+            if (!Hubzero\Console\Command\Install\Vendor::install($ansi, $quiet, dirname(__DIR__)))
+            {
+                exit(1);
+            }
+
+            // If vendor only, we're done
+            if ($vendorOnly)
+            {
+                exit(0);
             }
         }
 
-        aecho("\n");
+        // Run preflight checks for full install (vendor is now installed)
+        require_once dirname(__DIR__) . '/libraries/Hubzero/Console/Command/Install/Preflight.php';
 
-        if (file_exists(__DIR__ . "/composer"))
+        if (!Hubzero\Console\Command\Install\Preflight::check($ansi, dirname(dirname(__DIR__)), $force))
         {
-            exec(__DIR__ . "/composer install $options -d " . dirname(__DIR__), $output);
+            exit(1);
+        }
 
-            foreach($output as $line)
-            {
-                aecho("$line\n");
-            }
+        // Vendor is now installed, load the autoloader and run full muse
+        // Suppress session warnings in CLI mode - they're harmless when output has been sent
+        // (session operations warn about "headers already sent" but work fine in CLI)
+        $previousErrorLevel = error_reporting(E_ALL & ~E_WARNING);
+
+        if (include($vendorPath))
+        {
+            (new Hubzero\Base\Application())->run();
         }
         else
         {
-            aecho("\n",true);
-            aecho("\e[37;41mERROR:\e[39;49m " . __DIR__ . "/composer: No such file.\n",true);
-            aecho("\n",true);  
+            aecho("\n", true);
+            aecho("\e[37;41mERROR:\e[39;49m Failed to load composer autoloader.\n", true);
+            aecho("\n", true);
+            exit(1);
         }
-
-        aecho("\n");
     }
     else
     {
         aecho("\n",true);
-        aecho("\e[37;41mERROR:\e[39;49m Command \"{$argv[1]}\" is not defined.\n",true);
+        aecho("\e[37;41mERROR:\e[39;49m Command \"{$argv[1]}\" is not available.\n",true);
+        aecho("\n",true);
+        aecho("HUBzero is not installed yet. Muse is missing required dependencies\n",true);
+        aecho("and cannot look up or run commands.\n",true);
+        aecho("\n",true);
+        aecho("To install HUBzero, run:\n",true);
+        aecho("\n",true);
+        aecho("    \e[32mmuse install\e[39m\n",true);
         aecho("\n",true);
     }
 }
