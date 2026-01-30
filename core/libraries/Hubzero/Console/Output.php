@@ -559,6 +559,16 @@ class Output
 	}
 
 	/**
+	 * Check if output is colored
+	 *
+	 * @return  bool
+	 **/
+	public function isColored()
+	{
+		return $this->colored;
+	}
+
+	/**
 	 * Simple translation table to map color words to bash equivalents
 	 *
 	 * @param   string  $color  Human readable color name
