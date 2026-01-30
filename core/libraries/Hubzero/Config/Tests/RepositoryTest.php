@@ -21,11 +21,6 @@ class RepositoryTest extends Basic
     /**
      * Tests the constructor sets loader and client
      *
-     * @covers  \Hubzero\Config\Repository::__construct
-     * @covers  \Hubzero\Config\Repository::setLoader
-     * @covers  \Hubzero\Config\Repository::getLoader
-     * @covers  \Hubzero\Config\Repository::setClient
-     * @covers  \Hubzero\Config\Repository::getClient
      * @return  void
      **/
     public function testConstructor()
@@ -62,8 +57,6 @@ class RepositoryTest extends Basic
     /**
      * Tests get()
      *
-     * @covers  \Hubzero\Config\Repository::load
-     * @covers  \Hubzero\Config\Repository::get
      * @return  void
      **/
     public function testSetAndGet()

@@ -11,6 +11,7 @@ namespace Hubzero\Template\Tests;
 use Hubzero\Test\Database;
 use Hubzero\Template\Loader;
 use Hubzero\Base\Application;
+use Hubzero\Config\Registry;
 
 /**
  * Template loader test
@@ -33,12 +34,14 @@ class LoaderTest extends Database
      */
     public function setUp(): void
     {
+        parent::setUp();
+
         \Hubzero\Database\Relational::setDefaultConnection($this->getMockDriver());
 
         $app = new Application();
         $app['client'] = new \Hubzero\Base\Client\Site();
         $app['db']     = $this->getMockDriver();
-        $app['config'] = \App::get('config');
+        $app['config'] = new Registry();
 
         $this->loader = new Loader($app, [
             'path_app'  => __DIR__ . '/Mock/app',
@@ -49,7 +52,6 @@ class LoaderTest extends Database
     /**
      * Test the getPath() method.
      *
-     * @covers  \Hubzero\Template\Loader::getPath
      * @return  void
      */
     public function testGetPath()
@@ -63,7 +65,6 @@ class LoaderTest extends Database
     /**
      * Test the setPath() method.
      *
-     * @covers  \Hubzero\Template\Loader::setPath
      * @return  void
      */
     public function testSetPath()
@@ -86,7 +87,6 @@ class LoaderTest extends Database
     /**
      * Test that the system template is built and returned properly
      *
-     * @covers  \Hubzero\Template\Loader::getSystemTemplate
      * @return  void
      */
     public function testGetSystemTemplate()
@@ -107,8 +107,6 @@ class LoaderTest extends Database
     /**
      * Test the setStyle() and getStyle() methods.
      *
-     * @covers  \Hubzero\Template\Loader::setStyle
-     * @covers  \Hubzero\Template\Loader::getStyle
      * @return  void
      */
     public function testSetGetStyle()
@@ -125,8 +123,6 @@ class LoaderTest extends Database
     /**
      * Test the setLang() and getLang() methods.
      *
-     * @covers  \Hubzero\Template\Loader::setLang
-     * @covers  \Hubzero\Template\Loader::getLang
      * @return  void
      */
     public function testSetGetLang()
@@ -143,7 +139,6 @@ class LoaderTest extends Database
     /**
      * Test the the constructor is properly setting all optional values
      *
-     * @covers  \Hubzero\Template\Loader::__construct
      * @return  void
      */
     public function testConstructor()
@@ -153,7 +148,7 @@ class LoaderTest extends Database
         $app = new Application();
         $app['client'] = new \Hubzero\Base\Client\Site();
         $app['db']     = $this->getMockDriver();
-        $app['config'] = \App::get('config');
+        $app['config'] = new Registry();
 
         $loader = new Loader($app, [
             'path_app'  => __DIR__ . '/Mock/app',
@@ -171,7 +166,10 @@ class LoaderTest extends Database
     /**
      * Test that the system template is built and returned properly
      *
-     * @covers  \Hubzero\Template\Loader::getTemplate
+     * Note: This test requires MySQL-compatible SQL quoting. The Hubzero Query
+     * builder uses double quotes for string literals, which SQLite interprets
+     * as identifiers. Skip this test when using SQLite as test database.
+     *
      * @return  void
      */
     public function testGetTemplate()
@@ -248,12 +246,11 @@ class LoaderTest extends Database
     /**
      * Test loading a template by client ID
      *
-     * @covers  \Hubzero\Template\Loader::load
      * @return  void
      */
     public function testLoad()
     {
-        // Load tmeplate by current client (site)
+        // Load template by current client (site)
         $template = $this->loader->load();
 
         $this->assertTrue(is_object($template));
@@ -292,7 +289,7 @@ class LoaderTest extends Database
             DIRECTORY_SEPARATOR .
             $template->template);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $template = $this->loader->load('foobar');
     }
@@ -300,7 +297,6 @@ class LoaderTest extends Database
     /**
      * Test that the system template is returned on a database error
      *
-     * @covers  \Hubzero\Template\Loader::load
      * @return  void
      */
     public function testDatabaseError()
@@ -313,7 +309,7 @@ class LoaderTest extends Database
         $app = new Application();
         $app['client'] = new \Hubzero\Base\Client\Site();
         $app['db']     = $this->getMockDriver();
-        $app['config'] = \App::get('config');
+        $app['config'] = new Registry();
 
         $this->loader = new Loader($app, [
             'path_app'  => __DIR__ . '/Mock/app',

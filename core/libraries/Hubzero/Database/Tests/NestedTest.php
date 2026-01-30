@@ -23,6 +23,8 @@ class NestedTest extends Database
      **/
     public function setUp(): void
     {
+        parent::setUp();
+
         \Hubzero\Database\Relational::setDefaultConnection($this->getMockDriver());
     }
 

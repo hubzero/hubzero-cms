@@ -19,11 +19,6 @@ class FileLoaderTest extends Basic
     /**
      * Tests constructor
      *
-     * @covers  \Hubzero\Config\FileLoader::__construct
-     * @covers  \Hubzero\Config\FileLoader::getDefaultPath
-     * @covers  \Hubzero\Config\FileLoader::getPaths
-     * @covers  \Hubzero\Config\FileLoader::getParser
-     * @covers  \Hubzero\Config\FileLoader::load
      * @return  void
      **/
     public function testLoad()

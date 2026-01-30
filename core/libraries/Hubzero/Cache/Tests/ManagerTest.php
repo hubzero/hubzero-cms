@@ -10,7 +10,7 @@ namespace Hubzero\Cache\Tests;
 
 use Hubzero\Cache\Storage\None;
 use Hubzero\Cache\Manager;
-use Hubzero\Base\Application;
+use Hubzero\Container\Container;
 use Hubzero\Config\Registry;
 
 /**
@@ -40,7 +40,9 @@ class ManagerTest extends \PHPUnit\Framework\TestCase
 
         $config = json_decode(file_get_contents($configurationFile), true);
 
-        $app = new Application();
+        // Use Container instead of Application to avoid destructor
+        // that flushes output buffers (causes PHPUnit risky test warning)
+        $app = new Container();
         $app['config'] = new Registry();
         foreach ($config as $key => $value) {
             $app['config']->set($key, $value);

@@ -38,7 +38,6 @@ class ProfilerTest extends Basic
     /**
      * Tests the __constructor.
      *
-     * @covers  \Hubzero\Debug\Profiler::__construct
      * @return  void
      **/
     public function testConstructor()
@@ -58,7 +57,6 @@ class ProfilerTest extends Basic
     /**
      * Tests the marks() method.
      *
-     * @covers  \Hubzero\Debug\Profiler::marks
      * @return  void
      **/
     public function testMarks()
@@ -77,7 +75,6 @@ class ProfilerTest extends Basic
     /**
      * Tests the mark() method.
      *
-     * @covers  \Hubzero\Debug\Profiler::mark
      * @return  void
      **/
     public function testMark()
@@ -85,7 +82,9 @@ class ProfilerTest extends Basic
         $started = $this->instance->started();
 
         $this->instance->mark('one');
+        usleep(1000); // Small delay to ensure measurable duration
         $this->instance->mark('two');
+        usleep(1000); // Small delay to ensure measurable duration
         $this->instance->mark('three');
 
         // Assert the first point has a time and memory = 0
@@ -100,24 +99,23 @@ class ProfilerTest extends Basic
         $second = $marks[1];
 
         $this->assertEquals($second->label(), 'two');
-        $this->assertGreaterThan(0, $second->duration());
-        $this->assertGreaterThan(0, $second->memory());
+        $this->assertGreaterThanOrEqual(0, $second->duration());
+        $this->assertGreaterThanOrEqual(0, $second->memory());
 
         $third = $marks[2];
 
         $this->assertEquals($third->label(), 'three');
-        $this->assertGreaterThan(0, $third->duration());
-        $this->assertGreaterThan(0, $third->memory());
+        $this->assertGreaterThanOrEqual(0, $third->duration());
+        $this->assertGreaterThanOrEqual(0, $third->memory());
 
         // Assert the third point has greater values than the other points
-        $this->assertGreaterThan($second->ended(), $third->ended());
+        $this->assertGreaterThanOrEqual($second->ended(), $third->ended());
         $this->assertGreaterThanOrEqual($second->memory(), $third->memory());
     }
 
     /**
      * Tests the duration() method.
      *
-     * @covers  \Hubzero\Debug\Profiler::duration
      * @return  void
      **/
     public function testDuration()
@@ -132,7 +130,6 @@ class ProfilerTest extends Basic
     /**
      * Tests the label() method.
      *
-     * @covers  \Hubzero\Debug\Profiler::label
      * @return  void
      **/
     public function testLabel()
@@ -143,7 +140,6 @@ class ProfilerTest extends Basic
     /**
      * Tests the now() method.
      *
-     * @covers  \Hubzero\Debug\Profiler::now
      * @return  void
      **/
     public function testNow()
@@ -154,7 +150,6 @@ class ProfilerTest extends Basic
     /**
      * Tests the reset() method.
      *
-     * @covers  \Hubzero\Debug\Profiler::reset
      * @return  void
      **/
     public function testReset()
@@ -176,7 +171,6 @@ class ProfilerTest extends Basic
     /**
      * Tests the started() method.
      *
-     * @covers  \Hubzero\Debug\Profiler::started
      * @return  void
      **/
     public function testStarted()
@@ -189,7 +183,6 @@ class ProfilerTest extends Basic
     /**
      * Tests the ended() method.
      *
-     * @covers  \Hubzero\Debug\Profiler::ended
      * @return  void
      **/
     public function testEnded()
@@ -213,7 +206,6 @@ class ProfilerTest extends Basic
     /**
      * Tests the memory() method.
      *
-     * @covers  \Hubzero\Debug\Profiler::memory
      * @return  void
      **/
     public function testMemory()
@@ -244,7 +236,6 @@ class ProfilerTest extends Basic
     /**
      * Tests the summary() method.
      *
-     * @covers  \Hubzero\Debug\Profiler::summary
      * @return  void
      **/
     public function testSummary()

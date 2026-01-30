@@ -19,7 +19,6 @@ class ProcessorTest extends Basic
     /**
      * Tests all()
      *
-     * @covers  \Hubzero\Config\Processor::all
      * @return  void
      **/
     public function testAll()
@@ -36,7 +35,6 @@ class ProcessorTest extends Basic
     /**
      * Tests the instance() method
      *
-     * @covers  \Hubzero\Config\Processor::instance
      * @return  void
      **/
     public function testInstance()
@@ -53,35 +51,30 @@ class ProcessorTest extends Basic
     }
 
     /**
-     * Tests getSupportedExtensions()
+     * Tests getSupportedExtensions() through a concrete implementation
      *
-     * @covers  \Hubzero\Config\Processor::getSupportedExtensions
      * @return  void
      **/
     public function testGetSupportedExtensions()
     {
-        $stub = $this->getMockForAbstractClass('Hubzero\Config\Processor');
-        $stub->expects($this->any())
-            ->method('getSupportedExtensions')
-            ->will($this->returnValue(array()));
+        $processor = Processor::instance('json');
+        $extensions = $processor->getSupportedExtensions();
 
-        $this->assertEquals(array(), $stub->getSupportedExtensions());
+        $this->assertIsArray($extensions);
+        $this->assertContains('json', $extensions);
     }
 
     /**
-     * Tests parse()
+     * Tests stringToObject() through a concrete implementation
      *
-     * @covers  \Hubzero\Config\Processor::parse
      * @return  void
      **/
     public function testParse()
     {
-        $stub = $this->getMockForAbstractClass('Hubzero\Config\Processor');
-        $stub->expects($this->any())
-            ->method('parse')
-            ->with($this->isType('string'))
-            ->will($this->returnValue(array()));
+        $processor = Processor::instance('json');
+        $result = $processor->stringToObject('{"foo": "bar"}');
 
-        $this->assertEquals(array(), $stub->parse(__DIR__ . '/Tests/Files/test.json'));
+        $this->assertIsObject($result);
+        $this->assertEquals('bar', $result->foo);
     }
 }

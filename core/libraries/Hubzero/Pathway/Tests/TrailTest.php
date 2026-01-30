@@ -20,14 +20,6 @@ class TrailTest extends Basic
     /**
      * Test ArrayAccess methods
      *
-     * @covers  \Hubzero\Pathway\Trail::set
-     * @covers  \Hubzero\Pathway\Trail::get
-     * @covers  \Hubzero\Pathway\Trail::has
-     * @covers  \Hubzero\Pathway\Trail::forget
-     * @covers  \Hubzero\Pathway\Trail::offsetSet
-     * @covers  \Hubzero\Pathway\Trail::offsetGet
-     * @covers  \Hubzero\Pathway\Trail::offsetUnset
-     * @covers  \Hubzero\Pathway\Trail::offsetExists
      * @return  void
      **/
     public function testArrayAccessMethods()
@@ -76,7 +68,6 @@ class TrailTest extends Basic
      *  3. append() adds an Hubzero\Pathway\Item object to the items list
      *  4. append() adds to the END of the items list
      *
-     * @covers  \Hubzero\Pathway\Trail::append
      * @return  void
      **/
     public function testAppend()
@@ -107,7 +98,6 @@ class TrailTest extends Basic
      *  3. prepend() adds an Hubzero\Pathway\Item object to the items list
      *  4. prepend() adds to the BEGINNING of the items list
      *
-     * @covers  \Hubzero\Pathway\Trail::prepend
      * @return  void
      **/
     public function testPrepend()
@@ -134,7 +124,6 @@ class TrailTest extends Basic
     /**
      * Test the count() method returns the number of items added
      *
-     * @covers  \Hubzero\Pathway\Trail::count
      * @return  void
      **/
     public function testCount()
@@ -153,7 +142,6 @@ class TrailTest extends Basic
      *  2. the number of items in the array matches the number of items added
      *  3. the array returned contains just the names of the items added
      *
-     * @covers  \Hubzero\Pathway\Trail::names
      * @return  void
      **/
     public function testNames()
@@ -180,7 +168,6 @@ class TrailTest extends Basic
      *  2. the number of items in the array matches the number of items added
      *  3. the array returned contains a Hubzero\Pathway\Item object for each entry added
      *
-     * @covers  \Hubzero\Pathway\Trail::items
      * @return  void
      **/
     public function testItems()
@@ -207,7 +194,6 @@ class TrailTest extends Basic
      *  2. the number of items in the array matches the number of items added
      *  3. the array returned contains just the names of the items added
      *
-     * @covers  \Hubzero\Pathway\Trail::clear
      * @return  void
      **/
     public function testClear()
@@ -225,11 +211,6 @@ class TrailTest extends Basic
     /**
      * Tests array traversing methods
      *
-     * @covers  \Hubzero\Pathway\Trail::current
-     * @covers  \Hubzero\Pathway\Trail::key
-     * @covers  \Hubzero\Pathway\Trail::next
-     * @covers  \Hubzero\Pathway\Trail::valid
-     * @covers  \Hubzero\Pathway\Trail::rewind
      * @return  void
      **/
     public function testIterator()

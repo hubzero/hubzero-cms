@@ -48,7 +48,6 @@ class MemoryTest extends Basic
     /**
      * Test that the constructor provides an empty message bag
      *
-     * @covers  \Hubzero\Notification\Storage\Memory::__construct
      * @return  void
      **/
     public function testConstructor()
@@ -62,7 +61,6 @@ class MemoryTest extends Basic
     /**
      * Test that the store() method adds to the internal list
      *
-     * @covers  \Hubzero\Notification\Storage\Memory::store
      * @return  void
      **/
     public function testStore()
@@ -85,7 +83,6 @@ class MemoryTest extends Basic
     /**
      * Test that the lit of messages returned by the handler
      *
-     * @covers  \Hubzero\Notification\Storage\Memory::retrieve
      * @return  void
      **/
     public function testRetrieve()
@@ -105,7 +102,6 @@ class MemoryTest extends Basic
     /**
      * Tests clear() empties the message bag
      *
-     * @covers  \Hubzero\Notification\Storage\Memory::clear
      * @return  void
      **/
     public function testClear()
@@ -134,7 +130,6 @@ class MemoryTest extends Basic
     /**
      * Test that the total() method returns the correct count
      *
-     * @covers  \Hubzero\Notification\Storage\Memory::total
      * @return  void
      **/
     public function testTotal()
@@ -159,7 +154,6 @@ class MemoryTest extends Basic
     /**
      * Test that the key() method generates keys correctly
      *
-     * @covers  \Hubzero\Notification\Storage\Memory::key
      * @return  void
      **/
     public function testKey()

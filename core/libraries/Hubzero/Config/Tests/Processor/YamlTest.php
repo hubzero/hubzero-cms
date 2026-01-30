@@ -110,7 +110,6 @@ seo:
     /**
      * Tests the getSupportedExtensions() method.
      *
-     * @covers  \Hubzero\Config\Processor\Yaml::getSupportedExtensions
      * @return  void
      **/
     public function testGetSupportedExtensions()
@@ -126,7 +125,6 @@ seo:
     /**
      * Tests the canParse() method.
      *
-     * @covers  \Hubzero\Config\Processor\Yaml::canParse
      * @return  void
      **/
     public function testCanParse()
@@ -138,7 +136,6 @@ seo:
     /**
      * Tests the parse() method.
      *
-     * @covers  \Hubzero\Config\Processor\Yaml::parse
      * @return  void
      **/
     public function testParse()
@@ -163,8 +160,6 @@ seo:
     /**
      * Tests the objectToString() method.
      *
-     * @covers  \Hubzero\Config\Processor\Yaml::objectToString
-     * @covers  \Hubzero\Config\Processor\Yaml::asArray
      * @return  void
      **/
     public function testObjectToString()
@@ -183,8 +178,6 @@ seo:
     /**
      * Tests the stringToObject() method.
      *
-     * @covers  \Hubzero\Config\Processor\Yaml::stringToObject
-     * @covers  \Hubzero\Config\Processor\Yaml::toObject
      * @return  void
      **/
     public function testStringToObject()

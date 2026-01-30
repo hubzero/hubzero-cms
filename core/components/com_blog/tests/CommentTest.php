@@ -63,7 +63,6 @@ class CommentTest extends Database
      * Tests that a call for a non-existent row via oneOrFail method throws an exception
      *
      * @covers  Components\Blog\Models\Comment::oneOrFail
-     * @expectedException RuntimeException
      * @return  void
      **/
     public function testOneOrFailThrowsException()

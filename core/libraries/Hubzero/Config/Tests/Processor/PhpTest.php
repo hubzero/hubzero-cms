@@ -41,37 +41,20 @@ class PhpTest extends Basic
     private $arr = null;
 
     /**
-     * Expected data as a string
+     * Expected data as a string (array format)
      *
      * @var  string
      */
-    private $str = '<?php
-return array(
-	\'foo\' => \'1\',
-	\'bar\' => \'\',	\'app\' => array("application_env" => "development",
-	    "editor" => "ckeditor", "list_limit" => "25", "helpurl" => "English (GB) - HUBzero help", ' .
-        '"debug" => "1", "debug_lang" => "0", "sef" => "1", "sef_rewrite" => "1", "sef_suffix" => "0", ' .
-        '"sef_groups" => "0", "feed_limit" => "10", "feed_email" => "author"),
-	\'seo\' => array("sef" => "1",
-	    "sef_groups" => "0", "sef_rewrite" => "1", "sef_suffix" => "0", ' .
-        '"unicodeslugs" => "0", "sitename_pagetitles" => "0"),);';
+    private $str = null;
+
     /**
-     * Expected data as a string
+     * Expected data as a string (object format)
      *
      * @var  string
-     */    private $strObject = '<?php
-class Config
-{
-	var $foo = \'1\';
-	var $bar = \'\';
-	var $app = array("application_env" => "development",
-	    "editor" => "ckeditor", "list_limit" => "25", "helpurl" => "English (GB) - HUBzero help", ' .
-        '"debug" => "1", "debug_lang" => "0", "sef" => "1", "sef_rewrite" => "1", "sef_suffix" => "0", ' .
-        '"sef_groups" => "0", "feed_limit" => "10", "feed_email" => "author");
-	var $seo = array("sef" => "1",
-	    "sef_groups" => "0", "sef_rewrite" => "1", "sef_suffix" => "0", ' .
-        '"unicodeslugs" => "0", "sitename_pagetitles" => "0");
-}';    /**
+     */
+    private $strObject = null;
+
+    /**
      * Test setup
      *
      * @return  void
@@ -115,13 +98,34 @@ class Config
 
         $this->processor = new Php();
 
+        // Build expected string (array format)
+        $this->str = "<?php\nreturn array(\n\t'foo' => '1',\n\t'bar' => '',\n\t'app' => array("
+            . "\"application_env\" => \"development\", \"editor\" => \"ckeditor\", "
+            . "\"list_limit\" => \"25\", \"helpurl\" => \"English (GB) - HUBzero help\", "
+            . "\"debug\" => \"1\", \"debug_lang\" => \"0\", \"sef\" => \"1\", "
+            . "\"sef_rewrite\" => \"1\", \"sef_suffix\" => \"0\", \"sef_groups\" => \"0\", "
+            . "\"feed_limit\" => \"10\", \"feed_email\" => \"author\"),\n\t'seo' => array("
+            . "\"sef\" => \"1\", \"sef_groups\" => \"0\", \"sef_rewrite\" => \"1\", "
+            . "\"sef_suffix\" => \"0\", \"unicodeslugs\" => \"0\", "
+            . "\"sitename_pagetitles\" => \"0\"),\n);";
+
+        // Build expected string (object format)
+        $this->strObject = "<?php\nclass Config\n{\n\tvar \$foo = '1';\n\tvar \$bar = '';"
+            . "\n\tvar \$app = array(\"application_env\" => \"development\", "
+            . "\"editor\" => \"ckeditor\", \"list_limit\" => \"25\", "
+            . "\"helpurl\" => \"English (GB) - HUBzero help\", \"debug\" => \"1\", "
+            . "\"debug_lang\" => \"0\", \"sef\" => \"1\", \"sef_rewrite\" => \"1\", "
+            . "\"sef_suffix\" => \"0\", \"sef_groups\" => \"0\", \"feed_limit\" => \"10\", "
+            . "\"feed_email\" => \"author\");\n\tvar \$seo = array(\"sef\" => \"1\", "
+            . "\"sef_groups\" => \"0\", \"sef_rewrite\" => \"1\", \"sef_suffix\" => \"0\", "
+            . "\"unicodeslugs\" => \"0\", \"sitename_pagetitles\" => \"0\");\n}";
+
         parent::setUp();
     }
 
     /**
      * Tests the getSupportedExtensions() method.
      *
-     * @covers  \Hubzero\Config\Processor\Php::getSupportedExtensions
      * @return  void
      **/
     public function testGetSupportedExtensions()
@@ -136,7 +140,6 @@ class Config
     /**
      * Tests the canParse() method.
      *
-     * @covers  \Hubzero\Config\Processor\Php::canParse
      * @return  void
      **/
     public function testCanParse()
@@ -147,7 +150,6 @@ class Config
     /**
      * Tests the parse() method.
      *
-     * @covers  \Hubzero\Config\Processor\Php::parse
      * @return  void
      **/
     public function testParse()
@@ -163,7 +165,6 @@ class Config
     /**
      * Test a PHP file containing a callable
      *
-     * @covers  \Hubzero\Config\Processor\Php::parse
      * @return  void
      **/
     public function testParseCallable()
@@ -179,7 +180,6 @@ class Config
     /**
      * Test that an exception is thrown and caught
      *
-     * @covers  \Hubzero\Config\Processor\Php::parse
      * @return  void
      **/
     public function testParseException()
@@ -195,7 +195,6 @@ class Config
     /**
      * Tests the parse() method throws an Exception for a bad PHP file.
      *
-     * @covers  \Hubzero\Config\Processor\Php::parse
      * @return  void
      **/
     public function testParseEmptyFile()
@@ -211,8 +210,6 @@ class Config
     /**
      * Tests the objectToString() method.
      *
-     * @covers  \Hubzero\Config\Processor\Php::objectToString
-     * @covers  \Hubzero\Config\Processor\Php::getArrayString
      * @return  void
      **/
     public function testObjectToString()
@@ -240,7 +237,6 @@ class Config
     /**
      * Tests the stringToObject() method.
      *
-     * @covers  \Hubzero\Config\Processor\Php::stringToObject
      * @return  void
      **/
     public function testStringToObject()

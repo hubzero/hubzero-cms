@@ -545,7 +545,7 @@ class QueryTest extends Database
         $query = new Query($dbo);
 
         if ($dbo->getConnection()->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'sqlite') {
-            $this->setExpectedException('\Hubzero\Database\Exception\UnsupportedSyntaxException');
+            $this->expectException(\Hubzero\Database\Exception\UnsupportedSyntaxException::class);
 
             $query->select('*')
                   ->from('users')
@@ -590,7 +590,7 @@ class QueryTest extends Database
         $query = new Query($dbo);
 
         if ($dbo->getConnection()->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'sqlite') {
-            $this->setExpectedException('\Hubzero\Database\Exception\UnsupportedSyntaxException');
+            $this->expectException(\Hubzero\Database\Exception\UnsupportedSyntaxException::class);
 
             $query->select('*')
                   ->from('users')
@@ -706,7 +706,7 @@ class QueryTest extends Database
         // Mock the query builder and tell it we only want to override the query method
         $query = $this->getMockBuilder('Hubzero\Database\Query')
                       ->setConstructorArgs([$dbo])
-                      ->setMethods(['query'])
+                      ->onlyMethods(['query'])
                       ->getMock();
 
         // Now set that we should only be calling the query method one time
@@ -735,7 +735,7 @@ class QueryTest extends Database
         // Mock the query builder and tell it we only want to override the query method
         $query = $this->getMockBuilder('Hubzero\Database\Query')
                       ->setConstructorArgs([$dbo])
-                      ->setMethods(['query'])
+                      ->onlyMethods(['query'])
                       ->getMock();
 
         // Now set that we should be calling the query exactly 2 times
@@ -956,7 +956,7 @@ class QueryTest extends Database
         $syntax = '\\Hubzero\\Database\\Syntax\\' . ucfirst($dbo->getSyntax());
         $syntax = new $syntax($dbo);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $syntax->setStart('beginning');
     }
@@ -972,7 +972,7 @@ class QueryTest extends Database
 
         $query = new Query($dbo);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $query->select('*')
               ->from('groups')
@@ -982,7 +982,7 @@ class QueryTest extends Database
         $syntax = '\\Hubzero\\Database\\Syntax\\' . ucfirst($dbo->getSyntax());
         $syntax = new $syntax($dbo);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $syntax->setStart(-50);
         */
@@ -1019,7 +1019,7 @@ class QueryTest extends Database
         $syntax = '\\Hubzero\\Database\\Syntax\\' . ucfirst($dbo->getSyntax());
         $syntax = new $syntax($dbo);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $syntax->setLimit('all');
     }
@@ -1034,7 +1034,7 @@ class QueryTest extends Database
         $dbo   = $this->getMockDriver();
         $query = new Query($dbo);
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $query->select('*')
               ->from('groups')
@@ -1084,7 +1084,7 @@ class QueryTest extends Database
         );
 
         // Test that an exception is thrown if order is not asc or desc
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(\InvalidArgumentException::class);
 
         $query = new Query($dbo);
         $query->select('*')

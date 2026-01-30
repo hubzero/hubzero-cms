@@ -13,3 +13,5 @@ config/
 favicon.ico
 .phan/**
 psalm.xml
+.phpunit.result.cache
+*.sqlite3

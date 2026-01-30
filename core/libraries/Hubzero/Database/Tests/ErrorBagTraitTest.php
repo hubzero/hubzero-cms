@@ -31,7 +31,9 @@ class ErrorBagTraitTest extends Basic
      */
     public function setUp(): void
     {
-        $this->traitObject = $this->getObjectForTrait('Hubzero\Database\Traits\ErrorBag');
+        $this->traitObject = new class {
+            use ErrorBag;
+        };
 
         parent::setUp();
     }
@@ -39,10 +41,6 @@ class ErrorBagTraitTest extends Basic
     /**
      * Test ErrorBag methods
      *
-     * @covers  \Hubzero\Database\Traits\ErrorBag::addError
-     * @covers  \Hubzero\Database\Traits\ErrorBag::setErrors
-     * @covers  \Hubzero\Database\Traits\ErrorBag::getError
-     * @covers  \Hubzero\Database\Traits\ErrorBag::getErrors
      * @return  void
      **/
     public function testErrorBag()

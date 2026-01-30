@@ -19,18 +19,19 @@ class StrTest extends Basic
     /**
      * Tests extracting key/value pairs out of a string with XML style attributes
      *
-     * @covers  \Hubzero\Utility\Str::parseAttributes
      * @return  void
      **/
     public function testParseAttributes()
     {
+        $fieldStr = '<field description="Duis mollis, est non commodo luctus." '
+            . 'default=0 height=55 width="35" type = "list">';
+
         $strings = array(
             'a href="http://hubzero.org" title="HUBzero"' => array(
                 'href'  => 'http://hubzero.org',
                 'title' => 'HUBzero'
             ),
-            '<field description="Duis mollis, 
-                est non commodo luctus." default=0 height=55 width="35" type = "list">' => array(
+            $fieldStr => array(
                 'description' => 'Duis mollis, est non commodo luctus.',
                 //'default'     => '0',
                 //'height'      => '55',
@@ -51,7 +52,6 @@ class StrTest extends Basic
     /**
      * Tests converting a string to snake case
      *
-     * @covers  \Hubzero\Utility\Str::snake
      * @return  void
      **/
     public function testSnake()
@@ -74,7 +74,6 @@ class StrTest extends Basic
     /**
      * Tests splitting a string in camel case format
      *
-     * @covers  \Hubzero\Utility\Str::camel
      * @return  void
      **/
     public function testCamel()
@@ -97,7 +96,6 @@ class StrTest extends Basic
     /**
      * Tests splitting a string in camel case format
      *
-     * @covers  \Hubzero\Utility\Str::splitCamel
      * @return  void
      **/
     public function testSplitCamel()
@@ -120,7 +118,6 @@ class StrTest extends Basic
     /**
      * Tests if a given string contains a given substring.
      *
-     * @covers  \Hubzero\Utility\Str::contains
      * @return  void
      **/
     public function testContains()
@@ -151,7 +148,6 @@ class StrTest extends Basic
     /**
      * Tests if a given string starts with a given substring.
      *
-     * @covers  \Hubzero\Utility\Str::startsWith
      * @return  void
      **/
     public function testStartsWith()
@@ -188,7 +184,6 @@ class StrTest extends Basic
     /**
      * Tests if a given string ends with a given substring.
      *
-     * @covers  \Hubzero\Utility\Str::endsWith
      * @return  void
      **/
     public function testEndsWith()
@@ -219,7 +214,6 @@ class StrTest extends Basic
     /**
      * Tests prefixing a string to a specificed length.
      *
-     * @covers  \Hubzero\Utility\Str::pad
      * @return  void
      **/
     public function testPad()
@@ -258,7 +252,6 @@ class StrTest extends Basic
     /**
      * Tests prefixing a string to a specificed length.
      *
-     * @covers  \Hubzero\Utility\Str::obfuscate
      * @return  void
      **/
     public function testObfuscate()
@@ -277,7 +270,6 @@ class StrTest extends Basic
     /**
      * Tests if a given string is truncated starting from the end.
      *
-     * @covers  \Hubzero\Utility\Str::tail
      * @return  void
      **/
     public function testTail()
@@ -308,7 +300,6 @@ class StrTest extends Basic
     /**
      * Tests if a given string is truncated starting from the end.
      *
-     * @covers  \Hubzero\Utility\Str::insert
      * @return  void
      **/
     public function testInsert()
@@ -327,7 +318,6 @@ class StrTest extends Basic
     /**
      * Test cleanInsert
      *
-     * @covers  \Hubzero\Utility\Str::cleanInsert
      * @return  void
      */
     public function testCleanInsert()
@@ -381,7 +371,6 @@ class StrTest extends Basic
     /**
      * Tests replacing &amp; with & for XHTML compliance
      *
-     * @covers  \Hubzero\Utility\Str::ampReplace
      * @return  void
      **/
     public function testAmpReplace()
@@ -401,7 +390,6 @@ class StrTest extends Basic
     /**
      * Tests truncating a block of text
      *
-     * @covers  \Hubzero\Utility\Str::truncate
      * @return  void
      **/
     public function testTruncate()
@@ -435,7 +423,6 @@ class StrTest extends Basic
     /**
      * Tests extracting an excerpt from text
      *
-     * @covers  \Hubzero\Utility\Str::excerpt
      * @return  void
      **/
     public function testExcerpt()
@@ -464,7 +451,6 @@ class StrTest extends Basic
     /**
      * Tests highlight() method.
      *
-     * @covers  \Hubzero\Utility\Str::highlight
      * @return  void
      */
     public function testHighlight()
@@ -519,8 +505,8 @@ class StrTest extends Basic
         $this->assertEquals($expected, Str::highlight($text2, 'strong', $options));
         $this->assertEquals($text3, Str::highlight($text3, 'strong', $options));
         $this->assertEquals($text3, Str::highlight($text3, ['strong', 'what'], $options));
-        $expected = '<b>What</b> a <b>strong</b> mouse: <img src="what-a-strong-mouse.png" alt="What a strong mouse!" 
-            />';
+        $expected = '<b>What</b> a <b>strong</b> mouse: '
+            . '<img src="what-a-strong-mouse.png" alt="What a strong mouse!" />';
         $this->assertEquals($expected, Str::highlight($text4, ['strong', 'what'], $options));
     }
 }

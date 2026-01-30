@@ -20,7 +20,6 @@ class StringProcessorTest extends Basic
     /**
      * Tests for setting and getting a StringProcessor
      *
-     * @covers  \Hubzero\Spam\StringProcessor\NoneStringProcessor::prepare
      * @return  void
      **/
     public function testNoneStringProcessor()
@@ -36,35 +35,34 @@ class StringProcessorTest extends Basic
     /**
      * Tests for setting and getting a StringProcessor
      *
-     * @covers  \Hubzero\Spam\StringProcessor\NativeStringProcessor::__construct
-     * @covers  \Hubzero\Spam\StringProcessor\NativeStringProcessor::prepare
      * @return  void
      **/
     public function testNativeStringProcessor()
     {
         // Test default preparation
-        $text = " Curabitur foo @ blandit up......er tempus porttitor[dot]\nLorem ipsum dolor sit \tamet, 
-            consectetur & adipiscing elit.";
+        $text = " Curabitur foo @ blandit up......er tempus porttitor[dot]\n"
+            . "Lorem ipsum dolor sit \tamet, consectetur & adipiscing elit.";
         $processor = new NativeStringProcessor();
         $result    = $processor->prepare($text);
-        $expected  = "curabitur foo @ blandit up......er tempus porttitor[dot]lorem ipsum dolor sit amet, 
-            consectetur & adipiscing elit.";
+        $expected  = "curabitur foo @ blandit up......er tempus porttitor[dot]"
+            . "lorem ipsum dolor sit amet, consectetur & adipiscing elit.";
         $this->assertEquals($result, $expected);
 
         // Test aggressive flag
         $processor = new NativeStringProcessor(array('aggressive' => true));
         $result    = $processor->prepare($text);
-        $expected  = "curabiturfooatblanditup.ertempusporttitor.loremipsumdolorsitametconsecteturadipiscingelit.";
+        $expected  = "curabiturfooatblanditup.ertempusporttitor."
+            . "loremipsumdolorsitametconsecteturadipiscingelit.";
 
         $this->assertEquals($result, $expected);
 
         // Test ASCII conversion flag
-        $text   = " Curabitur foo @ blandit ùp......er tempus porttitor[dot]\nLorem ipsum dölor sit \tamet, 
-            cönsectetur & adipiscing élit.";
+        $text = " Curabitur foo @ blandit ùp......er tempus porttitor[dot]\n"
+            . "Lorem ipsum dölor sit \tamet, cönsectetur & adipiscing élit.";
         $processor = new NativeStringProcessor(array('ascii_conversion' => true));
         $result    = $processor->prepare($text);
-        $expected  = "curabitur foo @ blandit up......er tempus porttitor[dot]lorem ipsum dolor sit amet, 
-            consectetur & adipiscing elit.";
+        $expected  = "curabitur foo @ blandit up......er tempus porttitor[dot]"
+            . "lorem ipsum dolor sit amet, consectetur & adipiscing elit.";
         $this->assertEquals($result, $expected);
     }
 }

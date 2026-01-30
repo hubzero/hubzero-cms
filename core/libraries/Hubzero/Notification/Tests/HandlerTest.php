@@ -48,7 +48,6 @@ class HandlerTest extends Basic
     /**
      * Test that the lit of messages returned by the handler
      *
-     * @covers  \Hubzero\Notification\Handler::message
      * @return  void
      **/
     public function testMessage()
@@ -97,7 +96,6 @@ class HandlerTest extends Basic
     /**
      * Test that the lit of messages returned by the handler
      *
-     * @covers  \Hubzero\Notification\Handler::messages
      * @return  void
      **/
     public function testMessages()
@@ -117,7 +115,6 @@ class HandlerTest extends Basic
     /**
      * Tests clear() empties the message bag
      *
-     * @covers  \Hubzero\Notification\Handler::clear
      * @return  void
      **/
     public function testClear()
@@ -149,7 +146,6 @@ class HandlerTest extends Basic
      * Test that messages added with info() are
      * assigned the appropriate type.
      *
-     * @covers  \Hubzero\Notification\Handler::info
      * @return  void
      **/
     public function testInfo()
@@ -168,7 +164,6 @@ class HandlerTest extends Basic
      * Test that messages added with success() are
      * assigned the appropriate type.
      *
-     * @covers  \Hubzero\Notification\Handler::success
      * @return  void
      **/
     public function testSuccess()
@@ -187,7 +182,6 @@ class HandlerTest extends Basic
      * Test that messages added with warning() are
      * assigned the appropriate type.
      *
-     * @covers  \Hubzero\Notification\Handler::warning
      * @return  void
      **/
     public function testWarning()
@@ -206,7 +200,6 @@ class HandlerTest extends Basic
      * Test that messages added with error() are
      * assigned the appropriate type.
      *
-     * @covers  \Hubzero\Notification\Handler::error
      * @return  void
      **/
     public function testError()
@@ -225,7 +218,6 @@ class HandlerTest extends Basic
      * Test that any() returns FALSE if there are no
      * messages and TRUE if there.
      *
-     * @covers  \Hubzero\Notification\Handler::any
      * @return  void
      **/
     public function testAny()
@@ -243,7 +235,6 @@ class HandlerTest extends Basic
      * Test that isEmpty() returns TRUE if there are no
      * messages and FALSE if there.
      *
-     * @covers  \Hubzero\Notification\Handler::isEmpty
      * @return  void
      **/
     public function testIsEmpty()
@@ -260,7 +251,6 @@ class HandlerTest extends Basic
     /**
      * Test that toArray() returns an array of messages
      *
-     * @covers  \Hubzero\Notification\Handler::toArray
      * @return  void
      **/
     public function testToArray()
@@ -280,7 +270,6 @@ class HandlerTest extends Basic
     /**
      * Test that toJson() returns a JSON string
      *
-     * @covers  \Hubzero\Notification\Handler::toJson
      * @return  void
      **/
     public function testToJson()
@@ -300,7 +289,6 @@ class HandlerTest extends Basic
     /**
      * Test __toString
      *
-     * @covers  \Hubzero\Notification\Handler::__toString
      * @return  void
      **/
     public function testToString()

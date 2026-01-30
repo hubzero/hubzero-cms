@@ -122,7 +122,6 @@ class XmlTest extends Basic
     /**
      * Tests the getSupportedExtensions() method.
      *
-     * @covers  \Hubzero\Config\Processor\Xml::getSupportedExtensions
      * @return  void
      **/
     public function testGetSupportedExtensions()
@@ -137,7 +136,6 @@ class XmlTest extends Basic
     /**
      * Tests the canParse() method.
      *
-     * @covers  \Hubzero\Config\Processor\Xml::canParse
      * @return  void
      **/
     public function testCanParse()
@@ -151,7 +149,6 @@ class XmlTest extends Basic
     /**
      * Tests the parse() method.
      *
-     * @covers  \Hubzero\Config\Processor\Xml::parse
      * @return  void
      **/
     public function testParse()
@@ -176,8 +173,6 @@ class XmlTest extends Basic
     /**
      * Tests the objectToString() method.
      *
-     * @covers  \Hubzero\Config\Processor\Xml::objectToString
-     * @covers  \Hubzero\Config\Processor\Xml::getXmlChildren
      * @return  void
      **/
     public function testObjectToString()
@@ -202,8 +197,6 @@ class XmlTest extends Basic
     /**
      * Tests the stringToObject() method.
      *
-     * @covers  \Hubzero\Config\Processor\Xml::stringToObject
-     * @covers  \Hubzero\Config\Processor\Xml::getValueFromNode
      * @return  void
      **/
     public function testStringToObject()

@@ -19,7 +19,6 @@ class MarkTest extends Basic
     /**
      * Tests that data passed in constructor is set to correct properties
      *
-     * @covers  \Hubzero\Debug\Profile\Mark::__construct
      * @return  void
      **/
     public function testConstructor()
@@ -43,7 +42,6 @@ class MarkTest extends Basic
      * Tests the label() method.
      *
      * @return  void
-     * @covers  \Hubzero\Debug\Profile\Mark::label
      */
     public function testLabel()
     {
@@ -55,7 +53,6 @@ class MarkTest extends Basic
      * Tests the started() method.
      *
      * @return  void
-     * @covers  \Hubzero\Debug\Profile\Mark::started
      */
     public function testStarted()
     {
@@ -70,7 +67,6 @@ class MarkTest extends Basic
      * Tests the ended() method.
      *
      * @return  void
-     * @covers  \Hubzero\Debug\Profile\Mark::ended
      */
     public function testEnded()
     {
@@ -85,7 +81,6 @@ class MarkTest extends Basic
      * Tests the duration() method.
      *
      * @return  void
-     * @covers  \Hubzero\Debug\Profile\Mark::duration
      */
     public function testDuration()
     {
@@ -100,7 +95,6 @@ class MarkTest extends Basic
      * Tests the memory() method.
      *
      * @return  void
-     * @covers  \Hubzero\Debug\Profile\Mark::memory
      */
     public function testMemory()
     {
@@ -115,8 +109,6 @@ class MarkTest extends Basic
      * Tests the toString() method.
      *
      * @return  void
-     * @covers  \Hubzero\Debug\Profile\Mark::toString
-     * @covers  \Hubzero\Debug\Profile\Mark::__toString
      */
     public function testToString()
     {
@@ -133,7 +125,6 @@ class MarkTest extends Basic
      * Tests the toArray() method.
      *
      * @return  void
-     * @covers  \Hubzero\Debug\Profile\Mark::toArray
      */
     public function testToArray()
     {

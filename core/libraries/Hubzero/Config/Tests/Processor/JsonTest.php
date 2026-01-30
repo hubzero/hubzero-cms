@@ -92,7 +92,6 @@ class JsonTest extends Basic
     /**
      * Tests the getSupportedExtensions() method.
      *
-     * @covers  \Hubzero\Config\Processor\Json::getSupportedExtensions
      * @return  void
      **/
     public function testGetSupportedExtensions()
@@ -107,7 +106,6 @@ class JsonTest extends Basic
     /**
      * Tests the canParse() method.
      *
-     * @covers  \Hubzero\Config\Processor\Json::canParse
      * @return  void
      **/
     public function testCanParse()
@@ -128,7 +126,6 @@ class JsonTest extends Basic
     /**
      * Tests the parse() method.
      *
-     * @covers  \Hubzero\Config\Processor\Json::parse
      * @return  void
      **/
     public function testParse()
@@ -153,7 +150,6 @@ class JsonTest extends Basic
     /**
      * Tests the objectToString() method.
      *
-     * @covers  \Hubzero\Config\Processor\Json::objectToString
      * @return  void
      **/
     public function testObjectToString()
@@ -172,7 +168,6 @@ class JsonTest extends Basic
     /**
      * Tests the stringToObject() method.
      *
-     * @covers  \Hubzero\Config\Processor\Json::stringToObject
      * @return  void
      **/
     public function testStringToObject()

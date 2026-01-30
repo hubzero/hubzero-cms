@@ -23,9 +23,6 @@ class CheckerTest extends Basic
     /**
      * Tests for setting and getting a StringProcessor
      *
-     * @covers  \Hubzero\Spam\Checker::__construct
-     * @covers  \Hubzero\Spam\Checker::setStringProcessor
-     * @covers  \Hubzero\Spam\Checker::getStringProcessor
      * @return  void
      **/
     public function testStringProcessor()
@@ -43,7 +40,6 @@ class CheckerTest extends Basic
      * Test to make sure a detector is registered properly
      * and returns $this.
      *
-     * @covers  \Hubzero\Spam\Checker::registerDetector
      * @return  void
      **/
     public function testRegisterDetector()
@@ -60,8 +56,6 @@ class CheckerTest extends Basic
     /**
      * Test to get a registered detector
      *
-     * @covers  \Hubzero\Spam\Checker::getDetector
-     * @covers  \Hubzero\Spam\Checker::classSimpleName
      * @return  void
      **/
     public function testGetDetector()
@@ -79,7 +73,6 @@ class CheckerTest extends Basic
     /**
      * Test that getDetectors returns an array of detectors
      *
-     * @covers  \Hubzero\Spam\Checker::getDetectors
      * @return  void
      **/
     public function testGetDetectors()
@@ -103,7 +96,6 @@ class CheckerTest extends Basic
     /**
      * Test that getReport() returns an array
      *
-     * @covers  \Hubzero\Spam\Checker::getReport
      * @return  void
      **/
     public function testGetReport()
@@ -119,9 +111,6 @@ class CheckerTest extends Basic
     /**
      * Test the check() method
      *
-     * @covers  \Hubzero\Spam\Checker::check
-     * @covers  \Hubzero\Spam\Checker::prepareData
-     * @covers  \Hubzero\Spam\Checker::mark
      * @return  void
      **/
     public function testCheck()

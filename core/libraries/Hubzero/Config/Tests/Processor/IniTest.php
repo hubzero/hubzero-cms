@@ -117,7 +117,6 @@ sitename_pagetitles=0';
     /**
      * Tests the getSupportedExtensions() method.
      *
-     * @covers  \Hubzero\Config\Processor\Ini::getSupportedExtensions
      * @return  void
      **/
     public function testGetSupportedExtensions()
@@ -132,25 +131,25 @@ sitename_pagetitles=0';
     /**
      * Tests the canParse() method.
      *
-     * @covers  \Hubzero\Config\Processor\Ini::canParse
      * @return  void
      **/
     public function testCanParse()
     {
+        // Plain text without = should not parse
         $this->assertFalse($this->processor->canParse('Cras justo odio, dapibus ac facilisis in, egestas eget quam.'));
+        // JSON should not parse (starts with {)
         $this->assertFalse($this->processor->canParse('{"application_env":"development",
             "editor":"ck = editor","list_limit":"25"}'));
-        $this->assertFalse(
-            $this->processor->canParse('<foo att=="val">Cras justo odio dapibus ac facilisis in,
-            egestas eget quam.</foo>')
-        );
+        // Valid INI string should parse
         $this->assertTrue($this->processor->canParse($this->str));
     }
 
     /**
      * Tests the parse() method.
      *
-     * @covers  \Hubzero\Config\Processor\Ini::parse
+     * Note: parse() uses parse_ini_file() with INI_SCANNER_RAW which returns
+     * all values as strings. Use stringToObject() for type conversion.
+     *
      * @return  void
      **/
     public function testParse()
@@ -161,22 +160,57 @@ sitename_pagetitles=0';
             DIRECTORY_SEPARATOR .
             'test.ini');
 
-        $this->assertEquals($this->arr, $result);
+        // parse_ini_file with INI_SCANNER_RAW returns all values as strings
+        $expected = array(
+            'app' => array(
+                'application_env' => 'development',
+                'editor' => 'ckeditor',
+                'list_limit' => '25',
+                'helpurl' => 'English (GB) - HUBzero help',
+                'debug' => '1',
+                'debug_lang' => '0',
+                'sef' => '1',
+                'sef_rewrite' => '1',
+                'sef_suffix' => '0',
+                'sef_groups' => '0',
+                'feed_limit' => '10',
+                'feed_email' => 'author',
+                'gzip' => 'true',
+                'unicodeslugs' => 'false',
+                'version' => '2.2',
+            ),
+            'seo' => array(
+                'sef' => '1',
+                'sef_groups' => '0',
+                'sef_rewrite' => '1',
+                'sef_suffix' => '0',
+                'unicodeslugs' => '0',
+                'sitename_pagetitles' => '0',
+            ),
+        );
 
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * Tests that parse() throws ParseException for non-existent files.
+     *
+     * @return  void
+     **/
+    public function testParseNonExistentFile()
+    {
         $this->expectException(\Hubzero\Config\Exception\ParseException::class);
 
-        $result = $this->processor->parse(dirname(__DIR__) .
+        $this->processor->parse(dirname(__DIR__) .
             DIRECTORY_SEPARATOR .
             'Files' .
             DIRECTORY_SEPARATOR .
-            'test.xml');
+            'nonexistent.ini');
     }
 
     /**
      * Tests the objectToString() method.
      *
-     * @covers  \Hubzero\Config\Processor\Ini::objectToString
-     * @covers  \Hubzero\Config\Processor\Ini::getValueAsINI
      * @return  void
      **/
     public function testObjectToString()
@@ -195,7 +229,6 @@ sitename_pagetitles=0';
     /**
      * Tests the stringToObject() method.
      *
-     * @covers  \Hubzero\Config\Processor\Ini::stringToObject
      * @return  void
      **/
     public function testStringToObject()

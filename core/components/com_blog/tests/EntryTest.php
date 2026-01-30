@@ -63,7 +63,6 @@ class EntryTest extends Database
      * Tests that a call for a non-existent row via oneOrFail method throws an exception
      *
      * @covers  Components\Blog\Models\Entry::oneOrFail
-     * @expectedException RuntimeException
      * @return  void
      **/
     public function testOneOrFailThrowsException()

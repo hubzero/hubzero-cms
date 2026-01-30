@@ -9,6 +9,9 @@
 namespace Hubzero\Base\Tests;
 
 use Hubzero\Test\Basic;
+use Hubzero\Container\Container;
+use Hubzero\Config\Registry;
+use Hubzero\Facades\Facade;
 
 /**
  * Helpers test
@@ -16,47 +19,71 @@ use Hubzero\Test\Basic;
 class HelpersTest extends Basic
 {
     /**
+     * The application container
+     *
+     * @var Container|null
+     */
+    protected static $app = null;
+
+    /**
+     * Set up the test environment
+     *
+     * @return  void
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        if (self::$app === null) {
+            self::$app = new Container();
+            self::$app['config'] = function () {
+                return new Registry([
+                    'application_env' => 'testing',
+                ]);
+            };
+            Facade::setApplication(self::$app);
+        }
+    }
+
+    /**
      * Test app()
      *
-     * @covers  \app()
      * @return  void
      **/
     public function testApp()
     {
         $app = app();
 
-        $this->assertInstanceOf('Hubzero\\Base\\Application', $app);
+        $this->assertInstanceOf(Container::class, $app);
 
         $config = app('config');
 
-        $this->assertInstanceOf('Hubzero\\Config\\Repository', $config);
+        $this->assertInstanceOf(Registry::class, $config);
     }
 
     /**
      * Test config()
      *
-     * @covers  \config()
      * @return  void
      **/
     public function testConfig()
     {
         $config = config();
 
-        $this->assertInstanceOf('Hubzero\\Config\\Repository', $config);
+        $this->assertInstanceOf(Registry::class, $config);
 
         $val = config('application_env');
 
-        $this->assertEquals($val, 'testing');
+        $this->assertEquals('testing', $val);
 
         $val = config('bar', 'foo');
 
-        $this->assertEquals($val, 'foo');
+        $this->assertEquals('foo', $val);
     }
 
     /**
      * Test with()
      *
-     * @covers  \with()
      * @return  void
      **/
     public function testWith()
@@ -74,7 +101,6 @@ class HelpersTest extends Basic
     /**
      * Test classExists()
      *
-     * @covers  \classExists()
      * @return  void
      **/
     public function testClassExists()

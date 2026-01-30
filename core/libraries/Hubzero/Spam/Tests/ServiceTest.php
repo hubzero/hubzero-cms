@@ -9,6 +9,7 @@
 namespace Hubzero\Spam\Tests;
 
 use Hubzero\Test\Basic;
+use Hubzero\Spam\Detector\Service;
 
 /**
  * Spam (abstract) Service tests
@@ -16,20 +17,20 @@ use Hubzero\Test\Basic;
 class ServiceTest extends Basic
 {
     /**
-     * Get the mock object
+     * Get the stub object
      *
      * @return  object
      **/
     protected function getStub()
     {
-        return $this->getMockForAbstractClass('Hubzero\Spam\Detector\Service');
+        return new class extends Service
+        {
+        };
     }
 
     /**
      * Tests for setting and getting a value
      *
-     * @covers  \Hubzero\Spam\Detector\Service::setValue
-     * @covers  \Hubzero\Spam\Detector\Service::getValue
      * @return  void
      **/
     public function testValue()
@@ -44,7 +45,6 @@ class ServiceTest extends Basic
     /**
      * Tests detect() returns false
      *
-     * @covers  \Hubzero\Spam\Detector\Service::detect
      * @return  void
      **/
     public function testDetect()
@@ -57,7 +57,6 @@ class ServiceTest extends Basic
     /**
      * Tests learn()
      *
-     * @covers  \Hubzero\Spam\Detector\Service::learn
      * @return  void
      **/
     public function testLearn()
@@ -73,7 +72,6 @@ class ServiceTest extends Basic
     /**
      * Tests forget()
      *
-     * @covers  \Hubzero\Spam\Detector\Service::forget
      * @return  void
      **/
     public function testForget()
@@ -88,7 +86,6 @@ class ServiceTest extends Basic
     /**
      * Tests message() returns an empty string
      *
-     * @covers  \Hubzero\Spam\Detector\Service::message
      * @return  void
      **/
     public function testMessage()

@@ -20,7 +20,6 @@ class ArrTest extends Basic
     /**
      * Tests converting values to integers
      *
-     * @covers  \Hubzero\Utility\Arr::toInteger
      * @return  void
      **/
     public function testToInteger()
@@ -94,7 +93,6 @@ class ArrTest extends Basic
     /**
      * Tests converting values to objects
      *
-     * @covers  \Hubzero\Utility\Arr::toObject
      * @return  void
      **/
     public function testToObject()
@@ -145,7 +143,6 @@ class ArrTest extends Basic
     /**
      * Tests converting values from objects
      *
-     * @covers  \Hubzero\Utility\Arr::fromObject
      * @return  void
      **/
     public function testFromObject()
@@ -207,7 +204,6 @@ class ArrTest extends Basic
     /**
      * Tests determining if array is associative array
      *
-     * @covers  \Hubzero\Utility\Arr::isAssociative
      * @return  void
      **/
     public function testIsAssociative()
@@ -238,7 +234,6 @@ class ArrTest extends Basic
     /**
      * Tests mapping an array to a string
      *
-     * @covers  \Hubzero\Utility\Arr::toString
      * @return  void
      **/
     public function testToString()
@@ -265,7 +260,6 @@ class ArrTest extends Basic
     /**
      * Tests returning a value from a named array
      *
-     * @covers  \Hubzero\Utility\Arr::getValue
      * @return  void
      **/
     public function testGetValue()
@@ -334,7 +328,6 @@ class ArrTest extends Basic
     /**
      * Tests extracting a column from an array
      *
-     * @covers  \Hubzero\Utility\Arr::getColumn
      * @return  void
      **/
     public function testGetColumn()
@@ -378,7 +371,6 @@ class ArrTest extends Basic
     /**
      * Tests that #filterKeys filters correctly
      *
-     * @covers  \Hubzero\Utility\Arr::filterKeys
      * @return  void
      **/
     public function testFilterKeysFilters()
@@ -394,7 +386,6 @@ class ArrTest extends Basic
     /**
      * Tests that #filterKeys does not change argument array
      *
-     * @covers  \Hubzero\Utility\Arr::filterKeys
      * @return  void
      **/
     public function testFilterKeysNonDestructive()
@@ -410,7 +401,6 @@ class ArrTest extends Basic
     /**
      * Tests that #pluck unsets the given key
      *
-     * @covers  \Hubzero\Utility\Arr::pluck
      * @return  void
      **/
     public function testPluckRemovesKey()
@@ -426,7 +416,6 @@ class ArrTest extends Basic
     /**
      * Tests that #pluck returns value under the given key
      *
-     * @covers  \Hubzero\Utility\Arr::pluck
      * @return  void
      **/
     public function testPluckReturnsValue()
@@ -443,7 +432,6 @@ class ArrTest extends Basic
     /**
      * Tests that #pluck returns default when key is missing
      *
-     * @covers  \Hubzero\Utility\Arr::pluck
      * @return  void
      **/
     public function testPluckReturnsDefaultIfKeyMissing()
@@ -460,7 +448,6 @@ class ArrTest extends Basic
     /**
      * Tests that #pluck returns default when value is null
      *
-     * @covers  \Hubzero\Utility\Arr::pluck
      * @return  void
      **/
     public function testPluckReturnsDefaultIfValueNull()
@@ -477,7 +464,6 @@ class ArrTest extends Basic
     /**
      * Tests multidimensional array unique
      *
-     * @covers  \Hubzero\Utility\Arr::arrayUnique
      * @return  void
      **/
     public function testArrayUnique()
@@ -515,7 +501,6 @@ class ArrTest extends Basic
     /**
      * Tests pivot method
      *
-     * @covers  \Hubzero\Utility\Arr::pivot
      * @return  void
      **/
     public function testPivot()
@@ -554,8 +539,6 @@ class ArrTest extends Basic
     /**
      * Tests sortObjects method
      *
-     * @covers  \Hubzero\Utility\Arr::sortObjects
-     * @covers  \Hubzero\Utility\Arr::_sortObjects
      * @return  void
      **/
     public function testSortObjects()

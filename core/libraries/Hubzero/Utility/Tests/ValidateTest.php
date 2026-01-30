@@ -20,7 +20,6 @@ class ValidateTest extends Basic
     /**
      * Tests if a value is a boolean integer or true/false
      *
-     * @covers  \Hubzero\Utility\Validate::boolean
      * @return  void
      **/
     public function testBoolean()
@@ -46,7 +45,6 @@ class ValidateTest extends Basic
     /**
      * Tests if a value is within a specified range.
      *
-     * @covers  \Hubzero\Utility\Validate::between
      * @return  void
      **/
     public function testBetween()
@@ -86,7 +84,6 @@ class ValidateTest extends Basic
     /**
      * Tests if a value is numeric.
      *
-     * @covers  \Hubzero\Utility\Validate::numeric
      * @return  void
      **/
     public function testNumeric()
@@ -113,7 +110,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is an integer
      *
-     * @covers  \Hubzero\Utility\Validate::integer
      * @return  void
      **/
     public function testInteger()
@@ -141,7 +137,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is a positive integer
      *
-     * @covers  \Hubzero\Utility\Validate::positiveInteger
      * @return  void
      **/
     public function testPositiveInteger()
@@ -170,7 +165,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is a non positive integer
      *
-     * @covers  \Hubzero\Utility\Validate::nonPositiveInteger
      * @return  void
      **/
     public function testNonPositiveInteger()
@@ -196,7 +190,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is a non-negative integer
      *
-     * @covers  \Hubzero\Utility\Validate::nonNegativeInteger
      * @return  void
      **/
     public function testNonNegativeInteger()
@@ -222,7 +215,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is a negative integer
      *
-     * @covers  \Hubzero\Utility\Validate::negativeInteger
      * @return  void
      **/
     public function testNegativeInteger()
@@ -248,7 +240,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is an orcid
      *
-     * @covers  \Hubzero\Utility\Validate::orcid
      * @return  void
      **/
     public function testOrcid()
@@ -273,7 +264,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is not Empty
      *
-     * @covers  \Hubzero\Utility\Validate::notEmpty
      * @return  void
      **/
     public function testNotEmpty()
@@ -306,7 +296,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is a valid group alias
      *
-     * @covers  \Hubzero\Utility\Validate::group
      * @return  void
      **/
     public function testGroup()
@@ -339,7 +328,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is a valid username
      *
-     * @covers  \Hubzero\Utility\Validate::username
      * @return  void
      **/
     public function testUsername()
@@ -367,7 +355,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is reserved
      *
-     * @covers  \Hubzero\Utility\Validate::reserved
      * @return  void
      **/
     public function testReserved()
@@ -578,7 +565,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is a string contains only integer or letters
      *
-     * @covers  \Hubzero\Utility\Validate::alphaNumeric
      * @return  void
      **/
     public function testAlphaNumeric()
@@ -614,7 +600,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is a number is in specified range.
      *
-     * @covers  \Hubzero\Utility\Validate::range
      * @return  void
      **/
     public function testRange()
@@ -645,7 +630,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is blank
      *
-     * @covers  \Hubzero\Utility\Validate::blank
      * @return  void
      **/
     public function testBlank()
@@ -678,7 +662,6 @@ class ValidateTest extends Basic
     /**
      * Tests if value is a valid URL
      *
-     * @covers  \Hubzero\Utility\Validate::url
      * @return  void
      **/
     public function testUrl()
@@ -729,7 +712,6 @@ class ValidateTest extends Basic
      * Tests is valid ip check
      *
      * @return  void
-     * @covers  \Hubzero\Utility\Validate::ip
      **/
     public function testIp()
     {
@@ -748,7 +730,6 @@ class ValidateTest extends Basic
      * Tests is valid password check
      *
      * @return  void
-     * @covers  \Hubzero\Utility\Validate::password
      **/
     public function testPassword()
     {

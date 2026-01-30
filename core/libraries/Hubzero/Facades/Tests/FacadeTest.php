@@ -36,8 +36,6 @@ class FacadeTest extends Basic
     /**
      * Test setting and getting underlying application
      *
-     * @covers  \Hubzero\Facades\Facade::setApplication
-     * @covers  \Hubzero\Facades\Facade::getApplication
      * @return  void
      **/
     public function testSetAndGetApplication()
@@ -55,7 +53,6 @@ class FacadeTest extends Basic
     /**
      * Test getRoot method
      *
-     * @covers  \Hubzero\Facades\Facade::getRoot
      * @return  void
      **/
     public function testGetRoot()
@@ -73,7 +70,6 @@ class FacadeTest extends Basic
     /**
      * Tests getAccessor() method
      *
-     * @covers  \Hubzero\Facades\Facade::getAccessor
      * @return  void
      **/
     public function testGetAccessor()
@@ -93,8 +89,6 @@ class FacadeTest extends Basic
     /**
      * Test Facade calls the underlying application
      *
-     * @covers  \Hubzero\Facades\Facade::getAccessor
-     * @covers  \Hubzero\Facades\Facade::__callStatic
      * @return  void
      **/
     public function testFacadeCallsUnderlyingApplication()
@@ -127,7 +121,6 @@ class FacadeTest extends Basic
     /**
      * Tests swap() method
      *
-     * @covers  \Hubzero\Facades\Facade::swap
      * @return  void
      **/
     public function testSwap()

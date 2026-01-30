@@ -21,15 +21,6 @@ class DetectorTest extends Basic
     /**
      * Tests the match() method.
      *
-     * @covers  \Hubzero\Browser\Detector::__construct
-     * @covers  \Hubzero\Browser\Detector::match
-     * @covers  \Hubzero\Browser\Detector::agent
-     * @covers  \Hubzero\Browser\Detector::name
-     * @covers  \Hubzero\Browser\Detector::version
-     * @covers  \Hubzero\Browser\Detector::platform
-     * @covers  \Hubzero\Browser\Detector::major
-     * @covers  \Hubzero\Browser\Detector::minor
-     * @covers  \Hubzero\Browser\Detector::_setPlatform
      * @return  void
      **/
     public function testMatch()
@@ -57,7 +48,6 @@ class DetectorTest extends Basic
     /**
      * Tests the isBrowser() method.
      *
-     * @covers  \Hubzero\Browser\Detector::isBrowser
      * @return  void
      **/
     public function testIsBrowser()
@@ -75,7 +65,6 @@ class DetectorTest extends Basic
     /**
      * Tests the isMobile() method.
      *
-     * @covers  \Hubzero\Browser\Detector::isMobile
      * @return  void
      **/
     public function testIsMobile()
@@ -99,7 +88,6 @@ class DetectorTest extends Basic
     /**
      * Tests the isRobot() method.
      *
-     * @covers  \Hubzero\Browser\Detector::isRobot
      * @return  void
      **/
     public function testIsRobot()

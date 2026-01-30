@@ -20,7 +20,6 @@ class ContainerTest extends Basic
     /**
      * Test the constructor sets values
      *
-     * @covers  \Hubzero\Container\Container::__construct
      * @return  void
      **/
     public function testConstructor()
@@ -35,10 +34,6 @@ class ContainerTest extends Basic
     /**
      * Test setting and getting a string
      *
-     * @covers  \Hubzero\Container\Container::set
-     * @covers  \Hubzero\Container\Container::offsetSet
-     * @covers  \Hubzero\Container\Container::get
-     * @covers  \Hubzero\Container\Container::offsetGet
      * @return  void
      **/
     public function testWithString()
@@ -62,10 +57,6 @@ class ContainerTest extends Basic
     /**
      * Test setting and getting a string
      *
-     * @covers  \Hubzero\Container\Container::set
-     * @covers  \Hubzero\Container\Container::offsetSet
-     * @covers  \Hubzero\Container\Container::get
-     * @covers  \Hubzero\Container\Container::offsetGet
      * @return  void
      **/
     public function testWithClosure()
@@ -81,8 +72,6 @@ class ContainerTest extends Basic
     /**
      * Test checking for a parameter being set or not
      *
-     * @covers  \Hubzero\Container\Container::has
-     * @covers  \Hubzero\Container\Container::offsetExists
      * @return  void
      **/
     public function testHas()
@@ -104,8 +93,6 @@ class ContainerTest extends Basic
     /**
      * Test unsetting a parameter
      *
-     * @covers  \Hubzero\Container\Container::forget
-     * @covers  \Hubzero\Container\Container::offsetUnset
      * @return  void
      **/
     public function testForget()
@@ -131,7 +118,6 @@ class ContainerTest extends Basic
     /**
      * Test getting defined value names
      *
-     * @covers  \Hubzero\Container\Container::keys
      * @return  void
      **/
     public function testKeys()
@@ -146,7 +132,6 @@ class ContainerTest extends Basic
     /**
      * Test getting raw value
      *
-     * @covers  \Hubzero\Container\Container::raw
      * @return  void
      **/
     public function testRaw()
@@ -169,7 +154,6 @@ class ContainerTest extends Basic
     /**
      * Test that factory services are different
      *
-     * @covers  \Hubzero\Container\Container::factory
      * @return  void
      **/
     public function testServicesShouldBeDifferent()
@@ -194,7 +178,6 @@ class ContainerTest extends Basic
     /**
      * Test that extend() throws an exception when a key is undefined
      *
-     * @covers  \Hubzero\Container\Container::extend
      * @return  void
      **/
     public function testExtendThrowsExceptionWithUndefinedKey()
@@ -214,7 +197,6 @@ class ContainerTest extends Basic
     /**
      * Test that extend() throws an exception when a definition isn't callable
      *
-     * @covers  \Hubzero\Container\Container::extend
      * @return  void
      **/
     public function testExtendThrowsExceptionWithInvalidDefinition()
@@ -235,7 +217,6 @@ class ContainerTest extends Basic
     /**
      * Test that extend() throws an exception when an extension isn't callable
      *
-     * @covers  \Hubzero\Container\Container::extend
      * @return  void
      **/
     public function testExtendThrowsExceptionWithUncallableExtension()
@@ -254,7 +235,6 @@ class ContainerTest extends Basic
     /**
      * Test extending a service
      *
-     * @covers  \Hubzero\Container\Container::extend
      * @return  void
      **/
     public function testExtendingService()

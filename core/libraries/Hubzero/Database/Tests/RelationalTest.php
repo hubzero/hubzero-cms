@@ -33,6 +33,18 @@ class RelationalTest extends Database
     }
 
     /**
+     * Skip test if Event facade is not available
+     *
+     * @return  void
+     **/
+    protected function requireEventFacade(): void
+    {
+        if (!class_exists('Event')) {
+            $this->markTestSkipped('Event facade not available - requires full application bootstrap');
+        }
+    }
+
+    /**
      * Tests object construction and variable initialization
      *
      * @return  void
@@ -82,11 +94,12 @@ class RelationalTest extends Database
     /**
      * Tests that a call for a non-existant row via oneOrFail method throws an exception
      *
-     * @expectedException RuntimeException
      * @return  void
      **/
     public function testOneOrFailThrowsException()
     {
+        $this->expectException(\Hubzero\Error\Exception\RuntimeException::class);
+
         User::oneOrFail(0);
     }
 
@@ -392,6 +405,8 @@ class RelationalTest extends Database
      **/
     public function testSaveOneToManyAssociatesRelated()
     {
+        $this->requireEventFacade();
+
         User::oneOrFail(1)->posts()->save(['content' => 'This is a test post']);
 
         $this->assertArrayHasKey(
@@ -409,6 +424,8 @@ class RelationalTest extends Database
      **/
     public function testSaveOneShiftsToManyAssociatesRelated()
     {
+        $this->requireEventFacade();
+
         Project::oneOrFail(1)->members()->save(['user_id' => 2]);
 
         $this->assertCount(
@@ -481,6 +498,8 @@ class RelationalTest extends Database
      **/
     public function testManyToManySaveAutomaticallyConnects()
     {
+        $this->requireEventFacade();
+
         // Tag post 2 with tag 3
         Post::oneOrFail(2)->tags()->save(['name' => 'automatically created']);
 
@@ -502,6 +521,8 @@ class RelationalTest extends Database
      **/
     public function testManyShiftsToManySaveAutomaticallyConnects()
     {
+        $this->requireEventFacade();
+
         // Tag post 2 with tag 3
         Member::oneOrFail(1)->permissions()->save(['name' => 'do awesome stuff']);
 

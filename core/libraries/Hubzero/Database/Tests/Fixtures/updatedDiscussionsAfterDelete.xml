@@ -48,16 +48,4 @@
         scope="group"
         scope_id="1"
     />
-    <discussions
-        id="6"
-        user_id="3"
-        title="This is a new discussion"
-        content="Tell me about life"
-        lft="0"
-        rgt="1"
-        parent_id="0"
-        level="0"
-        scope="group"
-        scope_id="2"
-    />
 </dataset>

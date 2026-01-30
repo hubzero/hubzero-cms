@@ -31,7 +31,6 @@ class ObjTest extends Basic
     /**
      * Test __construct
      *
-     * @covers  \Hubzero\Base\Obj::__construct
      * @return  void
      **/
     public function testConstructor()
@@ -54,7 +53,6 @@ class ObjTest extends Basic
     /**
      * Test __toString
      *
-     * @covers  \Hubzero\Base\Obj::__toString
      * @return  void
      **/
     public function testToString()
@@ -69,7 +67,6 @@ class ObjTest extends Basic
     /**
      * Test setProperties
      *
-     * @covers  \Hubzero\Base\Obj::setProperties
      * @return  void
      **/
     public function testSetProperties()
@@ -103,7 +100,6 @@ class ObjTest extends Basic
     /**
      * Test getProperties
      *
-     * @covers  \Hubzero\Base\Obj::getProperties
      * @return  void
      **/
     public function testGetProperties()
@@ -126,7 +122,6 @@ class ObjTest extends Basic
     /**
      * Test setting a property
      *
-     * @covers  \Hubzero\Base\Obj::set
      * @return  void
      **/
     public function testSet()
@@ -142,7 +137,6 @@ class ObjTest extends Basic
      * Test retrieving a set property and
      * retriving a default value if a property isn't set
      *
-     * @covers  \Hubzero\Base\Obj::get
      * @return  void
      **/
     public function testGet()
@@ -157,7 +151,6 @@ class ObjTest extends Basic
     /**
      * Test setting a default value if not alreay assigned
      *
-     * @covers  \Hubzero\Base\Obj::def
      * @return  void
      **/
     public function testDef()
