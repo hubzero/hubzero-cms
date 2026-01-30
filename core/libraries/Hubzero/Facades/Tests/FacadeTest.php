@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,129 +21,122 @@ use Hubzero\Facades\Tests\Mock\BadFacade;
  */
 class FacadeTest extends Basic
 {
-	public $app;
-	
-	public function setUp(): void
-	{
-		$this->app = Facade::getApplication();
-	}
+    public $app;
 
-	public function tearDown(): void
-	{
-		Facade::setApplication($this->app);
-	}
+    public function setUp(): void
+    {
+        $this->app = Facade::getApplication();
+    }
 
-	/**
-	 * Test setting and getting underlying application
-	 *
-	 * @covers  \Hubzero\Facades\Facade::setApplication
-	 * @covers  \Hubzero\Facades\Facade::getApplication
-	 * @return  void
-	 **/
-	public function testSetAndGetApplication()
-	{
-		$foo = new Foo;
+    public function tearDown(): void
+    {
+        Facade::setApplication($this->app);
+    }
 
-		$app = new Application;
-		$app['foo'] = $foo;
+    /**
+     * Test setting and getting underlying application
+     *
+     * @return  void
+     **/
+    public function testSetAndGetApplication()
+    {
+        $foo = new Foo();
 
-		FooFacade::setApplication($app);
+        $app = new Application();
+        $app['foo'] = $foo;
 
-		$this->assertEquals($app, FooFacade::getApplication());
-	}
+        FooFacade::setApplication($app);
 
-	/**
-	 * Test getRoot method
-	 *
-	 * @covers  \Hubzero\Facades\Facade::getRoot
-	 * @return  void
-	 **/
-	public function testGetRoot()
-	{
-		$foo = new Foo;
+        $this->assertEquals($app, FooFacade::getApplication());
+    }
 
-		$app = new Application;
-		$app['foo'] = $foo;
+    /**
+     * Test getRoot method
+     *
+     * @return  void
+     **/
+    public function testGetRoot()
+    {
+        $foo = new Foo();
 
-		FooFacade::setApplication($app);
+        $app = new Application();
+        $app['foo'] = $foo;
 
-		$this->assertEquals($foo, FooFacade::getRoot());
-	}
+        FooFacade::setApplication($app);
 
-	/**
-	 * Tests getAccessor() method
-	 *
-	 * @covers  \Hubzero\Facades\Facade::getAccessor
-	 * @return  void
-	 **/
-	public function testGetAccessor()
-	{
-		$foo = new Foo;
+        $this->assertEquals($foo, FooFacade::getRoot());
+    }
 
-		$app = new Application;
-		$app['foo'] = $foo;
+    /**
+     * Tests getAccessor() method
+     *
+     * @return  void
+     **/
+    public function testGetAccessor()
+    {
+        $foo = new Foo();
 
-		BadFacade::setApplication($app);
+        $app = new Application();
+        $app['foo'] = $foo;
 
-		$this->expectException(\RuntimeException::class);
+        BadFacade::setApplication($app);
 
-		BadFacade::bar();
-	}
+        $this->expectException(\RuntimeException::class);
 
-	/**
-	 * Test Facade calls the underlying application
-	 *
-	 * @covers  \Hubzero\Facades\Facade::getAccessor
-	 * @covers  \Hubzero\Facades\Facade::__callStatic
-	 * @return  void
-	 **/
-	public function testFacadeCallsUnderlyingApplication()
-	{
-		$foo = new Foo;
+        BadFacade::bar();
+    }
 
-		$app = new Application;
-		$app['foo'] = $foo;
+    /**
+     * Test Facade calls the underlying application
+     *
+     * @return  void
+     **/
+    public function testFacadeCallsUnderlyingApplication()
+    {
+        $foo = new Foo();
 
-		FooFacade::setApplication($app);
+        $app = new Application();
+        $app['foo'] = $foo;
 
-		$this->assertEquals('baz', FooFacade::bar());
+        FooFacade::setApplication($app);
 
-		$argsCount = FooFacade::multiArg('one');
-		$this->assertEquals($argsCount, 1);
+        $this->assertEquals('baz', FooFacade::bar());
 
-		$argsCount = FooFacade::multiArg('one', 'two');
-		$this->assertEquals($argsCount, 2);
+        $argsCount = FooFacade::multiArg('one');
+        $this->assertEquals($argsCount, 1);
 
-		$argsCount = FooFacade::multiArg('one', 'two', 'three');
-		$this->assertEquals($argsCount, 3);
+        $argsCount = FooFacade::multiArg('one', 'two');
+        $this->assertEquals($argsCount, 2);
 
-		$argsCount = FooFacade::multiArg('one', 'two', 'three', 'four');
-		$this->assertEquals($argsCount, 4);
+        $argsCount = FooFacade::multiArg('one', 'two', 'three');
+        $this->assertEquals($argsCount, 3);
 
-		$argsCount = FooFacade::multiArg('one', 'two', 'three', 'four', 'five');
-		$this->assertEquals($argsCount, 5);
-	}
+        $argsCount = FooFacade::multiArg('one', 'two', 'three', 'four');
+        $this->assertEquals($argsCount, 4);
 
-	/**
-	 * Tests swap() method
-	 *
-	 * @covers  \Hubzero\Facades\Facade::swap
-	 * @return  void
-	 **/
-	public function testSwap()
-	{
-		$foo = new Foo;
+        $argsCount = FooFacade::multiArg('one', 'two', 'three', 'four', 'five');
+        $this->assertEquals($argsCount, 5);
+    }
 
-		$app = new Application;
-		$app['foo'] = $foo;
+    /**
+     * Tests swap() method
+     *
+     * @return  void
+     **/
+    public function testSwap()
+    {
+        $foo = new Foo();
 
-		FooFacade::setApplication($app);
+        $app = new Application();
+        $app['foo'] = $foo;
 
-		$bar = new Bar;
+        FooFacade::setApplication($app);
 
-		FooFacade::swap($bar);
+        $bar = new Bar();
 
-		$this->assertEquals('zab', FooFacade::bar());
-		$this->assertEquals($bar, FooFacade::getRoot());
-	}
+        FooFacade::swap($bar);
+
+        $this->assertEquals('zab', FooFacade::bar());
+        $this->assertEquals($bar, FooFacade::getRoot());
+    }
 }

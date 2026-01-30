@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,33 +17,33 @@ use stdClass;
  */
 class XmlTest extends Basic
 {
-	/**
-	 * Format processor
-	 *
-	 * @var  object
-	 */
-	private $processor = null;
+    /**
+     * Format processor
+     *
+     * @var  object
+     */
+    private $processor = null;
 
-	/**
-	 * Expected datain object form
-	 *
-	 * @var  object
-	 */
-	private $obj = null;
+    /**
+     * Expected datain object form
+     *
+     * @var  object
+     */
+    private $obj = null;
 
-	/**
-	 * Expected data as an array
-	 *
-	 * @var  array
-	 */
-	private $arr = null;
+    /**
+     * Expected data as an array
+     *
+     * @var  array
+     */
+    private $arr = null;
 
-	/**
-	 * Expected data as a string
-	 *
-	 * @var  string
-	 */
-	private $str = '<?xml version="1.0"?>
+    /**
+     * Expected data as a string
+     *
+     * @var  string
+     */
+    private $str = '<?xml version="1.0"?>
 <config>
 	<setting name="app" type="object">
 		<setting name="application_env" type="string">development</setting>
@@ -72,140 +73,142 @@ class XmlTest extends Basic
 	</setting>
 </config>';
 
-	/**
-	 * Test setup
-	 *
-	 * @return  void
-	 */
-	protected function setUp(): void
-	{
-		$data = new stdClass();
+    /**
+     * Test setup
+     *
+     * @return  void
+     */
+    protected function setUp(): void
+    {
+        $data = new stdClass();
 
-		$data->app = new stdClass();
-		$data->app->application_env = "development";
-		$data->app->editor = "ckeditor";
-		$data->app->list_limit = 25;
-		$data->app->helpurl = "English (GB) - HUBzero help";
-		$data->app->debug = 1;
-		$data->app->debug_lang = 0;
-		$data->app->sef = 1;
-		$data->app->sef_rewrite = 1;
-		$data->app->sef_suffix = 0;
-		$data->app->sef_groups = 0;
-		$data->app->feed_limit = 10;
-		$data->app->feed_email = "author";
-		$data->app->ratelimit = array(
-			'short' => 500.1,
-			'long' => 5000.7
-		);
+        $data->app = new stdClass();
+        $data->app->application_env = "development";
+        $data->app->editor = "ckeditor";
+        $data->app->list_limit = 25;
+        $data->app->helpurl = "English (GB) - HUBzero help";
+        $data->app->debug = 1;
+        $data->app->debug_lang = 0;
+        $data->app->sef = 1;
+        $data->app->sef_rewrite = 1;
+        $data->app->sef_suffix = 0;
+        $data->app->sef_groups = 0;
+        $data->app->feed_limit = 10;
+        $data->app->feed_email = "author";
+        $data->app->ratelimit = array(
+            'short' => 500.1,
+            'long' => 5000.7
+        );
 
-		$data->seo = new stdClass();
-		$data->seo->sef = 1;
-		$data->seo->sef_groups = 0;
-		$data->seo->sef_rewrite = 1;
-		$data->seo->sef_suffix = 0;
-		$data->seo->unicodeslugs = 0;
-		$data->seo->sitename_pagetitles = 0;
+        $data->seo = new stdClass();
+        $data->seo->sef = 1;
+        $data->seo->sef_groups = 0;
+        $data->seo->sef_rewrite = 1;
+        $data->seo->sef_suffix = 0;
+        $data->seo->unicodeslugs = 0;
+        $data->seo->sitename_pagetitles = 0;
 
-		$this->obj = $data;
-		$this->arr = array(
-			'app' => (array)$data->app,
-			'seo' => (array)$data->seo
-		);
+        $this->obj = $data;
+        $this->arr = array(
+            'app' => (array)$data->app,
+            'seo' => (array)$data->seo
+        );
 
-		$this->processor = new Xml();
+        $this->processor = new Xml();
 
-		parent::setUp();
-	}
+        parent::setUp();
+    }
 
-	/**
-	 * Tests the getSupportedExtensions() method.
-	 *
-	 * @covers  \Hubzero\Config\Processor\Xml::getSupportedExtensions
-	 * @return  void
-	 **/
-	public function testGetSupportedExtensions()
-	{
-		$extensions = $this->processor->getSupportedExtensions();
+    /**
+     * Tests the getSupportedExtensions() method.
+     *
+     * @return  void
+     **/
+    public function testGetSupportedExtensions()
+    {
+        $extensions = $this->processor->getSupportedExtensions();
 
-		$this->assertTrue(is_array($extensions));
-		$this->assertCount(1, $extensions);
-		$this->assertTrue(in_array('xml', $extensions));
-	}
+        $this->assertTrue(is_array($extensions));
+        $this->assertCount(1, $extensions);
+        $this->assertTrue(in_array('xml', $extensions));
+    }
 
-	/**
-	 * Tests the canParse() method.
-	 *
-	 * @covers  \Hubzero\Config\Processor\Xml::canParse
-	 * @return  void
-	 **/
-	public function testCanParse()
-	{
-		$this->assertFalse($this->processor->canParse('Cras justo odio, dapibus ac facilisis in, egestas eget quam.'));
-		$this->assertFalse($this->processor->canParse('{"application_env":"development","editor":"ckeditor","list_limit":"25"}'));
-		$this->assertTrue($this->processor->canParse($this->str));
-	}
+    /**
+     * Tests the canParse() method.
+     *
+     * @return  void
+     **/
+    public function testCanParse()
+    {
+        $this->assertFalse($this->processor->canParse('Cras justo odio, dapibus ac facilisis in, egestas eget quam.'));
+        $this->assertFalse($this->processor->canParse('{"application_env":"development",
+            "editor":"ckeditor","list_limit":"25"}'));
+        $this->assertTrue($this->processor->canParse($this->str));
+    }
 
-	/**
-	 * Tests the parse() method.
-	 *
-	 * @covers  \Hubzero\Config\Processor\Xml::parse
-	 * @return  void
-	 **/
-	public function testParse()
-	{
-		$result = $this->processor->parse(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Files' . DIRECTORY_SEPARATOR . 'test.xml');
+    /**
+     * Tests the parse() method.
+     *
+     * @return  void
+     **/
+    public function testParse()
+    {
+        $result = $this->processor->parse(dirname(__DIR__) .
+            DIRECTORY_SEPARATOR .
+            'Files' .
+            DIRECTORY_SEPARATOR .
+            'test.xml');
 
-		$this->assertEquals($this->arr, $result);
+        $this->assertEquals($this->arr, $result);
 
-		$this->expectException(\Hubzero\Config\Exception\ParseException::class);
+        $this->expectException(\Hubzero\Config\Exception\ParseException::class);
 
-		$result = $this->processor->parse(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Files' . DIRECTORY_SEPARATOR . 'test.ini');
-	}
+        $result = $this->processor->parse(dirname(__DIR__) .
+            DIRECTORY_SEPARATOR .
+            'Files' .
+            DIRECTORY_SEPARATOR .
+            'test.ini');
+    }
 
-	/**
-	 * Tests the objectToString() method.
-	 *
-	 * @covers  \Hubzero\Config\Processor\Xml::objectToString
-	 * @covers  \Hubzero\Config\Processor\Xml::getXmlChildren
-	 * @return  void
-	 **/
-	public function testObjectToString()
-	{
-		// Test that a string is returned as-is
-		$result = $this->processor->objectToString($this->str);
+    /**
+     * Tests the objectToString() method.
+     *
+     * @return  void
+     **/
+    public function testObjectToString()
+    {
+        // Test that a string is returned as-is
+        $result = $this->processor->objectToString($this->str);
 
-		$this->assertEquals($this->str, $result);
+        $this->assertEquals($this->str, $result);
 
-		// Test object to string conversion
-		$result = $this->processor->objectToString($this->obj, array(
-			'name'     => 'config',
-			'nodeName' => 'setting'
-		));
+        // Test object to string conversion
+        $result = $this->processor->objectToString($this->obj, array(
+            'name'     => 'config',
+            'nodeName' => 'setting'
+        ));
 
-		$str = str_replace(array("\n", "\t"), '', $this->str);
-		$str = str_replace('<?xml version="1.0"?>', "<?xml version=\"1.0\"?>\n", $str);
+        $str = str_replace(array("\n", "\t"), '', $this->str);
+        $str = str_replace('<?xml version="1.0"?>', "<?xml version=\"1.0\"?>\n", $str);
 
-		$this->assertEquals($str, trim($result));
-	}
+        $this->assertEquals($str, trim($result));
+    }
 
-	/**
-	 * Tests the stringToObject() method.
-	 *
-	 * @covers  \Hubzero\Config\Processor\Xml::stringToObject
-	 * @covers  \Hubzero\Config\Processor\Xml::getValueFromNode
-	 * @return  void
-	 **/
-	public function testStringToObject()
-	{
-		// Test that an object is returned as-is
-		$result = $this->processor->stringToObject($this->obj);
+    /**
+     * Tests the stringToObject() method.
+     *
+     * @return  void
+     **/
+    public function testStringToObject()
+    {
+        // Test that an object is returned as-is
+        $result = $this->processor->stringToObject($this->obj);
 
-		$this->assertEquals($this->obj, $result);
+        $this->assertEquals($this->obj, $result);
 
-		// Test that a string gets converted as expected
-		$result = $this->processor->stringToObject($this->str);
+        // Test that a string gets converted as expected
+        $result = $this->processor->stringToObject($this->str);
 
-		$this->assertEquals($this->obj, $result);
-	}
+        $this->assertEquals($this->obj, $result);
+    }
 }

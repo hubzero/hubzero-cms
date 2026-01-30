@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,78 +9,104 @@
 namespace Hubzero\Base\Tests;
 
 use Hubzero\Test\Basic;
+use Hubzero\Container\Container;
+use Hubzero\Config\Registry;
+use Hubzero\Facades\Facade;
 
 /**
  * Helpers test
  */
 class HelpersTest extends Basic
 {
-	/**
-	 * Test app()
-	 *
-	 * @covers  \app()
-	 * @return  void
-	 **/
-	public function testApp()
-	{
-		$app = app();
+    /**
+     * The application container
+     *
+     * @var Container|null
+     */
+    protected static $app = null;
 
-		$this->assertInstanceOf('Hubzero\\Base\\Application', $app);
+    /**
+     * Set up the test environment
+     *
+     * @return  void
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
 
-		$config = app('config');
+        if (self::$app === null) {
+            self::$app = new Container();
+            self::$app['config'] = function () {
+                return new Registry([
+                    'application_env' => 'testing',
+                ]);
+            };
+            Facade::setApplication(self::$app);
+        }
+    }
 
-		$this->assertInstanceOf('Hubzero\\Config\\Repository', $config);
-	}
+    /**
+     * Test app()
+     *
+     * @return  void
+     **/
+    public function testApp()
+    {
+        $app = app();
 
-	/**
-	 * Test config()
-	 *
-	 * @covers  \config()
-	 * @return  void
-	 **/
-	public function testConfig()
-	{
-		$config = config();
+        $this->assertInstanceOf(Container::class, $app);
 
-		$this->assertInstanceOf('Hubzero\\Config\\Repository', $config);
+        $config = app('config');
 
-		$val = config('application_env');
+        $this->assertInstanceOf(Registry::class, $config);
+    }
 
-		$this->assertEquals($val, 'testing');
+    /**
+     * Test config()
+     *
+     * @return  void
+     **/
+    public function testConfig()
+    {
+        $config = config();
 
-		$val = config('bar', 'foo');
+        $this->assertInstanceOf(Registry::class, $config);
 
-		$this->assertEquals($val, 'foo');
-	}
+        $val = config('application_env');
 
-	/**
-	 * Test with()
-	 *
-	 * @covers  \with()
-	 * @return  void
-	 **/
-	public function testWith()
-	{
-		$obj = with(new \stdClass);
+        $this->assertEquals('testing', $val);
 
-		$this->assertInstanceOf('stdClass', $obj);
+        $val = config('bar', 'foo');
 
-		$obj = with(new \Hubzero\Base\Obj(array('foo' => 'bar')));
+        $this->assertEquals('foo', $val);
+    }
 
-		$this->assertInstanceOf('Hubzero\\Base\\Obj', $obj);
-		$this->assertEquals($obj->get('foo'), 'bar');
-	}
+    /**
+     * Test with()
+     *
+     * @return  void
+     **/
+    public function testWith()
+    {
+        $obj = with(new \stdClass());
 
-	/**
-	 * Test classExists()
-	 *
-	 * @covers  \classExists()
-	 * @return  void
-	 **/
-	public function testClassExists()
-	{
-		$this->assertFalse(classExists('Hubzero\\Foo\\Bar'));
+        $this->assertInstanceOf('stdClass', $obj);
 
-		$this->assertTrue(classExists('Hubzero\\Base\\Obj'));
-	}
+        $obj = with(new \Hubzero\Base\Obj(array('foo' => 'bar')));
+
+        $this->assertInstanceOf('Hubzero\\Base\\Obj', $obj);
+        $this->assertEquals($obj->get('foo'), 'bar');
+    }
+
+    /**
+     * Test classExists()
+     *
+     * @return  void
+     **/
+    public function testClassExists()
+    {
+        $this->assertFalse(classExists('Hubzero\\Foo\\Bar'));
+
+        $this->assertTrue(classExists('Hubzero\\Base\\Obj'));
+    }
 }

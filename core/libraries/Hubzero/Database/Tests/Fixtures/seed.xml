@@ -59,7 +59,7 @@
 			<value>My first discussion</value>
 			<value>Tell me everything!</value>
 			<value>0</value>
-			<value>3</value>
+			<value>9</value>
 			<value>0</value>
 			<value>0</value>
 			<value>group</value>
@@ -72,6 +72,42 @@
 			<value>Is this really a good idea?</value>
 			<value>1</value>
 			<value>2</value>
+			<value>1</value>
+			<value>1</value>
+			<value>group</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>3</value>
+			<value>Testing Stuff</value>
+			<value>This is a test additional child node</value>
+			<value>5</value>
+			<value>8</value>
+			<value>1</value>
+			<value>1</value>
+			<value>group</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>4</value>
+			<value>3</value>
+			<value>More Testing</value>
+			<value>This is a node added by parent id</value>
+			<value>6</value>
+			<value>7</value>
+			<value>3</value>
+			<value>2</value>
+			<value>group</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>5</value>
+			<value>3</value>
+			<value>Another Reply</value>
+			<value>This is another top-level reply</value>
+			<value>3</value>
+			<value>4</value>
 			<value>1</value>
 			<value>1</value>
 			<value>group</value>

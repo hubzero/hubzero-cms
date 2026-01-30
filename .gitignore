@@ -18,3 +18,5 @@ psalm.xml
 phpunit.xml
 configuration.php
 hubconfiguration.php
+.phpunit.result.cache
+*.sqlite3
