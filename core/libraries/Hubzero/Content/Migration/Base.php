@@ -15,8 +15,8 @@ require_once __DIR__ . '/helpers/queryDropColumnStatement.php';
 
 use Hubzero\Content\Migration\Helpers\QueryAddColumnStatement;
 use Hubzero\Content\Migration\Helpers\QueryDropColumnStatement;
-use Hubzero\Config\Processor;
 use Hubzero\Database\Driver;
+use Hubzero\System\PrivilegeManager;
 
 /**
  * Base migration class
@@ -195,67 +195,30 @@ class Base
     }
 
     /**
-     * Try to get the root credentials from a variety of locations
+     * Execute a shell command with escalated privileges if available
      *
-     * @return  mixed  Array of creds or false on failure
+     * This temporarily escalates to root (if running via sudo), executes the
+     * command, then drops back to the original user. Use this for system
+     * commands that require elevated privileges.
+     *
+     * @param   string  $command  The command to execute
+     * @return  string|null  Command output or null on failure
      **/
-    private function getRootCredentials()
+    protected function executeWithEscalation($command)
     {
-        $secrets   = DIRECTORY_SEPARATOR . 'etc'  . DIRECTORY_SEPARATOR . 'hubzero.secrets';
-        $conf_file = DIRECTORY_SEPARATOR . 'root' . DIRECTORY_SEPARATOR . '.my.cnf';
-        $hub_maint = DIRECTORY_SEPARATOR .
-            'etc'  .
-            DIRECTORY_SEPARATOR .
-            'mysql' .
-            DIRECTORY_SEPARATOR .
-            'hubmaint.cnf';
-        $deb_maint = DIRECTORY_SEPARATOR . 'etc'  . DIRECTORY_SEPARATOR . 'mysql' . DIRECTORY_SEPARATOR . 'debian.cnf';
-
-        if (is_file($secrets) && is_readable($secrets)) {
-            $conf = Processor::instance('ini')->parse($secrets);
-            $user = (isset($conf['DEFAULT']['MYSQL-ROOT-USER'])) ? $conf['DEFAULT']['MYSQL-ROOT-USER'] : 'root';
-            $pw   = (isset($conf['DEFAULT']['MYSQL-ROOT'])) ? $conf['DEFAULT']['MYSQL-ROOT'] : false;
-
-            if ($user && $pw) {
-                return array('user' => $user, 'password' => $pw);
-            }
-        }
-
-        if (is_file($conf_file) && is_readable($conf_file)) {
-            $conf = Processor::instance('ini')->parse($conf_file, true);
-            $user = (isset($conf['client']['user'])) ? $conf['client']['user'] : false;
-            $pw   = (isset($conf['client']['password'])) ? $conf['client']['password'] : false;
-
-            if ($user && $pw) {
-                return array('user' => $user, 'password' => $pw);
-            }
-        }
-
-        if (is_file($hub_maint) && is_readable($hub_maint)) {
-            $conf = Processor::instance('ini')->parse($hub_maint, true);
-            $user = (isset($conf['client']['user'])) ? $conf['client']['user'] : false;
-            $pw   = (isset($conf['client']['password'])) ? $conf['client']['password'] : false;
-
-            if ($user && $pw) {
-                return array('user' => $user, 'password' => $pw);
-            }
-        }
-
-        if (is_file($deb_maint) && is_readable($deb_maint)) {
-            $conf = Processor::instance('ini')->parse($deb_maint, true);
-            $user = (isset($conf['client']['user'])) ? $conf['client']['user'] : false;
-            $pw   = (isset($conf['client']['password'])) ? $conf['client']['password'] : false;
-
-            if ($user && $pw) {
-                return array('user' => $user, 'password' => $pw);
-            }
-        }
-
-        return false;
+        return PrivilegeManager::getInstance()->withElevatedPrivileges(
+            fn() => shell_exec($command)
+        );
     }
 
     /**
-     * Try to run commands as MySql root user
+     * Try to run commands as MySQL root user
+     *
+     * Uses Unix socket authentication when running as system root.
+     * This requires:
+     *   1. Running muse via sudo (sudo muse migration run)
+     *   2. MySQL root user configured with auth_socket or unix_socket plugin
+     *   3. Database must be local (localhost, 127.0.0.1, or socket path)
      *
      * @return  bool  If successfully upgraded to root access
      **/
@@ -265,25 +228,103 @@ class Base
             return false;
         }
 
-        if ($creds = $this->getRootCredentials()) {
-            $db = Driver::getInstance(
-                array(
-                    'driver'   => (\Config::get('dbtype') == 'mysql') ? 'pdo' : \Config::get('dbtype'),
-                    'host'     => \Config::get('host'),
-                    'user'     => $creds['user'],
-                    'password' => $creds['password'],
-                    'database' => \Config::get('db'),
-                    'prefix'   => \Config::get('dbprefix')
-                )
-            );
+        // Socket authentication only works for local databases
+        $host = \Config::get('host', 'localhost');
+        if (!$this->isLocalHost($host)) {
+            return false;
+        }
 
-            // Test the connection
-            if (!$db->connected()) {
-                return false;
-            } else {
+        $pm = PrivilegeManager::getInstance();
+
+        // Need to be running as root (or have escalation available)
+        $escalated = $pm->escalate();
+        $isRoot = (function_exists('posix_geteuid') && posix_geteuid() === 0);
+
+        if (!$isRoot) {
+            if ($escalated) {
+                $pm->drop();
+            }
+            return false;
+        }
+
+        // Find MySQL socket
+        $socketPaths = [
+            '/var/run/mysqld/mysqld.sock',
+            '/var/lib/mysql/mysql.sock',
+            '/tmp/mysql.sock',
+        ];
+
+        $socket = null;
+        foreach ($socketPaths as $path) {
+            if (file_exists($path)) {
+                $socket = $path;
+                break;
+            }
+        }
+
+        if (!$socket) {
+            if ($escalated) {
+                $pm->drop();
+            }
+            return false;
+        }
+
+        // Try to connect as MySQL root using socket authentication
+        try {
+            $database = \Config::get('db');
+            $dsn = "mysql:unix_socket={$socket};charset=utf8";
+            if ($database) {
+                $dsn .= ";dbname={$database}";
+            }
+
+            $db = Driver::getInstance([
+                'driver'   => 'pdo',
+                'dsn'      => $dsn,
+                'user'     => 'root',
+                'password' => '',
+                'database' => $database,
+                'prefix'   => \Config::get('dbprefix')
+            ]);
+
+            if ($db->connected()) {
                 $this->db = $db;
+                // Keep escalated privileges while using root DB connection
                 return true;
             }
+        } catch (\Exception $e) {
+            // Socket auth failed, connection error
+        }
+
+        if ($escalated) {
+            $pm->drop();
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if a host string refers to the local machine
+     *
+     * @param   string  $host  The host to check
+     * @return  bool    True if local, false if remote
+     **/
+    private function isLocalHost(string $host): bool
+    {
+        $host = strtolower(trim($host));
+
+        // Empty host typically means localhost
+        if ($host === '') {
+            return true;
+        }
+
+        // Common localhost identifiers
+        if ($host === 'localhost' || $host === '127.0.0.1' || $host === '::1') {
+            return true;
+        }
+
+        // Unix socket path (starts with /)
+        if (str_starts_with($host, '/')) {
+            return true;
         }
 
         return false;
