@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing wiki tables
  *
- */
+*/
 class Migration20170901000000ComWiki extends Base
 {
     /**

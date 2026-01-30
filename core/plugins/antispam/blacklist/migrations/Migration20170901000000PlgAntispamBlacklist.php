@@ -1,5 +1,7 @@
 <?php
 
+namespace Plugins\Antispam\Blacklist\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**

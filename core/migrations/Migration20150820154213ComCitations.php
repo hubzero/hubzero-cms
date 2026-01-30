@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 use Components\Citations\Models\Format;
 
 /**
  * Migration script for adding IEEE and APA formats as defaults
- **/
+**/
 class Migration20150820154213ComCitations extends Base
 {
     /**

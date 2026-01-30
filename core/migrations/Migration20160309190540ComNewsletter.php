@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for enabling digest plugins
  * Specifically the event, feedaggregator, and resource plugins
- **/
+**/
 class Migration20160309190540ComNewsletter extends Base
 {
     /**

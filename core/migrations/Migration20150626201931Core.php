@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for moving site directory
  *
- */
+*/
 class Migration20150626201931Core extends Base
 {
     /**

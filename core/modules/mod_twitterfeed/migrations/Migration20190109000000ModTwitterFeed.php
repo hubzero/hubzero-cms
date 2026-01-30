@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Twitterfeed\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing twitterfeed module
  *
- */
+*/
 class Migration20190109000000ModTwitterFeed extends Base
 {
     /**

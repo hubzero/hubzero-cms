@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Custom\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing custom module
  *
- */
+*/
 class Migration20190109000000ModCustom extends Base
 {
     /**

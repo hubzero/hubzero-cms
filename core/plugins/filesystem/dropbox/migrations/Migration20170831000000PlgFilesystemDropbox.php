@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Filesystem\Dropbox\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**

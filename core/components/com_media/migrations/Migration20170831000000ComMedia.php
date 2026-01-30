@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Media\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding component entry for com_media
  **/
-
 class Migration20170831000000ComMedia extends Base
 {
     /**

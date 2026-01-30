@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for enabling the plugin by default.
- **/
+**/
 class Migration20160810121746PlgContentFormathtml extends Base
 {
     /**

@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Cron\Resources\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**

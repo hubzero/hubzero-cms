@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding ratelimit memory table
   *
- **/
+**/
 class Migration20250305102831Core extends Base
 {
     /**

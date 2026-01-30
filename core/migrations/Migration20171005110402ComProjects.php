@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for moving projects activity to the global activity tables
  *
- */
+*/
 class Migration20171005110402ComProjects extends Base
 {
     /**

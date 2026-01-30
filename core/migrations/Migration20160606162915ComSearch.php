@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for defaulting the option to Basic search
   *
- **/
+**/
 class Migration20160606162915ComSearch extends Base
 {
     /**

@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Whatsnew\Wiki\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**

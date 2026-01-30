@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parsermarkdown\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**

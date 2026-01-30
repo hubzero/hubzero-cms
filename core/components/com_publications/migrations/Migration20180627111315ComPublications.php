@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Publications\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
@@ -43,7 +45,6 @@ class Migration20180627111315ComPublications extends Base
                 $this->db->query();
             }
         }
-
 
         if (is_dir(PATH_APP . '/site/publications/ftp')) {
             $offset = 0;

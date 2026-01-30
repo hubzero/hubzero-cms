@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding plugins for Publication metadata
- **/
+**/
 class Migration20160412200438PlgPublications extends Base
 {
     /**

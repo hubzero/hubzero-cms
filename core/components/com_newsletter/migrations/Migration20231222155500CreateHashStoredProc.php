@@ -1,5 +1,7 @@
 <?php
 
+namespace Components\Newsletter\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 class Migration20231222155500CreateHashStoredProc extends Base

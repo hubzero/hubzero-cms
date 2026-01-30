@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Collect\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing collect module
  *
- */
+*/
 class Migration20190109000000ModCollect extends Base
 {
     /**

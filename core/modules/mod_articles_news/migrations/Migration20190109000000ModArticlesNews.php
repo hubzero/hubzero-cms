@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\ArticlesNews\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing articles_news module
  *
- */
+*/
 class Migration20190109000000ModArticlesNews extends Base
 {
     /**

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Whosonline\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing whosonline module
  *
- */
+*/
 class Migration20190109000000ModWhosonline extends Base
 {
     /**

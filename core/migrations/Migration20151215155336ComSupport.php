@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for removing unnecessary ticket severity level
  *
- */
+*/
 class Migration20151215155336ComSupport extends Base
 {
     /**

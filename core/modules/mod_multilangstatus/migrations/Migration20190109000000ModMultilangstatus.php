@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Multilangstatus\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Multilangstatus module
  *
- */
+*/
 class Migration20190109000000ModMultilangstatus extends Base
 {
     /**

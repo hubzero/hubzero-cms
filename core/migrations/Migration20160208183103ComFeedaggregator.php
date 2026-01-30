@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for converting the timestamps in the created field to
  * standard format
- **/
+**/
 
 class Migration20160208183103ComFeedaggregator extends Base
 {

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Latestblog\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Latest Blog module
  *
- */
+*/
 class Migration20190109000000ModLatestblog extends Base
 {
     /**
