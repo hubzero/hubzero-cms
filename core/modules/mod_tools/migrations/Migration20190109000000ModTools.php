@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Tools\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing tools module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModTools extends Base
 {
     /**

@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Tags\Citations\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Tags - Citations plugin
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgTagsCitations extends Base
 {
     /**

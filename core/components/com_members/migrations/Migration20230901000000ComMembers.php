@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Members\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
@@ -16,7 +18,6 @@ use Hubzero\Content\Migration\Base;
  * is dropped from the table.
  *
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20230901000000ComMembers extends Base
 {
     // specify table name

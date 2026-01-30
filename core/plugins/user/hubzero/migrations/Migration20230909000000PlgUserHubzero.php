@@ -1,16 +1,14 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR2.Classes.PropertyDeclaration
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\User\Hubzero\Migrations;
 
-// No direct access
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding User Secret to plugin
@@ -23,10 +21,10 @@ use Hubzero\Content\Migration\Base;
 class Migration20230909000000PlgUserHubzero extends Base
 {
     // specify table name
-    static $tableName = '#__users';
+    protected static $tableName = '#__users';
 
     // specify column to create
-    static $columnData = [['name' => 'secret',
+    protected static $columnData = [['name' => 'secret',
         'type' => 'char(32)',
         'restriction' => 'UNIQUE',
         'default' => 'NULL'],

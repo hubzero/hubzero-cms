@@ -6,13 +6,13 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Activity\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing activity tables
  **/
-
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComActivity extends Base
 {
     /**

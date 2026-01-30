@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Memberhome\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding System - Memberhome plugin
  **/
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgSystemMemberhome extends Base
 {
     /**

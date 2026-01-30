@@ -1,21 +1,18 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Components\Messages\Migrations;
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for changing DATETIME fields default to NULL for com_messages
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190221000000ComMessages extends Base
 {
     /**

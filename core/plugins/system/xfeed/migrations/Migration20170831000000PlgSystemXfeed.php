@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Xfeed\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding System - Xfeed plugin
  **/
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgSystemXfeed extends Base
 {
     /**

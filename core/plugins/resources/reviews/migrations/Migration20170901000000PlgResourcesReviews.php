@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Resources\Reviews\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing resource reviews table
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000PlgResourcesReviews extends Base
 {
     /**

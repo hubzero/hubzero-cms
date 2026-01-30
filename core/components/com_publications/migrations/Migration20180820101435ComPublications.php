@@ -1,12 +1,14 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+namespace Components\Publications\Migrations;
 
 use Hubzero\Content\Migration\Base;
 use Components\Publications\Models\Publication;
@@ -16,7 +18,6 @@ include Component::path('com_publications') . '/models/publication.php';
 /**
  * Migration script for creating links in the SFTP directory
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20180820101435ComPublications extends Base
 {
     /**

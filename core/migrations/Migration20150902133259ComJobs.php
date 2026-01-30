@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding expiredate column to jobs table
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20150902133259ComJobs extends Base
 {
     /**

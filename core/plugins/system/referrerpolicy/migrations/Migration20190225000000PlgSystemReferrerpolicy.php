@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Referrerpolicy\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding System - Referrer Policy plugin
  **/
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190225000000PlgSystemReferrerpolicy extends Base
 {
     /**

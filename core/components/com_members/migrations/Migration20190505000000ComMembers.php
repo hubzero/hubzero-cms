@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Members\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for updating category items from com_users to com_members
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190505000000ComMembers extends Base
 {
     /**

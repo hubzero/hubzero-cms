@@ -6,13 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Oaipmh\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding component entry for com_oaipmh
  **/
-
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000ComOaipmh extends Base
 {
     /**

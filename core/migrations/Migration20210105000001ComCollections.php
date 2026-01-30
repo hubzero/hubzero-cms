@@ -1,17 +1,14 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
+namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
 
 // no direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for updating Collections params.
   *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- **/
+**/
 class Migration20210105000001ComCollections extends Base
 {
     public function up()

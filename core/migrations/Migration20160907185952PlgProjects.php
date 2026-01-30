@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Project Info, renaming Project blog, updating ordering
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20160907185952PlgProjects extends Base
 {
     /**

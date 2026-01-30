@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Templates\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing templates table
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComTemplates extends Base
 {
     /**

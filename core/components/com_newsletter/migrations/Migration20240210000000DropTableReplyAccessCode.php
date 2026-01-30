@@ -6,9 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Newsletter\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20240210000000DropTableReplyAccessCode extends Base
 {
     public static $tableName = '#__reply_access_codes';

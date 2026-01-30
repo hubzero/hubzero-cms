@@ -1,8 +1,9 @@
 <?php
 
+namespace Components\Newsletter\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20231222155500CreateHashStoredProc extends Base
 {
     public static $campaign = '#__campaign';

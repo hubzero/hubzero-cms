@@ -1,19 +1,18 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Resources\Windowstools\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for changing DATETIME fields default to NULL for `#__resource_sponsors` table
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Migration20190307114147PlgResourcesWindowstools extends Base
 {

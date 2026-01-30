@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Mysessions\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mysessions module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModMySessions extends Base
 {
     /**

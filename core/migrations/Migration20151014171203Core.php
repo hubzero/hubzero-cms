@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for ensuring plugins are enabled for site login by default
   *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- **/
+**/
 class Migration20151014171203Core extends Base
 {
     /**

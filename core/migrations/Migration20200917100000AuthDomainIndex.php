@@ -1,17 +1,14 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
+namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
 
 // no direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for adding indexes to the `#__auth_domain` table.
   *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- **/
+**/
 class Migration20200917100000AuthDomainIndex extends Base
 {
     /**

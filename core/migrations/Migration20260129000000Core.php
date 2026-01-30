@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
@@ -14,8 +16,7 @@ use Hubzero\Content\Migration\Base;
  * The reason, params, and note columns were defined as NOT NULL without defaults,
  * which causes errors when creating/updating users.
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20260129000000Core extends Base
 {
     /**

@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for changing DATETIME fields default to NULL for com_wiki
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190221000000ComWiki extends Base
 {
     /**

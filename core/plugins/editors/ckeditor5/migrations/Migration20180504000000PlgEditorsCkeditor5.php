@@ -6,9 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\Editors\Ckeditor5\Migrations;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Editors - CKeditor5 plugin

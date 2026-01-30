@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Authfactors\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding System - Authfactors plugin
  **/
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgSystemAuthfactors extends Base
 {
     /**

@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Forum\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing forum tables
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComForum extends Base
 {
     /**

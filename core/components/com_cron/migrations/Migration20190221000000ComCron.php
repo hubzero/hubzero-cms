@@ -6,13 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Cron\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for changing DATETIME fields default to NULL for com_cron
  **/
-
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190221000000ComCron extends Base
 {
     /**

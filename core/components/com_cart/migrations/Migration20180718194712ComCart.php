@@ -1,19 +1,18 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Cart\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script to create an index on `#__cart_meta`
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20180718194712ComCart extends Base
 {
     /**

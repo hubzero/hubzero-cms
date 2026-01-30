@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Resources\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration to add primary key to `#__resource_stats_tools_topvals` table
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20180924164242ComResources extends Base
 {
     /**

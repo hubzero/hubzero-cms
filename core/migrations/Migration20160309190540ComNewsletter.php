@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for enabling digest plugins
  * Specifically the event, feedaggregator, and resource plugins
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- **/
+**/
 class Migration20160309190540ComNewsletter extends Base
 {
     /**

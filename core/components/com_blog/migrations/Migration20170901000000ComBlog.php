@@ -6,13 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+namespace Components\Blog\Migrations;
 
 use Hubzero\Content\Migration\Base;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Migration script for installing blog tables

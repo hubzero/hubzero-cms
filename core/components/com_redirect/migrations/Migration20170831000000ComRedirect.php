@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Redirect\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding component entry for com_redirect
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000ComRedirect extends Base
 {
     /**

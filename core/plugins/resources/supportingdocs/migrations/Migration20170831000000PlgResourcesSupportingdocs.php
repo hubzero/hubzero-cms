@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Resources\Supportingdocs\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Resources - Supportingdocs plugin
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgResourcesSupportingdocs extends Base
 {
     /**

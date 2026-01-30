@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Redirect\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for changing DATETIME fields default to NULL for com_redirect
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190221000000ComRedirect extends Base
 {
     /**

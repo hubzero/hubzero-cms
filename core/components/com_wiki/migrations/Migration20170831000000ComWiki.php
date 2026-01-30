@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding component entry for com_wiki
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20170831000000ComWiki extends Base
 {
     /**

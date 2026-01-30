@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Resources\Wishlist\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Resources - Wishlist plugin
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgResourcesWishlist extends Base
 {
     /**

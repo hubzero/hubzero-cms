@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Support\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing support tables
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000ComSupport extends Base
 {
     /**

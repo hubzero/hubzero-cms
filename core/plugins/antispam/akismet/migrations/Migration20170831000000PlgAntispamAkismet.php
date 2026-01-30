@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Akismet\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Antispam - Akismet plugin
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgAntispamAkismet extends Base
 {
     /**

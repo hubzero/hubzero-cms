@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Mygroups\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mygroups module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModMyGroups extends Base
 {
     /**

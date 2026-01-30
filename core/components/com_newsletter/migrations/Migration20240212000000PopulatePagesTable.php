@@ -1,8 +1,9 @@
 <?php
 
+namespace Components\Newsletter\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20240212000000PopulatePagesTable extends Base
 {
     public static $tableName = '#__reply_pages';

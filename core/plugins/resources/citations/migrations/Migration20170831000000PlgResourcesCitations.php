@@ -6,14 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\Resources\Citations\Migrations;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Resources - Citations plugin
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgResourcesCitations extends Base
 {
     /**

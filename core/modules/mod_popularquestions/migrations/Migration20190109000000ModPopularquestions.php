@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Popularquestions\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing popularquestions module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModPopularquestions extends Base
 {
     /**

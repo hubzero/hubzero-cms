@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Mymessages\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mymessages module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModMyMessages extends Base
 {
     /**

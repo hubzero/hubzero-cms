@@ -1,11 +1,12 @@
 <?php
 
+namespace Plugins\Antispam\Blacklist\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing antispam blacklisted words table
  **/
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000PlgAntispamBlacklist extends Base
 {
     /**

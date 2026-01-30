@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Members\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for updating menu items to point to com_members
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190327000000ComMembers extends Base
 {
     /**

@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Resources\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script to add a license column
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20180308140800ComResources extends Base
 {
     /**

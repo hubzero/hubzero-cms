@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Resources\Windowstools\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Resources - Windowstools plugin
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgResourcesWindowstools extends Base
 {
     /**

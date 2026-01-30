@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Supergroup\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding System - Supergroup plugin
  **/
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgSystemSupergroup extends Base
 {
     /**

@@ -1,23 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Hubzero!
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for removing unused/deprecated mod_megamenu module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20150508103212ModMegamenu extends Base
 {
     /**

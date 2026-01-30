@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Members\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for fixing members names that are malformed
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20241218103500ComMembers extends Base
 {
     /*
@@ -36,7 +37,6 @@ class Migration20241218103500ComMembers extends Base
                 reset jos_xprofile fields to match.
     */
 
-
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function cleanUnicode_ProperNames()
     {
@@ -54,7 +54,6 @@ class Migration20241218103500ComMembers extends Base
             $user->set('name', $user->get('name'));
             $user->save();
         }
-
 
         $query = 'SELECT uidNumber FROM #__xprofiles where surname REGEXP "\\\\p{C}" '
             . 'OR givenName REGEXP "\\\\p{C}" OR middleName REGEXP "\\\\p{C}" '
@@ -186,7 +185,6 @@ class Migration20241218103500ComMembers extends Base
         $this->db->setQuery($query);
         $this->db->execute();
     }
-
 
     public function up()
     {

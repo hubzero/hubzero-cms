@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Captcha\Recaptcha\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Captcha - Recaptcha plugin
  **/
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgCaptchaRecaptcha extends Base
 {
     /**

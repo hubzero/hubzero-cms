@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 use Components\Citations\Models\Format;
 
 /**
  * Migration script for adding IEEE and APA formats as defaults
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- **/
+**/
 class Migration20150820154213ComCitations extends Base
 {
     /**

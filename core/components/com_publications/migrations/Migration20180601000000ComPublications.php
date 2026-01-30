@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Publications\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for setting proper scope on activity entries
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20180601000000ComPublications extends Base
 {
     /**

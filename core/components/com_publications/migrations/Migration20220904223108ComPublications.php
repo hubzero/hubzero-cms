@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Publications\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for ...
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20220904223108ComPublications extends Base
 {
     /**

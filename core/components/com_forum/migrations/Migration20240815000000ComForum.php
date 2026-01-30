@@ -1,11 +1,12 @@
 <?php
 
+namespace Components\Forum\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding a new table for forum likes
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20240815000000ComForum extends Base
 {
     public function up()

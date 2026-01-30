@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Publications\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for having tags associated with publication versions
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190620000000ComPublications extends Base
 {
     /**

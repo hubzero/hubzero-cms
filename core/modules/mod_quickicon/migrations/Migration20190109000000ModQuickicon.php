@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Quickicon\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing quickicon module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModQuickicon extends Base
 {
     /**

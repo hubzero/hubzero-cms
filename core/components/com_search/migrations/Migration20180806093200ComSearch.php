@@ -1,6 +1,6 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 
 /**
  * @package    hubzero-cms
@@ -8,14 +8,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Search\Migrations;
+
 use Hubzero\Content\Migration\Base;
 use Components\Search\Models\Solr\SearchComponent;
 
 require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
-
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for adding title column to SearchComponents
  **/

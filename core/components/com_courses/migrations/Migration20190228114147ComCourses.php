@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Courses\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding indexes to #__courses table
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190228114147ComCourses extends Base
 {
     /**

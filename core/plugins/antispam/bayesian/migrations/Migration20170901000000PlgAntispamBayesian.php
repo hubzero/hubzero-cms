@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Bayesian\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing antispam tables
  **/
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170901000000PlgAntispamBayesian extends Base
 {
     /**

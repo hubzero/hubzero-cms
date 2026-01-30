@@ -1,18 +1,14 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
+namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Migration script for changing the data_definition field type to accommodate
  * longer strings needed for files with many fields
   *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- **/
+**/
 class Migration20191017000001ComProjects extends Base
 {
     /**

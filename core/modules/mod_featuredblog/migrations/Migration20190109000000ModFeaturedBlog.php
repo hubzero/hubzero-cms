@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Featuredblog\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing featuredblog module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModFeaturedBlog extends Base
 {
     /**

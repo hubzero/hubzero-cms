@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+namespace Plugins\Geocode\Ipstack\Migrations;
 
 use Hubzero\Content\Migration\Base;
 

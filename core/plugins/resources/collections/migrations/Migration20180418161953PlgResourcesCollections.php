@@ -1,6 +1,6 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 
 /**
  * @package    hubzero-cms
@@ -8,16 +8,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Resources\Collections\Migrations;
+
 require_once Component::path('com_resources') . '/models/type.php';
 use Components\Resources\Models\Type;
 use Hubzero\Content\Migration\Base;
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * Migration script for adding Resources - Related plugin
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20180418161953PlgResourcesCollections extends Base
 {
     /**

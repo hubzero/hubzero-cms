@@ -1,12 +1,14 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+namespace Components\Courses\Migrations;
 
 use Hubzero\Content\Migration\Base;
 
@@ -21,7 +23,6 @@ use Components\Courses\Helpers\QueryDropColumnStatement;
 /**
  * Migration to add missing columns
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190102152739ComCoursesMissingColumns extends Base
 {
     public static $assetsTable = '#__courses_assets';

@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Tags\Events\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Tags - Events plugin
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20170831000000PlgTagsEvents extends Base
 {
     /**

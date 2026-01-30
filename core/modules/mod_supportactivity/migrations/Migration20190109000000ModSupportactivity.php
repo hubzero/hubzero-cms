@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Supportactivity\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing supportactivity module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModSupportactivity extends Base
 {
     /**

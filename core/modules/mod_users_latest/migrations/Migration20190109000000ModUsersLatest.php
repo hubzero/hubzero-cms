@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\UsersLatest\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing users_latest module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModUsersLatest extends Base
 {
     /**

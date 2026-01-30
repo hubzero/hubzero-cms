@@ -1,23 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 // Restricted access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for making Blog Entry state and access conform to standard conventions
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20151007181841ComBlog extends Base
 {
     /**

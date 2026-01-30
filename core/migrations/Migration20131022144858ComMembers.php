@@ -1,24 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 use Hubzero\Utility\Date;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Migration script for moving member manager notes to user notes table
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20131022144858ComMembers extends Base
 {
     /**

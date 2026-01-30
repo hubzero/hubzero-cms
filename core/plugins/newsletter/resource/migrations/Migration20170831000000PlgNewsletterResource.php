@@ -6,9 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\Newsletter\Resource\Migrations;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Newsletter - Resource plugin

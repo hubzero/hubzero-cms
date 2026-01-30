@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Resources\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script to add a doi_shoulder column
  **/
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20190107140800ComResources extends Base
 {
     /**

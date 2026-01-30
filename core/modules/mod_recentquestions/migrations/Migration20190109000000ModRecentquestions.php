@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Recentquestions\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing recentquestions module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModRecentquestions extends Base
 {
     /**

@@ -1,11 +1,14 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+namespace Components\Groups\Migrations;
 
 use Hubzero\Content\Migration\Base;
 use Components\Groups\Models\Orm\Field;
@@ -14,15 +17,10 @@ use Components\Groups\Models\Orm\Group;
 
 require_once \Component::path('com_groups') . '/models/orm/group.php';
 require_once \Component::path('com_groups') . '/models/orm/field.php';
-
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for adding custom fields
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20180524092913ComGroups extends Base
 {
     /**

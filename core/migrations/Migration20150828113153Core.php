@@ -1,23 +1,19 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Migrations;
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for removing duplicate plugin entries while retaining proper parameters
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20150828113153Core extends Base
 {
     /**
@@ -42,7 +38,6 @@ class Migration20150828113153Core extends Base
                     ) {
                         continue;
                     }
-
 
                     $query = "UPDATE `#__extensions` AS e1, `#__extensions` e2 SET e1.params = e2.params WHERE "
                         . "e1.extension_id = " . $this->db->quote($result->min) . " AND e2.extension_id = "

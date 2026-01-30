@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Feed\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing feed module
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- */
+*/
 class Migration20190109000000ModFeed extends Base
 {
     /**

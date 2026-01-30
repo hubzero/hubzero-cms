@@ -1,8 +1,9 @@
 <?php
 
+namespace Components\Newsletter\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Migration20240204000000CreateEmailSubscriptionsTable extends Base
 {
     public static $tableName = '#__email_subscriptions';
