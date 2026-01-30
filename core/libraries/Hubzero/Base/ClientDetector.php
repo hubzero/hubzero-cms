@@ -8,6 +8,7 @@
 
 namespace Hubzero\Base;
 
+use Hubzero\Database\MysqlDatabaseConnection;
 use Hubzero\Http\Request;
 
 /**
@@ -57,6 +58,12 @@ class ClientDetector
     protected function detectWebClient($environments)
     {
         $default = ClientManager::client('site', true);
+
+        // Check if the site is installed (database config exists)
+        // If not, always return the Install client
+        if (!$this->isInstalled()) {
+            return ClientManager::client('install', true);
+        }
 
         // To determine the current client, we'll simply iterate through the possible
         // clients and look for the one that matches the path for the request we
@@ -112,5 +119,46 @@ class ClientDetector
     protected function detectConsoleClient($environments)
     {
         return (php_sapi_name() == 'cli');
+    }
+
+    /**
+     * Determine if the site is installed
+     *
+     * Checks for the existence of database configuration and verifies
+     * the database has users (meaning setup is complete).
+     *
+     * @return  bool
+     */
+    protected function isInstalled()
+    {
+        // Get database configuration from Config facade
+        $dbConfig = \Config::get('database');
+
+        if (!$dbConfig) {
+            return false;
+        }
+
+        $dbConfig = (array) $dbConfig;
+
+        // Check for required config values
+        if (empty($dbConfig['host']) || empty($dbConfig['db']) || empty($dbConfig['user'])) {
+            return false;
+        }
+
+        // Try to connect and check for users
+        try {
+            $pdo = MysqlDatabaseConnection::connectOrFail($dbConfig);
+            $prefix = $dbConfig['dbprefix'] ?? 'jos_';
+            $stmt = $pdo->query("SELECT COUNT(*) FROM `{$prefix}users`");
+
+            if ($stmt && $stmt->fetchColumn() > 0) {
+                return true;
+            }
+        } catch (\Exception $e) {
+            // Can't connect or query - consider not installed
+            return false;
+        }
+
+        return false;
     }
 }
