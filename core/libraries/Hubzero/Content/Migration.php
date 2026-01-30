@@ -559,11 +559,27 @@ class Migration
 									// Informational error (is that a real thing?)
 									$this->log("Info: running {$direction}() noted this in {$scope}/{$file}: {$error['message']}", 'info');
 								}
+								else if ($error['type'] == 'skipped')
+								{
+									// Migration chose to skip - will retry on next run
+									$this->log("Skipped {$direction}() in {$scope}/{$file}: {$error['message']}", 'info');
+									$status = 'skipped';
+								}
 							}
 						}
 
 						$this->recordMigration($file, $scope, $hash, $direction, $status);
-						$this->log("Completed {$direction}() in {$scope}/{$file}", 'success');
+
+						// Don't log "Completed" for skipped migrations
+						if ($status !== 'skipped')
+						{
+							$this->log("Completed {$direction}() in {$scope}/{$file}", 'success');
+						}
+					}
+					catch (Migration\SkipMigrationException $e)
+					{
+						$this->recordMigration($file, $scope, $hash, $direction, 'skipped');
+						$this->log("Skipped {$direction}() in {$scope}/{$file}: {$e->getMessage()}", 'info');
 					}
 					catch (\Hubzero\Database\Exception\QueryFailedException $e)
 					{
