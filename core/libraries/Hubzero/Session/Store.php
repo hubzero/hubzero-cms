@@ -71,14 +71,8 @@ abstract class Store extends Obj implements SessionHandlerInterface
 	public function register($options = array())
 	{
 		// Use this object as the session handler
-		session_set_save_handler(
-			array($this, 'open'),
-			array($this, 'close'),
-			array($this, 'read'),
-			array($this, 'write'),
-			array($this, 'destroy'),
-			array($this, 'gc')
-		);
+		// Pass $this directly since we implement SessionHandlerInterface
+		session_set_save_handler($this, true);
 	}
 
 	/**
