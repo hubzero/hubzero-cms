@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding the autogen field to the table
- **/
+**/
 class Migration20160301152243ComNewsletter extends Base
 {
     /**

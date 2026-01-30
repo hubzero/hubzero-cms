@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Geocode\Ipstack\Migrations;
 
 use Hubzero\Content\Migration\Base;
 

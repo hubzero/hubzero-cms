@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Randomquote\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing randomquote module
  *
- */
+*/
 class Migration20190109000000ModRandomQuote extends Base
 {
     /**

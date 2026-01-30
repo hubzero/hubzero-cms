@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding password expiration/rules route plugin
- **/
+**/
 class Migration20150626173412PlgSystemPassword extends Base
 {
     /**

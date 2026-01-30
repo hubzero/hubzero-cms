@@ -6,11 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Blog\Migrations;
 
 use Hubzero\Content\Migration\Base;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Migration script for adding component entry for com_blog

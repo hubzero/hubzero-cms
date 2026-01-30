@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding auth factors authy plugin
   *
- **/
+**/
 class Migration20150511160714PlgAuthfactorsAuthy extends Base
 {
     /**

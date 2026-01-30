@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding GitHub filesystem plugin
  *
- */
+*/
 class Migration20170207025712PlgFilesystemGithub extends Base
 {
     /**

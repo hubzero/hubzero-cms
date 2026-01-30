@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding column to track when activity should be reported as anonymous
- **/
+**/
 class Migration20160818061637Core extends Base
 {
     /**

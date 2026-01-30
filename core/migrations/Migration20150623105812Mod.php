@@ -1,20 +1,19 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 // Check to ensure this file is included in Hubzero!
-defined('_HZEXEC_') or die();
-
 /**
  * Migration script for renaming admin modules to avoid conflict with site modules
- **/
+**/
 class Migration20150623105812Mod extends Base
 {
     /**

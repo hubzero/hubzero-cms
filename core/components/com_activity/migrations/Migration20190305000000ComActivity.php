@@ -6,13 +6,14 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Activity\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for changing DATETIME fields default to NULL for com_activity
  * (catching missed column in previous migration)
  **/
-
 class Migration20190305000000ComActivity extends Base
 {
     /**

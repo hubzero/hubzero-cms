@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for removing deprecaed disablecache plugin
- **/
+ *
+*/
 class Migration20161111173852PlgSystemCache extends Base
 {
     /**
@@ -19,13 +22,15 @@ class Migration20161111173852PlgSystemCache extends Base
     public function up()
     {
         if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND `element`='disablecache'";
+            $query = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND "
+                . "`element`='disablecache'";
             $this->db->setQuery($query);
             if ($params = $this->db->loadResult()) {
                 $params = $this->params($params);
 
                 if (isset($params->definitions)) {
-                    $query = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND `element`='cache'";
+                    $query = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND "
+                        . "`element`='cache'";
                     $this->db->setQuery($query);
                     $cparams = $this->db->loadResult();
                     $cparams = $this->params($cparams);
@@ -33,7 +38,8 @@ class Migration20161111173852PlgSystemCache extends Base
                     $cparams->cacheexempt = $params->definitions;
                     $cparams = json_encode($cparams);
 
-                    $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($cparams) . " WHERE `type`='plugin' AND `folder`='system' AND `element`='cache'";
+                    $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($cparams) . " WHERE "
+                        . "`type`='plugin' AND `folder`='system' AND `element`='cache'";
                     $this->db->setQuery($query);
                     $this->db->execute();
                 }
@@ -51,9 +57,10 @@ class Migration20161111173852PlgSystemCache extends Base
      **/
     private function params($params)
     {
+        $original = $params;
         $params = json_decode($params);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $params = parse_ini_string($params, false, INI_SCANNER_RAW);
+        if (json_last_error() !== JSON_ERROR_NONE && $original !== null && $original !== '') {
+            $params = parse_ini_string($original, false, INI_SCANNER_RAW);
         }
         if (!isset($params) || !$params) {
             $params = new \stdClass();

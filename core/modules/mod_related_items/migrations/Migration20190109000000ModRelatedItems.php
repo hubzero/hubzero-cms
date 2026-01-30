@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\RelatedItems\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing related_items module
  *
- */
+*/
 class Migration20190109000000ModRelatedItems extends Base
 {
     /**

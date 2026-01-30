@@ -5,6 +5,8 @@
  * @licensehttp://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Redirect\Migrations;
+
 include_once \Component::path('com_config') . DS . 'models' . DS . 'extension.php';
 
 use Hubzero\Content\Migration\Base;

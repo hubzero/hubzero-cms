@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for fixing scope of custom migrations
  *
- */
+*/
 class Migration20151006204314Core extends Base
 {
     /**

@@ -1,9 +1,12 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2026 The Regents of Purdue University.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
 

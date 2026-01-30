@@ -7,11 +7,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Resources\Collections\Migrations;
+
 require_once Component::path('com_resources') . '/models/type.php';
 use Components\Resources\Models\Type;
 use Hubzero\Content\Migration\Base;
-
-
 /**
  * Migration script for adding Resources - Related plugin
  **/

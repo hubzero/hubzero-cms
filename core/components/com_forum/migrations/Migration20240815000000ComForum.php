@@ -1,5 +1,7 @@
 <?php
 
+namespace Components\Forum\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for creating publication collaborator table
   *
- **/
+**/
 class Migration20240613212454ComPublications extends Base
 {
     /**

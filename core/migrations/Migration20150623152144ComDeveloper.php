@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding rate limiting table
   *
- **/
+**/
 class Migration20150623152144ComDeveloper extends Base
 {
     /**

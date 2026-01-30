@@ -1,15 +1,13 @@
 <?php
 
+namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Migration script for dropping unused #__tags_group table
  *
- */
+*/
 class Migration20190902000001ComTags extends Base
 {
     /**

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for ...
   *
- **/
+**/
 class Migration20240716193359ComPublications extends Base
 {
     /**

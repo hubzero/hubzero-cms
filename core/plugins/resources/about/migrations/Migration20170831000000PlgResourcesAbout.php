@@ -6,8 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\Resources\About\Migrations;
 
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Resources - About plugin

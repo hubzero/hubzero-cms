@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for column orcid_work_put_code in table #__publication_authors
  *
- */
+*/
 class Migration20240502154413ComPublications extends Base
 {
     /**

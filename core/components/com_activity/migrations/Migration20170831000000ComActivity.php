@@ -6,12 +6,13 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Activity\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding component entry for com_activity
  **/
-
 class Migration20170831000000ComActivity extends Base
 {
     /**

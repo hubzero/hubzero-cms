@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Mycourses\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mycourses module
  *
- */
+*/
 class Migration20190109000000ModMyCourses extends Base
 {
     /**

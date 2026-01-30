@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding the blacklist table
- **/
+**/
 class Migration20160805180813ComSearch extends Base
 {
     /**

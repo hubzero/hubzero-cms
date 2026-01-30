@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding registration completeness plugin check
   *
- **/
+**/
 class Migration20150630195749PlgSystemIncomplete extends Base
 {
     /**

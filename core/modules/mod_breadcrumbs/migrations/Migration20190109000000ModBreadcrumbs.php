@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Breadcrumbs\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing breadcrumbs module
  *
- */
+*/
 class Migration20190109000000ModBreadcrumbs extends Base
 {
     /**

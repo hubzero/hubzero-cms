@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Quicktips\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing quicktips module
  *
- */
+*/
 class Migration20190109000000ModQuicktips extends Base
 {
     /**

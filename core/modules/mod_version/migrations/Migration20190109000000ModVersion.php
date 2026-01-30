@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Version\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing version module
  *
- */
+*/
 class Migration20190109000000ModVersion extends Base
 {
     /**

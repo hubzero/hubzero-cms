@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Courses\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
@@ -749,7 +751,6 @@ class Migration20170901000000ComCourses extends Base
             $this->db->setQuery($query);
             $this->db->query();
         }
-
 
         if ($this->db->tableExists('#__courses_forms')) {
             $query = "DROP TABLE IF EXISTS `#__courses_forms`;";

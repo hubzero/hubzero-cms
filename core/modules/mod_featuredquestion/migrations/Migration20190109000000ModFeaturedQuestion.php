@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Featuredquestion\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing featuredquestion module
  *
- */
+*/
 class Migration20190109000000ModFeaturedQuestion extends Base
 {
     /**
