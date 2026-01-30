@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\ApplicationEnv\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Application Env module
  *
- */
+*/
 class Migration20190109000000ModApplicationEnv extends Base
 {
     /**

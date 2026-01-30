@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Installer\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 // No direct access

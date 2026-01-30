@@ -6,13 +6,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 use Hubzero\Content\Migration\SkipMigrationException;
 
 /**
  * Migration script for usage setup
  *
- */
+*/
 class Migration20150904235936ComUsage extends Base
 {
     /**

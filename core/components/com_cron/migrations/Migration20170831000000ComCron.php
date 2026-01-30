@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Cron\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding component entry for com_cron
  **/
-
 class Migration20170831000000ComCron extends Base
 {
     /**

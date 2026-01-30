@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Mytools\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mytools module
  *
- */
+*/
 class Migration20190109000000ModMyTools extends Base
 {
     /**

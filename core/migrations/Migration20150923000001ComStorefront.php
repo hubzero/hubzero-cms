@@ -1,21 +1,19 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Migrations;
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script to create the downloads log table
   *
- **/
+**/
 class Migration20150923000001ComStorefront extends Base
 {
     /**
@@ -31,7 +29,6 @@ class Migration20150923000001ComStorefront extends Base
             $this->db->setQuery($query);
             $this->db->query();
         }
-
 
         $query = "ALTER TABLE `#__storefront_collections` MODIFY `cId` INT(16) UNSIGNED NOT NULL AUTO_INCREMENT";
         $this->db->setQuery($query);

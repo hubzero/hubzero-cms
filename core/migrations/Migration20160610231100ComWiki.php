@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for renaming the column to Relational standards
  *
- */
+*/
 class Migration20160610231100ComWiki extends Base
 {
     /**

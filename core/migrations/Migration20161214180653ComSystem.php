@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for help to correct default value for GeoDB
  *
- */
+*/
 class Migration20161214180653ComSystem extends Base
 {
     /**

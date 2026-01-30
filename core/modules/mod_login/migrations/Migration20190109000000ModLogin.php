@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Login\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Login module
  *
- */
+*/
 class Migration20190109000000ModLogin extends Base
 {
     /**

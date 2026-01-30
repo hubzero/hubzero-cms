@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Adminmenu\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Admin menu module
  *
- */
+*/
 class Migration20190109000000ModAdminmenu extends Base
 {
     /**

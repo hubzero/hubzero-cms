@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding new weekly bar chart plugin (time reports)
   *
- **/
+**/
 class Migration20160302141138PlgTimeWeeklybar extends Base
 {
     /**

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for creating table #__users_log_auth
  *
- */
+*/
 class Migration20150721135541ComUsers extends Base
 {
     /**

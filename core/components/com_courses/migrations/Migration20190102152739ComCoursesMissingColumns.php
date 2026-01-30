@@ -7,6 +7,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Courses\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 $componentPath = Component::path('com_courses');

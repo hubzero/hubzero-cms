@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for renaming and changing value format of the column to hub standards
  *
- */
+*/
 class Migration20160809152100ComRedirect extends Base
 {
     /**

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Mysubmissions\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mysubmissions module
  *
- */
+*/
 class Migration20190109000000ModMySubmissions extends Base
 {
     /**

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Youtube\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing youtube module
  *
- */
+*/
 class Migration20190109000000ModYoutube extends Base
 {
     /**

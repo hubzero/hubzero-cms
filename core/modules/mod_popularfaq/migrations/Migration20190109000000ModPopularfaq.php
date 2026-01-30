@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Popularfaq\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing popularfaq module
  *
- */
+*/
 class Migration20190109000000ModPopularfaq extends Base
 {
     /**

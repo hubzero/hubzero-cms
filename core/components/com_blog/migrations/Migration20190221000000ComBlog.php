@@ -6,11 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Blog\Migrations;
 
 use Hubzero\Content\Migration\Base;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Migration script for changing DATETIME fields default to NULL for com_blog

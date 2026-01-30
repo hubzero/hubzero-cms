@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Feed\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing feed module
  *
- */
+*/
 class Migration20190109000000ModFeed extends Base
 {
     /**

@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for changing #__support_tickets group (cn) field to group ID
  *
- */
+*/
 class Migration20170209150806ComSupport extends Base
 {
     /**

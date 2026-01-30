@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Languages\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Languages module
  *
- */
+*/
 class Migration20190109000000ModLanguages extends Base
 {
     /**

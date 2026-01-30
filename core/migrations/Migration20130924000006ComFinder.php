@@ -1,21 +1,19 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Content\Migration\Base;
+namespace Migrations;
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for new joomla search/finder tables
  *
- */
+*/
 class Migration20130924000006ComFinder extends Base
 {
     /**
@@ -307,7 +305,6 @@ class Migration20130924000006ComFinder extends Base
 						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
-
 
             $query .= "INSERT INTO `#__finder_taxonomy` (`id`, `parent_id`, `title`, `state`, `access`,"
                 . "`ordering`) VALUES (1, 0, 'ROOT', 0, 0, 0);";

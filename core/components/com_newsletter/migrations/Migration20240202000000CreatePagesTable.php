@@ -1,5 +1,7 @@
 <?php
 
+namespace Components\Newsletter\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 class Migration20240202000000CreatePagesTable extends Base

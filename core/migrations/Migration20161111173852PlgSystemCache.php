@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for removing deprecaed disablecache plugin
  *
- */
+*/
 class Migration20161111173852PlgSystemCache extends Base
 {
     /**

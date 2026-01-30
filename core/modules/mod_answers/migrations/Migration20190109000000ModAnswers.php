@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Answers\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing Answers module
  *
- */
+*/
 class Migration20190109000000ModAnswers extends Base
 {
     /**

@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding project description tables
- **/
+**/
 class Migration20160603173202ComProjects extends Base
 {
     /**

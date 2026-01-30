@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Mycuration\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing mycuration module
  *
- */
+*/
 class Migration20190109000000ModMyCuration extends Base
 {
     /**

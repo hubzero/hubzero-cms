@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding mandrill mail plugin
  *
- */
+*/
 class Migration20150518175926PlgMailMandrill extends Base
 {
     /**

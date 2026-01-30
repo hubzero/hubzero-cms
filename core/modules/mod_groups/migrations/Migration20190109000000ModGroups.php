@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Groups\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing groups module
  *
- */
+*/
 class Migration20190109000000ModGroups extends Base
 {
     /**

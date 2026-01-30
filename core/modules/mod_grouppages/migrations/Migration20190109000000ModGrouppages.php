@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Modules\Grouppages\Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for installing grouppages module
  *
- */
+*/
 class Migration20190109000000ModGrouppages extends Base
 {
     /**

@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding Files group plugin
- **/
+**/
 class Migration20151105145500PlgGroupsFiles extends Base
 {
     /**

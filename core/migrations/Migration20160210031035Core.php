@@ -6,11 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Migrations;
+
 use Hubzero\Content\Migration\Base;
 
 /**
  * Migration script for adding a status column to the migrations table
- **/
+**/
 class Migration20160210031035Core extends Base
 {
     /**
