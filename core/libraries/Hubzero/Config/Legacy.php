@@ -165,13 +165,16 @@ class Legacy extends Registry
     }
 
     /**
-     * Determine if the given configuration exists.
+     * Determine if the given configuration exists and is valid.
+     *
+     * A configuration file must exist and be at least 10 bytes to be valid.
+     * This prevents treating empty/placeholder files as valid configs.
      *
      * @return  bool
      */
     public function exists()
     {
-        return file_exists($this->file);
+        return file_exists($this->file) && filesize($this->file) >= 10;
     }
 
     /**
