@@ -88,7 +88,9 @@ class SessionServiceProvider extends ServiceProvider
 				$exists = $db->loadResult();
 
 				// If the session record doesn't exist initialise it.
-				if (!$exists)
+				// Skip if session_id is empty to avoid duplicate key errors
+				$sessionId = $this->app['session']->getId();
+				if (!$exists && !empty($sessionId))
 				{
 					$ip = $this->app['request']->ip();
 
