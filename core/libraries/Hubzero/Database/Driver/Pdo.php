@@ -651,7 +651,8 @@ class Pdo extends Driver
      */
     public function escape($text, $extra = false)
     {
-        $result = substr($this->connection->quote($text ? $text : ''), 1, -1);
+        // Use null coalescing to properly handle falsy but valid values like 0, '0', false
+        $result = substr($this->connection->quote($text ?? ''), 1, -1);
 
         if ($extra) {
             $result = addcslashes($result, '%_');
