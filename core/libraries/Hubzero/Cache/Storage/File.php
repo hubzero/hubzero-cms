@@ -223,16 +223,22 @@ class File extends None
 		{
 			foreach (new DirectoryIterator($path) as $file)
 			{
-				if (!$root || (!$file->isDot() && !in_array(strtolower($file->getFilename()), static::$skip)))
+				if ($file->isDot())
 				{
-					if ($file->isDir())
-					{
-						//$this->clean(($group ? $group . DIRECTORY_SEPARATOR : '') . $file->getFilename());
-					}
-					else
-					{
-						unlink($file->getPathname());
-					}
+					continue;
+				}
+				if ($root && in_array(strtolower($file->getFilename()), static::$skip))
+				{
+					continue;
+				}
+				if ($file->isDir())
+				{
+					$subgroup = ($group ? $group . DIRECTORY_SEPARATOR : '') . $file->getFilename();
+					$this->clean($subgroup);
+				}
+				else
+				{
+					unlink($file->getPathname());
 				}
 			}
 
