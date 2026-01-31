@@ -238,7 +238,7 @@ class Loader
 					->whereEquals($s . '.client_id', (int)$client_id)
 					->whereEquals($e . '.enabled', 1)
 					->whereEquals($e . '.type', 'template')
-					->whereRaw($e . '.`client_id` = `' . $s . '`.`client_id`');
+					->whereRaw($db->quoteName($e . '.client_id') . ' = ' . $db->quoteName($s . '.client_id'));
 
 				$query->order('home', 'desc');
 
