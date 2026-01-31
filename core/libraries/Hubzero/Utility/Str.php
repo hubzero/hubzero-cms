@@ -593,7 +593,7 @@ class Str
     public static function contains($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ($needle != '' && strpos($haystack ? $haystack != null : "", $needle) !== false) {
+            if ($needle != '' && strpos((string)$haystack, $needle) !== false) {
                 return true;
             }
         }
