@@ -24,6 +24,7 @@ if ($inuse < 1)
 }
 $inuse = ($inuse > 100) ? 100 : $inuse;
 $approachingQuota = $this->project->config('approachingQuota', 85);
+$selfAssessmentGuide = $this->pub->config()->get('data_publishing_self_assessment_guide', '');
 $approachingQuota = intval($approachingQuota) > 0 ? $approachingQuota : 85;
 $warning = ($inuse > $approachingQuota) ? 1 : 0;
 
@@ -43,6 +44,11 @@ $i = 1;
 					<a class="icon-add btn" href="/pubs/#/prjs/<?php echo $this->project->get('id'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a>
 				</li>
 			<?php } else { ?>
+				<?php if(!empty($selfAssessmentGuide)) { ?>
+				<li>
+					<a class="icon-file btn" target="_blank" href="<?php echo $selfAssessmentGuide; ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELF_ASSESSMENT_GUIDE'); ?></a>
+				</li>
+				<?php } ?>
 				<li>
 					<a class="icon-add btn" href="<?php echo Route::url($this->project->link('publications') . '&action=start'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a>
                 	</li>
