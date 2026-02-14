@@ -30,7 +30,6 @@ class ManyShiftsToMany extends ManyToMany
      * @param   string                               $relatedKey         The related key
      * @param   string                               $shifter            The field identifying model type
      * @return  void
-     * @since   2.0.0
      **/
     public function __construct($model, $related, $associativeTable, $localKey, $relatedKey, $shifter)
     {
@@ -46,7 +45,6 @@ class ManyShiftsToMany extends ManyToMany
      * our way backwards through the intermediate table.
      *
      * @return  $this
-     * @since   2.0.0
      **/
     public function mediate()
     {
@@ -66,7 +64,6 @@ class ManyShiftsToMany extends ManyToMany
      * @param   int     $count     The count to limit by
      * @param   string  $operator  The comparison operator used between the column and the count
      * @return  array
-     * @since   2.0.0
      **/
     public function getConstrainedKeysByCount($count, $operator = '>=')
     {
@@ -93,7 +90,6 @@ class ManyShiftsToMany extends ManyToMany
      * Generates the connection data needed to create the associative entry
      *
      * @return  array
-     * @since   2.0.0
      **/
     protected function getConnectionData()
     {
@@ -108,7 +104,6 @@ class ManyShiftsToMany extends ManyToMany
      * @param   array    $ids         The identifiers to remove from the associative table
      * @param   closure  $constraint  Additional constraints to place on the query
      * @return  $this
-     * @since   2.0.0
      **/
     public function disconnect($ids, $constraint = null)
     {

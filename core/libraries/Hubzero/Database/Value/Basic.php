@@ -25,7 +25,6 @@ class Basic
      *
      * @param   string  $content  The content of the given value
      * @return  void
-     * @since   2.1.0
      **/
     public function __construct($content)
     {
@@ -37,7 +36,6 @@ class Basic
      *
      * @param   object  $syntax  The syntax object with which the query is being built
      * @return  string
-     * @since   2.1.0
      **/
     public function build($syntax)
     {

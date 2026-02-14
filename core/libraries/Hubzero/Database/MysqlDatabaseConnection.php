@@ -28,6 +28,23 @@ class MysqlDatabaseConnection
     private const DEFAULT_TIMEOUT = 30;
 
     /**
+     * Most recent PDO error message captured by this utility.
+     *
+     * @var string|null
+     */
+    private static ?string $lastError = null;
+
+    /**
+     * Get the most recent captured PDO error message.
+     *
+     * @return  string|null
+     */
+    public static function getLastError(): ?string
+    {
+        return self::$lastError;
+    }
+
+    /**
      * Build a MySQL DSN string from configuration
      *
      * @param   array  $config  Database configuration with keys:
@@ -90,13 +107,16 @@ class MysqlDatabaseConnection
             $dsn = self::buildDsn($config);
             $options = self::getDefaultOptions($timeout);
 
-            return new PDO(
+            $pdo = new PDO(
                 $dsn,
                 $config['user'] ?? '',
                 $config['password'] ?? '',
                 $options
             );
+            self::$lastError = null;
+            return $pdo;
         } catch (PDOException $e) {
+            self::$lastError = $e->getMessage();
             return null;
         }
     }
@@ -114,12 +134,19 @@ class MysqlDatabaseConnection
         $dsn = self::buildDsn($config);
         $options = self::getDefaultOptions($timeout);
 
-        return new PDO(
-            $dsn,
-            $config['user'] ?? '',
-            $config['password'] ?? '',
-            $options
-        );
+        try {
+            $pdo = new PDO(
+                $dsn,
+                $config['user'] ?? '',
+                $config['password'] ?? '',
+                $options
+            );
+            self::$lastError = null;
+            return $pdo;
+        } catch (PDOException $e) {
+            self::$lastError = $e->getMessage();
+            throw $e;
+        }
     }
 
     /**
@@ -161,8 +188,11 @@ class MysqlDatabaseConnection
             );
             $stmt->execute(['name' => $name]);
 
-            return $stmt->fetch() !== false;
+            $exists = $stmt->fetch() !== false;
+            self::$lastError = null;
+            return $exists;
         } catch (PDOException $e) {
+            self::$lastError = $e->getMessage();
             return false;
         }
     }
@@ -186,8 +216,10 @@ class MysqlDatabaseConnection
                 "CREATE DATABASE `{$name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
             );
 
+            self::$lastError = null;
             return true;
         } catch (PDOException $e) {
+            self::$lastError = $e->getMessage();
             return false;
         }
     }

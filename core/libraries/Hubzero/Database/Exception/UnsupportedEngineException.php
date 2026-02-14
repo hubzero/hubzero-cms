@@ -8,6 +8,6 @@
 
 namespace Hubzero\Database\Exception;
 
-class UnsupportedEngineException extends \Hubzero\Error\Exception\RuntimeException
+class UnsupportedEngineException extends RuntimeException
 {
 }

@@ -19,7 +19,6 @@ class OneToMany extends Relationship
      * Fetches the results of relationship
      *
      * @return  \Hubzero\Database\Relational
-     * @since   2.0.0
      **/
     public function rows()
     {
@@ -36,7 +35,6 @@ class OneToMany extends Relationship
      * @param   object|array   $models    A single model or array of models to associate
      * @param   closure        $callback  A callback to potentially append additional data
      * @return  object|array
-     * @since   2.0.0
      **/
     public function associate($models, $callback = null)
     {
@@ -56,7 +54,6 @@ class OneToMany extends Relationship
      *
      * @param   array  $data  An array of datasets being saved to new models
      * @return  bool
-     * @since   2.0.0
      **/
     public function save($data)
     {
@@ -86,7 +83,6 @@ class OneToMany extends Relationship
      *
      * @param   array  $models  An array of models being associated and saved
      * @return  array
-     * @since   2.0.0
      **/
     public function saveAll($models)
     {
@@ -103,7 +99,6 @@ class OneToMany extends Relationship
      * Deletes all rows attached to the current model
      *
      * @return  bool
-     * @since   2.0.0
      **/
     public function destroyAll()
     {
@@ -122,7 +117,6 @@ class OneToMany extends Relationship
      *
      * @param   closure  $constraint  The constraint function to apply
      * @return  array
-     * @since   2.0.0
      **/
     public function getConstrainedKeys($constraint)
     {
@@ -139,7 +133,6 @@ class OneToMany extends Relationship
      * @param   string  $data  The data to seed
      * @param   string  $name  The name of the relationship
      * @return  object
-     * @since   2.0.0
      **/
     public function seedWithData($rows, $data, $name)
     {
@@ -155,7 +148,6 @@ class OneToMany extends Relationship
      * @param   array   $data  The data from which to seed
      * @param   string  $name  The relationship name
      * @return  array
-     * @since   2.0.0
      **/
     protected function seed($rows, $data, $name)
     {
@@ -176,7 +168,6 @@ class OneToMany extends Relationship
      *
      * @param   array  $relations  The relations to sort
      * @return  array
-     * @since   2.0.0
      **/
     protected function getResultsByRelatedKey($relations)
     {
