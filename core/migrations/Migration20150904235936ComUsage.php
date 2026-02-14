@@ -54,6 +54,10 @@ class Migration20150904235936ComUsage extends Base
 
         try {
             $statsDb   = \Hubzero\Database\Driver::getInstance($options);
+            // getInstance() builds a lazy connection, so ask for the connection
+            // itself; otherwise a bad host or missing grant is not discovered
+            // until the first query, long past the checks below.
+            $statsDb->connect();
             $connected = true;
         } catch (\Hubzero\Database\Exception\ConnectionFailedException $e) {
             $connected = false;
@@ -86,6 +90,7 @@ class Migration20150904235936ComUsage extends Base
 
             try {
                 $statsDb = \Hubzero\Database\Driver::getInstance($options);
+                $statsDb->connect();
             } catch (\Hubzero\Database\Exception\ConnectionFailedException $e) {
                 // Still can't connect after granting - database probably doesn't exist
                 // Skip gracefully since metrics is optional
