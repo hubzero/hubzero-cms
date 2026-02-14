@@ -9,6 +9,7 @@
 namespace Hubzero\Database;
 
 use Hubzero\Access\Asset as Model;
+use Hubzero\Facades\Event;
 
 /**
  * Database asset helper class for permissions compatibility
@@ -27,7 +28,6 @@ class Asset
      *
      * @param   object  $model  The model to which the asset will refer
      * @return  void
-     * @since   2.0.0
      **/
     public function __construct($model)
     {
@@ -39,7 +39,6 @@ class Asset
      *
      * @param   object  $model  The database model to which the asset refers
      * @return  int
-     * @since   2.0.0
      **/
     public static function resolve($model)
     {
@@ -51,7 +50,6 @@ class Asset
      *
      * @param   object  $model  The model being deleted
      * @return  bool
-     * @since   2.0.0
      **/
     public static function destroy($model)
     {
@@ -62,7 +60,6 @@ class Asset
      * Gets the asset id for the object instance
      *
      * @return  int
-     * @since   2.0.0
      **/
     public function getId()
     {
@@ -102,7 +99,7 @@ class Asset
         // Register an event to update the asset name once we know the model id
         if ($this->model->isNew()) {
             $me = $this;
-            \Event::listen(
+            Event::listen(
                 function ($event) use ($asset, $me) {
                     $asset->set('name', $me->getAssetName());
                     $asset->save();
@@ -119,7 +116,6 @@ class Asset
      * Deletes the current asset entry
      *
      * @return  bool
-     * @since   2.0.0
      **/
     public function delete()
     {
@@ -138,7 +134,6 @@ class Asset
      * Computes the (distinct) name of the asset
      *
      * @return  string
-     * @since   2.0.0
      */
     private function getAssetName()
     {
@@ -154,7 +149,6 @@ class Asset
      * Gets the title to use for the asset table
      *
      * @return  string
-     * @since   2.0.0
      */
     private function getAssetTitle()
     {
@@ -166,7 +160,6 @@ class Asset
      * Gets the parent asset id for the record
      *
      * @return  int
-     * @since   2.0.0
      */
     private function getAssetParentId()
     {
@@ -186,7 +179,6 @@ class Asset
      * Gets the root asset id from the #__assets table, defaulting to 1
      *
      * @return  int
-     * @since   2.0.0
      */
     private function getRootId()
     {

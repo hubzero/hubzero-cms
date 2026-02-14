@@ -8,6 +8,10 @@
 
 namespace Hubzero\Database;
 
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\User;
+
 /**
  * Pagination class
  */
@@ -47,7 +51,6 @@ class Pagination
      * @param   string  $name       The method name being called
      * @param   array   $arguments  The method arguments provided
      * @return  $this
-     * @since   2.0.0
      **/
     public function __call($name, $arguments)
     {
@@ -72,37 +75,33 @@ class Pagination
      * @param   string  $start      The variable name representing the pagination start number
      * @param   string  $limit      The variable name representing the pagination limit number
      * @return  object
-     * @since   2.0.0
      **/
     public static function init($namespace, $total, $start = 'start', $limit = 'limit')
     {
         $instance = new self();
 
         $instance->total = $total;
-        $instance->start = \Request::getInt(
+        $instance->start = Request::getInt(
             $start,
-            \User::getState($namespace . '.start', 0)
+            User::getState($namespace . '.start', 0)
         );
-        $instance->limit = \Request::getInt(
+        $instance->limit = Request::getInt(
             $limit,
-            \User::getState($namespace . '.limit', \Config::get('list_limit'))
+            User::getState($namespace . '.limit', Config::get('list_limit'))
         );
 
         if ($instance->limit < 0) {
-            $instance->limit = \Config::get('list_limit');
+            $instance->limit = Config::get('list_limit');
         }
-        $instance->
-            start = ($instance->
-            limit != 0 ? (int)(floor($instance->
-            start / $instance->
-            limit) * $instance->
-            limit) : 0);
+        $instance->start = ($instance->limit != 0)
+            ? (int) (floor($instance->start / $instance->limit) * $instance->limit)
+            : 0;
         if ($instance->start < 0) {
             $instance->start = 0;
         }
 
-        \User::setState($namespace . '.start', $instance->start);
-        \User::setState($namespace . '.limit', $instance->limit);
+        User::setState($namespace . '.start', $instance->start);
+        User::setState($namespace . '.limit', $instance->limit);
 
         return $instance;
     }
@@ -111,7 +110,6 @@ class Pagination
      * Returns the html pagination output
      *
      * @return  string
-     * @since   2.0.0
      **/
     public function __toString()
     {
@@ -122,7 +120,6 @@ class Pagination
      * Gets the HUBzero paginator, or creates a new one
      *
      * @return  \Hubzero\Pagination\Paginator
-     * @since   2.0.0
      **/
     protected function getPaginator()
     {
