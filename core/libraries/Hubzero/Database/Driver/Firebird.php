@@ -1316,24 +1316,25 @@ class Firebird extends SqlDriver
     }
 
     /**
-     * Checks for the existence of a table
-     *
-     * @param   string  $table  The table we're looking for
-     * @return  bool
+     * {@inheritdoc}
      */
     public function tableExists($table)
     {
         $this->commitBeforeMetadataQuery();
 
-        $table = strtoupper($this->replacePrefix($table));
+        return parent::tableExists($table);
+    }
 
-        $this->setQuery("
-            SELECT COUNT(*) FROM RDB\$RELATIONS
-            WHERE RDB\$RELATION_NAME = " . $this->quote($table) . "
-            AND RDB\$SYSTEM_FLAG = 0
-        ");
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTableExistsQuery(string $table): string
+    {
+        $table = strtoupper($table);
 
-        return (bool) $this->loadResult();
+        return "SELECT COUNT(*) FROM RDB\$RELATIONS"
+            . " WHERE RDB\$RELATION_NAME = " . $this->quote($table)
+            . " AND RDB\$SYSTEM_FLAG = 0";
     }
 
     /**
@@ -2610,32 +2611,6 @@ class Firebird extends SqlDriver
         return null;
     }
 
-    /**
-     * Build a CREATE INDEX statement for databases that create indexes separately
-     *
-     * Firebird requires index and table names to be uppercase for proper resolution.
-     *
-     * @param   string  $indexName   The index name (unquoted)
-     * @param   string  $tableName   The table name (unquoted, may have prefix)
-     * @param   string  $columnList  The column list SQL (already quoted)
-     * @param   bool    $unique      Whether this is a unique index
-     * @return  string  The CREATE INDEX SQL
-     */
-    public function buildCreateIndexSql(
-        string $indexName,
-        string $tableName,
-        string $columnList,
-        bool $unique = false
-    ): string {
-        // Firebird stores identifiers in uppercase, so we must uppercase before quoting
-        $uniqueKeyword = $unique ? 'UNIQUE ' : '';
-        $quotedIndex = $this->quoteName($indexName);  // quoteName handles uppercasing
-        $quotedTable = $this->quoteName($tableName);  // quoteName handles uppercasing
-
-        // Note: Firebird does not support IF NOT EXISTS for CREATE INDEX
-        return "CREATE {$uniqueKeyword}INDEX $quotedIndex ON $quotedTable ($columnList)";
-    }
-
     // =========================================================================
     // Sequence Management
     // =========================================================================
@@ -3370,24 +3345,14 @@ class Firebird extends SqlDriver
      * @param   string  $comment     Optional column comment (ignored)
      * @return  bool
      */
-    public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = strtoupper($this->replacePrefix($table));
-        $column = strtoupper($column);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if ($this->tableHasField($table, $column)) {
-            return true; // Already exists
-        }
-
-        $query = 'ALTER TABLE ' . $this->quoteName($table) .
-                 ' ADD ' . $this->quoteName($column) . ' ' . $definition;
-
-        $this->setQuery($query);
-        return (bool) $this->execute();
+    protected function buildAddColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        return 'ALTER TABLE ' . $this->quoteName($table)
+            . ' ADD ' . $this->quoteName($column) . ' ' . $definition;
     }
 
     /**
@@ -3503,24 +3468,10 @@ class Firebird extends SqlDriver
      * @param   string  $column  Column name
      * @return  bool
      */
-    public function dropColumn(string $table, string $column): bool
+    protected function buildDropColumnSql(string $table, string $column): string
     {
-        $table = strtoupper($this->replacePrefix($table));
-        $column = strtoupper($column);
-
-        if (!$this->tableExists($table)) {
-            return true;
-        }
-
-        if (!$this->tableHasField($table, $column)) {
-            return true;
-        }
-
-        $query = 'ALTER TABLE ' . $this->quoteName($table) .
-                 ' DROP ' . $this->quoteName($column);
-
-        $this->setQuery($query);
-        return (bool) $this->execute();
+        return 'ALTER TABLE ' . $this->quoteName($table)
+            . ' DROP ' . $this->quoteName($column);
     }
 
     /**
@@ -3784,43 +3735,15 @@ END';
      * @param   bool          $unique   Whether to create a unique index
      * @return  bool
      */
-    public function addIndex(string $table, string $name, $columns, bool $unique = false): bool
+    protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
-        $table = strtoupper($this->replacePrefix($table));
-        $name = strtoupper($name);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if (is_string($columns)) {
-            $columns = [$columns];
-        }
-
         $columnList = implode(', ', array_map(function ($col) {
             return $this->quoteName(strtoupper($col));
         }, $columns));
-
         $uniqueStr = $unique ? 'UNIQUE ' : '';
 
-        $query = 'CREATE ' . $uniqueStr . 'INDEX ' . $this->quoteName($name) .
-                 ' ON ' . $this->quoteName($table) . ' (' . $columnList . ')';
-
-        $this->setQuery($query);
-        return (bool) $this->execute();
-    }
-
-    /**
-     * Add a unique index to a table
-     *
-     * @param   string        $table    Table name
-     * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s)
-     * @return  bool
-     */
-    public function addUniqueIndex(string $table, string $name, $columns): bool
-    {
-        return $this->addIndex($table, $name, $columns, true);
+        return 'CREATE ' . $uniqueStr . 'INDEX ' . $this->quoteName(strtoupper($name))
+            . ' ON ' . $this->quoteName($table) . ' (' . $columnList . ')';
     }
 
     /**
@@ -3879,31 +3802,15 @@ END';
             ORDER BY rc.RDB\$CONSTRAINT_NAME, s.RDB\$FIELD_POSITION
         ");
 
-        $rows = $this->loadObjectList();
-
-        // PDO returns lowercase property names with ATTR_CASE = CASE_LOWER
-        $foreignKeys = [];
-        foreach ($rows as $row) {
-            $name = trim($row->constraint_name ?? '');
-            // Uppercase for consistency with Firebird's storage
-            $nameUpper = strtoupper($name);
-
-            if (!isset($foreignKeys[$nameUpper])) {
-                $foreignKeys[$nameUpper] = (object) [
-                    'name'            => strtolower($nameUpper),
-                    'columns'         => [],
-                    'foreign_table'   => strtolower(trim($row->referenced_table ?? '')),
-                    'foreign_columns' => [],
-                    'on_update'       => trim($row->update_rule ?? ''),
-                    'on_delete'       => trim($row->delete_rule ?? '')
-                ];
-            }
-
-            $foreignKeys[$nameUpper]->columns[] = strtolower(trim($row->column_name ?? ''));
-            $foreignKeys[$nameUpper]->foreign_columns[] = strtolower(trim($row->referenced_column ?? ''));
-        }
-
-        return array_values($foreignKeys);
+        return $this->groupForeignKeyRows($this->loadObjectList(), [
+            'group_key'       => fn($row) => strtoupper(trim($row->constraint_name ?? '')),
+            'constraint_name' => fn($row) => strtolower(trim($row->constraint_name ?? '')),
+            'column_name'     => fn($row) => strtolower(trim($row->column_name ?? '')),
+            'foreign_table'   => fn($row) => strtolower(trim($row->referenced_table ?? '')),
+            'foreign_column'  => fn($row) => strtolower(trim($row->referenced_column ?? '')),
+            'on_update'       => fn($row) => trim($row->update_rule ?? ''),
+            'on_delete'       => fn($row) => trim($row->delete_rule ?? ''),
+        ]);
     }
 
     // =========================================================================

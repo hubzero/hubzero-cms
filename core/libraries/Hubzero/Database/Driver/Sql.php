@@ -159,10 +159,37 @@ abstract class Sql extends PdoDriver
     /**
      * Checks for the existence of a table
      *
+     * Default implementation uses getTableExistsQuery(). Drivers that need
+     * a different approach (e.g. SHOW TABLES LIKE, getTableList()) should
+     * override this method directly.
+     *
      * @param   string  $table  The table we're looking for
      * @return  bool
      */
-    abstract public function tableExists($table);
+    public function tableExists($table)
+    {
+        $table = $this->replacePrefix($table);
+        $this->setQuery($this->getTableExistsQuery($table));
+
+        return (bool) $this->loadResult();
+    }
+
+    /**
+     * Returns the SQL query to check if a table exists
+     *
+     * The table name has already been passed through replacePrefix().
+     * Override this to provide the dialect-specific existence check SQL,
+     * or override tableExists() directly for non-query-based patterns.
+     *
+     * @param   string  $table  The table name (already prefix-replaced)
+     * @return  string  SQL query that returns a truthy value if the table exists
+     */
+    protected function getTableExistsQuery(string $table): string
+    {
+        throw new \BadMethodCallException(
+            static::class . ' must override getTableExistsQuery() or tableExists()'
+        );
+    }
 
     /**
      * Returns whether or not the given table has a given field
@@ -867,6 +894,82 @@ abstract class Sql extends PdoDriver
      * @return  array
      */
     abstract public function getIndexes($table);
+
+    /**
+     * Gets foreign key constraints for a table
+     *
+     * Returns an array of objects, each containing:
+     * - name: The constraint name
+     * - columns: Array of local column names
+     * - foreign_table: The referenced table name
+     * - foreign_columns: Array of referenced column names
+     * - on_update: The ON UPDATE action
+     * - on_delete: The ON DELETE action
+     *
+     * @param   string  $table  The table name
+     * @return  array   Array of foreign key constraint objects
+     */
+    abstract public function getForeignKeys($table);
+
+    /**
+     * Groups foreign key metadata rows by constraint name into normalized objects
+     *
+     * Each entry in $map is either a string (property name on the row object)
+     * or a Closure that receives the row and returns the value.
+     *
+     * Required map keys: constraint_name, column_name, foreign_table,
+     * foreign_column, on_update, on_delete.
+     * Optional: group_key (defaults to constraint_name).
+     *
+     * @param   array  $rows  Result rows from a foreign key metadata query
+     * @param   array  $map   Property mapping keyed by logical field name
+     * @return  array  Array of foreign key objects
+     */
+    protected function groupForeignKeyRows(array $rows, array $map): array
+    {
+        $foreignKeys = [];
+
+        foreach ($rows as $row) {
+            $name = $this->resolveFkMapping($row, $map['constraint_name']);
+            $groupKey = isset($map['group_key'])
+                ? $this->resolveFkMapping($row, $map['group_key'])
+                : $name;
+
+            if (!isset($foreignKeys[$groupKey])) {
+                $foreignKeys[$groupKey] = (object) [
+                    'name'            => $name,
+                    'columns'         => [],
+                    'foreign_table'   => $this->resolveFkMapping($row, $map['foreign_table']),
+                    'foreign_columns' => [],
+                    'on_update'       => $this->resolveFkMapping($row, $map['on_update']),
+                    'on_delete'       => $this->resolveFkMapping($row, $map['on_delete']),
+                ];
+            }
+
+            $foreignKeys[$groupKey]->columns[]
+                = $this->resolveFkMapping($row, $map['column_name']);
+            $foreignKeys[$groupKey]->foreign_columns[]
+                = $this->resolveFkMapping($row, $map['foreign_column']);
+        }
+
+        return array_values($foreignKeys);
+    }
+
+    /**
+     * Resolves a single foreign key property mapping to a value
+     *
+     * @param   object          $row      A result row
+     * @param   string|\Closure $mapping  Property name or closure
+     * @return  mixed
+     */
+    private function resolveFkMapping($row, $mapping)
+    {
+        if ($mapping instanceof \Closure) {
+            return $mapping($row);
+        }
+
+        return $row->$mapping ?? null;
+    }
 
     /**
      * Gets an array of all tables in the database
@@ -1990,12 +2093,51 @@ abstract class Sql extends PdoDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    abstract public function modifyColumn(
+    public function modifyColumn(
         string $table,
         string $column,
         string $definition,
         string $comment = ''
-    ): bool;
+    ): bool {
+        $table = $this->replacePrefix($table);
+
+        if (!$this->tableExists($table)) {
+            return false;
+        }
+
+        if (!$this->tableHasField($table, $column)) {
+            return false;
+        }
+
+        $this->setQuery($this->buildModifyColumnSql($table, $column, $definition, $comment));
+        $result = (bool) $this->execute();
+
+        if ($result && $comment) {
+            $this->applyColumnComment($table, $column, $comment);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Build the SQL statement for modifying a column
+     *
+     * @param   string  $table       Table name (already prefix-replaced)
+     * @param   string  $column      Column name
+     * @param   string  $definition  New column definition
+     * @param   string  $comment     Optional column comment
+     * @return  string
+     */
+    protected function buildModifyColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        throw new \BadMethodCallException(
+            static::class . ' must override buildModifyColumnSql() or modifyColumn()'
+        );
+    }
 
     /**
      * Modify a column definition and move it after a specific column
@@ -2076,7 +2218,60 @@ abstract class Sql extends PdoDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    abstract public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool;
+    public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool
+    {
+        $table = $this->replacePrefix($table);
+
+        if (!$this->tableExists($table)) {
+            return false;
+        }
+
+        if ($this->tableHasField($table, $column)) {
+            return true;
+        }
+
+        $this->setQuery($this->buildAddColumnSql($table, $column, $definition, $comment));
+        $result = (bool) $this->execute();
+
+        if ($result && $comment) {
+            $this->applyColumnComment($table, $column, $comment);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Build the SQL statement for adding a column
+     *
+     * @param   string  $table       Table name (already prefix-replaced)
+     * @param   string  $column      Column name
+     * @param   string  $definition  Column definition
+     * @param   string  $comment     Optional column comment
+     * @return  string
+     */
+    protected function buildAddColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        throw new \BadMethodCallException(
+            static::class . ' must override buildAddColumnSql() or addColumn()'
+        );
+    }
+
+    /**
+     * Apply a comment to a column (for databases with separate COMMENT syntax)
+     *
+     * @param   string  $table    Table name (already prefix-replaced)
+     * @param   string  $column   Column name
+     * @param   string  $comment  Comment text
+     * @return  void
+     */
+    protected function applyColumnComment(string $table, string $column, string $comment): void
+    {
+        // Default: no-op. Override for drivers with separate COMMENT ON statements.
+    }
 
     /**
      * Add a column after a specific column
@@ -2176,7 +2371,35 @@ abstract class Sql extends PdoDriver
      * @param   string  $column  Column name
      * @return  bool
      */
-    abstract public function dropColumn(string $table, string $column): bool;
+    public function dropColumn(string $table, string $column): bool
+    {
+        $table = $this->replacePrefix($table);
+
+        if (!$this->tableExists($table)) {
+            return true;
+        }
+
+        if (!$this->tableHasField($table, $column)) {
+            return true;
+        }
+
+        $this->setQuery($this->buildDropColumnSql($table, $column));
+        return (bool) $this->execute();
+    }
+
+    /**
+     * Build the SQL statement for dropping a column
+     *
+     * @param   string  $table   Table name (already prefix-replaced)
+     * @param   string  $column  Column name
+     * @return  string
+     */
+    protected function buildDropColumnSql(string $table, string $column): string
+    {
+        throw new \BadMethodCallException(
+            static::class . ' must override buildDropColumnSql() or dropColumn()'
+        );
+    }
 
     /**
      * Add a FULLTEXT index to a table
@@ -2244,7 +2467,41 @@ abstract class Sql extends PdoDriver
      * @param   bool          $unique   Whether to create a unique index
      * @return  bool
      */
-    abstract public function addIndex(string $table, string $name, $columns, bool $unique = false): bool;
+    public function addIndex(string $table, string $name, $columns, bool $unique = false): bool
+    {
+        $table = $this->replacePrefix($table);
+
+        if (!$this->tableExists($table)) {
+            return false;
+        }
+
+        if ($this->tableHasKey($table, $name)) {
+            return true;
+        }
+
+        if (is_string($columns)) {
+            $columns = [$columns];
+        }
+
+        $this->setQuery($this->buildCreateIndexSql($table, $name, $columns, $unique));
+        return (bool) $this->execute();
+    }
+
+    /**
+     * Build the SQL statement for creating an index
+     *
+     * @param   string  $table    Table name (already prefix-replaced)
+     * @param   string  $name     Index name
+     * @param   array   $columns  Column names
+     * @param   bool    $unique   Whether to create a unique index
+     * @return  string
+     */
+    protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
+    {
+        throw new \BadMethodCallException(
+            static::class . ' must override buildCreateIndexSql() or addIndex()'
+        );
+    }
 
     /**
      * Add a unique index to a table
@@ -2254,7 +2511,10 @@ abstract class Sql extends PdoDriver
      * @param   string|array  $columns  Column name(s) to index
      * @return  bool
      */
-    abstract public function addUniqueIndex(string $table, string $name, $columns): bool;
+    public function addUniqueIndex(string $table, string $name, $columns): bool
+    {
+        return $this->addIndex($table, $name, $columns, true);
+    }
 
     /**
      * Drop an index from a table

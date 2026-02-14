@@ -535,17 +535,14 @@ class Cubrid extends Sql
      * @param   string  $comment
      * @return  bool
      */
-    public function modifyColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-        if (!$this->tableAndFieldExist($table, $column)) {
-            return false;
-        }
-
-        return $this->executeAlterTableStatement(
-            $table,
-            'MODIFY COLUMN ' . $this->quoteName($column) . ' ' . $definition
-        );
+    protected function buildModifyColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        return 'ALTER TABLE ' . $this->quoteName($table)
+            . ' MODIFY COLUMN ' . $this->quoteName($column) . ' ' . $definition;
     }
 
     /**
@@ -667,18 +664,14 @@ class Cubrid extends Sql
      * @param   string  $comment
      * @return  bool
      */
-    public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-        $precondition = $this->resolveAddColumnPrecondition($table, $column);
-        if ($precondition !== null) {
-            return $precondition;
-        }
-
-        return $this->executeAlterTableStatement(
-            $table,
-            'ADD COLUMN ' . $this->quoteName($column) . ' ' . $definition
-        );
+    protected function buildAddColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        return 'ALTER TABLE ' . $this->quoteName($table)
+            . ' ADD COLUMN ' . $this->quoteName($column) . ' ' . $definition;
     }
 
     /**
@@ -813,17 +806,10 @@ class Cubrid extends Sql
      * @param   string  $column
      * @return  bool
      */
-    public function dropColumn(string $table, string $column): bool
+    protected function buildDropColumnSql(string $table, string $column): string
     {
-        $table = $this->replacePrefix($table);
-        if ($this->tableMissingOrFieldMissing($table, $column)) {
-            return true;
-        }
-
-        return $this->executeAlterTableStatement(
-            $table,
-            'DROP COLUMN ' . $this->quoteName($column)
-        );
+        return 'ALTER TABLE ' . $this->quoteName($table)
+            . ' DROP COLUMN ' . $this->quoteName($column);
     }
 
     /**
@@ -937,38 +923,13 @@ class Cubrid extends Sql
      * @param   bool          $unique
      * @return  bool
      */
-    public function addIndex(string $table, string $name, $columns, bool $unique = false): bool
+    protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
-        $table = $this->replacePrefix($table);
-        $precondition = $this->resolveAddKeyPrecondition($table, $name);
-        if ($precondition !== null) {
-            return $precondition;
-        }
-
-        if (is_string($columns)) {
-            $columns = [$columns];
-        }
-
         $columnList = $this->buildQuotedIdentifierList($columns);
         $uniqueStr = $unique ? 'UNIQUE ' : '';
-
-        return $this->executeAlterTableStatement(
-            $table,
-            'ADD ' . $uniqueStr . 'INDEX ' . $this->quoteName($name) . ' (' . $columnList . ')'
-        );
-    }
-
-    /**
-     * Add a unique index.
-     *
-     * @param   string        $table
-     * @param   string        $name
-     * @param   string|array  $columns
-     * @return  bool
-     */
-    public function addUniqueIndex(string $table, string $name, $columns): bool
-    {
-        return $this->addIndex($table, $name, $columns, true);
+        return 'ALTER TABLE ' . $this->quoteName($table)
+            . ' ADD ' . $uniqueStr . 'INDEX ' . $this->quoteName($name)
+            . ' (' . $columnList . ')';
     }
 
     /**

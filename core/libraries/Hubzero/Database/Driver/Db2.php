@@ -1794,39 +1794,32 @@ class Db2 extends SqlDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = strtoupper($this->replacePrefix($table));
+    protected function buildAddColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        $table = strtoupper($table);
         $column = strtoupper($column);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if ($this->tableHasField($table, $column)) {
-            return true;
-        }
-
-        $query = 'ALTER TABLE ' . $this->quoteName($table)
+        return 'ALTER TABLE ' . $this->quoteName($table)
             . ' ADD COLUMN ' . $this->quoteName($column)
             . ' ' . $definition;
+    }
 
-        $this->setQuery($query);
-        $result = (bool) $this->execute();
-
-        if ($result && $comment) {
-            $this->setQuery(
-                'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column) .
-                ' IS ' . $this->quote($comment)
-            );
-            try {
-                $this->execute();
-            } catch (\Exception $e) {
-                // Comments may fail on some DB2 configurations
-            }
+    protected function applyColumnComment(string $table, string $column, string $comment): void
+    {
+        $table = strtoupper($table);
+        $column = strtoupper($column);
+        $this->setQuery(
+            'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column) .
+            ' IS ' . $this->quote($comment)
+        );
+        try {
+            $this->execute();
+        } catch (\Exception $e) {
+            // Comments may fail on some DB2 configurations
         }
-
-        return $result;
     }
 
     /**
@@ -1836,22 +1829,11 @@ class Db2 extends SqlDriver
      * @param   string  $column  Column name
      * @return  bool
      */
-    public function dropColumn(string $table, string $column): bool
+    protected function buildDropColumnSql(string $table, string $column): string
     {
-        $table = strtoupper($this->replacePrefix($table));
+        $table = strtoupper($table);
         $column = strtoupper($column);
-
-        if (!$this->tableExists($table)) {
-            return true;
-        }
-
-        if (!$this->tableHasField($table, $column)) {
-            return true;
-        }
-
-        $query = 'ALTER TABLE ' . $this->quoteName($table) . ' DROP COLUMN ' . $this->quoteName($column);
-        $this->setQuery($query);
-        return (bool) $this->execute();
+        return 'ALTER TABLE ' . $this->quoteName($table) . ' DROP COLUMN ' . $this->quoteName($column);
     }
 
     /**
@@ -1863,39 +1845,17 @@ class Db2 extends SqlDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    public function modifyColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = strtoupper($this->replacePrefix($table));
+    protected function buildModifyColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        $table = strtoupper($table);
         $column = strtoupper($column);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if (!$this->tableHasField($table, $column)) {
-            return false;
-        }
-
-        $query = 'ALTER TABLE ' . $this->quoteName($table)
+        return 'ALTER TABLE ' . $this->quoteName($table)
             . ' ALTER COLUMN ' . $this->quoteName($column)
             . ' SET DATA TYPE ' . $definition;
-
-        $this->setQuery($query);
-        $result = (bool) $this->execute();
-
-        if ($result && $comment) {
-            $this->setQuery(
-                'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column) .
-                ' IS ' . $this->quote($comment)
-            );
-            try {
-                $this->execute();
-            } catch (\Exception $e) {
-                // Comments may fail
-            }
-        }
-
-        return $result;
     }
 
     /**
@@ -2087,43 +2047,17 @@ class Db2 extends SqlDriver
      * @param   bool          $unique   Whether this is a unique index
      * @return  bool
      */
-    public function addIndex(string $table, string $name, $columns, bool $unique = false): bool
+    protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
-        $table = strtoupper($this->replacePrefix($table));
+        $table = strtoupper($table);
         $name = strtoupper($name);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if (is_string($columns)) {
-            $columns = [$columns];
-        }
-
         $columnList = implode(', ', array_map(function ($col) {
             return $this->quoteName(strtoupper($col));
         }, $columns));
-
         $uniqueStr = $unique ? 'UNIQUE ' : '';
 
-        $query = "CREATE {$uniqueStr}INDEX " . $this->quoteName($name) .
-                 ' ON ' . $this->quoteName($table) . " ($columnList)";
-
-        $this->setQuery($query);
-        return (bool) $this->execute();
-    }
-
-    /**
-     * Add a unique index to a table
-     *
-     * @param   string        $table    Table name
-     * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s)
-     * @return  bool
-     */
-    public function addUniqueIndex(string $table, string $name, $columns): bool
-    {
-        return $this->addIndex($table, $name, $columns, true);
+        return "CREATE {$uniqueStr}INDEX " . $this->quoteName($name)
+            . ' ON ' . $this->quoteName($table) . " ($columnList)";
     }
 
     /**
@@ -2427,29 +2361,15 @@ class Db2 extends SqlDriver
                 ORDER BY r.constname, kc.colseq";
 
         $this->setQuery($sql);
-        $rows = $this->loadObjectList();
 
-        // Group by constraint name
-        $foreignKeys = [];
-        foreach ($rows as $row) {
-            $name = $row->constraint_name;
-
-            if (!isset($foreignKeys[$name])) {
-                $foreignKeys[$name] = (object) [
-                    'name'            => $name,
-                    'columns'         => [],
-                    'foreign_table'   => $row->foreign_table,
-                    'foreign_columns' => [],
-                    'on_update'       => $this->translateRule($row->update_rule),
-                    'on_delete'       => $this->translateRule($row->delete_rule),
-                ];
-            }
-
-            $foreignKeys[$name]->columns[] = $row->column_name;
-            $foreignKeys[$name]->foreign_columns[] = $row->foreign_column;
-        }
-
-        return array_values($foreignKeys);
+        return $this->groupForeignKeyRows($this->loadObjectList(), [
+            'constraint_name' => 'constraint_name',
+            'column_name'     => 'column_name',
+            'foreign_table'   => 'foreign_table',
+            'foreign_column'  => 'foreign_column',
+            'on_update'       => fn($row) => $this->translateRule($row->update_rule),
+            'on_delete'       => fn($row) => $this->translateRule($row->delete_rule),
+        ]);
     }
 
     /**

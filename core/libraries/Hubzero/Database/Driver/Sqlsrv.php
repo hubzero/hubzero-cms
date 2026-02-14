@@ -643,18 +643,12 @@ class Sqlsrv extends SqlDriver
     // =========================================================================
 
     /**
-     * Checks for the existence of a table
-     *
-     * @param   string  $table  The table we're looking for
-     * @return  bool
+     * {@inheritdoc}
      */
-    public function tableExists($table)
+    protected function getTableExistsQuery(string $table): string
     {
-        $table = $this->replacePrefix($table);
-        $this->setQuery(
-            "SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = " . $this->quote($table)
-        );
-        return (bool) $this->loadResult();
+        return "SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = "
+            . $this->quote($table);
     }
 
     /**
@@ -789,33 +783,15 @@ class Sqlsrv extends SqlDriver
                 ORDER BY fk.name, fkc.constraint_column_id";
 
         $this->setQuery($sql);
-        $results = $this->loadObjectList();
 
-        $foreignKeys = [];
-
-        foreach ($results as $row) {
-            $fkName = $row->constraint_name;
-
-            if (!isset($foreignKeys[$fkName])) {
-                // Map SQL Server action descriptions to standard terms
-                $onUpdate = str_replace('_', ' ', $row->on_update);
-                $onDelete = str_replace('_', ' ', $row->on_delete);
-
-                $foreignKeys[$fkName] = (object) [
-                    'name'              => $fkName,
-                    'columns'           => [],
-                    'foreign_table'     => $row->referenced_table,
-                    'foreign_columns'   => [],
-                    'on_update'         => $onUpdate,
-                    'on_delete'         => $onDelete,
-                ];
-            }
-
-            $foreignKeys[$fkName]->columns[] = $row->column_name;
-            $foreignKeys[$fkName]->foreign_columns[] = $row->referenced_column;
-        }
-
-        return array_values($foreignKeys);
+        return $this->groupForeignKeyRows($this->loadObjectList(), [
+            'constraint_name' => 'constraint_name',
+            'column_name'     => 'column_name',
+            'foreign_table'   => 'referenced_table',
+            'foreign_column'  => 'referenced_column',
+            'on_update'       => fn($row) => str_replace('_', ' ', $row->on_update),
+            'on_delete'       => fn($row) => str_replace('_', ' ', $row->on_delete),
+        ]);
     }
 
     /**
@@ -1538,16 +1514,15 @@ class Sqlsrv extends SqlDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    public function modifyColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-        $this->setQuery(
-            "ALTER TABLE " . $this->quoteName($table)
+    protected function buildModifyColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        return "ALTER TABLE " . $this->quoteName($table)
             . " ALTER COLUMN " . $this->quoteName($column)
-            . " " . $definition
-        );
-        $this->execute();
-        return true;
+            . " " . $definition;
     }
 
     /**
@@ -1662,16 +1637,15 @@ class Sqlsrv extends SqlDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-        $this->setQuery(
-            "ALTER TABLE " . $this->quoteName($table)
+    protected function buildAddColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        return "ALTER TABLE " . $this->quoteName($table)
             . " ADD " . $this->quoteName($column)
-            . " " . $definition
-        );
-        $this->execute();
-        return true;
+            . " " . $definition;
     }
 
     /**
@@ -2115,12 +2089,9 @@ class Sqlsrv extends SqlDriver
      * @param   string  $column  Column name
      * @return  bool
      */
-    public function dropColumn(string $table, string $column): bool
+    protected function buildDropColumnSql(string $table, string $column): string
     {
-        $table = $this->replacePrefix($table);
-        $this->setQuery("ALTER TABLE " . $this->quoteName($table) . " DROP COLUMN " . $this->quoteName($column));
-        $this->execute();
-        return true;
+        return "ALTER TABLE " . $this->quoteName($table) . " DROP COLUMN " . $this->quoteName($column);
     }
 
     /**
@@ -2360,33 +2331,12 @@ class Sqlsrv extends SqlDriver
      * @param   bool          $unique   Whether to create a unique index
      * @return  bool
      */
-    public function addIndex(string $table, string $name, $columns, bool $unique = false): bool
+    protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
-        $table = $this->replacePrefix($table);
-        $columns = (array) $columns;
         $columnList = implode(', ', array_map([$this, 'quoteName'], $columns));
         $uniqueStr = $unique ? 'UNIQUE ' : '';
-
-        $this->setQuery(
-            "CREATE " . $uniqueStr . "INDEX " . $this->quoteName($name) .
-            " ON " . $this->quoteName($table) . " (" . $columnList . ")"
-        );
-        $this->execute();
-
-        return true;
-    }
-
-    /**
-     * Add a unique index to a table
-     *
-     * @param   string        $table    Table name
-     * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
-     * @return  bool
-     */
-    public function addUniqueIndex(string $table, string $name, $columns): bool
-    {
-        return $this->addIndex($table, $name, $columns, true);
+        return "CREATE " . $uniqueStr . "INDEX " . $this->quoteName($name)
+            . " ON " . $this->quoteName($table) . " (" . $columnList . ")";
     }
 
     /**

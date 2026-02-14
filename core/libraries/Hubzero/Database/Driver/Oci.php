@@ -1852,33 +1852,26 @@ class Oci extends SqlDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = strtoupper($this->replacePrefix($table));
+    protected function buildAddColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        $table = strtoupper($table);
         $column = strtoupper($column);
+        return 'ALTER TABLE ' . $this->quoteName($table) . ' ADD ' . $this->quoteName($column) . ' ' . $definition;
+    }
 
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if ($this->tableHasField($table, $column)) {
-            return true;
-        }
-
-        $query = 'ALTER TABLE ' . $this->quoteName($table) . ' ADD ' . $this->quoteName($column) . ' ' . $definition;
-
-        $this->setQuery($query);
-        $result = (bool) $this->execute();
-
-        if ($result && $comment) {
-            $this->setQuery(
-                'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column) .
-                ' IS ' . $this->quote($comment)
-            );
-            $this->execute();
-        }
-
-        return $result;
+    protected function applyColumnComment(string $table, string $column, string $comment): void
+    {
+        $table = strtoupper($table);
+        $column = strtoupper($column);
+        $this->setQuery(
+            'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column) .
+            ' IS ' . $this->quote($comment)
+        );
+        $this->execute();
     }
 
     /**
@@ -1888,22 +1881,11 @@ class Oci extends SqlDriver
      * @param   string  $column  Column name
      * @return  bool
      */
-    public function dropColumn(string $table, string $column): bool
+    protected function buildDropColumnSql(string $table, string $column): string
     {
-        $table = strtoupper($this->replacePrefix($table));
+        $table = strtoupper($table);
         $column = strtoupper($column);
-
-        if (!$this->tableExists($table)) {
-            return true;
-        }
-
-        if (!$this->tableHasField($table, $column)) {
-            return true;
-        }
-
-        $query = 'ALTER TABLE ' . $this->quoteName($table) . ' DROP COLUMN ' . $this->quoteName($column);
-        $this->setQuery($query);
-        return (bool) $this->execute();
+        return 'ALTER TABLE ' . $this->quoteName($table) . ' DROP COLUMN ' . $this->quoteName($column);
     }
 
     /**
@@ -1915,33 +1897,15 @@ class Oci extends SqlDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    public function modifyColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = strtoupper($this->replacePrefix($table));
+    protected function buildModifyColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        $table = strtoupper($table);
         $column = strtoupper($column);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if (!$this->tableHasField($table, $column)) {
-            return false;
-        }
-
-        $query = 'ALTER TABLE ' . $this->quoteName($table) . ' MODIFY ' . $this->quoteName($column) . ' ' . $definition;
-
-        $this->setQuery($query);
-        $result = (bool) $this->execute();
-
-        if ($result && $comment) {
-            $this->setQuery(
-                'COMMENT ON COLUMN ' . $this->quoteName($table) . '.' . $this->quoteName($column) .
-                ' IS ' . $this->quote($comment)
-            );
-            $this->execute();
-        }
-
-        return $result;
+        return 'ALTER TABLE ' . $this->quoteName($table) . ' MODIFY ' . $this->quoteName($column) . ' ' . $definition;
     }
 
     /**
@@ -2175,19 +2139,6 @@ class Oci extends SqlDriver
 
         $this->setQuery($query);
         return (bool) $this->execute();
-    }
-
-    /**
-     * Add a unique index to a table
-     *
-     * @param   string        $table    Table name
-     * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s)
-     * @return  bool
-     */
-    public function addUniqueIndex(string $table, string $name, $columns): bool
-    {
-        return $this->addIndex($table, $name, $columns, true);
     }
 
     /**
@@ -2507,29 +2458,15 @@ class Oci extends SqlDriver
                 ORDER BY c.constraint_name, cc.position";
 
         $this->setQuery($sql);
-        $rows = $this->loadObjectList();
 
-        // Group by constraint name
-        $foreignKeys = [];
-        foreach ($rows as $row) {
-            $name = $row->constraint_name;
-
-            if (!isset($foreignKeys[$name])) {
-                $foreignKeys[$name] = (object) [
-                    'name'            => $name,
-                    'columns'         => [],
-                    'foreign_table'   => $row->foreign_table,
-                    'foreign_columns' => [],
-                    'on_update'       => 'NO ACTION', // Oracle doesn't track ON UPDATE
-                    'on_delete'       => $row->delete_rule ?: 'NO ACTION',
-                ];
-            }
-
-            $foreignKeys[$name]->columns[] = $row->column_name;
-            $foreignKeys[$name]->foreign_columns[] = $row->foreign_column;
-        }
-
-        return array_values($foreignKeys);
+        return $this->groupForeignKeyRows($this->loadObjectList(), [
+            'constraint_name' => 'constraint_name',
+            'column_name'     => 'column_name',
+            'foreign_table'   => 'foreign_table',
+            'foreign_column'  => 'foreign_column',
+            'on_update'       => fn($row) => 'NO ACTION',
+            'on_delete'       => fn($row) => $row->delete_rule ?: 'NO ACTION',
+        ]);
     }
 
     /**

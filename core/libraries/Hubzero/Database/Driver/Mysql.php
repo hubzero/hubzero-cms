@@ -1397,7 +1397,6 @@ class Mysql extends SqlDriver
         $table = $this->replacePrefix($table);
         $database = $this->getDatabase();
 
-        // Query information_schema for foreign key constraints
         $sql = "SELECT
                     kcu.CONSTRAINT_NAME,
                     kcu.COLUMN_NAME,
@@ -1415,29 +1414,15 @@ class Mysql extends SqlDriver
                 ORDER BY kcu.CONSTRAINT_NAME, kcu.ORDINAL_POSITION";
 
         $this->setQuery($sql);
-        $rows = $this->loadObjectList();
 
-        // Group by constraint name
-        $foreignKeys = [];
-        foreach ($rows as $row) {
-            $name = $row->CONSTRAINT_NAME;
-
-            if (!isset($foreignKeys[$name])) {
-                $foreignKeys[$name] = (object) [
-                    'name'            => $name,
-                    'columns'         => [],
-                    'foreign_table'   => $row->REFERENCED_TABLE_NAME,
-                    'foreign_columns' => [],
-                    'on_update'       => $row->UPDATE_RULE,
-                    'on_delete'       => $row->DELETE_RULE,
-                ];
-            }
-
-            $foreignKeys[$name]->columns[] = $row->COLUMN_NAME;
-            $foreignKeys[$name]->foreign_columns[] = $row->REFERENCED_COLUMN_NAME;
-        }
-
-        return array_values($foreignKeys);
+        return $this->groupForeignKeyRows($this->loadObjectList(), [
+            'constraint_name' => 'CONSTRAINT_NAME',
+            'column_name'     => 'COLUMN_NAME',
+            'foreign_table'   => 'REFERENCED_TABLE_NAME',
+            'foreign_column'  => 'REFERENCED_COLUMN_NAME',
+            'on_update'       => 'UPDATE_RULE',
+            'on_delete'       => 'DELETE_RULE',
+        ]);
     }
 
     /**
@@ -2314,26 +2299,19 @@ class Mysql extends SqlDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    public function modifyColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if (!$this->tableHasField($table, $column)) {
-            return false;
-        }
-
+    protected function buildModifyColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
         $query = "ALTER TABLE `$table` MODIFY COLUMN `$column` $definition";
 
         if ($comment) {
             $query .= " COMMENT " . $this->quote($comment);
         }
 
-        $this->setQuery($query);
-        return (bool) $this->execute();
+        return $query;
     }
 
     /**
@@ -2509,26 +2487,19 @@ class Mysql extends SqlDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if ($this->tableHasField($table, $column)) {
-            return true; // Already exists
-        }
-
+    protected function buildAddColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
         $query = "ALTER TABLE `$table` ADD COLUMN `$column` $definition";
 
         if ($comment) {
             $query .= " COMMENT " . $this->quote($comment);
         }
 
-        $this->setQuery($query);
-        return (bool) $this->execute();
+        return $query;
     }
 
     /**
@@ -2723,21 +2694,9 @@ class Mysql extends SqlDriver
      * @param   string  $column  Column name
      * @return  bool
      */
-    public function dropColumn(string $table, string $column): bool
+    protected function buildDropColumnSql(string $table, string $column): string
     {
-        $table = $this->replacePrefix($table);
-
-        if (!$this->tableExists($table)) {
-            return true; // Table doesn't exist, nothing to drop
-        }
-
-        if (!$this->tableHasField($table, $column)) {
-            return true; // Column doesn't exist, nothing to drop
-        }
-
-        $query = "ALTER TABLE `$table` DROP COLUMN `$column`";
-        $this->setQuery($query);
-        return (bool) $this->execute();
+        return "ALTER TABLE `$table` DROP COLUMN `$column`";
     }
 
     /**
@@ -2907,41 +2866,11 @@ class Mysql extends SqlDriver
      * @param   bool          $unique   Whether to create a unique index
      * @return  bool
      */
-    public function addIndex(string $table, string $name, $columns, bool $unique = false): bool
+    protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
-        $table = $this->replacePrefix($table);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if ($this->tableHasKey($table, $name)) {
-            return true; // Index already exists
-        }
-
-        if (is_string($columns)) {
-            $columns = [$columns];
-        }
-
         $columnList = '`' . implode('`, `', $columns) . '`';
         $uniqueStr = $unique ? 'UNIQUE ' : '';
-
-        $query = "ALTER TABLE `$table` ADD {$uniqueStr}INDEX `$name` ($columnList)";
-        $this->setQuery($query);
-        return (bool) $this->execute();
-    }
-
-    /**
-     * Add a unique index to a table
-     *
-     * @param   string        $table    Table name (with or without prefix)
-     * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
-     * @return  bool
-     */
-    public function addUniqueIndex(string $table, string $name, $columns): bool
-    {
-        return $this->addIndex($table, $name, $columns, true);
+        return "ALTER TABLE `$table` ADD {$uniqueStr}INDEX `$name` ($columnList)";
     }
 
     /**

@@ -272,21 +272,12 @@ class Sqlite extends SqlDriver
     }
 
     /**
-     * Checks for the existence of a table
-     *
-     * @param   string  $table  The table we're looking for
-     * @return  bool
+     * {@inheritdoc}
      */
-    public function tableExists($table)
+    protected function getTableExistsQuery(string $table): string
     {
-        $table = $this->replacePrefix($table);
-
-        $this->setQuery(
-            "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = " .
-            $this->quote($table)
-        );
-
-        return (bool) $this->loadResult();
+        return "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = "
+            . $this->quote($table);
     }
 
     /**
@@ -893,63 +884,31 @@ class Sqlite extends SqlDriver
     /**
      * Initializes a transaction
      *
-     * Supports nested transactions via savepoints.
-     *
      * @return  void
      */
     public function transactionStart()
     {
-        if ($this->transactionDepth == 0) {
-            $this->setQuery('BEGIN TRANSACTION')->execute();
-        } else {
-            $this->setQuery('SAVEPOINT SP_' . $this->transactionDepth)->execute();
-        }
-
-        $this->transactionDepth++;
+        $this->transactionStartWithSavepoints('BEGIN TRANSACTION');
     }
 
     /**
      * Commits a transaction
      *
-     * Supports nested transactions via savepoints.
-     *
      * @return  void
      */
     public function transactionCommit()
     {
-        if ($this->transactionDepth <= 0) {
-            return;
-        }
-
-        $this->transactionDepth--;
-
-        if ($this->transactionDepth == 0) {
-            $this->setQuery('COMMIT')->execute();
-        } else {
-            $this->setQuery('RELEASE SAVEPOINT SP_' . $this->transactionDepth)->execute();
-        }
+        $this->transactionCommitWithSavepoints();
     }
 
     /**
      * Rolls back a transaction
      *
-     * Supports nested transactions via savepoints.
-     *
      * @return  void
      */
     public function transactionRollback()
     {
-        if ($this->transactionDepth <= 0) {
-            return;
-        }
-
-        $this->transactionDepth--;
-
-        if ($this->transactionDepth == 0) {
-            $this->setQuery('ROLLBACK')->execute();
-        } else {
-            $this->setQuery('ROLLBACK TO SAVEPOINT SP_' . $this->transactionDepth)->execute();
-        }
+        $this->transactionRollbackWithSavepoints();
     }
 
     /**
@@ -1219,31 +1178,15 @@ class Sqlite extends SqlDriver
         $table = $this->replacePrefix($table);
 
         $this->setQuery('PRAGMA foreign_key_list(' . $this->quoteName($table) . ')');
-        $rows = $this->loadObjectList();
 
-        // Group by id (foreign key id in SQLite)
-        $foreignKeys = [];
-        foreach ($rows as $row) {
-            // SQLite foreign key IDs are integers, use them to create constraint names
-            $id = $row->id;
-            $name = 'fk_' . $id;
-
-            if (!isset($foreignKeys[$name])) {
-                $foreignKeys[$name] = (object) [
-                    'name'            => $name,
-                    'columns'         => [],
-                    'foreign_table'   => $row->table,
-                    'foreign_columns' => [],
-                    'on_update'       => $row->on_update ?? 'NO ACTION',
-                    'on_delete'       => $row->on_delete ?? 'NO ACTION',
-                ];
-            }
-
-            $foreignKeys[$name]->columns[] = $row->from;
-            $foreignKeys[$name]->foreign_columns[] = $row->to;
-        }
-
-        return array_values($foreignKeys);
+        return $this->groupForeignKeyRows($this->loadObjectList(), [
+            'constraint_name' => fn($row) => 'fk_' . $row->id,
+            'column_name'     => 'from',
+            'foreign_table'   => 'table',
+            'foreign_column'  => 'to',
+            'on_update'       => fn($row) => $row->on_update ?? 'NO ACTION',
+            'on_delete'       => fn($row) => $row->on_delete ?? 'NO ACTION',
+        ]);
     }
 
     /**
@@ -1736,6 +1679,7 @@ class Sqlite extends SqlDriver
             return false;
         }
 
+        // SQLite doesn't support ALTER TABLE MODIFY COLUMN - uses table recreation
         return $this->sqliteModifyColumn($table, $column, $column, $definition);
     }
 
@@ -2092,23 +2036,13 @@ class Sqlite extends SqlDriver
      * @param   string  $comment     Optional column comment (ignored on SQLite)
      * @return  bool
      */
-    public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if ($this->tableHasField($table, $column)) {
-            return true; // Already exists
-        }
-
-        // SQLite doesn't support COMMENT
-        $query = "ALTER TABLE `$table` ADD COLUMN `$column` $definition";
-
-        $this->setQuery($query);
-        return (bool) $this->execute();
+    protected function buildAddColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        return "ALTER TABLE `$table` ADD COLUMN `$column` $definition";
     }
 
     /**
@@ -2811,42 +2745,11 @@ class Sqlite extends SqlDriver
      * @param   bool          $unique   Whether to create a unique index
      * @return  bool
      */
-    public function addIndex(string $table, string $name, $columns, bool $unique = false): bool
+    protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
-        $table = $this->replacePrefix($table);
-
-        if (!$this->tableExists($table)) {
-            return false;
-        }
-
-        if ($this->tableHasKey($table, $name)) {
-            return true; // Index already exists
-        }
-
-        if (is_string($columns)) {
-            $columns = [$columns];
-        }
-
         $columnList = '`' . implode('`, `', $columns) . '`';
         $uniqueStr = $unique ? 'UNIQUE ' : '';
-
-        // SQLite uses CREATE INDEX instead of ALTER TABLE ADD INDEX
-        $query = "CREATE {$uniqueStr}INDEX IF NOT EXISTS `$name` ON `$table` ($columnList)";
-        $this->setQuery($query);
-        return (bool) $this->execute();
-    }
-
-    /**
-     * Add a unique index to a table
-     *
-     * @param   string        $table    Table name (with or without prefix)
-     * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
-     * @return  bool
-     */
-    public function addUniqueIndex(string $table, string $name, $columns): bool
-    {
-        return $this->addIndex($table, $name, $columns, true);
+        return "CREATE {$uniqueStr}INDEX IF NOT EXISTS `$name` ON `$table` ($columnList)";
     }
 
     /**

@@ -557,22 +557,12 @@ class Informix extends SqlDriver
     }
 
     /**
-     * Checks if a table exists in the database
-     *
-     * @param   string  $table  The table name
-     * @return  bool
+     * {@inheritdoc}
      */
-    public function tableExists($table)
+    protected function getTableExistsQuery(string $table): string
     {
-        $table = $this->replacePrefix($table);
-
-        $this->setQuery(
-            "SELECT COUNT(*) FROM systables WHERE tabname = " .
-            $this->quote(strtolower($table)) .
-            " AND tabtype = 'T'"
-        );
-
-        return ((int) $this->loadResult() > 0);
+        return "SELECT COUNT(*) FROM systables WHERE tabname = "
+            . $this->quote(strtolower($table)) . " AND tabtype = 'T'";
     }
 
     public function getTableList()
@@ -1380,33 +1370,30 @@ class Informix extends SqlDriver
     // Column Operations
     // =========================================================================
 
-    public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-        $this->setQuery(
-            'ALTER TABLE ' . $this->quoteName($table)
-            . ' ADD ' . $this->quoteName($column) . ' ' . $definition
-        )->execute();
-        return true;
+    protected function buildAddColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        return 'ALTER TABLE ' . $this->quoteName($table)
+            . ' ADD ' . $this->quoteName($column) . ' ' . $definition;
     }
 
-    public function dropColumn(string $table, string $column): bool
+    protected function buildDropColumnSql(string $table, string $column): string
     {
-        $table = $this->replacePrefix($table);
-        $this->setQuery('ALTER TABLE ' . $this->quoteName($table) . ' DROP ' . $this->quoteName($column))
-             ->execute();
-        return true;
+        return 'ALTER TABLE ' . $this->quoteName($table) . ' DROP ' . $this->quoteName($column);
     }
 
-    public function modifyColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-        $this->setQuery(
-            'ALTER TABLE ' . $this->quoteName($table)
+    protected function buildModifyColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        return 'ALTER TABLE ' . $this->quoteName($table)
             . ' MODIFY ' . $this->quoteName($column)
-            . ' ' . $definition
-        )->execute();
-        return true;
+            . ' ' . $definition;
     }
 
     /**
@@ -3478,23 +3465,6 @@ class Informix extends SqlDriver
     // =========================================================================
     // Index Methods
     // =========================================================================
-
-    /**
-     * Add unique index
-     *
-     * @param   string        $table    Table name
-     * @param   string        $name     Index name
-     * @param   string|array  $columns  Column(s)
-     * @return  bool
-     */
-    public function addUniqueIndex(string $table, string $name, $columns): bool
-    {
-        $table = $this->replacePrefix($table);
-        $columns = is_array($columns) ? implode(', ', $columns) : $columns;
-
-        $this->setQuery("CREATE UNIQUE INDEX $name ON $table ($columns)");
-        return (bool) $this->execute();
-    }
 
     /**
      * Add fulltext index to a table

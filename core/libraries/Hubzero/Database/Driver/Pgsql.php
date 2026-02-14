@@ -354,21 +354,12 @@ class Pgsql extends SqlDriver
     }
 
     /**
-     * Checks for the existence of a table
-     *
-     * @param   string  $table  The table we're looking for
-     * @return  bool
+     * {@inheritdoc}
      */
-    public function tableExists($table)
+    protected function getTableExistsQuery(string $table): string
     {
-        $table = $this->replacePrefix($table);
-
-        $this->setQuery(
-            "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = " .
-            $this->quote($table)
-        );
-
-        return (bool) $this->loadResult();
+        return "SELECT COUNT(*) FROM information_schema.tables"
+            . " WHERE table_schema = 'public' AND table_name = " . $this->quote($table);
     }
 
     /**
@@ -873,63 +864,31 @@ class Pgsql extends SqlDriver
     /**
      * Initializes a transaction
      *
-     * Supports nested transactions via savepoints.
-     *
      * @return  void
      */
     public function transactionStart()
     {
-        if ($this->transactionDepth == 0) {
-            $this->setQuery('BEGIN TRANSACTION')->execute();
-        } else {
-            $this->setQuery('SAVEPOINT SP_' . $this->transactionDepth)->execute();
-        }
-
-        $this->transactionDepth++;
+        $this->transactionStartWithSavepoints('BEGIN TRANSACTION');
     }
 
     /**
      * Commits a transaction
      *
-     * Supports nested transactions via savepoints.
-     *
      * @return  void
      */
     public function transactionCommit()
     {
-        if ($this->transactionDepth <= 0) {
-            return;
-        }
-
-        $this->transactionDepth--;
-
-        if ($this->transactionDepth == 0) {
-            $this->setQuery('COMMIT')->execute();
-        } else {
-            $this->setQuery('RELEASE SAVEPOINT SP_' . $this->transactionDepth)->execute();
-        }
+        $this->transactionCommitWithSavepoints();
     }
 
     /**
      * Rolls back a transaction
      *
-     * Supports nested transactions via savepoints.
-     *
      * @return  void
      */
     public function transactionRollback()
     {
-        if ($this->transactionDepth <= 0) {
-            return;
-        }
-
-        $this->transactionDepth--;
-
-        if ($this->transactionDepth == 0) {
-            $this->setQuery('ROLLBACK')->execute();
-        } else {
-            $this->setQuery('ROLLBACK TO SAVEPOINT SP_' . $this->transactionDepth)->execute();
-        }
+        $this->transactionRollbackWithSavepoints();
     }
 
     /**
@@ -1190,31 +1149,20 @@ class Pgsql extends SqlDriver
                   AND ccu.table_schema = tc.table_schema
                 JOIN information_schema.referential_constraints AS rc
                   ON rc.constraint_name = tc.constraint_name
-            WHERE tc.constraint_type = 'FOREIGN KEY' 
+            WHERE tc.constraint_type = 'FOREIGN KEY'
               AND tc.table_name = " . $this->quote($table) . "
               AND tc.table_schema = 'public'";
 
         $this->setQuery($query);
-        $rows = $this->loadObjectList();
 
-        $foreignKeys = [];
-        foreach ($rows as $row) {
-            if (!isset($foreignKeys[$row->name])) {
-                $foreignKeys[$row->name] = (object) [
-                    'name'            => $row->name,
-                    'columns'         => [],
-                    'foreign_table'   => $row->foreign_table,
-                    'foreign_columns' => [],
-                    'on_update'       => $row->on_update,
-                    'on_delete'       => $row->on_delete,
-                ];
-            }
-
-            $foreignKeys[$row->name]->columns[] = $row->local_column;
-            $foreignKeys[$row->name]->foreign_columns[] = $row->foreign_column;
-        }
-
-        return array_values($foreignKeys);
+        return $this->groupForeignKeyRows($this->loadObjectList(), [
+            'constraint_name' => 'name',
+            'column_name'     => 'local_column',
+            'foreign_table'   => 'foreign_table',
+            'foreign_column'  => 'foreign_column',
+            'on_update'       => 'on_update',
+            'on_delete'       => 'on_delete',
+        ]);
     }
 
     /**
@@ -1845,16 +1793,15 @@ class Pgsql extends SqlDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    public function modifyColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-        $quotedTable = $this->quoteName($table);
-        $quotedColumn = $this->quoteName($column);
-
-        // PostgreSQL ALTER COLUMN TYPE uses different syntax:
-        // ALTER TABLE x ALTER COLUMN y TYPE z
-        $this->setQuery("ALTER TABLE $quotedTable ALTER COLUMN $quotedColumn TYPE $definition");
-        return (bool) $this->execute();
+    protected function buildModifyColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        return "ALTER TABLE " . $this->quoteName($table)
+            . " ALTER COLUMN " . $this->quoteName($column)
+            . " TYPE $definition";
     }
 
     public function modifyColumnAfter(
@@ -1933,14 +1880,15 @@ class Pgsql extends SqlDriver
      * @param   string  $comment     Optional column comment
      * @return  bool
      */
-    public function addColumn(string $table, string $column, string $definition, string $comment = ''): bool
-    {
-        $table = $this->replacePrefix($table);
-        $quotedTable = $this->quoteName($table);
-        $quotedColumn = $this->quoteName($column);
-
-        $this->setQuery("ALTER TABLE $quotedTable ADD COLUMN $quotedColumn $definition");
-        return (bool) $this->execute();
+    protected function buildAddColumnSql(
+        string $table,
+        string $column,
+        string $definition,
+        string $comment
+    ): string {
+        return "ALTER TABLE " . $this->quoteName($table)
+            . " ADD COLUMN " . $this->quoteName($column)
+            . " $definition";
     }
 
     public function addColumnAfter(
@@ -1980,14 +1928,10 @@ class Pgsql extends SqlDriver
      * @param   string  $column  Column name
      * @return  bool
      */
-    public function dropColumn(string $table, string $column): bool
+    protected function buildDropColumnSql(string $table, string $column): string
     {
-        $table = $this->replacePrefix($table);
-        $quotedTable = $this->quoteName($table);
-        $quotedColumn = $this->quoteName($column);
-
-        $this->setQuery("ALTER TABLE $quotedTable DROP COLUMN $quotedColumn");
-        return (bool) $this->execute();
+        return "ALTER TABLE " . $this->quoteName($table)
+            . " DROP COLUMN " . $this->quoteName($column);
     }
 
     /**
@@ -2192,36 +2136,12 @@ class Pgsql extends SqlDriver
      * @param   bool          $unique   Whether to create a unique index
      * @return  bool
      */
-    public function addIndex(string $table, string $name, $columns, bool $unique = false): bool
+    protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {
-        $table = $this->replacePrefix($table);
-        $quotedTable = $this->quoteName($table);
-        $quotedName = $this->quoteName($name);
-
-        if (is_string($columns)) {
-            $columns = [$columns];
-        }
-
-        $quotedCols = array_map([$this, 'quoteName'], $columns);
-        $columnList = implode(', ', $quotedCols);
+        $columnList = implode(', ', array_map([$this, 'quoteName'], $columns));
         $uniqueStr = $unique ? 'UNIQUE ' : '';
-
-        $query = "CREATE {$uniqueStr}INDEX $quotedName ON $quotedTable ($columnList)";
-        $this->setQuery($query);
-        return (bool) $this->execute();
-    }
-
-    /**
-     * Add a unique index to a table
-     *
-     * @param   string        $table    Table name (with or without prefix)
-     * @param   string        $name     Index name
-     * @param   string|array  $columns  Column name(s) to index
-     * @return  bool
-     */
-    public function addUniqueIndex(string $table, string $name, $columns): bool
-    {
-        return $this->addIndex($table, $name, $columns, true);
+        return "CREATE {$uniqueStr}INDEX " . $this->quoteName($name)
+            . " ON " . $this->quoteName($table) . " ($columnList)";
     }
 
     /**
