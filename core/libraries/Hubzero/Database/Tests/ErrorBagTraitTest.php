@@ -8,14 +8,14 @@
 
 namespace Hubzero\Database\Tests;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Database\Traits\ErrorBag;
 use Exception;
 
 /**
  * ErrorBag Trait test
  */
-class ErrorBagTraitTest extends Basic
+class ErrorBagTraitTest extends TestCase
 {
     /**
      * The object under test.

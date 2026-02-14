@@ -29,7 +29,6 @@ class OneShiftsToMany extends OneToMany
      * @param   \Hubzero\Database\Relational|static  $relatedKey  The related key
      * @param   string                               $shifter     The field identifying model type
      * @return  void
-     * @since   2.0.0
      **/
     public function __construct($model, $related, $localKey, $relatedKey, $shifter)
     {
@@ -46,7 +45,6 @@ class OneShiftsToMany extends OneToMany
      * @param   object|array  $models    A single model or array of models to associate
      * @param   closure       $callback  A callback to potentially append additional data
      * @return  object|array
-     * @since   2.0.0
      **/
     public function associate($models, $callback = null)
     {
@@ -64,13 +62,15 @@ class OneShiftsToMany extends OneToMany
      * Constrains the relationship content to the applicable rows on the related model
      *
      * @return  object
-     * @since   2.0.0
      **/
     public function constrain()
     {
-        return $this->related
+        $query = $this->related
                     ->whereEquals($this->relatedKey, $this->model->{$this->localKey})
                     ->whereEquals($this->shifter, strtolower($this->model->getModelName()));
+
+        // Apply any default conditions
+        return $this->applyDefaultConditions($query);
     }
 
     /**
@@ -79,10 +79,12 @@ class OneShiftsToMany extends OneToMany
      * @param   array    $keys        The keys for which to fetch related items
      * @param   closure  $constraint  The constraint function to limit related items
      * @return  array
-     * @since   2.0.0
      **/
     protected function getRelations($keys, $constraint = null)
     {
+        // Apply default conditions first
+        $this->applyDefaultConditions($this->related);
+
         if (isset($constraint)) {
             call_user_func_array($constraint, array($this->related));
         }

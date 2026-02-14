@@ -18,7 +18,6 @@ class Raw extends Basic
      *
      * @param   object  $syntax  The syntax object with which the query is being built
      * @return  string
-     * @since   2.1.0
      **/
     public function build($syntax)
     {

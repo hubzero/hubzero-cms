@@ -8,6 +8,6 @@
 
 namespace Hubzero\Database\Exception;
 
-class UnsupportedSyntaxException extends \Hubzero\Error\Exception\RuntimeException
+class UnsupportedSyntaxException extends RuntimeException
 {
 }

@@ -48,7 +48,6 @@ class OneToManyThrough extends OneToMany
      * @param   string                               $associativeLocal    The local key on the associative table
      * @param   string                               $associativeRelated  The related key on the associative table
      * @return  void
-     * @since   2.0.0
      **/
     public function __construct($model, $related, $associativeTable, $associativeLocal, $associativeRelated)
     {
@@ -63,7 +62,6 @@ class OneToManyThrough extends OneToMany
      * Loads the relationship content and returns the related side of the model
      *
      * @return  object
-     * @since   2.0.0
      **/
     public function constrain()
     {
@@ -73,7 +71,8 @@ class OneToManyThrough extends OneToMany
             '.' .
             $this->associativeLocal, $this->model->getPkValue());
 
-        return $this->related;
+        // Apply any default conditions
+        return $this->applyDefaultConditions($this->related);
     }
 
     /**
@@ -81,7 +80,6 @@ class OneToManyThrough extends OneToMany
      *
      * @param   closure  $constraint  The constraint function to apply
      * @return  array
-     * @since   2.0.0
      **/
     public function getConstrainedKeys($constraint)
     {
@@ -96,7 +94,6 @@ class OneToManyThrough extends OneToMany
      * @param   int     $count     The count to limit by
      * @param   string  $operator  The comparison operator used between the column and the count
      * @return  array
-     * @since   2.0.0
      **/
     public function getConstrainedKeysByCount($count, $operator = '>=')
     {
@@ -111,7 +108,6 @@ class OneToManyThrough extends OneToMany
      * Joins the intermediate and related tables together to the model for the pending query
      *
      * @return  $this
-     * @since   2.0.0
      **/
     public function join()
     {
@@ -142,7 +138,6 @@ class OneToManyThrough extends OneToMany
      * our way backwards through the intermediate table.
      *
      * @return  $this
-     * @since   2.0.0
      **/
     public function mediate()
     {
@@ -163,11 +158,13 @@ class OneToManyThrough extends OneToMany
      * @param   array    $keys        The keys for which to fetch related items
      * @param   closure  $constraint  The constraint function to limit related items
      * @return  array
-     * @since   2.0.0
      **/
     protected function getRelations($keys, $constraint = null)
     {
         $this->mediate();
+
+        // Apply default conditions first
+        $this->applyDefaultConditions($this->related);
 
         if (isset($constraint)) {
             call_user_func_array($constraint, array($this->related));
@@ -181,7 +178,6 @@ class OneToManyThrough extends OneToMany
      *
      * @param   array  $relations  The relations to sort
      * @return  array
-     * @since   2.0.0
      **/
     protected function getResultsByRelatedKey($relations)
     {
