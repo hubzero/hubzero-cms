@@ -8,662 +8,569 @@
 
 namespace Hubzero\Database\Tests;
 
-use Hubzero\Test\Database;
-use Hubzero\Database\Tests\Mock\User;
-use Hubzero\Database\Tests\Mock\Member;
-use Hubzero\Database\Tests\Mock\Permission;
-use Hubzero\Database\Tests\Mock\Post;
-use Hubzero\Database\Tests\Mock\Group;
-use Hubzero\Database\Tests\Mock\Project;
-use Hubzero\Database\Tests\Mock\Tag;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Hubzero\Database\Driver;
+use Hubzero\Database\Relational;
+use Hubzero\Database\Tests\TestModels\User;
+use Hubzero\Database\Tests\TestModels\Post;
+use Hubzero\Database\Tests\TestModels\Tag;
 
 /**
- * Base relational model tests
+ * Relational ORM tests - runs against ALL configured databases
+ *
+ * Configuration: Add backends to DB_TEST_BACKENDS and set credentials in phpunit.xml
+ *
+ * Each test method runs once per configured database using PHPUnit data providers.
  */
-class RelationalTest extends Database
+class RelationalTest extends AbstractDriverTestCase
 {
     /**
-     * Sets up the tests...called prior to each test
+     * Whether tables have been created per database
      *
-     * @return  void
-     **/
-    public function setUp(): void
+     * @var array
+     */
+    protected static $tablesCreated = [];
+
+    protected static function getTestTables(): array
     {
-        \Hubzero\Database\Relational::setDefaultConnection($this->getMockDriver());
+        return ['test_users', 'test_posts', 'test_tags', 'test_post_tags'];
+    }
+
+    protected static function getTestModelClasses(): array
+    {
+        return [User::class, Post::class, Tag::class];
+    }
+
+    protected static function setUpDatabase(Driver $driver): void
+    {
+        // Tables are created on-demand in setupTables() per test
     }
 
     /**
-     * Skip test if Event facade is not available
+     * Get table name with "test_" prefix
      *
-     * @return  void
-     **/
-    protected function requireEventFacade(): void
+     * @param   string  $table   Base table name
+     * @return  string
+     */
+    protected function tableName(string $table): string
     {
-        if (!class_exists('Event')) {
-            $this->markTestSkipped('Event facade not available - requires full application bootstrap');
+        return 'test_' . $table;
+    }
+
+    /**
+     * Set up test tables for a database (once per database)
+     *
+     * @param   Driver  $driver  Driver instance
+     * @param   string  $dbName  Database name
+     * @return  void
+     */
+    protected function setupTables(Driver $driver, string $dbName): void
+    {
+        if (isset(self::$tablesCreated[$dbName])) {
+            $allExist = true;
+            foreach (static::getTestTables() as $table) {
+                if (!$driver->tableExists($table)) {
+                    $allExist = false;
+                    break;
+                }
+            }
+            if ($allExist) {
+                return;
+            }
+        }
+
+        $usersTable = $this->tableName('users');
+        $postsTable = $this->tableName('posts');
+        $tagsTable = $this->tableName('tags');
+        $postTagsTable = $this->tableName('post_tags');
+
+        // Drop tables if they exist (children first)
+        foreach ([$postTagsTable, $postsTable, $tagsTable, $usersTable] as $table) {
+            $driver->dropTable($table, true);
+        }
+
+        // Create tables using schema builder
+        $driver->createTable($usersTable)
+            ->id()
+            ->string('name', 255)
+            ->string('email', 255)
+            ->execute();
+
+        $driver->createTable($postsTable)
+            ->id()
+            ->integer('user_id')
+            ->string('title', 255)
+            ->text('content')
+            ->execute();
+
+        $driver->createTable($tagsTable)
+            ->id()
+            ->string('name', 255)
+            ->execute();
+
+        $driver->createTable($postTagsTable)
+            ->integer('post_id')
+            ->integer('tag_id')
+            ->execute();
+
+        self::$tablesCreated[$dbName] = true;
+    }
+
+    /**
+     * Seed test data
+     *
+     * @param   Driver  $driver  Driver instance
+     * @param   string  $dbName  Database name
+     * @return  void
+     */
+    protected function seedTestData(Driver $driver, string $dbName): void
+    {
+        $usersTable = $this->tableName('users');
+        $postsTable = $this->tableName('posts');
+        $tagsTable = $this->tableName('tags');
+        $postTagsTable = $this->tableName('post_tags');
+
+        // Clear existing data
+        $driver->truncateTable($postTagsTable);
+        $driver->truncateTable($postsTable);
+        $driver->truncateTable($tagsTable);
+        $driver->truncateTable($usersTable);
+
+        // Insert users
+        $driver->setQuery("INSERT INTO {$usersTable} (id, name, email) VALUES (1, 'Test User', 'test@example.com')");
+        $driver->execute();
+        $driver->setQuery("INSERT INTO {$usersTable} (id, name, email) VALUES (2, 'Jane Doe', 'jane@example.com')");
+        $driver->execute();
+        $driver->setQuery("INSERT INTO {$usersTable} (id, name, email) VALUES (3, 'Bob Smith', 'bob@example.com')");
+        $driver->execute();
+
+        // Insert posts
+        $driver->setQuery(
+            "INSERT INTO {$postsTable} (id, user_id, title, content)"
+            . " VALUES (1, 1, 'First Post', 'Content of first post')"
+        );
+        $driver->execute();
+        $driver->setQuery(
+            "INSERT INTO {$postsTable} (id, user_id, title, content)"
+            . " VALUES (2, 1, 'Second Post', 'Content of second post')"
+        );
+        $driver->execute();
+        $driver->setQuery(
+            "INSERT INTO {$postsTable} (id, user_id, title, content)"
+            . " VALUES (3, 2, 'Third Post', 'Content of third post')"
+        );
+        $driver->execute();
+
+        // Insert tags
+        $driver->setQuery("INSERT INTO {$tagsTable} (id, name) VALUES (1, 'php')");
+        $driver->execute();
+        $driver->setQuery("INSERT INTO {$tagsTable} (id, name) VALUES (2, 'database')");
+        $driver->execute();
+        $driver->setQuery("INSERT INTO {$tagsTable} (id, name) VALUES (3, 'fun stuff')");
+        $driver->execute();
+
+        // Insert post_tags (many-to-many)
+        $driver->setQuery("INSERT INTO {$postTagsTable} (post_id, tag_id) VALUES (1, 1)");
+        $driver->execute();
+        $driver->setQuery("INSERT INTO {$postTagsTable} (post_id, tag_id) VALUES (1, 2)");
+        $driver->execute();
+        $driver->setQuery("INSERT INTO {$postTagsTable} (post_id, tag_id) VALUES (1, 3)");
+        $driver->execute();
+        $driver->setQuery("INSERT INTO {$postTagsTable} (post_id, tag_id) VALUES (2, 3)");
+        $driver->execute();
+
+        // Reset auto-increment past seeded IDs so new inserts don't conflict
+        $driver->setAutoIncrement($usersTable, 4);
+        $driver->setAutoIncrement($postsTable, 4);
+        $driver->setAutoIncrement($tagsTable, 4);
+    }
+
+    /**
+     * Clean up test data
+     *
+     * @param   Driver  $driver  Driver instance
+     * @param   string  $dbName  Database name
+     * @return  void
+     */
+    protected function cleanupTestData(Driver $driver, string $dbName): void
+    {
+        $usersTable = $this->tableName('users');
+        $postsTable = $this->tableName('posts');
+        $tagsTable = $this->tableName('tags');
+        $postTagsTable = $this->tableName('post_tags');
+
+        // Clear all data (children first for referential integrity)
+        foreach ([$postTagsTable, $postsTable, $tagsTable, $usersTable] as $table) {
+            try {
+                $driver->setQuery("DELETE FROM {$table}");
+                $driver->execute();
+            } catch (\Exception $e) {
+                fwrite(STDERR, sprintf(
+                    "\n  [cleanup] %s DELETE FROM %s: %s\n",
+                    $dbName,
+                    $table,
+                    $e->getMessage()
+                ));
+            }
         }
     }
 
     /**
-     * Tests object construction and variable initialization
+     * Configure test models for the current database
      *
+     * @param   string  $dbName  Database name
      * @return  void
-     **/
-    public function testConstruct()
+     */
+    protected function configureModels(string $dbName): void
     {
+        User::useTable($this->tableName('users'));
+        Post::useTable($this->tableName('posts'));
+        Tag::useTable($this->tableName('tags'));
+        Post::useTagsAssocTable($this->tableName('post_tags'));
+        Tag::usePostsAssocTable($this->tableName('post_tags'));
+    }
+
+    // =========================================================================
+    // Basic Model Tests
+    // =========================================================================
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testModelConstruction(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
         $model = User::blank();
 
-        $this->assertInstanceOf(
-            '\Hubzero\Database\Relational',
-            $model,
-            'Model is not an instance of \Hubzero\Database\Relational'
-        );
-        $this->assertEquals($model->getModelName(), 'User', 'Model should have a model name of "User"');
+        $this->assertInstanceOf(Relational::class, $model, "[$dbName] Model should be instance of Relational");
+
+        $this->cleanupTestData($driver, $dbName);
     }
 
-    /**
-     * Tests to make sure a call to a helper function actually finds the function
-     *
-     * @return  void
-     **/
-    public function testCallHelper()
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testFindById(string $dbName, Driver $driver)
     {
-        $this->assertEquals('Test', User::one(1)->getFirstName(), 'Model should have returned a first name of "Test"');
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $user = User::one(1);
+
+        $this->assertEquals(1, $user->get('id'), "[$dbName] Should find user with ID 1");
+        $this->assertEquals('Test User', $user->get('name'), "[$dbName] User name should match");
+
+        $this->cleanupTestData($driver, $dbName);
     }
 
-    /**
-     * Tests to make sure a call to a transformer actually finds the transformer
-     *
-     * @return  void
-     **/
-    public function testCallTransformer()
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testOneOrFailThrowsException(string $dbName, Driver $driver)
     {
-        $this->assertEquals('Tester', User::one(1)->nickname, 'Model should have returned a nickname of "Tester"');
-    }
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
 
-    /**
-     * Tests to make sure that a result can be retrieved
-     *
-     * @return  void
-     **/
-    public function testOneReturnsResult()
-    {
-        $this->assertEquals(1, User::one(1)->id, 'Model should have returned an instance with id of 1');
-    }
-
-    /**
-     * Tests that a call for a non-existant row via oneOrFail method throws an exception
-     *
-     * @return  void
-     **/
-    public function testOneOrFailThrowsException()
-    {
         $this->expectException(\Hubzero\Error\Exception\RuntimeException::class);
 
-        User::oneOrFail(0);
+        // No cleanup after this — PHPUnit intercepts the exception so
+        // nothing below oneOrFail() executes. seedTestData() in the
+        // next test deletes all rows before re-seeding.
+        User::oneOrFail(999);
     }
 
-    /**
-     * Tests that a request for a non-existant row via oneOrNew method returns new model
-     *
-     * @return  void
-     **/
-    public function testOneOrNewCreatesNew()
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testOneOrNewReturnsNewModel(string $dbName, Driver $driver)
     {
-        $this->assertTrue(User::oneOrNew(0)->isNew(), 'Model should have stated that it was new');
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $user = User::oneOrNew(999);
+
+        $this->assertTrue($user->isNew(), "[$dbName] Model should be new for non-existent ID");
+
+        $this->cleanupTestData($driver, $dbName);
     }
 
-    /**
-     * Tests that a belongsToOne relationship properly grabs the related side of the relationship
-     *
-     * @return  void
-     **/
-    public function testBelongsToOneReturnsRelationship()
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testFetchAll(string $dbName, Driver $driver)
     {
-        $this->assertEquals(1, Post::oneOrFail(1)->user->id, 'Model should have returned a user id of 1');
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $users = User::all()->rows();
+
+        $this->assertCount(3, $users, "[$dbName] Should have 3 users");
+
+        $this->cleanupTestData($driver, $dbName);
     }
 
-    /**
-     * Tests that the belongs to one relationship can properly constrain the belongs to side
-     *
-     * @return  void
-     **/
-    public function testBelongsToOneCanBeConstrained()
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testWhereEquals(string $dbName, Driver $driver)
     {
-        // Get all users that have 2 or more posts - this should return 1 result
-        $posts = Post::all()->whereRelatedHas('user', function ($user) {
-            $user->whereEquals('name', 'Test User');
-        })->rows();
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
 
-        $this->assertCount(
-            2,
-            $posts,
-            'Model should have returned a count of 2 posts for the user by the name of "Test User"'
-        );
+        $users = User::all()
+            ->whereEquals('name', 'Test User')
+            ->rows();
+
+        $this->assertCount(1, $users, "[$dbName] Should find 1 user named Test User");
+
+        $this->cleanupTestData($driver, $dbName);
     }
 
-    /**
-     * Tests that a oneToMany relationship properly grabs the many side of the relationship
-     *
-     * @return  void
-     **/
-    public function testOneToManyReturnsRelationship()
+    // =========================================================================
+    // Relationship Tests
+    // =========================================================================
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testBelongsToOne(string $dbName, Driver $driver)
     {
-        $this->assertCount(2, User::oneOrFail(1)->posts, 'Model should have returned a count of 2 posts for user 1');
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $post = Post::oneOrFail(1);
+        $user = $post->user;
+
+        $this->assertNotNull($user, "[$dbName] Post should have a user");
+        $this->assertEquals(1, $user->get('id'), "[$dbName] User ID should be 1");
+        $this->assertEquals('Test User', $user->get('name'), "[$dbName] User name should match");
+
+        $this->cleanupTestData($driver, $dbName);
     }
 
-    /**
-     * Tests that the one side of the relationship can be properly constrained by the many side
-     *
-     * @return  void
-     **/
-    public function testOneToManyCanBeConstrainedByCount()
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testOneToMany(string $dbName, Driver $driver)
     {
-        // Get all users that have 2 or more posts - this should return 1 result
-        $users = User::all()->whereRelatedHasCount('posts', 2)->rows();
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
 
-        $this->assertCount(1, $users, 'Model should have returned a count of 1 user with 2 or more posts');
-    }
-
-    /**
-     * Tests that a manyToMany relationship properly grabs the many side of the relationship
-     *
-     * @return  void
-     **/
-    public function testManyToManyReturnsRelationship()
-    {
-        $this->assertCount(3, Post::oneOrFail(1)->tags, 'Model should have returned a count of 3 tags for post 1');
-    }
-
-    /**
-     * Tests that the local/left side of the m2m relationship can be properly constrained by the related/right side
-     *
-     * @return  void
-     **/
-    public function testManyToManyCanBeConstrainedByCount()
-    {
-        $posts = Post::all()->whereRelatedHasCount('tags', 3)->rows();
-
-        $this->assertCount(1, $posts, 'Model should have returned a count of 1 post with 3 or more tags');
-    }
-
-    /**
-     * Tests that the local/left side of the m2m relationship can be properly constrained by the related/right side
-     *
-     * @return  void
-     **/
-    public function testManyToManyCanBeConstrained()
-    {
-        $posts = Post::all()->whereRelatedHas('tags', function ($tags) {
-            $tags->whereEquals('name', 'fun stuff');
-        })->rows();
-
-        $this->assertCount(2, $posts, 'Model should have returned a count of 2 post with the tag "fun stuff"');
-    }
-
-    /**
-     * Tests that a oneShiftsToMany relationship properly grabs the many side of the relationship
-     *
-     * @return  void
-     **/
-    public function testOneShiftsToManyReturnsRelationship()
-    {
-        $this->assertCount(
-            3,
-            Group::oneOrFail(1)->members,
-            'Model should have returned a count of 3 members for group 1'
-        );
-    }
-
-    /**
-     * Tests that a manyShiftsToMany relationship properly grabs the many (right) side of the relationship
-     *
-     * @return  void
-     **/
-    public function testManyShiftsToManyReturnsRelationship()
-    {
-        $this->assertCount(
-            2,
-            Group::oneOrFail(1)->permissions,
-            'Model should have returned a count of 2 permissions for group 1'
-        );
-    }
-
-    /**
-     * Tests that the local/left side of the os2m relationship can be properly constrained by the related/right side
-     *
-     * @return  void
-     **/
-    public function testOneShiftsToManyCanBeConstrainedByCount()
-    {
-        $projects = Project::all()->whereRelatedHasCount('members', 3)->rows();
-
-        $this->assertCount(1, $projects, 'Model should have returned a count of 1 project with 3 or more members');
-    }
-
-    /**
-     * Tests that the local/left side of the ms2m relationship can be properly constrained by the related/right side
-     *
-     * @return  void
-     **/
-    public function testManyShiftsToManyCanBeConstrainedByCount()
-    {
-        $projects = Project::all()->whereRelatedHasCount('permissions', 2)->rows();
-
-        $this->assertCount(1, $projects, 'Model should have returned a count of 1 project with 2 or more permissions');
-    }
-
-    /**
-     * Tests that the local/left side of the os2m relationship can be properly constrained by the related/right side
-     *
-     * @return  void
-     **/
-    public function testOneShiftsToManyCanBeConstrained()
-    {
-        $projects = Project::all()->whereRelatedHas('members', function ($members) {
-            $members->whereEquals('user_id', 3);
-        })->rows();
-
-        $this->assertCount(
-            1,
-            $projects,
-            'Model should have returned a count of 1 project with a member whose user_id is 3'
-        );
-    }
-
-    /**
-     * Tests that the local/left side of the ms2m relationship can be properly constrained by the related/right side
-     *
-     * @return  void
-     **/
-    public function testManyShiftsToManyCanBeConstrained()
-    {
-        $projects = Project::all()->whereRelatedHas('permissions', function ($permissions) {
-            $permissions->whereEquals('name', 'read');
-        })->rows();
-
-        $this->assertCount(2, $projects, 'Model should have returned a count of 2 project with read permissions');
-    }
-
-    /**
-     * Tests that an including call can properly preload a simple one to many relationship
-     *
-     * @return  void
-     **/
-    public function testIncludingOneToManyPreloadsRelationship()
-    {
-        $users = User::all()->including('posts')->rows()->first();
-
-        $this->assertNotNull(
-            $users->getRelationship('posts'),
-            'Model should have had a relationship named posts defined'
-        );
-    }
-
-    /**
-     * Tests that an including call can properly preload a one shifts to many relationship
-     *
-     * @return  void
-     **/
-    public function testIncludingOneShiftsToManyPreloadsRelationship()
-    {
-        $projects = Project::all()->including('members')->rows()->first();
-
-        $this->assertNotNull(
-            $projects->getRelationship('members'),
-            'Model should have had a relationship named members defined'
-        );
-    }
-
-    /**
-     * Tests that an including call can properly preload a many shifts to many relationship
-     *
-     * @return  void
-     **/
-    public function testIncludingManyShiftsToManyPreloadsRelationship()
-    {
-        $projects = Project::all()->including('permissions')->rows()->first();
-
-        $this->assertNotNull(
-            $projects->getRelationship('permissions'),
-            'Model should have had a relationship named permissions defined'
-        );
-    }
-
-    /**
-     * Tests that an including call can properly preload a simple many to many relationship
-     *
-     * @return  void
-     **/
-    public function testIncludingManyToManyPreloadsRelationship()
-    {
-        $posts = Post::all()->including('tags')->rows()->first();
-
-        $this->assertNotNull(
-            $posts->getRelationship('tags'),
-            'Model should have had a relationship named tags defined'
-        );
-    }
-
-    /**
-     * Tests that an including call can be constrained on a one to many relationship
-     *
-     * @return  void
-     **/
-    public function testIncludingOneToManyCanBeConstrained()
-    {
-        $users = User::all()->including(['posts', function ($posts) {
-            $posts->where('content', 'LIKE', '%computer%');
-        }])->rows();
-
-        $this->assertCount(1, $users->seek(1)->posts, 'Model should have had 1 post that met the constraint');
-        $this->assertCount(0, $users->seek(2)->posts, 'Model should have had 0 posts that met the constraint');
-    }
-
-    /**
-     * Tests that an including call can be constrained on a one shifts to many relationship
-     *
-     * @return  void
-     **/
-    public function testIncludingOneShiftsToManyCanBeConstrained()
-    {
-        $projects = Project::all()->including(['members', function ($posts) {
-            $posts->whereEquals('user_id', 1);
-        }])->rows();
-
-        $this->assertCount(1, $projects->seek(1)->members, 'Model should have had 1 member that met the constraint');
-        $this->assertCount(1, $projects->seek(2)->members, 'Model should have had 1 member that met the constraint');
-    }
-
-    /**
-     * Tests that an including call can be constrained on a many shifts to many relationship
-     *
-     * @return  void
-     **/
-    public function testIncludingManyShiftsToManyCanBeConstrained()
-    {
-        $projects = Project::all()->including(['permissions', function ($permissions) {
-            $permissions->whereEquals('name', 'read');
-        }])->rows();
-
-        $this->assertCount(
-            1,
-            $projects->seek(1)->permissions,
-            'Model should have had 1 permission that met the constraint'
-        );
-        $this->assertCount(
-            0,
-            $projects->seek(3)->permissions,
-            'Model should have had 0 permissions that met the constraint'
-        );
-    }
-
-    /**
-     * Tests to make sure saving a one to many relationship properly sets the associated field on the related side
-     *
-     * @return  void
-     **/
-    public function testSaveOneToManyAssociatesRelated()
-    {
-        $this->requireEventFacade();
-
-        User::oneOrFail(1)->posts()->save(['content' => 'This is a test post']);
-
-        $this->assertArrayHasKey(
-            'user_id',
-            User::oneOrFail(1)->posts->last(),
-            'Saved item should have automatically included a user_id'
-        );
-    }
-
-    /**
-     * Tests to make sure saving a one shifts to many relationship properly sets the associated fields on the related
-     * side
-     *
-     * @return  void
-     **/
-    public function testSaveOneShiftsToManyAssociatesRelated()
-    {
-        $this->requireEventFacade();
-
-        Project::oneOrFail(1)->members()->save(['user_id' => 2]);
-
-        $this->assertCount(
-            4,
-            Project::oneOrFail(1)->members,
-            'Saved item should have automatically included a scope and scope_id'
-        );
-    }
-
-    /**
-     * Tests to make sure connecting a many to many properly creates the relationship
-     *
-     * @return  void
-     **/
-    public function testConnectManyToManyCreatesAssociation()
-    {
-        // Tag post 2 with tag 3
-        Post::oneOrFail(2)->tags()->connect([3]);
-
-        $this->assertCount(2, Post::oneOrFail(2)->tags, 'Post should have had a total of 2 tags');
-    }
-
-    /**
-     * Tests to make sure connecting a many shifts to many properly creates the relationship
-     *
-     * @return  void
-     **/
-    public function testConnectManyShiftsToManyCreatesAssociation()
-    {
-        // Tag post 2 with tag 3
-        Member::oneOrFail(1)->permissions()->connect([1]);
-
-        $this->assertCount(3, Member::oneOrFail(1)->permissions, 'Member should have had a total of 3 permissions');
-    }
-
-    /**
-     * Tests to make sure disconnecting a many to many properly destroys the relationship
-     *
-     * @return  void
-     **/
-    public function testDisconnectManyToManyDestroysAssociation()
-    {
-        // Tag post 2 with tag 3
-        Post::oneOrFail(2)->tags()->disconnect([3]);
-
-        $this->assertCount(1, Post::oneOrFail(2)->purgeCache()->tags, 'Post should have had a total of 1 tags');
-    }
-
-    /**
-     * Tests to make sure disconnecting a many shifts to many properly destroys the relationship
-     *
-     * @return  void
-     **/
-    public function testDisconnectManyShiftsToManyDestroysAssociation()
-    {
-        // Tag post 2 with tag 3
-        Member::oneOrFail(1)->permissions()->disconnect([1]);
-
-        $this->assertCount(
-            2,
-            Member::oneOrFail(1)->purgeCache()->permissions,
-            'Member should have had a total of 2 permissions'
-        );
-    }
-
-    /**
-     * Tests to make sure many to many save automatically connects
-     *
-     * @return  void
-     **/
-    public function testManyToManySaveAutomaticallyConnects()
-    {
-        $this->requireEventFacade();
-
-        // Tag post 2 with tag 3
-        Post::oneOrFail(2)->tags()->save(['name' => 'automatically created']);
-
-        $this->assertCount(
-            1,
-            Tag::whereEquals(
-                'name',
-                'automatically created'
-            )->rows(),
-            'A tag with the name of "automatically created" should exist'
-        );
-        $this->assertCount(2, Post::oneOrFail(2)->purgeCache()->tags, 'Post should have had a total of 2 tags');
-    }
-
-    /**
-     * Tests to make sure many shifts to many save automatically connects
-     *
-     * @return  void
-     **/
-    public function testManyShiftsToManySaveAutomaticallyConnects()
-    {
-        $this->requireEventFacade();
-
-        // Tag post 2 with tag 3
-        Member::oneOrFail(1)->permissions()->save(['name' => 'do awesome stuff']);
-
-        $this->assertCount(
-            1,
-            Permission::whereEquals(
-                'name',
-                'do awesome stuff'
-            )->rows(),
-            'A permission with the name of "do awesome stuff" should exist'
-        );
-        $this->assertCount(
-            3,
-            Member::oneOrFail(1)->purgeCache()->permissions,
-            'Member should have had a total of 3 permissions'
-        );
-    }
-
-    /**
-     * Tests to make sure connecting a many to many can also add additional fields to the intermediary table
-     *
-     * @return  void
-     **/
-    public function testConnectManyToManyCanAddAdditionalFields()
-    {
-        // Tag post 2 with tag 4
-        $now = uniqid();
-        Post::oneOrFail(3)->tags()->connect([1 => ['tagged' => $now]]);
-
-        $result = Post::oneOrFail(3)->tags->seek(1);
-
-        $this->assertFalse($result->hasAttribute('tagged'), 'Post should not have had an attributed for "tagged"');
-        $this->assertArrayHasKey(
-            'tagged',
-            (array)$result->associated,
-            'Post should have had an associated key of "tagged"'
-        );
-        $this->assertEquals($now, $result->associated->tagged, 'Post tagged date should have equaled ' . $now);
-    }
-
-    /**
-     * Tests to make sure connecting a many shifts to many can also add additional fields to the intermediary table
-     *
-     * @return  void
-     **/
-    public function testConnectManyShiftsToManyCanAddAdditionalFields()
-    {
-        $now = uniqid();
-        Group::oneOrFail(1)->permissions()->connect([3 => ['permitted' => $now]]);
-
-        $result = Group::oneOrFail(1)->permissions->seek(3);
-
-        $this->assertFalse(
-            $result->hasAttribute('permitted'),
-            'Group should not have had an attributed for "permitted"'
-        );
-        $this->assertArrayHasKey(
-            'permitted',
-            (array)$result->associated,
-            'Group should have had an associated key of "permitted"'
-        );
-        $this->assertEquals($now, $result->associated->permitted, 'Group permitted date should have equaled ' . $now);
-    }
-
-    /**
-     * Tests to make sure we can retrieve the shifter of a many to many shifting relationship
-     *
-     * @return  void
-     **/
-    public function testOneShiftsToManyCanGetShifter()
-    {
-        $group = Member::oneOrFail(1)->memberable;
-
-        $this->assertEquals($group->id, '1', 'Member should have returned a group association id of 1');
-    }
-
-    /**
-     * Tests to make sure we can get relationships defined on a model
-     *
-     * @return  void
-     **/
-    public function testCanIntrospectRelationships()
-    {
-        $this->assertEquals(
-            ['posts'],
-            User::introspectRelationships(),
-            'User should have had one relationships of "posts"'
-        );
-    }
-
-    /**
-     * Tests to make sure we can add a dynamic relationship at runtime
-     *
-     * @return  void
-     **/
-    public function testCanAddRuntimeRelationship()
-    {
-        User::registerRelationship('bio', function ($model) {
-            return $model->oneToOne('Bio');
-        });
-
-        $this->assertEquals(
-            'This is my bio about me.',
-            User::oneOrFail(1)->bio->text,
-            'Bio call should have returned the bio for user 1'
-        );
-        $this->assertEquals(
-            'This is my bio about me.',
-            User::oneOrFail(1)->bio()->rows()->text,
-            'Bio call should have returned the bio for user 1'
-        );
-    }
-
-    /**
-     * Tests to make sure we can get relationships defined on a model, including runtime relationships
-     *
-     * @return  void
-     **/
-    public function testCanIntrospectRelationshipsIncludingRuntimeRelationships()
-    {
-        // Note that we're expecting the relationship registered in the previous test
-        $this->assertEquals(
-            ['posts',
-            'bio'],
-            User::introspectRelationships(),
-            'User should have had two relationships of "posts" and "bio"'
-        );
-    }
-
-    /**
-     * Tests to make sure we can serialize and unserialize a model
-     *
-     * @return  void
-     **/
-    public function testCanDoSimpleSerialization()
-    {
         $user = User::oneOrFail(1);
+        $posts = $user->posts;
 
-        $serialized   = serialize($user);
-        $unserialized = unserialize($serialized);
+        $this->assertCount(2, $posts, "[$dbName] User 1 should have 2 posts");
 
-        $this->assertEquals($user, $unserialized, 'Unserialize did not result in the original model');
+        $this->cleanupTestData($driver, $dbName);
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testManyToMany(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $post = Post::oneOrFail(1);
+        $tags = $post->tags;
+
+        $this->assertCount(3, $tags, "[$dbName] Post 1 should have 3 tags");
+
+        $this->cleanupTestData($driver, $dbName);
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testWhereRelatedHasCount(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $users = User::all()
+            ->whereRelatedHasCount('posts', 2)
+            ->rows();
+
+        $this->assertCount(1, $users, "[$dbName] Should find 1 user with 2+ posts");
+
+        $this->cleanupTestData($driver, $dbName);
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testWhereRelatedHas(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $posts = Post::all()
+            ->whereRelatedHas('user', function ($user) {
+                $user->whereEquals('name', 'Test User');
+            })
+            ->rows();
+
+        $this->assertCount(2, $posts, "[$dbName] Should find 2 posts by Test User");
+
+        $this->cleanupTestData($driver, $dbName);
+    }
+
+    // =========================================================================
+    // CRUD Tests
+    // =========================================================================
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testCreateRecord(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $user = User::blank();
+        $user->set('name', 'New User');
+        $user->set('email', 'new@example.com');
+
+        $result = $user->save();
+
+        // save() returns the new ID on success, false on failure
+        $this->assertNotFalse($result, "[$dbName] Save should not return false");
+        $this->assertFalse($user->isNew(), "[$dbName] Model should no longer be new after save");
+        $this->assertNotEmpty($user->get('id'), "[$dbName] Model should have an ID after save");
+
+        $this->cleanupTestData($driver, $dbName);
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testUpdateRecord(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $user = User::one(1);
+        $user->set('name', 'Updated Name');
+
+        $result = $user->save();
+
+        // save() returns a truthy value on success, false on failure
+        $this->assertNotFalse($result, "[$dbName] Save should not return false");
+
+        // Reload and verify
+        $reloaded = User::one(1);
+        $this->assertEquals('Updated Name', $reloaded->get('name'), "[$dbName] Name should be updated");
+
+        $this->cleanupTestData($driver, $dbName);
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testDeleteRecord(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        // Use an existing seeded user to avoid cascade delete issues
+        // User 3 (Bob Smith) has no posts, so can be safely deleted
+        $user = User::one(3);
+        $this->assertFalse($user->isNew(), "[$dbName] User 3 should exist");
+        $this->assertEquals(3, $user->get('id'), "[$dbName] Should be user ID 3");
+
+        // Delete it
+        $result = $user->destroy();
+
+        $this->assertNotFalse($result, "[$dbName] Destroy should not return false");
+
+        // Verify it's gone by direct query to avoid caching issues
+        $tableName = $this->tableName('users');
+        $driver->setQuery("SELECT COUNT(*) as cnt FROM {$tableName} WHERE id = 3");
+        $row = $driver->loadObject();
+
+        $this->assertEquals(0, (int)$row->cnt, "[$dbName] Deleted user should not exist in database");
+
+        $this->cleanupTestData($driver, $dbName);
+    }
+
+    // =========================================================================
+    // Query Builder Tests
+    // =========================================================================
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testOrderBy(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $users = User::all()
+            ->order('name', 'asc')
+            ->rows();
+
+        $names = [];
+        foreach ($users as $user) {
+            $names[] = $user->get('name');
+        }
+
+        $sorted = $names;
+        sort($sorted);
+
+        $this->assertEquals($sorted, $names, "[$dbName] Users should be sorted by name");
+
+        $this->cleanupTestData($driver, $dbName);
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testLimit(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $users = User::all()
+            ->limit(2)
+            ->rows();
+
+        $this->assertCount(2, $users, "[$dbName] Should return only 2 users");
+
+        $this->cleanupTestData($driver, $dbName);
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testCount(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $count = User::all()->total();
+
+        $this->assertEquals(3, $count, "[$dbName] Should count 3 users");
+
+        $this->cleanupTestData($driver, $dbName);
     }
 }

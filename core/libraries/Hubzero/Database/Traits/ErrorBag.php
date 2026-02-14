@@ -25,7 +25,6 @@ trait ErrorBag
      *
      * @param   array  $errors  The errors to set
      * @return  $this
-     * @since   2.0.0
      **/
     public function setErrors($errors)
     {
@@ -38,7 +37,6 @@ trait ErrorBag
      *
      * @param   string  $error  The error to add
      * @return  $this
-     * @since   2.0.0
      **/
     public function addError($error)
     {
@@ -50,7 +48,6 @@ trait ErrorBag
      * Returns all errors
      *
      * @return  array
-     * @since   2.0.0
      **/
     public function getErrors()
     {
@@ -61,7 +58,6 @@ trait ErrorBag
      * Returns the first error
      *
      * @return  string
-     * @since   2.0.0
      **/
     public function getError()
     {

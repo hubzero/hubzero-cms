@@ -47,7 +47,6 @@ class Pagination
      * @param   string  $name       The method name being called
      * @param   array   $arguments  The method arguments provided
      * @return  $this
-     * @since   2.0.0
      **/
     public function __call($name, $arguments)
     {
@@ -72,7 +71,6 @@ class Pagination
      * @param   string  $start      The variable name representing the pagination start number
      * @param   string  $limit      The variable name representing the pagination limit number
      * @return  object
-     * @since   2.0.0
      **/
     public static function init($namespace, $total, $start = 'start', $limit = 'limit')
     {
@@ -111,7 +109,6 @@ class Pagination
      * Returns the html pagination output
      *
      * @return  string
-     * @since   2.0.0
      **/
     public function __toString()
     {
@@ -122,7 +119,6 @@ class Pagination
      * Gets the HUBzero paginator, or creates a new one
      *
      * @return  \Hubzero\Pagination\Paginator
-     * @since   2.0.0
      **/
     protected function getPaginator()
     {

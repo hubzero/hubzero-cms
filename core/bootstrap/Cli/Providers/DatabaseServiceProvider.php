@@ -33,7 +33,15 @@ class DatabaseServiceProvider extends ServiceProvider
                 'prefix'   => $app['config']->get('dbprefix')
             ];
 
-            return Driver::getInstance($options);
+            $driver = Driver::getInstance($options);
+
+            if ($app['config']->get('raw_query_mode')) {
+                $driver->setRawQueryMode(
+                    $app['config']->get('raw_query_mode')
+                );
+            }
+
+            return $driver;
         };
     }
 }

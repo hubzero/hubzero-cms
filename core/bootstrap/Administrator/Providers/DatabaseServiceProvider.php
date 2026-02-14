@@ -50,6 +50,12 @@ class DatabaseServiceProvider extends ServiceProvider
                 $driver->enableDebugging();
             }
 
+            if ($app['config']->get('raw_query_mode')) {
+                $driver->setRawQueryMode(
+                    $app['config']->get('raw_query_mode')
+                );
+            }
+
             return $driver;
         };
     }

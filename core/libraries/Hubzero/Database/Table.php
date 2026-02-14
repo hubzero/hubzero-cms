@@ -30,7 +30,6 @@ abstract class Table extends Obj
      * Name of the database table to model.
      *
      * @public string
-     * @since  2.1.12
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl = '';
@@ -39,7 +38,6 @@ abstract class Table extends Obj
      * Name of the primary key field in the table.
      *
      * @public string
-     * @since  2.1.12
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_tbl_key = '';
@@ -48,7 +46,6 @@ abstract class Table extends Obj
      * Database connector object.
      *
      * @public object
-     * @since  2.1.12
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_db;
@@ -57,7 +54,6 @@ abstract class Table extends Obj
      * Should rows be tracked as ACL assets?
      *
      * @public boolean
-     * @since  2.1.12
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_trackAssets = false;
@@ -66,7 +62,6 @@ abstract class Table extends Obj
      * The rules associated with this record.
      *
      * @public object  A Access Rules object.
-     * @since  2.1.12
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_rules;
@@ -75,7 +70,6 @@ abstract class Table extends Obj
      * Indicator that the tables have been locked.
      *
      * @public boolean
-     * @since  2.1.12
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_locked = false;
@@ -95,7 +89,6 @@ abstract class Table extends Obj
      * @param  string  $table  Name of the table to model.
      * @param  string  $key    Name of the primary key field in the table.
      * @param  object  &$db    Database connector object.
-     * @since  2.1.12
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function __construct($table, $key, $db)
@@ -130,7 +123,6 @@ abstract class Table extends Obj
      * Get the columns from database table.
      *
      * @return  mixed   An array of the field names, or false if an error occurs.
-     * @since   2.1.12
      */
     public function getFields()
     {
@@ -159,7 +151,6 @@ abstract class Table extends Obj
      * @param   string  $prefix  An optional prefix for the table class name.
      * @param   array   $config  An optional array of configuration values for the Table object.
      * @return  mixed   A Table object if found or boolean false if one could not be found.
-     * @since   2.1.12
      */
     public static function getInstance($type, $prefix = 'Table', $config = array())
     {
@@ -199,7 +190,6 @@ abstract class Table extends Obj
      *
      * @param   mixed  $path  A filesystem path or array of filesystem paths to add.
      * @return  array  An array of filesystem paths to find Table classes in.
-     * @since   2.1.12
      */
     public static function addIncludePath($path = null)
     {
@@ -235,7 +225,6 @@ abstract class Table extends Obj
      * where id is the value of the primary key of the table.
      *
      * @return  string
-     * @since   2.1.12
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetName()
@@ -252,7 +241,6 @@ abstract class Table extends Obj
      * primary name of the row. If this method is not overridden, the asset name is used.
      *
      * @return  string  The string to use as the title in the asset table.
-     * @since   2.1.12
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetTitle()
@@ -270,7 +258,6 @@ abstract class Table extends Obj
      * @param   object   $table  A Table object for the asset parent.
      * @param   integer  $id     Id to look up
      * @return  integer
-     * @since   2.1.12
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getAssetParentId($table = null, $id = null)
@@ -298,7 +285,6 @@ abstract class Table extends Obj
      * Method to get the primary key field name for the table.
      *
      * @return  string  The name of the primary key for the table.
-     * @since   2.1.12
      */
     public function getKeyName()
     {
@@ -309,7 +295,6 @@ abstract class Table extends Obj
      * Method to get the Database connector object.
      *
      * @return  object  The internal database connector object.
-     * @since   2.1.12
      */
     public function getDbo()
     {
@@ -321,7 +306,6 @@ abstract class Table extends Obj
      *
      * @param   object   &$db  A Database connector object to be used by the table object.
      * @return  boolean  True on success.
-     * @since   2.1.12
      */
     public function setDBO(&$db)
     {
@@ -340,7 +324,6 @@ abstract class Table extends Obj
      *
      * @param   mixed  $input  A Hubzero\Access\Rules object, JSON string, or array.
      * @return  void
-     * @since   2.1.12
      */
     public function setRules($input)
     {
@@ -355,7 +338,6 @@ abstract class Table extends Obj
      * Method to get the rules for the record.
      *
      * @return  object
-     * @since   2.1.12
      */
     public function getRules()
     {
@@ -368,7 +350,6 @@ abstract class Table extends Obj
      * properties.
      *
      * @return  void
-     * @since   2.1.12
      */
     public function reset()
     {
@@ -389,7 +370,6 @@ abstract class Table extends Obj
      * @param   mixed    $src     An associative array or object to bind to the Table instance.
      * @param   mixed    $ignore  An optional array or space separated list of properties to ignore while binding.
      * @return  boolean  True on success.
-     * @since   2.1.12
      */
     public function bind($src, $ignore = array())
     {
@@ -432,7 +412,6 @@ abstract class Table extends Obj
      *                           set the instance property value is used.
      * @param   boolean  $reset  True to reset the default values before loading the new row.
      * @return  boolean  True if successful. False if row not found or on error (internal error state set in that case).
-     * @since   2.1.12
      */
     public function load($keys = null, $reset = true)
     {
@@ -501,7 +480,6 @@ abstract class Table extends Obj
      * as expected before storage.
      *
      * @return  boolean  True if the instance is sane and able to be stored in the database.
-     * @since   2.1.12
      */
     public function check()
     {
@@ -517,7 +495,6 @@ abstract class Table extends Obj
      *
      * @param   boolean  $updateNulls  True to update fields even if they are null.
      * @return  boolean  True on success.
-     * @since   2.1.12
      */
     public function store($updateNulls = false)
     {
@@ -645,7 +622,6 @@ abstract class Table extends Obj
      * @param   mixed    $ignore          An optional array or space separated list of properties
      *                                    to ignore while binding.
      * @return  boolean  True on success.
-     * @since   2.1.12
      */
     public function save($src, $orderingFilter = '', $ignore = '')
     {
@@ -688,7 +664,6 @@ abstract class Table extends Obj
      *
      * @param   mixed    $pk  An optional primary key value to delete.  If not set the instance property value is used.
      * @return  boolean  True on success.
-     * @since   2.1.12
      */
     public function delete($pk = null)
     {
@@ -757,7 +732,6 @@ abstract class Table extends Obj
      * @param   mixed    $pk      An optional primary key value to check out.  If not set the
      *                            instance property value is used.
      * @return  boolean  True on success.
-     * @since   2.1.12
      */
     public function checkOut($userId, $pk = null)
     {
@@ -816,7 +790,6 @@ abstract class Table extends Obj
      * @param   mixed    $pk  An optional primary key value to check out.  If not set the instance
      *                        property value is used.
      * @return  boolean  True on success.
-     * @since   2.1.12
      */
     public function checkIn($pk = null)
     {
@@ -883,7 +856,6 @@ abstract class Table extends Obj
      * @param   mixed    $pk  An optional primary key value to increment. If not set the instance
      *                        property value is used.
      * @return  boolean  True on success.
-     * @since   2.1.12
      */
     public function hit($pk = null)
     {
@@ -939,7 +911,6 @@ abstract class Table extends Obj
      * @param   integer  $against  The userid to perform the match against when the function is
      *                             used as a static function.
      * @return  boolean  True if checked out.
-     * @since   2.1.12
      * @todo    This either needs to be static or not.
      */
     public function isCheckedOut($with = 0, $against = null)
@@ -974,7 +945,6 @@ abstract class Table extends Obj
      *
      * @param   string  $where  WHERE clause to use for selecting the MAX(ordering) for the table.
      * @return  mixed   Boolean false an failure or the next ordering value as an integer.
-     * @since   2.1.12
      */
     public function getNextOrder($where = '')
     {
@@ -1021,7 +991,6 @@ abstract class Table extends Obj
      *
      * @param   string  $where  WHERE clause to use for limiting the selection of rows to compact the ordering values.
      * @return  mixed   Boolean true on success.
-     * @since   2.1.12
      */
     public function reorder($where = '')
     {
@@ -1108,7 +1077,6 @@ abstract class Table extends Obj
      * @param   integer  $delta  The direction and magnitude to move the row in the ordering sequence.
      * @param   string   $where  WHERE clause to use for limiting the selection of rows to compact the ordering values.
      * @return  mixed    Boolean true on success.
-     * @since   2.1.12
      */
     public function move($delta, $where = '')
     {
@@ -1235,7 +1203,6 @@ abstract class Table extends Obj
      * @param   integer  $state   The publishing state. eg. [0 = unpublished, 1 = published]
      * @param   integer  $userId  The user id of the user performing the operation.
      * @return  boolean  True on success.
-     * @since   2.1.12
      */
     public function publish($pks = null, $state = 1, $userId = 0)
     {
@@ -1322,7 +1289,6 @@ abstract class Table extends Obj
      *                         [label => 'Label', name => 'table name' , idfield => 'field', joinfield => 'field']
      * @return  boolean  True on success.
      * @deprecated    2.1.12
-     * @since  2.1.12
      */
     public function canDelete($pk = null, $joins = null)
     {
@@ -1396,7 +1362,6 @@ abstract class Table extends Obj
      * @param   boolean  $mapKeysToText  True to map foreign keys to text values.
      * @return  string   XML string representation of the instance.
      * @deprecated  2.1.12
-     * @since   2.1.12
      */
     public function toXML($mapKeysToText = false)
     {
@@ -1431,7 +1396,6 @@ abstract class Table extends Obj
      * Method to lock the database table for writing.
      *
      * @return  boolean  True on success.
-     * @since   2.1.12
      * @throws  Exception
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -1447,7 +1411,6 @@ abstract class Table extends Obj
      * Method to unlock the database table for writing.
      *
      * @return  boolean  True on success.
-     * @since   2.1.12
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _unlock()

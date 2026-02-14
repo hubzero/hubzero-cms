@@ -11,18 +11,72 @@ namespace Hubzero\Database;
 use Hubzero\Utility\Str;
 use Hubzero\Error\Exception\RuntimeException;
 use Hubzero\Error\Exception\BadMethodCallException;
+use Hubzero\Database\Connection\PdoConnection;
+use Hubzero\Database\Exception\ConnectionFailedException;
+use Hubzero\Database\Exception\QueryFailedException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Event;
 
 /**
  * Base database driver
+ *
+ * This is the abstract base class for all database drivers. It provides
+ * connection management and query execution mechanics. SQL dialect logic
+ * lives in the Sql subclass and its concrete dialect drivers.
+ *
+ * ```
+ * Driver (abstract base - connection + query execution)
+ *   └── Pdo (deprecated BC layer)
+ *         └── Sql (abstract - universal SQL contract + abstract methods)
+ *               ├── Mysql (MySQL-specific SQL)
+ *               │     ├── Mariadb (MariaDB-specific features)
+ *               │     └── Percona (Percona-specific features)
+ *               ├── Cubrid (CUBRID-specific SQL)
+ *               ├── Pgsql (PostgreSQL-specific SQL)
+ *               ├── Sqlite (SQLite-specific SQL)
+ *               ├── Firebird (Firebird-specific SQL)
+ *               ├── Informix (Informix-specific SQL)
+ *               ├── Db2 (IBM DB2-specific SQL)
+ *               ├── Oracle (Oracle-specific SQL)
+ *               └── Sqlsrv (SQL Server-specific SQL)
+ * ```
+ *
+ * ARCHITECTURE NOTES:
+ * - Driver handles connection management: connect, disconnect, prepare, bind, execute, fetch
+ * - Connections are injected via setConnection(ConnectionInterface)
+ * - Sql.php defines the SQL contract as abstract methods
+ * - Each dialect driver implements SQL syntax specific to that database
+ * - Connections are lazy — PdoConnection auto-connects on first use
+ *
+ * When adding new database introspection or DDL methods:
+ * 1. Add abstract method declaration to Sql.php
+ * 2. Implement in each dialect driver (Mysql.php, Pgsql.php, Sqlite.php, etc.)
+ *
+ * ## PSR-3 Logging
+ *
+ * The driver implements `Psr\Log\LoggerAwareInterface` for standardized logging.
+ * By default, a `NullLogger` is used (no logging). Inject a logger to enable:
+ *
+ * ```php
+ * $db = App::get('db');
+ * $db->setLogger($monolog);
+ * $db->setSlowQueryThreshold(0.5); // Log queries taking > 0.5 seconds as warnings
+ * $db->enableDebugging();          // Log all queries at DEBUG level
+ * ```
+ *
+ * Log levels:
+ * - ERROR: Database errors (failed queries, connection issues)
+ * - WARNING: Slow queries exceeding the threshold
+ * - DEBUG: All queries (when debugging is enabled)
  */
-abstract class Driver
+abstract class Driver implements LoggerAwareInterface
 {
     /**
      * The connection instances factory
      *
      * @public array
-     * @since  2.0.0
      **/
     protected static $instances = [];
 
@@ -30,17 +84,17 @@ abstract class Driver
      * The cumulative query timer (in miliseconds)
      *
      * @public int
-     * @since  2.0.0
      */
     protected $timer = 0;
 
     /**
-     * The database connection resource/object
+     * The database connection
      *
-     * This will likely be an object for all modern database drivers.
+     * This holds the connection adapter that implements ConnectionInterface.
+     * For PDO-based drivers, this will be a PdoConnection instance.
+     * For other drivers, this may be a different implementation.
      *
-     * @public object|resource
-     * @since  2.0.0
+     * @var ConnectionInterface|object|resource
      */
     protected $connection;
 
@@ -48,7 +102,6 @@ abstract class Driver
      * The incremental count of executed queries
      *
      * @public int
-     * @since  2.0.0
      */
     protected $count = 0;
 
@@ -59,7 +112,6 @@ abstract class Driver
      * statements, this will simply be the last executed or upcoming query.
      *
      * @public object|string
-     * @since  2.0.0
      */
     protected $statement;
 
@@ -67,7 +119,6 @@ abstract class Driver
      * The prepared statement bindings
      *
      * @public array
-     * @since  2.0.0
      */
     protected $bindings = [];
 
@@ -78,23 +129,23 @@ abstract class Driver
      * even though this isn't really an accurate representation of the query.
      *
      * @public array
-     * @since  2.0.0
      */
     protected $log = [];
 
     /**
      * The character(s) used to quote items such as table names or field names
      *
+     * Default uses SQL standard double-quote identifiers. MySQL and SQLite
+     * override this to use backticks.
+     *
      * @public string
-     * @since  2.0.0
      */
-    protected $wrapper = '`%s`';
+    protected $wrapper = '"%s"';
 
     /**
      * The null or zero representation of a timestamp for the database driver
      *
      * @public string
-     * @since  2.0.0
      */
     protected $nullDate = '0000-00-00 00:00:00';
 
@@ -102,7 +153,6 @@ abstract class Driver
      * The common database table prefix
      *
      * @public string
-     * @since  2.0.0
      */
     protected $tablePrefix = 'jos_';
 
@@ -110,7 +160,6 @@ abstract class Driver
      * The state of debugging
      *
      * @public bool
-     * @since  2.0.0
      */
     protected $debug = false;
 
@@ -118,7 +167,6 @@ abstract class Driver
      * The name of the database
      *
      * @public string
-     * @since  2.0.0
      */
     protected $database;
 
@@ -126,20 +174,88 @@ abstract class Driver
      * The database driver syntax
      *
      * @public string
-     * @since  2.0.0
      **/
     protected $syntax = null;
+
+    /**
+     * The schema manager instance
+     *
+     * @var SchemaManager|null
+     */
+    protected $schema = null;
+
+    /**
+     * PSR-3 logger instance
+     *
+     * @var LoggerInterface|null
+     */
+    protected ?LoggerInterface $logger = null;
+
+    /**
+     * Slow query threshold in seconds
+     *
+     * Queries taking longer than this threshold will be logged as warnings.
+     * Set to 0 to disable slow query logging.
+     *
+     * @var float
+     */
+    protected float $slowQueryThreshold = 1.0;
+
+    /**
+     * Raw query mode controls how direct setQuery() calls are handled
+     *
+     * When code outside the Database framework calls setQuery() with raw SQL,
+     * this mode determines the behavior:
+     *
+     * - 'permissive': No checks (default, current behavior)
+     * - 'log': Allow but log caller file/line via PSR-3 logger at NOTICE level
+     * - 'strict': Throw RuntimeException for non-framework callers
+     *
+     * Internal framework calls (from Hubzero\Database\* classes) are always
+     * allowed regardless of mode, since they already generate portable SQL
+     * through the Query builder and Syntax layer.
+     *
+     * @var string
+     */
+    protected string $rawQueryMode = 'permissive';
+
+    /**
+     * Flag to prevent re-entrant raw query mode checks
+     *
+     * When a driver subclass overrides setQuery() and calls parent::setQuery(),
+     * this flag ensures enforcement runs only once for the outermost call.
+     *
+     * @var bool
+     */
+    protected bool $rawQueryModeEnforced = false;
+
+    /**
+     * Unique identifier for this connection instance
+     *
+     * This UUID is generated when the connection is established and is used
+     * for cache isolation. Each connection gets a unique ID, ensuring that
+     * query caches are properly isolated between different connections, even
+     * when connecting to the same database.
+     *
+     * @var string|null
+     */
+    protected ?string $connectionId = null;
 
     /**
      * Constructs a new object, setting some class properties
      *
      * @param  array  $options  List of options used to configure the connection
-     * @since  2.0.0
      */
     protected function __construct($options)
     {
         $this->tablePrefix = (isset($options['prefix']))   ? $options['prefix']   : $this->tablePrefix;
         $this->database    = (isset($options['database'])) ? $options['database'] : $this->database;
+        $this->logger      = new NullLogger();
+
+        if (isset($options['raw_query_mode'])) {
+            $this->setRawQueryMode($options['raw_query_mode']);
+        }
+
         $this->setUTF();
     }
 
@@ -149,7 +265,6 @@ abstract class Driver
      * @param       string  $method  The called method name
      * @param       array   $args    The array of arguments passed to the method
      * @return      string
-     * @since       2.0.0
      * @deprecated  2.0.0
      * @throws      \Hubzero\Error\Exception\BadMethodCallException
      */
@@ -185,7 +300,6 @@ abstract class Driver
      *
      * @param   array   $options   Parameters to construct the database driver requested
      * @return  static
-     * @since   2.0.0
      * @throws  \Hubzero\Error\Exception\RuntimeException
      */
     public static function getInstance($options = [])
@@ -235,36 +349,64 @@ abstract class Driver
      *
      * @param   object $connection the connection to set
      * @return  $this
-     * @since   2.0.0
      **/
     public function setConnection($connection)
     {
         $this->connection = $connection;
+        $this->connectionId = $this->generateConnectionId();
         $this->setSyntax($this->detectSyntax());
 
         return $this;
     }
 
     /**
-     * Destroys the connection
+     * Opens the database connection
+     *
+     * For ConnectionInterface implementations, this delegates to connect().
+     * For lazy connections (like PdoConnection), this triggers the actual
+     * database connection to be established.
      *
      * @return  void
-     * @since   2.1.11
+     * @throws  ConnectionFailedException
      */
-    public function disconnect()
+    public function connect()
     {
-        $this->connection = null;
+        if ($this->connection instanceof ConnectionInterface) {
+            $this->connection->connect();
+        }
     }
 
     /**
-     * Destroys the connection
+     * Closes the database connection
+     *
+     * For ConnectionInterface implementations, this delegates to disconnect()
+     * which releases the native connection but preserves connection parameters
+     * for later reconnection. The ConnectionInterface wrapper is kept.
+     *
+     * For legacy connections, this nulls the connection entirely.
      *
      * @return  void
-     * @since   2.0.0
+     */
+    public function disconnect()
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            $this->connection->disconnect();
+        } else {
+            $this->connection = null;
+        }
+    }
+
+    /**
+     * Destroys the connection entirely
+     *
+     * @return  void
      */
     public function __destruct()
     {
-        $this->disconnect();
+        if ($this->connection instanceof ConnectionInterface) {
+            $this->connection->disconnect();
+        }
+        $this->connection = null;
     }
 
     /**
@@ -272,14 +414,26 @@ abstract class Driver
      *
      * @param   string  $query  The SQL statement to set
      * @return  $this
-     * @since   2.0.0
      */
     public function setQuery($query)
     {
-        $this->prepare((string)$query);
+        if (
+            $this->rawQueryMode !== 'permissive'
+            && !$this->rawQueryModeEnforced
+        ) {
+            $this->rawQueryModeEnforced = true;
+            try {
+                $this->enforceRawQueryMode((string) $query);
+            } finally {
+                $this->rawQueryModeEnforced = false;
+            }
+        }
+
+        $this->prepare((string) $query);
 
         return $this;
     }
+
 
     /**
      * Quotes and optionally escape a string to database requirements for insertion into the database
@@ -287,7 +441,6 @@ abstract class Driver
      * @param   string  $text    The string to quote
      * @param   bool    $escape  True to escape the string, false to leave it unchanged
      * @return  string
-     * @since   2.0.0
      */
     public function quote($text, $escape = true)
     {
@@ -301,7 +454,6 @@ abstract class Driver
      * @param   string  $name  The identifier name to wrap in quotes, supporting dot-notation names
      * @param   string  $as    The AS query part associated to $name
      * @return  string
-     * @since   2.0.0
      */
     public function quoteName($name, $as = null)
     {
@@ -331,11 +483,26 @@ abstract class Driver
      */
     public function wrap($value)
     {
-        // Look for an 'AS' identifier first, and make sure not to choke on that
-        if (strpos(strtolower($value), ' as ') !== false) {
-            $parts = explode(' ', $value);
+        $value = trim((string) $value);
 
-            return $this->wrap($parts[0]) . ' AS ' . $this->wrap($parts[2]);
+        if ($value === '') {
+            return '';
+        }
+
+        // Preserve derived-table expressions like "(SELECT ...)" as raw SQL.
+        if ($value[0] === '(' && substr($value, -1) === ')') {
+            return $value;
+        }
+
+        // Handle explicit aliases, including derived tables:
+        // "(SELECT ... AS x ...) AS alias"
+        if (preg_match('/^(.+)\s+as\s+([^\s]+)$/is', $value, $matches)) {
+            return $this->wrap($matches[1]) . ' AS ' . $this->wrap($matches[2]);
+        }
+
+        // Handle shorthand alias format: "table alias" (without AS keyword)
+        if (preg_match('/^(.+)\s+([^\s]+)$/s', $value, $matches)) {
+            return $this->wrap($matches[1]) . ' AS ' . $this->wrap($matches[2]);
         }
 
         $quoted = [];
@@ -343,6 +510,7 @@ abstract class Driver
 
         foreach ($parts as $part) {
             // Make sure it's not an *, which shouldn't be quoted
+            $part = trim($part);
             $quoted[] = $part !== '*' ? sprintf($this->wrapper, $part) : $part;
         }
 
@@ -351,118 +519,22 @@ abstract class Driver
     }
 
     /**
-     * Inserts a row into a table based on an object's properties
+     * Creates a new Query builder instance bound to this connection
      *
-     * @param   string  $table    The name of the database table to insert into
-     * @param   object  &$object  A reference to an object whose public properties match the table fields
-     * @param   string  $key      The name of the primary key. If provided the object property is updated
-     * @return  bool
-     * @since   2.0.0
-     */
-    public function insertObject($table, &$object, $key = null)
-    {
-        // Initialise some variables
-        $fields = [];
-        $values = [];
-        $binds  = [];
-
-        // Create the base insert statement
-        $statement = 'INSERT INTO ' . $this->quoteName($table) . ' (%s) VALUES (%s)';
-
-        // Iterate over the object variables to build the query fields and values
-        foreach (get_object_vars($object) as $k => $v) {
-            // Only process non-null scalars
-            if (is_array($v) or is_object($v) or $v === null) {
-                continue;
-            }
-
-            // Ignore any internal fields
-            if ($k[0] == '_') {
-                continue;
-            }
-
-            // Prepare and sanitize the fields and values for the database query
-            $fields[] = $this->quoteName($k);
-            $values[] = '?';
-            $binds[]  = $v;
-        }
-
-        // Set the query and execute the insert
-        $this->prepare(sprintf($statement, implode(',', $fields), implode(',', $values)))
-             ->bind($binds);
-
-        if (!$this->execute()) {
-            return false;
-        }
-
-        // Update the primary key if it exists
-        $id = $this->insertid();
-        if ($key && $id) {
-            $object->$key = $id;
-        }
-
-        return true;
-    }
-
-    /**
-     * Updates a row in a table based on an object's properties
+     * This provides convenient access to the Query builder for performing
+     * database operations through the higher-level Query API.
      *
-     * @param   string  $table    The name of the database table to update
-     * @param   object  &$object  A reference to an object whose public properties match the table fields
-     * @param   string  $key      The name of the primary key
-     * @param   bool    $nulls    True to update null fields or false to ignore them
-     * @return  bool
-     * @since   2.0.0
+     * Example:
+     * ```php
+     * $db->queryBuilder()->push('users', ['name' => 'John', 'email' => 'john@example.com']);
+     * $db->queryBuilder()->pushObject('users', $userObject, 'id');
+     * ```
+     *
+     * @return  Query  A new Query builder instance
      */
-    public function updateObject($table, &$object, $key, $nulls = false)
+    public function queryBuilder()
     {
-        // Initialise variables
-        $fields = [];
-        $where  = '';
-
-        // Create the base update statement
-        $statement = 'UPDATE ' . $this->quoteName($table) . ' SET %s WHERE %s';
-
-        // Iterate over the object variables to build the query fields/value pairs
-        foreach (get_object_vars($object) as $k => $v) {
-            // Only process scalars that are not internal fields.
-            if (is_array($v) or is_object($v) or $k[0] == '_') {
-                continue;
-            }
-
-            // Set the primary key to the WHERE clause instead of a field to update
-            if ($k == $key) {
-                $where = $this->quoteName($k) . '=' . $this->quote($v);
-                continue;
-            }
-
-            // Prepare and sanitize the fields and values for the database query
-            if ($v === null) {
-                // If the value is null and we want to update nulls then set it
-                if ($nulls) {
-                    $val = 'NULL';
-                } else {
-                // If the value is null and we do not want to update nulls then ignore this field
-                    continue;
-                }
-            } else {
-            // The field is not null so we prep it for update
-                $val = $this->quote($v);
-            }
-
-            // Add the field to be updated
-            $fields[] = $this->quoteName($k) . '=' . $val;
-        }
-
-        // We don't have any fields to update
-        if (empty($fields)) {
-            return true;
-        }
-
-        // Set the query and execute the update.
-        $this->setQuery(sprintf($statement, implode(",", $fields), $where));
-
-        return $this->execute();
+        return new Query($this);
     }
 
     /**
@@ -470,7 +542,6 @@ abstract class Driver
      * as an associative array of type: ['field_name' => 'row_value']
      *
      * @return  array|null
-     * @since   2.0.0
      */
     public function loadAssoc()
     {
@@ -504,7 +575,6 @@ abstract class Driver
      * @param   string  $key     The name of a field on which to key the result array
      * @param   string  $column  Instead of the whole row, only this column value will be in the result array
      * @return  array|null
-     * @since   2.0.0
      */
     public function loadAssocList($key = null, $column = null)
     {
@@ -537,7 +607,6 @@ abstract class Driver
      *
      * @param   int  $offset  The row offset to use to build the result array
      * @return  array|null
-     * @since   2.0.0
      */
     public function loadColumn($offset = 0)
     {
@@ -568,7 +637,6 @@ abstract class Driver
      *
      * @param   string  $class  The class name to use for the returned row object
      * @return  object|bool
-     * @since   2.0.0
      */
     public function loadNextObject($class = 'stdClass')
     {
@@ -590,7 +658,6 @@ abstract class Driver
      * you'll have nothing to load.
      *
      * @return  array|bool
-     * @since   2.0.0
      */
     public function loadNextRow()
     {
@@ -610,7 +677,6 @@ abstract class Driver
      *
      * @param   string  $class  The class name to use for the returned row object
      * @return  object|null
-     * @since   2.0.0
      */
     public function loadObject($class = 'stdClass')
     {
@@ -637,7 +703,6 @@ abstract class Driver
      * Gets the first field of the first row of the result set from the database query
      *
      * @return  string|null
-     * @since   2.0.0
      */
     public function loadResult()
     {
@@ -664,7 +729,6 @@ abstract class Driver
      * Gets the first row of the result set from the database query as an array
      *
      * @return  array|null
-     * @since   2.0.0
      */
     public function loadRow()
     {
@@ -696,7 +760,6 @@ abstract class Driver
      *
      * @param   string  $key  The name of a field on which to key the result array
      * @return  array|null
-     * @since   2.0.0
      */
     public function loadRowList($key = null)
     {
@@ -733,7 +796,6 @@ abstract class Driver
      * @param   string  $key    The name of the field on which to key the result array
      * @param   string  $class  The class name to use for the returned row objects
      * @return  array
-     * @since   2.0.0
      */
     public function loadObjectList($key = '', $class = 'stdClass')
     {
@@ -765,7 +827,6 @@ abstract class Driver
      * of connector classes that are self-aware as to whether or not they are able to be used on a given system.
      *
      * @return  array
-     * @since   2.0.0
      */
     public static function getConnectors()
     {
@@ -804,7 +865,6 @@ abstract class Driver
      * @param   string  $sql     The SQL statement to prepare
      * @param   string  $prefix  The common table prefix
      * @return  string
-     * @since   2.0.0
      */
     public function replacePrefix($sql, $prefix = '#__')
     {
@@ -831,7 +891,6 @@ abstract class Driver
      *
      * @param   string  $sql  Input SQL string from which to split into individual queries
      * @return  array
-     * @since   2.0.0
      */
     public static function splitSql($sql)
     {
@@ -855,42 +914,89 @@ abstract class Driver
     /**
      * Logs the current sql statement
      *
-     * @param   int    $time  The time elapsed during query execution
+     * Logs to:
+     * - Internal log array (always)
+     * - Event system (always)
+     * - PSR-3 logger at WARNING level if slow query threshold exceeded
+     * - PSR-3 logger at DEBUG level if debugging is enabled
+     *
+     * @param   float  $time  The time elapsed during query execution (in seconds)
      * @return  $this
-     * @since   2.0.0
      **/
     protected function log($time)
     {
         // Build the actual query
         $query = $this->toString();
 
-        Event::trigger('database_query', [
-            'query' => $query,
-            'time'  => $time
-        ]);
+        // Convert time to milliseconds for the detailed log
+        $timeMs = $time * 1000;
+
+        // Only trigger event if Event facade is available (allows standalone usage)
+        if (class_exists('Event', false)) {
+            try {
+                \Event::trigger('database_query', [
+                    'query' => $query,
+                    'time'  => $time
+                ]);
+            } catch (\Throwable $e) {
+                // Silently continue if Event facade not configured
+            }
+        }
 
         // Add it to the internal logs
         $this->log[] = $query;
         $this->count++;
         $this->timer += $time;
+
+        // Add to detailed query log if enabled
+        $this->logQuery($query, $this->bindings, $timeMs);
+
+        // PSR-3 logging: slow queries as warnings
+        if ($this->slowQueryThreshold > 0 && $time > $this->slowQueryThreshold) {
+            $this->getLogger()->warning('Slow database query', [
+                'sql'       => $query,
+                'time'      => round($time, 4),
+                'threshold' => $this->slowQueryThreshold,
+            ]);
+        } elseif ($this->debug) {
+            // Normal queries at debug level when debugging is enabled
+            $this->getLogger()->debug('Database query executed', [
+                'sql'  => $query,
+                'time' => round($time, 4),
+            ]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Logs a database error
+     *
+     * @param   \Throwable  $exception  The exception that occurred
+     * @param   string|null $sql        The SQL that caused the error (optional)
+     * @return  void
+     **/
+    protected function logError(\Throwable $exception, ?string $sql = null): void
+    {
+        $this->getLogger()->error('Database error', [
+            'message' => $exception->getMessage(),
+            'code'    => $exception->getCode(),
+            'sql'     => $sql ?? $this->toString(),
+        ]);
     }
 
     /**
      * Gets the string version of the query
      *
      * @return  string
-     * @since   2.0.0
      **/
     public function toString()
     {
-        // Build the actual query
         if (is_object($this->statement)) {
-            $query = $this->interpolate($this->statement->queryString, $this->bindings);
-        } else {
-            $query = $this->statement;
+            return $this->interpolate($this->statement->queryString, $this->bindings);
         }
 
-        return $query;
+        return $this->statement;
     }
 
     /**
@@ -899,7 +1005,6 @@ abstract class Driver
      * @param   string  $query     The query string to use as the base
      * @param   array   $bindings  The bindings to interpolate in
      * @return  string
-     * @since   2.0.0
      **/
     private function interpolate($query, $bindings)
     {
@@ -920,7 +1025,6 @@ abstract class Driver
      * Executes the SQL statement (basically an alias for execute())
      *
      * @return  static
-     * @since   2.0.0
      */
     public function query()
     {
@@ -932,7 +1036,6 @@ abstract class Driver
      *
      * @param   bool   $level  True to enable debugging
      * @return  $this
-     * @since   2.0.0
      */
     public function setDebug($level)
     {
@@ -945,7 +1048,6 @@ abstract class Driver
      * Enables debugging
      *
      * @return  $this
-     * @since   2.0.0
      */
     public function enableDebugging()
     {
@@ -956,7 +1058,6 @@ abstract class Driver
      * Disables debugging
      *
      * @return  $this
-     * @since   2.0.0
      */
     public function disableDebugging()
     {
@@ -964,25 +1065,191 @@ abstract class Driver
     }
 
     /**
-     * Truncates a table
+     * Sets a PSR-3 logger instance on the driver
      *
-     * @param   string  $table  The table to truncate
+     * When set, queries will be logged at DEBUG level (when $debug is true),
+     * slow queries at WARNING level, and errors at ERROR level.
+     *
+     * @param   LoggerInterface  $logger  The PSR-3 logger instance
      * @return  void
-     * @since   2.0.0
      */
-    public function truncateTable($table)
+    public function setLogger(LoggerInterface $logger): void
     {
-        $this->setQuery('TRUNCATE TABLE ' . $this->quoteName($table));
-        $this->execute();
+        $this->logger = $logger;
     }
 
     /**
-     * Grabs the underlying database connection
+     * Gets the current PSR-3 logger instance
      *
-     * Useful for when you need to call a proprietary method such as postgresql's lo_* methods.
+     * Returns a NullLogger if no logger has been set.
      *
-     * @return  mixed
-     * @since   2.0.0
+     * @return  LoggerInterface
+     */
+    public function getLogger(): LoggerInterface
+    {
+        if ($this->logger === null) {
+            $this->logger = new NullLogger();
+        }
+
+        return $this->logger;
+    }
+
+    /**
+     * Sets the slow query threshold in seconds
+     *
+     * Queries taking longer than this threshold will be logged as warnings.
+     * Set to 0 to disable slow query logging.
+     *
+     * @param   float  $seconds  The threshold in seconds
+     * @return  $this
+     */
+    public function setSlowQueryThreshold(float $seconds)
+    {
+        $this->slowQueryThreshold = $seconds;
+
+        return $this;
+    }
+
+    /**
+     * Gets the slow query threshold in seconds
+     *
+     * @return  float
+     */
+    public function getSlowQueryThreshold(): float
+    {
+        return $this->slowQueryThreshold;
+    }
+
+    /**
+     * Sets the raw query mode
+     *
+     * Controls how direct setQuery() calls from outside the Database
+     * framework are handled:
+     *
+     * - 'permissive': No checks (default)
+     * - 'log': Allow but log caller info at NOTICE level
+     * - 'strict': Throw RuntimeException
+     *
+     * @param   string  $mode  One of 'permissive', 'log', 'strict'
+     * @return  $this
+     * @throws  \InvalidArgumentException  If mode is not valid
+     */
+    public function setRawQueryMode(string $mode): self
+    {
+        $valid = ['permissive', 'log', 'strict'];
+
+        if (!in_array($mode, $valid, true)) {
+            throw new \InvalidArgumentException(
+                "Invalid raw query mode '{$mode}'. "
+                . "Must be one of: " . implode(', ', $valid)
+            );
+        }
+
+        $this->rawQueryMode = $mode;
+
+        return $this;
+    }
+
+    /**
+     * Gets the current raw query mode
+     *
+     * @return  string  One of 'permissive', 'log', 'strict'
+     */
+    public function getRawQueryMode(): string
+    {
+        return $this->rawQueryMode;
+    }
+
+    /**
+     * Enforces raw query mode restrictions
+     *
+     * Called from setQuery() when mode is not 'permissive'. Uses
+     * debug_backtrace to identify the caller. Internal framework
+     * calls (from Hubzero\Database\* classes) are always allowed.
+     *
+     * @param   string  $sql  The SQL being set
+     * @return  void
+     * @throws  \RuntimeException  In 'strict' mode for external callers
+     */
+    protected function enforceRawQueryMode(string $sql): void
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 8);
+
+        // Walk past internal setQuery() overrides in driver subclasses.
+        // Frame 0 = enforceRawQueryMode(), Frame 1 = Driver::setQuery(),
+        // Frame 2+ = possibly Firebird/Oracle setQuery() that called
+        // parent::setQuery(). Skip those to find the REAL caller.
+        $caller = null;
+        for ($i = 2, $len = count($trace); $i < $len; $i++) {
+            $fn = $trace[$i]['function'] ?? '';
+            $cls = $trace[$i]['class'] ?? '';
+
+            // Skip setQuery() calls within the Database namespace
+            if (
+                $fn === 'setQuery'
+                && $cls !== ''
+                && strncmp($cls, 'Hubzero\\Database\\', 17) === 0
+            ) {
+                continue;
+            }
+
+            $caller = $trace[$i];
+            break;
+        }
+
+        if ($caller === null) {
+            return;
+        }
+
+        $callerClass = $caller['class'] ?? '';
+
+        // Internal Database framework calls are always allowed
+        if (
+            $callerClass !== ''
+            && strncmp(
+                $callerClass,
+                'Hubzero\\Database\\',
+                17
+            ) === 0
+        ) {
+            return;
+        }
+
+        $file = $caller['file'] ?? 'unknown';
+        $line = $caller['line'] ?? 0;
+        $function = $caller['function'] ?? '';
+        $sqlPreview = substr($sql, 0, 200);
+
+        if ($this->rawQueryMode === 'log') {
+            $this->getLogger()->notice(
+                'Raw SQL via setQuery()',
+                [
+                    'sql_preview' => $sqlPreview,
+                    'file'        => $file,
+                    'line'        => $line,
+                    'class'       => $callerClass,
+                    'function'    => $function,
+                ]
+            );
+            return;
+        }
+
+        // strict mode
+        throw new \RuntimeException(
+            "setQuery() called with raw SQL in strict mode. "
+            . "Use the Query builder for portable queries. "
+            . "Called from {$file}:{$line}"
+            . ($callerClass ? " ({$callerClass}::{$function})" : '')
+        );
+    }
+
+    /**
+     * Grabs the connection adapter
+     *
+     * Returns the ConnectionInterface implementation used by this driver.
+     * For most operations, use the Driver methods directly instead.
+     *
+     * @return  ConnectionInterface|mixed
      */
     public function getConnection()
     {
@@ -990,10 +1257,66 @@ abstract class Driver
     }
 
     /**
+     * Gets the unique identifier for this connection instance
+     *
+     * This UUID is used for query cache isolation. Each connection gets a unique
+     * ID, ensuring that caches are properly separated between different connections.
+     * The ID is generated lazily on first access and persists for the connection's
+     * lifetime. If the connection is replaced via setConnection(), a new ID is generated.
+     *
+     * @return  string  A unique identifier for this connection instance
+     */
+    public function getConnectionId(): string
+    {
+        if ($this->connectionId === null) {
+            $this->connectionId = $this->generateConnectionId();
+        }
+
+        return $this->connectionId;
+    }
+
+    /**
+     * Generates a new unique connection identifier
+     *
+     * Creates a cryptographically secure random identifier for this connection.
+     * This is called automatically when a connection is established or replaced.
+     *
+     * @return  string  A 32-character hexadecimal UUID
+     */
+    protected function generateConnectionId(): string
+    {
+        return bin2hex(random_bytes(16));
+    }
+
+    /**
+     * Gets the native/underlying database connection
+     *
+     * This provides an escape hatch for cases where direct access to the
+     * underlying connection is needed (e.g., PDO, mysqli, or proprietary
+     * driver-specific features like PostgreSQL's lo_* methods).
+     *
+     * Example:
+     * ```php
+     * $pdo = $db->getNativeConnection();
+     * $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+     * ```
+     *
+     * @return  mixed  The native connection (PDO, mysqli, etc.)
+     */
+    public function getNativeConnection()
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            return $this->connection->getNativeConnection();
+        }
+
+        // Fallback for legacy drivers that don't use ConnectionInterface
+        return $this->connection;
+    }
+
+    /**
      * Grabs the syntax
      *
      * @return  string
-     * @since   2.0.0
      */
     public function getSyntax()
     {
@@ -1005,7 +1328,6 @@ abstract class Driver
      *
      * @param   string  $syntax  The syntax being used based on the connection
      * @return  $this
-     * @since   2.0.0
      */
     public function setSyntax($syntax)
     {
@@ -1018,7 +1340,6 @@ abstract class Driver
      * Gets the total number of SQL statements executed by the database driver
      *
      * @return  int
-     * @since   2.0.0
      */
     public function getCount()
     {
@@ -1029,7 +1350,6 @@ abstract class Driver
      * Gets the name of the database in use by this connection
      *
      * @return  string
-     * @since   2.0.0
      */
     protected function getDatabase()
     {
@@ -1040,7 +1360,6 @@ abstract class Driver
      * Returns a PHP date() function compliant date format for the database driver
      *
      * @return  string
-     * @since   2.0.0
      */
     public function getDateFormat()
     {
@@ -1051,18 +1370,194 @@ abstract class Driver
      * Gets the database driver SQL statement log
      *
      * @return  array
-     * @since   2.0.0
      */
     public function getLog()
     {
         return $this->log;
     }
 
+    // =========================================================================
+    // Query Logging
+    // =========================================================================
+    //
+    // Record all executed queries with timing information for debugging
+    // and performance analysis. Disabled by default for performance.
+    //
+    // | Method                | Returns | Description                          |
+    // |-----------------------|---------|--------------------------------------|
+    // | enableQueryLog()      | $this   | Start recording queries              |
+    // | disableQueryLog()     | $this   | Stop recording queries               |
+    // | isQueryLogEnabled()   | bool    | Check if logging is enabled          |
+    // | getQueryLog()         | array   | Get all logged queries               |
+    // | flushQueryLog()       | $this   | Clear the query log                  |
+    // | getQueryLogCount()    | int     | Number of logged queries             |
+    // | getQueryLogTotalTime()| float   | Total execution time (ms)            |
+    //
+    // Example:
+    // ```php
+    // $db = App::get('db');
+    // $db->enableQueryLog();
+    //
+    // // Run your queries...
+    // $users = User::all()->rows();
+    // $articles = Article::whereEquals('status', 1)->rows();
+    //
+    // // Analyze queries
+    // foreach ($db->getQueryLog() as $query) {
+    //     echo $query['sql'] . "\n";
+    //     echo "Bindings: " . json_encode($query['bindings']) . "\n";
+    //     echo "Time: " . $query['time'] . "ms\n\n";
+    // }
+    //
+    // echo "Total queries: " . $db->getQueryLogCount() . "\n";
+    // echo "Total time: " . $db->getQueryLogTotalTime() . "ms\n";
+    // ```
+    // =========================================================================
+
+    /**
+     * Whether detailed query logging is enabled
+     *
+     * @var bool
+     */
+    protected static $queryLoggingEnabled = false;
+
+    /**
+     * Detailed query log with timing information
+     *
+     * @var array
+     */
+    protected static $queryLog = [];
+
+    /**
+     * Enable detailed query logging
+     *
+     * When enabled, all executed queries are logged with their SQL,
+     * bindings, and execution time. This is useful for debugging
+     * and performance analysis.
+     *
+     * Example:
+     * ```php
+     * $db = App::get('db');
+     * $db->enableQueryLog();
+     *
+     * // ... run queries ...
+     *
+     * $queries = $db->getQueryLog();
+     * foreach ($queries as $query) {
+     *     echo $query['sql'] . ' (' . $query['time'] . 'ms)';
+     * }
+     * ```
+     *
+     * @return  $this
+     */
+    public function enableQueryLog()
+    {
+        static::$queryLoggingEnabled = true;
+        return $this;
+    }
+
+    /**
+     * Disable detailed query logging
+     *
+     * @return  $this
+     */
+    public function disableQueryLog()
+    {
+        static::$queryLoggingEnabled = false;
+        return $this;
+    }
+
+    /**
+     * Check if query logging is enabled
+     *
+     * @return  bool
+     */
+    public function isQueryLogEnabled()
+    {
+        return static::$queryLoggingEnabled;
+    }
+
+    /**
+     * Get the detailed query log
+     *
+     * Returns an array of queries with their SQL, bindings, and execution time.
+     * Each entry contains:
+     * - sql: The SQL query string
+     * - bindings: Array of bound parameters
+     * - time: Execution time in milliseconds
+     *
+     * Example:
+     * ```php
+     * $queries = $db->getQueryLog();
+     * // [
+     * //   ['sql' => 'SELECT * FROM users WHERE id = ?', 'bindings' => [1], 'time' => 2.5],
+     * //   ['sql' => 'UPDATE users SET name = ?', 'bindings' => ['John'], 'time' => 1.2],
+     * // ]
+     * ```
+     *
+     * @return  array
+     */
+    public function getQueryLog()
+    {
+        return static::$queryLog;
+    }
+
+    /**
+     * Clear the query log
+     *
+     * @return  $this
+     */
+    public function flushQueryLog()
+    {
+        static::$queryLog = [];
+        return $this;
+    }
+
+    /**
+     * Get the total execution time of all logged queries
+     *
+     * @return  float  Total time in milliseconds
+     */
+    public function getQueryLogTotalTime()
+    {
+        return array_sum(array_column(static::$queryLog, 'time'));
+    }
+
+    /**
+     * Get the number of queries in the log
+     *
+     * @return  int
+     */
+    public function getQueryLogCount()
+    {
+        return count(static::$queryLog);
+    }
+
+    /**
+     * Log a query to the detailed query log
+     *
+     * This is called internally during query execution when logging is enabled.
+     *
+     * @param   string  $sql       The SQL query
+     * @param   array   $bindings  The query bindings
+     * @param   float   $time      Execution time in milliseconds
+     * @return  void
+     */
+    protected function logQuery($sql, array $bindings, $time)
+    {
+        if (static::$queryLoggingEnabled) {
+            static::$queryLog[] = [
+                'sql' => $sql,
+                'bindings' => $bindings,
+                'time' => round($time, 2),
+            ];
+        }
+    }
+
     /**
      * Gets the database timer
      *
      * @return  int
-     * @since   2.0.0
      */
     public function getTimer()
     {
@@ -1073,7 +1568,6 @@ abstract class Driver
      * Gets the null or zero representation of a timestamp for the database driver
      *
      * @return  string
-     * @since   2.0.0
      */
     public function getNullDate()
     {
@@ -1084,7 +1578,6 @@ abstract class Driver
      * Gets the common table prefix for the database driver
      *
      * @return  string
-     * @since   2.0.0
      */
     public function getPrefix()
     {
@@ -1096,7 +1589,6 @@ abstract class Driver
      *
      * @param   string  $prefix  The prefix to use
      * @return  $this
-     * @since   2.0.0
      */
     public function setPrefix($prefix)
     {
@@ -1106,10 +1598,23 @@ abstract class Driver
     }
 
     /**
+     * Gets the driver type identifier
+     *
+     * Returns the database driver type (e.g., 'mysql', 'sqlite', 'pgsql').
+     * This is useful for debugging, logging, and tests that need to check
+     * driver-specific behavior without using instanceof or is*() methods.
+     *
+     * @return  string  The driver type identifier
+     */
+    public function getDriverType(): string
+    {
+        return $this->name ?? 'unknown';
+    }
+
+    /**
      * Gets the current sql statement
      *
      * @return  string
-     * @since   2.0.0
      */
     public function getStatement()
     {
@@ -1118,103 +1623,268 @@ abstract class Driver
                 : $this->statement;
     }
 
+    // =========================================================================
+    // Connection Mechanics (absorbed from Pdo)
+    //
+    // These methods handle query preparation, execution, and result fetching.
+    // They delegate to the ConnectionInterface implementation, with fallback
+    // to raw PDO for backward compatibility.
+    // =========================================================================
+
     /**
-     * Fetchs a row from the result set as an object
+     * Fetches a row from the result set cursor as an object
      *
-     * @param   string  $class  The class name to use for the returned row object
-     * @return  mixed
-     * @since   2.0.0
+     * @param   string       $class  The class name to use for the returned row object
+     * @return  object|null
      */
-    abstract protected function fetchObject($class = 'stdClass');
+    protected function fetchObject($class = 'stdClass')
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            return $this->connection->fetchObject($this->statement, $class);
+        }
+
+        // Backward compatibility: raw PDO - statement is a PDOStatement
+        return $this->statement->fetchObject($class);
+    }
 
     /**
      * Fetches a row from the result set as an array
      *
-     * @return  mixed
-     * @since   2.0.0
+     * @return  array|null
      */
-    abstract protected function fetchArray();
+    protected function fetchArray()
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            return $this->connection->fetchArray($this->statement);
+        }
+
+        // Backward compatibility: raw PDO - statement is a PDOStatement
+        return $this->statement->fetch(\PDO::FETCH_NUM);
+    }
 
     /**
      * Fetches a row from the result set as an associative array
      *
-     * @return  mixed
-     * @since   2.0.0
+     * @return  array|null
      */
-    abstract protected function fetchAssoc();
+    protected function fetchAssoc()
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            return $this->connection->fetchAssoc($this->statement);
+        }
+
+        // Backward compatibility: raw PDO - statement is a PDOStatement
+        return $this->statement->fetch(\PDO::FETCH_ASSOC);
+    }
 
     /**
      * Detects the driver syntax
      *
+     * Supports both ConnectionInterface and raw PDO for backward compatibility.
+     *
      * @return  string
-     * @since   2.0.0
      **/
-    abstract protected function detectSyntax();
+    protected function detectSyntax()
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            return $this->connection->getDriverName();
+        }
+
+        // Backward compatibility: raw PDO object
+        if ($this->connection instanceof \PDO) {
+            return $this->connection->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        }
+
+        return '';
+    }
 
     /**
      * Frees up the memory used for the result set
      *
      * @return  $this
-     * @since   2.0.0
      */
-    abstract protected function freeResult();
+    protected function freeResult()
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            $this->connection->freeResult($this->statement);
+        } else {
+            // Backward compatibility: raw PDO - statement is a PDOStatement
+            $this->statement->closeCursor();
+        }
+
+        $this->statement = null;
+
+        return $this;
+    }
 
     /**
      * Sets the error reporting mode to throw exceptions
      *
      * @return  $this
-     * @since   2.0.0
      **/
-    abstract public function throwExceptions();
+    public function throwExceptions()
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            $this->connection->setExceptionMode();
+        } elseif ($this->connection instanceof \PDO) {
+            $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        }
+
+        return $this;
+    }
 
     /**
      * Sets the error reporting mode to return errors
      *
      * @return  $this
-     * @since   2.0.0
      **/
-    abstract public function returnErrors();
+    public function returnErrors()
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            $this->connection->setSilentMode();
+        } elseif ($this->connection instanceof \PDO) {
+            $this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_SILENT);
+        }
+
+        return $this;
+    }
 
     /**
-     * Checks for a database connection, throwing an exception if not
+     * Checks for a database connection
      *
      * @return  $this
-     * @since   2.0.0
+     * @throws  ConnectionFailedException  If no database connection exists
      **/
-    abstract public function hasConnectionOrFail();
+    public function hasConnectionOrFail()
+    {
+        if (!$this->connection) {
+            throw new ConnectionFailedException('No database connection.', 500);
+        }
+
+        if ($this->connection instanceof ConnectionInterface) {
+            if (!$this->connection->isConnected()) {
+                throw new ConnectionFailedException('No database connection.', 500);
+            }
+        } elseif (!is_object($this->connection)) {
+            throw new ConnectionFailedException('No database connection.', 500);
+        }
+
+        return $this;
+    }
 
     /**
      * Prepares a query for binding
      *
-     * @param   string  $statement  The query statement to prepare
+     * @param   string  $statement  The statement to prepare
      * @return  $this
-     * @since   2.0.0
      **/
-    abstract public function prepare($statement);
+    public function prepare($statement)
+    {
+        $sql = $this->replacePrefix($statement);
+
+        $this->bindings = [];
+
+        // Close previous statement to avoid cursor issues
+        if ($this->statement) {
+            try {
+                $this->statement->closeCursor();
+            } catch (\PDOException $e) {
+                // Ignore - statement might already be closed
+            }
+            $this->statement = null;
+        }
+
+        if ($this->connection instanceof ConnectionInterface) {
+            $this->statement = $this->connection->prepare($sql);
+        } elseif ($this->connection instanceof \PDO) {
+            // Backward compatibility: raw PDO
+            $this->statement = $this->connection->prepare($sql);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Explicitly translate generic type to driver specific types
+     *
+     * @param   string  $type  The variable type (bool, null, int, str)
+     * @return  int
+     **/
+    private function translateType($type)
+    {
+        return constant('\PDO::PARAM_' . strtoupper($type));
+    }
+
+    /**
+     * Infers the variable type from the variable itself
+     *
+     * @param   mixed  $binding  The binding to infer from
+     * @return  int
+     **/
+    private function inferType($binding)
+    {
+        if (is_bool($binding)) {
+            $type = \PDO::PARAM_BOOL;
+        } elseif (is_null($binding)) {
+            $type = \PDO::PARAM_NULL;
+        } elseif (is_int($binding)) {
+            $type = \PDO::PARAM_INT;
+        } else {
+            $type = \PDO::PARAM_STR;
+        }
+
+        return $type;
+    }
 
     /**
      * Binds the given bindings to the prepared statement
      *
-     * @param   array   $bindings  The param bindings
-     * @param   string  $type      The param type
+     * If you're going to pass in types, they must be keyed
+     * the same as the bindings.
+     *
+     * @param   array  $bindings  The param bindings
+     * @param   array  $type      The param types
      * @return  $this
-     * @since   2.0.0
      **/
-    abstract public function bind($bindings, $type = null);
+    public function bind($bindings, $type = [])
+    {
+        $idx = 1;
+
+        $this->bindings = $bindings;
+
+        foreach ($bindings as $binding) {
+            // We use bindValue here because that allows us to pass in plain old strings
+            $this->statement->bindValue(
+                $idx,
+                $binding,
+                isset($type[$idx]) ? $this->translateType($type[$idx]) : $this->inferType($binding)
+            );
+
+            $idx++;
+        }
+
+        return $this;
+    }
 
     /**
      * Gets the auto-incremented value from the last INSERT statement
      *
      * @return  int
-     * @since   2.0.0
      */
-    abstract public function insertid();
+    public function insertid()
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            return $this->connection->lastInsertId();
+        }
+
+        // Backward compatibility: raw PDO
+        return $this->connection->lastInsertId();
+    }
 
     /**
      * Sets the connection to use UTF-8 character encoding
      *
      * @return  bool
-     * @since   2.0.0
      */
     abstract public function setUTF();
 
@@ -1222,7 +1892,6 @@ abstract class Driver
      * Initializes a transaction
      *
      * @return  void
-     * @since   2.0.0
      */
     abstract public function transactionStart();
 
@@ -1230,7 +1899,6 @@ abstract class Driver
      * Rolls back a transaction
      *
      * @return  void
-     * @since   2.0.0
      */
     abstract public function transactionRollback();
 
@@ -1238,15 +1906,118 @@ abstract class Driver
      * Commits a transaction
      *
      * @return  void
-     * @since   2.0.0
      */
     abstract public function transactionCommit();
+
+    /**
+     * Execute a callback within a database transaction
+     *
+     * This method provides a convenient way to wrap database operations in a transaction.
+     * The transaction is automatically committed on success or rolled back on exception.
+     *
+     * Example usage:
+     * ```php
+     * $result = $db->transaction(function($db) {
+     *     $db->setQuery("INSERT INTO users (name) VALUES ('John')")->execute();
+     *     $db->setQuery("UPDATE accounts SET balance = balance - 100")->execute();
+     *     return $db->insertid();
+     * });
+     * ```
+     *
+     * With retry on deadlock:
+     * ```php
+     * $result = $db->transaction(function($db) {
+     *     // operations that might deadlock
+     * }, 3); // Retry up to 3 times
+     * ```
+     *
+     * @param   callable  $callback  The callback to execute within the transaction.
+     *                               Receives the driver instance as first argument.
+     * @param   int       $attempts  Number of attempts before giving up (for deadlock retry).
+     *                               Default is 1 (no retry).
+     * @return  mixed     The return value of the callback
+     * @throws  \Throwable  Re-throws the exception after rollback if all attempts fail
+     */
+    public function transaction(callable $callback, int $attempts = 1)
+    {
+        if ($attempts < 1) {
+            $attempts = 1;
+        }
+
+        $lastException = null;
+
+        for ($currentAttempt = 1; $currentAttempt <= $attempts; $currentAttempt++) {
+            $this->transactionStart();
+
+            try {
+                $result = $callback($this);
+                $this->transactionCommit();
+                return $result;
+            } catch (\Throwable $e) {
+                $this->transactionRollback();
+                $lastException = $e;
+
+                // Only retry on deadlock-related exceptions
+                if ($currentAttempt < $attempts && $this->isDeadlockException($e)) {
+                    // Brief pause before retry (exponential backoff)
+                    usleep(min(100000 * pow(2, $currentAttempt - 1), 1000000));
+                    continue;
+                }
+
+                throw $e;
+            }
+        }
+
+        // This should never be reached, but just in case
+        if ($lastException) {
+            throw $lastException;
+        }
+    }
+
+    /**
+     * Determine if an exception is caused by a deadlock or lock timeout
+     *
+     * Override in driver-specific classes for more accurate detection.
+     *
+     * @param   \Throwable  $e  The exception to check
+     * @return  bool
+     */
+    protected function isDeadlockException(\Throwable $e): bool
+    {
+        $message = strtolower($e->getMessage());
+
+        return strpos($message, 'deadlock') !== false
+            || strpos($message, 'lock wait timeout') !== false
+            || strpos($message, 'serialization failure') !== false;
+    }
+
+    /**
+     * Check if the connection is currently within a transaction
+     *
+     * @return  bool
+     */
+    public function inTransaction(): bool
+    {
+        return $this->getTransactionLevel() > 0;
+    }
+
+    /**
+     * Get the current transaction nesting level
+     *
+     * Returns 0 if not in a transaction, 1 for the main transaction,
+     * and higher values for nested transactions (savepoints).
+     *
+     * @return  int
+     */
+    public function getTransactionLevel(): int
+    {
+        return $this->transactionDepth ?? 0;
+    }
 
     /**
      * Unlocks all tables in the database
      *
      * @return  $this
-     * @since   2.0.0
      */
     abstract public function unlockTables();
 
@@ -1255,17 +2026,126 @@ abstract class Driver
      *
      * @param   string  $tableName  The name of the table to lock
      * @return  $this
-     * @since   2.0.0
      */
     abstract public function lockTable($tableName);
 
     /**
-     * Executes the set SQL statement
+     * Executes the SQL statement
      *
-     * @return  $this|bool
-     * @since   2.0.0
+     * @return  $this|int
+     * @throws  QueryFailedException
      */
-    abstract public function execute();
+    public function execute()
+    {
+        $this->hasConnectionOrFail();
+
+        $start = microtime(true);
+
+        try {
+            $this->statement->execute();
+        } catch (\PDOException $e) {
+            throw new QueryFailedException($e->getMessage(), 500, $e);
+        }
+
+        if ($this->debug || $this->slowQueryThreshold > 0) {
+            $this->log(microtime(true) - $start);
+        }
+
+        // For DELETE, UPDATE, INSERT queries, return affected row count
+        $sql = $this->statement->queryString ?? '';
+        $type = strtoupper(substr(trim($sql), 0, 6));
+        if ($type === 'DELETE' || $type === 'UPDATE' || $type === 'INSERT') {
+            return $this->getAffectedRows();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Executes a raw SQL statement directly without prepared statements
+     *
+     * This is useful for DDL statements, PRAGMA commands, SET statements,
+     * and other SQL that doesn't need parameter binding or return results.
+     *
+     * @param   string  $statement  The SQL statement to execute
+     * @return  int     The number of affected rows
+     * @throws  QueryFailedException
+     */
+    public function exec($statement)
+    {
+        // Check connection
+        $this->hasConnectionOrFail();
+
+        // Replace table prefix
+        $sql = $this->replacePrefix($statement);
+
+        // Capture the start time
+        $start = microtime(true);
+
+        try {
+            if ($this->connection instanceof ConnectionInterface) {
+                $result = $this->connection->exec($sql);
+            } elseif ($this->connection instanceof \PDO) {
+                // Backward compatibility: raw PDO
+                $result = $this->connection->exec($sql);
+            } else {
+                $result = 0;
+            }
+        } catch (\PDOException $e) {
+            throw new QueryFailedException($e->getMessage(), 500, $e);
+        }
+
+        // Log query if debugging is enabled or slow query logging is configured
+        if ($this->debug || $this->slowQueryThreshold > 0) {
+            $this->log(microtime(true) - $start);
+        }
+
+        return $result === false ? 0 : $result;
+    }
+
+    /**
+     * Get the schema manager instance
+     *
+     * The schema manager provides a unified interface for all DDL operations:
+     * - Creating and altering tables (fluent builders)
+     * - Dropping tables
+     * - Table introspection (columns, keys, existence checks)
+     * - Index management
+     *
+     * Usage:
+     *   $db->schema()->createTable('#__users')
+     *       ->id()
+     *       ->string('name', 255)
+     *       ->execute();
+     *
+     *   if ($db->schema()->tableExists('#__users')) { ... }
+     *
+     *   $columns = $db->schema()->getTableColumns('#__users');
+     *
+     * @return  SchemaManager
+     */
+    public function schema(): SchemaManager
+    {
+        if ($this->schema === null) {
+            $this->schema = new SchemaManager($this);
+        }
+
+        return $this->schema;
+    }
+
+    /**
+     * Get a Table gateway for fluent table operations
+     *
+     * Convenience method that returns a Table instance for the specified table.
+     * The Table class provides fluent methods for create(), alter(), drop(), etc.
+     *
+     * @param   string  $table  Table name (can include prefix placeholder #__)
+     * @return  \Hubzero\Database\Schema\Table
+     */
+    public function table(string $table): \Hubzero\Database\Schema\Table
+    {
+        return $this->schema()->table($table);
+    }
 
     /**
      * Renames a table in the database
@@ -1275,7 +2155,6 @@ abstract class Driver
      * @param   string  $backup    Table prefix
      * @param   string  $prefix    For the table - used to rename constraints in non-mysql databases
      * @return  $this
-     * @since   2.0.0
      */
     abstract public function renameTable($oldTable, $newTable, $backup = null, $prefix = null);
 
@@ -1284,7 +2163,6 @@ abstract class Driver
      *
      * @param   string  $database  The name of the database to select for use
      * @return  bool
-     * @since   2.0.0
      */
     abstract public function select($database);
 
@@ -1292,7 +2170,6 @@ abstract class Driver
      * Gets a new query for the current driver
      *
      * @return  Query
-     * @since   2.0.0
      */
     abstract public function getQuery();
 
@@ -1302,7 +2179,6 @@ abstract class Driver
      * @param   string  $table     The name of the database table
      * @param   bool    $typeOnly  True (default) to only return field types
      * @return  array
-     * @since   2.0.0
      */
     abstract public function getTableColumns($table, $typeOnly = true);
 
@@ -1311,7 +2187,6 @@ abstract class Driver
      *
      * @param   string|array  $tables  A table name or a list of table names
      * @return  array
-     * @since   2.0.0
      */
     abstract public function getTableCreate($tables);
 
@@ -1320,7 +2195,6 @@ abstract class Driver
      *
      * @param   string|array  $tables  A table name or a list of table names
      * @return  array
-     * @since   2.0.0
      */
     abstract public function getTableKeys($tables);
 
@@ -1328,7 +2202,6 @@ abstract class Driver
      * Gets an array of all tables in the database
      *
      * @return  array
-     * @since   2.0.0
      */
     abstract public function getTableList();
 
@@ -1336,7 +2209,6 @@ abstract class Driver
      * Gets the version of the database connector
      *
      * @return  string
-     * @since   2.0.0
      */
     abstract public function getVersion();
 
@@ -1344,9 +2216,29 @@ abstract class Driver
      * Determines if the connection to the server is active
      *
      * @return  bool
-     * @since   2.0.0
      */
-    abstract public function connected();
+    public function connected()
+    {
+        if (!$this->connection) {
+            return false;
+        }
+
+        if ($this->connection instanceof ConnectionInterface) {
+            return $this->connection->isConnected();
+        }
+
+        // Backward compatibility: raw PDO
+        if ($this->connection instanceof \PDO) {
+            try {
+                $this->connection->query('SELECT 1');
+                return true;
+            } catch (\PDOException $e) {
+                return false;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Drops a table from the database
@@ -1354,9 +2246,23 @@ abstract class Driver
      * @param   string  $table     The name of the database table to drop
      * @param   bool    $ifExists  Optionally specify that the table must exist before it is dropped
      * @return  $this
-     * @since   2.0.0
      */
     abstract public function dropTable($table, $ifExists = true);
+
+    /**
+     * Truncates a table (removes all rows and resets auto-increment)
+     *
+     * Emulates MySQL TRUNCATE semantics across all drivers:
+     * 1. Deletes all rows from the table
+     * 2. Resets auto-increment/identity counter to $nextId
+     * 3. Always commits (MySQL TRUNCATE is DDL and auto-commits)
+     * 4. Never cascades to other tables
+     *
+     * @param   string  $table   The name of the database table to truncate
+     * @param   int     $nextId  The next auto-increment value (default 1)
+     * @return  $this
+     */
+    abstract public function truncateTable($table, int $nextId = 1);
 
     /**
      * Escapes a string for usage in an SQL statement
@@ -1364,23 +2270,42 @@ abstract class Driver
      * @param   string   $text   The string to be escaped
      * @param   boolean  $extra  Optional parameter to provide extra escaping
      * @return  string
-     * @since   2.0.0
      */
-    abstract public function escape($text, $extra = false);
+    public function escape($text, $extra = false)
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            return $this->connection->escape($text ?? '', $extra);
+        }
+
+        // Backward compatibility: raw PDO
+        $result = substr($this->connection->quote($text ?? ''), 1, -1);
+
+        if ($extra) {
+            $result = addcslashes($result, '%_');
+        }
+
+        return $result;
+    }
 
     /**
      * Gets the number of affected rows for the previous executed SQL statement
      *
      * @return  int
-     * @since   2.0.0
      */
-    abstract public function getAffectedRows();
+    public function getAffectedRows()
+    {
+        if ($this->connection instanceof ConnectionInterface) {
+            return $this->connection->affectedRows($this->statement);
+        }
+
+        // Backward compatibility: raw PDO - statement is a PDOStatement
+        return $this->statement->rowCount();
+    }
 
     /**
      * Gets the database collation in use by sampling a text field of a table in the database
      *
      * @return  string|bool
-     * @since   2.0.0
      */
     abstract public function getCollation();
 
@@ -1388,16 +2313,23 @@ abstract class Driver
      * Grabs the number of returned rows for the previous executed SQL statement
      *
      * @return  int
-     * @since   2.0.0
      */
-    abstract public function getNumRows();
+    public function getNumRows()
+    {
+        // @FIXME: this isn't guaranteed to work on select statements in mysql
+        if ($this->connection instanceof ConnectionInterface) {
+            return $this->connection->affectedRows($this->statement);
+        }
+
+        // Backward compatibility: raw PDO - statement is a PDOStatement
+        return $this->statement->rowCount();
+    }
 
     /**
      * Checks for the existance of a table
      *
      * @param   string  $table  The table we're looking for
      * @return  bool
-     * @since   2.0.0
      */
     abstract public function tableExists($table);
 
@@ -1407,34 +2339,85 @@ abstract class Driver
      * @param   string  $table  A table name
      * @param   string  $field  A field name
      * @return  bool
-     * @since   2.0.0
      */
     abstract public function tableHasField($table, $field);
 
     /**
      * Returns whether or not the given table has a given key
      *
+     * Note: Method name uses capital 'K' in 'Key' (tableHasKey).
+     * PHP methods are case-insensitive, so existing code using
+     * tableHaskey (lowercase k) will continue to work.
+     *
      * @param   string  $table  A table name
      * @param   string  $key    A key name
      * @return  bool
-     * @since   2.0.0
      */
-    abstract public function tableHaskey($table, $key);
+    abstract public function tableHasKey($table, $key);
 
     /**
      * Gets the primary key of a table
      *
      * @return  string
-     * @since   2.0.0
      **/
     abstract public function getPrimaryKey($table);
+
+    /**
+     * Get primary key column names for a table
+     *
+     * Default implementation returns a single column from getPrimaryKey().
+     * Drivers with composite primary key support should override.
+     *
+     * @param   string  $table  The table name
+     * @return  array
+     */
+    public function getPrimaryKeyColumns($table): array
+    {
+        $pk = $this->getPrimaryKey($table);
+        return $pk ? [$pk] : [];
+    }
+
+    /**
+     * Gets foreign key constraints for a table
+     *
+     * Returns an array of foreign key constraint objects, each containing:
+     * - name: The constraint name
+     * - columns: Array of local column names
+     * - foreign_table: The referenced table name
+     * - foreign_columns: Array of referenced column names
+     * - on_update: The ON UPDATE action (CASCADE, SET NULL, RESTRICT, NO ACTION)
+     * - on_delete: The ON DELETE action (CASCADE, SET NULL, RESTRICT, NO ACTION)
+     *
+     * @param   string  $table  The table name
+     * @return  array   Array of foreign key constraint objects
+     */
+    abstract public function getForeignKeys($table);
+
+    /**
+     * Checks if a table has a specific foreign key constraint
+     *
+     * @param   string  $table  The table name
+     * @param   string  $name   The foreign key constraint name
+     * @return  bool
+     */
+    public function hasForeignKey($table, $name)
+    {
+        $foreignKeys = $this->getForeignKeys($table);
+
+        foreach ($foreignKeys as $fk) {
+            if ($fk->name === $name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Gets the database engine of the given table
      *
      * @param   string       $table  The table for which to retrieve the engine type
      * @return  string|bool
-     * @since   2.0.0
      **/
     abstract public function getEngine($table);
 
@@ -1444,7 +2427,6 @@ abstract class Driver
      * @param   string  $table   The table for which to retrieve the engine type
      * @param   string  $engine  The engine type to set
      * @return  bool
-     * @since   2.2.15
      **/
     abstract public function setEngine($table, $engine);
 
@@ -1454,16 +2436,492 @@ abstract class Driver
      * @param   string  $table  The table for which to retrieve the character set
      * @param   string  $field  The field to check (optional)
      * @return  string|bool
-     * @since   2.0.0
      **/
     abstract public function getCharacterSet($table, $field = null);
+
+    /**
+     * Converts a table to the specified character set
+     *
+     * This converts all text columns in the table to the new character set.
+     * On SQLite this is a no-op as SQLite handles encoding at the database level.
+     *
+     * @param   string       $table    The table to convert
+     * @param   string       $charset  The character set (e.g., 'utf8', 'utf8mb4')
+     * @param   string|null  $collate  Optional collation (e.g., 'utf8mb4_unicode_ci')
+     * @return  bool
+     **/
+    abstract public function convertToCharset($table, $charset, $collate = null);
 
     /**
      * Gets the auto-increment value for the given table
      *
      * @param   string    $table  The table for which to retrieve the character set
      * @return  int|bool
-     * @since   2.0.0
      **/
     abstract public function getAutoIncrement($table);
+
+    /**
+     * Sets the auto-increment starting value for the given table
+     *
+     * On SQLite this is a no-op as SQLite manages auto-increment automatically
+     * through the sqlite_sequence table. Use this for MySQL/PostgreSQL.
+     *
+     * @param   string  $table  The table name
+     * @param   int     $value  The auto-increment starting value
+     * @return  bool
+     **/
+    abstract public function setAutoIncrement($table, $value);
+
+    // =========================================================================
+    // ENUM Column Management
+    // =========================================================================
+    // Abstract methods for ENUM column operations. MySQL has native ENUM support,
+    // while SQLite stores ENUM as TEXT with no enforcement.
+
+    /**
+     * Get the allowed values for an ENUM column
+     *
+     * @param   string  $table   The table name
+     * @param   string  $column  The column name
+     * @return  array   Array of allowed values, empty array if not an ENUM or on SQLite
+     **/
+    abstract public function getEnumValues($table, $column);
+
+    /**
+     * Add a value to an ENUM column
+     *
+     * On SQLite this is a no-op since ENUM columns are stored as TEXT.
+     *
+     * @param   string  $table   The table name
+     * @param   string  $column  The column name
+     * @param   string  $value   The value to add
+     * @return  bool
+     **/
+    abstract public function addEnumValue($table, $column, $value);
+
+    /**
+     * Remove a value from an ENUM column
+     *
+     * On SQLite this is a no-op since ENUM columns are stored as TEXT.
+     * Warning: Existing rows with this value will become invalid on MySQL.
+     *
+     * @param   string  $table   The table name
+     * @param   string  $column  The column name
+     * @param   string  $value   The value to remove
+     * @return  bool
+     **/
+    abstract public function removeEnumValue($table, $column, $value);
+
+    // =========================================================================
+    // View Management
+    // =========================================================================
+    // Abstract methods for database view operations that differ between
+    // MySQL and SQLite.
+
+    /**
+     * Creates or replaces a database view
+     *
+     * MySQL uses CREATE OR REPLACE VIEW with ALGORITHM, DEFINER, and SQL SECURITY clauses.
+     * SQLite requires DROP then CREATE (no security concepts).
+     * PostgreSQL uses CREATE OR REPLACE VIEW.
+     *
+     * Table prefixes (#__) are replaced in both the view name and the SELECT SQL.
+     *
+     * Options (MySQL-specific, ignored on SQLite/PostgreSQL):
+     * - algorithm: UNDEFINED, MERGE, or TEMPTABLE (default: UNDEFINED)
+     * - definer: User who owns the view (default: CURRENT_USER)
+     * - security: DEFINER or INVOKER (default: INVOKER)
+     *
+     * @param   string  $name       The view name (with or without prefix)
+     * @param   string  $selectSql  The SELECT statement for the view (prefixes will be replaced)
+     * @param   array   $options    MySQL-specific view options (algorithm, definer, security)
+     * @return  bool
+     **/
+    abstract public function createOrReplaceView($name, $selectSql, array $options = []);
+
+    /**
+     * Drops a database view
+     *
+     * @param   string  $name      The view name (with or without prefix)
+     * @param   bool    $ifExists  Whether to use IF EXISTS clause
+     * @return  bool
+     **/
+    abstract public function dropView($name, $ifExists = true);
+
+    /**
+     * Checks if a view exists in the database
+     *
+     * @param   string  $name  The view name (with or without prefix)
+     * @return  bool
+     **/
+    abstract public function viewExists($name);
+
+    /**
+     * Returns a list of all views in the current database
+     *
+     * @return  array  Array of view names
+     **/
+    abstract public function getViews();
+
+    /**
+     * Returns a list of all database names on the server
+     *
+     * Note: SQLite is file-based and does not support this concept,
+     * so it returns an array containing only the current database name.
+     *
+     * @return  array  Array of database names
+     **/
+    abstract public function getDatabaseNames();
+
+    /**
+     * Returns a list of all sequences in the current database
+     *
+     * Sequences are supported by PostgreSQL, Oracle, and SQL Server (2012+).
+     * MySQL and SQLite do not support sequences and will return an empty array.
+     *
+     * @return  array  Array of SequenceInfo objects
+     **/
+    abstract public function getSequences();
+
+    /**
+     * Creates a new sequence
+     *
+     * @param   string  $name       The sequence name
+     * @param   int     $start      Starting value (default: 1)
+     * @param   int     $increment  Increment value (default: 1)
+     * @param   array   $options    Additional options (min, max, cycle, cache)
+     * @return  bool
+     * @throws  \RuntimeException  If sequences are not supported
+     **/
+    abstract public function createSequence($name, $start = 1, $increment = 1, array $options = []);
+
+    /**
+     * Drops a sequence
+     *
+     * @param   string  $name      The sequence name
+     * @param   bool    $ifExists  Whether to use IF EXISTS clause
+     * @return  bool
+     * @throws  \RuntimeException  If sequences are not supported
+     **/
+    abstract public function dropSequence($name, $ifExists = true);
+
+    /**
+     * Checks if a sequence exists
+     *
+     * @param   string  $name  The sequence name
+     * @return  bool
+     **/
+    abstract public function sequenceExists($name);
+
+    /**
+     * Gets the next value from a sequence
+     *
+     * @param   string  $name  The sequence name
+     * @return  int
+     * @throws  \RuntimeException  If sequences are not supported
+     **/
+    abstract public function nextSequenceValue($name);
+
+    /**
+     * Gets the current value of a sequence (without incrementing)
+     *
+     * @param   string  $name  The sequence name
+     * @return  int
+     **/
+    abstract public function currentSequenceValue($name);
+
+    /**
+     * Check if this driver supports sequences
+     *
+     * Drivers with native sequence support (PostgreSQL, Firebird,
+     * Informix, MariaDB 10.3+, Oracle) return true. Drivers with
+     * table-based emulation (MySQL, Percona, SQLite) also return true.
+     *
+     * @return  bool
+     **/
+    abstract public function supportsSequences(): bool;
+
+    /**
+     * Check whether this driver emulates sequences via a backing table.
+     *
+     * Drivers with native sequence objects should return false.
+     * Drivers that implement sequence behavior through a `_sequences`
+     * table (or equivalent emulation) should override and return true.
+     *
+     * @return  bool
+     */
+    public function usesSequenceEmulation(): bool
+    {
+        return false;
+    }
+
+    /**
+     * Get the appropriate column type for binary JSON storage
+     *
+     * PostgreSQL has native JSONB support. Other databases fall back to TEXT.
+     * This allows schema builders to request JSONB-like functionality in a
+     * database-agnostic way.
+     *
+     * @return  string  The column type (e.g., 'JSONB' for PostgreSQL, 'TEXT' for others)
+     */
+    public function getJsonBinaryColumnType(): string
+    {
+        return 'TEXT';
+    }
+
+    /**
+     * Get the SQL CAST keyword for integer conversion.
+     *
+     * Most drivers use `INTEGER`. Drivers with different CAST syntax
+     * should override this method.
+     *
+     * @return  string
+     */
+    public function getIntegerCastKeyword(): string
+    {
+        return 'INTEGER';
+    }
+
+    /**
+     * Whether identifier quoting wraps names with quote characters.
+     *
+     * Most drivers quote identifiers (e.g. "name", `name`, [name]).
+     * Drivers that intentionally use bare identifiers should override.
+     *
+     * @return  bool
+     */
+    public function usesQuotedIdentifiers(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Build a column definition string for ALTER TABLE operations
+     *
+     * This method generates database-specific column definition SQL for use in
+     * ALTER TABLE ADD COLUMN or ALTER TABLE MODIFY COLUMN statements.
+     *
+     * The definition array contains:
+     * - 'type': The column type (e.g., 'INT', 'VARCHAR(255)', 'TEXT')
+     * - 'modifiers': Array of column modifiers:
+     *   - 'nullable': bool - Whether column allows NULL
+     *   - 'default': mixed - Default value
+     *   - 'autoIncrement': bool - Whether column is auto-increment
+     *   - 'unsigned': bool - Whether numeric column is unsigned (MySQL-specific)
+     *   - 'comment': string - Column comment (MySQL-specific)
+     *   - 'after': string - Place column after this column (MySQL-specific)
+     *   - 'first': bool - Place column first in table (MySQL-specific)
+     *
+     * @param   string  $name        The column name
+     * @param   array   $definition  The column definition
+     * @return  string  The SQL column definition string
+     */
+    public function buildAlterColumnDefinition(string $name, array $definition): string
+    {
+        $type = $definition['type'];
+        $modifiers = $definition['modifiers'] ?? [];
+
+        // Clean up type string
+        $type = preg_replace('/\s*AUTO_INCREMENT\s*/i', ' ', $type);
+        $type = trim($type);
+
+        // Translate zero-date default to NULL
+        if (
+            array_key_exists('default', $modifiers)
+            && \Hubzero\Database\Driver\Sql::isZeroDate($modifiers['default'])
+        ) {
+            $modifiers['nullable'] = true;
+            $modifiers['default'] = null;
+        }
+
+        $parts = [$this->quoteName($name), $type];
+
+        // NULL / NOT NULL
+        if (isset($modifiers['nullable'])) {
+            $parts[] = $modifiers['nullable'] ? 'NULL' : 'NOT NULL';
+        }
+
+        // DEFAULT value
+        if (array_key_exists('default', $modifiers)) {
+            $default = $modifiers['default'];
+            if ($default === null) {
+                $parts[] = 'DEFAULT NULL';
+            } elseif (is_bool($default)) {
+                $parts[] = 'DEFAULT ' . ($default ? '1' : '0');
+            } elseif (is_numeric($default)) {
+                $parts[] = 'DEFAULT ' . $default;
+            } elseif ($default === 'CURRENT_TIMESTAMP') {
+                $parts[] = 'DEFAULT CURRENT_TIMESTAMP';
+            } else {
+                $parts[] = "DEFAULT '" . addslashes($default) . "'";
+            }
+        }
+
+        return implode(' ', $parts);
+    }
+
+    /**
+     * Get the mapping of abstract column types to database-specific SQL types
+     *
+     * Maps abstract column types (e.g., 'integer', 'string', 'boolean') to
+     * database-specific SQL types. Drivers override this to provide their
+     * specific type mappings.
+     *
+     * Default implementation provides basic SQL-92 compatible types.
+     *
+     * @return  array  Mapping of abstract type => SQL type
+     */
+    public function getAbstractTypeMap(): array
+    {
+        // Default: SQL-92 compatible types
+        return [
+            'tinyInteger' => 'SMALLINT',
+            'smallInteger' => 'SMALLINT',
+            'mediumInteger' => 'INTEGER',
+            'integer' => 'INTEGER',
+            'bigInteger' => 'BIGINT',
+            'boolean' => 'BOOLEAN',
+            'string' => 'VARCHAR',
+            'char' => 'CHAR',
+            'tinyText' => 'TEXT',
+            'text' => 'TEXT',
+            'mediumText' => 'TEXT',
+            'longText' => 'TEXT',
+            'float' => 'REAL',
+            'double' => 'DOUBLE PRECISION',
+            'decimal' => 'DECIMAL',
+            'date' => 'DATE',
+            'time' => 'TIME',
+            'datetime' => 'TIMESTAMP',
+            'timestamp' => 'TIMESTAMP',
+            'timestampTz' => 'TIMESTAMP',
+            'year' => 'INTEGER',
+            'binary' => 'BLOB',
+            'json' => 'TEXT',
+            'uuid' => 'CHAR(36)',
+            'ulid' => 'CHAR(26)',
+            'ipAddress' => 'VARCHAR(45)',
+            'macAddress' => 'VARCHAR(17)',
+        ];
+    }
+
+    /**
+     * Check if this database requires length parameters for string types
+     *
+     * Most databases require VARCHAR(length) and CHAR(length).
+     * SQLite is an exception - it treats all text as TEXT regardless of length.
+     *
+     * @return  bool  True if length parameters are required
+     */
+    public function requiresStringLength(): bool
+    {
+        // Default: yes, most databases require length
+        return true;
+    }
+
+    /**
+     * Check if this database supports precision parameters for float/double types
+     *
+     * Most databases support FLOAT(precision) and DOUBLE(precision).
+     * PostgreSQL is an exception - REAL and DOUBLE PRECISION are fixed-size.
+     *
+     * @return  bool  True if precision parameters are supported
+     */
+    public function supportsFloatPrecision(): bool
+    {
+        // Default: yes, most databases support precision
+        return true;
+    }
+
+    /**
+     * Check if this database supports UNSIGNED modifier on integer columns
+     *
+     * MySQL and MariaDB support UNSIGNED on integer types.
+     * PostgreSQL, SQLite, and SQL Server do not.
+     *
+     * @return  bool  True if UNSIGNED is supported
+     */
+    public function supportsUnsigned(): bool
+    {
+        // Default: no, UNSIGNED is MySQL-specific
+        return false;
+    }
+
+    /**
+     * Check if explicit NULL keyword is supported in DDL
+     *
+     * Most databases support explicitly specifying NULL for nullable columns,
+     * but some (like Firebird) do not. For those databases, nullable columns
+     * are created by omitting NOT NULL rather than adding NULL.
+     *
+     * @return  bool  True if explicit NULL is supported
+     */
+    public function supportsExplicitNull(): bool
+    {
+        // Default: yes, most databases support explicit NULL
+        return true;
+    }
+
+    /**
+     * Check whether upsert supports selective update-column lists.
+     *
+     * Some engines' native upsert syntax always updates all provided columns.
+     * Drivers for those engines should override and return false.
+     *
+     * @return  bool
+     */
+    public function supportsSelectiveUpsertUpdateColumns(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Return the SQL expression for CURRENT_TIMESTAMP default values
+     *
+     * Most databases use CURRENT_TIMESTAMP. Informix uses CURRENT YEAR TO SECOND.
+     *
+     * @return  string  SQL expression for current timestamp
+     */
+    public function currentTimestampDefault(): string
+    {
+        return 'CURRENT_TIMESTAMP';
+    }
+
+    /**
+     * Check if IF NOT EXISTS clause is supported in CREATE TABLE
+     *
+     * Most databases support IF NOT EXISTS, but some (like Firebird) do not.
+     *
+     * @return  bool  True if IF NOT EXISTS is supported
+     */
+    public function supportsIfNotExists(): bool
+    {
+        // Default: yes, most modern databases support IF NOT EXISTS
+        return true;
+    }
+
+    /**
+     * Check if this database supports length parameters for integer types
+     *
+     * MySQL and MariaDB support INT(length).
+     * PostgreSQL, SQLite, and most others do not.
+     *
+     * @return  bool  True if integer length parameters are supported
+     */
+    public function supportsIntegerLength(): bool
+    {
+        // Default: no, only MySQL supports this
+        return false;
+    }
+
+    /**
+     * Get the schema grammar instance for this driver
+     *
+     * Schema grammars handle database-specific DDL syntax for CREATE TABLE,
+     * ALTER TABLE, and other schema operations. Each driver returns its
+     * appropriate grammar implementation.
+     *
+     * @return  \Hubzero\Database\Schema\Grammar
+     */
+    abstract public function getSchemaGrammar();
 }

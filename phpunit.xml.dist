@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd"
+	bootstrap="core/vendor/autoload.php"
+         colors="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
+         displayDetailsOnPhpunitDeprecations="true"
+         failOnPhpunitDeprecation="true"
+         failOnDeprecation="true"
+         failOnWarning="true"
+         failOnRisky="true"
+         failOnSkipped="true">
+    <testsuites>
+        <testsuite name="HubZero Libraries">
+            <directory suffix="Test.php">core/libraries/Hubzero/</directory>
+            <exclude>core/libraries/Hubzero/Console/Command/Test.php</exclude>
+            <exclude>core/libraries/Hubzero/Console/Command/Scaffolding/Test.php</exclude>
+            <exclude>core/libraries/Hubzero/Content/Auditor/Test.php</exclude>
+        </testsuite>
+        <testsuite name="Components">
+            <directory suffix="Test.php">core/components/com_courses/tests/helpers/</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <!--
+            Database Test Configuration
+
+            Override these in a local phpunit.xml (copy this file) or via
+            environment variables. Only databases with ENABLED=true are tested.
+
+            Quick start:
+              cp phpunit.xml.dist phpunit.xml
+              # Edit phpunit.xml: set DB_MYSQL_ENABLED to "true", etc.
+
+            Or export env vars directly:
+              DB_MYSQL_ENABLED=true DB_MYSQL_HOST=localhost vendor/bin/phpunit
+
+            Security note:
+              Replace all *_USER and *_PASSWORD placeholders below with
+              local test-only credentials. Do not reuse production secrets.
+        -->
+
+        <!-- MySQL -->
+        <env name="DB_MYSQL_ENABLED" value="false"/>
+        <env name="DB_MYSQL_DRIVER" value="mysql"/>
+        <env name="DB_MYSQL_HOST" value="127.0.0.1"/>
+        <env name="DB_MYSQL_PORT" value="3306"/>
+        <env name="DB_MYSQL_DATABASE" value="hubzero"/>
+        <env name="DB_MYSQL_USER" value="CHANGE_ME_MYSQL_USER"/>
+        <env name="DB_MYSQL_PASSWORD" value="CHANGE_ME_MYSQL_PASSWORD"/>
+        <env name="DB_MYSQL_PREFIX" value="jos_"/>
+        <env name="DB_MYSQL_CHARSET" value="utf8mb4"/>
+
+        <!-- MariaDB (only if testing separately from MySQL) -->
+        <env name="DB_MARIADB_ENABLED" value="false"/>
+        <env name="DB_MARIADB_DRIVER" value="mariadb"/>
+        <env name="DB_MARIADB_HOST" value="127.0.0.1"/>
+        <env name="DB_MARIADB_PORT" value="3306"/>
+        <env name="DB_MARIADB_DATABASE" value="hubzero"/>
+        <env name="DB_MARIADB_USER" value="CHANGE_ME_MARIADB_USER"/>
+        <env name="DB_MARIADB_PASSWORD" value="CHANGE_ME_MARIADB_PASSWORD"/>
+        <env name="DB_MARIADB_PREFIX" value="jos_"/>
+        <env name="DB_MARIADB_CHARSET" value="utf8mb4"/>
+
+        <!-- PostgreSQL -->
+        <env name="DB_PGSQL_ENABLED" value="false"/>
+        <env name="DB_PGSQL_DRIVER" value="pgsql"/>
+        <env name="DB_PGSQL_HOST" value="127.0.0.1"/>
+        <env name="DB_PGSQL_PORT" value="5432"/>
+        <env name="DB_PGSQL_DATABASE" value="hubzero"/>
+        <env name="DB_PGSQL_USER" value="CHANGE_ME_PGSQL_USER"/>
+        <env name="DB_PGSQL_PASSWORD" value="CHANGE_ME_PGSQL_PASSWORD"/>
+        <env name="DB_PGSQL_PREFIX" value="jos_"/>
+        <env name="DB_PGSQL_CHARSET" value="utf8"/>
+
+        <!-- SQLite -->
+        <env name="DB_SQLITE_ENABLED" value="false"/>
+        <env name="DB_SQLITE_DRIVER" value="sqlite"/>
+        <env name="DB_SQLITE_DATABASE" value="hubzero"/>
+        <env name="DB_SQLITE_PREFIX" value="jos_"/>
+
+        <!-- Firebird (single instance — use this OR the versioned entries below) -->
+        <env name="DB_FIREBIRD_ENABLED" value="false"/>
+        <env name="DB_FIREBIRD_DRIVER" value="firebird"/>
+        <env name="DB_FIREBIRD_HOST" value="localhost"/>
+        <env name="DB_FIREBIRD_DATABASE" value="hubzero"/>
+        <env name="DB_FIREBIRD_USER" value="CHANGE_ME_FIREBIRD_USER"/>
+        <env name="DB_FIREBIRD_PASSWORD" value="CHANGE_ME_FIREBIRD_PASSWORD"/>
+        <env name="DB_FIREBIRD_CHARSET" value="UTF8"/>
+        <env name="DB_FIREBIRD_PREFIX" value="fb_"/>
+
+        <!-- Firebird 3.x (enable to test against a Firebird 3 server) -->
+        <env name="DB_FIREBIRD3_ENABLED" value="false"/>
+        <env name="DB_FIREBIRD3_DRIVER" value="firebird"/>
+        <env name="DB_FIREBIRD3_HOST" value="localhost"/>
+        <env name="DB_FIREBIRD3_DATABASE" value="hubzero"/>
+        <env name="DB_FIREBIRD3_USER" value="CHANGE_ME_FIREBIRD3_USER"/>
+        <env name="DB_FIREBIRD3_PASSWORD" value="CHANGE_ME_FIREBIRD3_PASSWORD"/>
+        <env name="DB_FIREBIRD3_CHARSET" value="UTF8"/>
+        <env name="DB_FIREBIRD3_PREFIX" value=""/>
+
+        <!-- Firebird 5.x (enable to test against a Firebird 5 server) -->
+        <env name="DB_FIREBIRD5_ENABLED" value="false"/>
+        <env name="DB_FIREBIRD5_DRIVER" value="firebird"/>
+        <env name="DB_FIREBIRD5_HOST" value="localhost"/>
+        <env name="DB_FIREBIRD5_DATABASE" value="hubzero"/>
+        <env name="DB_FIREBIRD5_USER" value="CHANGE_ME_FIREBIRD5_USER"/>
+        <env name="DB_FIREBIRD5_PASSWORD" value="CHANGE_ME_FIREBIRD5_PASSWORD"/>
+        <env name="DB_FIREBIRD5_CHARSET" value="UTF8"/>
+        <env name="DB_FIREBIRD5_PREFIX" value=""/>
+
+        <!-- Informix -->
+        <env name="DB_INFORMIX_ENABLED" value="false"/>
+        <env name="DB_INFORMIX_DRIVER" value="informix"/>
+        <env name="DB_INFORMIX_HOST" value="localhost"/>
+        <env name="DB_INFORMIX_SERVICE" value="9088"/>
+        <env name="DB_INFORMIX_PORT" value="9088"/>
+        <env name="DB_INFORMIX_DATABASE" value="hubzero"/>
+        <env name="DB_INFORMIX_SERVER" value="informix"/>
+        <env name="DB_INFORMIX_USER" value="CHANGE_ME_INFORMIX_USER"/>
+        <env name="DB_INFORMIX_PASSWORD" value="CHANGE_ME_INFORMIX_PASSWORD"/>
+        <env name="DB_INFORMIX_PREFIX" value="jos_"/>
+
+        <!-- Oracle XE -->
+        <env name="DB_ORACLE_ENABLED" value="false"/>
+        <env name="DB_ORACLE_DRIVER" value="oci"/>
+        <env name="DB_ORACLE_HOST" value="127.0.0.1"/>
+        <env name="DB_ORACLE_PORT" value="1521"/>
+        <env name="DB_ORACLE_DATABASE" value="hubzero"/>
+        <env name="DB_ORACLE_USER" value="CHANGE_ME_ORACLE_USER"/>
+        <env name="DB_ORACLE_PASSWORD" value="CHANGE_ME_ORACLE_PASSWORD"/>
+        <env name="DB_ORACLE_CHARSET" value="AL32UTF8"/>
+        <env name="DB_ORACLE_PREFIX" value=""/>
+
+        <!-- SAP ASE (Sybase) -->
+        <env name="DB_ASE_ENABLED" value="false"/>
+        <env name="DB_ASE_DRIVER" value="ase"/>
+        <env name="DB_ASE_HOST" value="127.0.0.1"/>
+        <env name="DB_ASE_PORT" value="5000"/>
+        <env name="DB_ASE_DATABASE" value="hubzero"/>
+        <env name="DB_ASE_USER" value="CHANGE_ME_ASE_USER"/>
+        <env name="DB_ASE_PASSWORD" value="CHANGE_ME_ASE_PASSWORD"/>
+        <env name="DB_ASE_PREFIX" value=""/>
+    </php>
+    <source>
+        <include>
+            <directory suffix=".php">core/libraries/Hubzero/</directory>
+        </include>
+        <exclude>
+            <directory suffix="Test.php">core/libraries/Hubzero/</directory>
+        </exclude>
+    </source>
+</phpunit>

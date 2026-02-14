@@ -22,7 +22,6 @@ class Log
      * @param   string  $query  The query to log
      * @param   int     $time   The query time
      * @return  void
-     * @since   2.0.0
      **/
     public static function add($query, $time = 0)
     {
@@ -36,7 +35,6 @@ class Log
      * Writes the log statment out
      *
      * @return  void
-     * @since   2.0.0
      **/
     public static function write($statement)
     {
@@ -55,7 +53,6 @@ class Log
      * Parses the debug backtrace for the applicable file and line
      *
      * @return  array
-     * @since   2.0.0
      **/
     public static function parseBacktrace()
     {
@@ -84,7 +81,6 @@ class Log
      * Gets the debug backtrace from php
      *
      * @return  array
-     * @since   2.0.0
      **/
     public static function getBacktrace()
     {
