@@ -8,7 +8,7 @@
 
 namespace Hubzero\Database\Relationship;
 
-use Event;
+use Hubzero\Facades\Event;
 
 /**
  * Database many to many relationship
@@ -19,7 +19,6 @@ class ManyToMany extends OneToManyThrough
      * Fetches the results of relationship
      *
      * @return  \Hubzero\Database\Relational
-     * @since   2.0.0
      **/
     public function rows()
     {
@@ -51,7 +50,6 @@ class ManyToMany extends OneToManyThrough
      * @param   object   $model     The model to associate
      * @param   closure  $callback  A callback to potentially append additional data
      * @return  object
-     * @since   2.0.0
      **/
     public function associate($model, $callback = null)
     {
@@ -73,7 +71,6 @@ class ManyToMany extends OneToManyThrough
      * our way backwards through the intermediate table.
      *
      * @return  $this
-     * @since   2.0.0
      **/
     public function mediate()
     {
@@ -114,7 +111,6 @@ class ManyToMany extends OneToManyThrough
      *
      * @param   array  $ids  The identifiers to place in the associative table
      * @return  $this
-     * @since   2.0.0
      **/
     public function connect($ids)
     {
@@ -141,7 +137,6 @@ class ManyToMany extends OneToManyThrough
      * Generates the connection data needed to create the associative entry
      *
      * @return  array
-     * @since   2.0.0
      **/
     protected function getConnectionData()
     {
@@ -155,7 +150,6 @@ class ManyToMany extends OneToManyThrough
      * @param   array    $ids         The identifiers to remove from the associative table
      * @param   closure  $constraint  Additional constraints to place on the query
      * @return  $this
-     * @since   2.0.0
      **/
     public function disconnect($ids, $constraint = null)
     {
@@ -181,7 +175,6 @@ class ManyToMany extends OneToManyThrough
      *
      * @param   array  $ids  The identifiers to place in the associative table
      * @return  $this
-     * @since   2.0.0
      **/
     public function sync($ids)
     {

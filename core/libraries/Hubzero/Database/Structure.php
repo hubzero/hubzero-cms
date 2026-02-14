@@ -19,7 +19,6 @@ class Structure extends Query
      * @param   string  $table     The name of the database table
      * @param   bool    $typeOnly  True (default) to only return field types
      * @return  array
-     * @since   2.0.0
      */
     public function getTableColumns($table, $typeOnly = true)
     {
