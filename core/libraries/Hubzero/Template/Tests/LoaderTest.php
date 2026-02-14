@@ -8,15 +8,16 @@
 
 namespace Hubzero\Template\Tests;
 
-use Hubzero\Test\Database;
 use Hubzero\Template\Loader;
 use Hubzero\Base\Application;
 use Hubzero\Config\Registry;
+use Hubzero\Database\Drivers\Sqlite\SqliteDriver;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Template loader test
  */
-class LoaderTest extends Database
+class LoaderTest extends TestCase
 {
     /**
      * Hubzero\Template\Loader
@@ -28,19 +29,26 @@ class LoaderTest extends Database
     private $loader;
 
     /**
+     * Fixture sqlite file name
+     *
+     * @var string
+     */
+    private $fixture = 'test.sqlite3';
+
+    /**
      * Sets up the tests...called prior to each test
      *
      * @return  void
      */
     public function setUp(): void
     {
-        parent::setUp();
+        $driver = $this->getMockDriver($this->fixture);
 
-        \Hubzero\Database\Relational::setDefaultConnection($this->getMockDriver());
+        \Hubzero\Database\Relational::setDefaultConnection($driver);
 
         $app = new Application();
         $app['client'] = new \Hubzero\Base\Client\Site();
-        $app['db']     = $this->getMockDriver();
+        $app['db']     = $driver;
         $app['config'] = new Registry();
 
         $this->loader = new Loader($app, [
@@ -143,11 +151,13 @@ class LoaderTest extends Database
      */
     public function testConstructor()
     {
-        \Hubzero\Database\Relational::setDefaultConnection($this->getMockDriver());
+        $driver = $this->getMockDriver($this->fixture);
+
+        \Hubzero\Database\Relational::setDefaultConnection($driver);
 
         $app = new Application();
         $app['client'] = new \Hubzero\Base\Client\Site();
-        $app['db']     = $this->getMockDriver();
+        $app['db']     = $driver;
         $app['config'] = new Registry();
 
         $loader = new Loader($app, [
@@ -301,14 +311,11 @@ class LoaderTest extends Database
      */
     public function testDatabaseError()
     {
-        self::tearDownAfterClass();
-
-        $this->fixture = 'testBad.sqlite3';
-        $this->connection = null;
+        $driver = $this->getMockDriver('testBad.sqlite3');
 
         $app = new Application();
         $app['client'] = new \Hubzero\Base\Client\Site();
-        $app['db']     = $this->getMockDriver();
+        $app['db']     = $driver;
         $app['config'] = new Registry();
 
         $this->loader = new Loader($app, [
@@ -321,5 +328,29 @@ class LoaderTest extends Database
 
         $this->assertTrue(is_object($template));
         $this->assertEquals($template->template, 'system');
+    }
+
+    /**
+     * Gets a mock SQLite database driver using the requested fixture database
+     *
+     * @param   string  $fixture
+     * @return  SqliteDriver
+     */
+    private function getMockDriver(string $fixture): SqliteDriver
+    {
+        $dbPath = __DIR__ . '/Fixtures/' . $fixture;
+        $pdo = new \PDO('sqlite:' . $dbPath);
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+        /** @var SqliteDriver $driver */
+        $driver = $this->getMockBuilder(SqliteDriver::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods([])
+            ->getMock();
+
+        $driver->setConnection($pdo)
+            ->setPrefix('');
+
+        return $driver;
     }
 }

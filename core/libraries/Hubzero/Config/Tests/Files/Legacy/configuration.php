@@ -1,6 +1,8 @@
 <?php
 
 // @codeCoverageIgnoreStart
+if (!class_exists('JConfig', false)) {
+    eval(<<<'JCONFIG'
 class JConfig
 {
     public $access = '1';
@@ -86,5 +88,7 @@ class JConfig
     public $solr_password = 'drowssaprlos';
     public $solr_port = '2093';
     public $solr_username = 'hubzerosolrworker';
+}
+JCONFIG);
 }
 // @codeCoverageIgnoreEnd

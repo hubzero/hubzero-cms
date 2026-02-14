@@ -1,7 +1,8 @@
 <?php
 
-
 // @codeCoverageIgnoreStart
+if (!class_exists('ConfigGetter', false)) {
+    eval(<<<'CONFIGGETTER'
 class ConfigGetter
 {
     public function getConfig()
@@ -33,6 +34,8 @@ class ConfigGetter
 
         return $config;
     }
+}
+CONFIGGETTER);
 }
 
 return array(new ConfigGetter(), 'getConfig');
