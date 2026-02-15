@@ -73,6 +73,13 @@ class MigrationGenerator
     protected $includeExistenceChecks = true;
 
     /**
+     * Whether blank migration generation should reject TODO placeholders.
+     *
+     * @var bool
+     */
+    protected $strictBlankMigrations = false;
+
+    /**
      * Copyright year for generated files
      *
      * @var string
@@ -132,6 +139,21 @@ class MigrationGenerator
     public function setIncludeExistenceChecks(bool $include): self
     {
         $this->includeExistenceChecks = $include;
+        return $this;
+    }
+
+    /**
+     * Set strict mode for blank migration generation.
+     *
+     * When enabled, generateBlank() throws if it would emit TODO stubs.
+     * Use generateBlankWithBodies() to provide explicit method bodies.
+     *
+     * @param  bool  $strict
+     * @return self
+     */
+    public function setStrictBlankMigrations(bool $strict): self
+    {
+        $this->strictBlankMigrations = $strict;
         return $this;
     }
 
@@ -207,10 +229,56 @@ class MigrationGenerator
      */
     public function generateBlank(string $component = 'Core', string $description = 'Migration script'): string
     {
+        if ($this->strictBlankMigrations) {
+            throw new \RuntimeException(
+                'Strict blank migration mode is enabled; provide explicit up/down bodies.'
+            );
+        }
+
         $upCode = "        // TODO: Implement migration\n";
         $downCode = "        // TODO: Implement rollback\n";
 
         return $this->generateMigrationContent($component, $description, $upCode, $downCode);
+    }
+
+    /**
+     * Generate a migration stub with explicit up/down bodies.
+     *
+     * @param  string  $upCode
+     * @param  string  $downCode
+     * @param  string  $component
+     * @param  string  $description
+     * @return string
+     */
+    public function generateBlankWithBodies(
+        string $upCode,
+        string $downCode,
+        string $component = 'Core',
+        string $description = 'Migration script'
+    ): string {
+        $trimmedUp = trim($upCode);
+        $trimmedDown = trim($downCode);
+
+        if ($trimmedUp === '' || $trimmedDown === '') {
+            throw new \InvalidArgumentException('Blank migration bodies cannot be empty.');
+        }
+
+        if (
+            $this->strictBlankMigrations
+            && (
+                stripos($trimmedUp, 'TODO: Implement migration') !== false
+                || stripos($trimmedDown, 'TODO: Implement rollback') !== false
+            )
+        ) {
+            throw new \RuntimeException(
+                'Strict blank migration mode rejects TODO placeholder bodies.'
+            );
+        }
+
+        $upBody = $this->normalizeMethodBodyIndentation($upCode);
+        $downBody = $this->normalizeMethodBodyIndentation($downCode);
+
+        return $this->generateMigrationContent($component, $description, $upBody, $downBody);
     }
 
     /**
@@ -603,5 +671,25 @@ PHP;
     protected function escapePhpString(string $str): string
     {
         return addcslashes($str, "\\\"\$\n\r\t");
+    }
+
+    /**
+     * Normalize a method body string to 8-space indentation with trailing newline.
+     *
+     * @param  string  $body
+     * @return string
+     */
+    protected function normalizeMethodBodyIndentation(string $body): string
+    {
+        $body = str_replace("\r\n", "\n", $body);
+        $body = rtrim($body, "\n");
+        $lines = explode("\n", $body);
+
+        foreach ($lines as &$line) {
+            $line = '        ' . ltrim($line);
+        }
+        unset($line);
+
+        return implode("\n", $lines) . "\n";
     }
 }

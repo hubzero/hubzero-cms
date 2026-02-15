@@ -136,6 +136,74 @@ class MigrationGeneratorTest extends AbstractDriverTestCase
         $this->assertMatchesRegularExpression('/class Migration\d+ComUsers extends Base/', $content);
     }
 
+    /**
+     * Test strict blank migration mode rejects TODO stubs
+     */
+    #[DataProvider('databaseProvider')]
+    public function testGenerateBlankStrictModeRejectsTodoStub(string $dbName, Driver $driver): void
+    {
+        $generator = (new MigrationGenerator($driver))->setStrictBlankMigrations(true);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Strict blank migration mode is enabled');
+
+        $generator->generateBlank('Core', 'Strict migration');
+    }
+
+    /**
+     * Test strict blank migration mode accepts explicit bodies
+     */
+    #[DataProvider('databaseProvider')]
+    public function testGenerateBlankWithBodiesStrictModeAllowsExplicitCode(string $dbName, Driver $driver): void
+    {
+        $generator = (new MigrationGenerator($driver))->setStrictBlankMigrations(true);
+
+        $content = $generator->generateBlankWithBodies(
+            "\$this->db->setQuery('SELECT 1')->execute();",
+            "\$this->db->setQuery('SELECT 0')->execute();",
+            'Core',
+            'Strict explicit body'
+        );
+
+        $this->assertStringContainsString("\$this->db->setQuery('SELECT 1')->execute();", $content);
+        $this->assertStringContainsString("\$this->db->setQuery('SELECT 0')->execute();", $content);
+        $this->assertStringNotContainsString('TODO: Implement migration', $content);
+        $this->assertStringNotContainsString('TODO: Implement rollback', $content);
+    }
+
+    /**
+     * Test strict blank migration mode rejects TODO placeholders in provided bodies
+     */
+    #[DataProvider('databaseProvider')]
+    public function testGenerateBlankWithBodiesStrictModeRejectsTodoPlaceholders(string $dbName, Driver $driver): void
+    {
+        $generator = (new MigrationGenerator($driver))->setStrictBlankMigrations(true);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('rejects TODO placeholder bodies');
+
+        $generator->generateBlankWithBodies(
+            '// TODO: Implement migration',
+            '// TODO: Implement rollback',
+            'Core',
+            'Strict placeholder rejection'
+        );
+    }
+
+    /**
+     * Test generateBlankWithBodies rejects empty content
+     */
+    #[DataProvider('databaseProvider')]
+    public function testGenerateBlankWithBodiesRejectsEmptyBodies(string $dbName, Driver $driver): void
+    {
+        $generator = new MigrationGenerator($driver);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('cannot be empty');
+
+        $generator->generateBlankWithBodies(" \n ", "\t");
+    }
+
     // =========================================================================
     // Table Diff Migration Tests
     // =========================================================================
