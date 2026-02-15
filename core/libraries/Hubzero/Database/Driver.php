@@ -2109,6 +2109,42 @@ abstract class Driver implements LoggerAwareInterface
     }
 
     /**
+     * Determine whether an exception represents a duplicate key violation.
+     *
+     * Default implementation uses common SQLSTATE/error-message patterns
+     * shared by PDO drivers. Dialect drivers can override this for
+     * backend-specific behavior.
+     *
+     * @param   \Throwable  $e
+     * @return  bool
+     */
+    public function isDuplicateKeyException(\Throwable $e): bool
+    {
+        // Exception may be wrapped (e.g. QueryFailedException).
+        $pdoException = ($e instanceof \PDOException) ? $e : $e->getPrevious();
+        if (!$pdoException instanceof \PDOException) {
+            return false;
+        }
+
+        $sqlState = (string) $pdoException->getCode();
+        $errorMessage = $pdoException->getMessage();
+
+        // SQLSTATE 23000 = integrity constraint violation (includes duplicate key)
+        // SQLSTATE 23505 = unique violation (PostgreSQL, DB2)
+        // SQLSTATE HY000 with -803 = Firebird duplicate key error
+        // SQLSTATE HY000 with ORA-00001 = Oracle unique constraint violated
+        // ASE/PDO_DBLIB: "duplicate key row" in error message
+        return in_array($sqlState, ['23000', '23505'], true) ||
+            ($sqlState === 'HY000' && (
+                strpos($errorMessage, '-803') !== false ||
+                strpos($errorMessage, 'violation of PRIMARY or UNIQUE KEY') !== false ||
+                strpos($errorMessage, 'UNIQUE KEY constraint') !== false ||
+                strpos($errorMessage, 'ORA-00001') !== false
+            )) ||
+            strpos($errorMessage, 'duplicate key row') !== false;
+    }
+
+    /**
      * Get the schema manager instance
      *
      * The schema manager provides a unified interface for all DDL operations:

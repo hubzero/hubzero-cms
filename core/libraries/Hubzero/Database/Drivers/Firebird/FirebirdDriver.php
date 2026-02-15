@@ -1275,7 +1275,11 @@ class FirebirdDriver extends BaseSqlDriver
             try {
                 $this->connection->commit();
             } catch (\Exception $e) {
-                // Ignore commit errors - transaction may already be committed
+                // Ignore commit errors - transaction may already be committed.
+                // Preserve context in debug logs for troubleshooting.
+                $this->getLogger()->debug('Firebird metadata pre-commit ignored', [
+                    'error' => $e->getMessage(),
+                ]);
             }
         }
     }

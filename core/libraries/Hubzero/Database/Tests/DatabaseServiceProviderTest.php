@@ -18,6 +18,10 @@ namespace Hubzero\Database {
             }
         }
     }
+
+    if (!class_exists('\\Config', false)) {
+        class_alias(__NAMESPACE__ . '\\Config', 'Config');
+    }
 }
 
 namespace Hubzero\Database\Tests {

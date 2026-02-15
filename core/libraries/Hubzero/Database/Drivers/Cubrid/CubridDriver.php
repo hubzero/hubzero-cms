@@ -1162,10 +1162,11 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
         $refColumn = $this->quoteName($fk['referencedColumn']);
 
         // CUBRID doesn't support ON UPDATE CASCADE - convert to NO ACTION.
-        $onDelete = $this->normalizeForeignKeyActionKeyword($fk['onDelete'] ?? 'NO ACTION');
-        $onUpdate = $this->normalizeForeignKeyUpdateAction(
-            $this->normalizeForeignKeyActionKeyword($fk['onUpdate'] ?? 'NO ACTION')
-        );
+        $onDelete = strtoupper(trim($fk['onDelete'] ?? 'NO ACTION'));
+        $onUpdate = strtoupper(trim($fk['onUpdate'] ?? 'NO ACTION'));
+        if ($onUpdate === 'CASCADE') {
+            $onUpdate = 'NO ACTION';
+        }
 
         $constraint = "CONSTRAINT $constraintName ";
         $constraint .= "FOREIGN KEY ($fkColumn) ";
@@ -1722,18 +1723,6 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
     }
 
     /**
-     * Determine whether a table is missing or does not contain a field.
-     *
-     * @param   string  $table
-     * @param   string  $field
-     * @return  bool
-     */
-    protected function tableMissingOrFieldMissing($table, $field): bool
-    {
-        return !$this->tableAndFieldExist($table, $field);
-    }
-
-    /**
      * Resolve common preconditions for column-add operations.
      *
      * Returns:
@@ -1926,28 +1915,6 @@ class CubridDriver extends \Hubzero\Database\Drivers\Base\BaseSqlDriver
             2 => 'NO ACTION',
             3 => 'SET NULL',
         ];
-    }
-
-    /**
-     * Normalize ON UPDATE action for CUBRID compatibility.
-     *
-     * @param   string  $action
-     * @return  string
-     */
-    protected function normalizeForeignKeyUpdateAction(string $action): string
-    {
-        return strtoupper($action) === 'CASCADE' ? 'NO ACTION' : $action;
-    }
-
-    /**
-     * Normalize FK action keyword formatting.
-     *
-     * @param   string  $action
-     * @return  string
-     */
-    protected function normalizeForeignKeyActionKeyword(string $action): string
-    {
-        return strtoupper(trim($action));
     }
 
     /**

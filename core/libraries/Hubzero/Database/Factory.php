@@ -341,7 +341,10 @@ abstract class Factory
         // Create has-many relationships
         foreach ($this->has as $hasRelation) {
             foreach ($results as $model) {
-                $this->createHasRelation($model, $hasRelation);
+                $foreignKey = $this->guessForeignKey($model);
+                $hasRelation['factory']->create([
+                    $foreignKey => $model->get($model->getPrimaryKey()),
+                ]);
             }
         }
 
@@ -378,7 +381,9 @@ abstract class Factory
 
         // Apply belongs-to relationships (set foreign keys)
         foreach ($this->for as $forRelation) {
-            $definition = $this->applyForRelation($definition, $forRelation);
+            $parent = $forRelation['model'];
+            $foreignKey = $this->guessForeignKey($parent);
+            $definition[$foreignKey] = $parent->get($parent->getPrimaryKey());
         }
 
         // Merge with provided attributes (highest priority)
@@ -396,42 +401,6 @@ abstract class Factory
         }
 
         return $model;
-    }
-
-    /**
-     * Create has-many relationship instances
-     *
-     * @param   Relational  $model    The parent model
-     * @param   array       $relation  The relation configuration
-     * @return  void
-     */
-    protected function createHasRelation(Relational $model, array $relation)
-    {
-        $factory = $relation['factory'];
-        $relationName = $relation['relationship'];
-
-        // Try to determine the foreign key
-        $foreignKey = $this->guessForeignKey($model);
-
-        // Create the related models with the foreign key set
-        $factory->create([$foreignKey => $model->get($model->getPrimaryKey())]);
-    }
-
-    /**
-     * Apply belongs-to relationship to definition
-     *
-     * @param   array  $definition  Current definition
-     * @param   array  $relation    Relation configuration
-     * @return  array  Modified definition
-     */
-    protected function applyForRelation(array $definition, array $relation)
-    {
-        $parent = $relation['model'];
-        $foreignKey = $this->guessForeignKey($parent);
-
-        $definition[$foreignKey] = $parent->get($parent->getPrimaryKey());
-
-        return $definition;
     }
 
     /**

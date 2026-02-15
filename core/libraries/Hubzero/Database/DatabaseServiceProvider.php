@@ -23,15 +23,15 @@ class DatabaseServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app['db'] = function ($app) {
-            $driver = Config::get('dbtype');
+            $driver = \Config::get('dbtype');
 
             $options = [
                 'driver'   => $driver,
-                'host'     => Config::get('host'),
-                'user'     => Config::get('user'),
-                'password' => Config::get('password'),
-                'database' => Config::get('db'),
-                'prefix'   => Config::get('dbprefix')
+                'host'     => \Config::get('host'),
+                'user'     => \Config::get('user'),
+                'password' => \Config::get('password'),
+                'database' => \Config::get('db'),
+                'prefix'   => \Config::get('dbprefix')
             ];
 
             return Driver::getInstance($options);

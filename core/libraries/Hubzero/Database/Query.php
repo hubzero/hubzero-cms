@@ -4466,34 +4466,10 @@ class Query
         } catch (\Exception $e) {
             // For INSERT IGNORE, silently ignore duplicate key errors
             // (databases without native INSERT IGNORE syntax like Firebird, Oracle, DB2, SQL Server, Informix)
-            if ($this->type === 'insert' && $this->syntax->isIgnore()) {
-                // Check if this is a PDOException (may be wrapped in QueryFailedException)
-                $pdoException = ($e instanceof \PDOException) ? $e : $e->getPrevious();
-
-                if ($pdoException instanceof \PDOException) {
-                    $sqlState = $pdoException->getCode();
-                    $errorMessage = $pdoException->getMessage();
-
-                    // SQLSTATE 23000 = integrity constraint violation (includes duplicate key)
-                    // SQLSTATE 23505 = unique violation (PostgreSQL, DB2)
-                    // SQLSTATE HY000 with -803 = Firebird duplicate key error
-                    // SQLSTATE HY000 with ORA-00001 = Oracle unique constraint violated
-                    // ASE/PDO_DBLIB: "duplicate key row" in error message
-                    $isDuplicateKey = in_array($sqlState, ['23000', '23505']) ||
-                        ($sqlState === 'HY000' && (
-                            strpos($errorMessage, '-803') !== false ||
-                            strpos($errorMessage, 'violation of PRIMARY or UNIQUE KEY') !== false ||
-                            strpos($errorMessage, 'UNIQUE KEY constraint') !== false ||
-                            strpos($errorMessage, 'ORA-00001') !== false
-                        )) ||
-                        strpos($errorMessage, 'duplicate key row') !== false;
-
-                    if ($isDuplicateKey) {
-                        // Silently ignore the duplicate - clear state and return success
-                        $this->reset();
-                        return true;
-                    }
-                }
+            if ($this->type === 'insert' && $this->syntax->isIgnore() && $this->connection->isDuplicateKeyException($e)) {
+                // Silently ignore the duplicate - clear state and return success
+                $this->reset();
+                return true;
             }
             // Re-throw if not an ignorable duplicate key error
             throw $e;
@@ -4558,24 +4534,8 @@ class Query
                 $this->connection->query();
             } catch (\Exception $e) {
                 // Check if this is a duplicate key error — if so, skip silently
-                $pdoException = ($e instanceof \PDOException) ? $e : $e->getPrevious();
-
-                if ($pdoException instanceof \PDOException) {
-                    $sqlState = $pdoException->getCode();
-                    $errorMessage = $pdoException->getMessage();
-
-                    $isDuplicateKey = in_array($sqlState, ['23000', '23505']) ||
-                        ($sqlState === 'HY000' && (
-                            strpos($errorMessage, '-803') !== false ||
-                            strpos($errorMessage, 'violation of PRIMARY or UNIQUE KEY') !== false ||
-                            strpos($errorMessage, 'UNIQUE KEY constraint') !== false ||
-                            strpos($errorMessage, 'ORA-00001') !== false
-                        )) ||
-                        strpos($errorMessage, 'duplicate key row') !== false;
-
-                    if ($isDuplicateKey) {
-                        continue;
-                    }
+                if ($this->connection->isDuplicateKeyException($e)) {
+                    continue;
                 }
 
                 // Not a duplicate key error — re-throw
@@ -5217,22 +5177,10 @@ class Query
 
         // Case 2: No bindings but SQL has :placeholders and we have stored params
         if (empty($bindings) && !empty($this->namedParameters)) {
-            // Check if SQL contains named placeholders
-            return $this->containsNamedPlaceholders($sql);
+            return (bool) preg_match('/:([a-zA-Z_][a-zA-Z0-9_]*)/', $sql);
         }
 
         return false;
-    }
-
-    /**
-     * Check if a SQL string contains named placeholders (:name)
-     *
-     * @param   string  $sql  The SQL string to check
-     * @return  bool
-     **/
-    private function containsNamedPlaceholders(string $sql): bool
-    {
-        return (bool) preg_match('/:([a-zA-Z_][a-zA-Z0-9_]*)/', $sql);
     }
 
     /**

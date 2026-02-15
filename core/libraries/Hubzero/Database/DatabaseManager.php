@@ -77,7 +77,13 @@ class DatabaseManager
         // Prefer canonical built-in registry resolution.
         $builtInClass = BackendRegistry::resolveDriverClassFor((string) $driverName);
         if ($builtInClass !== null) {
-            return $this->buildDriver($builtInClass, $config);
+            if (!$builtInClass::test()) {
+                throw new \RuntimeException("Driver not available: {$builtInClass}");
+            }
+
+            $driver = new $builtInClass($config);
+            $driver->connect();
+            return $driver;
         }
 
         // Custom class fallback by canonical naming convention.
@@ -91,7 +97,13 @@ class DatabaseManager
                 );
             }
 
-            return $this->buildDriver($candidate, $config);
+            if (!$candidate::test()) {
+                throw new \RuntimeException("Driver not available: {$candidate}");
+            }
+
+            $driver = new $candidate($config);
+            $driver->connect();
+            return $driver;
         }
 
         throw new \RuntimeException("Unsupported driver: {$driverName}");
@@ -109,6 +121,9 @@ class DatabaseManager
     protected function parseUrl(array $config): array
     {
         $parsed = parse_url($config['url']);
+        if ($parsed === false) {
+            throw new \InvalidArgumentException('Invalid database URL: ' . $config['url']);
+        }
 
         $mapping = [
             'scheme' => 'driver',
@@ -189,22 +204,4 @@ class DatabaseManager
         return $result;
     }
 
-    /**
-     * Instantiate and connect a driver
-     *
-     * @param  string $class  Driver class name
-     * @param  array  $config Connection config
-     * @return Driver
-     * @throws \RuntimeException If driver extension is not available
-     */
-    protected function buildDriver(string $class, array $config): Driver
-    {
-        if (!$class::test()) {
-            throw new \RuntimeException("Driver not available: {$class}");
-        }
-
-        $driver = new $class($config);
-        $driver->connect();
-        return $driver;
-    }
 }

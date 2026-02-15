@@ -1240,7 +1240,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
 
                 if ($ignoreMode) {
                     $result .= $this->buildNoopDuplicateUpdateClause(
-                        $this->resolveNoopColumnForInsertSelect()
+                        !empty($this->insertColumns) ? $this->insertColumns[0] : 'id'
                     );
                 }
 
@@ -1251,7 +1251,7 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
             $values = parent::buildValues();
 
             if ($ignoreMode) {
-                $firstCol = $this->resolveNoopColumnForInsertValues();
+                $firstCol = !empty($this->values) ? array_key_first($this->values) : null;
                 if ($firstCol) {
                     $values .= $this->buildNoopDuplicateUpdateClause($firstCol);
                 }
@@ -1286,27 +1286,4 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         return !empty($this->cubridIgnoreMode) || !empty($this->ignore);
     }
 
-    /**
-     * Resolve fallback column for INSERT ... SELECT ignore emulation.
-     *
-     * @return  string
-     */
-    protected function resolveNoopColumnForInsertSelect()
-    {
-        return !empty($this->insertColumns) ? $this->insertColumns[0] : 'id';
-    }
-
-    /**
-     * Resolve fallback column for INSERT ... VALUES ignore emulation.
-     *
-     * @return  string|null
-     */
-    protected function resolveNoopColumnForInsertValues()
-    {
-        if (!empty($this->values)) {
-            return array_key_first($this->values);
-        }
-
-        return null;
-    }
 }

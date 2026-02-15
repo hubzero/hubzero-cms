@@ -291,6 +291,19 @@ class DatabaseManagerTest extends TestCase
         $this->assertEquals('path/to/db.sqlite', $parsedConfig['database']);
     }
 
+    #[Test]
+    public function parseUrlThrowsForMalformedUrl(): void
+    {
+        $manager = new DatabaseManager();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid database URL');
+
+        $manager->makeDriver('test', [
+            'url' => 'mysql://user@:3306',
+        ]);
+    }
+
     // =========================================================================
     // Built-in factory methods (integration)
     // =========================================================================
