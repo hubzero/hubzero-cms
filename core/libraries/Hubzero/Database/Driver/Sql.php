@@ -1279,7 +1279,10 @@ abstract class Sql extends PdoDriver
      * @param   bool    $not      Whether to negate the match
      * @return  string
      */
-    abstract public function sqlRegexp(string $column, string $pattern, bool $not = false): string;
+    public function sqlRegexp(string $column, string $pattern, bool $not = false): string
+    {
+        return $this->buildRegexpPredicateSql($column, $pattern, $not);
+    }
 
     /**
      * Returns the SQL for date subtraction
@@ -1293,7 +1296,10 @@ abstract class Sql extends PdoDriver
      * @param   string  $unit   The interval unit (DAY, MONTH, YEAR, HOUR, MINUTE, SECOND)
      * @return  string
      */
-    abstract public function sqlDateSub(string $date, int $value, string $unit = 'DAY'): string;
+    public function sqlDateSub(string $date, int $value, string $unit = 'DAY'): string
+    {
+        return $this->buildDateSubExpression($date, $value, $unit);
+    }
 
     /**
      * Returns the SQL for date addition
@@ -1307,7 +1313,10 @@ abstract class Sql extends PdoDriver
      * @param   string  $unit   The interval unit (DAY, MONTH, YEAR, HOUR, MINUTE, SECOND)
      * @return  string
      */
-    abstract public function sqlDateAdd(string $date, int $value, string $unit = 'DAY'): string;
+    public function sqlDateAdd(string $date, int $value, string $unit = 'DAY'): string
+    {
+        return $this->buildDateAddExpression($date, $value, $unit);
+    }
 
     /**
      * Returns the SQL for date formatting
@@ -1322,7 +1331,10 @@ abstract class Sql extends PdoDriver
      * @param   string  $format  The format string (MySQL format: %Y-%m-%d, etc.)
      * @return  string
      */
-    abstract public function sqlDateFormat(string $date, string $format): string;
+    public function sqlDateFormat(string $date, string $format): string
+    {
+        return $this->buildDateFormatExpression($date, $format);
+    }
 
     /**
      * Returns the SQL for extracting year from a date
@@ -1334,7 +1346,10 @@ abstract class Sql extends PdoDriver
      * @param   string  $date  The date column or value
      * @return  string
      */
-    abstract public function sqlYear(string $date): string;
+    public function sqlYear(string $date): string
+    {
+        return $this->buildYearExpression($date);
+    }
 
     /**
      * Returns the SQL for extracting month from a date
@@ -1346,7 +1361,10 @@ abstract class Sql extends PdoDriver
      * @param   string  $date  The date column or value
      * @return  string
      */
-    abstract public function sqlMonth(string $date): string;
+    public function sqlMonth(string $date): string
+    {
+        return $this->buildMonthExpression($date);
+    }
 
     /**
      * Returns the SQL for converting a date to Unix timestamp
@@ -1358,7 +1376,10 @@ abstract class Sql extends PdoDriver
      * @param   string  $date  The date column or value
      * @return  string
      */
-    abstract public function sqlUnixTimestamp(string $date): string;
+    public function sqlUnixTimestamp(string $date): string
+    {
+        return $this->buildUnixTimestampExpression($date);
+    }
 
     /**
      * Returns the SQL for random ordering
@@ -1388,7 +1409,10 @@ abstract class Sql extends PdoDriver
      * @param   int     $count  The occurrence count (positive = from left, negative = from right)
      * @return  string
      */
-    abstract public function sqlSubstringIndex(string $str, string $delim, int $count): string;
+    public function sqlSubstringIndex(string $str, string $delim, int $count): string
+    {
+        return $this->buildSubstringIndexExpression($str, $delim, $count);
+    }
 
     /**
      * Returns the SQL for concatenating strings
@@ -1400,7 +1424,10 @@ abstract class Sql extends PdoDriver
      * @param   array  $strings  Array of column names or quoted strings to concatenate
      * @return  string
      */
-    abstract public function sqlConcat(array $strings): string;
+    public function sqlConcat(array $strings): string
+    {
+        return $this->buildConcatExpression($strings);
+    }
 
     /**
      * Returns the SQL for concatenating strings with a separator
@@ -1413,7 +1440,10 @@ abstract class Sql extends PdoDriver
      * @param   array   $strings    Array of column names or quoted strings to concatenate
      * @return  string
      */
-    abstract public function sqlConcatWs(string $separator, array $strings): string;
+    public function sqlConcatWs(string $separator, array $strings): string
+    {
+        return $this->buildConcatWithSeparatorExpression($separator, $strings);
+    }
 
     /**
      * Returns the SQL for getting string length in characters
@@ -1601,11 +1631,12 @@ abstract class Sql extends PdoDriver
      * @param   string  $quotedName     The quoted index name
      * @param   string  $columnList     The column list SQL (already quoted and joined)
      * @return  string|null  The index definition SQL, or null if handled separately
+     * @deprecated Use schema grammar inline index compilation for new code.
      */
     public function buildIndexDefinition(string $quotedName, string $columnList): ?string
     {
-        // Default: MySQL syntax (inline in CREATE TABLE)
-        return "KEY $quotedName ($columnList)";
+        // Compatibility delegate: grammar owns index DDL compilation.
+        return $this->getSchemaGrammar()->compileLegacyInlineIndexDefinition($quotedName, $columnList);
     }
 
     /**
@@ -1614,11 +1645,12 @@ abstract class Sql extends PdoDriver
      * @param   string  $quotedName     The quoted index name
      * @param   string  $columnList     The column list SQL
      * @return  string|null  The index definition SQL, or null if not supported inline
+     * @deprecated Use schema grammar inline fulltext index compilation for new code.
      */
     public function buildFulltextIndexDefinition(string $quotedName, string $columnList): ?string
     {
-        // Default: MySQL syntax
-        return "FULLTEXT KEY $quotedName ($columnList)";
+        // Compatibility delegate: grammar owns index DDL compilation.
+        return $this->getSchemaGrammar()->compileLegacyInlineFulltextIndexDefinition($quotedName, $columnList);
     }
 
     /**
@@ -1629,6 +1661,7 @@ abstract class Sql extends PdoDriver
      * @param   array   $columns    The columns (may include prefix lengths for MySQL)
      * @param   bool    $unique     Whether this is a unique index
      * @return  string  The CREATE INDEX SQL
+     * @deprecated Use schema grammar create-index compilation for new code.
      */
     public function buildCreateIndexStatement(
         string $indexName,
@@ -1636,12 +1669,13 @@ abstract class Sql extends PdoDriver
         array $columns,
         bool $unique = false
     ): string {
-        $uniqueKeyword = $unique ? 'UNIQUE ' : '';
-        $quotedIndex = $this->quoteName($indexName);
-        $quotedTable = $this->quoteName($tableName);
-        $columnList = implode(', ', array_map([$this, 'quoteName'], $columns));
-
-        return "CREATE {$uniqueKeyword}INDEX $quotedIndex ON $quotedTable ($columnList)";
+        // Compatibility delegate: grammar owns index DDL compilation.
+        return $this->getSchemaGrammar()->compileCreateIndexStatement(
+            $indexName,
+            $tableName,
+            $columns,
+            $unique
+        );
     }
 
     /**
@@ -1942,6 +1976,19 @@ abstract class Sql extends PdoDriver
     }
 
     /**
+     * Check if this database supports FK referential actions
+     *
+     * Referential actions are ON DELETE CASCADE, ON UPDATE SET NULL, etc.
+     * Most databases support them. ASE does not.
+     *
+     * @return  bool  True if referential actions are supported
+     */
+    public function supportsReferentialActions(): bool
+    {
+        return true;
+    }
+
+    /**
      * Build the table options string for CREATE TABLE
      *
      * MySQL: ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
@@ -2021,7 +2068,25 @@ abstract class Sql extends PdoDriver
         $this->setQuery($grammar->compileDrop($tableName, $ifExists))
              ->execute();
 
+        $this->cleanupSequencesForTable($tableName);
+
         return $this;
+    }
+
+    /**
+     * Remove emulated sequence rows associated with a dropped table.
+     *
+     * Drivers that use a `_sequences` table for sequence emulation
+     * should override this to delete rows where `table_name` matches.
+     * The default implementation is a no-op for drivers with native
+     * sequences (PostgreSQL, Firebird, Oracle, etc.).
+     *
+     * @param   string  $tableName  The resolved table name (prefix already applied)
+     * @return  void
+     */
+    protected function cleanupSequencesForTable(string $tableName): void
+    {
+        // No-op for drivers with native sequences
     }
 
     /**
@@ -2109,6 +2174,21 @@ abstract class Sql extends PdoDriver
             return false;
         }
 
+        // Compatibility shim: if the concrete driver does not implement
+        // legacy SQL-string builders, route through grammar compilation.
+        if (!$this->isLegacyDdlBuilderOverridden('buildModifyColumnSql')) {
+            $modifiers = [];
+            if ($comment !== '') {
+                $modifiers['comment'] = $comment;
+            }
+            return $this->executeAlterBuilder(
+                $table,
+                function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use ($column, $definition, $modifiers): void {
+                    $builder->modifyColumn($column, $definition, $modifiers);
+                }
+            );
+        }
+
         $this->setQuery($this->buildModifyColumnSql($table, $column, $definition, $comment));
         $result = (bool) $this->execute();
 
@@ -2127,6 +2207,7 @@ abstract class Sql extends PdoDriver
      * @param   string  $definition  New column definition
      * @param   string  $comment     Optional column comment
      * @return  string
+     * @deprecated Use schema grammar (`compileAlterTable` via AlterTableBuilder) for new code.
      */
     protected function buildModifyColumnSql(
         string $table,
@@ -2230,6 +2311,21 @@ abstract class Sql extends PdoDriver
             return true;
         }
 
+        // Compatibility shim: if the concrete driver does not implement
+        // legacy SQL-string builders, route through grammar compilation.
+        if (!$this->isLegacyDdlBuilderOverridden('buildAddColumnSql')) {
+            $modifiers = [];
+            if ($comment !== '') {
+                $modifiers['comment'] = $comment;
+            }
+            return $this->executeAlterBuilder(
+                $table,
+                function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use ($column, $definition, $modifiers): void {
+                    $builder->addColumn($column, $definition, $modifiers);
+                }
+            );
+        }
+
         $this->setQuery($this->buildAddColumnSql($table, $column, $definition, $comment));
         $result = (bool) $this->execute();
 
@@ -2248,6 +2344,7 @@ abstract class Sql extends PdoDriver
      * @param   string  $definition  Column definition
      * @param   string  $comment     Optional column comment
      * @return  string
+     * @deprecated Use schema grammar (`compileAlterTable` via AlterTableBuilder) for new code.
      */
     protected function buildAddColumnSql(
         string $table,
@@ -2383,8 +2480,54 @@ abstract class Sql extends PdoDriver
             return true;
         }
 
+        // Compatibility shim: if the concrete driver does not implement
+        // legacy SQL-string builders, route through grammar compilation.
+        if (!$this->isLegacyDdlBuilderOverridden('buildDropColumnSql')) {
+            return $this->executeAlterBuilder(
+                $table,
+                function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use ($column): void {
+                    $builder->dropColumn($column);
+                }
+            );
+        }
+
         $this->setQuery($this->buildDropColumnSql($table, $column));
         return (bool) $this->execute();
+    }
+
+    /**
+     * Determine whether a legacy DDL builder method is overridden by the concrete driver.
+     *
+     * @param   string  $method
+     * @return  bool
+     */
+    protected function isLegacyDdlBuilderOverridden(string $method): bool
+    {
+        $reflection = new \ReflectionMethod($this, $method);
+        return $reflection->getDeclaringClass()->getName() !== __CLASS__;
+    }
+
+    /**
+     * Execute ALTER TABLE SQL generated via the schema grammar.
+     *
+     * @param   string    $table
+     * @param   callable  $configureBuilder
+     * @return  bool
+     */
+    protected function executeAlterBuilder(string $table, callable $configureBuilder): bool
+    {
+        $builder = new \Hubzero\Database\Schema\AlterTableBuilder($this, $table);
+        $configureBuilder($builder);
+
+        $statements = $this->getSchemaGrammar()->compileAlterTable($builder);
+        foreach ($statements as $sql) {
+            $this->setQuery($sql);
+            if ($this->execute() === false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -2393,6 +2536,7 @@ abstract class Sql extends PdoDriver
      * @param   string  $table   Table name (already prefix-replaced)
      * @param   string  $column  Column name
      * @return  string
+     * @deprecated Use schema grammar (`compileAlterTable` via AlterTableBuilder) for new code.
      */
     protected function buildDropColumnSql(string $table, string $column): string
     {
@@ -2483,6 +2627,21 @@ abstract class Sql extends PdoDriver
             $columns = [$columns];
         }
 
+        // Compatibility shim: if the concrete driver does not implement
+        // legacy SQL-string index builders, route through grammar compilation.
+        if (!$this->isLegacyDdlBuilderOverridden('buildCreateIndexSql')) {
+            return $this->executeAlterBuilder(
+                $table,
+                function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use ($name, $columns, $unique): void {
+                    if ($unique) {
+                        $builder->addUniqueIndex($name, $columns);
+                    } else {
+                        $builder->addIndex($name, $columns);
+                    }
+                }
+            );
+        }
+
         $this->setQuery($this->buildCreateIndexSql($table, $name, $columns, $unique));
         return (bool) $this->execute();
     }
@@ -2495,6 +2654,7 @@ abstract class Sql extends PdoDriver
      * @param   array   $columns  Column names
      * @param   bool    $unique   Whether to create a unique index
      * @return  string
+     * @deprecated Use schema grammar (`compileAlterTable`/`compileCreateIndexStatement`) for new code.
      */
     protected function buildCreateIndexSql(string $table, string $name, array $columns, bool $unique): string
     {

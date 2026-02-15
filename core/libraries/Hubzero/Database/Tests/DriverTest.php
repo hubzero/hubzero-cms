@@ -11,6 +11,13 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Driver\Ase;
+use Hubzero\Database\Driver\Db2;
+use Hubzero\Database\Driver\Firebird;
+use Hubzero\Database\Driver\Mysql;
+use Hubzero\Database\Driver\Oci;
+use Hubzero\Database\Driver\Sql as SqlDriver;
+use Hubzero\Database\Driver\Sqlsrv;
 
 /**
  * Database driver tests across multiple database backends
@@ -80,6 +87,97 @@ class DriverTest extends AbstractDriverTestCase
     // =========================================================================
     // Connection Tests
     // =========================================================================
+
+    #[Test]
+    public function testSqlDirectApiHelpersHaveSharedDefaultImplementations(): void
+    {
+        $methods = [
+            'sqlRegexp',
+            'sqlDateSub',
+            'sqlDateAdd',
+            'sqlDateFormat',
+            'sqlYear',
+            'sqlMonth',
+            'sqlUnixTimestamp',
+            'sqlSubstringIndex',
+            'sqlConcat',
+            'sqlConcatWs',
+        ];
+
+        foreach ($methods as $methodName) {
+            $method = new \ReflectionMethod(SqlDriver::class, $methodName);
+            $this->assertFalse($method->isAbstract(), $methodName);
+            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $methodName);
+        }
+    }
+
+    #[Test]
+    public function testMysqlInheritsSharedSqlDirectApiHelperImplementations(): void
+    {
+        $methods = [
+            'sqlRegexp',
+            'sqlDateSub',
+            'sqlDateAdd',
+            'sqlDateFormat',
+            'sqlYear',
+            'sqlMonth',
+            'sqlUnixTimestamp',
+            'sqlSubstringIndex',
+            'sqlConcat',
+            'sqlConcatWs',
+        ];
+
+        foreach ($methods as $methodName) {
+            $method = new \ReflectionMethod(Mysql::class, $methodName);
+            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $methodName);
+        }
+    }
+
+    #[Test]
+    public function testMysqlInheritsSharedIndexDefinitionBuilders(): void
+    {
+        foreach (['buildAutoIncrementColumn', 'buildIndexDefinition', 'buildFulltextIndexDefinition'] as $methodName) {
+            $method = new \ReflectionMethod(Mysql::class, $methodName);
+            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $methodName);
+        }
+    }
+
+    #[Test]
+    public function testAseInheritsSharedImplementations(): void
+    {
+        $methods = [
+            'sqlInsertIgnoreSuffix',
+            'buildIndexDefinition',
+            'buildFulltextIndexDefinition',
+            'supportsGeneratedColumns',
+            'supportsJson',
+            'supportsWindowFunctions',
+            'supportsCTE',
+        ];
+
+        foreach ($methods as $methodName) {
+            $method = new \ReflectionMethod(Ase::class, $methodName);
+            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $methodName);
+        }
+    }
+
+    #[Test]
+    public function testDriversInheritSharedSqlInsertIgnoreSuffixWhereUnchanged(): void
+    {
+        foreach ([Ase::class, Firebird::class, Sqlsrv::class, Oci::class, Db2::class] as $driverClass) {
+            $method = new \ReflectionMethod($driverClass, 'sqlInsertIgnoreSuffix');
+            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $driverClass);
+        }
+    }
+
+    #[Test]
+    public function testDriversInheritSharedSqlReplaceSuffixWhereUnchanged(): void
+    {
+        foreach ([Ase::class, Oci::class, Db2::class] as $driverClass) {
+            $method = new \ReflectionMethod($driverClass, 'sqlReplaceSuffix');
+            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $driverClass);
+        }
+    }
 
     #[Test]
     #[DataProvider('databaseProvider')]

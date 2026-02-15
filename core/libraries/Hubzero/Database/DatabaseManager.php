@@ -19,7 +19,7 @@ namespace Hubzero\Database;
  * 2. Custom creators registered via extend()
  * 3. Convention method: create{Name}Driver()
  *
- * Built-in drivers: mysql, mariadb, percona, cubrid, sqlite, mock, pgsql, firebird, informix, oci, sqlsrv, db2
+ * Built-in drivers: mysql, mariadb, percona, cubrid, sqlite, mock, pgsql, firebird, informix, oci, sqlsrv, db2, ase
  *
  * Usage:
  * ```php
@@ -51,30 +51,6 @@ class DatabaseManager
      * @var array<string, callable>
      */
     protected $customCreators = [];
-
-    /**
-     * Map of built-in driver names to their class names
-     *
-     * Used by getDriverAvailability() to check PHP extension status
-     * without instantiating drivers. Multiple names can map to the
-     * same class (e.g., mariadb and percona both use Mysql).
-     *
-     * @var array<string, string>
-     */
-    protected static $builtInDrivers = [
-        'mysql'    => Driver\Mysql::class,
-        'mariadb'  => Driver\Mariadb::class,
-        'percona'  => Driver\Mysql::class,
-        'cubrid'   => Driver\Cubrid::class,
-        'sqlite'   => Driver\Sqlite::class,
-        'mock'     => Driver\Mock::class,
-        'pgsql'    => Driver\Pgsql::class,
-        'firebird' => Driver\Firebird::class,
-        'informix' => Driver\Informix::class,
-        'oci'      => Driver\Oci::class,
-        'sqlsrv'   => Driver\Sqlsrv::class,
-        'db2'      => Driver\Db2::class,
-    ];
 
     /**
      * Create a driver from a config array
@@ -190,7 +166,7 @@ class DatabaseManager
         $result = [];
 
         foreach ($this->getAvailableDrivers() as $name) {
-            $class = static::$builtInDrivers[$name] ?? null;
+            $class = BackendRegistry::driverClassFor($name);
             $result[$name] = [
                 'class'     => $class,
                 'available' => $class ? $class::test() : null,
@@ -263,6 +239,11 @@ class DatabaseManager
     protected function createDb2Driver(array $config): Driver
     {
         return $this->buildDriver(Driver\Db2::class, $config);
+    }
+
+    protected function createAseDriver(array $config): Driver
+    {
+        return $this->buildDriver(Driver\Ase::class, $config);
     }
 
     /**

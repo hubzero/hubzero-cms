@@ -31,11 +31,11 @@ class SchemaGrammarTest extends AbstractDriverTestCase
     }
 
     /**
-     * compileCreateTableFromDefinition() defaults to passthrough stub.
+     * compileCreateTableFromDefinition() defaults to shared generic compilation.
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function compileCreateTableFromDefinitionIsPassthroughByDefault(string $dbName, Driver $driver): void
+    public function compileCreateTableFromDefinitionUsesGenericCompilationByDefault(string $dbName, Driver $driver): void
     {
         $grammar = new class ($driver) extends Grammar {
             public function compileCreate(TableDefinition $blueprint): array
@@ -100,7 +100,12 @@ class SchemaGrammarTest extends AbstractDriverTestCase
             'foreignKeys' => [],
         ];
 
-        $this->assertSame($definition, $grammar->compileCreateTableFromDefinition($definition));
+        $compiled = $grammar->compileCreateTableFromDefinition($definition);
+
+        $this->assertNotEmpty($compiled, "[$dbName]");
+        $this->assertTrue(array_is_list($compiled), "[$dbName]");
+        $this->assertIsString($compiled[0], "[$dbName]");
+        $this->assertStringStartsWith('CREATE TABLE', $compiled[0], "[$dbName]");
     }
 
     /**
@@ -187,5 +192,67 @@ class SchemaGrammarTest extends AbstractDriverTestCase
             $this->assertIsString($compiled[0], $class);
             $this->assertStringStartsWith('CREATE TABLE', $compiled[0], $class);
         }
+    }
+
+    /**
+     * Base compileIndexes() should quote index and table identifiers.
+     */
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function compileIndexesQuotesIdentifiersInBaseGrammar(string $dbName, Driver $driver): void
+    {
+        $grammar = new class ($driver) extends Grammar {
+            public function compileCreate(TableDefinition $blueprint): array
+            {
+                return [];
+            }
+
+            public function compileInlineIndex(string $name, array $columns): ?string
+            {
+                return null;
+            }
+
+            public function compileInlineUniqueIndex(string $name, array $columns): ?string
+            {
+                return null;
+            }
+
+            public function compileInlineFulltextIndex(string $name, array $columns): ?string
+            {
+                return null;
+            }
+
+            public function compileAlterAdd(TableDefinition $blueprint): array
+            {
+                return [];
+            }
+
+            public function compileAlterModify(TableDefinition $blueprint): array
+            {
+                return [];
+            }
+
+            public function compileAlterTable(AlterTableBuilder $builder): array
+            {
+                return [];
+            }
+
+            protected function getColumnType(\Hubzero\Database\Schema\Column $column): string
+            {
+                return 'TEXT';
+            }
+        };
+
+        $definition = new TableDefinition('sg_idx_table');
+        $definition->index(['name'], 'idx sg name');
+        $definition->uniqueIndex(['email'], 'uidx sg email');
+
+        $statements = $grammar->compileIndexes($definition);
+
+        $this->assertCount(2, $statements, "[$dbName]");
+        $this->assertStringContainsString($driver->quoteName('idx sg name'), $statements[0], "[$dbName]");
+        $this->assertStringContainsString($driver->quoteName('uidx sg email'), $statements[1], "[$dbName]");
+        $this->assertStringContainsString($driver->quoteName('sg_idx_table'), $statements[0], "[$dbName]");
+        $this->assertStringContainsString($driver->quoteName('sg_idx_table'), $statements[1], "[$dbName]");
     }
 }

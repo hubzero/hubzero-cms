@@ -1516,32 +1516,6 @@ class Db2 extends SqlDriver
     }
 
     /**
-     * Returns the suffix for INSERT IGNORE statements
-     *
-     * DB2 doesn't have a simple suffix; requires error handling
-     *
-     * @return  string
-     */
-    public function sqlInsertIgnoreSuffix(): string
-    {
-        return '';
-    }
-
-    /**
-     * Returns the suffix for REPLACE (upsert) statements
-     *
-     * DB2 uses MERGE statement instead
-     *
-     * @param   string  $pkColumn       The primary key column
-     * @param   array   $updateColumns  Columns to update
-     * @return  string
-     */
-    public function sqlReplaceSuffix(string $pkColumn, array $updateColumns): string
-    {
-        return '';
-    }
-
-    /**
      * Returns the SQL for regular expression matching
      *
      * DB2 uses REGEXP_LIKE() function (DB2 11.1+)

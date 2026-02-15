@@ -282,20 +282,80 @@ class TableBuilderTest extends AbstractDriverTestCase
     }
 
     /**
-     * Test toSqlStatements() falls back when grammar output is not SQL list.
+     * Test toSqlStatements() rejects non-list grammar output.
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function tableBuilderFallsBackWhenGrammarDoesNotReturnSqlList(string $dbName, Driver $driver): void
+    public function tableBuilderRejectsWhenGrammarDoesNotReturnSqlList(string $dbName, Driver $driver): void
     {
         $stub = $this->createStubGrammar($driver, ['table' => 'not_a_statement_list']);
         $builder = $this->createBuilderWithGrammar($driver, 'fallback_test', $stub);
         $builder->id();
 
+        $this->expectException(\UnexpectedValueException::class);
+        $builder->toSqlStatements();
+    }
+
+    /**
+     * Test base Grammar default produces concrete SQL statements.
+     */
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function tableBuilderBaseGrammarDefaultCompilesCreateDefinition(string $dbName, Driver $driver): void
+    {
+        $grammar = new class ($driver) extends Grammar {
+            public function compileCreate(TableDefinition $blueprint): array
+            {
+                return [];
+            }
+
+            public function compileInlineIndex(string $name, array $columns): ?string
+            {
+                return null;
+            }
+
+            public function compileInlineUniqueIndex(string $name, array $columns): ?string
+            {
+                return null;
+            }
+
+            public function compileInlineFulltextIndex(string $name, array $columns): ?string
+            {
+                return null;
+            }
+
+            public function compileAlterAdd(TableDefinition $blueprint): array
+            {
+                return [];
+            }
+
+            public function compileAlterModify(TableDefinition $blueprint): array
+            {
+                return [];
+            }
+
+            public function compileAlterTable(AlterTableBuilder $builder): array
+            {
+                return [];
+            }
+
+            public function compileCreateTableFromDefinition(array $definition): array
+            {
+                return parent::compileCreateTableFromDefinition($definition);
+            }
+
+            protected function getColumnType(\Hubzero\Database\Schema\Column $column): string
+            {
+                return 'TEXT';
+            }
+        };
+
+        $builder = $this->createBuilderWithGrammar($driver, 'fallback_delegate_test', $grammar);
+        $builder->id();
+
         $statements = $builder->toSqlStatements();
-        $this->assertNotEmpty($statements);
-        $this->assertIsArray($statements);
-        $this->assertStringStartsWith('CREATE TABLE', $statements[0]);
+        $this->assertNotEmpty($statements, "[$dbName]");
+        $this->assertStringStartsWith('CREATE TABLE', $statements[0], "[$dbName]");
     }
 
     /**

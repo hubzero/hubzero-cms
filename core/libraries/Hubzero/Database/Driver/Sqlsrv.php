@@ -189,21 +189,6 @@ class Sqlsrv extends SqlDriver
     }
 
     /**
-     * Returns the suffix for INSERT IGNORE statements
-     *
-     * For SQL Server, we need to handle duplicates differently.
-     * This could use WHERE NOT EXISTS or be part of a MERGE.
-     *
-     * @return  string
-     */
-    public function sqlInsertIgnoreSuffix(): string
-    {
-        // Note: Full INSERT IGNORE emulation requires knowledge of the key
-        // This is a simplified version; complex cases need MERGE
-        return '';
-    }
-
-    /**
      * Returns whether the database supports REGEXP operator
      *
      * SQL Server does not have native REGEXP support.

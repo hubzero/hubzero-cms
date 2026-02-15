@@ -1892,6 +1892,28 @@ abstract class Sql
         $this->order = [];
     }
 
+    /**
+     * Returns the order clauses set on this syntax instance
+     *
+     * Each element is ['column' => string, 'dir' => string].
+     *
+     * @return  array
+     */
+    public function getOrderClauses(): array
+    {
+        return $this->order;
+    }
+
+    /**
+     * Returns the current limit value
+     *
+     * @return  int
+     */
+    public function getLimit(): int
+    {
+        return (int) $this->limit;
+    }
+
     // =========================================================================
     // Union Methods
     // =========================================================================

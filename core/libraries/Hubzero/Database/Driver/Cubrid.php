@@ -2094,12 +2094,19 @@ class Cubrid extends Sql
         $this->ensureSequenceTable();
         $name = $this->normalizeSequenceName($name);
         $seedValue = (int) $start - (int) $increment;
+        $tableName = $options['table'] ?? null;
+        if ($tableName) {
+            $tableName = $this->replacePrefix($tableName);
+        }
+
+        $columns = '`name`, `current_value`, `increment_value`, `table_name`';
+        $values = $this->quote($name) . ', '
+            . $seedValue . ', '
+            . (int) $increment . ', '
+            . ($tableName ? $this->quote($tableName) : 'NULL');
 
         $this->setQuery(
-            'INSERT INTO `_sequences` (`name`, `current_value`, `increment_value`) VALUES ('
-            . $this->quote($name) . ', '
-            . $seedValue . ', '
-            . (int) $increment . ')'
+            "INSERT INTO `_sequences` ({$columns}) VALUES ({$values})"
         );
         $this->execute();
 
@@ -2136,6 +2143,17 @@ class Cubrid extends Sql
         $this->execute();
 
         return true;
+    }
+
+    protected function cleanupSequencesForTable(string $tableName): void
+    {
+        if ($this->sequenceTableReady || $this->tableExists('_sequences')) {
+            $this->setQuery(
+                'DELETE FROM `_sequences` WHERE `table_name` = '
+                . $this->quote($tableName)
+            );
+            $this->execute();
+        }
     }
 
     /**
@@ -2468,8 +2486,14 @@ class Cubrid extends Sql
                 'CREATE TABLE `_sequences` ('
                 . '`name` VARCHAR(255) NOT NULL PRIMARY KEY, '
                 . '`current_value` BIGINT NOT NULL DEFAULT 0, '
-                . '`increment_value` INT NOT NULL DEFAULT 1'
+                . '`increment_value` INT NOT NULL DEFAULT 1, '
+                . '`table_name` VARCHAR(255) NULL'
                 . ')'  // No ENGINE clause for CUBRID
+            );
+            $this->execute();
+        } elseif (!$this->tableHasField('_sequences', 'table_name')) {
+            $this->setQuery(
+                'ALTER TABLE `_sequences` ADD `table_name` VARCHAR(255) NULL'
             );
             $this->execute();
         }

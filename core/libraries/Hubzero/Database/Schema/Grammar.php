@@ -48,16 +48,15 @@ abstract class Grammar
     /**
      * Compile CREATE TABLE statements from a normalized array definition.
      *
-     * Default implementation is a passthrough stub used during incremental
-     * migration from builder-centric compilation. Dialects can override this
-     * to return concrete SQL statements when adopted by callers.
+     * Default implementation compiles statements using the shared generic path.
+     * Dialects can override this for backend-specific create-table behavior.
      *
      * @param  array $definition Normalized table definition
      * @return array
      */
     public function compileCreateTableFromDefinition(array $definition): array
     {
-        return $definition;
+        return $this->compileCreateTableFromDefinitionGeneric($definition);
     }
 
     /**
@@ -362,15 +361,67 @@ abstract class Grammar
 
         foreach ($blueprint->getIndexes() as $index) {
             $columns = $this->columnize($index['columns']);
+            $name = $this->wrap($index['name']);
 
             if ($index['type'] === 'unique') {
-                $statements[] = "CREATE UNIQUE INDEX {$index['name']} ON {$table} ({$columns})";
+                $statements[] = "CREATE UNIQUE INDEX {$name} ON {$table} ({$columns})";
             } else {
-                $statements[] = "CREATE INDEX {$index['name']} ON {$table} ({$columns})";
+                $statements[] = "CREATE INDEX {$name} ON {$table} ({$columns})";
             }
         }
 
         return $statements;
+    }
+
+    /**
+     * Compile a legacy inline regular index definition.
+     *
+     * Kept for compatibility while moving index DDL ownership to grammar.
+     *
+     * @param  string  $quotedName
+     * @param  string  $columnList
+     * @return string|null
+     */
+    public function compileLegacyInlineIndexDefinition(string $quotedName, string $columnList): ?string
+    {
+        return "KEY $quotedName ($columnList)";
+    }
+
+    /**
+     * Compile a legacy inline fulltext index definition.
+     *
+     * Kept for compatibility while moving index DDL ownership to grammar.
+     *
+     * @param  string  $quotedName
+     * @param  string  $columnList
+     * @return string|null
+     */
+    public function compileLegacyInlineFulltextIndexDefinition(string $quotedName, string $columnList): ?string
+    {
+        return "FULLTEXT KEY $quotedName ($columnList)";
+    }
+
+    /**
+     * Compile a CREATE INDEX statement from index metadata.
+     *
+     * @param  string  $indexName
+     * @param  string  $tableName
+     * @param  array   $columns
+     * @param  bool    $unique
+     * @return string
+     */
+    public function compileCreateIndexStatement(
+        string $indexName,
+        string $tableName,
+        array $columns,
+        bool $unique = false
+    ): string {
+        $uniqueKeyword = $unique ? 'UNIQUE ' : '';
+        $wrappedIndex = $this->wrap($indexName);
+        $wrappedTable = $this->wrapTable($tableName);
+        $columnList = $this->columnize($columns);
+
+        return "CREATE {$uniqueKeyword}INDEX {$wrappedIndex} ON {$wrappedTable} ({$columnList})";
     }
 
     /**

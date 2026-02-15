@@ -1189,128 +1189,6 @@ class Mysql extends SqlDriver
         return 'REPLACE INTO';
     }
 
-    /**
-     * Returns the SQL for a REGEXP comparison
-     *
-     * @param   string  $column   The column to match
-     * @param   string  $pattern  The regex pattern
-     * @param   bool    $not      Whether to negate the match
-     * @return  string
-     */
-    public function sqlRegexp(string $column, string $pattern, bool $not = false): string
-    {
-        return $this->buildRegexpPredicateSql($column, $pattern, $not);
-    }
-
-    /**
-     * Returns the SQL for date subtraction
-     *
-     * @param   string  $date   The date column or value
-     * @param   int     $value  The interval value
-     * @param   string  $unit   The interval unit (DAY, MONTH, YEAR, HOUR, MINUTE, SECOND)
-     * @return  string
-     */
-    public function sqlDateSub(string $date, int $value, string $unit = 'DAY'): string
-    {
-        return $this->buildDateSubExpression($date, $value, $unit);
-    }
-
-    /**
-     * Returns the SQL for date addition
-     *
-     * @param   string  $date   The date column or value
-     * @param   int     $value  The interval value
-     * @param   string  $unit   The interval unit (DAY, MONTH, YEAR, HOUR, MINUTE, SECOND)
-     * @return  string
-     */
-    public function sqlDateAdd(string $date, int $value, string $unit = 'DAY'): string
-    {
-        return $this->buildDateAddExpression($date, $value, $unit);
-    }
-
-    /**
-     * Returns the SQL for date formatting
-     *
-     * @param   string  $date    The date column or value
-     * @param   string  $format  The format string (MySQL format: %Y-%m-%d, etc.)
-     * @return  string
-     */
-    public function sqlDateFormat(string $date, string $format): string
-    {
-        return $this->buildDateFormatExpression($date, $format);
-    }
-
-    /**
-     * Returns the SQL for extracting year from a date
-     *
-     * @param   string  $date  The date column or value
-     * @return  string
-     */
-    public function sqlYear(string $date): string
-    {
-        return $this->buildYearExpression($date);
-    }
-
-    /**
-     * Returns the SQL for extracting month from a date
-     *
-     * @param   string  $date  The date column or value
-     * @return  string
-     */
-    public function sqlMonth(string $date): string
-    {
-        return $this->buildMonthExpression($date);
-    }
-
-    /**
-     * Returns the SQL for converting a date to Unix timestamp
-     *
-     * @param   string  $date  The date column or value
-     * @return  string
-     */
-    public function sqlUnixTimestamp(string $date): string
-    {
-        return $this->buildUnixTimestampExpression($date);
-    }
-
-
-    /**
-     * Returns the SQL for extracting a substring based on a delimiter
-     *
-     * @param   string  $str    The string expression (column or literal)
-     * @param   string  $delim  The delimiter to search for
-     * @param   int     $count  The occurrence count (positive = from left, negative = from right)
-     * @return  string
-     */
-    public function sqlSubstringIndex(string $str, string $delim, int $count): string
-    {
-        return $this->buildSubstringIndexExpression($str, $delim, $count);
-    }
-
-    /**
-     * Returns the SQL for concatenating strings
-     *
-     * @param   array  $strings  Array of column names or quoted strings to concatenate
-     * @return  string
-     */
-    public function sqlConcat(array $strings): string
-    {
-        return $this->buildConcatExpression($strings);
-    }
-
-    /**
-     * Returns the SQL for concatenating strings with a separator
-     *
-     * @param   string  $separator  The separator string
-     * @param   array   $strings    Array of column names or quoted strings to concatenate
-     * @return  string
-     */
-    public function sqlConcatWs(string $separator, array $strings): string
-    {
-        return $this->buildConcatWithSeparatorExpression($separator, $strings);
-    }
-
-
     // =========================================================================
     // Schema Introspection Methods (MySQL implementation)
     // =========================================================================
@@ -1872,8 +1750,14 @@ class Mysql extends SqlDriver
                 'CREATE TABLE `_sequences` ('
                 . '`name` VARCHAR(255) NOT NULL PRIMARY KEY, '
                 . '`current_value` BIGINT NOT NULL DEFAULT 0, '
-                . '`increment_value` INT NOT NULL DEFAULT 1'
+                . '`increment_value` INT NOT NULL DEFAULT 1, '
+                . '`table_name` VARCHAR(255) NULL'
                 . ') ENGINE=InnoDB'
+            );
+            $this->execute();
+        } elseif (!$this->tableHasField('_sequences', 'table_name')) {
+            $this->setQuery(
+                'ALTER TABLE `_sequences` ADD `table_name` VARCHAR(255) NULL'
             );
             $this->execute();
         }
@@ -1922,13 +1806,19 @@ class Mysql extends SqlDriver
         $this->ensureSequenceTable();
         $name = $this->replacePrefix($name);
         $seedValue = (int) $start - (int) $increment;
+        $tableName = $options['table'] ?? null;
+        if ($tableName) {
+            $tableName = $this->replacePrefix($tableName);
+        }
+
+        $columns = '`name`, `current_value`, `increment_value`, `table_name`';
+        $values = $this->quote($name) . ', '
+            . $seedValue . ', '
+            . (int) $increment . ', '
+            . ($tableName ? $this->quote($tableName) : 'NULL');
 
         $this->setQuery(
-            'INSERT INTO `_sequences` '
-            . '(`name`, `current_value`, `increment_value`) VALUES ('
-            . $this->quote($name) . ', '
-            . $seedValue . ', '
-            . (int) $increment . ')'
+            "INSERT INTO `_sequences` ({$columns}) VALUES ({$values})"
         );
         $this->execute();
 
@@ -1954,6 +1844,17 @@ class Mysql extends SqlDriver
         $this->execute();
 
         return true;
+    }
+
+    protected function cleanupSequencesForTable(string $tableName): void
+    {
+        if ($this->sequenceTableReady || $this->tableExists('_sequences')) {
+            $this->setQuery(
+                'DELETE FROM `_sequences` WHERE `table_name` = '
+                . $this->quote($tableName)
+            );
+            $this->execute();
+        }
     }
 
     /**
@@ -2198,20 +2099,6 @@ class Mysql extends SqlDriver
     }
 
     /**
-     * Build an auto-increment primary key column definition
-     *
-     * MySQL uses AUTO_INCREMENT keyword.
-     *
-     * @param   string  $quotedName  The quoted column name
-     * @param   string  $type        The column type
-     * @return  string  The column definition SQL
-     */
-    public function buildAutoIncrementColumn(string $quotedName, string $type): string
-    {
-        return "$quotedName $type AUTO_INCREMENT";
-    }
-
-    /**
      * Build a UNIQUE constraint definition for CREATE TABLE
      *
      * MySQL uses UNIQUE KEY syntax.
@@ -2223,32 +2110,6 @@ class Mysql extends SqlDriver
     public function buildUniqueConstraint(string $quotedName, string $columnList): string
     {
         return "UNIQUE KEY $quotedName ($columnList)";
-    }
-
-    /**
-     * Build a regular INDEX definition for CREATE TABLE
-     *
-     * MySQL supports inline KEY definitions.
-     *
-     * @param   string  $quotedName     The quoted index name
-     * @param   string  $columnList     The column list SQL
-     * @return  string|null  The index definition SQL
-     */
-    public function buildIndexDefinition(string $quotedName, string $columnList): ?string
-    {
-        return "KEY $quotedName ($columnList)";
-    }
-
-    /**
-     * Build a FULLTEXT index definition for CREATE TABLE
-     *
-     * @param   string  $quotedName     The quoted index name
-     * @param   string  $columnList     The column list SQL
-     * @return  string|null  The index definition SQL
-     */
-    public function buildFulltextIndexDefinition(string $quotedName, string $columnList): ?string
-    {
-        return "FULLTEXT KEY $quotedName ($columnList)";
     }
 
     /**

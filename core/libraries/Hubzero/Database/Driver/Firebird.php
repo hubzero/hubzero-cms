@@ -2924,18 +2924,6 @@ class Firebird extends SqlDriver
     }
 
     /**
-     * Returns the suffix for INSERT IGNORE statements
-     *
-     * @return  string
-     */
-    public function sqlInsertIgnoreSuffix(): string
-    {
-        // Note: Firebird requires a different approach for ignore behavior
-        // This would need to be combined with MATCHING clause
-        return '';
-    }
-
-    /**
      * Returns the SQL keyword for REPLACE (upsert)
      *
      * Firebird uses UPDATE OR INSERT

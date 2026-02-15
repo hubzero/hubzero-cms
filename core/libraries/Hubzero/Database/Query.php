@@ -18,39 +18,6 @@ use App;
 class Query
 {
     /**
-     * Known syntax name -> syntax class map.
-     *
-     * This is the primary resolution path used by reset().
-     *
-     * @var array<string, string>
-     */
-    private const SYNTAX_CLASS_MAP = [
-        'mysql'    => '\\Hubzero\\Database\\Syntax\\Mysql',
-        'mariadb'  => '\\Hubzero\\Database\\Syntax\\Mariadb',
-        'percona'  => '\\Hubzero\\Database\\Syntax\\Percona',
-        'cubrid'   => '\\Hubzero\\Database\\Syntax\\Cubrid',
-        'pgsql'    => '\\Hubzero\\Database\\Syntax\\Pgsql',
-        'sqlite'   => '\\Hubzero\\Database\\Syntax\\Sqlite',
-        'firebird' => '\\Hubzero\\Database\\Syntax\\Firebird',
-        'informix' => '\\Hubzero\\Database\\Syntax\\Informix',
-        'sqlsrv'   => '\\Hubzero\\Database\\Syntax\\Sqlsrv',
-        'db2'      => '\\Hubzero\\Database\\Syntax\\Db2',
-        'oci'      => '\\Hubzero\\Database\\Syntax\\Oci',
-    ];
-
-    /**
-     * Driver-name aliases mapped to syntax names.
-     *
-     * Maps PDO driver names (PDO::ATTR_DRIVER_NAME) to syntax class keys when
-     * they differ. For example, pdo_ibm reports driver name "ibm" but uses "db2" syntax.
-     *
-     * @var array<string, string>
-     */
-    private const SYNTAX_ALIASES = [
-        'ibm' => 'db2',   // pdo_ibm reports driver name "ibm"; uses DB2 syntax
-    ];
-
-    /**
      * The actual database connection object
      *
      * @var  object
@@ -4511,13 +4478,15 @@ class Query
                     // SQLSTATE 23505 = unique violation (PostgreSQL, DB2)
                     // SQLSTATE HY000 with -803 = Firebird duplicate key error
                     // SQLSTATE HY000 with ORA-00001 = Oracle unique constraint violated
+                    // ASE/PDO_DBLIB: "duplicate key row" in error message
                     $isDuplicateKey = in_array($sqlState, ['23000', '23505']) ||
                         ($sqlState === 'HY000' && (
                             strpos($errorMessage, '-803') !== false ||
                             strpos($errorMessage, 'violation of PRIMARY or UNIQUE KEY') !== false ||
                             strpos($errorMessage, 'UNIQUE KEY constraint') !== false ||
                             strpos($errorMessage, 'ORA-00001') !== false
-                        ));
+                        )) ||
+                        strpos($errorMessage, 'duplicate key row') !== false;
 
                     if ($isDuplicateKey) {
                         // Silently ignore the duplicate - clear state and return success
@@ -4601,7 +4570,8 @@ class Query
                             strpos($errorMessage, 'violation of PRIMARY or UNIQUE KEY') !== false ||
                             strpos($errorMessage, 'UNIQUE KEY constraint') !== false ||
                             strpos($errorMessage, 'ORA-00001') !== false
-                        ));
+                        )) ||
+                        strpos($errorMessage, 'duplicate key row') !== false;
 
                     if ($isDuplicateKey) {
                         continue;
@@ -5032,12 +5002,9 @@ class Query
             );
         }
 
-        if (isset(self::SYNTAX_ALIASES[$key])) {
-            $key = self::SYNTAX_ALIASES[$key];
-        }
-
-        if (isset(self::SYNTAX_CLASS_MAP[$key])) {
-            return $this->validateSyntaxClass(self::SYNTAX_CLASS_MAP[$key], $syntaxName);
+        $registryClass = BackendRegistry::syntaxClassFor($key);
+        if ($registryClass !== null) {
+            return $this->validateSyntaxClass($registryClass, $syntaxName);
         }
 
         // Backward-compatible fallback for custom syntax classes that follow
@@ -5049,7 +5016,7 @@ class Query
 
         throw new \InvalidArgumentException(
             'Unsupported database syntax "' . $syntaxName . '". Supported syntax names: '
-            . implode(', ', array_keys(self::SYNTAX_CLASS_MAP))
+            . implode(', ', array_keys(BackendRegistry::syntaxClassMap()))
         );
     }
 
@@ -5377,6 +5344,23 @@ class Query
 
         // Get bindings from the subquery
         $bindings = $subquery->syntax->getBindings();
+
+        // ASE workaround: ASE has no OFFSET clause and forbids ORDER BY in
+        // derived tables. For subqueries with OFFSET, materialize into a temp
+        // table, delete the offset rows, then reference the temp table.
+        if ($this->connection instanceof Driver\Ase) {
+            [$offset, $clientLimit] = $this->connection->consumePendingPagination();
+            if ($offset > 0) {
+                $limit = (int) $subquery->syntax->getLimit();
+                $sql = $this->connection->materializeOffsetSubquery(
+                    $sql,
+                    $bindings,
+                    $offset,
+                    $limit
+                );
+                $bindings = [];
+            }
+        }
 
         return [$sql, $bindings];
     }

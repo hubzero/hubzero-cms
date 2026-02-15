@@ -1586,34 +1586,6 @@ class Oci extends SqlDriver
     }
 
     /**
-     * Returns the suffix for INSERT IGNORE statements
-     *
-     * Oracle doesn't have a simple suffix; requires error handling
-     *
-     * @return  string
-     */
-    public function sqlInsertIgnoreSuffix(): string
-    {
-        // Oracle doesn't have a suffix for this
-        return '';
-    }
-
-    /**
-     * Returns the suffix for REPLACE (upsert) statements
-     *
-     * Oracle uses MERGE statement instead
-     *
-     * @param   string  $pkColumn       The primary key column
-     * @param   array   $updateColumns  Columns to update
-     * @return  string
-     */
-    public function sqlReplaceSuffix(string $pkColumn, array $updateColumns): string
-    {
-        // Oracle uses MERGE instead
-        return '';
-    }
-
-    /**
      * Returns the SQL for regular expression matching
      *
      * Oracle uses REGEXP_LIKE() function

@@ -173,7 +173,7 @@ class OciDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function oracleGrammarDelegationMatchesFallbackSql(string $dbName, Driver $driver): void
+    public function oracleGrammarDelegationMatchesGenericCreateCompilation(string $dbName, Driver $driver): void
     {
         if (!$this->requiresOracle($driver)) {
             return;
@@ -182,7 +182,7 @@ class OciDriverTest extends AbstractDriverTestCase
         $fallbackGrammar = new class ($driver) extends \Hubzero\Database\Schema\Grammars\OciGrammar {
             public function compileCreateTableFromDefinition(array $definition): array
             {
-                return ['fallback' => true];
+                return parent::compileCreateTableFromDefinition($definition);
             }
         };
 
