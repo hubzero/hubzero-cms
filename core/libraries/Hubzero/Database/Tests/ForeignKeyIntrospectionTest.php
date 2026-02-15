@@ -35,6 +35,12 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
         $driver->dropTable('fki_parent', true);
         $driver->dropTable('fki_grandparent', true);
 
+        // Use NO ACTION fallback for drivers that don't support referential actions
+        $supportsActions = $driver->supportsReferentialActions();
+        $setNull   = $supportsActions ? 'SET NULL' : 'NO ACTION';
+        $cascade   = $supportsActions ? 'CASCADE'  : 'NO ACTION';
+        $noAction  = 'NO ACTION';
+
         // Grandparent table (no foreign keys)
         $driver->createTable('fki_grandparent')
             ->id()
@@ -46,14 +52,14 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
             ->id()
             ->unsignedInteger('grandparent_id')->nullable()
             ->string('name', 255)->nullable()
-            ->foreign('grandparent_id', 'fki_grandparent', 'id', 'SET NULL', 'NO ACTION')
+            ->foreign('grandparent_id', 'fki_grandparent', 'id', $setNull, $noAction)
             ->execute();
         // Child table (FK to parent with ON DELETE CASCADE ON UPDATE CASCADE)
         $driver->createTable('fki_child')
             ->id()
             ->unsignedInteger('parent_id')->nullable()
             ->string('description', 255)->nullable()
-            ->foreign('parent_id', 'fki_parent', 'id', 'CASCADE', 'CASCADE')
+            ->foreign('parent_id', 'fki_parent', 'id', $cascade, $cascade)
             ->execute();
 
         // Commit DDL so metadata is visible for all drivers
@@ -131,13 +137,17 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
         $this->assertContains('parent_id', $fk->columns, "[$dbName] FK columns should include parent_id");
         $this->assertEquals('fki_parent', $fk->foreign_table, "[$dbName] FK should reference fki_parent");
         $this->assertContains('id', $fk->foreign_columns, "[$dbName] FK foreign_columns should include id");
-        $this->assertEquals('CASCADE', $fk->on_delete, "[$dbName] FK on_delete should be CASCADE");
-        // Some engines do not preserve explicit ON UPDATE actions during introspection.
-        $this->assertContains(
-            $fk->on_update,
-            ['CASCADE', 'RESTRICT', 'NO ACTION'],
-            "[$dbName] FK on_update should be a valid action"
-        );
+        if ($driver->supportsReferentialActions()) {
+            $this->assertEquals('CASCADE', $fk->on_delete, "[$dbName] FK on_delete should be CASCADE");
+            // Some engines do not preserve explicit ON UPDATE actions during introspection.
+            $this->assertContains(
+                $fk->on_update,
+                ['CASCADE', 'RESTRICT', 'NO ACTION'],
+                "[$dbName] FK on_update should be a valid action"
+            );
+        } else {
+            $this->assertEquals('NO ACTION', $fk->on_delete, "[$dbName] FK on_delete should be NO ACTION (referential actions not supported)");
+        }
     }
 
     /**

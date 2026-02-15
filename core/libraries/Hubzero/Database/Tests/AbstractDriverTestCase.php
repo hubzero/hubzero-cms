@@ -129,6 +129,19 @@ abstract class AbstractDriverTestCase extends TestCase
     }
 
     /**
+     * Return sequence names created by this test class for automatic cleanup.
+     *
+     * Override this to return sequence names that should be dropped
+     * in tearDownAfterClass().
+     *
+     * @return array Sequence names
+     */
+    protected static function getTestSequences(): array
+    {
+        return [];
+    }
+
+    /**
      * Get driver instances for the current test class
      *
      * @return array<string, Driver>
@@ -438,6 +451,14 @@ abstract class AbstractDriverTestCase extends TestCase
                         $table,
                         $e->getMessage()
                     ));
+                }
+            }
+
+            foreach (static::getTestSequences() as $seq) {
+                try {
+                    $driver->dropSequence($seq);
+                } catch (\Exception $e) {
+                    // Ignore — sequence may not exist
                 }
             }
         }

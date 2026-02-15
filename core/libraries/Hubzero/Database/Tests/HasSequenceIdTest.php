@@ -40,6 +40,11 @@ class HasSequenceIdTest extends AbstractDriverTestCase
         return ['seq_items'];
     }
 
+    protected static function getTestSequences(): array
+    {
+        return [self::$defaultSeq, self::$customSeq];
+    }
+
     /**
      * Create test tables
      *

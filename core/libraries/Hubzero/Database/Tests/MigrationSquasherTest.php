@@ -43,7 +43,11 @@ class MigrationSquasherTest extends AbstractDriverTestCase
             ->id()
             ->unsignedInteger('user_id')
             ->string('title', 255)
-            ->foreign('user_id', 'squash_users', 'id')
+            ->foreign(
+                'user_id', 'squash_users', 'id',
+                $driver->supportsReferentialActions() ? 'CASCADE' : 'NO ACTION',
+                $driver->supportsReferentialActions() ? 'CASCADE' : 'NO ACTION'
+            )
             ->execute();
     }
 

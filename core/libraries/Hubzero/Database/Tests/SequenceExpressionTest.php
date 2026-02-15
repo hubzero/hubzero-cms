@@ -40,6 +40,11 @@ class SequenceExpressionTest extends AbstractDriverTestCase
         return [self::$testTable];
     }
 
+    protected static function getTestSequences(): array
+    {
+        return [self::$seqDefault, self::$seqStart, self::$seqInsert];
+    }
+
     /**
      * Create test tables
      *

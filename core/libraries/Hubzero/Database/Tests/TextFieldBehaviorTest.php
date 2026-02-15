@@ -194,23 +194,29 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
         $medium = $this->rowValue($row, 'body_medium');
         $long = $this->rowValue($row, 'body_long');
 
+        // Acceptable representations of an inserted empty string:
+        // ''     - preserved (MySQL, PostgreSQL, SQLite, Firebird)
+        // null   - normalized to NULL (Oracle)
+        // ' '    - padded to single space (ASE/Sybase)
+        $acceptable = ['', null, ' '];
+
         $this->assertContains(
             $text,
-            ['', null],
+            $acceptable,
             true,
-            "{$dbName}: body_text should preserve empty string or normalize it to NULL"
+            "{$dbName}: body_text should preserve empty string, normalize to NULL, or pad to space"
         );
         $this->assertContains(
             $medium,
-            ['', null],
+            $acceptable,
             true,
-            "{$dbName}: body_medium should preserve empty string or normalize it to NULL"
+            "{$dbName}: body_medium should preserve empty string, normalize to NULL, or pad to space"
         );
         $this->assertContains(
             $long,
-            ['', null],
+            $acceptable,
             true,
-            "{$dbName}: body_long should preserve empty string or normalize it to NULL"
+            "{$dbName}: body_long should preserve empty string, normalize to NULL, or pad to space"
         );
     }
 
