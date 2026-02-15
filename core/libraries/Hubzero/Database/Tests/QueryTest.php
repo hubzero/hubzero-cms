@@ -9,6 +9,7 @@
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use Hubzero\Database\BackendRegistry;
 use Hubzero\Database\Driver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Expression;
@@ -1645,8 +1646,9 @@ class QueryTest extends AbstractDriverTestCase
 
         // NOTE: We directly test the Syntax class as the `start()` method on
         //       the Query class casts values as integers.
-        $syntax = '\\Hubzero\\Database\\Syntax\\' . ucfirst($driver->getSyntax());
-        $syntax = new $syntax($driver);
+        $syntaxClass = BackendRegistry::resolveSyntaxClassFor($driver->getSyntax());
+        $this->assertNotNull($syntaxClass);
+        $syntax = new $syntaxClass($driver);
 
         $this->expectException(\InvalidArgumentException::class);
 
@@ -1686,8 +1688,9 @@ class QueryTest extends AbstractDriverTestCase
 
         // NOTE: We directly test the Syntax class as the `limit()` method on
         //       the Query class casts values as integers.
-        $syntax = '\\Hubzero\\Database\\Syntax\\' . ucfirst($driver->getSyntax());
-        $syntax = new $syntax($driver);
+        $syntaxClass = BackendRegistry::resolveSyntaxClassFor($driver->getSyntax());
+        $this->assertNotNull($syntaxClass);
+        $syntax = new $syntaxClass($driver);
 
         $this->expectException(\InvalidArgumentException::class);
 

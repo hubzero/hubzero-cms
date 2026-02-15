@@ -260,6 +260,7 @@ class SchemaSnapshotTest extends AbstractDriverTestCase
 
         $this->assertEquals($name, $data['name'], "[$dbName]");
         $this->assertEquals($description, $data['description'], "[$dbName]");
+        $this->assertEquals(strtolower($driver->getDriverType()), $data['driver'], "[$dbName]");
         $this->assertArrayHasKey('created_at', $data, "[$dbName]");
         $this->assertArrayHasKey('schema', $data, "[$dbName]");
         $this->assertArrayHasKey('table_count', $data, "[$dbName]");

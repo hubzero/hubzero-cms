@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Schema\Grammar;
+use Hubzero\Database\Drivers\Base\BaseSchemaGrammar as Grammar;
 use Hubzero\Database\Schema\TableBuilder;
 use Hubzero\Database\Schema\AlterTableBuilder;
 use Hubzero\Database\Schema\TableDefinition;

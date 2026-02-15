@@ -11,6 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
 use Hubzero\Database\Query;
+use Hubzero\Database\Drivers\Base\BaseSqlSyntax;
 
 /**
  * INSERT IGNORE and INSERT ... SELECT tests
@@ -167,7 +168,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     public function testSyntaxHasSetColumnsMethod(string $dbName, Driver $driver): void
     {
         $this->assertTrue(
-            method_exists('Hubzero\\Database\\Syntax\\Sql', 'setColumns'),
+            method_exists(BaseSqlSyntax::class, 'setColumns'),
             'Syntax class should have setColumns method'
         );
     }
@@ -179,7 +180,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     public function testSyntaxHasSetInsertSelectMethod(string $dbName, Driver $driver): void
     {
         $this->assertTrue(
-            method_exists('Hubzero\\Database\\Syntax\\Sql', 'setInsertSelect'),
+            method_exists(BaseSqlSyntax::class, 'setInsertSelect'),
             'Syntax class should have setInsertSelect method'
         );
     }
@@ -191,7 +192,7 @@ class InsertIgnoreSelectTest extends AbstractDriverTestCase
     public function testSyntaxHasResetInsertSelectMethod(string $dbName, Driver $driver): void
     {
         $this->assertTrue(
-            method_exists('Hubzero\\Database\\Syntax\\Sql', 'resetInsertSelect'),
+            method_exists(BaseSqlSyntax::class, 'resetInsertSelect'),
             'Syntax class should have resetInsertSelect method'
         );
     }

@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Sqlite;
+use Hubzero\Database\Drivers\Sqlite\SqliteDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Schema\AlterTableBuilder;
 
@@ -44,7 +44,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(Driver $driver): void
     {
-        if (get_class($driver) !== Sqlite::class) {
+        if (!($driver instanceof SqliteDriver)) {
             return;
         }
 
@@ -56,7 +56,7 @@ class SqliteDriverTest extends AbstractDriverTestCase
      */
     private function requiresSqlite(Driver $driver): bool
     {
-        if (get_class($driver) !== Sqlite::class) {
+        if (!($driver instanceof SqliteDriver)) {
             $this->assertTrue(true);
             return false;
         }

@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Percona;
+use Hubzero\Database\Drivers\Percona\PerconaDriver as Percona;
 
 /**
  * Percona Server-specific driver tests
@@ -34,7 +34,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(Driver $driver): void
     {
-        if (get_class($driver) !== Percona::class) {
+        if (!($driver instanceof Percona)) {
             return;
         }
 
@@ -105,7 +105,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
 
     private function requiresPercona(Driver $driver): bool
     {
-        if (get_class($driver) !== Percona::class) {
+        if (!($driver instanceof Percona)) {
             $this->assertTrue(true);
             return false;
         }
@@ -122,7 +122,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
         ];
 
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Percona::class) {
+            if (!($driver instanceof Percona)) {
                 continue;
             }
             foreach ($adHocViews as $view) {
@@ -143,7 +143,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
     public static function tearDownAfterClass(): void
     {
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Percona::class) {
+            if (!($driver instanceof Percona)) {
                 continue;
             }
             try {
@@ -169,7 +169,7 @@ class PerconaDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $this->assertSame(Percona::class, get_class($driver));
+        $this->assertInstanceOf(Percona::class, $driver);
     }
 
     #[Test]

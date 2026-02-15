@@ -11,13 +11,13 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Ase;
-use Hubzero\Database\Driver\Db2;
-use Hubzero\Database\Driver\Firebird;
-use Hubzero\Database\Driver\Mysql;
-use Hubzero\Database\Driver\Oci;
-use Hubzero\Database\Driver\Sql as SqlDriver;
-use Hubzero\Database\Driver\Sqlsrv;
+use Hubzero\Database\Drivers\Ase\AseDriver as Ase;
+use Hubzero\Database\Drivers\Db2\Db2Driver as Db2;
+use Hubzero\Database\Drivers\Firebird\FirebirdDriver as Firebird;
+use Hubzero\Database\Drivers\Mysql\MysqlDriver as Mysql;
+use Hubzero\Database\Drivers\Oci\OciDriver as Oci;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver as SqlDriver;
+use Hubzero\Database\Drivers\Sqlsrv\SqlsrvDriver as Sqlsrv;
 
 /**
  * Database driver tests across multiple database backends
@@ -65,6 +65,18 @@ class DriverTest extends AbstractDriverTestCase
     }
 
     /**
+     * Shared SQL helper methods must resolve from canonical SQL base.
+     *
+     * @param  \ReflectionMethod $method
+     * @param  string            $label
+     * @return void
+     */
+    private function assertDeclaresInSharedSqlBase(\ReflectionMethod $method, string $label): void
+    {
+        $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $label);
+    }
+
+    /**
      * Tear down after each test - clean the test data
      *
      * @return void
@@ -107,7 +119,7 @@ class DriverTest extends AbstractDriverTestCase
         foreach ($methods as $methodName) {
             $method = new \ReflectionMethod(SqlDriver::class, $methodName);
             $this->assertFalse($method->isAbstract(), $methodName);
-            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $methodName);
+            $this->assertDeclaresInSharedSqlBase($method, $methodName);
         }
     }
 
@@ -129,7 +141,7 @@ class DriverTest extends AbstractDriverTestCase
 
         foreach ($methods as $methodName) {
             $method = new \ReflectionMethod(Mysql::class, $methodName);
-            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $methodName);
+            $this->assertDeclaresInSharedSqlBase($method, $methodName);
         }
     }
 
@@ -138,7 +150,7 @@ class DriverTest extends AbstractDriverTestCase
     {
         foreach (['buildAutoIncrementColumn', 'buildIndexDefinition', 'buildFulltextIndexDefinition'] as $methodName) {
             $method = new \ReflectionMethod(Mysql::class, $methodName);
-            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $methodName);
+            $this->assertDeclaresInSharedSqlBase($method, $methodName);
         }
     }
 
@@ -157,7 +169,7 @@ class DriverTest extends AbstractDriverTestCase
 
         foreach ($methods as $methodName) {
             $method = new \ReflectionMethod(Ase::class, $methodName);
-            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $methodName);
+            $this->assertDeclaresInSharedSqlBase($method, $methodName);
         }
     }
 
@@ -166,7 +178,7 @@ class DriverTest extends AbstractDriverTestCase
     {
         foreach ([Ase::class, Firebird::class, Sqlsrv::class, Oci::class, Db2::class] as $driverClass) {
             $method = new \ReflectionMethod($driverClass, 'sqlInsertIgnoreSuffix');
-            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $driverClass);
+            $this->assertDeclaresInSharedSqlBase($method, $driverClass);
         }
     }
 
@@ -175,7 +187,7 @@ class DriverTest extends AbstractDriverTestCase
     {
         foreach ([Ase::class, Oci::class, Db2::class] as $driverClass) {
             $method = new \ReflectionMethod($driverClass, 'sqlReplaceSuffix');
-            $this->assertSame(SqlDriver::class, $method->getDeclaringClass()->getName(), $driverClass);
+            $this->assertDeclaresInSharedSqlBase($method, $driverClass);
         }
     }
 
@@ -616,7 +628,7 @@ class DriverTest extends AbstractDriverTestCase
     #[DataProvider('databaseProvider')]
     public function testStaticTest(string $dbName, Driver $driver): void
     {
-        $driverClass = get_class($driver);
+        $driverClass = $driver::class;
         $this->assertTrue($driverClass::test(), 'Static test() method should return true for available driver');
     }
 

@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Sqlsrv;
+use Hubzero\Database\Drivers\Sqlsrv\SqlsrvDriver as Sqlsrv;
 
 /**
  * SQL Server-specific driver tests
@@ -34,7 +34,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(Driver $driver): void
     {
-        if (get_class($driver) !== Sqlsrv::class) {
+        if (!($driver instanceof Sqlsrv)) {
             return;
         }
 
@@ -111,7 +111,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
 
     private function requiresSqlsrv(Driver $driver): bool
     {
-        if (get_class($driver) !== Sqlsrv::class) {
+        if (!($driver instanceof Sqlsrv)) {
             $this->assertTrue(true);
             return false;
         }
@@ -132,7 +132,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
         ];
 
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Sqlsrv::class) {
+            if (!($driver instanceof Sqlsrv)) {
                 continue;
             }
             foreach ($adHocViews as $view) {
@@ -153,7 +153,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
     public static function tearDownAfterClass(): void
     {
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Sqlsrv::class) {
+            if (!($driver instanceof Sqlsrv)) {
                 continue;
             }
             try {
@@ -179,7 +179,7 @@ class SqlsrvDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $this->assertSame(Sqlsrv::class, get_class($driver));
+        $this->assertInstanceOf(Sqlsrv::class, $driver);
     }
 
     #[Test]

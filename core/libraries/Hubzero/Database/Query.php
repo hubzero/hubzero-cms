@@ -1753,7 +1753,7 @@ class Query
         // Check if driver supports native fulltext search (MySQL/MariaDB/Informix BTS)
         $driverName = strtolower($this->connection->getName() ?? '');
         $isInformix = $driverName === 'informix'
-            || get_class($this->connection) === \Hubzero\Database\Driver\Informix::class;
+            || $this->connection instanceof \Hubzero\Database\Drivers\Informix\InformixDriver;
         $supportsFulltext = in_array($driverName, ['mysql', 'mariadb']);
 
         if ($supportsFulltext) {
@@ -5002,15 +5002,17 @@ class Query
             );
         }
 
-        $registryClass = BackendRegistry::syntaxClassFor($key);
+        $registryClass = BackendRegistry::resolveSyntaxClassFor($key);
         if ($registryClass !== null) {
             return $this->validateSyntaxClass($registryClass, $syntaxName);
         }
 
-        // Backward-compatible fallback for custom syntax classes that follow
-        // the Hubzero\Database\Syntax\<Name> convention.
-        $fallback = '\\Hubzero\\Database\\Syntax\\' . ucfirst($key);
-        if (class_exists($fallback)) {
+        // Fallback for custom syntax classes using canonical convention:
+        // Drivers/<Name>/<Name>Syntax.
+        $fallback = BackendRegistry::firstExistingClassCandidate(
+            BackendRegistry::conventionSyntaxClassCandidates($key)
+        );
+        if ($fallback !== null) {
             return $this->validateSyntaxClass($fallback, $syntaxName);
         }
 
@@ -5029,10 +5031,10 @@ class Query
      */
     private function validateSyntaxClass(string $syntaxClass, string $originalName): string
     {
-        if (!is_subclass_of($syntaxClass, '\\Hubzero\\Database\\Syntax\\Sql')) {
+        if (!is_subclass_of($syntaxClass, '\\Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax')) {
             throw new \InvalidArgumentException(
                 'Invalid syntax class "' . $syntaxClass . '" resolved from syntax "'
-                . $originalName . '". Class must extend Hubzero\\Database\\Syntax\\Sql.'
+                . $originalName . '". Class must extend Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax.'
             );
         }
 
@@ -5348,7 +5350,7 @@ class Query
         // ASE workaround: ASE has no OFFSET clause and forbids ORDER BY in
         // derived tables. For subqueries with OFFSET, materialize into a temp
         // table, delete the offset rows, then reference the temp table.
-        if ($this->connection instanceof Driver\Ase) {
+        if ($this->connection instanceof \Hubzero\Database\Drivers\Ase\AseDriver) {
             [$offset, $clientLimit] = $this->connection->consumePendingPagination();
             if ($offset > 0) {
                 $limit = (int) $subquery->syntax->getLimit();

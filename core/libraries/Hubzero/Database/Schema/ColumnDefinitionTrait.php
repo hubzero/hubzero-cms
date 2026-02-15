@@ -669,7 +669,7 @@ trait ColumnDefinitionTrait
 
         // Detect zero-date default — translate to DEFAULT NULL
         $hasZeroDateDefault = array_key_exists('default', $this->columnModifiers)
-            && \Hubzero\Database\Driver\Sql::isZeroDate($this->columnModifiers['default']);
+            && \Hubzero\Database\Drivers\Base\BaseSqlDriver::isZeroDate($this->columnModifiers['default']);
 
         // NULL / NOT NULL — force nullable when translating zero-date
         if ($hasZeroDateDefault) {
@@ -708,7 +708,7 @@ trait ColumnDefinitionTrait
         if (isset($this->columnModifiers['onUpdate'])) {
             $onUpdate = $this->columnModifiers['onUpdate'];
             if ($onUpdate instanceof \Hubzero\Database\Expression) {
-                $syntaxClass = '\\Hubzero\\Database\\Syntax\\' . ucfirst($driver->getSyntax());
+                $syntaxClass = $this->resolveSyntaxClassForExpressions($driver);
                 $syntax = new $syntaxClass($driver);
                 $onUpdate = $syntax->buildExpression($onUpdate);
             }
@@ -735,7 +735,7 @@ trait ColumnDefinitionTrait
     protected function compileDefaultValue($value, Driver $driver): string
     {
         if ($value instanceof \Hubzero\Database\Expression) {
-            $syntaxClass = '\\Hubzero\\Database\\Syntax\\' . ucfirst($driver->getSyntax());
+            $syntaxClass = $this->resolveSyntaxClassForExpressions($driver);
             $syntax = new $syntaxClass($driver);
             return $syntax->buildExpression($value);
         }
@@ -759,6 +759,39 @@ trait ColumnDefinitionTrait
         }
 
         return "'" . addslashes($value) . "'";
+    }
+
+    /**
+     * Resolve and validate a syntax class for expression compilation.
+     *
+     * @param  Driver $driver
+     * @return string
+     */
+    protected function resolveSyntaxClassForExpressions(Driver $driver): string
+    {
+        $syntaxName = (string) $driver->getSyntax();
+        $syntaxClass = \Hubzero\Database\BackendRegistry::resolveSyntaxClassFor($syntaxName);
+
+        if ($syntaxClass === null) {
+            $syntaxClass = \Hubzero\Database\BackendRegistry::firstExistingClassCandidate(
+                \Hubzero\Database\BackendRegistry::conventionSyntaxClassCandidates($syntaxName)
+            );
+        }
+
+        if ($syntaxClass === null) {
+            throw new \InvalidArgumentException(
+                'Unsupported database syntax "' . $syntaxName . '" for expression compilation.'
+            );
+        }
+
+        if (!is_subclass_of($syntaxClass, '\\Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax')) {
+            throw new \InvalidArgumentException(
+                'Invalid syntax class "' . $syntaxClass
+                . '" for expression compilation. Class must extend Hubzero\\Database\\Drivers\\Base\\BaseSqlSyntax.'
+            );
+        }
+
+        return $syntaxClass;
     }
 
     /**

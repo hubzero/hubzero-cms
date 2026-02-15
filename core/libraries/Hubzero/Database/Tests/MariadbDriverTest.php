@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Mariadb;
+use Hubzero\Database\Drivers\Mariadb\MariadbDriver as Mariadb;
 
 /**
  * MariaDB-specific driver tests
@@ -34,7 +34,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(Driver $driver): void
     {
-        if (get_class($driver) !== Mariadb::class) {
+        if (!($driver instanceof Mariadb)) {
             return;
         }
 
@@ -105,7 +105,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
 
     private function requiresMariadb(Driver $driver): bool
     {
-        if (get_class($driver) !== Mariadb::class) {
+        if (!($driver instanceof Mariadb)) {
             $this->assertTrue(true);
             return false;
         }
@@ -126,7 +126,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
         $adHocSequences = ['mdb_test_seq'];
 
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Mariadb::class) {
+            if (!($driver instanceof Mariadb)) {
                 continue;
             }
             foreach ($adHocViews as $view) {
@@ -153,7 +153,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
     public static function tearDownAfterClass(): void
     {
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Mariadb::class) {
+            if (!($driver instanceof Mariadb)) {
                 continue;
             }
             try {
@@ -179,7 +179,7 @@ class MariadbDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $this->assertSame(Mariadb::class, get_class($driver));
+        $this->assertInstanceOf(Mariadb::class, $driver);
     }
 
     #[Test]

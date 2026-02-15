@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Oci;
+use Hubzero\Database\Drivers\Oci\OciDriver as Oci;
 use Hubzero\Database\Schema\TableBuilder;
 
 /**
@@ -35,7 +35,7 @@ class OciDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(Driver $driver): void
     {
-        if (get_class($driver) !== Oci::class) {
+        if (!($driver instanceof Oci)) {
             return;
         }
 
@@ -110,7 +110,7 @@ class OciDriverTest extends AbstractDriverTestCase
 
     private function requiresOracle(Driver $driver): bool
     {
-        if (get_class($driver) !== Oci::class) {
+        if (!($driver instanceof Oci)) {
             $this->assertTrue(true);
             return false;
         }
@@ -132,7 +132,7 @@ class OciDriverTest extends AbstractDriverTestCase
         $adHocSequences = ['ora_test_seq'];
 
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Oci::class) {
+            if (!($driver instanceof Oci)) {
                 continue;
             }
             foreach ($adHocViews as $view) {
@@ -159,7 +159,7 @@ class OciDriverTest extends AbstractDriverTestCase
     public static function tearDownAfterClass(): void
     {
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Oci::class) {
+            if (!($driver instanceof Oci)) {
                 continue;
             }
             try {
@@ -179,7 +179,7 @@ class OciDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $fallbackGrammar = new class ($driver) extends \Hubzero\Database\Schema\Grammars\OciGrammar {
+        $fallbackGrammar = new class ($driver) extends \Hubzero\Database\Drivers\Oci\OciGrammar {
             public function compileCreateTableFromDefinition(array $definition): array
             {
                 return parent::compileCreateTableFromDefinition($definition);
@@ -196,12 +196,12 @@ class OciDriverTest extends AbstractDriverTestCase
             ->ifNotExists(false);
 
         $fallback = new class ($driver, 'parity_oracle_items', $fallbackGrammar) extends TableBuilder {
-            private \Hubzero\Database\Schema\Grammar $grammar;
+            private \Hubzero\Database\Drivers\Base\BaseSchemaGrammar $grammar;
 
             public function __construct(
                 Driver $driver,
                 string $table,
-                \Hubzero\Database\Schema\Grammar $grammar
+                \Hubzero\Database\Drivers\Base\BaseSchemaGrammar $grammar
             ) {
                 parent::__construct($driver, $table);
                 $this->grammar = $grammar;
@@ -238,7 +238,7 @@ class OciDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $this->assertSame(Oci::class, get_class($driver));
+        $this->assertInstanceOf(Oci::class, $driver);
     }
 
     #[Test]

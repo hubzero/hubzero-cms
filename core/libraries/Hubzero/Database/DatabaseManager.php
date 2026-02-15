@@ -11,13 +11,15 @@ namespace Hubzero\Database;
 /**
  * Database Manager
  *
- * Resolves driver names to Driver instances using convention-based factory
- * methods. Third parties can register custom drivers via extend().
+ * Resolves driver names to Driver instances.
+ * Third parties can register custom drivers via extend().
  *
  * Resolution order for makeDriver():
  * 1. Parse 'url' into config components (if present)
  * 2. Custom creators registered via extend()
- * 3. Convention method: create{Name}Driver()
+ * 3. Built-in driver resolution via BackendRegistry
+ * 4. Convention class fallback:
+ *    - Hubzero\Database\Drivers\<Name>\<Name>Driver
  *
  * Built-in drivers: mysql, mariadb, percona, cubrid, sqlite, mock, pgsql, firebird, informix, oci, sqlsrv, db2, ase
  *
@@ -72,10 +74,24 @@ class DatabaseManager
             return call_user_func($this->customCreators[$driverName], $config, $name);
         }
 
-        $method = 'create' . ucfirst($driverName) . 'Driver';
+        // Prefer canonical built-in registry resolution.
+        $builtInClass = BackendRegistry::resolveDriverClassFor((string) $driverName);
+        if ($builtInClass !== null) {
+            return $this->buildDriver($builtInClass, $config);
+        }
 
-        if (method_exists($this, $method)) {
-            return $this->$method($config);
+        // Custom class fallback by canonical naming convention.
+        $candidate = BackendRegistry::firstExistingClassCandidate(
+            BackendRegistry::conventionDriverClassCandidates((string) $driverName)
+        );
+        if ($candidate !== null) {
+            if (!is_subclass_of($candidate, Driver::class)) {
+                throw new \RuntimeException(
+                    "Invalid driver class {$candidate}; expected subclass of " . Driver::class
+                );
+            }
+
+            return $this->buildDriver($candidate, $config);
         }
 
         throw new \RuntimeException("Unsupported driver: {$driverName}");
@@ -141,12 +157,8 @@ class DatabaseManager
      */
     public function getAvailableDrivers(): array
     {
-        $builtIn = [];
-        foreach (get_class_methods($this) as $method) {
-            if (preg_match('/^create(\w+)Driver$/', $method, $m)) {
-                $builtIn[] = lcfirst($m[1]);
-            }
-        }
+        // Canonical built-ins come from registry metadata.
+        $builtIn = array_keys(BackendRegistry::driverClassMap());
 
         return array_unique(array_merge($builtIn, array_keys($this->customCreators)));
     }
@@ -166,7 +178,7 @@ class DatabaseManager
         $result = [];
 
         foreach ($this->getAvailableDrivers() as $name) {
-            $class = BackendRegistry::driverClassFor($name);
+            $class = BackendRegistry::resolveDriverClassFor($name);
             $result[$name] = [
                 'class'     => $class,
                 'available' => $class ? $class::test() : null,
@@ -175,75 +187,6 @@ class DatabaseManager
         }
 
         return $result;
-    }
-
-    // =========================================================================
-    // Built-in factory methods
-    // =========================================================================
-
-    protected function createMysqlDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Mysql::class, $config);
-    }
-
-    protected function createMariadbDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Mariadb::class, $config);
-    }
-
-    protected function createPerconaDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Mysql::class, $config);
-    }
-
-    protected function createCubridDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Cubrid::class, $config);
-    }
-
-    protected function createSqliteDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Sqlite::class, $config);
-    }
-
-    protected function createMockDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Mock::class, $config);
-    }
-
-    protected function createPgsqlDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Pgsql::class, $config);
-    }
-
-    protected function createFirebirdDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Firebird::class, $config);
-    }
-
-    protected function createInformixDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Informix::class, $config);
-    }
-
-    protected function createOciDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Oci::class, $config);
-    }
-
-    protected function createSqlsrvDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Sqlsrv::class, $config);
-    }
-
-    protected function createDb2Driver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Db2::class, $config);
-    }
-
-    protected function createAseDriver(array $config): Driver
-    {
-        return $this->buildDriver(Driver\Ase::class, $config);
     }
 
     /**

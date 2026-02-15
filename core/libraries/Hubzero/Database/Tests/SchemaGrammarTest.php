@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Hubzero\Database\Driver;
 use Hubzero\Database\Schema\AlterTableBuilder;
-use Hubzero\Database\Schema\Grammar;
+use Hubzero\Database\Drivers\Base\BaseSchemaGrammar as Grammar;
 use Hubzero\Database\Schema\TableDefinition;
 
 /**
@@ -182,7 +182,12 @@ class SchemaGrammarTest extends AbstractDriverTestCase
 
         foreach ($classes as $class) {
             $method = new \ReflectionMethod($class, 'compileCreateTableFromDefinition');
-            $this->assertSame($class, $method->getDeclaringClass()->getName(), $class);
+            $declaringClass = $method->getDeclaringClass()->getName();
+            $this->assertTrue(
+                $declaringClass === $class || is_subclass_of($class, $declaringClass),
+                $class
+            );
+            $this->assertNotSame(\Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class, $declaringClass, $class);
 
             $grammar = new $class($driver);
             $compiled = $grammar->compileCreateTableFromDefinition($definition);

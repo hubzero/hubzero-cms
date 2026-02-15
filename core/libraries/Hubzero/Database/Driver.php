@@ -11,48 +11,47 @@ namespace Hubzero\Database;
 use Hubzero\Utility\Str;
 use Hubzero\Error\Exception\RuntimeException;
 use Hubzero\Error\Exception\BadMethodCallException;
-use Hubzero\Database\Connection\PdoConnection;
 use Hubzero\Database\Exception\ConnectionFailedException;
 use Hubzero\Database\Exception\QueryFailedException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Event;
 
 /**
  * Base database driver
  *
  * This is the abstract base class for all database drivers. It provides
  * connection management and query execution mechanics. SQL dialect logic
- * lives in the Sql subclass and its concrete dialect drivers.
+ * lives in canonical `Drivers` classes.
  *
  * ```
  * Driver (abstract base - connection + query execution)
- *   └── Pdo (deprecated BC layer)
- *         └── Sql (abstract - universal SQL contract + abstract methods)
- *               ├── Mysql (MySQL-specific SQL)
- *               │     ├── Mariadb (MariaDB-specific features)
- *               │     └── Percona (Percona-specific features)
- *               ├── Cubrid (CUBRID-specific SQL)
- *               ├── Pgsql (PostgreSQL-specific SQL)
- *               ├── Sqlite (SQLite-specific SQL)
- *               ├── Firebird (Firebird-specific SQL)
- *               ├── Informix (Informix-specific SQL)
- *               ├── Db2 (IBM DB2-specific SQL)
- *               ├── Oracle (Oracle-specific SQL)
- *               └── Sqlsrv (SQL Server-specific SQL)
+ *   └── Drivers\Base\BasePdoDriver
+ *         └── Drivers\Base\BaseSqlDriver
+ *               ├── Drivers\Mysql\MysqlDriver
+ *               │     ├── Drivers\Mariadb\MariadbDriver
+ *               │     └── Drivers\Percona\PerconaDriver
+ *               ├── Drivers\Cubrid\CubridDriver
+ *               ├── Drivers\Pgsql\PgsqlDriver
+ *               ├── Drivers\Sqlite\SqliteDriver
+ *               ├── Drivers\Firebird\FirebirdDriver
+ *               ├── Drivers\Informix\InformixDriver
+ *               ├── Drivers\Db2\Db2Driver
+ *               ├── Drivers\Oci\OciDriver
+ *               └── Drivers\Sqlsrv\SqlsrvDriver
  * ```
  *
  * ARCHITECTURE NOTES:
  * - Driver handles connection management: connect, disconnect, prepare, bind, execute, fetch
  * - Connections are injected via setConnection(ConnectionInterface)
- * - Sql.php defines the SQL contract as abstract methods
+ * - Drivers\Base\BaseSqlDriver defines the SQL contract as abstract methods
  * - Each dialect driver implements SQL syntax specific to that database
  * - Connections are lazy — PdoConnection auto-connects on first use
  *
  * When adding new database introspection or DDL methods:
- * 1. Add abstract method declaration to Sql.php
- * 2. Implement in each dialect driver (Mysql.php, Pgsql.php, Sqlite.php, etc.)
+ * 1. Add abstract method declaration to Drivers\Base\BaseSqlDriver
+ * 2. Implement in each concrete dialect driver class
+ *    (e.g. Drivers\Mysql\MysqlDriver, Drivers\Pgsql\PgsqlDriver).
  *
  * ## PSR-3 Logging
  *
@@ -294,9 +293,12 @@ abstract class Driver implements LoggerAwareInterface
      * Returns a driver instance based on the given options
      *
      * There are three global options and then the rest are specific to the database driver:
-     *  * The 'driver' option defines which driver class is used for the connection -- the default is 'pdo'.
+     *  * The 'driver' option defines which driver class is used for the connection -- the default is 'mysql'.
      *  * The 'database' option determines which database is to be used for the connection.
      *  * The 'select' option determines whether the connector should automatically select the chosen database.
+     *
+     * Legacy alias support:
+     *  * 'pdo' is normalized to 'mysql' for backward compatibility.
      *
      * @param   array   $options   Parameters to construct the database driver requested
      * @return  static
@@ -314,8 +316,8 @@ abstract class Driver implements LoggerAwareInterface
             : null;
         $options['select']   = (isset($options['select']))   ? $options['select']
             : true;
-        // @TODO: Eventually remove this?
-        if ($options['driver'] == 'pdo') {
+        // Legacy alias retained for configuration compatibility.
+        if ($options['driver'] === 'pdo') {
             $options['driver'] = 'mysql';
         }
 
@@ -324,8 +326,15 @@ abstract class Driver implements LoggerAwareInterface
 
         // If we already have a database connector instance for these options, then just use that
         if (!isset(self::$instances[$signature])) {
-            // Derive the class name from the driver
-            $class = __NAMESPACE__ . '\Driver\\' . ucfirst(strtolower($options['driver']));
+            // Resolve canonical built-in class first
+            $class = BackendRegistry::resolveDriverClassFor((string) $options['driver']);
+
+            // Resolve canonical convention candidate for custom drivers
+            if ($class === null) {
+                $class = BackendRegistry::firstExistingClassCandidate(
+                    BackendRegistry::conventionDriverClassCandidates((string) $options['driver'])
+                );
+            }
 
             // If the class doesn't exist we have a problem
             if (!class_exists($class)) {
@@ -833,26 +842,22 @@ abstract class Driver implements LoggerAwareInterface
         // Instantiate variables
         $connectors = [];
 
-        // Get a list of types, only including php files
-        $types = glob(__DIR__ . DIRECTORY_SEPARATOR . 'Driver' . DIRECTORY_SEPARATOR . '*.php');
+        // Canonical built-ins from backend registry
+        $types = array_keys(BackendRegistry::driverClassMap());
 
         // Loop through the types and find the ones that are available
         foreach ($types as $type) {
-            // Get just the file name
-            $type = basename($type);
-
-            // Derive the class name from the type
-            $class = __NAMESPACE__ . '\\Driver\\' . str_ireplace('.php', '', ucfirst(trim($type)));
+            $class = BackendRegistry::resolveDriverClassFor($type);
 
             // If the class doesn't exist...these are not the droids you're looking for...
-            if (!class_exists($class)) {
+            if (!$class || !class_exists($class)) {
                 continue;
             }
 
             // Our class exists, so now we just need to know if it passes it's test method
             if (call_user_func_array(array($class, 'test'), array())) {
-                // Connector names should not have file extensions
-                $connectors[] = str_ireplace('.php', '', $type);
+                // Preserve historical connector naming style (ucfirst)
+                $connectors[] = ucfirst($type);
             }
         }
 
@@ -2728,7 +2733,7 @@ abstract class Driver implements LoggerAwareInterface
         // Translate zero-date default to NULL
         if (
             array_key_exists('default', $modifiers)
-            && \Hubzero\Database\Driver\Sql::isZeroDate($modifiers['default'])
+            && \Hubzero\Database\Drivers\Base\BaseSqlDriver::isZeroDate($modifiers['default'])
         ) {
             $modifiers['nullable'] = true;
             $modifiers['default'] = null;
@@ -2921,7 +2926,7 @@ abstract class Driver implements LoggerAwareInterface
      * ALTER TABLE, and other schema operations. Each driver returns its
      * appropriate grammar implementation.
      *
-     * @return  \Hubzero\Database\Schema\Grammar
+     * @return  \Hubzero\Database\Drivers\Base\BaseSchemaGrammar
      */
     abstract public function getSchemaGrammar();
 }

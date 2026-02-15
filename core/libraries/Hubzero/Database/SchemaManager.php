@@ -466,6 +466,7 @@ class SchemaManager
         $databaseName = $this->driver->getDatabase();
         $tableList = $this->driver->getTableList();
         $tables = [];
+        $firstIncludedTable = '';
 
         foreach ($tableList as $tableName) {
             // Filter by prefix if specified
@@ -478,6 +479,9 @@ class SchemaManager
                 continue;
             }
 
+            if ($firstIncludedTable === '') {
+                $firstIncludedTable = $tableName;
+            }
             $tables[] = $this->introspectTable($tableName);
         }
 
@@ -486,8 +490,7 @@ class SchemaManager
         $collation = null;
         try {
             // Use first table name or empty string for drivers that require an argument
-            $firstTable = !empty($tableNames) ? $tableNames[0] : '';
-            $charset = $this->driver->getCharacterSet($firstTable) ?: null;
+            $charset = $this->driver->getCharacterSet($firstIncludedTable) ?: null;
             $collation = $this->driver->getCollation() ?: null;
         } catch (\Throwable $e) {
             // Some drivers may not support these methods

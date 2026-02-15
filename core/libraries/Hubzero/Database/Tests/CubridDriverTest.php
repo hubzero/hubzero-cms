@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Cubrid;
+use Hubzero\Database\Drivers\Cubrid\CubridDriver as Cubrid;
 
 /**
  * CUBRID-specific driver tests
@@ -38,7 +38,7 @@ class CubridDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(Driver $driver): void
     {
-        if (get_class($driver) !== Cubrid::class) {
+        if (!($driver instanceof Cubrid)) {
             return;
         }
 
@@ -109,7 +109,7 @@ class CubridDriverTest extends AbstractDriverTestCase
 
     private function requiresCubrid(Driver $driver): bool
     {
-        if (get_class($driver) !== Cubrid::class) {
+        if (!($driver instanceof Cubrid)) {
             $this->assertTrue(true);
             return false;
         }
@@ -129,7 +129,7 @@ class CubridDriverTest extends AbstractDriverTestCase
         ];
 
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Cubrid::class) {
+            if (!($driver instanceof Cubrid)) {
                 continue;
             }
             foreach ($adHocViews as $view) {
@@ -150,7 +150,7 @@ class CubridDriverTest extends AbstractDriverTestCase
     public static function tearDownAfterClass(): void
     {
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Cubrid::class) {
+            if (!($driver instanceof Cubrid)) {
                 continue;
             }
             try {
@@ -176,7 +176,7 @@ class CubridDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $this->assertSame(Cubrid::class, get_class($driver));
+        $this->assertInstanceOf(Cubrid::class, $driver);
     }
 
     #[Test]

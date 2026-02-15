@@ -533,6 +533,13 @@ class SchemaSnapshot
      */
     protected function getDriverName(): string
     {
+        if (method_exists($this->driver, 'getDriverType')) {
+            $name = strtolower((string) $this->driver->getDriverType());
+            if ($name !== '' && $name !== 'unknown') {
+                return $name;
+            }
+        }
+
         $class = get_class($this->driver);
         $parts = explode('\\', $class);
         return strtolower(end($parts));

@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Mysql;
+use Hubzero\Database\Drivers\Mysql\MysqlDriver as Mysql;
 
 /**
  * MySQL-specific driver tests
@@ -109,7 +109,7 @@ class MysqlDriverTest extends AbstractDriverTestCase
      */
     private static function isMysqlOnly(Driver $driver): bool
     {
-        return get_class($driver) === Mysql::class;
+        return strtolower((string) $driver->getDriverType()) === 'mysql';
     }
 
     private function requiresMysql(Driver $driver): bool

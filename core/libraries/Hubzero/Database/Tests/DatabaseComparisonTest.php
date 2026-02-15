@@ -75,16 +75,9 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
             ->string('title', 255)->nullable()
             ->execute();
 
-        // Introspect current state
-        $currentSchema = $schema->introspectDatabase();
-
-        // Filter to only our test tables
-        $testTables = [];
-        foreach ($currentSchema->getTables() as $table) {
-            if (strpos($table->getName(), 'dbdiff_') === 0) {
-                $testTables[] = $table->toArray();
-            }
-        }
+        // Introspect only our test tables to avoid unrelated fixture drift.
+        $currentSchema = $schema->introspectDatabase('dbdiff_');
+        $testTables = array_map(static fn($table) => $table->toArray(), $currentSchema->getTables());
 
         $schema1 = new DatabaseInfo([
             'name' => 'test_db',
@@ -102,14 +95,9 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
             ->addColumn('email', 'string', ['length' => 255, 'nullable' => true])
             ->execute();
 
-        // Introspect new state
-        $currentSchema2 = $schema->introspectDatabase();
-        $testTables2 = [];
-        foreach ($currentSchema2->getTables() as $table) {
-            if (strpos($table->getName(), 'dbdiff_') === 0) {
-                $testTables2[] = $table->toArray();
-            }
-        }
+        // Introspect only our test tables to avoid unrelated fixture drift.
+        $currentSchema2 = $schema->introspectDatabase('dbdiff_');
+        $testTables2 = array_map(static fn($table) => $table->toArray(), $currentSchema2->getTables());
 
         $schema2 = new DatabaseInfo([
             'name' => 'test_db',
@@ -220,17 +208,9 @@ class DatabaseComparisonTest extends AbstractDriverTestCase
             ],
         ]);
 
-        // Compare current database to target
-        // Note: We need to filter since introspectDatabase gets all tables
-        $currentSchema = $schema->introspectDatabase();
-
-        // Build filtered schema with just our test tables
-        $testTables = [];
-        foreach ($currentSchema->getTables() as $table) {
-            if ($table->getName() === 'dbdiff_users') {
-                $testTables[] = $table->toArray();
-            }
-        }
+        // Compare current database to target using only dbdiff_* tables.
+        $currentSchema = $schema->introspectDatabase('dbdiff_');
+        $testTables = array_map(static fn($table) => $table->toArray(), $currentSchema->getTables());
 
         $filteredCurrent = new DatabaseInfo([
             'name' => 'test_db',

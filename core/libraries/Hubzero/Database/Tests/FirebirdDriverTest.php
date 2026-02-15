@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Firebird;
+use Hubzero\Database\Drivers\Firebird\FirebirdDriver as Firebird;
 
 /**
  * Firebird-specific driver tests
@@ -36,7 +36,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(Driver $driver): void
     {
-        if (get_class($driver) !== Firebird::class) {
+        if (!($driver instanceof Firebird)) {
             return;
         }
 
@@ -108,7 +108,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
      */
     private function requiresFirebird(Driver $driver): bool
     {
-        if (get_class($driver) !== Firebird::class) {
+        if (!($driver instanceof Firebird)) {
             $this->assertTrue(true);
             return false;
         }
@@ -137,7 +137,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
         $migViews = ['MIG_TEST_VIEW_CRE', 'MIG_REPLACE_VIEW', 'MIG_EXISTS_VIEW', 'MIG_DROP_VIEW'];
 
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Firebird::class) {
+            if (!($driver instanceof Firebird)) {
                 continue;
             }
             foreach ($migViews as $view) {
@@ -165,7 +165,7 @@ class FirebirdDriverTest extends AbstractDriverTestCase
     {
         // Drop views before parent drops the base tables they depend on
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Firebird::class) {
+            if (!($driver instanceof Firebird)) {
                 continue;
             }
             try {

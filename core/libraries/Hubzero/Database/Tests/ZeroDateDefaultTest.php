@@ -11,7 +11,7 @@ namespace Hubzero\Database\Tests;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Sql as SqlDriver;
+use Hubzero\Database\Drivers\Base\BaseSqlDriver as SqlDriver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Schema\Column;
 use Hubzero\Database\Schema\ColumnDefinitionTrait;

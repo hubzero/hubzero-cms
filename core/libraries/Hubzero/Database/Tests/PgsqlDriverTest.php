@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Pgsql;
+use Hubzero\Database\Drivers\Pgsql\PgsqlDriver as Pgsql;
 
 /**
  * PostgreSQL-specific driver tests
@@ -36,7 +36,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(Driver $driver): void
     {
-        if (get_class($driver) !== Pgsql::class) {
+        if (!($driver instanceof Pgsql)) {
             return;
         }
 
@@ -106,7 +106,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
      */
     private function requiresPgsql(Driver $driver): bool
     {
-        if (get_class($driver) !== Pgsql::class) {
+        if (!($driver instanceof Pgsql)) {
             $this->assertTrue(true);
             return false;
         }
@@ -128,7 +128,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
         $adHocSequences = ['pg_test_seq'];
 
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Pgsql::class) {
+            if (!($driver instanceof Pgsql)) {
                 continue;
             }
             foreach ($adHocViews as $view) {
@@ -156,7 +156,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
     {
         // Drop views before parent drops the base tables they depend on
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Pgsql::class) {
+            if (!($driver instanceof Pgsql)) {
                 continue;
             }
             try {
@@ -180,7 +180,7 @@ class PgsqlDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $this->assertSame(Pgsql::class, get_class($driver));
+        $this->assertInstanceOf(Pgsql::class, $driver);
     }
 
     #[Test]

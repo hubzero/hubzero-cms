@@ -12,8 +12,8 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Mock;
-use Hubzero\Database\Driver\Sqlite;
+use Hubzero\Database\Drivers\Mock\MockDriver;
+use Hubzero\Database\Drivers\Sqlite\SqliteDriver;
 use Hubzero\Database\Query;
 
 /**
@@ -41,7 +41,7 @@ class MockDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(Driver $driver): void
     {
-        if (get_class($driver) !== Mock::class) {
+        if (!($driver instanceof MockDriver)) {
             return;
         }
 
@@ -132,7 +132,7 @@ class MockDriverTest extends AbstractDriverTestCase
 
     private function requiresMock(Driver $driver): bool
     {
-        if (get_class($driver) !== Mock::class) {
+        if (!($driver instanceof MockDriver)) {
             $this->assertTrue(true);
             return false;
         }
@@ -148,7 +148,7 @@ class MockDriverTest extends AbstractDriverTestCase
         ];
 
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Mock::class) {
+            if (!($driver instanceof MockDriver)) {
                 continue;
             }
             foreach ($adHocTables as $table) {
@@ -174,8 +174,8 @@ class MockDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $this->assertSame(Mock::class, get_class($driver));
-        $this->assertInstanceOf(Sqlite::class, $driver);
+        $this->assertInstanceOf(MockDriver::class, $driver);
+        $this->assertInstanceOf(SqliteDriver::class, $driver);
     }
 
     #[Test]
@@ -189,9 +189,9 @@ class MockDriverTest extends AbstractDriverTestCase
         }
 
         // Mock is a subclass of Sqlite, not Sqlite itself
-        $this->assertNotEquals(
-            Sqlite::class,
-            get_class($driver)
+        $this->assertNotSame(
+            SqliteDriver::class,
+            $driver::class
         );
     }
 
@@ -206,7 +206,7 @@ class MockDriverTest extends AbstractDriverTestCase
         }
 
         // Create a new Mock with arbitrary options — all should be ignored
-        $mock = new Mock([
+        $mock = new MockDriver([
             'database' => '/tmp/should_be_ignored.db',
             'host'     => 'should.be.ignored',
             'user'     => 'nobody',
@@ -551,7 +551,7 @@ class MockDriverTest extends AbstractDriverTestCase
         $this->assertTrue($driver->tableExists('mk_categories'));
 
         // A brand new Mock instance should have an empty database
-        $fresh = new Mock();
+        $fresh = new MockDriver();
         $this->assertFalse($fresh->tableExists('mk_categories'));
     }
 
@@ -565,8 +565,8 @@ class MockDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $mockA = new Mock();
-        $mockB = new Mock();
+        $mockA = new MockDriver();
+        $mockB = new MockDriver();
 
         // Create table in A only
         $mockA->exec(

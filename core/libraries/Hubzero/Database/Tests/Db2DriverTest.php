@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Db2;
+use Hubzero\Database\Drivers\Db2\Db2Driver as Db2;
 use Hubzero\Database\Query;
 
 /**

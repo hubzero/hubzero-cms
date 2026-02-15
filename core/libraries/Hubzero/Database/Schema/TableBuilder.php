@@ -120,7 +120,7 @@ class TableBuilder
     /**
      * Get the schema grammar instance for DDL generation
      *
-     * @return \Hubzero\Database\Schema\Grammar
+     * @return \Hubzero\Database\Drivers\Base\BaseSchemaGrammar
      */
     protected function getGrammar()
     {

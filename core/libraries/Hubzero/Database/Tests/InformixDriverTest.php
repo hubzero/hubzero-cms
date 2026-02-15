@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Hubzero\Database\Driver;
-use Hubzero\Database\Driver\Informix;
+use Hubzero\Database\Drivers\Informix\InformixDriver as Informix;
 use Hubzero\Database\Query;
 
 /**
@@ -37,7 +37,7 @@ class InformixDriverTest extends AbstractDriverTestCase
 
     protected static function setUpDatabase(Driver $driver): void
     {
-        if (get_class($driver) !== Informix::class) {
+        if (!($driver instanceof Informix)) {
             return;
         }
 
@@ -108,7 +108,7 @@ class InformixDriverTest extends AbstractDriverTestCase
      */
     private function requiresInformix(Driver $driver): bool
     {
-        if (get_class($driver) !== Informix::class) {
+        if (!($driver instanceof Informix)) {
             $this->assertTrue(true);
             return false;
         }
@@ -130,7 +130,7 @@ class InformixDriverTest extends AbstractDriverTestCase
         $adHocSequences = ['ix_test_seq'];
 
         foreach (static::getClassDrivers() as $driver) {
-            if (get_class($driver) !== Informix::class) {
+            if (!($driver instanceof Informix)) {
                 continue;
             }
             foreach ($adHocViews as $view) {
@@ -273,7 +273,7 @@ class InformixDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        $this->assertSame(Informix::class, get_class($driver));
+        $this->assertInstanceOf(Informix::class, $driver);
     }
 
     #[Test]
