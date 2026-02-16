@@ -24,8 +24,7 @@ class Page extends Relational
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_namespace = 'resource';
+    protected $namespace = 'resource';
 
     /**
      * Default order by for model

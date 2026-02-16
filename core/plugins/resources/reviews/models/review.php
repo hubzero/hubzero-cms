@@ -38,8 +38,7 @@ class Review extends Relational
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_namespace = 'resource';
+    protected $namespace = 'resource';
 
     /**
      * The table to which the class pertains
