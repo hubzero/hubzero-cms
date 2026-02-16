@@ -17,11 +17,18 @@ use Hubzero\Config\Exception\FileNotFoundException;
 class Legacy extends Registry
 {
     /**
-     * The current client type (admin, site, api, etc).
+     * Root path for path rewriting.
      *
-     * @var  string
+     * @var  string|null
      */
-    protected $path;
+    protected $rootPath;
+
+    /**
+     * App path for path rewriting.
+     *
+     * @var  string|null
+     */
+    protected $appPath;
 
     /**
      * The current client type (admin, site, api, etc).
@@ -130,22 +137,23 @@ class Legacy extends Registry
     /**
      * Create a new configuration repository.
      *
-     * @param   string  $path
+     * @param   string  $path      Path to configuration directory
+     * @param   string  $rootPath  Root path for path rewriting (optional)
+     * @param   string  $appPath   App path for path rewriting (optional)
      * @return  void
      */
-    public function __construct($path = null)
+    public function __construct($path = null, $rootPath = null, $appPath = null)
     {
         $this->reset();
 
-        if (!$path) {
-            $path = defined('PATH_ROOT') ? PATH_ROOT : __DIR__;
-        }
+        $this->rootPath = $rootPath;
+        $this->appPath = $appPath;
 
         $this->file = $path . DIRECTORY_SEPARATOR . 'configuration.php';
 
         if ($this->exists()) {
             $data = $this->read($this->file);
-            $data = \Hubzero\Utility\Arr::fromObject($data);
+            $data = json_decode(json_encode($data), true);
 
             $config = array();
 
@@ -197,16 +205,16 @@ class Legacy extends Registry
 
         $config = new \JConfig();
 
-        if (defined('PATH_ROOT') && defined('PATH_APP')) {
+        if ($this->rootPath && $this->appPath) {
             if (isset($config->tmp_path)) {
-                if (substr($config->tmp_path, strlen(PATH_ROOT)) == DIRECTORY_SEPARATOR . 'tmp') {
-                    $config->tmp_path = PATH_APP . substr($config->tmp_path, strlen(PATH_ROOT));
+                if (substr($config->tmp_path, strlen($this->rootPath)) == DIRECTORY_SEPARATOR . 'tmp') {
+                    $config->tmp_path = $this->appPath . substr($config->tmp_path, strlen($this->rootPath));
                 }
             }
 
             if (isset($config->log_path)) {
-                if (substr($config->log_path, strlen(PATH_ROOT)) == DIRECTORY_SEPARATOR . 'logs') {
-                    $config->log_path = PATH_APP . substr($config->log_path, strlen(PATH_ROOT));
+                if (substr($config->log_path, strlen($this->rootPath)) == DIRECTORY_SEPARATOR . 'logs') {
+                    $config->log_path = $this->appPath . substr($config->log_path, strlen($this->rootPath));
                 }
             }
         }
@@ -225,8 +233,10 @@ class Legacy extends Registry
     {
         $format = $format ?: 'php';
         if (!$path) {
-            $path  = defined('PATH_ROOT') ? PATH_ROOT : __DIR__;
-            $path .= DIRECTORY_SEPARATOR . 'config';
+            if (!$this->rootPath) {
+                throw new \InvalidArgumentException('Path is required for split operation');
+            }
+            $path = $this->rootPath . DIRECTORY_SEPARATOR . 'config';
         }
 
         $writer = new FileWriter(

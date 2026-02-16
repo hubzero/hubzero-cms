@@ -8,13 +8,13 @@
 
 namespace Hubzero\Config\Tests;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Config\Legacy;
 
 /**
  * Legacy tests
  */
-class LegacyTest extends Basic
+class LegacyTest extends TestCase
 {
     /**
      * Tests reading an invalid file path
@@ -86,5 +86,25 @@ class LegacyTest extends Basic
         $this->assertIsString($file->log_path);
         $this->assertNotEmpty($file->tmp_path);
         $this->assertNotEmpty($file->log_path);
+    }
+
+    /**
+     * Tests that read() rewrites paths if rootPath and appPath are provided
+     *
+     * @return  void
+     **/
+    public function testReadRewritesPaths()
+    {
+        $path = __DIR__ . '/Files';
+        // These match the paths in Files/Legacy/configuration.php
+        $rootPath = '/var/www/hub';
+        $appPath = '/custom/app/path';
+
+        $loader = new Legacy($path, $rootPath, $appPath);
+
+        $config = $loader->read($path . '/Legacy/configuration.php');
+
+        $this->assertEquals('/custom/app/path/logs', $config->log_path);
+        $this->assertEquals('/custom/app/path/tmp', $config->tmp_path);
     }
 }
