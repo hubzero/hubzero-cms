@@ -86,9 +86,7 @@ class Helper extends Module
             $query->select('metakey');
             $query->from('#__content');
             $query->where('id', '=', (int) $id);
-            $db->setQuery($query);
-
-            if ($metakey = trim($db->loadResult())) {
+            if ($metakey = trim((string) $query->value('metakey'))) {
                 // Explode the meta keys on a comma
                 $keys  = explode(',', $metakey);
                 $likes = array();
@@ -106,7 +104,7 @@ class Helper extends Module
                     $query->clear();
                     $query->select('a.id');
                     $query->select('a.title');
-                    $query->select('DATE_FORMAT(a.created, "%Y-%m-%d") as created');
+                    $query->select($db->sqlDateFormat('a.created', '%Y-%m-%d') . ' as created');
                     $query->select('a.catid');
                     $query->select('a.language');
                     $query->select('cc.access AS cat_access');
@@ -164,9 +162,7 @@ class Helper extends Module
                         );
                     }
 
-                    $db->setQuery($query);
-                    $qstring = $db->getQuery();
-                    $temp = $db->loadObjectList();
+                    $temp = $query->fetch();
 
                     if (count($temp)) {
                         foreach ($temp as $row) {

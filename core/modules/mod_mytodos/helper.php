@@ -30,14 +30,17 @@ class Helper extends Module
         if (!User::isGuest()) {
             $database = App::get('db');
             $limit = intval($this->params->get('limit', 10));
-            $database->setQuery(
-                "SELECT a.id, a.content, b.title, b.alias
-                FROM `#__project_todo` a
-                INNER JOIN `#__projects` b ON b.id=a.projectid
-                WHERE a.assigned_to=" . $database->escape(User::get('id')) .
-                " AND a.state=0 LIMIT 0, " . $limit
-            );
-            $this->rows = $database->loadObjectList();
+            $this->rows = $database->getQuery()
+                ->select('a.id')
+                ->select('a.content')
+                ->select('b.title')
+                ->select('b.alias')
+                ->from('#__project_todo', 'a')
+                ->joinRaw('#__projects AS b', 'b.id = a.projectid', 'inner')
+                ->whereEquals('a.assigned_to', (int) User::get('id'))
+                ->whereEquals('a.state', 0)
+                ->limit($limit)
+                ->fetch();
         }
 
         // Push the module CSS to the template
