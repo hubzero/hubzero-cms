@@ -20,133 +20,64 @@ class Migration20140818161500ComWishlist extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__wishlist_vote')) {
-            $query = "ALTER TABLE `#__wishlist_vote`
-					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
-					CHANGE `wishid` `wishid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
-					CHANGE `userid` `userid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
-					CHANGE `importance` `importance` INT(3)  UNSIGNED  NOT NULL  DEFAULT '0',
-					CHANGE `effort` `effort` INT(3)  NOT NULL  DEFAULT '0'
-			;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__wishlist_vote', 'jos_wishlist_vote_wishid_idx')) {
-                $query = "ALTER TABLE `#__wishlist_vote` DROP INDEX `jos_wishlist_vote_wishid_idx`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__wishlist_vote', 'idx_wishid')) {
-                $query = "ALTER TABLE `#__wishlist_vote` ADD INDEX `idx_wishid` (`wishid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__wishlist_vote', 'idx_userid')) {
-                $query = "ALTER TABLE `#__wishlist_vote` ADD INDEX `idx_userid` (`userid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wishlist_vote')) {
+            // Standardize column types
+            $schema->alterTable('#__wishlist_vote')
+                ->modifyInteger('id', true)->notNull()->autoIncrement()
+                ->modifyInteger('wishid', true)->notNull()->default(0)
+                ->modifyInteger('userid', true)->notNull()->default(0)
+                ->modifyInteger('importance', true)->notNull()->default(0)
+                ->modifyInteger('effort')->notNull()->default(0)
+                ->dropIndex('jos_wishlist_vote_wishid_idx')
+                ->addIndex('idx_wishid', 'wishid')
+                ->addIndex('idx_userid', 'userid')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__wishlist_owners')) {
-            $query = "ALTER TABLE `#__wishlist_owners`
-					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
-					CHANGE `wishlist` `wishlist` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
-					CHANGE `userid` `userid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
-					CHANGE `type` `type` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'
-			;";
-            $this->db->setQuery($query);
-            $this->db->query();
-
-            if (!$this->db->tableHasKey('#__wishlist_owners', 'idx_wishlist')) {
-                $query = "ALTER TABLE `#__wishlist_owners` ADD INDEX `idx_wishlist` (`wishlist`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__wishlist_owners', 'idx_userid')) {
-                $query = "ALTER TABLE `#__wishlist_owners` ADD INDEX `idx_userid` (`userid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__wishlist_owners', 'idx_type')) {
-                $query = "ALTER TABLE `#__wishlist_owners` ADD INDEX `idx_type` (`type`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wishlist_owners')) {
+            // Standardize column types
+            $schema->alterTable('#__wishlist_owners')
+                ->modifyInteger('id', true)->notNull()->autoIncrement()
+                ->modifyInteger('wishlist', true)->notNull()->default(0)
+                ->modifyInteger('userid', true)->notNull()->default(0)
+                ->modifyInteger('type', true)->notNull()->default(0)
+                ->addIndex('idx_wishlist', 'wishlist')
+                ->addIndex('idx_userid', 'userid')
+                ->addIndex('idx_type', 'type')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__wishlist_ownergroups')) {
-            $query = "ALTER TABLE `#__wishlist_ownergroups`
-					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
-					CHANGE `wishlist` `wishlist` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
-					CHANGE `groupid` `groupid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'
-			;";
-            $this->db->setQuery($query);
-            $this->db->query();
-
-            if (!$this->db->tableHasKey('#__wishlist_ownergroups', 'idx_wishlist')) {
-                $query = "ALTER TABLE `#__wishlist_ownergroups` ADD INDEX `idx_wishlist` (`wishlist`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__wishlist_ownergroups', 'idx_groupid')) {
-                $query = "ALTER TABLE `#__wishlist_ownergroups` ADD INDEX `idx_groupid` (`groupid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wishlist_ownergroups')) {
+            // Standardize column types
+            $schema->alterTable('#__wishlist_ownergroups')
+                ->modifyInteger('id', true)->notNull()->autoIncrement()
+                ->modifyInteger('wishlist', true)->notNull()->default(0)
+                ->modifyInteger('groupid', true)->notNull()->default(0)
+                ->addIndex('idx_wishlist', 'wishlist')
+                ->addIndex('idx_groupid', 'groupid')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__wishlist_implementation')) {
-            if (!$this->db->tableHasKey('#__wishlist_implementation', 'idx_wishid')) {
-                $query = "ALTER TABLE `#__wishlist_implementation` ADD INDEX `idx_wishid` (`wishid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__wishlist_implementation', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__wishlist_implementation` ADD INDEX `idx_created_by` (`created_by`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__wishlist_implementation', 'idx_approved')) {
-                $query = "ALTER TABLE `#__wishlist_implementation` ADD INDEX `idx_approved` (`approved`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wishlist_implementation')) {
+            $schema->alterTable('#__wishlist_implementation')
+                ->addIndex('idx_wishid', 'wishid')
+                ->addIndex('idx_created_by', 'created_by')
+                ->addIndex('idx_approved', 'approved')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__wishlist')) {
-            if (!$this->db->tableHasKey('#__wishlist', 'idx_category_referenceid')) {
-                $query = "ALTER TABLE `#__wishlist` ADD INDEX `idx_category_referenceid` (`category`, `referenceid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__wishlist', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__wishlist` ADD INDEX `idx_created_by` (`created_by`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__wishlist', 'idx_state')) {
-                $query = "ALTER TABLE `#__wishlist` ADD INDEX `idx_state` (`state`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wishlist')) {
+            $schema->alterTable('#__wishlist')
+                ->addIndex('idx_category_referenceid', ['category', 'referenceid'])
+                ->addIndex('idx_created_by', 'created_by')
+                ->addIndex('idx_state', 'state')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__wish_attachments')) {
-            if (!$this->db->tableHasKey('#__wish_attachments', 'idx_wish')) {
-                $query = "ALTER TABLE `#__wish_attachments` ADD INDEX `idx_wish` (`wish`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wish_attachments')) {
+            $schema->addIndex('#__wish_attachments', 'idx_wish', 'wish');
         }
     }
 
@@ -155,100 +86,46 @@ class Migration20140818161500ComWishlist extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__wishlist_vote')) {
-            if ($this->db->tableHasKey('#__wishlist_vote', 'idx_wishid')) {
-                $query = "ALTER TABLE `#__wishlist_vote` DROP INDEX `idx_wishid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__wishlist_vote', 'idx_userid')) {
-                $query = "ALTER TABLE `#__wishlist_vote` DROP INDEX `idx_userid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wishlist_vote')) {
+            $schema->dropIndex('#__wishlist_vote', 'idx_wishid');
+
+            $schema->dropIndex('#__wishlist_vote', 'idx_userid');
         }
 
-        if ($this->db->tableExists('#__wishlist_owner')) {
-            if ($this->db->tableHasKey('#__wishlist_owner', 'idx_wishlist')) {
-                $query = "ALTER TABLE `#__wishlist_owner` DROP INDEX `idx_wishlist`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wishlist_owner')) {
+            $schema->dropIndex('#__wishlist_owner', 'idx_wishlist');
 
-            if ($this->db->tableHasKey('#__wishlist_owner', 'idx_userid')) {
-                $query = "ALTER TABLE `#__wishlist_owner` DROP INDEX `idx_userid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__wishlist_owner', 'idx_userid');
 
-            if ($this->db->tableHasKey('#__wishlist_owner', 'idx_type')) {
-                $query = "ALTER TABLE `#__wishlist_owner` DROP INDEX `idx_type`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__wishlist_owner', 'idx_type');
         }
 
-        if ($this->db->tableExists('#__wishlist_ownergroups')) {
-            if ($this->db->tableHasKey('#__wishlist_ownergroups', 'idx_wishlist')) {
-                $query = "ALTER TABLE `#__wishlist_ownergroups` DROP INDEX `idx_wishlist`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wishlist_ownergroups')) {
+            $schema->dropIndex('#__wishlist_ownergroups', 'idx_wishlist');
 
-            if ($this->db->tableHasKey('#__wishlist_ownergroups', 'idx_groupid')) {
-                $query = "ALTER TABLE `#__wishlist_ownergroups` DROP INDEX `idx_groupid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__wishlist_ownergroups', 'idx_groupid');
         }
 
-        if ($this->db->tableExists('#__wishlist_implementation')) {
-            if ($this->db->tableHasKey('#__wishlist_implementation', 'idx_wishid')) {
-                $query = "ALTER TABLE `#__wishlist_implementation` DROP INDEX `idx_wishid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wishlist_implementation')) {
+            $schema->dropIndex('#__wishlist_implementation', 'idx_wishid');
 
-            if ($this->db->tableHasKey('#__wishlist_implementation', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__wishlist_implementation` DROP INDEX `idx_created_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__wishlist_implementation', 'idx_created_by');
 
-            if ($this->db->tableHasKey('#__wishlist_implementation', 'idx_approved')) {
-                $query = "ALTER TABLE `#__wishlist_implementation` DROP INDEX `idx_approved`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__wishlist_implementation', 'idx_approved');
         }
 
-        if ($this->db->tableExists('#__wishlist')) {
-            if ($this->db->tableHasKey('#__wishlist', 'idx_category_referenceid')) {
-                $query = "ALTER TABLE `#__wishlist` DROP INDEX `idx_category_referenceid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wishlist')) {
+            $schema->dropIndex('#__wishlist', 'idx_category_referenceid');
 
-            if ($this->db->tableHasKey('#__wishlist', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__wishlist` DROP INDEX `idx_created_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__wishlist', 'idx_created_by');
 
-            if ($this->db->tableHasKey('#__wishlist', 'idx_state')) {
-                $query = "ALTER TABLE `#__wishlist` DROP INDEX `idx_state`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__wishlist', 'idx_state');
         }
 
-        if ($this->db->tableExists('#__wish_attachments')) {
-            if ($this->db->tableHasKey('#__wish_attachments', 'idx_wish')) {
-                $query = "ALTER TABLE `#__wish_attachments` DROP INDEX `idx_wish`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wish_attachments')) {
+            $schema->dropIndex('#__wish_attachments', 'idx_wish');
         }
     }
 }

@@ -21,30 +21,16 @@ class Migration20170913133847Core extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__activity_recipients')
-            && $this->db->tableHasKey('#__activity_recipients', 'idx_user_id')
-        ) {
-            $query = "ALTER TABLE `#__activity_recipients` DROP KEY `idx_user_id`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "ALTER TABLE `#__activity_recipients` ADD INDEX `idx_scope_scope_id` (`scope`, `scope_id`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__activity_recipients')) {
+            $schema->dropIndex('#__activity_recipients', 'idx_user_id');
+            $schema->addIndex('#__activity_recipients', 'idx_scope_scope_id', ['scope', 'scope_id']);
         }
 
-        if (
-            $this->db->tableExists('#__activity_digests')
-            && $this->db->tableHasKey('#__activity_digests', 'idx_user_id')
-        ) {
-            $query = "ALTER TABLE `#__activity_digests` DROP KEY `idx_user_id`";
-            $this->db->setQuery($query);
-            $this->db->query();
-
-            $query = "ALTER TABLE `#__activity_digests` ADD INDEX `idx_scope_scope_id` (`scope`, `scope_id`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__activity_digests')) {
+            $schema->dropIndex('#__activity_digests', 'idx_user_id');
+            $schema->addIndex('#__activity_digests', 'idx_scope_scope_id', ['scope', 'scope_id']);
         }
     }
 
@@ -53,30 +39,16 @@ class Migration20170913133847Core extends Base
      **/
     public function down()
     {
-        if (
-            $this->db->tableExists('#__activity_recipients')
-            && $this->db->tableHasKey('#__activity_recipients', 'idx_scope_scope_id')
-        ) {
-            $query = "ALTER TABLE `#__activity_recipients` DROP KEY `idx_scope_scope_id`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "ALTER TABLE `#__activity_recipients` ADD INDEX `idx_user_id` (`scope_id`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__activity_recipients')) {
+            $schema->dropIndex('#__activity_recipients', 'idx_scope_scope_id');
+            $schema->addIndex('#__activity_recipients', 'idx_user_id', 'scope_id');
         }
 
-        if (
-            $this->db->tableExists('#__activity_digests')
-            && $this->db->tableHasKey('#__activity_digests', 'idx_scope_scope_id')
-        ) {
-            $query = "ALTER TABLE `#__activity_digests` DROP KEY `idx_scope_scope_id`";
-            $this->db->setQuery($query);
-            $this->db->query();
-
-            $query = "ALTER TABLE `#__activity_digests` ADD INDEX `idx_user_id` (`scope_id`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__activity_digests')) {
+            $schema->dropIndex('#__activity_digests', 'idx_scope_scope_id');
+            $schema->addIndex('#__activity_digests', 'idx_user_id', 'scope_id');
         }
     }
 }

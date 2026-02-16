@@ -21,40 +21,61 @@ class Migration20140113135231ComSearch extends Base
      **/
     public function up()
     {
-        $query = "SELECT `extension_id` FROM `#__extensions` "
-            . "WHERE `type`='component' AND `element`='com_search' AND `protected`=1;";
+        $id = $this->db->getQuery(true)
+            ->select('extension_id')
+            ->from('#__extensions')
+            ->where('type', '=', 'component')
+            ->where('element', '=', 'search')
+            ->where('protected', '=', 1)
+            ->value('extension_id');
 
-        $this->db->setQuery($query);
-
-        if ($id = $this->db->loadResult()) {
+        if ($id) {
             $this->deleteComponentEntry('search');
 
             $this->deletePluginEntry('search');
 
-            $query = "UPDATE `#__extensions` SET `element`='com_search', `name`='Search' "
-                . "WHERE `type`='component' AND `element`='com_ysearch';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set([
+                    'element' => 'com_search',
+                    'name'    => 'Search'
+                ])
+                ->where('type', '=', 'component')
+                ->where('element', '=', 'com_ysearch')
+                ->execute();
 
-            $query = "UPDATE `#__menu` SET `title`='com_search', `alias`='search', `path`='search', "
-                . "`link`='index.php?option=com_search&task=configure' WHERE `title`='com_ysearch';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__menu')
+                ->set([
+                    'title' => 'com_search',
+                    'alias' => 'search',
+                    'path'  => 'search',
+                    'link'  => 'index.php?option=com_search&task=configure'
+                ])
+                ->where('title', '=', 'com_ysearch')
+                ->execute();
 
-            $query = "UPDATE `#__extensions` SET `folder`='search' WHERE `folder`='ysearch' AND `type`='plugin';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['folder' => 'search'])
+                ->where('folder', '=', 'ysearch')
+                ->where('type', '=', 'plugin')
+                ->execute();
 
-            $query = "SELECT `extension_id`, `name`, `element`, `folder` FROM `#__extensions` "
-                . "WHERE `type`='plugin' AND `folder`='search';";
-            $this->db->setQuery($query);
-            if ($results = $this->db->loadObjectList()) {
+            $results = $this->db->getQuery(true)
+                ->select(['extension_id', 'name', 'element', 'folder'])
+                ->from('#__extensions')
+                ->where('type', '=', 'plugin')
+                ->where('folder', '=', 'search')
+                ->loadObjectList();
+
+            if ($results) {
                 foreach ($results as $result) {
-                    $query = "UPDATE `#__extensions` SET `name`="
-                        . $this->db->quote('plg_' . $result->folder . '_' . $result->element)
-                        . " WHERE `extension_id`=" . $this->db->quote($result->extension_id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__extensions')
+                        ->set(['name' => 'plg_' . $result->folder . '_' . $result->element])
+                        ->where('extension_id', '=', (int)$result->extension_id)
+                        ->execute();
                 }
             }
         }
@@ -65,42 +86,67 @@ class Migration20140113135231ComSearch extends Base
      **/
     public function down()
     {
-        $query = "SELECT `extension_id` FROM `#__extensions` "
-            . "WHERE `type`='component' AND `element`='com_search' AND `protected`=0;";
+        $id = $this->db->getQuery(true)
+            ->select('extension_id')
+            ->from('#__extensions')
+            ->where('type', '=', 'component')
+            ->where('element', '=', 'com_search')
+            ->where('protected', '=', 0)
+            ->value('extension_id');
 
-        $this->db->setQuery($query);
+        if ($id) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set([
+                    'element' => 'com_ysearch',
+                    'name'    => 'YSearch'
+                ])
+                ->where('type', '=', 'component')
+                ->where('element', '=', 'com_search')
+                ->where('protected', '=', 0)
+                ->execute();
 
-        if ($id = $this->db->loadResult()) {
-            $query = "UPDATE `#__extensions` SET `element`='com_ysearch', `name`='YSearch' "
-                . "WHERE `type`='component' AND `element`='com_search' AND `protected`=0;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['folder' => 'ysearch'])
+                ->where('folder', '=', 'search')
+                ->where('type', '=', 'plugin')
+                ->execute();
 
-            $query = "UPDATE `#__extensions` SET `folder`='ysearch' WHERE `folder`='search' AND `type`='plugin';";
-            $this->db->setQuery($query);
-            $this->db->query();
-
-            $query = "UPDATE `#__menu` SET `title`='com_ysearch', `alias`='ysearch', `path`='ysearch', "
-                . "`link`='index.php?option=com_ysearch&task=configure' WHERE `title`='com_search';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__menu')
+                ->set([
+                    'title' => 'com_ysearch',
+                    'alias' => 'ysearch',
+                    'path'  => 'ysearch',
+                    'link'  => 'index.php?option=com_ysearch&task=configure'
+                ])
+                ->where('title', '=', 'com_search')
+                ->execute();
 
             $this->addComponentEntry('search');
 
-            $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='component' AND `element`='com_search';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['protected' => 1])
+                ->where('type', '=', 'component')
+                ->where('element', '=', 'com_search')
+                ->execute();
 
-            $query = "SELECT `extension_id`, `name`, `element`, `folder` FROM `#__extensions` "
-                . "WHERE `type`='plugin' AND `folder`='ysearch';";
-            $this->db->setQuery($query);
-            if ($results = $this->db->loadObjectList()) {
+            $results = $this->db->getQuery(true)
+                ->select(['extension_id', 'name', 'element', 'folder'])
+                ->from('#__extensions')
+                ->where('type', '=', 'plugin')
+                ->where('folder', '=', 'ysearch')
+                ->loadObjectList();
+
+            if ($results) {
                 foreach ($results as $result) {
-                    $query = "UPDATE `#__extensions` SET `name`="
-                        . $this->db->quote('plg_' . $result->folder . '_' . $result->element)
-                        . " WHERE `extension_id`=" . $this->db->quote($result->extension_id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__extensions')
+                        ->set(['name' => 'plg_' . $result->folder . '_' . $result->element])
+                        ->where('extension_id', '=', (int)$result->extension_id)
+                        ->execute();
                 }
             }
         }

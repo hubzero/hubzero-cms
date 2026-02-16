@@ -21,30 +21,28 @@ class Migration20141112142733ComCourses extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__courses')) {
-            if (!$this->db->tableHasField('#__courses', 'length')) {
-                $query = "ALTER TABLE `#__courses` ADD `length` VARCHAR(255) NULL  DEFAULT NULL;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__courses')) {
+            if (!$schema->hasColumn('#__courses', 'length')) {
+                $schema->addColumn('#__courses', 'length')
+                    ->string(255)
+                    ->nullable()
+                    ->default(null)
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__courses', 'effort')) {
-                $query = "ALTER TABLE `#__courses` ADD `effort` VARCHAR(255) NULL  DEFAULT NULL;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__courses', 'effort')) {
+                $schema->addColumn('#__courses', 'effort')
+                    ->string(255)
+                    ->nullable()
+                    ->default(null)
+                    ->execute();
             }
 
-            if ($this->db->tableHasKey('#__courses', 'jos_xgroups_cn_description_public_desc_ftidx')) {
-                $query = "ALTER TABLE `#__courses` DROP INDEX `jos_xgroups_cn_description_public_desc_ftidx`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__courses', 'jos_xgroups_cn_description_public_desc_ftidx');
 
-            if (!$this->db->tableHasKey('#__courses', 'ftidx_alias_title_blurb')) {
-                $query = "ALTER TABLE `#__courses` ADD FULLTEXT `ftidx_alias_title_blurb` (`alias`, `title`, `blurb`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addFulltextIndex('#__courses', 'ftidx_alias_title_blurb', ['alias', 'title', 'blurb']);
         }
     }
 
@@ -53,17 +51,15 @@ class Migration20141112142733ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__courses')) {
-            if ($this->db->tableHasField('#__courses', 'length')) {
-                $query = "ALTER TABLE `#__courses` DROP `length`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__courses')) {
+            if ($schema->hasColumn('#__courses', 'length')) {
+                $schema->dropColumn('#__courses', 'length');
             }
 
-            if ($this->db->tableHasField('#__courses', 'effort')) {
-                $query = "ALTER TABLE `#__courses` DROP `effort`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__courses', 'effort')) {
+                $schema->dropColumn('#__courses', 'effort');
             }
         }
     }

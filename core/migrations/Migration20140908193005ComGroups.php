@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for adding nested pages & comments
@@ -21,40 +22,37 @@ class Migration20140908193005ComGroups extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // add parent
-        if (!$this->db->tableHasField('#__xgroups_pages', 'parent')) {
-            $query = "ALTER TABLE `#__xgroups_pages` ADD COLUMN `parent` INT(11) DEFAULT 0 AFTER `gidNumber`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups_pages', 'parent')) {
+            $schema->addColumn('#__xgroups_pages', 'parent')->integer()->default(0)->after('gidNumber')->execute();
         }
 
         // add depth
-        if (!$this->db->tableHasField('#__xgroups_pages', 'depth')) {
-            $query = "ALTER TABLE `#__xgroups_pages` ADD COLUMN `depth` INT(11) DEFAULT 1 AFTER `parent`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups_pages', 'depth')) {
+            $schema->addColumn('#__xgroups_pages', 'depth')->integer()->default(1)->after('parent')->execute();
         }
 
         // add left
-        if (!$this->db->tableHasField('#__xgroups_pages', 'lft')) {
-            $query = "ALTER TABLE `#__xgroups_pages` ADD COLUMN `lft` INT(11) AFTER `parent`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups_pages', 'lft')) {
+            $schema->addColumn('#__xgroups_pages', 'lft')->integer()->after('parent')->execute();
         }
 
         // add right
-        if (!$this->db->tableHasField('#__xgroups_pages', 'rgt')) {
-            $query = "ALTER TABLE `#__xgroups_pages` ADD COLUMN `rgt` INT(11) AFTER `lft`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups_pages', 'rgt')) {
+            $schema->addColumn('#__xgroups_pages', 'rgt')->integer()->after('lft')->execute();
         }
 
         // drop ordering
-        if ($this->db->tableHasField('#__xgroups_pages', 'ordering')) {
+        if ($schema->hasColumn('#__xgroups_pages', 'ordering')) {
             // get a list of all hub & super groups
-            $query = "SELECT gidNumber, cn, description FROM `#__xgroups` WHERE `type` IN(1,3);";
-            $this->db->setQuery($query);
-            $groups = $this->db->loadObjectList();
+            // get a list of all hub & super groups
+            $groups = $this->db->getQuery(true)
+                ->select(['gidNumber', 'cn', 'description'])
+                ->from('#__xgroups')
+                ->where('type', 'IN', [1, 3])
+                ->loadObjectList();
 
             // default home page content
             $defaultHomePageContent = "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>";
@@ -63,10 +61,12 @@ class Migration20140908193005ComGroups extends Base
             // loading all of their pages
             // create a default home page if one does not exist
             foreach ($groups as $group) {
-                $query = "SELECT * FROM `#__xgroups_pages` WHERE `gidNumber`=" . $group->gidNumber . " ORDER BY "
-                    . "ordering ASC;";
-                $this->db->setQuery($query);
-                $pages = $this->db->loadObjectList();
+                $pages = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__xgroups_pages')
+                    ->where('gidNumber', '=', $group->gidNumber)
+                    ->order('ordering', 'ASC')
+                    ->loadObjectList();
 
                 // locate the home page
                 $homePage = null;
@@ -81,28 +81,27 @@ class Migration20140908193005ComGroups extends Base
                 // if we dont ahve a home page we need one
                 if ($homePage == null) {
                     // create page
-                    $query = "INSERT INTO `#__xgroups_pages` "
-                        . "(`gidNumber`, `parent`, `depth`, `lft`, `alias`, `title`, `state`, "
-                        . "`privacy`, `home`) VALUES ({$group->gidNumber}, 0, 0, 1, 'overview', "
-                        . "'Overview', 1, 'default', 1);";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__xgroups_pages')
+                        ->columns(['gidNumber', 'parent', 'depth', 'lft', 'alias', 'title', 'state', 'privacy', 'home'])
+                        ->values([$group->gidNumber, 0, 0, 1, 'overview', 'Overview', 1, 'default', 1])
+                        ->execute();
 
                     $homePageId = $this->db->insertid();
 
                     // create page version
-                    $query = "INSERT INTO `#__xgroups_pages_versions` "
-                        . "(`pageid`, `version`, `content`, `created`, `created_by`) VALUES "
-                        . "({$homePageId}, 1, " . $this->db->quote($defaultHomePageContent)
-                        . ", NOW(), 1000);";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__xgroups_pages_versions')
+                        ->columns(['pageid', 'version', 'content', 'created', 'created_by'])
+                        ->values([$homePageId, 1, $defaultHomePageContent, new Expression('NOW()'), 1000])
+                        ->execute();
                 } else {
                     // update the home page
-                    $query = "UPDATE `#__xgroups_pages` SET `parent`=0, `depth`=0, `lft`=1, "
-                        . "`alias`='overview', `title`='Overview' WHERE `id`={$homePage->id};";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__xgroups_pages')
+                        ->set(['parent' => 0, 'depth' => 0, 'lft' => 1, 'alias' => 'overview', 'title' => 'Overview'])
+                        ->where('id', '=', $homePage->id)
+                        ->execute();
 
                     $homePageId = $homePage->id;
                 }
@@ -114,32 +113,31 @@ class Migration20140908193005ComGroups extends Base
                     $right = $left + 1;
 
                     // update the left, right, parent, & depth
-                    $query = "UPDATE `#__xgroups_pages` SET `parent`={$homePageId}, `lft`= {$left}, "
-                        . "`rgt`= {$right}, `depth`= 1 WHERE `id`= {$page->id};";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__xgroups_pages')
+                        ->set(['parent' => $homePageId, 'lft' => $left, 'rgt' => $right, 'depth' => 1])
+                        ->where('id', '=', $page->id)
+                        ->execute();
 
                     // add 2 to left for next iteration
                     $left += 2;
                 }
 
                 // update the home page after weve computed all the left & rights
-                $query = "UPDATE `#__xgroups_pages` SET `rgt`= {$left} WHERE `id`={$homePageId};";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__xgroups_pages')
+                    ->set(['rgt' => $left])
+                    ->where('id', '=', $homePageId)
+                    ->execute();
             }
 
             // drop ordering column
-            $query = "ALTER TABLE `#__xgroups_pages` DROP COLUMN `ordering`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__xgroups_pages', 'ordering');
         }
 
         // add comments
-        if (!$this->db->tableHasField('#__xgroups_pages', 'comments')) {
-            $query = "ALTER TABLE `#__xgroups_pages` ADD COLUMN `comments` TINYINT;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups_pages', 'comments')) {
+            $schema->addColumn('#__xgroups_pages', 'comments')->tinyInteger()->execute();
         }
     }
 
@@ -148,46 +146,36 @@ class Migration20140908193005ComGroups extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         // drop parent
-        if ($this->db->tableHasField('#__xgroups_pages', 'parent')) {
-            $query = "ALTER TABLE `#__xgroups_pages` DROP COLUMN `parent`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__xgroups_pages', 'parent')) {
+            $schema->dropColumn('#__xgroups_pages', 'parent');
         }
 
         // drop depth
-        if ($this->db->tableHasField('#__xgroups_pages', 'depth')) {
-            $query = "ALTER TABLE `#__xgroups_pages` DROP COLUMN `depth`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__xgroups_pages', 'depth')) {
+            $schema->dropColumn('#__xgroups_pages', 'depth');
         }
 
         // drop left
-        if ($this->db->tableHasField('#__xgroups_pages', 'lft')) {
-            $query = "ALTER TABLE `#__xgroups_pages` DROP COLUMN `lft`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__xgroups_pages', 'lft')) {
+            $schema->dropColumn('#__xgroups_pages', 'lft');
         }
 
         // drop right
-        if ($this->db->tableHasField('#__xgroups_pages', 'rgt')) {
-            $query = "ALTER TABLE `#__xgroups_pages` DROP COLUMN `rgt`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__xgroups_pages', 'rgt')) {
+            $schema->dropColumn('#__xgroups_pages', 'rgt');
         }
 
         // add ordering
-        if (!$this->db->tableHasField('#__xgroups_pages', 'ordering')) {
-            $query = "ALTER TABLE `#__xgroups_pages` ADD COLUMN `ordering` INT(11) AFTER `title`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups_pages', 'ordering')) {
+            $schema->addColumn('#__xgroups_pages', 'ordering')->integer()->after('title')->execute();
         }
 
         //remove comments
-        if ($this->db->tableHasField('#__xgroups_pages', 'comments')) {
-            $query = "ALTER TABLE `#__xgroups_pages` DROP COLUMN `comments`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__xgroups_pages', 'comments')) {
+            $schema->dropColumn('#__xgroups_pages', 'comments');
         }
     }
 }

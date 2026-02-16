@@ -37,16 +37,13 @@ class Migration20140325093000ComResources extends Base
 
         $found = false;
 
-        $this->db->setQuery("SHOW FUNCTION STATUS");
-        $results = $this->db->loadObjectList();
-        if ($results) {
-            foreach ($results as $result) {
-                if ($result->Db == \App::get('config')->get('db') && $result->Name == 'LEVENSHTEIN') {
-                    $found = true;
-                    break;
-                }
-            }
-        }
+        $found = $this->db->getQuery(true)
+            ->select('ROUTINE_NAME')
+            ->from('information_schema.ROUTINES')
+            ->where('ROUTINE_SCHEMA', '=', \App::get('config')->get('db'))
+            ->where('ROUTINE_NAME', '=', 'LEVENSHTEIN')
+            ->where('ROUTINE_TYPE', '=', 'FUNCTION')
+            ->exists();
 
         if (!$found) {
             // levenshtein func
@@ -110,10 +107,7 @@ BEGIN
 	RETURN (c);
   END;';
 
-            if ($query != '') {
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $this->db->execute($query);
         }
     }
 
@@ -125,7 +119,6 @@ BEGIN
         // levenshtein func
         $query = "DROP FUNCTION IF EXISTS LEVENSHTEIN;";
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        $this->db->execute($query);
     }
 }

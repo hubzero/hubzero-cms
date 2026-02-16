@@ -26,19 +26,23 @@ class Migration20150414183059ComTools extends Base
             return false;
         }
 
+        $mwSchema = $mwdb->schema();
+
         if (
-            $mwdb->tableExists('zones')
-            && $mwdb->tableHasField('zones', 'state')
-            && !$mwdb->tableHasField('zones', 'is_default')
+            $mwSchema->tableExists('zones')
+            && $mwSchema->hasColumn('zones', 'state')
+            && !$mwSchema->hasColumn('zones', 'is_default')
         ) {
-            $query = "ALTER TABLE `zones` ADD `is_default` TINYINT(2) NOT NULL DEFAULT '0' AFTER `state`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwSchema->addColumn('zones', 'is_default')->tinyInteger(2)->notNull()->default(0);
 
             // Set the first zone as default
-            $query = "UPDATE `zones` SET `is_default` = 1 WHERE `type` = 'local' ORDER BY `id` ASC LIMIT 1";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwdb->getQuery(true)
+                ->update('zones')
+                ->set(['is_default' => 1])
+                ->where('type', '=', 'local')
+                ->order('id', 'ASC')
+                ->limit(1)
+                ->execute();
         }
     }
 
@@ -52,13 +56,13 @@ class Migration20150414183059ComTools extends Base
             return false;
         }
 
+        $mwSchema = $mwdb->schema();
+
         if (
-            $mwdb->tableExists('zones')
-            && $mwdb->tableHasField('zones', 'is_default')
+            $mwSchema->tableExists('zones')
+            && $mwSchema->hasColumn('zones', 'is_default')
         ) {
-            $query = "ALTER TABLE `zones` DROP `is_default`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwSchema->dropColumn('zones', 'is_default');
         }
     }
 }

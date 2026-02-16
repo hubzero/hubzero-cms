@@ -21,14 +21,10 @@ class Migration20141201170547ComGroups extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__xgroups_members')
-            && !$this->db->tableHasKey('#__xgroups_members', 'idx_gidNumber_uidNumber')
-        ) {
-            $query = "ALTER TABLE `#__xgroups_members` "
-                . "ADD UNIQUE KEY idx_gidNumber_uidNumber(`gidNumber`, `uidNumber`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xgroups_members')) {
+            $schema->addUniqueIndex('#__xgroups_members', 'idx_gidNumber_uidNumber', ['gidNumber', 'uidNumber']);
         }
     }
 
@@ -37,13 +33,8 @@ class Migration20141201170547ComGroups extends Base
      **/
     public function down()
     {
-        if (
-            $this->db->tableExists('#__xgroups_members')
-            && $this->db->tableHasKey('#__xgroups_members', 'idx_gidNumber_uidNumber')
-        ) {
-            $query = "ALTER TABLE `#__xgroups_members` DROP KEY idx_gidNumber_uidNumber";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropIndex('#__xgroups_members', 'idx_gidNumber_uidNumber');
     }
 }

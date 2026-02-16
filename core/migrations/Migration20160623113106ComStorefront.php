@@ -21,14 +21,18 @@ class Migration20160623113106ComStorefront extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
+        // renameColumn handles AUTO_INCREMENT appropriately for each database
         if (
-            $this->db->tableExists('#__storefront_product_collections')
-            && $this->db->tableHasField('#__storefront_product_collections', 'cllId')
+            $schema->tableExists('#__storefront_product_collections')
+            && $schema->hasColumn('#__storefront_product_collections', 'cllId')
         ) {
-            $query = "ALTER TABLE `#__storefront_product_collections` CHANGE `cllId` `pcId` int(16) NOT NULL "
-                . "AUTO_INCREMENT";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__storefront_product_collections', 'cllId', 'pcId')
+                ->integer(16)
+                ->notNull()
+                ->autoIncrement()
+                ->execute();
         }
     }
 
@@ -37,14 +41,18 @@ class Migration20160623113106ComStorefront extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
+        // renameColumn handles AUTO_INCREMENT appropriately for each database
         if (
-            $this->db->tableExists('#__storefront_product_collections')
-            && $this->db->tableHasField('#__storefront_product_collections', 'pcId')
+            $schema->tableExists('#__storefront_product_collections')
+            && $schema->hasColumn('#__storefront_product_collections', 'pcId')
         ) {
-            $query = "ALTER TABLE `#__storefront_product_collections` CHANGE `pcId` `cllId` int(16) NOT NULL "
-                . "AUTO_INCREMENT";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__storefront_product_collections', 'pcId', 'cllId')
+                ->integer(16)
+                ->notNull()
+                ->autoIncrement()
+                ->execute();
         }
     }
 }

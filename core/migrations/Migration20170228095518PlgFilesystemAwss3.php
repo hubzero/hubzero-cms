@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding GitHub filesystem plugin
  *
-*/
+ */
 class Migration20170228095518PlgFilesystemAwss3 extends Base
 {
     /**
@@ -21,17 +21,23 @@ class Migration20170228095518PlgFilesystemAwss3 extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $this->addPluginEntry('filesystem', 'awss3');
 
-        if ($this->db->tableExists('#__projects_connection_providers')) {
-            $query = "SELECT * FROM `#__projects_connection_providers` WHERE `alias`='awss3'";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        if ($schema->tableExists('#__projects_connection_providers')) {
+            $results = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__projects_connection_providers')
+                ->where('alias', '=', 'awss3')
+                ->loadObjectList();
 
             if (count($results) < 1) {
-                $query = "INSERT INTO `#__projects_connection_providers` (`alias`, `name`) VALUES ('awss3','AWS S3')";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__projects_connection_providers')
+                    ->columns(['alias', 'name'])
+                    ->values(['awss3', 'AWS S3'])
+                    ->execute();
             }
         }
     }
@@ -41,24 +47,30 @@ class Migration20170228095518PlgFilesystemAwss3 extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $this->deletePluginEntry('filesystem', 'awss3');
 
-        if ($this->db->tableExists('#__projects_connection_providers')) {
-            $query = "SELECT * FROM `#__projects_connection_providers` WHERE `alias`='awss3'";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        if ($schema->tableExists('#__projects_connection_providers')) {
+            $results = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__projects_connection_providers')
+                ->where('alias', '=', 'awss3')
+                ->loadObjectList();
 
             // Find and delete all connections using this connection
             foreach ($results as $result) {
-                $query = "DELETE FROM `#__projects_connections` WHERE `provider_id`=" . $this->db->quote($result->id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__projects_connections')
+                    ->where('provider_id', '=', $result->id)
+                    ->execute();
             }
 
             if (count($results) > 0) {
-                $query = "DELETE FROM `#__projects_connection_providers` WHERE `alias`='awss3'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__projects_connection_providers')
+                    ->where('alias', '=', 'awss3')
+                    ->execute();
             }
         }
     }

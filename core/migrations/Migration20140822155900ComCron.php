@@ -21,18 +21,12 @@ class Migration20140822155900ComCron extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__cron_jobs')) {
-            if (!$this->db->tableHasKey('#__cron_jobs', 'idx_state')) {
-                $query = "ALTER TABLE `#__cron_jobs` ADD INDEX `idx_state` (`state`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasKey('#__cron_jobs', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__cron_jobs` ADD INDEX `idx_created_by` (`created_by`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__cron_jobs')) {
+            $schema->addIndex('#__cron_jobs', 'idx_state', 'state');
+
+            $schema->addIndex('#__cron_jobs', 'idx_created_by', 'created_by');
         }
     }
 
@@ -41,18 +35,12 @@ class Migration20140822155900ComCron extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__cron_jobs')) {
-            if ($this->db->tableHasKey('#__cron_jobs', 'idx_state')) {
-                $query = "ALTER TABLE `#__cron_jobs` DROP INDEX `idx_state`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__cron_jobs', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__cron_jobs` DROP INDEX `idx_created_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__cron_jobs')) {
+            $schema->dropIndex('#__cron_jobs', 'idx_state');
+
+            $schema->dropIndex('#__cron_jobs', 'idx_created_by');
         }
     }
 }

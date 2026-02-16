@@ -20,63 +20,63 @@ class Migration20160425154200ComPoll extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__polls')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__polls')) {
             if (
-                $this->db->tableHasField('#__polls', 'published')
-                && !$this->db->tableHasField('#__polls', 'state')
+                $schema->hasColumn('#__polls', 'published')
+                && !$schema->hasColumn('#__polls', 'state')
             ) {
-                $query = "ALTER TABLE `#__polls` CHANGE `published` `state` tinyint(1) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__polls', 'published', 'state')
+                    ->tinyInteger()
+                    ->default(0)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__poll_data') && !$this->db->tableExists('#__poll_options')) {
-            $query = "RENAME TABLE `#__poll_data` TO `#__poll_options`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__poll_data') && !$schema->tableExists('#__poll_options')) {
+            $schema->renameTable('#__poll_data', '#__poll_options');
         }
 
-        if ($this->db->tableExists('#__poll_options')) {
+        if ($schema->tableExists('#__poll_options')) {
             if (
-                $this->db->tableHasField('#__poll_options', 'pollid')
-                && !$this->db->tableHasField('#__poll_options', 'poll_id')
+                $schema->hasColumn('#__poll_options', 'pollid')
+                && !$schema->hasColumn('#__poll_options', 'poll_id')
             ) {
-                $query = "ALTER TABLE `#__poll_options` CHANGE `pollid` `poll_id` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__poll_options', 'pollid', 'poll_id')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__poll_date') && !$this->db->tableExists('#__poll_dates')) {
-            $query = "RENAME TABLE `#__poll_date` TO `#__poll_dates`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__poll_date') && !$schema->tableExists('#__poll_dates')) {
+            $schema->renameTable('#__poll_date', '#__poll_dates');
         }
 
-        if ($this->db->tableExists('#__poll_menu') && !$this->db->tableExists('#__poll_menus')) {
-            $query = "RENAME TABLE `#__poll_menu` TO `#__poll_menus`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__poll_menu') && !$schema->tableExists('#__poll_menus')) {
+            $schema->renameTable('#__poll_menu', '#__poll_menus');
         }
 
-        if ($this->db->tableExists('#__poll_menus')) {
+        if ($schema->tableExists('#__poll_menus')) {
             if (
-                $this->db->tableHasField('#__poll_menus', 'pollid')
-                && !$this->db->tableHasField('#__poll_menus', 'poll_id')
+                $schema->hasColumn('#__poll_menus', 'pollid')
+                && !$schema->hasColumn('#__poll_menus', 'poll_id')
             ) {
-                $query = "ALTER TABLE `#__poll_menus` CHANGE `pollid` `poll_id` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__poll_menus', 'pollid', 'poll_id')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
 
             if (
-                $this->db->tableHasField('#__poll_menus', 'menuid')
-                && !$this->db->tableHasField('#__poll_menus', 'menu_id')
+                $schema->hasColumn('#__poll_menus', 'menuid')
+                && !$schema->hasColumn('#__poll_menus', 'menu_id')
             ) {
-                $query = "ALTER TABLE `#__poll_menus` CHANGE `menuid` `menu_id` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__poll_menus', 'menuid', 'menu_id')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
         }
     }
@@ -86,63 +86,63 @@ class Migration20160425154200ComPoll extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__polls')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__polls')) {
             if (
-                $this->db->tableHasField('#__polls', 'state')
-                && !$this->db->tableHasField('#__polls', 'published')
+                $schema->hasColumn('#__polls', 'state')
+                && !$schema->hasColumn('#__polls', 'published')
             ) {
-                $query = "ALTER TABLE `#__polls` CHANGE `state` `published` tinyint(1) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__polls', 'state', 'published')
+                    ->tinyInteger()
+                    ->default(0)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__poll_options') && !$this->db->tableExists('#__poll_data')) {
-            $query = "RENAME TABLE `#__poll_options` TO `#__poll_data`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__poll_options') && !$schema->tableExists('#__poll_data')) {
+            $schema->renameTable('#__poll_options', '#__poll_data');
         }
 
-        if ($this->db->tableExists('#__poll_data')) {
+        if ($schema->tableExists('#__poll_data')) {
             if (
-                $this->db->tableHasField('#__poll_data', 'poll_id')
-                && !$this->db->tableHasField('#__poll_data', 'pollid')
+                $schema->hasColumn('#__poll_data', 'poll_id')
+                && !$schema->hasColumn('#__poll_data', 'pollid')
             ) {
-                $query = "ALTER TABLE `#__poll_options` CHANGE `poll_id` `pollid` int(4) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__poll_data', 'poll_id', 'pollid')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__poll_dates') && !$this->db->tableExists('#__poll_date')) {
-            $query = "RENAME TABLE `#__poll_dates` TO `#__poll_date`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__poll_dates') && !$schema->tableExists('#__poll_date')) {
+            $schema->renameTable('#__poll_dates', '#__poll_date');
         }
 
-        if ($this->db->tableExists('#__poll_menus')) {
-            $query = "RENAME TABLE `#__poll_menus` TO `#__poll_menu`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__poll_menus')) {
+            $schema->renameTable('#__poll_menus', '#__poll_menu');
         }
 
-        if ($this->db->tableExists('#__poll_menu')) {
+        if ($schema->tableExists('#__poll_menu')) {
             if (
-                $this->db->tableHasField('#__poll_menu', 'poll_id')
-                && !$this->db->tableHasField('#__poll_menu', 'pollid')
+                $schema->hasColumn('#__poll_menu', 'poll_id')
+                && !$schema->hasColumn('#__poll_menu', 'pollid')
             ) {
-                $query = "ALTER TABLE `#__poll_menu` CHANGE `poll_id` `pollid` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__poll_menu', 'poll_id', 'pollid')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
 
             if (
-                $this->db->tableHasField('#__poll_menu', 'menu_id')
-                && !$this->db->tableHasField('#__poll_menu', 'menuid')
+                $schema->hasColumn('#__poll_menu', 'menu_id')
+                && !$schema->hasColumn('#__poll_menu', 'menuid')
             ) {
-                $query = "ALTER TABLE `#__poll_menu` CHANGE `menu_id` `menuid` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__poll_menu', 'menu_id', 'menuid')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
         }
     }

@@ -18,35 +18,17 @@ class Migration20130410000000ComCourses extends Base
 {
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasKey('#__courses_member_notes', 'idx_scoped')) {
-            $query .= "ALTER TABLE `#__courses_member_notes` ADD INDEX `idx_scoped` (`scope`, `scope_id`);\n";
-        }
-        if (!$this->db->tableHasKey('#__courses_member_notes', 'idx_createdby')) {
-            $query .= "ALTER TABLE `#__courses_member_notes` ADD INDEX `idx_createdby` (`created_by`);";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->addIndex('#__courses_member_notes', 'idx_scoped', ['scope', 'scope_id']);
+        $schema->addIndex('#__courses_member_notes', 'idx_createdby', 'created_by');
     }
 
     public function down()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasKey('#__courses_member_notes', 'idx_scoped')) {
-            $query .= "DROP INDEX `idx_scoped` ON `#__courses_member_notes`;\n";
-        }
-        if ($this->db->tableHasKey('#__courses_member_notes', 'idx_createdby')) {
-            $query .= "DROP INDEX `idx_createdby` ON `#__courses_member_notes`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropIndex('#__courses_member_notes', 'idx_scoped');
+        $schema->dropIndex('#__courses_member_notes', 'idx_createdby');
     }
 }

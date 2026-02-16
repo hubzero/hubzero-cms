@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding a state field to resource reviews
  *
-*/
+ */
 class Migration20140627140011PlgResourcesReviews extends Base
 {
     /**
@@ -21,14 +21,16 @@ class Migration20140627140011PlgResourcesReviews extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__resource_ratings', 'state')) {
-            $query = "ALTER TABLE `#__resource_ratings` ADD `state` TINYINT(2)  NOT NULL  DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__resource_ratings` SET state=1 WHERE resource_id!=0";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__resource_ratings', 'state')) {
+            $schema->addColumn('#__resource_ratings', 'state')->tinyInteger(2)->notNull()->default(0);
+
+            $this->db->getQuery(true)
+                ->update('#__resource_ratings')
+                ->set(['state' => 1])
+                ->where('resource_id', '!=', 0)
+                ->execute();
         }
     }
 
@@ -37,10 +39,10 @@ class Migration20140627140011PlgResourcesReviews extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__resource_ratings', 'state')) {
-            $query = "ALTER TABLE `#__resource_ratings` DROP `state`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__resource_ratings', 'state')) {
+            $schema->dropColumn('#__resource_ratings', 'state');
         }
     }
 }

@@ -18,44 +18,35 @@ class Migration20121015000000ComTools extends Base
 {
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableExists('#__venue') && !$this->db->tableExists('venue')) {
-            $query .= "CREATE TABLE IF NOT EXISTS `#__venue` (
-						`id` int(11) NOT NULL AUTO_INCREMENT,
-						`venue` varchar(40),
-						`network` varchar(40),
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
-        }
-        if (!$this->db->tableExists('#__venue_countries') && !$this->db->tableExists('venue_countries')) {
-            $query .= "CREATE TABLE IF NOT EXISTS `#__venue_countries` (
-						`id` int(11) NOT NULL AUTO_INCREMENT,
-						`countrySHORT` varchar(40),
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
+        if (!$schema->tableExists('#__venue') && !$schema->tableExists('venue')) {
+            $schema->createTable('#__venue')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('venue', 40)->nullable()
+                ->string('network', 40)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__venue_countries') && !$schema->tableExists('venue_countries')) {
+            $schema->createTable('#__venue_countries')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('countrySHORT', 40)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
     public function down()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__venue')) {
-            $query .= "DROP TABLE IF EXISTS `#__venue`;\n";
-        }
-        if ($this->db->tableExists('#__venue_countries')) {
-            $query .= "DROP TABLE IF EXISTS `#__venue_countries`;\n";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__venue');
+        $schema->dropTable('#__venue_countries');
     }
 }

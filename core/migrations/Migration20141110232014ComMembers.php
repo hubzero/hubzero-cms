@@ -22,12 +22,18 @@ class Migration20141110232014ComMembers extends Base
     public function up()
     {
         // load all members without given name or surname filled in
-        $query = "SELECT `uidNumber`, `username`, `name`, `surname`, `givenName`, `middleName`
-				  FROM `#__xprofiles`
-				  WHERE (`givenName` = '' OR `givenName` IS NULL)
-				  AND (`surname` = '' OR `surname` IS NULL);";
-        $this->db->setQuery($query);
-        $result = $this->db->loadObjectList();
+        $result = $this->db->getQuery(true)
+            ->select(['uidNumber', 'username', 'name', 'surname', 'givenName', 'middleName'])
+            ->from('#__xprofiles')
+            ->beginOrGroup()
+                ->where('givenName', '=', '')
+                ->orWhereIsNull('givenName')
+            ->endAndGroup()
+            ->beginOrGroup()
+                ->where('surname', '=', '')
+                ->orWhereIsNull('surname')
+            ->endAndGroup()
+            ->loadObjectList();
 
         // fix each name
         foreach ($result as $profile) {
@@ -43,9 +49,11 @@ class Migration20141110232014ComMembers extends Base
             }
 
             if (empty($firstname) && empty($middlename) && empty($surname) && empty($name)) {
-                $query = "SELECT `name` FROM `#__users` WHERE `id`=" . $profile->uidNumber;
-                $this->db->setQuery($query);
-                $name = $this->db->loadResult();
+                $name = $this->db->getQuery(true)
+                    ->select('name')
+                    ->from('#__users')
+                    ->where('id', '=', $profile->uidNumber)
+                    ->value('name');
 
                 $name = $name ?: $username;
                 $firstname = $username;
@@ -84,13 +92,16 @@ class Migration20141110232014ComMembers extends Base
             $lastname   = trim($lastname);
 
             // update name
-            $query = "UPDATE `#__xprofiles` SET `name` = " . $this->db->quote($name)
-                . ", `givenName` = " . $this->db->quote($firstname)
-                . ", `middleName` = " . $this->db->quote($middlename)
-                . ", `surname` = " . $this->db->quote($lastname)
-                . " WHERE `uidNumber`=" . $profile->uidNumber;
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__xprofiles')
+                ->set([
+                    'name'       => $name,
+                    'givenName'  => $firstname,
+                    'middleName' => $middlename,
+                    'surname'    => $lastname
+                ])
+                ->where('uidNumber', '=', $profile->uidNumber)
+                ->execute();
         }
     }
 }

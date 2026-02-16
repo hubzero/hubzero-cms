@@ -20,17 +20,19 @@ class Migration20160111200400ComCitations extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__citations_links')) {
-            $query = "CREATE TABLE `#__citations_links` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `title` varchar(255) NOT NULL DEFAULT '',
-				  `url` text,
-				  `citation_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_citation_id` (`citation_id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__citations_links')) {
+            $schema->createTable('#__citations_links')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('title', 255)->default('')
+                ->text('url')->nullable()
+                ->unsignedInteger('citation_id')->default(0)
+                ->primaryKey('id')
+                ->index('idx_citation_id', 'citation_id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -39,10 +41,8 @@ class Migration20160111200400ComCitations extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__citations_links')) {
-            $query = "DROP TABLE IF EXISTS `#__citations_links`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__citations_links');
     }
 }

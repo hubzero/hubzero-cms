@@ -21,26 +21,27 @@ class Migration20140108233321PlgGroupsMembers extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
         // change role to name
-        if (!$this->db->tableHasField('#__xgroups_roles', 'name')) {
-            $query = "ALTER TABLE `#__xgroups_roles` CHANGE `role` `name` VARCHAR(150);";
+        if (!$schema->hasColumn('#__xgroups_roles', 'name')) {
+            $schema->renameColumn('#__xgroups_roles', 'role', 'name')
+                ->string(150)
+                ->execute();
         }
 
         // add permissions field
-        if (!$this->db->tableHasField('#__xgroups_roles', 'permissions')) {
-            $query .= "ALTER TABLE `#__xgroups_roles` ADD COLUMN `permissions` TEXT;";
+        if (!$schema->hasColumn('#__xgroups_roles', 'permissions')) {
+            $schema->addColumn('#__xgroups_roles', 'permissions')
+                ->text()
+                ->execute();
         }
 
         // add role to roleid
-        if (!$this->db->tableHasField('#__xgroups_member_roles', 'roleid')) {
-            $query .= "ALTER TABLE `#__xgroups_member_roles` CHANGE `role` `roleid` INT(11);";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups_member_roles', 'roleid')) {
+            $schema->renameColumn('#__xgroups_member_roles', 'role', 'roleid')
+                ->integer(11)
+                ->execute();
         }
     }
 
@@ -49,26 +50,25 @@ class Migration20140108233321PlgGroupsMembers extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
         // change role to name
-        if ($this->db->tableHasField('#__xgroups_roles', 'name')) {
-            $query = "ALTER TABLE `#__xgroups_roles` CHANGE `name` `role` VARCHAR(150);";
+        if ($schema->hasColumn('#__xgroups_roles', 'name')) {
+            $schema->renameColumn('#__xgroups_roles', 'name', 'role')
+                ->string(150)
+                ->execute();
         }
 
         // add permissions field
-        if ($this->db->tableHasField('#__xgroups_roles', 'permissions')) {
-            $query .= "ALTER TABLE `#__xgroups_roles` DROP COLUMN `permissions`;";
+        if ($schema->hasColumn('#__xgroups_roles', 'permissions')) {
+            $schema->dropColumn('#__xgroups_roles', 'permissions');
         }
 
         // add role to roleid
-        if ($this->db->tableHasField('#__xgroups_member_roles', 'roleid')) {
-            $query .= "ALTER TABLE `#__xgroups_member_roles` CHANGE `roleid` `role` INT(11);";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__xgroups_member_roles', 'roleid')) {
+            $schema->renameColumn('#__xgroups_member_roles', 'roleid', 'role')
+                ->integer(11)
+                ->execute();
         }
     }
 }

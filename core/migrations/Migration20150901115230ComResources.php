@@ -21,17 +21,23 @@ class Migration20150901115230ComResources extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__resource_licenses')) {
-            $query = "SELECT id FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa' LIMIT 1";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_licenses')) {
+            $query = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__resource_licenses')
+                ->where('name', '=', 'cc40-by-nc-sa');
+            $id = $query->value('id');
 
             if (!$id) {
                 include_once PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'license.php';
 
-                $query = "SELECT ordering FROM `#__resource_licenses` ORDER BY ordering DESC LIMIT 1";
-                $this->db->setQuery($query);
-                $ordering = $this->db->loadResult();
+                $query = $this->db->getQuery(true)
+                    ->select('ordering')
+                    ->from('#__resource_licenses')
+                    ->order('ordering', 'desc');
+                $ordering = $query->value('ordering');
 
                 $tbl = new \Components\Resources\Tables\License($this->db);
                 $tbl->ordering = intval($ordering) + 1;
@@ -74,16 +80,21 @@ For more information visit http://creativecommons.org/licenses/by-nc-sa/4.0/lega
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__resource_licenses')) {
-            $query = "SELECT id FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa' LIMIT 1";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_licenses')) {
+            $query = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__resource_licenses')
+                ->where('name', '=', 'cc40-by-nc-sa');
+            $id = $query->value('id');
 
             if ($id) {
                 // Set the first zone as default
-                $query = "DELETE FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__resource_licenses')
+                    ->where('name', '=', 'cc40-by-nc-sa')
+                    ->execute();
             }
         }
     }

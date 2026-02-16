@@ -20,20 +20,21 @@ class Migration20171115112800ComSupportCriteria extends Base
 
     public function up()
     {
+        $schema = $this->db->schema();
+
         $tableName = self::$tableName;
 
-        if (!$this->db->tableExists($tableName)) {
-            $createTable = "CREATE TABLE `{$tableName}` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`description` varchar(255) DEFAULT NULL,
-				`query` varchar(255) DEFAULT NULL,
-				`created` timestamp NULL DEFAULT NULL,
-				`modified` timestamp NULL DEFAULT NULL,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($createTable);
-            $this->db->query();
+        if (!$schema->tableExists($tableName)) {
+            $schema->createTable($tableName)
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('description', 255)->nullable()
+                ->string('query', 255)->nullable()
+                ->timestamp('created')->nullable()
+                ->timestamp('modified')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -42,12 +43,12 @@ class Migration20171115112800ComSupportCriteria extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $tableName = self::$tableName;
 
-        if ($this->db->tableExists($tableName)) {
-            $dropTable = "DROP TABLE {$tableName};";
-            $this->db->setQuery($dropTable);
-            $this->db->query();
+        if ($schema->tableExists($tableName)) {
+            $schema->dropTable($tableName);
         }
     }
 }

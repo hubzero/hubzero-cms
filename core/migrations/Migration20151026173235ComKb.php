@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for replacing HUBADDRESS references in KB article
@@ -21,17 +22,20 @@ class Migration20151026173235ComKb extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__faq')) {
-            $query = "UPDATE `#__faq` SET `fulltxt` = REPLACE(`fulltxt`, 'HUBADDRESS', '{xhub:getcfg hubHostname}')";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__faq')) {
+            $this->db->getQuery(true)
+                ->update('#__faq')
+                ->set(['fulltxt' => Expression::replace('fulltxt', 'HUBADDRESS', '{xhub:getcfg hubHostname}')])
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__kb_articles')) {
-            $query = "UPDATE `#__kb_articles` SET `fulltxt` = REPLACE(`fulltxt`, 'HUBADDRESS', '{xhub:getcfg"
-                . "hubHostname}')";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__kb_articles')) {
+            $this->db->getQuery(true)
+                ->update('#__kb_articles')
+                ->set(['fulltxt' => Expression::replace('fulltxt', 'HUBADDRESS', '{xhub:getcfg hubHostname}')])
+                ->execute();
         }
     }
 }

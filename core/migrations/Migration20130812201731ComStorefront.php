@@ -21,168 +21,198 @@ class Migration20130812201731ComStorefront extends Base
      **/
     public function up()
     {
-        /*Table structure for table `#__storefront_collections` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_collections` (
-		  `cId` char(50) NOT NULL,
-		  `cName` varchar(64) DEFAULT NULL,
-		  `cParent` int(16) DEFAULT NULL,
-		  `cActive` tinyint(1) DEFAULT NULL,
-		  `cType` char(10) DEFAULT NULL,
-		  PRIMARY KEY (`cId`),
-		  KEY `cActive` (`cActive`),
-		  KEY `cParent` (`cParent`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
 
-        /*Table structure for table `#__storefront_coupon_actions` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_coupon_actions` (
-		  `cnId` int(16) NOT NULL,
-		  `cnaAction` char(25) DEFAULT NULL,
-		  `cnaVal` char(255) DEFAULT NULL,
-		  UNIQUE KEY `cnId` (`cnId`,`cnaAction`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_collections`
+        if (!$schema->tableExists('#__storefront_collections')) {
+            $schema->createTable('#__storefront_collections')
+                ->char('cId', 50)
+                ->string('cName', 64)->nullable()
+                ->integer('cParent')->nullable()
+                ->tinyInteger('cActive')->nullable()
+                ->char('cType', 10)->nullable()
+                ->primaryKey('cId')
+                ->index('cActive', 'cActive')
+                ->index('cParent', 'cParent')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_coupon_conditions` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_coupon_conditions` (
-		  `cnId` int(16) NOT NULL,
-		  `cncRule` char(100) DEFAULT NULL,
-		  `cncVal` char(255) DEFAULT NULL
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_coupon_actions`
+        if (!$schema->tableExists('#__storefront_coupon_actions')) {
+            $schema->createTable('#__storefront_coupon_actions')
+                ->integer('cnId')
+                ->char('cnaAction', 25)->nullable()
+                ->char('cnaVal', 255)->nullable()
+                ->uniqueIndex('cnId', ['cnId', 'cnaAction'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_coupon_objects` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_coupon_objects` (
-		  `cnId` int(16) NOT NULL,
-		  `cnoObjectId` int(16) DEFAULT NULL,
-		  `cnoObjectsLimit` int(5) DEFAULT '0' COMMENT 'How many objects can be applied to. 0 - unlimited',
-		  UNIQUE KEY `cnId` (`cnId`,`cnoObjectId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_coupon_conditions`
+        if (!$schema->tableExists('#__storefront_coupon_conditions')) {
+            $schema->createTable('#__storefront_coupon_conditions')
+                ->integer('cnId')
+                ->char('cncRule', 100)->nullable()
+                ->char('cncVal', 255)->nullable()
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_coupons` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_coupons` (
-		  `cnId` int(16) NOT NULL AUTO_INCREMENT,
-		  `cnCode` char(25) DEFAULT NULL,
-		  `cnDescription` char(255) DEFAULT NULL,
-		  `cnExpires` date DEFAULT NULL,
-		  `cnUseLimit` int(5) unsigned DEFAULT NULL,
-		  `cnObject` char(15) NOT NULL,
-		  `cnActive` tinyint(1) DEFAULT '1',
-		  PRIMARY KEY (`cnId`),
-		  UNIQUE KEY `Unique code` (`cnCode`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_coupon_objects`
+        if (!$schema->tableExists('#__storefront_coupon_objects')) {
+            $schema->createTable('#__storefront_coupon_objects')
+                ->integer('cnId')
+                ->integer('cnoObjectId')->nullable()
+                ->integer('cnoObjectsLimit')->default(0)
+                ->uniqueIndex('cnId', ['cnId', 'cnoObjectId'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_option_groups` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_option_groups` (
-		  `ogId` int(16) NOT NULL AUTO_INCREMENT,
-		  `ogName` char(16) DEFAULT NULL,
-		  PRIMARY KEY (`ogId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_coupons`
+        if (!$schema->tableExists('#__storefront_coupons')) {
+            $schema->createTable('#__storefront_coupons')
+                ->integer('cnId', ['autoIncrement' => true])
+                ->char('cnCode', 25)->nullable()
+                ->char('cnDescription', 255)->nullable()
+                ->date('cnExpires')->nullable()
+                ->unsignedInteger('cnUseLimit')->nullable()
+                ->char('cnObject', 15)
+                ->tinyInteger('cnActive')->default(1)
+                ->primaryKey('cnId')
+                ->uniqueIndex('Unique code', 'cnCode')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_options` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_options` (
-		  `oId` int(16) NOT NULL AUTO_INCREMENT,
-		  `ogId` int(16) DEFAULT NULL COMMENT 'Foreign key to option-groups',
-		  `oName` char(255) DEFAULT NULL,
-		  PRIMARY KEY (`oId`),
-		  UNIQUE KEY `ogId` (`ogId`,`oName`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_option_groups`
+        if (!$schema->tableExists('#__storefront_option_groups')) {
+            $schema->createTable('#__storefront_option_groups')
+                ->integer('ogId', ['autoIncrement' => true])
+                ->char('ogName', 16)->nullable()
+                ->primaryKey('ogId')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_product_collections` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_product_collections` (
-		  `cllId` int(16) NOT NULL AUTO_INCREMENT,
-		  `pId` int(16) NOT NULL,
-		  `cId` char(50) NOT NULL,
-		  PRIMARY KEY (`cllId`,`pId`,`cId`),
-		  UNIQUE KEY `pId` (`pId`,`cId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_options`
+        if (!$schema->tableExists('#__storefront_options')) {
+            $schema->createTable('#__storefront_options')
+                ->integer('oId', ['autoIncrement' => true])
+                ->integer('ogId')->nullable()
+                ->char('oName', 255)->nullable()
+                ->primaryKey('oId')
+                ->uniqueIndex('ogId', ['ogId', 'oName'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_product_option_groups` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_product_option_groups` (
-		  `pId` int(16) NOT NULL,
-		  `ogId` int(16) NOT NULL,
-		  PRIMARY KEY (`pId`,`ogId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_product_collections`
+        if (!$schema->tableExists('#__storefront_product_collections')) {
+            $schema->createTable('#__storefront_product_collections')
+                ->integer('cllId', ['autoIncrement' => true])
+                ->integer('pId')
+                ->char('cId', 50)
+                ->primaryKey(['cllId', 'pId', 'cId'])
+                ->uniqueIndex('pId', ['pId', 'cId'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_product_types` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_product_types` (
-		  `ptId` int(16) NOT NULL AUTO_INCREMENT,
-		  `ptName` char(128) DEFAULT NULL,
-		  `ptModel` char(25) DEFAULT 'normal',
-		  PRIMARY KEY (`ptId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_product_option_groups`
+        if (!$schema->tableExists('#__storefront_product_option_groups')) {
+            $schema->createTable('#__storefront_product_option_groups')
+                ->integer('pId')
+                ->integer('ogId')
+                ->primaryKey(['pId', 'ogId'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_products` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_products` (
-		  `pId` int(16) NOT NULL AUTO_INCREMENT,
-		  `ptId` int(16) NOT NULL COMMENT 'Product type ID. Foreign key to product_types table',
-		  `pName` char(128) DEFAULT NULL,
-		  `pTagline` tinytext,
-		  `pDescription` text,
-		  `pFeatures` text,
-		  `pActive` tinyint(1) DEFAULT '1',
-		  PRIMARY KEY (`pId`),
-		  KEY `pActive` (`pActive`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_product_types`
+        if (!$schema->tableExists('#__storefront_product_types')) {
+            $schema->createTable('#__storefront_product_types')
+                ->integer('ptId', ['autoIncrement' => true])
+                ->char('ptName', 128)->nullable()
+                ->char('ptModel', 25)->default('normal')
+                ->primaryKey('ptId')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_sku_meta` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_sku_meta` (
-		  `smId` int(16) NOT NULL AUTO_INCREMENT,
-		  `sId` int(16) NOT NULL,
-		  `smKey` varchar(100) DEFAULT NULL,
-		  `smValue` varchar(100) DEFAULT NULL,
-		  PRIMARY KEY (`smId`),
-		  UNIQUE KEY `sId` (`sId`,`smKey`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_products`
+        if (!$schema->tableExists('#__storefront_products')) {
+            $schema->createTable('#__storefront_products')
+                ->integer('pId', ['autoIncrement' => true])
+                ->integer('ptId')
+                ->char('pName', 128)->nullable()
+                ->tinyText('pTagline')->nullable()
+                ->text('pDescription')->nullable()
+                ->text('pFeatures')->nullable()
+                ->tinyInteger('pActive')->default(1)
+                ->primaryKey('pId')
+                ->index('pActive', 'pActive')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_sku_options` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_sku_options` (
-		  `sId` int(16) NOT NULL,
-		  `oId` int(16) NOT NULL,
-		  PRIMARY KEY (`sId`,`oId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_sku_meta`
+        if (!$schema->tableExists('#__storefront_sku_meta')) {
+            $schema->createTable('#__storefront_sku_meta')
+                ->integer('smId', ['autoIncrement' => true])
+                ->integer('sId')
+                ->string('smKey', 100)->nullable()
+                ->string('smValue', 100)->nullable()
+                ->primaryKey('smId')
+                ->uniqueIndex('sId', ['sId', 'smKey'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__storefront_skus` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__storefront_skus` (
-		  `sId` int(16) NOT NULL AUTO_INCREMENT,
-		  `pId` int(16) DEFAULT NULL COMMENT 'Foreign key to products',
-		  `sSku` char(16) DEFAULT NULL,
-		  `sWeight` decimal(10,2) DEFAULT NULL,
-		  `sPrice` decimal(10,2) DEFAULT NULL,
-		  `sDescriprtion` text,
-		  `sFeatures` text,
-		  `sTrackInventory` tinyint(1) DEFAULT '0',
-		  `sInventory` int(11) DEFAULT '0',
-		  `sEnumerable` tinyint(1) DEFAULT '1',
-		  `sAllowMultiple` tinyint(1) DEFAULT '1',
-		  `sActive` tinyint(1) DEFAULT '1',
-		  PRIMARY KEY (`sId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table `#__storefront_sku_options`
+        if (!$schema->tableExists('#__storefront_sku_options')) {
+            $schema->createTable('#__storefront_sku_options')
+                ->integer('sId')
+                ->integer('oId')
+                ->primaryKey(['sId', 'oId'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
+
+        // Table structure for table `#__storefront_skus`
+        if (!$schema->tableExists('#__storefront_skus')) {
+            $schema->createTable('#__storefront_skus')
+                ->integer('sId', ['autoIncrement' => true])
+                ->integer('pId')->nullable()
+                ->char('sSku', 16)->nullable()
+                ->decimal('sWeight', 10, 2)->nullable()
+                ->decimal('sPrice', 10, 2)->nullable()
+                ->text('sDescriprtion')->nullable()
+                ->text('sFeatures')->nullable()
+                ->tinyInteger('sTrackInventory')->default(0)
+                ->integer('sInventory')->default(0)
+                ->tinyInteger('sEnumerable')->default(1)
+                ->tinyInteger('sAllowMultiple')->default(1)
+                ->tinyInteger('sActive')->default(1)
+                ->primaryKey('sId')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
     }
 
     /**
@@ -190,60 +220,21 @@ class Migration20130812201731ComStorefront extends Base
      **/
     public function down()
     {
-        $query = "DROP TABLE IF EXISTS `#__storefront_collections`";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
 
-        $query = "DROP TABLE IF EXISTS `#__storefront_coupon_actions`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_coupon_conditions`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_coupon_objects`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_coupons`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_option_groups`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_options`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_product_collections`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_product_option_groups`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_product_types`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_products`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_sku_meta`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_sku_options`";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__storefront_skus`";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema->dropTable('#__storefront_collections');
+        $schema->dropTable('#__storefront_coupon_actions');
+        $schema->dropTable('#__storefront_coupon_conditions');
+        $schema->dropTable('#__storefront_coupon_objects');
+        $schema->dropTable('#__storefront_coupons');
+        $schema->dropTable('#__storefront_option_groups');
+        $schema->dropTable('#__storefront_options');
+        $schema->dropTable('#__storefront_product_collections');
+        $schema->dropTable('#__storefront_product_option_groups');
+        $schema->dropTable('#__storefront_product_types');
+        $schema->dropTable('#__storefront_products');
+        $schema->dropTable('#__storefront_sku_meta');
+        $schema->dropTable('#__storefront_sku_options');
+        $schema->dropTable('#__storefront_skus');
     }
 }

@@ -20,21 +20,27 @@ class Migration20130911070500ComCourses extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__courses_asset_groups', 'params')) {
-            $query = "ALTER TABLE `#__courses_asset_groups` ADD `params` TEXT  NOT NULL  AFTER `state`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "SELECT id FROM `#__courses_asset_groups` WHERE `alias`='lectures'";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        if (
+            $schema->tableExists('#__courses_asset_groups')
+            && !$schema->hasColumn('#__courses_asset_groups', 'params')
+        ) {
+            $schema->addColumn('#__courses_asset_groups', 'params')->text()->notNull();
+
+            $query = $this->db->getQuery(true);
+            $query->select('id')
+                ->from('#__courses_asset_groups')
+                ->where('alias', '=', 'lectures');
+            $results = $query->loadObjectList();
 
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
-                    $query = "UPDATE `#__courses_asset_groups` SET `params` = "
-                        . "'discussions_category=1' WHERE `parent` = '{$r->id}'";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__courses_asset_groups')
+                        ->set(['params' => 'discussions_category=1'])
+                        ->where('parent', '=', $r->id)
+                        ->execute();
                 }
             }
         }
@@ -45,10 +51,10 @@ class Migration20130911070500ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__courses_asset_groups', 'params')) {
-            $query = "ALTER TABLE `#__courses_asset_groups` DROP `params`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__courses_asset_groups', 'params')) {
+            $schema->dropColumn('#__courses_asset_groups', 'params');
         }
     }
 }

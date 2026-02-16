@@ -21,24 +21,20 @@ class Migration20140623144900Core extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__xgroups_member_roles')
-            && !$this->db->tableHasField('#__xgroups_member_roles', 'id')
+            $schema->tableExists('#__xgroups_member_roles')
+            && !$schema->hasColumn('#__xgroups_member_roles', 'id')
         ) {
-            $query = "ALTER TABLE `#__xgroups_member_roles` "
-                . "ADD `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addAutoIncrementPrimaryKey('#__xgroups_member_roles', 'id', true);
         }
 
         if (
-            $this->db->tableExists('#__xmessage_seen')
-            && !$this->db->tableHasField('#__xmessage_seen', 'id')
+            $schema->tableExists('#__xmessage_seen')
+            && !$schema->hasColumn('#__xmessage_seen', 'id')
         ) {
-            $query = "ALTER TABLE `#__xmessage_seen` "
-                . "ADD `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addAutoIncrementPrimaryKey('#__xmessage_seen', 'id', true);
         }
     }
 
@@ -47,22 +43,20 @@ class Migration20140623144900Core extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__xgroups_member_roles')
-            && $this->db->tableHasField('#__xgroups_member_roles', 'id')
+            $schema->tableExists('#__xgroups_member_roles')
+            && $schema->hasColumn('#__xgroups_member_roles', 'id')
         ) {
-            $query = "ALTER TABLE `#__xgroups_member_roles` DROP `id`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__xgroups_member_roles', 'id');
         }
 
         if (
-            $this->db->tableExists('#__xmessage_seen')
-            && $this->db->tableHasField('#__xmessage_seen', 'id')
+            $schema->tableExists('#__xmessage_seen')
+            && $schema->hasColumn('#__xmessage_seen', 'id')
         ) {
-            $query = "ALTER TABLE `#__xmessage_seen` DROP `id`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__xmessage_seen', 'id');
         }
     }
 }

@@ -18,857 +18,556 @@ class Migration20120101000004Core extends Base
 {
     public function up()
     {
-        if (
-            $this->db->tableExists('#__blog_entries')
-            && !$this->db->tableHasKey('#__blog_entries', 'ftidx_title_content')
-            && $this->db->tableHasField('#__blog_entries', 'title')
-            && $this->db->tableHasField('#__blog_entries', 'content')
-        ) {
-            $query = "ALTER TABLE `#__blog_entries` ADD FULLTEXT INDEX `ftidx_title_content` "
-                . "(`title` ASC, `content` ASC)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__blog_entries')) {
+            $schema->addFulltextIndex('#__blog_entries', 'ftidx_title_content', ['title', 'content']);
         }
 
-        if ($this->db->tableExists('#__citations')) {
+        if ($schema->tableExists('#__citations')) {
             if (
-                $this->db->tableHasField('#__citations', 'type')
-                && $this->db->tableHasField('#__citations', 'uid')
+                $schema->hasColumn('#__citations', 'type')
+                && $schema->hasColumn('#__citations', 'uid')
             ) {
-                $query = "ALTER TABLE `#__citations` CHANGE COLUMN `type` `type` "
-                    . "VARCHAR(30) NULL DEFAULT NULL AFTER `uid`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->modifyColumn('#__citations', 'type')->string(30)->nullable()->execute();
             }
 
             if (
-                $this->db->tableHasField('#__citations', 'published')
-                && $this->db->tableHasField('#__citations', 'type')
+                $schema->hasColumn('#__citations', 'published')
+                && $schema->hasColumn('#__citations', 'type')
             ) {
-                $query = "ALTER TABLE `#__citations` CHANGE COLUMN `published` `published` "
-                    . "INT(3) NOT NULL DEFAULT '1' AFTER `type`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->modifyColumn('#__citations', 'published')->integer()->notNull()->default(1)->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations', 'language')
-                && $this->db->tableHasField('#__citations', 'notes')
+                !$schema->hasColumn('#__citations', 'language')
+                && $schema->hasColumn('#__citations', 'notes')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `language` VARCHAR(100) "
-                    . "NULL DEFAULT NULL AFTER `notes`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__citations', 'language')->string(100)->nullable()->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations', 'accession_number')
-                && $this->db->tableHasField('#__citations', 'language')
+                !$schema->hasColumn('#__citations', 'accession_number')
+                && $schema->hasColumn('#__citations', 'language')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `accession_number` VARCHAR(100) "
-                    . "NULL DEFAULT NULL AFTER `language`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__citations', 'accession_number')->string(100)->nullable()->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations', 'short_title')
-                && $this->db->tableHasField('#__citations', 'accession_number')
+                !$schema->hasColumn('#__citations', 'short_title')
+                && $schema->hasColumn('#__citations', 'accession_number')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `short_title` VARCHAR(250) "
-                    . "NULL DEFAULT NULL AFTER `accession_number`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__citations', 'short_title')->string(250)->nullable()->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations', 'author_address')
-                && $this->db->tableHasField('#__citations', 'short_title')
+                !$schema->hasColumn('#__citations', 'author_address')
+                && $schema->hasColumn('#__citations', 'short_title')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `author_address` TEXT "
-                    . "NULL DEFAULT NULL AFTER `short_title`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__citations', 'author_address')->text()->nullable()->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations', 'keywords')
-                && $this->db->tableHasField('#__citations', 'author_address')
+                !$schema->hasColumn('#__citations', 'keywords')
+                && $schema->hasColumn('#__citations', 'author_address')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `keywords` TEXT "
-                    . "NULL DEFAULT NULL AFTER `author_address`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__citations', 'keywords')->text()->nullable()->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations', 'abstract')
-                && $this->db->tableHasField('#__citations', 'keywords')
+                !$schema->hasColumn('#__citations', 'abstract')
+                && $schema->hasColumn('#__citations', 'keywords')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `abstract` TEXT "
-                    . "NULL DEFAULT NULL AFTER `keywords`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__citations', 'abstract')->text()->nullable()->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations', 'call_number')
-                && $this->db->tableHasField('#__citations', 'abstract')
+                !$schema->hasColumn('#__citations', 'call_number')
+                && $schema->hasColumn('#__citations', 'abstract')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `call_number` VARCHAR(100) "
-                    . "NULL DEFAULT NULL AFTER `abstract`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__citations', 'call_number')->string(100)->nullable()->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations', 'label')
-                && $this->db->tableHasField('#__citations', 'call_number')
+                !$schema->hasColumn('#__citations', 'label')
+                && $schema->hasColumn('#__citations', 'call_number')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `label` VARCHAR(100) "
-                    . "NULL DEFAULT NULL AFTER `call_number`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__citations', 'label')->string(100)->nullable()->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations', 'research_notes')
-                && $this->db->tableHasField('#__citations', 'label')
+                !$schema->hasColumn('#__citations', 'research_notes')
+                && $schema->hasColumn('#__citations', 'label')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `research_notes` TEXT "
-                    . "NULL DEFAULT NULL AFTER `label`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__citations', 'research_notes')->text()->nullable()->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations', 'params')
-                && $this->db->tableHasField('#__citations', 'research_notes')
+                !$schema->hasColumn('#__citations', 'params')
+                && $schema->hasColumn('#__citations', 'research_notes')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD COLUMN `params` TEXT "
-                    . "NULL DEFAULT NULL AFTER `research_notes` ";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__citations', 'params')->text()->nullable()->execute();
             }
 
+            $schema->addFulltextIndex('#__citations', 'ftidx_title_isbn_doi_abstract', [
+                'title',
+                'isbn',
+                'doi',
+                'abstract',
+            ]);
+        }
+
+        if ($schema->tableExists('#__citations_assoc')) {
             if (
-                $this->db->tableHasField('#__citations', 'title')
-                && $this->db->tableHasField('#__citations', 'isbn')
-                && $this->db->tableHasField('#__citations', 'doi')
-                && $this->db->tableHasField('#__citations', 'abstract')
-                && !$this->db->tableHasKey('#__citations', 'ftidx_title_isbn_doi_abstract')
+                $schema->hasColumn('#__citations_assoc', 'table')
+                && !$schema->hasColumn('#__citations_assoc', 'tbl')
             ) {
-                $query = "ALTER TABLE `#__citations` ADD FULLTEXT INDEX `ftidx_title_isbn_doi_abstract` "
-                    . "(`title` ASC, `isbn` ASC, `doi` ASC, `abstract` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__citations_assoc', 'table', 'tbl')->string(50)->nullable()->execute();
             }
         }
 
-        if ($this->db->tableExists('#__citations_assoc')) {
+        if ($schema->tableExists('#__citations_authors')) {
             if (
-                $this->db->tableHasField('#__citations_assoc', 'table')
-                && !$this->db->tableHasField('#__citations_assoc', 'tbl')
+                $schema->hasColumn('#__citations_authors', 'author_uid')
+                && !$schema->hasColumn('#__citations_authors', 'authorid')
             ) {
-                $query = "ALTER TABLE `#__citations_assoc` CHANGE COLUMN `table` `tbl` "
-                    . "VARCHAR(50) NULL DEFAULT NULL AFTER `type`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__citations_authors', 'author_uid', 'authorid')
+                    ->integer()
+                    ->nullable()
+                    ->default(0)
+                    ->execute();
             }
+
+            if (
+                !$schema->hasColumn('#__citations_authors', 'uidNumber')
+                && $schema->hasColumn('#__citations_authors', 'authorid')
+            ) {
+                $schema->addColumn('#__citations_authors', 'uidNumber')
+                    ->integer()
+                    ->nullable()
+                    ->default(0)
+                    ->execute();
+            }
+
+            $schema->addUniqueIndex('#__citations_authors', 'uidx_cid_author_authorid_uidNumber', [
+                'cid',
+                'author',
+                'authorid',
+                'uidNumber',
+            ]);
+
+            $schema->addIndex('#__citations_authors', 'idx_authorid', 'authorid');
+
+            $schema->addIndex('#__citations_authors', 'idx_uidNumber', 'uidNumber');
+
+            $schema->dropIndex('#__citations_authors', 'cid_auth_uid');
         }
 
-        if ($this->db->tableExists('#__citations_authors')) {
+        if ($schema->tableExists('#__doi_mapping')) {
             if (
-                $this->db->tableHasField('#__citations_authors', 'author_uid')
-                && !$this->db->tableHasField('#__citations_authors', 'authorid')
+                $schema->hasColumn('#__doi_mapping', 'alias')
+                && !$schema->hasColumn('#__doi_mapping', 'versionid')
             ) {
-                $query = "ALTER TABLE `#__citations_authors` CHANGE COLUMN `author_uid` `authorid` "
-                    . "INT(11) NULL DEFAULT '0' AFTER `author`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__doi_mapping', 'versionid')
+                    ->integer()
+                    ->nullable()
+                    ->default(0)
+                    ->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__citations_authors', 'uidNumber')
-                && $this->db->tableHasField('#__citations_authors', 'authorid')
+                $schema->hasColumn('#__doi_mapping', 'versionid')
+                && !$schema->hasColumn('#__doi_mapping', 'doi')
             ) {
-                $query = "ALTER TABLE `#__citations_authors` ADD COLUMN `uidNumber` "
-                    . "INT(11) NULL DEFAULT '0' AFTER `authorid`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                $this->db->tableHasField('#__citations_authors', 'cid')
-                && $this->db->tableHasField('#__citations_authors', 'author')
-                && $this->db->tableHasField('#__citations_authors', 'authorid')
-                && $this->db->tableHasField('#__citations_authors', 'uidNumber')
-                && !$this->db->tableHasKey('#__citations_authors', 'uidx_cid_author_authorid_uidNumber')
-            ) {
-                $query = "ALTER TABLE `#__citations_authors` ADD UNIQUE INDEX "
-                    . "`uidx_cid_author_authorid_uidNumber` (`cid` ASC, `author` ASC, `authorid` ASC, `uidNumber` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                $this->db->tableHasField('#__citations_authors', 'authorid')
-                && !$this->db->tableHasKey('#__citations_authors', 'idx_authorid')
-            ) {
-                $query = "ALTER TABLE `#__citations_authors` ADD INDEX `idx_authorid` (`authorid` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                $this->db->tableHasField('#__citations_authors', 'uidNumber')
-                && !$this->db->tableHasKey('#__citations_authors', 'idx_uidNumber')
-            ) {
-                $query = "ALTER TABLE `#__citations_authors` ADD INDEX `idx_uidNumber` (`uidNumber` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasKey('#__citations_authors', 'cid_auth_uid')) {
-                $query = "ALTER TABLE `#__citations_authors` DROP INDEX `cid_auth_uid`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-        }
-
-        if ($this->db->tableExists('#__doi_mapping')) {
-            if (
-                $this->db->tableHasField('#__doi_mapping', 'alias')
-                && !$this->db->tableHasField('#__doi_mapping', 'versionid')
-            ) {
-                $query = "ALTER TABLE `#__doi_mapping` ADD COLUMN `versionid` INT(11) NULL DEFAULT '0' AFTER `alias`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                $this->db->tableHasField('#__doi_mapping', 'versionid')
-                && !$this->db->tableHasField('#__doi_mapping', 'doi')
-            ) {
-                $query = "ALTER TABLE `#__doi_mapping` ADD COLUMN `doi` "
-                    . "VARCHAR(50) NULL DEFAULT NULL AFTER `versionid`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__doi_mapping', 'doi')->string(50)->nullable()->execute();
             }
         }
 
         if (
-            $this->db->tableExists('#__events')
-            && $this->db->tableHasField('#__events', 'publish_down')
-            && !$this->db->tableHasField('#__events', 'time_zone')
+            $schema->tableExists('#__events')
+            && $schema->hasColumn('#__events', 'publish_down')
+            && !$schema->hasColumn('#__events', 'time_zone')
         ) {
-            $query = "ALTER TABLE `#__events` ADD COLUMN `time_zone` "
-                . "VARCHAR(5) NULL DEFAULT NULL AFTER `publish_down`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__events', 'time_zone')->string(5)->nullable()->execute();
         }
 
-        if ($this->db->tableExists('#__faq')) {
+        if ($schema->tableExists('#__faq')) {
             if (
-                $this->db->tableHasField('#__faq', 'fulltext')
-                && !$this->db->tableHasField('#__faq', 'fulltxt')
+                $schema->hasColumn('#__faq', 'fulltext')
+                && !$schema->hasColumn('#__faq', 'fulltxt')
             ) {
-                $query = "ALTER TABLE `#__faq` CHANGE COLUMN `fulltext` `fulltxt` "
-                    . "TEXT NULL DEFAULT NULL AFTER `params`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__faq', 'fulltext', 'fulltxt')->text()->nullable()->execute();
             }
 
-            if ($this->db->tableHasKey('#__faq', 'jos_faq_title_introtext_fulltext_ftidx')) {
-                $query = "ALTER TABLE `#__faq` DROP INDEX `jos_faq_title_introtext_fulltext_ftidx`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__faq', 'jos_faq_title_introtext_fulltext_ftidx');
 
-            if (
-                $this->db->tableHasField('#__faq', 'title')
-                && $this->db->tableHasField('#__faq', 'params')
-                && $this->db->tableHasField('#__faq', 'fulltxt')
-                && !$this->db->tableHasKey('#__faq', 'jos_faq_title_introtext_fulltext_ftidx')
-            ) {
-                $query = "ALTER TABLE `#__faq` ADD FULLTEXT INDEX "
-                    . "`jos_faq_title_introtext_fulltext_ftidx` (`title` ASC, `params` ASC, `fulltxt` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
+            $schema->addFulltextIndex('#__faq', 'jos_faq_title_introtext_fulltext_ftidx', [
+                'title',
+                'params',
+                'fulltxt',
+            ]);
+            $schema->addFulltextIndex('#__faq', 'ftidx_fulltxt', 'fulltxt');
+
+            $schema->dropIndex('#__faq', 'fulltext');
+        }
+
+        if ($schema->tableExists('#__faq_categories')) {
+            if ($schema->hasColumn('#__faq_categories', 'description')) {
+                $schema->modifyColumn('#__faq_categories', 'description')
+                    ->string(255)
+                    ->nullable()
+                    ->default('')
+                    ->execute();
             }
 
             if (
-                $this->db->tableHasField('#__faq', 'fulltxt')
-                && !$this->db->tableHasKey('#__faq', 'ftidx_fulltxt')
+                !$schema->hasColumn('#__faq_categories', 'asset_id')
+                && $schema->hasColumn('#__faq_categories', 'access')
             ) {
-                $query = "ALTER TABLE `#__faq` ADD FULLTEXT INDEX `ftidx_fulltxt` (`fulltxt` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasKey('#__faq', 'fulltext')) {
-                $query = "ALTER TABLE `#__faq` DROP INDEX `fulltext`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__faq_categories', 'asset_id')->integer()->notNull()->default(0)->execute();
             }
         }
 
-        if ($this->db->tableExists('#__faq_categories')) {
-            if ($this->db->tableHasField('#__faq_categories', 'description')) {
-                $query = "ALTER TABLE `#__faq_categories` CHANGE COLUMN `description` `description` "
-                    . "VARCHAR(255) NULL DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__faq_comments')) {
+            if ($schema->hasColumn('#__faq_comments', 'entry_id')) {
+                $schema->modifyColumn('#__faq_comments', 'entry_id')->integer()->notNull()->default(0)->execute();
+            }
+
+            if ($schema->hasColumn('#__faq_comments', 'content')) {
+                $schema->modifyColumn('#__faq_comments', 'content')->text()->nullable()->execute();
+            }
+
+            if ($schema->hasColumn('#__faq_comments', 'created')) {
+                $schema->modifyColumn('#__faq_comments', 'created')
+                    ->datetime()
+                    ->notNull()
+                    ->default('0000-00-00 00:00:00')
+                    ->execute();
+            }
+
+            if ($schema->hasColumn('#__faq_comments', 'created_by')) {
+                $schema->modifyColumn('#__faq_comments', 'created_by')->integer()->notNull()->default(0)->execute();
+            }
+
+            if ($schema->hasColumn('#__faq_comments', 'anonymous')) {
+                $schema->modifyColumn('#__faq_comments', 'anonymous')->tinyInteger()->notNull()->default(0)->execute();
+            }
+
+            if ($schema->hasColumn('#__faq_comments', 'parent')) {
+                $schema->modifyColumn('#__faq_comments', 'parent')->integer()->notNull()->default(0)->execute();
             }
 
             if (
-                !$this->db->tableHasField('#__faq_categories', 'asset_id')
-                && $this->db->tableHasField('#__faq_categories', 'access')
+                $schema->hasColumn('#__faq_comments', 'parent')
+                && !$schema->hasColumn('#__faq_comments', 'asset_id')
             ) {
-                $query = "ALTER TABLE `#__faq_categories` ADD COLUMN `asset_id` "
-                    . "INT(11) NOT NULL DEFAULT '0' AFTER `access`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-        }
-
-        if ($this->db->tableExists('#__faq_comments')) {
-            if ($this->db->tableHasField('#__faq_comments', 'entry_id')) {
-                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `entry_id` `entry_id` "
-                    . "INT(11) NOT NULL DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__faq_comments', 'content')) {
-                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `content` `content` TEXT NULL DEFAULT NULL";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__faq_comments', 'created')) {
-                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `created` `created` "
-                    . "DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__faq_comments', 'created_by')) {
-                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `created_by` `created_by` "
-                    . "INT(11) NOT NULL DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__faq_comments', 'anonymous')) {
-                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `anonymous` `anonymous` "
-                    . "TINYINT(2) NOT NULL DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__faq_comments', 'parent')) {
-                $query = "ALTER TABLE `#__faq_comments` CHANGE COLUMN `parent` `parent` INT(11) NOT NULL DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__faq_comments', 'asset_id')->integer()->notNull()->default(0)->execute();
             }
 
             if (
-                $this->db->tableHasField('#__faq_comments', 'parent')
-                && !$this->db->tableHasField('#__faq_comments', 'asset_id')
+                $schema->hasColumn('#__faq_comments', 'asset_id')
+                && !$schema->hasColumn('#__faq_comments', 'helpful')
             ) {
-                $query = "ALTER TABLE `#__faq_comments` ADD COLUMN `asset_id` "
-                    . "INT(11) NOT NULL DEFAULT '0' AFTER `parent`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__faq_comments', 'helpful')->integer()->notNull()->default(0)->execute();
             }
 
             if (
-                $this->db->tableHasField('#__faq_comments', 'asset_id')
-                && !$this->db->tableHasField('#__faq_comments', 'helpful')
+                $schema->hasColumn('#__faq_comments', 'helpful')
+                && !$schema->hasColumn('#__faq_comments', 'nothelpful')
             ) {
-                $query = "ALTER TABLE `#__faq_comments` ADD COLUMN `helpful` "
-                    . "INT(11) NOT NULL DEFAULT '0' AFTER `asset_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__faq_comments', 'nothelpful')->integer()->notNull()->default(0)->execute();
             }
+        }
 
+        if ($schema->tableExists('#__password_rule')) {
             if (
-                $this->db->tableHasField('#__faq_comments', 'helpful')
-                && !$this->db->tableHasField('#__faq_comments', 'nothelpful')
+                $schema->hasColumn('#__password_rule', 'group')
+                && !$schema->hasColumn('#__password_rule', 'grp')
+                && $schema->hasColumn('#__password_rule', 'failuremsg')
             ) {
-                $query = "ALTER TABLE `#__faq_comments` ADD COLUMN `nothelpful` "
-                    . "INT(11) NOT NULL DEFAULT '0' AFTER `helpful`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__password_rule', 'group', 'grp')->char(32)->notNull()->execute();
             }
         }
 
-        if ($this->db->tableExists('#__password_rule')) {
-            if (
-                $this->db->tableHasField('#__password_rule', 'group')
-                && !$this->db->tableHasField('#__password_rule', 'grp')
-                && $this->db->tableHasField('#__password_rule', 'failuremsg')
-            ) {
-                $query = "ALTER TABLE `#__password_rule` CHANGE COLUMN `group` `grp` "
-                    . "CHAR(32) NOT NULL AFTER `failuremsg` ;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (!$schema->tableExists('#__polls') && $schema->tableExists('#__xpolls')) {
+            $schema->renameTable('#__xpolls', '#__polls');
         }
 
-        if (!$this->db->tableExists('#__polls') && $this->db->tableExists('#__xpolls')) {
-            $query = "RENAME TABLE `#__xpolls` TO `#__polls`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__poll_data') && $schema->tableExists('#__xpoll_data')) {
+            $schema->renameTable('#__xpoll_data', '#__poll_data');
         }
 
-        if (!$this->db->tableExists('#__poll_data') && $this->db->tableExists('#__xpoll_data')) {
-            $query = "RENAME TABLE `#__xpoll_data` TO `#__poll_data`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__poll_date') && $schema->tableExists('#__xpoll_date')) {
+            $schema->renameTable('#__xpoll_date', '#__poll_date');
         }
 
-        if (!$this->db->tableExists('#__poll_date') && $this->db->tableExists('#__xpoll_date')) {
-            $query = "RENAME TABLE `#__xpoll_date` TO `#__poll_date`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if (!$this->db->tableExists('#__poll_menu') && $this->db->tableExists('#__xpoll_menu')) {
-            $query = "RENAME TABLE `#__xpoll_menu` TO `#__poll_menu`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__poll_menu') && $schema->tableExists('#__xpoll_menu')) {
+            $schema->renameTable('#__xpoll_menu', '#__poll_menu');
         }
 
         if (
-            $this->db->tableExists('#__resource_types')
-            && $this->db->tableHasField('#__resource_types', 'id')
-            && !$this->db->tableHasField('#__resource_types', 'alias')
+            $schema->tableExists('#__resource_types')
+            && $schema->hasColumn('#__resource_types', 'id')
+            && !$schema->hasColumn('#__resource_types', 'alias')
         ) {
-            $query = "ALTER TABLE `#__resource_types` ADD COLUMN `alias` VARCHAR(100) NULL DEFAULT NULL AFTER `id`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__resource_types', 'alias')->string(100)->nullable()->execute();
         }
 
-        if ($this->db->tableExists('#__resources')) {
+        if ($schema->tableExists('#__resources')) {
             if (
-                $this->db->tableHasField('#__resources', 'fulltext')
-                && !$this->db->tableHasField('#__resources', 'fulltxt')
-                && $this->db->tableHasField('#__resources', 'introtext')
+                $schema->hasColumn('#__resources', 'fulltext')
+                && !$schema->hasColumn('#__resources', 'fulltxt')
+                && $schema->hasColumn('#__resources', 'introtext')
             ) {
-                $query = "ALTER TABLE `#__resources` CHANGE COLUMN `fulltext` `fulltxt` "
-                    . "TEXT NOT NULL AFTER `introtext`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__resources', 'fulltext', 'fulltxt')->text()->notNull()->execute();
             }
 
-            if ($this->db->tableHasKey('#__resources', 'introtext')) {
-                $query = "ALTER TABLE `#__resources` DROP INDEX `introtext`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__resources', 'introtext');
 
-            if (
-                $this->db->tableHasField('#__resources', 'introtext')
-                && $this->db->tableHasField('#__resources', 'fulltxt')
-                && !$this->db->tableHasKey('#__resources', 'ftidx_introtext_fulltxt')
-            ) {
-                $query = "ALTER TABLE `#__resources` ADD FULLTEXT INDEX `ftidx_introtext_fulltxt` "
-                    . "(`introtext` ASC, `fulltxt` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addFulltextIndex('#__resources', 'ftidx_introtext_fulltxt', ['introtext', 'fulltxt']);
 
-            if ($this->db->tableHasKey('#__resources', 'jos_resources_title_introtext_fulltext_ftidx')) {
-                $query = "ALTER TABLE `#__resources` DROP INDEX `jos_resources_title_introtext_fulltext_ftidx`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__resources', 'jos_resources_title_introtext_fulltext_ftidx');
 
-            if (
-                !$this->db->tableHasKey('#__resources', 'ftidx_title_introtext_fulltxt')
-                && $this->db->tableHasField('#__resources', 'title')
-                && $this->db->tableHasField('#__resources', 'introtext')
-                && $this->db->tableHasField('#__resources', 'fulltxt')
-            ) {
-                $query = "ALTER TABLE `#__resources` ADD FULLTEXT INDEX `ftidx_title_introtext_fulltxt` "
-                    . "(`title` ASC, `introtext` ASC, `fulltxt` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
+            $schema->addFulltextIndex('#__resources', 'ftidx_title_introtext_fulltxt', [
+                'title',
+                'introtext',
+                'fulltxt',
+            ]);
+        }
+
+        if ($schema->tableExists('#__session')) {
+            if ($schema->hasPrimaryKey('#__session')) {
+                $schema->table('#__session')->alter()
+                    ->dropPrimaryKey()
+                    ->addPrimaryKey('session_id')
+                    ->execute();
+            } elseif ($schema->hasColumn('#__session', 'session_id')) {
+                $schema->table('#__session')->alter()
+                    ->addPrimaryKey('session_id')
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__session')) {
-            if ($this->db->tableHasKey('#__session', 'PRIMARY')) {
-                $query = "ALTER TABLE `#__session` DROP PRIMARY KEY";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                !$this->db->tableHasKey('#__session', 'PRIMARY')
-                && $this->db->tableHasField('#__session', 'session_id')
-            ) {
-                $query = "ALTER TABLE `#__session` ADD PRIMARY KEY USING BTREE (`session_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__stats_topvals')) {
+            if ($schema->hasColumn('#__stats_topvals', 'rank')) {
+                $schema->modifyColumn('#__stats_topvals', 'rank')->smallInteger()->notNull()->default(0)->execute();
             }
         }
 
-        if ($this->db->tableExists('#__stats_topvals')) {
-            if ($this->db->tableHasField('#__stats_topvals', 'rank')) {
-                $query = "ALTER TABLE `#__stats_topvals` CHANGE COLUMN `rank` `rank` "
-                    . "SMALLINT(6) NOT NULL DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__support_tickets')) {
+            if (
+                !$schema->hasColumn('#__support_tickets', 'open')
+                && $schema->hasColumn('#__support_tickets', 'group')
+            ) {
+                $schema->addColumn('#__support_tickets', 'open')->tinyInteger()->notNull()->default(1)->execute();
             }
         }
 
-        if ($this->db->tableExists('#__support_tickets')) {
+        if ($schema->tableExists('#__tags')) {
+            if ($schema->hasColumn('#__tags', 'alias')) {
+                $schema->dropColumn('#__tags', 'alias');
+            }
+
+            $schema->dropIndex('#__tags', 'jos_tags_raw_tag_alias_description_ftidx');
+
+            $schema->addFulltextIndex('#__tags', 'jos_tags_raw_tag_alias_description_ftidx', [
+                'raw_tag',
+                'description',
+            ]);
+        }
+
+        if ($schema->tableExists('#__tags_object')) {
             if (
-                !$this->db->tableHasField('#__support_tickets', 'open')
-                && $this->db->tableHasField('#__support_tickets', 'group')
+                !$schema->hasColumn('#__tags_object', 'label')
+                && $schema->hasColumn('#__tags_object', 'tbl')
             ) {
-                $query = "ALTER TABLE `#__support_tickets` ADD COLUMN `open` "
-                    . "TINYINT(3) NOT NULL DEFAULT '1' AFTER `group`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__tags_object', 'label')->string(30)->nullable()->execute();
+            }
+
+            $schema->addIndex('#__tags_object', 'jos_tags_object_objectid_tbl_idx', ['objectid', 'tbl']);
+        }
+
+        if ($schema->tableExists('#__tool')) {
+            if (
+                $schema->hasColumn('#__tool', 'fulltext')
+                && $schema->hasColumn('#__tool', 'description')
+                && !$schema->hasColumn('#__tool', 'fulltxt')
+            ) {
+                $schema->renameColumn('#__tool', 'fulltext', 'fulltxt')->text()->nullable()->execute();
             }
         }
 
-        if ($this->db->tableExists('#__tags')) {
-            if ($this->db->tableHasField('#__tags', 'alias')) {
-                $query = "ALTER TABLE `#__tags` DROP COLUMN `alias`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasKey('#__tags', 'jos_tags_raw_tag_alias_description_ftidx')) {
-                $query = "ALTER TABLE `#__tags` DROP INDEX `jos_tags_raw_tag_alias_description_ftidx`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__tool_version')) {
+            if (
+                $schema->hasColumn('#__tool_version', 'fulltext')
+                && $schema->hasColumn('#__tool_version', 'description')
+                && !$schema->hasColumn('#__tool_version', 'fulltxt')
+            ) {
+                $schema->renameColumn('#__tool_version', 'fulltext', 'fulltxt')->text()->nullable()->execute();
             }
 
             if (
-                !$this->db->tableHasKey('#__tags', 'jos_tags_raw_tag_alias_description_ftidx')
-                && $this->db->tableHasField('#__tags', 'raw_tag')
-                && $this->db->tableHasField('#__tags', 'description')
+                $schema->hasColumn('#__tool_version', 'priority')
+                && !$schema->hasColumn('#__tool_version', 'params')
             ) {
-                $query = "ALTER TABLE `#__tags` ADD FULLTEXT INDEX "
-                    . "`jos_tags_raw_tag_alias_description_ftidx` (`raw_tag` ASC, `description` ASC)";
-            }
-                $this->db->setQuery($query);
-                $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__tags_object')) {
-            if (
-                !$this->db->tableHasField('#__tags_object', 'label')
-                && $this->db->tableHasField('#__tags_object', 'tbl')
-            ) {
-                $query = "ALTER TABLE `#__tags_object` ADD COLUMN `label` VARCHAR(30) NULL DEFAULT NULL AFTER `tbl`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                !$this->db->tableHasKey('#__tags_object', 'jos_tags_object_objectid_tbl_idx')
-                && $this->db->tableHasField('#__tags_object', 'objectid')
-                && $this->db->tableHasField('#__tags_object', 'tbl')
-            ) {
-                $query = "ALTER TABLE `#__tags_object` ADD INDEX "
-                    . "`jos_tags_object_objectid_tbl_idx` (`objectid` ASC, `tbl` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__tool_version', 'params')->text()->nullable()->execute();
             }
         }
 
-        if ($this->db->tableExists('#__tool')) {
-            if (
-                $this->db->tableHasField('#__tool', 'fulltext')
-                && $this->db->tableHasField('#__tool', 'description')
-                && !$this->db->tableHasField('#__tool', 'fulltxt')
-            ) {
-                $query = "ALTER TABLE `#__tool` CHANGE COLUMN `fulltext` `fulltxt` "
-                    . "TEXT NULL DEFAULT NULL AFTER `description`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__users_password')) {
+            if ($schema->hasColumn('#__users_password', 'user_id')) {
+                $schema->modifyColumn('#__users_password', 'user_id')->integer()->notNull()->execute();
             }
         }
 
-        if ($this->db->tableExists('#__tool_version')) {
+        if ($schema->tableExists('#__users_password_history')) {
             if (
-                $this->db->tableHasField('#__tool_version', 'fulltext')
-                && $this->db->tableHasField('#__tool_version', 'description')
-                && !$this->db->tableHasField('#__tool_version', 'fulltxt')
+                $schema->hasColumn('#__users_password_history', 'user_id')
+                && $schema->hasColumn('#__users_password_history', 'id')
             ) {
-                $query = "ALTER TABLE `#__tool_version` CHANGE COLUMN `fulltext` `fulltxt` "
-                    . "TEXT NULL DEFAULT NULL AFTER `description`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->modifyColumn('#__users_password_history', 'user_id')->integer()->notNull()->execute();
             }
 
             if (
-                $this->db->tableHasField('#__tool_version', 'priority')
-                && !$this->db->tableHasField('#__tool_version', 'params')
+                $schema->hasColumn('#__users_password_history', 'passhash')
+                && $schema->hasColumn('#__users_password_history', 'user_id')
             ) {
-                $query = "ALTER TABLE `#__tool_version` ADD COLUMN `params` TEXT NULL DEFAULT NULL AFTER `priority`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->modifyColumn('#__users_password_history', 'passhash')->char(32)->notNull()->execute();
+            }
+
+            // Add id column if it doesn't exist
+            if (!$schema->hasColumn('#__users_password_history', 'id')) {
+                $schema->addColumn('#__users_password_history', 'id')->integer()->notNull()->execute();
+            }
+
+            // Modify the id column to be auto-increment and set as primary key
+            if ($schema->hasColumn('#__users_password_history', 'id')) {
+                $pkColumn = $schema->getPrimaryKey('#__users_password_history');
+                if ($pkColumn == 'user_id') {
+                    // Drop old primary key and add new one with auto-increment
+                    $schema->table('#__users_password_history')->alter()
+                        ->dropPrimaryKey()
+                        ->modifyColumn('id')->integer()->notNull()->autoIncrement()
+                        ->addPrimaryKey('id')
+                        ->execute();
+                } elseif (!$schema->hasPrimaryKey('#__users_password_history')) {
+                    // Just add primary key with auto-increment
+                    $schema->table('#__users_password_history')->alter()
+                        ->modifyColumn('id')->integer()->notNull()->autoIncrement()
+                        ->addPrimaryKey('id')
+                        ->execute();
+                }
             }
         }
 
-        if ($this->db->tableExists('#__users_password')) {
-            if ($this->db->tableHasField('#__users_password', 'user_id')) {
-                $query = "ALTER TABLE `#__users_password` CHANGE COLUMN `user_id` `user_id` INT(11) NOT NULL FIRST";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__users_transactions')) {
+            $schema->addIndex('#__users_transactions', 'idx_referenceid_category_type', [
+                'referenceid',
+                'category',
+                'type',
+            ]);
         }
 
-        if ($this->db->tableExists('#__users_password_history')) {
-            if (
-                $this->db->tableHasField('#__users_password_history', 'user_id')
-                && $this->db->tableHasField('#__users_password_history', 'id')
-            ) {
-                $query = "ALTER TABLE `#__users_password_history` CHANGE COLUMN `user_id` `user_id` "
-                    . "INT(11) NOT NULL AFTER `id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                $this->db->tableHasField('#__users_password_history', 'passhash')
-                && $this->db->tableHasField('#__users_password_history', 'user_id')
-            ) {
-                $query = "ALTER TABLE `#__users_password_history` CHANGE COLUMN `passhash` `passhash` "
-                    . "CHAR(32) NOT NULL AFTER `user_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                $this->db->tableHasKey('#__users_password_history', 'PRIMARY')
-                && $this->db->getPrimaryKey('#__users_password_history') == 'user_id'
-            ) {
-                $query = "ALTER TABLE `#__users_password_history` DROP PRIMARY KEY";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasField('#__users_password_history', 'id')) {
-                $query = "ALTER TABLE `#__users_password_history` ADD COLUMN `id` INT(11) NOT NULL FIRST";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                !$this->db->tableHasKey('#__users_password_history', 'PRIMARY')
-                && $this->db->tableHasField('#__users_password_history', 'id')
-            ) {
-                $query = "ALTER TABLE `#__users_password_history` ADD PRIMARY KEY (`id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__users_password_history', 'id')) {
-                $query = "ALTER TABLE `#__users_password_history` CHANGE COLUMN `id` `id` "
-                    . "INT(11) NOT NULL AUTO_INCREMENT FIRST";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__vote_log')) {
+            $schema->addIndex('#__vote_log', 'idx_referenceid', 'referenceid');
         }
 
-        if ($this->db->tableExists('#__users_transactions')) {
-            if (
-                !$this->db->tableHasKey('#__users_transactions', 'idx_referenceid_category_type')
-                && $this->db->tableHasField('#__users_transactions', 'referenceid')
-                && $this->db->tableHasField('#__users_transactions', 'category')
-                && $this->db->tableHasField('#__users_transactions', 'type')
-            ) {
-                $query = "ALTER TABLE `#__users_transactions` ADD INDEX `idx_referenceid_category_type` "
-                    . "(`referenceid` ASC, `category` ASC, `type` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_math')) {
+            if ($schema->hasColumn('#__wiki_math', 'inputhash')) {
+                $schema->modifyColumn('#__wiki_math', 'inputhash')->string(32)->notNull()->default('')->execute();
+            }
+
+            if ($schema->hasColumn('#__wiki_math', 'outputhash')) {
+                $schema->modifyColumn('#__wiki_math', 'outputhash')->string(32)->notNull()->default('')->execute();
             }
         }
 
         if (
-            $this->db->tableExists('#__vote_log')
-            && $this->db->tableHasField('#__vote_log', 'referenceid')
-            && !$this->db->tableHasKey('#__vote_log', 'idx_referenceid')
+            $schema->tableExists('#__wiki_page')
+            && !$schema->hasColumn('#__wiki_page', 'group_cn')
+            && $schema->hasColumn('#__wiki_page', 'group')
+            && $schema->hasColumn('#__wiki_page', 'access')
         ) {
-            $query = "ALTER TABLE `#__vote_log` ADD INDEX `idx_referenceid` (`referenceid` ASC)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__wiki_page', 'group', 'group_cn')->string(255)->nullable()->execute();
         }
 
-        if ($this->db->tableExists('#__wiki_math')) {
-            if ($this->db->tableHasField('#__wiki_math', 'inputhash')) {
-                $query = "ALTER TABLE `#__wiki_math` CHANGE COLUMN `inputhash` `inputhash` "
-                    . "VARCHAR(32) NOT NULL DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__wiki_math', 'outputhash')) {
-                $query = "ALTER TABLE `#__wiki_math` CHANGE COLUMN `outputhash` `outputhash` "
-                    . "VARCHAR(32) NOT NULL DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__wiki_version')) {
+            $schema->addIndex('#__wiki_version', 'idx_pageid', 'pageid');
         }
 
-        if (
-            $this->db->tableExists('#__wiki_page')
-            && !$this->db->tableHasField('#__wiki_page', 'group_cn')
-            && $this->db->tableHasField('#__wiki_page', 'group')
-            && $this->db->tableHasField('#__wiki_page', 'access')
-        ) {
-            $query = "ALTER TABLE `#__wiki_page` CHANGE COLUMN `group` `group_cn` "
-                . "VARCHAR(255) NULL DEFAULT NULL AFTER `access`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__wishlist_item')) {
+            $schema->addIndex('#__wishlist_item', 'idx_wishlist', 'wishlist');
         }
 
-        if (
-            $this->db->tableExists('#__wiki_version')
-            && $this->db->tableHasField('#__wiki_version', 'pageid')
-            && !$this->db->tableHasKey('#__wiki_version', 'idx_pageid')
-        ) {
-            $query = "ALTER TABLE `#__wiki_version` ADD INDEX `idx_pageid` (`pageid` ASC)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__wishlist_vote')) {
+            $schema->addIndex('#__wishlist_vote', 'idx_wishid', 'wishid');
         }
 
-        if (
-            $this->db->tableExists('#__wishlist_item')
-            && $this->db->tableHasField('#__wishlist_item', 'wishlist')
-            && !$this->db->tableHasKey('#__wishlist_item', 'idx_wishlist')
-        ) {
-            $query = "ALTER TABLE `#__wishlist_item` ADD INDEX `idx_wishlist` (`wishlist` ASC)";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if (
-            $this->db->tableExists('#__wishlist_vote')
-            && $this->db->tableHasField('#__wishlist_vote', 'wishid')
-            && !$this->db->tableHasKey('#__wishlist_vote', 'idx_wishid')
-        ) {
-            $query = "ALTER TABLE `#__wishlist_vote` ADD INDEX `idx_wishid` (`wishid` ASC)";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__xgroups')) {
+        if ($schema->tableExists('#__xgroups')) {
             if (
-                $this->db->tableHasField('#__xgroups', 'privacy')
-                && !$this->db->tableHasField('#__xgroups', 'discussion_email_autosubscribe')
+                $schema->hasColumn('#__xgroups', 'privacy')
+                && !$schema->hasColumn('#__xgroups', 'discussion_email_autosubscribe')
             ) {
-                $query = "ALTER TABLE `#__xgroups` ADD COLUMN `discussion_email_autosubscribe` "
-                    . "TINYINT(3) NULL DEFAULT NULL AFTER `privacy`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__xgroups', 'discussion_email_autosubscribe')
+                    ->tinyInteger()
+                    ->nullable()
+                    ->execute();
             }
 
             if (
-                $this->db->tableHasField('#__xgroups', 'plugins')
-                && !$this->db->tableHasField('#__xgroups', 'created')
+                $schema->hasColumn('#__xgroups', 'plugins')
+                && !$schema->hasColumn('#__xgroups', 'created')
             ) {
-                $query = "ALTER TABLE `#__xgroups` ADD COLUMN `created` DATETIME NULL DEFAULT NULL AFTER `plugins`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__xgroups', 'created')->datetime()->nullable()->execute();
             }
 
             if (
-                $this->db->tableHasField('#__xgroups', 'created')
-                && !$this->db->tableHasField('#__xgroups', 'created_by')
+                $schema->hasColumn('#__xgroups', 'created')
+                && !$schema->hasColumn('#__xgroups', 'created_by')
             ) {
-                $query = "ALTER TABLE `#__xgroups` ADD COLUMN `created_by` INT(11) NULL DEFAULT NULL AFTER `created`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__xgroups', 'created_by')->integer()->nullable()->execute();
             }
 
             if (
-                $this->db->tableHasField('#__xgroups', 'created_by')
-                && !$this->db->tableHasField('#__xgroups', 'params')
+                $schema->hasColumn('#__xgroups', 'created_by')
+                && !$schema->hasColumn('#__xgroups', 'params')
             ) {
-                $query = "ALTER TABLE `#__xgroups` ADD COLUMN `params` TEXT NULL DEFAULT NULL AFTER `created_by`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addColumn('#__xgroups', 'params')->text()->nullable()->execute();
             }
         }
 
-        if ($this->db->tableExists('#__xgroups_events') && $this->db->tableHasField('#__xgroups_events', 'active')) {
-            $query = "ALTER TABLE `#__xgroups_events` CHANGE COLUMN `active` `active` TINYINT(1) NOT NULL";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__xgroups_events') && $schema->hasColumn('#__xgroups_events', 'active')) {
+            $schema->modifyColumn('#__xgroups_events', 'active')->tinyInteger(1)->notNull()->execute();
         }
 
         if (
-            $this->db->tableExists('#__xgroups_pages')
-            && $this->db->tableHasField('#__xgroups_pages', 'active')
-            && !$this->db->tableHasField('#__xgroups_pages', 'privacy')
+            $schema->tableExists('#__xgroups_pages')
+            && $schema->hasColumn('#__xgroups_pages', 'active')
+            && !$schema->hasColumn('#__xgroups_pages', 'privacy')
         ) {
-            $query = "ALTER TABLE `#__xgroups_pages` ADD COLUMN `privacy` VARCHAR(10) NULL DEFAULT NULL AFTER `active`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__xgroups_pages', 'privacy')->string(10)->nullable()->execute();
         }
 
-        if ($this->db->tableExists('#__xgroups_tracperm')) {
-            if (
-                $this->db->tableHasField('#__xgroups_tracperm', 'group_id')
-                && $this->db->tableHasField('#__xgroups_tracperm', 'action')
-                && !$this->db->tableHasKey('#__xgroups_tracperm', 'id')
-            ) {
-                $query = "ALTER TABLE `#__xgroups_tracperm` ADD UNIQUE INDEX `id` (`group_id` ASC, `action` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_tracperm')) {
+            $schema->addUniqueIndex('#__xgroups_tracperm', 'id', ['group_id', 'action']);
 
-            if ($this->db->tableHasKey('#__xgroups_tracperm', 'PRIMARY')) {
-                $query = "ALTER TABLE `#__xgroups_tracperm` DROP PRIMARY KEY";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropPrimaryKey('#__xgroups_tracperm');
         }
 
         if (
-            $this->db->tableExists('#__xprofiles')
-            && $this->db->tableHasField('#__xprofiles', 'shadowExpire')
-            && !$this->db->tableHasField('#__xprofiles', 'locked')
+            $schema->tableExists('#__xprofiles')
+            && $schema->hasColumn('#__xprofiles', 'shadowExpire')
+            && !$schema->hasColumn('#__xprofiles', 'locked')
         ) {
-            $query = "ALTER TABLE `#__xprofiles` ADD COLUMN `locked` "
-                . "TINYINT(4) NOT NULL DEFAULT '0' AFTER `shadowExpire`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__xprofiles', 'locked')->tinyInteger()->notNull()->default(0)->execute();
         }
 
-        if ($this->db->tableExists('#__ysearch_site_map')) {
-            if (
-                !$this->db->tableHasKey('#__ysearch_site_map', 'ftidx_title_description')
-                && $this->db->tableHasField('#__ysearch_site_map', 'title')
-                && $this->db->tableHasField('#__ysearch_site_map', 'description')
-            ) {
-                $query = "ALTER TABLE `#__ysearch_site_map` ADD FULLTEXT INDEX "
-                    . "`ftidx_title_description` (`title` ASC, `description` ASC)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__ysearch_site_map')) {
+            $schema->addFulltextIndex('#__ysearch_site_map', 'ftidx_title_description', ['title', 'description']);
 
-            if ($this->db->tableHasKey('#__ysearch_site_map', 'ysearch_site_map_title_description_ftidx')) {
-                $query = "ALTER TABLE `#__ysearch_site_map` DROP INDEX `ysearch_site_map_title_description_ftidx`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__ysearch_site_map', 'ysearch_site_map_title_description_ftidx');
 
-            if ($this->db->tableHasKey('#__ysearch_site_map', 'jos_ysearch_site_map_title_description_ftidx')) {
-                $query = "ALTER TABLE `#__ysearch_site_map` DROP INDEX `jos_ysearch_site_map_title_description_ftidx`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__ysearch_site_map', 'jos_ysearch_site_map_title_description_ftidx');
         }
     }
 }

@@ -20,18 +20,22 @@ class Migration20140305090721ComCron extends Base
      **/
     public function up()
     {
-        // add publish_up
-        if (!$this->db->tableHasField('#__cron_jobs', 'publish_up')) {
-            $query = "ALTER TABLE `#__cron_jobs` ADD `publish_up` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->hasColumn('#__cron_jobs', 'publish_up')) {
+            $schema->addColumn('#__cron_jobs', 'publish_up')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
         }
 
-        // add publish_down
-        if (!$this->db->tableHasField('#__cron_jobs', 'publish_down')) {
-            $query = "ALTER TABLE `#__cron_jobs` ADD `publish_down` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__cron_jobs', 'publish_down')) {
+            $schema->addColumn('#__cron_jobs', 'publish_down')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
         }
     }
 
@@ -40,18 +44,16 @@ class Migration20140305090721ComCron extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         // drop publish_up
-        if ($this->db->tableHasField('#__cron_jobs', 'publish_up')) {
-            $query = "ALTER TABLE `#__cron_jobs` DROP COLUMN `publish_up`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__cron_jobs', 'publish_up')) {
+            $schema->dropColumn('#__cron_jobs', 'publish_up');
         }
 
         // drop publish_down
-        if ($this->db->tableHasField('#__cron_jobs', 'publish_down')) {
-            $query = "ALTER TABLE `#__cron_jobs` DROP COLUMN `publish_down`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__cron_jobs', 'publish_down')) {
+            $schema->dropColumn('#__cron_jobs', 'publish_down');
         }
     }
 }

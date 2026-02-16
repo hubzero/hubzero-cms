@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for deleting com_weblinks
  *
-*/
+ */
 class Migration20140110132217ComWeblinks extends Base
 {
     /**
@@ -21,32 +21,39 @@ class Migration20140110132217ComWeblinks extends Base
      **/
     public function up()
     {
-        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_weblinks';";
+        $id = $this->db->getQuery(true)
+            ->select('extension_id')
+            ->from('#__extensions')
+            ->where('type', '=', 'component')
+            ->where('element', '=', 'com_weblinks')
+            ->value('extension_id');
 
-        $this->db->setQuery($query);
-
-        if ($id = $this->db->loadResult()) {
+        if ($id) {
             $this->deleteComponentEntry('weblinks');
 
             $this->deletePluginEntry('search', 'weblinks');
 
             $this->deleteModuleEntry('mod_weblinks');
 
-            $query = "SELECT `id` FROM `#__modules` WHERE `module`='mod_weblinks';";
-            $this->db->setQuery($query);
-            if ($results = $this->db->loadColumn()) {
-                $query = "DELETE FROM `#__modules_menu` WHERE `moduleid` IN (" . implode(',', $results) . ");";
-                $this->db->setQuery($query);
-                $this->db->query();
+            $results = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__modules')
+                ->where('module', '=', 'mod_weblinks')
+                ->loadColumn();
 
-                $query = "DELETE FROM `#__modules` WHERE `module`='mod_weblinks';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($results) {
+                $this->db->getQuery(true)
+                    ->delete('#__modules_menu')
+                    ->whereIn('moduleid', $results)
+                    ->execute();
+
+                $this->db->getQuery(true)
+                    ->delete('#__modules')
+                    ->where('module', '=', 'mod_weblinks')
+                    ->execute();
             }
 
-            $query = "DROP TABLE IF EXISTS `#__weblinks`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->schema()->dropTable('#__weblinks');
         }
     }
 
@@ -55,59 +62,64 @@ class Migration20140110132217ComWeblinks extends Base
      **/
     public function down()
     {
-        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_weblinks';";
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
+        $id = $this->db->getQuery(true)
+            ->select('extension_id')
+            ->from('#__extensions')
+            ->where('type', '=', 'component')
+            ->where('element', '=', 'com_weblinks')
+            ->value('extension_id');
 
-        if (!($id = $this->db->loadResult())) {
+        if (!$id) {
             $this->addComponentEntry('weblinks');
 
             $this->addPluginEntry('weblinks', 'contacts', 0);
 
-            if (!$this->db->tableExists('#__weblinks')) {
-                $query = "CREATE TABLE `#__weblinks` (
-					  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-					  `catid` int(11) NOT NULL DEFAULT '0',
-					  `sid` int(11) NOT NULL DEFAULT '0',
-					  `title` varchar(250) NOT NULL DEFAULT '',
-					  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-					  `url` varchar(250) NOT NULL DEFAULT '',
-					  `description` text NOT NULL,
-					  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `hits` int(11) NOT NULL DEFAULT '0',
-					  `state` tinyint(1) NOT NULL DEFAULT '0',
-					  `checked_out` int(11) NOT NULL DEFAULT '0',
-					  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `ordering` int(11) NOT NULL DEFAULT '0',
-					  `archived` tinyint(1) NOT NULL DEFAULT '0',
-					  `approved` tinyint(1) NOT NULL DEFAULT '1',
-					  `access` int(11) NOT NULL DEFAULT '1',
-					  `params` text NOT NULL,
-					  `language` char(7) NOT NULL DEFAULT '',
-					  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
-					  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
-					  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
-					  `metakey` text NOT NULL,
-					  `metadesc` text NOT NULL,
-					  `metadata` text NOT NULL,
-					  `featured` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Set if link is featured.',
-					  `xreference` varchar(50) NOT NULL COMMENT 'A reference to enable linkages to external data sets.',
-					  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  PRIMARY KEY (`id`),
-					  KEY `idx_access` (`access`),
-					  KEY `idx_checkout` (`checked_out`),
-					  KEY `idx_state` (`state`),
-					  KEY `idx_catid` (`catid`),
-					  KEY `idx_createdby` (`created_by`),
-					  KEY `idx_featured_catid` (`featured`,`catid`),
-					  KEY `idx_language` (`language`),
-					  KEY `idx_xreference` (`xreference`)
-					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->tableExists('#__weblinks')) {
+                $schema->createTable('#__weblinks')
+                    ->unsignedInteger('id', ['autoIncrement' => true])
+                    ->integer('catid')->default(0)
+                    ->integer('sid')->default(0)
+                    ->string('title', 250)->default('')
+                    ->string('alias', 255)->default('')
+                    ->string('url', 250)->default('')
+                    ->text('description')
+                    ->datetime('date')->default('0000-00-00 00:00:00')
+                    ->integer('hits')->default(0)
+                    ->tinyInteger('state')->default(0)
+                    ->integer('checked_out')->default(0)
+                    ->datetime('checked_out_time')->default('0000-00-00 00:00:00')
+                    ->integer('ordering')->default(0)
+                    ->tinyInteger('archived')->default(0)
+                    ->tinyInteger('approved')->default(1)
+                    ->integer('access')->default(1)
+                    ->text('params')
+                    ->char('language', 7)->default('')
+                    ->datetime('created')->default('0000-00-00 00:00:00')
+                    ->unsignedInteger('created_by')->default(0)
+                    ->string('created_by_alias', 255)->default('')
+                    ->datetime('modified')->default('0000-00-00 00:00:00')
+                    ->unsignedInteger('modified_by')->default(0)
+                    ->text('metakey')
+                    ->text('metadesc')
+                    ->text('metadata')
+                    ->unsignedTinyInteger('featured')->default(0)
+                    ->string('xreference', 50)
+                    ->datetime('publish_up')->default('0000-00-00 00:00:00')
+                    ->datetime('publish_down')->default('0000-00-00 00:00:00')
+                    ->primaryKey('id')
+                    ->index('idx_access', 'access')
+                    ->index('idx_checkout', 'checked_out')
+                    ->index('idx_state', 'state')
+                    ->index('idx_catid', 'catid')
+                    ->index('idx_createdby', 'created_by')
+                    ->index('idx_featured_catid', ['featured', 'catid'])
+                    ->index('idx_language', 'language')
+                    ->index('idx_xreference', 'xreference')
+                    ->engine('MyISAM')
+                    ->charset('utf8')
+                    ->execute();
             }
         }
     }

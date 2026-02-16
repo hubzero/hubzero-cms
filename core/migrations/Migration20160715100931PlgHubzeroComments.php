@@ -20,13 +20,14 @@ class Migration20160715100931PlgHubzeroComments extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__item_comment_files')
-            && $this->db->tableHasField('#__item_comment_files', 'filename')
-        ) {
-            $query = "ALTER TABLE `#__item_comment_files` CHANGE `filename` `filename` VARCHAR(255) DEFAULT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__item_comment_files') && $schema->hasColumn('#__item_comment_files', 'filename')) {
+            $schema->modifyColumn('#__item_comment_files', 'filename')
+                ->string(255)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
     }
 
@@ -35,13 +36,14 @@ class Migration20160715100931PlgHubzeroComments extends Base
      **/
     public function down()
     {
-        if (
-            $this->db->tableExists('#__item_comment_files')
-            && $this->db->tableHasField('#__item_comment_files', 'filename')
-        ) {
-            $query = "ALTER TABLE `#__item_comment_files` CHANGE `filename` `filename` VARCHAR(100) DEFAULT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__item_comment_files') && $schema->hasColumn('#__item_comment_files', 'filename')) {
+            $schema->modifyColumn('#__item_comment_files', 'filename')
+                ->string(100)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
     }
 }

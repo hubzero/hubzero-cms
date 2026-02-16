@@ -21,13 +21,18 @@ class Migration20170323234546PComWishlist extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__wish_attachments')
-            && !$this->db->tableHasField('#__wish_attachments', 'comment_id')
+            $schema->tableExists('#__wish_attachments')
+            && !$schema->hasColumn('#__wish_attachments', 'comment_id')
         ) {
-            $query = "ALTER TABLE `#__wish_attachments` ADD `comment_id` INT(11) unsigned NOT NULL DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__wish_attachments', 'comment_id')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 
@@ -36,13 +41,13 @@ class Migration20170323234546PComWishlist extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__wish_attachments')
-            && $this->db->tableHasField('#__wish_attachments', 'comment_id')
+            $schema->tableExists('#__wish_attachments')
+            && $schema->hasColumn('#__wish_attachments', 'comment_id')
         ) {
-            $query = "ALTER TABLE `#__wish_attachments` DROP COLUMN `comment_id`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__wish_attachments', 'comment_id');
         }
     }
 }

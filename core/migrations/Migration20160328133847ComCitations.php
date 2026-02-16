@@ -21,22 +21,11 @@ class Migration20160328133847ComCitations extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__citations_secondary')
-            && !$this->db->tableHasKey('#__citations_secondary', 'idx_cid')
-        ) {
-            $query = "ALTER TABLE `#__citations_secondary` ADD INDEX `idx_cid` (`cid`)";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        if (
-            $this->db->tableExists('#__citations_secondary')
-            && !$this->db->tableHasKey('#__citations_secondary', 'idx_scope_scope_id')
-        ) {
-            $query = "ALTER TABLE `#__citations_secondary` ADD INDEX `idx_scope_scope_id` (`scope`, `scope_id`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__citations_secondary')) {
+            $schema->addIndex('#__citations_secondary', 'idx_cid', 'cid');
+            $schema->addIndex('#__citations_secondary', 'idx_scope_scope_id', ['scope', 'scope_id']);
         }
     }
 
@@ -45,22 +34,9 @@ class Migration20160328133847ComCitations extends Base
      **/
     public function down()
     {
-        if (
-            $this->db->tableExists('#__citations_secondary')
-            && $this->db->tableHasKey('#__citations_secondary', 'idx_cid')
-        ) {
-            $query = "ALTER TABLE `#__citations_secondary` DROP KEY `idx_cid`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        if (
-            $this->db->tableExists('#__citations_secondary')
-            && $this->db->tableHasKey('#__citations_secondary', 'idx_scope_scope_id')
-        ) {
-            $query = "ALTER TABLE `#__citations_secondary` DROP KEY `idx_scope_scope_id`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropIndex('#__citations_secondary', 'idx_cid');
+        $schema->dropIndex('#__citations_secondary', 'idx_scope_scope_id');
     }
 }

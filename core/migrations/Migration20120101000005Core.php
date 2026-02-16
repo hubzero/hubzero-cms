@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for 2011/12 views
@@ -18,56 +19,96 @@ class Migration20120101000005Core extends Base
 {
     public function up()
     {
-        if (!$this->db->tableExists('#__resource_contributors_view')) {
-            $query  = "CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY INVOKER "
-                . "VIEW `#__resource_contributors_view`";
-            $query .= " AS SELECT `m`.`uidNumber` AS `uidNumber`,count(`AA`.`authorid`) AS `count`";
-            $query .= " FROM ((`#__xprofiles` `m` left join `#__author_assoc` `AA` "
-                . "on(((`AA`.`authorid` = `m`.`uidNumber`) and (`AA`.`subtable` = _utf8'resources')))) "
-                . "join `#__resources` `R` on(((`R`.`id` = `AA`.`subid`) and (`R`.`published` = 1) "
-                . "and (`R`.`standalone` = 1)))) where (`m`.`public` = 1) group by `m`.`uidNumber`";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__resource_contributors_view')) {
+            $selectQuery = $this->db->getQuery(true)
+                ->select('m.uidNumber', 'uidNumber')
+                ->select(Expression::count('AA.authorid'), 'count')
+                ->from('#__xprofiles', 'm')
+                ->join('#__author_assoc AS AA', function ($join) {
+                    $join->on('AA.authorid', '=', 'm.uidNumber')
+                         ->where('AA.subtable', '=', 'resources');
+                }, 'left')
+                ->join('#__resources AS R', function ($join) {
+                    $join->on('R.id', '=', 'AA.subid')
+                         ->where('R.published', '=', 1)
+                         ->where('R.standalone', '=', 1);
+                }, 'inner')
+                ->where('m.public', '=', 1)
+                ->group('m.uidNumber');
+
+            $schema->createView('#__resource_contributors_view')
+                ->algorithm('UNDEFINED')
+                ->definer('CURRENT_USER')
+                ->security('INVOKER')
+                ->as($selectQuery->toSql('select'));
         }
 
-        if (!$this->db->tableExists('#__wiki_contributors_view')) {
-            $query  = "CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY INVOKER "
-                . "VIEW `#__wiki_contributors_view`";
-            $query .= " AS SELECT `m`.`uidNumber` AS `uidNumber`,count(`w`.`id`) AS `count`";
-            $query .= " FROM (`#__xprofiles` `m` left join `#__wiki_page` `w` "
-                . "on(((`w`.`access` <> 1) and ((`w`.`created_by` = `m`.`uidNumber`) "
-                . "or ((`m`.`username` <> _utf8'') "
-                . "and (`w`.`authors` like concat(_utf8'%',`m`.`username`,_utf8'%'))))))) "
-                . "where ((`m`.`public` = 1) and (`w`.`id` is not null)) group by `m`.`uidNumber`";
+        if (!$schema->tableExists('#__wiki_contributors_view')) {
+            $likePattern = Expression::concat(
+                Expression::literal('%'),
+                Expression::column('m.username'),
+                Expression::literal('%')
+            );
 
-            $this->db->setQuery($query);
-            $this->db->query();
+            $selectQuery = $this->db->getQuery(true)
+                ->select('m.uidNumber', 'uidNumber')
+                ->select(Expression::count('w.id'), 'count')
+                ->from('#__xprofiles', 'm')
+                ->join('#__wiki_page AS w', function ($join) use ($likePattern) {
+                    $join->on('w.access', '<>', 1)
+                         ->where(function ($where) use ($likePattern) {
+                             $where->where('w.created_by', '=', Expression::column('m.uidNumber'))
+                                   ->orWhere(function ($where) use ($likePattern) {
+                                       $where->where('m.username', '<>', '')
+                                             ->where('w.authors', 'LIKE', $likePattern);
+                                   });
+                         });
+                }, 'left')
+                ->where('m.public', '=', 1)
+                ->whereNotNull('w.id')
+                ->group('m.uidNumber');
+
+            $schema->createView('#__wiki_contributors_view')
+                ->algorithm('UNDEFINED')
+                ->definer('CURRENT_USER')
+                ->security('INVOKER')
+                ->as($selectQuery->toSql('select'));
         }
 
-        if (!$this->db->tableExists('#__contributor_ids_view')) {
-            $query  = "CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY INVOKER "
-                . "VIEW `#__contributor_ids_view`";
-            $query .= " AS SELECT `#__resource_contributors_view`.`uidNumber` AS `uidNumber`";
-            $query .= " FROM `#__resource_contributors_view` union select `#__wiki_contributors_view`.`uidNumber` "
-                . "AS `uidNumber` from `#__wiki_contributors_view`";
+        if (!$schema->tableExists('#__contributor_ids_view')) {
+            $unionQuery = $this->db->getQuery(true)
+                ->select('uidNumber')
+                ->from('#__wiki_contributors_view');
 
-            $this->db->setQuery($query);
-            $this->db->query();
+            $selectQuery = $this->db->getQuery(true)
+                ->select('uidNumber')
+                ->from('#__resource_contributors_view')
+                ->union($unionQuery);
+
+            $schema->createView('#__contributor_ids_view')
+                ->algorithm('UNDEFINED')
+                ->definer('CURRENT_USER')
+                ->security('INVOKER')
+                ->as($selectQuery->toSql('select'));
         }
 
-        if (!$this->db->tableExists('#__contributors_view')) {
-            $query  = "CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY INVOKER "
-                . "VIEW `#__contributors_view`";
-            $query .= " AS SELECT `c`.`uidNumber` AS `uidNumber`,coalesce(`r`.`count`,0) AS `resource_count`,"
-                . "coalesce(`w`.`count`,0) AS `wiki_count`,"
-                . "(coalesce(`w`.`count`,0) + coalesce(`r`.`count`,0)) AS `total_count`";
-            $query .= " FROM ((`#__contributor_ids_view` `c` left join `#__resource_contributors_view` `r` "
-                . "on((`r`.`uidNumber` = `c`.`uidNumber`))) left join `#__wiki_contributors_view` `w` "
-                . "on((`w`.`uidNumber` = `c`.`uidNumber`)))";
+        if (!$schema->tableExists('#__contributors_view')) {
+            $selectQuery = $this->db->getQuery(true)
+                ->select('c.uidNumber', 'uidNumber')
+                ->select(Expression::coalesce('r.count', 0), 'resource_count')
+                ->select(Expression::coalesce('w.count', 0), 'wiki_count')
+                ->select(Expression::ifNull('w.count', 0)->plus(Expression::ifNull('r.count', 0)), 'total_count')
+                ->from('#__contributor_ids_view', 'c')
+                ->leftJoin('#__resource_contributors_view AS r', 'r.uidNumber', 'c.uidNumber')
+                ->leftJoin('#__wiki_contributors_view AS w', 'w.uidNumber', 'c.uidNumber');
 
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->createView('#__contributors_view')
+                ->algorithm('UNDEFINED')
+                ->definer('CURRENT_USER')
+                ->security('INVOKER')
+                ->as($selectQuery->toSql('select'));
         }
     }
 }

@@ -21,15 +21,17 @@ class Migration20130512175201ComForum extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__forum_posts', 'thread')) {
-            $query .= "ALTER TABLE `#__forum_posts` ADD `thread` int(11) NOT NULL DEFAULT '0';";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__forum_posts')
+            && !$schema->hasColumn('#__forum_posts', 'thread')
+        ) {
+            $schema->addColumn('#__forum_posts', 'thread')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 
@@ -38,15 +40,10 @@ class Migration20130512175201ComForum extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__forum_posts', 'thread')) {
-            $query .= "ALTER TABLE `#__forum_posts` DROP `thread`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__forum_posts', 'thread')) {
+            $schema->dropColumn('#__forum_posts', 'thread');
         }
     }
 }

@@ -29,9 +29,11 @@ class Migration20140829131016PlgMembersDashboard extends Base
         }
 
         // update all modules positions currently set to myhub
-        $query = "UPDATE `#__modules` SET `position`='memberDashboard' WHERE `position`='myhub';";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $this->db->getQuery(true)
+            ->update('#__modules')
+            ->set(['position' => 'memberDashboard'])
+            ->where('position', '=', 'myhub')
+            ->execute();
     }
 
     /**
@@ -47,8 +49,10 @@ class Migration20140829131016PlgMembersDashboard extends Base
         }
 
         // update all modules positions currently set to myhub
-        $query = "UPDATE `#__modules` SET `position`='myhub' WHERE `position`='memberDashboard';";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $this->db->getQuery(true)
+            ->update('#__modules')
+            ->set(['position' => 'myhub'])
+            ->where('position', '=', 'memberDashboard')
+            ->execute();
     }
 }

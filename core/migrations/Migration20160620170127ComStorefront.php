@@ -20,13 +20,13 @@ class Migration20160620170127ComStorefront extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_products')
-            && !$this->db->tableHasField('#__storefront_products', 'access')
+            $schema->tableExists('#__storefront_products')
+            && !$schema->hasColumn('#__storefront_products', 'access')
         ) {
-            $query = "ALTER TABLE `#__storefront_products` ADD `access` tinyint(3) NOT NULL DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_products', 'access')->tinyInteger(3)->notNull()->default('0');
         }
     }
 
@@ -35,13 +35,13 @@ class Migration20160620170127ComStorefront extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_products')
-            && $this->db->tableHasField('#__storefront_products', 'access')
+            $schema->tableExists('#__storefront_products')
+            && $schema->hasColumn('#__storefront_products', 'access')
         ) {
-            $query = "ALTER TABLE `#__storefront_products` DROP COLUMN `access`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__storefront_products', 'access');
         }
     }
 }

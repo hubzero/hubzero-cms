@@ -21,45 +21,59 @@ class Migration20151118164723ComAnswers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__answers_questions_log')) {
-            $this->db->setQuery("SELECT * FROM `#__answers_questions_log`");
-            $rows = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__answers_questions_log')) {
+            $query = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__answers_questions_log');
+            $rows = $query->loadObjectList();
+
             foreach ($rows as $row) {
-                $query = "INSERT INTO `#__item_votes` "
-                    . "(`id`, `item_id`, `item_type`, `ip`, `created`, `created_by`, `vote`) VALUES (null, "
-                    . $this->db->quote($row->question_id) . ", " . $this->db->quote('question') . ", "
-                    . $this->db->quote($row->ip) . ", " . $this->db->quote($row->expires) . ", "
-                    . $this->db->quote($row->voter) . ", 0)";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__item_votes')
+                    ->set([
+                        'id'        => null,
+                        'item_id'   => $row->question_id,
+                        'item_type' => 'question',
+                        'ip'        => $row->ip,
+                        'created'   => $row->expires,
+                        'created_by' => $row->voter,
+                        'vote'      => 0
+                    ])
+                    ->execute();
             }
 
-            $this->db->setQuery("DROP TABLE IF EXISTS `#__answers_questions_log`");
-            $this->db->query();
+            $schema->dropTable('#__answers_questions_log');
         }
 
-        if ($this->db->tableExists('#__answers_log')) {
-            $this->db->setQuery("SELECT * FROM `#__answers_log`");
-            $rows = $this->db->loadObjectList();
+        if ($schema->tableExists('#__answers_log')) {
+            $query = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__answers_log');
+            $rows = $query->loadObjectList();
+
             foreach ($rows as $row) {
-                $query = "INSERT INTO `#__item_votes` "
-                    . "(`id`, `item_id`, `item_type`, `ip`, `created`, `created_by`, `vote`) VALUES (null, "
-                    . $this->db->quote($row->response_id) . ", " . $this->db->quote('response') . ", "
-                    . $this->db->quote($row->ip) . ", " . $this->db->quote('0000-00-00 00:00:00') . ", 0, "
-                    . $this->db->quote($row->helpful == 'yes' ? 1 : -1) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__item_votes')
+                    ->set([
+                        'id'        => null,
+                        'item_id'   => $row->response_id,
+                        'item_type' => 'response',
+                        'ip'        => $row->ip,
+                        'created'   => '0000-00-00 00:00:00',
+                        'created_by' => 0,
+                        'vote'      => ($row->helpful == 'yes' ? 1 : -1)
+                    ])
+                    ->execute();
             }
 
-            $this->db->setQuery("DROP TABLE IF EXISTS `#__answers_log`");
-            $this->db->query();
+            $schema->dropTable('#__answers_log');
         }
 
-        if ($this->db->tableExists('#__answers_questions')) {
-            if (!$this->db->tableHasField('#__answers_questions', 'nothelpful')) {
-                $query = "ALTER TABLE `#__answers_questions` ADD COLUMN `nothelpful` INT(11) NOT NULL DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__answers_questions')) {
+            if (!$schema->hasColumn('#__answers_questions', 'nothelpful')) {
+                $schema->addColumn('#__answers_questions', 'nothelpful')->integer()->notNull()->default(0)->execute();
             }
         }
     }
@@ -69,62 +83,76 @@ class Migration20151118164723ComAnswers extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__answers_questions_log')) {
-            $this->db->setQuery("SELECT * FROM `#__item_votes` WHERE `item_type`=" . $this->db->quote('question'));
-            $rows = $this->db->loadObjectList();
-            foreach ($rows as $row) {
-                $query = "INSERT INTO `#__answers_questions_log` "
-                    . "(`id`, `question_id`, `expires`, `voter`, `ip`) VALUES (null, "
-                    . $this->db->quote($row->item_id) . ", " . $this->db->quote($row->created) . ", "
-                    . $this->db->quote($row->created_by) . ", " . $this->db->quote($row->ip) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            $this->db->setQuery(
-                "CREATE TABLE `#__answers_questions_log` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `question_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `expires` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `voter` int(11) NOT NULL DEFAULT '0',
-				  `ip` varchar(15) NOT NULL DEFAULT '',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_qid` (`question_id`),
-				  KEY `idx_voter` (`voter`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
-            );
-            $this->db->query();
+        if (!$schema->tableExists('#__answers_questions_log')) {
+            $schema->createTable('#__answers_questions_log')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('question_id')->default(0)
+                ->datetime('expires')->default('0000-00-00 00:00:00')
+                ->integer('voter')->default(0)
+                ->string('ip', 15)->default('')
+                ->primaryKey('id')
+                ->index('idx_qid', 'question_id')
+                ->index('idx_voter', 'voter')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+
+            $query = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__item_votes')
+                ->where('item_type', '=', 'question');
+            $rows = $query->loadObjectList();
+
+            foreach ($rows as $row) {
+                $this->db->getQuery(true)
+                    ->insert('#__answers_questions_log')
+                    ->set([
+                        'id'          => null,
+                        'question_id' => $row->item_id,
+                        'expires'     => $row->created,
+                        'voter'       => $row->created_by,
+                        'ip'          => $row->ip
+                    ])
+                    ->execute();
+            }
         }
 
-        if (!$this->db->tableExists('#__answers_log')) {
-            $this->db->setQuery("SELECT * FROM `#__item_votes` WHERE `item_type`=" . $this->db->quote('response'));
-            $rows = $this->db->loadObjectList();
-            foreach ($rows as $row) {
-                $query = "INSERT INTO `#__answers_log` (`id`, `response_id`, `ip`, `helpful`) VALUES (null, "
-                    . $this->db->quote($row->item_id) . ", " . $this->db->quote($row->ip) . ", "
-                    . $this->db->quote($row->vote == 1 ? 'yes' : 'no') . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (!$schema->tableExists('#__answers_log')) {
+            $schema->createTable('#__answers_log')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('response_id')->default(0)
+                ->string('ip', 15)->default('')
+                ->string('helpful', 10)->default('')
+                ->primaryKey('id')
+                ->index('idx_rid', 'response_id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
-            $this->db->setQuery(
-                "CREATE TABLE `#__answers_log` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `response_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `ip` varchar(15) NOT NULL DEFAULT '',
-				  `helpful` varchar(10) NOT NULL DEFAULT '',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_rid` (`response_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;"
-            );
-            $this->db->query();
+            $query = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__item_votes')
+                ->where('item_type', '=', 'response');
+            $rows = $query->loadObjectList();
+
+            foreach ($rows as $row) {
+                $this->db->getQuery(true)
+                    ->insert('#__answers_log')
+                    ->set([
+                        'id'          => null,
+                        'response_id' => $row->item_id,
+                        'ip'          => $row->ip,
+                        'helpful'     => ($row->vote == 1 ? 'yes' : 'no')
+                    ])
+                    ->execute();
+            }
         }
 
-        if ($this->db->tableExists('#__answers_questions')) {
-            if ($this->db->tableHasField('#__answers_questions', 'nothelpful')) {
-                $query = "ALTER TABLE `#__answers_questions` DROP COLUMN `nothelpful`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__answers_questions')) {
+            if ($schema->hasColumn('#__answers_questions', 'nothelpful')) {
+                $schema->dropColumn('#__answers_questions', 'nothelpful');
             }
         }
     }

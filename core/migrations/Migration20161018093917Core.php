@@ -22,9 +22,9 @@ class Migration20161018093917Core extends Base
     public function up()
     {
         /* Future migration should drop the table */
-        $query = "TRUNCATE #__session_log;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $this->db->getQuery(true)
+            ->delete('#__session_log')
+            ->execute();
     }
 
     /**

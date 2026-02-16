@@ -16,18 +16,12 @@ class Migration20200917000000AuthLinkIndex extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__auth_link')) {
-            if (!$this->db->tableHasKey('#__auth_link', 'auth_domain_id_idx')) {
-                $query = "ALTER TABLE `#__auth_link` ADD INDEX auth_domain_id_idx (auth_domain_id);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasKey('#__auth_link', 'user_id_idx')) {
-                $query = "ALTER TABLE `#__auth_link` ADD INDEX user_id_idx (user_id);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__auth_link')) {
+            $schema->addIndex('#__auth_link', 'auth_domain_id_idx', 'auth_domain_id');
+
+            $schema->addIndex('#__auth_link', 'user_id_idx', 'user_id');
         }
     }
 
@@ -36,18 +30,12 @@ class Migration20200917000000AuthLinkIndex extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__auth_link')) {
-            if ($this->db->tableHasKey('#__auth_link', 'auth_domain_id_idx')) {
-                $query = "ALTER TABLE `#__auth_link` DROP INDEX auth_domain_id_idx;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__auth_link', 'user_id_idx')) {
-                $query = "ALTER TABLE `#__auth_link` DROP INDEX user_id_idx;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__auth_link')) {
+            $schema->dropIndex('#__auth_link', 'auth_domain_id_idx');
+
+            $schema->dropIndex('#__auth_link', 'user_id_idx');
         }
     }
 }

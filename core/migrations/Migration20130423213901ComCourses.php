@@ -20,11 +20,10 @@ class Migration20130423213901ComCourses extends Base
      **/
     public function up()
     {
-        $query = "ALTER TABLE `#__courses_grade_book` CHANGE `score` `score` DECIMAL(5,2)  NULL;";
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_grade_book', 'score')) {
+            $schema->modifyColumn('#__courses_grade_book', 'score')->decimal(5, 2)->nullable();
         }
     }
 }

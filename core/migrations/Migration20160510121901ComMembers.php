@@ -21,27 +21,29 @@ class Migration20160510121901ComMembers extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__user_profile_fields')) {
-            $query = "CREATE TABLE `#__user_profile_fields` (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `type` varchar(255) NOT NULL,
-			  `name` varchar(255) NOT NULL DEFAULT '',
-			  `label` varchar(255) NOT NULL DEFAULT '',
-			  `placeholder` varchar(255) DEFAULT NULL,
-			  `description` mediumtext,
-			  `ordering` int(11) NOT NULL DEFAULT '0',
-			  `access` int(10) NOT NULL DEFAULT '0',
-			  `option_other` tinyint(2) NOT NULL DEFAULT '0',
-			  `option_blank` tinyint(2) NOT NULL DEFAULT '0',
-			  `action_create` tinyint(2) NOT NULL DEFAULT '1',
-			  `action_update` tinyint(2) NOT NULL DEFAULT '1',
-			  `action_edit` tinyint(2) NOT NULL DEFAULT '1',
-			  PRIMARY KEY (`id`),
-			  KEY `idx_type` (`type`),
-			  KEY `idx_access` (`access`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__user_profile_fields')) {
+            $schema->createTable('#__user_profile_fields')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('type', 255)
+                ->string('name', 255)->default('')
+                ->string('label', 255)->default('')
+                ->string('placeholder', 255)->nullable()
+                ->mediumText('description')->nullable()
+                ->integer('ordering')->default(0)
+                ->integer('access')->default(0)
+                ->tinyInteger('option_other')->default(0)
+                ->tinyInteger('option_blank')->default(0)
+                ->tinyInteger('action_create')->default(1)
+                ->tinyInteger('action_update')->default(1)
+                ->tinyInteger('action_edit')->default(1)
+                ->primaryKey('id')
+                ->index('idx_type', 'type')
+                ->index('idx_access', 'access')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
             $params = \Component::params('com_members');
 
@@ -107,177 +109,330 @@ class Migration20160510121901ComMembers extends Base
                 . 'and supports automated linkages between you and your professional '
                 . 'activities ensuring that your work is recognized.';
 
-            $query = "INSERT INTO `#__user_profile_fields` "
-                . "(`id`, `type`, `name`, `label`, `placeholder`, `description`, "
-                . "`ordering`, `access`, `option_other`, `option_blank`, "
-                . "`action_create`, `action_update`, `action_edit`) VALUES "
-                . "(1,'select','organization','Organization',NULL,NULL,"
-                . "1,1,1,1,$orgCreate,$orgUpdate,$orgEdit),"
-                . "(2,'select','orgtype','Employment Status',NULL,NULL,"
-                . "2,5,0,1,$empCreate,$empUpdate,$empEdit),"
-                . "(3,'country','countryresident','Residency',NULL,"
-                . "'Select your Country of Residency.',3,5,0,1,$resCreate,$resUpdate,$resEdit),"
-                . "(4,'country','countryorigin','Citizenship',NULL,"
-                . "'Select your Country of Citizenship.',4,5,0,1,$citCreate,$citUpdate,$citEdit),"
-                . "(5,'url','url','Website',NULL,NULL,5,1,0,0,$urlCreate,$urlUpdate,$urlEdit),"
-                . "(6,'text','phone','Telephone',NULL,NULL,"
-                . "6,5,0,0,$phoneCreate,$phoneUpdate,$phoneEdit),"
-                . "(7,'orcid','orcid','ORCID',NULL,"
-                . $this->db->quote($orcidDesc) . ","
-                . "7,1,0,0,$orcidCreate,$orcidUpdate,$orcidEdit),"
-                . "(8,'radio','gender','Gender',NULL,NULL,"
-                . "8,5,0,0,$sexCreate,$sexUpdate,$sexEdit),"
-                . "(9,'checkboxes','race','Racial Background',NULL,NULL,"
-                . "9,5,0,0,$raceCreate,$raceUpdate,$raceEdit),"
-                . "(10,'checkboxes','disability','Disability',NULL,NULL,"
-                . "10,5,0,0,$disCreate,$disUpdate,$disEdit),"
-                . "(11,'select','reason','Reason',NULL,NULL,"
-                . "11,5,0,1,$reasonCreate,$reasonUpdate,$reasonEdit),"
-                . "(12,'tags','tags','Interests',NULL,NULL,"
-                . "12,1,0,0,$intCreate,$intUpdate,$intEdit),"
-                . "(13,'address','address','Address',NULL,NULL,"
-                . "13,5,0,0,$addrCreate,$addrUpdate,$addrEdit),"
-                . "(14,'radio','hispanic','Hispanic Heritage',NULL,NULL,"
-                . "14,5,0,0,$hispCreate,$hispUpdate,$hispEdit),"
-                . "(15,'editor','bio','Biography',NULL,NULL,15,1,0,0,0,0,1);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__user_profile_fields')
+                ->columns([
+                    'id',
+                    'type',
+                    'name',
+                    'label',
+                    'placeholder',
+                    'description',
+                    'ordering',
+                    'access',
+                    'option_other',
+                    'option_blank',
+                    'action_create',
+                    'action_update',
+                    'action_edit',
+                ])
+                ->values([
+                    [
+                        1,
+                        'select',
+                        'organization',
+                        'Organization',
+                        null,
+                        null,
+                        1,
+                        1,
+                        1,
+                        1,
+                        $orgCreate,
+                        $orgUpdate,
+                        $orgEdit,
+                    ],
+                    [
+                        2,
+                        'select',
+                        'orgtype',
+                        'Employment Status',
+                        null,
+                        null,
+                        2,
+                        5,
+                        0,
+                        1,
+                        $empCreate,
+                        $empUpdate,
+                        $empEdit,
+                    ],
+                    [
+                        3,
+                        'country',
+                        'countryresident',
+                        'Residency',
+                        null,
+                        'Select your Country of Residency.',
+                        3,
+                        5,
+                        0,
+                        1,
+                        $resCreate,
+                        $resUpdate,
+                        $resEdit,
+                    ],
+                    [
+                        4,
+                        'country',
+                        'countryorigin',
+                        'Citizenship',
+                        null,
+                        'Select your Country of Citizenship.',
+                        4,
+                        5,
+                        0,
+                        1,
+                        $citCreate,
+                        $citUpdate,
+                        $citEdit,
+                    ],
+                    [5, 'url', 'url', 'Website', null, null, 5, 1, 0, 0, $urlCreate, $urlUpdate, $urlEdit],
+                    [6, 'text', 'phone', 'Telephone', null, null, 6, 5, 0, 0, $phoneCreate, $phoneUpdate, $phoneEdit],
+                    [
+                        7,
+                        'orcid',
+                        'orcid',
+                        'ORCID',
+                        null,
+                        $orcidDesc,
+                        7,
+                        1,
+                        0,
+                        0,
+                        $orcidCreate,
+                        $orcidUpdate,
+                        $orcidEdit,
+                    ],
+                    [8, 'radio', 'gender', 'Gender', null, null, 8, 5, 0, 0, $sexCreate, $sexUpdate, $sexEdit],
+                    [
+                        9,
+                        'checkboxes',
+                        'race',
+                        'Racial Background',
+                        null,
+                        null,
+                        9,
+                        5,
+                        0,
+                        0,
+                        $raceCreate,
+                        $raceUpdate,
+                        $raceEdit,
+                    ],
+                    [
+                        10,
+                        'checkboxes',
+                        'disability',
+                        'Disability',
+                        null,
+                        null,
+                        10,
+                        5,
+                        0,
+                        0,
+                        $disCreate,
+                        $disUpdate,
+                        $disEdit,
+                    ],
+                    [
+                        11,
+                        'select',
+                        'reason',
+                        'Reason',
+                        null,
+                        null,
+                        11,
+                        5,
+                        0,
+                        1,
+                        $reasonCreate,
+                        $reasonUpdate,
+                        $reasonEdit,
+                    ],
+                    [12, 'tags', 'tags', 'Interests', null, null, 12, 1, 0, 0, $intCreate, $intUpdate, $intEdit],
+                    [13, 'address', 'address', 'Address', null, null, 13, 5, 0, 0, $addrCreate, $addrUpdate, $addrEdit],
+                    [
+                        14,
+                        'radio',
+                        'hispanic',
+                        'Hispanic Heritage',
+                        null,
+                        null,
+                        14,
+                        5,
+                        0,
+                        0,
+                        $hispCreate,
+                        $hispUpdate,
+                        $hispEdit,
+                    ],
+                    [15, 'editor', 'bio', 'Biography', null, null, 15, 1, 0, 0, 0, 0, 1]
+                ])
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__user_profile_options')) {
-            $query = "CREATE TABLE `#__user_profile_options` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `field_id` int(11) NOT NULL DEFAULT '0',
-				  `value` varchar(255) NOT NULL DEFAULT '',
-				  `label` varchar(255) NOT NULL DEFAULT '',
-				  `ordering` int(11) NOT NULL DEFAULT '0',
-				  `checked` tinyint(2) NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_field_id` (`field_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__user_profile_options')) {
+            $schema->createTable('#__user_profile_options')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('field_id')->default(0)
+                ->string('value', 255)->default('')
+                ->string('label', 255)->default('')
+                ->integer('ordering')->default(0)
+                ->tinyInteger('checked')->default(0)
+                ->primaryKey('id')
+                ->index('idx_field_id', 'field_id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
             // Gender
-            $query = "INSERT INTO `#__user_profile_options` (`id`, `field_id`, `value`, `label`, `ordering`, `checked`)
-						VALUES (null,8,'male','Male',1,0),
-								(null,8,'female','Female',2,0),
-								(null,8,'refused','Do not with to reveal',3,0);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__user_profile_options')
+                ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
+                ->values([
+                    [null, 8, 'male', 'Male', 1, 0],
+                    [null, 8, 'female', 'Female', 2, 0],
+                    [null, 8, 'refused', 'Do not with to reveal', 3, 0]
+                ])
+                ->execute();
 
             // Race
-            $query = "INSERT INTO `#__user_profile_options` (`id`, `field_id`, `value`, `label`, `ordering`, `checked`)
-						VALUES (null,9,'nativeamerican','American Indian or Alaska Native',1,0),
-								(null,9,'asian','Asian',2,0),
-								(null,9,'black','Black or African American',3,0),
-								(null,9,'hawaiian','Native Hawaiian or Other Pacific Islander',4,0),
-								(null,9,'white','White',5,0),
-								(null,9,'refused','Do not wish to reveal',6,0);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__user_profile_options')
+                ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
+                ->values([
+                    [null, 9, 'nativeamerican', 'American Indian or Alaska Native', 1, 0],
+                    [null, 9, 'asian', 'Asian', 2, 0],
+                    [null, 9, 'black', 'Black or African American', 3, 0],
+                    [null, 9, 'hawaiian', 'Native Hawaiian or Other Pacific Islander', 4, 0],
+                    [null, 9, 'white', 'White', 5, 0],
+                    [null, 9, 'refused', 'Do not wish to reveal', 6, 0]
+                ])
+                ->execute();
 
             // Hispanic
-            $query = "INSERT INTO `#__user_profile_options` (`id`, `field_id`, `value`, `label`, `ordering`, `checked`)
-						VALUES (null,14,'cuban','Cuban',1,0),
-								(null,14,'mexican','Mexican American or Chicano',2,0),
-								(null,14,'puertorican','Puerto Rican',3,0),
-								(null,14,'no','No (not Hispanic or Latino)',4,0),
-								(null,14,'refused','Do not wish to reveal',5,0);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__user_profile_options')
+                ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
+                ->values([
+                    [null, 14, 'cuban', 'Cuban', 1, 0],
+                    [null, 14, 'mexican', 'Mexican American or Chicano', 2, 0],
+                    [null, 14, 'puertorican', 'Puerto Rican', 3, 0],
+                    [null, 14, 'no', 'No (not Hispanic or Latino)', 4, 0],
+                    [null, 14, 'refused', 'Do not wish to reveal', 5, 0]
+                ])
+                ->execute();
 
             // Disability
-            $query = "INSERT INTO `#__user_profile_options` (`id`, `field_id`, `value`, `label`, `ordering`, `checked`)
-						VALUES (null,10,'blind','Blind / Visually Impaired',1,0),
-								(null,10,'deaf','Deaf / Hard of Hearing',2,0),
-								(null,10,'physical','Physical / Orthopedic Disability',3,0),
-								(null,10,'learning','Learning / Cognitive Disability',4,0),
-								(null,10,'vocal','Vocal / Speech Disability',5,0),
-								(null,10,'no','No (none)',6,0),
-								(null,10,'refused','Do not wish to reveal',7,0);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__user_profile_options')
+                ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
+                ->values([
+                    [null, 10, 'blind', 'Blind / Visually Impaired', 1, 0],
+                    [null, 10, 'deaf', 'Deaf / Hard of Hearing', 2, 0],
+                    [null, 10, 'physical', 'Physical / Orthopedic Disability', 3, 0],
+                    [null, 10, 'learning', 'Learning / Cognitive Disability', 4, 0],
+                    [null, 10, 'vocal', 'Vocal / Speech Disability', 5, 0],
+                    [null, 10, 'no', 'No (none)', 6, 0],
+                    [null, 10, 'refused', 'Do not wish to reveal', 7, 0]
+                ])
+                ->execute();
 
             // Organizations
-            if ($this->db->tableExists('#__xorganizations')) {
-                $query = "SELECT * FROM `#__xorganizations`";
-                $this->db->setQuery($query);
-                $organizations = $this->db->loadObjectList();
+            if ($schema->tableExists('#__xorganizations')) {
+                $organizations = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__xorganizations')
+                    ->loadObjectList();
 
                 if (count($organizations) > 0) {
-                    $query = "INSERT INTO `#__user_profile_options` "
-                        . "(`id`, `field_id`, `value`, `label`, `ordering`, `checked`) VALUES ";
+                    $columns = ['id', 'field_id', 'value', 'label', 'ordering', 'checked'];
+                    $values  = [];
 
-                    $queries = array();
                     foreach ($organizations as $i => $organization) {
-                        $queries[] = "(null,1,"
-                            . $this->db->quote($organization->organization) . ","
-                            . $this->db->quote($organization->organization) . ","
-                            . ($i + 1) . ",0)";
+                        $values[] = [
+                            null,
+                            1,
+                            $organization->organization,
+                            $organization->organization,
+                            ($i + 1),
+                            0
+                        ];
                     }
 
-                    $this->db->setQuery($query . implode(',', $queries) . ';');
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__user_profile_options')
+                        ->columns($columns)
+                        ->values($values)
+                        ->execute();
                 }
 
-                $query = "DROP TABLE IF EXISTS `#__xorganizations`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->schema()->dropTable('#__xorganizations');
             }
 
             // Organization types
-            if ($this->db->tableExists('#__xorganization_types')) {
-                $query = "SELECT * FROM `#__xorganization_types`";
-                $this->db->setQuery($query);
-                $types = $this->db->loadObjectList();
+            if ($schema->tableExists('#__xorganization_types')) {
+                $types = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__xorganization_types')
+                    ->loadObjectList();
 
                 if (count($types) > 0) {
-                    $query = "INSERT INTO `#__user_profile_options` "
-                        . "(`id`, `field_id`, `value`, `label`, `ordering`, `checked`) VALUES ";
+                    $columns = ['id', 'field_id', 'value', 'label', 'ordering', 'checked'];
+                    $values  = [];
 
-                    $queries = array();
                     foreach ($types as $i => $type) {
-                        $queries[] = "(null,2,"
-                            . $this->db->quote($type->type) . ","
-                            . $this->db->quote($type->title) . ","
-                            . ($i + 1) . ",0)";
+                        $values[] = [
+                            null,
+                            2,
+                            $type->type,
+                            $type->title,
+                            ($i + 1),
+                            0
+                        ];
                     }
 
-                    $this->db->setQuery($query . implode(',', $queries) . ';');
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__user_profile_options')
+                        ->columns($columns)
+                        ->values($values)
+                        ->execute();
                 }
 
-                $query = "DROP TABLE IF EXISTS `#__xorganization_types`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->schema()->dropTable('#__xorganization_types');
             }
 
             // Reasons
-            if ($this->db->tableExists('#__xprofiles_reasons')) {
-                $query = "SELECT * FROM `#__xprofiles_reasons`";
-                $this->db->setQuery($query);
-                $reasons = $this->db->loadObjectList();
+            if ($schema->tableExists('#__xprofiles_reasons')) {
+                $reasons = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__xprofiles_reasons')
+                    ->loadObjectList();
 
                 if (count($reasons) > 0) {
-                    $query = "INSERT INTO `#__user_profile_options` "
-                        . "(`id`, `field_id`, `value`, `label`, `ordering`, `checked`) VALUES ";
+                    $columns = ['id', 'field_id', 'value', 'label', 'ordering', 'checked'];
+                    $values  = [];
 
-                    $queries = array();
                     foreach ($reasons as $i => $reason) {
-                        $queries[] = "(null,11,"
-                            . $this->db->quote($reason->reason) . ","
-                            . $this->db->quote($reason->reason) . ","
-                            . ($i + 1) . ",0)";
+                        $values[] = [
+                            null,
+                            11,
+                            $reason->reason,
+                            $reason->reason,
+                            ($i + 1),
+                            0
+                        ];
                     }
 
-                    $this->db->setQuery($query . implode(',', $queries) . ';');
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__user_profile_options')
+                        ->columns($columns)
+                        ->values($values)
+                        ->execute();
                 }
 
-                $query = "DROP TABLE IF EXISTS `#__xprofiles_reasons`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->schema()->dropTable('#__xprofiles_reasons');
             }
         }
     }
@@ -287,110 +442,121 @@ class Migration20160510121901ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__user_profile_fields')) {
-            $query = "DROP TABLE IF EXISTS `#__user_profile_fields`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__user_profile_fields');
 
         // Organization types
-        if (!$this->db->tableExists('#__xorganizations')) {
-            $query = "CREATE TABLE `#__xorganizations` (
-				  `id` int(11) NOT NULL AUTO_INCREMENT,
-				  `organization` varchar(255) DEFAULT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__xorganizations')) {
+            $schema->createTable('#__xorganizations')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('organization', 255)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
-            if ($this->db->tableExists('#__user_profile_options')) {
-                $query = "SELECT * FROM `#__user_profile_options` WHERE `field_id`=1 ORDER BY `ordering`";
-                $this->db->setQuery($query);
-                $organizations = $this->db->loadObjectList();
+            if ($schema->tableExists('#__user_profile_options')) {
+                $organizations = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__user_profile_options')
+                    ->where('field_id', '=', 1)
+                    ->order('ordering', 'asc')
+                    ->loadObjectList();
 
                 if (count($organizations) > 0) {
-                    $query = "INSERT INTO `#__xorganizations` (`id`, `organization`)
-							VALUES ";
+                    $columns = ['id', 'organization'];
+                    $values  = [];
 
-                    $queries = array();
                     foreach ($organizations as $i => $organization) {
-                        $queries[] = "(null," . $this->db->quote($organization->label) . ")";
+                        $values[] = [null, $organization->label];
                     }
 
-                    $this->db->setQuery($query . implode(',', $queries) . ';');
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__xorganizations')
+                        ->columns($columns)
+                        ->values($values)
+                        ->execute();
                 }
             }
         }
 
         // Organization types
-        if (!$this->db->tableExists('#__xorganization_types')) {
-            $query = "CREATE TABLE `#__xorganization_types` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `type` varchar(150) DEFAULT NULL,
-				  `title` varchar(255) DEFAULT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__xorganization_types')) {
+            $schema->createTable('#__xorganization_types')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('type', 150)->nullable()
+                ->string('title', 255)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
-            if ($this->db->tableExists('#__user_profile_options')) {
-                $query = "SELECT * FROM `#__user_profile_options` WHERE `field_id`=2 ORDER BY `ordering`";
-                $this->db->setQuery($query);
-                $types = $this->db->loadObjectList();
+            if ($schema->tableExists('#__user_profile_options')) {
+                $types = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__user_profile_options')
+                    ->where('field_id', '=', 2)
+                    ->order('ordering', 'asc')
+                    ->loadObjectList();
 
                 if (count($types) > 0) {
-                    $query = "INSERT INTO `#__xorganization_types` (`id`, `type`, `title`)
-							VALUES ";
+                    $columns = ['id', 'type', 'title'];
+                    $values  = [];
 
-                    $queries = array();
                     foreach ($types as $i => $type) {
-                        $queries[] = "(null,"
-                            . $this->db->quote($type->name) . ","
-                            . $this->db->quote($type->label) . ")";
+                        $values[] = [
+                            null,
+                            $type->name,
+                            $type->label
+                        ];
                     }
 
-                    $this->db->setQuery($query . implode(',', $queries) . ';');
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__xorganization_types')
+                        ->columns($columns)
+                        ->values($values)
+                        ->execute();
                 }
             }
         }
 
         // Reasons
-        if (!$this->db->tableExists('#__xprofiles_reasons')) {
-            $query = "CREATE TABLE `#__xprofiles_reasons` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `reason` varchar(255) DEFAULT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__xprofiles_reasons')) {
+            $schema->createTable('#__xprofiles_reasons')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('reason', 255)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
-            if ($this->db->tableExists('#__user_profile_options')) {
-                $query = "SELECT * FROM `#__user_profile_options` WHERE `field_id`=11 ORDER BY `ordering`";
-                $this->db->setQuery($query);
-                $reasons = $this->db->loadObjectList();
+            if ($schema->tableExists('#__user_profile_options')) {
+                $reasons = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__user_profile_options')
+                    ->where('field_id', '=', 11)
+                    ->order('ordering', 'asc')
+                    ->loadObjectList();
 
                 if (count($reasons) > 0) {
-                    $query = "INSERT INTO `#__xprofiles_reasons` (`id`, `reason`)
-							VALUES ";
+                    $columns = ['id', 'reason'];
+                    $values  = [];
 
-                    $queries = array();
                     foreach ($reasons as $i => $reason) {
-                        $queries[] = "(null," . $this->db->quote($reason->label) . ")";
+                        $values[] = [null, $reason->label];
                     }
 
-                    $this->db->setQuery($query . implode(',', $queries) . ';');
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__xprofiles_reasons')
+                        ->columns($columns)
+                        ->values($values)
+                        ->execute();
                 }
             }
         }
 
-        if ($this->db->tableExists('#__user_profile_options')) {
-            $query = "DROP TABLE IF EXISTS `#__user_profile_options`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__user_profile_options');
     }
 
     /**

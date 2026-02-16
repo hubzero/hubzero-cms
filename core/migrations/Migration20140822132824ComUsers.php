@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for putting group-less members into the default group
@@ -22,12 +23,12 @@ class Migration20140822132824ComUsers extends Base
     public function up()
     {
         // Get all users that have no group set
-        $query  = "SELECT `id` FROM `#__users` AS u";
-        $query .= " LEFT JOIN `#__user_usergroup_map` AS um ON u.id = um.user_id";
-        $query .= " WHERE `group_id` IS NULL";
-
-        $this->db->setQuery($query);
-        $ids = $this->db->loadColumn();
+        $ids = $this->db->getQuery(true)
+            ->select('u.id')
+            ->from('#__users', 'u')
+            ->leftJoin('#__user_usergroup_map AS um', 'u.id', 'um.user_id')
+            ->where('group_id', 'IS', new Expression('NULL'))
+            ->loadColumn();
 
         if ($ids && count($ids) > 0) {
             // Get the default new user group
@@ -45,9 +46,11 @@ class Migration20140822132824ComUsers extends Base
 
             foreach ($ids as $id) {
                 $id = $this->db->quote($id);
-                $query = "INSERT INTO `#__user_usergroup_map` (`user_id`, `group_id`) VALUES ({$id}, {$group_id})";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__user_usergroup_map')
+                    ->columns(['user_id', 'group_id'])
+                    ->values("{$id},{$group_id}")
+                    ->execute();
             }
         }
     }

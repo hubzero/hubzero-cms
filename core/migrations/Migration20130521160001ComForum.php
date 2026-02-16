@@ -21,18 +21,18 @@ class Migration20130521160001ComForum extends Base
      **/
     public function up()
     {
-        $query = "UPDATE `#__forum_posts` SET `thread`=id WHERE `scope` IN ('site', 'group') AND `parent`=0;";
+        $this->db->getQuery(true)
+            ->update('#__forum_posts')
+            ->set(['thread' => new \Hubzero\Database\Query\Expression('id')])
+            ->whereIn('scope', ['site', 'group'])
+            ->where('parent', '=', 0)
+            ->execute();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        $query = "UPDATE `#__forum_posts` SET `thread`=parent WHERE `scope` IN ('site', 'group') AND `parent`!=0;";
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $this->db->getQuery(true)
+            ->update('#__forum_posts')
+            ->set(['thread' => new \Hubzero\Database\Query\Expression('parent')])
+            ->whereIn('scope', ['site', 'group'])
+            ->where('parent', '!=', 0)
+            ->execute();
     }
 }

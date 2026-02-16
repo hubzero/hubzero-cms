@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for joomla conversion of sections to categories
@@ -20,375 +21,439 @@ class Migration20130924000000ComCategories extends Base
      **/
     public function up()
     {
-        $query = "ALTER TABLE `#__categories` ENGINE = MYISAM;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
+        // $schema->setTableEngine('#__categories', 'MYISAM');
 
-        if ($this->db->tableHasField('#__categories', 'parent_id')) {
-            $query = "ALTER TABLE `#__categories` CHANGE COLUMN `parent_id` `parent_id` INT(10) UNSIGNED NOT NULL "
-                . "DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__categories', 'alias')) {
-            $query = "ALTER TABLE `#__categories` CHANGE COLUMN `alias` `alias` VARCHAR(255) CHARACTER SET 'utf8' "
-                . "COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__categories', 'access')) {
-            $query = "ALTER TABLE `#__categories` CHANGE COLUMN `access` `access` INT(10) UNSIGNED NOT NULL "
-                . "DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__categories', 'description')) {
-            $query = "ALTER TABLE `#__categories` MODIFY COLUMN `description` MEDIUMTEXT NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__categories', 'params')) {
-            $query = "ALTER TABLE `#__categories` MODIFY COLUMN `params` TEXT NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'lft')
-            && $this->db->tableHasField('#__categories', 'parent_id')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `lft` INTEGER NOT NULL DEFAULT 0 COMMENT 'Nested set"
-                . "lft.' AFTER `parent_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasField('#__categories', 'rgt') && $this->db->tableHasField('#__categories', 'lft')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `rgt` INTEGER NOT NULL DEFAULT 0 COMMENT 'Nested set"
-                . "rgt.' AFTER `lft`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasField('#__categories', 'asset_id') && $this->db->tableHasField('#__categories', 'id')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0"
-                . "COMMENT 'FK to the #__assets table.' AFTER `id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasField('#__categories', 'level') && $this->db->tableHasField('#__categories', 'rgt')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `level` INT UNSIGNED NOT NULL DEFAULT 0 AFTER `rgt`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasField('#__categories', 'path') && $this->db->tableHasField('#__categories', 'level')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `path` VARCHAR(255) NOT NULL DEFAULT '' AFTER `level`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'extension')
-            && $this->db->tableHasField('#__categories', 'path')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `extension` varchar(50) NOT NULL default '' AFTER `path`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasField('#__categories', 'note') && $this->db->tableHasField('#__categories', 'alias')) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `note` VARCHAR(255) NOT NULL DEFAULT '' AFTER `alias`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'metadesc')
-            && $this->db->tableHasField('#__categories', 'params')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `metadesc` VARCHAR(1024) NOT NULL COMMENT 'The meta"
-                . "description for the page.' AFTER `params`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'metakey')
-            && $this->db->tableHasField('#__categories', 'metadesc')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `metakey` VARCHAR(1024) NOT NULL COMMENT 'The meta"
-                . "keywords for the page.' AFTER `metadesc`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'metadata')
-            && $this->db->tableHasField('#__categories', 'metakey')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `metadata` VARCHAR(2048) NOT NULL COMMENT 'JSON"
-                . "encoded metadata properties.' AFTER `metakey`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'created_user_id')
-            && $this->db->tableHasField('#__categories', 'metadata')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `created_user_id` INT UNSIGNED NOT NULL DEFAULT 0"
-                . "AFTER `metadata`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'created_time')
-            && $this->db->tableHasField('#__categories', 'created_user_id')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `created_time` DATETIME NOT NULL DEFAULT '0000-00-00"
-                . "00:00:00' AFTER `created_user_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'modified_user_id')
-            && $this->db->tableHasField('#__categories', 'created_time')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `modified_user_id` INT UNSIGNED NOT NULL DEFAULT 0"
-                . "AFTER `created_time`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'modified_time')
-            && $this->db->tableHasField('#__categories', 'modified_user_id')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `modified_time` DATETIME NOT NULL DEFAULT '0000-00-00"
-                . "00:00:00' AFTER `modified_user_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'hits')
-            && $this->db->tableHasField('#__categories', 'modified_time')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `hits` INT UNSIGNED NOT NULL DEFAULT 0 AFTER "
-                . "`modified_time`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__categories', 'language')
-            && $this->db->tableHasField('#__categories', 'hits')
-        ) {
-            $query = "ALTER TABLE `#__categories` ADD COLUMN `language` CHAR(7) NOT NULL AFTER `hits`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasKey('#__categories', 'cat_idx')) {
-            $query = "ALTER TABLE `#__categories` DROP INDEX `cat_idx` ;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasKey('#__categories', 'idx_extension_published_access')) {
-            $query = "ALTER TABLE `#__categories` ADD INDEX `idx_extension_published_access` (`extension` ASC,"
-                . "`published` ASC, `access` ASC);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasKey('#__categories', 'idx_alias')) {
-            $query = "ALTER TABLE `#__categories` ADD INDEX idx_alias(`alias`);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasKey('#__categories', 'idx_path')) {
-            $query = "ALTER TABLE `#__categories` ADD INDEX `idx_path` (`path` ASC);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasKey('#__categories', 'idx_left_right')) {
-            $query = "ALTER TABLE `#__categories` ADD INDEX idx_left_right(`lft`, `rgt`);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasKey('#__categories', 'idx_language')) {
-            $query = "ALTER TABLE `#__categories` ADD INDEX `idx_language` (`language`);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        // Batch column modifications
+        $schema->table('#__categories')->alter()
+            ->modifyColumn('parent_id')->integer()->unsigned()->notNull()->default(0)
+            ->modifyColumn('alias')->string(255)->notNull()->default('')
+            ->modifyColumn('access')->integer()->unsigned()->notNull()->default(0)
+            ->modifyColumn('description')->mediumText()->notNull()
+            ->modifyColumn('params')->text()->notNull()
+            ->execute();
 
-        if ($this->db->tableHasField('#__categories', 'section')) {
-            // @FIXME: should we fix up references in the data to com_banner(s) here?
+        // Add new columns with position (MySQL-specific)
+        $schema->alterTable('#__categories')
+            ->addColumnIfNotExists('lft')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->after('parent_id')
+                ->comment('Nested set lft.')
+            ->addColumnIfNotExists('rgt')->integer()->notNull()->default(0)->after('lft')->comment('Nested set rgt.')
+            ->addColumnIfNotExists('asset_id')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->after('id')
+                ->comment('FK to the #__assets table.')
+            ->addColumnIfNotExists('level')->integer()->unsigned()->notNull()->default(0)->after('rgt')
+            ->addColumnIfNotExists('path')->string(255)->notNull()->default('')->after('level')
+            ->addColumnIfNotExists('extension')->string(50)->notNull()->default('')->after('path')
+            ->addColumnIfNotExists('note')->string(255)->notNull()->default('')->after('alias')
+            ->addColumnIfNotExists('metadesc')
+                ->string(1024)
+                ->notNull()
+                ->after('params')
+                ->comment('The meta description for the page.')
+            ->addColumnIfNotExists('metakey')
+                ->string(1024)
+                ->notNull()
+                ->after('metadesc')
+                ->comment('The meta keywords for the page.')
+            ->addColumnIfNotExists('metadata')
+                ->string(2048)
+                ->notNull()
+                ->after('metakey')
+                ->comment('JSON encoded metadata properties.')
+            ->addColumnIfNotExists('created_user_id')->integer()->unsigned()->notNull()->default(0)->after('metadata')
+            ->addColumnIfNotExists('created_time')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->after('created_user_id')
+            ->addColumnIfNotExists('modified_user_id')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->after('created_time')
+            ->addColumnIfNotExists('modified_time')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->after('modified_user_id')
+            ->addColumnIfNotExists('hits')->integer()->unsigned()->notNull()->default(0)->after('modified_time')
+            ->addColumnIfNotExists('language')->char(7)->notNull()->after('hits')
+            ->execute();
 
-            $query  = "UPDATE `#__categories` SET extension = section WHERE SUBSTR(section,1,3) = 'com';\n";
-            $query .= "UPDATE `#__categories` SET extension = 'com_content' WHERE SUBSTR(section,1,3) != 'com';\n";
-            $query .= "UPDATE `#__categories` SET parent_id = 0 WHERE SUBSTR(section,1,3)='com';";
-            $query .= "UPDATE `#__categories` SET parent_id = section WHERE SUBSTR(section,1,3) !='com';";
-            $query .= "UPDATE `#__categories` SET `alias` = LOWER(title) WHERE `alias` IS NULL OR `alias` = '';";
-            $query .= "UPDATE `#__categories` SET level=1;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        // Batch index operations
+        $schema->table('#__categories')->alter()
+            ->dropIndex('cat_idx')
+            ->addIndex('idx_extension_published_access', ['extension', 'published', 'access'])
+            ->addIndex('idx_alias', 'alias')
+            ->addIndex('idx_path', 'path')
+            ->addIndex('idx_left_right', ['lft', 'rgt'])
+            ->addIndex('idx_language', 'language')
+            ->execute();
 
-            // Insert default "uncategorised" categories
-            // (set access to 0, because we'll increment it later with all the old categories)
-            $query = "INSERT INTO `#__categories` "
-                . "(parent_id,lft,rgt,level,path,extension,title,alias,note,description,published,"
-                . "checked_out,checked_out_time,access,params,metadesc,metakey,metadata,"
-                . "created_user_id,created_time,modified_user_id,modified_time,hits,language)";
-            $query .= " VALUES ";
-            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_content', 'Uncategorised', 'uncategorised', '', '', 1,"
-                . "0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '',"
-                . "'{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:26:37', 0,"
-                . "'0000-00-00 00:00:00', 0, '*'),";
-            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_banners', 'Uncategorised', 'uncategorised', '', '', 1,"
-                . "0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\",\"foobar\":\"\"}', '', '',"
-                . "'{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:27:35', 0,"
-                . "'0000-00-00 00:00:00', 0, '*'),";
-            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_contact', 'Uncategorised', 'uncategorised', '', '', 1,"
-                . "0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '',"
-                . "'{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:27:57', 0,"
-                . "'0000-00-00 00:00:00', 0, '*'),";
-            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_newsfeeds', 'Uncategorised', 'uncategorised', '', '',"
-                . "1, 0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '',"
-                . "'{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:28:15', 0,"
-                . "'0000-00-00 00:00:00', 0, '*'),";
-            $query .= "( 0, 0, 0, 1, 'uncategorised', 'com_weblinks', 'Uncategorised', 'uncategorised', '', '', 1,"
-                . "0, '0000-00-00 00:00:00', 0, '{\"target\":\"\",\"image\":\"\"}', '', '',"
-                . "'{\"page_title\":\"\",\"author\":\"\",\"robots\":\"\"}', 62, '2010-06-28 13:28:33', 0,"
-                . "'0000-00-00 00:00:00', 0, '*');";
-            $this->db->setQuery($query);
-            $this->db->query();
+        // Data migration from sections to categories
+        if ($schema->hasColumn('#__categories', 'section')) {
+            $this->migrateDataFromSections();
 
-            // Grab sections and insert them into categories
-            $query = "SELECT * FROM `#__sections`;";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
-
-            if (count($results) > 0) {
-                foreach ($results as $r) {
-                    // Collapse duplicate section/categories down into one level
-                    $query = "SELECT `id` FROM `#__categories` WHERE `alias` = '{$r->alias}';";
-                    $this->db->setQuery($query);
-                    if ($this->db->loadResult()) {
-                        // Set any categories that were in recently added section
-                        // to have that new category id as parent_id
-                        $query = "UPDATE  `#__categories` SET parent_id = 0 WHERE section = {$r->id};";
-                        $this->db->setQuery($query);
-                        $this->db->query();
-
-                        continue;
-                    }
-
-                    $query = "INSERT INTO `#__categories` "
-                        . "(parent_id,lft,rgt,level,path,extension,title,alias,note,description,"
-                        . "published,checked_out,checked_out_time,access,params,metadesc,metakey,"
-                        . "metadata,created_user_id,created_time,modified_user_id,modified_time,"
-                        . "hits,language) "
-                        . "VALUES";
-                    $query .= "(";
-                    $query .= '"0",';                                // parent_id
-                    $query .= '"",';                                 // lft
-                    $query .= '"",';                                 // rgt
-                    $query .= '"1",';                                // level
-                    $query .= $this->db->Quote($r->alias) . ",";             // path
-                    $query .= '"com_content",';                      // extension
-                    $query .= $this->db->Quote($r->title) . ",";             // title
-                    $query .= $this->db->Quote($r->alias) . ",";             // alias
-                    $query .= '"",';                                 // note
-                    $query .= $this->db->Quote($r->description) . ",";       // description
-                    $query .= $this->db->Quote($r->published) . ",";         // published
-                    $query .= $this->db->Quote($r->checked_out) . ",";       // checked_out
-                    $query .= $this->db->Quote($r->checked_out_time) . ",";  // checked_out_time
-                    $query .= $this->db->Quote($r->access) . ",";            // access
-                    $query .= $this->db->Quote($r->params) . ",";            // params
-                    $query .= '"",';                                 // metadesc
-                    $query .= '"",';                                 // metakey
-                    $query .= '"",';                                 // metadata
-                    $query .= '"",';                                 // created_user_id
-                    $query .= '"",';                                 // created_time
-                    $query .= '"",';                                 // modified_user_id,
-                    $query .= '"",';                                 // modified_time
-                    $query .= '"",';                                 // hits
-                    $query .= '""';                                  // language
-                    $query .= ");";
-                    $this->db->setQuery($query);
-                    $this->db->query();
-
-                    // Get last id
-                    $id = $this->db->insertid();
-
-                    // Set any categories that were in recently added section to have that new category id as parent_id
-                    $query = "UPDATE  `#__categories` SET parent_id = {$id}, level = 2 WHERE section = {$r->id};";
-                    $this->db->setQuery($query);
-                    $this->db->query();
-                }
+            // Drop obsolete columns
+            $schema->table('#__categories')->alter()
+                ->dropColumn('ordering')
+                ->dropColumn('image')
+                ->dropColumn('image_position')
+                ->dropColumn('editor')
+                ->dropColumn('count')
+                ->dropColumn('name')
+                ->dropColumn('section')
+                ->execute();
+        } else {
+            // Just drop columns if they exist
+            if ($schema->hasColumn('#__categories', 'ordering')) {
+                $schema->dropColumn('#__categories', 'ordering');
             }
+            if ($schema->hasColumn('#__categories', 'image')) {
+                $schema->dropColumn('#__categories', 'image');
+            }
+            if ($schema->hasColumn('#__categories', 'image_position')) {
+                $schema->dropColumn('#__categories', 'image_position');
+            }
+            if ($schema->hasColumn('#__categories', 'editor')) {
+                $schema->dropColumn('#__categories', 'editor');
+            }
+            if ($schema->hasColumn('#__categories', 'count')) {
+                $schema->dropColumn('#__categories', 'count');
+            }
+            if ($schema->hasColumn('#__categories', 'name')) {
+                $schema->dropColumn('#__categories', 'name');
+            }
+        }
+    }
 
-            // Insert root category and set all 1st level categories to point to it
-            $query = "INSERT INTO `#__categories` "
-                . "(asset_id,parent_id,lft,rgt,level,path,extension,title,alias,note,description,"
-                . "published,checked_out,checked_out_time,access,params,metadesc,metakey,metadata,"
-                . "created_user_id,created_time,modified_user_id,modified_time,hits,language) "
-                . "VALUES";
-            $query .= "( 0, 0, 0, 0, 0, '', 'system', 'ROOT', 'root', '', '', 1, 0, '0000-00-00 00:00:00', 1,"
-                . "'{}', '', '', '', 0, '2009-10-18 16:07:09', 0, '0000-00-00 00:00:00', 0, '*');";
-            $query .= "UPDATE  `#__categories` SET parent_id=LAST_INSERT_ID() WHERE parent_id=0 AND id "
-                . "!=LAST_INSERT_ID();";
-            $this->db->setQuery($query);
-            $this->db->query();
+    /**
+     * Migrate data from sections to categories
+     */
+    protected function migrateDataFromSections()
+    {
+        // @FIXME: should we fix up references in the data to com_banner(s) here?
 
-            // Fix up "path" field
-            $query = "UPDATE `#__categories` SET `path` = alias WHERE (`path` IS NULL OR `path` = '') AND level = 1;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        // @FIXME: should we fix up references in the data to com_banner(s) here?
+        $this->db->getQuery(true)
+            ->update('#__categories')
+            ->set(['extension' => Expression::column('section')])
+            ->where(Expression::substring('section', 1, 3), '=', 'com')
+            ->execute();
 
-            $query = "SELECT * FROM `#__categories` WHERE (`path` IS NULL OR `path` = '') AND level = 2;";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        $this->db->getQuery(true)
+            ->update('#__categories')
+            ->set(['extension' => 'com_content'])
+            ->where(Expression::substring('section', 1, 3), '!=', 'com')
+            ->execute();
 
-            if (count($results) > 0) {
-                foreach ($results as $r) {
-                    // Get the parent item alias
-                    $query = "SELECT `alias` FROM `#__categories` WHERE `id` = {$r->parent_id};";
-                    $this->db->setQuery($query);
-                    $alias = $this->db->loadResult();
+        $this->db->getQuery(true)
+            ->update('#__categories')
+            ->set(['parent_id' => 0])
+            ->where(Expression::substring('section', 1, 3), '=', 'com')
+            ->execute();
 
-                    // Build path var
-                    $path = $alias . '/' . $r->alias;
+        $this->db->getQuery(true)
+            ->update('#__categories')
+            ->set(['parent_id' => Expression::column('section')])
+            ->where(Expression::substring('section', 1, 3), '!=', 'com')
+            ->execute();
 
-                    // Save the sub-category path
-                    $query = "UPDATE `#__categories` SET `path` = \"{$path}\" WHERE `id` = {$r->id};";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+        $this->db->getQuery(true)
+            ->update('#__categories')
+            ->set(['alias' => Expression::lower('title')])
+            ->beginOrGroup()
+                ->whereIsNull('alias')
+                ->orWhere('alias', '=', '')
+            ->endAndGroup()
+            ->execute();
+
+        // UPDATE #__categories SET level=1
+        $this->db->getQuery(true)
+            ->update('#__categories')
+            ->set(['level' => 1])
+            ->execute();
+
+        // Insert default "uncategorised" categories
+        // (set access to 0, because we'll increment it later with all the old categories)
+        // Insert default "uncategorised" categories
+        $defaults = [
+            ['com_content', '2010-06-28 13:26:37', '{"target":"","image":""}'],
+            ['com_banners', '2010-06-28 13:27:35', '{"target":"","image":"","foobar":""}'],
+            ['com_contact', '2010-06-28 13:27:57', '{"target":"","image":""}'],
+            ['com_newsfeeds', '2010-06-28 13:28:15', '{"target":"","image":""}'],
+            ['com_weblinks', '2010-06-28 13:28:33', '{"target":"","image":""}']
+        ];
+
+        foreach ($defaults as $default) {
+            $this->db->getQuery(true)
+                ->insert('#__categories')
+                ->columns([
+                    'parent_id',
+                    'lft',
+                    'rgt',
+                    'level',
+                    'path',
+                    'extension',
+                    'title',
+                    'alias',
+                    'note',
+                    'description',
+                    'published',
+                    'checked_out',
+                    'checked_out_time',
+                    'access',
+                    'params',
+                    'metadesc',
+                    'metakey',
+                    'metadata',
+                    'created_user_id',
+                    'created_time',
+                    'modified_user_id',
+                    'modified_time',
+                    'hits',
+                    'language'
+                ])
+                ->values([
+                    0,
+                    0,
+                    0,
+                    1,
+                    'uncategorised',
+                    $default[0],
+                    'Uncategorised',
+                    'uncategorised',
+                    '',
+                    '',
+                    1,
+                    0,
+                    '0000-00-00 00:00:00',
+                    0,
+                    $default[2],
+                    '',
+                    '',
+                    '{"page_title":"","author":"","robots":""}',
+                    62,
+                    $default[1],
+                    0,
+                    '0000-00-00 00:00:00',
+                    0,
+                    '*'
+                ])
+                ->execute();
+        }
+
+        // Grab sections and insert them into categories
+        $query = $this->db->getQuery(true);
+        $query->select('*')
+            ->from('#__sections');
+        $results = $query->loadObjectList();
+
+        if (count($results) > 0) {
+            foreach ($results as $r) {
+                // Collapse duplicate section/categories down into one level
+                $query = $this->db->getQuery(true);
+                $query->select('id')
+                    ->from('#__categories')
+                    ->where('alias', '=', $r->alias);
+                if ($$query->exists()) {
+                    // Set any categories that were in recently added section
+                    // to have that new category id as parent_id
+                    $query = $this->db->getQuery(true);
+                    $query->update('#__categories')
+                        ->set(['parent_id' => 0])
+                        ->where('section', '=', $r->id);
+                    $query->execute();
+
+                    continue;
                 }
+
+                $query = $this->db->getQuery(true);
+                $query->insert('#__categories')
+                    ->columns([
+                        'parent_id',
+                        'lft',
+                        'rgt',
+                        'level',
+                        'path',
+                        'extension',
+                        'title',
+                        'alias',
+                        'note',
+                        'description',
+                        'published',
+                        'checked_out',
+                        'checked_out_time',
+                        'access',
+                        'params',
+                        'metadesc',
+                        'metakey',
+                        'metadata',
+                        'created_user_id',
+                        'created_time',
+                        'modified_user_id',
+                        'modified_time',
+                        'hits',
+                        'language'
+                    ])
+                    ->values([
+                        0,
+                        0,
+                        0,
+                        1,
+                        $r->alias,
+                        'com_content',
+                        $r->title,
+                        $r->alias,
+                        '',
+                        $r->description,
+                        $r->published,
+                        $r->checked_out,
+                        $r->checked_out_time,
+                        $r->access,
+                        $r->params,
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        ''
+                    ]);
+                $query->execute();
+
+                // Get last id
+                $id = $this->db->insertid();
+
+                // Set any categories that were in recently added section to have that new category id as parent_id
+                $query = $this->db->getQuery(true);
+                $query->update('#__categories')
+                    ->set(['parent_id' => $id, 'level' => 2])
+                    ->where('section', '=', $r->id);
+                $query->execute();
             }
         }
 
-        if ($this->db->tableHasField('#__categories', 'ordering')) {
-            $query = "ALTER TABLE `#__categories` DROP COLUMN `ordering`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__categories', 'image')) {
-            $query = "ALTER TABLE `#__categories` DROP COLUMN `image`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__categories', 'image_position')) {
-            $query = "ALTER TABLE `#__categories` DROP COLUMN `image_position`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__categories', 'editor')) {
-            $query = "ALTER TABLE `#__categories` DROP COLUMN `editor`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__categories', 'count')) {
-            $query = "ALTER TABLE `#__categories` DROP COLUMN `count`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__categories', 'name')) {
-            $query = "ALTER TABLE `#__categories` DROP COLUMN `name`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__categories', 'section')) {
-            $query = "ALTER TABLE `#__categories` DROP COLUMN `section`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        // Insert root category and set all 1st level categories to point to it
+        $this->db->getQuery(true)
+            ->insert('#__categories')
+            ->columns([
+                'asset_id',
+                'parent_id',
+                'lft',
+                'rgt',
+                'level',
+                'path',
+                'extension',
+                'title',
+                'alias',
+                'note',
+                'description',
+                'published',
+                'checked_out',
+                'checked_out_time',
+                'access',
+                'params',
+                'metadesc',
+                'metakey',
+                'metadata',
+                'created_user_id',
+                'created_time',
+                'modified_user_id',
+                'modified_time',
+                'hits',
+                'language'
+            ])
+            ->values([
+                0,
+                0,
+                0,
+                0,
+                0,
+                '',
+                'system',
+                'ROOT',
+                'root',
+                '',
+                '',
+                1,
+                0,
+                '0000-00-00 00:00:00',
+                1,
+                '{}',
+                '',
+                '',
+                '',
+                0,
+                '2009-10-18 16:07:09',
+                0,
+                '0000-00-00 00:00:00',
+                0,
+                '*'
+            ])
+            ->execute();
+
+        $rootId = $this->db->insertid();
+
+        $query = $this->db->getQuery(true);
+        $query->update('#__categories')
+            ->set(['parent_id' => $rootId])
+            ->where('parent_id', '=', 0)
+            ->where('id', '!=', $rootId);
+        $query->execute();
+
+        // Fix up "path" field
+        $query = $this->db->getQuery(true);
+        $query->update('#__categories')
+            ->set(['path' => 'alias'], true)
+            ->beginOrGroup()
+                ->whereIsNull('path')
+                ->orWhere('path', '=', '')
+            ->endAndGroup()
+            ->where('level', '=', 1);
+        $query->execute();
+
+        $query = $this->db->getQuery(true);
+        $query->select('*')
+            ->from('#__categories')
+            ->beginOrGroup()
+                ->whereIsNull('path')
+                ->orWhere('path', '=', '')
+            ->endAndGroup()
+            ->where('level', '=', 2);
+        $results = $query->loadObjectList();
+
+        if (count($results) > 0) {
+            $aliases = $this->db->getQuery(true)
+                ->select(['id', 'alias'])
+                ->from('#__categories')
+                ->pluck('alias', 'id');
+
+            foreach ($results as $r) {
+                // Get the parent item alias
+                $alias = $aliases[$r->parent_id] ?? null;
+
+                // Build path var
+                $path = $alias . '/' . $r->alias;
+
+                // Save the sub-category path
+                $query = $this->db->getQuery(true);
+                $query->update('#__categories')
+                    ->set(['path' => $this->db->quote($path)])
+                    ->where('id', '=', $r->id);
+                $query->execute();
+            }
         }
     }
 }

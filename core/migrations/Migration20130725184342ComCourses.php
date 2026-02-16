@@ -20,59 +20,45 @@ class Migration20130725184342ComCourses extends Base
      **/
     public function up()
     {
-        if (
-            !$this->db->tableHasField('#__courses_asset_views', 'course_id')
-            && $this->db->tableHasField('#__courses_asset_views', 'asset_id')
-        ) {
-            $query = "ALTER TABLE `#__courses_asset_views` ADD `course_id` INT(11)  NULL  DEFAULT NULL  AFTER "
-                . "`asset_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__courses_asset_views', 'ip')
-            && $this->db->tableHasField('#__courses_asset_views', 'viewed_by')
-        ) {
-            $query = "ALTER TABLE `#__courses_asset_views` ADD `ip` VARCHAR(15)  CHARACTER SET utf8  NULL  DEFAULT "
-                . "NULL  AFTER `viewed_by`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__courses_asset_views', 'url')
-            && $this->db->tableHasField('#__courses_asset_views', 'ip')
-        ) {
-            $query = "ALTER TABLE `#__courses_asset_views` ADD `url` VARCHAR(255)  CHARACTER SET utf8  NULL "
-                . "DEFAULT NULL  AFTER `ip`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__courses_asset_views', 'referrer')
-            && $this->db->tableHasField('#__courses_asset_views', 'url')
-        ) {
-            $query = "ALTER TABLE `#__courses_asset_views` ADD `referrer` VARCHAR(255)  CHARACTER SET utf8  NULL "
-                . "DEFAULT NULL  AFTER `url`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__courses_asset_views', 'user_agent_string')
-            && $this->db->tableHasField('#__courses_asset_views', 'referrer')
-        ) {
-            $query = "ALTER TABLE `#__courses_asset_views` ADD `user_agent_string` VARCHAR(255)  CHARACTER SET "
-                . "utf8  NULL  DEFAULT NULL  AFTER `referrer`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__courses_asset_views', 'session_id')
-            && $this->db->tableHasField('#__courses_asset_views', 'user_agent_string')
-        ) {
-            $query = "ALTER TABLE `#__courses_asset_views` ADD `session_id` VARCHAR(200)  CHARACTER SET utf8  NULL "
-                . "DEFAULT NULL  AFTER `user_agent_string`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__courses_asset_views')) {
+            if (
+                !$schema->hasColumn('#__courses_asset_views', 'course_id')
+                && $schema->hasColumn('#__courses_asset_views', 'asset_id')
+            ) {
+                $schema->addColumn('#__courses_asset_views', 'course_id')->integer()->nullable()->execute();
+            }
+            if (
+                !$schema->hasColumn('#__courses_asset_views', 'ip')
+                && $schema->hasColumn('#__courses_asset_views', 'viewed_by')
+            ) {
+                $schema->addColumn('#__courses_asset_views', 'ip')->string(15)->nullable()->execute();
+            }
+            if (
+                !$schema->hasColumn('#__courses_asset_views', 'url')
+                && $schema->hasColumn('#__courses_asset_views', 'ip')
+            ) {
+                $schema->addColumn('#__courses_asset_views', 'url')->string(255)->nullable()->execute();
+            }
+            if (
+                !$schema->hasColumn('#__courses_asset_views', 'referrer')
+                && $schema->hasColumn('#__courses_asset_views', 'url')
+            ) {
+                $schema->addColumn('#__courses_asset_views', 'referrer')->string(255)->nullable()->execute();
+            }
+            if (
+                !$schema->hasColumn('#__courses_asset_views', 'user_agent_string')
+                && $schema->hasColumn('#__courses_asset_views', 'referrer')
+            ) {
+                $schema->addColumn('#__courses_asset_views', 'user_agent_string')->string(255)->nullable()->execute();
+            }
+            if (
+                !$schema->hasColumn('#__courses_asset_views', 'session_id')
+                && $schema->hasColumn('#__courses_asset_views', 'user_agent_string')
+            ) {
+                $schema->addColumn('#__courses_asset_views', 'session_id')->string(200)->nullable()->execute();
+            }
         }
     }
 
@@ -81,35 +67,25 @@ class Migration20130725184342ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__courses_asset_views', 'course_id')) {
-            $query = "ALTER TABLE `#__courses_asset_views` DROP `course_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__courses_asset_views', 'course_id')) {
+            $schema->dropColumn('#__courses_asset_views', 'course_id');
         }
-        if ($this->db->tableHasField('#__courses_asset_views', 'ip')) {
-            $query = "ALTER TABLE `#__courses_asset_views` DROP `ip`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_asset_views', 'ip')) {
+            $schema->dropColumn('#__courses_asset_views', 'ip');
         }
-        if ($this->db->tableHasField('#__courses_asset_views', 'url')) {
-            $query = "ALTER TABLE `#__courses_asset_views` DROP `url`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_asset_views', 'url')) {
+            $schema->dropColumn('#__courses_asset_views', 'url');
         }
-        if ($this->db->tableHasField('#__courses_asset_views', 'referrer')) {
-            $query = "ALTER TABLE `#__courses_asset_views` DROP `referrer`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_asset_views', 'referrer')) {
+            $schema->dropColumn('#__courses_asset_views', 'referrer');
         }
-        if ($this->db->tableHasField('#__courses_asset_views', 'user_agent_string')) {
-            $query = "ALTER TABLE `#__courses_asset_views` DROP `user_agent_string`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_asset_views', 'user_agent_string')) {
+            $schema->dropColumn('#__courses_asset_views', 'user_agent_string');
         }
-        if ($this->db->tableHasField('#__courses_asset_views', 'session_id')) {
-            $query = "ALTER TABLE `#__courses_asset_views` DROP `session_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_asset_views', 'session_id')) {
+            $schema->dropColumn('#__courses_asset_views', 'session_id');
         }
     }
 }

@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for deleting com_wrapper
  *
-*/
+ */
 class Migration20140110125436ComWrapper extends Base
 {
     /**
@@ -21,11 +21,14 @@ class Migration20140110125436ComWrapper extends Base
      **/
     public function up()
     {
-        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_wrapper';";
+        $id = $this->db->getQuery(true)
+            ->select('extension_id')
+            ->from('#__extensions')
+            ->where('type', '=', 'component')
+            ->where('element', '=', 'com_wrapper')
+            ->value('extension_id');
 
-        $this->db->setQuery($query);
-
-        if ($id = $this->db->loadResult()) {
+        if ($id) {
             $this->deleteComponentEntry('wrapper');
         }
     }
@@ -35,11 +38,14 @@ class Migration20140110125436ComWrapper extends Base
      **/
     public function down()
     {
-        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_wrapper';";
+        $id = $this->db->getQuery(true)
+            ->select('extension_id')
+            ->from('#__extensions')
+            ->where('type', '=', 'component')
+            ->where('element', '=', 'com_wrapper')
+            ->value('extension_id');
 
-        $this->db->setQuery($query);
-
-        if (!($id = $this->db->loadResult())) {
+        if (!$id) {
             $this->addComponentEntry('wrapper');
         }
     }

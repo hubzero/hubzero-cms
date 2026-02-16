@@ -100,10 +100,8 @@ class UpdateTimezoneDatabase extends Base
                     continue;
                 }
 
-                $this->db->setQuery($s);
-
                 try {
-                    $this->db->query();
+                    $this->db->execute($s);
                 } catch (Exception $e) {
                     $return = array(
                         'success' => false,

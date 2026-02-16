@@ -21,19 +21,19 @@ class Migration20140624123157ComCitations extends Base
      **/
     public function up()
     {
-        $query = "describe #__citations uid";
-        $this->db->setQuery($query);
-        $uidField = $this->db->loadObject();
+        $columns = $this->db->schema()->getTableColumns('#__citations');
+        $uidField = $columns['uid'] ?? '';
 
         // if we have an INT already, were good to go
-        if (strtolower($uidField->Type) == 'int(11)') {
+        if (stripos($uidField, 'int') !== false) {
             return;
         }
 
         // load all citations
-        $query = "SELECT id, uid FROM `#__citations`";
-        $this->db->setQuery($query);
-        $citations = $this->db->loadObjectList();
+        $citations = $this->db->getQuery(true)
+            ->select(['id', 'uid'])
+            ->from('#__citations')
+            ->loadObjectList();
         foreach ($citations as $citation) {
             if (!is_numeric($citation->uid)) {
                 $newId = 62;
@@ -42,16 +42,15 @@ class Migration20140624123157ComCitations extends Base
                     $newId = $profile->get('id');
                 }
 
-                $query = "UPDATE `#__citations` SET uid=" . $this->db->quote($newId)
-                    . " WHERE id=" . $this->db->quote($citation->id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__citations')
+                    ->set(['uid' => $newId])
+                    ->where('id', '=', $citation->id)
+                    ->execute();
             }
         }
 
-        // change column name
-        $query = "ALTER TABLE `#__citations` CHANGE uid uid INT(11);";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // change column type
+        $this->db->schema()->modifyColumn('#__citations', 'uid')->integer(11);
     }
 }

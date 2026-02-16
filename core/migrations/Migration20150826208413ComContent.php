@@ -20,10 +20,13 @@ class Migration20150826208413ComContent extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__content')) {
-            $this->db->setQuery("SELECT `id`, `attribs` from `#__content`;");
+        $schema = $this->db->schema();
 
-            $results = $this->db->loadObjectList();
+        if ($schema->tableExists('#__content')) {
+            $query = $this->db->getQuery(true)
+                ->select(['id', 'attribs'])
+                ->from('#__content');
+            $results = $query->loadObjectList();
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
@@ -44,11 +47,11 @@ class Migration20150826208413ComContent extends Base
 
                     if (json_last_error() === JSON_ERROR_NONE) {
                         $attribs = json_encode($attribs);
-                        $this->db->setQuery(
-                            "UPDATE `#__content` SET `attribs` = " . $this->db->quote($attribs)
-                                . " WHERE `id` = " . $this->db->quote($r->id)
-                        );
-                        $this->db->query();
+                        $this->db->getQuery(true)
+                            ->update('#__content')
+                            ->set(['attribs' => $attribs])
+                            ->where('id', '=', $r->id)
+                            ->execute();
                     }
                 }
             }

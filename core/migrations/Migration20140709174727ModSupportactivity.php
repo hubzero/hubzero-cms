@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding mod_supportactivity
  *
-*/
+ */
 class Migration20140709174727ModSupportactivity extends Base
 {
     /**
@@ -21,17 +21,23 @@ class Migration20140709174727ModSupportactivity extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $element = 'mod_supportactivity';
         $params  = '';
         $enabled = 1;
 
-        if ($this->db->tableExists('#__extensions')) {
+        if ($schema->tableExists('#__extensions')) {
             $name = $element;
 
             // First, make sure it isn't already there
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `name` = " . $this->db->quote($name);
-            $this->db->setQuery($query);
-            if ($this->db->loadResult()) {
+            $id = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('name', '=', $name)
+                ->value('extension_id');
+
+            if ($id) {
                 return true;
             }
 
@@ -41,14 +47,27 @@ class Migration20140709174727ModSupportactivity extends Base
                 $params = json_encode($params);
             }
 
-            $query = "INSERT INTO `#__extensions` "
-                . "(`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, "
-                . "`protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, "
-                . "`checked_out`, `checked_out_time`, `ordering`, `state`)";
-            $query .= " VALUES ('{$name}', 'module', '{$element}', '', 1, {$enabled}, 1, 0, '', "
-                . $this->db->quote($params) . ", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__extensions')
+                ->set([
+                    'name'              => $name,
+                    'type'              => 'module',
+                    'element'           => $element,
+                    'folder'            => '',
+                    'client_id'         => 1,
+                    'enabled'           => $enabled,
+                    'access'            => 1,
+                    'protected'         => 0,
+                    'manifest_cache'    => '',
+                    'params'            => $params,
+                    'custom_data'       => '',
+                    'system_data'       => '',
+                    'checked_out'       => 0,
+                    'checked_out_time'  => '0000-00-00 00:00:00',
+                    'ordering'          => $ordering,
+                    'state'             => 0
+                ])
+                ->execute();
         }
     }
 
@@ -57,13 +76,16 @@ class Migration20140709174727ModSupportactivity extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $element = 'mod_supportactivity';
 
-        if ($this->db->tableExists('#__extensions')) {
+        if ($schema->tableExists('#__extensions')) {
             // Delete module entry
-            $query = "DELETE FROM `#__extensions` WHERE `element` = '{$element}'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->delete('#__extensions')
+                ->where('element', '=', $element)
+                ->execute();
         }
     }
 }

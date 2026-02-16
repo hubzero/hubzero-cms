@@ -21,26 +21,20 @@ class Migration20141119164113ComPublications extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__publication_logs')) {
-            if (!$this->db->tableHasField('#__publication_logs', 'page_views_unfiltered')) {
-                $query = "ALTER TABLE `#__publication_logs` ADD COLUMN page_views_unfiltered int(11);";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publication_logs')) {
+            if (!$schema->hasColumn('#__publication_logs', 'page_views_unfiltered')) {
+                $schema->addColumn('#__publication_logs', 'page_views_unfiltered')->integer(11);
             }
-            if (!$this->db->tableHasField('#__publication_logs', 'primary_accesses_unfiltered')) {
-                $query = "ALTER TABLE `#__publication_logs` ADD COLUMN primary_accesses_unfiltered int(11);";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__publication_logs', 'primary_accesses_unfiltered')) {
+                $schema->addColumn('#__publication_logs', 'primary_accesses_unfiltered')->integer(11);
             }
-            if (!$this->db->tableHasField('#__publication_logs', 'page_views_unique')) {
-                $query = "ALTER TABLE `#__publication_logs` ADD COLUMN page_views_unique int(11);";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__publication_logs', 'page_views_unique')) {
+                $schema->addColumn('#__publication_logs', 'page_views_unique')->integer(11);
             }
-            if (!$this->db->tableHasField('#__publication_logs', 'primary_accesses_unique')) {
-                $query = "ALTER TABLE `#__publication_logs` ADD COLUMN primary_accesses_unique int(11);";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__publication_logs', 'primary_accesses_unique')) {
+                $schema->addColumn('#__publication_logs', 'primary_accesses_unique')->integer(11);
             }
         }
     }
@@ -50,26 +44,20 @@ class Migration20141119164113ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__publication_logs')) {
-            if ($this->db->tableHasField('#__publication_logs', 'page_views_unfiltered')) {
-                $query = "ALTER TABLE `#__publication_logs` DROP `page_views_unfiltered`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publication_logs')) {
+            if ($schema->hasColumn('#__publication_logs', 'page_views_unfiltered')) {
+                $schema->dropColumn('#__publication_logs', 'page_views_unfiltered');
             }
-            if ($this->db->tableHasField('#__publication_logs', 'primary_accesses_unfiltered')) {
-                $query = "ALTER TABLE `#__publication_logs` DROP `primary_accesses_unfiltered`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__publication_logs', 'primary_accesses_unfiltered')) {
+                $schema->dropColumn('#__publication_logs', 'primary_accesses_unfiltered');
             }
-            if ($this->db->tableHasField('#__publication_logs', 'page_views_unique')) {
-                $query = "ALTER TABLE `#__publication_logs` DROP `page_views_unique`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__publication_logs', 'page_views_unique')) {
+                $schema->dropColumn('#__publication_logs', 'page_views_unique');
             }
-            if ($this->db->tableHasField('#__publication_logs', 'primary_accesses_unique')) {
-                $query = "ALTER TABLE `#__publication_logs` DROP `primary_accesses_unique`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__publication_logs', 'primary_accesses_unique')) {
+                $schema->dropColumn('#__publication_logs', 'primary_accesses_unique');
             }
         }
     }

@@ -20,11 +20,15 @@ class Migration20160810121746PlgContentFormathtml extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `enabled`=1 WHERE `folder`="
-                . $this->db->quote('content') . " AND `element`=" . $this->db->quote('formathtml');
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['enabled' => 1])
+                ->where('folder', '=', 'content')
+                ->where('element', '=', 'formathtml')
+                ->execute();
         }
     }
 
@@ -33,11 +37,15 @@ class Migration20160810121746PlgContentFormathtml extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `enabled`=0 WHERE `folder`="
-                . $this->db->quote('content') . " AND `element`=" . $this->db->quote('formathtml');
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['enabled' => 0])
+                ->where('folder', '=', 'content')
+                ->where('element', '=', 'formathtml')
+                ->execute();
         }
     }
 }

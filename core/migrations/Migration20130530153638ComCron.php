@@ -21,15 +21,13 @@ class Migration20130530153638ComCron extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__cron_jobs', 'params')) {
-            $query = "ALTER TABLE `#__cron_jobs` ADD `params` TEXT  NOT NULL  AFTER `ordering`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__cron_jobs')
+            && !$schema->hasColumn('#__cron_jobs', 'params')
+        ) {
+            $schema->addColumn('#__cron_jobs', 'params')->text()->notNull();
         }
     }
 
@@ -38,15 +36,10 @@ class Migration20130530153638ComCron extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__cron_jobs', 'params')) {
-            $query .= "ALTER TABLE `#__cron_jobs` DROP `params`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__cron_jobs', 'params')) {
+            $schema->dropColumn('#__cron_jobs', 'params');
         }
     }
 }

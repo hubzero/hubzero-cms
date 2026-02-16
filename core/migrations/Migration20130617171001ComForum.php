@@ -21,15 +21,13 @@ class Migration20130617171001ComForum extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__forum_posts', 'closed')) {
-            $query = "ALTER TABLE `#__forum_posts` ADD `closed` TINYINT(2)  NOT NULL  DEFAULT '0';";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__forum_posts')
+            && !$schema->hasColumn('#__forum_posts', 'closed')
+        ) {
+            $schema->addColumn('#__forum_posts', 'closed')->tinyInteger(2)->notNull()->default(0);
         }
     }
 
@@ -38,15 +36,10 @@ class Migration20130617171001ComForum extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__forum_posts', 'closed')) {
-            $query .= "ALTER TABLE `#__forum_posts` DROP `closed`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__forum_posts', 'closed')) {
+            $schema->dropColumn('#__forum_posts', 'closed');
         }
     }
 }

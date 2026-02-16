@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for removing bogus characters from names
@@ -20,24 +21,31 @@ class Migration20150306115852ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__xprofiles')) {
-            $query = "UPDATE `#__xprofiles` SET `name` = REPlACE(`name`, 0xc2ad, '')";
-            $this->db->setQuery($query);
-            $this->db->query();
-            $query = "UPDATE `#__xprofiles` SET `givenName` = REPlACE(`givenName`, 0xc2ad, '')";
-            $this->db->setQuery($query);
-            $this->db->query();
-            $query = "UPDATE `#__xprofiles` SET `middleName` = REPlACE(`middleName`, 0xc2ad, '')";
-            $this->db->setQuery($query);
-            $this->db->query();
-            $query = "UPDATE `#__xprofiles` SET `surname` = REPlACE(`surname`, 0xc2ad, '')";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xprofiles')) {
+            $this->db->getQuery(true)
+                ->update('#__xprofiles')
+                ->set(['name' => Expression::replace('name', Expression::hexLiteral('c2ad'), '')])
+                ->execute();
+            $this->db->getQuery(true)
+                ->update('#__xprofiles')
+                ->set(['givenName' => Expression::replace('givenName', Expression::hexLiteral('c2ad'), '')])
+                ->execute();
+            $this->db->getQuery(true)
+                ->update('#__xprofiles')
+                ->set(['middleName' => Expression::replace('middleName', Expression::hexLiteral('c2ad'), '')])
+                ->execute();
+            $this->db->getQuery(true)
+                ->update('#__xprofiles')
+                ->set(['surname' => Expression::replace('surname', Expression::hexLiteral('c2ad'), '')])
+                ->execute();
         }
-        if ($this->db->tableExists('#__users')) {
-            $query = "UPDATE `#__users` SET `name` = REPlACE(`name`, 0xc2ad, '')";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__users')) {
+            $this->db->getQuery(true)
+                ->update('#__users')
+                ->set(['name' => Expression::replace('name', Expression::hexLiteral('c2ad'), '')])
+                ->execute();
         }
     }
 }

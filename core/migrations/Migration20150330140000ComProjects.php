@@ -21,11 +21,11 @@ class Migration20150330140000ComProjects extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__project_activity')) {
-            if (!$this->db->tableHasField('#__project_activity', 'preview')) {
-                $query = "ALTER TABLE `#__project_activity` ADD COLUMN preview text DEFAULT '';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__project_activity')) {
+            if (!$schema->hasColumn('#__project_activity', 'preview')) {
+                $schema->addColumn('#__project_activity', 'preview')->text()->default('');
             }
         }
     }

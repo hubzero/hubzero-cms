@@ -21,17 +21,17 @@ class Migration20141004111111ComCitations extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // Checks whether table exists and if the 'scope' field already exists
         if (
-            $this->db->tableExists('#__citations_secondary')
-            && !$this->db->tableHasField('#__citations_secondary', 'scope')
+            $schema->tableExists('#__citations_secondary')
+            && !$schema->hasColumn('#__citations_secondary', 'scope')
         ) {
-            $query = "ALTER TABLE `#__citations_secondary`
-			ADD COLUMN `scope` VARCHAR(250) NULL DEFAULT NULL,
-			ADD COLUMN `scope_id` INT(11) NULL DEFAULT NULL;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->alterTable('#__citations_secondary')
+                ->addColumn('scope')->string(250)->nullable()->default(null)
+                ->addColumn('scope_id')->integer()->nullable()->default(null)
+                ->execute();
         }
     }
 
@@ -40,16 +40,15 @@ class Migration20141004111111ComCitations extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         // Checks to see if fieldd exists and removes it
         if (
-            $this->db->tableExists('#__citations_secondary')
-            && $this->db->tableHasField('#__citations_secondary', 'scope')
+            $schema->tableExists('#__citations_secondary')
+            && $schema->hasColumn('#__citations_secondary', 'scope')
         ) {
-            $query = "ALTER TABLE `#__citations_secondary`
-			DROP COLUMN `scope`,
-			DROP COLUMN `scope_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__citations_secondary', 'scope');
+            $schema->dropColumn('#__citations_secondary', 'scope_id');
         }
     }
 }

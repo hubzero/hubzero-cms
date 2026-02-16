@@ -21,16 +21,6 @@ class Migration20170627153900ComHubgraph extends Base
      **/
     public function up()
     {
-        // Need elevated MySQL privileges for DROP TRIGGER operations
-        // The runAsRoot() method will use muse escalation if available
-        if (!$this->runAsRoot()) {
-            $this->setError(
-                'Failed to run with the necessary privileges. Try running with: sudo muse migration run',
-                'warning'
-            );
-            return false;
-        }
-
         $triggers = array(
             //Answers
             'hg_jos_answers_questions_insert_trigger',
@@ -181,28 +171,12 @@ class Migration20170627153900ComHubgraph extends Base
             'hg_jos_xprofiles_bio_delete_trigger'
         );
 
-        foreach ($triggers as $trigger) {
-            $query = "DROP TRIGGER IF EXISTS `" . $trigger . "`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-    }
+    // Hubgraph no longer exists.
+    // No point in trying to work around
+    // database independent implementations now.
 
-    /**
-     * Down
-     **/
-    public function down()
-    {
-        // Need elevated MySQL privileges for CREATE TRIGGER operations
-        // The runAsRoot() method will use muse escalation if available
-        if (!$this->runAsRoot()) {
-            $this->setError(
-                'Failed to run with the necessary privileges. Try running with: sudo muse migration run',
-                'warning'
-            );
-            return false;
-        }
-
-        // Create triggers...
+        //foreach ($triggers as $trigger) {
+    //  $this->db->dropTrigger($trigger)->ifExists();
+        //}
     }
 }

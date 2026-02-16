@@ -25,10 +25,15 @@ class Migration20140630084843ComCollections extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__collections')) {
-            $query = "UPDATE `#__collections` SET access=4 WHERE is_default=1 AND access=0";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__collections')) {
+            $this->db->getQuery(true)
+                ->update('#__collections')
+                ->set(['access' => 4])
+                ->where('is_default', '=', 1)
+                ->where('access', '=', 0)
+                ->execute();
         }
     }
 
@@ -37,10 +42,15 @@ class Migration20140630084843ComCollections extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__collections')) {
-            $query = "UPDATE `#__collections` SET access=0 WHERE is_default=1 AND access=4";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__collections')) {
+            $this->db->getQuery(true)
+                ->update('#__collections')
+                ->set(['access' => 0])
+                ->where('is_default', '=', 1)
+                ->where('access', '=', 4)
+                ->execute();
         }
     }
 }

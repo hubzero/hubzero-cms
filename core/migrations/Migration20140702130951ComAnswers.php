@@ -20,40 +20,56 @@ class Migration20140702130951ComAnswers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableHasField('#__answers_questions', 'state')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('question')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
-                $ids = array_map('intval', $ids);
+        $schema = $this->db->schema();
 
-                $query = "UPDATE `#__answers_questions` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->hasColumn('#__answers_questions', 'state')) {
+            $ids = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->where('category', '=', 'question')
+                ->loadColumn();
+
+            if (!empty($ids)) {
+                $this->db->getQuery(true)
+                    ->update('#__answers_questions')
+                    ->set(['state' => 3])
+                    ->whereIn('id', array_map('intval', $ids))
+                    ->execute();
             }
         }
 
-        if ($this->db->tableHasField('#__answers_responses', 'state')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('answer')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
-                $ids = array_map('intval', $ids);
+        if ($schema->hasColumn('#__answers_responses', 'state')) {
+            $ids = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->where('category', '=', 'answer')
+                ->loadColumn();
 
-                $query = "UPDATE `#__answers_responses` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!empty($ids)) {
+                $this->db->getQuery(true)
+                    ->update('#__answers_responses')
+                    ->set(['state' => 3])
+                    ->whereIn('id', array_map('intval', $ids))
+                    ->execute();
             }
         }
 
-        if ($this->db->tableHasField('#__item_comments', 'state')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` "
-                . "WHERE state=0 AND category IN ('itemcomment', 'answercomment')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
-                $ids = array_map('intval', $ids);
+        if ($schema->hasColumn('#__item_comments', 'state')) {
+            $ids = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->whereIn('category', ['itemcomment', 'answercomment'])
+                ->loadColumn();
 
-                $query = "UPDATE `#__item_comments` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!empty($ids)) {
+                $this->db->getQuery(true)
+                    ->update('#__item_comments')
+                    ->set(['state' => 3])
+                    ->whereIn('id', array_map('intval', $ids))
+                    ->execute();
             }
         }
     }
@@ -63,22 +79,30 @@ class Migration20140702130951ComAnswers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__answers_questions', 'state')) {
-            $query = "UPDATE `#__answers_questions` SET state=1 WHERE state=3";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__answers_questions', 'state')) {
+            $this->db->getQuery(true)
+                ->update('#__answers_questions')
+                ->set(['state' => 1])
+                ->where('state', '=', 3)
+                ->execute();
         }
 
-        if ($this->db->tableHasField('#__answers_responses', 'state')) {
-            $query = "UPDATE `#__answers_responses` SET state=1 WHERE state=3";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__answers_responses', 'state')) {
+            $this->db->getQuery(true)
+                ->update('#__answers_responses')
+                ->set(['state' => 1])
+                ->where('state', '=', 3)
+                ->execute();
         }
 
-        if ($this->db->tableHasField('#__item_comments', 'state')) {
-            $query = "UPDATE `#__item_comments` SET state=1 WHERE state=3";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__item_comments', 'state')) {
+            $this->db->getQuery(true)
+                ->update('#__item_comments')
+                ->set(['state' => 1])
+                ->where('state', '=', 3)
+                ->execute();
         }
     }
 }

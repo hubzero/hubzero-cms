@@ -20,17 +20,18 @@ class Migration20140109024336ComGroups extends Base
      **/
     public function up()
     {
-        $query = "CREATE TABLE IF NOT EXISTS `#__xgroups_pages_checkout` (
-					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					`pageid` int(11) DEFAULT NULL,
-					`userid` int(11) DEFAULT NULL,
-					`when` datetime DEFAULT NULL,
-				PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__xgroups_pages_checkout')) {
+            $schema->createTable('#__xgroups_pages_checkout')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('pageid')->nullable()
+                ->integer('userid')->nullable()
+                ->datetime('when')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -39,16 +40,8 @@ class Migration20140109024336ComGroups extends Base
      **/
     public function down()
     {
-        // delete categories table
-        if ($this->db->tableExists('#__xgroups_pages_checkout')) {
-            $query = "DROP TABLE #__xgroups_pages_checkout;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__xgroups_pages_checkout');
     }
 }

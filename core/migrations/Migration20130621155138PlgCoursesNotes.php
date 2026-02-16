@@ -21,15 +21,13 @@ class Migration20130621155138PlgCoursesNotes extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__courses_member_notes', 'access')) {
-            $query = "ALTER TABLE `#__courses_member_notes` ADD `access` TINYINT(2)  NOT NULL  DEFAULT '0';";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__courses_member_notes')
+            && !$schema->hasColumn('#__courses_member_notes', 'access')
+        ) {
+            $schema->addColumn('#__courses_member_notes', 'access')->tinyInteger(2)->notNull()->default(0);
         }
     }
 
@@ -38,15 +36,10 @@ class Migration20130621155138PlgCoursesNotes extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_member_notes', 'access')) {
-            $query .= "ALTER TABLE `#__courses_member_notes` DROP `access`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_member_notes', 'access')) {
+            $schema->dropColumn('#__courses_member_notes', 'access');
         }
     }
 }

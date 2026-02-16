@@ -21,10 +21,10 @@ class Migration20170815000001ComPublications extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__publications', 'featured')) {
-            $query = "ALTER TABLE `#__publications` ADD `featured` TINYINT(1)  NOT NULL  DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->hasColumn('#__publications', 'featured')) {
+            $schema->addColumn('#__publications', 'featured')->tinyInteger(1)->notNull()->default(0);
         }
     }
 
@@ -33,10 +33,10 @@ class Migration20170815000001ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__publications', 'featured')) {
-            $query = "ALTER TABLE `#__publications` DROP `featured`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__publications', 'featured')) {
+            $schema->dropColumn('#__publications', 'featured');
         }
     }
 }

@@ -21,21 +21,26 @@ class Migration20170822114718PlgProjectsFiles extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT * FROM `#__extensions` WHERE `folder`='projects' AND `element`='files'";
-            $this->db->setQuery($query);
-            $row = $this->db->loadObject();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $row = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__extensions')
+                ->where('folder', '=', 'projects')
+                ->where('element', '=', 'files')
+                ->first();
 
             if ($row && $row->params) {
                 $params = json_decode($row->params);
                 if ($params && isset($params->handler_base_path) && $params->handler_base_path != '/srv/projects/') {
                     $params->handler_base_path = rtrim($params->handler_base_path, '/') . '/{project}/{file}';
 
-                    $query = "UPDATE `#__extensions` SET `params`="
-                        . $this->db->quote(json_encode($params))
-                        . " WHERE `extension_id`=" . $row->extension_id;
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__extensions')
+                        ->set(['params' => json_encode($params)])
+                        ->where('extension_id', '=', $row->extension_id)
+                        ->execute();
                 }
             }
         }
@@ -46,21 +51,26 @@ class Migration20170822114718PlgProjectsFiles extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT * FROM `#__extensions` WHERE `folder`='projects' AND `element`='files'";
-            $this->db->setQuery($query);
-            $row = $this->db->loadObject();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $row = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__extensions')
+                ->where('folder', '=', 'projects')
+                ->where('element', '=', 'files')
+                ->first();
 
             if ($row && $row->params) {
                 $params = json_decode($row->params);
                 if ($params && isset($params->handler_base_path) && strstr($params->handler_base_path, '{')) {
                     $params->handler_base_path = str_replace('{project}/{file}', '', $params->handler_base_path);
 
-                    $query = "UPDATE `#__extensions` SET `params`="
-                        . $this->db->quote(json_encode($params))
-                        . " WHERE `extension_id`=" . $row->extension_id;
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__extensions')
+                        ->set(['params' => json_encode($params)])
+                        ->where('extension_id', '=', $row->extension_id)
+                        ->execute();
                 }
             }
         }

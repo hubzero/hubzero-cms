@@ -21,193 +21,98 @@ class Migration20131108095500ComAnswers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__answers_questions')) {
-            if ($this->db->tableHasField('#__answers_questions', 'id')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `id` `id` "
-                    . "INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $this->migrateQuestionsTable();
+        $this->migrateResponsesTable();
+        $this->migrateQuestionsLogTable();
+        $this->migrateLogTable();
+    }
 
-            if ($this->db->tableHasField('#__answers_questions', 'subject')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `subject` `subject` "
-                    . "VARCHAR(250)  NOT NULL  DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+    /**
+     * Migrate answers_questions table
+     */
+    protected function migrateQuestionsTable()
+    {
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasField('#__answers_questions', 'question')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `question` `question` TEXT  NOT NULL";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__answers_questions', 'created_by')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `created_by` `created_by` "
-                    . "VARCHAR(50)  NOT NULL  DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__answers_questions', 'email')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `email` `email` "
-                    . "TINYINT(2)  UNSIGNED  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__answers_questions', 'helpful')) {
-                $query = "ALTER TABLE `#__answers_questions` CHANGE `helpful` `helpful` "
-                    . "INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__answers_questions', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__answers_questions` ADD INDEX `idx_created_by` (`created_by`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__answers_questions', 'idx_state')) {
-                $query = "ALTER TABLE `#__answers_questions` ADD INDEX `idx_state` (`state`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (!$schema->tableExists('#__answers_questions')) {
+            return;
         }
 
-        if ($this->db->tableExists('#__answers_responses')) {
-            if ($this->db->tableHasField('#__answers_responses', 'id')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `id` `id` "
-                    . "INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema->table('#__answers_questions')->alter()
+            ->modifyInteger('id', true)->notNull()->autoIncrement()
+            ->modifyString('subject', 250)->notNull()->default('')
+            ->modifyText('question')->notNull()
+            ->modifyString('created_by', 50)->notNull()->default('')
+            ->modifyTinyInteger('email', true)->notNull()->default(0)
+            ->modifyInteger('helpful', true)->notNull()->default(0)
+            ->addIndex('idx_created_by', 'created_by')
+            ->addIndex('idx_state', 'state')
+            ->execute();
+    }
 
-            if ($this->db->tableHasField('#__answers_responses', 'qid')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `qid` `qid` "
-                    . "INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+    /**
+     * Migrate answers_responses table
+     */
+    protected function migrateResponsesTable()
+    {
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasField('#__answers_responses', 'created_by')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `created_by` `created_by` "
-                    . "VARCHAR(50)  NOT NULL  DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__answers_responses', 'state')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `state` `state` TINYINT(3)  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__answers_responses', 'nothelpful')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `nothelpful` `nothelpful` "
-                    . "INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__answers_responses', 'helpful')) {
-                $query = "ALTER TABLE `#__answers_responses` CHANGE `helpful` `helpful` "
-                    . "INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__answers_responses', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__answers_responses` ADD INDEX `idx_created_by` (`created_by`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__answers_responses', 'idx_state')) {
-                $query = "ALTER TABLE `#__answers_responses` ADD INDEX `idx_state` (`state`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__answers_responses', 'idx_qid')) {
-                $query = "ALTER TABLE `#__answers_responses` ADD INDEX `idx_qid` (`qid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (!$schema->tableExists('#__answers_responses')) {
+            return;
         }
 
-        if ($this->db->tableExists('#__answers_questions_log')) {
-            if ($this->db->tableHasField('#__answers_questions_log', 'id')) {
-                $query = "ALTER TABLE `#__answers_questions_log` CHANGE `id` `id` "
-                    . "INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema->table('#__answers_responses')->alter()
+            ->modifyInteger('id', true)->notNull()->autoIncrement()
+            ->modifyInteger('qid', true)->notNull()->default(0)
+            ->modifyString('created_by', 50)->notNull()->default('')
+            ->modifyTinyInteger('state')->notNull()->default(0)
+            ->modifyInteger('nothelpful', true)->notNull()->default(0)
+            ->modifyInteger('helpful', true)->notNull()->default(0)
+            ->addIndex('idx_created_by', 'created_by')
+            ->addIndex('idx_state', 'state')
+            ->addIndex('idx_qid', 'qid')
+            ->execute();
+    }
 
-            if ($this->db->tableHasField('#__answers_questions_log', 'voter')) {
-                $query = "ALTER TABLE `#__answers_questions_log` CHANGE `voter` `voter` INT(11)  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+    /**
+     * Migrate answers_questions_log table
+     */
+    protected function migrateQuestionsLogTable()
+    {
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasField('#__answers_questions_log', 'ip')) {
-                $query = "ALTER TABLE `#__answers_questions_log` CHANGE `ip` `ip` VARCHAR(15)  NOT NULL  DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__answers_questions_log', 'qid')) {
-                $query = "ALTER TABLE `#__answers_questions_log` CHANGE `qid` `qid` "
-                    . "INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__answers_questions_log', 'idx_voter')) {
-                $query = "ALTER TABLE `#__answers_questions_log` ADD INDEX `idx_voter` (`voter`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__answers_questions_log', 'idx_qid')) {
-                $query = "ALTER TABLE `#__answers_questions_log` ADD INDEX `idx_qid` (`qid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (!$schema->tableExists('#__answers_questions_log')) {
+            return;
         }
 
-        if ($this->db->tableExists('#__answers_log')) {
-            if ($this->db->tableHasField('#__answers_log', 'id')) {
-                $query = "ALTER TABLE `#__answers_log` CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema->table('#__answers_questions_log')->alter()
+            ->modifyInteger('id', true)->notNull()->autoIncrement()
+            ->modifyInteger('voter')->notNull()->default(0)
+            ->modifyString('ip', 15)->notNull()->default('')
+            ->modifyInteger('qid', true)->notNull()->default(0)
+            ->addIndex('idx_voter', 'voter')
+            ->addIndex('idx_qid', 'qid')
+            ->execute();
+    }
 
-            if ($this->db->tableHasField('#__answers_log', 'ip')) {
-                $query = "ALTER TABLE `#__answers_log` CHANGE `ip` `ip` VARCHAR(15)  NOT NULL  DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+    /**
+     * Migrate answers_log table
+     */
+    protected function migrateLogTable()
+    {
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasField('#__answers_log', 'rid')) {
-                $query = "ALTER TABLE `#__answers_log` CHANGE `rid` `rid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__answers_log', 'helpful')) {
-                $query = "ALTER TABLE `#__answers_log` CHANGE `helpful` `helpful` VARCHAR(10)  NOT NULL  DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__answers_log', 'idx_rid')) {
-                $query = "ALTER TABLE `#__answers_log` ADD INDEX `idx_rid` (`rid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (!$schema->tableExists('#__answers_log')) {
+            return;
         }
+
+        $schema->table('#__answers_log')->alter()
+            ->modifyInteger('id', true)->notNull()->autoIncrement()
+            ->modifyString('ip', 15)->notNull()->default('')
+            ->modifyInteger('rid', true)->notNull()->default(0)
+            ->modifyString('helpful', 10)->notNull()->default('')
+            ->addIndex('idx_rid', 'rid')
+            ->execute();
     }
 
     /**
@@ -215,60 +120,32 @@ class Migration20131108095500ComAnswers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__answers_questions')) {
-            if ($this->db->tableHasKey('#__answers_questions', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__answers_questions` DROP INDEX `idx_created_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__answers_questions', 'idx_state')) {
-                $query = "ALTER TABLE `#__answers_questions` DROP INDEX `idx_state`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__answers_questions')) {
+            $schema->table('#__answers_questions')->alter()
+                ->dropIndex('idx_created_by')
+                ->dropIndex('idx_state')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__answers_responses')) {
-            if ($this->db->tableHasKey('#__answers_responses', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__answers_responses` DROP INDEX `idx_created_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasKey('#__answers_responses', 'idx_qid')) {
-                $query = "ALTER TABLE `#__answers_responses` DROP INDEX `idx_qid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasKey('#__answers_responses', 'idx_state')) {
-                $query = "ALTER TABLE `#__answers_responses` DROP INDEX `idx_state`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__answers_responses')) {
+            $schema->table('#__answers_responses')->alter()
+                ->dropIndex('idx_created_by')
+                ->dropIndex('idx_qid')
+                ->dropIndex('idx_state')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__answers_questions_log')) {
-            if ($this->db->tableHasKey('#__answers_questions_log', 'idx_qid')) {
-                $query = "ALTER TABLE `#__answers_questions_log` DROP INDEX `idx_qid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasKey('#__answers_questions_log', 'idx_voter')) {
-                $query = "ALTER TABLE `#__answers_questions_log` DROP INDEX `idx_voter`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__answers_questions_log')) {
+            $schema->table('#__answers_questions_log')->alter()
+                ->dropIndex('idx_qid')
+                ->dropIndex('idx_voter')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__answers_log')) {
-            if ($this->db->tableHasKey('#__answers_log', 'idx_rid')) {
-                $query = "ALTER TABLE `#__answers_log` DROP INDEX `idx_rid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__answers_log')) {
+            $schema->dropIndex('#__answers_log', 'idx_rid');
         }
     }
 }

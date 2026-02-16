@@ -21,18 +21,19 @@ class Migration20140421135022ComTools extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__tool_version_zone')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__tool_version_zone` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `tool_version_id` int(11) NOT NULL,
-			  `zone_id` int(11) NOT NULL,
-			  `publish_up` datetime DEFAULT NULL,
-			  `publish_down` datetime DEFAULT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__tool_version_zone')) {
+            $schema->createTable('#__tool_version_zone')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('tool_version_id')
+                ->integer('zone_id')
+                ->datetime('publish_up')->nullable()
+                ->datetime('publish_down')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

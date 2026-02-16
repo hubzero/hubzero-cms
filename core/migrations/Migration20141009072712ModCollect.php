@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding the collect module and removing collect plugins
  *
-*/
+ */
 class Migration20141009072712ModCollect extends Base
 {
     /**
@@ -27,22 +27,35 @@ class Migration20141009072712ModCollect extends Base
 
         $this->addModuleEntry('mod_collect', 1, '', 0);
 
-        $query = "SELECT COUNT(*) FROM `#__modules` WHERE `module`='mod_collect'";
-        $this->db->setQuery($query);
-        if (!$this->db->loadResult()) {
+        $count = $this->db->getQuery(true)
+            ->from('#__modules')
+            ->where('module', '=', 'mod_collect')
+            ->count();
+
+        if (!$count) {
             $position = 'endpage';
             $found = false;
 
-            $query  = "SELECT COUNT(*) FROM `#__modules` WHERE `client_id`=0 AND `position`=";
-            $this->db->setQuery($query . $this->db->quote($position));
-            if ($this->db->loadResult()) {
+            $count = $this->db->getQuery(true)
+                ->from('#__modules')
+                ->where('client_id', '=', 0)
+                ->where('position', '=', $position)
+                ->count();
+
+            if ($count) {
                 $found = true;
             }
 
             if (!$found) {
                 $position = 'footer';
-                $this->db->setQuery($query . $this->db->quote($position));
-                if ($this->db->loadResult()) {
+
+                $count = $this->db->getQuery(true)
+                    ->from('#__modules')
+                    ->where('client_id', '=', 0)
+                    ->where('position', '=', $position)
+                    ->count();
+
+                if ($count) {
                     $found = true;
                 }
             }

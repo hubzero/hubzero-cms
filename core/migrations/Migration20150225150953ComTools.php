@@ -26,26 +26,24 @@ class Migration20150225150953ComTools extends Base
             return false;
         }
 
-        $info = $mwdb->getTableColumns('host', false);
+        // Note: Middleware database is typically MySQL-only
+        // These MODIFY COLUMN operations are kept as-is for middleware
+        $info = $mwdb->schema()->getTableColumns('host', false);
 
         if (
-            $mwdb->tableExists('host')
-            && $mwdb->tableHasField('host', 'max_uses')
+            $mwdb->schema()->tableExists('host')
+            && $mwdb->schema()->hasColumn('host', 'max_uses')
             && $info['max_uses']->Type == 'int(11) unsigned'
         ) {
-            $query = "ALTER TABLE `host` MODIFY COLUMN `max_uses` int(11) NOT NULL DEFAULT 0";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwdb->schema()->modifyColumn('host', 'max_uses')->integer()->notNull()->default(0)->execute();
         }
 
         if (
-            $mwdb->tableExists('host')
-            && $mwdb->tableHasField('host', 'uses')
+            $mwdb->schema()->tableExists('host')
+            && $mwdb->schema()->hasColumn('host', 'uses')
             && $info['uses']->Type == 'int(11) unsigned'
         ) {
-            $query = "ALTER TABLE `host` MODIFY COLUMN `uses` INT(11) NOT NULL DEFAULT 0";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwdb->schema()->modifyColumn('host', 'uses')->integer()->notNull()->default(0)->execute();
         }
     }
 }

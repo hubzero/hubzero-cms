@@ -21,11 +21,14 @@ class Migration20160830165511ComSupport extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__support_tickets', 'target_date')) {
-            $query = "ALTER TABLE `#__support_tickets` ADD COLUMN `target_date` DATETIME NOT NULL DEFAULT "
-                . "'0000-00-00 00:00:00';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->hasColumn('#__support_tickets', 'target_date')) {
+            $schema->addColumn('#__support_tickets', 'target_date')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
         }
     }
 
@@ -34,10 +37,10 @@ class Migration20160830165511ComSupport extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__support_tickets', 'target_date')) {
-            $query = "ALTER TABLE `#__support_tickets` DROP COLUMN `target_date`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__support_tickets', 'target_date')) {
+            $schema->dropColumn('#__support_tickets', 'target_date');
         }
     }
 }

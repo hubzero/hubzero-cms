@@ -21,24 +21,25 @@ class Migration20150623152144ComDeveloper extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__developer_rate_limit')) {
-            $query = "CREATE TABLE `#__developer_rate_limit` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`application_id` int(11) DEFAULT NULL,
-						`uidNumber` int(11) DEFAULT NULL,
-						`ip` varchar(255) DEFAULT NULL,
-						`limit_short` int(11) DEFAULT NULL,
-						`limit_long` int(11) DEFAULT NULL,
-						`count_short` int(11) DEFAULT NULL,
-						`count_long` int(11) DEFAULT NULL,
-						`expires_short` datetime DEFAULT NULL,
-						`expires_long` datetime DEFAULT NULL,
-						`created` datetime DEFAULT NULL,
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__developer_rate_limit')) {
+            $schema->createTable('#__developer_rate_limit')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('application_id')->nullable()
+                ->integer('uidNumber')->nullable()
+                ->string('ip', 255)->nullable()
+                ->integer('limit_short')->nullable()
+                ->integer('limit_long')->nullable()
+                ->integer('count_short')->nullable()
+                ->integer('count_long')->nullable()
+                ->datetime('expires_short')->nullable()
+                ->datetime('expires_long')->nullable()
+                ->datetime('created')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -47,11 +48,8 @@ class Migration20150623152144ComDeveloper extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__developer_rate_limit')) {
-            $query = "DROP TABLE `#__developer_rate_limit`";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__developer_rate_limit');
     }
 }

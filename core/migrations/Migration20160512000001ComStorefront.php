@@ -21,21 +21,21 @@ class Migration20160512000001ComStorefront extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_products')
-            && !$this->db->tableHasField('#__storefront_products', 'publish_up')
+            $schema->tableExists('#__storefront_products')
+            && !$schema->hasColumn('#__storefront_products', 'publish_up')
         ) {
-            $query = "ALTER TABLE `#__storefront_products` ADD `publish_up` DATETIME, ADD `publish_down` DATETIME";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_products', 'publish_up')->datetime()->execute();
+            $schema->addColumn('#__storefront_products', 'publish_down')->datetime()->execute();
         }
         if (
-            $this->db->tableExists('#__storefront_skus')
-            && !$this->db->tableHasField('#__storefront_skus', 'publish_up')
+            $schema->tableExists('#__storefront_skus')
+            && !$schema->hasColumn('#__storefront_skus', 'publish_up')
         ) {
-            $query = "ALTER TABLE `#__storefront_skus` ADD `publish_up` DATETIME, ADD `publish_down` DATETIME";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_skus', 'publish_up')->datetime()->execute();
+            $schema->addColumn('#__storefront_skus', 'publish_down')->datetime()->execute();
         }
     }
 
@@ -44,21 +44,21 @@ class Migration20160512000001ComStorefront extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_products')
-            && $this->db->tableHasField('#__storefront_products', 'publish_up')
+            $schema->tableExists('#__storefront_products')
+            && $schema->hasColumn('#__storefront_products', 'publish_up')
         ) {
-            $query = "ALTER TABLE `#__storefront_products` DROP COLUMN `publish_up`, DROP COLUMN `publish_down`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__storefront_products', 'publish_up');
+            $schema->dropColumn('#__storefront_products', 'publish_down');
         }
         if (
-            $this->db->tableExists('#__storefront_skus')
-            && $this->db->tableHasField('#__storefront_skus', 'publish_up')
+            $schema->tableExists('#__storefront_skus')
+            && $schema->hasColumn('#__storefront_skus', 'publish_up')
         ) {
-            $query = "ALTER TABLE `#__storefront_skus` DROP COLUMN `publish_up`, DROP COLUMN `publish_down`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__storefront_skus', 'publish_up');
+            $schema->dropColumn('#__storefront_skus', 'publish_down');
         }
     }
 }

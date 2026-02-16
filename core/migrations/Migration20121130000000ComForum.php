@@ -20,65 +20,106 @@ class Migration20121130000000ComForum extends Base
      **/
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__forum_sections')) {
+        if ($schema->tableExists('#__forum_sections')) {
             if (
-                !$this->db->tableHasField('#__forum_sections', 'scope_id')
-                && $this->db->tableHasField('#__forum_sections', 'group_id')
+                !$schema->hasColumn('#__forum_sections', 'scope_id')
+                && $schema->hasColumn('#__forum_sections', 'group_id')
             ) {
-                $query .= "ALTER TABLE `#__forum_sections` CHANGE `group_id` `scope_id` INT(11)  NOT NULL  DEFAULT "
-                    . "'0';\n";
+                $schema->renameColumn('#__forum_sections', 'group_id', 'scope_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
-            if (!$this->db->tableHasField('#__forum_sections', 'scope')) {
-                $query .= "ALTER TABLE `#__forum_sections` ADD `scope` VARCHAR(100)  NOT NULL  DEFAULT 'site' "
-                    . "AFTER `state`;\n";
+            if (!$schema->hasColumn('#__forum_sections', 'scope')) {
+                $schema->addColumn('#__forum_sections', 'scope')
+                    ->string(100)
+                    ->notNull()
+                    ->default('site')
+                    ->after('state')
+                    ->execute();
 
-                $query .= "UPDATE `#__forum_sections` SET scope='group' WHERE scope_id>0 AND scope!='course'\n;";
-                //$query .= "UPDATE `#__forum_sections` SET scope=CASE WHEN scope IN ('', 'group') "
-                //    . "THEN 'group' ELSE 'course' END WHERE scope_id>0;\n";
-                $query .= "UPDATE `#__forum_sections` SET scope='site' WHERE scope_id=0;\n";
+                $this->db->getQuery(true)
+                    ->update('#__forum_sections')
+                    ->set(['scope' => 'group'])
+                    ->where('scope_id', '>', 0)
+                    ->where('scope', '!=', 'course')
+                    ->execute();
+
+                $this->db->getQuery(true)
+                    ->update('#__forum_sections')
+                    ->set(['scope' => 'site'])
+                    ->where('scope_id', '=', 0)
+                    ->execute();
             }
         }
-        if ($this->db->tableExists('#__forum_categories')) {
+        if ($schema->tableExists('#__forum_categories')) {
             if (
-                !$this->db->tableHasField('#__forum_categories', 'scope_id')
-                && $this->db->tableHasField('#__forum_categories', 'group_id')
+                !$schema->hasColumn('#__forum_categories', 'scope_id')
+                && $schema->hasColumn('#__forum_categories', 'group_id')
             ) {
-                $query .= "ALTER TABLE `#__forum_categories` CHANGE `group_id` `scope_id` INT(11)  NOT NULL "
-                    . "DEFAULT '0';\n";
+                $schema->renameColumn('#__forum_categories', 'group_id', 'scope_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
-            if (!$this->db->tableHasField('#__forum_categories', 'scope')) {
-                $query .= "ALTER TABLE `#__forum_categories` ADD `scope` VARCHAR(100)  NOT NULL  DEFAULT 'site' "
-                    . "AFTER `state`;\n";
+            if (!$schema->hasColumn('#__forum_categories', 'scope')) {
+                $schema->addColumn('#__forum_categories', 'scope')
+                    ->string(100)
+                    ->notNull()
+                    ->default('site')
+                    ->after('state')
+                    ->execute();
 
-                $query .= "UPDATE `#__forum_categories` SET scope='group' WHERE scope_id>0 AND scope!='course';\n";
-                //$query .= "UPDATE `#__forum_categories` SET scope=CASE WHEN scope IN ('', 'group') "
-                //    . "THEN 'group' ELSE 'course' END WHERE scope_id>0;\n";
-                $query .= "UPDATE `#__forum_categories` SET scope='site' WHERE scope_id=0;\n";
+                $this->db->getQuery(true)
+                    ->update('#__forum_categories')
+                    ->set(['scope' => 'group'])
+                    ->where('scope_id', '>', 0)
+                    ->where('scope', '!=', 'course')
+                    ->execute();
+
+                $this->db->getQuery(true)
+                    ->update('#__forum_categories')
+                    ->set(['scope' => 'site'])
+                    ->where('scope_id', '=', 0)
+                    ->execute();
             }
         }
-        if ($this->db->tableExists('#__forum_posts')) {
+        if ($schema->tableExists('#__forum_posts')) {
             if (
-                !$this->db->tableHasField('#__forum_posts', 'scope_id')
-                && $this->db->tableHasField('#__forum_posts', 'group_id')
+                !$schema->hasColumn('#__forum_posts', 'scope_id')
+                && $schema->hasColumn('#__forum_posts', 'group_id')
             ) {
-                $query .= "ALTER TABLE `#__forum_posts` CHANGE `group_id` `scope_id` INT(11)  NOT NULL  DEFAULT '0';\n";
+                $schema->renameColumn('#__forum_posts', 'group_id', 'scope_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
-            if (!$this->db->tableHasField('#__forum_posts', 'scope')) {
-                $query .= "ALTER TABLE `#__forum_posts` ADD `scope` VARCHAR(100)  NOT NULL  DEFAULT 'site'  AFTER "
-                    . "`hits`;\n";
+            if (!$schema->hasColumn('#__forum_posts', 'scope')) {
+                $schema->addColumn('#__forum_posts', 'scope')
+                    ->string(100)
+                    ->notNull()
+                    ->default('site')
+                    ->after('hits')
+                    ->execute();
 
-                $query .= "UPDATE `#__forum_posts` SET scope='group' WHERE scope_id>0 AND scope!='course';\n";
-                //$query .= "UPDATE `#__forum_posts` SET scope=CASE WHEN scope IN ('', 'group') "
-                //    . "THEN 'group' ELSE 'course' END WHERE scope_id>0;\n";
-                $query .= "UPDATE `#__forum_posts` SET scope='site' WHERE scope_id=0;\n";
+                $this->db->getQuery(true)
+                    ->update('#__forum_posts')
+                    ->set(['scope' => 'group'])
+                    ->where('scope_id', '>', 0)
+                    ->where('scope', '!=', 'course')
+                    ->execute();
+
+                $this->db->getQuery(true)
+                    ->update('#__forum_posts')
+                    ->set(['scope' => 'site'])
+                    ->where('scope_id', '=', 0)
+                    ->execute();
             }
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
         }
     }
 
@@ -87,47 +128,52 @@ class Migration20121130000000ComForum extends Base
      **/
     public function down()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__forum_sections')) {
+        if ($schema->tableExists('#__forum_sections')) {
             if (
-                $this->db->tableHasField('#__forum_sections', 'scope_id')
-                && !$this->db->tableHasField('#__forum_sections', 'group_id')
+                $schema->hasColumn('#__forum_sections', 'scope_id')
+                && !$schema->hasColumn('#__forum_sections', 'group_id')
             ) {
-                $query .= "ALTER TABLE `#__forum_sections` CHANGE `scope_id` `group_id` INT(11)  NOT NULL  DEFAULT "
-                    . "'0';\n";
+                $schema->renameColumn('#__forum_sections', 'scope_id', 'group_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
-            if ($this->db->tableHasField('#__forum_sections', 'scope')) {
-                $query .= "ALTER TABLE `#__forum_sections` DROP COLUMN `scope`;\n";
+            if ($schema->hasColumn('#__forum_sections', 'scope')) {
+                $schema->dropColumn('#__forum_sections', 'scope');
             }
         }
-        if ($this->db->tableExists('#__forum_categories')) {
+        if ($schema->tableExists('#__forum_categories')) {
             if (
-                $this->db->tableHasField('#__forum_categories', 'scope_id')
-                && !$this->db->tableHasField('#__forum_categories', 'group_id')
+                $schema->hasColumn('#__forum_categories', 'scope_id')
+                && !$schema->hasColumn('#__forum_categories', 'group_id')
             ) {
-                $query .= "ALTER TABLE `#__forum_categories` CHANGE `scope_id` `group_id` INT(11)  NOT NULL "
-                    . "DEFAULT '0';\n";
+                $schema->renameColumn('#__forum_categories', 'scope_id', 'group_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
-            if ($this->db->tableHasField('#__forum_categories', 'scope')) {
-                $query .= "ALTER TABLE `#__forum_categories` DROP COLUMN `scope`;\n";
+            if ($schema->hasColumn('#__forum_categories', 'scope')) {
+                $schema->dropColumn('#__forum_categories', 'scope');
             }
         }
-        if ($this->db->tableExists('#__forum_posts')) {
+        if ($schema->tableExists('#__forum_posts')) {
             if (
-                $this->db->tableHasField('#__forum_posts', 'scope_id')
-                && !$this->db->tableHasField('#__forum_posts', 'group_id')
+                $schema->hasColumn('#__forum_posts', 'scope_id')
+                && !$schema->hasColumn('#__forum_posts', 'group_id')
             ) {
-                $query .= "ALTER TABLE `#__forum_posts` CHANGE `scope_id` `group_id` INT(11)  NOT NULL  DEFAULT '0';\n";
+                $schema->renameColumn('#__forum_posts', 'scope_id', 'group_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
-            if ($this->db->tableHasField('#__forum_posts', 'scope')) {
-                $query .= "ALTER TABLE `#__forum_posts` DROP COLUMN `scope`;\n";
+            if ($schema->hasColumn('#__forum_posts', 'scope')) {
+                $schema->dropColumn('#__forum_posts', 'scope');
             }
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
         }
     }
 }

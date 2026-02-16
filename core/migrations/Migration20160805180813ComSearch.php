@@ -20,18 +20,19 @@ class Migration20160805180813ComSearch extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__search_blacklist')) {
-            $query = "CREATE TABLE `#__search_blacklist` (
-			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			`scope` varchar(11) NOT NULL DEFAULT '',
-			`scope_id` int(11) NOT NULL,
-			`created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-			`created_by` int(11) DEFAULT NULL,
-			PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__search_blacklist')) {
+            $schema->createTable('#__search_blacklist')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('scope', 11)->default('')
+                ->integer('scope_id')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->nullable()
+                ->primaryKey('id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -40,10 +41,8 @@ class Migration20160805180813ComSearch extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__search_blacklist')) {
-            $query = "DROP TABLE #__search_blacklist";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__search_blacklist');
     }
 }

@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for forcing ROOT record to an ID of "1"
  *
-*/
+ */
 class Migration20150428103217ComCategories extends Base
 {
     /**
@@ -21,46 +21,64 @@ class Migration20150428103217ComCategories extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__categories')) {
-            $query = "SELECT * FROM `#__categories` WHERE `alias`='root' AND `level`=0";
-            $this->db->setQuery($query);
-            $root = $this->db->loadObject();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__categories')) {
+            $root = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__categories')
+                ->where('alias', '=', 'root')
+                ->where('level', '=', 0)
+                ->first();
 
             if ($root && $root->id != 1) {
                 // Get the item that has the node's destined ID
-                $query = "SELECT * FROM `#__categories` WHERE `id`=1";
-                $this->db->setQuery($query);
-                $first = $this->db->loadObject();
+                $first = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__categories')
+                    ->where('id', '=', 1)
+                    ->first();
 
                 if ($first && $first->id) {
                     // Get the last item in the list
-                    $query = "SELECT * FROM `#__categories` ORDER BY `id` DESC LIMIT 1";
-                    $this->db->setQuery($query);
-                    $last = $this->db->loadObject();
+                    $last = $this->db->getQuery(true)
+                        ->select('*')
+                        ->from('#__categories')
+                        ->order('id', 'DESC')
+                        ->first();
 
                     // Push the first to the last.
                     // This shouldn't cause issues as the nested set maintains the
                     // proper order. ID should be irrelevant except for ROOT.
-                    $query = "UPDATE `#__categories` SET `id`=" . ($last->id + 1) . " WHERE `id`=" . $first->id;
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__categories')
+                        ->set(['id' => $last->id + 1])
+                        ->where('id', '=', $first->id)
+                        ->execute();
                 }
 
                 // Update the root node's position
-                $query = "UPDATE `#__categories` SET `id`=1 WHERE `id`=" . $root->id;
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__categories')
+                    ->set(['id' => 1])
+                    ->where('id', '=', $root->id)
+                    ->execute();
 
                 // Update the parent ID on all the node's immediate children
-                $query = "UPDATE `#__categories` SET `parent_id`=1 WHERE `parent_id`=" . $root->id;
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__categories')
+                    ->set(['parent_id' => 1])
+                    ->where('parent_id', '=', $root->id)
+                    ->execute();
             }
 
             // Make sure the root node is public
-            $query = "UPDATE `#__categories` SET `access`=1 WHERE `id`=1 AND `access`!=1";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__categories')
+                ->set(['access' => 1])
+                ->where('id', '=', 1)
+                ->where('access', '!=', 1)
+                ->execute();
         }
     }
 }

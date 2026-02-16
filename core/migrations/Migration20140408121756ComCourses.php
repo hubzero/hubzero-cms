@@ -21,10 +21,14 @@ class Migration20140408121756ComCourses extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__courses_members', 'token')) {
-            $query = "ALTER TABLE `#__courses_members` ADD `token` VARCHAR(23)  NOT NULL  DEFAULT '';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->hasColumn('#__courses_members', 'token')) {
+            $schema->addColumn('#__courses_members', 'token')
+                ->string(23)
+                ->notNull()
+                ->default('')
+                ->execute();
 
             $path = PATH_APP . DS . 'site' . DS . 'courses' . DS . 'certificates';
 
@@ -78,10 +82,10 @@ class Migration20140408121756ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__courses_members', 'token')) {
-            $query = "ALTER TABLE `#__courses_members` DROP COLUMN `token`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__courses_members', 'token')) {
+            $schema->dropColumn('#__courses_members', 'token');
         }
     }
 }

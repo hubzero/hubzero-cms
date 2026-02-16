@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for creating courses tables
@@ -17,351 +18,466 @@ class Migration20130101000000ComCourses extends Base
 {
     public function up()
     {
-        $query = "CREATE TABLE IF NOT EXISTS `#__courses` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`alias` varchar(255) NOT NULL DEFAULT '',
-				`group_id` int(11) NOT NULL DEFAULT '0',
-				`title` varchar(255) NOT NULL DEFAULT '',
-				`state` tinyint(3) NOT NULL DEFAULT '0',
-				`type` tinyint(3) NOT NULL DEFAULT '0',
-				`access` tinyint(3) NOT NULL DEFAULT '0',
-				`blurb` text NOT NULL,
-				`description` text NOT NULL,
-				`logo` varchar(255) NOT NULL DEFAULT '',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`params` text NOT NULL,
-				PRIMARY KEY (`id`),
-				FULLTEXT KEY `#__xgroups_cn_description_public_desc_ftidx` (`alias`,`title`,`blurb`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        $schema = $this->db->schema();
 
-			CREATE TABLE IF NOT EXISTS `#__courses_announcements` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`offering_id` int(11) NOT NULL DEFAULT '0',
-				`content` text,
-				`priority` tinyint(2) NOT NULL DEFAULT '0',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`section_id` int(11) NOT NULL DEFAULT '0',
-				`state` tinyint(2) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`),
-				KEY `idx_offering_id` (`offering_id`),
-				KEY `idx_section_id` (`section_id`),
-				KEY `idx_created_by` (`created_by`),
-				KEY `idx_state` (`state`),
-				KEY `idx_priority` (`priority`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses')) {
+            $schema->createTable('#__courses')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('alias', 255)->default('')
+                ->integer('group_id')->default(0)
+                ->string('title', 255)->default('')
+                ->tinyInteger('state')->default(0)
+                ->tinyInteger('type')->default(0)
+                ->tinyInteger('access')->default(0)
+                ->text('blurb')
+                ->text('description')
+                ->string('logo', 255)->default('')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->text('params')
+                ->primaryKey('id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_asset_associations` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`asset_id` int(11) NOT NULL DEFAULT '0',
-				`scope_id` int(11) NOT NULL DEFAULT '0',
-				`scope` varchar(255) NOT NULL DEFAULT 'asset_group',
-				`ordering` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`),
-				KEY `idx_asset_id` (`asset_id`),
-				KEY `idx_scope_id` (`scope_id`),
-				KEY `idx_scope` (`scope`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_announcements')) {
+            $schema->createTable('#__courses_announcements')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('offering_id')->default(0)
+                ->text('content')->nullable()
+                ->tinyInteger('priority')->default(0)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->integer('section_id')->default(0)
+                ->tinyInteger('state')->default(0)
+                ->primaryKey('id')
+                ->index('idx_offering_id', 'offering_id')
+                ->index('idx_section_id', 'section_id')
+                ->index('idx_created_by', 'created_by')
+                ->index('idx_state', 'state')
+                ->index('idx_priority', 'priority')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_asset_group_types` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`alias` varchar(200) NOT NULL DEFAULT '',
-				`type` varchar(255) NOT NULL DEFAULT '',
-				PRIMARY KEY (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_asset_associations')) {
+            $schema->createTable('#__courses_asset_associations')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('asset_id')->default(0)
+                ->integer('scope_id')->default(0)
+                ->string('scope', 255)->default('asset_group')
+                ->integer('ordering')->default(0)
+                ->primaryKey('id')
+                ->index('idx_asset_id', 'asset_id')
+                ->index('idx_scope_id', 'scope_id')
+                ->index('idx_scope', 'scope')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_asset_groups` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`unit_id` int(11) NOT NULL DEFAULT '0',
-				`alias` varchar(250) NOT NULL,
-				`title` varchar(255) NOT NULL DEFAULT '',
-				`description` varchar(255) NOT NULL DEFAULT '',
-				`ordering` int(11) NOT NULL DEFAULT '0',
-				`parent` int(11) NOT NULL DEFAULT '0',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`state` tinyint(2) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`),
-				KEY `idx_unit_id` (`unit_id`),
-				KEY `idx_created_by` (`created_by`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_asset_group_types')) {
+            $schema->createTable('#__courses_asset_group_types')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('alias', 200)->default('')
+                ->string('type', 255)->default('')
+                ->primaryKey('id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_asset_views` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`asset_id` int(11) NOT NULL,
-				`viewed` datetime NOT NULL,
-				`viewed_by` int(11) NOT NULL,
-				PRIMARY KEY (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_asset_groups')) {
+            $schema->createTable('#__courses_asset_groups')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('unit_id')->default(0)
+                ->string('alias', 250)
+                ->string('title', 255)->default('')
+                ->string('description', 255)->default('')
+                ->integer('ordering')->default(0)
+                ->integer('parent')->default(0)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->tinyInteger('state')->default(0)
+                ->primaryKey('id')
+                ->index('idx_unit_id', 'unit_id')
+                ->index('idx_created_by', 'created_by')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_assets` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`title` varchar(255) NOT NULL DEFAULT '',
-				`content` mediumtext,
-				`type` varchar(255) NOT NULL DEFAULT '',
-				`url` varchar(255) NOT NULL DEFAULT '',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`state` tinyint(2) NOT NULL DEFAULT '1',
-				`course_id` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`),
-				KEY `idx_course_id` (`course_id`),
-				KEY `idx_created_by` (`created_by`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_asset_views')) {
+            $schema->createTable('#__courses_asset_views')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('asset_id')
+                ->datetime('viewed')
+                ->integer('viewed_by')
+                ->primaryKey('id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_form_answers` (
-				`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				`correct` tinyint(4) NOT NULL,
-				`left_dist` int(11) NOT NULL,
-				`top_dist` int(11) NOT NULL,
-				`question_id` int(11) NOT NULL,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `id` (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_assets')) {
+            $schema->createTable('#__courses_assets')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('title', 255)->default('')
+                ->mediumText('content')->nullable()
+                ->string('type', 255)->default('')
+                ->string('url', 255)->default('')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->tinyInteger('state')->default(1)
+                ->integer('course_id')->default(0)
+                ->primaryKey('id')
+                ->index('idx_course_id', 'course_id')
+                ->index('idx_created_by', 'created_by')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_form_deployments` (
-				`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				`form_id` int(11) NOT NULL,
-				`start_time` timestamp NULL DEFAULT NULL,
-				`end_time` timestamp NULL DEFAULT NULL,
-				`results_open` varchar(50) DEFAULT NULL,
-				`time_limit` int(11) DEFAULT NULL,
-				`crumb` varchar(20) NOT NULL,
-				`results_closed` varchar(50) DEFAULT NULL,
-				`user_id` int(11) NOT NULL,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `id` (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_form_answers')) {
+            $schema->createTable('#__courses_form_answers')
+                ->unsignedBigInteger('id', ['autoIncrement' => true])
+                ->tinyInteger('correct')
+                ->integer('left_dist')
+                ->integer('top_dist')
+                ->integer('question_id')
+                ->primaryKey('id')
+                ->uniqueIndex('id', 'id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_form_questions` (
-				`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				`page` int(11) NOT NULL,
-				`version` int(11) NOT NULL,
-				`created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				`left_dist` int(11) NOT NULL,
-				`top_dist` int(11) NOT NULL,
-				`height` int(11) NOT NULL,
-				`width` int(11) NOT NULL,
-				`form_id` int(11) DEFAULT NULL,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `id` (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_form_deployments')) {
+            $schema->createTable('#__courses_form_deployments')
+                ->unsignedBigInteger('id', ['autoIncrement' => true])
+                ->integer('form_id')
+                ->timestamp('start_time')->nullable()
+                ->timestamp('end_time')->nullable()
+                ->string('results_open', 50)->nullable()
+                ->integer('time_limit')->nullable()
+                ->string('crumb', 20)
+                ->string('results_closed', 50)->nullable()
+                ->integer('user_id')
+                ->primaryKey('id')
+                ->uniqueIndex('id', 'id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_form_respondent_progress` (
-				`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				`respondent_id` int(11) NOT NULL,
-				`question_id` int(11) NOT NULL,
-				`answer_id` int(11) NOT NULL,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `id` (`id`),
-				UNIQUE KEY `#__pdf_form_respondent_progress_respondent_id_question_id_uidx`
-					(`respondent_id`,`question_id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_form_questions')) {
+            $schema->createTable('#__courses_form_questions')
+                ->unsignedBigInteger('id', ['autoIncrement' => true])
+                ->integer('page')
+                ->integer('version')
+                ->timestamp('created')
+                ->integer('left_dist')
+                ->integer('top_dist')
+                ->integer('height')
+                ->integer('width')
+                ->integer('form_id')->nullable()
+                ->primaryKey('id')
+                ->uniqueIndex('id', 'id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_form_respondents` (
-				`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				`deployment_id` int(11) NOT NULL,
-				`user_id` int(11) NOT NULL,
-				`started` timestamp NULL DEFAULT NULL,
-				`finished` timestamp NULL DEFAULT NULL,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `id` (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_form_respondent_progress')) {
+            $schema->createTable('#__courses_form_respondent_progress')
+                ->unsignedBigInteger('id', ['autoIncrement' => true])
+                ->integer('respondent_id')
+                ->integer('question_id')
+                ->integer('answer_id')
+                ->primaryKey('id')
+                ->uniqueIndex('id', 'id')
+                ->uniqueIndex('#__pdf_form_respondent_progress_respondent_id_question_id_uidx', [
+                    'respondent_id',
+                    'question_id',
+                ])
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_form_responses` (
-				`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				`respondent_id` int(11) NOT NULL,
-				`question_id` int(11) NOT NULL,
-				`answer_id` int(11) NOT NULL,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `id` (`id`),
-				KEY `#__pdf_form_respones_respondent_id_idx` (`respondent_id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_form_respondents')) {
+            $schema->createTable('#__courses_form_respondents')
+                ->unsignedBigInteger('id', ['autoIncrement' => true])
+                ->integer('deployment_id')
+                ->integer('user_id')
+                ->timestamp('started')->nullable()
+                ->timestamp('finished')->nullable()
+                ->primaryKey('id')
+                ->uniqueIndex('id', 'id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_forms` (
-				`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				`title` text,
-				`active` tinyint(4) NOT NULL DEFAULT '1',
-				`created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `id` (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_form_responses')) {
+            $schema->createTable('#__courses_form_responses')
+                ->unsignedBigInteger('id', ['autoIncrement' => true])
+                ->integer('respondent_id')
+                ->integer('question_id')
+                ->integer('answer_id')
+                ->primaryKey('id')
+                ->uniqueIndex('id', 'id')
+                ->index('#__pdf_form_respones_respondent_id_idx', 'respondent_id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_log` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`scope_id` int(11) NOT NULL DEFAULT '0',
-				`scope` varchar(100) NOT NULL DEFAULT '',
-				`timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`user_id` int(11) NOT NULL DEFAULT '0',
-				`action` varchar(50) NOT NULL DEFAULT '',
-				`comments` text NOT NULL,
-				`actor_id` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_forms')) {
+            $schema->createTable('#__courses_forms')
+                ->unsignedBigInteger('id', ['autoIncrement' => true])
+                ->text('title')->nullable()
+                ->tinyInteger('active')->default(1)
+                ->timestamp('created')
+                ->primaryKey('id')
+                ->uniqueIndex('id', 'id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_members` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`user_id` int(11) NOT NULL DEFAULT '0',
-				`course_id` int(11) NOT NULL DEFAULT '0',
-				`offering_id` int(11) NOT NULL DEFAULT '0',
-				`section_id` int(11) NOT NULL DEFAULT '0',
-				`role_id` int(11) NOT NULL DEFAULT '0',
-				`permissions` mediumtext NOT NULL,
-				`enrolled` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`student` tinyint(2) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`),
-				KEY `idx_offering_id` (`offering_id`),
-				KEY `idx_user_id` (`user_id`),
-				KEY `idx_role_id` (`role_id`),
-				KEY `idx_section_id` (`section_id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_log')) {
+            $schema->createTable('#__courses_log')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('scope_id')->default(0)
+                ->string('scope', 100)->default('')
+                ->datetime('timestamp')->default('0000-00-00 00:00:00')
+                ->integer('user_id')->default(0)
+                ->string('action', 50)->default('')
+                ->text('comments')
+                ->integer('actor_id')->default(0)
+                ->primaryKey('id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_offering_section_dates` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`section_id` int(11) NOT NULL DEFAULT '0',
-				`scope` varchar(150) NOT NULL DEFAULT '',
-				`scope_id` int(11) NOT NULL DEFAULT '0',
-				`publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_members')) {
+            $schema->createTable('#__courses_members')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('user_id')->default(0)
+                ->integer('course_id')->default(0)
+                ->integer('offering_id')->default(0)
+                ->integer('section_id')->default(0)
+                ->integer('role_id')->default(0)
+                ->mediumText('permissions')
+                ->datetime('enrolled')->default('0000-00-00 00:00:00')
+                ->tinyInteger('student')->default(0)
+                ->primaryKey('id')
+                ->index('idx_offering_id', 'offering_id')
+                ->index('idx_user_id', 'user_id')
+                ->index('idx_role_id', 'role_id')
+                ->index('idx_section_id', 'section_id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_offering_sections` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`offering_id` int(11) NOT NULL DEFAULT '0',
-				`alias` varchar(255) NOT NULL DEFAULT '',
-				`title` varchar(255) NOT NULL DEFAULT '',
-				`state` tinyint(2) NOT NULL DEFAULT '1',
-				`start_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`end_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`),
-				KEY `idx_offering_id` (`offering_id`),
-				KEY `idx_created_by` (`created_by`),
-				KEY `idx_state` (`state`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_offering_section_dates')) {
+            $schema->createTable('#__courses_offering_section_dates')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('section_id')->default(0)
+                ->string('scope', 150)->default('')
+                ->integer('scope_id')->default(0)
+                ->datetime('publish_up')->default('0000-00-00 00:00:00')
+                ->datetime('publish_down')->default('0000-00-00 00:00:00')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->primaryKey('id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_offerings` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`course_id` int(11) NOT NULL DEFAULT '0',
-				`alias` varchar(255) NOT NULL DEFAULT '',
-				`title` varchar(255) NOT NULL DEFAULT '',
-				`term` varchar(255) NOT NULL DEFAULT '',
-				`state` tinyint(2) NOT NULL DEFAULT '1',
-				`publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`),
-				KEY `idx_course_id` (`course_id`),
-				KEY `idx_state` (`state`),
-				KEY `idx_created_by` (`created_by`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_offering_sections')) {
+            $schema->createTable('#__courses_offering_sections')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('offering_id')->default(0)
+                ->string('alias', 255)->default('')
+                ->string('title', 255)->default('')
+                ->tinyInteger('state')->default(1)
+                ->datetime('start_date')->default('0000-00-00 00:00:00')
+                ->datetime('end_date')->default('0000-00-00 00:00:00')
+                ->datetime('publish_up')->default('0000-00-00 00:00:00')
+                ->datetime('publish_down')->default('0000-00-00 00:00:00')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->primaryKey('id')
+                ->index('idx_offering_id', 'offering_id')
+                ->index('idx_created_by', 'created_by')
+                ->index('idx_state', 'state')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_page_hits` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`offering_id` int(11) NOT NULL DEFAULT '0',
-				`page_id` int(11) NOT NULL DEFAULT '0',
-				`user_id` int(11) NOT NULL DEFAULT '0',
-				`datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`ip` varchar(15) NOT NULL DEFAULT '',
-				PRIMARY KEY (`id`),
-				KEY `idx_offering_id` (`offering_id`),
-				KEY `idx_page_id` (`page_id`),
-				KEY `idx_user_id` (`user_id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_offerings')) {
+            $schema->createTable('#__courses_offerings')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('course_id')->default(0)
+                ->string('alias', 255)->default('')
+                ->string('title', 255)->default('')
+                ->string('term', 255)->default('')
+                ->tinyInteger('state')->default(1)
+                ->datetime('publish_up')->default('0000-00-00 00:00:00')
+                ->datetime('publish_down')->default('0000-00-00 00:00:00')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->primaryKey('id')
+                ->index('idx_course_id', 'course_id')
+                ->index('idx_state', 'state')
+                ->index('idx_created_by', 'created_by')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_pages` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`offering_id` varchar(100) NOT NULL DEFAULT '0',
-				`url` varchar(100) NOT NULL DEFAULT '',
-				`title` varchar(100) NOT NULL DEFAULT '',
-				`content` text NOT NULL,
-				`porder` int(11) NOT NULL DEFAULT '0',
-				`active` int(11) NOT NULL DEFAULT '0',
-				`privacy` varchar(10) NOT NULL DEFAULT '',
-				PRIMARY KEY (`id`),
-				KEY `idx_offering_id` (`offering_id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_page_hits')) {
+            $schema->createTable('#__courses_page_hits')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('offering_id')->default(0)
+                ->integer('page_id')->default(0)
+                ->integer('user_id')->default(0)
+                ->datetime('datetime')->default('0000-00-00 00:00:00')
+                ->string('ip', 15)->default('')
+                ->primaryKey('id')
+                ->index('idx_offering_id', 'offering_id')
+                ->index('idx_page_id', 'page_id')
+                ->index('idx_user_id', 'user_id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE `#__courses_reviews` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`course_id` int(11) NOT NULL DEFAULT '0',
-				`offering_id` int(11) NOT NULL DEFAULT '0',
-				`rating` decimal(2,1) NOT NULL DEFAULT '0.0',
-				`content` text NOT NULL,
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`modified_by` int(11) NOT NULL DEFAULT '0',
-				`anonymous` tinyint(2) NOT NULL DEFAULT '0',
-				`parent` int(11) NOT NULL DEFAULT '0',
-				`access` tinyint(2) NOT NULL DEFAULT '0',
-				`state` tinyint(2) NOT NULL DEFAULT '0',
-				`positive` int(11) NOT NULL DEFAULT '0',
-				`negative` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_pages')) {
+            $schema->createTable('#__courses_pages')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('offering_id', 100)->default('0')
+                ->string('url', 100)->default('')
+                ->string('title', 100)->default('')
+                ->text('content')
+                ->integer('porder')->default(0)
+                ->integer('active')->default(0)
+                ->string('privacy', 10)->default('')
+                ->primaryKey('id')
+                ->index('idx_offering_id', 'offering_id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_roles` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`offering_id` int(11) NOT NULL DEFAULT '0',
-				`alias` varchar(150) NOT NULL,
-				`title` varchar(150) NOT NULL DEFAULT '',
-				`permissions` mediumtext NOT NULL,
-				PRIMARY KEY (`id`),
-				KEY `idx_offering_id` (`offering_id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_reviews')) {
+            $schema->createTable('#__courses_reviews')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('course_id')->default(0)
+                ->integer('offering_id')->default(0)
+                ->decimal('rating', 2, 1)->default('0.0')
+                ->text('content')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->datetime('modified')->default('0000-00-00 00:00:00')
+                ->integer('modified_by')->default(0)
+                ->tinyInteger('anonymous')->default(0)
+                ->integer('parent')->default(0)
+                ->tinyInteger('access')->default(0)
+                ->tinyInteger('state')->default(0)
+                ->integer('positive')->default(0)
+                ->integer('negative')->default(0)
+                ->primaryKey('id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_units` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`offering_id` int(11) NOT NULL DEFAULT '0',
-				`alias` varchar(250) NOT NULL,
-				`title` varchar(255) NOT NULL DEFAULT '',
-				`description` longtext NOT NULL,
-				`ordering` int(11) NOT NULL DEFAULT '0',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`state` tinyint(2) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`),
-				KEY `idx_offering_id` (`offering_id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_roles')) {
+            $schema->createTable('#__courses_roles')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('offering_id')->default(0)
+                ->string('alias', 150)
+                ->string('title', 150)->default('')
+                ->mediumText('permissions')
+                ->primaryKey('id')
+                ->index('idx_offering_id', 'offering_id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__courses_offering_section_codes` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`section_id` int(11) NOT NULL DEFAULT '0',
-				`code` varchar(10) NOT NULL DEFAULT '',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`expires` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`redeemed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`redeemed_by` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__courses_units')) {
+            $schema->createTable('#__courses_units')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('offering_id')->default(0)
+                ->string('alias', 250)
+                ->string('title', 255)->default('')
+                ->longText('description')
+                ->integer('ordering')->default(0)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->tinyInteger('state')->default(0)
+                ->primaryKey('id')
+                ->index('idx_offering_id', 'offering_id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY DEFINER
-			VIEW `#__courses_form_latest_responses_view`
-			AS SELECT
-				 `fre`.`id` AS `id`,
-				 `fre`.`respondent_id` AS `respondent_id`,
-				 `fre`.`question_id` AS `question_id`,
-				 `fre`.`answer_id` AS `answer_id`
-			FROM `#__courses_form_responses` `fre`
-			WHERE (
-				(SELECT COUNT(0) FROM `#__courses_form_responses` `frei`
-				WHERE ((`frei`.`respondent_id` = `fre`.`respondent_id`) AND (`frei`.`id` > `fre`.`id`)))
-				< (SELECT COUNT(DISTINCT `frei`.`question_id`) FROM `#__courses_form_responses` `frei`
-				WHERE (`frei`.`respondent_id` = `fre`.`respondent_id`))
-			);";
+        if (!$schema->tableExists('#__courses_offering_section_codes')) {
+            $schema->createTable('#__courses_offering_section_codes')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('section_id')->default(0)
+                ->string('code', 10)->default('')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->datetime('expires')->default('0000-00-00 00:00:00')
+                ->datetime('redeemed')->default('0000-00-00 00:00:00')
+                ->integer('redeemed_by')->default(0)
+                ->primaryKey('id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Create the view using query builder
+        $sub1 = $this->db->getQuery(true)
+            ->select(Expression::count(0))
+            ->from('#__courses_form_responses', 'frei')
+            ->where('frei.respondent_id', '=', Expression::column('fre.respondent_id'))
+            ->where('frei.id', '>', Expression::column('fre.id'));
+
+        $sub2 = $this->db->getQuery(true)
+            ->select(Expression::countDistinct('frei.question_id'))
+            ->from('#__courses_form_responses', 'frei')
+            ->where('frei.respondent_id', '=', Expression::column('fre.respondent_id'));
+
+        $selectSql = $this->db->getQuery(true)
+            ->select(['fre.id', 'fre.respondent_id', 'fre.question_id', 'fre.answer_id'])
+            ->from('#__courses_form_responses', 'fre')
+            ->where(Expression::subquery($sub1), '<', Expression::subquery($sub2));
+
+        $schema->createView('#__courses_form_latest_responses_view')
+            ->algorithm('UNDEFINED')
+            ->definer('CURRENT_USER')
+            ->security('DEFINER')
+            ->as((string) $selectSql);
+
+        // Add FULLTEXT index separately for SQLite compatibility
+        $schema->addFulltextIndex('#__courses', '#__xgroups_cn_description_public_desc_ftidx', [
+            'alias',
+            'title',
+            'blurb',
+        ]);
 
         $this->addPluginEntry('members', 'courses');
         $this->addPluginEntry('courses', 'syllabus');
@@ -376,34 +492,35 @@ class Migration20130101000000ComCourses extends Base
 
     public function down()
     {
-        $query = "
-			DROP TABLE IF EXISTS `#__courses`;
-			DROP TABLE IF EXISTS `#__courses_announcements`;
-			DROP TABLE IF EXISTS `#__courses_asset_associations`;
-			DROP TABLE IF EXISTS `#__courses_asset_group_types`;
-			DROP TABLE IF EXISTS `#__courses_asset_groups`;
-			DROP TABLE IF EXISTS `#__courses_assets`;
-			DROP TABLE IF EXISTS `#__courses_form_answers`;
-			DROP TABLE IF EXISTS `#__courses_form_deployments`;
-			DROP TABLE IF EXISTS `#__courses_form_questions`;
-			DROP TABLE IF EXISTS `#__courses_form_respondent_progress`;
-			DROP TABLE IF EXISTS `#__courses_form_respondents`;
-			DROP TABLE IF EXISTS `#__courses_form_responses`;
-			DROP TABLE IF EXISTS `#__courses_forms`;
-			DROP TABLE IF EXISTS `#__courses_log`;
-			DROP TABLE IF EXISTS `#__courses_members`;
-			DROP TABLE IF EXISTS `#__courses_offering_section_dates`;
-			DROP TABLE IF EXISTS `#__courses_offering_sections`;
-			DROP TABLE IF EXISTS `#__courses_offerings`;
-			DROP TABLE IF EXISTS `#__courses_page_hits`;
-			DROP TABLE IF EXISTS `#__courses_pages`;
-			DROP TABLE IF EXISTS `#__courses_roles`;
-			DROP TABLE IF EXISTS `#__courses_units`;
-			DROP TABLE IF EXISTS `#__courses_offering_section_codes`;
-			DROP VIEW IF EXISTS `#__courses_form_latest_responses_view`;";
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema->dropTable('#__courses');
+        $schema->dropTable('#__courses_announcements');
+        $schema->dropTable('#__courses_asset_associations');
+        $schema->dropTable('#__courses_asset_group_types');
+        $schema->dropTable('#__courses_asset_groups');
+        $schema->dropTable('#__courses_asset_views');
+        $schema->dropTable('#__courses_assets');
+        $schema->dropTable('#__courses_form_answers');
+        $schema->dropTable('#__courses_form_deployments');
+        $schema->dropTable('#__courses_form_questions');
+        $schema->dropTable('#__courses_form_respondent_progress');
+        $schema->dropTable('#__courses_form_respondents');
+        $schema->dropTable('#__courses_form_responses');
+        $schema->dropTable('#__courses_forms');
+        $schema->dropTable('#__courses_log');
+        $schema->dropTable('#__courses_members');
+        $schema->dropTable('#__courses_offering_section_dates');
+        $schema->dropTable('#__courses_offering_sections');
+        $schema->dropTable('#__courses_offerings');
+        $schema->dropTable('#__courses_page_hits');
+        $schema->dropTable('#__courses_pages');
+        $schema->dropTable('#__courses_reviews');
+        $schema->dropTable('#__courses_roles');
+        $schema->dropTable('#__courses_units');
+        $schema->dropTable('#__courses_offering_section_codes');
+
+        $schema->dropView('#__courses_form_latest_responses_view', true);
 
         $this->deletePluginEntry('members', 'courses');
         $this->deletePluginEntry('courses');

@@ -20,17 +20,15 @@ class Migration20150722080000ComPublications extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__item_watch') && !$this->db->tableHasField('#__item_watch', 'digest')) {
-            $query = "ALTER TABLE `#__item_watch` ADD COLUMN `digest` INT(11) NOT NULL DEFAULT 0 AFTER `state`;";
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__item_watch') && !$schema->hasColumn('#__item_watch', 'digest')) {
             /* 0 = on-action delivery, 1 = daily digest, 2 = weekly digest, 3 = monthly digest */
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__item_watch', 'digest')->integer()->notNull()->default(0)->after('state')->execute();
         }
 
-        if ($this->db->tableExists('#__item_watch') && !$this->db->tableHasField('#__item_watch', 'delivered')) {
-            $query = "ALTER TABLE `#__item_watch` ADD COLUMN `delivered` DATETIME NULL AFTER `digest`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__item_watch') && !$schema->hasColumn('#__item_watch', 'delivered')) {
+            $schema->addColumn('#__item_watch', 'delivered')->datetime()->nullable()->after('digest')->execute();
         }
     }
 
@@ -39,16 +37,14 @@ class Migration20150722080000ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__item_watch') && $this->db->tableHasField('#__item_watch', 'digest')) {
-            $query = "ALTER TABLE `#__item_watch` DROP COLUMN `digest`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__item_watch') && $schema->hasColumn('#__item_watch', 'digest')) {
+            $schema->dropColumn('#__item_watch', 'digest');
         }
 
-        if ($this->db->tableExists('#__item_watch') && $this->db->tableHasField('#__item_watch', 'delivered')) {
-            $query = "ALTER TABLE `#__item_watch` DROP COLUMN `delivered`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__item_watch') && $schema->hasColumn('#__item_watch', 'delivered')) {
+            $schema->dropColumn('#__item_watch', 'delivered');
         }
     }
 }

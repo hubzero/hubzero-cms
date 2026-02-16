@@ -21,23 +21,23 @@ class Migration20130827143717Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('metrics_author_cluster') && !$this->db->tableExists('#__metrics_author_cluster')) {
-            $query = "RENAME TABLE `metrics_author_cluster` TO `#__metrics_author_cluster`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('metrics_author_cluster') && !$schema->tableExists('#__metrics_author_cluster')) {
+            $schema->renameTable('metrics_author_cluster', '#__metrics_author_cluster');
         } elseif (
-            !$this->db->tableExists('metrics_author_cluster')
-            && !$this->db->tableExists('#__metrics_author_cluster')
+            !$schema->tableExists('metrics_author_cluster')
+            && !$schema->tableExists('#__metrics_author_cluster')
         ) {
-            $query = "CREATE TABLE `#__metrics_author_cluster` (
-						`authorid` varchar(60) NOT NULL DEFAULT '0',
-						`classes` int(11) DEFAULT '0',
-						`users` int(11) DEFAULT '0',
-						`schools` int(11) DEFAULT '0',
-						PRIMARY KEY (`authorid`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->createTable('#__metrics_author_cluster')
+                ->string('authorid', 60)->default('0')
+                ->integer('classes')->default(0)
+                ->integer('users')->default(0)
+                ->integer('schools')->default(0)
+                ->primaryKey('authorid')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -46,10 +46,10 @@ class Migration20130827143717Core extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('metrics_author_cluster') && $this->db->tableExists('#__metrics_author_cluster')) {
-            $query = "RENAME TABLE `#__metrics_author_cluster` TO `metrics_author_cluster`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('metrics_author_cluster') && $schema->tableExists('#__metrics_author_cluster')) {
+            $schema->renameTable('#__metrics_author_cluster', 'metrics_author_cluster');
         }
     }
 }

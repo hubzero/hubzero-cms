@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding registration reasons table and default values
  *
-*/
+ */
 class Migration20150918121036ComMembers extends Base
 {
     /**
@@ -21,32 +21,36 @@ class Migration20150918121036ComMembers extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__xprofiles_reasons')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__xprofiles_reasons` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`reason` varchar(255) DEFAULT NULL,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__xprofiles_reasons')) {
+            $schema->createTable('#__xprofiles_reasons')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('reason', 255)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__xprofiles_reasons')) {
-            $query = "SELECT COUNT(*) FROM `#__xprofiles_reasons`";
-            $this->db->setQuery($query);
-            $rows = $this->db->loadResult();
+        if ($schema->tableExists('#__xprofiles_reasons')) {
+            $query = $this->db->getQuery(true)
+                ->from('#__xprofiles_reasons');
+            $rows = $query->count();
+
             if (!$rows) {
-                $query = "INSERT INTO `#__xprofiles_reasons` (`id`, `reason`)
-						VALUES
-							(1,'Required for class'),
-							(2,'Developing a new course'),
-							(3,'Using in an existing course'),
-							(4,'Using simulation tools for research'),
-							(5,'Using as background for my research'),
-							(6,'Learning about subject matter'),
-							(7,'Keeping current in subject matter');";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__xprofiles_reasons')
+                    ->values([
+                        ['id' => 1, 'reason' => 'Required for class'],
+                        ['id' => 2, 'reason' => 'Developing a new course'],
+                        ['id' => 3, 'reason' => 'Using in an existing course'],
+                        ['id' => 4, 'reason' => 'Using simulation tools for research'],
+                        ['id' => 5, 'reason' => 'Using as background for my research'],
+                        ['id' => 6, 'reason' => 'Learning about subject matter'],
+                        ['id' => 7, 'reason' => 'Keeping current in subject matter']
+                    ])
+                    ->execute();
             }
         }
     }
@@ -56,10 +60,8 @@ class Migration20150918121036ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__xprofiles_reasons')) {
-            $query = "DROP TABLE IF EXISTS `#__xprofiles_reasons`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__xprofiles_reasons');
     }
 }

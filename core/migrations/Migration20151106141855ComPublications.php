@@ -20,11 +20,10 @@ class Migration20151106141855ComPublications extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__publication_authors', 'repository_contact')) {
-            $query = "ALTER TABLE `#__publication_authors` ADD COLUMN `repository_contact` TINYINT(2) NOT NULL "
-                . "DEFAULT 0;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->hasColumn('#__publication_authors', 'repository_contact')) {
+            $schema->addColumn('#__publication_authors', 'repository_contact')->tinyInteger(2)->notNull()->default(0);
         }
     }
 
@@ -33,10 +32,10 @@ class Migration20151106141855ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__publication_authors', 'repository_contact')) {
-            $query = "ALTER TABLE `#__publication_authors` DROP COLUMN `repository_contact`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__publication_authors', 'repository_contact')) {
+            $schema->dropColumn('#__publication_authors', 'repository_contact');
         }
     }
 }

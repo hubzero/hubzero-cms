@@ -18,24 +18,26 @@ class Migration20130320000000ComCourses extends Base
 {
     public function up()
     {
-        $query = "CREATE TABLE IF NOT EXISTS `#__courses_grade_book` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`user_id` int(11) NOT NULL,
-						`score` decimal(5,2) NOT NULL DEFAULT '0.00',
-						`scope` varchar(255) NOT NULL DEFAULT 'asset',
-						`scope_id` int(11) NOT NULL DEFAULT '0',
-						PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        if (!$schema->tableExists('#__courses_grade_book')) {
+            $schema->createTable('#__courses_grade_book')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('user_id')
+                ->decimal('score', 5, 2)->default('0.00')
+                ->string('scope', 255)->default('asset')
+                ->integer('scope_id')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
     }
 
     public function down()
     {
-        $query = "DROP TABLE IF EXISTS `#__courses_grade_book`;";
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema->dropTable('#__courses_grade_book');
     }
 }

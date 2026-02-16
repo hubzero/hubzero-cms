@@ -21,17 +21,18 @@ class Migration20141112203625ComHubgraph extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('hg_update_queue')) {
-            $query = "CREATE TABLE `hg_update_queue` (
-					  `action` enum('INSERT','UPDATE','DELETE') NOT NULL,
-					  `table_name` varchar(50) NOT NULL,
-					  `id` int(11) NOT NULL,
-					  `other_id` int(11) DEFAULT NULL,
-					  `note` text
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('hg_update_queue')) {
+            $schema->createTable('hg_update_queue')
+                ->enum('action', ['INSERT', 'UPDATE', 'DELETE'])
+                ->string('table_name', 50)
+                ->integer('id')
+                ->integer('other_id')->nullable()
+                ->text('note')->nullable()
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -40,10 +41,8 @@ class Migration20141112203625ComHubgraph extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('hg_update_queue')) {
-            $query = "DROP TABLE `hg_update_queue`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('hg_update_queue');
     }
 }

@@ -21,123 +21,125 @@ class Migration20130924000011ComModules extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $first = false;
 
-        $query = "ALTER TABLE `#__modules` ENGINE = MYISAM;\n";
-        $query .= "ALTER TABLE `#__modules_menu` ENGINE = MYISAM;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema->setTableEngine('#__modules', 'MYISAM');
+        $schema->setTableEngine('#__modules_menu', 'MYISAM');
 
-        if ($this->db->tableHasField('#__modules', 'numnews')) {
-            $query = "ALTER TABLE `#__modules` DROP `numnews`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-
+        if ($schema->hasColumn('#__modules', 'numnews')) {
+            $schema->dropColumn('#__modules', 'numnews');
             $first = true;
         }
-        if ($this->db->tableHasField('#__modules', 'control')) {
-            $query = "ALTER TABLE `#__modules` DROP `control`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__modules', 'control')) {
+            $schema->dropColumn('#__modules', 'control');
         }
-        if ($this->db->tableHasField('#__modules', 'iscore')) {
-            $query = "ALTER TABLE `#__modules` DROP `iscore`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__modules', 'iscore')) {
+            $schema->dropColumn('#__modules', 'iscore');
         }
-        if (!$this->db->tableHasField('#__modules', 'note') && $this->db->tableHasField('#__modules', 'title')) {
-            $query = "ALTER TABLE `#__modules` ADD COLUMN `note` VARCHAR(255) NOT NULL DEFAULT '' AFTER `title`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasField('#__modules', 'language')
-            && $this->db->tableHasField('#__modules', 'client_id')
-        ) {
-            $query = "ALTER TABLE `#__modules` ADD COLUMN `language` CHAR(7) NOT NULL AFTER `client_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__modules', 'note') && $schema->hasColumn('#__modules', 'title')) {
+            $schema->addColumn('#__modules', 'note')
+                ->string(255)
+                ->notNull()
+                ->default('')
+                ->after('title')
+                ->execute();
         }
         if (
-            !$this->db->tableHasKey('#__modules', 'idx_language')
-            && $this->db->tableHasField('#__modules', 'language')
+            !$schema->hasColumn('#__modules', 'language')
+            && $schema->hasColumn('#__modules', 'client_id')
         ) {
-            $query = "ALTER TABLE `#__modules` ADD INDEX `idx_language` (`language`);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__modules', 'language')->char(7)->notNull()->after('client_id');
         }
-        if ($this->db->tableHasField('#__modules', 'position')) {
-            $query = "ALTER TABLE `#__modules` CHANGE COLUMN `position` `position` VARCHAR(50) NOT NULL DEFAULT '';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema->addIndex('#__modules', 'idx_language', 'language');
+
+        if ($schema->hasColumn('#__modules', 'position')) {
+            $schema->modifyColumn('#__modules', 'position')
+                ->string(50)
+                ->notNull()
+                ->default('')
+                ->execute();
         }
-        if ($this->db->tableHasField('#__modules', 'title')) {
-            $query = "ALTER TABLE `#__modules` CHANGE `title` `title` varchar(100) NOT NULL DEFAULT '';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__modules', 'title')) {
+            $schema->modifyColumn('#__modules', 'title')
+                ->string(100)
+                ->notNull()
+                ->default('')
+                ->execute();
         }
-        if ($this->db->tableHasField('#__modules', 'params')) {
-            $query = "ALTER TABLE `#__modules` CHANGE COLUMN `params` `params` TEXT NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__modules', 'params')) {
+            $schema->modifyColumn('#__modules', 'params')->text()->notNull();
         }
-        if ($this->db->tableHasField('#__modules', 'checked_out')) {
-            $query = "ALTER TABLE `#__modules` CHANGE COLUMN `checked_out` `checked_out` INT(10) UNSIGNED NOT NULL "
-                . "DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__modules', 'checked_out')) {
+            $schema->modifyColumn('#__modules', 'checked_out')->integer(10)->unsigned()->notNull()->default(0);
         }
-        if ($this->db->tableHasField('#__modules', 'access')) {
-            $query = "ALTER TABLE `#__modules` CHANGE COLUMN `access` `access` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__modules', 'access')) {
+            $schema->modifyColumn('#__modules', 'access')->integer(10)->unsigned()->notNull()->default(0);
         }
         if (
-            !$this->db->tableHasField('#__modules', 'publish_up')
-            && $this->db->tableHasField('#__modules', 'checked_out_time')
+            !$schema->hasColumn('#__modules', 'publish_up')
+            && $schema->hasColumn('#__modules', 'checked_out_time')
         ) {
-            $query = "ALTER TABLE `#__modules` ADD COLUMN `publish_up` datetime NOT NULL default '0000-00-00"
-                . "00:00:00' AFTER `checked_out_time`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__modules', 'publish_up')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->after('checked_out_time');
         }
         if (
-            !$this->db->tableHasField('#__modules', 'publish_down')
-            && $this->db->tableHasField('#__modules', 'publish_up')
+            !$schema->hasColumn('#__modules', 'publish_down')
+            && $schema->hasColumn('#__modules', 'publish_up')
         ) {
-            $query = "ALTER TABLE `#__modules` ADD COLUMN `publish_down` datetime NOT NULL default '0000-00-00"
-                . "00:00:00' AFTER `publish_up`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__modules', 'publish_down')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->after('publish_up');
         }
 
         if ($first) {
-            $query = "UPDATE `#__modules` SET `module` = 'mod_menu' WHERE `module` = 'mod_mainmenu';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__modules')
+                ->set(['module' => 'mod_menu'])
+                ->where('module', '=', 'mod_mainmenu')
+                ->execute();
 
             // Add modules_menu entry admin modules that previously didn't need an entry
-            $query = "SELECT `id` FROM `#__modules` WHERE `published` = '1' AND `client_id` = '1';";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            $results = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__modules')
+                ->where('published', '=', '1')
+                ->where('client_id', '=', '1')
+                ->loadObjectList();
 
             foreach ($results as $r) {
                 // First, make sure it isn't already there
-                $query = "SELECT * FROM `#__modules_menu` WHERE `moduleid` = '{$r->id}' AND `menuid` = '0';";
-                $this->db->setQuery($query);
-                if ($ret = $this->db->loadObject()) {
+                $ret = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__modules_menu')
+                    ->where('moduleid', '=', (int)$r->id)
+                    ->where('menuid', '=', 0)
+                    ->first();
+
+                if ($ret) {
                     continue;
                 }
 
-                $query = "INSERT INTO `#__modules_menu` VALUES ('{$r->id}', '0');";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__modules_menu')
+                    ->values([
+                        'moduleid' => $r->id,
+                        'menuid'   => 0
+                    ])
+                    ->execute();
             }
 
             // Update menu params (specifically to fix menu_image)
-            $query = "SELECT `id`, `params`, `module` FROM `#__modules`;";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'params', 'module'])
+                ->from('#__modules')
+                ->loadObjectList();
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
@@ -163,22 +165,25 @@ class Migration20130924000011ComModules extends Base
                     if ($r->module == 'mod_breadcrumbs') {
                         $array['showHere'] = 0;
                     } elseif ($r->module == 'mod_newsflash') {
-                        $query = "UPDATE `#__modules` SET `module` = 'mod_articles_news' WHERE `id` = {$r->id};";
-                        $this->db->setQuery($query);
-                        $this->db->query();
+                        $this->db->getQuery(true)
+                            ->update('#__modules')
+                            ->set(['module' => 'mod_articles_news'])
+                            ->where('id', '=', $r->id)
+                            ->execute();
 
                         // Update a few param names
                         $array['item_heading'] = 'h4';
-                        $array['count']        = $array['items'];
+                        $array['count']        = isset($array['items']) ? $array['items'] : 0;
                         $array['ordering']     = "a.publish_up";
                         $array['layout']       = "_:vertical";
                         $array['cachemode']    = "itemid";
                     }
 
-                    $query = "UPDATE `#__modules` SET `params` = " . $this->db->Quote(json_encode($array)) . ""
-                        . "WHERE `id` = {$r->id};";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__modules')
+                        ->set(['params' => json_encode($array)])
+                        ->where('id', '=', $r->id)
+                        ->execute();
                 }
             }
         }

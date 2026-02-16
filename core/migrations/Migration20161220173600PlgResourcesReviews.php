@@ -21,26 +21,34 @@ class Migration20161220173600PlgResourcesReviews extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__vote_log') && $this->db->tableExists('#__item_votes')) {
-            $query = "SELECT * FROM `#__vote_log` WHERE `category`='review'";
-            $this->db->setQuery($query);
-            $votes = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__vote_log') && $schema->tableExists('#__item_votes')) {
+            $votes = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__vote_log')
+                ->where('category', '=', 'review')
+                ->loadObjectList();
+
             foreach ($votes as $vote) {
-                $query = "INSERT INTO `#__item_votes` "
-                    . "(`id`, `item_id`, `item_type`, `ip`, `created`, `created_by`, `vote`) VALUES (NULL, "
-                    . $this->db->quote($vote->referenceid) . ", "
-                    . $this->db->quote($vote->category) . ", "
-                    . $this->db->quote($vote->ip) . ", "
-                    . $this->db->quote($vote->voted) . ", "
-                    . $this->db->quote($vote->voter) . ", "
-                    . $this->db->quote($vote->helpful == 'no' ? -1 : 1) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__item_votes')
+                    ->set([
+                        'id'         => null,
+                        'item_id'    => $vote->referenceid,
+                        'item_type'  => $vote->category,
+                        'ip'         => $vote->ip,
+                        'created'    => $vote->voted,
+                        'created_by' => $vote->voter,
+                        'vote'       => ($vote->helpful == 'no' ? -1 : 1)
+                    ])
+                    ->execute();
             }
 
-            $query = "DELETE FROM `#__vote_log` WHERE `category`='review'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->delete('#__vote_log')
+                ->where('category', '=', 'review')
+                ->execute();
         }
     }
 
@@ -49,26 +57,34 @@ class Migration20161220173600PlgResourcesReviews extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__vote_log') && $this->db->tableExists('#__item_votes')) {
-            $query = "SELECT * FROM `#__item_votes` WHERE `item_type`='review'";
-            $this->db->setQuery($query);
-            $votes = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__vote_log') && $schema->tableExists('#__item_votes')) {
+            $votes = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__item_votes')
+                ->where('item_type', '=', 'review')
+                ->loadObjectList();
+
             foreach ($votes as $vote) {
-                $query = "INSERT INTO `#__vote_log` "
-                    . "(`id`, `referenceid`, `category`, `ip`, `voted`, `voter`, `helpful`) VALUES (NULL, "
-                    . $this->db->quote($vote->item_id) . ", "
-                    . $this->db->quote($vote->item_type) . ", "
-                    . $this->db->quote($vote->ip) . ", "
-                    . $this->db->quote($vote->created) . ", "
-                    . $this->db->quote($vote->created_by) . ", "
-                    . $this->db->quote($vote->helpful == 1 ? 'yes' : 'no') . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__vote_log')
+                    ->set([
+                        'id'          => null,
+                        'referenceid' => $vote->item_id,
+                        'category'    => $vote->item_type,
+                        'ip'          => $vote->ip,
+                        'voted'       => $vote->created,
+                        'voter'       => $vote->created_by,
+                        'helpful'     => ($vote->vote == 1 ? 'yes' : 'no')
+                    ])
+                    ->execute();
             }
 
-            $query = "DELETE FROM `#__item_votes` WHERE `item_type`='review'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->delete('#__item_votes')
+                ->where('item_type', '=', 'review')
+                ->execute();
         }
     }
 }

@@ -24,26 +24,22 @@ class Migration20260129000000Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__xprofiles')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xprofiles')) {
             // Fix 'reason' column - allow NULL with default NULL
-            if ($this->db->tableHasField('#__xprofiles', 'reason')) {
-                $query = "ALTER TABLE `#__xprofiles` MODIFY `reason` text DEFAULT NULL";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__xprofiles', 'reason')) {
+                $schema->modifyColumn('#__xprofiles', 'reason')->text()->nullable()->default(null)->execute();
             }
 
             // Fix 'params' column - allow NULL with default NULL
-            if ($this->db->tableHasField('#__xprofiles', 'params')) {
-                $query = "ALTER TABLE `#__xprofiles` MODIFY `params` text DEFAULT NULL";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__xprofiles', 'params')) {
+                $schema->modifyColumn('#__xprofiles', 'params')->text()->nullable()->default(null)->execute();
             }
 
             // Fix 'note' column - allow NULL with default NULL
-            if ($this->db->tableHasField('#__xprofiles', 'note')) {
-                $query = "ALTER TABLE `#__xprofiles` MODIFY `note` text DEFAULT NULL";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__xprofiles', 'note')) {
+                $schema->modifyColumn('#__xprofiles', 'note')->text()->nullable()->default(null)->execute();
             }
         }
     }

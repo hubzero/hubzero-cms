@@ -20,38 +20,50 @@ class Migration20130924000008Core extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__languages')) {
-            $query = "CREATE TABLE `#__languages` (
-							`lang_id` int(11) unsigned NOT NULL auto_increment,
-							`lang_code` char(7) NOT NULL,
-							`title` varchar(50) NOT NULL,
-							`title_native` varchar(50) NOT NULL,
-							`sef` varchar(50) NOT NULL,
-							`image` varchar(50) NOT NULL,
-							`description` varchar(512) NOT NULL,
-							`metakey` text NOT NULL,
-							`metadesc` text NOT NULL,
-							`sitename` VARCHAR(1024) NOT NULL DEFAULT '',
-							`published` int(11) NOT NULL default '0',
-							`access` INT(10) UNSIGNED NOT NULL DEFAULT '0',
-							`ordering` int(11) NOT NULL DEFAULT 0,
-							PRIMARY KEY  (`lang_id`),
-							UNIQUE `idx_sef` (`sef`),
-							UNIQUE INDEX `idx_image` (`image` ASC),
-							UNIQUE INDEX `idx_langcode` (`lang_code` ASC),
-							INDEX `idx_access` (`access` ASC),
-							INDEX `idx_ordering` (`ordering`)
-						)  DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query  = "INSERT INTO `#__languages` (`lang_id`,`lang_code`,`title`,`title_native`,"
-                . "`sef`,`image`,`description`,`metakey`,`metadesc`, `published`, `access`, `ordering`)";
-            $query .= " VALUES ";
-            $query .= "(1, 'en-GB', 'English (UK)', 'English (UK)', 'en', 'en', '', '', '', 1, 1, 1);";
+        if (!$schema->tableExists('#__languages')) {
+            $schema->createTable('#__languages')
+                ->unsignedInteger('lang_id', ['autoIncrement' => true])
+                ->char('lang_code', 7)
+                ->string('title', 50)
+                ->string('title_native', 50)
+                ->string('sef', 50)
+                ->string('image', 50)
+                ->string('description', 512)
+                ->text('metakey')
+                ->text('metadesc')
+                ->string('sitename', 1024)->default('')
+                ->integer('published')->default(0)
+                ->unsignedInteger('access')->default(0)
+                ->integer('ordering')->default(0)
+                ->primaryKey('lang_id')
+                ->uniqueIndex('idx_sef', 'sef')
+                ->uniqueIndex('idx_image', 'image')
+                ->uniqueIndex('idx_langcode', 'lang_code')
+                ->index('idx_access', 'access')
+                ->index('idx_ordering', 'ordering')
+                ->charset('utf8')
+                ->execute();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__languages')
+                ->columns([
+                    'lang_id',
+                    'lang_code',
+                    'title',
+                    'title_native',
+                    'sef',
+                    'image',
+                    'description',
+                    'metakey',
+                    'metadesc',
+                    'published',
+                    'access',
+                    'ordering',
+                ])
+                ->values("1, 'en-GB', 'English (UK)', 'English (UK)', 'en', 'en', '', '', '', 1, 1, 1")
+                ->execute();
         }
     }
 }

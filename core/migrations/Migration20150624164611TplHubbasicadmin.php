@@ -21,16 +21,23 @@ class Migration20150624164611TplHubbasicadmin extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__template_styles')) {
-            $query = "SELECT `template` FROM `#__template_styles` WHERE `client_id`=1 AND `home`=1";
-            $this->db->setQuery($query);
-            if ($template = $this->db->loadResult()) {
-                if ($template == 'hubbasicadmin') {
-                    $query = "UPDATE `#__template_styles` SET `home`=1 "
-                        . "WHERE `client_id`=1 AND `template`=" . $this->db->quote('kameleon');
-                    $this->db->setQuery($query);
-                    $this->db->query();
-                }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__template_styles')) {
+            $query = $this->db->getQuery(true)
+                ->select('template')
+                ->from('#__template_styles')
+                ->where('client_id', '=', 1)
+                ->where('home', '=', 1);
+            $template = $query->value('template');
+
+            if ($template == 'hubbasicadmin') {
+                $this->db->getQuery(true)
+                    ->update('#__template_styles')
+                    ->set(['home' => 1])
+                    ->where('client_id', '=', 1)
+                    ->where('template', '=', 'kameleon')
+                    ->execute();
             }
         }
 

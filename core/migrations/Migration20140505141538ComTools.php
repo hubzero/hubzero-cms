@@ -26,14 +26,17 @@ class Migration20140505141538ComTools extends Base
             return false;
         }
 
+        $mwSchema = $mwdb->schema();
+
         if (
-            $mwdb->tableExists('host')
-            && $mwdb->tableHasField('host', 'venue_id')
-            && !$mwdb->tableHasField('host', 'zone_id')
+            $mwdb->schema()->tableExists('host')
+            && $mwSchema->hasColumn('host', 'venue_id')
+            && !$mwSchema->hasColumn('host', 'zone_id')
         ) {
-            $query = "ALTER TABLE `host` CHANGE `venue_id` `zone_id` INT(11) NULL DEFAULT NULL";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwSchema->renameColumn('host', 'venue_id', 'zone_id')
+                ->integer()
+                ->nullable()
+                ->execute();
         }
     }
 
@@ -47,14 +50,17 @@ class Migration20140505141538ComTools extends Base
             return false;
         }
 
+        $mwSchema = $mwdb->schema();
+
         if (
-            $mwdb->tableExists('host')
-            && !$mwdb->tableHasField('host', 'venue_id')
-            && $mwdb->tableHasField('host', 'zone_id')
+            $mwdb->schema()->tableExists('host')
+            && !$mwSchema->hasColumn('host', 'venue_id')
+            && $mwSchema->hasColumn('host', 'zone_id')
         ) {
-            $query = "ALTER TABLE `host` CHANGE `zone_id` `venue_id` INT(11) NULL DEFAULT NULL";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwSchema->renameColumn('host', 'zone_id', 'venue_id')
+                ->integer()
+                ->nullable()
+                ->execute();
         }
     }
 }

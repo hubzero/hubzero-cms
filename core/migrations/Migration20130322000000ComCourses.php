@@ -18,30 +18,25 @@ class Migration20130322000000ComCourses extends Base
 {
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__courses_form_respondent_progress', 'submitted')) {
-            $query .= "ALTER TABLE `#__courses_form_respondent_progress` ADD `submitted` "
-                . "DATETIME NULL AFTER `answer_id`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__courses_form_respondent_progress')
+            && !$schema->hasColumn('#__courses_form_respondent_progress', 'submitted')
+        ) {
+            $schema->addColumn('#__courses_form_respondent_progress', 'submitted')
+                ->datetime()
+                ->nullable()
+                ->execute();
         }
     }
 
     public function down()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_form_respondent_progress', 'submitted')) {
-            $query .= "ALTER TABLE `#__courses_form_respondent_progress` DROP `submitted`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_form_respondent_progress', 'submitted')) {
+            $schema->dropColumn('#__courses_form_respondent_progress', 'submitted');
         }
     }
 }

@@ -26,16 +26,14 @@ class Migration20140808195514ComTools extends Base
             return false;
         }
 
-        if ($mwdb->tableExists('host') && !$mwdb->tableHasField('host', 'max_uses')) {
-            $query = "ALTER TABLE `host` ADD COLUMN `max_uses` int(11) NOT NULL DEFAULT 0";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        $schema = $mwdb->schema();
+
+        if ($schema->tableExists('host') && !$schema->hasColumn('host', 'max_uses')) {
+            $schema->addColumn('host', 'max_uses')->integer()->notNull()->default(0)->execute();
         }
 
-        if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'uses')) {
-            $query = "ALTER TABLE `host` CHANGE `uses` `uses` INT(11) NOT NULL DEFAULT 0";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        if ($schema->tableExists('host') && $schema->hasColumn('host', 'uses')) {
+            $schema->modifyColumn('host', 'uses')->integer()->notNull()->default(0)->execute();
         }
     }
 
@@ -49,16 +47,14 @@ class Migration20140808195514ComTools extends Base
             return false;
         }
 
-        if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'max_uses')) {
-            $query = "ALTER TABLE `host` DROP COLUMN `max_uses`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        $schema = $mwdb->schema();
+
+        if ($schema->tableExists('host') && $schema->hasColumn('host', 'max_uses')) {
+            $schema->dropColumn('host', 'max_uses');
         }
 
-        if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'uses')) {
-            $query = "ALTER TABLE `host` CHANGE `uses` `uses` SMALLINT(5) NOT NULL DEFAULT 0";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        if ($schema->tableExists('host') && $schema->hasColumn('host', 'uses')) {
+            $schema->modifyColumn('host', 'uses')->smallInteger()->notNull()->default(0)->execute();
         }
     }
 }

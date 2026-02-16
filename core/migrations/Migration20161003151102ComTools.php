@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for expire-session daemon, to record end time for jobs automatically with a timestamp
@@ -21,11 +22,14 @@ class Migration20161003151102ComTools extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // ADD COLUMN end
-        if ($this->db->tableExists('joblog') && !$this->db->tableHasField('joblog', 'end')) {
-            $query = "ALTER TABLE joblog ADD COLUMN end TIMESTAMP DEFAULT CURRENT_TIMESTAMP;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('joblog') && !$schema->hasColumn('joblog', 'end')) {
+            $schema->table('joblog')->alter()
+                ->addTimestamp('end')
+                ->defaultExpression(Expression::currentTimestamp())
+                ->execute();
         }
     }
 
@@ -34,11 +38,11 @@ class Migration20161003151102ComTools extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         // Drop column end
-        if ($this->db->tableExists('joblog') && $this->db->tableHasField('joblog', 'end')) {
-            $query = "ALTER TABLE joblog DROP COLUMN end;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('joblog') && $schema->hasColumn('joblog', 'end')) {
+            $schema->dropColumn('joblog', 'end');
         }
     }
 }

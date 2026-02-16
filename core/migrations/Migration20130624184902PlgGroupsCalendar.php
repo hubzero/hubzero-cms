@@ -21,35 +21,30 @@ class Migration20130624184902PlgGroupsCalendar extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__events', 'ical_uid')) {
-            $query .= "ALTER TABLE `#__events` ADD COLUMN `ical_uid` VARCHAR(255) AFTER `calendar_id`;";
+        if (!$schema->hasColumn('#__events', 'ical_uid')) {
+            $schema->addColumn('#__events', 'ical_uid')->string()->after('calendar_id')->execute();
         }
 
-        if (!$this->db->tableHasField('#__events_calendars', 'url')) {
-            $query .= "ALTER TABLE `#__events_calendars` ADD COLUMN `url` VARCHAR(255);";
+        if (!$schema->hasColumn('#__events_calendars', 'url')) {
+            $schema->addColumn('#__events_calendars', 'url')->string()->execute();
         }
 
-        if (!$this->db->tableHasField('#__events_calendars', 'readonly')) {
-            $query .= "ALTER TABLE `#__events_calendars` ADD COLUMN `readonly` TINYINT(4) DEFAULT 0;";
+        if (!$schema->hasColumn('#__events_calendars', 'readonly')) {
+            $schema->addColumn('#__events_calendars', 'readonly')->tinyInteger()->default(0)->execute();
         }
 
-        if (!$this->db->tableHasField('#__events_calendars', 'last_fetched')) {
-            $query .= "ALTER TABLE `#__events_calendars` ADD COLUMN `last_fetched` DATETIME;";
+        if (!$schema->hasColumn('#__events_calendars', 'last_fetched')) {
+            $schema->addColumn('#__events_calendars', 'last_fetched')->datetime()->execute();
         }
 
-        if (!$this->db->tableHasField('#__events_calendars', 'last_fetched_attempt')) {
-            $query .= "ALTER TABLE `#__events_calendars` ADD COLUMN `last_fetched_attempt` DATETIME;";
+        if (!$schema->hasColumn('#__events_calendars', 'last_fetched_attempt')) {
+            $schema->addColumn('#__events_calendars', 'last_fetched_attempt')->datetime()->execute();
         }
 
-        if (!$this->db->tableHasField('#__events_calendars', 'failed_attempts')) {
-            $query .= "ALTER TABLE `#__events_calendars` ADD COLUMN `failed_attempts` INT(11) DEFAULT 0;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__events_calendars', 'failed_attempts')) {
+            $schema->addColumn('#__events_calendars', 'failed_attempts')->integer()->default(0)->execute();
         }
     }
 
@@ -58,35 +53,30 @@ class Migration20130624184902PlgGroupsCalendar extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__events', 'ical_uid')) {
-            $query .= "ALTER TABLE `#__events` DROP `ical_uid`;";
+        if ($schema->hasColumn('#__events', 'ical_uid')) {
+            $schema->dropColumn('#__events', 'ical_uid');
         }
 
-        if ($this->db->tableHasField('#__events_calendars', 'url')) {
-            $query .= "ALTER TABLE `#__events_calendars` DROP `url`;";
+        if ($schema->hasColumn('#__events_calendars', 'url')) {
+            $schema->dropColumn('#__events_calendars', 'url');
         }
 
-        if ($this->db->tableHasField('#__events_calendars', 'readonly')) {
-            $query .= "ALTER TABLE `#__events_calendars` DROP `readonly`;";
+        if ($schema->hasColumn('#__events_calendars', 'readonly')) {
+            $schema->dropColumn('#__events_calendars', 'readonly');
         }
 
-        if ($this->db->tableHasField('#__events_calendars', 'last_fetched')) {
-            $query .= "ALTER TABLE `#__events_calendars` DROP `last_fetched`;";
+        if ($schema->hasColumn('#__events_calendars', 'last_fetched')) {
+            $schema->dropColumn('#__events_calendars', 'last_fetched');
         }
 
-        if ($this->db->tableHasField('#__events_calendars', 'last_fetched_attempt')) {
-            $query .= "ALTER TABLE `#__events_calendars` DROP `last_fetched_attempt`;";
+        if ($schema->hasColumn('#__events_calendars', 'last_fetched_attempt')) {
+            $schema->dropColumn('#__events_calendars', 'last_fetched_attempt');
         }
 
-        if ($this->db->tableHasField('#__events_calendars', 'failed_attempts')) {
-            $query .= "ALTER TABLE `#__events_calendars` DROP `failed_attempts`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__events_calendars', 'failed_attempts')) {
+            $schema->dropColumn('#__events_calendars', 'failed_attempts');
         }
     }
 }

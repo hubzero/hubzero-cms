@@ -20,17 +20,23 @@ class Migration20141121144051ComCollections extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__collections_items')) {
-            $query = "SELECT `id`, `url` FROM `#__collections_items` WHERE `type`='article' AND `url` LIKE '%&'";
-            $this->db->setQuery($query);
+        $schema = $this->db->schema();
 
-            if ($articles = $this->db->loadObjectList()) {
+        if ($schema->tableExists('#__collections_items')) {
+            $query = $this->db->getQuery(true)
+                ->select(['id', 'url'])
+                ->from('#__collections_items')
+                ->where('type', '=', 'article')
+                ->where('url', 'LIKE', '%&', false); // false to prevent auto-escaping of %
+
+            if ($articles = $query->loadObjectList()) {
                 foreach ($articles as $article) {
                     $article->url = rtrim($article->url, '&');
-                    $query = "UPDATE `#__collections_items` SET `url`=" . $this->db->quote($article->url)
-                        . " WHERE `id`=" . $this->db->quote($article->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__collections_items')
+                        ->set(['url' => $this->db->quote($article->url)])
+                        ->where('id', '=', $article->id)
+                        ->execute();
                 }
             }
         }

@@ -23,111 +23,113 @@ class Migration20120101000002Core extends Base
             return false;
         }
 
-        if (
-            $mwdb->tableExists('display')
-            && $mwdb->tableHasField('display', 'hostname')
-            && !$mwdb->tableHasKey('display', 'idx_hostname')
-        ) {
-            $query = "ALTER TABLE `display` ADD INDEX `idx_hostname` (`hostname` ASC)";
-            $mwdb->setQuery($query);
-            $mwdb->query();
-        }
+        $mwSchema = $mwdb->schema();
 
         if (
-            $mwdb->tableExists('host')
-            && $mwdb->tableHasField('host', 'hostname')
-            && !$mwdb->tableHasKey('host', 'PRIMARY')
+            $mwSchema->tableExists('display')
+            && $mwSchema->hasColumn('display', 'hostname')
         ) {
-            $query = "ALTER TABLE `host` ADD PRIMARY KEY (`hostname`)";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwSchema->addIndex('display', 'idx_hostname', 'hostname');
         }
 
-        if ($mwdb->tableExists('hosttype') && $mwdb->tableHasKey('hosttype', 'PRIMARY}')) {
-            $query = "ALTER TABLE `hosttype` DROP PRIMARY KEY";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        if (
+            $mwSchema->tableExists('host')
+            && $mwSchema->hasColumn('host', 'hostname')
+            && !$mwSchema->hasPrimaryKey('host')
+        ) {
+            $mwSchema->table('host')->alter()
+                ->addPrimaryKey('hostname')
+                ->execute();
         }
 
-        if ($mwdb->tableExists('job')) {
-            if ($mwdb->tableHasField('job', 'start') && !$mwdb->tableHasKey('job', 'idx_start')) {
-                $query = "ALTER TABLE `job` ADD INDEX `idx_start` (`start` ASC)";
-                $mwdb->setQuery($query);
-                $mwdb->query();
-            }
-
-            if ($mwdb->tableHasField('job', 'heartbeat') && !$mwdb->tableHasKey('job', 'idx_heartbeat')) {
-                $query = "ALTER TABLE `job` ADD INDEX `idx_heartbeat` (`heartbeat` ASC)";
-                $mwdb->setQuery($query);
-                $mwdb->query();
-            }
+        if ($mwSchema->tableExists('hosttype') && $mwSchema->hasPrimaryKey('hosttype')) {
+            $mwSchema->dropPrimaryKey('hosttype');
         }
 
-        if ($mwdb->tableExists('joblog')) {
-            if ($mwdb->tableHasField('joblog', 'walltime')) {
-                $query = "ALTER TABLE `joblog` CHANGE COLUMN `walltime` `walltime` DOUBLE UNSIGNED NULL DEFAULT '0'";
-                $mwdb->setQuery($query);
-                $mwdb->query();
-            }
-
-            if ($mwdb->tableHasField('joblog', 'cputime')) {
-                $query = "ALTER TABLE `joblog` CHANGE COLUMN `cputime` `cputime` DOUBLE UNSIGNED NULL DEFAULT '0'";
-                $mwdb->setQuery($query);
-                $mwdb->query();
-            }
-
-            if ($mwdb->tableHasKey('joblog', 'PRIMARY')) {
-                $query = "ALTER TABLE `joblog` DROP PRIMARY KEY ";
-                $mwdb->setQuery($query);
-                $mwdb->query();
-            }
-
-            if (!$mwdb->tableHasKey('joblog', 'PRIMARY')) {
-                $query = "ALTER TABLE `joblog` ADD PRIMARY KEY (`sessnum`, `job`, `event`, `venue`)";
-                $mwdb->setQuery($query);
-                $mwdb->query();
-            }
+        if ($mwSchema->tableExists('job')) {
+            $mwSchema->addIndex('job', 'idx_start', 'start');
+            $mwSchema->addIndex('job', 'idx_heartbeat', 'heartbeat');
         }
 
-        if ($mwdb->tableExists('session') && $mwdb->tableHasField('session', 'sessname')) {
-            $query = "ALTER TABLE `session` CHANGE COLUMN `sessname` `sessname` VARCHAR(100) NOT NULL DEFAULT ''";
-            $mwdb->setQuery($query);
-            $mwdb->query();
-        }
-
-        if ($mwdb->tableExists('sessionlog')) {
-            if ($mwdb->tableHasField('sessionlog', 'sessnum')) {
-                $query = "ALTER TABLE `sessionlog` CHANGE COLUMN `sessnum` `sessnum` "
-                    . "BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT";
-                $mwdb->setQuery($query);
-                $mwdb->query();
+        if ($mwSchema->tableExists('joblog')) {
+            if ($mwSchema->hasColumn('joblog', 'walltime')) {
+                $mwSchema->modifyColumn('joblog', 'walltime')
+                    ->double()
+                    ->unsigned()
+                    ->nullable()
+                    ->default(0)
+                    ->execute();
             }
 
-            if ($mwdb->tableHasField('sessionlog', 'walltime')) {
-                $query = "ALTER TABLE `sessionlog` CHANGE COLUMN `walltime` `walltime` "
-                    . "DOUBLE UNSIGNED NULL DEFAULT '0'";
-                $mwdb->setQuery($query);
-                $mwdb->query();
+            if ($mwSchema->hasColumn('joblog', 'cputime')) {
+                $mwSchema->modifyColumn('joblog', 'cputime')
+                    ->double()
+                    ->unsigned()
+                    ->nullable()
+                    ->default(0)
+                    ->execute();
             }
 
-            if ($mwdb->tableHasField('sessionlog', 'viewtime')) {
-                $query = "ALTER TABLE `sessionlog` CHANGE COLUMN `viewtime` `viewtime` "
-                    . "DOUBLE UNSIGNED NULL DEFAULT '0'";
-                $mwdb->setQuery($query);
-                $mwdb->query();
-            }
-
-            if ($mwdb->tableHasField('sessionlog', 'cputime')) {
-                $query = "ALTER TABLE `sessionlog` CHANGE COLUMN `cputime` `cputime` DOUBLE UNSIGNED NULL DEFAULT '0'";
-                $mwdb->setQuery($query);
-                $mwdb->query();
+            if ($mwSchema->hasPrimaryKey('joblog')) {
+                $mwSchema->table('joblog')->alter()
+                    ->dropPrimaryKey()
+                    ->addPrimaryKey(['sessnum', 'job', 'event', 'venue'])
+                    ->execute();
+            } else {
+                $mwSchema->table('joblog')->alter()
+                    ->addPrimaryKey(['sessnum', 'job', 'event', 'venue'])
+                    ->execute();
             }
         }
 
-        if ($mwdb->tableExists('view') && $mwdb->tableHasField('view', 'referrer')) {
-            $query = "ALTER TABLE `view` DROP COLUMN `referrer`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        if ($mwSchema->tableExists('session') && $mwSchema->hasColumn('session', 'sessname')) {
+            $mwSchema->modifyColumn('session', 'sessname')
+                ->string(100)
+                ->notNull()
+                ->default('')
+                ->execute();
+        }
+
+        if ($mwSchema->tableExists('sessionlog')) {
+            if ($mwSchema->hasColumn('sessionlog', 'sessnum')) {
+                $mwSchema->modifyColumn('sessionlog', 'sessnum')
+                    ->bigInteger()
+                    ->unsigned()
+                    ->notNull()
+                    ->autoIncrement()
+                    ->execute();
+            }
+
+            if ($mwSchema->hasColumn('sessionlog', 'walltime')) {
+                $mwSchema->modifyColumn('sessionlog', 'walltime')
+                    ->double()
+                    ->unsigned()
+                    ->nullable()
+                    ->default(0)
+                    ->execute();
+            }
+
+            if ($mwSchema->hasColumn('sessionlog', 'viewtime')) {
+                $mwSchema->modifyColumn('sessionlog', 'viewtime')
+                    ->double()
+                    ->unsigned()
+                    ->nullable()
+                    ->default(0)
+                    ->execute();
+            }
+
+            if ($mwSchema->hasColumn('sessionlog', 'cputime')) {
+                $mwSchema->modifyColumn('sessionlog', 'cputime')
+                    ->double()
+                    ->unsigned()
+                    ->nullable()
+                    ->default(0)
+                    ->execute();
+            }
+        }
+
+        if ($mwSchema->tableExists('view') && $mwSchema->hasColumn('view', 'referrer')) {
+            $mwSchema->dropColumn('view', 'referrer');
         }
     }
 }

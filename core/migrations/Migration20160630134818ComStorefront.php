@@ -21,17 +21,19 @@ class Migration20160630134818ComStorefront extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__storefront_product_access_groups')) {
-            $query = "CREATE TABLE `#__storefront_product_access_groups` (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `pId` int(11) NOT NULL DEFAULT '0',
-			  `agId` int(11) NOT NULL DEFAULT '0',
-			  PRIMARY KEY (`id`),
-			  KEY `idx_pId` (`pId`),
-			  KEY `idx_agId` (`agId`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__storefront_product_access_groups')) {
+            $schema->createTable('#__storefront_product_access_groups')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('pId')->default(0)
+                ->integer('agId')->default(0)
+                ->primaryKey('id')
+                ->index('idx_pId', 'pId')
+                ->index('idx_agId', 'agId')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -40,10 +42,8 @@ class Migration20160630134818ComStorefront extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__storefront_product_access_groups')) {
-            $query = "DROP TABLE `#__storefront_product_access_groups`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__storefront_product_access_groups');
     }
 }

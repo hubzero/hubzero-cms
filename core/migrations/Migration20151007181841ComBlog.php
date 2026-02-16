@@ -22,31 +22,43 @@ class Migration20151007181841ComBlog extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__blog_entries') && $this->db->tableHasField('#__blog_entries', 'access')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__blog_entries') && $schema->hasColumn('#__blog_entries', 'access')) {
             // Public entries
-            $query = "UPDATE `#__blog_entries` SET `access`=1 WHERE `state`=1";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['access' => 1])
+                ->where('state', '=', 1)
+                ->execute();
 
             // Registered entries
-            $query = "UPDATE `#__blog_entries` SET `access`=2 WHERE `state`=2";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['access' => 2])
+                ->where('state', '=', 2)
+                ->execute();
 
             // Private entries
-            $query = "UPDATE `#__blog_entries` SET `access`=5 WHERE `state`=0";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['access' => 5])
+                ->where('state', '=', 0)
+                ->execute();
 
             // All entries are "published"
-            $query = "UPDATE `#__blog_entries` SET `state`=1 WHERE `state`>=0";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['state' => 1])
+                ->where('state', '>=', 0)
+                ->execute();
 
             // Change the state of trashed entries
-            $query = "UPDATE `#__blog_entries` SET `state`=2 WHERE `state`<0";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['state' => 2])
+                ->where('state', '<', 0)
+                ->execute();
         }
     }
 
@@ -55,26 +67,36 @@ class Migration20151007181841ComBlog extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__blog_entries') && $this->db->tableHasField('#__blog_entries', 'access')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__blog_entries') && $schema->hasColumn('#__blog_entries', 'access')) {
             // Public entries
-            $query = "UPDATE `#__blog_entries` SET `state`=1 WHERE `access`=1";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['state' => 1])
+                ->where('access', '=', 1)
+                ->execute();
 
             // Registered entries
-            $query = "UPDATE `#__blog_entries` SET `state`=2 WHERE `access`=2";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['state' => 2])
+                ->where('access', '=', 2)
+                ->execute();
 
             // Private entries
-            $query = "UPDATE `#__blog_entries` SET `state`=0 WHERE `access`=5";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['state' => 0])
+                ->where('access', '=', 5)
+                ->execute();
 
             // Change the state of trashed entries
-            $query = "UPDATE `#__blog_entries` SET `state`='-1' WHERE `state`=2";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['state' => -1])
+                ->where('state', '=', 2)
+                ->execute();
         }
     }
 }

@@ -21,18 +21,28 @@ class Migration20170518102512PlgAuthenticationFacebook extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions') && $this->db->tableHasField('#__extensions', 'params')) {
-            $facebookWhere = " WHERE element = 'facebook' AND type = 'plugin' AND folder = 'authentication'";
-            $query = "SELECT params FROM `#__extensions`" . $facebookWhere . ";";
-            $this->db->setQuery($query);
-            $params = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions') && $schema->hasColumn('#__extensions', 'params')) {
+            $params = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__extensions')
+                ->where('element', '=', 'facebook')
+                ->where('type', '=', 'plugin')
+                ->where('folder', '=', 'authentication')
+                ->value('params');
+
             if (!empty($params)) {
                 $params = (array) json_decode($params);
                 $params['graph_version'] = 'v2.9';
-                $updateQuery = "UPDATE `#__extensions` SET params = '"
-                    . json_encode($params) . "'" . $facebookWhere . ";";
-                $this->db->setQuery($updateQuery);
-                $this->db->query();
+
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => json_encode($params)])
+                    ->where('element', '=', 'facebook')
+                    ->where('type', '=', 'plugin')
+                    ->where('folder', '=', 'authentication')
+                    ->execute();
             }
         }
     }

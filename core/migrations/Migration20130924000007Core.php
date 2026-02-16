@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for user groups (access control list)
@@ -20,126 +21,140 @@ class Migration20130924000007Core extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__user_usergroup_map')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__user_usergroup_map` (
-						`user_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Foreign Key to #__users.id' ,
-						`group_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Foreign Key to #__usergroups.id' ,
-						PRIMARY KEY (`user_id`, `group_id`) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__user_usergroup_map')) {
+            $schema->createTable('#__user_usergroup_map')
+                ->unsignedInteger('user_id')->default(0)
+                ->unsignedInteger('group_id')->default(0)
+                ->primaryKey(['user_id', 'group_id'])
+                ->execute();
         }
-        if (!$this->db->tableExists('#__usergroups')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__usergroups` (
-						`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'Primary Key' ,
-						`parent_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Adjacency List Reference Id' ,
-						`lft` INT(11) NOT NULL DEFAULT '0' COMMENT 'Nested set lft.' ,
-						`rgt` INT(11) NOT NULL DEFAULT '0' COMMENT 'Nested set rgt.' ,
-						`title` VARCHAR(100) NOT NULL DEFAULT '' ,
-						PRIMARY KEY (`id`) ,
-						UNIQUE INDEX `idx_usergroup_parent_title_lookup` (`parent_id` ASC, `title` ASC) ,
-						INDEX `idx_usergroup_title_lookup` (`title` ASC) ,
-						INDEX `idx_usergroup_adjacency_lookup` (`parent_id` ASC) ,
-						INDEX `idx_usergroup_nested_set_lookup` USING BTREE (`lft` ASC, `rgt` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__usergroups')) {
+            $schema->createTable('#__usergroups')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('parent_id')->default(0)
+                ->integer('lft')->default(0)
+                ->integer('rgt')->default(0)
+                ->string('title', 100)->default('')
+                ->primaryKey('id')
+                ->uniqueIndex('idx_usergroup_parent_title_lookup', ['parent_id', 'title'])
+                ->index('idx_usergroup_title_lookup', 'title')
+                ->index('idx_usergroup_adjacency_lookup', 'parent_id')
+                ->index('idx_usergroup_nested_set_lookup', ['lft', 'rgt'])
+                ->execute();
 
             // Insert default data
-            $query  = "INSERT INTO `#__usergroups` (`id` ,`parent_id` ,`lft` ,`rgt` ,`title`) VALUES\n";
-            $query .= "(1, 0, 1, 20, 'Public'),";
-            $query .= "(2, 1, 6, 17, 'Registered'),";
-            $query .= "(3, 2, 7, 14, 'Author'),";
-            $query .= "(4, 3, 8, 11, 'Editor'),";
-            $query .= "(5, 4, 9, 10, 'Publisher'),";
-            $query .= "(6, 1, 2, 5, 'Manager'),";
-            $query .= "(7, 6, 3, 4, 'Administrator'),";
-            $query .= "(8, 1, 18, 19, 'Super Users');";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $usergroups = [
+                [1, 0, 1, 20, 'Public'],
+                [2, 1, 6, 17, 'Registered'],
+                [3, 2, 7, 14, 'Author'],
+                [4, 3, 8, 11, 'Editor'],
+                [5, 4, 9, 10, 'Publisher'],
+                [6, 1, 2, 5, 'Manager'],
+                [7, 6, 3, 4, 'Administrator'],
+                [8, 1, 18, 19, 'Super Users']
+            ];
+
+            foreach ($usergroups as $group) {
+                $this->db->getQuery(true)
+                    ->insert('#__usergroups')
+                    ->values([
+                        'id'        => $group[0],
+                        'parent_id' => $group[1],
+                        'lft'       => $group[2],
+                        'rgt'       => $group[3],
+                        'title'     => $group[4]
+                    ])
+                    ->execute();
+            }
         }
-        if (!$this->db->tableExists('#__viewlevels')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__viewlevels` (
-						`id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
-						`title` varchar(100) NOT NULL DEFAULT '',
-						`ordering` int(11) NOT NULL DEFAULT '0',
-						`rules` varchar(5120) NOT NULL COMMENT 'JSON encoded access control.',
-						PRIMARY KEY (`id`),
-						UNIQUE KEY `idx_assetgroup_title_lookup` (`title`)
-						)   DEFAULT CHARSET=utf8;\n";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__viewlevels')) {
+            $schema->createTable('#__viewlevels')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('title', 100)->default('')
+                ->integer('ordering')->default(0)
+                ->string('rules', 5120)
+                ->primaryKey('id')
+                ->uniqueIndex('idx_assetgroup_title_lookup', 'title')
+                ->execute();
 
             // Insert default data
-            $query  = "INSERT INTO `#__viewlevels` (`id`, `title`, `ordering`, `rules`) VALUES\n";
-            $query .= "(1, 'Public', 0, '[1]'),";
-            $query .= "(2, 'Registered', 1, '[6,2,8]'),";
-            $query .= "(3, 'Special', 2, '[6,3,8]');";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $viewlevels = [
+                [1, 'Public', 0, '[1]'],
+                [2, 'Registered', 1, '[6,2,8]'],
+                [3, 'Special', 2, '[6,3,8]']
+            ];
+
+            foreach ($viewlevels as $level) {
+                $this->db->getQuery(true)
+                    ->insert('#__viewlevels')
+                    ->values([
+                        'id'       => $level[0],
+                        'title'    => $level[1],
+                        'ordering' => $level[2],
+                        'rules'    => $level[3]
+                    ])
+                    ->execute();
+            }
 
             // Update access levels on a few Joomla things as needed
-            $query  = "UPDATE `#__categories` SET access = access + 1;";
-            $query .= "UPDATE `#__contact_details` SET access = access + 1;";
-            $query .= "UPDATE `#__content` SET access = access + 1;";
-            $query .= "UPDATE `#__menu` SET access = access + 1;";
-            $query .= "UPDATE `#__modules` SET access = access + 1;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $tables = ['#__categories', '#__contact_details', '#__content', '#__menu', '#__modules'];
+            foreach ($tables as $table) {
+                $this->db->getQuery(true)
+                    ->update($table)
+                    ->set(['access' => Expression::column('access')->plus(1)])
+                    ->execute();
+            }
 
             // Add rows to usergroup map table for existing users
-            $query  = "SELECT id AS user_id, usertype AS value FROM `#__users`;";
-            //$query  = "SELECT u.id AS user_id, g.value FROM `#__users` AS u\n";
-            //$query .= "LEFT JOIN `#__core_acl_aro` AS acl ON u.id = acl.value\n";
-            //$query .= "LEFT JOIN `#__core_acl_groups_aro_map` AS map ON acl.id = map.aro_id\n";
-            //$query .= "LEFT JOIN `#__core_acl_aro_groups` AS g ON map.group_id = g.id;\n";
-
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'usertype'])
+                ->from('#__users')
+                ->loadObjectList();
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
                     // Map old names to new
-                    switch ($r->value) {
+                    switch ($r->usertype) {
                         case 'Registered':
-                            $group_id = 2;
-                            break;
                         case 'Author':
-                            $group_id = 3;
-                            break;
                         case 'Editor':
-                            $group_id = 4;
-                            break;
                         case 'Publisher':
-                            $group_id = 5;
-                            break;
                         case 'Manager':
-                            $group_id = 6;
-                            break;
                         case 'Administrator':
-                            $group_id = 7;
-                            break;
                         case 'Super Administrator':
-                            $group_id = 8;
+                            // Mapping logic based on index
+                            $m = [
+                                'Registered'          => 2,
+                                'Author'              => 3,
+                                'Editor'              => 4,
+                                'Publisher'           => 5,
+                                'Manager'             => 6,
+                                'Administrator'       => 7,
+                                'Super Administrator' => 8
+                            ];
+                            $group_id = $m[$r->usertype];
                             break;
                         default:
                             $group_id = 2;
                             break;
                     }
-                    $query = "INSERT INTO `#__user_usergroup_map` VALUES ({$r->user_id}, {$group_id});";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__user_usergroup_map')
+                        ->values([
+                            'user_id'  => $r->id,
+                            'group_id' => $group_id
+                        ])
+                        ->execute();
                 }
             }
 
             // Update user params (specifically to remove timezone)
-            $query = "SELECT `id`, `params` FROM `#__users`;";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'params'])
+                ->from('#__users')
+                ->loadObjectList();
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
@@ -164,92 +179,57 @@ class Migration20130924000007Core extends Base
                         $array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
                     }
 
-                    $query = "UPDATE `#__users` SET `params` = " . $this->db->Quote(json_encode($array)) . " WHERE "
-                        . "`id` = {$r->id};";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__users')
+                        ->set(['params' => json_encode($array)])
+                        ->where('id', '=', $r->id)
+                        ->execute();
                 }
             }
         }
 
-        if (!$this->db->tableExists('#__user_profiles')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__user_profiles` (
-						`user_id` INT(11) NOT NULL ,
-						`profile_key` VARCHAR(100) NOT NULL ,
-						`profile_value` VARCHAR(255) NOT NULL ,
-						`ordering` INT(11) NOT NULL DEFAULT '0' ,
-						UNIQUE INDEX `idx_user_id_profile_key` (`user_id` ASC, `profile_key` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci
-						COMMENT = 'Simple user profile storage table';\n";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__user_profiles')) {
+            $schema->createTable('#__user_profiles')
+                ->integer('user_id')
+                ->string('profile_key', 100)
+                ->string('profile_value', 255)
+                ->integer('ordering')->default(0)
+                ->uniqueIndex('idx_user_id_profile_key', ['user_id', 'profile_key'])
+                ->execute();
         }
 
-        $query = "ALTER TABLE `#__users` ENGINE = MYISAM;";
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        if ($this->db->tableHasField('#__users', 'gid')) {
-            $query = "ALTER TABLE `#__users` DROP COLUMN `gid`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasField('#__users', 'lastResetTime') && $this->db->tableHasField('#__users', 'params')) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `lastResetTime` DATETIME NOT NULL DEFAULT '0000-00-00"
-                . "00:00:00' AFTER `params`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__users', 'lastResetTime') && $schema->hasColumn('#__users', 'params')) {
+            $schema->addColumn('#__users', 'lastResetTime')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
         }
         if (
-            !$this->db->tableHasField('#__users', 'resetCount')
-            && $this->db->tableHasField('#__users', 'lastResetTime')
+            !$schema->hasColumn('#__users', 'resetCount')
+            && $schema->hasColumn('#__users', 'lastResetTime')
         ) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `resetCount` INT(11) NOT NULL DEFAULT '0' AFTER "
-                . "`lastResetTime`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__users', 'resetCount')->integer()->notNull()->default(0)->execute();
         }
-        if (!$this->db->tableHasKey('#__users', 'idx_block') && $this->db->tableHasField('#__users', 'block')) {
-            $query = "ALTER TABLE `#__users` ADD INDEX `idx_block` (`block` ASC);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema->addIndex('#__users', 'idx_block', 'block');
+        $schema->dropIndex('#__users', 'gid_block');
+        if ($schema->tableExists('#__core_acl_groups_aro_map')) {
+            $schema->dropTable('#__core_acl_groups_aro_map');
         }
-        if ($this->db->tableHasKey('#__users', 'gid_block')) {
-            $query = "ALTER TABLE `#__users` DROP INDEX `gid_block`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__core_acl_aro_sections')) {
+            $schema->dropTable('#__core_acl_aro_sections');
         }
-        if ($this->db->tableExists('#__core_acl_groups_aro_map')) {
-            $query = "DROP TABLE IF EXISTS `#__core_acl_groups_aro_map` ;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__core_acl_aro_map')) {
+            $schema->dropTable('#__core_acl_aro_map');
         }
-        if ($this->db->tableExists('#__core_acl_aro_sections')) {
-            $query = "DROP TABLE IF EXISTS `#__core_acl_aro_sections` ;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__core_acl_aro_groups')) {
+            $schema->dropTable('#__core_acl_aro_groups');
         }
-        if ($this->db->tableExists('#__core_acl_aro_map')) {
-            $query = "DROP TABLE IF EXISTS `#__core_acl_aro_map` ;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__core_acl_aro')) {
+            $schema->dropTable('#__core_acl_aro');
         }
-        if ($this->db->tableExists('#__core_acl_aro_groups')) {
-            $query = "DROP TABLE IF EXISTS `#__core_acl_aro_groups` ;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableExists('#__core_acl_aro')) {
-            $query = "DROP TABLE IF EXISTS `#__core_acl_aro` ;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableExists('#__groups')) {
-            $query = "DROP TABLE IF EXISTS `#__groups` ;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__groups')) {
+            $schema->dropTable('#__groups');
         }
     }
 }

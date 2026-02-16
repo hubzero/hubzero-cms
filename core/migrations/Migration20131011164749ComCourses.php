@@ -20,14 +20,13 @@ class Migration20131011164749ComCourses extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__courses_asset_groups')
-            && $this->db->tableHasField('#__courses_asset_groups', 'description')
+            $schema->tableExists('#__courses_asset_groups')
+            && $schema->hasColumn('#__courses_asset_groups', 'description')
         ) {
-            $query = "ALTER TABLE `#__courses_asset_groups` CHANGE `description` `description` TEXT  CHARACTER SET "
-                . "utf8  NOT NULL";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__courses_asset_groups', 'description')->text()->notNull();
         }
     }
 
@@ -36,14 +35,17 @@ class Migration20131011164749ComCourses extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__courses_asset_groups')
-            && $this->db->tableHasField('#__courses_asset_groups', 'description')
+            $schema->tableExists('#__courses_asset_groups')
+            && $schema->hasColumn('#__courses_asset_groups', 'description')
         ) {
-            $query = "ALTER TABLE `#__courses_asset_groups` CHANGE `description` `description` VARCHAR(255) "
-                . "CHARACTER SET utf8  NOT NULL  DEFAULT ''";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__courses_asset_groups', 'description')
+                ->string(255)
+                ->notNull()
+                ->default('')
+                ->execute();
         }
     }
 }

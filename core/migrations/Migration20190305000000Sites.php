@@ -21,10 +21,10 @@ class Migration20190305000000Sites extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__sites')) {
-            $query = "DROP TABLE IF EXISTS `#__sites`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__sites')) {
+            $schema->dropTable('#__sites');
         }
     }
 
@@ -33,26 +33,26 @@ class Migration20190305000000Sites extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__sites')) {
-            $query = "CREATE TABLE `#__sites` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `title` varchar(100) DEFAULT NULL,
-			  `category` varchar(100) DEFAULT NULL,
-			  `url` varchar(255) DEFAULT NULL,
-			  `image` varchar(255) DEFAULT NULL,
-			  `teaser` varchar(255) DEFAULT NULL,
-			  `description` text,
-			  `notes` text,
-			  `checked_out` int(11) NOT NULL DEFAULT '0',
-			  `checked_out_time` DEFAULT NULL,
-			  `published` tinyint(1) NOT NULL DEFAULT '0',
-			  `published_date`DEFAULT NULL,
-			  `state` varchar(30) DEFAULT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__sites')) {
+            $schema->createTable('#__sites')
+                ->id()
+                ->string('title', 100)->nullable()
+                ->string('category', 100)->nullable()
+                ->string('url', 255)->nullable()
+                ->string('image', 255)->nullable()
+                ->string('teaser', 255)->nullable()
+                ->text('description')->nullable()
+                ->text('notes')->nullable()
+                ->integer('checked_out')->default(0)
+                ->datetime('checked_out_time')->nullable()
+                ->tinyInteger('published')->default(0)
+                ->datetime('published_date')->nullable()
+                ->string('state', 30)->nullable()
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

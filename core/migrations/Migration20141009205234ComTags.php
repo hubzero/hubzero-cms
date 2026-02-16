@@ -21,14 +21,10 @@ class Migration20141009205234ComTags extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__tags')) {
-            $info = $this->db->getTableColumns('#__tags', false);
-
-            if ($this->db->tableHasField('#__tags', 'tag') && $info['tag']->Null != "NO") {
-                $query = "ALTER TABLE `#__tags` CHANGE COLUMN `tag` `tag` VARCHAR(100) NOT NULL DEFAULT '' ";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-        }
+        $this->db->schema()->modifyColumn('#__tags', 'tag')
+            ->string(100)
+            ->notNull()
+            ->default('')
+            ->execute();
     }
 }

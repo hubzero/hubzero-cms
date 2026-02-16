@@ -21,16 +21,17 @@ class Migration20130723163332ComCourses extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__courses_members', 'first_visit')) {
-            $query = "ALTER TABLE `#__courses_members` ADD `first_visit` DATETIME "
-                . "NOT NULL DEFAULT '0000-00-00 00:00:00';";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__courses_members')
+            && !$schema->hasColumn('#__courses_members', 'first_visit')
+        ) {
+            $schema->addColumn('#__courses_members', 'first_visit')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
         }
     }
 
@@ -39,15 +40,10 @@ class Migration20130723163332ComCourses extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_members', 'first_visit')) {
-            $query .= "ALTER TABLE `#__courses_members` DROP `first_visit`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_members', 'first_visit')) {
+            $schema->dropColumn('#__courses_members', 'first_visit');
         }
     }
 }
