@@ -43,7 +43,7 @@ use Closure;
  *
  * protected function scopeRecent($query, $days = 30)
  * {
- *     $query->where('created', '>=', Date::of('-' . $days . ' days'));
+ *     $query->where('created', '>=', date('Y-m-d H:i:s', strtotime('-' . $days . ' days')));
  * }
  * ```
  *
@@ -662,7 +662,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * protected function scopeRecent($query, $days = 30)
      * {
-     *     $query->where('created', '>=', Date::of('-' . $days . ' days'));
+     *     $query->where('created', '>=', date('Y-m-d H:i:s', strtotime('-' . $days . ' days')));
      * }
      *
      * // Usage: Entry::published()->recent(7)->rows()
@@ -4034,8 +4034,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Example:
      * ```php
      * User::insertMany([
-     *     ['name' => 'Alice', 'email' => 'alice@example.com', 'created' => Date::now()],
-     *     ['name' => 'Bob', 'email' => 'bob@example.com', 'created' => Date::now()],
+     *     ['name' => 'Alice', 'email' => 'alice@example.com', 'created' => date('Y-m-d H:i:s')],
+     *     ['name' => 'Bob', 'email' => 'bob@example.com', 'created' => date('Y-m-d H:i:s')],
      * ]);
      * ```
      *
@@ -4789,8 +4789,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             $data = [];
 
             if (isset($columns['checked_out_time'])) {
-                $now = new Date('now');
-                $data['checked_out_time'] = $now->toSql();
+                $data['checked_out_time'] = date('Y-m-d H:i:s');
             }
 
             if (isset($columns['checked_out'])) {
@@ -7080,8 +7079,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function automaticCreated($data)
     {
         if (!isset($data['created']) || !$data['created']) {
-            $now = new Date('now');
-            $data['created'] = $now->toSql();
+            $data['created'] = date('Y-m-d H:i:s');
         }
         return $data['created'];
     }
