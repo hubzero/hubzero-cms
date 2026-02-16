@@ -1330,7 +1330,7 @@ abstract class Table extends \stdClass
         $k = $this->_tbl_key;
 
         // Sanitize input.
-        \Hubzero\Utility\Arr::toInteger($pks);
+        $pks = array_map('intval', $pks);
         $userId = (int) $userId;
         $state = (int) $state;
 
