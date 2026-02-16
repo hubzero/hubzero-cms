@@ -21,124 +21,58 @@ class Migration20170124114147ComGroups extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__xgroups_inviteemails')) {
-            if (!$this->db->tableHasKey('#__xgroups_inviteemails', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_inviteemails` ADD INDEX `idx_gidNumber` (`gidNumber`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xgroups_inviteemails')) {
+            $schema->addIndex('#__xgroups_inviteemails', 'idx_gidNumber', 'gidNumber');
         }
 
-        if ($this->db->tableExists('#__xgroups_log')) {
-            if (!$this->db->tableHasKey('#__xgroups_log', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_log` ADD INDEX `idx_gidNumber` (`gidNumber`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_log')) {
+            $schema->addIndex('#__xgroups_log', 'idx_gidNumber', 'gidNumber');
 
-            if (!$this->db->tableHasKey('#__xgroups_log', 'idx_userid')) {
-                $query = "ALTER TABLE `#__xgroups_log` ADD INDEX `idx_userid` (`userid`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__xgroups_log', 'idx_userid', 'userid');
 
-            if (!$this->db->tableHasKey('#__xgroups_log', 'idx_actorid')) {
-                $query = "ALTER TABLE `#__xgroups_log` ADD INDEX `idx_actorid` (`actorid`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__xgroups_log', 'idx_actorid', 'actorid');
         }
 
-        if ($this->db->tableExists('#__xgroups_memberoption')) {
-            if (!$this->db->tableHasKey('#__xgroups_memberoption', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_memberoption` ADD INDEX `idx_gidNumber` (`gidNumber`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_memberoption')) {
+            $schema->addIndex('#__xgroups_memberoption', 'idx_gidNumber', 'gidNumber');
 
-            if (!$this->db->tableHasKey('#__xgroups_memberoption', 'idx_userid')) {
-                $query = "ALTER TABLE `#__xgroups_memberoption` ADD INDEX `idx_userid` (`userid`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__xgroups_memberoption', 'idx_userid', 'userid');
         }
 
-        if ($this->db->tableExists('#__xgroups_modules')) {
-            if (!$this->db->tableHasKey('#__xgroups_modules', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_modules` ADD INDEX `idx_gidNumber` (`gidNumber`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_modules')) {
+            $schema->addIndex('#__xgroups_modules', 'idx_gidNumber', 'gidNumber');
 
-            if (!$this->db->tableHasKey('#__xgroups_modules', 'idx_state')) {
-                $query = "ALTER TABLE `#__xgroups_modules` ADD INDEX `idx_state` (`state`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__xgroups_modules', 'idx_state', 'state');
         }
 
-        if ($this->db->tableExists('#__xgroups_pages')) {
-            if (!$this->db->tableHasKey('#__xgroups_pages', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_pages` ADD INDEX `idx_gidNumber` (`gidNumber`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_pages')) {
+            $schema->addIndex('#__xgroups_pages', 'idx_gidNumber', 'gidNumber');
 
-            if (!$this->db->tableHasKey('#__xgroups_pages', 'idx_state')) {
-                $query = "ALTER TABLE `#__xgroups_pages` ADD INDEX `idx_state` (`state`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__xgroups_pages', 'idx_state', 'state');
         }
 
-        if ($this->db->tableExists('#__xgroups_pages_categories')) {
-            if (!$this->db->tableHasKey('#__xgroups_pages_categories', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_pages_categories` ADD INDEX `idx_gidNumber` (`gidNumber`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_pages_categories')) {
+            $schema->addIndex('#__xgroups_pages_categories', 'idx_gidNumber', 'gidNumber');
         }
 
-        if ($this->db->tableExists('#__xgroups_pages_versions')) {
-            if (!$this->db->tableHasKey('#__xgroups_pages_versions', 'idx_pageid')) {
-                $query = "ALTER TABLE `#__xgroups_pages_versions` ADD INDEX `idx_pageid` (`pageid`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_pages_versions')) {
+            $schema->addIndex('#__xgroups_pages_versions', 'idx_pageid', 'pageid');
 
-            if (!$this->db->tableHasKey('#__xgroups_pages_versions', 'idx_approved')) {
-                $query = "ALTER TABLE `#__xgroups_pages_versions` ADD INDEX `idx_approved` (`approved`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__xgroups_pages_versions', 'idx_approved', 'approved');
 
-            if (!$this->db->tableHasKey('#__xgroups_pages_versions', 'idx_scanned')) {
-                $query = "ALTER TABLE `#__xgroups_pages_versions` ADD INDEX `idx_scanned` (`scanned`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__xgroups_pages_versions', 'idx_scanned', 'scanned');
         }
 
-        if ($this->db->tableExists('#__xgroups_reasons')) {
-            if (!$this->db->tableHasKey('#__xgroups_reasons', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_reasons` ADD INDEX `idx_gidNumber` (`gidNumber`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_reasons')) {
+            $schema->addIndex('#__xgroups_reasons', 'idx_gidNumber', 'gidNumber');
 
-            if (!$this->db->tableHasKey('#__xgroups_reasons', 'idx_uidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_reasons` ADD INDEX `idx_uidNumber` (`uidNumber`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__xgroups_reasons', 'idx_uidNumber', 'uidNumber');
         }
 
-        if ($this->db->tableExists('#__xgroups_roles')) {
-            if (!$this->db->tableHasKey('#__xgroups_roles', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_roles` ADD INDEX `idx_gidNumber` (`gidNumber`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_roles')) {
+            $schema->addIndex('#__xgroups_roles', 'idx_gidNumber', 'gidNumber');
         }
     }
 
@@ -147,124 +81,58 @@ class Migration20170124114147ComGroups extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__xgroups_inviteemails')) {
-            if ($this->db->tableHasKey('#__xgroups_inviteemails', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_inviteemails` DROP KEY `idx_gidNumber`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xgroups_inviteemails')) {
+            $schema->dropIndex('#__xgroups_inviteemails', 'idx_gidNumber');
         }
 
-        if ($this->db->tableExists('#__xgroups_log')) {
-            if ($this->db->tableHasKey('#__xgroups_log', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_log` DROP KEY `idx_gidNumber`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_log')) {
+            $schema->dropIndex('#__xgroups_log', 'idx_gidNumber');
 
-            if ($this->db->tableHasKey('#__xgroups_log', 'idx_userid')) {
-                $query = "ALTER TABLE `#__xgroups_log` DROP KEY `idx_userid`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__xgroups_log', 'idx_userid');
 
-            if ($this->db->tableHasKey('#__xgroups_log', 'idx_actorid')) {
-                $query = "ALTER TABLE `#__xgroups_log` DROP KEY `idx_actorid`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__xgroups_log', 'idx_actorid');
         }
 
-        if ($this->db->tableExists('#__xgroups_memberoption')) {
-            if ($this->db->tableHasKey('#__xgroups_memberoption', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_memberoption` DROP KEY `idx_gidNumber`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_memberoption')) {
+            $schema->dropIndex('#__xgroups_memberoption', 'idx_gidNumber');
 
-            if ($this->db->tableHasKey('#__xgroups_memberoption', 'idx_userid')) {
-                $query = "ALTER TABLE `#__xgroups_memberoption` DROP KEY `idx_userid`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__xgroups_memberoption', 'idx_userid');
         }
 
-        if ($this->db->tableExists('#__xgroups_modules')) {
-            if ($this->db->tableHasKey('#__xgroups_modules', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_modules` DROP KEY `idx_gidNumber`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_modules')) {
+            $schema->dropIndex('#__xgroups_modules', 'idx_gidNumber');
 
-            if ($this->db->tableHasKey('#__xgroups_modules', 'idx_state')) {
-                $query = "ALTER TABLE `#__xgroups_modules` DROP KEY `idx_state`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__xgroups_modules', 'idx_state');
         }
 
-        if ($this->db->tableExists('#__xgroups_pages')) {
-            if ($this->db->tableHasKey('#__xgroups_pages', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_pages` DROP KEY `idx_gidNumber`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_pages')) {
+            $schema->dropIndex('#__xgroups_pages', 'idx_gidNumber');
 
-            if ($this->db->tableHasKey('#__xgroups_pages', 'idx_state')) {
-                $query = "ALTER TABLE `#__xgroups_pages` DROP KEY `idx_state`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__xgroups_pages', 'idx_state');
         }
 
-        if ($this->db->tableExists('#__xgroups_pages_categories')) {
-            if ($this->db->tableHasKey('#__xgroups_pages_categories', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_pages_categories` DROP KEY `idx_gidNumber`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_pages_categories')) {
+            $schema->dropIndex('#__xgroups_pages_categories', 'idx_gidNumber');
         }
 
-        if ($this->db->tableExists('#__xgroups_pages_versions')) {
-            if ($this->db->tableHasKey('#__xgroups_pages_versions', 'idx_pageid')) {
-                $query = "ALTER TABLE `#__xgroups_pages_versions` DROP KEY `idx_pageid`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_pages_versions')) {
+            $schema->dropIndex('#__xgroups_pages_versions', 'idx_pageid');
 
-            if ($this->db->tableHasKey('#__xgroups_pages_versions', 'idx_approved')) {
-                $query = "ALTER TABLE `#__xgroups_pages_versions` DROP KEY `idx_approved`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__xgroups_pages_versions', 'idx_approved');
 
-            if ($this->db->tableHasKey('#__xgroups_pages_versions', 'idx_scanned')) {
-                $query = "ALTER TABLE `#__xgroups_pages_versions` DROP KEY `idx_scanned`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__xgroups_pages_versions', 'idx_scanned');
         }
 
-        if ($this->db->tableExists('#__xgroups_reasons')) {
-            if ($this->db->tableHasKey('#__xgroups_reasons', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_reasons` DROP KEY `idx_gidNumber`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_reasons')) {
+            $schema->dropIndex('#__xgroups_reasons', 'idx_gidNumber');
 
-            if ($this->db->tableHasKey('#__xgroups_reasons', 'idx_uidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_reasons` DROP KEY `idx_uidNumber`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__xgroups_reasons', 'idx_uidNumber');
         }
 
-        if ($this->db->tableExists('#__xgroups_roles')) {
-            if ($this->db->tableHasKey('#__xgroups_roles', 'idx_gidNumber')) {
-                $query = "ALTER TABLE `#__xgroups_roles` DROP KEY `idx_gidNumber`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups_roles')) {
+            $schema->dropIndex('#__xgroups_roles', 'idx_gidNumber');
         }
     }
 }

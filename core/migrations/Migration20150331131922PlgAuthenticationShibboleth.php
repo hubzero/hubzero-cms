@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for Shibboleth session data that needs to survive a logout during account linking
@@ -21,11 +22,20 @@ class Migration20150331131922PlgAuthenticationShibboleth extends Base
      **/
     public function up()
     {
-        $query = 'create table if not exists #__shibboleth_sessions(id serial not null primary key,'
-            . 'session_key varchar(200) not null unique key, data text not null, created timestamp not null '
-            . 'default current_timestamp)';
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__shibboleth_sessions')) {
+            $schema->createTable('#__shibboleth_sessions')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('session_key', 200)
+                ->text('data')
+                ->timestamp('created')->defaultExpression(Expression::currentTimestamp())
+                ->primaryKey('id')
+                ->uniqueIndex('session_key', 'session_key')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
     }
 
     /**
@@ -33,7 +43,10 @@ class Migration20150331131922PlgAuthenticationShibboleth extends Base
      **/
     public function down()
     {
-        $this->db->setQuery('drop table #__shibboleth_sessions');
-        $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__shibboleth_sessions')) {
+            $schema->dropTable('#__shibboleth_sessions');
+        }
     }
 }

@@ -21,26 +21,28 @@ class Migration20250305102831Core extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__ratelimit')) {
-            $query = "CREATE TABLE `#__ratelimit` (
-  `ratelimit_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ip` varbinary(16) NOT NULL,
-  `rule_id` int(10) unsigned NOT NULL DEFAULT 0,
-  `count` bigint(20) unsigned NOT NULL DEFAULT 0,
-  `window_sz` int(10) unsigned NOT NULL DEFAULT 1,
-  `last_ts` bigint(20) unsigned NOT NULL DEFAULT 0,
-  `last_cnt` int(10) unsigned NOT NULL DEFAULT 0,
-  `current_ts` bigint(20) unsigned NOT NULL DEFAULT 0,
-  `current_cnt` int(10) unsigned NOT NULL DEFAULT 0,
-  `triggered` int(10) unsigned NOT NULL DEFAULT 0,
-  `action` varchar(255) NOT NULL DEFAULT 'log',
-  `banned` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`ratelimit_id`),
-  UNIQUE KEY `uidx_ip_rule_id` (`ip`,`rule_id`)
-) ENGINE=MEMORY DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->execute();
+        if (!$schema->tableExists('#__ratelimit')) {
+            $schema->createTable('#__ratelimit')
+                ->increments('ratelimit_id')
+                ->binary('ip', 16)
+                ->unsignedInteger('rule_id')->default(0)
+                ->unsignedBigInteger('count')->default(0)
+                ->unsignedInteger('window_sz')->default(1)
+                ->unsignedBigInteger('last_ts')->default(0)
+                ->unsignedInteger('last_cnt')->default(0)
+                ->unsignedBigInteger('current_ts')->default(0)
+                ->unsignedInteger('current_cnt')->default(0)
+                ->unsignedInteger('triggered')->default(0)
+                ->string('action', 255)->default('log')
+                ->boolean('banned')->default(0)
+                ->primaryKey('ratelimit_id')
+                ->uniqueIndex('uidx_ip_rule_id', ['ip', 'rule_id'])
+                ->engine('MEMORY')
+                ->charset('utf8mb4')
+                ->collation('utf8mb4_general_ci')
+                ->execute();
         }
     }
 
@@ -49,10 +51,10 @@ class Migration20250305102831Core extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__ratelimit')) {
-            $query = "DROP TABLE #__ratelimit;";
-            $this->db->setQuery($query);
-            $this->db->execute();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__ratelimit')) {
+            $schema->dropTable('#__ratelimit');
         }
     }
 }

@@ -14,7 +14,7 @@ use Hubzero\Content\Migration\Base;
  * Migration script for adding state, modified, modified_by
  * fields to blog comments
  *
-*/
+ */
 class Migration20140702071151ComBlog extends Base
 {
     /**
@@ -22,36 +22,41 @@ class Migration20140702071151ComBlog extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__blog_comments', 'state')) {
-            $query = "ALTER TABLE `#__blog_comments` ADD `state` TINYINT(2)  NOT NULL  DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__blog_comments` SET state=1 WHERE state=0";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__blog_comments', 'state')) {
+            $schema->addColumn('state')->tinyInteger()->notNull()->default(0);
 
-            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('blog', 'blogcomment')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
+            $this->db->getQuery(true)
+                ->update('#__blog_comments')
+                ->set(['state' => 1])
+                ->where('state', '=', 0)
+                ->execute();
+
+            $ids = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->whereIn('category', ['blog', 'blogcomment'])
+                ->loadColumn();
+
+            if ($ids) {
                 $ids = array_map('intval', $ids);
 
-                $query = "UPDATE `#__blog_comments` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__blog_comments')
+                    ->set(['state' => 3])
+                    ->whereIn('id', $ids)
+                    ->execute();
             }
         }
 
-        if (!$this->db->tableHasField('#__blog_comments', 'modified')) {
-            $query = "ALTER TABLE `#__blog_comments` ADD `modified` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__blog_comments', 'modified')) {
+            $schema->addColumn('modified')->datetime()->notNull()->default('0000-00-00 00:00:00');
         }
 
-        if (!$this->db->tableHasField('#__blog_comments', 'modified_by')) {
-            $query = "ALTER TABLE `#__blog_comments` ADD `modified_by` INT(11)  NOT NULL  DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__blog_comments', 'modified_by')) {
+            $schema->addColumn('modified_by')->integer()->notNull()->default(0);
         }
     }
 
@@ -60,22 +65,18 @@ class Migration20140702071151ComBlog extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__blog_comments', 'state')) {
-            $query = "ALTER TABLE `#__blog_comments` DROP `state`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__blog_comments', 'state')) {
+            $schema->dropColumn('#__blog_comments', 'state');
         }
 
-        if ($this->db->tableHasField('#__blog_comments', 'modified')) {
-            $query = "ALTER TABLE `#__blog_comments` DROP `modified`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__blog_comments', 'modified')) {
+            $schema->dropColumn('#__blog_comments', 'modified');
         }
 
-        if ($this->db->tableHasField('#__blog_comments', 'modified_by')) {
-            $query = "ALTER TABLE `#__blog_comments` DROP `modified_by`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__blog_comments', 'modified_by')) {
+            $schema->dropColumn('#__blog_comments', 'modified_by');
         }
     }
 }

@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding members quota interface
  *
-*/
+ */
 class Migration20131014103753ComMembers extends Base
 {
     /**
@@ -21,59 +21,65 @@ class Migration20131014103753ComMembers extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__users_quotas')) {
-            $query = "CREATE TABLE `#__users_quotas` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`user_id` int(11) NOT NULL,
-						`class_id` int(11) DEFAULT NULL,
-						`hard_files` int(11) NOT NULL,
-						`soft_files` int(11) NOT NULL,
-						`hard_blocks` int(11) NOT NULL,
-						`soft_blocks` int(11) NOT NULL,
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__users_quotas')) {
+            $schema->createTable('#__users_quotas')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('user_id')
+                ->integer('class_id')->nullable()
+                ->integer('hard_files')
+                ->integer('soft_files')
+                ->integer('hard_blocks')
+                ->integer('soft_blocks')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__users_quotas_classes')) {
-            $query = "CREATE TABLE `#__users_quotas_classes` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`alias` varchar(255) NOT NULL DEFAULT '',
-						`hard_files` int(11) NOT NULL,
-						`soft_files` int(11) NOT NULL,
-						`hard_blocks` int(11) NOT NULL,
-						`soft_blocks` int(11) NOT NULL,
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        if (!$schema->tableExists('#__users_quotas_classes')) {
+            $schema->createTable('#__users_quotas_classes')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('alias', 255)->default('')
+                ->integer('hard_files')
+                ->integer('soft_files')
+                ->integer('hard_blocks')
+                ->integer('soft_blocks')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
-            $this->db->setQuery($query);
-            $this->db->query();
-
-            $query = "INSERT INTO `#__users_quotas_classes` (`id`, `alias`, `hard_files`, `soft_files`, "
-                . "`hard_blocks`, `soft_blocks`) VALUES (1, 'default', 0, 0, 1000000, 900000);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__users_quotas_classes')
+                ->set([
+                    'id'          => 1,
+                    'alias'       => 'default',
+                    'hard_files'  => 0,
+                    'soft_files'  => 0,
+                    'hard_blocks' => 1000000,
+                    'soft_blocks' => 900000
+                ])
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__users_quotas_log')) {
-            $query = "CREATE TABLE `#__users_quotas_log` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`object_type` varchar(255) NOT NULL DEFAULT '',
-						`object_id` int(11) NOT NULL,
-						`name` varchar(255) NOT NULL DEFAULT '',
-						`action` varchar(255) NOT NULL DEFAULT '',
-						`actor_id` int(11) NOT NULL,
-						`soft_blocks` int(11) NOT NULL,
-						`hard_blocks` int(11) NOT NULL,
-						`soft_files` int(11) NOT NULL,
-						`hard_files` int(11) NOT NULL,
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__users_quotas_log')) {
+            $schema->createTable('#__users_quotas_log')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('object_type', 255)->default('')
+                ->integer('object_id')
+                ->string('name', 255)->default('')
+                ->string('action', 255)->default('')
+                ->integer('actor_id')
+                ->integer('soft_blocks')
+                ->integer('hard_blocks')
+                ->integer('soft_files')
+                ->integer('hard_files')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -82,22 +88,10 @@ class Migration20131014103753ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__users_quotas')) {
-            $query = "DROP TABLE `#__users_quotas`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__users_quotas_classes')) {
-            $query = "DROP TABLE `#__users_quotas_classes`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__users_quotas_log')) {
-            $query = "DROP TABLE `#__users_quotas_log`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__users_quotas');
+        $schema->dropTable('#__users_quotas_classes');
+        $schema->dropTable('#__users_quotas_log');
     }
 }

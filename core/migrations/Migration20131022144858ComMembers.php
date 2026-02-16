@@ -22,31 +22,38 @@ class Migration20131022144858ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__xprofiles_manager') && $this->db->tableExists('#__user_notes')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xprofiles_manager') && $schema->tableExists('#__user_notes')) {
             // Get admin user id number (probabaly 62)
-            $query = "SELECT `id` FROM `#__users` WHERE username = 'admin'";
-            $this->db->setQuery($query);
-            $admin_id = (int) $this->db->loadResult();
+            $admin_id = (int) $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__users')
+                ->where('username', '=', 'admin')
+                ->value('id');
 
             // Start by grabbing all xprofile_manager entries
-            $query = "SELECT * FROM `#__xprofiles_manager`";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            $results = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__xprofiles_manager')
+                ->loadObjectList();
 
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
-                    $query = "INSERT INTO `#__user_notes` (`user_id`, `subject`, `state`, `created_user_id`,"
-                        . "`created_time`) VALUES";
-                    $query .= "('{$r->uidNumber}', " . $this->db->quote($r->manager) . ", '1', '{$admin_id}', '"
-                        . Date::toSql() . "')";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__user_notes')
+                        ->values([
+                            'user_id'         => $r->uidNumber,
+                            'subject'         => $r->manager,
+                            'state'           => '1',
+                            'created_user_id' => $admin_id,
+                            'created_time'    => Date::toSql()
+                        ])
+                        ->execute();
                 }
             }
 
-            $query = "DROP TABLE `#__xprofiles_manager`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->schema()->dropTable('#__xprofiles_manager');
         }
     }
 }

@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for fixing some dated references to topics, rather than wiki
  *
-*/
+ */
 class Migration20131017133750ComWiki extends Base
 {
     /**
@@ -21,20 +21,24 @@ class Migration20131017133750ComWiki extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__wiki_page')
-            && $this->db->tableExists('#__wiki_version')
-            && $this->db->tableHasField('#__wiki_version', 'pageid')
-        ) {
-            $query  = "SELECT * FROM `#__wiki_page` AS wp,";
-            $query .= " `#__wiki_version` AS wv";
-            $query .= " WHERE wp.id = wv.pageid";
-            $query .= " AND wp.pagename = 'MainPage' AND (wp.group_cn='' OR wp.group_cn IS NULL)";
-            $query .= " ORDER BY wv.version DESC";
-            $query .= " LIMIT 1;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $result = $this->db->loadObject();
+        if (
+            $schema->tableExists('#__wiki_page')
+            && $schema->tableExists('#__wiki_version')
+            && $schema->hasColumn('#__wiki_version', 'pageid')
+        ) {
+            $result = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__wiki_page', 'wp')
+                ->innerJoin('#__wiki_version AS wv', 'wp.id', 'wv.pageid')
+                ->where('wp.pagename', '=', 'MainPage')
+                ->beginOrGroup()
+                    ->where('wp.group_cn', '=', '')
+                    ->orWhereIsNull('wp.group_cn')
+                ->endAndGroup()
+                ->order('wv.version', 'DESC')
+                ->first();
 
             if ($result) {
                 $pagetext = preg_replace('/(Topic)/', 'Wiki', $result->pagetext);
@@ -42,18 +46,23 @@ class Migration20131017133750ComWiki extends Base
                 $pagetext = preg_replace('/(topic)/', 'wiki', $pagetext);
                 $pagehtml = preg_replace('/(topic)/', 'wiki', $pagehtml);
 
-                $query = "UPDATE `#__wiki_version` SET `pagetext`=" . $this->db->quote($pagetext)
-                    . ", `pagehtml`=" . $this->db->quote($pagehtml)
-                    . " WHERE `pageid`=" . $result->pageid . " AND `version`=" . $result->version;
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_version')
+                    ->set([
+                        'pagetext' => $pagetext,
+                        'pagehtml' => $pagehtml
+                    ])
+                    ->where('pageid', '=', $result->pageid)
+                    ->where('version', '=', $result->version)
+                    ->execute();
 
                 $title = preg_replace('/(Topic)/', 'Wiki', $result->title);
 
-                $query = "UPDATE `#__wiki_page` SET `title`=" . $this->db->quote($title)
-                    . " WHERE `id`=" . $result->pageid;
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_page')
+                    ->set(['title' => $title])
+                    ->where('id', '=', $result->pageid)
+                    ->execute();
             }
         }
     }

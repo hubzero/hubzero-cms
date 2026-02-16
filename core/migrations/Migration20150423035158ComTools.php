@@ -26,14 +26,14 @@ class Migration20150423035158ComTools extends Base
             return false;
         }
 
+        $mwSchema = $mwdb->schema();
+
         if (
-            $mwdb->tableExists('zones')
-            && !$mwdb->tableHasField('zones', 'params')
-            && $mwdb->tableHasField('zones', 'description')
+            $mwSchema->tableExists('zones')
+            && !$mwSchema->hasColumn('zones', 'params')
+            && $mwSchema->hasColumn('zones', 'description')
         ) {
-            $query = "ALTER TABLE `zones` ADD `params` TEXT NULL AFTER `description`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwSchema->addColumn('zones', 'params')->text()->nullable();
         }
     }
 
@@ -47,10 +47,10 @@ class Migration20150423035158ComTools extends Base
             return false;
         }
 
-        if ($mwdb->tableExists('zones') && $mwdb->tableHasField('zones', 'params')) {
-            $query = "ALTER TABLE `zones` DROP `params`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        $mwSchema = $mwdb->schema();
+
+        if ($mwSchema->tableExists('zones') && $mwSchema->hasColumn('zones', 'params')) {
+            $mwSchema->dropColumn('zones', 'params');
         }
     }
 }

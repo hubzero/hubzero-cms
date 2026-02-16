@@ -21,11 +21,7 @@ class Migration20160920144401ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__support_sections')) {
-            $query = "DROP TABLE IF EXISTS `#__support_sections`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__support_sections');
     }
 
     /**
@@ -33,14 +29,16 @@ class Migration20160920144401ComSupport extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__support_sections')) {
-            $query = "CREATE TABLE `#__support_sections` (
-				  `id` int(11) NOT NULL AUTO_INCREMENT,
-				  `section` varchar(50) DEFAULT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__support_sections')) {
+            $schema->createTable('#__support_sections')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('section', 50)->nullable()
+                ->primaryKey('id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

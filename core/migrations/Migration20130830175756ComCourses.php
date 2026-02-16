@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for updating form info to correspond to code changes
@@ -21,15 +22,18 @@ class Migration20130830175756ComCourses extends Base
      **/
     public function up()
     {
-        $queries   = array();
-        $queries[] = "UPDATE `#__courses_assets` SET url = SUBSTRING(url, 30, 50) "
-            . "WHERE `type` = 'form' AND `url` LIKE '/courses/form/complete?crumb=%'";
-        $queries[] = "UPDATE `#__courses_assets` SET url = SUBSTRING(url, 22) "
-            . "WHERE `type` = 'form' AND `url` LIKE '/courses/form/layout/%'";
+        $this->db->getQuery(true)
+            ->update('#__courses_assets')
+            ->set(['url' => Expression::substring('url', 30, 50)])
+            ->where('type', '=', 'form')
+            ->where('url', 'LIKE', '/courses/form/complete?crumb=%')
+            ->execute();
 
-        foreach ($queries as $query) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $this->db->getQuery(true)
+            ->update('#__courses_assets')
+            ->set(['url' => Expression::substring('url', 22)])
+            ->where('type', '=', 'form')
+            ->where('url', 'LIKE', '/courses/form/layout/%')
+            ->execute();
     }
 }

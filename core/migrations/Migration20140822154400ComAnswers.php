@@ -20,22 +20,12 @@ class Migration20140822154400ComAnswers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__answers_questions')) {
-            if (
-                $this->db->tableHasKey('#__answers_questions', 'jos_answers_questions_question_subject_ftidx')
-            ) {
-                $query = "ALTER TABLE `#__answers_questions` "
-                    . "DROP INDEX `jos_answers_questions_question_subject_ftidx`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasKey('#__answers_questions', 'ftidx_question_subject')) {
-                $query = "ALTER TABLE `#__answers_questions` "
-                    . "ADD FULLTEXT `ftidx_question_subject` (`question`, `subject`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__answers_questions')) {
+            $schema->dropIndex('#__answers_questions', 'jos_answers_questions_question_subject_ftidx');
+
+            $schema->addFulltextIndex('#__answers_questions', 'ftidx_question_subject', ['question', 'subject']);
         }
     }
 
@@ -44,21 +34,15 @@ class Migration20140822154400ComAnswers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__answers_questions')) {
-            if ($this->db->tableHasKey('#__answers_questions', 'ftidx_question_subject')) {
-                $query = "ALTER TABLE `#__answers_questions` DROP INDEX `ftidx_question_subject`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (
-                !$this->db->tableHasKey('#__answers_questions', 'jos_answers_questions_question_subject_ftidx')
-            ) {
-                $query = "ALTER TABLE `#__answers_questions` "
-                    . "ADD FULLTEXT `jos_answers_questions_question_subject_ftidx` (`question`, `subject`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__answers_questions')) {
+            $schema->dropIndex('#__answers_questions', 'ftidx_question_subject');
+
+            $schema->addFulltextIndex('#__answers_questions', 'jos_answers_questions_question_subject_ftidx', [
+                'question',
+                'subject',
+            ]);
         }
     }
 }

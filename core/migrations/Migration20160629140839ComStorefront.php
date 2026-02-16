@@ -20,18 +20,21 @@ class Migration20160629140839ComStorefront extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__storefront_product_types')) {
-            $this->db->setQuery(
-                "SELECT ptId FROM `#__storefront_product_types` WHERE `ptModel`='software'"
-            );
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__storefront_product_types')) {
+            $id = $this->db->getQuery(true)
+                ->select('ptId')
+                ->from('#__storefront_product_types')
+                ->where('ptModel', '=', 'software')
+                ->value('ptId');
 
             if (!$id) {
-                $this->db->setQuery(
-                    "INSERT INTO `#__storefront_product_types` (`ptId`, `ptName`, `ptModel`) "
-                    . "VALUES (NULL, 'Software Download', 'software')"
-                );
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__storefront_product_types')
+                    ->columns(['ptId', 'ptName', 'ptModel'])
+                    ->values("NULL, 'Software Download', 'software'")
+                    ->execute();
             }
         }
     }
@@ -41,17 +44,20 @@ class Migration20160629140839ComStorefront extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__storefront_product_types')) {
-            $this->db->setQuery(
-                "SELECT ptId FROM `#__storefront_product_types` WHERE `ptModel`='software'"
-            );
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__storefront_product_types')) {
+            $id = $this->db->getQuery(true)
+                ->select('ptId')
+                ->from('#__storefront_product_types')
+                ->where('ptModel', '=', 'software')
+                ->value('ptId');
 
             if ($id) {
-                $this->db->setQuery(
-                    "DELETE FROM `#__storefront_product_types` WHERE `ptId`=" . $id
-                );
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__storefront_product_types')
+                    ->where('ptId', '=', $id)
+                    ->execute();
             }
         }
     }

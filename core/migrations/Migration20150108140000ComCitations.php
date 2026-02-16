@@ -21,16 +21,22 @@ class Migration20150108140000ComCitations extends Base
      **/
     public function up()
     {
-        //checks whether table exists and if the 'scope' field already exists
-        if ($this->db->tableExists('#__citations') && !$this->db->tableHasField('#__citations', 'custom1')) {
-            $query = "ALTER TABLE `#__citations`
-			ADD COLUMN `custom1` TEXT NULL DEFAULT NULL,
-			ADD COLUMN `custom2` TEXT NULL DEFAULT NULL,
-			ADD COLUMN `custom3` VARCHAR(45) NULL DEFAULT NULL,
-			ADD COLUMN `custom4` VARCHAR(45) NULL DEFAULT NULL";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        //checks whether table exists and if the 'scope' field already exists
+        if ($schema->tableExists('#__citations') && !$schema->hasColumn('#__citations', 'custom1')) {
+            $schema->addColumn('#__citations', 'custom1')->text()->nullable()->default(null)->execute();
+            $schema->addColumn('#__citations', 'custom2')->text()->nullable()->default(null)->execute();
+            $schema->addColumn('#__citations', 'custom3')
+                ->string(45)
+                ->nullable()
+                ->default(null)
+                ->execute();
+            $schema->addColumn('#__citations', 'custom4')
+                ->string(45)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
     }
 
@@ -39,16 +45,14 @@ class Migration20150108140000ComCitations extends Base
      **/
     public function down()
     {
-        // Checks to see if gid field exists and removes it
-        if ($this->db->tableExists('#__citations') && $this->db->tableHasField('#__citations', 'custom1')) {
-            $query = "ALTER TABLE `#__citations`
-			DROP COLUMN `custom1`,
-			DROP COLUMN `custom2`,
-			DROP COLUMN `custom3`,
-			DROP COLUMN `custom4`";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        // Checks to see if gid field exists and removes it
+        if ($schema->tableExists('#__citations') && $schema->hasColumn('#__citations', 'custom1')) {
+            $schema->dropColumn('#__citations', 'custom1');
+            $schema->dropColumn('#__citations', 'custom2');
+            $schema->dropColumn('#__citations', 'custom3');
+            $schema->dropColumn('#__citations', 'custom4');
         }
     }
 }

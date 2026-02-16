@@ -21,11 +21,32 @@ class Migration20140508122800PlgMembersDashboard extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__xprofiles_dashboard_preferences', 'id')) {
-            $query  = "ALTER TABLE `#__xprofiles_dashboard_preferences` "
-                . "ADD COLUMN `id` INT NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (id);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (
+            $schema->tableExists('#__xprofiles_dashboard_preferences')
+            && !$schema->hasColumn('#__xprofiles_dashboard_preferences', 'id')
+        ) {
+            // Adding auto-increment primary key to existing table requires multiple steps:
+            // Step 1: Add the column without auto_increment
+            $schema->addColumn('#__xprofiles_dashboard_preferences', 'id')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
+
+            // Step 2: Populate existing rows with unique sequential values (cross-database portable)
+            $schema->populateSequentialValues('#__xprofiles_dashboard_preferences', 'id');
+
+            // Step 3: Add primary key constraint
+            $schema->addPrimaryKey('#__xprofiles_dashboard_preferences', 'id');
+
+            // Step 4: Enable auto_increment
+            $schema->modifyColumn('#__xprofiles_dashboard_preferences', 'id')
+                ->integer()
+                ->notNull()
+                ->autoIncrement()
+                ->execute();
         }
     }
 }

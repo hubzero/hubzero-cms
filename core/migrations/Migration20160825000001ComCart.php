@@ -20,17 +20,19 @@ class Migration20160825000001ComCart extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__cart_meta')) {
-            $query = "CREATE TABLE `#__cart_meta` (
-						`mtId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`scope_id` int(11) NOT NULL DEFAULT '0',
-						`scope` varchar(100) NOT NULL DEFAULT '',
-			  			`mtKey` varchar(100) NOT NULL DEFAULT '',
-			  			`mtValue` TEXT DEFAULT '',
-			  PRIMARY KEY (`mtId`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__cart_meta')) {
+            $schema->createTable('#__cart_meta')
+                ->unsignedInteger('mtId', ['autoIncrement' => true])
+                ->integer('scope_id')->default(0)
+                ->string('scope', 100)->default('')
+                ->string('mtKey', 100)->default('')
+                ->text('mtValue')->default('')
+                ->primaryKey('mtId')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -39,8 +41,10 @@ class Migration20160825000001ComCart extends Base
      **/
     public function down()
     {
-        $query = "DROP TABLE IF EXISTS `#__cart_meta`";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__cart_meta')) {
+            $schema->dropTable('#__cart_meta');
+        }
     }
 }

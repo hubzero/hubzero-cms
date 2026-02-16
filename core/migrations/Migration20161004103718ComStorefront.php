@@ -21,13 +21,16 @@ class Migration20161004103718ComStorefront extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_product_access_groups')
-            && !$this->db->tableHasField('#__storefront_product_access_groups', 'exclude')
+            $schema->tableExists('#__storefront_product_access_groups')
+            && !$schema->hasColumn('#__storefront_product_access_groups', 'exclude')
         ) {
-            $query = "ALTER TABLE `#__storefront_product_access_groups` ADD `exclude` tinyint(2) NOT NULL DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_product_access_groups', 'exclude')
+                ->tinyInteger(2)
+                ->notNull()
+                ->default('0');
         }
     }
 
@@ -36,13 +39,13 @@ class Migration20161004103718ComStorefront extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_product_access_groups')
-            && $this->db->tableHasField('#__storefront_product_access_groups', 'exclude')
+            $schema->tableExists('#__storefront_product_access_groups')
+            && $schema->hasColumn('#__storefront_product_access_groups', 'exclude')
         ) {
-            $query = "ALTER TABLE `#__storefront_product_access_groups` DROP `exclude`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__storefront_product_access_groups', 'exclude');
         }
     }
 }

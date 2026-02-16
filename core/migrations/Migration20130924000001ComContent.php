@@ -21,175 +21,139 @@ class Migration20130924000001ComContent extends Base
      **/
     public function up()
     {
-        $query  = "";
-        $query .= "ALTER TABLE `#__content_frontpage` ENGINE = MYISAM ;\n";
-        $query .= "ALTER TABLE `#__content_rating` ENGINE = MYISAM;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
+        $schema->setTableEngine('#__content_frontpage', 'MYISAM');
+        $schema->setTableEngine('#__content_rating', 'MYISAM');
 
-        if (!$this->db->tableHasField('#__content', 'asset_id') && $this->db->tableHasField('#__content', 'id')) {
-            $query = "ALTER TABLE `#__content` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT"
-                . "'FK to the #__assets table.' AFTER `id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        // Add new columns with position (MySQL-specific)
+        if (!$schema->hasColumn('#__content', 'asset_id') && $schema->hasColumn('#__content', 'id')) {
+            $schema->addColumn('#__content', 'asset_id')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->after('id')
+                ->execute();
         }
-        if (!$this->db->tableHasField('#__content', 'featured') && $this->db->tableHasField('#__content', 'metadata')) {
-            $query = "ALTER TABLE `#__content` ADD COLUMN `featured` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT"
-                . "'Set if article is featured.' AFTER `metadata`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__content', 'featured') && $schema->hasColumn('#__content', 'metadata')) {
+            $schema->addColumn('#__content', 'featured')
+                ->tinyInteger()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->after('metadata')
+                ->execute();
         }
-        if (
-            !$this->db->tableHasKey('#__content', 'idx_featured_catid')
-            && $this->db->tableHasField('#__content', 'featured')
-            && $this->db->tableHasField('#__content', 'catid')
-        ) {
-            $query = "ALTER TABLE `#__content` ADD INDEX idx_featured_catid(`featured`, `catid`);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__content', 'featured') && $schema->hasColumn('#__content', 'catid')) {
+            $schema->addIndex('#__content', 'idx_featured_catid', ['featured', 'catid']);
         }
-        if (!$this->db->tableHasField('#__content', 'language') && $this->db->tableHasField('#__content', 'featured')) {
-            $query = "ALTER TABLE `#__content` ADD COLUMN `language` CHAR(7) NOT NULL COMMENT 'The language code"
-                . "for the article.' AFTER `featured`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__content', 'language') && $schema->hasColumn('#__content', 'featured')) {
+            $schema->addColumn('#__content', 'language')
+                ->char(7)
+                ->notNull()
+                ->after('featured')
+                ->execute();
         }
-        if (
-            !$this->db->tableHasField('#__content', 'xreference')
-            && $this->db->tableHasField('#__content', 'language')
-        ) {
-            $query = "ALTER TABLE `#__content` ADD COLUMN `xreference` VARCHAR(50) NOT NULL COMMENT 'A reference"
-                . "to enable linkages to external data sets.' AFTER `language`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasKey('#__content', 'idx_language')
-            && $this->db->tableHasField('#__content', 'language')
-        ) {
-            $query = "ALTER TABLE `#__content` ADD INDEX idx_language(`language`);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasKey('#__content', 'idx_xreference')
-            && $this->db->tableHasField('#__content', 'xreference')
-        ) {
-            $query = "ALTER TABLE `#__content` ADD INDEX idx_xreference(`xreference`);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'attribs')) {
-            $query = "ALTER TABLE `#__content` CHANGE `attribs` `attribs` VARCHAR( 5120 ) NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'id')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'alias')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `alias` `alias` VARCHAR(255) CHARACTER SET 'utf8' "
-                . "COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'title_alias')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `title_alias` `title_alias` VARCHAR(255) CHARACTER "
-                . "SET 'utf8' COLLATE 'utf8_bin' NOT NULL DEFAULT '' COMMENT 'Deprecated in Joomla! 3.0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'sectionid')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `sectionid` `sectionid` INT(10) UNSIGNED NOT NULL "
-                . "DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'mask')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `mask` `mask` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'catid')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `catid` `catid` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'created_by')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `created_by` `created_by` INT(10) UNSIGNED NOT NULL "
-                . "DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'modified_by')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `modified_by` `modified_by` INT(10) UNSIGNED NOT NULL "
-                . "DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'checked_out')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `checked_out` `checked_out` INT(10) UNSIGNED NOT NULL "
-                . "DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'version')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `version` `version` INT(10) UNSIGNED NOT NULL DEFAULT "
-                . "'1';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'parentid')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `parentid` `parentid` INT(10) UNSIGNED NOT NULL "
-                . "DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'access')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `access` `access` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content', 'hits')) {
-            $query = "ALTER TABLE `#__content` CHANGE COLUMN `hits` `hits` INT(10) UNSIGNED NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasKey('#__content', 'idx_section')) {
-            $query = "ALTER TABLE `#__content` DROP INDEX `idx_section`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content_rating', 'rating_sum')) {
-            $query = "ALTER TABLE `#__content_rating` CHANGE COLUMN `rating_sum` `rating_sum` INT(10) UNSIGNED NOT "
-                . "NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasField('#__content_rating', 'rating_count')) {
-            $query = "ALTER TABLE `#__content_rating` CHANGE COLUMN `rating_count` `rating_count` INT(10) UNSIGNED "
-                . "NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__content', 'xreference') && $schema->hasColumn('#__content', 'language')) {
+            $schema->addColumn('#__content', 'xreference')
+                ->string(50)
+                ->notNull()
+                ->after('language')
+                ->execute();
         }
 
-        // Update "uncategoriesed" cat_id from 0
-        $query = "SELECT `id` FROM `#__categories` WHERE extension = 'com_content' AND `alias` = 'uncategorised';";
-        $this->db->setQuery($query);
-        $id = $this->db->loadResult();
+        // Batch index and column modifications
+        $schema->table('#__content')->alter()
+            ->addIndex('idx_language', 'language')
+            ->addIndex('idx_xreference', 'xreference')
+            ->dropIndex('idx_section')
+            ->modifyColumn('attribs', function ($column) {
+                $column->string(5120)->notNull();
+            })
+            ->modifyColumn('alias', function ($column) {
+                $column->string(255)->notNull()->default('');
+            })
+            ->modifyColumn('title_alias', function ($column) {
+                $column->string(255)->notNull()->default('');
+            })
+            ->modifyColumn('sectionid', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->modifyColumn('mask', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->modifyColumn('catid', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->modifyColumn('created_by', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->modifyColumn('modified_by', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->modifyColumn('checked_out', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->modifyColumn('version', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(1);
+            })
+            ->modifyColumn('parentid', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->modifyColumn('access', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->modifyColumn('hits', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->execute();
+
+        // modifyColumn handles AUTO_INCREMENT appropriately for each database
+        $schema->modifyColumn('#__content', 'id')
+            ->integer()
+            ->unsigned()
+            ->notNull()
+            ->autoIncrement()
+            ->execute();
+
+        // Batch content_rating modifications
+        $schema->table('#__content_rating')->alter()
+            ->modifyColumn('rating_sum', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->modifyColumn('rating_count', function ($column) {
+                $column->integer()->unsigned()->notNull()->default(0);
+            })
+            ->execute();
+
+        // Update "uncategorised" cat_id from 0
+        // Update "uncategorised" cat_id from 0
+        $id = $this->db->getQuery(true)
+            ->select('id')
+            ->from('#__categories')
+            ->where('extension', '=', 'com_content')
+            ->where('alias', '=', 'uncategorised')
+            ->value('id');
 
         if (is_numeric($id)) {
-            $query = "UPDATE `#__content` set `catid` = '{$id}' WHERE `catid` = '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__content')
+                ->set(['catid' => $id])
+                ->where('catid', '=', 0)
+                ->execute();
         }
 
         // Convert params to json
-        $query = "SELECT `id`, `attribs` FROM `#__content` WHERE `attribs` IS NOT NULL OR `attribs` != '';";
-        $this->db->setQuery($query);
-        $results = $this->db->loadObjectList();
+        // Convert params to json
+        // Convert params to json
+        $results = $this->db->getQuery(true)
+            ->select(['id', 'attribs'])
+            ->from('#__content')
+            ->beginOrGroup()
+                ->whereIsNotNull('attribs')
+                ->orWhere('attribs', '!=', '')
+            ->endAndGroup()
+            ->loadObjectList();
 
         if (count($results) > 0) {
             foreach ($results as $r) {
@@ -211,10 +175,11 @@ class Migration20130924000001ComContent extends Base
                     $array[$ar2[0]] = (isset($ar2[1])) ? $ar2[1] : '';
                 }
 
-                $query = "UPDATE `#__content` SET `attribs` = " . $this->db->Quote(json_encode($array)) . " WHERE "
-                    . "`id` = {$r->id};";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__content')
+                    ->set(['attribs' => json_encode($array)])
+                    ->where('id', '=', $r->id)
+                    ->execute();
             }
         }
     }

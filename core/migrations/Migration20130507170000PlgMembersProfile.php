@@ -21,29 +21,25 @@ class Migration20130507170000PlgMembersProfile extends Base
      **/
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        // create event calendars table
-        if (!$this->db->tableExists('#__xprofiles_address')) {
-            $query .= "CREATE TABLE `#__xprofiles_address` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`uidNumber` int(11) DEFAULT NULL,
-						`addressTo` varchar(200) DEFAULT NULL,
-						`address1` varchar(255) DEFAULT NULL,
-						`address2` varchar(255) DEFAULT NULL,
-						`addressCity` varchar(200) DEFAULT NULL,
-						`addressRegion` varchar(200) DEFAULT NULL,
-						`addressPostal` varchar(200) DEFAULT NULL,
-						`addressCountry` varchar(200) DEFAULT NULL,
-						`addressLatitude` float DEFAULT NULL,
-						`addressLongitude` float DEFAULT NULL,
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__xprofiles_address')) {
+            $schema->createTable('#__xprofiles_address')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('uidNumber')->nullable()
+                ->string('addressTo', 200)->nullable()
+                ->string('address1', 255)->nullable()
+                ->string('address2', 255)->nullable()
+                ->string('addressCity', 200)->nullable()
+                ->string('addressRegion', 200)->nullable()
+                ->string('addressPostal', 200)->nullable()
+                ->string('addressCountry', 200)->nullable()
+                ->float('addressLatitude')->nullable()
+                ->float('addressLongitude')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

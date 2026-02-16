@@ -21,13 +21,13 @@ class Migration20150722090000ComPublications extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__publication_licenses')
-            && $this->db->tableHasField('#__publication_licenses', 'apps_only')
+            $schema->tableExists('#__publication_licenses')
+            && $schema->hasColumn('#__publication_licenses', 'apps_only')
         ) {
-            $query = "ALTER TABLE `#__publication_licenses` DROP COLUMN `apps_only`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__publication_licenses', 'apps_only');
         }
     }
 }

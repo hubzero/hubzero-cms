@@ -21,15 +21,10 @@ class Migration20140206131800ComCitations extends Base
      **/
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__citations', 'formatted')) {
-            $query .= "ALTER TABLE `#__citations` ADD COLUMN `formatted` TEXT;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__citations', 'formatted')) {
+            $schema->addColumn('#__citations', 'formatted')->text();
         }
     }
 
@@ -38,15 +33,10 @@ class Migration20140206131800ComCitations extends Base
      **/
     public function down()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__citations', 'formatted')) {
-            $query .= "ALTER TABLE `#__citations` DROP COLUMN `formatted`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__citations', 'formatted')) {
+            $schema->dropColumn('#__citations', 'formatted');
         }
     }
 }

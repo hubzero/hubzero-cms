@@ -21,19 +21,20 @@ class Migration20180419000000Core extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__auth_link_data')) {
-            $query = "CREATE TABLE `#__auth_link_data` (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `link_id` int(11) NOT NULL DEFAULT '0',
-			  `modified` datetime DEFAULT NULL,
-			  `domain_key` varchar(255) DEFAULT NULL,
-			  `domain_value` text,
-			  PRIMARY KEY (`id`),
-			  KEY `idx_link_id` (`link_id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__auth_link_data')) {
+            $schema->createTable('#__auth_link_data')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('link_id')->default(0)
+                ->datetime('modified')->nullable()
+                ->string('domain_key', 255)->nullable()
+                ->text('domain_value')->nullable()
+                ->primaryKey('id')
+                ->index('idx_link_id', 'link_id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -42,10 +43,10 @@ class Migration20180419000000Core extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__auth_link_data')) {
-            $query = "DROP TABLE IF EXISTS `#__auth_link_data`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__auth_link_data')) {
+            $schema->dropTable('#__auth_link_data');
         }
     }
 }

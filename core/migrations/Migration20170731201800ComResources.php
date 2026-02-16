@@ -21,22 +21,19 @@ class Migration20170731201800ComResources extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__resource_types')) {
-            if (!$this->db->tableHasField('#__resource_types', 'state')) {
-                $query = "ALTER TABLE `#__resource_types` ADD `state` INT(3) NOT NULL DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
 
-                $query = "UPDATE `#__resource_types` SET `state`=1";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__resource_types')) {
+            if (!$schema->hasColumn('#__resource_types', 'state')) {
+                $schema->addColumn('#__resource_types', 'state')->integer(3)->notNull()->default('0');
+
+                $this->db->getQuery(true)
+                    ->update('#__resource_types')
+                    ->set(['state' => 1])
+                    ->execute();
             }
 
-            if (!$this->db->tableHasKey('#__resource_types', 'idx_state')) {
-                $query = "ALTER TABLE `#__resource_types` ADD INDEX `idx_state` (`state`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__resource_types', 'idx_state', 'state');
         }
     }
 
@@ -45,17 +42,13 @@ class Migration20170731201800ComResources extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__resource_types')) {
-            if ($this->db->tableHasKey('#__resource_types', 'idx_state')) {
-                $query = "ALTER TABLE `#__resource_types` DROP KEY `idx_state`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasField('#__resource_types', 'state')) {
-                $query = "ALTER TABLE `#__resource_types` DROP COLUMN `state`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__resource_types')) {
+            $schema->dropIndex('#__resource_types', 'idx_state');
+
+            if ($schema->hasColumn('#__resource_types', 'state')) {
+                $schema->dropColumn('#__resource_types', 'state');
             }
         }
     }

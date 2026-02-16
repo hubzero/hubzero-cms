@@ -21,13 +21,13 @@ class Migration20251120161115PlgProjectsPublications extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__publication_versions')
-            && !$this->db->tableHasField('#__publication_versions', 'datasize')
+            $schema->tableExists('#__publication_versions')
+            && !$schema->hasColumn('#__publication_versions', 'datasize')
         ) {
-            $query = "ALTER TABLE `#__publication_versions` ADD COLUMN `datasize` BIGINT UNSIGNED";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__publication_versions', 'datasize')->bigInteger()->unsigned();
         }
     }
 
@@ -36,13 +36,13 @@ class Migration20251120161115PlgProjectsPublications extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__publication_versions')
-            && $this->db->tableHasField('#__publication_versions', 'datasize')
+            $schema->tableExists('#__publication_versions')
+            && $schema->hasColumn('#__publication_versions', 'datasize')
         ) {
-            $query = "ALTER TABLE `#__publication_versions` DROP COLUMN `datasize`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__publication_versions', 'datasize');
         }
     }
 }

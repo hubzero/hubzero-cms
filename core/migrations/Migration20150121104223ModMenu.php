@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for renaming admin menu module
  *
-*/
+ */
 class Migration20150121104223ModMenu extends Base
 {
     /**
@@ -21,11 +21,15 @@ class Migration20150121104223ModMenu extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__modules')) {
-            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_menu')
-                . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_hubmenu');
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__modules')) {
+            $this->db->getQuery(true)
+                ->update('#__modules')
+                ->set(['module' => 'mod_menu'])
+                ->where('client_id', '=', 1)
+                ->where('module', '=', 'mod_hubmenu')
+                ->execute();
         }
 
         $this->deleteModuleEntry('mod_hubmenu');

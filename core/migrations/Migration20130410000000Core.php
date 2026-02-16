@@ -18,104 +18,93 @@ class Migration20130410000000Core extends Base
 {
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
+
+
 
         // Forum section indices
-        if (!$this->db->tableHasKey('#__forum_sections', 'idx_scoped')) {
-            $query .= "ALTER TABLE `#__forum_sections` ADD INDEX `idx_scoped` (`scope`, `scope_id`);\n";
+        $schema->addIndex('#__forum_sections', 'idx_scoped', ['scope', 'scope_id']);
+        if (!$schema->hasKey('#__forum_sections', 'idx_asset_id')) {
+            $schema->addIndex('#__forum_sections', 'idx_asset_id', 'asset_id');
         }
-        if (!$this->db->tableHasKey('#__forum_sections', 'idx_asset_id')) {
-            $query .= "ALTER TABLE `#__forum_sections` ADD INDEX `idx_asset_id` (`asset_id`);\n";
+        if (!$schema->hasKey('#__forum_sections', 'idx_object_id')) {
+            $schema->addIndex('#__forum_sections', 'idx_object_id', 'object_id');
         }
-        if (!$this->db->tableHasKey('#__forum_sections', 'idx_object_id')) {
-            $query .= "ALTER TABLE `#__forum_sections` ADD INDEX `idx_object_id` (`object_id`);\n";
-        }
-        if (!$this->db->tableHasKey('#__forum_sections', 'idx_access')) {
-            $query .= "ALTER TABLE `#__forum_sections` ADD INDEX `idx_access` (`access`);\n";
+        if (!$schema->hasKey('#__forum_sections', 'idx_access')) {
+            $schema->addIndex('#__forum_sections', 'idx_access', 'access');
         }
 
         // Forum categories indices
-        if (!$this->db->tableHasKey('#__forum_categories', 'idx_scoped')) {
-            $query .= "ALTER TABLE `#__forum_categories` ADD INDEX `idx_scoped` (`scope`, `scope_id`);\n";
+        $schema->addIndex('#__forum_categories', 'idx_scoped', ['scope', 'scope_id']);
+        if (!$schema->hasKey('#__forum_categories', 'idx_asset_id')) {
+            $schema->addIndex('#__forum_categories', 'idx_asset_id', 'asset_id');
         }
-        if (!$this->db->tableHasKey('#__forum_categories', 'idx_asset_id')) {
-            $query .= "ALTER TABLE `#__forum_categories` ADD INDEX `idx_asset_id` (`asset_id`);\n";
+        if (!$schema->hasKey('#__forum_categories', 'idx_object_id')) {
+            $schema->addIndex('#__forum_categories', 'idx_object_id', 'object_id');
         }
-        if (!$this->db->tableHasKey('#__forum_categories', 'idx_object_id')) {
-            $query .= "ALTER TABLE `#__forum_categories` ADD INDEX `idx_object_id` (`object_id`);\n";
+        if (!$schema->hasKey('#__forum_categories', 'idx_state')) {
+            $schema->addIndex('#__forum_categories', 'idx_state', 'state');
         }
-        if (!$this->db->tableHasKey('#__forum_categories', 'idx_state')) {
-            $query .= "ALTER TABLE `#__forum_categories` ADD INDEX `idx_state` (`state`);\n";
+        if (!$schema->hasKey('#__forum_categories', 'idx_access')) {
+            $schema->addIndex('#__forum_categories', 'idx_access', 'access');
         }
-        if (!$this->db->tableHasKey('#__forum_categories', 'idx_access')) {
-            $query .= "ALTER TABLE `#__forum_categories` ADD INDEX `idx_access` (`access`);\n";
+        if (!$schema->hasKey('#__forum_categories', 'idx_section_id')) {
+            $schema->addIndex('#__forum_categories', 'idx_section_id', 'section_id');
         }
-        if (!$this->db->tableHasKey('#__forum_categories', 'idx_section_id')) {
-            $query .= "ALTER TABLE `#__forum_categories` ADD INDEX `idx_section_id` (`section_id`);\n";
-        }
-        if (!$this->db->tableHasKey('#__forum_categories', 'idx_closed')) {
-            $query .= "ALTER TABLE `#__forum_categories` ADD INDEX `idx_closed` (`closed`);\n";
+        if (!$schema->hasKey('#__forum_categories', 'idx_closed')) {
+            $schema->addIndex('#__forum_categories', 'idx_closed', 'closed');
         }
 
         // Forum post indices
-        if (!$this->db->tableHasKey('#__forum_posts', 'idx_scoped')) {
-            $query .= "ALTER TABLE `#__forum_posts` ADD INDEX `idx_scoped` (`scope`, `scope_id`);\n";
+        $schema->addIndex('#__forum_posts', 'idx_scoped', ['scope', 'scope_id']);
+        if (!$schema->hasKey('#__forum_posts', 'idx_category_id')) {
+            $schema->addIndex('#__forum_posts', 'idx_category_id', 'category_id');
         }
-        if (!$this->db->tableHasKey('#__forum_posts', 'idx_category_id')) {
-            $query .= "ALTER TABLE `#__forum_posts` ADD INDEX `idx_category_id` (`category_id`);\n";
+        if (!$schema->hasKey('#__forum_posts', 'idx_access')) {
+            $schema->addIndex('#__forum_posts', 'idx_access', 'access');
         }
-        if (!$this->db->tableHasKey('#__forum_posts', 'idx_access')) {
-            $query .= "ALTER TABLE `#__forum_posts` ADD INDEX `idx_access` (`access`);\n";
+        if (!$schema->hasKey('#__forum_posts', 'idx_asset_id')) {
+            $schema->addIndex('#__forum_posts', 'idx_asset_id', 'asset_id');
         }
-        if (!$this->db->tableHasKey('#__forum_posts', 'idx_asset_id')) {
-            $query .= "ALTER TABLE `#__forum_posts` ADD INDEX `idx_asset_id` (`asset_id`);\n";
+        if (!$schema->hasKey('#__forum_posts', 'idx_object_id')) {
+            $schema->addIndex('#__forum_posts', 'idx_object_id', 'object_id');
         }
-        if (!$this->db->tableHasKey('#__forum_posts', 'idx_object_id')) {
-            $query .= "ALTER TABLE `#__forum_posts` ADD INDEX `idx_object_id` (`object_id`);\n";
+        if (!$schema->hasKey('#__forum_posts', 'idx_state')) {
+            $schema->addIndex('#__forum_posts', 'idx_state', 'state');
         }
-        if (!$this->db->tableHasKey('#__forum_posts', 'idx_state')) {
-            $query .= "ALTER TABLE `#__forum_posts` ADD INDEX `idx_state` (`state`);\n";
+        if (!$schema->hasKey('#__forum_posts', 'idx_sticky')) {
+            $schema->addIndex('#__forum_posts', 'idx_sticky', 'sticky');
         }
-        if (!$this->db->tableHasKey('#__forum_posts', 'idx_sticky')) {
-            $query .= "ALTER TABLE `#__forum_posts` ADD INDEX `idx_sticky` (`sticky`);\n";
-        }
-        if (!$this->db->tableHasKey('#__forum_posts', 'idx_parent')) {
-            $query .= "ALTER TABLE `#__forum_posts` ADD INDEX `idx_parent` (`parent`);\n";
+        if (!$schema->hasKey('#__forum_posts', 'idx_parent')) {
+            $schema->addIndex('#__forum_posts', 'idx_parent', 'parent');
         }
 
         // Forum attachment indices
-        if (!$this->db->tableHasKey('#__forum_attachments', 'idx_filename_postid')) {
-            $query .= "ALTER TABLE `#__forum_attachments` ADD INDEX `idx_filename_postid` (`filename`, `post_id`);\n";
-        }
-        if (!$this->db->tableHasKey('#__forum_attachments', 'idx_parent')) {
-            $query .= "ALTER TABLE `#__forum_attachments` ADD INDEX `idx_parent` (`parent`);\n";
+        $schema->addIndex('#__forum_attachments', 'idx_filename_postid', ['filename', 'post_id']);
+        if (!$schema->hasKey('#__forum_attachments', 'idx_parent')) {
+            $schema->addIndex('#__forum_attachments', 'idx_parent', 'parent');
         }
 
         // Blog comments index
-        if (!$this->db->tableHasKey('#__blog_comments', 'idx_entry_id')) {
-            $query .= "ALTER TABLE `#__blog_comments` ADD INDEX `idx_entry_id` (`entry_id`);\n";
+        if (!$schema->hasKey('#__blog_comments', 'idx_entry_id')) {
+            $schema->addIndex('#__blog_comments', 'idx_entry_id', 'entry_id');
         }
 
         // Xmessage recipient
-        if (!$this->db->tableHasKey('#__xmessage_recipient', 'idx_mid')) {
-            $query .= "ALTER TABLE `#__xmessage_recipient` ADD INDEX `idx_mid` (`mid`);\n";
+        if (!$schema->hasKey('#__xmessage_recipient', 'idx_mid')) {
+            $schema->addIndex('#__xmessage_recipient', 'idx_mid', 'mid');
         }
-        if (!$this->db->tableHasKey('#__xmessage_recipient', 'idx_uid')) {
-            $query .= "ALTER TABLE `#__xmessage_recipient` ADD INDEX `idx_uid` (`uid`);\n";
+        if (!$schema->hasKey('#__xmessage_recipient', 'idx_uid')) {
+            $schema->addIndex('#__xmessage_recipient', 'idx_uid', 'uid');
         }
 
         // Xmessage recipient
-        if (!$this->db->tableHasKey('#__resource_types', 'idx_category')) {
-            $query .= "ALTER TABLE `#__resource_types` ADD INDEX `idx_category` (`category`);\n";
+        if (!$schema->hasKey('#__resource_types', 'idx_category')) {
+            $schema->addIndex('#__resource_types', 'idx_category', 'category');
         }
 
-        $query .= "DROP TABLE IF EXISTS `#__resource_tags`;\n
-					DROP TABLE IF EXISTS `#__support_tags`;\n
-					DROP TABLE IF EXISTS `#__answers_tags`;";
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $this->db->schema()->dropTable('#__resource_tags');
+        $this->db->schema()->dropTable('#__support_tags');
+        $this->db->schema()->dropTable('#__answers_tags');
     }
 }

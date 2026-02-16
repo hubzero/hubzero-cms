@@ -18,10 +18,10 @@ class Migration20160907102400ComCourses extends Base
 {
     public function up()
     {
-        if ($this->db->tableHasField('#__courses_form_respondents', 'attempts')) {
-            $query = "ALTER TABLE `#__courses_form_respondents` DROP `attempts`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__courses_form_respondents', 'attempts')) {
+            $schema->dropColumn('#__courses_form_respondents', 'attempts');
         }
     }
 

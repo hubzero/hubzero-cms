@@ -21,45 +21,53 @@ class Migration20170731200400ComTools extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__support_tickets')
-            && $this->db->tableHasField('#__support_tickets', 'group_id')
-            && $this->db->tableExists('#__xgroups')
-            && $this->db->tableHasField('#__xgroups', 'gidNumber')
-            && $this->db->tableHasField('#__xgroups', 'cn')
-            && $this->db->tableExists('#__tool')
-            && $this->db->tableHasField('#__tool', 'toolname')
-            && $this->db->tableHasField('#__tool', 'ticketid')
+            $schema->tableExists('#__support_tickets')
+            && $schema->hasColumn('#__support_tickets', 'group_id')
+            && $schema->tableExists('#__xgroups')
+            && $schema->hasColumn('#__xgroups', 'gidNumber')
+            && $schema->hasColumn('#__xgroups', 'cn')
+            && $schema->tableExists('#__tool')
+            && $schema->hasColumn('#__tool', 'toolname')
+            && $schema->hasColumn('#__tool', 'ticketid')
         ) {
             $prefix = 'app-';
 
-            if ($this->db->tableExists('#__extensions')) {
-                $query = "SELECT `params` FROM `#__extensions` WHERE `element`=" . $this->db->quote('com_tools');
-                $this->db->setQuery($query);
-                $params = $this->db->loadResult();
+            if ($schema->tableExists('#__extensions')) {
+                $params = $this->db->getQuery(true)
+                    ->select('params')
+                    ->from('#__extensions')
+                    ->where('element', '=', 'com_tools')
+                    ->value('params');
+
                 if ($params && substr($params, 0, 1) == '{') {
                     $params = json_decode($params);
                     $prefix = $params->group_prefix;
                 }
             }
 
-            $query = "SELECT t.toolname, t.ticketid FROM `#__tool` AS t
-				INNER JOIN `#__support_tickets` AS st ON st.id=t.ticketid
-				WHERE st.group_id=0";
-            $this->db->setQuery($query);
-            $tools = $this->db->loadObjectList();
+            $tools = $this->db->getQuery(true)
+                ->select(['t.toolname', 't.ticketid'])
+                ->from('#__tool', 't')
+                ->innerJoin('#__support_tickets AS st', 'st.id', 't.ticketid')
+                ->where('st.group_id', '=', 0)
+                ->loadObjectList();
 
             foreach ($tools as $tool) {
-                $query = "SELECT `gidNumber` FROM `#__xgroups` WHERE `cn`="
-                    . $this->db->quote($prefix . $tool->toolname);
-                $this->db->setQuery($query);
-                $gidNumber = $this->db->loadResult();
+                $gidNumber = $this->db->getQuery(true)
+                    ->select('gidNumber')
+                    ->from('#__xgroups')
+                    ->where('cn', '=', $prefix . $tool->toolname)
+                    ->value('gidNumber');
 
                 if ($gidNumber) {
-                    $query = "UPDATE `#__support_tickets` SET `group_id`="
-                        . $this->db->quote($gidNumber) . " WHERE `id`=" . $this->db->quote($tool->ticketid);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__support_tickets')
+                        ->set(['group_id' => $gidNumber])
+                        ->where('id', '=', $tool->ticketid)
+                        ->execute();
                 }
             }
         }

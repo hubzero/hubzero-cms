@@ -20,44 +20,54 @@ class Migration20150626141512Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
             $components = array();
             foreach (self::$components as $c) {
-                $components[] = $this->db->quote($c);
+                $components[] = $c;
             }
-            $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='component' AND `element` IN ("
-                . implode(',', $components) . ")";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['protected' => 1])
+                ->where('type', '=', 'component')
+                ->whereIn('element', $components)
+                ->execute();
 
             $modules = array();
             foreach (self::$modules as $c) {
-                $modules[] = $this->db->quote($c);
+                $modules[] = $c;
             }
-            $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='module' AND `element` IN ("
-                . implode(',', $modules) . ")";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['protected' => 1])
+                ->where('type', '=', 'module')
+                ->whereIn('element', $modules)
+                ->execute();
 
             $templates = array();
             foreach (self::$templates as $c) {
-                $templates[] = $this->db->quote($c);
+                $templates[] = $c;
             }
-            $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='template' AND `element` IN ("
-                . implode(',', $templates) . ")";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['protected' => 1])
+                ->where('type', '=', 'template')
+                ->whereIn('element', $templates)
+                ->execute();
 
-            $templates = array();
             foreach (self::$plugins as $folder => $plugs) {
                 $contents = array();
                 foreach ($plugs as $c) {
-                    $contents[] = $this->db->quote($c);
+                    $contents[] = $c;
                 }
-                $query = "UPDATE `#__extensions` SET `protected`=1 WHERE `type`='plugin' AND `folder`="
-                    . $this->db->quote($folder) . " AND `element` IN (" . implode(',', $contents) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['protected' => 1])
+                    ->where('type', '=', 'plugin')
+                    ->where('folder', '=', $folder)
+                    ->whereIn('element', $contents)
+                    ->execute();
             }
         }
     }

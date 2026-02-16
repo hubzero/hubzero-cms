@@ -20,61 +20,62 @@ class Migration20160603173202ComProjects extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // Create the project_descriptions table
-        if (!$this->db->tableExists('#__project_descriptions')) {
-            $createQuery = "CREATE TABLE `#__project_descriptions` (
-  			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  			`project_id` int(11) NOT NULL,
-  			`description_key` varchar(100) NOT NULL DEFAULT '',
-  			`description_value` text NOT NULL,
-  			`ordering` int(11) DEFAULT NULL,
-  			PRIMARY KEY (`id`),
-  			KEY `idx_user_id` (`project_id`)
-				) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='Simple user profile storage table';";
-            $this->db->setQuery($createQuery);
-            $this->db->query();
+        if (!$schema->tableExists('#__project_descriptions')) {
+            $schema->createTable('#__project_descriptions')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('project_id')
+                ->string('description_key', 100)->default('')
+                ->text('description_value')
+                ->integer('ordering')->nullable()
+                ->primaryKey('id')
+                ->index('idx_user_id', 'project_id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
         // Create the project_description_options table
-        if (!$this->db->tableExists('#__project_description_options')) {
-            $createQuery = "CREATE TABLE `#__project_description_options` (
-		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-		  `field_id` int(11) NOT NULL DEFAULT '0',
-		  `value` varchar(255) NOT NULL DEFAULT '',
-		  `label` varchar(255) NOT NULL DEFAULT '',
-		  `ordering` int(11) NOT NULL DEFAULT '0',
-		  `checked` tinyint(2) NOT NULL DEFAULT '0',
-		  `dependents` tinytext,
-		  PRIMARY KEY (`id`),
-		  KEY `idx_field_id` (`field_id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($createQuery);
-            $this->db->query();
+        if (!$schema->tableExists('#__project_description_options')) {
+            $schema->createTable('#__project_description_options')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('field_id')->default(0)
+                ->string('value', 255)->default('')
+                ->string('label', 255)->default('')
+                ->integer('ordering')->default(0)
+                ->tinyInteger('checked')->default(0)
+                ->tinyText('dependents')->nullable()
+                ->primaryKey('id')
+                ->index('idx_field_id', 'field_id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        // Create the project_description_options table
-        if (!$this->db->tableExists('#__project_description_fields')) {
-            $createQuery = "CREATE TABLE `#__project_description_fields` (
-  			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  			`type` varchar(255) NOT NULL,
-  			`name` varchar(255) NOT NULL DEFAULT '',
-  			`label` varchar(255) NOT NULL DEFAULT '',
-  			`placeholder` varchar(255) DEFAULT NULL,
-  			`description` mediumtext,
-  			`ordering` int(11) NOT NULL DEFAULT '0',
-  			`access` int(10) NOT NULL DEFAULT '0',
-  			`option_other` tinyint(2) NOT NULL DEFAULT '0',
-  			`option_blank` tinyint(2) NOT NULL DEFAULT '0',
-  			`action_create` tinyint(2) NOT NULL DEFAULT '1',
-  			`action_update` tinyint(2) NOT NULL DEFAULT '1',
-  			`action_edit` tinyint(2) NOT NULL DEFAULT '1',
-  			PRIMARY KEY (`id`),
-  			KEY `idx_type` (`type`),
-  			KEY `idx_access` (`access`)
-				) 			ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($createQuery);
-            $this->db->query();
+        // Create the project_description_fields table
+        if (!$schema->tableExists('#__project_description_fields')) {
+            $schema->createTable('#__project_description_fields')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('type', 255)
+                ->string('name', 255)->default('')
+                ->string('label', 255)->default('')
+                ->string('placeholder', 255)->nullable()
+                ->mediumText('description')->nullable()
+                ->integer('ordering')->default(0)
+                ->integer('access')->default(0)
+                ->tinyInteger('option_other')->default(0)
+                ->tinyInteger('option_blank')->default(0)
+                ->tinyInteger('action_create')->default(1)
+                ->tinyInteger('action_update')->default(1)
+                ->tinyInteger('action_edit')->default(1)
+                ->primaryKey('id')
+                ->index('idx_type', 'type')
+                ->index('idx_access', 'access')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -83,25 +84,10 @@ class Migration20160603173202ComProjects extends Base
      **/
     public function down()
     {
-        // Drop project descriptions table
-        if ($this->db->tableExists('#__project_descriptions')) {
-            $dropQuery = "DROP TABLE `#__project_descriptions`;";
-            $this->db->setQuery($dropQuery);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        // Drop the project_description_options table
-        if ($this->db->tableExists('#__project_description_options')) {
-            $dropQuery = "DROP TABLE `#__project_description_options`;";
-            $this->db->setQuery($dropQuery);
-            $this->db->query();
-        }
-
-        // Drop the project_description_options table
-        if ($this->db->tableExists('#__project_description_fields')) {
-            $dropQuery = "DROP TABLE `#__project_description_fields`;";
-            $this->db->setQuery($dropQuery);
-            $this->db->query();
-        }
+        $schema->dropTable('#__project_descriptions');
+        $schema->dropTable('#__project_description_options');
+        $schema->dropTable('#__project_description_fields');
     }
 }

@@ -21,16 +21,17 @@ class Migration20160522113201ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__user_profile_fields')) {
-            if (!$this->db->tableHasField('#__user_profile_fields', 'action_browse')) {
-                $query = "ALTER TABLE `#__user_profile_fields` ADD `action_browse` TINYINT(2) NOT NULL DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
 
-                $query = "UPDATE `#__user_profile_fields` SET `action_browse`=1"
-                    . " WHERE `name` IN ('organization', 'bio');";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__user_profile_fields')) {
+            if (!$schema->hasColumn('#__user_profile_fields', 'action_browse')) {
+                $schema->addColumn('#__user_profile_fields', 'action_browse')->tinyInteger(2)->notNull()->default(0);
+
+                $this->db->getQuery(true)
+                    ->update('#__user_profile_fields')
+                    ->set(['action_browse' => 1])
+                    ->whereIn('name', ['organization', 'bio'])
+                    ->execute();
             }
         }
     }
@@ -40,11 +41,11 @@ class Migration20160522113201ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__user_profile_fields')) {
-            if ($this->db->tableHasField('#__user_profile_fields', 'action_browse')) {
-                $query = "ALTER TABLE `#__user_profile_fields` DROP COLUMN `action_browse`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__user_profile_fields')) {
+            if ($schema->hasColumn('#__user_profile_fields', 'action_browse')) {
+                $schema->dropColumn('#__user_profile_fields', 'action_browse');
             }
         }
     }

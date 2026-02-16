@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding billboards component
  *
-*/
+ */
 class Migration20130930160944ComBillboards extends Base
 {
     /**
@@ -21,102 +21,148 @@ class Migration20130930160944ComBillboards extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__billboards')) {
-            $query = "CREATE TABLE `#__billboards` (
-						`id` int(11) unsigned NOT NULL auto_increment,
-						`collection_id` int(11) default NULL,
-						`name` varchar(255) default NULL,
-						`header` varchar(255) default NULL,
-						`text` text,
-						`learn_more_text` varchar(255) default NULL,
-						`learn_more_target` varchar(255) default NULL,
-						`learn_more_class` varchar(255) default NULL,
-						`learn_more_location` varchar(255) default NULL,
-						`background_img` varchar(255) default NULL,
-						`padding` varchar(255) default NULL,
-						`alias` varchar(255) default NULL,
-						`css` text,
-						`published` tinyint(1) default '0',
-						`ordering` int(11) default NULL,
-						`checked_out` int(11) default '0',
-						`checked_out_time` datetime default '0000-00-00 00:00:00',
-						PRIMARY KEY  (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__billboards')) {
+            $schema->createTable('#__billboards')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('collection_id')->nullable()
+                ->string('name', 255)->nullable()
+                ->string('header', 255)->nullable()
+                ->text('text')->nullable()
+                ->string('learn_more_text', 255)->nullable()
+                ->string('learn_more_target', 255)->nullable()
+                ->string('learn_more_class', 255)->nullable()
+                ->string('learn_more_location', 255)->nullable()
+                ->string('background_img', 255)->nullable()
+                ->string('padding', 255)->nullable()
+                ->string('alias', 255)->nullable()
+                ->text('css')->nullable()
+                ->tinyInteger('published')->default(0)
+                ->integer('ordering')->nullable()
+                ->integer('checked_out')->default(0)
+                ->datetime('checked_out_time')->default('0000-00-00 00:00:00')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
-            $query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, "
-                . "`learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, "
-                . "`background_img`, `padding`, `alias`, `css`, `published`, `ordering`, "
-                . "`checked_out`, `checked_out_time`) VALUES "
-                . "(1,'Powered by HUBzero','Powered by HUBzero',"
-                . "'HUBzero is a platform used to create dynamic web sites for scientific research "
-                . "and educational activities. With HUBzero, you can easily publish your research "
-                . "software and related educational materials on the web.',"
-                . "'Learn more &rsaquo;','http://hubzero.org/about','learnmore','relative',"
-                . "'slideone.png','15px','poweredbyhubzero','',1,1,0,'0000-00-00 00:00:00')";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__billboards')
+                ->set([
+                    'collection_id'       => 1,
+                    'name'                => 'Powered by HUBzero',
+                    'header'              => 'Powered by HUBzero',
+                    'text'                => 'HUBzero is a platform used to create dynamic web sites '
+                        . 'for scientific research and educational activities. '
+                        . 'With HUBzero, you can easily publish your research software and related educational '
+                        . 'materials on the web.',
+                    'learn_more_text'     => 'Learn more &rsaquo;',
+                    'learn_more_target'   => 'http://hubzero.org/about',
+                    'learn_more_class'    => 'learnmore',
+                    'learn_more_location' => 'relative',
+                    'background_img'      => 'slideone.png',
+                    'padding'             => '15px',
+                    'alias'               => 'poweredbyhubzero',
+                    'css'                 => '',
+                    'published'           => 1,
+                    'ordering'            => 1,
+                    'checked_out'        => 0,
+                    'checked_out_time'    => '0000-00-00 00:00:00'
+                ])
+                ->execute();
 
-            $query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, "
-                . "`learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, "
-                . "`background_img`, `padding`, `alias`, `css`, `published`, `ordering`, "
-                . "`checked_out`, `checked_out_time`) VALUES "
-                . "(1,'Interactive simulation tools','Interactive simulation tools',"
-                . "'The signature service of a hub is its ability to deliver interactive, graphical "
-                . "simulation tools through an ordinary web browser. In the world of portals and "
-                . "cyber-environments, this capability is completely unique.',"
-                . "'Learn more &rsaquo;','http://hubzero.org/tour/features/#tools','learnmore',"
-                . "'bottomright','slidetwo.png','0 0 0 225px','interactivesimulationtools','',"
-                . "1,2,0,'0000-00-00 00:00:00')";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__billboards')
+                ->set([
+                    'collection_id'       => 1,
+                    'name'                => 'Interactive simulation tools',
+                    'header'              => 'Interactive simulation tools',
+                    'text'                => 'The signature service of a hub is its ability to deliver interactive, '
+                        . 'graphical simulation tools through an ordinary web browser. '
+                        . 'In the world of portals and cyber-environments, '
+                        . 'this capability is '
+                        . 'completely unique.',
+                    'learn_more_text'     => 'Learn more &rsaquo;',
+                    'learn_more_target'   => 'http://hubzero.org/tour/features/#tools',
+                    'learn_more_class'    => 'learnmore',
+                    'learn_more_location' => 'bottomright',
+                    'background_img'      => 'slidetwo.png',
+                    'padding'             => '0 0 0 225px',
+                    'alias'               => 'interactivesimulationtools',
+                    'css'                 => '',
+                    'published'           => 1,
+                    'ordering'            => 2,
+                    'checked_out'        => 0,
+                    'checked_out_time'    => '0000-00-00 00:00:00'
+                ])
+                ->execute();
 
-            $query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, "
-                . "`learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, "
-                . "`background_img`, `padding`, `alias`, `css`, `published`, `ordering`, "
-                . "`checked_out`, `checked_out_time`) VALUES "
-                . "(1,'Electronic library of resources','Electronic library of resources',"
-                . "'Each hub is a place for users to come together and share information. "
-                . "One important way to accomplish this is by encouraging all users to upload "
-                . "their own tools, presentations, and other materials onto the hub.<br />',"
-                . "'Learn more &rsaquo;','/contribute','learnmore','relative','slidethree.png',"
-                . "'0 0 0 190px','electroniclibraryofresources',"
-                . "'#electroniclibraryofresources h3 {\r\nline-height:2em;\r\n}',1,3,0,"
-                . "'0000-00-00 00:00:00')";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__billboards')
+                ->set([
+                    'collection_id'       => 1,
+                    'name'                => 'Electronic library of resources',
+                    'header'              => 'Electronic library of resources',
+                    'text'                => 'Each hub is a place for users to come together and share information. '
+                        . 'One important way to accomplish this is by encouraging all users to upload their own tools, '
+                        . 'presentations, and other materials onto the hub.<br />',
+                    'learn_more_text'     => 'Learn more &rsaquo;',
+                    'learn_more_target'   => '/contribute',
+                    'learn_more_class'    => 'learnmore',
+                    'learn_more_location' => 'relative',
+                    'background_img'      => 'slidethree.png',
+                    'padding'             => '0 0 0 190px',
+                    'alias'               => 'electroniclibraryofresources',
+                    'css'                 => "#electroniclibraryofresources h3 {\r\nline-height:2em;\r\n}",
+                    'published'           => 1,
+                    'ordering'            => 3,
+                    'checked_out'        => 0,
+                    'checked_out_time'    => '0000-00-00 00:00:00'
+                ])
+                ->execute();
 
-            $query = "INSERT INTO `#__billboards` (`collection_id`, `name`, `header`, `text`, "
-                . "`learn_more_text`, `learn_more_target`, `learn_more_class`, `learn_more_location`, "
-                . "`background_img`, `padding`, `alias`, `css`, `published`, `ordering`, "
-                . "`checked_out`, `checked_out_time`) VALUES "
-                . "(1,'User groups for collaboration','User groups for collaboration',"
-                . "'Groups are an easy way to share content and conversation, either privately or "
-                . "with the world. Many times, a group already exist for a specific interest or "
-                . "topic. If you can\\'t find one you like, feel free to start your own.',"
-                . "'Learn more &rsaquo;','/groups','learnmore','bottomright','slidefour.png',"
-                . "'0 0 0 170px','usergroupsforcollaboration',"
-                . "'#usergroupsforcollaboration h3 {\r\nline-height:2em;\r\n}',1,4,0,"
-                . "'0000-00-00 00:00:00')";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__billboards')
+                ->set([
+                    'collection_id'       => 1,
+                    'name'                => 'User groups for collaboration',
+                    'header'              => 'User groups for collaboration',
+                    'text'                => 'Groups are an easy way to share content and conversation, '
+                        . 'either privately or with the world. '
+                        . 'Many times, a group already exist for a specific interest '
+                        . 'or topic. '
+                        . 'If you can\'t find one you like, '
+                        . 'feel free to start your own.',
+                    'learn_more_text'     => 'Learn more &rsaquo;',
+                    'learn_more_target'   => '/groups',
+                    'learn_more_class'    => 'learnmore',
+                    'learn_more_location' => 'bottomright',
+                    'background_img'      => 'slidefour.png',
+                    'padding'             => '0 0 0 170px',
+                    'alias'               => 'usergroupsforcollaboration',
+                    'css'                 => "#usergroupsforcollaboration h3 {\r\nline-height:2em;\r\n}",
+                    'published'           => 1,
+                    'ordering'            => 4,
+                    'checked_out'        => 0,
+                    'checked_out_time'    => '0000-00-00 00:00:00'
+                ])
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__billboard_collection')) {
-            $query = "CREATE TABLE `#__billboard_collection` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`name` varchar(255) DEFAULT NULL,
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        if (!$schema->tableExists('#__billboard_collection')) {
+            $schema->createTable('#__billboard_collection')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('name', 255)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
-            $this->db->setQuery($query);
-            $this->db->query();
-
-            $query = "INSERT INTO `#__billboard_collection` (`name`) VALUES ('Home Default Billboard');";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__billboard_collection')
+                ->set(['name' => 'Home Default Billboard'])
+                ->execute();
         }
 
         $this->addComponentEntry('Billboards');
@@ -127,18 +173,14 @@ class Migration20130930160944ComBillboards extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__billboards')) {
-            $query = "DROP TABLE `#__billboards`";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__billboards')) {
+            $schema->dropTable('#__billboards');
         }
 
-        if ($this->db->tableExists('#__billboard_collection')) {
-            $query = "DROP TABLE `#__billboard_collection`";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__billboard_collection')) {
+            $schema->dropTable('#__billboard_collection');
         }
 
         $this->deleteComponentEntry('Billboards');

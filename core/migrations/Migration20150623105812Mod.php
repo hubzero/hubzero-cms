@@ -21,28 +21,38 @@ class Migration20150623105812Mod extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_adminmenu')
-                . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_menu');
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_adminlogin')
-                . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_login');
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['element' => 'mod_adminmenu'])
+                ->where('client_id', '=', 1)
+                ->where('element', '=', 'mod_menu')
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['element' => 'mod_adminlogin'])
+                ->where('client_id', '=', 1)
+                ->where('element', '=', 'mod_login')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__modules')) {
-            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_adminmenu')
-                . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_menu');
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__modules')) {
+            $this->db->getQuery(true)
+                ->update('#__modules')
+                ->set(['module' => 'mod_adminmenu'])
+                ->where('client_id', '=', 1)
+                ->where('module', '=', 'mod_menu')
+                ->execute();
 
-            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_adminlogin')
-                . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_login');
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__modules')
+                ->set(['module' => 'mod_adminlogin'])
+                ->where('client_id', '=', 1)
+                ->where('module', '=', 'mod_login')
+                ->execute();
         }
 
         $this->deleteModuleEntry('mod_dashboard', 1);
@@ -53,28 +63,38 @@ class Migration20150623105812Mod extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_menu')
-                . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_adminmenu');
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__extensions` SET `element`=" . $this->db->quote('mod_login')
-                . " WHERE `client_id`=1 AND `element`=" . $this->db->quote('mod_adminlogin');
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['element' => 'mod_menu'])
+                ->where('client_id', '=', 1)
+                ->where('element', '=', 'mod_adminmenu')
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['element' => 'mod_login'])
+                ->where('client_id', '=', 1)
+                ->where('element', '=', 'mod_adminlogin')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__modules')) {
-            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_menu')
-                . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_adminmenu');
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__modules')) {
+            $this->db->getQuery(true)
+                ->update('#__modules')
+                ->set(['module' => 'mod_menu'])
+                ->where('client_id', '=', 1)
+                ->where('module', '=', 'mod_adminmenu')
+                ->execute();
 
-            $query = "UPDATE `#__modules` SET `module`=" . $this->db->quote('mod_login')
-                . " WHERE `client_id`=1 AND `module`=" . $this->db->quote('mod_adminlogin');
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__modules')
+                ->set(['module' => 'mod_login'])
+                ->where('client_id', '=', 1)
+                ->where('module', '=', 'mod_adminlogin')
+                ->execute();
         }
 
         $this->addModuleEntry('mod_dashboard', 1, '', 1);

@@ -21,12 +21,11 @@ class Migration20180924162929Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__stats_topvals')) {
-            if (!$this->db->tableHasField('#__stats_topvals', 'id')) {
-                $query = "ALTER TABLE `#__stats_topvals` ADD `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY "
-                    . "KEY FIRST";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__stats_topvals')) {
+            if (!$schema->hasColumn('#__stats_topvals', 'id')) {
+                $schema->addAutoIncrementPrimaryKey('#__stats_topvals', 'id', true, false);
             }
         }
     }
@@ -36,11 +35,11 @@ class Migration20180924162929Core extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__stats_topvals')) {
-            if ($this->db->tableHasField('#__stats_topvals', 'id')) {
-                $query = "ALTER TABLE `#__stats_topvals` DROP `id`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__stats_topvals')) {
+            if ($schema->hasColumn('#__stats_topvals', 'id')) {
+                $schema->dropColumn('#__stats_topvals', 'id');
             }
         }
     }

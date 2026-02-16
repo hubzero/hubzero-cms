@@ -21,15 +21,14 @@ class Migration20130703075132ComCourses extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_pages', 'porder')) {
-            $query = "ALTER TABLE `#__courses_pages` CHANGE `porder` `ordering` INT(11)  NOT NULL  DEFAULT '0';";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_pages', 'porder')) {
+            $schema->alterTable('#__courses_pages')->renameColumn('porder', 'ordering')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 
@@ -38,15 +37,14 @@ class Migration20130703075132ComCourses extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_pages', 'ordering')) {
-            $query .= "ALTER TABLE `#__courses_pages` CHANGE `ordering` `porder` INT(11)  NOT NULL  DEFAULT '0';";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_pages', 'ordering')) {
+            $schema->renameColumn('#__courses_pages', 'ordering', 'porder')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 }

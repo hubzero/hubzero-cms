@@ -21,24 +21,33 @@ class Migration20170124151456ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT params FROM #__extensions WHERE name = 'com_support';";
-            $this->db->setQuery($query);
-            $params = $this->db->query()->loadResult();
-            $params = json_decode($params);
-            $fileExt = explode(",", $params->file_ext);
+        $schema = $this->db->schema();
 
-            // Prevent duplicates
-            if (!in_array('mp4', $fileExt)) {
-                array_push($fileExt, 'mp4');
+        if ($schema->tableExists('#__extensions')) {
+            $params = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__extensions')
+                ->where('name', '=', 'com_support')
+                ->value('params');
+
+            if ($params) {
+                $params = json_decode($params);
+                $fileExt = explode(",", $params->file_ext);
+
+                // Prevent duplicates
+                if (!in_array('mp4', $fileExt)) {
+                    array_push($fileExt, 'mp4');
+                }
+
+                $params->file_ext = implode(",", $fileExt);
+                $params = json_encode($params);
+
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => $params])
+                    ->where('name', '=', 'com_support')
+                    ->execute();
             }
-
-            $params->file_ext = implode(",", $fileExt);
-            $params = json_encode($params);
-
-            $query2 = "UPDATE `#__extensions` SET params=" . $this->db->quote($params) . " WHERE name='com_support';";
-            $this->db->setQuery($query2);
-            $this->db->query();
         }
     }
 
@@ -47,25 +56,31 @@ class Migration20170124151456ComSupport extends Base
      **/
     public function down()
     {
-        $query = "SELECT params FROM #__extensions WHERE name = 'com_support';";
-        $this->db->setQuery($query);
+        $params = $this->db->getQuery(true)
+            ->select('params')
+            ->from('#__extensions')
+            ->where('name', '=', 'com_support')
+            ->value('params');
 
-        $params = $this->db->query()->loadResult();
-        $params = json_decode($params);
+        if ($params) {
+            $params = json_decode($params);
 
-        $fileExt = explode(",", $params->file_ext);
-        $index = array_search('mp4', $fileExt);
+            $fileExt = explode(",", $params->file_ext);
+            $index = array_search('mp4', $fileExt);
 
-        // Prevents invalid array access
-        if ($index !== false) {
-            unset($fileExt[$index]);
+            // Prevents invalid array access
+            if ($index !== false) {
+                unset($fileExt[$index]);
+            }
+
+            $params->file_ext = implode(",", $fileExt);
+            $params = json_encode($params);
+
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['params' => $params])
+                ->where('name', '=', 'com_support')
+                ->execute();
         }
-
-        $params->file_ext = implode(",", $fileExt);
-        $params = json_encode($params);
-
-        $query2 = "UPDATE `#__extensions` SET params=" . $this->db->quote($params) . " WHERE name='com_support';";
-        $this->db->setQuery($query2);
-        $this->db->query();
     }
 }

@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script to add tables to associate sessions allowed with user groups
  *
-*/
+ */
 class Migration20150326183839ComTools extends Base
 {
     /**
@@ -21,57 +21,68 @@ class Migration20150326183839ComTools extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__tool_session_classes')) {
-            $query = "CREATE TABLE `#__tool_session_classes` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `alias` varchar(255) NOT NULL DEFAULT '',
-				  `jobs` int(11) NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  UNIQUE KEY `uidx_alias` (`alias`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $this->db->setQuery("INSERT INTO `#__tool_session_classes` (`alias`, `jobs`) VALUES ('default', 3)");
-            $this->db->query();
+        if (!$schema->tableExists('#__tool_session_classes')) {
+            $schema->createTable('#__tool_session_classes')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('alias', 255)->default('')
+                ->integer('jobs')->default(0)
+                ->primaryKey('id')
+                ->uniqueIndex('uidx_alias', 'alias')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->insert('#__tool_session_classes')
+                ->set([
+                    'alias' => 'default',
+                    'jobs'  => 3
+                ])
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__tool_session_class_groups')) {
-            $query = "CREATE TABLE `#__tool_session_class_groups` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `class_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `group_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_class_id` (`class_id`),
-				  KEY `idx_group_id` (`group_id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__tool_session_class_groups')) {
+            $schema->createTable('#__tool_session_class_groups')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('class_id')->default(0)
+                ->unsignedInteger('group_id')->default(0)
+                ->primaryKey('id')
+                ->index('idx_class_id', 'class_id')
+                ->index('idx_group_id', 'group_id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__users_tool_preferences')) {
-            if (!$this->db->tableHasField('#__users_tool_preferences', 'class_id')) {
-                $query = "ALTER TABLE `#__users_tool_preferences` ADD COLUMN `class_id` int(11) NOT NULL DEFAULT 0";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__users_tool_preferences')) {
+            if (!$schema->hasColumn('#__users_tool_preferences', 'class_id')) {
+                $schema->addColumn('#__users_tool_preferences', 'class_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
 
-                $query = "ALTER TABLE `#__users_tool_preferences` ADD INDEX `idx_class_id` (`class_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addIndex('#__users_tool_preferences', 'idx_class_id', 'class_id');
             }
 
-            if (!$this->db->tableHasField('#__users_tool_preferences', 'jobs')) {
-                $query = "ALTER TABLE `#__users_tool_preferences` ADD COLUMN `jobs` int(11) NOT NULL DEFAULT 0";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__users_tool_preferences', 'jobs')) {
+                $schema->addColumn('#__users_tool_preferences', 'jobs')->integer()->notNull()->default(0)->execute();
             }
+        }
 
-            if ($this->db->tableHasField('#__xprofiles', 'jobsAllowed')) {
+        if ($schema->tableExists('#__users_tool_preferences')) {
+            if ($schema->hasColumn('#__xprofiles', 'jobsAllowed')) {
                 // Create a preferences entry for anyone who has a non-default value for jobs allowed
-                $query = "SELECT `uidNumber`, `jobsAllowed` FROM `#__xprofiles` "
-                    . "WHERE `jobsAllowed`!=3 AND `uidNumber` > 0";
-                $this->db->setQuery($query);
-                if ($rows = $this->db->loadObjectList()) {
+                $rows = $this->db->getQuery(true)
+                    ->select(['uidNumber', 'jobsAllowed'])
+                    ->from('#__xprofiles')
+                    ->where('jobsAllowed', '!=', 3)
+                    ->where('uidNumber', '>', 0)
+                    ->loadObjectList();
+
+                if ($rows) {
                     $path = PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables'
                         . DS . 'preferences.php';
                     include_once $path;
@@ -86,9 +97,7 @@ class Migration20150326183839ComTools extends Base
                     }
                 }
 
-                $query = "ALTER TABLE `#__xprofiles` DROP COLUMN `jobsAllowed`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->dropColumn('#__xprofiles', 'jobsAllowed');
             }
         }
     }
@@ -98,53 +107,45 @@ class Migration20150326183839ComTools extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__tool_session_classes')) {
-            $query = "DROP TABLE `#__tool_session_classes`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__tool_session_class_groups')) {
-            $query = "DROP TABLE `#__tool_session_class_groups`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__tool_session_classes');
+        $schema->dropTable('#__tool_session_class_groups');
 
-        if ($this->db->tableExists('#__users_tool_preferences')) {
-            if (!$this->db->tableHasField('#__xprofiles', 'jobsAllowed')) {
-                $query = "ALTER TABLE `#__xprofiles` ADD COLUMN `jobsAllowed` int(11) NOT NULL DEFAULT 0";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__users_tool_preferences')) {
+            if (!$schema->hasColumn('#__xprofiles', 'jobsAllowed')) {
+                $schema->addColumn('#__xprofiles', 'jobsAllowed')->integer()->notNull()->default(0)->execute();
             }
 
             // Create a preferences entry for anyone who has a non-default value for jobs allowed
-            $query = "SELECT * FROM `#__users_tool_preferences` WHERE `jobs`!=3";
-            $this->db->setQuery($query);
+            $rows = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__users_tool_preferences')
+                ->where('jobs', '!=', 3)
+                ->loadObjectList();
 
-            if ($rows = $this->db->loadObjectList()) {
+            if ($rows) {
                 foreach ($rows as $row) {
-                    $query = "UPDATE `#__xprofiles` SET `jobsAllowed`="
-                        . $this->db->quote($row->jobs)
-                        . " WHERE `uidNumber`=" . $this->db->quote($row->user_id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__xprofiles')
+                        ->set(['jobsAllowed' => $row->jobs])
+                        ->where('uidNumber', '=', $row->user_id)
+                        ->execute();
                 }
             }
 
-            $query = "UPDATE `#__xprofiles` SET `jobsAllowed`=3 WHERE `jobsAllowed`=0";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__xprofiles')
+                ->set(['jobsAllowed' => 3])
+                ->where('jobsAllowed', '=', 0)
+                ->execute();
 
-            if ($this->db->tableHasField('#__users_tool_preferences', 'class_id')) {
-                $query = "ALTER TABLE `#__users_tool_preferences` DROP COLUMN `class_id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__users_tool_preferences', 'class_id')) {
+                $schema->dropColumn('#__users_tool_preferences', 'class_id');
             }
 
-            if ($this->db->tableHasField('#__users_tool_preferences', 'jobs')) {
-                $query = "ALTER TABLE `#__users_tool_preferences` DROP COLUMN `jobs`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__users_tool_preferences', 'jobs')) {
+                $schema->dropColumn('#__users_tool_preferences', 'jobs');
             }
         }
     }

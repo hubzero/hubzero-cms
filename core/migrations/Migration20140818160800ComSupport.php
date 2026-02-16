@@ -20,41 +20,43 @@ class Migration20140818160800ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__abuse_reports')) {
-            $query = "ALTER TABLE `#__abuse_reports`
-					CHANGE `id` `id` INT(11)  UNSIGNED  NOT NULL  AUTO_INCREMENT,
-					CHANGE `created_by` `created_by` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
-					CHANGE `reviewed_by` `reviewed_by` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
-					CHANGE `referenceid` `referenceid` INT(11)  UNSIGNED  NOT NULL  DEFAULT '0',
-					CHANGE `state` `state` TINYINT(2)  NOT NULL  DEFAULT '0'
-			;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasKey('#__abuse_reports', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__abuse_reports` ADD INDEX `idx_created_by` (`created_by`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__abuse_reports')) {
+            // Standardize column types
+            $schema->modifyColumn('#__abuse_reports', 'id')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->autoIncrement()
+                ->execute();
+            $schema->modifyColumn('#__abuse_reports', 'created_by')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->execute();
+            $schema->modifyColumn('#__abuse_reports', 'reviewed_by')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->execute();
+            $schema->modifyColumn('#__abuse_reports', 'referenceid')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->execute();
+            $schema->modifyColumn('#__abuse_reports', 'state')->tinyInteger()->notNull()->default(0)->execute();
 
-            if (!$this->db->tableHasKey('#__abuse_reports', 'idx_reviewed_by')) {
-                $query = "ALTER TABLE `#__abuse_reports` ADD INDEX `idx_reviewed_by` (`reviewed_by`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__abuse_reports', 'idx_created_by', 'created_by');
 
-            if (!$this->db->tableHasKey('#__abuse_reports', 'idx_state')) {
-                $query = "ALTER TABLE `#__abuse_reports` ADD INDEX `idx_state` (`state`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__abuse_reports', 'idx_reviewed_by', 'reviewed_by');
 
-            if (!$this->db->tableHasKey('#__abuse_reports', 'idx_category_referenceid')) {
-                $query = "ALTER TABLE `#__abuse_reports` "
-                    . "ADD INDEX `idx_category_referenceid` (`category`, `referenceid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__abuse_reports', 'idx_state', 'state');
+
+            $schema->addIndex('#__abuse_reports', 'idx_category_referenceid', ['category', 'referenceid']);
         }
     }
 
@@ -63,30 +65,16 @@ class Migration20140818160800ComSupport extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__abuse_reports')) {
-            if ($this->db->tableHasKey('#__abuse_reports', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__abuse_reports` DROP INDEX `idx_created_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__abuse_reports', 'idx_reviewed_by')) {
-                $query = "ALTER TABLE `#__abuse_reports` DROP INDEX `idx_reviewed_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__abuse_reports')) {
+            $schema->dropIndex('#__abuse_reports', 'idx_created_by');
 
-            if ($this->db->tableHasKey('#__abuse_reports', 'idx_state')) {
-                $query = "ALTER TABLE `#__abuse_reports` DROP INDEX `idx_state`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__abuse_reports', 'idx_reviewed_by');
 
-            if ($this->db->tableHasKey('#__abuse_reports', 'idx_reference')) {
-                $query = "ALTER TABLE `#__abuse_reports` DROP INDEX `idx_reference`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__abuse_reports', 'idx_state');
+
+            $schema->dropIndex('#__abuse_reports', 'idx_reference');
         }
     }
 }

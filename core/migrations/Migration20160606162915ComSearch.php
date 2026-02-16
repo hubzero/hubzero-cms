@@ -23,18 +23,21 @@ class Migration20160606162915ComSearch extends Base
     {
         $parameter = Component::params('com_search')->get('engine');
         if ($parameter == 'hubgraph') {
-            $query = "SELECT extension_id, params FROM #__extensions WHERE name = 'com_search';";
-            $this->db->setQuery($query);
-            $result = $this->db->loadAssoc();
+            $result = $this->db->getQuery(true)
+                ->select('extension_id, params')
+                ->from('#__extensions')
+                ->where('name', '=', 'com_search')
+                ->loadAssoc();
             if (isset($result)) {
                 $parameters = json_decode($result['params']);
                 $parameters->engine = 'basic';
                 $parameters = json_encode($parameters);
 
-                $query = "UPDATE #__extensions SET params=" . $this->db->quote($parameters) . " WHERE "
-                    . "extension_id=" . $result['extension_id'] . ";";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => $parameters])
+                    ->where('extension_id', '=', (int)$result['extension_id'])
+                    ->execute();
             }
         }
     }

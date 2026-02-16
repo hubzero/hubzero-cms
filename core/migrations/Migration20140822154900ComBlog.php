@@ -21,20 +21,12 @@ class Migration20140822154900ComBlog extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__blog_entries')) {
-            if ($this->db->tableHasKey('#__blog_entries', 'jos_blog_entries_title_content_ftidx')) {
-                $query = "ALTER TABLE `#__blog_entries` "
-                    . "DROP INDEX `jos_blog_entries_title_content_ftidx`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasKey('#__blog_entries', 'ftidx_title_content')) {
-                $query = "ALTER TABLE `#__blog_entries` "
-                    . "ADD FULLTEXT `ftidx_title_content` (`title`, `content`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__blog_entries')) {
+            $schema->dropIndex('#__blog_entries', 'jos_blog_entries_title_content_ftidx');
+
+            $schema->addFulltextIndex('#__blog_entries', 'ftidx_title_content', ['title', 'content']);
         }
     }
 
@@ -43,19 +35,12 @@ class Migration20140822154900ComBlog extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__blog_entries')) {
-            if ($this->db->tableHasKey('#__blog_entries', 'ftidx_title_content')) {
-                $query = "ALTER TABLE `#__blog_entries` DROP INDEX `ftidx_title_content`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasKey('#__blog_entries', 'jos_blog_entries_title_content_ftidx')) {
-                $query = "ALTER TABLE `#__blog_entries` "
-                    . "ADD FULLTEXT `jos_blog_entries_title_content_ftidx` (`title`, `content`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__blog_entries')) {
+            $schema->dropIndex('#__blog_entries', 'ftidx_title_content');
+
+            $schema->addFulltextIndex('#__blog_entries', 'jos_blog_entries_title_content_ftidx', ['title', 'content']);
         }
     }
 }

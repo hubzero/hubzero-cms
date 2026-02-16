@@ -17,7 +17,7 @@ use Hubzero\Content\Migration\Base;
  * not take into account records where access was set to "1"
  * by Joomla.
  *
-*/
+ */
 class Migration20150106211443ComCollections extends Base
 {
     /**
@@ -25,11 +25,16 @@ class Migration20150106211443ComCollections extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__collections')) {
-            $query = "UPDATE `#__collections` SET access=4 "
-                . "WHERE is_default=1 AND access=1 AND created < '2014-06-30 00:00:00'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__collections')) {
+            $this->db->getQuery(true)
+                ->update('#__collections')
+                ->set(['access' => 4])
+                ->where('is_default', '=', 1)
+                ->where('access', '=', 1)
+                ->where('created', '<', '2014-06-30 00:00:00')
+                ->execute();
         }
     }
 
@@ -38,11 +43,16 @@ class Migration20150106211443ComCollections extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__collections')) {
-            $query = "UPDATE `#__collections` SET access=0 "
-                . "WHERE is_default=1 AND access=4 AND created < '2014-06-30 00:00:00'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__collections')) {
+            $this->db->getQuery(true)
+                ->update('#__collections')
+                ->set(['access' => 0])
+                ->where('is_default', '=', 1)
+                ->where('access', '=', 4)
+                ->where('created', '<', '2014-06-30 00:00:00')
+                ->execute();
         }
     }
 }

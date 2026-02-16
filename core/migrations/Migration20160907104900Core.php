@@ -18,10 +18,10 @@ class Migration20160907104900Core extends Base
 {
     private function changeEngine($table, $engine)
     {
-        if ($this->db->tableExists($table) && strtolower($this->db->getEngine($table)) != $engine) {
-            $query = "ALTER TABLE `" . $table . "` ENGINE = " . $engine;
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists($table) && strtolower($schema->getEngine($table)) != strtolower($engine)) {
+            $schema->setTableEngine($table, $engine);
         }
     }
 

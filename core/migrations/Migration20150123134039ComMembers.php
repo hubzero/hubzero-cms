@@ -20,17 +20,19 @@ class Migration20150123134039ComMembers extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__users_quotas_classes_groups')) {
-            $query = "CREATE TABLE `#__users_quotas_classes_groups` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `class_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `group_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_class_id` (`class_id`),
-				  KEY `idx_group_id` (`group_id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__users_quotas_classes_groups')) {
+            $schema->createTable('#__users_quotas_classes_groups')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('class_id')->default(0)
+                ->unsignedInteger('group_id')->default(0)
+                ->primaryKey('id')
+                ->index('idx_class_id', 'class_id')
+                ->index('idx_group_id', 'group_id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -39,10 +41,8 @@ class Migration20150123134039ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__users_quotas_classes_groups')) {
-            $query = "DROP TABLE `#__users_quotas_classes_groups`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__users_quotas_classes_groups');
     }
 }

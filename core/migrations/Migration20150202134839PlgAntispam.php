@@ -21,31 +21,43 @@ class Migration20150202134839PlgAntispam extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $params = '';
 
-        if ($this->db->tableExists('#__extensions')) {
+        if ($schema->tableExists('#__extensions')) {
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
             foreach (array('akismet', 'mollom', 'spamassassin') as $plg) {
-                $query = "SELECT extension_id FROM `#__extensions` WHERE `type`='plugin' "
-                    . "AND `folder`='content' AND `element`=" . $this->db->quote($plg);
-                $this->db->setQuery($query);
-                if ($id = $this->db->loadResult()) {
-                    $query = "UPDATE `#__extensions` SET `folder`='antispam', `name`="
-                        . $this->db->quote('plg_antispam_' . $plg)
-                        . " WHERE `extension_id`=" . $this->db->quote($id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                $id = $this->db->getQuery(true)
+                    ->select('extension_id')
+                    ->from('#__extensions')
+                    ->where('type', '=', 'plugin')
+                    ->where('folder', '=', 'content')
+                    ->where('element', '=', $plg)
+                    ->value('extension_id');
+                if ($id) {
+                    $this->db->getQuery(true)
+                        ->update('#__extensions')
+                        ->set([
+                            'folder' => 'antispam',
+                            'name'   => 'plg_antispam_' . $plg
+                        ])
+                        ->where('extension_id', '=', $id)
+                        ->execute();
                 } else {
                     $this->addPluginEntry('antispam', $plg, 0);
                 }
             }
 
             // Get the params from the old antispam plugin. We need the badwords list for the 'blacklist' plugin.
-            $query = "SELECT params FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' "
-                . "AND `element`='antispam'";
-            $this->db->setQuery($query);
-            $params = $this->db->loadResult();
+            $params = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__extensions')
+                ->where('type', '=', 'plugin')
+                ->where('folder', '=', 'content')
+                ->where('element', '=', 'antispam')
+                ->value('params');
         }
 
         if ($params) {
@@ -57,44 +69,41 @@ class Migration20150202134839PlgAntispam extends Base
         $this->addPluginEntry('antispam', 'linkrife', 0);
         $this->addPluginEntry('antispam', 'bayesian', 0);
 
-        if (!$this->db->tableExists('#__antispam_token_probs')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__antispam_token_probs` (
-				  `id` int(11) NOT NULL auto_increment,
-				  `token` varchar(256) NOT NULL,
-				  `prob` float DEFAULT '0.00',
-				  `prev_prob` float DEFAULT '0.00',
-				  `in_ham` int DEFAULT '0',
-				  `in_spam` int DEFAULT '0',
-				  `provider` varchar(256),
-				  `param1` varchar(256) NOT NULL,
-				  `param2` varchar(256) NOT NULL,
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  PRIMARY KEY  (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__antispam_token_probs')) {
+            $schema->createTable('#__antispam_token_probs')
+                ->id()
+                ->string('token', 256)
+                ->float('prob')->default(0.00)
+                ->float('prev_prob')->default(0.00)
+                ->integer('in_ham')->default(0)
+                ->integer('in_spam')->default(0)
+                ->string('provider', 256)->nullable()
+                ->string('param1', 256)
+                ->string('param2', 256)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->datetime('modified')->default('0000-00-00 00:00:00')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__antispam_token_counts')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__antispam_token_counts` (
-				  `id` int(11) NOT NULL auto_increment,
-				  `good_count` int(11) DEFAULT '0',
-				  `bad_count` int(11) DEFAULT '0',
-				  PRIMARY KEY  (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__antispam_token_counts')) {
+            $schema->createTable('#__antispam_token_counts')
+                ->id()
+                ->integer('good_count')->default(0)
+                ->integer('bad_count')->default(0)
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__antispam_message_hashes')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__antispam_message_hashes` (
-				  `id` int(11) NOT NULL auto_increment,
-				  `hash` varchar(256) NOT NULL,
-				  PRIMARY KEY  (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__antispam_message_hashes')) {
+            $schema->createTable('#__antispam_message_hashes')
+                ->id()
+                ->string('hash', 256)
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -103,19 +112,28 @@ class Migration20150202134839PlgAntispam extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
             foreach (array('akismet', 'mollom', 'spamassassin') as $plg) {
-                $query = "SELECT extension_id FROM `#__extensions` WHERE `type`='plugin' "
-                    . "AND `folder`='antispam' AND `element`=" . $this->db->quote($plg);
-                $this->db->setQuery($query);
-                if ($id = $this->db->loadResult()) {
-                    $query = "UPDATE `#__extensions` SET `folder`='content', `name`="
-                        . $this->db->quote('plg_content_' . $plg)
-                        . " WHERE `extension_id`=" . $this->db->quote($id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                $id = $this->db->getQuery(true)
+                    ->select('extension_id')
+                    ->from('#__extensions')
+                    ->where('type', '=', 'plugin')
+                    ->where('folder', '=', 'antispam')
+                    ->where('element', '=', $plg)
+                    ->value('extension_id');
+                if ($id) {
+                    $this->db->getQuery(true)
+                        ->update('#__extensions')
+                        ->set([
+                            'folder' => 'content',
+                            'name'   => 'plg_content_' . $plg
+                        ])
+                        ->where('extension_id', '=', $id)
+                        ->execute();
                 } else {
                     $this->addPluginEntry('content', $plg, 0);
                 }
@@ -126,22 +144,16 @@ class Migration20150202134839PlgAntispam extends Base
         $this->deletePluginEntry('antispam', 'linkrife');
         $this->deletePluginEntry('antispam', 'bayesian');
 
-        if ($this->db->tableExists('#__antispam_token_probs')) {
-            $query = "DROP TABLE `#__antispam_token_probs`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__antispam_token_probs')) {
+            $schema->dropTable('#__antispam_token_probs');
         }
 
-        if ($this->db->tableExists('#__antispam_token_counts')) {
-            $query = "DROP TABLE `#__antispam_token_counts`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__antispam_token_counts')) {
+            $schema->dropTable('#__antispam_token_counts');
         }
 
-        if ($this->db->tableExists('#__antispam_message_hashes')) {
-            $query = "DROP TABLE `#__antispam_message_hashes`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__antispam_message_hashes')) {
+            $schema->dropTable('#__antispam_message_hashes');
         }
     }
 }

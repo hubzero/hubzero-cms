@@ -17,22 +17,26 @@ class Migration20130415000000ComSupport extends Base
 {
     public function up()
     {
-        if (!$this->db->tableHasField('#__support_tickets', 'closed')) {
-            // Add a unique index on grade book and asset_id field to forms table
-            $query = "ALTER TABLE `#__support_tickets` ADD `closed` DATETIME  NOT NULL  DEFAULT '0000-00-00"
-                . "00:00:00' AFTER `created`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (
+            $schema->tableExists('#__support_tickets')
+            && !$schema->hasColumn('#__support_tickets', 'closed')
+        ) {
+            $schema->addColumn('#__support_tickets', 'closed')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
 
             // Closed tickets
-            $sql = "SELECT c.ticket, c.created
-					FROM `#__support_comments` AS c
-					LEFT JOIN `#__support_tickets` AS t ON c.ticket=t.id
-					WHERE t.open=0
-					ORDER BY c.created ASC";
-
-            $this->db->setQuery($sql);
-            $clsd = $this->db->loadObjectList();
+            $clsd = $this->db->getQuery(true)
+                ->select(['c.ticket', 'c.created'])
+                ->from('#__support_comments', 'c')
+                ->leftJoin('#__support_tickets AS t', 'c.ticket', 't.id')
+                ->where('t.open', '=', 0)
+                ->order('c.created', 'ASC')
+                ->loadObjectList();
 
             // First we need to loop through all the entries and reove some potential duplicates
             $closedTickets = array();
@@ -47,20 +51,21 @@ class Migration20130415000000ComSupport extends Base
             }
 
             foreach ($closedTickets as $ticket => $closed) {
-                $query = "UPDATE `#__support_tickets` SET `closed`=" . $this->db->Quote($closed)
-                    . " WHERE id=" . $this->db->Quote($ticket);
-
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__support_tickets')
+                    ->set(['closed' => $closed])
+                    ->where('id', '=', $ticket)
+                    ->execute();
             }
         }
     }
 
     public function down()
     {
-        $query = "ALTER TABLE `#__support_tickets` DROP `closed`;";
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        if ($schema->hasColumn('#__support_tickets', 'closed')) {
+            $schema->dropColumn('#__support_tickets', 'closed');
+        }
     }
 }

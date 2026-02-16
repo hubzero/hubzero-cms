@@ -21,14 +21,7 @@ class Migration20160808143522ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__support_tickets')) {
-            $info = $this->db->getTableColumns('#__support_tickets', false);
-
-            if ($this->db->tableHasField('#__support_tickets', 'owner') && $info['owner']->Null != "NO") {
-                $query = "ALTER TABLE `#__support_tickets` CHANGE COLUMN `owner` `owner` int(11) NOT NULL DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-        }
+        // Note: DEFAULT '' for int is unusual, using 0 for proper typing
+        $this->db->schema()->modifyColumn('#__support_tickets', 'owner')->integer()->notNull()->default(0)->execute();
     }
 }

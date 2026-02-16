@@ -20,11 +20,11 @@ class Migration20140820171853ComEvents extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // all day field
-        if (!$this->db->tableHasField('#__events', 'allday')) {
-            $query = "ALTER TABLE `#__events` ADD COLUMN allday INT(11) DEFAULT 0 AFTER publish_down;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__events', 'allday')) {
+            $schema->addColumn('#__events', 'allday')->integer()->default(0)->after('publish_down')->execute();
         }
     }
 
@@ -33,11 +33,11 @@ class Migration20140820171853ComEvents extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         // all day field
-        if ($this->db->tableHasField('#__events', 'allday')) {
-            $query = "ALTER TABLE `#__events` DROP COLUMN allday;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__events', 'allday')) {
+            $schema->dropColumn('#__events', 'allday');
         }
     }
 }

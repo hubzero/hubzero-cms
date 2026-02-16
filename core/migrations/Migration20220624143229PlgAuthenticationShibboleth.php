@@ -21,13 +21,7 @@ class Migration20220624143229PlgAuthenticationShibboleth extends Base
     **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            if ($this->db->tableHasField('#__extensions', 'params')) {
-                                $query = "ALTER TABLE `#__extensions` MODIFY COLUMN params LONGTEXT not null";
-                                $this->db->setQuery($query);
-                                $this->db->query();
-            }
-        }
+        $this->db->schema()->modifyColumn('#__extensions', 'params')->longText()->notNull();
     }
 
     /**
@@ -35,13 +29,11 @@ class Migration20220624143229PlgAuthenticationShibboleth extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            if ($this->db->tableHasField('#__extensions', 'params')) {
-                        /* this is dangerous as contents can be clipped and become unparseable then GUI fails
-                $query = "ALTER TABLE `#__extensions` MODIFY COLUMN params TEXT not null";
-                        $this->db->setQuery($query);
-                        $this->db->query();
-                */
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            if ($schema->hasColumn('#__extensions', 'params')) {
+                $schema->modifyColumn('#__extensions', 'params')->text()->notNull();
             }
         }
     }

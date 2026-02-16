@@ -20,31 +20,39 @@ class Migration20130924000010ComMessages extends Base
      **/
     public function up()
     {
-        $query = "ALTER TABLE `#__messages` ENGINE = MYISAM  ;\n";
-        $query .= "ALTER TABLE `#__messages_cfg` ENGINE = MYISAM ;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
+        $schema->setTableEngine('#__messages', 'MYISAM');
+        $schema->setTableEngine('#__messages_cfg', 'MYISAM');
 
-        if ($this->db->tableHasField('#__messages', 'subject')) {
-            $query = "ALTER TABLE `#__messages` CHANGE `subject` `subject` varchar(255) NOT NULL DEFAULT '';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__messages', 'subject')) {
+            $schema->modifyColumn('#__messages', 'subject')
+                ->string(255)
+                ->notNull()
+                ->default('')
+                ->execute();
         }
-        if ($this->db->tableHasField('#__messages', 'state')) {
-            $query = "ALTER TABLE `#__messages` CHANGE `state` `state` tinyint(1) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__messages', 'state')) {
+            $schema->modifyColumn('#__messages', 'state')
+                ->tinyInteger(1)
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
-        if ($this->db->tableHasField('#__messages', 'priority')) {
-            $query = "ALTER TABLE `#__messages` CHANGE `priority` `priority` tinyint(1) UNSIGNED NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__messages', 'priority')) {
+            $schema->modifyColumn('#__messages', 'priority')
+                ->tinyInteger(1)
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
-        if ($this->db->tableHasField('#__messages', 'folder_id')) {
-            $query = "ALTER TABLE `#__messages` CHANGE `folder_id` `folder_id` "
-                . "tinyint(3) UNSIGNED NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__messages', 'folder_id')) {
+            $schema->modifyColumn('#__messages', 'folder_id')
+                ->tinyInteger(3)
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 }

@@ -26,15 +26,15 @@ class Migration20140422082422ComTools extends Base
             return false;
         }
 
-        if (!$mwdb->tableHasField('session', 'params')) {
-            $query = "ALTER TABLE `session` ADD `params` TEXT  NULL;";
-            $mwdb->setQuery($query);
-            $mwdb->query();
-        }
-        if (!$mwdb->tableHasField('session', 'zone_id')) {
-            $query = "ALTER TABLE `session` ADD `zone_id` int(11) NOT NULL DEFAULT '0';";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        $mwSchema = $mwdb->schema();
+
+        if ($mwSchema->tableExists('session')) {
+            if (!$mwSchema->hasColumn('session', 'params')) {
+                $mwSchema->addColumn('params')->text()->nullable();
+            }
+            if (!$mwSchema->hasColumn('session', 'zone_id')) {
+                $mwSchema->addColumn('zone_id')->integer()->notNull()->default(0);
+            }
         }
     }
 
@@ -48,15 +48,15 @@ class Migration20140422082422ComTools extends Base
             return false;
         }
 
-        if ($mwdb->tableHasField('session', 'params')) {
-            $query = "ALTER TABLE `session` DROP `params`;";
-            $mwdb->setQuery($query);
-            $mwdb->query();
-        }
-        if ($mwdb->tableHasField('session', 'zone_id')) {
-            $query = "ALTER TABLE `session` DROP `zone_id`;";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        $mwSchema = $mwdb->schema();
+
+        if ($mwSchema->tableExists('session')) {
+            if ($mwSchema->hasColumn('session', 'params')) {
+                $mwSchema->dropColumn('session', 'params');
+            }
+            if ($mwSchema->hasColumn('session', 'zone_id')) {
+                $mwSchema->dropColumn('session', 'zone_id');
+            }
         }
     }
 }

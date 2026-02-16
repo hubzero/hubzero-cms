@@ -26,11 +26,11 @@ class Migration20150330174214ComTools extends Base
             return false;
         }
 
-        if ($mwdb->tableExists('zones')) {
-            if (!$mwdb->tableHasField('zones', 'description')) {
-                $query = "ALTER TABLE `zones` ADD `description` TEXT;";
-                $mwdb->setQuery($query);
-                $mwdb->query();
+        $mwSchema = $mwdb->schema();
+
+        if ($mwdb->schema()->tableExists('zones')) {
+            if (!$mwSchema->hasColumn('zones', 'description')) {
+                $mwSchema->addColumn('zones', 'description')->text();
             }
         }
     }
@@ -45,11 +45,11 @@ class Migration20150330174214ComTools extends Base
             return false;
         }
 
-        if ($mwdb->tableExists('zones')) {
-            if ($mwdb->tableHasField('zones', 'description')) {
-                $query = "ALTER TABLE `zones` DROP `description`;";
-                $mwdb->setQuery($query);
-                $mwdb->query();
+        $mwSchema = $mwdb->schema();
+
+        if ($mwdb->schema()->tableExists('zones')) {
+            if ($mwSchema->hasColumn('zones', 'description')) {
+                $mwSchema->dropColumn('zones', 'description');
             }
         }
     }

@@ -21,12 +21,12 @@ class Migration20171201000001ComCart extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__cart_transaction_info')) {
-            if (!$this->db->tableHasField('#__cart_transaction_info', 'tiPayment')) {
-                $query = "ALTER TABLE `#__cart_transaction_info` ADD COLUMN `tiPayment` CHAR(30), ADD COLUMN "
-                    . "`tiPaymentDetails` CHAR(255);";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__cart_transaction_info')) {
+            if (!$schema->hasColumn('#__cart_transaction_info', 'tiPayment')) {
+                $schema->addColumn('#__cart_transaction_info', 'tiPayment')->char(30);
+                $schema->addColumn('#__cart_transaction_info', 'tiPaymentDetails')->char(255);
             }
         }
     }
@@ -36,12 +36,12 @@ class Migration20171201000001ComCart extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__cart_transaction_info')) {
-            if ($this->db->tableHasField('#__cart_transaction_info', 'tiPayment')) {
-                $query = "ALTER TABLE `#__cart_transaction_info` DROP COLUMN `tiPayment`, DROP COLUMN "
-                    . "`tiPaymentDetails`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__cart_transaction_info')) {
+            if ($schema->hasColumn('#__cart_transaction_info', 'tiPayment')) {
+                $schema->dropColumn('#__cart_transaction_info', 'tiPayment');
+                $schema->dropColumn('#__cart_transaction_info', 'tiPaymentDetails');
             }
         }
     }

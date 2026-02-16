@@ -20,10 +20,10 @@ class Migration20160818061637Core extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__activity_logs', 'anonymous')) {
-            $query = "ALTER TABLE `#__activity_logs` ADD `anonymous` TINYINT(2)  UNSIGNED  NOT NULL  DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->hasColumn('#__activity_logs', 'anonymous')) {
+            $schema->addColumn('#__activity_logs', 'anonymous')->tinyInteger(2)->unsigned()->notNull()->default('0');
         }
     }
 
@@ -32,10 +32,10 @@ class Migration20160818061637Core extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__activity_logs', 'anonymous')) {
-            $query = "ALTER TABLE `#__activity_logs` DROP COLUMN `anonymous`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__activity_logs', 'anonymous')) {
+            $schema->dropColumn('#__activity_logs', 'anonymous');
         }
     }
 }

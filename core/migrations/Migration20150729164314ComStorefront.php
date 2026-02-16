@@ -21,29 +21,38 @@ class Migration20150729164314ComStorefront extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_collections')
-            && $this->db->tableHasField('#__storefront_collections', 'cParent')
+            $schema->tableExists('#__storefront_collections')
+            && $schema->hasColumn('#__storefront_collections', 'cParent')
         ) {
-            $query = "ALTER TABLE `#__storefront_collections` MODIFY `cParent` CHAR(1) DEFAULT NULL";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__storefront_collections', 'cParent')->char(1)->nullable()->default(null);
         }
 
         if (
-            $this->db->tableExists('#__storefront_product_meta')
-            && $this->db->tableHasField('#__storefront_product_meta', 'pmValue')
+            $schema->tableExists('#__storefront_product_meta')
+            && $schema->hasColumn('#__storefront_product_meta', 'pmValue')
         ) {
-            $query = "ALTER TABLE `#__storefront_product_meta` MODIFY `pmValue` TEXT";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__storefront_product_meta', 'pmValue')
+                ->text()
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__storefront_product_types')) {
-            $query = "INSERT IGNORE INTO `#__storefront_product_types` (`ptName`, `ptModel`) VALUES ('Software"
-                . "Download', 'software')";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__storefront_product_types')) {
+            $query = $this->db->getQuery(true)
+                ->from('#__storefront_product_types')
+                ->where('ptName', '=', 'SoftwareDownload')
+                ->where('ptModel', '=', 'software');
+            $count = $query->count();
+
+            if (!$count) {
+                $this->db->getQuery(true)
+                    ->insert('#__storefront_product_types')
+                    ->columns(['ptName', 'ptModel'])
+                    ->values(['SoftwareDownload', 'software'])
+                    ->execute();
+            }
         }
     }
 
@@ -52,29 +61,30 @@ class Migration20150729164314ComStorefront extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_collections')
-            && $this->db->tableHasField('#__storefront_collections', 'cParent')
+            $schema->tableExists('#__storefront_collections')
+            && $schema->hasColumn('#__storefront_collections', 'cParent')
         ) {
-            $query = "ALTER TABLE `#__storefront_collections` MODIFY `cParent` INT(16) DEFAULT NULL";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__storefront_collections', 'cParent')->integer(16)->nullable()->default(null);
         }
 
         if (
-            $this->db->tableExists('#__storefront_product_meta')
-            && $this->db->tableHasField('#__storefront_product_meta', 'pmValue')
+            $schema->tableExists('#__storefront_product_meta')
+            && $schema->hasColumn('#__storefront_product_meta', 'pmValue')
         ) {
-            $query = "ALTER TABLE `#__storefront_product_meta` MODIFY `pmValue` VARCHAR(255)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__storefront_product_meta', 'pmValue')
+                ->string(255)
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__storefront_product_types')) {
-            $query = "DELETE FROM `#__storefront_product_types` WHERE ptName = 'Software Download' AND  ptModel ="
-                . "'software'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__storefront_product_types')) {
+            $this->db->getQuery(true)
+                ->delete('#__storefront_product_types')
+                ->where('ptName', '=', 'Software Download')
+                ->where('ptModel', '=', 'software')
+                ->execute();
         }
     }
 }

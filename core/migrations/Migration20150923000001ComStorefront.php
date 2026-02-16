@@ -21,52 +21,38 @@ class Migration20150923000001ComStorefront extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_collections')
-            && !$this->db->tableHasField('#__storefront_collections', 'cAlias')
+            $schema->tableExists('#__storefront_collections')
+            && !$schema->hasColumn('#__storefront_collections', 'cAlias')
         ) {
-            $query = "ALTER TABLE `#__storefront_collections` ADD `cAlias` CHAR(50) DEFAULT NULL";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_collections', 'cAlias')->char(50)->nullable()->default(null)->execute();
         }
 
-        $query = "ALTER TABLE `#__storefront_collections` MODIFY `cId` INT(16) UNSIGNED NOT NULL AUTO_INCREMENT";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // modifyColumn handles AUTO_INCREMENT appropriately for each database
+        $schema->modifyColumn('#__storefront_collections', 'cId')->integer()->notNull()->autoIncrement()->execute();
 
-        if (
-            $this->db->tableExists('#__storefront_product_collections')
-            && $this->db->tableHasField('#__storefront_product_collections', 'cllId')
-        ) {
-            $query = "ALTER TABLE `#__storefront_product_collections` CHANGE COLUMN `cllId` `pcId` INT(16) NOT "
-                . "NULL AUTO_INCREMENT;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__storefront_product_collections', 'cllId')) {
+            // renameColumn handles AUTO_INCREMENT appropriately for each database
+            $schema->renameColumn('#__storefront_product_collections', 'cllId', 'pcId')
+                ->integer()
+                ->notNull()
+                ->autoIncrement()
+                ->execute();
         }
     }
 
     public function down()
     {
-        if (
-            $this->db->tableExists('#__storefront_collections')
-            && $this->db->tableHasField('#__storefront_collections', 'cAlias')
-        ) {
-            $query = "ALTER TABLE `#__storefront_collections` DROP COLUMN `cAlias`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        $query = "ALTER TABLE `#__storefront_collections` MODIFY `cId` CHAR(50) DEFAULT NULL;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema->dropColumn('#__storefront_collections', 'cAlias');
 
-        if (
-            $this->db->tableExists('#__storefront_product_collections')
-            && $this->db->tableHasField('#__storefront_product_collections', 'pcId')
-        ) {
-            $query = "ALTER TABLE `#__storefront_product_collections` CHANGE COLUMN `pcId` `cllId` INT(16);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema->modifyColumn('#__storefront_collections', 'cId')->char(50)->nullable()->default(null);
+
+        if ($schema->hasColumn('#__storefront_product_collections', 'pcId')) {
+            $schema->renameColumn('#__storefront_product_collections', 'pcId', 'cllId')->integer();
         }
     }
 }

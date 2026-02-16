@@ -13,7 +13,10 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for new joomla search/finder tables
  *
-*/
+ * Note: MEMORY engine tables become regular tables on SQLite (engine ignored).
+ * This is acceptable for development/testing since MEMORY tables are temporary
+ * and volatile (lost on server restart) anyway.
+ */
 class Migration20130924000006ComFinder extends Base
 {
     /**
@@ -21,504 +24,249 @@ class Migration20130924000006ComFinder extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableExists('#__finder_filters')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_filters` (
-							`filter_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
-							`title` VARCHAR(255) NOT NULL ,
-							`alias` VARCHAR(255) NOT NULL ,
-							`state` TINYINT(1) NOT NULL DEFAULT '1' ,
-							`created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
-							`created_by` INT(10) UNSIGNED NOT NULL ,
-							`created_by_alias` VARCHAR(255) NOT NULL ,
-							`modified` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
-							`modified_by` INT(10) UNSIGNED NOT NULL DEFAULT '0' ,
-							`checked_out` INT(10) UNSIGNED NOT NULL DEFAULT '0' ,
-							`checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
-							`map_count` INT(10) UNSIGNED NOT NULL DEFAULT '0' ,
-							`data` TEXT NOT NULL ,
-							`params` MEDIUMTEXT NULL DEFAULT NULL ,
-							PRIMARY KEY (`filter_id`) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
+        // Table: finder_filters
+        if (!$schema->tableExists('#__finder_filters')) {
+            $schema->create('#__finder_filters')
+                ->increments('filter_id')
+                ->primaryKey('filter_id')
+                ->string('title', 255)->nullable(false)
+                ->string('alias', 255)->nullable(false)
+                ->tinyInteger('state')->nullable(false)->default(1)
+                ->datetime('created')->nullable(false)->default('0000-00-00 00:00:00')
+                ->unsignedInteger('created_by')->nullable(false)
+                ->string('created_by_alias', 255)->nullable(false)
+                ->datetime('modified')->nullable(false)->default('0000-00-00 00:00:00')
+                ->unsignedInteger('modified_by')->nullable(false)->default(0)
+                ->unsignedInteger('checked_out')->nullable(false)->default(0)
+                ->datetime('checked_out_time')->nullable(false)->default('0000-00-00 00:00:00')
+                ->unsignedInteger('map_count')->nullable(false)->default(0)
+                ->text('data')->nullable(false)
+                ->mediumText('params')->nullable()
+                ->engine('MYISAM')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__finder_links')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links` (
-							`link_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
-							`url` VARCHAR(255) NOT NULL ,
-							`route` VARCHAR(255) NOT NULL ,
-							`title` VARCHAR(255) NULL DEFAULT NULL ,
-							`description` VARCHAR(255) NULL DEFAULT NULL ,
-							`indexdate` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
-							`md5sum` VARCHAR(32) NULL DEFAULT NULL ,
-							`published` TINYINT(1) NOT NULL DEFAULT '1' ,
-							`state` INT(5) NULL DEFAULT '1' ,
-							`access` INT(5) NULL DEFAULT '0' ,
-							`language` VARCHAR(8) NOT NULL ,
-							`publish_start_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
-							`publish_end_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
-							`start_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
-							`end_date` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
-							`list_price` DOUBLE UNSIGNED NOT NULL DEFAULT '0' ,
-							`sale_price` DOUBLE UNSIGNED NOT NULL DEFAULT '0' ,
-							`type_id` INT(11) NOT NULL ,
-							`object` MEDIUMBLOB NOT NULL ,
-							PRIMARY KEY (`link_id`) ,
-							INDEX `idx_type` (`type_id` ASC) ,
-							INDEX `idx_title` (`title` ASC) ,
-							INDEX `idx_md5` (`md5sum` ASC) ,
-							INDEX `idx_url` (`url`(75) ASC) ,
-							INDEX `idx_published_list` (`published` ASC, `state` ASC, `access` ASC,
-								`publish_start_date` ASC, `publish_end_date` ASC, `list_price` ASC) ,
-							INDEX `idx_published_sale` (`published` ASC, `state` ASC, `access` ASC,
-								`publish_start_date` ASC, `publish_end_date` ASC, `sale_price` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
+        // Table: finder_links
+        if (!$schema->tableExists('#__finder_links')) {
+            $schema->create('#__finder_links')
+                ->increments('link_id')
+                ->primaryKey('link_id')
+                ->string('url', 255)->nullable(false)
+                ->string('route', 255)->nullable(false)
+                ->string('title', 255)->nullable()
+                ->string('description', 255)->nullable()
+                ->datetime('indexdate')->nullable(false)->default('0000-00-00 00:00:00')
+                ->string('md5sum', 32)->nullable()
+                ->unsignedInteger('published')->nullable(false)->default(1)
+                ->integer('state', 5)->nullable()->default(1)
+                ->integer('access', 5)->nullable()->default(0)
+                ->string('language', 8)->nullable(false)
+                ->datetime('publish_start_date')->nullable(false)->default('0000-00-00 00:00:00')
+                ->datetime('publish_end_date')->nullable(false)->default('0000-00-00 00:00:00')
+                ->datetime('start_date')->nullable(false)->default('0000-00-00 00:00:00')
+                ->datetime('end_date')->nullable(false)->default('0000-00-00 00:00:00')
+                ->double('list_price')->unsigned()->nullable(false)->default(0)
+                ->double('sale_price')->unsigned()->nullable(false)->default(0)
+                ->integer('type_id' /*, 11 */)->nullable(false)
+                ->mediumBlob('object')->nullable(false)
+                ->index('idx_type', 'type_id')
+                ->index('idx_title', 'title')
+                ->index('idx_md5', 'md5sum')
+                ->index('idx_url', [['url', 75]])  // Prefix index: url(75)
+                ->index('idx_published_list', [
+                    'published',
+                    'state',
+                    'access',
+                    'publish_start_date',
+                    'publish_end_date',
+                    'list_price',
+                ])
+                ->index('idx_published_sale', [
+                    'published',
+                    'state',
+                    'access',
+                    'publish_start_date',
+                    'publish_end_date',
+                    'sale_price',
+                ])
+                ->engine('MYISAM')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__finder_links_terms0')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms0` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
+        // Tables: finder_links_terms[0-9a-f] (16 tables with same structure)
+        $termSuffixes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        foreach ($termSuffixes as $suffix) {
+            $tableName = '#__finder_links_terms' . $suffix;
+            if (!$schema->tableExists($tableName)) {
+                $schema->create($tableName)
+                    ->unsignedInteger('link_id')->nullable(false)
+                    ->unsignedInteger('term_id')->nullable(false)
+                    ->float('weight')->unsigned()->nullable(false)
+                    ->primaryKey(['link_id', 'term_id'])
+                    ->index('idx_term_weight', ['term_id', 'weight'])
+                    ->index('idx_link_term_weight', ['link_id', 'term_id', 'weight'])
+                    ->engine('MYISAM')
+                    ->execute();
+            }
         }
 
-        if (!$this->db->tableExists('#__finder_links_terms1')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms1` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
+        // Table: finder_taxonomy
+        if (!$schema->tableExists('#__finder_taxonomy')) {
+            $schema->create('#__finder_taxonomy')
+                ->increments('id')
+                ->primaryKey('id')
+                ->unsignedInteger('parent_id')->nullable(false)->default(0)
+                ->string('title', 255)->nullable(false)
+                ->unsignedTinyInteger('state')->nullable(false)->default(1)
+                ->unsignedTinyInteger('access')->nullable(false)->default(0)
+                ->unsignedTinyInteger('ordering')->nullable(false)->default(0)
+                ->index('parent_id', 'parent_id')
+                ->index('state', 'state')
+                ->index('ordering', 'ordering')
+                ->index('access', 'access')
+                ->index('idx_parent_published', ['parent_id', 'state', 'access'])
+                ->engine('MYISAM')
+                ->execute();
+
+            // Insert root taxonomy entry
+            // Insert root taxonomy entry
+            // Insert root taxonomy entry
+            // Insert root taxonomy entry
+            $this->db->getQuery(true)
+                ->insert('#__finder_taxonomy')
+                ->set([
+                    'id'        => 1,
+                    'parent_id' => 0,
+                    'title'     => 'ROOT',
+                    'state'     => 0,
+                    'access'    => 0,
+                    'ordering'  => 0
+                ])
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__finder_links_terms2')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms2` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
+        // Table: finder_taxonomy_map
+        if (!$schema->tableExists('#__finder_taxonomy_map')) {
+            $schema->create('#__finder_taxonomy_map')
+                ->unsignedInteger('link_id')->nullable(false)
+                ->unsignedInteger('node_id')->nullable(false)
+                ->primaryKey(['link_id', 'node_id'])
+                ->index('link_id', 'link_id')
+                ->index('node_id', 'node_id')
+                ->engine('MYISAM')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__finder_links_terms3')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms3` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
+        // Table: finder_terms
+        if (!$schema->tableExists('#__finder_terms')) {
+            $schema->create('#__finder_terms')
+                ->increments('term_id')
+                ->primaryKey('term_id')
+                ->string('term', 75)->nullable(false)
+                ->string('stem', 75)->nullable(false)
+                ->unsignedTinyInteger('common')->nullable(false)->default(0)
+                ->unsignedTinyInteger('phrase')->nullable(false)->default(0)
+                ->float('weight')->unsigned()->nullable(false)->default(0)
+                ->string('soundex', 75)->nullable(false)
+                ->integer('links', 10)->nullable(false)->default(0)
+                ->uniqueIndex('idx_term', 'term')
+                ->index('idx_term_phrase', ['term', 'phrase'])
+                ->index('idx_stem_phrase', ['stem', 'phrase'])
+                ->index('idx_soundex_phrase', ['soundex', 'phrase'])
+                ->engine('MYISAM')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__finder_links_terms4')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms4` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
+        // Table: finder_terms_common (no primary key)
+        if (!$schema->tableExists('#__finder_terms_common')) {
+            $schema->create('#__finder_terms_common')
+                ->string('term', 75)->nullable(false)
+                ->string('language', 3)->nullable(false)
+                ->index('idx_word_lang', ['term', 'language'])
+                ->index('idx_lang', 'language')
+                ->engine('MYISAM')
+                ->execute();
+
+            // Insert common terms
+            $this->getCommonTermsInsertQuery();
         }
 
-        if (!$this->db->tableExists('#__finder_links_terms5')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms5` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
+        // Table: finder_tokens (MEMORY engine - becomes regular table on SQLite)
+        if (!$schema->tableExists('#__finder_tokens')) {
+            $schema->create('#__finder_tokens')
+                ->string('term', 75)->nullable(false)
+                ->string('stem', 75)->nullable(false)
+                ->unsignedTinyInteger('common')->nullable(false)->default(0)
+                ->unsignedTinyInteger('phrase')->nullable(false)->default(0)
+                ->float('weight')->unsigned()->nullable(false)->default(1)
+                ->unsignedTinyInteger('context')->nullable(false)->default(2)
+                ->index('idx_word', 'term')
+                ->index('idx_context', 'context')
+                ->engine('MEMORY')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__finder_links_terms6')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms6` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
+        // Table: finder_tokens_aggregate (MEMORY engine - becomes regular table on SQLite)
+        if (!$schema->tableExists('#__finder_tokens_aggregate')) {
+            $schema->create('#__finder_tokens_aggregate')
+                ->unsignedInteger('term_id')->nullable(false)
+                ->char('map_suffix', 1)->nullable(false)
+                ->string('term', 75)->nullable(false)
+                ->string('stem', 75)->nullable(false)
+                ->unsignedTinyInteger('common')->nullable(false)->default(0)
+                ->unsignedTinyInteger('phrase')->nullable(false)->default(0)
+                ->float('term_weight')->unsigned()->nullable(false)
+                ->unsignedTinyInteger('context')->nullable(false)->default(2)
+                ->float('context_weight')->unsigned()->nullable(false)
+                ->float('total_weight')->unsigned()->nullable(false)
+                ->index('token', 'term')
+                ->index('keyword_id', 'term_id')
+                ->engine('MEMORY')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__finder_links_terms7')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms7` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
+        // Table: finder_types
+        if (!$schema->tableExists('#__finder_types')) {
+            $schema->create('#__finder_types')
+                ->increments('id')
+                ->primaryKey('id')
+                ->string('title', 100)->nullable(false)
+                ->string('mime', 100)->nullable(false)
+                ->uniqueIndex('title', 'title')
+                ->engine('MYISAM')
+                ->execute();
         }
+    }
 
-        if (!$this->db->tableExists('#__finder_links_terms8')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms8` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
+    /**
+     * Get the INSERT query for common terms
+     *
+     * @return string
+     */
+    protected function getCommonTermsInsertQuery()
+    {
+        $terms = [
+            'a', 'about', 'after', 'ago', 'all', 'am', 'an', 'and', 'ani', 'any', 'are', "aren't", 'as', 'at',
+            'be', 'but', 'by', 'for', 'from', 'get', 'go', 'how', 'if', 'in', 'into', 'is', "isn't", 'it', 'its',
+            'me', 'more', 'most', 'must', 'my', 'new', 'no', 'none', 'not', 'noth', 'nothing', 'of', 'off',
+            'often', 'old', 'on', 'onc', 'once', 'onli', 'only', 'or', 'other', 'our', 'ours', 'out', 'over', 'page',
+            'she', 'should', 'small', 'so', 'some', 'than', 'thank', 'that', 'the', 'their', 'theirs', 'them',
+            'then', 'there', 'these', 'they', 'this', 'those', 'thus', 'time', 'times', 'to', 'too', 'true',
+            'under', 'until', 'up', 'upon', 'use', 'user', 'users', 'veri', 'version', 'very', 'via', 'want',
+            'was', 'way', 'were', 'what', 'when', 'where', 'whi', 'which', 'who', 'whom', 'whose', 'why', 'wide',
+            'will', 'with', 'within', 'without', 'would', 'yes', 'yet', 'you', 'your', 'yours'
+        ];
 
-        if (!$this->db->tableExists('#__finder_links_terms9')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_terms9` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_links_termsa')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsa` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_links_termsb')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsb` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_links_termsc')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsc` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_links_termsd')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsd` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_links_termse')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termse` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_links_termsf')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_links_termsf` (
-							`link_id` INT(10) UNSIGNED NOT NULL ,
-							`term_id` INT(10) UNSIGNED NOT NULL ,
-							`weight` FLOAT(10) UNSIGNED NOT NULL ,
-							PRIMARY KEY (`link_id`, `term_id`) ,
-							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
-							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_taxonomy')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_taxonomy` (
-						`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
-						`parent_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' ,
-						`title` VARCHAR(255) NOT NULL ,
-						`state` TINYINT(1) UNSIGNED NOT NULL DEFAULT '1' ,
-						`access` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ,
-						`ordering` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ,
-						PRIMARY KEY (`id`) ,
-						INDEX `parent_id` (`parent_id` ASC) ,
-						INDEX `state` (`state` ASC) ,
-						INDEX `ordering` (`ordering` ASC) ,
-						INDEX `access` (`access` ASC) ,
-						INDEX `idx_parent_published` (`parent_id` ASC, `state` ASC, `access` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-
-            $query .= "INSERT INTO `#__finder_taxonomy` (`id`, `parent_id`, `title`, `state`, `access`,"
-                . "`ordering`) VALUES (1, 0, 'ROOT', 0, 0, 0);";
-        }
-
-        if (!$this->db->tableExists('#__finder_taxonomy_map')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_taxonomy_map` (
-						`link_id` INT(10) UNSIGNED NOT NULL ,
-						`node_id` INT(10) UNSIGNED NOT NULL ,
-						PRIMARY KEY (`link_id`, `node_id`) ,
-						INDEX `link_id` (`link_id` ASC) ,
-						INDEX `node_id` (`node_id` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_terms')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_terms` (
-						`term_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
-						`term` VARCHAR(75) NOT NULL ,
-						`stem` VARCHAR(75) NOT NULL ,
-						`common` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ,
-						`phrase` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ,
-						`weight` FLOAT(10) UNSIGNED NOT NULL DEFAULT '0' ,
-						`soundex` VARCHAR(75) NOT NULL ,
-						`links` INT(10) NOT NULL DEFAULT '0' ,
-						PRIMARY KEY (`term_id`) ,
-						UNIQUE INDEX `idx_term` (`term` ASC) ,
-						INDEX `idx_term_phrase` (`term` ASC, `phrase` ASC) ,
-						INDEX `idx_stem_phrase` (`stem` ASC, `phrase` ASC) ,
-						INDEX `idx_soundex_phrase` (`soundex` ASC, `phrase` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_terms_common')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_terms_common` (
-						`term` VARCHAR(75) NOT NULL ,
-						`language` VARCHAR(3) NOT NULL ,
-						INDEX `idx_word_lang` (`term` ASC, `language` ASC) ,
-						INDEX `idx_lang` (`language` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-
-            $query .= "INSERT INTO `#__finder_terms_common` (`term`, `language`) VALUES
-						('a', 'en'),
-						('about', 'en'),
-						('after', 'en'),
-						('ago', 'en'),
-						('all', 'en'),
-						('am', 'en'),
-						('an', 'en'),
-						('and', 'en'),
-						('ani', 'en'),
-						('any', 'en'),
-						('are', 'en'),
-						('aren''t', 'en'),
-						('as', 'en'),
-						('at', 'en'),
-						('be', 'en'),
-						('but', 'en'),
-						('by', 'en'),
-						('for', 'en'),
-						('from', 'en'),
-						('get', 'en'),
-						('go', 'en'),
-						('how', 'en'),
-						('if', 'en'),
-						('in', 'en'),
-						('into', 'en'),
-						('is', 'en'),
-						('isn''t', 'en'),
-						('it', 'en'),
-						('its', 'en'),
-						('me', 'en'),
-						('more', 'en'),
-						('most', 'en'),
-						('must', 'en'),
-						('my', 'en'),
-						('new', 'en'),
-						('no', 'en'),
-						('none', 'en'),
-						('not', 'en'),
-						('noth', 'en'),
-						('nothing', 'en'),
-						('of', 'en'),
-						('off', 'en'),
-						('often', 'en'),
-						('old', 'en'),
-						('on', 'en'),
-						('onc', 'en'),
-						('once', 'en'),
-						('onli', 'en'),
-						('only', 'en'),
-						('or', 'en'),
-						('other', 'en'),
-						('our', 'en'),
-						('ours', 'en'),
-						('out', 'en'),
-						('over', 'en'),
-						('page', 'en'),
-						('she', 'en'),
-						('should', 'en'),
-						('small', 'en'),
-						('so', 'en'),
-						('some', 'en'),
-						('than', 'en'),
-						('thank', 'en'),
-						('that', 'en'),
-						('the', 'en'),
-						('their', 'en'),
-						('theirs', 'en'),
-						('them', 'en'),
-						('then', 'en'),
-						('there', 'en'),
-						('these', 'en'),
-						('they', 'en'),
-						('this', 'en'),
-						('those', 'en'),
-						('thus', 'en'),
-						('time', 'en'),
-						('times', 'en'),
-						('to', 'en'),
-						('too', 'en'),
-						('true', 'en'),
-						('under', 'en'),
-						('until', 'en'),
-						('up', 'en'),
-						('upon', 'en'),
-						('use', 'en'),
-						('user', 'en'),
-						('users', 'en'),
-						('veri', 'en'),
-						('version', 'en'),
-						('very', 'en'),
-						('via', 'en'),
-						('want', 'en'),
-						('was', 'en'),
-						('way', 'en'),
-						('were', 'en'),
-						('what', 'en'),
-						('when', 'en'),
-						('where', 'en'),
-						('whi', 'en'),
-						('which', 'en'),
-						('who', 'en'),
-						('whom', 'en'),
-						('whose', 'en'),
-						('why', 'en'),
-						('wide', 'en'),
-						('will', 'en'),
-						('with', 'en'),
-						('within', 'en'),
-						('without', 'en'),
-						('would', 'en'),
-						('yes', 'en'),
-						('yet', 'en'),
-						('you', 'en'),
-						('your', 'en'),
-						('yours', 'en');";
-        }
-
-        if (!$this->db->tableExists('#__finder_tokens')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_tokens` (
-						`term` VARCHAR(75) NOT NULL ,
-						`stem` VARCHAR(75) NOT NULL ,
-						`common` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ,
-						`phrase` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ,
-						`weight` FLOAT(10) UNSIGNED NOT NULL DEFAULT '1' ,
-						`context` TINYINT(1) UNSIGNED NOT NULL DEFAULT '2' ,
-						INDEX `idx_word` (`term` ASC) ,
-						INDEX `idx_context` (`context` ASC) )
-						ENGINE = MEMORY
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_tokens_aggregate')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_tokens_aggregate` (
-						`term_id` INT(10) UNSIGNED NOT NULL ,
-						`map_suffix` CHAR(1) NOT NULL ,
-						`term` VARCHAR(75) NOT NULL ,
-						`stem` VARCHAR(75) NOT NULL ,
-						`common` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ,
-						`phrase` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' ,
-						`term_weight` FLOAT(10) UNSIGNED NOT NULL ,
-						`context` TINYINT(1) UNSIGNED NOT NULL DEFAULT '2' ,
-						`context_weight` FLOAT(10) UNSIGNED NOT NULL ,
-						`total_weight` FLOAT(10) UNSIGNED NOT NULL ,
-						INDEX `token` (`term` ASC) ,
-						INDEX `keyword_id` (`term_id` ASC) )
-						ENGINE = MEMORY
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!$this->db->tableExists('#__finder_types')) {
-            $query .= "CREATE  TABLE IF NOT EXISTS `#__finder_types` (
-						`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
-						`title` VARCHAR(100) NOT NULL ,
-						`mime` VARCHAR(100) NOT NULL ,
-						PRIMARY KEY (`id`) ,
-						UNIQUE INDEX `title` (`title` ASC) )
-						ENGINE = MYISAM
-						DEFAULT CHARACTER SET = utf8
-						COLLATE = utf8_general_ci;\n";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        foreach ($terms as $term) {
+            $this->db->getQuery(true)
+                ->insert('#__finder_terms_common')
+                ->set([
+                    'term'     => $term,
+                    'language' => 'en'
+                ])
+                ->execute();
         }
     }
 }

@@ -21,15 +21,17 @@ class Migration20170921161800ComRedirect extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__redirect_links')) {
-            if (!$this->db->tableHasField('#__redirect_links', 'status_code')) {
-                $query = "ALTER TABLE `#__redirect_links` ADD `status_code` INT(3) NOT NULL DEFAULT '404'";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
 
-                $query = "UPDATE `#__redirect_links` SET `status_code`=301 WHERE `new_url`!=''";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__redirect_links')) {
+            if (!$schema->hasColumn('#__redirect_links', 'status_code')) {
+                $schema->addColumn('#__redirect_links', 'status_code')->integer(3)->notNull()->default('404');
+
+                $this->db->getQuery(true)
+                    ->update('#__redirect_links')
+                    ->set(['status_code' => 301])
+                    ->where('new_url', '!=', '')
+                    ->execute();
             }
         }
     }
@@ -39,11 +41,11 @@ class Migration20170921161800ComRedirect extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__redirect_links')) {
-            if ($this->db->tableHasField('#__redirect_links', 'status_code')) {
-                $query = "ALTER TABLE `#__redirect_links` DROP COLUMN `status_code`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__redirect_links')) {
+            if ($schema->hasColumn('#__redirect_links', 'status_code')) {
+                $schema->dropColumn('#__redirect_links', 'status_code');
             }
         }
     }

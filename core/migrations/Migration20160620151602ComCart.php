@@ -20,20 +20,22 @@ class Migration20160620151602ComCart extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__cart_downloads')) {
-            $query = "CREATE TABLE `#__cart_downloads` (
-			  `dId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `uId` int(11) DEFAULT NULL,
-			  `sId` int(11) DEFAULT NULL,
-			  `dDownloaded` datetime DEFAULT NULL,
-			  `dStatus` tinyint(1) DEFAULT '1',
-			  `dIp` int(10) unsigned DEFAULT NULL,
-			  PRIMARY KEY (`dId`),
-			  KEY `idx_uId` (`uId`),
-			  KEY `idx_sId` (`sId`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__cart_downloads')) {
+            $schema->createTable('#__cart_downloads')
+                ->unsignedInteger('dId', ['autoIncrement' => true])
+                ->integer('uId')->nullable()
+                ->integer('sId')->nullable()
+                ->datetime('dDownloaded')->nullable()
+                ->tinyInteger('dStatus')->default(1)
+                ->unsignedInteger('dIp')->nullable()
+                ->primaryKey('dId')
+                ->index('idx_uId', 'uId')
+                ->index('idx_sId', 'sId')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -42,11 +44,8 @@ class Migration20160620151602ComCart extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__cart_downloads')) {
-            $query = "DROP TABLE `#__cart_downloads`";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__cart_downloads');
     }
 }

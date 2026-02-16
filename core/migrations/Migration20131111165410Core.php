@@ -21,22 +21,30 @@ class Migration20131111165410Core extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $init_params = array(
             "period"     => "14",
             "chart_path" => "/site/stats/chart_resources/",
             "map_path"   => "/site/stats/resource_maps/"
         );
 
-        if ($this->db->tableExists('#__extensions')) {
-            $query = 'SELECT `params` FROM `#__extensions` WHERE folder = "resources" AND element = "usage"';
-            $this->db->setQuery($query);
-            $result = $this->db->loadResult();
+        if ($schema->tableExists('#__extensions')) {
+            $query = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__extensions')
+                ->where('folder', '=', 'resources')
+                ->where('element', '=', 'usage');
+            $result = $query->value('params');
 
             $params = (array) json_decode($result);
         } else {
-            $query = 'SELECT `params` FROM `#__plugins` WHERE folder = "resources" AND element = "usage"';
-            $this->db->setQuery($query);
-            $result = $this->db->loadResult();
+            $query = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__plugins')
+                ->where('folder', '=', 'resources')
+                ->where('element', '=', 'usage');
+            $result = $query->value('params');
 
             $params = array();
 
@@ -84,13 +92,15 @@ class Migration20131111165410Core extends Base
             $params = $init_params;
         }
 
-        if ($this->db->tableExists('#__extensions')) {
+        if ($schema->tableExists('#__extensions')) {
             $params = json_encode($params);
 
-            $query = 'UPDATE `#__extensions` SET params = ' . $this->db->quote($params)
-                . ' WHERE folder = "resources" AND element = "usage"';
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['params' => $params])
+                ->where('folder', '=', 'resources')
+                ->where('element', '=', 'usage')
+                ->execute();
         } else {
             $p = '';
             foreach ($params as $k => $v) {
@@ -99,110 +109,114 @@ class Migration20131111165410Core extends Base
 
             $params = $p;
 
-            $query = 'UPDATE `#__plugins` SET params = ' . $this->db->quote($params)
-                . ' WHERE folder = "resources" AND element = "usage"';
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__plugins')
+                ->set(['params' => $params])
+                ->where('folder', '=', 'resources')
+                ->where('element', '=', 'usage')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__resource_stats_tools_tops')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__resource_stats_tools_tops` (
-						`top` tinyint(4) NOT NULL default '0',
-						`name` varchar(128) NOT NULL default '',
-						`valfmt` tinyint(4) NOT NULL default '0',
-						`size` tinyint(4) NOT NULL default '0',
-						PRIMARY KEY  (`top`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__resource_stats_tools_tops')) {
+            $schema->createTable('#__resource_stats_tools_tops')
+                ->tinyInteger('top')->default(0)
+                ->string('name', 128)->default('')
+                ->tinyInteger('valfmt')->default(0)
+                ->tinyInteger('size')->default(0)
+                ->primaryKey('top')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
-            $query  = "INSERT IGNORE INTO `#__resource_stats_tools_tops` VALUES";
-            $query .= " (1,'Users By Country Of Residence',1,5),";
-            $query .= " (2,'Top Domains By User Count',1,5),";
-            $query .= " (3,'Users By Organization Type',1,5)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__resource_stats_tools_tops')
+                ->columns(['top', 'name', 'valfmt', 'size'])
+                ->values([1, 'Users By Country Of Residence', 1, 5])
+                ->values([2, 'Top Domains By User Count', 1, 5])
+                ->values([3, 'Users By Organization Type', 1, 5])
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__stats_tops')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__stats_tops` (
-						`id` tinyint(4) NOT NULL default '0',
-						`name` varchar(128) NOT NULL default '',
-						`valfmt` tinyint(4) NOT NULL default '0',
-						`size` tinyint(4) NOT NULL default '0',
-						PRIMARY KEY  (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__stats_tops')) {
+            $schema->createTable('#__stats_tops')
+                ->tinyInteger('id')->default(0)
+                ->string('name', 128)->default('')
+                ->tinyInteger('valfmt')->default(0)
+                ->tinyInteger('size')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
-            $query  = "INSERT IGNORE INTO `#__stats_tops` VALUES";
-            $query .= " (1,'Top Tools by Ranking',1,5),";
-            $query .= " (2,'Top Tools by Simulation Users',1,5),";
-            $query .= " (3,'Top Tools by Interactive Sessions',1,5),";
-            $query .= " (4,'Top Tools by Simulation Sessions',1,5),";
-            $query .= " (5,'Top Tools by Simulation Runs',1,5),";
-            $query .= " (6,'Top Tools by Simulation Wall Time',2,5),";
-            $query .= " (7,'Top Tools by Simulation CPU Time',2,5),";
-            $query .= " (8,'Top Tools by Simulation Interaction Time',2,5),";
-            $query .= " (9,'Top Tools by Citations',1,5)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__stats_tops')
+                ->columns(['id', 'name', 'valfmt', 'size'])
+                ->values([1, 'Top Tools by Ranking', 1, 5])
+                ->values([2, 'Top Tools by Simulation Users', 1, 5])
+                ->values([3, 'Top Tools by Interactive Sessions', 1, 5])
+                ->values([4, 'Top Tools by Simulation Sessions', 1, 5])
+                ->values([5, 'Top Tools by Simulation Runs', 1, 5])
+                ->values([6, 'Top Tools by Simulation Wall Time', 2, 5])
+                ->values([7, 'Top Tools by Simulation CPU Time', 2, 5])
+                ->values([8, 'Top Tools by Simulation Interaction Time', 2, 5])
+                ->values([9, 'Top Tools by Citations', 1, 5])
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__citations_secondary')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__citations_secondary` (
-						`id` int(11) NOT NULL auto_increment,
-						`cid` int(11) NOT NULL,
-						`sec_cits_cnt` int(11) default NULL,
-						`search_string` tinytext,
-						PRIMARY KEY  (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__citations_secondary')) {
+            $schema->createTable('#__citations_secondary')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('cid')
+                ->integer('sec_cits_cnt')->nullable()
+                ->tinyText('search_string')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__session_geo')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__session_geo` (
-						`session_id` varchar(200) NOT NULL default '0',
-						`username` varchar(150) default '',
-						`time` varchar(14) default '',
-						`guest` tinyint(4) default '1',
-						`userid` int(11) default '0',
-						`ip` varchar(15) default NULL,
-						`host` varchar(128) default NULL,
-						`domain` varchar(128) default NULL,
-						`signed` tinyint(3) default '0',
-						`countrySHORT` char(2) default NULL,
-						`countryLONG` varchar(64) default NULL,
-						`ipREGION` varchar(128) default NULL,
-						`ipCITY` varchar(128) default NULL,
-						`ipLATITUDE` double default NULL,
-						`ipLONGITUDE` double default NULL,
-						`bot` tinyint(4) default '0',
-						PRIMARY KEY  (`session_id`),
-						KEY `userid` (`userid`),
-						KEY `time` (`time`),
-						KEY `ip` (`ip`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__session_geo')) {
+            $schema->createTable('#__session_geo')
+                ->string('session_id', 200)->default('0')
+                ->string('username', 150)->default('')
+                ->string('time', 14)->default('')
+                ->tinyInteger('guest')->default(1)
+                ->integer('userid')->default(0)
+                ->string('ip', 15)->nullable()
+                ->string('host', 128)->nullable()
+                ->string('domain', 128)->nullable()
+                ->tinyInteger('signed')->default(0)
+                ->char('countrySHORT', 2)->nullable()
+                ->string('countryLONG', 64)->nullable()
+                ->string('ipREGION', 128)->nullable()
+                ->string('ipCITY', 128)->nullable()
+                ->double('ipLATITUDE')->nullable()
+                ->double('ipLONGITUDE')->nullable()
+                ->tinyInteger('bot')->default(0)
+                ->primaryKey('session_id')
+                ->index('userid', 'userid')
+                ->index('time', 'time')
+                ->index('ip', 'ip')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__metrics_ipgeo_cache')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__metrics_ipgeo_cache` (
-						`ip` int(10) NOT NULL DEFAULT '0000000000',
-						`countrySHORT` char(2) NOT NULL DEFAULT '',
-						`countryLONG` varchar(64) NOT NULL DEFAULT '',
-						`ipREGION` varchar(128) NOT NULL DEFAULT '',
-						`ipCITY` varchar(128) NOT NULL DEFAULT '',
-						`ipLATITUDE` double DEFAULT NULL,
-						`ipLONGITUDE` double DEFAULT NULL,
-						`lookup_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-						PRIMARY KEY (`ip`),
-						KEY (`lookup_datetime`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__metrics_ipgeo_cache')) {
+            $schema->createTable('#__metrics_ipgeo_cache')
+                ->integer('ip')->default(0)
+                ->char('countrySHORT', 2)->default('')
+                ->string('countryLONG', 64)->default('')
+                ->string('ipREGION', 128)->default('')
+                ->string('ipCITY', 128)->default('')
+                ->double('ipLATITUDE')->nullable()
+                ->double('ipLONGITUDE')->nullable()
+                ->timestamp('lookup_datetime')
+                ->primaryKey('ip')
+                ->index('lookup_datetime', 'lookup_datetime')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

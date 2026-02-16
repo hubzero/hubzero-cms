@@ -21,13 +21,13 @@ class Migration20131106154023ComPublications extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasKey('#__publication_versions', 'idx_fulltxt_title_description_abstract')) {
-            $query = "ALTER TABLE `#__publication_versions` ADD FULLTEXT KEY "
-                . "`idx_fulltxt_title_description_abstract` (`title`, `description`, `abstract`);";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->addFulltextIndex('#__publication_versions', 'idx_fulltxt_title_description_abstract', [
+            'title',
+            'description',
+            'abstract',
+        ]);
     }
 
     /**
@@ -35,11 +35,8 @@ class Migration20131106154023ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasKey('#__publication_versions', 'idx_fulltxt_title_description_abstract')) {
-            $query = "ALTER TABLE `#__publication_versions` DROP INDEX `idx_fulltxt_title_description_abstract`;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropIndex('#__publication_versions', 'idx_fulltxt_title_description_abstract');
     }
 }

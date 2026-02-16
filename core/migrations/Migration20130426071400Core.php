@@ -21,25 +21,38 @@ class Migration20130426071400Core extends Base
      **/
     public function up()
     {
-        $query = "SELECT `introtext` FROM `#__content` WHERE alias='licensing' AND title='Intellectual Property"
-            . "Considerations';";
-        $this->db->setQuery($query);
-        $result = $this->db->loadResult();
+        $result = $this->db->getQuery(true)
+            ->select('introtext')
+            ->from('#__content')
+            ->where('alias', '=', 'licensing')
+            ->where('title', '=', 'Intellectual PropertyConsiderations')
+            ->value('introtext');
 
         $search = '<a href="http://www.hubzero.org/topics/middleware">unique middleware</a>';
         $result = str_replace($search, 'unique middleware', $result);
 
-        $query = "UPDATE `#__content` SET introtext=" . $this->db->Quote($result)
-            . " WHERE alias='licensing' AND title='Intellectual Property Considerations' LIMIT 1;";
+        $this->db->getQuery(true)
+            ->update('#__content')
+            ->set(['introtext' => $result])
+            ->where('alias', '=', 'licensing')
+            ->where('title', '=', 'Intellectual Property Considerations')
+            ->execute();
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        $introtext = $this->db->getQuery(true)
+            ->select('introtext')
+            ->from('#__content')
+            ->where('alias', '=', 'licensing')
+            ->where('title', '=', 'Intellectual Property Considerations')
+            ->value('introtext');
 
-        $query = "UPDATE `#__content` SET "
-            . "introtext=REPLACE(introtext,'/feedback/report_problems/','/support/ticket/new') "
-            . "WHERE alias='licensing' AND title='Intellectual Property Considerations' LIMIT 1;";
-
-        $this->db->setQuery($query);
-        $this->db->query();
+        if ($introtext) {
+            $introtext = str_replace('/feedback/report_problems/', '/support/ticket/new', $introtext);
+            $this->db->getQuery(true)
+                ->update('#__content')
+                ->set(['introtext' => $introtext])
+                ->where('alias', '=', 'licensing')
+                ->where('title', '=', 'Intellectual Property Considerations')
+                ->execute();
+        }
     }
 }

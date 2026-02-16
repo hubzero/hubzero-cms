@@ -20,10 +20,13 @@ class Migration20140131091600HubzeroComments extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__comments')) {
-            $query = "SELECT * FROM `#__comments`";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__comments')) {
+            $results = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__comments')
+                ->loadObjectList();
 
             if ($results && count($results) > 0) {
                 $parents = array();
@@ -99,9 +102,7 @@ class Migration20140131091600HubzeroComments extends Base
                 }
             }
 
-            $query = "DROP TABLE IF EXISTS `#__comments`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropTable('#__comments');
         }
     }
 
@@ -110,26 +111,28 @@ class Migration20140131091600HubzeroComments extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__comments')) {
-            $query = "CREATE TABLE `#__comments` (
-				  `filter_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-				  `title` varchar(255) NOT NULL,
-				  `alias` varchar(255) NOT NULL,
-				  `state` tinyint(1) NOT NULL DEFAULT '1',
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `created_by` int(10) unsigned NOT NULL,
-				  `created_by_alias` varchar(255) NOT NULL,
-				  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
-				  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
-				  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `map_count` int(10) unsigned NOT NULL DEFAULT '0',
-				  `data` text NOT NULL,
-				  `params` mediumtext,
-				  PRIMARY KEY (`filter_id`)
-				) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__comments')) {
+            $schema->createTable('#__comments')
+                ->unsignedInteger('filter_id', ['autoIncrement' => true])
+                ->string('title', 255)
+                ->string('alias', 255)
+                ->tinyInteger('state')->default(1)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->unsignedInteger('created_by')
+                ->string('created_by_alias', 255)
+                ->datetime('modified')->default('0000-00-00 00:00:00')
+                ->unsignedInteger('modified_by')->default(0)
+                ->unsignedInteger('checked_out')->default(0)
+                ->datetime('checked_out_time')->default('0000-00-00 00:00:00')
+                ->unsignedInteger('map_count')->default(0)
+                ->text('data')
+                ->mediumText('params')->nullable()
+                ->primaryKey('filter_id')
+                ->engine('MYISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

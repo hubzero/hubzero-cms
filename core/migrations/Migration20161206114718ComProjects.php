@@ -21,21 +21,19 @@ class Migration20161206114718ComProjects extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__projects')) {
-            if (!$this->db->tableHasField('#__projects', 'sync_group')) {
-                $query = "ALTER TABLE `#__projects` ADD `sync_group` tinyint(2) NOT NULL DEFAULT '1'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (
-                $this->db->tableHasField('#__projects', 'sync_group')
-                && !$this->db->tableHasKey('#__projects', 'idx_sync_group')
-            ) {
-                $query = "ALTER TABLE `#__projects` ADD INDEX `idx_sync_group` (`sync_group`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (!$schema->tableExists('#__projects')) {
+            return;
+        }
+
+        if (!$schema->hasColumn('#__projects', 'sync_group')) {
+            $schema->table('#__projects')->alter()
+                ->addColumn('sync_group')->tinyInteger(2)->notNull()->default('1')
+                ->addIndex('idx_sync_group', 'sync_group')
+                ->execute();
+        } else {
+            $schema->addIndex('#__projects', 'idx_sync_group', 'sync_group');
         }
     }
 
@@ -44,18 +42,16 @@ class Migration20161206114718ComProjects extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__projects')) {
-            if ($this->db->tableHasKey('#__projects', 'idx_sync_group')) {
-                $query = "ALTER TABLE `#__projects` DROP KEY `idx_sync_group`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasField('#__projects', 'sync_group')) {
-                $query = "ALTER TABLE `#__projects` DROP `sync_group`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (!$schema->tableExists('#__projects')) {
+            return;
+        }
+
+        $schema->dropIndex('#__projects', 'idx_sync_group');
+
+        if ($schema->hasColumn('#__projects', 'sync_group')) {
+            $schema->dropColumn('#__projects', 'sync_group');
         }
     }
 }

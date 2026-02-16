@@ -20,16 +20,17 @@ class Migration20130430112401ComCourses extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__courses_member_notes', 'timestamp')) {
-            $query .= "ALTER TABLE `#__courses_member_notes` ADD `timestamp` datetime "
-                . "NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER `state`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__courses_member_notes')
+            && !$schema->hasColumn('#__courses_member_notes', 'timestamp')
+        ) {
+            $schema->addColumn('#__courses_member_notes', 'timestamp')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
         }
     }
 
@@ -38,15 +39,10 @@ class Migration20130430112401ComCourses extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_member_notes', 'timestamp')) {
-            $query .= "ALTER TABLE `#__courses_member_notes` DROP `timestamp`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_member_notes', 'timestamp')) {
+            $schema->dropColumn('#__courses_member_notes', 'timestamp');
         }
     }
 }

@@ -21,14 +21,18 @@ class Migration20151014171203Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
             // If a plugin is enabled, we'll assume that it should also be enabled for site login if not already saved
             // We changed the CMS to enforce the configuration option of site_login enabled.  Prior to this, it was
             // assuming true.  We need to default the database to emulate current behavior.
-            $query = "SELECT `element`, `params` FROM `#__extensions` WHERE `type` = 'plugin' AND `folder` ="
-                . "'authentication'";
-            $this->db->setQuery($query);
-            $plugins = $this->db->loadObjectList();
+            $query = $this->db->getQuery(true)
+                ->select(['element', 'params'])
+                ->from('#__extensions')
+                ->where('type', '=', 'plugin')
+                ->where('folder', '=', 'authentication');
+            $plugins = $query->loadObjectList();
 
             if (count($plugins) > 0) {
                 foreach ($plugins as $plugin) {

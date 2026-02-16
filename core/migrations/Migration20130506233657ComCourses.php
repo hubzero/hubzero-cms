@@ -21,34 +21,42 @@ class Migration20130506233657ComCourses extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_grade_policies', 'score_criteria')) {
+        if ($schema->hasColumn('#__courses_grade_policies', 'score_criteria')) {
             // If the table is of the 'old' style, just get rid of it
-            $query .= "DROP TABLE `#__courses_grade_policies`;\n";
+            $schema->dropTable('#__courses_grade_policies');
 
             // Now create the new one
-            $query .= "CREATE TABLE `#__courses_grade_policies` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`description` mediumtext,
-						`threshold` decimal(3,2) DEFAULT NULL,
-						`exam_weight` decimal(3,2) DEFAULT NULL,
-						`quiz_weight` decimal(3,2) DEFAULT NULL,
-						`homework_weight` decimal(3,2) DEFAULT NULL,
-						PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
+            if (!$schema->hasTable('#__courses_grade_policies')) {
+                $schema->createTable('#__courses_grade_policies')
+                    ->integer('id')->unsigned()->autoIncrement()
+                    ->mediumText('description')->nullable()
+                    ->decimal('threshold', 3, 2)->nullable()
+                    ->decimal('exam_weight', 3, 2)->nullable()
+                    ->decimal('quiz_weight', 3, 2)->nullable()
+                    ->decimal('homework_weight', 3, 2)->nullable()
+                    ->primaryKey('id')
+                    ->engine('MyISAM')
+                    ->charset('utf8')
+                    ->execute();
+            }
 
             // Insert default row
             $description = 'An average exam score of 70% or greater is required to pass the class.  '
                 . 'Quizzes and homeworks do not count toward the final score.';
-            $query .= "INSERT INTO `#__courses_grade_policies` "
-                . "(`id`, `description`, `threshold`, `exam_weight`, `quiz_weight`, `homework_weight`) "
-                . "VALUES (1, " . $this->db->quote($description) . ", 0.70, 1.00, 0.00, 0.00);";
-        }
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__courses_grade_policies')
+                ->set([
+                    'id'              => 1,
+                    'description'     => $description,
+                    'threshold'       => 0.70,
+                    'exam_weight'     => 1.00,
+                    'quiz_weight'     => 0.00,
+                    'homework_weight' => 0.00
+                ])
+                ->execute();
         }
     }
 }

@@ -21,26 +21,29 @@ class Migration20140822203559ComPoll extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__polls')
-            && !$this->db->tableHasField('#__polls', 'alias')
-        ) {
-            $query = "ALTER TABLE `#__polls` ADD `alias` VARCHAR(255) NOT NULL DEFAULT '' AFTER `title`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "SELECT `id`, `title` FROM `#__polls`";
-            $this->db->setQuery($query);
-            $polls = $this->db->loadObjectList();
+        if (
+            $schema->tableExists('#__polls')
+            && !$schema->hasColumn('#__polls', 'alias')
+        ) {
+            $schema->addColumn('#__polls', 'alias')->string(255)->notNull()->default('')->execute();
+
+            $polls = $this->db->getQuery(true)
+                ->select(['id', 'title'])
+                ->from('#__polls')
+                ->loadObjectList();
 
             if ($polls && count($polls) > 0) {
                 foreach ($polls as $poll) {
                     $alias = preg_replace("/[^a-zA-Z0-9]/", '', $poll->title);
                     $alias = strtolower($alias);
-                    $query = "UPDATE `#__polls` SET `alias` = " . $this->db->quote($alias)
-                        . " WHERE `id` = '{$poll->id}'";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+
+                    $this->db->getQuery(true)
+                        ->update('#__polls')
+                        ->set(['alias' => $alias])
+                        ->where('id', '=', $poll->id)
+                        ->execute();
                 }
             }
         }

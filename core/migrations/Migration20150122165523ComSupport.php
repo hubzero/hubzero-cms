@@ -21,12 +21,35 @@ class Migration20150122165523ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__support_tickets')) {
-            $query = "UPDATE `#__support_tickets` AS t SET t.`closed`=(SELECT c.created FROM `#__support_comments` "
-                . "AS c WHERE c.ticket=t.id ORDER BY c.created DESC LIMIT 1) WHERE t.`closed`='0000-00-00 "
-                . "00:00:00' AND t.`open`=0";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__support_tickets')) {
+            $query = $this->db->getQuery(true)
+                ->select('t.id')
+                ->from('#__support_tickets', 't')
+                ->where('t.closed', '=', '0000-00-00 00:00:00')
+                ->where('t.open', '=', 0);
+
+            $tickets = $query->loadObjectList();
+
+            if ($tickets) {
+                foreach ($tickets as $ticket) {
+                    $lastComment = $this->db->getQuery(true)
+                        ->select('created')
+                        ->from('#__support_comments')
+                        ->where('ticket', '=', $ticket->id)
+                        ->order('created', 'DESC')
+                        ->value('created');
+
+                    if ($lastComment) {
+                        $this->db->getQuery(true)
+                            ->update('#__support_tickets')
+                            ->set(['closed' => $lastComment])
+                            ->where('id', '=', $ticket->id)
+                            ->execute();
+                    }
+                }
+            }
         }
     }
 }

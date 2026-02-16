@@ -21,30 +21,32 @@ class Migration20141105073734ComTags extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__tags_group')) {
-            $query = "DROP TABLE IF EXISTS `#__tags_group`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__tags_group')) {
+            $schema->dropTable('#__tags_group');
         }
     }
 
     /**
-     * Up
+     * Down
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__tags_group')) {
-            $query = "CREATE TABLE `#__tags_group` (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `groupid` int(11) unsigned NOT NULL DEFAULT '0',
-			  `tagid` int(11) unsigned NOT NULL DEFAULT '0',
-			  `priority` int(11) NOT NULL DEFAULT '0',
-			  PRIMARY KEY (`id`),
-			  KEY `idx_tagid` (`tagid`),
-			  KEY `idx_groupid` (`groupid`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__tags_group')) {
+            $schema->createTable('#__tags_group')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('groupid')->default(0)
+                ->unsignedInteger('tagid')->default(0)
+                ->integer('priority')->default(0)
+                ->primaryKey('id')
+                ->index('idx_tagid', 'tagid')
+                ->index('idx_groupid', 'groupid')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

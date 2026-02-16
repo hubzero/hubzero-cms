@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for adding a column to track whether an asset should have a corresponding gradebook entry or not
@@ -21,35 +22,45 @@ class Migration20140117212240ComCourses extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__courses_assets')
-            && $this->db->tableHasField('#__courses_assets', 'course_id')
-            && !$this->db->tableHasField('#__courses_assets', 'graded')
+            $schema->tableExists('#__courses_assets')
+            && $schema->hasColumn('#__courses_assets', 'course_id')
+            && !$schema->hasColumn('#__courses_assets', 'graded')
         ) {
-            $query = "ALTER TABLE `#__courses_assets` ADD `graded` TINYINT(2) NULL DEFAULT NULL AFTER `course_id`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__courses_assets', 'graded')
+                ->tinyInteger(2)
+                ->nullable()
+                ->default(null)
+                ->after('course_id');
 
             // Mark all assets of type form as graded
-            $query = "UPDATE `#__courses_assets` SET `graded` = 1 WHERE `type` = 'form'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__courses_assets')
+                ->set(['graded' => 1])
+                ->where('type', '=', 'form')
+                ->execute();
         }
 
         if (
-            $this->db->tableExists('#__courses_assets')
-            && $this->db->tableHasField('#__courses_assets', 'graded')
-            && !$this->db->tableHasField('#__courses_assets', 'grade_weight')
+            $schema->tableExists('#__courses_assets')
+            && $schema->hasColumn('#__courses_assets', 'graded')
+            && !$schema->hasColumn('#__courses_assets', 'grade_weight')
         ) {
-            $query = "ALTER TABLE `#__courses_assets` "
-                . "ADD `grade_weight` VARCHAR(255) NOT NULL DEFAULT '' AFTER `graded`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__courses_assets', 'grade_weight')
+                ->string(255)
+                ->notNull()
+                ->default('')
+                ->after('graded')
+                ->execute();
 
             // Mark all assets of type form as graded
-            $query = "UPDATE `#__courses_assets` SET `grade_weight` = `subtype` WHERE `type` = 'form'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__courses_assets')
+                ->set(['grade_weight' => Expression::column('subtype')])
+                ->where('type', '=', 'form')
+                ->execute();
         }
     }
 
@@ -58,19 +69,17 @@ class Migration20140117212240ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__courses_assets') && $this->db->tableHasField('#__courses_assets', 'graded')) {
-            $query = "ALTER TABLE `#__courses_assets` DROP COLUMN `graded`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__courses_assets') && $schema->hasColumn('#__courses_assets', 'graded')) {
+            $schema->dropColumn('#__courses_assets', 'graded');
         }
 
         if (
-            $this->db->tableExists('#__courses_assets')
-            && $this->db->tableHasField('#__courses_assets', 'grade_weight')
+            $schema->tableExists('#__courses_assets')
+            && $schema->hasColumn('#__courses_assets', 'grade_weight')
         ) {
-            $query = "ALTER TABLE `#__courses_assets` DROP COLUMN `grade_weight`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__courses_assets', 'grade_weight');
         }
     }
 }

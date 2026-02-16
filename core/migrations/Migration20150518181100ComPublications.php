@@ -21,22 +21,24 @@ class Migration20150518181100ComPublications extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__item_watch')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__item_watch` (
-				  `id` int(11) NOT NULL AUTO_INCREMENT,
-				  `item_id` int(11) NOT NULL DEFAULT '0',
-				  `item_type` varchar(150) NOT NULL,
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `created_by` int(11) NOT NULL DEFAULT '0',
-				  `email` varchar(150),
-				  `state` tinyint(2) NOT NULL DEFAULT '0',
-				  `params` text,
-				  PRIMARY KEY (`id`),
-				  KEY `idx_item_type_item_id` (`item_type`,`item_id`),
-				  KEY `idx_created_by_email` (`created_by`, `email`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__item_watch')) {
+            $schema->createTable('#__item_watch')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('item_id')->default(0)
+                ->string('item_type', 150)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->string('email', 150)->nullable()
+                ->tinyInteger('state')->default(0)
+                ->text('params')->nullable()
+                ->primaryKey('id')
+                ->index('idx_item_type_item_id', ['item_type', 'item_id'])
+                ->index('idx_created_by_email', ['created_by', 'email'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -45,10 +47,8 @@ class Migration20150518181100ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__item_watch')) {
-            $query = "DROP TABLE IF EXISTS `#__item_watch`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__item_watch');
     }
 }

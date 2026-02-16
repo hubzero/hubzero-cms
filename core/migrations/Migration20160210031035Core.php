@@ -20,38 +20,48 @@ class Migration20160210031035Core extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__migrations')
-            && !$this->db->tableHasField('#__migrations', 'status')
-            && $this->db->tableHasField('#__migrations', 'action_by')
-        ) {
-            $query = "ALTER TABLE `#__migrations` ADD `status` varchar(255) NOT NULL DEFAULT '' AFTER `action_by`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__migrations` SET `status` = 'success'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__migrations')
+            && !$schema->hasColumn('#__migrations', 'status')
+            && $schema->hasColumn('#__migrations', 'action_by')
+        ) {
+            $schema->addColumn('#__migrations', 'status')
+                ->string(255)
+                ->notNull()
+                ->default('')
+                ->after('action_by')
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__migrations')
+                ->set(['status' => 'success'])
+                ->execute();
         }
     }
 
     /**
      * Down
      **/
+    /**
+     * Down
+     **/
     public function down()
     {
-        if ($this->db->tableExists('#__migrations') && $this->db->tableHasField('#__migrations', 'status')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__migrations') && $schema->hasColumn('#__migrations', 'status')) {
             // We delete all non success entries - this loses data, but it
             // restores the original intent of the migrations table.
             // Otherwise, you'd have entries in the table that will look like
             // successful runs, even though they weren't.
-            $query = "DELETE FROM `#__migrations` WHERE `status` != 'success'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->delete('#__migrations')
+                ->where('status', '!=', 'success')
+                ->execute();
 
-            $query = "ALTER TABLE `#__migrations` DROP `status`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__migrations', 'status');
         }
     }
 }

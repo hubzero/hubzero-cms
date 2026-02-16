@@ -191,22 +191,4 @@ class Migration20170627153900ComHubgraph extends Base
             }
         }
     }
-
-    /**
-     * Down
-     **/
-    public function down()
-    {
-        // Need elevated MySQL privileges for CREATE TRIGGER operations
-        // The runAsRoot() method will use muse escalation if available
-        if (!$this->runAsRoot()) {
-            $this->setError(
-                'Failed to run with the necessary privileges. Try running with: sudo muse migration run',
-                'warning'
-            );
-            return false;
-        }
-
-        // Create triggers...
-    }
 }

@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for syncing loginShell and ftpShell between users and xprofiles
@@ -21,20 +22,22 @@ class Migration20161021110502ComUsers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__users') && $this->db->tableExists('#__xprofiles')) {
-            $query = "UPDATE `#__users` AS u
-						INNER JOIN `#__xprofiles` AS x ON x.`uidNumber`=u.`id`
-						SET u.`loginShell` = x.`loginShell`
-						WHERE u.`loginShell` != x.`loginShell`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__users` AS u
-						INNER JOIN `#__xprofiles` AS x ON x.`uidNumber`=u.`id`
-						SET u.`ftpShell` = x.`ftpShell`
-						WHERE u.`ftpShell` != x.`ftpShell`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__users') && $schema->tableExists('#__xprofiles')) {
+            $this->db->getQuery(true)
+                ->update('#__users', 'u')
+                ->innerJoin('#__xprofiles AS x', 'x.uidNumber', 'u.id')
+                ->set(['u.loginShell' => Expression::column('x.loginShell')])
+                ->whereColumn('u.loginShell', '!=', 'x.loginShell')
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__users', 'u')
+                ->innerJoin('#__xprofiles AS x', 'x.uidNumber', 'u.id')
+                ->set(['u.ftpShell' => Expression::column('x.ftpShell')])
+                ->whereColumn('u.ftpShell', '!=', 'x.ftpShell')
+                ->execute();
         }
     }
 }

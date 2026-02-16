@@ -20,30 +20,32 @@ class Migration20151030150411ComProjects extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // Add connections table
-        if (!$this->db->tableExists('#__projects_connections')) {
-            $query = "CREATE TABLE `#__projects_connections` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`name` varchar(255) DEFAULT NULL,
-						`project_id` int(11) NOT NULL,
-						`provider_id` int(11) NOT NULL,
-						`params` text,
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__projects_connections')) {
+            $schema->createTable('#__projects_connections')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('name', 255)->nullable()
+                ->integer('project_id')
+                ->integer('provider_id')
+                ->text('params')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
         // Add providers table
-        if (!$this->db->tableExists('#__projects_connection_providers')) {
-            $query = "CREATE TABLE `#__projects_connection_providers` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`alias` varchar(255) NOT NULL DEFAULT '',
-						`name` varchar(255) NOT NULL DEFAULT '',
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__projects_connection_providers')) {
+            $schema->createTable('#__projects_connection_providers')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('alias', 255)->default('')
+                ->string('name', 255)->default('')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -52,18 +54,9 @@ class Migration20151030150411ComProjects extends Base
      **/
     public function down()
     {
-        // Drop connections table
-        if ($this->db->tableExists('#__projects_connections')) {
-            $query = "DROP TABLE `#__projects_connections`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        // Drop providers table
-        if ($this->db->tableExists('#__projects_connection_providers')) {
-            $query = "DROP TABLE `#__projects_connection_providers`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__projects_connections');
+        $schema->dropTable('#__projects_connection_providers');
     }
 }

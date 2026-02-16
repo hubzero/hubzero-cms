@@ -21,43 +21,54 @@ class Migration20130801182039ComPdf2form extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__pdf_forms')) {
-            if (!$this->db->tableHasKey('#__pdf_form_deployments', 'jos_pdf_form_deployments_crumb_uidx')) {
-                $query = "create unique index jos_pdf_form_deployments_crumb_uidx on #__pdf_form_deployments(crumb)";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__pdf_forms')) {
+            if (
+                $schema->tableExists('#__pdf_form_deployments')
+                && !$schema->hasKey('#__pdf_form_deployments', 'jos_pdf_form_deployments_crumb_uidx')
+            ) {
+                $schema->addUniqueIndex('#__pdf_form_deployments', 'jos_pdf_form_deployments_crumb_uidx', 'crumb');
             }
-            if (!$this->db->tableHasKey('#__pdf_form_responses', 'jos_pdf_form_responses_respondent_id_idx')) {
-                $query = "create index jos_pdf_form_responses_respondent_id_idx on"
-                    . "#__pdf_form_responses(respondent_id)";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (
+                $schema->tableExists('#__pdf_form_responses')
+                && !$schema->hasKey('#__pdf_form_responses', 'jos_pdf_form_responses_respondent_id_idx')
+            ) {
+                $schema->addIndex('#__pdf_form_responses', 'jos_pdf_form_responses_respondent_id_idx', 'respondent_id');
             }
-            if (!$this->db->tableHasKey('#__pdf_form_responses', 'jos_pdf_form_responses_question_id_idx')) {
-                $query = "create index jos_pdf_form_responses_question_id_idx on #__pdf_form_responses(question_id)";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (
+                $schema->tableExists('#__pdf_form_responses')
+                && !$schema->hasKey('#__pdf_form_responses', 'jos_pdf_form_responses_question_id_idx')
+            ) {
+                $schema->addIndex('#__pdf_form_responses', 'jos_pdf_form_responses_question_id_idx', 'question_id');
             }
-            if (!$this->db->tableHasKey('#__pdf_form_responses', 'jos_pdf_form_responses_answer_id_idx')) {
-                $query = "create index jos_pdf_form_responses_answer_id_idx on #__pdf_form_responses(answer_id)";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (
+                $schema->tableExists('#__pdf_form_responses')
+                && !$schema->hasKey('#__pdf_form_responses', 'jos_pdf_form_responses_answer_id_idx')
+            ) {
+                $schema->addIndex('#__pdf_form_responses', 'jos_pdf_form_responses_answer_id_idx', 'answer_id');
             }
-            if (!$this->db->tableHasKey('#__pdf_form_answers', 'jos_pdf_form_answers_question_id_idx')) {
-                $query = "create index jos_pdf_form_answers_question_id_idx on #__pdf_form_answers(question_id)";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (
+                $schema->tableExists('#__pdf_form_answers')
+                && !$schema->hasKey('#__pdf_form_answers', 'jos_pdf_form_answers_question_id_idx')
+            ) {
+                $schema->addIndex('#__pdf_form_answers', 'jos_pdf_form_answers_question_id_idx', 'question_id');
             }
-            if (!$this->db->tableHasKey('#__pdf_form_respondents', 'jos_pdf_form_respondents_user_id_idx')) {
-                $query = "create index jos_pdf_form_respondents_user_id_idx on #__pdf_form_respondents(user_id)";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (
+                $schema->tableExists('#__pdf_form_respondents')
+                && !$schema->hasKey('#__pdf_form_respondents', 'jos_pdf_form_respondents_user_id_idx')
+            ) {
+                $schema->addIndex('#__pdf_form_respondents', 'jos_pdf_form_respondents_user_id_idx', 'user_id');
             }
-            if (!$this->db->tableHasKey('#__pdf_form_respondents', 'jos_pdf_form_respondents_deployment_id_idx')) {
-                $query = "create index jos_pdf_form_respondents_deployment_id_idx on"
-                    . "#__pdf_form_respondents(deployment_id)";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (
+                $schema->tableExists('#__pdf_form_respondents')
+                && !$schema->hasKey('#__pdf_form_respondents', 'jos_pdf_form_respondents_deployment_id_idx')
+            ) {
+                $schema->addIndex(
+                    '#__pdf_form_respondents',
+                    'jos_pdf_form_respondents_deployment_id_idx',
+                    'deployment_id'
+                );
             }
         }
     }
@@ -67,20 +78,23 @@ class Migration20130801182039ComPdf2form extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__pdf_forms')) {
-            foreach (
-                array(
-                'jos_pdf_form_deployments_crumb_uidx on jos_pdf_form_deployments',
-                'jos_pdf_form_responses_respondent_id_idx on jos_pdf_form_responses',
-                'jos_pdf_form_responses_question_id_idx on jos_pdf_form_responses',
-                'jos_pdf_form_responses_answer_id_idx on jos_pdf_form_responses',
-                'jos_pdf_form_answers_question_id_idx on jos_pdf_form_answers',
-                'jos_pdf_form_respondents_user_id_idx on jos_pdf_form_respondents',
-                'jos_pdf_form_respondents_deployment_id_idx on jos_pdf_form_respondents'
-                ) as $query
-            ) {
-                $this->db->setQuery("drop index $query");
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__pdf_forms')) {
+            $indices = [
+                'jos_pdf_form_deployments_crumb_uidx' => '#__pdf_form_deployments',
+                'jos_pdf_form_responses_respondent_id_idx' => '#__pdf_form_responses',
+                'jos_pdf_form_responses_question_id_idx' => '#__pdf_form_responses',
+                'jos_pdf_form_responses_answer_id_idx' => '#__pdf_form_responses',
+                'jos_pdf_form_answers_question_id_idx' => '#__pdf_form_answers',
+                'jos_pdf_form_respondents_user_id_idx' => '#__pdf_form_respondents',
+                'jos_pdf_form_respondents_deployment_id_idx' => '#__pdf_form_respondents'
+            ];
+
+            foreach ($indices as $index => $table) {
+                if ($schema->tableExists($table) && $schema->hasKey($table, $index)) {
+                     $schema->dropIndex($table, $index);
+                }
             }
         }
     }

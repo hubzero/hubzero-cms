@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding scope field to migrations table
  *
-*/
+ */
 class Migration20140716182939Core extends Base
 {
     /**
@@ -21,22 +21,24 @@ class Migration20140716182939Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__migrations') && !$this->db->tableHasField('#__migrations', 'scope')) {
-            $query = "ALTER TABLE `#__migrations` ADD `scope` VARCHAR(255) NOT NULL DEFAULT '' AFTER `file`";
-            $this->db->setQuery($query);
-            $this->db->query();
-            $query = "UPDATE `#__migrations` SET `scope` = " . $this->db->quote(PATH_ROOT . DS . 'migrations');
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__migrations') && !$schema->hasColumn('#__migrations', 'scope')) {
+            $schema->addColumn('#__migrations', 'scope')->string(255)->notNull()->default('');
+
+            $this->db->getQuery(true)
+                ->update('#__migrations')
+                ->set(['scope' => PATH_ROOT . DS . 'migrations'])
+                ->execute();
         }
 
-        if ($this->db->tableExists('migrations') && !$this->db->tableHasField('migrations', 'scope')) {
-            $query = "ALTER TABLE `migrations` ADD `scope` VARCHAR(255) NOT NULL DEFAULT '' AFTER `file`";
-            $this->db->setQuery($query);
-            $this->db->query();
-            $query = "UPDATE `migrations` SET `scope` = " . $this->db->quote(PATH_ROOT . DS . 'migrations');
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('migrations') && !$schema->hasColumn('migrations', 'scope')) {
+            $schema->addColumn('migrations', 'scope')->string(255)->notNull()->default('');
+
+            $this->db->getQuery(true)
+                ->update('migrations')
+                ->set(['scope' => PATH_ROOT . DS . 'migrations'])
+                ->execute();
         }
     }
 
@@ -45,16 +47,14 @@ class Migration20140716182939Core extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__migrations') && $this->db->tableHasField('#__migrations', 'scope')) {
-            $query = "ALTER TABLE `#__migrations` DROP `scope`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__migrations') && $schema->hasColumn('#__migrations', 'scope')) {
+            $schema->dropColumn('#__migrations', 'scope');
         }
 
-        if ($this->db->tableExists('migrations') && $this->db->tableHasField('migrations', 'scope')) {
-            $query = "ALTER TABLE `migrations` DROP `scope`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('migrations') && $schema->hasColumn('migrations', 'scope')) {
+            $schema->dropColumn('migrations', 'scope');
         }
     }
 }

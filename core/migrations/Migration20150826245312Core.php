@@ -21,10 +21,15 @@ class Migration20150826245312Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__languages')) {
-            $query = "UPDATE `#__languages` SET access=1 WHERE lang_id=1 AND access=0;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__languages')) {
+            $this->db->getQuery(true)
+                ->update('#__languages')
+                ->set(['access' => 1])
+                ->where('lang_id', '=', 1)
+                ->where('access', '=', 0)
+                ->execute();
         }
     }
 }

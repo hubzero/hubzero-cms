@@ -21,15 +21,14 @@ class Migration20160307191342PlgProjectsFiles extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__projects_connections')
-            && $this->db->tableHasField('#__projects_connections', 'provider_id')
-            && !$this->db->tableHasField('#__projects_connections', 'owner_id')
+            $schema->tableExists('#__projects_connections')
+            && $schema->hasColumn('#__projects_connections', 'provider_id')
+            && !$schema->hasColumn('#__projects_connections', 'owner_id')
         ) {
-            $query = "ALTER TABLE `#__projects_connections` ADD `owner_id` INT(11) NULL DEFAULT NULL AFTER "
-                . "`provider_id`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__projects_connections', 'owner_id')->integer()->nullable()->execute();
         }
     }
 
@@ -38,13 +37,13 @@ class Migration20160307191342PlgProjectsFiles extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__projects_connections')
-            && $this->db->tableHasField('#__projects_connections', 'owner_id')
+            $schema->tableExists('#__projects_connections')
+            && $schema->hasColumn('#__projects_connections', 'owner_id')
         ) {
-            $query = "ALTER TABLE `#__projects_connections` DROP `owner_id`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__projects_connections', 'owner_id');
         }
     }
 }

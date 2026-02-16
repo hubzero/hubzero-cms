@@ -21,17 +21,20 @@ class Migration20151006204314Core extends Base
      **/
     public function up()
     {
-        if (is_dir(PATH_APP . DS . 'migrations') && $this->db->tableExists('#__migrations')) {
+        $schema = $this->db->schema();
+
+        if (is_dir(PATH_APP . DS . 'migrations') && $schema->tableExists('#__migrations')) {
             // Get any migrations that have been moved to app
             $exclude = array(".", "..", "index.html");
             $files   = array_diff(scandir(PATH_APP . DS . 'migrations'), $exclude);
 
             if ($files && count($files) > 0) {
                 foreach ($files as $file) {
-                    $query = "UPDATE `#__migrations` SET `scope` = 'app/migrations' WHERE `file` = "
-                        . $this->db->quote($file);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__migrations')
+                        ->set(['scope' => 'app/migrations'])
+                        ->where('file', '=', $file)
+                        ->execute();
                 }
             }
         }

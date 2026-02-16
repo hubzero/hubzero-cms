@@ -21,15 +21,17 @@ class Migration20140611102711ComCourses extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__courses_certificates')) {
-            $query = "CREATE TABLE `#__courses_certificates` (
-				  `id` int(11) NOT NULL AUTO_INCREMENT,
-				  `properties` text,
-				  `course_id` int(11) NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__courses_certificates')) {
+            $schema->createTable('#__courses_certificates')
+                ->integer('id', ['autoIncrement' => true])
+                ->text('properties')->nullable()
+                ->integer('course_id')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -38,10 +40,8 @@ class Migration20140611102711ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__courses_certificates')) {
-            $query = "DROP TABLE `#__courses_certificates`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__courses_certificates');
     }
 }

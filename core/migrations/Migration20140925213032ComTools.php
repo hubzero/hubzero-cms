@@ -25,25 +25,26 @@ class Migration20140925213032ComTools extends Base
             return false;
         }
 
+        $mwSchema = $mwdb->schema();
+
         if (
-            $mwdb->tableExists('job')
-            && $mwdb->tableHasField('job', 'active')
-            && !$mwdb->tableHasField('job', 'jobtoken')
+            $mwSchema->tableExists('job')
+            && $mwSchema->hasColumn('job', 'active')
+            && !$mwSchema->hasColumn('job', 'jobtoken')
         ) {
-            $query = "ALTER TABLE `job` ADD `jobtoken` VARCHAR(32) NULL DEFAULT NULL AFTER `active`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwSchema->addColumn('job', 'jobtoken')
+                ->string(32)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
 
         if (
-            $mwdb->tableExists('job')
-            && $mwdb->tableHasField('job', 'jobtoken')
-            && $mwdb->tableHasField('job', 'username')
-            && !$mwdb->tableHasKey('job', 'idx_username_jobtoken')
+            $mwSchema->tableExists('job')
+            && $mwSchema->hasColumn('job', 'jobtoken')
+            && $mwSchema->hasColumn('job', 'username')
         ) {
-            $query = "ALTER TABLE `job` ADD KEY `idx_username_jobtoken` (`username`,`jobtoken`)";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwSchema->addIndex('job', 'idx_username_jobtoken', ['username', 'jobtoken']);
         }
     }
 
@@ -57,16 +58,14 @@ class Migration20140925213032ComTools extends Base
             return false;
         }
 
-        if ($mwdb->tableExists('job') && $mwdb->tableHasKey('job', 'idx_username_jobtoken')) {
-            $query = "ALTER TABLE `job` DROP KEY `idx_username_jobtoken`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        $mwSchema = $mwdb->schema();
+
+        if ($mwSchema->tableExists('job')) {
+            $mwSchema->dropIndex('job', 'idx_username_jobtoken');
         }
 
-        if ($mwdb->tableExists('job') && $mwdb->tableHasField('job', 'jobtoken')) {
-            $query = "ALTER TABLE `job` DROP `jobtoken`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        if ($mwSchema->tableExists('job') && $mwSchema->hasColumn('job', 'jobtoken')) {
+            $mwSchema->dropColumn('job', 'jobtoken');
         }
     }
 }

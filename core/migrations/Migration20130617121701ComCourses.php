@@ -21,26 +21,20 @@ class Migration20130617121701ComCourses extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__courses_offering_sections', 'params')) {
-            $query = "ALTER TABLE `#__courses_offering_sections` ADD `params` TEXT  NOT NULL  AFTER `grade_policy_id`;";
+        if (
+            $schema->tableExists('#__courses_offering_sections')
+            && !$schema->hasColumn('#__courses_offering_sections', 'params')
+        ) {
+            $schema->addColumn('#__courses_offering_sections', 'params')->text()->notNull();
         }
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        $query = "";
-
-        if (!$this->db->tableHasField('#__courses_offerings', 'params')) {
-            $query = "ALTER TABLE `#__courses_offerings` ADD `params` TEXT  NOT NULL  AFTER `created_by`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__courses_offerings')
+            && !$schema->hasColumn('#__courses_offerings', 'params')
+        ) {
+            $schema->addColumn('#__courses_offerings', 'params')->text()->notNull();
         }
     }
 
@@ -49,26 +43,14 @@ class Migration20130617121701ComCourses extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_offering_sections', 'params')) {
-            $query .= "ALTER TABLE `#__courses_offering_sections` DROP `params`;";
+        if ($schema->hasColumn('#__courses_offering_sections', 'params')) {
+            $schema->dropColumn('#__courses_offering_sections', 'params');
         }
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        $query = "";
-
-        if ($this->db->tableHasField('#__courses_offerings', 'params')) {
-            $query .= "ALTER TABLE `#__courses_offerings` DROP `params`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_offerings', 'params')) {
+            $schema->dropColumn('#__courses_offerings', 'params');
         }
     }
 }

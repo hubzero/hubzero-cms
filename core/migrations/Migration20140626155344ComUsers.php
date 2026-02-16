@@ -20,20 +20,22 @@ class Migration20140626155344ComUsers extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__users_merge_log')) {
-            $query = "CREATE TABLE `#__users_merge_log` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `source` varchar(150) NOT NULL DEFAULT '',
-				  `destination` varchar(150) NOT NULL DEFAULT '',
-				  `table` varchar(255) NOT NULL DEFAULT '',
-				  `column` varchar(255) NOT NULL DEFAULT '',
-				  `table_pk` varchar(255) DEFAULT NULL,
-				  `table_id` int(11) DEFAULT NULL,
-				  `logged` datetime NOT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__users_merge_log')) {
+            $schema->createTable('#__users_merge_log')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('source', 150)->default('')
+                ->string('destination', 150)->default('')
+                ->string('table', 255)->default('')
+                ->string('column', 255)->default('')
+                ->string('table_pk', 255)->nullable()
+                ->integer('table_id')->nullable()
+                ->datetime('logged')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -42,10 +44,8 @@ class Migration20140626155344ComUsers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__users_merge_log')) {
-            $query = "DROP TABLE `#__users_merge_log`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__users_merge_log');
     }
 }

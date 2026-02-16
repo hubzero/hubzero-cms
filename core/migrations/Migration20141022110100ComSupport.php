@@ -20,12 +20,17 @@ class Migration20141022110100ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__support_tickets')) {
-            $query = "SELECT id, report FROM `#__support_tickets` WHERE `created` < '2013-01-01"
-                . "00:00:00' AND `report` LIKE '%\\\\\'%' AND `type`=0 AND `open`=1";
-            $this->db->setQuery($query);
+        $schema = $this->db->schema();
 
-            if ($records = $this->db->loadObjectList()) {
+        if ($schema->tableExists('#__support_tickets')) {
+            $query = $this->db->getQuery(true)
+                ->select(['id', 'report'])
+                ->from('#__support_tickets')
+                ->where('created', '<', '2013-01-01 00:00:00')
+                ->where('report', 'LIKE', '%\\\\\'%') // Keep escaping logic
+                ->where('type', '=', 0)
+                ->where('open', '=', 1);
+            if ($records = $query->loadObjectList()) {
                 foreach ($records as $row) {
                     $row->report = str_replace('&quot;', '"', $row->report);
                     $row->report = stripslashes($row->report);
@@ -35,13 +40,11 @@ class Migration20141022110100ComSupport extends Base
                         $row->summary .= '...';
                     }
 
-                    $this->db->setQuery(
-                        "UPDATE `#__support_tickets` "
-                        . "SET `report`=" . $this->db->quote($row->report)
-                        . ", `summary`=" . $this->db->quote($row->summary)
-                        . " WHERE `id`=" . $this->db->quote($row->id)
-                    );
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__support_tickets')
+                        ->set(['report' => $row->report, 'summary' => $row->summary])
+                        ->where('id', '=', $row->id)
+                        ->execute();
                 }
             }
         }

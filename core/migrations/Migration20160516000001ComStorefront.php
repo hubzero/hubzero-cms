@@ -21,25 +21,25 @@ class Migration20160516000001ComStorefront extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_skus')
-            && !$this->db->tableHasField('#__storefront_skus', 'sRestricted')
+            $schema->tableExists('#__storefront_skus')
+            && !$schema->hasColumn('#__storefront_skus', 'sRestricted')
         ) {
-            $query = "ALTER TABLE `#__storefront_skus` ADD `sRestricted` tinyint(1) DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_skus', 'sRestricted')->tinyInteger()->default(0)->execute();
         }
-        if (!$this->db->tableExists('#__storefront_permissions')) {
-            $query = "	CREATE TABLE `#__storefront_permissions` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`scope` varchar(15) DEFAULT NULL,
-						`scope_id` int(11) DEFAULT NULL,
-						`uId` int(11) DEFAULT NULL,
-						PRIMARY KEY (`id`),
-						UNIQUE KEY `single entry per item` (`scope`,`scope_id`,`uId`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__storefront_permissions')) {
+            $schema->createTable('#__storefront_permissions')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('scope', 15)->nullable()
+                ->integer('scope_id')->nullable()
+                ->integer('uId')->nullable()
+                ->primaryKey('id')
+                ->uniqueIndex('single entry per item', ['scope', 'scope_id', 'uId'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -48,19 +48,14 @@ class Migration20160516000001ComStorefront extends Base
      **/
     public function down()
     {
-        if (
-            $this->db->tableExists('#__storefront_skus')
-            && $this->db->tableHasField('#__storefront_skus', 'sRestricted')
-        ) {
-            $query = "ALTER TABLE `#__storefront_skus` DROP COLUMN `sRestricted`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableExists('#__storefront_permissions')) {
-            $query = "DROP TABLE `#__storefront_permissions`";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__storefront_skus')
+            && $schema->hasColumn('#__storefront_skus', 'sRestricted')
+        ) {
+            $schema->dropColumn('#__storefront_skus', 'sRestricted');
         }
+        $schema->dropTable('#__storefront_permissions');
     }
 }
