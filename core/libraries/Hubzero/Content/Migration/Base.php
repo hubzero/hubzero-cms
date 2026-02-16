@@ -16,13 +16,37 @@ require_once __DIR__ . '/helpers/queryDropColumnStatement.php';
 use Hubzero\Content\Migration\Helpers\QueryAddColumnStatement;
 use Hubzero\Content\Migration\Helpers\QueryDropColumnStatement;
 use Hubzero\Database\Driver;
+use Hubzero\Database\Schema\Builder as SchemaBuilder;
 use Hubzero\System\PrivilegeManager;
 
 /**
  * Base migration class
+ *
+ * Migrations are automatically wrapped in database transactions for safety.
+ * If a migration fails, any DML changes (INSERT, UPDATE, DELETE) will be
+ * rolled back automatically.
+ *
+ * Note: On MySQL/MariaDB, DDL statements (CREATE TABLE, ALTER TABLE, DROP TABLE,
+ * CREATE INDEX, etc.) cause an implicit commit and cannot be rolled back.
+ * On PostgreSQL and SQLite, DDL is fully transactional.
+ *
+ * To disable transaction wrapping for a specific migration, set:
+ * ```php
+ * public $useTransaction = false;
+ * ```
  **/
 class Base
 {
+    /**
+     * Whether to wrap this migration in a transaction
+     *
+     * Set to false to disable automatic transaction wrapping.
+     * Most migrations should leave this as true (the default).
+     *
+     * @var  bool
+     **/
+    public $useTransaction = true;
+
     /**
      * Base database object (should have extensions and migrations log tables in it)
      *
@@ -64,6 +88,13 @@ class Base
      * @var  bool
      **/
     private $protectedMode = true;
+
+    /**
+     * Schema builder instance
+     *
+     * @var  SchemaBuilder|null
+     **/
+    private $schemaBuilder = null;
 
     /**
      * Macros
@@ -192,6 +223,42 @@ class Base
         }
 
         return $instance;
+    }
+
+    /**
+     * Get a Schema Builder instance for database-agnostic DDL
+     *
+     * The Schema Builder provides a fluent interface for creating and
+     * modifying database tables that works across MySQL and SQLite.
+     *
+     * Example usage in a migration:
+     * ```php
+     * public function up()
+     * {
+     *     $this->schema()->create('my_table', function($table) {
+     *         $table->id();
+     *         $table->string('name');
+     *         $table->string('email')->unique();
+     *         $table->boolean('active')->default(true);
+     *         $table->timestamps();
+     *     });
+     * }
+     *
+     * public function down()
+     * {
+     *     $this->schema()->dropIfExists('my_table');
+     * }
+     * ```
+     *
+     * @return SchemaBuilder
+     */
+    public function schema(): SchemaBuilder
+    {
+        if ($this->schemaBuilder === null) {
+            $this->schemaBuilder = new SchemaBuilder($this->db);
+        }
+
+        return $this->schemaBuilder;
     }
 
     /**

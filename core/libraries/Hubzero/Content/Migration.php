@@ -82,6 +82,16 @@ class Migration
     private $ignoreCallbacks = false;
 
     /**
+     * All-or-nothing transaction mode
+     *
+     * When enabled, wraps all migrations in a single transaction.
+     * If any migration fails, the entire batch is rolled back.
+     *
+     * @public bool
+     **/
+    private $allOrNothing = false;
+
+    /**
      * Constructor
      *
      * @param   object  $docroot  Defaults to null, which should then resolve to the hub docroot
@@ -200,6 +210,36 @@ class Migration
         } else {
             return false;
         }
+    }
+
+    /**
+     * Enable or disable all-or-nothing transaction mode
+     *
+     * When enabled, wraps all migrations in a single transaction.
+     * If any migration fails, the entire batch is rolled back.
+     *
+     * Note: MySQL DDL statements (CREATE TABLE, ALTER TABLE, etc.) cause
+     * implicit commits and cannot be rolled back. This mode is most useful
+     * for data migrations or with databases that support transactional DDL
+     * (PostgreSQL, SQLite).
+     *
+     * @param   bool  $enabled  Whether to enable all-or-nothing mode
+     * @return  $this
+     **/
+    public function setAllOrNothing($enabled = true)
+    {
+        $this->allOrNothing = (bool) $enabled;
+        return $this;
+    }
+
+    /**
+     * Check if all-or-nothing mode is enabled
+     *
+     * @return  bool
+     **/
+    public function isAllOrNothing()
+    {
+        return $this->allOrNothing;
     }
 
     /**
@@ -347,6 +387,18 @@ class Migration
 
         $hasStatus = $this->db->tableHasField($this->get('tbl_name'), 'status');
 
+        // All-or-nothing mode: start batch transaction
+        $runDb = $this->runDb ?? $this->db;
+        $batchTransactionStarted = false;
+        $completedMigrations = [];
+
+        if ($this->allOrNothing && !$dryrun && !$logOnly) {
+            $this->log("All-or-nothing mode: wrapping all migrations in a single transaction");
+            $this->log("Warning: MySQL DDL statements cause implicit commits and cannot be rolled back", 'warning');
+            $runDb->transactionStart();
+            $batchTransactionStarted = true;
+        }
+
         // Loop through files and run their '$direction' method
         foreach ($this->files as $fullpath) { //$file)
         // Get just the file
@@ -480,23 +532,49 @@ class Migration
             } else {
                 // Try running the '$direction' SQL
                 if (method_exists($class, $direction)) {
+                    // Determine if we should use transaction wrapping
+                    // Migrations can opt-out by setting $useTransaction = false
+                    // Skip per-migration transactions when in all-or-nothing mode
+                    $useTransaction = $this->allOrNothing ? false : $this->shouldUseTransaction($class);
+
+                    // Start transaction if enabled (per-migration, not batch)
+                    if ($useTransaction) {
+                        $runDb->transactionStart();
+                    }
+
+                    // Track execution time
+                    $startTime = microtime(true);
+
                     try {
                         $result = $class->$direction();
                         $errors = $class->getErrors();
                         $status = 'success';
 
+                        // Calculate execution time in milliseconds
+                        $executionTime = (int) round((microtime(true) - $startTime) * 1000);
+
                         // Loop through errors if we have them
                         if ($errors && count($errors) > 0) {
                             foreach ($errors as $error) {
                                 if ($error['type'] == 'fatal') {
-                                    // Completely failed...log and stop immediately
-                                    $this->log("Error: running {$direction}() resulted in a fatal error in 
+                                    // Completely failed...rollback and stop immediately
+                                    if ($this->allOrNothing && $batchTransactionStarted) {
+                                        // Rollback entire batch
+                                        $runDb->transactionRollback();
+                                        $this->log("All-or-nothing: rolling back entire batch due to fatal error", 'error');
+                                    } elseif ($useTransaction) {
+                                        $runDb->transactionRollback();
+                                    }
+                                    $this->log("Error: running {$direction}() resulted in a fatal error in
                                         {$scope}/{$file}: {$error['message']}", 'error');
-                                    $this->recordMigration($file, $scope, $hash, $direction, 'fatal');
+                                    // Only record if not in all-or-nothing mode
+                                    if (!$this->allOrNothing) {
+                                        $this->recordMigration($file, $scope, $hash, $direction, 'fatal', $executionTime);
+                                    }
                                     return false;
                                 } elseif ($error['type'] == 'warning') {
                                     // Just a warning...display message and carry on (my wayward son)
-                                    $this->log("Warning: running {$direction}() resulted in a non-fatal error in 
+                                    $this->log("Warning: running {$direction}() resulted in a non-fatal error in
                                         {$scope}/{$file}: {$error['message']}", 'warning');
                                     $status = 'warning';
                                     continue;
@@ -515,27 +593,107 @@ class Migration
                             }
                         }
 
-                        $this->recordMigration($file, $scope, $hash, $direction, $status);
+                        // Commit transaction on success (non-fatal) - only for per-migration transactions
+                        if ($useTransaction) {
+                            $runDb->transactionCommit();
+                        }
+
+                        // Record or track the migration
+                        if ($this->allOrNothing) {
+                            // Track for batch recording after successful commit
+                            $completedMigrations[] = [
+                                'file' => $file,
+                                'scope' => $scope,
+                                'hash' => $hash,
+                                'direction' => $direction,
+                                'status' => $status,
+                                'executionTime' => $executionTime
+                            ];
+                        } else {
+                            $this->recordMigration($file, $scope, $hash, $direction, $status, $executionTime);
+                        }
+
                         if ($status === 'skipped') {
                             // Don't log "Completed" for skipped migrations
                         } else {
-                            $this->log("Completed {$direction}() in {$scope}/{$file}", 'success');
+                            $this->log("Completed {$direction}() in {$scope}/{$file} ({$executionTime}ms)", 'success');
                         }
                     } catch (Migration\SkipMigrationException $e) {
-                        $this->recordMigration($file, $scope, $hash, $direction, 'skipped');
+                        // Calculate execution time even for skipped migrations
+                        $executionTime = (int) round((microtime(true) - $startTime) * 1000);
+
+                        if ($this->allOrNothing && $batchTransactionStarted) {
+                            // In all-or-nothing mode, a skip causes batch rollback
+                            $runDb->transactionRollback();
+                            $this->log("All-or-nothing: rolling back entire batch due to skip", 'warning');
+                            $this->log("Skipped {$direction}() in {$scope}/{$file}: {$e->getMessage()}", 'info');
+                            return false;
+                        } elseif ($useTransaction) {
+                            // Rollback per-migration transaction on skip
+                            $runDb->transactionRollback();
+                        }
+
+                        // Only record if not in all-or-nothing mode
+                        if (!$this->allOrNothing) {
+                            $this->recordMigration($file, $scope, $hash, $direction, 'skipped', $executionTime);
+                        }
                         $this->log("Skipped {$direction}() in {$scope}/{$file}: {$e->getMessage()}", 'info');
                     } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+                        // Rollback transaction on failure
+                        if ($this->allOrNothing && $batchTransactionStarted) {
+                            $runDb->transactionRollback();
+                            $this->log("All-or-nothing: rolling back entire batch due to query failure", 'error');
+                        } elseif ($useTransaction) {
+                            $runDb->transactionRollback();
+                        }
                         $this->
                             log("Error: running {$direction}() resulted in\n\n{$e->
                             getMessage()}\n\nin {$scope}/{$file}", 'error');
                         return false;
                     } catch (\PDOException $e) {
+                        // Rollback transaction on failure
+                        if ($this->allOrNothing && $batchTransactionStarted) {
+                            $runDb->transactionRollback();
+                            $this->log("All-or-nothing: rolling back entire batch due to PDO exception", 'error');
+                        } elseif ($useTransaction) {
+                            $runDb->transactionRollback();
+                        }
                         $this->
                             log("Error: running {$direction}() resulted in\n\n{$e->
                             getMessage()}\n\nin {$scope}/{$file}", 'error');
                         return false;
                     }
                 }
+            }
+        }
+
+        // All-or-nothing mode: commit batch transaction and record all migrations
+        if ($this->allOrNothing && $batchTransactionStarted) {
+            try {
+                $runDb->transactionCommit();
+                $this->log("All-or-nothing: batch transaction committed successfully", 'success');
+
+                // Now record all completed migrations
+                foreach ($completedMigrations as $migration) {
+                    $this->recordMigration(
+                        $migration['file'],
+                        $migration['scope'],
+                        $migration['hash'],
+                        $migration['direction'],
+                        $migration['status'],
+                        $migration['executionTime']
+                    );
+                }
+
+                if (count($completedMigrations) > 0) {
+                    $this->log(
+                        "All-or-nothing: recorded " . count($completedMigrations) . " migration(s)",
+                        'success'
+                    );
+                }
+            } catch (\Exception $e) {
+                $this->log("All-or-nothing: failed to commit batch transaction: " . $e->getMessage(), 'error');
+                return false;
             }
         }
 
@@ -635,14 +793,15 @@ class Migration
     /**
      * Record migration in migrations table
      *
-     * @param   string  $file       The path to file being recorded
-     * @param   string  $scope      The folder of migration
-     * @param   string  $hash       The hash of file
-     * @param   string  $direction  Up or down
-     * @param   string  $status     The status of the run
+     * @param   string  $file           The path to file being recorded
+     * @param   string  $scope          The folder of migration
+     * @param   string  $hash           The hash of file
+     * @param   string  $direction      Up or down
+     * @param   string  $status         The status of the run
+     * @param   int     $executionTime  Execution time in milliseconds
      * @return  bool
      **/
-    public function recordMigration($file, $scope, $hash, $direction, $status = 'success')
+    public function recordMigration($file, $scope, $hash, $direction, $status = 'success', $executionTime = null)
     {
         // Catch instances where we don't have a status field yet
         // and mimic prior behavior where these runs were not logged
@@ -654,7 +813,7 @@ class Migration
         try {
             $date = new \Hubzero\Utility\Date();
 
-            // Craete our object to insert
+            // Create our object to insert
             $obj = (object) array(
                 'file'      => $file,
                 'hash'      => $hash,
@@ -669,6 +828,10 @@ class Migration
 
             if ($this->db->tableHasField($this->get('tbl_name'), 'status')) {
                 $obj->status = $status;
+            }
+
+            if ($executionTime !== null && $this->db->tableHasField($this->get('tbl_name'), 'execution_time')) {
+                $obj->execution_time = (int) $executionTime;
             }
 
             $this->db->insertObject($this->get('tbl_name'), $obj);
@@ -696,6 +859,486 @@ class Migration
             $this->log("Failed to retrieve history.", 'error');
             return false;
         }
+    }
+
+    /**
+     * Mark a migration as executed without actually running it
+     *
+     * This is useful for:
+     * - Fixing tracking table mismatches after manual database changes
+     * - Recovering from partial failures
+     * - Syncing tracking state with external changes
+     *
+     * @param   string  $file       The migration filename
+     * @param   string  $direction  Direction ('up' or 'down')
+     * @param   string  $extension  Optional extension filter to help locate the file
+     * @return  bool    True on success, false on failure
+     **/
+    public function markMigration($file, $direction = 'up', $extension = null)
+    {
+        if (!$this->db) {
+            $this->log("Database connection not available.", 'error');
+            return false;
+        }
+
+        // Validate direction
+        if (!in_array($direction, ['up', 'down'])) {
+            $this->log("Invalid direction: must be 'up' or 'down'.", 'error');
+            return false;
+        }
+
+        // Find the migration file to get its scope
+        $this->files = [];
+        if (!$this->find($extension, $file)) {
+            $this->log("Migration file not found: {$file}", 'error');
+            return false;
+        }
+
+        if (empty($this->files)) {
+            $this->log("Migration file not found: {$file}", 'error');
+            return false;
+        }
+
+        $fullpath = $this->files[0];
+        $scope = str_replace(PATH_ROOT . DS, '', dirname($fullpath));
+        $hash = hash('md5', $file);
+
+        // Record the migration
+        if ($this->recordMigration($file, $scope, $hash, $direction, 'success', null)) {
+            $this->log("Marked {$file} as {$direction} (without executing)", 'success');
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Remove a migration record from the tracking table
+     *
+     * This removes the most recent tracking entry for a migration,
+     * effectively "unmarking" it so it appears as pending again.
+     *
+     * @param   string  $file       The migration filename
+     * @param   string  $extension  Optional extension filter to help locate the file
+     * @return  bool    True on success, false on failure
+     **/
+    public function unmarkMigration($file, $extension = null)
+    {
+        if (!$this->db) {
+            $this->log("Database connection not available.", 'error');
+            return false;
+        }
+
+        // Find the migration file to get its scope
+        $this->files = [];
+        if (!$this->find($extension, $file)) {
+            $this->log("Migration file not found: {$file}", 'error');
+            return false;
+        }
+
+        if (empty($this->files)) {
+            $this->log("Migration file not found: {$file}", 'error');
+            return false;
+        }
+
+        $fullpath = $this->files[0];
+        $scope = str_replace(PATH_ROOT . DS, '', dirname($fullpath));
+
+        try {
+            // Find the most recent entry for this file/scope
+            $query = "SELECT `id` FROM " . $this->db->quoteName($this->get('tbl_name'))
+                   . " WHERE `file` = " . $this->db->quote($file);
+
+            if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
+                if ($scope == 'core/migrations') {
+                    $query .= " AND (`scope`='' OR `scope` IN ("
+                            . $this->db->quote($scope) . ","
+                            . $this->db->quote('migrations') . "))";
+                } else {
+                    $query .= " AND `scope` = " . $this->db->quote($scope);
+                }
+            }
+
+            $query .= " ORDER BY `date` DESC LIMIT 1";
+
+            $this->db->setQuery($query);
+            $entry = $this->db->loadObject();
+
+            if (!$entry) {
+                $this->log("No tracking record found for {$file}", 'warning');
+                return false;
+            }
+
+            // Delete the entry
+            $deleteQuery = "DELETE FROM " . $this->db->quoteName($this->get('tbl_name'))
+                         . " WHERE `id` = " . (int) $entry->id;
+
+            $this->db->setQuery($deleteQuery);
+            $this->db->query();
+
+            $this->log("Removed tracking record for {$file}", 'success');
+            return true;
+        } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+            $this->log("Failed to remove tracking record: {$e->getMessage()}", 'error');
+            return false;
+        }
+    }
+
+    /**
+     * Check if a migration has been executed
+     *
+     * @param   string  $file       The migration filename
+     * @param   string  $extension  Optional extension filter
+     * @return  array|false  Migration entry if executed, false if not found or not executed
+     **/
+    public function getMigrationStatus($file, $extension = null)
+    {
+        if (!$this->db) {
+            return false;
+        }
+
+        // Find the migration file to get its scope
+        $this->files = [];
+        if (!$this->find($extension, $file)) {
+            return false;
+        }
+
+        if (empty($this->files)) {
+            return false;
+        }
+
+        $fullpath = $this->files[0];
+        $scope = str_replace(PATH_ROOT . DS, '', dirname($fullpath));
+
+        try {
+            $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'))
+                   . " WHERE `file` = " . $this->db->quote($file);
+
+            if ($this->db->tableHasField($this->get('tbl_name'), 'scope')) {
+                if ($scope == 'core/migrations') {
+                    $query .= " AND (`scope`='' OR `scope` IN ("
+                            . $this->db->quote($scope) . ","
+                            . $this->db->quote('migrations') . "))";
+                } else {
+                    $query .= " AND `scope` = " . $this->db->quote($scope);
+                }
+            }
+
+            $query .= " ORDER BY `date` DESC LIMIT 1";
+
+            $this->db->setQuery($query);
+            $entry = $this->db->loadObject();
+
+            return $entry ?: false;
+        } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Get migration status summary
+     *
+     * Returns counts and details about pending, executed, and failed migrations.
+     *
+     * @param   string  $extension  Optional extension filter
+     * @return  array|false  Status array or false on error
+     **/
+    public function getStatus($extension = null)
+    {
+        if (!$this->db) {
+            return false;
+        }
+
+        // Find all migration files
+        $this->find($extension);
+        $allFiles = $this->files;
+
+        // Get all executed migrations from database
+        try {
+            $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'))
+                   . " ORDER BY `date` DESC";
+            $this->db->setQuery($query);
+            $history = $this->db->loadObjectList();
+        } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+            $this->log("Failed to retrieve migration history.", 'error');
+            return false;
+        }
+
+        // Build lookup of executed migrations (most recent entry for each file/scope)
+        $executed = [];
+        $failed = [];
+        $skipped = [];
+
+        foreach ($history as $entry) {
+            $key = $entry->scope . '/' . $entry->file;
+
+            // Only track the most recent execution for each file
+            if (!isset($executed[$key])) {
+                $executed[$key] = $entry;
+
+                // Track failed/skipped separately
+                if (isset($entry->status)) {
+                    if ($entry->status === 'fatal' || $entry->status === 'failed') {
+                        $failed[] = $entry;
+                    } elseif ($entry->status === 'skipped') {
+                        $skipped[] = $entry;
+                    }
+                }
+            }
+        }
+
+        // Determine pending migrations (files not executed or last run was 'down')
+        $pending = [];
+        foreach ($allFiles as $filepath) {
+            $file = basename($filepath);
+            $scope = str_replace(PATH_ROOT . DS, '', dirname($filepath));
+            $key = $scope . '/' . $file;
+
+            // Pending if: never run, or last run was down, or last run failed/skipped
+            if (!isset($executed[$key])) {
+                $pending[] = $file;
+            } elseif ($executed[$key]->direction === 'down') {
+                $pending[] = $file;
+            } elseif (isset($executed[$key]->status) &&
+                      in_array($executed[$key]->status, ['fatal', 'failed', 'skipped'])) {
+                $pending[] = $file;
+            }
+        }
+
+        // Sort pending by filename (which includes timestamp)
+        sort($pending);
+
+        // Get last executed (successful up migration)
+        $lastExecuted = null;
+        foreach ($history as $entry) {
+            if ($entry->direction === 'up' &&
+                (!isset($entry->status) || $entry->status === 'success' || $entry->status === 'warning')) {
+                $lastExecuted = $entry;
+                break;
+            }
+        }
+
+        // Get recent history (last 10)
+        $recent = array_slice($history, 0, 10);
+
+        // Count successful executions (up migrations that succeeded)
+        $executedCount = 0;
+        foreach ($executed as $entry) {
+            if ($entry->direction === 'up' &&
+                (!isset($entry->status) || $entry->status === 'success' || $entry->status === 'warning')) {
+                $executedCount++;
+            }
+        }
+
+        return [
+            'counts' => [
+                'available' => count($allFiles),
+                'executed'  => $executedCount,
+                'pending'   => count($pending),
+                'failed'    => count($failed),
+                'skipped'   => count($skipped),
+            ],
+            'pending'       => $pending,
+            'failed'        => $failed,
+            'skipped'       => $skipped,
+            'last_executed' => $lastExecuted,
+            'next_pending'  => !empty($pending) ? $pending[0] : null,
+            'recent'        => $recent,
+        ];
+    }
+
+    /**
+     * Resolve a migration alias to a specific filename
+     *
+     * Supported aliases:
+     * - 'first'   - The first (oldest) migration file
+     * - 'prev'    - The migration before the last executed one
+     * - 'current' - The last successfully executed migration
+     * - 'next'    - The next pending migration
+     * - 'latest'  - The latest (newest) migration file
+     *
+     * @param   string       $alias      The alias to resolve
+     * @param   string|null  $extension  Optional extension filter
+     * @return  array|false  Array with 'file' and 'info' keys, or false if not found
+     **/
+    public function resolveAlias($alias, $extension = null)
+    {
+        if (!$this->db) {
+            return false;
+        }
+
+        $alias = strtolower($alias);
+        $validAliases = ['first', 'prev', 'previous', 'current', 'next', 'latest', 'last'];
+
+        if (!in_array($alias, $validAliases)) {
+            return false;
+        }
+
+        // Normalize aliases
+        if ($alias === 'previous') {
+            $alias = 'prev';
+        }
+        if ($alias === 'last') {
+            $alias = 'latest';
+        }
+
+        // Find all migration files (sorted by filename/timestamp)
+        $this->files = [];
+        $this->find($extension);
+        $allFiles = $this->files;
+
+        if (empty($allFiles)) {
+            return false;
+        }
+
+        // Sort files by basename (which includes timestamp)
+        usort($allFiles, function ($a, $b) {
+            return strcmp(basename($a), basename($b));
+        });
+
+        // Get execution history
+        try {
+            $query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'))
+                   . " WHERE `direction` = 'up'"
+                   . " AND (`status` IS NULL OR `status` IN ('success', 'warning'))"
+                   . " ORDER BY `date` DESC";
+            $this->db->setQuery($query);
+            $history = $this->db->loadObjectList();
+        } catch (\Hubzero\Database\Exception\QueryFailedException $e) {
+            $this->log("Failed to retrieve migration history.", 'error');
+            return false;
+        }
+
+        // Build list of successfully executed migrations
+        $executed = [];
+        foreach ($history as $entry) {
+            $executed[$entry->file] = $entry;
+        }
+
+        // Get pending migrations (not executed or last run was down/failed)
+        $pending = [];
+        foreach ($allFiles as $filepath) {
+            $file = basename($filepath);
+            if (!isset($executed[$file])) {
+                $pending[] = $filepath;
+            }
+        }
+
+        // Resolve the alias
+        switch ($alias) {
+            case 'first':
+                // First (oldest) migration file
+                $filepath = $allFiles[0];
+                return [
+                    'file' => basename($filepath),
+                    'path' => $filepath,
+                    'info' => 'First migration (oldest)'
+                ];
+
+            case 'latest':
+                // Latest (newest) migration file
+                $filepath = $allFiles[count($allFiles) - 1];
+                return [
+                    'file' => basename($filepath),
+                    'path' => $filepath,
+                    'info' => 'Latest migration (newest)'
+                ];
+
+            case 'current':
+                // Last successfully executed migration
+                if (empty($history)) {
+                    return [
+                        'file' => null,
+                        'path' => null,
+                        'info' => 'No migrations have been executed yet'
+                    ];
+                }
+                $current = $history[0];
+                // Find the full path
+                foreach ($allFiles as $filepath) {
+                    if (basename($filepath) === $current->file) {
+                        return [
+                            'file' => $current->file,
+                            'path' => $filepath,
+                            'info' => 'Currently executed migration'
+                        ];
+                    }
+                }
+                return [
+                    'file' => $current->file,
+                    'path' => null,
+                    'info' => 'Currently executed migration (file not found in search paths)'
+                ];
+
+            case 'next':
+                // Next pending migration
+                if (empty($pending)) {
+                    return [
+                        'file' => null,
+                        'path' => null,
+                        'info' => 'No pending migrations'
+                    ];
+                }
+                $filepath = $pending[0];
+                return [
+                    'file' => basename($filepath),
+                    'path' => $filepath,
+                    'info' => 'Next pending migration'
+                ];
+
+            case 'prev':
+                // Migration before the last executed one
+                if (empty($history)) {
+                    return [
+                        'file' => null,
+                        'path' => null,
+                        'info' => 'No migrations have been executed yet'
+                    ];
+                }
+
+                // Find the current migration in the sorted file list
+                $currentFile = $history[0]->file;
+                $currentIndex = null;
+                foreach ($allFiles as $index => $filepath) {
+                    if (basename($filepath) === $currentFile) {
+                        $currentIndex = $index;
+                        break;
+                    }
+                }
+
+                if ($currentIndex === null || $currentIndex === 0) {
+                    return [
+                        'file' => null,
+                        'path' => null,
+                        'info' => 'No previous migration (already at first)'
+                    ];
+                }
+
+                $filepath = $allFiles[$currentIndex - 1];
+                return [
+                    'file' => basename($filepath),
+                    'path' => $filepath,
+                    'info' => 'Previous migration'
+                ];
+        }
+
+        return false;
+    }
+
+    /**
+     * Get list of valid migration aliases
+     *
+     * @return  array
+     **/
+    public function getValidAliases()
+    {
+        return [
+            'first'   => 'The first (oldest) migration file',
+            'prev'    => 'The migration before the last executed one',
+            'current' => 'The last successfully executed migration',
+            'next'    => 'The next pending migration',
+            'latest'  => 'The latest (newest) migration file',
+        ];
     }
 
     /**
@@ -853,6 +1496,30 @@ class Migration
     {
         $value = ucwords(str_replace(['-', '_'], ' ', $value));
         return str_replace(' ', '', $value);
+    }
+
+    /**
+     * Determine if a migration should use transaction wrapping
+     *
+     * By default, all migrations are wrapped in a transaction for safety.
+     * Migrations can opt-out by setting a public $useTransaction = false property.
+     *
+     * Note: On MySQL/MariaDB, DDL statements (CREATE TABLE, ALTER TABLE, etc.)
+     * cause an implicit commit, so transactions only protect DML operations.
+     * On PostgreSQL and SQLite, DDL is fully transactional.
+     *
+     * @param   object  $class  The migration class instance
+     * @return  bool
+     **/
+    private function shouldUseTransaction($class)
+    {
+        // Check if the migration explicitly opts out
+        if (property_exists($class, 'useTransaction')) {
+            return (bool) $class->useTransaction;
+        }
+
+        // Default: use transactions for safety
+        return true;
     }
 
     /**
