@@ -79,6 +79,38 @@ abstract class Table extends \stdClass
     private $fieldCache = null;
 
     /**
+     * Default access level for new records.
+     *
+     * @var  int
+     */
+    protected static $defaultAccess = 1;
+
+    /**
+     * Set the default access level for new Table instances.
+     *
+     * @param   int  $level  The default access level
+     * @return  void
+     */
+    public static function setDefaultAccess(int $level): void
+    {
+        static::$defaultAccess = $level;
+    }
+
+    /**
+     * Reset static state for worker mode safety.
+     *
+     * @param   array  $options  Supported keys:
+     *                           - clear_default_access (bool, default true)
+     * @return  void
+     */
+    public static function flush(array $options = []): void
+    {
+        if ($options['clear_default_access'] ?? true) {
+            static::$defaultAccess = 1;
+        }
+    }
+
+    /**
      * An array of error messages or Exception objects.
      *
      * @var  array
@@ -278,7 +310,7 @@ abstract class Table extends \stdClass
 
         // If the access property exists, set the default.
         if (property_exists($this, 'access')) {
-            $this->access = (int) \Config::get('access');
+            $this->access = static::$defaultAccess;
         }
     }
 

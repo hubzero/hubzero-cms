@@ -771,6 +771,8 @@ abstract class Driver implements LoggerAwareInterface
      *                           - query_options (array, default [])
      *                           - flush_relational_state (bool, default true)
      *                           - relational_options (array, default [])
+     *                           - flush_table_state (bool, default true)
+     *                           - table_options (array, default [])
      *                           - flush_factory_state (bool, default true)
      *                           - factory_options (array, default [])
      *                           plus all flushRuntimeState() keys
@@ -782,6 +784,7 @@ abstract class Driver implements LoggerAwareInterface
 
         $flushQueryState = $options['flush_query_state'] ?? true;
         $flushRelationalState = $options['flush_relational_state'] ?? true;
+        $flushTableState = $options['flush_table_state'] ?? true;
         $flushFactoryState = $options['flush_factory_state'] ?? true;
         $queryOptions = array_replace([
             'clear_memory_cache' => true,
@@ -789,6 +792,7 @@ abstract class Driver implements LoggerAwareInterface
             'clear_cache_namespace' => true,
         ], (array) ($options['query_options'] ?? []));
         $relationalOptions = (array) ($options['relational_options'] ?? []);
+        $tableOptions = (array) ($options['table_options'] ?? []);
         $factoryOptions = (array) ($options['factory_options'] ?? []);
 
         if ($flushQueryState) {
@@ -801,6 +805,10 @@ abstract class Driver implements LoggerAwareInterface
             }
 
             Relational::flush($relationalOptions);
+        }
+
+        if ($flushTableState) {
+            Table::flush($tableOptions);
         }
 
         if ($flushFactoryState) {
@@ -832,6 +840,8 @@ abstract class Driver implements LoggerAwareInterface
      *                           - query_options (array, default [])
      *                           - flush_relational_state (bool, default true)
      *                           - relational_options (array, default [])
+     *                           - flush_table_state (bool, default true)
+     *                           - table_options (array, default [])
      * @return  void
      */
     public function reset(array $options = []): void
@@ -843,8 +853,10 @@ abstract class Driver implements LoggerAwareInterface
         $softClose = $options['soft_close'] ?? false;
         $flushQueryState = $options['flush_query_state'] ?? true;
         $flushRelationalState = $options['flush_relational_state'] ?? true;
+        $flushTableState = $options['flush_table_state'] ?? true;
         $queryOptions = (array) ($options['query_options'] ?? []);
         $relationalOptions = (array) ($options['relational_options'] ?? []);
+        $tableOptions = (array) ($options['table_options'] ?? []);
 
         if ($flushQueryState) {
             Query::flush($queryOptions);
@@ -856,6 +868,10 @@ abstract class Driver implements LoggerAwareInterface
             }
 
             Relational::flush($relationalOptions);
+        }
+
+        if ($flushTableState) {
+            Table::flush($tableOptions);
         }
 
         try {

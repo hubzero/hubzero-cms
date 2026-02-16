@@ -10,6 +10,7 @@ namespace Bootstrap\Api\Providers;
 
 use Hubzero\Database\Driver;
 use Hubzero\Database\Relational;
+use Hubzero\Database\Table;
 use Hubzero\Base\ServiceProvider;
 
 /**
@@ -61,6 +62,8 @@ class DatabaseServiceProvider extends ServiceProvider
     public function boot()
     {
         $app = $this->app;
+
+        Table::setDefaultAccess((int) $app['config']->get('access', 1));
 
         Relational::setUserIdResolver(function () use ($app) {
             if (isset($app['user'])) {
