@@ -2789,6 +2789,119 @@ abstract class Driver implements LoggerAwareInterface
     }
 
     /**
+     * Inserts a row into a table based on an object's properties
+     *
+     * @param   string  $table    The name of the database table to insert into
+     * @param   object  &$object  A reference to an object whose public properties match the table fields
+     * @param   string  $key      The name of the primary key. If provided the object property is updated
+     * @return  bool
+     */
+    public function insertObject($table, &$object, $key = null)
+    {
+        // Initialise some variables
+        $fields = [];
+        $values = [];
+        $binds  = [];
+
+        // Create the base insert statement
+        $statement = 'INSERT INTO ' . $this->quoteName($table) . ' (%s) VALUES (%s)';
+
+        // Iterate over the object variables to build the query fields and values
+        foreach (get_object_vars($object) as $k => $v) {
+            // Only process non-null scalars
+            if (is_array($v) or is_object($v) or $v === null) {
+                continue;
+            }
+
+            // Ignore any internal fields
+            if ($k[0] == '_') {
+                continue;
+            }
+
+            // Prepare and sanitize the fields and values for the database query
+            $fields[] = $this->quoteName($k);
+            $values[] = '?';
+            $binds[]  = $v;
+        }
+
+        // Set the query and execute the insert
+        $this->prepare(sprintf($statement, implode(',', $fields), implode(',', $values)))
+             ->bind($binds);
+
+        if (!$this->execute()) {
+            return false;
+        }
+
+        // Update the primary key if it exists
+        $id = $this->insertid();
+        if ($key && $id) {
+            $object->$key = $id;
+        }
+
+        return true;
+    }
+
+    /**
+     * Updates a row in a table based on an object's properties
+     *
+     * @param   string  $table    The name of the database table to update
+     * @param   object  &$object  A reference to an object whose public properties match the table fields
+     * @param   string  $key      The name of the primary key
+     * @param   bool    $nulls    True to update null fields or false to ignore them
+     * @return  bool
+     */
+    public function updateObject($table, &$object, $key, $nulls = false)
+    {
+        // Initialise variables
+        $fields = [];
+        $where  = '';
+
+        // Create the base update statement
+        $statement = 'UPDATE ' . $this->quoteName($table) . ' SET %s WHERE %s';
+
+        // Iterate over the object variables to build the query fields/value pairs
+        foreach (get_object_vars($object) as $k => $v) {
+            // Only process scalars that are not internal fields.
+            if (is_array($v) or is_object($v) or $k[0] == '_') {
+                continue;
+            }
+
+            // Set the primary key to the WHERE clause instead of a field to update
+            if ($k == $key) {
+                $where = $this->quoteName($k) . '=' . $this->quote($v);
+                continue;
+            }
+
+            // Prepare and sanitize the fields and values for the database query
+            if ($v === null) {
+                // If the value is null and we want to update nulls then set it
+                if ($nulls) {
+                    $val = 'NULL';
+                } else {
+                    // If the value is null and we do not want to update nulls then ignore this field
+                    continue;
+                }
+            } else {
+                // The field is not null so we prep it for update
+                $val = $this->quote($v);
+            }
+
+            // Add the field to be updated
+            $fields[] = $this->quoteName($k) . '=' . $val;
+        }
+
+        // We don't have any fields to update
+        if (empty($fields)) {
+            return true;
+        }
+
+        // Set the query and execute the update.
+        $this->setQuery(sprintf($statement, implode(",", $fields), $where));
+
+        return $this->execute();
+    }
+
+    /**
      * Sets the connection to use UTF-8 character encoding
      *
      * @return  bool
