@@ -32,6 +32,13 @@ class Profiler
 	protected $memory = 0;
 
 	/**
+	 * Last observed timestamp, used to keep now() monotonic.
+	 *
+	 * @var  float
+	 */
+	protected $lastNow = 0.0;
+
+	/**
 	 * The prefix to use in the output
 	 *
 	 * @var  string
@@ -69,6 +76,7 @@ class Profiler
 		$this->prefix  = '';
 		$this->marks   = array();
 		$this->memory  = memory_get_usage(true);
+		$this->lastNow = $this->started;
 	}
 
 	/**
@@ -104,7 +112,18 @@ class Profiler
 	 */
 	public function now()
 	{
-		return microtime(true);
+		$now = microtime(true);
+
+		// Guard against wall-clock regressions (e.g., NTP adjustments)
+		// so profiler periods never move backwards in time.
+		if ($now < $this->lastNow)
+		{
+			$now = $this->lastNow;
+		}
+
+		$this->lastNow = $now;
+
+		return $now;
 	}
 
 	/**
