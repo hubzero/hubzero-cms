@@ -28,6 +28,10 @@ class Inflector
     /**
      * Plural inflector rules.
      *
+     * NOTE: These rules are duplicated in Hubzero\Database\Relational to keep
+     * the Database package free of external dependencies. Changes here should
+     * be kept in sync with Relational::$pluralRules.
+     *
      * @var  array
      */
     protected static $plural_rules = array(
