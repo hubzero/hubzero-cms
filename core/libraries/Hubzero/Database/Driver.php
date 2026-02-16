@@ -58,7 +58,6 @@ use Psr\Log\NullLogger;
  * By default, a `NullLogger` is used (no logging). Inject a logger to enable:
  *
  * ```php
- * $db = App::get('db');
  * $db->setLogger($monolog);
  * $db->setSlowQueryThreshold(0.5); // Log queries taking > 0.5 seconds as warnings
  * $db->enableDebugging();          // Log all queries at DEBUG level
@@ -2289,7 +2288,6 @@ abstract class Driver implements LoggerAwareInterface
     //
     // Example:
     // ```php
-    // $db = App::get('db');
     // $db->enableQueryLog();
     //
     // // Run your queries...
@@ -2331,7 +2329,6 @@ abstract class Driver implements LoggerAwareInterface
      *
      * Example:
      * ```php
-     * $db = App::get('db');
      * $db->enableQueryLog();
      *
      * // ... run queries ...

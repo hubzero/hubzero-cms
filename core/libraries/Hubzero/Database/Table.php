@@ -11,7 +11,6 @@ namespace Hubzero\Database;
 use Hubzero\Base\Obj;
 use RuntimeException;
 use Exception;
-use App;
 use Log;
 
 /**
@@ -175,9 +174,11 @@ abstract class Table extends Obj
             }
         }
 
-        // If a database object was passed in the configuration array use it, otherwise get the global one from
-        // JFactory.
-        $db = isset($config['dbo']) ? $config['dbo'] : App::get('db');
+        if (!isset($config['dbo'])) {
+            return false;
+        }
+
+        $db = $config['dbo'];
 
         // Instantiate a new table class and return it.
         return new $tableClass($db);
@@ -905,15 +906,14 @@ abstract class Table extends Obj
             return false;
         }
 
-        $db = App::get('db');
-        $db->setQuery('SELECT COUNT(userid)' .
+        $this->_db->setQuery('SELECT COUNT(userid)' .
             ' FROM ' .
-            $db->quoteName('#__session') .
+            $this->_db->quoteName('#__session') .
             ' WHERE ' .
-            $db->quoteName('userid') .
+            $this->_db->quoteName('userid') .
             ' = ' .
             (int) $against);
-        $checkedOut = (bool) $db->loadResult();
+        $checkedOut = (bool) $this->_db->loadResult();
 
         // If a session exists for the user then it is checked out.
         return $checkedOut;

@@ -1881,8 +1881,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * This is a static convenience method that delegates to Query::setCacheStore().
      * The cache store should implement get(), put(), forget(), and has() methods.
      *
-     * Example with HubZero Cache:
-     *   Relational::setCacheStore(App::get('cache')->storage());
+     * Example:
+     *   Relational::setCacheStore(new MyRedisCache());
      *
      * @param   object|null  $store  Cache store instance or null to disable
      * @return  void

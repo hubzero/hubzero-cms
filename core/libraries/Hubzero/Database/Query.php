@@ -8,8 +8,6 @@
 
 namespace Hubzero\Database;
 
-use App;
-
 /**
  * Database query class
  *
@@ -203,9 +201,9 @@ class Query
      * @param   object  $connect  The database connection to use in the query builder
      * @return  void
      **/
-    public function __construct($connection = null)
+    public function __construct($connection)
     {
-        $this->connection = $connection ?: App::get('db');
+        $this->connection = $connection;
         $this->reset();
     }
 
@@ -290,9 +288,6 @@ class Query
      *
      * The cache store should implement get(), put(), forget(), and has() methods.
      * Compatible with Hubzero\Cache\Storage classes or any duck-typed equivalent.
-     *
-     * Example with HubZero Cache:
-     *   Query::setCacheStore(App::get('cache')->storage());
      *
      * Example with custom store:
      *   Query::setCacheStore(new MyRedisCache());
@@ -5146,7 +5141,7 @@ class Query
     //   $query->forgetCached('users_active');
     //
     // Set custom cache backend:
-    //   Query::setCacheStore(App::get('cache')->storage());
+    //   Query::setCacheStore(new MyRedisCache());
     //
     // Model-level caching (via Relational):
     //   Article::all()->whereEquals('published', 1)->remember(30)->rows();
