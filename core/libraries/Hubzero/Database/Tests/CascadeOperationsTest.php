@@ -21,7 +21,9 @@ use Hubzero\Database\Tests\TestModels\CascadePostWithCascadeDelete;
 use Hubzero\Database\Tests\TestModels\CascadePostWithBulkCascadeDelete;
 use Hubzero\Database\Tests\TestModels\CascadePostWithCascadeSave;
 use Hubzero\Database\Tests\TestModels\CascadePostWithOrphanRemoval;
+use Hubzero\Database\Tests\TestModels\CascadePostWithFailingCascadeSave;
 use Hubzero\Database\Tests\TestModels\CascadeComment;
+use Hubzero\Database\Tests\TestModels\CascadeFailingCommentSave;
 
 /**
  * Tests for ORM cascade operations (cascadeOnDelete, cascadeOnSave, orphanRemoval)
@@ -83,7 +85,9 @@ class CascadeOperationsTest extends AbstractDriverTestCase
         CascadePostWithBulkCascadeDelete::clearBootedModels();
         CascadePostWithCascadeSave::clearBootedModels();
         CascadePostWithOrphanRemoval::clearBootedModels();
+        CascadePostWithFailingCascadeSave::clearBootedModels();
         CascadeComment::clearBootedModels();
+        CascadeFailingCommentSave::clearBootedModels();
 
         // Purge query cache
         Query::purgeCache();
@@ -600,5 +604,39 @@ class CascadeOperationsTest extends AbstractDriverTestCase
         $result = $driver->setQuery($sql)->loadObject();
 
         $this->assertEquals(0, $result->cnt);
+    }
+
+    /**
+     * Test parent save is rolled back when cascade save fails
+     */
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testCascadeSaveFailureRollsBackParentSave(string $dbName, Driver $driver): void
+    {
+        $this->cleanupData($driver);
+        Relational::setDefaultConnection($driver);
+
+        $post = new CascadePostWithFailingCascadeSave();
+        $post->set('title', 'Should Roll Back');
+        $post->set('body', 'Parent insert should not persist');
+
+        $failingComment = new CascadeFailingCommentSave();
+        $failingComment->set('content', 'This save is forced to fail');
+
+        // Mark relationship as loaded so performCascadeSaves() will process it.
+        $post->addRelationship('comments', $failingComment);
+
+        $result = $post->save();
+        $this->assertFalse($result, 'Save should fail when cascade save fails');
+
+        $sql = "SELECT COUNT(*) as cnt FROM " . $driver->quoteName('cascade_posts')
+            . " WHERE title = " . $driver->quote('Should Roll Back');
+        $row = $driver->setQuery($sql)->loadObject();
+
+        $this->assertEquals(
+            0,
+            (int) $row->cnt,
+            'Parent row should be rolled back when cascade save fails'
+        );
     }
 }

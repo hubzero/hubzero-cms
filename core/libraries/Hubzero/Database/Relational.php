@@ -250,11 +250,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     private $originalRelationshipIds = [];
 
     /**
-     * The relationships established at runtime
+     * Runtime relationship registry.
      *
-     * @public array
-     **/
-    private static $acquaintances = [];
+     * @var RelationshipRegistry|null
+     */
+    protected static ?RelationshipRegistry $relationshipRegistry = null;
 
     /**
      * The forwards for the model (i.e. other places to look for attributes)
@@ -437,13 +437,6 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * @public array
      **/
     private static $classMethods = [];
-
-    /**
-     * Table schema cache
-     *
-     * @public array
-     */
-    public static $columns = [];
 
     /**
      * Global scopes registered on each model class
@@ -699,8 +692,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         }
 
         // Finally, check for a dynamic relationship definition
-        if (array_key_exists($name, self::$acquaintances)) {
-            return call_user_func_array(self::$acquaintances[$name], [$this]);
+        $registry = static::getRelationshipRegistry();
+        if ($registry->has(static::class, $name)) {
+            $resolver = $registry->get(static::class, $name);
+            return call_user_func_array($resolver, [$this]);
         }
 
         // This method doesn't exist
@@ -779,7 +774,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 // We take the first one we find, so in theory, if multiple forwards exist with
                 // the same name, you'd have to prioritize them somehow.
                 if ($public = $this->makeRelationship($forward)->getRelationship($forward)->$name) {
-                    return $var;
+                    return $public;
                 }
             }
         }
@@ -790,7 +785,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         }
 
         // Finally, check for a dynamic relationship definition
-        if (array_key_exists($name, self::$acquaintances)) {
+        if (static::getRelationshipRegistry()->has(static::class, $name)) {
             return $this->makeAcquaintance($name)->getRelationship($name);
         }
     }
@@ -888,7 +883,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     {
         $this->__construct();
         if (is_string($data)) {
-            $data = unserialize($data);
+            // Restrict legacy string payloads to arrays/scalars only.
+            // This keeps backward compatibility while preventing object hydration.
+            $data = @unserialize($data, ['allowed_classes' => false]);
         }
 
         // Check if this is the new serialization format (v2+)
@@ -1601,6 +1598,66 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public static function setDefaultConnection($connection)
     {
         self::$connection = $connection;
+    }
+
+    /**
+     * Flush static runtime state for long-lived worker processes.
+     *
+     * Defaults clear all static model runtime state. Pass explicit false values
+     * to opt out of individual reset categories.
+     *
+     * @param   array  $options  Supported keys:
+     *                           - clear_columns (bool, default true)
+     *                           - clear_query_cache (bool, default true)
+     *                           - clear_connection (bool, default true)
+     *                           - clear_relationships (bool, default true)
+     *                           - clear_morph_map (bool, default true)
+     *                           - clear_custom_casters (bool, default true)
+     *                           - clear_booted_models (bool, default true)
+     * @return  void
+     */
+    public static function flush(array $options = []): void
+    {
+        $clearColumns = $options['clear_columns'] ?? true;
+        $clearQueryCache = $options['clear_query_cache'] ?? true;
+        $clearConnection = $options['clear_connection'] ?? true;
+        $clearRelationships = $options['clear_relationships'] ?? true;
+        $clearMorphMap = $options['clear_morph_map'] ?? true;
+        $clearCustomCasters = $options['clear_custom_casters'] ?? true;
+        $clearBootedModels = $options['clear_booted_models'] ?? true;
+        $clearClassMethods = $options['clear_class_methods'] ?? true;
+
+        if ($clearColumns) {
+            static::clearTableColumnsCache();
+        }
+
+        if ($clearQueryCache) {
+            Query::purgeCache();
+        }
+
+        if ($clearConnection) {
+            static::$connection = null;
+        }
+
+        if ($clearRelationships) {
+            static::getRelationshipRegistry()->clear();
+        }
+
+        if ($clearMorphMap) {
+            static::clearMorphMap();
+        }
+
+        if ($clearCustomCasters) {
+            static::$customCasters = [];
+        }
+
+        if ($clearBootedModels) {
+            static::clearBootedModels();
+        }
+
+        if ($clearClassMethods) {
+            static::$classMethods = [];
+        }
     }
 
     // =========================================================================
@@ -4085,18 +4142,14 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             return false;
         }
 
-        // Capture dirty attributes before save (automatics may add more)
-        // We'll capture the final changes after automatics run
-        $result = $this->$method();
+        // Perform DB writes atomically so parent and cascade operations
+        // are committed or rolled back together.
+        $result = $this->executeAtomically(function () use ($method, $isNew) {
+            $result = $this->$method();
 
-        // Only perform the following upon success
-        if ($result) {
-            // Capture what changed (getDirty() compares current to original)
-            // This must happen before syncOriginal() clears the dirty state
-            $this->changes = $this->getDirty();
-
-            // Purge cache
-            $this->purgeCache();
+            if (!$result) {
+                return $result;
+            }
 
             // If creating, result is our new id, so set that back on the model
             // But only if the PK isn't already set (e.g., for UUID primary keys)
@@ -4107,12 +4160,23 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 // Only overwrite PK if not already set (for auto-increment columns)
                 if (empty($existingPk)) {
                     $this->set($pk, $result);
-                    // Include the new PK in changes
-                    $this->changes[$pk] = $result;
-                } else {
-                    // For non-auto-increment PKs like UUIDs, keep the existing value
-                    $this->changes[$pk] = $existingPk;
                 }
+            }
+
+            // Capture what changed (getDirty() compares current to original)
+            // This must happen before syncOriginal() clears the dirty state
+            $this->changes = $this->getDirty();
+
+            // Purge cache
+            $this->purgeCache();
+
+            if ($isNew) {
+                $pk = $this->getPrimaryKey();
+                $existingPk = $this->get($pk);
+
+                // Include the model PK in changes
+                $this->changes[$pk] = empty($existingPk) ? $result : $existingPk;
+
                 if (class_exists('Event')) {
                     \Event::trigger($this->getTableName() . '_new', ['model' => $this, 'changes' => $this->changes]);
                 }
@@ -4141,9 +4205,49 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             if (!$this->performOrphanRemovals()) {
                 return false;
             }
-        }
+
+            return $result;
+        });
 
         return $result;
+    }
+
+    /**
+     * Execute callback within a transaction and rollback on explicit false.
+     *
+     * @param   callable  $callback
+     * @return  mixed
+     * @throws  \Throwable
+     */
+    protected function executeAtomically(callable $callback)
+    {
+        $connection = self::$connection;
+
+        if (
+            !$connection
+            || !method_exists($connection, 'transactionStart')
+            || !method_exists($connection, 'transactionCommit')
+            || !method_exists($connection, 'transactionRollback')
+        ) {
+            return $callback();
+        }
+
+        $connection->transactionStart();
+
+        try {
+            $result = $callback();
+
+            if ($result === false) {
+                $connection->transactionRollback();
+                return false;
+            }
+
+            $connection->transactionCommit();
+            return $result;
+        } catch (\Throwable $e) {
+            $connection->transactionRollback();
+            throw $e;
+        }
     }
 
     /**
@@ -4341,15 +4445,44 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function getTableColumns()
     {
-        if (!isset(self::$columns[$this->table]) || is_null(self::$columns[$this->table])) {
-            self::$columns[$this->table] = (array)$this->getStructure()->getTableColumns($this->getTableName(), false);
+        $tableName = $this->getTableName();
+        $connection = self::$connection;
 
-            if (empty(self::$columns[$this->table])) {
-                throw new \Exception(sprintf('Columns not found for table %s', $this->getTableName()));
+        if ($connection instanceof Driver) {
+            if (!$connection->hasCachedTableColumns($tableName)) {
+                $columns = (array) $this->getStructure()->getTableColumns($tableName, false);
+
+                if (empty($columns)) {
+                    throw new \Exception(sprintf('Columns not found for table %s', $tableName));
+                }
+
+                $connection->setCachedTableColumns($tableName, $columns);
             }
+
+            return $connection->getCachedTableColumns($tableName);
         }
 
-        return self::$columns[$this->table];
+        $columns = (array) $this->getStructure()->getTableColumns($tableName, false);
+
+        if (empty($columns)) {
+            throw new \Exception(sprintf('Columns not found for table %s', $tableName));
+        }
+
+        return $columns;
+    }
+
+    /**
+     * Clear table column metadata cache.
+     *
+     * When both parameters are null, the entire cache is cleared.
+     *
+     * @param   string|null  $tableName     Optional table name to clear.
+     * @param   string|null  $connectionId  Optional connection id to scope clear.
+     * @return  void
+     */
+    public static function clearTableColumnsCache(?string $tableName = null, ?string $connectionId = null): void
+    {
+        Driver::flushAllTableColumnsCaches($tableName, $connectionId);
     }
 
     /**
@@ -4509,20 +4642,22 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             }
         }
 
-        // Handle cascade deletes - delete related models first
-        if (!$this->performCascadeDeletes()) {
-            return false;
-        }
+        $result = $this->executeAtomically(function () {
+            // Handle cascade deletes - delete related models first
+            if (!$this->performCascadeDeletes()) {
+                return false;
+            }
 
-        if ($this->query === null) {
-            $this->newQuery();
-        }
+            if ($this->query === null) {
+                $this->newQuery();
+            }
 
-        $result = $this->query->remove(
-            $this->getTableName(),
-            $this->getPrimaryKey(),
-            $this->getPkValue()
-        );
+            return $this->query->remove(
+                $this->getTableName(),
+                $this->getPrimaryKey(),
+                $this->getPkValue()
+            );
+        });
 
         if ($result) {
             // Fire "deleted" event (no cancellation)
@@ -4929,7 +5064,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     {
         // Make sure we have a valid row
         if (!$this->hasAttribute($field)) {
-            throw new RuntimeException('Cannot determine creator of non-existant row(s)');
+            throw new RuntimeException('Cannot determine creator of non-existent row(s)');
         }
 
         return $this->$field == \User::get('id');
@@ -6716,8 +6851,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     {
         // See if the relationship already exists
         if (!$this->getRelationship($name)) {
+            $resolver = static::getRelationshipRegistry()->get(static::class, $name);
+            if ($resolver === null) {
+                throw new BadMethodCallException("'{$name}' relationship does not exist.", 500);
+            }
+
             // Get the child rows/row and set them back on the model as a relationship for future use
-            $rows = call_user_func_array(self::$acquaintances[$name], [$this])->rows();
+            $rows = call_user_func_array($resolver, [$this])->rows();
             $this->addRelationship($name, $rows);
         }
 
@@ -6733,7 +6873,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public static function registerRelationship($name, $response)
     {
-        self::$acquaintances[$name] = $response;
+        static::getRelationshipRegistry()->register(static::class, (string) $name, $response);
     }
 
     /**
@@ -6777,9 +6917,34 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             }
         }
 
-        $acquaintances = array_keys(self::$acquaintances);
+        $acquaintances = array_keys(static::getRelationshipRegistry()->all(static::class));
 
         return array_merge($methods, $acquaintances);
+    }
+
+    /**
+     * Set the runtime relationship registry implementation.
+     *
+     * @param   RelationshipRegistry  $registry
+     * @return  void
+     */
+    public static function setRelationshipRegistry(RelationshipRegistry $registry): void
+    {
+        static::$relationshipRegistry = $registry;
+    }
+
+    /**
+     * Get the runtime relationship registry.
+     *
+     * @return  RelationshipRegistry
+     */
+    protected static function getRelationshipRegistry(): RelationshipRegistry
+    {
+        if (!static::$relationshipRegistry instanceof RelationshipRegistry) {
+            static::$relationshipRegistry = new RelationshipRegistry();
+        }
+
+        return static::$relationshipRegistry;
     }
 
     /**

@@ -205,11 +205,15 @@ abstract class Table extends Obj
         settype($path, 'array');
 
         // If we have new paths to add, do so.
-        if (!empty($path) && !in_array($path, $_paths)) {
+        if (!empty($path)) {
             // Check and add each individual new path.
             foreach ($path as $dir) {
                 // Sanitize path.
                 $dir = trim($dir);
+
+                if ($dir === '' || in_array($dir, $_paths, true)) {
+                    continue;
+                }
 
                 // Add to the front of the list so that custom paths are searched first.
                 array_unshift($_paths, $dir);

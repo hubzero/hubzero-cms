@@ -291,6 +291,17 @@ class FirebirdDriver extends BaseSqlDriver
     protected $tableIdColumnCache = [];
 
     /**
+     * @inheritdoc
+     */
+    protected function resetDriverState(array $options = []): void
+    {
+        $this->lastInsertTable = null;
+        $this->lastInsertId = null;
+        $this->cachedReturningRow = null;
+        $this->tableIdColumnCache = [];
+    }
+
+    /**
      * Character used to quote identifiers
      *
      * @var string

@@ -2814,6 +2814,105 @@ abstract class BaseSqlDriver extends PdoDriver
     }
 
     /**
+     * @inheritdoc
+     */
+    protected function resetSessionState(array $options = []): void
+    {
+        parent::resetSessionState($options);
+
+        if (
+            method_exists($this->connection, 'isConnected')
+            && !$this->connection->isConnected()
+        ) {
+            return;
+        }
+
+        $charset = $options['charset']
+            ?? $options['session_charset']
+            ?? $this->getConnectionOption('charset');
+        if (is_string($charset) && $charset !== '') {
+            $this->setNamesCharset($charset);
+        }
+
+        $timeZone = $options['session_time_zone']
+            ?? $options['time_zone']
+            ?? $this->getConnectionOption('session_time_zone')
+            ?? $this->getConnectionOption('time_zone');
+        if (is_string($timeZone) && $timeZone !== '') {
+            $this->applySessionVariableString('time_zone', $timeZone);
+        }
+
+        $sqlMode = $options['session_sql_mode']
+            ?? $options['sql_mode']
+            ?? $this->getConnectionOption('session_sql_mode')
+            ?? $this->getConnectionOption('sql_mode');
+        if (is_string($sqlMode) && $sqlMode !== '') {
+            $this->applySessionVariableString('sql_mode', $sqlMode);
+        }
+
+        $transactionIsolation = $options['session_transaction_isolation']
+            ?? $options['transaction_isolation']
+            ?? $this->getConnectionOption('session_transaction_isolation')
+            ?? $this->getConnectionOption('transaction_isolation');
+        if (is_string($transactionIsolation) && $transactionIsolation !== '') {
+            $this->applySessionVariableString('transaction_isolation', $transactionIsolation);
+        }
+
+        $queries = $options['session_reset_queries']
+            ?? $this->getConnectionOption('session_reset_queries')
+            ?? [];
+        if (is_string($queries) && $queries !== '') {
+            $queries = [$queries];
+        }
+
+        if (!is_array($queries)) {
+            return;
+        }
+
+        foreach ($queries as $query) {
+            if (!is_string($query) || trim($query) === '') {
+                continue;
+            }
+
+            $this->runSessionResetQuery($query);
+        }
+    }
+
+    /**
+     * Apply a session variable assignment using safe SQL literal quoting.
+     *
+     * @param   string  $name
+     * @param   string  $value
+     * @return  void
+     */
+    protected function applySessionVariableString(string $name, string $value): void
+    {
+        $name = preg_replace('/[^a-z0-9_]/i', '', $name);
+        if ($name === '') {
+            return;
+        }
+
+        $literal = addslashes($value);
+        $this->runSessionResetQuery("SET SESSION {$name} = '{$literal}'");
+    }
+
+    /**
+     * Execute one session reset query (best effort).
+     *
+     * @param   string  $query
+     * @return  void
+     */
+    protected function runSessionResetQuery(string $query): void
+    {
+        try {
+            $this->setQuery($query);
+            $this->execute();
+        } catch (\Throwable $e) {
+            // Best-effort only.
+        }
+    }
+
+    /**
      * Apply connection character set via SET NAMES.
      *
      * @param   string  $charset

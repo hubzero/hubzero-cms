@@ -140,6 +140,17 @@ class AseDriver extends BaseSqlDriver
     protected $pendingLimit = null;
 
     /**
+     * @inheritdoc
+     */
+    protected function resetDriverState(array $options = []): void
+    {
+        $this->pendingOffset = 0;
+        $this->pendingLimit = null;
+        $this->sequenceTableReady = false;
+        $this->identityColumns = [];
+    }
+
+    /**
      * SQL expression for current timestamp
      *
      * @var string

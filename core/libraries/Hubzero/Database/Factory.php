@@ -452,6 +452,19 @@ abstract class Factory
     }
 
     /**
+     * Flush static factory runtime state.
+     *
+     * @param   array  $options  Supported keys:
+     *                           - reset_sequence_to (int, default 1)
+     * @return  void
+     */
+    public static function flush(array $options = []): void
+    {
+        $start = (int) ($options['reset_sequence_to'] ?? 1);
+        self::resetSequence($start);
+    }
+
+    /**
      * Generate a UUID v4
      *
      * @return  string

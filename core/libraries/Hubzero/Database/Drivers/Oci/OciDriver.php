@@ -98,6 +98,15 @@ class OciDriver extends BaseSqlDriver
     protected $lobStreams = [];
 
     /**
+     * @inheritdoc
+     */
+    protected function resetDriverState(array $options = []): void
+    {
+        $this->lastInsertTable = null;
+        $this->lobStreams = [];
+    }
+
+    /**
      * Oracle's NOW() equivalent expression
      *
      * @var string

@@ -77,6 +77,14 @@ class SqlsrvDriver extends BaseSqlDriver
     protected $identityColumns = [];
 
     /**
+     * @inheritdoc
+     */
+    protected function resetDriverState(array $options = []): void
+    {
+        $this->identityColumns = [];
+    }
+
+    /**
      * The current transaction depth (for savepoint support)
      *
      * @var int

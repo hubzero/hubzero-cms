@@ -10,6 +10,7 @@ namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Hubzero\Database\ApcuCacheStore;
 use Hubzero\Database\Driver;
 use Hubzero\Database\Query;
 use Hubzero\Database\Tests\TestModels\MockCacheStore;
@@ -63,6 +64,7 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         // Clear any existing cache store
         Query::setCacheStore(null);
+        Query::setCacheNamespace('');
 
         // Purge in-memory cache
         Query::purgeCache();
@@ -77,6 +79,7 @@ class QueryCachingTest extends AbstractDriverTestCase
     {
         // Clear cache store
         Query::setCacheStore(null);
+        Query::setCacheNamespace('');
         Query::purgeCache();
 
         parent::tearDown();
@@ -98,6 +101,50 @@ class QueryCachingTest extends AbstractDriverTestCase
 
         Query::setCacheStore(null);
         $this->assertNull(Query::getCacheStore(), 'Cache store should be null after reset');
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function persistentCacheKeyIncludesNamespaceWhenSet(string $dbName, Driver $driver): void
+    {
+        Query::setCacheStore($this->mockCache);
+        Query::setCacheNamespace('tenant_a');
+
+        $query = new Query($driver);
+        $query->select('*')->from('users')->remember(60)->fetch();
+
+        $this->assertStringStartsWith(
+            'tenant_a:hubzero_query_',
+            $this->mockCache->lastKey,
+            'Persistent cache key should be namespaced'
+        );
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function queryFlushClearsNamespaceByDefault(string $dbName, Driver $driver): void
+    {
+        Query::setCacheNamespace('tenant_a');
+        $this->assertSame('tenant_a', Query::getCacheNamespace());
+
+        Query::flush();
+
+        $this->assertSame('', Query::getCacheNamespace());
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function apcuCacheStoreIsExplicitOptIn(string $dbName, Driver $driver): void
+    {
+        if (ApcuCacheStore::isAvailable()) {
+            Query::setCacheStore('apcu');
+            $this->assertInstanceOf(ApcuCacheStore::class, Query::getCacheStore());
+            Query::setCacheStore(null);
+            return;
+        }
+
+        $this->expectException(\RuntimeException::class);
+        Query::setCacheStore('apcu');
     }
 
     /**
@@ -362,5 +409,75 @@ class QueryCachingTest extends AbstractDriverTestCase
         $key2 = $this->mockCache->lastKey;
 
         $this->assertNotEquals($key1, $key2, 'Different queries should have different cache keys');
+    }
+
+    #[Test]
+    public function persistentCacheKeyIsStableAcrossDriverRecreationForSameConfig(): void
+    {
+        Query::setCacheStore($this->mockCache);
+        Query::setCacheNamespace('stable_key_test');
+
+        Driver::setPoolSize(1);
+        Driver::setPoolTimelimit(0);
+
+        $driverA = Driver::getInstance([
+            'driver' => 'mock',
+            'database' => 'stable_cache_identity',
+            'prefix' => '',
+        ]);
+
+        // Build schema/data on first instance
+        $driverA->dropTable('users', true);
+        $driverA->createTable('users')
+            ->id()
+            ->string('name', 255)
+            ->string('email', 255)
+            ->execute();
+        $queryA = new Query($driverA);
+        $queryA->insertMany('users', [
+            ['name' => 'Alice', 'email' => 'alice@example.com'],
+        ]);
+
+        (new Query($driverA))
+            ->select('*')
+            ->from('users')
+            ->whereEquals('id', '1')
+            ->remember(60)
+            ->fetch();
+        $keyA = $this->mockCache->lastKey;
+
+        // Force eviction/recreation by filling pool with another config
+        Driver::getInstance([
+            'driver' => 'mock',
+            'database' => 'stable_cache_other',
+            'prefix' => '',
+        ]);
+
+        $driverARecreated = Driver::getInstance([
+            'driver' => 'mock',
+            'database' => 'stable_cache_identity',
+            'prefix' => '',
+        ]);
+
+        // Recreate minimal schema/data for query execution on recreated in-memory driver
+        $driverARecreated->dropTable('users', true);
+        $driverARecreated->createTable('users')
+            ->id()
+            ->string('name', 255)
+            ->string('email', 255)
+            ->execute();
+        (new Query($driverARecreated))->insertMany('users', [
+            ['name' => 'Alice', 'email' => 'alice@example.com'],
+        ]);
+
+        (new Query($driverARecreated))
+            ->select('*')
+            ->from('users')
+            ->whereEquals('id', '1')
+            ->remember(60)
+            ->fetch();
+        $keyB = $this->mockCache->lastKey;
+
+        $this->assertSame($keyA, $keyB, 'Persistent cache key should be stable across driver recreation');
     }
 }

@@ -573,4 +573,24 @@ class RelationalTest extends AbstractDriverTestCase
 
         $this->cleanupTestData($driver, $dbName);
     }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function testForwardedPropertyReturnsRelatedValue(string $dbName, Driver $driver)
+    {
+        $this->setupTables($driver, $dbName);
+        $this->seedTestData($driver, $dbName);
+        $this->configureModels($dbName);
+        Relational::setDefaultConnection($driver);
+
+        $post = Post::oneOrFail(1)->forwardTo('user');
+
+        $this->assertEquals(
+            'test@example.com',
+            $post->email,
+            "[$dbName] Forwarded property should return related model value"
+        );
+
+        $this->cleanupTestData($driver, $dbName);
+    }
 }

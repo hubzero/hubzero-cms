@@ -32,15 +32,6 @@ class Query
     protected $syntax = null;
 
     /**
-     * The query results cache (in-memory)
-     *
-     * This is a key value dictionary of query md5 hash and query results.
-     *
-     * @var  array
-     **/
-    private static $cache = array();
-
-    /**
      * The injected persistent cache store
      *
      * This can be any object that implements get(), put(), forget(), and has() methods
@@ -50,6 +41,16 @@ class Query
      * @var  object|null
      **/
     private static $cacheStore = null;
+
+    /**
+     * Optional namespace prefix for persistent query cache keys.
+     *
+     * This should be set per request (e.g. tenant/site identifier) when
+     * using a shared persistent cache backend.
+     *
+     * @var  string
+     **/
+    private static $cacheNamespace = '';
 
     /**
      * Tracks whether any SELECT columns have been set
@@ -250,7 +251,38 @@ class Query
      **/
     public static function purgeCache()
     {
-        self::$cache = array();
+        Driver::flushAllQueryCaches();
+    }
+
+    /**
+     * Flush static runtime state for long-lived worker processes.
+     *
+     * By default, this only clears in-memory query cache and preserves the
+     * configured persistent cache store.
+     *
+     * @param   array  $options  Supported keys:
+     *                           - clear_memory_cache (bool, default true)
+     *                           - clear_cache_store (bool, default false)
+     *                           - clear_cache_namespace (bool, default true)
+     * @return  void
+     */
+    public static function flush(array $options = []): void
+    {
+        $clearMemoryCache = $options['clear_memory_cache'] ?? true;
+        $clearCacheStore = $options['clear_cache_store'] ?? false;
+        $clearCacheNamespace = $options['clear_cache_namespace'] ?? true;
+
+        if ($clearMemoryCache) {
+            self::purgeCache();
+        }
+
+        if ($clearCacheStore) {
+            self::$cacheStore = null;
+        }
+
+        if ($clearCacheNamespace) {
+            self::$cacheNamespace = '';
+        }
     }
 
     /**
@@ -265,11 +297,23 @@ class Query
      * Example with custom store:
      *   Query::setCacheStore(new MyRedisCache());
      *
-     * @param   object|null  $store  Cache store instance or null to disable
+     * Example with explicit APCu store:
+     *   Query::setCacheStore('apcu');
+     *
+     * @param   object|string|null  $store  Cache store instance, 'apcu', or null to disable
      * @return  void
      **/
     public static function setCacheStore($store)
     {
+        if ($store === 'apcu') {
+            if (!ApcuCacheStore::isAvailable()) {
+                throw new \RuntimeException('APCu cache store requested but APCu is not available.');
+            }
+
+            self::$cacheStore = new ApcuCacheStore();
+            return;
+        }
+
         self::$cacheStore = $store;
     }
 
@@ -284,12 +328,32 @@ class Query
     }
 
     /**
+     * Set namespace for persistent cache keys.
+     *
+     * @param   string|null  $namespace
+     * @return  void
+     */
+    public static function setCacheNamespace(?string $namespace): void
+    {
+        $namespace = trim((string) $namespace);
+        self::$cacheNamespace = $namespace;
+    }
+
+    /**
+     * Get current persistent cache key namespace.
+     *
+     * @return  string
+     */
+    public static function getCacheNamespace(): string
+    {
+        return self::$cacheNamespace;
+    }
+
+    /**
      * Cache the query results for a given number of minutes
      *
-     * This enables persistent caching using either:
-     * 1. An injected cache store (via setCacheStore)
-     * 2. APCu if available (automatic fallback)
-     * 3. In-memory cache only (when neither is available)
+     * This enables persistent caching using an explicitly configured
+     * cache store (via setCacheStore()).
      *
      * Example:
      *   $users = $query->from('users')->whereEquals('active', 1)->remember(60)->fetch();
@@ -345,11 +409,11 @@ class Query
      **/
     public function forgetCached(string $key)
     {
-        $fullKey = $this->cachePrefix . $key;
+        $fullKey = $this->buildPersistentCacheKey($key);
 
-        // Clear from in-memory cache
-        if (isset(self::$cache[$fullKey])) {
-            unset(self::$cache[$fullKey]);
+        // Clear from this connection's in-memory cache
+        if ($this->connection instanceof Driver) {
+            $this->connection->flushCachedQueryResultByKey($key);
         }
 
         // Clear from persistent store
@@ -3953,10 +4017,9 @@ class Query
     /**
      * Retrieves all applicable data
      *
-     * Supports three levels of caching:
-     * 1. In-memory cache (default) - caches results for the duration of the request
-     * 2. Persistent cache via injected store - uses setCacheStore() with remember()
-     * 3. APCu fallback - automatic when APCu is available and remember() is called
+     * Supports two levels of caching:
+     * 1. In-memory cache (default) - per-driver connection cache
+     * 2. Persistent cache via explicit store - uses setCacheStore() with remember()
      *
      * @FIXME: this could result in slightly odd behavior if you call the same query
      *         twice, but for some reason want differing structures of the returned data.
@@ -3973,19 +4036,29 @@ class Query
 
         // Build and hash query
         $query = $this->buildQuery();
-        $connectionId = $this->connection ? $this->connection->getConnectionId() : '';
-        $key   = hash('md5', $connectionId . $structure . $query . serialize($this->syntax->getBindings()));
+        $bindingsHash = serialize($this->syntax->getBindings());
+        $connectionId = ($this->connection instanceof Driver) ? $this->connection->getConnectionId() : '';
+        $memoryCacheKey = hash('md5', $connectionId . $structure . $query . $bindingsHash);
+        $persistentConnectionFingerprint = ($this->connection instanceof Driver)
+            ? $this->connection->getPersistentCacheConnectionFingerprint()
+            : '';
+        $persistentCacheKeyHash = hash(
+            'md5',
+            $persistentConnectionFingerprint . $structure . $query . $bindingsHash
+        );
 
         // Handle persistent caching if enabled via remember() or rememberForever()
         if ($this->isPersistentCacheEnabled() && $this->hasPersistentCache()) {
-            $persistentKey = $this->cachePrefix . $key;
+            $persistentKey = $this->buildPersistentCacheKey($persistentCacheKeyHash);
 
             // Check persistent cache first (unless noCache)
             if (!$noCache) {
                 $cached = $this->persistentGet($persistentKey);
                 if ($cached !== null) {
-                    // Also populate in-memory cache for this request
-                    self::$cache[$key] = $cached;
+                    // Also populate in-memory cache for this driver instance
+                    if ($this->connection instanceof Driver) {
+                        $this->connection->setCachedQueryResult($memoryCacheKey, $cached);
+                    }
 
                     // Clear elements and reset cache settings
                     $this->resetCacheSettings();
@@ -4003,7 +4076,9 @@ class Query
             $this->persistentPut($persistentKey, $result, $ttl);
 
             // Also store in in-memory cache
-            self::$cache[$key] = $result;
+            if ($this->connection instanceof Driver) {
+                $this->connection->setCachedQueryResult($memoryCacheKey, $result);
+            }
 
             // Clear elements and reset cache settings
             $this->resetCacheSettings();
@@ -4013,14 +4088,26 @@ class Query
         }
 
         // Standard in-memory cache behavior
-        if ($noCache || !isset(self::$cache[$key])) {
-            self::$cache[$key] = $this->query($query, $structure);
+        if (
+            $noCache
+            || !($this->connection instanceof Driver)
+            || !$this->connection->hasCachedQueryResult($memoryCacheKey)
+        ) {
+            $result = $this->query($query, $structure);
+
+            if (!$noCache && $this->connection instanceof Driver) {
+                $this->connection->setCachedQueryResult($memoryCacheKey, $result);
+            } else {
+                // No driver cache available (or bypassed): return direct result.
+                $this->reset();
+                return $result;
+            }
         }
 
         // Clear elements
         $this->reset();
 
-        return self::$cache[$key];
+        return $this->connection->getCachedQueryResult($memoryCacheKey);
     }
 
     /**
@@ -4033,6 +4120,21 @@ class Query
         $this->cacheTtl = 0;
         $this->cacheForever = false;
         $this->cachePrefix = 'hubzero_query_';
+    }
+
+    /**
+     * Purge in-memory query cache for this connection.
+     *
+     * @return  void
+     */
+    private function purgeConnectionCache(): void
+    {
+        if ($this->connection instanceof Driver) {
+            $this->connection->flushCachedQueryResults();
+            return;
+        }
+
+        static::purgeCache();
     }
 
     /**
@@ -4226,7 +4328,7 @@ class Query
                 // Use bulk insert
                 if ($this->query($sql)) {
                     $totalInserted += count($chunk);
-                    self::purgeCache();
+                    $this->purgeConnectionCache();
                 }
             }
 
@@ -4327,7 +4429,7 @@ class Query
             } else {
                 if ($this->query($sql)) {
                     $totalAffected += count($chunk);
-                    self::purgeCache();
+                    $this->purgeConnectionCache();
                 }
             }
 
@@ -4478,7 +4580,7 @@ class Query
         // For DELETE, UPDATE, INSERT queries, purge the cache since data has changed
         // This prevents stale cached SELECT results from being returned
         if (in_array($this->type, ['delete', 'update', 'insert', 'upsert'])) {
-            self::purgeCache();
+            $this->purgeConnectionCache();
         }
 
         // Clear elements
@@ -4543,7 +4645,7 @@ class Query
             }
         }
 
-        self::purgeCache();
+        $this->purgeConnectionCache();
         $this->reset();
         return true;
     }
@@ -5005,7 +5107,7 @@ class Query
     // Persistent Cache Operations
     // =========================================================================
     //
-    // Query caching provides two layers: in-memory (single request) and
+    // Query caching provides two layers: in-memory (per driver connection) and
     // persistent (across requests). Use these methods to cache expensive
     // queries and reduce database load.
     //
@@ -5013,8 +5115,8 @@ class Query
     //
     // | Layer      | Scope           | Backend                       | Cleared By           |
     // |------------|-----------------|-------------------------------|----------------------|
-    // | In-memory  | Single request  | Static array ($cache)         | purgeCache()         |
-    // | Persistent | Across requests | Injected store or APCu        | forgetCached(), TTL  |
+    // | In-memory  | Per connection  | Driver instance cache         | purgeCache()         |
+    // | Persistent | Across requests | Explicit cache store          | forgetCached(), TTL  |
     //
     // ## Public Methods
     //
@@ -5025,13 +5127,12 @@ class Query
     // | forgetCached()  | bool     | Invalidate a specific cache key           |
     // | setCacheStore() | void     | Set persistent cache backend (static)     |
     // | getCacheStore() | object   | Get current cache backend (static)        |
-    // | purgeCache()    | void     | Clear in-memory cache only (static)       |
+    // | purgeCache()    | void     | Clear in-memory cache across drivers       |
     //
     // ## Cache Resolution Order (Persistent)
     //
-    // 1. Injected cache store (set via Query::setCacheStore())
-    // 2. APCu extension (automatic fallback if available)
-    // 3. In-memory only (no persistence when neither is available)
+    // 1. Explicitly configured cache store (set via Query::setCacheStore())
+    // 2. In-memory only (no persistence when no store is configured)
     //
     // ## Usage Examples
     //
@@ -5063,23 +5164,13 @@ class Query
     }
 
     /**
-     * Check if persistent cache is available
-     *
-     * Cache resolution order:
-     * 1. Injected cache store (if set via setCacheStore)
-     * 2. APCu (if extension is loaded)
+     * Check if persistent cache is available.
      *
      * @return  bool
      **/
     private function hasPersistentCache(): bool
     {
-        // First check injected store
-        if (self::$cacheStore !== null) {
-            return true;
-        }
-
-        // Fall back to APCu
-        return function_exists('apcu_fetch');
+        return self::$cacheStore !== null;
     }
 
     /**
@@ -5090,21 +5181,14 @@ class Query
      **/
     private function persistentGet(string $key)
     {
-        // Try injected store first
-        if (self::$cacheStore !== null) {
-            $result = self::$cacheStore->get($key);
-            // Most cache stores return false or null for misses
-            return ($result !== false && $result !== null) ? $result : null;
+        if (self::$cacheStore === null) {
+            return null;
         }
 
-        // Fall back to APCu
-        if (function_exists('apcu_fetch')) {
-            $success = false;
-            $result = apcu_fetch($key, $success);
-            return $success ? $result : null;
-        }
+        $result = self::$cacheStore->get($key);
 
-        return null;
+        // Most cache stores return false or null for misses.
+        return ($result !== false && $result !== null) ? $result : null;
     }
 
     /**
@@ -5117,19 +5201,11 @@ class Query
      **/
     private function persistentPut(string $key, $value, int $minutes)
     {
-        $seconds = $minutes * 60;
-
-        // Try injected store first
-        if (self::$cacheStore !== null) {
-            return (bool) self::$cacheStore->put($key, $value, $minutes);
+        if (self::$cacheStore === null) {
+            return false;
         }
 
-        // Fall back to APCu
-        if (function_exists('apcu_store')) {
-            return apcu_store($key, $value, $seconds);
-        }
-
-        return false;
+        return (bool) self::$cacheStore->put($key, $value, $minutes);
     }
 
     /**
@@ -5140,17 +5216,29 @@ class Query
      **/
     private function persistentForget(string $key): bool
     {
-        // Try injected store first
-        if (self::$cacheStore !== null) {
-            return (bool) self::$cacheStore->forget($key);
+        if (self::$cacheStore === null) {
+            return false;
         }
 
-        // Fall back to APCu
-        if (function_exists('apcu_delete')) {
-            return apcu_delete($key);
+        return (bool) self::$cacheStore->forget($key);
+    }
+
+    /**
+     * Build fully-qualified persistent cache key with optional namespace.
+     *
+     * @param   string  $key
+     * @return  string
+     */
+    private function buildPersistentCacheKey(string $key): string
+    {
+        $baseKey = $this->cachePrefix . $key;
+        $namespace = self::$cacheNamespace;
+
+        if ($namespace === '') {
+            return $baseKey;
         }
 
-        return false;
+        return $namespace . ':' . $baseKey;
     }
 
     /**

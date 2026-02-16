@@ -80,6 +80,55 @@ abstract class Driver implements LoggerAwareInterface
     protected static $instances = [];
 
     /**
+     * Last-used timestamps for pooled instances (signature => microtime).
+     *
+     * @var array<string,float>
+     */
+    protected static $instanceLastUsed = [];
+
+    /**
+     * Persistence flags for pooled instances (signature => bool).
+     *
+     * Non-persistent instances are hard-evicted on Driver::flush().
+     *
+     * @var array<string,bool>
+     */
+    protected static $instancePersistent = [];
+
+    /**
+     * Maximum number of pooled driver instances.
+     *
+     * @var int
+     */
+    protected static $poolSize = 10;
+
+    /**
+     * Idle time limit (seconds) before pooled connections are closed.
+     *
+     * A value <= 0 disables idle connection cleanup.
+     *
+     * @var int
+     */
+    protected static $poolTimeLimit = 120;
+
+    /**
+     * Runtime telemetry counters for worker observability.
+     *
+     * @var array<string,int>
+     */
+    protected static $telemetry = [
+        'get_instance_calls' => 0,
+        'flush_calls' => 0,
+        'flush_runtime_calls' => 0,
+        'reset_calls' => 0,
+        'reset_failures' => 0,
+        'session_reset_failures' => 0,
+        'lru_evictions' => 0,
+        'non_persistent_evictions' => 0,
+        'idle_closes' => 0,
+    ];
+
+    /**
      * The cumulative query timer (in miliseconds)
      *
      * @public int
@@ -132,6 +181,20 @@ abstract class Driver implements LoggerAwareInterface
     protected $log = [];
 
     /**
+     * In-memory query result cache scoped to this driver instance.
+     *
+     * @var array<string,mixed>
+     */
+    protected $queryResultCache = [];
+
+    /**
+     * In-memory table column metadata cache scoped to this driver instance.
+     *
+     * @var array<string,array>
+     */
+    protected $tableColumnsCache = [];
+
+    /**
      * The character(s) used to quote items such as table names or field names
      *
      * Default uses SQL standard double-quote identifiers. MySQL and SQLite
@@ -168,6 +231,27 @@ abstract class Driver implements LoggerAwareInterface
      * @public string
      */
     protected $database;
+
+    /**
+     * Original connection options used to construct this driver instance.
+     *
+     * @var array
+     */
+    protected $connectionOptions = [];
+
+    /**
+     * Baseline PDO attributes captured from initial connection setup.
+     *
+     * @var array<int,mixed>
+     */
+    protected $initialPdoAttributes = [];
+
+    /**
+     * Whether baseline PDO attributes have been captured.
+     *
+     * @var bool
+     */
+    protected $initialPdoAttributesCaptured = false;
 
     /**
      * The database driver syntax
@@ -247,6 +331,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     protected function __construct($options)
     {
+        $this->connectionOptions = (array) $options;
         $this->tablePrefix = (isset($options['prefix']))   ? $options['prefix']   : $this->tablePrefix;
         $this->database    = (isset($options['database'])) ? $options['database'] : $this->database;
         $this->logger      = new NullLogger();
@@ -296,6 +381,7 @@ abstract class Driver implements LoggerAwareInterface
      *  * The 'driver' option defines which driver class is used for the connection -- the default is 'mysql'.
      *  * The 'database' option determines which database is to be used for the connection.
      *  * The 'select' option determines whether the connector should automatically select the chosen database.
+     *  * The 'persistent' option controls whether the pooled instance survives Driver::flush() (default: true).
      *
      * Legacy alias support:
      *  * 'pdo' is normalized to 'mysql' for backward compatibility.
@@ -306,6 +392,8 @@ abstract class Driver implements LoggerAwareInterface
      */
     public static function getInstance($options = [])
     {
+        static::incrementTelemetry('get_instance_calls');
+
         // Sanitize the database connector options
         $options['driver']   = (isset($options['driver']))   ? preg_replace(
             '/[^A-Z0-9_\.-]/i',
@@ -316,6 +404,7 @@ abstract class Driver implements LoggerAwareInterface
             : null;
         $options['select']   = (isset($options['select']))   ? $options['select']
             : true;
+        $options['persistent'] = isset($options['persistent']) ? (bool) $options['persistent'] : true;
         // Legacy alias retained for configuration compatibility.
         if ($options['driver'] === 'pdo') {
             $options['driver'] = 'mysql';
@@ -323,9 +412,15 @@ abstract class Driver implements LoggerAwareInterface
 
         // Get the options signature for the database connector
         $signature = md5(serialize($options));
+        $now = microtime(true);
+
+        // Best-effort cleanup of idle pooled native connections.
+        static::closeExpiredPoolConnections($now);
 
         // If we already have a database connector instance for these options, then just use that
         if (!isset(self::$instances[$signature])) {
+            static::enforcePoolSizeLimit();
+
             // Resolve canonical built-in class first
             $class = BackendRegistry::resolveDriverClassFor((string) $options['driver']);
 
@@ -343,9 +438,763 @@ abstract class Driver implements LoggerAwareInterface
 
             // Set the new connector to the global instances based on signature
             self::$instances[$signature] = new $class($options);
+            self::$instancePersistent[$signature] = (bool) $options['persistent'];
+        } elseif (!array_key_exists($signature, self::$instancePersistent)) {
+            self::$instancePersistent[$signature] = (bool) $options['persistent'];
         }
 
+        self::$instanceLastUsed[$signature] = $now;
+
         return self::$instances[$signature];
+    }
+
+    /**
+     * Configure max pooled instance count.
+     *
+     * @param   int  $count  Max pooled instances (minimum 1).
+     * @return  void
+     */
+    public static function setPoolSize(int $count = 10): void
+    {
+        static::$poolSize = max(1, $count);
+        static::enforcePoolSizeLimit();
+    }
+
+    /**
+     * Configure idle connection time limit for pooled instances.
+     *
+     * @param   int  $time  Seconds; <= 0 disables idle connection cleanup.
+     * @return  void
+     */
+    public static function setPoolTimelimit(int $time = 120): void
+    {
+        static::$poolTimeLimit = $time;
+    }
+
+    /**
+     * Evict least-recently-used pooled instances until pool size is respected.
+     *
+     * Evicted instances are hard-disconnected and removed from the pool.
+     *
+     * @return  void
+     */
+    protected static function enforcePoolSizeLimit(): void
+    {
+        $poolSize = static::$poolSize;
+        if ($poolSize < 1) {
+            $poolSize = 1;
+        }
+
+        while (count(self::$instances) >= $poolSize) {
+            $evictSignature = static::getLeastRecentlyUsedSignature();
+            if ($evictSignature === null) {
+                break;
+            }
+
+            static::evictInstanceBySignature($evictSignature, 'lru');
+        }
+    }
+
+    /**
+     * Return signature of least recently used pooled instance.
+     *
+     * @return  string|null
+     */
+    protected static function getLeastRecentlyUsedSignature(): ?string
+    {
+        $oldestSignature = null;
+        $oldestTimestamp = null;
+
+        foreach (self::$instances as $signature => $instance) {
+            $lastUsed = self::$instanceLastUsed[$signature] ?? 0.0;
+            if ($oldestTimestamp === null || $lastUsed < $oldestTimestamp) {
+                $oldestTimestamp = $lastUsed;
+                $oldestSignature = $signature;
+            }
+        }
+
+        return $oldestSignature;
+    }
+
+    /**
+     * Hard-evict one pooled instance by signature.
+     *
+     * @param   string  $signature
+     * @return  void
+     */
+    protected static function evictInstanceBySignature(string $signature, string $reason = 'manual'): void
+    {
+        if (isset(self::$instances[$signature]) && self::$instances[$signature] instanceof self) {
+            try {
+                self::$instances[$signature]->disconnect();
+            } catch (\Throwable $e) {
+                // Ignore disconnect failures during eviction.
+            }
+        }
+
+        if ($reason === 'lru') {
+            static::incrementTelemetry('lru_evictions');
+        } elseif ($reason === 'non_persistent') {
+            static::incrementTelemetry('non_persistent_evictions');
+        }
+
+        unset(self::$instances[$signature], self::$instanceLastUsed[$signature], self::$instancePersistent[$signature]);
+    }
+
+    /**
+     * Close idle pooled native connections that exceeded the configured limit.
+     *
+     * Pooled objects are retained; only native connections are closed.
+     *
+     * @param   float|null  $now  Optional current timestamp from microtime(true).
+     * @return  void
+     */
+    protected static function closeExpiredPoolConnections(?float $now = null): void
+    {
+        $limit = static::$poolTimeLimit;
+        if ($limit <= 0) {
+            return;
+        }
+
+        $now = $now ?? microtime(true);
+
+        foreach (self::$instances as $signature => $instance) {
+            if (!$instance instanceof self) {
+                continue;
+            }
+
+            $lastUsed = self::$instanceLastUsed[$signature] ?? $now;
+            if (($now - $lastUsed) < $limit) {
+                continue;
+            }
+
+            try {
+                $instance->disconnect();
+                static::incrementTelemetry('idle_closes');
+            } catch (\Throwable $e) {
+                // Ignore disconnect failures during idle cleanup.
+            }
+        }
+    }
+
+    /**
+     * Return telemetry snapshot for database runtime lifecycle.
+     *
+     * @return  array<string,int>
+     */
+    public static function telemetry(): array
+    {
+        $snapshot = static::$telemetry;
+        $snapshot['pool_size'] = count(self::$instances);
+        $snapshot['pool_persistent'] = count(array_filter(self::$instancePersistent, function ($isPersistent) {
+            return (bool) $isPersistent;
+        }));
+        $snapshot['pool_non_persistent'] = count(array_filter(self::$instancePersistent, function ($isPersistent) {
+            return !(bool) $isPersistent;
+        }));
+
+        return $snapshot;
+    }
+
+    /**
+     * Reset telemetry counters.
+     *
+     * @return  void
+     */
+    public static function resetTelemetry(): void
+    {
+        foreach (array_keys(static::$telemetry) as $key) {
+            static::$telemetry[$key] = 0;
+        }
+    }
+
+    /**
+     * Increment one telemetry counter.
+     *
+     * @param   string  $key
+     * @param   int     $by
+     * @return  void
+     */
+    protected static function incrementTelemetry(string $key, int $by = 1): void
+    {
+        if (!isset(static::$telemetry[$key])) {
+            static::$telemetry[$key] = 0;
+        }
+
+        static::$telemetry[$key] += $by;
+    }
+
+    /**
+     * Flush cached driver instances.
+     *
+     * @param   bool  $disconnect  Whether to disconnect instances before flush.
+     * @return  void
+     */
+    public static function flushInstances(bool $disconnect = true): void
+    {
+        if ($disconnect) {
+            foreach (self::$instances as $instance) {
+                if ($instance instanceof self) {
+                    try {
+                        $instance->disconnect();
+                    } catch (\Throwable $e) {
+                        // Ignore disconnect failures during state reset.
+                    }
+                }
+            }
+        }
+
+        self::$instances = [];
+        self::$instanceLastUsed = [];
+        self::$instancePersistent = [];
+    }
+
+    /**
+     * Flush in-memory query result caches across all pooled driver instances.
+     *
+     * @return  void
+     */
+    public static function flushAllQueryCaches(): void
+    {
+        foreach (self::$instances as $instance) {
+            if ($instance instanceof self) {
+                $instance->flushCachedQueryResults();
+            }
+        }
+    }
+
+    /**
+     * Flush table column metadata caches across pooled driver instances.
+     *
+     * @param   string|null  $tableName     Optional table name to clear.
+     * @param   string|null  $connectionId  Optional connection id scope.
+     * @return  void
+     */
+    public static function flushAllTableColumnsCaches(
+        ?string $tableName = null,
+        ?string $connectionId = null
+    ): void {
+        foreach (self::$instances as $instance) {
+            if (!$instance instanceof self) {
+                continue;
+            }
+
+            if (
+                $connectionId !== null
+                && method_exists($instance, 'getConnectionId')
+                && $instance->getConnectionId() !== $connectionId
+            ) {
+                continue;
+            }
+
+            $instance->flushCachedTableColumns($tableName);
+        }
+    }
+
+    /**
+     * Flush static runtime state for long-lived worker processes.
+     *
+     * @param   array  $options  Supported keys:
+     *                           - clear_query_log (bool, default true)
+     *                           - disable_query_logging (bool, default true)
+     *                           - reset_instances (bool, default false)
+     *                           - soft_close_instances (bool, default false)
+     *                           - flush_instances (bool, default false)
+     *                           - disconnect_instances (bool, default true)
+     *                           - commit_open_transaction (bool, default false)
+     *                           - rollback_open_transaction (bool, default true)
+     * @return  void
+     */
+    public static function flushRuntimeState(array $options = []): void
+    {
+        static::incrementTelemetry('flush_runtime_calls');
+
+        $clearQueryLog = $options['clear_query_log'] ?? true;
+        $disableQueryLogging = $options['disable_query_logging'] ?? true;
+        $flushInstances = $options['flush_instances'] ?? false;
+        $disconnectInstances = $options['disconnect_instances'] ?? true;
+        $resetInstances = $options['reset_instances'] ?? false;
+        $softCloseInstances = $options['soft_close_instances'] ?? false;
+
+        if ($disableQueryLogging || $clearQueryLog) {
+            foreach (self::$instances as $instance) {
+                if (!$instance instanceof self) {
+                    continue;
+                }
+
+                if ($disableQueryLogging) {
+                    $instance->disableQueryLog();
+                }
+
+                if ($clearQueryLog) {
+                    $instance->flushQueryLog();
+                }
+            }
+        }
+
+        if ($resetInstances) {
+            $instanceOptions = $options;
+            $instanceOptions['soft_close'] = $softCloseInstances;
+            $instanceOptions['flush_query_state'] = $instanceOptions['flush_query_state'] ?? false;
+            $instanceOptions['flush_relational_state'] = $instanceOptions['flush_relational_state'] ?? false;
+            $nonPersistentSignatures = [];
+
+            foreach (self::$instances as $signature => $instance) {
+                if ($instance instanceof self) {
+                    $instance->reset($instanceOptions);
+
+                    if (!(self::$instancePersistent[$signature] ?? true)) {
+                        $nonPersistentSignatures[] = (string) $signature;
+                    }
+                }
+            }
+
+            foreach ($nonPersistentSignatures as $signature) {
+                static::evictInstanceBySignature($signature, 'non_persistent');
+            }
+        }
+
+        if ($flushInstances) {
+            static::flushInstances((bool) $disconnectInstances);
+        }
+    }
+
+    /**
+     * Flush database runtime state through the Driver gateway.
+     *
+     * Defaults:
+     * - flush Query static state
+     * - flush Relational static state
+     * - reset pooled driver instances
+     * - soft-close pooled connections without removing pooled objects
+     *
+     * @param   array  $options  Supported keys:
+     *                           - flush_query_state (bool, default true)
+     *                           - query_options (array, default [])
+     *                           - flush_relational_state (bool, default true)
+     *                           - relational_options (array, default [])
+     *                           - flush_factory_state (bool, default true)
+     *                           - factory_options (array, default [])
+     *                           plus all flushRuntimeState() keys
+     * @return  void
+     */
+    public static function flush(array $options = []): void
+    {
+        static::incrementTelemetry('flush_calls');
+
+        $flushQueryState = $options['flush_query_state'] ?? true;
+        $flushRelationalState = $options['flush_relational_state'] ?? true;
+        $flushFactoryState = $options['flush_factory_state'] ?? true;
+        $queryOptions = array_replace([
+            'clear_memory_cache' => true,
+            'clear_cache_store' => true,
+            'clear_cache_namespace' => true,
+        ], (array) ($options['query_options'] ?? []));
+        $relationalOptions = (array) ($options['relational_options'] ?? []);
+        $factoryOptions = (array) ($options['factory_options'] ?? []);
+
+        if ($flushQueryState) {
+            Query::flush($queryOptions);
+        }
+
+        if ($flushRelationalState) {
+            if ($flushQueryState && !array_key_exists('clear_query_cache', $relationalOptions)) {
+                $relationalOptions['clear_query_cache'] = false;
+            }
+
+            Relational::flush($relationalOptions);
+        }
+
+        if ($flushFactoryState) {
+            Factory::flush($factoryOptions);
+        }
+
+        $runtimeOptions = array_replace([
+            'clear_query_log' => true,
+            'disable_query_logging' => true,
+            'reset_instances' => true,
+            'soft_close_instances' => true,
+            'flush_instances' => false,
+            'disconnect_instances' => false,
+            'commit_open_transaction' => true,
+            'rollback_open_transaction' => false,
+        ], $options);
+
+        static::flushRuntimeState($runtimeOptions);
+    }
+
+    /**
+     * Reset this driver instance so it can be safely reused between requests.
+     *
+     * @param   array  $options  Supported keys:
+     *                           - commit_open_transaction (bool, default false)
+     *                           - rollback_open_transaction (bool, default true)
+     *                           - soft_close (bool, default false)
+     *                           - flush_query_state (bool, default true)
+     *                           - query_options (array, default [])
+     *                           - flush_relational_state (bool, default true)
+     *                           - relational_options (array, default [])
+     * @return  void
+     */
+    public function reset(array $options = []): void
+    {
+        static::incrementTelemetry('reset_calls');
+
+        $commitOpenTransaction = $options['commit_open_transaction'] ?? false;
+        $rollbackOpenTransaction = $options['rollback_open_transaction'] ?? true;
+        $softClose = $options['soft_close'] ?? false;
+        $flushQueryState = $options['flush_query_state'] ?? true;
+        $flushRelationalState = $options['flush_relational_state'] ?? true;
+        $queryOptions = (array) ($options['query_options'] ?? []);
+        $relationalOptions = (array) ($options['relational_options'] ?? []);
+
+        if ($flushQueryState) {
+            Query::flush($queryOptions);
+        }
+
+        if ($flushRelationalState) {
+            if ($flushQueryState && !array_key_exists('clear_query_cache', $relationalOptions)) {
+                $relationalOptions['clear_query_cache'] = false;
+            }
+
+            Relational::flush($relationalOptions);
+        }
+
+        try {
+            $this->freeResult();
+        } catch (\Throwable $e) {
+            static::incrementTelemetry('reset_failures');
+            // Ignore cleanup failures during reuse flush.
+        }
+
+        if ($commitOpenTransaction && method_exists($this, 'inTransaction')) {
+            try {
+                while ($this->inTransaction()) {
+                    $this->transactionCommit();
+                }
+            } catch (\Throwable $e) {
+                static::incrementTelemetry('reset_failures');
+                // Best-effort commit cleanup only.
+            }
+        } elseif ($rollbackOpenTransaction && method_exists($this, 'inTransaction')) {
+            try {
+                while ($this->inTransaction()) {
+                    $this->transactionRollback();
+                }
+            } catch (\Throwable $e) {
+                static::incrementTelemetry('reset_failures');
+                // Best-effort rollback cleanup only.
+            }
+        }
+
+        $this->statement = null;
+        $this->bindings = [];
+        $this->log = [];
+        $this->queryResultCache = [];
+        $this->tableColumnsCache = [];
+        $this->timer = 0;
+        $this->count = 0;
+        $this->schema = null;
+        $this->rawQueryModeEnforced = false;
+
+        if (!$softClose && ($options['reset_session_state'] ?? true)) {
+            try {
+                $this->resetSessionState($options);
+            } catch (\Throwable $e) {
+                static::incrementTelemetry('session_reset_failures');
+                // Best-effort session cleanup only.
+            }
+        }
+
+        $this->resetDriverState($options);
+
+        if ($softClose) {
+            try {
+                $this->softClose();
+            } catch (\Throwable $e) {
+                static::incrementTelemetry('reset_failures');
+                // Best-effort soft close only.
+            }
+        }
+    }
+
+    /**
+     * Reset driver-specific mutable state for request reuse.
+     *
+     * Concrete drivers may override this to clear transient flags/caches.
+     *
+     * @param   array  $options
+     * @return  void
+     */
+    protected function resetDriverState(array $options = []): void
+    {
+        // Base driver has no additional transient state to reset.
+    }
+
+    /**
+     * Reset database session-level state for connection reuse.
+     *
+     * Concrete drivers can override to reapply session defaults
+     * (charset, timezone, SQL mode, etc.) between requests.
+     *
+     * @param   array  $options
+     * @return  void
+     */
+    protected function resetSessionState(array $options = []): void
+    {
+        $this->resetPdoConnectionAttributes();
+    }
+
+    /**
+     * Restore baseline PDO connection attributes from connection options.
+     *
+     * @return  void
+     */
+    protected function resetPdoConnectionAttributes(): void
+    {
+        $this->ensureInitialPdoAttributesCaptured();
+
+        $attributes = $this->initialPdoAttributes;
+        $extras = $this->getConnectionOption('extras', []);
+        if (!is_array($extras)) {
+            $extras = [];
+        }
+
+        foreach ($extras as $attribute => $value) {
+            if (is_int($attribute)) {
+                $attributes[$attribute] = $value;
+            }
+        }
+
+        if (!array_key_exists(\PDO::ATTR_ERRMODE, $attributes)) {
+            $attributes[\PDO::ATTR_ERRMODE] = \PDO::ERRMODE_EXCEPTION;
+        }
+
+        foreach ($attributes as $attribute => $value) {
+            if (!is_int($attribute)) {
+                continue;
+            }
+
+            try {
+                if (method_exists($this->connection, 'setAttribute')) {
+                    $this->connection->setAttribute($attribute, $value);
+                } elseif ($this->connection instanceof \PDO) {
+                    $this->connection->setAttribute($attribute, $value);
+                }
+            } catch (\Throwable $e) {
+                // Best-effort only.
+            }
+        }
+    }
+
+    /**
+     * Capture baseline PDO attributes from the current connection state.
+     *
+     * @return  void
+     */
+    protected function captureInitialPdoConnectionAttributes(): void
+    {
+        if ($this->initialPdoAttributesCaptured || !is_object($this->connection)) {
+            return;
+        }
+
+        if (
+            !method_exists($this->connection, 'getAttribute')
+            && !($this->connection instanceof \PDO)
+        ) {
+            return;
+        }
+
+        $attributeMap = [];
+        foreach ($this->defaultTrackedPdoAttributes() as $attribute) {
+            $attributeMap[$attribute] = true;
+        }
+
+        $extras = $this->getConnectionOption('extras', []);
+        if (is_array($extras)) {
+            foreach ($extras as $attribute => $value) {
+                if (is_int($attribute)) {
+                    $attributeMap[$attribute] = true;
+                }
+            }
+        }
+
+        $captured = [];
+        foreach (array_keys($attributeMap) as $attribute) {
+            try {
+                if (method_exists($this->connection, 'getAttribute')) {
+                    $captured[$attribute] = $this->connection->getAttribute($attribute);
+                } elseif ($this->connection instanceof \PDO) {
+                    $captured[$attribute] = $this->connection->getAttribute($attribute);
+                }
+            } catch (\Throwable $e) {
+                // Best-effort only.
+            }
+        }
+
+        $this->initialPdoAttributes = $captured;
+        $this->initialPdoAttributesCaptured = true;
+    }
+
+    /**
+     * Common PDO attributes that should be restored across worker requests.
+     *
+     * @return  array<int,int>
+     */
+    protected function defaultTrackedPdoAttributes(): array
+    {
+        return [
+            \PDO::ATTR_AUTOCOMMIT,
+            \PDO::ATTR_CASE,
+            \PDO::ATTR_ERRMODE,
+            \PDO::ATTR_ORACLE_NULLS,
+            \PDO::ATTR_DEFAULT_FETCH_MODE,
+            \PDO::ATTR_EMULATE_PREPARES,
+            \PDO::ATTR_STRINGIFY_FETCHES,
+            \PDO::ATTR_TIMEOUT,
+        ];
+    }
+
+    /**
+     * Ensure initial PDO attributes are captured from an open connection.
+     *
+     * @return  void
+     */
+    protected function ensureInitialPdoAttributesCaptured(): void
+    {
+        if ($this->initialPdoAttributesCaptured) {
+            return;
+        }
+
+        try {
+            $this->connect();
+            $this->captureInitialPdoConnectionAttributes();
+        } catch (\Throwable $e) {
+            // Best-effort only.
+        }
+    }
+
+    /**
+     * Get a connection option captured at driver construction.
+     *
+     * @param   string  $key
+     * @param   mixed   $default
+     * @return  mixed
+     */
+    protected function getConnectionOption(string $key, $default = null)
+    {
+        return $this->connectionOptions[$key] ?? $default;
+    }
+
+    /**
+     * Determine whether this driver has a cached query result for key.
+     *
+     * @param   string  $key
+     * @return  bool
+     */
+    public function hasCachedQueryResult(string $key): bool
+    {
+        return array_key_exists($key, $this->queryResultCache);
+    }
+
+    /**
+     * Get a cached query result for key.
+     *
+     * @param   string  $key
+     * @return  mixed
+     */
+    public function getCachedQueryResult(string $key)
+    {
+        return $this->queryResultCache[$key] ?? null;
+    }
+
+    /**
+     * Store a cached query result for key.
+     *
+     * @param   string  $key
+     * @param   mixed   $result
+     * @return  void
+     */
+    public function setCachedQueryResult(string $key, $result): void
+    {
+        $this->queryResultCache[$key] = $result;
+    }
+
+    /**
+     * Clear in-memory cached query results for this driver instance.
+     *
+     * @return  $this
+     */
+    public function flushCachedQueryResults()
+    {
+        $this->queryResultCache = [];
+
+        return $this;
+    }
+
+    /**
+     * Remove one cached query result by key for this driver instance.
+     *
+     * @param   string  $key
+     * @return  $this
+     */
+    public function flushCachedQueryResultByKey(string $key)
+    {
+        unset($this->queryResultCache[$key]);
+
+        return $this;
+    }
+
+    /**
+     * Determine whether this driver has cached table columns for table.
+     *
+     * @param   string  $table
+     * @return  bool
+     */
+    public function hasCachedTableColumns(string $table): bool
+    {
+        return array_key_exists($table, $this->tableColumnsCache);
+    }
+
+    /**
+     * Get cached table columns for table.
+     *
+     * @param   string  $table
+     * @return  array
+     */
+    public function getCachedTableColumns(string $table): array
+    {
+        return (array) ($this->tableColumnsCache[$table] ?? []);
+    }
+
+    /**
+     * Store cached table columns for table.
+     *
+     * @param   string  $table
+     * @param   array   $columns
+     * @return  void
+     */
+    public function setCachedTableColumns(string $table, array $columns): void
+    {
+        $this->tableColumnsCache[$table] = $columns;
+    }
+
+    /**
+     * Flush cached table column metadata for this driver instance.
+     *
+     * @param   string|null  $tableName  Optional table name to clear.
+     * @return  $this
+     */
+    public function flushCachedTableColumns(?string $tableName = null)
+    {
+        if ($tableName === null) {
+            $this->tableColumnsCache = [];
+            return $this;
+        }
+
+        unset($this->tableColumnsCache[$tableName]);
+
+        return $this;
     }
 
     /**
@@ -363,6 +1212,8 @@ abstract class Driver implements LoggerAwareInterface
     {
         $this->connection = $connection;
         $this->connectionId = $this->generateConnectionId();
+        $this->initialPdoAttributes = [];
+        $this->initialPdoAttributesCaptured = false;
         $this->setSyntax($this->detectSyntax());
 
         return $this;
@@ -383,6 +1234,8 @@ abstract class Driver implements LoggerAwareInterface
         if ($this->connection instanceof ConnectionInterface) {
             $this->connection->connect();
         }
+
+        $this->captureInitialPdoConnectionAttributes();
     }
 
     /**
@@ -403,6 +1256,19 @@ abstract class Driver implements LoggerAwareInterface
         } else {
             $this->connection = null;
         }
+    }
+
+    /**
+     * Soft-close the active native connection while preserving this driver object.
+     *
+     * The next query/prepare/connect call can reconnect lazily using the same
+     * connection configuration.
+     *
+     * @return  void
+     */
+    public function softClose(): void
+    {
+        $this->disconnect();
     }
 
     /**
@@ -1281,6 +2147,30 @@ abstract class Driver implements LoggerAwareInterface
     }
 
     /**
+     * Get stable connection fingerprint for persistent cache key identity.
+     *
+     * Unlike getConnectionId(), this value is based on connection configuration
+     * and remains stable across instance eviction/recreation for the same
+     * backend settings.
+     *
+     * @return  string
+     */
+    public function getPersistentCacheConnectionFingerprint(): string
+    {
+        $fingerprintData = [
+            'driver' => $this->getType(),
+            'database' => (string) ($this->database ?? ''),
+            'prefix' => (string) ($this->tablePrefix ?? ''),
+            'host' => (string) ($this->getConnectionOption('host', '')),
+            'port' => (string) ($this->getConnectionOption('port', '')),
+            'dsn' => (string) ($this->getConnectionOption('dsn', '')),
+            'socket' => (string) ($this->getConnectionOption('socket', '')),
+        ];
+
+        return hash('sha256', serialize($fingerprintData));
+    }
+
+    /**
      * Generates a new unique connection identifier
      *
      * Creates a cryptographically secure random identifier for this connection.
@@ -1424,14 +2314,14 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @var bool
      */
-    protected static $queryLoggingEnabled = false;
+    protected $queryLoggingEnabled = false;
 
     /**
      * Detailed query log with timing information
      *
      * @var array
      */
-    protected static $queryLog = [];
+    protected $queryLog = [];
 
     /**
      * Enable detailed query logging
@@ -1457,7 +2347,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     public function enableQueryLog()
     {
-        static::$queryLoggingEnabled = true;
+        $this->queryLoggingEnabled = true;
         return $this;
     }
 
@@ -1468,7 +2358,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     public function disableQueryLog()
     {
-        static::$queryLoggingEnabled = false;
+        $this->queryLoggingEnabled = false;
         return $this;
     }
 
@@ -1479,7 +2369,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     public function isQueryLogEnabled()
     {
-        return static::$queryLoggingEnabled;
+        return $this->queryLoggingEnabled;
     }
 
     /**
@@ -1504,7 +2394,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     public function getQueryLog()
     {
-        return static::$queryLog;
+        return $this->queryLog;
     }
 
     /**
@@ -1514,7 +2404,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     public function flushQueryLog()
     {
-        static::$queryLog = [];
+        $this->queryLog = [];
         return $this;
     }
 
@@ -1525,7 +2415,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     public function getQueryLogTotalTime()
     {
-        return array_sum(array_column(static::$queryLog, 'time'));
+        return array_sum(array_column($this->queryLog, 'time'));
     }
 
     /**
@@ -1535,7 +2425,7 @@ abstract class Driver implements LoggerAwareInterface
      */
     public function getQueryLogCount()
     {
-        return count(static::$queryLog);
+        return count($this->queryLog);
     }
 
     /**
@@ -1550,8 +2440,8 @@ abstract class Driver implements LoggerAwareInterface
      */
     protected function logQuery($sql, array $bindings, $time)
     {
-        if (static::$queryLoggingEnabled) {
-            static::$queryLog[] = [
+        if ($this->queryLoggingEnabled) {
+            $this->queryLog[] = [
                 'sql' => $sql,
                 'bindings' => $bindings,
                 'time' => round($time, 2),

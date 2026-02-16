@@ -68,6 +68,14 @@ class MysqlDriver extends BaseSqlDriver
     private $sequenceTableReady = false;
 
     /**
+     * @inheritdoc
+     */
+    protected function resetDriverState(array $options = []): void
+    {
+        $this->sequenceTableReady = false;
+    }
+
+    /**
      * Constructs a new database object based on the given params
      *
      * @param   array  $options  The database connection params

@@ -1561,6 +1561,14 @@ class PgsqlDriver extends BaseSqlDriver
      */
     protected $regexpRegistered = false;
 
+    /**
+     * @inheritdoc
+     */
+    protected function resetDriverState(array $options = []): void
+    {
+        $this->regexpRegistered = false;
+    }
+
     public function registerRegexp()
     {
         $this->regexpRegistered = true;

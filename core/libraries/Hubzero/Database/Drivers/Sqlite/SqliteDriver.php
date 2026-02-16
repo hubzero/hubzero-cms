@@ -1416,6 +1416,15 @@ class SqliteDriver extends BaseSqlDriver
     protected $regexpRegistered = false;
 
     /**
+     * @inheritdoc
+     */
+    protected function resetDriverState(array $options = []): void
+    {
+        $this->sequenceTableReady = false;
+        $this->regexpRegistered = false;
+    }
+
+    /**
      * Format a boolean value as a SQL literal
      *
      * SQLite has no native boolean type; uses INTEGER with 1/0 values.

@@ -135,6 +135,17 @@ class InformixDriver extends BaseSqlDriver
     protected $lobStreams = [];
 
     /**
+     * @inheritdoc
+     */
+    protected function resetDriverState(array $options = []): void
+    {
+        $this->lastWasDdl = false;
+        $this->transactionEmulationActive = false;
+        $this->transactionBuffer = [];
+        $this->lobStreams = [];
+    }
+
+    /**
      * Whether Informix trace logging is enabled.
      *
      * @return bool
