@@ -14,7 +14,7 @@ use Hubzero\User\User;
 use Hubzero\User\Password;
 use Hubzero\Access\Map;
 use Hubzero\Base\Application;
-use PDO;
+use Hubzero\Database\ConnectionInterface;
 use PDOException;
 
 class Admin implements StepInterface
@@ -52,7 +52,7 @@ class Admin implements StepInterface
         $existingAdmin = $this->existingAdmin;
         $defaultEmail = $this->installer->getSessionData('settings')['mailfrom'] ?? '';
         ob_start();
-        include __DIR__ . '/../views/steps/admin.php';
+        include __DIR__ . '/../views/steps/tmpl/admin.php';
         $content = ob_get_clean();
 
         // Clear errors from session after rendering (they've been displayed)
@@ -276,24 +276,25 @@ class Admin implements StepInterface
             return;
         }
 
-        $pdo = $this->installer->connectToDatabase($dbConfig);
-        if (!$pdo) {
+        $connection = $this->installer->connectToDatabase($dbConfig);
+        if (!$connection) {
             return;
         }
 
         $prefix = $dbConfig['dbprefix'] ?? 'jos_';
 
         try {
-            $stmt = $pdo->prepare(
+            $stmt = $connection->prepare(
                 "SELECT u.id, u.name, u.username, u.email
                  FROM `{$prefix}users` u
                  INNER JOIN `{$prefix}user_usergroup_map` m ON u.id = m.user_id
-                 WHERE m.group_id = :group_id
+                 WHERE m.group_id = ?
                  AND u.block = 0
                  LIMIT 1"
             );
-            $stmt->execute(['group_id' => self::SUPER_USERS_GROUP_ID]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $connection->bind($stmt, [self::SUPER_USERS_GROUP_ID]);
+            $connection->execute($stmt);
+            $result = $connection->fetchAssoc($stmt);
 
             if ($result) {
                 $this->existingAdmin = $result;

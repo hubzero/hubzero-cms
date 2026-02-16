@@ -35,7 +35,7 @@ class WizardServiceProvider extends Middleware
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             http_response_code(500);
             ob_start();
-            include dirname(__DIR__) . '/web/views/windows-error.php';
+            include dirname(__DIR__) . '/web/views/tmpl/windows-error.php';
             $response->setContent(ob_get_clean());
             return $response;
         }
