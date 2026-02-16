@@ -205,24 +205,13 @@ class Helper extends Module
                 $additional_catids = array();
 
                 foreach ($catids as $catid) {
-                    $db = App::get('db');
-
-                    $authorisedLevels = implode(',', User::getAuthorisedViewLevels());
-                    $vars = array($catid, $authorisedLevels);
-
-                    // For each category find children up to needed depth
-                    $sql = "SELECT id FROM "
-                        . "(SELECT * FROM #__categories ORDER BY parent_id, id) cats, "
-                        . "(SELECT @pID := ?) varInit "
-                        . "WHERE `access` IN (?) AND FIND_IN_SET(parent_id, @pID)";
-                    if ($levels) {
-                        $sql .= " AND level <= ?";
-                        $vars[] = $levels;
-                    }
-                    $sql .= " AND @pID := CONCAT(@pID, ',', id)";
-
-                    $db->prepare($sql)->bind($vars);
-                    $additional_catids = array_merge($db->loadColumn(), $additional_catids);
+                    // Use PHP-based recursion for database-agnostic child category lookup
+                    $childIds = self::getChildCategoryIds(
+                        (int) $catid,
+                        User::getAuthorisedViewLevels(),
+                        $levels ?: 0
+                    );
+                    $additional_catids = array_merge($childIds, $additional_catids);
                 }
 
                 $catids = array_unique(array_merge($catids, $additional_catids));
@@ -262,7 +251,8 @@ class Helper extends Module
         } elseif ($date_filtering == 'relative') {
             $fld = str_replace('a.', '`#__content`.`', $params->get('date_field', 'a.created')) . '`';
             if ($relativeDate = $params->get('relative_date', 30)) {
-                $query->whereRaw($fld . " >= DATE_SUB('" . Date::toSql() . "', INTERVAL " . $relativeDate . " DAY)");
+                $db = App::get('db');
+                $query->whereRaw($fld . " >= " . $db->sqlDateSub($db->quote(Date::toSql()), (int) $relativeDate, 'DAY'));
             }
         }
 
@@ -536,5 +526,61 @@ class Helper extends Module
         }
 
         return $grouped;
+    }
+
+    /**
+     * Get child category IDs recursively using PHP-based traversal
+     *
+     * This is a database-agnostic alternative to the MySQL-specific query that
+     * used user variables (@pID) and FIND_IN_SET() for recursive traversal.
+     *
+     * @param   int    $parentId          The parent category ID to start from
+     * @param   array  $authorisedLevels  Array of authorised access levels
+     * @param   int    $maxDepth          Maximum depth to traverse (0 = unlimited)
+     * @param   int    $currentDepth      Current depth in recursion (internal use)
+     * @return  array  Array of child category IDs
+     */
+    protected static function getChildCategoryIds($parentId, $authorisedLevels, $maxDepth = 0, $currentDepth = 1)
+    {
+        // Stop if we've reached the maximum depth
+        if ($maxDepth > 0 && $currentDepth > $maxDepth) {
+            return [];
+        }
+
+        $db = App::get('db');
+
+        // Build query for direct children of this parent
+        $query = "SELECT id FROM #__categories WHERE parent_id = ?";
+
+        // Add access level filter
+        if (!empty($authorisedLevels)) {
+            $placeholders = implode(',', array_fill(0, count($authorisedLevels), '?'));
+            $query .= " AND access IN (" . $placeholders . ")";
+        }
+
+        // Prepare and bind parameters
+        $params = array_merge([$parentId], $authorisedLevels);
+        $db->prepare($query)->bind($params);
+
+        $childIds = $db->loadColumn();
+
+        if (empty($childIds)) {
+            return [];
+        }
+
+        $allIds = $childIds;
+
+        // Recursively get children of each child
+        foreach ($childIds as $childId) {
+            $grandchildIds = self::getChildCategoryIds(
+                (int) $childId,
+                $authorisedLevels,
+                $maxDepth,
+                $currentDepth + 1
+            );
+            $allIds = array_merge($allIds, $grandchildIds);
+        }
+
+        return $allIds;
     }
 }

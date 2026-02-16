@@ -86,22 +86,28 @@ class Helper extends Module
         $this->closed = array();
 
         // First ticket
-        $sql = "SELECT YEAR(created)
-				FROM `#__support_tickets`
-				WHERE report!=''
-				AND type='0' ORDER BY created ASC LIMIT 1";
-        $database->setQuery($sql);
-        $first = intval($database->loadResult());
+        $first = (int) $database->getQuery()
+            ->select($database->sqlYear('created'))
+            ->from('#__support_tickets')
+            ->whereRaw("report != ''")
+            ->whereEquals('type', 0)
+            ->order('created', 'asc')
+            ->limit(1)
+            ->value();
 
         // Opened tickets
-        $sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
-				FROM `#__support_tickets`
-				WHERE report!=''
-				AND type=0";
-        //$sql .= " AND group_id=0";
-        $sql .= " ORDER BY created ASC";
-        $database->setQuery($sql);
-        $openTickets = $database->loadObjectList();
+        $openTickets = $database->getQuery()
+            ->select('id')
+            ->select('created')
+            ->select($database->sqlYear('created'), 'year')
+            ->select($database->sqlMonth('created'), 'month')
+            ->select('status')
+            ->select('owner')
+            ->from('#__support_tickets')
+            ->whereRaw("report != ''")
+            ->whereEquals('type', 0)
+            ->order('created', 'asc')
+            ->fetch();
 
         $open = array();
         $this->opened['open']       = 0;
@@ -127,23 +133,26 @@ class Helper extends Module
         }
 
         // Closed tickets
-        /*$sql = "SELECT c.ticket, c.created_by, c.created, YEAR(c.created) AS `year`,
-                MONTH(c.created) AS `month`, UNIX_TIMESTAMP(t.created) AS opened,
-                UNIX_TIMESTAMP(c.created) AS closed
+        /*$sql = "SELECT c.ticket, c.created_by, c.created, " . $database->sqlYear('c.created') . " AS `year`,
+                " . $database->sqlMonth('c.created') . " AS `month`, " . $database->sqlUnixTimestamp('t.created') . " AS opened,
+                " . $database->sqlUnixTimestamp('c.created') . " AS closed
                 FROM `#__support_comments` AS c
                 LEFT JOIN `#__support_tickets` AS t ON c.ticket=t.id
                 WHERE t.report!=''
                 AND type=0 AND open=0";*/
-        $sql = "SELECT t.id AS ticket, t.closed, YEAR(t.closed) AS `year`,
-                MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened,
-                UNIX_TIMESTAMP(t.closed) AS closed
-				FROM `#__support_tickets` AS t
-				WHERE t.report!=''
-				AND t.type=0 AND t.open=0";
-        //$sql .= " AND group_id=0";
-        $sql .= " ORDER BY t.created ASC";
-        $database->setQuery($sql);
-        $clsd = $database->loadObjectList();
+        $clsd = $database->getQuery()
+            ->select('t.id', 'ticket')
+            ->select('t.closed')
+            ->select($database->sqlYear('t.closed'), 'year')
+            ->select($database->sqlMonth('t.closed'), 'month')
+            ->select($database->sqlUnixTimestamp('t.created'), 'opened')
+            ->select($database->sqlUnixTimestamp('t.closed'), 'closed')
+            ->from('#__support_tickets', 't')
+            ->whereRaw("t.report != ''")
+            ->whereEquals('t.type', 0)
+            ->whereEquals('t.open', 0)
+            ->order('t.created', 'asc')
+            ->fetch();
 
         $this->opened['closed'] = 0;
         $closedTickets = array();

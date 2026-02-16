@@ -251,7 +251,8 @@ class Helper extends Module
             $query->where($fld, '>=', $params->get('start_date_range', '1000-01-01 00:00:00'));
             $query->where($fld, '<', $params->get('end_date_range', '9999-12-31 23:59:59'));
             if ($relativeDate = $params->get('relative_date', 30)) {
-                $query->whereRaw($fld, '>= DATE_SUB(' . Date::toSql() . ', INTERVAL ' . $relativeDate . ' DAY)');
+                $db = App::get('db');
+                $query->whereRaw($fld, '>= ' . $db->sqlDateSub($db->quote(Date::toSql()), (int) $relativeDate, 'DAY'));
             }
         }
 

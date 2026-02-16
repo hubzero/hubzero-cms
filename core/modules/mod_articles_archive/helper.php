@@ -49,11 +49,11 @@ class Helper extends Module
         $db = App::get('db');
 
         $query = $db->getQuery()
-            ->select('MONTH(created)', 'created_month')
+            ->select($db->sqlMonth('created'), 'created_month')
             ->select('created')
             ->select('id')
             ->select('title')
-            ->select('YEAR(created)', 'created_year')
+            ->select($db->sqlYear('created'), 'created_year')
             ->from('#__content')
             ->whereEquals('state', 2)
             ->whereEquals('checked_out', 0)
@@ -65,8 +65,9 @@ class Helper extends Module
             $query->whereIn('language', array(Lang::getTag(), '*'));
         }
 
-        $db->setQuery($query, 0, intval($params->get('count')));
-        $rows = (array) $db->loadObjectList();
+        $rows = (array) $query
+            ->limit(intval($params->get('count')))
+            ->fetch();
 
         $menu   = App::get('menu');
         $item   = $menu->getItems('link', 'index.php?option=com_content&view=archive', true);
