@@ -332,10 +332,10 @@ class Groups extends Base
         }
 
         // Build the title
-        $this->buildTitle($pages);
+        $this->_buildTitle($pages);
 
         // Build pathway
-        $this->buildPathway($pages);
+        $this->_buildPathway($pages);
 
         // Set some vars for view
         $this->view->title         = $this->_title;
