@@ -383,10 +383,10 @@ For more info, check out the git docs:  https://git-scm.com/book/en/v2/Git-Tools
 
 # Fixing core issues
 
-Checkout a clone of `upstream/dev`:
+Checkout a clone of `upstream/2.4-main`:
 
 ```
-git checkout --track -b fix-core-bug upstream/dev
+git checkout --track -b fix-core-bug upstream/2.4-main
 ```
 
 Code the fix and then push the new branch to origin:
