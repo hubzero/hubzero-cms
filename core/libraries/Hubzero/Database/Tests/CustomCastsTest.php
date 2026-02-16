@@ -17,7 +17,7 @@ use Hubzero\Database\Casts\AsCollection;
 use Hubzero\Database\Casts\AsDateTime;
 use Hubzero\Database\Casts\AsEncryptedString;
 use Hubzero\Database\Relational;
-use Hubzero\Base\ItemList;
+use ArrayObject;
 use Hubzero\Database\Tests\TestModels\CastTestModelJson;
 use Hubzero\Database\Tests\TestModels\CastTestModelDateTime;
 use Hubzero\Database\Tests\TestModels\CastTestModelCollection;
@@ -319,7 +319,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $instance->save();
 
         $retrieved = CastTestModelCollection::one($instance->get('id'));
-        $this->assertInstanceOf(ItemList::class, $retrieved->get('tags'), "[$dbName]");
+        $this->assertInstanceOf(ArrayObject::class, $retrieved->get('tags'), "[$dbName]");
         $this->assertEquals(3, $retrieved->get('tags')->count(), "[$dbName]");
         $this->assertContains('php', iterator_to_array($retrieved->get('tags')), "[$dbName]");
     }
@@ -341,17 +341,17 @@ class CustomCastsTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function collectionCastStoresItemList(string $dbName, Driver $driver)
+    public function collectionCastStoresArrayObject(string $dbName, Driver $driver)
     {
         $this->prepareModels($driver);
 
-        $list = new ItemList(['a', 'b', 'c']);
+        $list = new ArrayObject(['a', 'b', 'c']);
         $instance = CastTestModelCollection::blank();
         $instance->set('tags', $list);
         $instance->save();
 
         $retrieved = CastTestModelCollection::one($instance->get('id'));
-        $this->assertInstanceOf(ItemList::class, $retrieved->get('tags'), "[$dbName]");
+        $this->assertInstanceOf(ArrayObject::class, $retrieved->get('tags'), "[$dbName]");
         $this->assertEquals(3, $retrieved->get('tags')->count(), "[$dbName]");
     }
 
@@ -365,7 +365,7 @@ class CustomCastsTest extends AbstractDriverTestCase
         $model = CastTestModelCollection::blank();
         $result = $cast->get($model, 'tags', '', []);
 
-        $this->assertInstanceOf(ItemList::class, $result, "[$dbName]");
+        $this->assertInstanceOf(ArrayObject::class, $result, "[$dbName]");
         $this->assertEquals(0, $result->count(), "[$dbName]");
     }
 

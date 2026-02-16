@@ -9,10 +9,10 @@
 namespace Hubzero\Database\Casts;
 
 use Hubzero\Database\Relational;
-use Hubzero\Base\ItemList;
+use ArrayObject;
 
 /**
- * Cast attribute to/from Collection (ItemList)
+ * Cast attribute to/from Collection (ArrayObject)
  *
  * Usage:
  * ```php
@@ -24,23 +24,23 @@ use Hubzero\Base\ItemList;
 class AsCollection implements CastsAttributes
 {
     /**
-     * Cast to ItemList when reading
+     * Cast to ArrayObject when reading
      *
      * @param  Relational  $model
      * @param  string      $key
      * @param  mixed       $value
      * @param  array       $attributes
-     * @return ItemList|null
+     * @return ArrayObject|null
      */
     public function get(Relational $model, string $key, $value, array $attributes)
     {
         if ($value === null || $value === '') {
-            return new ItemList([]);
+            return new ArrayObject([]);
         }
 
         $data = json_decode($value, true);
 
-        return new ItemList($data ?: []);
+        return new ArrayObject($data ?: []);
     }
 
     /**
@@ -58,14 +58,8 @@ class AsCollection implements CastsAttributes
             return null;
         }
 
-        // Handle ItemList/array-like objects
-        if ($value instanceof ItemList) {
-            // ItemList doesn't have toArray(), convert via iteration
-            $arr = [];
-            foreach ($value as $item) {
-                $arr[] = $item;
-            }
-            $value = $arr;
+        if ($value instanceof ArrayObject) {
+            $value = $value->getArrayCopy();
         } elseif (is_object($value) && method_exists($value, 'toArray')) {
             $value = $value->toArray();
         }
