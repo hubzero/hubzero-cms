@@ -15,7 +15,7 @@ defined('_HZEXEC_') or die();
 /**
  * Display sponsors on a resource page
  */
-class Sponsors extends \Hubzero\Plugin\Plugin
+class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

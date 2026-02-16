@@ -1,14 +1,13 @@
 <?php
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-namespace Hubzero\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -16,7 +15,7 @@ defined('_HZEXEC_') or die();
 /**
  * Resources Plugin class for related resources
  */
-class Related extends \Hubzero\Plugin\Plugin
+class plgResourcesRelated extends \Hubzero\Plugin\Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
