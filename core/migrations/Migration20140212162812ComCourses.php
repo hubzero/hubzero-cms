@@ -21,19 +21,20 @@ class Migration20140212162812ComCourses extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__courses_asset_unity')) {
-            $query = "CREATE TABLE `#__courses_asset_unity` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `member_id` int(11) NOT NULL,
-					  `asset_id` int(11) NOT NULL,
-					  `created` datetime NOT NULL,
-					  `passed` tinyint(1) NOT NULL,
-					  `details` text,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__courses_asset_unity')) {
+            $schema->createTable('#__courses_asset_unity')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('member_id')
+                ->integer('asset_id')
+                ->datetime('created')
+                ->tinyInteger('passed')
+                ->text('details')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -42,11 +43,8 @@ class Migration20140212162812ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__courses_asset_unity')) {
-            $query = "DROP TABLE `#__courses_asset_unity`";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__courses_asset_unity');
     }
 }

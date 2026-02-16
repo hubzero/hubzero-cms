@@ -20,25 +20,31 @@ class Migration20130814185755ComNewsletter extends Base
      **/
     public function up()
     {
-        $query = "CREATE TABLE IF NOT EXISTS `#__email_bounces` (
-					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					`email` varchar(150) DEFAULT NULL,
-					`component` varchar(100) DEFAULT NULL,
-					`object` varchar(100) DEFAULT NULL,
-					`object_id` int(11) DEFAULT NULL,
-					`reason` text,
-					`date` datetime DEFAULT NULL,
-					`resolved` int(11) DEFAULT '0',
-					PRIMARY KEY (`id`)
-				  ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-        $query .= "UPDATE `#__cron_jobs` SET `params`='' WHERE `plugin`='newsletter' "
-            . "AND `event`='processMailings' AND `params` LIKE '%newsletter_queue_limit=2\n%';";
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__email_bounces')) {
+            $schema->createTable('#__email_bounces')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('email', 150)->nullable()
+                ->string('component', 100)->nullable()
+                ->string('object', 100)->nullable()
+                ->integer('object_id')->nullable()
+                ->text('reason')->nullable()
+                ->datetime('date')->nullable()
+                ->integer('resolved')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
+
+        $this->db->getQuery(true)
+            ->update('#__cron_jobs')
+            ->set(['params' => ''])
+            ->where('plugin', '=', 'newsletter')
+            ->where('event', '=', 'processMailings')
+            ->whereLike('params', "newsletter_queue_limit=2\n")
+            ->execute();
     }
 
     /**
@@ -46,11 +52,10 @@ class Migration20130814185755ComNewsletter extends Base
      **/
     public function down()
     {
-        $query = "DROP TABLE IF EXISTS `#__email_bounces`";
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__email_bounces')) {
+            $schema->dropTable('#__email_bounces');
         }
     }
 }

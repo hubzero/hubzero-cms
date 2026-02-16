@@ -21,6 +21,8 @@ class Migration20141120215253ComHubgraph extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $params = array(
             "host"           => "unix:///var/run/hubgraph-server.sock",
             "port"           => null,
@@ -29,20 +31,23 @@ class Migration20141120215253ComHubgraph extends Base
         );
         $this->addComponentEntry('Hubgraph', 'com_hubgraph', 1, $params, false);
 
-        if ($this->db->tableExists('#__extensions')) {
+        if ($schema->tableExists('#__extensions')) {
             // Look for multiple entries
-            $query = "SELECT `extension_id` FROM `#__extensions` "
-                . "WHERE `element` = 'com_hubgraph' ORDER BY `extension_id` ASC";
-            $this->db->setQuery($query);
-            $ids = $this->db->loadColumn();
+            $ids = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('element', '=', 'com_hubgraph')
+                ->order('extension_id', 'ASC')
+                ->loadColumn();
 
             if ($ids && count($ids) > 1) {
                 unset($ids[0]);
 
                 foreach ($ids as $id) {
-                    $query = "DELETE FROM `#__extensions` WHERE `extension_id` = " . (int)$id;
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->delete('#__extensions')
+                        ->where('extension_id', '=', (int)$id)
+                        ->execute();
                 }
             }
 
@@ -53,10 +58,11 @@ class Migration20141120215253ComHubgraph extends Base
                 /*$object = unserialize($params);
                 $params = $object->settings();
 
-                $query = "UPDATE `#__extensions` SET `params` = "
-                    . $this->db->quote(json_encode($params)) . " WHERE `element` = 'com_hubgraph'";
-                $this->db->setQuery($query);
-                $this->db->query();*/
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => json_encode($params)])
+                    ->where('element', '=', 'com_hubgraph')
+                    ->execute();*/
             }
         }
     }

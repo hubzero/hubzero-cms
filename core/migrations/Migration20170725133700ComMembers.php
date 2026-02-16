@@ -21,13 +21,17 @@ class Migration20170725133700ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__user_profile_fields')) {
-            if (!$this->db->tableHasField('#__user_profile_fields', 'placeholder')) {
-                $query = "ALTER TABLE `#__user_profile_fields` ADD COLUMN `placeholder` varchar(255) NOT NULL "
-                    . "default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if (
+            $schema->tableExists('#__user_profile_fields')
+            && !$schema->hasColumn('#__user_profile_fields', 'placeholder')
+        ) {
+            $schema->addColumn('#__user_profile_fields', 'placeholder')
+                ->string(255)
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 
@@ -36,12 +40,13 @@ class Migration20170725133700ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__user_profile_fields')) {
-            if ($this->db->tableHasField('#__user_profile_fields', 'placeholder')) {
-                $query = "ALTER TABLE `#__user_profile_fields` DROP `placeholder`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if (
+            $schema->tableExists('#__user_profile_fields')
+            && $schema->hasColumn('#__user_profile_fields', 'placeholder')
+        ) {
+            $schema->dropColumn('#__user_profile_fields', 'placeholder');
         }
     }
 }

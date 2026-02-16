@@ -21,13 +21,13 @@ class Migration20140827100656ComPublications extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__publications')
-            && !$this->db->tableHasField('#__publications', 'group_owner')
+            $schema->tableExists('#__publications')
+            && !$schema->hasColumn('#__publications', 'group_owner')
         ) {
-            $query = "ALTER TABLE `#__publications` ADD `group_owner` int(11) NOT NULL DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__publications', 'group_owner')->integer(11)->notNull()->default('0');
         }
     }
 
@@ -36,10 +36,10 @@ class Migration20140827100656ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__publications') && $this->db->tableHasField('#__publications', 'group_owner')) {
-            $query = "ALTER TABLE `#__publications` DROP `group_owner`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publications') && $schema->hasColumn('#__publications', 'group_owner')) {
+            $schema->dropColumn('#__publications', 'group_owner');
         }
     }
 }

@@ -21,20 +21,27 @@ class Migration20130715111246ModIncrementalRegistration extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__profile_completion_awards', 'mailPreferenceOption')) {
-            $query = "ALTER TABLE `#__profile_completion_awards` ADD COLUMN mailPreferenceOption int not null"
-                . "default 0;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->hasColumn('#__profile_completion_awards', 'mailPreferenceOption')) {
+            $schema->addColumn('#__profile_completion_awards', 'mailPreferenceOption')
+                ->integer()
+                ->notNull()
+                ->default(0);
         }
 
-        $query = "SELECT * FROM `#__incremental_registration_labels` WHERE `field` = 'mailPreferenceOption';";
-        $this->db->setQuery($query);
-        if (!$this->db->loadResult()) {
-            $query = "INSERT INTO `#__incremental_registration_labels` (field, label) VALUES"
-                . "('mailPreferenceOption', 'E-Mail Updates');";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            !$this->db->getQuery(true)
+            ->select('*')
+            ->from('#__incremental_registration_labels')
+            ->where('field', '=', 'mailPreferenceOption')
+            ->exists()
+        ) {
+            $this->db->getQuery(true)
+                ->insert('#__incremental_registration_labels')
+                ->columns(['field', 'label'])
+                ->values(['mailPreferenceOption', 'E-Mail Updates'])
+                ->execute();
         }
     }
 
@@ -43,14 +50,15 @@ class Migration20130715111246ModIncrementalRegistration extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__profile_completion_awards', 'mailPreferenceOption')) {
-            $query = "ALTER TABLE `#__profile_completion_awards` DROP COLUMN mailPreferenceOption;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__profile_completion_awards', 'mailPreferenceOption')) {
+            $schema->dropColumn('#__profile_completion_awards', 'mailPreferenceOption');
         }
 
-        $query = "DELETE FROM `#__incremental_registration_labels` WHERE `field` = 'mailPreferenceOption';";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $this->db->getQuery(true)
+            ->delete('#__incremental_registration_labels')
+            ->where('field', '=', 'mailPreferenceOption')
+            ->execute();
     }
 }

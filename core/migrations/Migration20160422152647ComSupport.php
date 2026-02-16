@@ -21,51 +21,18 @@ class Migration20160422152647ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__support_tickets')) {
-            if (
-                !$this->db->tableHasKey('#__support_tickets', 'idx_status')
-                && $this->db->tableHasField('#__support_tickets', 'status')
-            ) {
-                $query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_status` (`status`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (
-                !$this->db->tableHasKey('#__support_tickets', 'idx_open')
-                && $this->db->tableHasField('#__support_tickets', 'open')
-            ) {
-                $query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_open` (`open`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__support_tickets')) {
+            $schema->addIndex('#__support_tickets', 'idx_status', 'status');
 
-            if (
-                !$this->db->tableHasKey('#__support_tickets', 'idx_type')
-                && $this->db->tableHasField('#__support_tickets', 'type')
-            ) {
-                $query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_type` (`type`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__support_tickets', 'idx_open', 'open');
 
-            if (
-                !$this->db->tableHasKey('#__support_tickets', 'idx_group')
-                && $this->db->tableHasField('#__support_tickets', 'group')
-            ) {
-                $query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_group` (`group`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__support_tickets', 'idx_type', 'type');
 
-            if (
-                !$this->db->tableHasKey('#__support_tickets', 'idx_severity')
-                && $this->db->tableHasField('#__support_tickets', 'severity')
-            ) {
-                $query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_severity` (`severity`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__support_tickets', 'idx_group', 'group');
+
+            $schema->addIndex('#__support_tickets', 'idx_severity', 'severity');
         }
     }
 
@@ -74,36 +41,18 @@ class Migration20160422152647ComSupport extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__support_tickets')) {
-            if ($this->db->tableHasKey('#__support_tickets', 'idx_status')) {
-                $query = "ALTER TABLE `#__support_tickets` DROP KEY `idx_status`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__support_tickets', 'idx_open')) {
-                $query = "ALTER TABLE `#__support_tickets` DROP KEY `idx_open`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__support_tickets')) {
+            $schema->dropIndex('#__support_tickets', 'idx_status');
 
-            if ($this->db->tableHasKey('#__support_tickets', 'idx_type')) {
-                $query = "ALTER TABLE `#__support_tickets` DROP KEY `idx_type`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__support_tickets', 'idx_open');
 
-            if ($this->db->tableHasKey('#__support_tickets', 'idx_group')) {
-                $query = "ALTER TABLE `#__support_tickets` DROP KEY `idx_group`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__support_tickets', 'idx_type');
 
-            if ($this->db->tableHasKey('#__support_tickets', 'idx_severity')) {
-                $query = "ALTER TABLE `#__support_tickets` DROP KEY `idx_severity`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__support_tickets', 'idx_group');
+
+            $schema->dropIndex('#__support_tickets', 'idx_severity');
         }
     }
 }

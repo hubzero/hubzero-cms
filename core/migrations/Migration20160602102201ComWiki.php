@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for updating SQL view with renamed wiki tables
@@ -21,19 +22,33 @@ class Migration20160602102201ComWiki extends Base
      **/
     public function up()
     {
-        $query = "DROP VIEW IF EXISTS `#__wiki_contributors_view`;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
 
-        $query = "CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY INVOKER VIEW `#__wiki_contributors_view`
-			AS
-				SELECT `m`.`id` AS `uidNumber`, count(`w`.`id`) AS `count`
-				FROM `#__users` AS `m`
-				LEFT JOIN `#__wiki_pages` AS `w` ON `w`.`access` <> 1 AND `w`.`created_by` = `m`.`id`
-				LEFT JOIN `#__wiki_authors` AS `a` ON a.`page_id`=w.`id` AND `m`.`id`=a.`user_id`
-				WHERE (`m`.`access` = 1 AND `w`.`id` IS NOT NULL) group by `m`.`id`;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Drop existing view if it exists
+        $schema->dropView('#__wiki_contributors_view', true);
+
+        // Create updated view with new table names
+        $query = $this->db->getQuery(true)
+            ->select('m.id', 'uidNumber')
+            ->select('w.id', 'count', true)
+            ->from('#__users', 'm')
+            ->leftJoin('#__wiki_pages AS w', function ($join) {
+                $join->where('w.access', '<>', 1)
+                    ->on('w.created_by', '=', 'm.id');
+            })
+            ->leftJoin('#__wiki_authors AS a', function ($join) {
+                $join->on('a.page_id', '=', 'w.id')
+                    ->on('m.id', '=', 'a.user_id');
+            })
+            ->where('m.access', '=', 1)
+            ->whereNotNull('w.id')
+            ->group('m.id');
+
+        $schema->createView('#__wiki_contributors_view')
+            ->algorithm('UNDEFINED')
+            ->definer('CURRENT_USER')
+            ->security('INVOKER')
+            ->as($query);
     }
 
     /**
@@ -41,17 +56,42 @@ class Migration20160602102201ComWiki extends Base
      **/
     public function down()
     {
-        $query = "DROP VIEW IF EXISTS `#__wiki_contributors_view`;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
 
-        $query = "CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY INVOKER "
-            . "VIEW `#__wiki_contributors_view` AS SELECT `m`.`uidNumber` AS `uidNumber`,count(`w`.`id`) AS `count` "
-            . "FROM (`#__xprofiles` `m` left join `#__wiki_page` `w` on(((`w`.`access` <> 1) "
-            . "and ((`w`.`created_by` = `m`.`uidNumber`) or ((`m`.`username` <> _utf8'') "
-            . "and (`w`.`authors` like concat(_utf8'%',`m`.`username`,_utf8'%'))))))) "
-            . "where ((`m`.`public` = 1) and (`w`.`id` is not null)) group by `m`.`uidNumber`;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Drop the updated view
+        $schema->dropView('#__wiki_contributors_view', true);
+
+        // Recreate the old view with original table names
+        $query = $this->db->getQuery(true)
+            ->select('m.uidNumber', 'uidNumber')
+            ->select('w.id', 'count', true)
+            ->from('#__xprofiles', 'm')
+            ->leftJoin('#__wiki_page AS w', function ($join) {
+                $join->where('w.access', '<>', 1)
+                    ->group(function ($group) {
+                        $group->on('w.created_by', '=', 'm.uidNumber')
+                            ->group(function ($nested) {
+                                $nested->where('m.username', '<>', '')
+                                    ->where(
+                                        'w.authors',
+                                        'like',
+                                        Expression::concat(
+                                            Expression::literal('%'),
+                                            'm.username',
+                                            Expression::literal('%')
+                                        )
+                                    );
+                            }, 'or');
+                    });
+            })
+            ->where('m.public', '=', 1)
+            ->whereNotNull('w.id')
+            ->group('m.uidNumber');
+
+        $schema->createView('#__wiki_contributors_view')
+            ->algorithm('UNDEFINED')
+            ->definer('CURRENT_USER')
+            ->security('INVOKER')
+            ->as($query);
     }
 }

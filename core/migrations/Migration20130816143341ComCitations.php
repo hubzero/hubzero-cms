@@ -21,36 +21,55 @@ class Migration20130816143341ComCitations extends Base
      **/
     public function up()
     {
-        //create new format table
-        $query = "CREATE TABLE IF NOT EXISTS `#__citations_format` (
-					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					`typeid` int(11) DEFAULT NULL,
-					`style` varchar(50) DEFAULT NULL,
-					`format` text,
-					PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
 
-        // get citation params
-        if ($this->db->tableExists('#__extensions')) {
-            $sql = "SELECT params FROM `#__extensions` WHERE `type`='component' AND `element`='com_citations';";
-        } else {
-            $sql = "SELECT params FROM `#__components` WHERE `option`='com_citations';";
+        //create new format table
+        if (!$schema->tableExists('#__citations_format')) {
+            $schema->createTable('#__citations_format')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('typeid')->nullable()
+                ->string('style', 50)->nullable()
+                ->text('format')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        $this->db->setQuery($sql);
-        $rawCitationParams = $this->db->loadResult();
+        // get citation params
+        if ($schema->tableExists('#__extensions')) {
+            $rawCitationParams = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__extensions')
+                ->where('type', '=', 'component')
+                ->where('element', '=', 'com_citations')
+                ->value('params');
+        } else {
+            $rawCitationParams = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__components')
+                ->where('option', '=', 'com_citations')
+                ->value('params');
+        }
+
         $citationParams = new \Hubzero\Config\Registry($rawCitationParams);
 
         //insert default format
-        $query = "INSERT INTO `#__citations_format` (`typeid`, `style`, `format`)
-			SELECT NULL,'custom'," . $this->db->quote($citationParams->get('citation_format', '')) . "
-			FROM DUAL WHERE NOT EXISTS (SELECT `typeid` FROM `#__citations_format` WHERE `typeid` IS NULL);";
+        $hasNullType = $this->db->getQuery(true)
+            ->select('typeid')
+            ->from('#__citations_format')
+            ->whereIsNull('typeid')
+            ->value('typeid');
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$hasNullType) {
+            $this->db->getQuery(true)
+                ->insert('#__citations_format')
+                ->set([
+                    'typeid' => null,
+                    'style'  => 'custom',
+                    'format' => $citationParams->get('citation_format', '')
+                ])
+                ->execute();
         }
     }
 
@@ -59,11 +78,10 @@ class Migration20130816143341ComCitations extends Base
      **/
     public function down()
     {
-        $query = "DROP TABLE `#__citations_format`";
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__citations_format')) {
+            $schema->dropTable('#__citations_format');
         }
     }
 }

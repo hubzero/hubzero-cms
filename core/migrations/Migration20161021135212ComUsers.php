@@ -21,88 +21,192 @@ class Migration20161021135212ComUsers extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
+        // 1. users <- users_password
         if (
-            $this->db->tableExists('#__users')
-            && $this->db->tableExists('#__users_password')
-            && $this->db->tableHasField('#__users', 'password')
-            && $this->db->tableHasField('#__users_password', 'passhash')
+            $schema->tableExists('#__users')
+            && $schema->tableExists('#__users_password')
+            && $schema->hasColumn('#__users', 'password')
+            && $schema->hasColumn('#__users_password', 'passhash')
         ) {
-            $query = "UPDATE `#__users` AS u, `#__users_password` AS up "
-                . "SET u.`password`=up.`passhash` "
-                . "WHERE u.`id`=up.`user_id` AND (u.`password`='' OR u.`password` IS NULL) "
-                . "AND (up.`passhash` != '' AND up.`passhash` IS NOT NULL);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $rows = $this->db->getQuery(true)
+                ->select('u.id')
+                ->select('up.passhash')
+                ->from('#__users', 'u')
+                ->join('#__users_password AS up', 'u.id', 'up.user_id')
+                ->beginOrGroup()
+                    ->where('u.password', '=', '')
+                    ->orWhereIsNull('u.password')
+                ->endAndGroup()
+                ->beginAndGroup()
+                    ->where('up.passhash', '!=', '')
+                    ->whereIsNotNull('up.passhash')
+                ->endAndGroup()
+                ->loadObjectList();
+
+            foreach ($rows as $row) {
+                $this->db->getQuery(true)
+                    ->update('#__users')
+                    ->set(['password' => $row->passhash])
+                    ->where('id', '=', $row->id)
+                    ->execute();
+            }
         }
 
+        // 2. users <- xprofiles
         if (
-            $this->db->tableExists('#__users')
-            && $this->db->tableExists('#__xprofiles')
-            && $this->db->tableHasField('#__users', 'password')
-            && $this->db->tableHasField('#__xprofiles', 'userPassword')
+            $schema->tableExists('#__users')
+            && $schema->tableExists('#__xprofiles')
+            && $schema->hasColumn('#__users', 'password')
+            && $schema->hasColumn('#__xprofiles', 'userPassword')
         ) {
-            $query = "UPDATE `#__users` AS u, `#__xprofiles` AS xp "
-                . "SET u.`password`=xp.`userPassword` "
-                . "WHERE u.`id`=xp.`uidNumber` AND (u.`password`='' OR u.`password` IS NULL) "
-                . "AND (xp.`userPassword` != '' AND xp.`userPassword` IS NOT NULL);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $rows = $this->db->getQuery(true)
+                ->select('u.id')
+                ->select('xp.userPassword')
+                ->from('#__users', 'u')
+                ->join('#__xprofiles AS xp', 'u.id', 'xp.uidNumber')
+                ->beginOrGroup()
+                    ->where('u.password', '=', '')
+                    ->orWhereIsNull('u.password')
+                ->endAndGroup()
+                ->beginAndGroup()
+                    ->where('xp.userPassword', '!=', '')
+                    ->whereIsNotNull('xp.userPassword')
+                ->endAndGroup()
+                ->loadObjectList();
+
+            foreach ($rows as $row) {
+                $this->db->getQuery(true)
+                    ->update('#__users')
+                    ->set(['password' => $row->userPassword])
+                    ->where('id', '=', $row->id)
+                    ->execute();
+            }
         }
 
+        // 3. xprofiles <- users_password
         if (
-            $this->db->tableExists('#__xprofiles')
-            && $this->db->tableExists('#__users_password')
-            && $this->db->tableHasField('#__xprofiles', 'userPassword')
-            && $this->db->tableHasField('#__users_password', 'passhash')
+            $schema->tableExists('#__xprofiles')
+            && $schema->tableExists('#__users_password')
+            && $schema->hasColumn('#__xprofiles', 'userPassword')
+            && $schema->hasColumn('#__users_password', 'passhash')
         ) {
-            $query = "UPDATE `#__xprofiles` AS xp, `#__users_password` AS up "
-                . "SET xp.`userPassword`=up.`passhash` "
-                . "WHERE up.`user_id`=xp.`uidNumber` AND (xp.`userPassword`='' OR xp.`userPassword` IS NULL) "
-                . "AND (up.`passhash` != '' AND up.`passhash` IS NOT NULL);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $rows = $this->db->getQuery(true)
+                ->select('xp.uidNumber')
+                ->select('up.passhash')
+                ->from('#__xprofiles', 'xp')
+                ->join('#__users_password AS up', 'xp.uidNumber', 'up.user_id')
+                ->beginOrGroup()
+                    ->where('xp.userPassword', '=', '')
+                    ->orWhereIsNull('xp.userPassword')
+                ->endAndGroup()
+                ->beginAndGroup()
+                    ->where('up.passhash', '!=', '')
+                    ->whereIsNotNull('up.passhash')
+                ->endAndGroup()
+                ->loadObjectList();
+
+            foreach ($rows as $row) {
+                $this->db->getQuery(true)
+                    ->update('#__xprofiles')
+                    ->set(['userPassword' => $row->passhash])
+                    ->where('uidNumber', '=', $row->uidNumber)
+                    ->execute();
+            }
         }
 
+        // 4. xprofiles <- users
         if (
-            $this->db->tableExists('#__xprofiles')
-            && $this->db->tableExists('#__users')
-            && $this->db->tableHasField('#__xprofiles', 'userPassword')
-            && $this->db->tableHasField('#__users', 'password')
+            $schema->tableExists('#__xprofiles')
+            && $schema->tableExists('#__users')
+            && $schema->hasColumn('#__xprofiles', 'userPassword')
+            && $schema->hasColumn('#__users', 'password')
         ) {
-            $query = "UPDATE `#__xprofiles` AS xp, `#__users` AS u "
-                . "SET xp.`userPassword`=u.`password` "
-                . "WHERE u.`id`=xp.`uidNumber` AND (xp.`userPassword`='' OR xp.`userPassword` IS NULL) "
-                . "AND (u.`password` != '' AND u.`password` IS NOT NULL);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $rows = $this->db->getQuery(true)
+                ->select('xp.uidNumber')
+                ->select('u.password')
+                ->from('#__xprofiles', 'xp')
+                ->join('#__users AS u', 'xp.uidNumber', 'u.id')
+                ->beginOrGroup()
+                    ->where('xp.userPassword', '=', '')
+                    ->orWhereIsNull('xp.userPassword')
+                ->endAndGroup()
+                ->beginAndGroup()
+                    ->where('u.password', '!=', '')
+                    ->whereIsNotNull('u.password')
+                ->endAndGroup()
+                ->loadObjectList();
+
+            foreach ($rows as $row) {
+                $this->db->getQuery(true)
+                    ->update('#__xprofiles')
+                    ->set(['userPassword' => $row->password])
+                    ->where('uidNumber', '=', $row->uidNumber)
+                    ->execute();
+            }
         }
 
+        // 5. users_password <- xprofiles
         if (
-            $this->db->tableExists('#__users_password')
-            && $this->db->tableExists('#__xprofiles')
-            && $this->db->tableHasField('#__users_password', 'passhash')
-            && $this->db->tableHasField('#__xprofiles', 'userPassword')
+            $schema->tableExists('#__users_password')
+            && $schema->tableExists('#__xprofiles')
+            && $schema->hasColumn('#__users_password', 'passhash')
+            && $schema->hasColumn('#__xprofiles', 'userPassword')
         ) {
-            $query = "UPDATE `#__users_password` AS up, `#__xprofiles` AS xp "
-                . "SET up.`passhash`=xp.`userPassword` "
-                . "WHERE up.`user_id`=xp.`uidNumber` AND (up.`passhash` ='' OR up.`passhash` IS NULL) "
-                . "AND (xp.`userPassword` != '' AND xp.`userPassword` IS NOT NULL);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $rows = $this->db->getQuery(true)
+                ->select('up.user_id')
+                ->select('xp.userPassword')
+                ->from('#__users_password', 'up')
+                ->join('#__xprofiles AS xp', 'up.user_id', 'xp.uidNumber')
+                ->beginOrGroup()
+                    ->where('up.passhash', '=', '')
+                    ->orWhereIsNull('up.passhash')
+                ->endAndGroup()
+                ->beginAndGroup()
+                    ->where('xp.userPassword', '!=', '')
+                    ->whereIsNotNull('xp.userPassword')
+                ->endAndGroup()
+                ->loadObjectList();
+
+            foreach ($rows as $row) {
+                $this->db->getQuery(true)
+                    ->update('#__users_password')
+                    ->set(['passhash' => $row->userPassword])
+                    ->where('user_id', '=', $row->user_id)
+                    ->execute();
+            }
         }
 
+        // 6. users_password <- users
         if (
-            $this->db->tableExists('#__users_password')
-            && $this->db->tableExists('#__users')
-            && $this->db->tableHasField('#__users_password', 'passhash')
-            && $this->db->tableHasField('#__users', 'password')
+            $schema->tableExists('#__users_password')
+            && $schema->tableExists('#__users')
+            && $schema->hasColumn('#__users_password', 'passhash')
+            && $schema->hasColumn('#__users', 'password')
         ) {
-            $query = "UPDATE `#__users_password` AS up, `#__users` AS u "
-                . "SET up.`passhash`=u.`password` "
-                . "WHERE up.`user_id`=u.`id` AND (up.`passhash` ='' OR up.`passhash` IS NULL) "
-                . "AND (u.`password` != '' AND u.`password` IS NOT NULL);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $rows = $this->db->getQuery(true)
+                ->select('up.user_id')
+                ->select('u.password')
+                ->from('#__users_password', 'up')
+                ->join('#__users AS u', 'up.user_id', 'u.id')
+                ->beginOrGroup()
+                    ->where('up.passhash', '=', '')
+                    ->orWhereIsNull('up.passhash')
+                ->endAndGroup()
+                ->beginAndGroup()
+                    ->where('u.password', '!=', '')
+                    ->whereIsNotNull('u.password')
+                ->endAndGroup()
+                ->loadObjectList();
+
+            foreach ($rows as $row) {
+                $this->db->getQuery(true)
+                    ->update('#__users_password')
+                    ->set(['passhash' => $row->password])
+                    ->where('user_id', '=', $row->user_id)
+                    ->execute();
+            }
         }
     }
 

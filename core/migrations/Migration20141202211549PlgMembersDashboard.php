@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script fixing dashboard migration stuff.
  *
-*/
+ */
 class Migration20141202211549PlgMembersDashboard extends Base
 {
     /**
@@ -21,14 +21,17 @@ class Migration20141202211549PlgMembersDashboard extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // get dashboard params
         $pluginParams = $this->getParams('plg_members_dashboard');
 
-        if ($this->db->tableExists('#__xprofiles_dashboard_preferences')) {
+        if ($schema->tableExists('#__xprofiles_dashboard_preferences')) {
             // delete all null user preferences
-            $sql = "DELETE FROM `#__xprofiles_dashboard_preferences` WHERE `preferences`='[]';";
-            $this->db->setQuery($sql);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->delete('#__xprofiles_dashboard_preferences')
+                ->where('preferences', '=', '[]')
+                ->execute();
         }
 
         // only continue if plugin defaults are NOT set
@@ -40,12 +43,17 @@ class Migration20141202211549PlgMembersDashboard extends Base
         // array to hold new defaults
         $defaults = array();
 
-        if ($this->db->tableExists('#__modules')) {
+        if ($schema->tableExists('#__modules')) {
             // get top 6 modules
-            $sql = "SELECT id FROM `#__modules` WHERE `position`='memberDashboard' "
-                . "AND `published`=1 AND `client_id`=0 ORDER BY `ordering` LIMIT 6;";
-            $this->db->setQuery($sql);
-            $modules = $this->db->loadColumn();
+            $modules = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__modules')
+                ->where('position', '=', 'memberDashboard')
+                ->where('published', '=', 1)
+                ->where('client_id', '=', 0)
+                ->order('ordering', 'ASC')
+                ->limit(6)
+                ->loadColumn();
 
             // create default
             $col = 0;

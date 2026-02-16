@@ -18,81 +18,64 @@ class Migration20130114000000Core extends Base
 {
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__venue') && !$this->db->tableExists('venue')) {
-            $query .= "RENAME TABLE `#__venue` TO `venue`;\n";
-        }
-
-        $query .= "ALTER TABLE `venue` CHANGE `venue` `venue` VARCHAR(40) DEFAULT NULL;\n";
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__venue') && !$schema->tableExists('venue')) {
+            $schema->renameTable('#__venue', 'venue');
         }
 
-        // Reset query
-        $query = '';
-
-        if ($this->db->tableHasField('venue', 'network')) {
-            $query .= "ALTER TABLE `venue` DROP COLUMN `network`;\n";
-        }
-        if (!$this->db->tableHasField('venue', 'state')) {
-            $query .= "ALTER TABLE `venue` ADD COLUMN `state` VARCHAR(15) DEFAULT NULL AFTER `venue`;\n";
-        }
-        if (!$this->db->tableHasField('venue', 'type')) {
-            $query .= "ALTER TABLE `venue` ADD COLUMN `type` VARCHAR(10) DEFAULT NULL AFTER `state`;\n";
-        }
-        if (!$this->db->tableHasField('venue', 'mw_version')) {
-            $query .= "ALTER TABLE `venue` ADD COLUMN `mw_version` VARCHAR(3) DEFAULT NULL AFTER `type`;\n";
-        }
-        if (!$this->db->tableHasField('venue', 'ssh_key_path')) {
-            $query .= "ALTER TABLE `venue` ADD COLUMN `ssh_key_path` VARCHAR(200) DEFAULT NULL AFTER `mw_version`;\n";
-        }
-        if (!$this->db->tableHasField('venue', 'latitude')) {
-            $query .= "ALTER TABLE `venue` ADD COLUMN `latitude` DOUBLE DEFAULT NULL AFTER `ssh_key_path`;\n";
-        }
-        if (!$this->db->tableHasField('venue', 'longitude')) {
-            $query .= "ALTER TABLE `venue` ADD COLUMN `longitude` DOUBLE DEFAULT NULL AFTER `latitude`;\n";
-        }
-        if (!$this->db->tableHasField('venue', 'master')) {
-            $query .= "ALTER TABLE `venue` ADD COLUMN `master` VARCHAR(255) DEFAULT NULL AFTER `longitude`;\n";
+        if ($schema->tableExists('venue')) {
+            $schema->modifyColumn('venue', 'venue')->string(40)->nullable()->default(null)->execute();
         }
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('venue', 'network')) {
+            $schema->dropColumn('venue', 'network');
+        }
+        if (!$schema->hasColumn('venue', 'state')) {
+            $schema->addColumn('venue', 'state')->string(15)->nullable()->default(null);
+        }
+        if (!$schema->hasColumn('venue', 'type')) {
+            $schema->addColumn('venue', 'type')->string(10)->nullable()->default(null);
+        }
+        if (!$schema->hasColumn('venue', 'mw_version')) {
+            $schema->addColumn('venue', 'mw_version')->string(3)->nullable()->default(null);
+        }
+        if (!$schema->hasColumn('venue', 'ssh_key_path')) {
+            $schema->addColumn('venue', 'ssh_key_path')->string(200)->nullable()->default(null);
+        }
+        if (!$schema->hasColumn('venue', 'latitude')) {
+            $schema->addColumn('venue', 'latitude')->double()->nullable()->default(null);
+        }
+        if (!$schema->hasColumn('venue', 'longitude')) {
+            $schema->addColumn('venue', 'longitude')->double()->nullable()->default(null);
+        }
+        if (!$schema->hasColumn('venue', 'master')) {
+            $schema->addColumn('venue', 'master')->string(255)->nullable()->default(null);
         }
 
-        // Reset query
-        $query = '';
-
-        if ($this->db->tableExists('#__venue_countries') && !$this->db->tableExists('venue_countries')) {
-            $query .= "RENAME TABLE `#__venue_countries` TO `venue_countries`;\n";
+        if ($schema->tableExists('#__venue_countries') && !$schema->tableExists('venue_countries')) {
+            $schema->renameTable('#__venue_countries', 'venue_countries');
         }
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        if (!$schema->hasColumn('venue_countries', 'id')) {
+            // Adding auto-increment primary key to existing table requires multiple steps:
+            // Step 1: Add the column without auto_increment
+            $schema->addColumn('venue_countries', 'id')->integer()->notNull()->default(0);
 
-        // Reset query
-        $query = '';
+            // Step 2: Populate existing rows with unique sequential values (cross-database portable)
+            $schema->populateSequentialValues('venue_countries', 'id');
 
-        if (!$this->db->tableHasField('venue_countries', 'id')) {
-            $query .= "ALTER TABLE `venue_countries` ADD COLUMN `id` INT(11) PRIMARY KEY "
-                . "NOT NULL AUTO_INCREMENT FIRST;\n";
-        }
-        if (!$this->db->tableHasField('venue_countries', 'venue_id')) {
-            $query .= "ALTER TABLE `venue_countries` ADD COLUMN `venue_id` INT(11) NOT NULL AFTER `id`;\n";
-        }
-        if ($this->db->tableHasField('venue_countries', 'venue')) {
-            $query .= "ALTER TABLE `venue_countries` DROP COLUMN `venue`;\n";
-        }
+            // Step 3: Add primary key constraint
+            $schema->addPrimaryKey('venue_countries', 'id');
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+            // Step 4: Enable auto_increment
+            $schema->modifyColumn('venue_countries', 'id')->integer()->notNull()->autoIncrement()->execute();
+        }
+        if (!$schema->hasColumn('venue_countries', 'venue_id')) {
+            $schema->addColumn('venue_countries', 'venue_id')->integer()->notNull();
+        }
+        if ($schema->hasColumn('venue_countries', 'venue')) {
+            $schema->dropColumn('venue_countries', 'venue');
         }
     }
 }

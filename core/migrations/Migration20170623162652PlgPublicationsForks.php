@@ -21,13 +21,17 @@ class Migration20170623162652PlgPublicationsForks extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $this->addPluginEntry('publications', 'forks', 0);
 
-        if ($this->db->tableExists('#__publication_versions')) {
-            if (!$this->db->tableHasField('#__publication_versions', 'forked_from')) {
-                $query = "ALTER TABLE `#__publication_versions` ADD `forked_from` int(11) NOT NULL DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__publication_versions')) {
+            if (!$schema->hasColumn('#__publication_versions', 'forked_from')) {
+                $schema->addColumn('#__publication_versions', 'forked_from')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
         }
     }
@@ -37,13 +41,13 @@ class Migration20170623162652PlgPublicationsForks extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $this->deletePluginEntry('publications', 'forks');
 
-        if ($this->db->tableExists('#__publication_versions')) {
-            if ($this->db->tableHasField('#__publication_versions', 'forked_from')) {
-                $query = "ALTER TABLE `#__publication_versions` DROP `forked_from`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__publication_versions')) {
+            if ($schema->hasColumn('#__publication_versions', 'forked_from')) {
+                $schema->dropColumn('#__publication_versions', 'forked_from');
             }
         }
     }

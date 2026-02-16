@@ -21,12 +21,15 @@ class Migration20140508120000PlgMembersDashboard extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__xprofiles_dashboard_preferences') && $this->db->tableExists('#__myhub')) {
-            $this->db->setQuery(
-                "SELECT extension_id, params FROM `#__extensions` "
-                . "WHERE `folder` = 'members' AND `element` = 'dashboard' LIMIT 1"
-            );
-            $dashboardPlugin = $this->db->loadObject();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__xprofiles_dashboard_preferences') && $schema->tableExists('#__myhub')) {
+            $dashboardPlugin = $this->db->getQuery(true)
+                ->select(['extension_id', 'params'])
+                ->from('#__extensions')
+                ->where('folder', '=', 'members')
+                ->where('element', '=', 'dashboard')
+                ->first();
             $params = json_decode($dashboardPlugin->params);
 
             $newDefaults = array();
@@ -64,25 +67,28 @@ class Migration20140508120000PlgMembersDashboard extends Base
                 }
             }
 
-            $query = "UPDATE `#__extensions` SET `params`="
-                . $this->db->quote('"' . json_encode($params) . '"')
-                . " WHERE `extension_id`=" . $this->db->quote($dashboardPlugin->extension_id);
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['params' => json_encode($params)])
+                ->where('extension_id', '=', $dashboardPlugin->extension_id)
+                ->execute();
 
             // create dashboard prefs table
-            $query = "CREATE TABLE IF NOT EXISTS `#__xprofiles_dashboard_preferences` (
-						  `uidNumber` int(11) unsigned NOT NULL,
-						  `preferences` text,
-						  `modified` datetime DEFAULT NULL,
-						  UNIQUE KEY `uidNumber` (`uidNumber`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->createTable('#__xprofiles_dashboard_preferences')
+                ->unsignedInteger('uidNumber')
+                ->text('preferences')->nullable()
+                ->datetime('modified')->nullable()
+                ->uniqueIndex('uidNumber', 'uidNumber')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
             // move over exxisting preferences
-            $this->db->setQuery("SELECT * FROM `#__myhub` GROUP BY uid");
-            $preferences = $this->db->loadObjectList();
+            $preferences = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__myhub')
+                ->group('uid')
+                ->loadObjectList();
 
             $newpreferences = array();
             foreach ($preferences as $preference) {
@@ -104,28 +110,36 @@ class Migration20140508120000PlgMembersDashboard extends Base
                     }
                 }
 
-                $newpreferences[] = "(" . $preference->uid . ",'"
-                    . json_encode($newPrefCols) . "','" . $preference->modified . "')";
+                $newpreferences[] = array(
+                    'uid'      => $preference->uid,
+                    'prefs'    => $newPrefCols,
+                    'modified' => $preference->modified
+                );
             }
 
             // if we have some prefs to move over
             if (count($newpreferences) > 0) {
                 foreach ($newpreferences as $pref) {
-                    $query = "INSERT INTO `#__xprofiles_dashboard_preferences` "
-                        . "(uidNumber,preferences,modified) VALUES " . $pref;
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__xprofiles_dashboard_preferences')
+                        ->columns(['uidNumber', 'preferences', 'modified'])
+                        ->values([
+                            $pref['uid'],
+                            json_encode($pref['prefs']),
+                            $pref['modified']
+                        ])
+                        ->execute();
                 }
             }
 
             // drop old myhub tables
-            $query = "DROP TABLE IF EXISTS `#__myhub`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            if ($schema->tableExists('#__myhub')) {
+                $schema->dropTable('#__myhub');
+            }
 
-            $query = "DROP TABLE IF EXISTS `#__myhub_params`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            if ($schema->tableExists('#__myhub_params')) {
+                $schema->dropTable('#__myhub_params');
+            }
         }
     }
 
@@ -134,27 +148,33 @@ class Migration20140508120000PlgMembersDashboard extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         // create myhub table
-        $query = "CREATE TABLE IF NOT EXISTS `#__myhub` (
-					  `uid` int(11) NOT NULL,
-                      `prefs` varchar(200) DEFAULT NULL,
-                      `modified` datetime DEFAULT '0000-00-00 00:00:00'
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        if (!$schema->tableExists('#__myhub')) {
+            $schema->createTable('#__myhub')
+                ->integer('uid')
+                ->string('prefs', 200)->nullable()
+                ->datetime('modified')->default('0000-00-00 00:00:00')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
         // create myhub params table
-        $query = "CREATE TABLE IF NOT EXISTS `#__myhub_params` (
-					    `uid` int(11) NOT NULL,
-                        `mid` int(11) NOT NULL,
-                        `params` text
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        if (!$schema->tableExists('#__myhub_params')) {
+            $schema->createTable('#__myhub_params')
+                ->integer('uid')
+                ->integer('mid')
+                ->text('params')->nullable()
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
         // remove new table
-        $query = "DROP TABLE IF EXISTS `#__xprofiles_dashboard_preferences`;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        if ($schema->tableExists('#__xprofiles_dashboard_preferences')) {
+            $schema->dropTable('#__xprofiles_dashboard_preferences');
+        }
     }
 }

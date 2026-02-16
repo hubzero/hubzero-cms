@@ -15,22 +15,20 @@ class Migration20190902000001ComTags extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__tags_object')) {
-            $query = "ALTER TABLE `#__tags_object` ADD UNIQUE INDEX unique_tag_per_obj (objectid, tagid, tbl)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__tags_object')) {
+            $schema->addUniqueIndex('#__tags_object', 'unique_tag_per_obj', ['objectid', 'tagid', 'tbl']);
         }
     }
 
     /**
-     * Up
+     * Down
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__tags_object')) {
-            $query = "ALTER TABLE `#__tags_object` DROP INDEX unique_tag_per_obj";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropIndex('#__tags_object', 'unique_tag_per_obj');
     }
 }

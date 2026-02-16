@@ -21,18 +21,17 @@ class Migration20140217151012ComCourses extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__courses_offering_sections')) {
-            if (!$this->db->tableHasField('#__courses_offering_sections', 'is_default')) {
-                $query = "ALTER TABLE `#__courses_offering_sections` "
-                    . "ADD `is_default` TINYINT(2)  NOT NULL  DEFAULT '0' AFTER `offering_id`";
+        $schema = $this->db->schema();
 
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__courses_offering_sections')) {
+            if (!$schema->hasColumn('#__courses_offering_sections', 'is_default')) {
+                $schema->addColumn('#__courses_offering_sections', 'is_default')->tinyInteger(2)->notNull()->default(0);
 
-                $query = "UPDATE `#__courses_offering_sections` SET `is_default`=1 WHERE `alias`='__default'";
-
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__courses_offering_sections')
+                    ->set(['is_default' => 1])
+                    ->where('alias', '=', '__default')
+                    ->execute();
             }
         }
     }
@@ -42,12 +41,11 @@ class Migration20140217151012ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__courses_offering_sections')) {
-            if ($this->db->tableHasField('#__courses_offering_sections', 'is_default')) {
-                $query = "ALTER TABLE `#__courses_offering_sections` DROP `is_default`;";
+        $schema = $this->db->schema();
 
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__courses_offering_sections')) {
+            if ($schema->hasColumn('#__courses_offering_sections', 'is_default')) {
+                $schema->dropColumn('#__courses_offering_sections', 'is_default');
             }
         }
     }

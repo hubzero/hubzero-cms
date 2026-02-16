@@ -21,11 +21,18 @@ class Migration20170822120311ComCitations extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__citations_assoc') && $this->db->tableHasField('#__citations_assoc', 'type')) {
-            $query = "UPDATE `#__citations_assoc` SET `type`='referencedby' WHERE `tbl`='resource' AND (`type`='' "
-                . "OR `type` IS NULL)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__citations_assoc') && $schema->hasColumn('#__citations_assoc', 'type')) {
+            $this->db->getQuery(true)
+                ->update('#__citations_assoc')
+                ->set(['type' => 'referencedby'])
+                ->whereEquals('tbl', 'resource')
+                ->beginAndGroup()
+                    ->whereEquals('type', '')
+                    ->orWhereIsNull('type')
+                ->endGroup()
+                ->execute();
         }
     }
 
@@ -34,10 +41,15 @@ class Migration20170822120311ComCitations extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__citations_assoc') && $this->db->tableHasField('#__citations_assoc', 'type')) {
-            $query = "UPDATE `#__citations_assoc` SET `type`='' WHERE `tbl`='resource' AND `type`='referencedby'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__citations_assoc') && $schema->hasColumn('#__citations_assoc', 'type')) {
+            $this->db->getQuery(true)
+                ->update('#__citations_assoc')
+                ->set(['type' => ''])
+                ->whereEquals('tbl', 'resource')
+                ->whereEquals('type', 'referencedby')
+                ->execute();
         }
     }
 }

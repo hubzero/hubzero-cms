@@ -21,23 +21,33 @@ class Migration20150216140100ComKb extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__faq') && $this->db->tableHasField('#__faq', 'access')) {
-            $query = "SELECT COUNT(*) FROM `#__faq` WHERE `access`=0";
-            $this->db->setQuery($query);
-            if ($this->db->loadResult()) {
-                $query = "UPDATE `#__faq` SET `access`=(`access` + 1)";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__faq') && $schema->hasColumn('#__faq', 'access')) {
+            $exists = $this->db->getQuery(true)
+                ->from('#__faq')
+                ->where('access', '=', 0)
+                ->exists();
+
+            if ($exists) {
+                $this->db->getQuery(true)
+                    ->update('#__faq')
+                    ->set('access = access + 1')
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__faq_categories') && $this->db->tableHasField('#__faq_categories', 'access')) {
-            $query = "SELECT COUNT(*) FROM `#__faq_categories` WHERE `access`=0";
-            $this->db->setQuery($query);
-            if ($this->db->loadResult()) {
-                $query = "UPDATE `#__faq_categories` SET `access`=(`access` + 1)";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__faq_categories') && $schema->hasColumn('#__faq_categories', 'access')) {
+            $exists = $this->db->getQuery(true)
+                ->from('#__faq_categories')
+                ->where('access', '=', 0)
+                ->exists();
+
+            if ($exists) {
+                $this->db->getQuery(true)
+                    ->update('#__faq_categories')
+                    ->set('access = access + 1')
+                    ->execute();
             }
         }
     }
@@ -47,23 +57,33 @@ class Migration20150216140100ComKb extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__faq') && $this->db->tableHasField('#__faq', 'access')) {
-            $query = "SELECT COUNT(*) FROM `#__faq` WHERE `access`=0";
-            $this->db->setQuery($query);
-            if (!$this->db->loadResult()) {
-                $query = "UPDATE `#__faq` SET `access`=(`access` - 1)";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__faq') && $schema->hasColumn('#__faq', 'access')) {
+            $exists = $this->db->getQuery(true)
+                ->from('#__faq')
+                ->where('access', '=', 0)
+                ->exists();
+
+            if (!$exists) {
+                $this->db->getQuery(true)
+                    ->update('#__faq')
+                    ->set('access = access - 1')
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__faq_categories') && $this->db->tableHasField('#__faq_categories', 'access')) {
-            $query = "SELECT COUNT(*) FROM `#__faq_categories` WHERE `access`=0";
-            $this->db->setQuery($query);
-            if (!$this->db->loadResult()) {
-                $query = "UPDATE `#__faq_categories` SET `access`=(`access` - 1)";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__faq_categories') && $schema->hasColumn('#__faq_categories', 'access')) {
+            $exists = $this->db->getQuery(true)
+                ->from('#__faq_categories')
+                ->where('access', '=', 0)
+                ->exists();
+
+            if (!$exists) {
+                $this->db->getQuery(true)
+                    ->update('#__faq_categories')
+                    ->set('access = access - 1')
+                    ->execute();
             }
         }
     }

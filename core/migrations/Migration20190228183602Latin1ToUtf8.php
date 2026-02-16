@@ -41,55 +41,16 @@ class Migration20190228183602Latin1ToUtf8 extends Base
     );
 
     /**
-     * Get table character set
-     *
-     * @param   string  $tbl
-     * @return  string
-     **/
-    private function getCharacterSet($tbl)
-    {
-        $query = "SELECT CCSA.character_set_name
-					FROM information_schema.`TABLES` T, information_schema.`COLLATION_CHARACTER_SET_APPLICABILITY` CCSA
-					WHERE CCSA.collation_name = T.table_collation
-					AND T.table_schema = " . $this->db->quote(\Config::get('db')) . "
-					AND T.table_name = " . $this->db->quote($tbl);
-
-        $this->db->setQuery($query);
-        return $this->db->loadResult();
-    }
-
-    /**
-     * Get table list
-     *
-     * @return  array
-     **/
-    private function getTableList()
-    {
-        return self::$tables;
-
-        //$this->db->setQuery("SHOW TABLES;");
-        //return $this->db->loadColumn();
-    }
-
-    /**
      * Up
      **/
     public function up()
     {
-        $tables = $this->getTableList();
+        $schema = $this->db->schema();
 
-        if (empty($tables)) {
-            return;
-        }
-
-        foreach ($tables as $tbl) {
-            if ($this->db->tableExists($tbl)) {
-                $charset = $this->getCharacterSet($tbl);
-
-                if ($charset != 'utf8') {
-                    $query = "ALTER TABLE `$tbl` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+        foreach (self::$tables as $tbl) {
+            if ($schema->tableExists($tbl)) {
+                if (strtolower($schema->getCharacterSet($tbl) ?? '') != 'utf8') {
+                    $schema->convertToCharset($tbl, 'utf8');
                 }
             }
         }
@@ -100,20 +61,12 @@ class Migration20190228183602Latin1ToUtf8 extends Base
      **/
     public function down()
     {
-        $tables = $this->getTableList();
-
-        if (empty($tables)) {
-            return;
-        }
+        $schema = $this->db->schema();
 
         foreach (self::$tables as $tbl) {
-            if ($this->db->tableExists($tbl)) {
-                $charset = $this->getCharacterSet($tbl);
-
-                if ($charset != 'latin1') {
-                    $query = "ALTER TABLE `$tbl` CONVERT TO CHARACTER SET latin1 COLLATE latin1_swedish_ci";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+            if ($schema->tableExists($tbl)) {
+                if (strtolower($schema->getCharacterSet($tbl) ?? '') != 'latin1') {
+                    $schema->convertToCharset($tbl, 'latin1');
                 }
             }
         }

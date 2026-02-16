@@ -21,6 +21,8 @@ class Migration20150916164629ComStorefront extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // Create software/images folders if needed
         $params = $this->getParams('com_storefront');
 
@@ -73,101 +75,72 @@ class Migration20150916164629ComStorefront extends Base
         $this->saveParams('com_storefront', $params);
 
         // Add a new index
-        if ($this->db->tableExists('#__storefront_product_meta')) {
-            $query = "SHOW INDEX FROM `#__storefront_product_meta` WHERE Key_name = 'uniqueKey'";
-            $this->db->setQuery($query);
-            $this->db->execute();
-            if ($this->db->getNumRows() <= 0) {
-                $query = "ALTER TABLE `#__storefront_product_meta` ADD UNIQUE INDEX `uniqueKey` (`pId`,`pmKey`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__storefront_product_meta')) {
+            $schema->addUniqueIndex('#__storefront_product_meta', 'uniqueKey', ['pId', 'pmKey']);
         }
 
         if (
-            $this->db->tableExists('#__storefront_option_groups')
-            && !$this->db->tableHasField('#__storefront_option_groups', 'ogActive')
+            $schema->tableExists('#__storefront_option_groups')
+            && !$schema->hasColumn('#__storefront_option_groups', 'ogActive')
         ) {
-            $query = "ALTER TABLE `#__storefront_option_groups` ADD `ogActive` TINYINT(1)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_option_groups', 'ogActive')->tinyInteger()->default(0)->execute();
         }
 
         if (
-            $this->db->tableExists('#__storefront_option_groups')
-            && $this->db->tableHasField('#__storefront_option_groups', 'ogName')
+            $schema->tableExists('#__storefront_option_groups')
+            && $schema->hasColumn('#__storefront_option_groups', 'ogName')
         ) {
-            $query = "ALTER TABLE `#__storefront_option_groups` MODIFY `ogName` CHAR(100)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__storefront_option_groups', 'ogName')->string(100)->execute();
         }
 
         if (
-            $this->db->tableExists('#__storefront_options')
-            && !$this->db->tableHasField('#__storefront_options', 'oActive')
+            $schema->tableExists('#__storefront_options')
+            && !$schema->hasColumn('#__storefront_options', 'oActive')
         ) {
-            $query = "ALTER TABLE `#__storefront_options` ADD `oActive` TINYINT(1)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_options', 'oActive')->tinyInteger()->default(0)->execute();
         }
 
-        if ($this->db->tableExists('#__storefront_skus') && $this->db->tableHasField('#__storefront_skus', 'sSku')) {
-            $query = "ALTER TABLE `#__storefront_skus` MODIFY `sSku` CHAR(100)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__storefront_skus') && $schema->hasColumn('#__storefront_skus', 'sSku')) {
+            $schema->modifyColumn('#__storefront_skus', 'sSku')->string(100)->execute();
         }
 
-        if (!$this->db->tableExists('#__storefront_images')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__storefront_images` (
-				  `imgId` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-				  `imgName` CHAR(255) DEFAULT NULL,
-				  `imgObject` CHAR(25) DEFAULT NULL,
-				  `imgObjectId` INT(11) DEFAULT NULL,
-				  `imgPrimary` TINYINT(1) DEFAULT '1',
-				  PRIMARY KEY (`imgId`) )
-				ENGINE = MyISAM
-				DEFAULT CHARACTER SET = utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__storefront_images')) {
+            $schema->createTable('#__storefront_images')
+                ->unsignedInteger('imgId', ['autoIncrement' => true])
+                ->char('imgName', 255)->nullable()
+                ->char('imgObject', 25)->nullable()
+                ->integer('imgObjectId')->nullable()
+                ->tinyInteger('imgPrimary')->default(1)
+                ->primaryKey('imgId')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
     public function down()
     {
+        $schema = $this->db->schema();
+
         // Drop index
-        if ($this->db->tableExists('#__storefront_product_meta')) {
-            $query = "SHOW INDEX FROM `#__storefront_product_meta` WHERE Key_name = 'uniqueKey'";
-            $this->db->setQuery($query);
-            $this->db->execute();
-            if ($this->db->getNumRows() > 0) {
-                $query = "DROP INDEX `uniqueKey` ON `#__storefront_product_meta`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__storefront_product_meta')) {
+            $schema->dropIndex('#__storefront_product_meta', 'uniqueKey');
         }
 
         if (
-            $this->db->tableExists('#__storefront_option_groups')
-            && $this->db->tableHasField('#__storefront_option_groups', 'ogActive')
+            $schema->tableExists('#__storefront_option_groups')
+            && $schema->hasColumn('#__storefront_option_groups', 'ogActive')
         ) {
-            $query = "ALTER TABLE `#__storefront_option_groups` DROP COLUMN `ogActive`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__storefront_option_groups', 'ogActive');
         }
 
         if (
-            $this->db->tableExists('#__storefront_options')
-            && $this->db->tableHasField('#__storefront_options', 'oActive')
+            $schema->tableExists('#__storefront_options')
+            && $schema->hasColumn('#__storefront_options', 'oActive')
         ) {
-            $query = "ALTER TABLE `#__storefront_options` DROP COLUMN `oActive`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__storefront_options', 'oActive');
         }
 
-        if ($this->db->tableExists('#__storefront_images')) {
-            $query = "DROP TABLE IF EXISTS `#__storefront_images`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__storefront_images');
     }
 }

@@ -21,22 +21,29 @@ class Migration20141029112543ComBlog extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__blog_entries')) {
-            if (!$this->db->tableHasField('#__blog_entries', 'access')) {
-                $query = "ALTER TABLE `#__blog_entries` ADD `access` TINYINT(3)  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasField('#__blog_entries', 'scope_id')) {
-                $query = "ALTER TABLE `#__blog_entries` CHANGE `group_id` `scope_id` INT(11)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if (!$schema->tableExists('#__blog_entries')) {
+            return;
+        }
 
-                $query = "UPDATE `#__blog_entries` SET `scope_id`=`created_by` WHERE `scope`='member' AND `scope_id`=0";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (!$schema->hasColumn('#__blog_entries', 'access')) {
+            $schema->addColumn('#__blog_entries', 'access')->tinyInteger()->notNull()->default(0)->execute();
+        }
+
+        if (!$schema->hasColumn('#__blog_entries', 'scope_id')) {
+            $schema->renameColumn('#__blog_entries', 'group_id', 'scope_id')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['scope_id' => 'created_by'], true)
+                ->where('scope', '=', 'member')
+                ->where('scope_id', '=', 0)
+                ->execute();
         }
     }
 
@@ -45,22 +52,29 @@ class Migration20141029112543ComBlog extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__blog_entries')) {
-            if ($this->db->tableHasField('#__blog_entries', 'access')) {
-                $query = "ALTER TABLE `#__blog_entries` DROP `access`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasField('#__blog_entries', 'scope_id')) {
-                $query = "ALTER TABLE `#__blog_entries` CHANGE `scope_id` `group_id` INT(11)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if (!$schema->tableExists('#__blog_entries')) {
+            return;
+        }
 
-                $query = "UPDATE `#__blog_entries` SET `group_id`='0' WHERE `scope`='member' AND `group_id`>0";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->hasColumn('#__blog_entries', 'access')) {
+            $schema->dropColumn('#__blog_entries', 'access');
+        }
+
+        if ($schema->hasColumn('#__blog_entries', 'scope_id')) {
+            $schema->renameColumn('#__blog_entries', 'scope_id', 'group_id')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__blog_entries')
+                ->set(['group_id' => $this->db->quote('0')])
+                ->where('scope', '=', 'member')
+                ->where('group_id', '>', 0)
+                ->execute();
         }
     }
 }

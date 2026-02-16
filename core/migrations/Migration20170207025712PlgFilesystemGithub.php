@@ -21,17 +21,23 @@ class Migration20170207025712PlgFilesystemGithub extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $this->addPluginEntry('filesystem', 'github');
 
-        if ($this->db->tableExists('#__projects_connection_providers')) {
-            $query = "SELECT * FROM `#__projects_connection_providers` WHERE `alias`='github'";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        if ($schema->tableExists('#__projects_connection_providers')) {
+            $results = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__projects_connection_providers')
+                ->where('alias', '=', 'github')
+                ->loadObjectList();
 
             if (count($results) < 1) {
-                $query = "INSERT INTO `#__projects_connection_providers` (`alias`, `name`) VALUES ('github','Github')";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__projects_connection_providers')
+                    ->columns(['alias', 'name'])
+                    ->values("'github', 'Github'")
+                    ->execute();
             }
         }
     }
@@ -41,23 +47,29 @@ class Migration20170207025712PlgFilesystemGithub extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $this->deletePluginEntry('filesystem', 'github');
 
-        if ($this->db->tableExists('#__projects_connection_providers')) {
-            $query = "SELECT * FROM `#__projects_connection_providers` WHERE `alias`='github'";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        if ($schema->tableExists('#__projects_connection_providers')) {
+            $results = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__projects_connection_providers')
+                ->where('alias', '=', 'github')
+                ->loadObjectList();
 
             foreach ($results as $result) {
-                $query = "DELETE FROM `#__projects_connections` WHERE `provider_id`=" . $this->db->quote($result->id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__projects_connections')
+                    ->where('provider_id', '=', $result->id)
+                    ->execute();
             }
 
             if (count($results) > 0) {
-                $query = "DELETE FROM `#__projects_connection_providers` WHERE `alias`='github'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__projects_connection_providers')
+                    ->where('alias', '=', 'github')
+                    ->execute();
             }
         }
     }

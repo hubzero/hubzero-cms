@@ -20,51 +20,118 @@ class Migration20141010150100ComSupport extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__support_queries', 'created_by')) {
-            $query = "ALTER TABLE `#__support_queries` ADD `created_by` INT(11)  NOT NULL  DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->hasColumn('#__support_queries', 'created_by')) {
+            $schema->addColumn('#__support_queries', 'created_by')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
 
-        if (!$this->db->tableHasField('#__support_queries', 'ordering')) {
-            $query = "ALTER TABLE `#__support_queries` ADD `ordering` INT(11)  NOT NULL  DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__support_queries', 'ordering')) {
+            $schema->addColumn('#__support_queries', 'ordering')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
 
-        if (!$this->db->tableHasField('#__support_queries', 'folder_id')) {
-            $query = "ALTER TABLE `#__support_queries` ADD `folder_id` INT(11)  NOT NULL  DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__support_queries', 'folder_id')) {
+            $schema->addColumn('#__support_queries', 'folder_id')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__support_query_folders')) {
-            $query = "CREATE TABLE `#__support_query_folders` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `title` varchar(200) NOT NULL DEFAULT '',
-				  `alias` varchar(200) NOT NULL DEFAULT '',
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
-				  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `modified_by` int(11) unsigned NOT NULL DEFAULT '0',
-				  `ordering` int(11) NOT NULL DEFAULT '0',
-				  `iscore` tinyint(2) unsigned NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__support_query_folders')) {
+            $schema->createTable('#__support_query_folders')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('user_id')->default(0)
+                ->string('title', 200)->default('')
+                ->string('alias', 200)->default('')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->unsignedInteger('created_by')->default(0)
+                ->datetime('modified')->default('0000-00-00 00:00:00')
+                ->unsignedInteger('modified_by')->default(0)
+                ->integer('ordering')->default(0)
+                ->unsignedTinyInteger('iscore')->default(0)
+                ->primaryKey('id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
 
-            $query = "INSERT INTO `#__support_query_folders` "
-                . "(`id`, `user_id`, `title`, `alias`, `created`, `created_by`, `modified`, "
-                . "`modified_by`, `ordering`, `iscore`) VALUES "
-                . "(1,0,'Common','common','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,1,1), "
-                . "(2,0,'Mine','mine','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,2,1), "
-                . "(3,0,'Custom','custom','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,3,1), "
-                . "(4,0,'Common','common','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,1,2), "
-                . "(5,0,'Mine','mine','0000-00-00 00:00:00',0,'0000-00-00 00:00:00',0,2,2);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $folders = [
+                [
+                    'id' => 1,
+                    'user_id' => 0,
+                    'title' => 'Common',
+                    'alias' => 'common',
+                    'created' => '0000-00-00 00:00:00',
+                    'created_by' => 0,
+                    'modified' => '0000-00-00 00:00:00',
+                    'modified_by' => 0,
+                    'ordering' => 1,
+                    'iscore' => 1,
+                ],
+                [
+                    'id' => 2,
+                    'user_id' => 0,
+                    'title' => 'Mine',
+                    'alias' => 'mine',
+                    'created' => '0000-00-00 00:00:00',
+                    'created_by' => 0,
+                    'modified' => '0000-00-00 00:00:00',
+                    'modified_by' => 0,
+                    'ordering' => 2,
+                    'iscore' => 1,
+                ],
+                [
+                    'id' => 3,
+                    'user_id' => 0,
+                    'title' => 'Custom',
+                    'alias' => 'custom',
+                    'created' => '0000-00-00 00:00:00',
+                    'created_by' => 0,
+                    'modified' => '0000-00-00 00:00:00',
+                    'modified_by' => 0,
+                    'ordering' => 3,
+                    'iscore' => 1,
+                ],
+                [
+                    'id' => 4,
+                    'user_id' => 0,
+                    'title' => 'Common',
+                    'alias' => 'common',
+                    'created' => '0000-00-00 00:00:00',
+                    'created_by' => 0,
+                    'modified' => '0000-00-00 00:00:00',
+                    'modified_by' => 0,
+                    'ordering' => 1,
+                    'iscore' => 2,
+                ],
+                [
+                    'id' => 5,
+                    'user_id' => 0,
+                    'title' => 'Mine',
+                    'alias' => 'mine',
+                    'created' => '0000-00-00 00:00:00',
+                    'created_by' => 0,
+                    'modified' => '0000-00-00 00:00:00',
+                    'modified_by' => 0,
+                    'ordering' => 2,
+                    'iscore' => 2
+                ]
+            ];
+
+            foreach ($folders as $folder) {
+                $this->db->getQuery(true)
+                    ->insert('#__support_query_folders')
+                    ->set($folder)
+                    ->execute();
+            }
 
             /*
                 folders:
@@ -76,20 +143,38 @@ class Migration20141010150100ComSupport extends Base
             */
 
             // Update "Common" queries
-            $this->db->setQuery("UPDATE `#__support_queries` SET `folder_id`=1 WHERE `iscore`=2 AND `folder_id`=0");
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__support_queries')
+                ->set(['folder_id' => 1])
+                ->where('iscore', '=', 2)
+                ->where('folder_id', '=', 0)
+                ->execute();
 
             // Update "Mine" queries
-            $this->db->setQuery("UPDATE `#__support_queries` SET `folder_id`=2 WHERE `iscore`=1 AND `folder_id`=0");
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__support_queries')
+                ->set(['folder_id' => 2])
+                ->where('iscore', '=', 1)
+                ->where('folder_id', '=', 0)
+                ->execute();
 
             // Update "Common not in ACL" queries
-            $this->db->setQuery("UPDATE `#__support_queries` SET `folder_id`=4 WHERE `iscore`=4 AND `folder_id`=0");
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__support_queries')
+                ->set(['folder_id' => 4])
+                ->where('iscore', '=', 4)
+                ->where('folder_id', '=', 0)
+                ->execute();
 
             // Get all the "mine" queries
-            $this->db->setQuery("SELECT * FROM `#__support_queries` WHERE `folder_id`=2 ORDER BY `id`");
-            if ($queries = $this->db->loadObjectList()) {
+            $queries = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__support_queries')
+                ->where('folder_id', '=', 2)
+                ->order('id')
+                ->loadObjectList();
+
+            if ($queries) {
                 $path = PATH_CORE . DS . 'components' . DS . 'com_support' . DS . 'tables'
                     . DS . 'query.php';
                 if (!file_exists($path)) {
@@ -123,28 +208,20 @@ class Migration20141010150100ComSupport extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__support_queries', 'created_by')) {
-            $query = "ALTER TABLE `#__support_queries` DROP `created_by`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__support_queries', 'created_by')) {
+            $schema->dropColumn('#__support_queries', 'created_by');
         }
 
-        if ($this->db->tableHasField('#__support_queries', 'ordering')) {
-            $query = "ALTER TABLE `#__support_queries` DROP `ordering`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__support_queries', 'ordering')) {
+            $schema->dropColumn('#__support_queries', 'ordering');
         }
 
-        if ($this->db->tableHasField('#__support_queries', 'folder_id')) {
-            $query = "ALTER TABLE `#__support_queries` DROP `folder_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__support_queries', 'folder_id')) {
+            $schema->dropColumn('#__support_queries', 'folder_id');
         }
 
-        if ($this->db->tableExists('#__support_query_folders')) {
-            $query = "DROP TABLE `#__support_query_folders`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__support_query_folders');
     }
 }

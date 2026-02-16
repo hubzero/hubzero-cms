@@ -21,19 +21,20 @@ class Migration20160328155038PlgMetadataLocal extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $this->addPluginEntry('metadata', 'local', 0);
 
-        if (!$this->db->tableExists('#__file_metadata')) {
-            $query = "CREATE TABLE `#__file_metadata` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `path` varchar(255) NOT NULL DEFAULT '',
-					  `key` varchar(255) NOT NULL DEFAULT '',
-					  `value` varchar(255) DEFAULT NULL,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__file_metadata')) {
+            $schema->createTable('#__file_metadata')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('path', 255)->default('')
+                ->string('key', 255)->default('')
+                ->string('value', 255)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -42,19 +43,20 @@ class Migration20160328155038PlgMetadataLocal extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $this->deletePluginEntry('metadata', 'local');
 
-        if (!$this->db->tableExists('#__file_metadata')) {
-            $query = "CREATE TABLE `#__file_metadata` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `path` varchar(255) NOT NULL DEFAULT '',
-					  `key` varchar(255) NOT NULL DEFAULT '',
-					  `value` varchar(255) DEFAULT NULL,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__file_metadata')) {
+            $schema->createTable('#__file_metadata')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('path', 255)->default('')
+                ->string('key', 255)->default('')
+                ->string('value', 255)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

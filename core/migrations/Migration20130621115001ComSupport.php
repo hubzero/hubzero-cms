@@ -21,37 +21,31 @@ class Migration20130621115001ComSupport extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__abuse_reports', 'reviewed')) {
-            $query = "ALTER TABLE `#__abuse_reports` ADD `reviewed` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
-        }
+        if ($schema->tableExists('#__abuse_reports')) {
+            if (!$schema->hasColumn('#__abuse_reports', 'reviewed')) {
+                $schema->alterTable('#__abuse_reports')->addColumn('reviewed')
+                    ->datetime()
+                    ->notNull()
+                    ->default('0000-00-00 00:00:00')
+                    ->execute();
+            }
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+            if (!$schema->hasColumn('#__abuse_reports', 'reviewed_by')) {
+                $schema->alterTable('#__abuse_reports')->addColumn('reviewed_by')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
+            }
 
-        $query = "";
-
-        if (!$this->db->tableHasField('#__abuse_reports', 'reviewed_by')) {
-            $query = "ALTER TABLE `#__abuse_reports` ADD `reviewed_by` INT(11)  NOT NULL  DEFAULT '0';";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        $query = "";
-
-        if (!$this->db->tableHasField('#__abuse_reports', 'note')) {
-            $query = "ALTER TABLE `#__abuse_reports` ADD `note` TEXT  NOT NULL;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+            if (!$schema->hasColumn('#__abuse_reports', 'note')) {
+                $schema->alterTable('#__abuse_reports')->addColumn('note')
+                    ->text()
+                    ->notNull()
+                    ->execute();
+            }
         }
     }
 
@@ -60,37 +54,18 @@ class Migration20130621115001ComSupport extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__abuse_reports', 'reviewed')) {
-            $query .= "ALTER TABLE `#__abuse_reports` DROP `reviewed`;";
+        if ($schema->hasColumn('#__abuse_reports', 'reviewed')) {
+            $schema->dropColumn('#__abuse_reports', 'reviewed');
         }
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__abuse_reports', 'reviewed_by')) {
+            $schema->dropColumn('#__abuse_reports', 'reviewed_by');
         }
 
-        $query = "";
-
-        if ($this->db->tableHasField('#__abuse_reports', 'reviewed_by')) {
-            $query .= "ALTER TABLE `#__abuse_reports` DROP `reviewed_by`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        $query = "";
-
-        if ($this->db->tableHasField('#__abuse_reports', 'note')) {
-            $query .= "ALTER TABLE `#__abuse_reports` DROP `note`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__abuse_reports', 'note')) {
+            $schema->dropColumn('#__abuse_reports', 'note');
         }
     }
 }

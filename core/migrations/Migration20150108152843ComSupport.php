@@ -21,7 +21,9 @@ class Migration20150108152843ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
             $params = \Component::params('com_support');
 
             $defs = str_replace("\r", '', $params->get('emails', '{config.mailfrom}'));
@@ -31,10 +33,11 @@ class Migration20150108152843ComSupport extends Base
 
             $params->set('emails', implode(', ', $defs));
 
-            $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString())
-                . " WHERE `element`=" . $this->db->quote('com_support');
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['params' => $params->toString()])
+                ->where('element', '=', 'com_support')
+                ->execute();
         }
     }
 
@@ -43,7 +46,9 @@ class Migration20150108152843ComSupport extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
             $params = \Component::params('com_support');
 
             $defs = explode(',', $params->get('emails', '{config.mailfrom}'));
@@ -51,10 +56,11 @@ class Migration20150108152843ComSupport extends Base
 
             $params->set('emails', implode("\n", $defs));
 
-            $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString())
-                . " WHERE `element`=" . $this->db->quote('com_support');
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['params' => $params->toString()])
+                ->where('element', '=', 'com_support')
+                ->execute();
         }
     }
 }

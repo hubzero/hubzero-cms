@@ -9,11 +9,12 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for group pages updates
  *
-*/
+**/
 class Migration20140108233318ComGroups extends Base
 {
     /**
@@ -21,146 +22,198 @@ class Migration20140108233318ComGroups extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // a bunch of name changes
-        if (!$this->db->tableHasField('#__xgroups_pages', 'gidNumber')) {
-            $query = "ALTER TABLE `#__xgroups_pages` CHANGE `gid` `gidNumber` int(11);
-			          ALTER TABLE `#__xgroups_pages` CHANGE `url` `alias` varchar(100);
-			          ALTER TABLE `#__xgroups_pages` CHANGE `porder` `ordering` int(11);
-			          ALTER TABLE `#__xgroups_pages` CHANGE `active` `state` int(11) DEFAULT 1;
-			          ALTER TABLE `#__xgroups_pages` ADD COLUMN `home` int(11) DEFAULT 0;
-			          ALTER TABLE `#__xgroups_pages` ADD COLUMN `category` int(11) AFTER `gidNumber`;
-			          ALTER TABLE `#__xgroups_pages` ADD COLUMN `template` VARCHAR(100) AFTER `category`;
-			          ALTER TABLE `#__xgroups_pages_hits` CHANGE `gid` `gidNumber` int(11);
-			          ALTER TABLE `#__xgroups_pages_hits` CHANGE `pid` `pageid` int(11);
-			          ALTER TABLE `#__xgroups_pages_hits` CHANGE `uid` `userid` int(11);
-			          ALTER TABLE `#__xgroups_pages_hits` CHANGE `datetime` `date` datetime;
-			          ALTER TABLE `#__xgroups_log` CHANGE `gid` `gidNumber` int(11);
-			          ALTER TABLE `#__xgroups_log` CHANGE `uid` `userid` int(11);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups_pages', 'gidNumber')) {
+            $schema->alterTable('#__xgroups_pages')
+                ->renameColumn('gid', 'gidNumber')->integer()
+                ->renameColumn('url', 'alias')->string(100)
+                ->renameColumn('porder', 'ordering')->integer()
+                ->renameColumn('active', 'state')->integer()->default(1)
+                ->addColumn('home')->integer()->default(0)
+                ->addColumn('category')->integer()
+                ->addColumn('template')->string(100)
+                ->execute();
+
+            $schema->alterTable('#__xgroups_pages_hits')
+                ->renameColumn('gid', 'gidNumber')->integer()
+                ->renameColumn('pid', 'pageid')->integer()
+                ->renameColumn('uid', 'userid')->integer()
+                ->renameColumn('datetime', 'date')->datetime()
+                ->execute();
+
+            $schema->alterTable('#__xgroups_log')
+                ->renameColumn('gid', 'gidNumber')->integer()
+                ->renameColumn('uid', 'userid')->integer()
+                ->execute();
         }
 
         // create page versions table
-        if (!$this->db->tableExists('#__xgroups_pages_versions')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__xgroups_pages_versions` (
-			             `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			             `pageid` int(11) DEFAULT NULL,
-			             `version` int(11) DEFAULT NULL,
-			             `content` longtext,
-			             `created` datetime DEFAULT NULL,
-			             `created_by` int(11) DEFAULT NULL,
-			             `approved` int(11) DEFAULT '1',
-			             `approved_on` datetime DEFAULT NULL,
-			             `approved_by` int(11) DEFAULT NULL,
-			             `checked_errors` int(11) DEFAULT 0,
-			             `scanned` int(11) DEFAULT 0,
-			             PRIMARY KEY (`id`)
-			             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__xgroups_pages_versions')) {
+            $schema->createTable('#__xgroups_pages_versions')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('pageid')->nullable()
+                ->integer('version')->nullable()
+                ->longText('content')->nullable()
+                ->datetime('created')->nullable()
+                ->integer('created_by')->nullable()
+                ->integer('approved')->default(1)
+                ->datetime('approved_on')->nullable()
+                ->integer('approved_by')->nullable()
+                ->integer('checked_errors')->default(0)
+                ->integer('scanned')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
         // create page category table
-        if (!$this->db->tableExists('#__xgroups_pages_categories')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__xgroups_pages_categories` (
-			             `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			              `gidNumber` int(11) DEFAULT NULL,
-			              `title` varchar(255) DEFAULT NULL,
-			              `color` varchar(6) DEFAULT NULL,
-			              PRIMARY KEY (`id`)
-			          ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__xgroups_pages_categories')) {
+            $schema->createTable('#__xgroups_pages_categories')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('gidNumber')->nullable()
+                ->string('title', 255)->nullable()
+                ->string('color', 6)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        // create page category table
-        if (!$this->db->tableExists('#__xgroups_modules')) {
-            $query = "CREATE TABLE `#__xgroups_modules` (
-		                 `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-		                 `gidNumber` int(11) DEFAULT NULL,
-		                 `title` varchar(255) DEFAULT '',
-		                 `content` text,
-		                 `position` varchar(50) DEFAULT NULL,
-		                 `ordering` int(11) DEFAULT NULL,
-		                 `state` int(1) DEFAULT NULL,
-		                 `created` datetime DEFAULT NULL,
-		                 `created_by` int(11) DEFAULT NULL,
-		                 `modified` datetime DEFAULT NULL,
-		                 `modified_by` int(11) DEFAULT NULL,
-		                 `approved` int(11) DEFAULT '1',
-		                 `approved_on` datetime DEFAULT NULL,
-		                 `approved_by` int(11) DEFAULT NULL,
-		                 `checked_errors` int(11) DEFAULT 0,
-		                 `scanned` int(11) DEFAULT 0,
-		                 PRIMARY KEY (`id`)
-		              ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        // create modules table
+        if (!$schema->tableExists('#__xgroups_modules')) {
+            $schema->createTable('#__xgroups_modules')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('gidNumber')->nullable()
+                ->string('title', 255)->default('')
+                ->text('content')->nullable()
+                ->string('position', 50)->nullable()
+                ->integer('ordering')->nullable()
+                ->integer('state')->nullable()
+                ->datetime('created')->nullable()
+                ->integer('created_by')->nullable()
+                ->datetime('modified')->nullable()
+                ->integer('modified_by')->nullable()
+                ->integer('approved')->default(1)
+                ->datetime('approved_on')->nullable()
+                ->integer('approved_by')->nullable()
+                ->integer('checked_errors')->default(0)
+                ->integer('scanned')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        // create page category table
-        if (!$this->db->tableExists('#__xgroups_modules_menu')) {
-            $query = "CREATE TABLE `#__xgroups_modules_menu` (
-			             `moduleid` int(11) DEFAULT NULL,
-			             `pageid` int(11) DEFAULT NULL
-			          ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        // create modules menu table
+        if (!$schema->tableExists('#__xgroups_modules_menu')) {
+            $schema->createTable('#__xgroups_modules_menu')
+                ->integer('moduleid')->nullable()
+                ->integer('pageid')->nullable()
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
         // remove content field from pages table
-        if ($this->db->tableHasField('#__xgroups_pages', 'content')) {
-            $query  = "INSERT INTO `#__xgroups_pages_versions` "
-                . "(pageid, version, content, created, created_by, approved, approved_on, approved_by) "
-                . "SELECT id as pageid, 1, content, NOW(), 1000, 1, NOW(), 1000 "
-                . "FROM `#__xgroups_pages`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__xgroups_pages', 'content')) {
+            $this->db->getQuery(true)
+                ->insert('#__xgroups_pages_versions')
+                ->columns([
+                    'pageid',
+                    'version',
+                    'content',
+                    'created',
+                    'created_by',
+                    'approved',
+                    'approved_on',
+                    'approved_by',
+                ])
+                ->fromSelect(
+                    $this->db->getQuery(true)
+                        ->select([
+                            'id as pageid',
+                            '1',
+                            'content',
+                            Expression::now(),
+                            '1000',
+                            '1',
+                            Expression::now(),
+                            '1000',
+                        ])
+                        ->from('#__xgroups_pages')
+                )
+                ->execute();
         }
 
         // if the groups table still has the home page overview content
-        if ($this->db->tableHasField('#__xgroups', 'overview_type')) {
+        if ($schema->hasColumn('#__xgroups', 'overview_type')) {
             // get list of groups
-            $query = "SELECT `gidNumber`, `overview_type`, `overview_content` FROM `#__xgroups` WHERE `type` IN(1,3)";
-            $this->db->setQuery($query);
-            $groups = $this->db->loadObjectList();
+            $groups = $this->db->getQuery(true)
+                ->select(['gidNumber', 'overview_type', 'overview_content'])
+                ->from('#__xgroups')
+                ->whereIn('type', [1, 3])
+                ->loadObjectList();
 
             // loop through each group
             foreach ($groups as $group) {
                 // if group has overview content
-                if (trim($group->overview_content) != '') {
+                if (trim((string)$group->overview_content) != '') {
                     // create page to store page info
-                    $query = "INSERT INTO `#__xgroups_pages` "
-                        . "(`gidNumber`, `alias`,`title`, `ordering`,`state`, `privacy`, `home`) VALUES("
-                        . $this->db->quote($group->gidNumber) . "," . $this->db->quote('home_page') . ","
-                        . $this->db->quote('Home Page') . ",0,1,'default',"
-                        . $this->db->quote($group->overview_type) . ");";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__xgroups_pages')
+                        ->columns(['gidNumber', 'alias', 'title', 'ordering', 'state', 'privacy', 'home'])
+                        ->values([
+                            $group->gidNumber,
+                            'home_page',
+                            'Home Page',
+                            0,
+                            1,
+                            'default',
+                            $group->overview_type
+                        ])
+                        ->execute();
+
+                    $pageId = $this->db->insertid();
 
                     // create page version to store page content
-                    $query2 = "INSERT INTO `#__xgroups_pages_versions` "
-                        . "(`pageid`,`version`,`content`,`created`,`created_by`,"
-                        . "`approved`,`approved_on`,`approved_by`) "
-                        . "VALUES("
-                        . $this->db->insertid() . ",1," . $this->db->quote($group->overview_content)
-                        . ",NOW(),1000,1, NOW(), 1000);";
-                    $this->db->setQuery($query2);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__xgroups_pages_versions')
+                        ->columns([
+                            'pageid',
+                            'version',
+                            'content',
+                            'created',
+                            'created_by',
+                            'approved',
+                            'approved_on',
+                            'approved_by',
+                        ])
+                        ->values([
+                            $pageId,
+                            1,
+                            $group->overview_content,
+                            Expression::now(),
+                            1000,
+                            1,
+                            Expression::now(),
+                            1000
+                        ])
+                        ->execute();
                 }
             }
 
-            if ($this->db->tableHasField('#__xgroups_pages', 'content')) {
-                $query = "ALTER TABLE `#__xgroups_pages` DROP COLUMN `content`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__xgroups_pages', 'content')) {
+                $schema->dropColumn('#__xgroups_pages', 'content');
             }
 
-            if ($this->db->tableHasField('#__xgroups', 'overview_type')) {
-                $query  = "ALTER TABLE `#__xgroups` DROP COLUMN `overview_type`;";
-                $query .= "ALTER TABLE `#__xgroups` DROP COLUMN `overview_content`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__xgroups', 'overview_type')) {
+                $schema->alterTable('#__xgroups')
+                    ->dropColumn('overview_type')
+                    ->dropColumn('overview_content')
+                    ->execute();
             }
         }
     }
@@ -170,88 +223,117 @@ class Migration20140108233318ComGroups extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         //add overview type back
-        if (!$this->db->tableHasField('#__xgroups', 'overview_type')) {
-            $query  = "ALTER TABLE `#__xgroups` ADD COLUMN `overview_type` int(11) AFTER `logo`;";
-            $query .= "ALTER TABLE `#__xgroups` ADD COLUMN `overview_content` TEXT AFTER `overview_type`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups', 'overview_type')) {
+            $schema->alterTable('#__xgroups')
+                ->addColumn('overview_type')->integer()
+                ->addColumn('overview_content')->text()
+                ->execute();
         }
 
         //move pages back
-        if (!$this->db->tableHasField('#__xgroups_pages', 'content')) {
-            $query = "ALTER TABLE `#__xgroups_pages` ADD COLUMN `content` TEXT AFTER `title`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups_pages', 'content')) {
+            $schema->addColumn('#__xgroups_pages', 'content')->text();
 
-            $query = "UPDATE `#__xgroups_pages` AS p SET content="
-                . "(SELECT content FROM `#__xgroups_pages_versions` as pv "
-                . "WHERE p.id=pv.pageid ORDER BY version DESC LIMIT 1);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $query = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__xgroups_pages');
+
+            $pages = $query->loadObjectList();
+
+            if ($pages) {
+                foreach ($pages as $page) {
+                    $content = $this->db->getQuery(true)
+                        ->select('content')
+                        ->from('#__xgroups_pages_versions')
+                        ->where('pageid', '=', $page->id)
+                        ->order('version', 'DESC')
+                        ->value('content');
+
+                    if ($content) {
+                        $this->db->getQuery(true)
+                            ->update('#__xgroups_pages')
+                            ->set(['content' => $content])
+                            ->where('id', '=', $page->id)
+                            ->execute();
+                    }
+                }
+            }
         }
 
         //move home content back to xgroups table and delete those records
-        if ($this->db->tableHasField('#__xgroups_pages', 'home')) {
-            $query = "UPDATE `#__xgroups` as g SET "
-                . "overview_content=(SELECT content FROM `#__xgroups_pages` as p "
-                . "WHERE g.gidNumber=p.gidNumber AND p.alias='home_page'), "
-                . "overview_type=(SELECT home FROM `#__xgroups_pages` as p "
-                . "WHERE g.gidNumber=p.gidNumber AND p.alias='home_page');";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__xgroups_pages', 'home')) {
+            $query = $this->db->getQuery(true)
+                ->select('gidNumber')
+                ->from('#__xgroups');
 
-            // delete all moved home pages
-            $query = "DELETE FROM `#__xgroups_pages` WHERE `alias`='home_page';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $groups = $query->loadObjectList();
+
+            if ($groups) {
+                foreach ($groups as $group) {
+                    $page = $this->db->getQuery(true)
+                        ->select('content, home')
+                        ->from('#__xgroups_pages')
+                        ->where('gidNumber', '=', $group->gidNumber)
+                        ->where('alias', '=', 'home_page')
+                        ->first();
+
+                    if ($page) {
+                        $this->db->getQuery(true)
+                            ->update('#__xgroups')
+                            ->set([
+                                'overview_content' => $page->content,
+                                'overview_type' => $page->home
+                            ])
+                            ->where('gidNumber', '=', $group->gidNumber)
+                            ->execute();
+                    }
+                }
+            }
+
+            $this->db->getQuery(true)
+                ->delete('#__xgroups_pages')
+                ->where('alias', '=', 'home_page')
+                ->execute();
         }
 
         // a bunch of name changes
-        if ($this->db->tableHasField('#__xgroups_pages', 'gidNumber')) {
-            $query = "ALTER TABLE `#__xgroups_pages` CHANGE `gidNumber` `gid` int(11);
-			          ALTER TABLE `#__xgroups_pages` CHANGE `alias` `url` varchar(100);
-			          ALTER TABLE `#__xgroups_pages` CHANGE `ordering` `porder` int(11);
-			          ALTER TABLE `#__xgroups_pages` CHANGE `state` `active` int(11);
-			          ALTER TABLE `#__xgroups_pages` DROP COLUMN `home`;
-			          ALTER TABLE `#__xgroups_pages` DROP COLUMN `category`;
-			          ALTER TABLE `#__xgroups_pages` DROP COLUMN `template`;
-			          ALTER TABLE `#__xgroups_pages_hits` CHANGE `gidNumber` `gid` int(11);
-			          ALTER TABLE `#__xgroups_pages_hits` CHANGE `pageid` `pid` int(11);
-			          ALTER TABLE `#__xgroups_pages_hits` CHANGE `userid` `uid` int(11);
-			          ALTER TABLE `#__xgroups_pages_hits` CHANGE `date` `datetime` datetime;
-			          ALTER TABLE `#__xgroups_log` CHANGE `gidNumber` `gid` int(11);
-			          ALTER TABLE `#__xgroups_log` CHANGE `userid` `uid` int(11);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__xgroups_pages', 'gidNumber')) {
+            $schema->alterTable('#__xgroups_pages')
+                ->renameColumn('gidNumber', 'gid')->integer()
+                ->renameColumn('alias', 'url')->string(100)
+                ->renameColumn('ordering', 'porder')->integer()
+                ->renameColumn('state', 'active')->integer()
+                ->dropColumn('home')
+                ->dropColumn('category')
+                ->dropColumn('template')
+                ->execute();
+
+            $schema->alterTable('#__xgroups_pages_hits')
+                ->renameColumn('gidNumber', 'gid')->integer()
+                ->renameColumn('pageid', 'pid')->integer()
+                ->renameColumn('userid', 'uid')->integer()
+                ->renameColumn('date', 'datetime')->datetime()
+                ->execute();
+
+            $schema->alterTable('#__xgroups_log')
+                ->renameColumn('gidNumber', 'gid')->integer()
+                ->renameColumn('userid', 'uid')->integer()
+                ->execute();
         }
 
         // delete page version table
-        if ($this->db->tableExists('#__xgroups_pages_versions')) {
-            $query = "DROP TABLE #__xgroups_pages_versions;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__xgroups_pages_versions');
 
         // delete categories table
-        if ($this->db->tableExists('#__xgroups_pages_categories')) {
-            $query = "DROP TABLE #__xgroups_pages_categories;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__xgroups_pages_categories');
 
         // delete modules table
-        if ($this->db->tableExists('#__xgroups_modules')) {
-            $query = "DROP TABLE #__xgroups_modules;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__xgroups_modules');
 
-        // delete  modules menu table
-        if ($this->db->tableExists('#__xgroups_modules_menu')) {
-            $query = "DROP TABLE #__xgroups_modules_menu;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        // delete modules menu table
+        $schema->dropTable('#__xgroups_modules_menu');
     }
 }

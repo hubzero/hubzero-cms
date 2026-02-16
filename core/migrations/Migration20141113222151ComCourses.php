@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for adding path field to course assets and subsequent updates
@@ -20,32 +21,44 @@ class Migration20141113222151ComCourses extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // Add folder/path field
-        if ($this->db->tableExists('#__courses_assets') && !$this->db->tableHasField('#__courses_assets', 'path')) {
-            $query = "ALTER TABLE `#__courses_assets` ADD `path` VARCHAR(255) NOT NULL DEFAULT ''";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__courses_assets') && !$schema->hasColumn('#__courses_assets', 'path')) {
+            $schema->addColumn('#__courses_assets', 'path')
+                ->string(255)
+                ->notNull()
+                ->default('')
+                ->execute();
 
             // Set path based on asset id
-            $query = "UPDATE `#__courses_assets` SET `path` = CONCAT(`course_id`, '/', `id`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            // Note: Using raw SQL as MySQL CONCAT() function is not directly supported by Query Builder
+            $this->db->getQuery(true)
+                ->update('#__courses_assets')
+                ->set(['path' => Expression::concat('course_id', Expression::literal('/'), 'id')])
+                ->execute();
         }
 
         // Find all assets with >1 associations
-        $query = "SELECT `asset_id`, count(asset_id) AS count FROM `#__courses_asset_associations` "
-            . "GROUP BY `asset_id` HAVING count > 1";
-        $this->db->setQuery($query);
-        $assetIds = $this->db->loadObjectList();
+        $assetIds = $this->db->getQuery(true)
+            ->select('asset_id')
+            ->select(Expression::count('asset_id'), 'count')
+            ->from('#__courses_asset_associations')
+            ->group('asset_id')
+            ->having('count', '>', 1)
+            ->loadObjectList();
 
         if ($assetIds && count($assetIds) > 0) {
             require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
 
             foreach ($assetIds as $aa) {
-                $query = "SELECT * FROM `#__courses_asset_associations` WHERE `asset_id` = "
-                    . (int)$aa->asset_id . " ORDER BY `id` DESC LIMIT " . (int)($aa->count - 1);
-                $this->db->setQuery($query);
-                $toChange = $this->db->loadObjectList();
+                $toChange = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__courses_asset_associations')
+                    ->where('asset_id', '=', (int)$aa->asset_id)
+                    ->order('id', 'DESC')
+                    ->limit((int)($aa->count - 1))
+                    ->loadObjectList();
 
                 foreach ($toChange as $a) {
                     $oldAssetId = $a->asset_id;
@@ -55,55 +68,58 @@ class Migration20141113222151ComCourses extends Base
                         // Get the offering
                         $offering = 0;
                         if ($a->scope == 'asset_group') {
-                            $query  = "SELECT `offering_id` FROM `#__courses_asset_groups` AS cag";
-                            $query .= " LEFT JOIN `#__courses_units` AS cu ON cag.unit_id = cu.id";
-                            $query .= " WHERE cag.id = " . $this->db->quote($a->scope_id);
-                            $this->db->setQuery($query);
-                            $offering = $this->db->loadResult();
+                            $offering = $this->db->getQuery(true)
+                                ->select('offering_id')
+                                ->from('#__courses_asset_groups', 'cag')
+                                ->leftJoin('#__courses_units AS cu', 'cag.unit_id', 'cu.id')
+                                ->where('cag.id', '=', $a->scope_id)
+                                ->value('offering_id');
                         } elseif ($a->scope == 'offering') {
                             $offering = $a->scope_id;
                         }
 
                         $asset->copy(false);
 
-                        $query = "UPDATE `#__courses_asset_associations` SET `asset_id` = "
-                            . $this->db->quote($asset->get('id')) . " WHERE `id` = " . $this->db->quote($a->id);
-                        $this->db->setQuery($query);
-                        $this->db->query();
+                        $this->db->getQuery(true)
+                            ->update('#__courses_asset_associations')
+                            ->set(['asset_id' => (int)$asset->get('id')])
+                            ->where('id', '=', $a->id)
+                            ->execute();
 
                         if ($offering) {
                             // Update gradebook entries
-                            $query = "UPDATE `#__courses_grade_book` AS g "
-                                . "LEFT JOIN `#__courses_members` AS m ON g.member_id = m.id"
-                                . " SET `scope_id` = " . (int)$asset->get('id')
-                                . " WHERE `scope_id` = " . (int)$oldAssetId
-                                . " AND `scope` = 'asset'"
-                                . " AND m.offering_id = " . (int)$offering;
-                            $this->db->setQuery($query);
-                            $this->db->query();
+                            $this->db->getQuery(true)
+                                ->update('#__courses_grade_book AS g')
+                                ->leftJoin('#__courses_members AS m', 'g.member_id', 'm.id')
+                                ->set(['g.scope_id' => (int)$asset->get('id')])
+                                ->where('g.scope_id', '=', (int)$oldAssetId)
+                                ->where('g.scope', '=', 'asset')
+                                ->where('m.offering_id', '=', (int)$offering)
+                                ->execute();
 
                             // Update asset_unity
-                            $query = "UPDATE `#__courses_asset_unity` AS u "
-                                . "LEFT JOIN `#__courses_members` AS m ON u.member_id = m.id"
-                                . " SET `asset_id` = " . (int)$asset->get('id')
-                                . " WHERE `asset_id` = " . (int)$oldAssetId
-                                . " AND m.offering_id = " . (int)$offering;
-                            $this->db->setQuery($query);
-                            $this->db->query();
+                            $this->db->getQuery(true)
+                                ->update('#__courses_asset_unity AS u')
+                                ->leftJoin('#__courses_members AS m', 'u.member_id', 'm.id')
+                                ->set(['u.asset_id' => (int)$asset->get('id')])
+                                ->where('u.asset_id', '=', (int)$oldAssetId)
+                                ->where('m.offering_id', '=', (int)$offering)
+                                ->execute();
 
                             // Update asset_views
-                            $query = "UPDATE `#__courses_asset_views` AS v "
-                                . "LEFT JOIN `#__courses_members` AS m ON v.viewed_by = m.id"
-                                . " SET `asset_id` = " . (int)$asset->get('id')
-                                . " WHERE `asset_id` = " . (int)$oldAssetId
-                                . " AND m.offering_id = " . (int)$offering;
-                            $this->db->setQuery($query);
-                            $this->db->query();
+                            $this->db->getQuery(true)
+                                ->update('#__courses_asset_views AS v')
+                                ->leftJoin('#__courses_members AS m', 'v.viewed_by', 'm.id')
+                                ->set(['v.asset_id' => (int)$asset->get('id')])
+                                ->where('v.asset_id', '=', (int)$oldAssetId)
+                                ->where('m.offering_id', '=', (int)$offering)
+                                ->execute();
                         }
                     } else {
-                        $query = "DELETE FROM `#__courses_asset_associations` WHERE `id` = " . $this->db->quote($a->id);
-                        $this->db->setQuery($query);
-                        $this->db->query();
+                        $this->db->getQuery(true)
+                            ->delete('#__courses_asset_associations')
+                            ->where('id', '=', $a->id)
+                            ->execute();
                     }
                 }
             }

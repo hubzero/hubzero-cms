@@ -23,9 +23,11 @@ class Migration20180821190002ComPublications extends Base
      **/
     public function up()
     {
-        $query = "SELECT `extension_id`, `params` FROM `#__extensions` WHERE `name` = 'com_publications'";
-        $this->db->setQuery($query);
-        $results = $this->db->loadObjectList();
+        $results = $this->db->getQuery(true)
+            ->select(['extension_id', 'params'])
+            ->from('#__extensions')
+            ->where('name', '=', 'com_publications')
+            ->loadObjectList();
         if (count($results) > 0) {
             foreach ($results as $r) {
                 $params = json_decode($r->params);
@@ -41,11 +43,11 @@ class Migration20180821190002ComPublications extends Base
                 if (!isset($params->ezid_doi_userpw)) {
                     $params->ezid_doi_userpw = "purr:#purrisice#";
                 }
-                $query = "UPDATE `#__extensions` SET `params` = "
-                    . $this->db->quote(json_encode($params))
-                    . " WHERE `extension_id` = " . $this->db->quote($r->extension_id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => json_encode($params)])
+                    ->where('extension_id', '=', $r->extension_id)
+                    ->execute();
             }
         }
     }

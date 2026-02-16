@@ -21,18 +21,26 @@ class Migration20160907185952PlgProjects extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $this->addPluginEntry('projects', 'info');
 
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `element`='feed' WHERE `folder`='projects' AND `element`='blog' "
-                . "AND `type`='plugin'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['element' => 'feed'])
+                ->where('folder', '=', 'projects')
+                ->where('element', '=', 'blog')
+                ->where('type', '=', 'plugin')
+                ->execute();
 
-            $query = "SELECT * FROM `#__extensions` WHERE `folder`='projects' AND `type`='plugin' ORDER BY "
-                . "`ordering` ASC";
-            $this->db->setQuery($query);
-            $plugins = $this->db->loadObjectList();
+            $plugins = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__extensions')
+                ->where('folder', '=', 'projects')
+                ->where('type', '=', 'plugin')
+                ->order('ordering', 'ASC')
+                ->loadObjectList();
 
             $i = 1;
             foreach ($plugins as $plugin) {
@@ -48,10 +56,11 @@ class Migration20160907185952PlgProjects extends Base
                     $num = 2;
                 }
 
-                $query = "UPDATE `#__extensions` SET `ordering`=" . $num
-                    . " WHERE `extension_id`=" . $plugin->extension_id;
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['ordering' => (int)$num])
+                    ->where('extension_id', '=', (int)$plugin->extension_id)
+                    ->execute();
 
                 $i++;
             }
@@ -63,13 +72,18 @@ class Migration20160907185952PlgProjects extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $this->deletePluginEntry('projects', 'info');
 
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `element`='blog' WHERE `folder`='projects' AND `element`='feed' "
-                . "AND `type`='plugin'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['element' => 'blog'])
+                ->where('folder', '=', 'projects')
+                ->where('element', '=', 'feed')
+                ->where('type', '=', 'plugin')
+                ->execute();
         }
     }
 }

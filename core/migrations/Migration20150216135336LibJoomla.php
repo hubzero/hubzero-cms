@@ -20,18 +20,29 @@ class Migration20150216135336LibJoomla extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__viewlevels')) {
-            $query = "SELECT `ordering` FROM `#__viewlevels` ORDER BY `ordering` DESC LIMIT 1";
-            $this->db->setQuery($query);
-            $i = (int) $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__viewlevels')) {
+            $query = $this->db->getQuery(true)
+                ->select('ordering')
+                ->from('#__viewlevels')
+                ->order('ordering', 'DESC');
+
+            $i = (int) $query->value('ordering');
+
             if ($i == 2) {
                 foreach (array('Protected' => '[1]', 'Private' => '[8]') as $title => $usergroups) {
                     $i++;
 
-                    $query = "INSERT INTO `#__viewlevels` (`id`, `title`, `ordering`, `rules`) VALUES (null, "
-                        . $this->db->quote($title) . "," . $i . "," . $this->db->quote($usergroups) . ")";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__viewlevels')
+                        ->set([
+                            'id'       => null,
+                            'title'    => $title,
+                            'ordering' => $i,
+                            'rules'    => $usergroups
+                        ])
+                        ->execute();
                 }
             }
         }
@@ -42,11 +53,13 @@ class Migration20150216135336LibJoomla extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__viewlevels')) {
-            $query = "DELETE FROM `#__viewlevels` WHERE `title` IN (" . $this->db->quote('Protected') . ","
-                . $this->db->quote('Private') . ")";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__viewlevels')) {
+            $this->db->getQuery(true)
+                ->delete('#__viewlevels')
+                ->whereIn('title', ['Protected', 'Private'])
+                ->execute();
         }
     }
 }

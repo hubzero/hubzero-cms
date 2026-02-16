@@ -21,29 +21,13 @@ class Migration20160914183602ComProjects extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__project_owners')) {
-            $query = "ALTER TABLE `#__project_owners` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__project_activity')) {
-            $query = "ALTER TABLE `#__project_activity` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__project_types')) {
-            $query = "ALTER TABLE `#__project_types` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__projects')) {
-            $query = "ALTER TABLE `#__projects` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        // CHARACTER SET conversion is MySQL-specific (SQLite uses UTF-8 by default)
+        $schema->setTableCharset('#__project_owners', 'utf8', 'utf8_general_ci');
+        $schema->setTableCharset('#__project_activity', 'utf8', 'utf8_general_ci');
+        $schema->setTableCharset('#__project_types', 'utf8', 'utf8_general_ci');
+        $schema->setTableCharset('#__projects', 'utf8', 'utf8_general_ci');
     }
 
     /**
@@ -51,28 +35,12 @@ class Migration20160914183602ComProjects extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__project_owners')) {
-            $query = "ALTER TABLE `#__project_owners` CONVERT TO CHARACTER SET latin1 COLLATE latin1_swedish_ci";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__project_activity')) {
-            $query = "ALTER TABLE `#__project_activity` CONVERT TO CHARACTER SET latin1 COLLATE latin1_swedish_ci";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__project_types')) {
-            $query = "ALTER TABLE `#__project_types` CONVERT TO CHARACTER SET latin1 COLLATE latin1_swedish_ci";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__projects')) {
-            $query = "ALTER TABLE `#__projects` CONVERT TO CHARACTER SET latin1 COLLATE latin1_swedish_ci";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        // CHARACTER SET conversion is MySQL-specific (SQLite uses UTF-8 by default)
+        $schema->setTableCharset('#__project_owners', 'latin1', 'latin1_swedish_ci');
+        $schema->setTableCharset('#__project_activity', 'latin1', 'latin1_swedish_ci');
+        $schema->setTableCharset('#__project_types', 'latin1', 'latin1_swedish_ci');
+        $schema->setTableCharset('#__projects', 'latin1', 'latin1_swedish_ci');
     }
 }

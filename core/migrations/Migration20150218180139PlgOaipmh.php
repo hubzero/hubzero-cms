@@ -21,11 +21,7 @@ class Migration20150218180139PlgOaipmh extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__oaipmh_dcspecs')) {
-            $query = "DROP TABLE `#__oaipmh_dcspecs`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__oaipmh_dcspecs');
 
         $this->addPluginEntry('oaipmh', 'resources', 1);
         $this->addPluginEntry('oaipmh', 'publications', 1);
@@ -36,16 +32,18 @@ class Migration20150218180139PlgOaipmh extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__oaipmh_dcspecs')) {
-            $query = "CREATE TABLE `#__oaipmh_dcspecs` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `name` varchar(255) NOT NULL,
-			  `query` text NOT NULL,
-			  `display` int(1) NOT NULL DEFAULT '0',
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__oaipmh_dcspecs')) {
+            $schema->createTable('#__oaipmh_dcspecs')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('name', 255)
+                ->text('query')
+                ->integer('display')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
         $this->deletePluginEntry('oaipmh', 'resources');

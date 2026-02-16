@@ -21,23 +21,30 @@ class Migration20150720105039PlgAntispam extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $params = '';
 
-        if ($this->db->tableExists('#__extensions')) {
+        if ($schema->tableExists('#__extensions')) {
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
             foreach (array('akismet', 'mollom', 'spamassassin') as $plg) {
-                $this->db->setQuery(
-                    "SELECT extension_id FROM `#__extensions` WHERE `type`='plugin' AND `element`="
-                        . $this->db->quote($plg)
-                );
-                if ($id = $this->db->loadResult()) {
-                    $this->db->setQuery(
-                        "UPDATE `#__extensions` SET `folder`='antispam', `name`="
-                            . $this->db->quote('plg_antispam_' . $plg)
-                            . " WHERE `extension_id`=" . $this->db->quote($id)
-                    );
-                    $this->db->query();
+                $query = $this->db->getQuery(true)
+                    ->select('extension_id')
+                    ->from('#__extensions')
+                    ->where('type', '=', 'plugin')
+                    ->where('element', '=', $plg);
+                $id = $query->value('extension_id');
+
+                if ($id) {
+                    $this->db->getQuery(true)
+                        ->update('#__extensions')
+                        ->set([
+                            'folder' => 'antispam',
+                            'name'   => 'plg_antispam_' . $plg
+                        ])
+                        ->where('extension_id', '=', $id)
+                        ->execute();
                 }
             }
         }
@@ -48,22 +55,29 @@ class Migration20150720105039PlgAntispam extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
             // Move the existing plugin entries when possible to preserve params,
             // otherwise add the entry
             foreach (array('akismet', 'mollom', 'spamassassin') as $plg) {
-                $this->db->setQuery(
-                    "SELECT extension_id FROM `#__extensions` "
-                        . "WHERE `type`='plugin' AND `folder`='antispam' AND `element`="
-                        . $this->db->quote($plg)
-                );
-                if ($id = $this->db->loadResult()) {
-                    $this->db->setQuery(
-                        "UPDATE `#__extensions` SET `folder`='content', `name`="
-                            . $this->db->quote('plg_content_' . $plg)
-                            . " WHERE `extension_id`=" . $this->db->quote($id)
-                    );
-                    $this->db->query();
+                $query = $this->db->getQuery(true)
+                    ->select('extension_id')
+                    ->from('#__extensions')
+                    ->where('type', '=', 'plugin')
+                    ->where('folder', '=', 'antispam')
+                    ->where('element', '=', $plg);
+                $id = $query->value('extension_id');
+
+                if ($id) {
+                    $this->db->getQuery(true)
+                        ->update('#__extensions')
+                        ->set([
+                            'folder' => 'content',
+                            'name'   => 'plg_content_' . $plg
+                        ])
+                        ->where('extension_id', '=', $id)
+                        ->execute();
                 }
             }
         }

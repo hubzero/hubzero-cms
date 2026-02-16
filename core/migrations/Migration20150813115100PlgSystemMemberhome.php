@@ -21,11 +21,16 @@ class Migration20150813115100PlgSystemMemberhome extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = 'system' AND `element` = "
-                . "'memberhome' AND `type` = 'plugin'";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $query = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('folder', '=', 'system')
+                ->where('element', '=', 'memberhome')
+                ->where('type', '=', 'plugin');
+            $id = $query->value('extension_id');
 
             if (!$id) {
                 $this->addPluginEntry('system', 'memberhome', 0);
@@ -38,11 +43,16 @@ class Migration20150813115100PlgSystemMemberhome extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = 'system' AND `element` = "
-                . "'memberhome' AND `type` = 'plugin'";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $query = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('folder', '=', 'system')
+                ->where('element', '=', 'memberhome')
+                ->where('type', '=', 'plugin');
+            $id = $query->value('extension_id');
 
             if ($id) {
                 $this->deletePluginEntry('system', 'memberhome');

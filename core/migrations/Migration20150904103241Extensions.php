@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for updating wrong client_id on entries
  *
-*/
+ */
 class Migration20150904103241Extensions extends Base
 {
     /**
@@ -21,18 +21,22 @@ class Migration20150904103241Extensions extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `client_id` = " . $this->db->quote('0')
-                . " WHERE `type`=" . $this->db->quote('component')
-                . " AND `element`=" . $this->db->quote('com_feedaggregator');
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__extensions` SET `client_id` = " . $this->db->quote('1')
-                . " WHERE `type`=" . $this->db->quote('module')
-                . " AND `element`=" . $this->db->quote('mod_grouppages');
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['client_id' => 0])
+                ->where('type', '=', 'component')
+                ->where('element', '=', 'com_feedaggregator')
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['client_id' => 1])
+                ->where('type', '=', 'module')
+                ->where('element', '=', 'mod_grouppages')
+                ->execute();
         }
     }
 
@@ -41,18 +45,22 @@ class Migration20150904103241Extensions extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `client_id` = " . $this->db->quote('1')
-                . " WHERE `type`=" . $this->db->quote('component')
-                . " AND `element`=" . $this->db->quote('com_feedaggregator');
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__extensions` SET `client_id` = " . $this->db->quote('0')
-                . " WHERE `type`=" . $this->db->quote('module')
-                . " AND `element`=" . $this->db->quote('mod_grouppages');
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['client_id' => 1])
+                ->where('type', '=', 'component')
+                ->where('element', '=', 'com_feedaggregator')
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['client_id' => 0])
+                ->where('type', '=', 'module')
+                ->where('element', '=', 'mod_grouppages')
+                ->execute();
         }
     }
 }

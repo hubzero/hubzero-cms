@@ -21,12 +21,19 @@ class Migration20160824181200ComWiki extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__wiki_pages')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__wiki_pages')) {
             // Convert group pages
-            $query = "SELECT w.*, g.cn FROM `#__wiki_pages` AS w LEFT JOIN `#__xgroups` AS g ON "
-                . "w.`scope_id`=g.`gidNumber` WHERE w.`path` LIKE '%/notes%' AND w.`scope`='group'";
-            $this->db->setQuery($query);
-            $rows = $this->db->loadObjectList();
+            $rows = $this->db->getQuery(true)
+                ->select('w.*')
+                ->select('g.cn')
+                ->from('#__wiki_pages', 'w')
+                ->leftJoin('#__xgroups AS g', 'w.scope_id', 'g.gidNumber')
+                ->whereLike('w.path', '%/notes%')
+                ->where('w.scope', '=', 'group')
+                ->loadObjectList();
+
             foreach ($rows as $row) {
                 if (substr($row->cn, 0, strlen('pr-')) != 'pr-') {
                     continue;
@@ -49,16 +56,21 @@ class Migration20160824181200ComWiki extends Base
 
                 $project = substr($row->cn, strlen('pr-'));
 
-                $query = "SELECT id FROM `#__projects` WHERE alias=" . $this->db->quote($project);
-                $this->db->setQuery($query);
-                $row->pidNumber = $this->db->loadResult();
+                $row->pidNumber = $this->db->getQuery(true)
+                    ->select('id')
+                    ->from('#__projects')
+                    ->where('alias', '=', $project)
+                    ->value('id');
 
-                $query = "UPDATE `#__wiki_pages` SET `scope`='project', "
-                    . "`scope_id`=" . $this->db->quote($row->pidNumber) . ", "
-                    . "`path`=" . $this->db->quote($row->path) . " "
-                    . "WHERE `id`=" . $this->db->quote($row->id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_pages')
+                    ->set([
+                        'scope'    => 'project',
+                        'scope_id' => $row->pidNumber,
+                        'path'     => $row->path
+                    ])
+                    ->where('id', '=', $row->id)
+                    ->execute();
             }
         }
     }

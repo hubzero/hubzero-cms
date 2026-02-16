@@ -18,29 +18,19 @@ class Migration20130214000000Core extends Base
 {
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('host', 'venue_id')) {
-            $query .= "ALTER TABLE `host` ADD COLUMN `venue_id` INT(11)  AFTER `portbase`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('host', 'venue_id')) {
+            $schema->addColumn('host', 'venue_id')->integer(11)->after('portbase');
         }
     }
 
     public function down()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('host', 'venue_id')) {
-            $query .= "ALTER TABLE `host` DROP COLUMN `venue_id`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('host', 'venue_id')) {
+            $schema->dropColumn('host', 'venue_id');
         }
     }
 }

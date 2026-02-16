@@ -21,24 +21,22 @@ class Migration20171106183501ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__profile_completion_awards')) {
-            if (!$this->db->tableHasField('#__profile_completion_awards', 'username')) {
-                $query = "ALTER TABLE `#__profile_completion_awards` ADD `username` TINYINT(4)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__profile_completion_awards')) {
+            if (!$schema->hasColumn('#__profile_completion_awards', 'username')) {
+                $schema->addColumn('#__profile_completion_awards', 'username')->tinyInteger(4)->notNull()->default('0');
             }
 
-            if (!$this->db->tableHasField('#__profile_completion_awards', 'email')) {
-                $query = "ALTER TABLE `#__profile_completion_awards` ADD `email` TINYINT(4)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__profile_completion_awards', 'email')) {
+                $schema->addColumn('#__profile_completion_awards', 'email')->tinyInteger(4)->notNull()->default('0');
             }
 
-            if (!$this->db->tableHasField('#__profile_completion_awards', 'disability')) {
-                $query = "ALTER TABLE `#__profile_completion_awards` ADD `disability` TINYINT(4)  NOT NULL "
-                    . "DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__profile_completion_awards', 'disability')) {
+                $schema->addColumn('#__profile_completion_awards', 'disability')
+                    ->tinyInteger(4)
+                    ->notNull()
+                    ->default('0');
             }
         }
     }
@@ -48,23 +46,19 @@ class Migration20171106183501ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__profile_completion_awards')) {
-            if ($this->db->tableHasField('#__profile_completion_awards', 'username')) {
-                $query = "ALTER TABLE `#__profile_completion_awards` DROP `username`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__profile_completion_awards')) {
+            if ($schema->hasColumn('#__profile_completion_awards', 'username')) {
+                $schema->dropColumn('#__profile_completion_awards', 'username');
             }
 
-            if ($this->db->tableHasField('#__profile_completion_awards', 'email')) {
-                $query = "ALTER TABLE `#__profile_completion_awards` DROP `email`';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__profile_completion_awards', 'email')) {
+                $schema->dropColumn('#__profile_completion_awards', 'email');
             }
 
-            if ($this->db->tableHasField('#__profile_completion_awards', 'disability')) {
-                $query = "ALTER TABLE `#__profile_completion_awards` DROP `disability`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__profile_completion_awards', 'disability')) {
+                $schema->dropColumn('#__profile_completion_awards', 'disability');
             }
         }
     }

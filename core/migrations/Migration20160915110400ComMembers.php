@@ -21,12 +21,16 @@ class Migration20160915110400ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__users')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__users')) {
             $config = null;
-            if ($this->db->tableExists('#__extensions')) {
-                $query = "SELECT `params` FROM `#__extensions` WHERE `element`='com_members' LIMIT 1";
-                $this->db->setQuery($query);
-                $config = $this->db->loadResult();
+            if ($schema->tableExists('#__extensions')) {
+                $config = $this->db->getQuery(true)
+                    ->select('params')
+                    ->from('#__extensions')
+                    ->where('element', '=', 'com_members')
+                    ->value('params');
             }
 
             $access = 1;
@@ -38,9 +42,11 @@ class Migration20160915110400ComMembers extends Base
                 }
             }
 
-            $query = "UPDATE `#__users` SET `access`=$access WHERE `access`=0";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__users')
+                ->set(['access' => (int)$access])
+                ->where('access', '=', 0)
+                ->execute();
         }
     }
 

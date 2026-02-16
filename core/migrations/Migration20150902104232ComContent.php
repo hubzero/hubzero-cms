@@ -21,10 +21,14 @@ class Migration20150902104232ComContent extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__content')) {
-            $query = "SELECT * FROM `#__content` WHERE `alias` = 'discover' LIMIT 1";
-            $this->db->setQuery($query);
-            $row = $this->db->loadObject();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__content')) {
+            $query = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__content')
+                ->where('alias', '=', 'discover');
+            $row = $query->first();
 
             if ($row && $row->id) {
                 $old = $this->previous;
@@ -36,10 +40,11 @@ class Migration20150902104232ComContent extends Base
                 $despaced = trim($despaced);
 
                 if ($row->introtext == $old || $despaced == $olddespaced) {
-                    $query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->updated)
-                        . " WHERE `id`=" . $this->db->quote($row->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__content')
+                        ->set(['introtext' => $this->updated])
+                        ->where('id', '=', $row->id)
+                        ->execute();
                 }
             }
         }
@@ -50,10 +55,14 @@ class Migration20150902104232ComContent extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__content')) {
-            $query = "SELECT * FROM `#__content` WHERE `alias` = 'discover' LIMIT 1";
-            $this->db->setQuery($query);
-            $row = $this->db->loadObject();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__content')) {
+            $query = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__content')
+                ->where('alias', '=', 'discover');
+            $row = $query->first();
 
             if ($row && $row->id) {
                 $old = $this->updated;
@@ -65,10 +74,11 @@ class Migration20150902104232ComContent extends Base
                 $despaced = trim($despaced);
 
                 if ($row->introtext == $old || $despaced == $olddespaced) {
-                    $query = "UPDATE `#__content` SET `introtext` = " . $this->db->quote($this->previous)
-                        . " WHERE `id`=" . $this->db->quote($row->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__content')
+                        ->set(['introtext' => $this->previous])
+                        ->where('id', '=', $row->id)
+                        ->execute();
                 }
             }
         }

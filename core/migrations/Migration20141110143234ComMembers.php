@@ -21,10 +21,14 @@ class Migration20141110143234ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__xorganization_types')) {
-            $query = "SELECT COUNT(*) FROM `#__xorganization_types`";
-            $this->db->setQuery($query);
-            if (!$this->db->loadResult()) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xorganization_types')) {
+            $count = $this->db->getQuery(true)
+                ->from('#__xorganization_types')
+                ->count();
+
+            if (!$count) {
                 $types = array(
                     'universityundergraduate' => 'University / College Undergraduate',
                     'universitygraduate'      => 'University / College Graduate Student',
@@ -40,10 +44,11 @@ class Migration20141110143234ComMembers extends Base
                 );
 
                 foreach ($types as $alias => $title) {
-                    $query = "INSERT INTO `#__xorganization_types` (`id`, `type`, `title`) "
-                        . "VALUES (NULL, " . $this->db->quote($alias) . "," . $this->db->quote($title) . ")";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__xorganization_types')
+                        ->columns(['type', 'title'])
+                        ->values([$alias, $title])
+                        ->execute();
                 }
             }
         }

@@ -21,15 +21,23 @@ class Migration20130512175301PlgCoursesDiscussions extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__plugins')) {
-            $query = "UPDATE `#__plugins` SET `element`='discussions' WHERE `element`='forum' AND `folder`='courses';";
-        } else {
-            $query = "UPDATE `#__extensions` SET `element`='discussions' WHERE `element`='forum' AND "
-                . "`folder`='courses';";
-        }
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        if ($schema->tableExists('#__plugins')) {
+            $this->db->getQuery(true)
+                ->update('#__plugins')
+                ->set(['element' => 'discussions'])
+                ->where('element', '=', 'forum')
+                ->where('folder', '=', 'courses')
+                ->execute();
+        } else {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['element' => 'discussions'])
+                ->where('element', '=', 'forum')
+                ->where('folder', '=', 'courses')
+                ->execute();
+        }
     }
 
     /**
@@ -37,14 +45,22 @@ class Migration20130512175301PlgCoursesDiscussions extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__plugins')) {
-            $query = "UPDATE `#__plugins` SET `element`='forum' WHERE `element`='discussions' AND `folder`='courses';";
-        } else {
-            $query = "UPDATE `#__extensions` SET `element`='forum' WHERE `element`='discussions' AND "
-                . "`folder`='courses';";
-        }
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        if ($schema->tableExists('#__plugins')) {
+            $this->db->getQuery(true)
+                ->update('#__plugins')
+                ->set(['element' => 'forum'])
+                ->where('element', '=', 'discussions')
+                ->where('folder', '=', 'courses')
+                ->execute();
+        } else {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['element' => 'forum'])
+                ->where('element', '=', 'discussions')
+                ->where('folder', '=', 'courses')
+                ->execute();
+        }
     }
 }

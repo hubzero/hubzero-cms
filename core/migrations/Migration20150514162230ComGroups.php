@@ -21,14 +21,18 @@ class Migration20150514162230ComGroups extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__assets')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__assets')) {
             $rules = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.view":[],'
                 . '"core.create":{"2":1},"core.delete":[],"core.edit":{"2":1},'
                 . '"core.edit.state":[],"core.edit.own":[]}';
 
-            $query = "SELECT id FROM `#__assets` WHERE `name` = 'com_groups' LIMIT 1";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+            $id = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__assets')
+                ->where('name', '=', 'com_groups')
+                ->value('id');
 
             if (!$id) {
                 $parent = \Hubzero\Access\Asset::oneOrNew(\Hubzero\Access\Asset::getRootId());
@@ -42,10 +46,11 @@ class Migration20150514162230ComGroups extends Base
                 $tbl->saveAsLastChildOf($parent);
             } else {
                 // Set the first zone as default
-                $query = "UPDATE `#__assets` SET `rules` = " . $this->db->quote($rules)
-                    . " WHERE `id` = " . $this->db->quote($id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__assets')
+                    ->set(['rules' => $rules])
+                    ->where('id', '=', $id)
+                    ->execute();
             }
         }
     }
@@ -55,14 +60,18 @@ class Migration20150514162230ComGroups extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__assets')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__assets')) {
             $rules = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.view":[],'
                 . '"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[],'
                 . '"core.edit.own":[]}';
 
-            $query = "SELECT id FROM `#__assets` WHERE `name` = 'com_groups' LIMIT 1";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+            $id = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__assets')
+                ->where('name', '=', 'com_groups')
+                ->value('id');
 
             if (!$id) {
                 $parent = \Hubzero\Access\Asset::oneOrNew(\Hubzero\Access\Asset::getRootId());
@@ -76,10 +85,11 @@ class Migration20150514162230ComGroups extends Base
                 $tbl->saveAsLastChildOf($parent);
             } else {
                 // Set the first zone as default
-                $query = "UPDATE `#__assets` SET `rules` = " . $this->db->quote($rules)
-                    . " WHERE `id` = " . $this->db->quote($id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__assets')
+                    ->set(['rules' => $rules])
+                    ->where('id', '=', $id)
+                    ->execute();
             }
         }
     }

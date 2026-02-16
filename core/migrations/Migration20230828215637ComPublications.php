@@ -21,13 +21,13 @@ class Migration20230828215637ComPublications extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__publication_versions')
-            && !$this->db->tableHasField('#__publication_versions', 'downloadDisabled')
+            $schema->tableExists('#__publication_versions')
+            && !$schema->hasColumn('#__publication_versions', 'downloadDisabled')
         ) {
-            $query = "ALTER TABLE `#__publication_versions` ADD COLUMN `downloadDisabled` BOOL DEFAULT FALSE";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__publication_versions', 'downloadDisabled')->boolean()->default(false);
         }
     }
 
@@ -36,13 +36,13 @@ class Migration20230828215637ComPublications extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__publication_versions')
-            && $this->db->tableHasField('#__publication_versions', 'downloadDisabled')
+            $schema->tableExists('#__publication_versions')
+            && $schema->hasColumn('#__publication_versions', 'downloadDisabled')
         ) {
-            $query = "ALTER TABLE `#__publication_versions` DROP COLUMN `downloadDisabled`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__publication_versions', 'downloadDisabled');
         }
     }
 }

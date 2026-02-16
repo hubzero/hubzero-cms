@@ -20,11 +20,11 @@ class Migration20141117095313ComPublications extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__publication_curation_history')) {
-            if (!$this->db->tableHasField('#__publication_curation_history', 'comment')) {
-                $query = "ALTER TABLE `#__publication_curation_history` ADD COLUMN `comment` TEXT AFTER newstatus;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publication_curation_history')) {
+            if (!$schema->hasColumn('#__publication_curation_history', 'comment')) {
+                $schema->addColumn('#__publication_curation_history', 'comment')->text();
             }
         }
     }
@@ -34,11 +34,11 @@ class Migration20141117095313ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__publication_curation_history')) {
-            if ($this->db->tableHasField('#__publication_curation_history', 'comment')) {
-                $query = "ALTER TABLE `#__publication_curation_history` DROP `comment`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publication_curation_history')) {
+            if ($schema->hasColumn('#__publication_curation_history', 'comment')) {
+                $schema->dropColumn('#__publication_curation_history', 'comment');
             }
         }
     }

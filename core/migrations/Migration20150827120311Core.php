@@ -46,15 +46,18 @@ class Migration20150827120311Core extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__migrations')
-            && $this->db->tableHasField('#__migrations', 'file')
+            $schema->tableExists('#__migrations')
+            && $schema->hasColumn('#__migrations', 'file')
         ) {
             foreach ($this->files as $old => $renamed) {
-                $query = "UPDATE `#__migrations` SET `file`=" . $this->db->quote($renamed)
-                    . " WHERE `file`=" . $this->db->quote($old);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__migrations')
+                    ->set(['file' => $renamed])
+                    ->where('file', '=', $old)
+                    ->execute();
             }
         }
     }
@@ -64,15 +67,18 @@ class Migration20150827120311Core extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__migrations')
-            && $this->db->tableHasField('#__migrations', 'file')
+            $schema->tableExists('#__migrations')
+            && $schema->hasColumn('#__migrations', 'file')
         ) {
             foreach ($this->files as $old => $renamed) {
-                $query = "UPDATE `#__migrations` SET `file`=" . $this->db->quote($old)
-                    . " WHERE `file`=" . $this->db->quote($renamed);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__migrations')
+                    ->set(['file' => $old])
+                    ->where('file', '=', $renamed)
+                    ->execute();
             }
         }
     }

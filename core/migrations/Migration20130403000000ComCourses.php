@@ -17,29 +17,26 @@ class Migration20130403000000ComCourses extends Base
 {
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__courses_pages', 'course_id')) {
-            $query .= "ALTER TABLE `#__courses_pages` ADD `course_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER `id`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__courses_pages')
+            && !$schema->hasColumn('#__courses_pages', 'course_id')
+        ) {
+            $schema->addColumn('#__courses_pages', 'course_id')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 
     public function down()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_pages', 'course_id')) {
-            $query .= "ALTER TABLE `#__courses_pages` DROP `course_id`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_pages', 'course_id')) {
+            $schema->dropColumn('#__courses_pages', 'course_id');
         }
     }
 }

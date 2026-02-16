@@ -18,11 +18,11 @@ class Migration20160907102800ComCategories extends Base
 {
     public function up()
     {
-        if ($this->db->tableHasField('#__categories', 'title')) {
-            $query = "ALTER TABLE `#__categories` CHANGE COLUMN `title` `title` varchar(255) NOT NULL DEFAULT '';";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $this->db->schema()->modifyColumn('#__categories', 'title')
+            ->string(255)
+            ->notNull()
+            ->default('')
+            ->execute();
     }
 
     public function down()

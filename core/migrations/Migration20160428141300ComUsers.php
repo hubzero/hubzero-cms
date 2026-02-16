@@ -21,71 +21,69 @@ class Migration20160428141300ComUsers extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableHasField('#__users', 'activation')
-            && $this->db->tableHasField('#__xprofiles', 'emailConfirmed')
-        ) {
-            $query = "ALTER TABLE `#__users` CHANGE `activation` `activation` INT(11)  NOT NULL  DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` "
-                . "SET u.`activation`=x.`emailConfirmed`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->hasColumn('#__users', 'activation')
+            && $schema->hasColumn('#__xprofiles', 'emailConfirmed')
+        ) {
+            $schema->modifyColumn('#__users', 'activation')->integer()->notNull()->default(0)->execute();
+
+            // Update activation from xprofiles
+            $this->db->getQuery(true)
+                ->update('#__users AS u')
+                ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
+                ->setColumn('u.activation', 'x.emailConfirmed')
+                ->execute();
         }
 
         if (
-            !$this->db->tableHasField('#__users', 'givenName')
-            && $this->db->tableHasField('#__xprofiles', 'givenName')
+            !$schema->hasColumn('#__users', 'givenName')
+            && $schema->hasColumn('#__xprofiles', 'givenName')
         ) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `givenName` VARCHAR(255) NOT NULL AFTER `name`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__users', 'givenName')->string()->notNull()->execute();
 
-            $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` "
-                . "SET u.`givenName`=x.`givenName`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__users AS u')
+                ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
+                ->setColumn('u.givenName', 'x.givenName')
+                ->execute();
         }
 
         if (
-            !$this->db->tableHasField('#__users', 'middleName')
-            && $this->db->tableHasField('#__xprofiles', 'middleName')
+            !$schema->hasColumn('#__users', 'middleName')
+            && $schema->hasColumn('#__xprofiles', 'middleName')
         ) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `middleName` VARCHAR(255) NOT NULL AFTER `givenName`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__users', 'middleName')->string()->notNull()->execute();
 
-            $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` "
-                . "SET u.`middleName`=x.`middleName`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__users AS u')
+                ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
+                ->setColumn('u.middleName', 'x.middleName')
+                ->execute();
         }
 
-        if (!$this->db->tableHasField('#__users', 'surname') && $this->db->tableHasField('#__xprofiles', 'surname')) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `surname` VARCHAR(255) NOT NULL AFTER `middleName`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__users', 'surname') && $schema->hasColumn('#__xprofiles', 'surname')) {
+            $schema->addColumn('#__users', 'surname')->string()->notNull()->execute();
 
-            $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` "
-                . "SET u.`surname`=x.`surname`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__users AS u')
+                ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
+                ->setColumn('u.surname', 'x.surname')
+                ->execute();
         }
 
         if (
-            !$this->db->tableHasField('#__users', 'usageAgreement')
-            && $this->db->tableHasField('#__xprofiles', 'usageAgreement')
+            !$schema->hasColumn('#__users', 'usageAgreement')
+            && $schema->hasColumn('#__xprofiles', 'usageAgreement')
         ) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `usageAgreement` TINYINT(2) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__users', 'usageAgreement')->tinyInteger()->notNull()->default(0)->execute();
 
-            $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` "
-                . "SET u.`usageAgreement`=x.`usageAgreement`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__users AS u')
+                ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
+                ->setColumn('u.usageAgreement', 'x.usageAgreement')
+                ->execute();
         }
     }
 
@@ -94,34 +92,29 @@ class Migration20160428141300ComUsers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__users', 'activation')) {
-            $query = "ALTER TABLE `#__users` CHANGE `activation` `activation` VARCHAR(100) NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__users', 'activation')) {
+            $schema->modifyColumn('#__users', 'activation')
+                ->string(100)
+                ->notNull()
+                ->execute();
         }
 
-        if ($this->db->tableHasField('#__users', 'givenName')) {
-            $query = "ALTER TABLE `#__users` DROP COLUMN `givenName`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__users', 'givenName')) {
+            $schema->dropColumn('#__users', 'givenName');
         }
 
-        if ($this->db->tableHasField('#__users', 'middleName')) {
-            $query = "ALTER TABLE `#__users` DROP COLUMN `middleName`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__users', 'middleName')) {
+            $schema->dropColumn('#__users', 'middleName');
         }
 
-        if ($this->db->tableHasField('#__users', 'givenName')) {
-            $query = "ALTER TABLE `#__users` DROP COLUMN `surname`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__users', 'givenName')) {
+            $schema->dropColumn('#__users', 'surname');
         }
 
-        if ($this->db->tableHasField('#__users', 'usageAgreement')) {
-            $query = "ALTER TABLE `#__users` DROP COLUMN `usageAgreement`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__users', 'usageAgreement')) {
+            $schema->dropColumn('#__users', 'usageAgreement');
         }
     }
 }

@@ -21,22 +21,20 @@ class Migration20160620171427ComCart extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__cart_transaction_items')
-            && !$this->db->tableHasField('#__cart_transaction_items', 'tiMeta')
+            $schema->tableExists('#__cart_transaction_items')
+            && !$schema->hasColumn('#__cart_transaction_items', 'tiMeta')
         ) {
-            $query = "ALTER TABLE `#__cart_transaction_items` ADD `tiMeta` text";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__cart_transaction_items', 'tiMeta')->text();
         }
 
         if (
-            $this->db->tableExists('#__cart_transaction_steps')
-            && !$this->db->tableHasField('#__cart_transaction_steps', 'tsMeta')
+            $schema->tableExists('#__cart_transaction_steps')
+            && !$schema->hasColumn('#__cart_transaction_steps', 'tsMeta')
         ) {
-            $query = "ALTER TABLE `#__cart_transaction_steps` ADD `tsMeta` char(255)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__cart_transaction_steps', 'tsMeta')->char(255);
         }
     }
 
@@ -45,22 +43,20 @@ class Migration20160620171427ComCart extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__cart_transaction_items')
-            && $this->db->tableHasField('#__cart_transaction_items', 'tiMeta')
+            $schema->tableExists('#__cart_transaction_items')
+            && $schema->hasColumn('#__cart_transaction_items', 'tiMeta')
         ) {
-            $query = "ALTER TABLE `#__cart_transaction_items` DROP COLUMN `tiMeta`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__cart_transaction_items', 'tiMeta');
         }
 
         if (
-            $this->db->tableExists('#__cart_transaction_steps')
-            && $this->db->tableHasField('#__cart_transaction_steps', 'tsMeta')
+            $schema->tableExists('#__cart_transaction_steps')
+            && $schema->hasColumn('#__cart_transaction_steps', 'tsMeta')
         ) {
-            $query = "ALTER TABLE `#__cart_transaction_steps` DROP COLUMN `tsMeta`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__cart_transaction_steps', 'tsMeta');
         }
     }
 }

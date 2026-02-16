@@ -21,25 +21,26 @@ class Migration20130826150814ComResources extends Base
      **/
     public function up()
     {
-        $query = "CREATE TABLE IF NOT EXISTS `#__media_tracking_detailed` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`user_id` int(11) DEFAULT NULL,
-				`session_id` varchar(200) DEFAULT NULL,
-				`ip_address` varchar(100) DEFAULT NULL,
-				`object_id` int(11) DEFAULT NULL,
-				`object_type` varchar(100) DEFAULT NULL,
-				`object_duration` int(11) DEFAULT NULL,
-				`current_position` int(11) DEFAULT NULL,
-				`farthest_position` int(11) DEFAULT NULL,
-				`current_position_timestamp` datetime DEFAULT NULL,
-				`farthest_position_timestamp` datetime DEFAULT NULL,
-				`completed` int(11) DEFAULT NULL,
-				PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__media_tracking_detailed')) {
+            $schema->createTable('#__media_tracking_detailed')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('user_id')->nullable()
+                ->string('session_id', 200)->nullable()
+                ->string('ip_address', 100)->nullable()
+                ->integer('object_id')->nullable()
+                ->string('object_type', 100)->nullable()
+                ->integer('object_duration')->nullable()
+                ->integer('current_position')->nullable()
+                ->integer('farthest_position')->nullable()
+                ->datetime('current_position_timestamp')->nullable()
+                ->datetime('farthest_position_timestamp')->nullable()
+                ->integer('completed')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -48,11 +49,8 @@ class Migration20130826150814ComResources extends Base
      **/
     public function down()
     {
-        $query = "DROP TABLE `#__media_tracking_detailed`";
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__media_tracking_detailed');
     }
 }

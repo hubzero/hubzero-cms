@@ -20,32 +20,31 @@ class Migration20171102100900PlgGroupsForumUsersCategories extends Base
 
     public function up()
     {
+        $schema = $this->db->schema();
+
         $tableName = self::$tableName;
 
-        if (!$this->db->tableExists($tableName)) {
-            $createTable = "CREATE TABLE `{$tableName}` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`user_id` int(11) unsigned NOT NULL,
-				`category_id` int(11) unsigned	NOT NULL,
-				`created` timestamp NULL DEFAULT NULL,
-					PRIMARY KEY (`id`)
-				)
-				ENGINE=MyISAM
-				DEFAULT CHARSET=utf8;";
+        if (!$schema->tableExists($tableName)) {
+            $schema->createTable($tableName)
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('user_id')
+                ->unsignedInteger('category_id')
+                ->timestamp('created')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
-
-        $this->db->setQuery($createTable);
-        $this->db->query();
     }
 
     public function down()
     {
+        $schema = $this->db->schema();
+
         $tableName = self::$tableName;
 
-        if ($this->db->tableExists($tableName)) {
-            $dropTable = "DROP TABLE {$tableName};";
-            $this->db->setQuery($dropTable);
-            $this->db->query();
+        if ($schema->tableExists($tableName)) {
+            $schema->dropTable($tableName);
         }
     }
 }

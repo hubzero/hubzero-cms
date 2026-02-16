@@ -21,137 +21,62 @@ class Migration20160129154900ComNewsletter extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__newsletter_mailing_recipient_actions')) {
-            if (!$this->db->tableHasKey('#__newsletter_mailing_recipient_actions', 'idx_mailingid')) {
-                $query = "ALTER TABLE `#__newsletter_mailing_recipient_actions` ADD INDEX `idx_mailingid` "
-                    . "(`mailingid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasKey('#__newsletter_mailing_recipient_actions', 'idx_action')) {
-                $query = "ALTER TABLE `#__newsletter_mailing_recipient_actions` ADD INDEX `idx_action` (`action`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailing_recipient_actions')) {
+            $schema->addIndex('#__newsletter_mailing_recipient_actions', 'idx_mailingid', 'mailingid');
+
+            $schema->addIndex('#__newsletter_mailing_recipient_actions', 'idx_action', 'action');
         }
 
-        if ($this->db->tableExists('#__newsletter_mailing_recipients')) {
-            if (!$this->db->tableHasKey('#__newsletter_mailing_recipients', 'idx_mid')) {
-                $query = "ALTER TABLE `#__newsletter_mailing_recipients` ADD INDEX `idx_mid` (`mid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailing_recipients')) {
+            $schema->addIndex('#__newsletter_mailing_recipients', 'idx_mid', 'mid');
 
-            if (!$this->db->tableHasKey('#__newsletter_mailing_recipients', 'idx_status')) {
-                $query = "ALTER TABLE `#__newsletter_mailing_recipients` ADD INDEX `idx_status` (`status`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__newsletter_mailing_recipients', 'idx_status', 'status');
         }
 
-        if ($this->db->tableExists('#__newsletter_mailinglist_emails')) {
-            if (!$this->db->tableHasKey('#__newsletter_mailinglist_emails', 'idx_mid')) {
-                $query = "ALTER TABLE `#__newsletter_mailinglist_emails` ADD INDEX `idx_mid` (`mid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailinglist_emails')) {
+            $schema->addIndex('#__newsletter_mailinglist_emails', 'idx_mid', 'mid');
 
-            if (!$this->db->tableHasKey('#__newsletter_mailinglist_emails', 'idx_status')) {
-                $query = "ALTER TABLE `#__newsletter_mailinglist_emails` ADD INDEX `idx_status` (`status`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__newsletter_mailinglist_emails', 'idx_status', 'status');
         }
 
-        if ($this->db->tableExists('#__newsletter_mailinglist_unsubscribes')) {
-            if (!$this->db->tableHasKey('#__newsletter_mailinglist_unsubscribes', 'idx_mid')) {
-                $query = "ALTER TABLE `#__newsletter_mailinglist_unsubscribes` ADD INDEX `idx_mid` (`mid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailinglist_unsubscribes')) {
+            $schema->addIndex('#__newsletter_mailinglist_unsubscribes', 'idx_mid', 'mid');
         }
 
-        if ($this->db->tableExists('#__newsletter_mailinglists')) {
-            if (!$this->db->tableHasKey('#__newsletter_mailinglists', 'idx_private')) {
-                $query = "ALTER TABLE `#__newsletter_mailinglists` ADD INDEX `idx_private` (`private`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailinglists')) {
+            $schema->addIndex('#__newsletter_mailinglists', 'idx_private', 'private');
 
-            if (!$this->db->tableHasKey('#__newsletter_mailinglists', 'idx_deleted')) {
-                $query = "ALTER TABLE `#__newsletter_mailinglists` ADD INDEX `idx_deleted` (`deleted`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__newsletter_mailinglists', 'idx_deleted', 'deleted');
         }
 
-        if ($this->db->tableExists('#__newsletter_mailings')) {
-            if (!$this->db->tableHasKey('#__newsletter_mailings', 'idx_nid')) {
-                $query = "ALTER TABLE `#__newsletter_mailings` ADD INDEX `idx_nid` (`nid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailings')) {
+            $schema->addIndex('#__newsletter_mailings', 'idx_nid', 'nid');
 
-            if (!$this->db->tableHasKey('#__newsletter_mailings', 'idx_lid')) {
-                $query = "ALTER TABLE `#__newsletter_mailings` ADD INDEX `idx_lid` (`lid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__newsletter_mailings', 'idx_lid', 'lid');
 
-            if (!$this->db->tableHasKey('#__newsletter_mailings', 'idx_deleted')) {
-                $query = "ALTER TABLE `#__newsletter_mailings` ADD INDEX `idx_deleted` (`deleted`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__newsletter_mailings', 'idx_deleted', 'deleted');
         }
 
-        if ($this->db->tableExists('#__newsletter_primary_story')) {
-            if (!$this->db->tableHasKey('#__newsletter_primary_story', 'idx_nid')) {
-                $query = "ALTER TABLE `#__newsletter_primary_story` ADD INDEX `idx_nid` (`nid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_primary_story')) {
+            $schema->addIndex('#__newsletter_primary_story', 'idx_nid', 'nid');
 
-            if (!$this->db->tableHasKey('#__newsletter_primary_story', 'idx_deleted')) {
-                $query = "ALTER TABLE `#__newsletter_primary_story` ADD INDEX `idx_deleted` (`deleted`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__newsletter_primary_story', 'idx_deleted', 'deleted');
         }
 
-        if ($this->db->tableExists('#__newsletter_secondary_story')) {
-            if (!$this->db->tableHasKey('#__newsletter_secondary_story', 'idx_nid')) {
-                $query = "ALTER TABLE `#__newsletter_secondary_story` ADD INDEX `idx_nid` (`nid`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_secondary_story')) {
+            $schema->addIndex('#__newsletter_secondary_story', 'idx_nid', 'nid');
 
-            if (!$this->db->tableHasKey('#__newsletter_secondary_story', 'idx_deleted')) {
-                $query = "ALTER TABLE `#__newsletter_secondary_story` ADD INDEX `idx_deleted` (`deleted`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__newsletter_secondary_story', 'idx_deleted', 'deleted');
         }
 
-        if ($this->db->tableExists('#__newsletters')) {
-            if (!$this->db->tableHasKey('#__newsletters', 'idx_published')) {
-                $query = "ALTER TABLE `#__newsletters` ADD INDEX `idx_published` (`published`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletters')) {
+            $schema->addIndex('#__newsletters', 'idx_published', 'published');
 
-            if (!$this->db->tableHasKey('#__newsletters', 'idx_sent')) {
-                $query = "ALTER TABLE `#__newsletters` ADD INDEX `idx_sent` (`sent`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__newsletters', 'idx_sent', 'sent');
 
-            if (!$this->db->tableHasKey('#__newsletters', 'idx_deleted')) {
-                $query = "ALTER TABLE `#__newsletters` ADD INDEX `idx_deleted` (`deleted`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__newsletters', 'idx_deleted', 'deleted');
         }
     }
 
@@ -160,136 +85,62 @@ class Migration20160129154900ComNewsletter extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__newsletter_mailing_recipient_actions')) {
-            if ($this->db->tableHasKey('#__newsletter_mailing_recipient_actions', 'idx_mailingid')) {
-                $query = "ALTER TABLE `#__newsletter_mailing_recipient_actions` DROP INDEX `idx_mailingid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__newsletter_mailing_recipient_actions', 'idx_action')) {
-                $query = "ALTER TABLE `#__newsletter_mailing_recipient_actions` DROP INDEX `idx_action`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailing_recipient_actions')) {
+            $schema->dropIndex('#__newsletter_mailing_recipient_actions', 'idx_mailingid');
+
+            $schema->dropIndex('#__newsletter_mailing_recipient_actions', 'idx_action');
         }
 
-        if ($this->db->tableExists('#__newsletter_mailing_recipients')) {
-            if ($this->db->tableHasKey('#__newsletter_mailing_recipients', 'idx_mid')) {
-                $query = "ALTER TABLE `#__newsletter_mailing_recipients` DROP INDEX `idx_mid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailing_recipients')) {
+            $schema->dropIndex('#__newsletter_mailing_recipients', 'idx_mid');
 
-            if ($this->db->tableHasKey('#__newsletter_mailing_recipients', 'idx_status')) {
-                $query = "ALTER TABLE `#__newsletter_mailing_recipients` DROP INDEX `idx_status`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__newsletter_mailing_recipients', 'idx_status');
         }
 
-        if ($this->db->tableExists('#__newsletter_mailinglist_emails')) {
-            if ($this->db->tableHasKey('#__newsletter_mailinglist_emails', 'idx_mid')) {
-                $query = "ALTER TABLE `#__newsletter_mailinglist_emails` DROP INDEX `idx_mid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailinglist_emails')) {
+            $schema->dropIndex('#__newsletter_mailinglist_emails', 'idx_mid');
 
-            if ($this->db->tableHasKey('#__newsletter_mailinglist_emails', 'idx_status')) {
-                $query = "ALTER TABLE `#__newsletter_mailinglist_emails` DROP INDEX `idx_status`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__newsletter_mailinglist_emails', 'idx_status');
         }
 
-        if ($this->db->tableExists('#__newsletter_mailinglist_unsubscribes')) {
-            if ($this->db->tableHasKey('#__newsletter_mailinglist_unsubscribes', 'idx_mid')) {
-                $query = "ALTER TABLE `#__newsletter_mailinglist_unsubscribes` DROP INDEX `idx_mid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailinglist_unsubscribes')) {
+            $schema->dropIndex('#__newsletter_mailinglist_unsubscribes', 'idx_mid');
         }
 
-        if ($this->db->tableExists('#__newsletter_mailinglists')) {
-            if ($this->db->tableHasKey('#__newsletter_mailinglists', 'idx_private')) {
-                $query = "ALTER TABLE `#__newsletter_mailinglists` DROP INDEX `idx_private`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailinglists')) {
+            $schema->dropIndex('#__newsletter_mailinglists', 'idx_private');
 
-            if ($this->db->tableHasKey('#__newsletter_mailinglists', 'idx_deleted')) {
-                $query = "ALTER TABLE `#__newsletter_mailinglists` DROP INDEX `idx_deleted`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__newsletter_mailinglists', 'idx_deleted');
         }
 
-        if ($this->db->tableExists('#__newsletter_mailings')) {
-            if ($this->db->tableHasKey('#__newsletter_mailings', 'idx_nid')) {
-                $query = "ALTER TABLE `#__newsletter_mailings` DROP INDEX `idx_nid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_mailings')) {
+            $schema->dropIndex('#__newsletter_mailings', 'idx_nid');
 
-            if ($this->db->tableHasKey('#__newsletter_mailings', 'idx_lid')) {
-                $query = "ALTER TABLE `#__newsletter_mailings` DROP INDEX `idx_lid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__newsletter_mailings', 'idx_lid');
 
-            if ($this->db->tableHasKey('#__newsletter_mailings', 'idx_deleted')) {
-                $query = "ALTER TABLE `#__newsletter_mailings` DROP INDEX `idx_deleted`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__newsletter_mailings', 'idx_deleted');
         }
 
-        if ($this->db->tableExists('#__newsletter_primary_story')) {
-            if ($this->db->tableHasKey('#__newsletter_primary_story', 'idx_nid')) {
-                $query = "ALTER TABLE `#__newsletter_primary_story` DROP INDEX `idx_nid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_primary_story')) {
+            $schema->dropIndex('#__newsletter_primary_story', 'idx_nid');
 
-            if ($this->db->tableHasKey('#__newsletter_primary_story', 'idx_deleted')) {
-                $query = "ALTER TABLE `#__newsletter_primary_story` DROP INDEX `idx_deleted`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__newsletter_primary_story', 'idx_deleted');
         }
 
-        if ($this->db->tableExists('#__newsletter_secondary_story')) {
-            if ($this->db->tableHasKey('#__newsletter_secondary_story', 'idx_nid')) {
-                $query = "ALTER TABLE `#__newsletter_secondary_story` DROP INDEX `idx_nid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletter_secondary_story')) {
+            $schema->dropIndex('#__newsletter_secondary_story', 'idx_nid');
 
-            if ($this->db->tableHasKey('#__newsletter_secondary_story', 'idx_deleted')) {
-                $query = "ALTER TABLE `#__newsletter_secondary_story` DROP INDEX `idx_deleted`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__newsletter_secondary_story', 'idx_deleted');
         }
 
-        if ($this->db->tableExists('#__newsletters')) {
-            if ($this->db->tableHasKey('#__newsletters', 'idx_published')) {
-                $query = "ALTER TABLE `#__newsletters` DROP INDEX `idx_published`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__newsletters')) {
+            $schema->dropIndex('#__newsletters', 'idx_published');
 
-            if ($this->db->tableHasKey('#__newsletters', 'idx_sent')) {
-                $query = "ALTER TABLE `#__newsletters` DROP INDEX `idx_sent`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__newsletters', 'idx_sent');
 
-            if ($this->db->tableHasKey('#__newsletters', 'idx_deleted')) {
-                $query = "ALTER TABLE `#__newsletters` DROP INDEX `idx_deleted`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__newsletters', 'idx_deleted');
         }
     }
 }

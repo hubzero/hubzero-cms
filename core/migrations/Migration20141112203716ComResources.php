@@ -20,24 +20,24 @@ class Migration20141112203716ComResources extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__resource_assoc') && !$this->db->tableHasField('#__resource_assoc', 'id')) {
-            $query = "ALTER TABLE `#__resource_assoc` ADD COLUMN `id` SERIAL NOT NULL PRIMARY KEY FIRST";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_assoc') && !$schema->hasColumn('#__resource_assoc', 'id')) {
+            $schema->addAutoIncrementPrimaryKey('#__resource_assoc', 'id', true);
         }
 
-        if ($this->db->tableExists('#__author_assoc') && !$this->db->tableHasField('#__author_assoc', 'id')) {
-            $query = "ALTER TABLE `#__author_assoc` DROP PRIMARY KEY";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__author_assoc') && !$schema->hasColumn('#__author_assoc', 'id')) {
+            $schema->dropPrimaryKey('#__author_assoc');
 
-            $query = "CREATE UNIQUE INDEX uidx_subtable_subid_authorid ON `#__author_assoc`(subtable, subid, authorid)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            if (!$schema->hasKey('#__author_assoc', 'uidx_subtable_subid_authorid')) {
+                $schema->addUniqueIndex(
+                    '#__author_assoc',
+                    'uidx_subtable_subid_authorid',
+                    ['subtable', 'subid', 'authorid']
+                );
+            }
 
-            $query = "ALTER TABLE `#__author_assoc` ADD COLUMN `id` SERIAL NOT NULL PRIMARY KEY FIRST";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addAutoIncrementPrimaryKey('#__author_assoc', 'id', true);
         }
     }
 }

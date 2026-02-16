@@ -21,22 +21,26 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
      **/
     public function up()
     {
-        $query = "CREATE TABLE IF NOT EXISTS `#__announcements` (
-					`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					`scope` varchar(100) DEFAULT NULL,
-					`scope_id` int(11) DEFAULT NULL,
-					`content` text,
-					`priority` tinyint(2) NOT NULL DEFAULT '0',
-					`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					`created_by` int(11) NOT NULL DEFAULT '0',
-					`state` tinyint(2) NOT NULL DEFAULT '0',
-					`publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					`publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					`sticky` tinyint(2) NOT NULL DEFAULT '0',
-					PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__announcements')) {
+            $schema->createTable('#__announcements')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('scope', 100)->nullable()
+                ->integer('scope_id')->nullable()
+                ->text('content')->nullable()
+                ->tinyInteger('priority')->default(0)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->tinyInteger('state')->default(0)
+                ->datetime('publish_up')->default('0000-00-00 00:00:00')
+                ->datetime('publish_down')->default('0000-00-00 00:00:00')
+                ->tinyInteger('sticky')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
         $params = array(
             'plugin_access' => 'members',
@@ -46,15 +50,22 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
         $this->addPluginEntry('groups', 'announcements', 1, $params);
 
         // get citation params
-        if ($this->db->tableExists('#__extensions')) {
-            $sql = "SELECT `params` FROM `#__extensions` "
-                . "WHERE `type`='plugin' AND `element`='messages' AND `folder` = 'groups'";
+        if ($schema->tableExists('#__extensions')) {
+            $p = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__extensions')
+                ->where('type', '=', 'plugin')
+                ->where('element', '=', 'messages')
+                ->where('folder', '=', 'groups')
+                ->value('params');
         } else {
-            $sql = "SELECT `params` FROM `#__plugins` WHERE `element`='messages' AND `folder`='groups'";
+            $p = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__plugins')
+                ->where('element', '=', 'messages')
+                ->where('folder', '=', 'groups')
+                ->value('params');
         }
-
-        $this->db->setQuery($sql);
-        $p = $this->db->loadResult();
 
         // load params object
         $params = new \Hubzero\Config\Registry($p);
@@ -63,15 +74,21 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
         $params->set('display_tab', 0);
 
         // save new params
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote(json_encode($params->toArray()))
-                . " WHERE `element`='messages' AND `folder`='groups'";
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['params' => json_encode($params->toArray())])
+                ->where('element', '=', 'messages')
+                ->where('folder', '=', 'groups')
+                ->execute();
         } else {
-            $query = "UPDATE `#__plugins` SET `params`='" . $params->toString() . "' WHERE `element`='messages' "
-                . "AND `folder`='groups'";
+            $this->db->getQuery(true)
+                ->update('#__plugins')
+                ->set(['params' => $params->toString()])
+                ->where('element', '=', 'messages')
+                ->where('folder', '=', 'groups')
+                ->execute();
         }
-        $this->db->setQuery($query);
-        $this->db->query();
     }
 
     /**
@@ -79,11 +96,9 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__announcements')) {
-            $query = "DROP TABLE `#__announcements`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__announcements');
 
         $this->deletePluginEntry('groups', 'announcements');
     }

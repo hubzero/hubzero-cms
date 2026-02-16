@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for adding params field to asset groups
@@ -21,16 +22,42 @@ class Migration20130916080500ComWiki extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__wiki_page', 'created')) {
-            $query = "ALTER TABLE `#__wiki_page` ADD `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' "
-                . "AFTER `created_by`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__wiki_page` AS p SET p.`created` = (SELECT v.created FROM `#__wiki_version` AS v "
-                . "WHERE v.pageid=p.id ORDER BY v.version ASC LIMIT 1);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__wiki_page')
+            && !$schema->hasColumn('#__wiki_page', 'created')
+        ) {
+            $schema->addColumn('#__wiki_page', 'created')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
+
+            $query = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__wiki_page');
+
+            $pages = $query->loadObjectList();
+
+            if ($pages) {
+                foreach ($pages as $page) {
+                    $created = $this->db->getQuery(true)
+                         ->select('created')
+                         ->from('#__wiki_version')
+                         ->where('pageid', '=', $page->id)
+                         ->order('version', 'ASC')
+                         ->value('created');
+
+                    if ($created) {
+                        $this->db->getQuery(true)
+                            ->update('#__wiki_page')
+                            ->set(['created' => $created])
+                            ->where('id', '=', $page->id)
+                            ->execute();
+                    }
+                }
+            }
         }
     }
 
@@ -39,10 +66,10 @@ class Migration20130916080500ComWiki extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__wiki_page', 'created')) {
-            $query = "ALTER TABLE `#__wiki_page` DROP `created`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__wiki_page', 'created')) {
+            $schema->dropColumn('#__wiki_page', 'created');
         }
     }
 }

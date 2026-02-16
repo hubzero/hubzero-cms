@@ -21,10 +21,10 @@ class Migration20160920143801ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__support_resolutions')) {
-            $query = "DROP TABLE IF EXISTS `#__support_resolutions`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__support_resolutions')) {
+            $schema->dropTable('#__support_resolutions');
         }
     }
 
@@ -33,15 +33,17 @@ class Migration20160920143801ComSupport extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__support_resolutions')) {
-            $query = "CREATE TABLE `#__support_resolutions` (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `title` varchar(100) NOT NULL DEFAULT '',
-			  `alias` varchar(100) NOT NULL DEFAULT '',
-			  PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__support_resolutions')) {
+            $schema->createTable('#__support_resolutions')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('title', 100)->default('')
+                ->string('alias', 100)->default('')
+                ->primaryKey('id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

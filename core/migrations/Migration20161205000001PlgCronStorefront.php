@@ -21,11 +21,16 @@ class Migration20161205000001PlgCronStorefront extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = 'cron' AND `element` ="
-                . "'storefront' AND `type` = 'plugin'";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $id = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('folder', '=', 'cron')
+                ->where('element', '=', 'storefront')
+                ->where('type', '=', 'plugin')
+                ->value('extension_id');
 
             if (!$id) {
                 $this->addPluginEntry('cron', 'storefront');
@@ -38,11 +43,16 @@ class Migration20161205000001PlgCronStorefront extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = 'cron' AND `element` ="
-                . "'storefront' AND `type` = 'plugin'";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $id = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('folder', '=', 'cron')
+                ->where('element', '=', 'storefront')
+                ->where('type', '=', 'plugin')
+                ->value('extension_id');
 
             if ($id) {
                 $this->deletePluginEntry('cron', 'storefront');

@@ -20,27 +20,27 @@ class Migration20130924000002Core extends Base
      **/
     public function up()
     {
-        // Create assets table (all of this will only run the first time the table is created)
-        if (!$this->db->tableExists('#__assets')) {
-            $query = "CREATE  TABLE IF NOT EXISTS `#__assets` (
-				`id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT ,
-				`parent_id` INT(11) NOT NULL DEFAULT '0' ,
-				`lft` INT(11) NOT NULL DEFAULT '0' ,
-				`rgt` INT(11) NOT NULL DEFAULT '0' ,
-				`level` INT(10) UNSIGNED NOT NULL ,
-				`name` VARCHAR(50) NOT NULL ,
-				`title` VARCHAR(100) NOT NULL ,
-				`rules` VARCHAR(5120) NOT NULL ,
-				PRIMARY KEY (`id`) ,
-				UNIQUE INDEX `idx_asset_name` (`name` ASC) ,
-				INDEX `idx_lft_rgt` (`lft` ASC, `rgt` ASC) ,
-				INDEX `idx_parent_id` (`parent_id` ASC) )
-			ENGINE = MYISAM
-			DEFAULT CHARACTER SET = utf8
-			COLLATE = utf8_general_ci;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        // Create assets table (all of this will only run the first time the table is created)
+        if (!$schema->tableExists('#__assets')) {
+            $schema->createTable('#__assets')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('parent_id')->default(0)
+                ->integer('lft')->default(0)
+                ->integer('rgt')->default(0)
+                ->unsignedInteger('level')
+                ->string('name', 50)
+                ->string('title', 100)
+                ->string('rules', 5120)
+                ->primaryKey('id')
+                ->uniqueIndex('idx_asset_name', 'name')
+                ->index('idx_lft_rgt', ['lft', 'rgt'])
+                ->index('idx_parent_id', 'parent_id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->collate('utf8_general_ci')
+                ->execute();
 
             // Insert some default values
             $rootRules = '{"core.login.site":{"1":1,"6":1,"2":1},"core.login.admin":{"6":1},'
@@ -62,45 +62,73 @@ class Migration20130924000002Core extends Base
                 . '"core.delete":[],"core.edit":[],"core.edit.own":{"6":1},"core.edit.state":[]}';
             $r25 = '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"3":1},'
                 . '"core.delete":[],"core.edit":{"4":1},"core.edit.state":{"5":1},"core.edit.own":[]}';
-            $query = "INSERT INTO `#__assets` "
-                . "(`id`, `parent_id`, `lft`, `rgt`, `level`, `name`, `title`, `rules`) VALUES "
-                . "(1,0,0,0,0, 'root.1', 'Root Asset', '$rootRules'), "
-                . "(2,1,0,0,1,'com_admin','com_admin','{}'), "
-                . "(3,1,0,0,1,'com_banners','com_banners','$r3'), "
-                . "(4,1,0,0,1,'com_cache','com_cache','{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'), "
-                . "(5,1,0,0,1,'com_checkin','com_checkin','{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'), "
-                . "(6,1,0,0,1,'com_config','com_config','{}'), "
-                . "(7,1,0,0,1,'com_contact','com_contact','$r7'), "
-                . "(8,1,0,0,1,'com_content','com_content','$r8'), "
-                . "(9,1,0,0,1,'com_cpanel','com_cpanel','{}'), "
-                . "(10,1,0,0,1,'com_installer','com_installer','$r10'), "
-                . "(11,1,0,0,1,'com_languages','com_languages','$r11'), "
-                . "(12,1,0,0,1,'com_login','com_login','{}'), "
-                . "(13,1,0,0,1,'com_mailto','com_mailto','{}'), "
-                . "(14,1,0,0,1,'com_massmail','com_massmail','{}'), "
-                . "(15,1,0,0,1,'com_media','com_media',"
-                . "'{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},"
-                . "\"core.create\":{\"3\":1},\"core.delete\":{\"5\":1}}'), "
-                . "(16,1,0,0,1,'com_menus','com_menus','$r11'), "
-                . "(17,1,0,0,1,'com_messages','com_messages','{\"core.admin\":{\"7\":1},\"core.manage\":{\"7\":1}}'), "
-                . "(18,1,0,0,1,'com_modules','com_modules','$r11'), "
-                . "(19,1,0,0,1,'com_newsfeeds','com_newsfeeds','$r19'), "
-                . "(20,1,0,0,1,'com_plugins','com_plugins',"
-                . "'{\"core.admin\":{\"7\":1},\"core.manage\":[],\"core.edit\":[],\"core.edit.state\":[]}'), "
-                . "(21,1,0,0,1,'com_redirect','com_redirect','{\"core.admin\":{\"7\":1},\"core.manage\":[]}'), "
-                . "(22,1,0,0,1,'com_search','com_search','{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1}}'), "
-                . "(23,1,0,0,1,'com_templates','com_templates','$r11'), "
-                . "(24,1,0,0,1,'com_users','com_users','$r24'), "
-                . "(25,1,0,0,1,'com_weblinks','com_weblinks','$r25'), "
-                . "(26,1,0,0,1,'com_wrapper','com_wrapper','{}');";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__assets')
+                ->columns(['id', 'parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
+                ->values([1, 0, 0, 0, 0, 'root.1', 'Root Asset', $rootRules])
+                ->values([2, 1, 0, 0, 1, 'com_admin', 'com_admin', '{}'])
+                ->values([3, 1, 0, 0, 1, 'com_banners', 'com_banners', $r3])
+                ->values([4, 1, 0, 0, 1, 'com_cache', 'com_cache', '{"core.admin":{"7":1},"core.manage":{"7":1}}'])
+                ->values([5, 1, 0, 0, 1, 'com_checkin', 'com_checkin', '{"core.admin":{"7":1},"core.manage":{"7":1}}'])
+                ->values([6, 1, 0, 0, 1, 'com_config', 'com_config', '{}'])
+                ->values([7, 1, 0, 0, 1, 'com_contact', 'com_contact', $r7])
+                ->values([8, 1, 0, 0, 1, 'com_content', 'com_content', $r8])
+                ->values([9, 1, 0, 0, 1, 'com_cpanel', 'com_cpanel', '{}'])
+                ->values([10, 1, 0, 0, 1, 'com_installer', 'com_installer', $r10])
+                ->values([11, 1, 0, 0, 1, 'com_languages', 'com_languages', $r11])
+                ->values([12, 1, 0, 0, 1, 'com_login', 'com_login', '{}'])
+                ->values([13, 1, 0, 0, 1, 'com_mailto', 'com_mailto', '{}'])
+                ->values([14, 1, 0, 0, 1, 'com_massmail', 'com_massmail', '{}'])
+                ->values([
+                    15,
+                    1,
+                    0,
+                    0,
+                    1,
+                    'com_media',
+                    'com_media',
+                    '{"core.admin":{"7":1},"core.manage":{"6":1},"core.create":{"3":1},"core.delete":{"5":1}}',
+                ])
+                ->values([16, 1, 0, 0, 1, 'com_menus', 'com_menus', $r11])
+                ->values([
+                    17,
+                    1,
+                    0,
+                    0,
+                    1,
+                    'com_messages',
+                    'com_messages',
+                    '{"core.admin":{"7":1},"core.manage":{"7":1}}',
+                ])
+                ->values([18, 1, 0, 0, 1, 'com_modules', 'com_modules', $r11])
+                ->values([19, 1, 0, 0, 1, 'com_newsfeeds', 'com_newsfeeds', $r19])
+                ->values([
+                    20,
+                    1,
+                    0,
+                    0,
+                    1,
+                    'com_plugins',
+                    'com_plugins',
+                    '{"core.admin":{"7":1},"core.manage":[],"core.edit":[],"core.edit.state":[]}',
+                ])
+                ->values([21, 1, 0, 0, 1, 'com_redirect', 'com_redirect', '{"core.admin":{"7":1},"core.manage":[]}'])
+                ->values([22, 1, 0, 0, 1, 'com_search', 'com_search', '{"core.admin":{"7":1},"core.manage":{"6":1}}'])
+                ->values([23, 1, 0, 0, 1, 'com_templates', 'com_templates', $r11])
+                ->values([24, 1, 0, 0, 1, 'com_users', 'com_users', $r24])
+                ->values([25, 1, 0, 0, 1, 'com_weblinks', 'com_weblinks', $r25])
+                ->values([26, 1, 0, 0, 1, 'com_wrapper', 'com_wrapper', '{}'])
+                ->execute();
 
             // Insert all components as assets (parent is 0 because we don't need more than
             // 1 entry per component - i.e. no sub items used for menus in 1.5)
-            $this->db->setQuery('SELECT * FROM `#__components` WHERE parent = 0');
-            $components = $this->db->loadObjectList();
+            // Insert all components as assets (parent is 0 because we don't need more than
+            // 1 entry per component - i.e. no sub items used for menus in 1.5)
+            $query = $this->db->getQuery(true);
+            $query->select('*')
+                ->from('#__components')
+                ->where('parent', '=', 0);
+            $components = $query->loadObjectList();
 
             if (count($components) > 0) {
                 // Build default ruleset
@@ -119,155 +147,165 @@ class Migration20130924000002Core extends Base
 
                 foreach ($components as $com) {
                     // Make sure it isn't already in there
-                    $query = "SELECT id FROM `#__assets` WHERE `name` = " . $this->db->Quote($com->option);
-                    $this->db->setQuery($query);
-                    if ($this->db->loadResult()) {
+                    if (
+                        $this->db->getQuery(true)
+                        ->select('id')
+                        ->from('#__assets')
+                        ->where('name', '=', $com->option)
+                        ->exists()
+                    ) {
                         continue;
                     }
 
                     // Craft query
-                    $query = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`,"
-                        . "`rules`) VALUES";
-                    $query .= "(";
-                    $query .= '1,';                                  // parent_id 1 is the root asset
-                    $query .= $this->db->Quote('') . ',';                  // lft
-                    $query .= $this->db->Quote('') . ',';                  // rgt
-                    $query .= '1,';                                  // level
-                    $query .= $this->db->Quote($com->option) . ',';        // name
-                    $query .= $this->db->Quote($com->option) . ',';        // title
-                    $query .= $this->db->Quote(json_encode($defaulRules)); // rules
-                    $query .= ");";
-
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__assets')
+                        ->columns(['parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
+                        ->values([1, '', '', 1, $com->option, $com->option, json_encode($defaulRules)])
+                        ->execute();
                 }
             }
 
             // Insert existing categories as assets (ignore root item)
-            $this->db->setQuery('SELECT * FROM `#__categories` WHERE extension != "system"');
-            $categories = $this->db->loadObjectList();
+            $query = $this->db->getQuery(true);
+            $query->select('*')
+                ->from('#__categories')
+                ->where('extension', '!=', 'system');
+            $categories = $query->loadObjectList();
 
             if (count($categories) > 0) {
                 foreach ($categories as $cat) {
                     // Make sure it isn't already in there
                     $catName = $cat->extension . '.category.' . $cat->id;
-                    $query = "SELECT id FROM `#__assets` WHERE `name` = " . $this->db->Quote($catName);
-                    $this->db->setQuery($query);
-                    if ($this->db->loadResult()) {
+                    // Make sure it isn't already in there
+                    $catName = $cat->extension . '.category.' . $cat->id;
+                    if (
+                        $this->db->getQuery(true)
+                        ->select('id')
+                        ->from('#__assets')
+                        ->where('name', '=', $catName)
+                        ->exists()
+                    ) {
                         continue;
                     }
 
                     // Query for parent id
-                    $query = "SELECT `id` FROM `#__assets` WHERE `name` = "
-                        . $this->db->Quote($cat->extension);
-                    $this->db->setQuery($query);
-                    $result = $this->db->loadResult();
+                    $result = $this->db->getQuery(true)
+                        ->select('id')
+                        ->from('#__assets')
+                        ->where('name', '=', $cat->extension)
+                        ->value('id');
                     if (!is_numeric($result)) {
                         // If we don't find the component entry, continue
                         continue;
                     }
 
                     $catRules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}';
-                    $query = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`,"
-                        . "`rules`) VALUES (";
-                    $query .= $this->db->Quote($result) . ',';              // parent_id (from list entered above)
-                    $query .= $this->db->Quote('') . ',';                   // lft
-                    $query .= $this->db->Quote('') . ',';                   // rgt
-                    $query .= $cat->level + 1 . ',';                        // level
-                    $query .= $this->db->Quote($catName) . ',';             // name
-                    $query .= $this->db->Quote($cat->extension) . ',';      // title
-                    $query .= $this->db->Quote($catRules);                  // rules
-                    $query .= ");";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__assets')
+                        ->columns(['parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
+                        ->values([$result, '', '', $cat->level + 1, $catName, $cat->extension, $catRules])
+                        ->execute();
 
                     // Now, update the categories table with the asset id
                     $id = $this->db->insertid();
-                    $query = "UPDATE `#__categories` SET `asset_id` = {$id} WHERE `id` = {$cat->id};";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $query = $this->db->getQuery(true);
+                    $query->update('#__categories')
+                        ->set(['asset_id' => $id])
+                        ->where('id', '=', $cat->id);
+                    $query->execute();
                 }
             }
 
             // Now, go back and set parent_id for categories that are level 2
             // (those were original 1.5 categories, i.e. below sections)
-            $query = "SELECT * FROM `#__categories` WHERE level = 2";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            // Now, go back and set parent_id for categories that are level 2
+            // (those were original 1.5 categories, i.e. below sections)
+            $query = $this->db->getQuery(true);
+            $query->select('*')
+                ->from('#__categories')
+                ->where('level', '=', 2);
+            $results = $query->loadObjectList();
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
                     // Get the category id from the assets table
                     $assetName = 'com_content.category.' . $r->id;
-                    $query = "SELECT `id` FROM `#__assets` WHERE name = " . $this->db->Quote($assetName);
-                    $this->db->setQuery($query);
-                    $id = $this->db->loadResult();
+                    $query = $this->db->getQuery(true);
+                    $query->select('id')
+                        ->from('#__assets')
+                        ->where('name', '=', $assetName);
+                    $id = $query->value('id');
 
                     // Get the category parent id from the assets table
                     $parentAssetName = 'com_content.category.' . $r->parent_id;
-                    $query = "SELECT `id` FROM `#__assets` WHERE name = "
-                        . $this->db->Quote($parentAssetName);
-                    $this->db->setQuery($query);
-                    $parent_id = $this->db->loadResult();
+                    $query = $this->db->getQuery(true);
+                    $query->select('id')
+                        ->from('#__assets')
+                        ->where('name', '=', $parentAssetName);
+                    $parent_id = $query->value('id');
 
                     // Update the assets table
-                    $query = "UPDATE `#__assets` SET parent_id = {$parent_id} WHERE `id` = {$id}";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $query = $this->db->getQuery(true);
+                    $query->update('#__assets')
+                        ->set(['parent_id' => $parent_id])
+                        ->where('id', '=', $id);
+                    $query->execute();
                 }
             }
 
             // We're going to go ahead and add asset_id here, as we need to insert into below
-            if (!$this->db->tableHasField('#__content', 'asset_id') && $this->db->tableHasField('#__content', 'id')) {
-                $query = "ALTER TABLE `#__content` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0"
-                    . "COMMENT 'FK to the #_assets table.' AFTER `id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__content', 'asset_id') && $schema->hasColumn('#__content', 'id')) {
+                $schema->addColumn('#__content', 'asset_id')->integer()->unsigned()->notNull()->default(0)->after('id');
             }
 
             // Insert articles
-            $this->db->setQuery('SELECT * FROM `#__content`');
-            $articles = $this->db->loadObjectList();
+            $query = $this->db->getQuery(true);
+            $query->select('*')
+                ->from('#__content');
+            $articles = $query->loadObjectList();
 
             if (count($articles) > 0) {
                 foreach ($articles as $art) {
                     // Query for parent ID
                     $artCatName = 'com_content.category.' . $art->catid;
-                    $query = "SELECT `id`, `level` FROM `#__assets` WHERE `name` = "
-                        . $this->db->Quote($artCatName);
-                    $this->db->setQuery($query);
-                    $obj    = $this->db->loadObject();
+                    $query = $this->db->getQuery(true);
+                    $query->select(['id', 'level'])
+                        ->from('#__assets')
+                        ->where('name', '=', $artCatName);
+                    $obj    = $query->first();
                     $level  = (is_object($obj) && is_numeric($obj->level)) ? $obj->level + 1 : 4;
                     if (is_object($obj) && is_numeric($obj->id)) {
                         $result = $obj->id;
                     } else {
                         // We didn't find a parent id, so just use the 'uncategorised' category
-                        $query = "SELECT `asset_id` FROM `#__categories` WHERE `extension` = 'com_content' AND "
-                            . "`alias` = 'uncategorised';";
-                        $this->db->setQuery($query);
-                        if (!$result = $this->db->loadResult()) {
+                        if (
+                            !$result = $this->db->getQuery(true)
+                            ->select('asset_id')
+                            ->from('#__categories')
+                            ->where('extension', '=', 'com_content')
+                            ->where('alias', '=', 'uncategorised')
+                            ->value('asset_id')
+                        ) {
                             continue;
                         }
                     }
 
-                    $query = "INSERT INTO `#__assets` (`parent_id`, `lft`, `rgt`, `level`, `name`, `title`,"
-                        . "`rules`) VALUES (";
-                    $query .= $this->db->Quote($result) . ',';                                            // parent_id
-                    $query .= $this->db->Quote('') . ',';                                                 // lft
-                    $query .= $this->db->Quote('') . ',';                                                 // rgt
-                    $query .= $level . ',';                                                         // level
-                    $query .= $this->db->Quote('com_content.article.' . $art->id) . ',';                    // name
-                    $query .= $this->db->Quote($art->title) . ',';                                        // title
-                    $query .= $this->db->Quote('{"core.delete":[],"core.edit":[],"core.edit.state":[]}'); // rules
-                    $query .= ")";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__assets')
+                        ->columns(['parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
+                        ->values([$result, '', '', $level, 'com_content.article.' . $art
+                            ->id, $art
+                            ->title, '{"core.delete":[],"core.edit":[],"core.edit.state":[]}'])
+                        ->execute();
 
                     // Now, update the content table with the asset id
                     $id = $this->db->insertid();
-                    $query = "UPDATE `#__content` SET `asset_id` = {$id} WHERE `id` = {$art->id};";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $query = $this->db->getQuery(true);
+                    $query->update('#__content')
+                        ->set(['asset_id' => $id])
+                        ->where('id', '=', $art->id);
+                    $query->execute();
                 }
             }
 
@@ -292,10 +330,13 @@ class Migration20130924000002Core extends Base
                     "7" => 1
                     )
                 );
-            $query = "UPDATE `#__assets` SET rules='" . json_encode($rules) . "' WHERE NAME="
-                . "'com_mailto' OR NAME='com_massmail' OR NAME='com_config';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__assets')
+                ->set(['rules' => json_encode($rules)])
+                ->where('NAME', '=', 'com_mailto')
+                ->orWhere('NAME', '=', 'com_massmail')
+                ->orWhere('NAME', '=', 'com_config')
+                ->execute();
 
             // If we have the nested set class available, use it to rebuild lft/rgt
             if (file_exists(PATH_CORE . '/components/com_categories/models/category.php')) {
@@ -314,15 +355,13 @@ class Migration20130924000002Core extends Base
 
     private function rebuildAssets($parentId = 1, $leftId = 0, $level = 0)
     {
-        $query = $this->db->getQuery();
-        $query->select('id');
-        $query->from('#__assets');
-        $query->whereEquals('parent_id', (int) $parentId);
-        $query->order('parent_id', 'asc');
-        $query->order('lft', 'asc');
-
-        $this->db->setQuery($query->toString());
-        $children = $this->db->loadObjectList();
+        $children = $this->db->getQuery(true)
+            ->select('id')
+            ->from('#__assets')
+            ->where('parent_id', '=', (int) $parentId)
+            ->order('parent_id', 'asc')
+            ->order('lft', 'asc')
+            ->loadObjectList();
 
         $rightId = $leftId + 1;
 
@@ -334,17 +373,15 @@ class Migration20130924000002Core extends Base
             }
         }
 
-        $query = $this->db->getQuery();
-        $query->update('#__assets');
-        $query->set(array(
-            'lft'   => (int) $leftId,
-            'rgt'   => (int) $rightId,
-            'level' => (int) $level
-        ));
-        $query->whereEquals('id', (int) $parentId);
-
-        $this->db->setQuery($query->toString());
-        $this->db->execute();
+        $this->db->getQuery(true)
+            ->update('#__assets')
+            ->set([
+                'lft'   => (int) $leftId,
+                'rgt'   => (int) $rightId,
+                'level' => (int) $level
+            ])
+            ->where('id', '=', (int) $parentId)
+            ->execute();
 
         return $rightId + 1;
     }

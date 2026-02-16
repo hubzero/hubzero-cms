@@ -20,14 +20,13 @@ class Migration20140421182216Core extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__users_password_history')
-            && $this->db->tableHasField('#__users_password_history', 'passhash')
+            $schema->tableExists('#__users_password_history')
+            && $schema->hasColumn('#__users_password_history', 'passhash')
         ) {
-            $query = "ALTER TABLE `#__users_password_history` "
-                . "CHANGE `passhash` `passhash` CHAR(127) NOT NULL  DEFAULT ''";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__users_password_history', 'passhash')->char(127)->notNull()->default('');
         }
     }
 
@@ -36,14 +35,13 @@ class Migration20140421182216Core extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__users_password_history')
-            && $this->db->tableHasField('#__users_password_history', 'passhash')
+            $schema->tableExists('#__users_password_history')
+            && $schema->hasColumn('#__users_password_history', 'passhash')
         ) {
-            $query = "ALTER TABLE `#__users_password_history` "
-                . "CHANGE `passhash` `passhash` CHAR(32) NOT NULL  DEFAULT ''";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__users_password_history', 'passhash')->char(32)->notNull()->default('');
         }
     }
 }

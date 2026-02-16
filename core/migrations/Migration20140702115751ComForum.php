@@ -20,15 +20,22 @@ class Migration20140702115751ComForum extends Base
      **/
     public function up()
     {
-        if ($this->db->tableHasField('#__forum_posts', 'state')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('forum')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__forum_posts', 'state')) {
+            $query = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->where('category', 'IN', ['forum']);
+            if ($ids = $query->loadColumn()) {
                 $ids = array_map('intval', $ids);
 
-                $query = "UPDATE `#__forum_posts` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__forum_posts')
+                    ->set(['state' => 3])
+                    ->where('id', 'IN', $ids)
+                    ->execute();
             }
         }
     }
@@ -38,10 +45,14 @@ class Migration20140702115751ComForum extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__forum_posts', 'state')) {
-            $query = "UPDATE `#__forum_posts` SET state=1 WHERE state=3";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__forum_posts', 'state')) {
+            $this->db->getQuery(true)
+                ->update('#__forum_posts')
+                ->set(['state' => 1])
+                ->where('state', '=', 3)
+                ->execute();
         }
     }
 }

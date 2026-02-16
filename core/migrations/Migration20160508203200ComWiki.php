@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for standardizing table and column names for wiki
@@ -20,203 +21,217 @@ class Migration20160508203200ComWiki extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__wiki_page') && !$this->db->tableExists('#__wiki_pages')) {
-            $query = "RENAME TABLE `#__wiki_page` TO `#__wiki_pages`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasField('#__wiki_pages', 'scope_id')) {
-                $query = "ALTER TABLE `#__wiki_pages` ADD COLUMN `scope_id` INT(11) NOT NULL DEFAULT 0 AFTER `scope`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_page') && !$schema->tableExists('#__wiki_pages')) {
+            $schema->renameTable('#__wiki_page', '#__wiki_pages');
+
+            if (!$schema->hasColumn('#__wiki_pages', 'scope_id')) {
+                $schema->addColumn('#__wiki_pages', 'scope_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__wiki_pages', 'path')) {
-                $query = "ALTER TABLE `#__wiki_pages` ADD COLUMN `path` VARCHAR(255) NOT NULL AFTER `pagename`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__wiki_pages', 'path')) {
+                $schema->addColumn('#__wiki_pages', 'path')->string(255)->notNull()->execute();
             }
 
-            if (!$this->db->tableHasField('#__wiki_pages', 'namespace')) {
-                $query = "ALTER TABLE `#__wiki_pages` ADD COLUMN `namespace` VARCHAR(255) NOT NULL AFTER `id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__wiki_pages', 'namespace')) {
+                $schema->addColumn('#__wiki_pages', 'namespace')->string(255)->notNull()->execute();
 
-                $query = "UPDATE `#__wiki_pages` SET `namespace`='Help' WHERE `pagename` LIKE 'Help:%'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_pages')
+                    ->set(['namespace' => $this->db->quote('Help')])
+                    ->where('pagename', 'LIKE', 'Help:%')
+                    ->execute();
 
-                $query = "UPDATE `#__wiki_pages` SET `namespace`='Template' WHERE `pagename` LIKE 'Template:%'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_pages')
+                    ->set(['namespace' => $this->db->quote('Template')])
+                    ->where('pagename', 'LIKE', 'Template:%')
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__wiki_pages', 'protected')) {
-                $query = "ALTER TABLE `#__wiki_pages` ADD COLUMN `protected` TINYINT(2) NOT NULL DEFAULT 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__wiki_pages', 'protected')) {
+                $schema->addColumn('#__wiki_pages', 'protected')
+                    ->tinyInteger()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__wiki_pages', 'parent')) {
-                $query = "ALTER TABLE `#__wiki_pages` ADD COLUMN `parent` INT(11) NOT NULL DEFAULT 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__wiki_pages', 'parent')) {
+                $schema->addColumn('#__wiki_pages', 'parent')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
 
             // Move state=1 (locked) to proected column
-            $query = "UPDATE `#__wiki_pages` SET `protected`=1 WHERE `state`=1;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__wiki_pages')
+                ->set(['protected' => 1])
+                ->where('state', '=', 1)
+                ->execute();
 
             // Mark items as published (state=1)
-            $query = "UPDATE `#__wiki_pages` SET `state`=1 WHERE `state`=0;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__wiki_pages')
+                ->set(['state' => 1])
+                ->where('state', '=', 0)
+                ->execute();
 
-            if ($this->db->tableHasField('#__wiki_pages', 'group_cn')) {
+            if ($schema->hasColumn('#__wiki_pages', 'group_cn')) {
                 // Convert group pages
-                $query = "SELECT w.id, w.scope, w.group_cn, g.gidNumber FROM `#__wiki_pages` AS w "
-                    . "INNER JOIN `#__xgroups` AS g ON w.`group_cn`=g.`cn`";
-                $this->db->setQuery($query);
-                $rows = $this->db->loadObjectList();
+                $rows = $this->db->getQuery(true)
+                    ->select('w.id, w.scope, w.group_cn, g.gidNumber')
+                    ->from('#__wiki_pages', 'w')
+                    ->innerJoin('#__xgroups AS g', 'w.group_cn', 'g.cn')
+                    ->loadObjectList();
                 foreach ($rows as $row) {
                     $row->scope = substr($row->scope, strlen($row->group_cn . '/wiki'));
                     $row->scope = ltrim($row->scope, '/');
 
-                    $query = "UPDATE `#__wiki_pages` "
-                        . "SET `scope`='group', `scope_id`=" . $this->db->quote($row->gidNumber) . ", "
-                        . "`path`=" . $this->db->quote($row->scope) . " "
-                        . "WHERE `id`=" . $this->db->quote($row->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__wiki_pages')
+                        ->set(['scope' => 'group'])
+                        ->set(['scope_id' => $row->gidNumber])
+                        ->set(['path' => $row->scope])
+                        ->where('id', '=', $row->id)
+                        ->execute();
                 }
 
                 // Convert projects
-                $query = "SELECT w.id, w.scope, w.group_cn FROM `#__wiki_pages` AS w WHERE w.group_cn LIKE 'pr-%'";
-                $this->db->setQuery($query);
-                $rows = $this->db->loadObjectList();
+                $rows = $this->db->getQuery(true)
+                    ->select('w.id, w.scope, w.group_cn')
+                    ->from('#__wiki_pages', 'w')
+                    ->where('w.group_cn', 'LIKE', 'pr-%')
+                    ->loadObjectList();
                 foreach ($rows as $row) {
                     $row->scope = substr($row->scope, strlen($row->group_cn . '/wiki'));
                     $row->scope = ltrim($row->scope, '/');
                     $row->group_cn = substr($row->group_cn, strlen('pr-'));
 
-                    $query = "SELECT id FROM `#__projects` WHERE alias=" . $this->db->quote($row->group_cn);
-                    $this->db->setQuery($query);
-                    $row->pidNumber = $this->db->loadResult();
+                    $row->pidNumber = $this->db->getQuery(true)
+                        ->select('id')
+                        ->from('#__projects')
+                        ->where('alias', '=', $row->group_cn)
+                        ->value('id');
 
-                    $query = "UPDATE `#__wiki_pages` "
-                        . "SET `scope`='project', `scope_id`=" . $this->db->quote($row->pidNumber) . ", "
-                        . "`path`=" . $this->db->quote($row->scope) . " "
-                        . "WHERE `id`=" . $this->db->quote($row->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__wiki_pages')
+                        ->set(['scope' => 'project'])
+                        ->set(['scope_id' => $row->pidNumber])
+                        ->set(['path' => $row->scope])
+                        ->where('id', '=', $row->id)
+                        ->execute();
                 }
 
-                $query = "UPDATE `#__wiki_pages` SET `scope`='site' WHERE `scope_id`=0";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_pages')
+                    ->set(['scope' => $this->db->quote('site')])
+                    ->where('scope_id', '=', 0)
+                    ->execute();
 
                 // Drop column
-                $query = "ALTER TABLE `#__wiki_pages` DROP COLUMN `group_cn`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->dropColumn('#__wiki_pages', 'group_cn');
             }
 
-            if ($this->db->tableHasField('#__wiki_pages', 'authors')) {
-                $query = "ALTER TABLE `#__wiki_pages` DROP COLUMN `authors`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__wiki_pages', 'authors')) {
+                $schema->dropColumn('#__wiki_pages', 'authors');
             }
         }
 
-        if ($this->db->tableExists('#__wiki_attachments')) {
+        if ($schema->tableExists('#__wiki_attachments')) {
             if (
-                $this->db->tableHasField('#__wiki_attachments', 'pageid')
-                && !$this->db->tableHasField('#__wiki_attachments', 'page_id')
+                $schema->hasColumn('#__wiki_attachments', 'pageid')
+                && !$schema->hasColumn('#__wiki_attachments', 'page_id')
             ) {
-                $query = "ALTER TABLE `#__wiki_attachments` CHANGE `pageid` `page_id` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->renameColumn('#__wiki_attachments', 'pageid', 'page_id')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__wiki_page_author') && !$this->db->tableExists('#__wiki_authors')) {
-            $query = "RENAME TABLE `#__wiki_page_author` TO `#__wiki_authors`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__wiki_page_author') && !$schema->tableExists('#__wiki_authors')) {
+            $schema->renameTable('#__wiki_page_author', '#__wiki_authors');
         }
 
-        if ($this->db->tableExists('#__wiki_math') && !$this->db->tableExists('#__wiki_formulas')) {
-            $query = "RENAME TABLE `#__wiki_math` TO `#__wiki_formulas`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__wiki_math') && !$schema->tableExists('#__wiki_formulas')) {
+            $schema->renameTable('#__wiki_math', '#__wiki_formulas');
         }
 
-        if ($this->db->tableExists('#__wiki_page_links') && !$this->db->tableExists('#__wiki_links')) {
-            $query = "RENAME TABLE `#__wiki_page_links` TO `#__wiki_links`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__wiki_page_links') && !$schema->tableExists('#__wiki_links')) {
+            $schema->renameTable('#__wiki_page_links', '#__wiki_links');
         }
 
-        if ($this->db->tableExists('#__wiki_comments')) {
-            if ($this->db->tableHasField('#__wiki_comments', 'pageid')) {
-                $query = "ALTER TABLE `#__wiki_comments` CHANGE `pageid` `page_id` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_comments')) {
+            if ($schema->hasColumn('#__wiki_comments', 'pageid')) {
+                $schema->renameColumn('#__wiki_comments', 'pageid', 'page_id')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
 
-            if ($this->db->tableHasField('#__wiki_comments', 'status')) {
-                $query = "ALTER TABLE `#__wiki_comments` CHANGE `status` `state` tinyint(1) NOT NULL default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__wiki_comments', 'status')) {
+                $schema->renameColumn('#__wiki_comments', 'status', 'state')
+                    ->tinyInteger()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__wiki_log')) {
-            if ($this->db->tableHasField('#__wiki_log', 'pid')) {
-                $query = "ALTER TABLE `#__wiki_log` CHANGE `pid` `page_id` int(11) NOT NULL default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_log')) {
+            if ($schema->hasColumn('#__wiki_log', 'pid')) {
+                $schema->renameColumn('#__wiki_log', 'pid', 'page_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
 
-            if ($this->db->tableHasField('#__wiki_log', 'uid')) {
-                $query = "ALTER TABLE `#__wiki_log` CHANGE `uid` `user_id` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__wiki_log', 'uid')) {
+                $schema->renameColumn('#__wiki_log', 'uid', 'user_id')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
 
-            if (!$this->db->tableExists('#__wiki_logs')) {
-                $query = "RENAME TABLE `#__wiki_log` TO `#__wiki_logs`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-        }
-
-        if ($this->db->tableExists('#__wiki_page_metrics')) {
-            if ($this->db->tableHasField('#__wiki_page_metrics', 'pageid')) {
-                $query = "ALTER TABLE `#__wiki_page_metrics` CHANGE `pageid` `page_id` int(11) NOT NULL default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableExists('#__wiki_metrics')) {
-                $query = "RENAME TABLE `#__wiki_page_metrics` TO `#__wiki_metrics`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->tableExists('#__wiki_logs')) {
+                $schema->renameTable('#__wiki_log', '#__wiki_logs');
             }
         }
 
-        if ($this->db->tableExists('#__wiki_version')) {
-            if ($this->db->tableHasField('#__wiki_version', 'pageid')) {
-                $query = "ALTER TABLE `#__wiki_version` CHANGE `pageid` `page_id` int(11) NOT NULL default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_page_metrics')) {
+            if ($schema->hasColumn('#__wiki_page_metrics', 'pageid')) {
+                $schema->renameColumn('#__wiki_page_metrics', 'pageid', 'page_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
 
-            if (!$this->db->tableExists('#__wiki_versions')) {
-                $query = "RENAME TABLE `#__wiki_version` TO `#__wiki_versions`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->tableExists('#__wiki_metrics')) {
+                $schema->renameTable('#__wiki_page_metrics', '#__wiki_metrics');
+            }
+        }
+
+        if ($schema->tableExists('#__wiki_version')) {
+            if ($schema->hasColumn('#__wiki_version', 'pageid')) {
+                $schema->renameColumn('#__wiki_version', 'pageid', 'page_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
+            }
+
+            if (!$schema->tableExists('#__wiki_versions')) {
+                $schema->renameTable('#__wiki_version', '#__wiki_versions');
             }
         }
     }
@@ -226,185 +241,185 @@ class Migration20160508203200ComWiki extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__wiki_page') && !$this->db->tableExists('#__wiki_pages')) {
-            if ($this->db->tableHasField('#__wiki_pages', 'scope_id')) {
-                $query = "ALTER TABLE `#__wiki_pages` DROP COLUMN `scope_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__wiki_page') && !$schema->tableExists('#__wiki_pages')) {
+            if ($schema->hasColumn('#__wiki_pages', 'scope_id')) {
+                $schema->dropColumn('#__wiki_pages', 'scope_id');
             }
 
-            if ($this->db->tableHasField('#__wiki_pages', 'path')) {
-                $query = "ALTER TABLE `#__wiki_pages` DROP COLUMN `path`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__wiki_pages', 'path')) {
+                $schema->dropColumn('#__wiki_pages', 'path');
             }
 
-            if ($this->db->tableHasField('#__wiki_pages', 'namespace')) {
-                $query = "ALTER TABLE `#__wiki_pages` DROP COLUMN `namespace`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__wiki_pages', 'namespace')) {
+                $schema->dropColumn('#__wiki_pages', 'namespace');
             }
 
             // Mark items as published (state=1)
-            $query = "UPDATE `#__wiki_pages` SET `state`=0 WHERE `state`=1;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__wiki_pages')
+                ->set(['state' => 0])
+                ->where('state', '=', 1)
+                ->execute();
 
-            if ($this->db->tableHasField('#__wiki_pages', 'protected')) {
+            if ($schema->hasColumn('#__wiki_pages', 'protected')) {
                 // Mark items as published (state=1)
-                $query = "UPDATE `#__wiki_pages` SET `state`=1 WHERE `protected`=1;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_pages')
+                    ->set(['state' => 1])
+                    ->where('protected', '=', 1)
+                    ->execute();
 
-                $query = "ALTER TABLE `#__wiki_pages` DROP COLUMN `protected`";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->dropColumn('#__wiki_pages', 'protected');
             }
 
-            if ($this->db->tableHasField('#__wiki_pages', 'parent')) {
-                $query = "ALTER TABLE `#__wiki_pages` DROP COLUMN `parent`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__wiki_pages', 'parent')) {
+                $schema->dropColumn('#__wiki_pages', 'parent');
             }
 
-            if ($this->db->tableHasField('#__wiki_pages', 'scope')) {
-                if (!$this->db->tableHasField('#__wiki_pages', 'group_cn')) {
-                    $query = "ALTER TABLE `#__wiki_pages` ADD COLUMN `group_cn` VARCHAR(255);";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+            if ($schema->hasColumn('#__wiki_pages', 'scope')) {
+                if (!$schema->hasColumn('#__wiki_pages', 'group_cn')) {
+                    $schema->addColumn('#__wiki_pages', 'group_cn')->string(255)->execute();
                 }
 
                 // Convert group pages
-                $query = "SELECT w.id, w.path, w.scope, w.scope_id, g.cn FROM `#__wiki_pages` AS w "
-                    . "INNER JOIN `#__xgroups` AS g ON w.`scope_id`=g.`gidNumber` AND w.scope='group'";
-                $this->db->setQuery($query);
-                $rows = $this->db->loadObjectList();
+                $rows = $this->db->getQuery(true)
+                    ->select('w.id, w.path, w.scope, w.scope_id, g.cn')
+                    ->from('#__wiki_pages', 'w')
+                    ->joinOn('#__xgroups AS g', [
+                        ['w.scope_id', '=', 'g.gidNumber'],
+                        ['left' => 'w.scope', 'operator' => '=', 'value' => 'group'],
+                    ], 'inner')
+                    ->loadObjectList();
                 foreach ($rows as $row) {
-                    $query = "UPDATE `#__wiki_pages` "
-                        . "SET `group_cn`=" . $this->db->quote($row->cn) . " AND "
-                        . "`scope`=" . $this->db->quote($row->cn . '/wiki' . ($row->path ? '/' . $row->path : '')) . " "
-                        . "WHERE `id`=" . $this->db->quote($row->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__wiki_pages')
+                        ->set(['group_cn' => $row->cn])
+                        ->set(['scope' => $row->cn . '/wiki' . ($row->path ? '/' . $row->path : '')])
+                        ->where('id', '=', $row->id)
+                        ->execute();
                 }
 
                 // Convert projects
-                $query = "SELECT w.id, w.path, w.scope, w.scope_id, p.alias FROM `#__wiki_pages` AS w "
-                    . "INNER JOIN `#__projects` AS p ON w.scope_id=p.id AND w.scope='project'";
-                $this->db->setQuery($query);
-                $rows = $this->db->loadObjectList();
+                $rows = $this->db->getQuery(true)
+                    ->select('w.id, w.path, w.scope, w.scope_id, p.alias')
+                    ->from('#__wiki_pages', 'w')
+                    ->joinOn('#__projects AS p', [
+                        ['w.scope_id', '=', 'p.id'],
+                        ['left' => 'w.scope', 'operator' => '=', 'value' => 'project'],
+                    ], 'inner')
+                    ->loadObjectList();
                 foreach ($rows as $row) {
                     $scopePath = $row->alias . '/wiki' . ($row->path ? '/' . $row->path : '');
-                    $query = "UPDATE `#__wiki_pages` "
-                        . "SET `group_cn`=" . $this->db->quote('pre-' . $row->alias) . " AND "
-                        . "`scope`=" . $this->db->quote($scopePath) . " "
-                        . "WHERE `id`=" . $this->db->quote($row->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__wiki_pages')
+                        ->set(['group_cn' => 'pre-' . $row->alias])
+                        ->set(['scope' => $scopePath])
+                        ->where('id', '=', $row->id)
+                        ->execute();
                 }
 
-                $query = "UPDATE `#__wiki_pages` SET `scope`=`path` WHERE `scope`='site' AND `scope_id`=0";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_pages')
+                    ->set(['scope' => Expression::column('path')])
+                    ->where('scope', '=', 'site')
+                    ->where('scope_id', '=', 0)
+                    ->execute();
 
                 // Drop column
-                $query = "ALTER TABLE `#__wiki_pages` DROP COLUMN `scope_id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->dropColumn('#__wiki_pages', 'scope_id');
             }
 
-            if (!$this->db->tableExists('#__wiki_page')) {
-                $query = "RENAME TABLE `#__wiki_pages` TO `#__wiki_page`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->tableExists('#__wiki_page')) {
+                $schema->renameTable('#__wiki_pages', '#__wiki_page');
             }
         }
 
-        if ($this->db->tableExists('#__wiki_attachments')) {
-            if ($this->db->tableHasField('#__wiki_attachments', 'page_id')) {
-                $query = "ALTER TABLE `#__wiki_attachments` CHANGE `page_id` `pageid` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_attachments')) {
+            if ($schema->hasColumn('#__wiki_attachments', 'page_id')) {
+                $schema->renameColumn('#__wiki_attachments', 'page_id', 'pageid')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__wiki_authors') && !$this->db->tableExists('#__wiki_page_author')) {
-            $query = "RENAME TABLE `#__wiki_authors` TO `#__wiki_page_author`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__wiki_authors') && !$schema->tableExists('#__wiki_page_author')) {
+            $schema->renameTable('#__wiki_authors', '#__wiki_page_author');
         }
 
-        if ($this->db->tableExists('#__wiki_formulas') && !$this->db->tableExists('#__wiki_math')) {
-            $query = "RENAME TABLE `#__wiki_formulas` TO `#__wiki_math`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__wiki_formulas') && !$schema->tableExists('#__wiki_math')) {
+            $schema->renameTable('#__wiki_formulas', '#__wiki_math');
         }
 
-        if ($this->db->tableExists('#__wiki_links') && !$this->db->tableExists('#__wiki_page_links')) {
-            $query = "RENAME TABLE `#__wiki_links` TO `#__wiki_page_links`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__wiki_links') && !$schema->tableExists('#__wiki_page_links')) {
+            $schema->renameTable('#__wiki_links', '#__wiki_page_links');
         }
 
-        if ($this->db->tableExists('#__wiki_comments')) {
-            if ($this->db->tableHasField('#__wiki_comments', 'page_id')) {
-                $query = "ALTER TABLE `#__wiki_comments` CHANGE `page_id` `pageid` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_comments')) {
+            if ($schema->hasColumn('#__wiki_comments', 'page_id')) {
+                $schema->renameColumn('#__wiki_comments', 'page_id', 'pageid')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
 
-            if ($this->db->tableHasField('#__wiki_comments', 'state')) {
-                $query = "ALTER TABLE `#__wiki_comments` CHANGE `state` `status` tinyint(1) NOT NULL default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__wiki_comments', 'state')) {
+                $schema->renameColumn('#__wiki_comments', 'state', 'status')
+                    ->tinyInteger()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__wiki_logs')) {
-            if ($this->db->tableHasField('#__wiki_logs', 'page_id')) {
-                $query = "ALTER TABLE `#__wiki_logs` CHANGE `page_id` `pid` int(11) NOT NULL default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_logs')) {
+            if ($schema->hasColumn('#__wiki_logs', 'page_id')) {
+                $schema->renameColumn('#__wiki_logs', 'page_id', 'pid')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
 
-            if ($this->db->tableHasField('#__wiki_logs', 'user_id')) {
-                $query = "ALTER TABLE `#__wiki_logs` CHANGE `user_id` `uid` int(11) default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__wiki_logs', 'user_id')) {
+                $schema->renameColumn('#__wiki_logs', 'user_id', 'uid')
+                    ->integer()
+                    ->default(0)
+                    ->execute();
             }
 
-            if (!$this->db->tableExists('#__wiki_log')) {
-                $query = "RENAME TABLE `#__wiki_logs` TO `#__wiki_log`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-        }
-
-        if ($this->db->tableExists('#__wiki_metrics')) {
-            if ($this->db->tableHasField('#__wiki_metrics', 'page_id')) {
-                $query = "ALTER TABLE `#__wiki_metrics` CHANGE `page_id` `pageid` int(11) NOT NULL default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableExists('#__wiki_page_metrics')) {
-                $query = "RENAME TABLE `#__wiki_metrics` TO `#__wiki_page_metrics`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->tableExists('#__wiki_log')) {
+                $schema->renameTable('#__wiki_logs', '#__wiki_log');
             }
         }
 
-        if ($this->db->tableExists('#__wiki_versions')) {
-            if ($this->db->tableHasField('#__wiki_versions', 'page_id')) {
-                $query = "ALTER TABLE `#__wiki_versions` CHANGE `page_id` `pageid` int(11) NOT NULL default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_metrics')) {
+            if ($schema->hasColumn('#__wiki_metrics', 'page_id')) {
+                $schema->renameColumn('#__wiki_metrics', 'page_id', 'pageid')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
 
-            if (!$this->db->tableExists('#__wiki_version')) {
-                $query = "RENAME TABLE `#__wiki_versions` TO `#__wiki_version`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->tableExists('#__wiki_page_metrics')) {
+                $schema->renameTable('#__wiki_metrics', '#__wiki_page_metrics');
+            }
+        }
+
+        if ($schema->tableExists('#__wiki_versions')) {
+            if ($schema->hasColumn('#__wiki_versions', 'page_id')) {
+                $schema->renameColumn('#__wiki_versions', 'page_id', 'pageid')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
+            }
+
+            if (!$schema->tableExists('#__wiki_version')) {
+                $schema->renameTable('#__wiki_versions', '#__wiki_version');
             }
         }
     }

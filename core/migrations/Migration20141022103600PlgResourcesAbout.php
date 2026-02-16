@@ -20,12 +20,18 @@ class Migration20141022103600PlgResourcesAbout extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__resource_types')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_types')) {
             // Get all the "mine" queries
-            $query = "SELECT id, params FROM `#__resource_types` WHERE `category`=27 AND `params` LIKE "
-                . "'%plg_abouttool=1%'";
-            $this->db->setQuery($query);
-            if ($records = $this->db->loadObjectList()) {
+            // Get all the "mine" queries
+            $records = $this->db->getQuery(true)
+                ->select(['id', 'params'])
+                ->from('#__resource_types')
+                ->where('category', '=', 27)
+                ->whereLike('params', 'plg_abouttool=1')
+                ->loadObjectList();
+            if ($records) {
                 $path = PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables'
                     . DS . 'type.php';
                 if (!file_exists($path)) {
@@ -62,14 +68,20 @@ class Migration20141022103600PlgResourcesAbout extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $this->addPluginEntry('resources', 'abouttool');
 
-        if ($this->db->tableExists('#__resource_types')) {
+        if ($schema->tableExists('#__resource_types')) {
             // Get all the "mine" queries
-            $query = "SELECT id, params FROM `#__resource_types` "
-                . "WHERE `category`=27 AND `alias`='tools'";
-            $this->db->setQuery($query);
-            if ($records = $this->db->loadObjectList()) {
+            // Get all the "mine" queries
+            $records = $this->db->getQuery(true)
+                ->select(['id', 'params'])
+                ->from('#__resource_types')
+                ->where('category', '=', 27)
+                ->where('alias', '=', 'tools')
+                ->loadObjectList();
+            if ($records) {
                 $path = PATH_CORE . DS . 'components' . DS . 'com_resources' . DS . 'tables'
                     . DS . 'type.php';
                 if (!file_exists($path)) {

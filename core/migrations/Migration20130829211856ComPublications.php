@@ -21,144 +21,145 @@ class Migration20130829211856ComPublications extends Base
      **/
     public function up()
     {
-        $queries = array();
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableExists('#__publications')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publications` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`category` int(11) NOT NULL DEFAULT '0',
-				`master_type` int(11) NOT NULL DEFAULT '1',
-				`project_id` int(11) NOT NULL DEFAULT '0',
-				`access` int(11) NOT NULL DEFAULT '0',
-				`checked_out` int(11) NOT NULL DEFAULT '0',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`rating` decimal(2,1) NOT NULL DEFAULT '0.0',
-				`times_rated` int(11) NOT NULL DEFAULT '0',
-				`alias` varchar(100) NOT NULL DEFAULT '',
-				`ranking` float NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publications')) {
+            $schema->createTable('#__publications')
+                ->id()
+                ->integer('category')->default(0)
+                ->integer('master_type')->default(1)
+                ->integer('project_id')->default(0)
+                ->integer('access')->default(0)
+                ->integer('checked_out')->default(0)
+                ->integer('created_by')->default(0)
+                ->datetime('checked_out_time')->default('0000-00-00 00:00:00')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->decimal('rating', 2, 1)->default(0.0)
+                ->integer('times_rated')->default(0)
+                ->string('alias', 100)->default('')
+                ->float('ranking')->default(0)
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__publication_access')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_access` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`publication_version_id` int(11) NOT NULL DEFAULT '0',
-				`group_id` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_access')) {
+            $schema->createTable('#__publication_access')
+                ->id()
+                ->integer('publication_version_id')->default(0)
+                ->integer('group_id')->default(0)
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__publication_attachments')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_attachments` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`publication_version_id` int(11) NOT NULL DEFAULT '0',
-				`publication_id` int(11) NOT NULL DEFAULT '0',
-				`title` varchar(255) DEFAULT NULL,
-				`created` datetime NOT NULL,
-				`modified` datetime DEFAULT NULL,
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`modified_by` int(11) DEFAULT '0',
-				`object_id` int(11) DEFAULT '0',
-				`object_name` varchar(64) DEFAULT '0',
-				`object_instance` int(11) DEFAULT '0',
-				`object_revision` int(11) DEFAULT '0',
-				`role` tinyint(1) DEFAULT '0',
-				`path` varchar(255) NOT NULL,
-				`vcs_hash` varchar(255) DEFAULT NULL,
-				`vcs_revision` varchar(255) DEFAULT NULL,
-				`type` varchar(30) NOT NULL DEFAULT 'file',
-				`params` text,
-				`attribs` text,
-				`ordering` int(11) DEFAULT '0',
-				`content_hash` varchar(255) DEFAULT NULL,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_attachments')) {
+            $schema->createTable('#__publication_attachments')
+                ->id()
+                ->integer('publication_version_id')->default(0)
+                ->integer('publication_id')->default(0)
+                ->string('title', 255)->nullable()
+                ->datetime('created')
+                ->datetime('modified')->nullable()
+                ->integer('created_by')->default(0)
+                ->integer('modified_by')->default(0)
+                ->integer('object_id')->default(0)
+                ->string('object_name', 64)->default('0')
+                ->integer('object_instance')->default(0)
+                ->integer('object_revision')->default(0)
+                ->tinyInteger('role')->default(0)
+                ->string('path', 255)
+                ->string('vcs_hash', 255)->nullable()
+                ->string('vcs_revision', 255)->nullable()
+                ->string('type', 30)->default('file')
+                ->text('params')->nullable()
+                ->text('attribs')->nullable()
+                ->integer('ordering')->default(0)
+                ->string('content_hash', 255)->nullable()
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__publication_audience')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_audience` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`publication_id` int(11) NOT NULL DEFAULT '0',
-				`publication_version_id` int(11) DEFAULT '0',
-				`level0` tinyint(2) NOT NULL DEFAULT '0',
-				`level1` tinyint(2) NOT NULL DEFAULT '0',
-				`level2` tinyint(2) NOT NULL DEFAULT '0',
-				`level3` tinyint(2) NOT NULL DEFAULT '0',
-				`level4` tinyint(2) NOT NULL DEFAULT '0',
-				`level5` tinyint(2) NOT NULL DEFAULT '0',
-				`comments` varchar(255) DEFAULT '',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_audience')) {
+            $schema->createTable('#__publication_audience')
+                ->id()
+                ->integer('publication_id')->default(0)
+                ->integer('publication_version_id')->default(0)
+                ->tinyInteger('level0')->default(0)
+                ->tinyInteger('level1')->default(0)
+                ->tinyInteger('level2')->default(0)
+                ->tinyInteger('level3')->default(0)
+                ->tinyInteger('level4')->default(0)
+                ->tinyInteger('level5')->default(0)
+                ->string('comments', 255)->default('')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__publication_audience_levels')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_audience_levels` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`label` varchar(11) NOT NULL DEFAULT '0',
-				`title` varchar(100) DEFAULT '',
-				`description` varchar(255) DEFAULT '',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_audience_levels')) {
+            $schema->createTable('#__publication_audience_levels')
+                ->id()
+                ->string('label', 11)->default('0')
+                ->string('title', 100)->default('')
+                ->string('description', 255)->default('')
+                ->execute();
 
             // Set audience level defaults
-            $queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
-						  VALUES ('level0','K12','Middle/High School')";
-            $queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
-						  VALUES ('level1','Easy','Freshmen/Sophomores')";
-            $queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
-						  VALUES ('level2','Intermediate','Juniors/Seniors')";
-            $queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
-				    	  VALUES ('level3','Advanced','Graduate Students')";
-            $queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
-						  VALUES ('level4','Expert','PhD Experts')";
-            $queries[] = "INSERT INTO `#__publication_audience_levels` (`label`,`title`,`description`)
-						  VALUES ('level5','Professional','Beyond PhD')";
+            // Set audience level defaults
+            $levels = [
+                ['level0', 'K12', 'Middle/High School'],
+                ['level1', 'Easy', 'Freshmen/Sophomores'],
+                ['level2', 'Intermediate', 'Juniors/Seniors'],
+                ['level3', 'Advanced', 'Graduate Students'],
+                ['level4', 'Expert', 'PhD Experts'],
+                ['level5', 'Professional', 'Beyond PhD']
+            ];
+
+            foreach ($levels as $level) {
+                $this->db->getQuery(true)
+                    ->insert('#__publication_audience_levels')
+                    ->set([
+                        'label'       => $level[0],
+                        'title'       => $level[1],
+                        'description' => $level[2]
+                    ])
+                    ->execute();
+            }
         }
 
-        if (!$this->db->tableExists('#__publication_authors')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_authors` (
-				`publication_version_id` int(11) NOT NULL DEFAULT '0',
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`user_id` int(11) NOT NULL DEFAULT '0',
-				`project_owner_id` int(11) NOT NULL DEFAULT '0',
-				`ordering` int(11) DEFAULT NULL,
-				`role` varchar(50) DEFAULT NULL,
-				`name` varchar(255) NOT NULL,
-				`firstName` varchar(255) DEFAULT NULL,
-				`lastName` varchar(255) DEFAULT NULL,
-				`organization` varchar(255) DEFAULT NULL,
-				`credit` varchar(255) DEFAULT NULL,
-				`created` datetime NOT NULL,
-				`modified` datetime DEFAULT NULL,
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`modified_by` int(11) DEFAULT '0',
-				`status` tinyint(2) NOT NULL DEFAULT '1',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_authors')) {
+            $schema->createTable('#__publication_authors')
+                ->id()
+                ->integer('publication_version_id')->default(0)
+                ->integer('user_id')->default(0)
+                ->integer('project_owner_id')->default(0)
+                ->integer('ordering')->nullable()
+                ->string('role', 50)->nullable()
+                ->string('name', 255)
+                ->string('firstName', 255)->nullable()
+                ->string('lastName', 255)->nullable()
+                ->string('organization', 255)->nullable()
+                ->string('credit', 255)->nullable()
+                ->datetime('created')
+                ->datetime('modified')->nullable()
+                ->integer('created_by')->default(0)
+                ->integer('modified_by')->default(0)
+                ->tinyInteger('status')->default(1)
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__publication_categories')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_categories` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`name` varchar(200) NOT NULL DEFAULT '',
-				`dc_type` varchar(200) NOT NULL DEFAULT 'Dataset',
-				`alias` varchar(200) NOT NULL DEFAULT '',
-				`url_alias` varchar(200) NOT NULL DEFAULT '',
-				`description` tinytext,
-				`contributable` int(2) DEFAULT '1',
-				`state` tinyint(1) DEFAULT '1',
-				`customFields` text,
-				`params` text,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `type` (`name`),
-				UNIQUE KEY `alias` (`alias`),
-				UNIQUE KEY `url_alias` (`url_alias`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_categories')) {
+            $schema->createTable('#__publication_categories')
+                ->id()
+                ->string('name', 200)->default('')
+                ->string('dc_type', 200)->default('Dataset')
+                ->string('alias', 200)->default('')
+                ->string('url_alias', 200)->default('')
+                ->tinyText('description')->nullable()
+                ->integer('contributable')->default(1)
+                ->tinyInteger('state')->default(1)
+                ->text('customFields')->nullable()
+                ->text('params')->nullable()
+                ->uniqueIndex('type', 'name')
+                ->uniqueIndex('alias', 'alias')
+                ->uniqueIndex('url_alias', 'url_alias')
+                ->execute();
 
             $customFields = 'bio=Bio=textarea=0\ncredits=Credits=textarea=0'
                 . '\ncitations=Citations=textarea=0\nsponsoredby=Sponsored by=textarea=0'
@@ -171,230 +172,286 @@ class Migration20130829211856ComPublications extends Base
             $paramsExt = 'plg_reviews=1\nplg_questions=1\nplg_supportingdocs=1\nplg_versions=1'
                 . '\nplg_wishlist=1\nplg_citations=1\nplg_usage = 1';
 
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Datasets','Dataset','dataset','datasets','A collection of research data',"
-                . "'1','1','$customFields','$paramsExt')";
+            $categories = [
+                [
+                    'Datasets',
+                    'Dataset',
+                    'dataset',
+                    'datasets',
+                    'A collection of research data',
+                    '1',
+                    '1',
+                    $customFields,
+                    $paramsExt,
+                ],
+                [
+                    'Workshops',
+                    'Event',
+                    'workshop',
+                    'workshops',
+                    'A collection of lectures, seminars, and materials that were presented at a workshop.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    'Publications',
+                    'Dataset',
+                    'publication',
+                    'publications',
+                    'A publication is a paper relevant to the community that has been published in some manner.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    'Learning Modules',
+                    'InteractiveResource',
+                    'learning module',
+                    'learningmodules',
+                    'A combination of presentations, tools, assignments, etc. geared toward teaching '
+                        . 'a specific concept.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    'Animations',
+                    'MovingImage',
+                    'animation',
+                    'animations',
+                    'An animation is a Flash-based demo or short movie that illustrates some concept.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    'Courses',
+                    'Collection',
+                    'course',
+                    'courses',
+                    'University courses that make videos of lectures and associated teaching materials available.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    'Tools',
+                    'Software',
+                    'tool',
+                    'tools',
+                    'A simulation tool is software that allows users to run a specific type of calculation.',
+                    '0',
+                    '1',
+                    $customFieldsTool,
+                    $params,
+                ],
+                [
+                    'Downloads',
+                    'PhysicalObject',
+                    'download',
+                    'downloads',
+                    'A download is a type of resource that users can download and use on their own computer.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    'Notes',
+                    'Text',
+                    'note',
+                    'notes',
+                    'Notes are typically a category for any resource that might not fit any of the other categories.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    'Series',
+                    'Collection',
+                    'series',
+                    'series',
+                    'Series are collections of other resources, typically online presentations, that '
+                        . 'cover a specific topic.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params,
+                ],
+                [
+                    'Teaching Materials',
+                    'Text',
+                    'teaching material',
+                    'teachingmaterials',
+                    'Supplementary materials (study notes, guides, etc.) that don\'t quite fit into '
+                        . 'any of the other categories.',
+                    '0',
+                    '0',
+                    $customFields,
+                    $params
+                ]
+            ];
 
-            $desc2 = 'A collection of lectures, seminars, and materials that were presented at a workshop.';
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Workshops','Event','workshop','workshops','$desc2',"
-                . "'0','0','$customFields','$params')";
-
-            $desc3 = 'A publication is a paper relevant to the community that has been published in some manner.';
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Publications','Dataset','publication','publications','$desc3',"
-                . "'0','0','$customFields','$params')";
-
-            $desc4 = 'A combination of presentations, tools, assignments, etc. '
-                . 'geared toward teaching a specific concept.';
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Learning Modules','InteractiveResource','learning module','learningmodules',"
-                . "'$desc4','0','0','$customFields','$params')";
-
-            $desc5 = 'An animation is a Flash-based demo or short movie that illustrates some concept.';
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Animations','MovingImage','animation','animations','$desc5',"
-                . "'0','0','$customFields','$params')";
-
-            $desc6 = 'University courses that make videos of lectures and associated teaching materials available.';
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Courses','Collection','course','courses','$desc6',"
-                . "'0','0','$customFields','$params')";
-
-            $desc7 = 'A simulation tool is software that allows users to run a specific type of calculation.';
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Tools','Software','tool','tools','$desc7',"
-                . "'0','1','$customFieldsTool','$params')";
-
-            $desc8 = 'A download is a type of resource that users can download and use on their own computer.';
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Downloads','PhysicalObject','download','downloads','$desc8',"
-                . "'0','0','$customFields','$params')";
-
-            $desc9 = 'Notes are typically a category for any resource '
-                . 'that might not fit any of the other categories.';
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Notes','Text','note','notes','$desc9',"
-                . "'0','0','$customFields','$params')";
-
-            $desc10 = 'Series are collections of other resources, typically online presentations, '
-                . 'that cover a specific topic.';
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Series','Collection','series','series','$desc10',"
-                . "'0','0','$customFields','$params')";
-
-            $desc11 = 'Supplementary materials (study notes, guides, etc.) '
-                . 'that don\'t quite fit into any of the other categories.';
-            $queries[] = "INSERT INTO `#__publication_categories` "
-                . "(`name`,`dc_type`,`alias`,`url_alias`,`description`,`contributable`,`state`,"
-                . "`customFields`,`params`) VALUES "
-                . "('Teaching Materials','Text','teaching material','teachingmaterials',"
-                . "'$desc11','0','0','$customFields','$params')";
+            foreach ($categories as $category) {
+                $this->db->getQuery(true)
+                    ->insert('#__publication_categories')
+                    ->set([
+                        'name'          => $category[0],
+                        'dc_type'       => $category[1],
+                        'alias'         => $category[2],
+                        'url_alias'     => $category[3],
+                        'description'   => $category[4],
+                        'contributable' => $category[5],
+                        'state'         => $category[6],
+                        'customFields'  => $category[7],
+                        'params'        => $category[8]
+                    ])
+                    ->execute();
+            }
         }
 
-        if (!$this->db->tableExists('#__publication_master_types')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_master_types` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `type` varchar(200) NOT NULL DEFAULT '',
-			  `alias` varchar(200) NOT NULL DEFAULT '',
-			  `description` tinytext,
-			  `contributable` int(2) DEFAULT '0',
-			  `supporting` int(2) DEFAULT '0',
-			  `ordering` int(2) DEFAULT '0',
-			  `params` text,
-			  PRIMARY KEY (`id`),
-			  UNIQUE KEY `alias` (`alias`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_master_types')) {
+            $schema->createTable('#__publication_master_types')
+                ->id()
+                ->string('type', 200)->default('')
+                ->string('alias', 200)->default('')
+                ->tinyText('description')->nullable()
+                ->integer('contributable')->default(0)
+                ->integer('supporting')->default(0)
+                ->integer('ordering')->default(0)
+                ->text('params')->nullable()
+                ->uniqueIndex('alias', 'alias')
+                ->execute();
 
-            $queries[] = "INSERT INTO `#__publication_master_types` "
-                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
-                . "VALUES ('File(s)','files','uploaded material','1','1','1','peer_review=1')";
-            $queries[] = "INSERT INTO `#__publication_master_types` "
-                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
-                . "VALUES ('Link','links','external content','0','0','3','')";
-            $queries[] = "INSERT INTO `#__publication_master_types` "
-                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
-                . "VALUES ('Wiki','notes','from project notes','0','0','5','')";
-            $queries[] = "INSERT INTO `#__publication_master_types` "
-                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
-                . "VALUES ('Application','apps','simulation tool','0','0','4','')";
-            $queries[] = "INSERT INTO `#__publication_master_types` "
-                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
-                . "VALUES ('Series','series','publication collection','0','0','6','')";
-            $queries[] = "INSERT INTO `#__publication_master_types` "
-                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
-                . "VALUES ('Gallery','gallery','image/photo gallery','0','0','7','')";
-            $queries[] = "INSERT INTO `#__publication_master_types` "
-                . "(`type`,`alias`,`description`,`contributable`,`supporting`,`ordering`,`params`) "
-                . "VALUES ('Databases','databases','project database','0','0','2','')";
+            $types = [
+                ['File(s)', 'files', 'uploaded material', '1', '1', '1', 'peer_review=1'],
+                ['Link', 'links', 'external content', '0', '0', '3', ''],
+                ['Wiki', 'notes', 'from project notes', '0', '0', '5', ''],
+                ['Application', 'apps', 'simulation tool', '0', '0', '4', ''],
+                ['Series', 'series', 'publication collection', '0', '0', '6', ''],
+                ['Gallery', 'gallery', 'image/photo gallery', '0', '0', '7', ''],
+                ['Databases', 'databases', 'project database', '0', '0', '2', '']
+            ];
+
+            foreach ($types as $type) {
+                $this->db->getQuery(true)
+                    ->insert('#__publication_master_types')
+                    ->set([
+                        'type'          => $type[0],
+                        'alias'         => $type[1],
+                        'description'   => $type[2],
+                        'contributable' => $type[3],
+                        'supporting'    => $type[4],
+                        'ordering'      => $type[5],
+                        'params'        => $type[6]
+                    ])
+                    ->execute();
+            }
         }
 
-        if (!$this->db->tableExists('#__publication_ratings')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_ratings` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`publication_id` int(11) NOT NULL DEFAULT '0',
-				`publication_version_id` int(11) NOT NULL DEFAULT '0',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`rating` decimal(2,1) NOT NULL DEFAULT '0.0',
-				`comment` text NOT NULL,
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`anonymous` tinyint(3) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_ratings')) {
+            $schema->createTable('#__publication_ratings')
+                ->id()
+                ->integer('publication_id')->default(0)
+                ->integer('publication_version_id')->default(0)
+                ->integer('created_by')->default(0)
+                ->decimal('rating', 2, 1)->default(0.0)
+                ->text('comment')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->tinyInteger('anonymous')->default(0)
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__publication_screenshots')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_screenshots` (
-				`id` int(10) NOT NULL AUTO_INCREMENT,
-				`publication_version_id` int(11) NOT NULL DEFAULT '0',
-				`publication_id` int(11) NOT NULL DEFAULT '0',
-				`title` varchar(127) DEFAULT '',
-				`ordering` int(11) DEFAULT '0',
-				`filename` varchar(100) NOT NULL,
-				`srcfile` varchar(100) NOT NULL,
-				`created` datetime DEFAULT NULL,
-				`modified` datetime DEFAULT NULL,
-				`created_by` varchar(127) DEFAULT NULL,
-				`modified_by` varchar(127) DEFAULT NULL,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_screenshots')) {
+            $schema->createTable('#__publication_screenshots')
+                ->id()
+                ->integer('publication_version_id')->default(0)
+                ->integer('publication_id')->default(0)
+                ->string('title', 127)->default('')
+                ->integer('ordering')->default(0)
+                ->string('filename', 100)
+                ->string('srcfile', 100)
+                ->datetime('created')->nullable()
+                ->datetime('modified')->nullable()
+                ->string('created_by', 127)->nullable()
+                ->string('modified_by', 127)->nullable()
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__publication_stats')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_stats` (
-				`id` bigint(20) NOT NULL AUTO_INCREMENT,
-				`publication_id` bigint(20) NOT NULL,
-				`publication_version` tinyint(4) DEFAULT NULL,
-				`users` bigint(20) DEFAULT NULL,
-				`downloads` bigint(20) DEFAULT NULL,
-				`datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`period` tinyint(4) NOT NULL DEFAULT '-1',
-				`processed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-				UNIQUE KEY `id` (`id`),
-				UNIQUE KEY `pub_stats` (`publication_id`,`datetime`,`period`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_stats')) {
+            $schema->createTable('#__publication_stats')
+                ->id('id', 'bigIncrements')
+                ->bigInteger('publication_id')
+                ->tinyInteger('publication_version')->nullable()
+                ->bigInteger('users')->nullable()
+                ->bigInteger('downloads')->nullable()
+                ->datetime('datetime')->default('0000-00-00 00:00:00')
+                ->tinyInteger('period')->default(-1)
+                ->timestamp('processed_on')
+                ->uniqueIndex('pub_stats', ['publication_id', 'datetime', 'period'])
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__publication_versions')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_versions` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`publication_id` int(11) NOT NULL DEFAULT '0',
-				`main` int(1) NOT NULL DEFAULT '0',
-				`doi` varchar(255) DEFAULT '',
-				`ark` varchar(255) DEFAULT '',
-				`state` int(1) NOT NULL DEFAULT '0',
-				`title` varchar(255) NOT NULL DEFAULT '',
-				`description` text NOT NULL,
-				`abstract` text NOT NULL,
-				`metadata` text,
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`published_up` datetime DEFAULT '0000-00-00 00:00:00',
-				`published_down` datetime DEFAULT NULL,
-				`modified` datetime DEFAULT '0000-00-00 00:00:00',
-				`accepted` datetime DEFAULT '0000-00-00 00:00:00',
-				`submitted` datetime DEFAULT '0000-00-00 00:00:00',
-				`modified_by` int(11) DEFAULT '0',
-				`version_label` varchar(100) NOT NULL DEFAULT '1.0',
-				`secret` varchar(10) NOT NULL DEFAULT '',
-				`version_number` int(11) NOT NULL DEFAULT '0',
-				`params` text,
-				`release_notes` text,
-				`license_text` text,
-				`license_type` int(11) DEFAULT NULL,
-				`access` int(11) NOT NULL DEFAULT '0',
-				`rating` decimal(2,1) NOT NULL DEFAULT '0.0',
-				`times_rated` int(11) NOT NULL DEFAULT '0',
-				`ranking` float NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_versions')) {
+            $schema->createTable('#__publication_versions')
+                ->id()
+                ->integer('publication_id')->default(0)
+                ->integer('main')->default(0)
+                ->string('doi', 255)->default('')
+                ->string('ark', 255)->default('')
+                ->integer('state')->default(0)
+                ->string('title', 255)->default('')
+                ->text('description')
+                ->text('abstract')
+                ->text('metadata')->nullable()
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->datetime('published_up')->default('0000-00-00 00:00:00')
+                ->datetime('published_down')->nullable()
+                ->datetime('modified')->default('0000-00-00 00:00:00')
+                ->datetime('accepted')->default('0000-00-00 00:00:00')
+                ->datetime('submitted')->default('0000-00-00 00:00:00')
+                ->integer('modified_by')->default(0)
+                ->string('version_label', 100)->default('1.0')
+                ->string('secret', 10)->default('')
+                ->integer('version_number')->default(0)
+                ->text('params')->nullable()
+                ->text('release_notes')->nullable()
+                ->text('license_text')->nullable()
+                ->integer('license_type')->nullable()
+                ->integer('access')->default(0)
+                ->decimal('rating', 2, 1)->default(0.0)
+                ->integer('times_rated')->default(0)
+                ->float('ranking')->default(0)
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__publication_licenses')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_licenses` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`name` varchar(100) NOT NULL,
-				`text` text,
-				`title` varchar(100) DEFAULT NULL,
-				`url` varchar(250) DEFAULT NULL,
-				`info` text,
-				`ordering` int(11) DEFAULT NULL,
-				`active` int(11) NOT NULL DEFAULT '0',
-				`apps_only` int(11) NOT NULL DEFAULT '0',
-				`main` int(11) NOT NULL DEFAULT '0',
-				`agreement` int(11) DEFAULT '0',
-				`customizable` int(11) DEFAULT '0',
-				`icon` varchar(250) DEFAULT NULL,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__publication_licenses')) {
+            $schema->createTable('#__publication_licenses')
+                ->id()
+                ->string('name', 100)
+                ->text('text')->nullable()
+                ->string('title', 100)->nullable()
+                ->string('url', 250)->nullable()
+                ->text('info')->nullable()
+                ->integer('ordering')->nullable()
+                ->integer('active')->default(0)
+                ->integer('apps_only')->default(0)
+                ->integer('main')->default(0)
+                ->integer('agreement')->default(0)
+                ->integer('customizable')->default(0)
+                ->string('icon', 250)->nullable()
+                ->execute();
 
             $licText1 = '[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR] [OWNER]';
             $licIcon1 = '/components/com_publications/assets/img/logos/license.gif';
-            $queries[] = "INSERT INTO `#__publication_licenses` "
-                . "(`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,"
-                . "`agreement`,`customizable`,`icon`) VALUES "
-                . "('custom','$licText1','Custom','http://creativecommons.org/about/cc0',"
-                . "'Custom license','3','1','0','0','0','1','$licIcon1')";
 
             $ccInfo = 'CC0 enables scientists, educators, artists and other creators and owners of '
                 . 'copyright- or database-protected content to waive those interests in their works '
@@ -402,25 +459,72 @@ class Migration20130829211856ComPublications extends Base
                 . 'others may freely build upon, enhance and reuse the works for any purposes '
                 . 'without restriction under copyright or database law.';
             $licIcon2 = '/components/com_publications/assets/img/logos/cc.gif';
-            $queries[] = "INSERT INTO `#__publication_licenses` "
-                . "(`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,"
-                . "`agreement`,`customizable`,`icon`) VALUES "
-                . "('cc','','CC0 - Creative Commons','http://creativecommons.org/about/cc0',"
-                . "'$ccInfo','2','1','0','1','1','0','$licIcon2')";
 
             $licIcon3 = '/components/com_publications/images/logos/license.gif';
-            $queries[] = "INSERT INTO `#__publication_licenses` "
-                . "(`name`,`text`,`title`,`url`,`info`,`ordering`,`active`,`apps_only`,`main`,"
-                . "`agreement`,`customizable`,`icon`) VALUES "
-                . "('standard','All rights reserved.','Standard HUB License','http://nanohub.org',"
-                . "'Standard HUB license.','1','0','0','0','0','0','$licIcon3')";
-        }
 
-        if (count($queries) > 0) {
-            // Run queries
-            foreach ($queries as $query) {
-                $this->db->setQuery($query);
-                $this->db->query();
+            $licenses = [
+                [
+                    'custom',
+                    $licText1,
+                    'Custom',
+                    'http://creativecommons.org/about/cc0',
+                    'Custom license',
+                    '3',
+                    '1',
+                    '0',
+                    '0',
+                    '0',
+                    '1',
+                    $licIcon1
+                ],
+                [
+                    'cc',
+                    '',
+                    'CC0 - Creative Commons',
+                    'http://creativecommons.org/about/cc0',
+                    $ccInfo,
+                    '2',
+                    '1',
+                    '0',
+                    '1',
+                    '1',
+                    '0',
+                    $licIcon2
+                ],
+                [
+                    'standard',
+                    'All rights reserved.',
+                    'Standard HUB License',
+                    'http://nanohub.org',
+                    'Standard HUB license.',
+                    '1',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    $licIcon3
+                ]
+            ];
+
+            foreach ($licenses as $lic) {
+                $this->db->getQuery(true)
+                    ->insert('#__publication_licenses')
+                    ->set([
+                        'name'         => $lic[0],
+                        'text'         => $lic[1],
+                        'title'        => $lic[2],
+                        'url'          => $lic[3],
+                        'info'         => $lic[4],
+                        'ordering'     => $lic[5],
+                        'active'       => $lic[6],
+                        'apps_only'    => $lic[7],
+                        'main'         => $lic[8],
+                        'agreement'    => $lic[9],
+                        'customizable' => $lic[10],
+                        'icon'         => $lic[11]
+                    ])
+                    ->execute();
             }
         }
 
@@ -486,67 +590,21 @@ class Migration20130829211856ComPublications extends Base
      **/
     public function down()
     {
-        $queries = array();
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__publications')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publications`";
-        }
-
-        if ($this->db->tableExists('#__publication_access')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_access`";
-        }
-
-        if ($this->db->tableExists('#__publication_attachments')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_attachments`";
-        }
-
-        if ($this->db->tableExists('#__publication_audience')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_audience`";
-        }
-
-        if ($this->db->tableExists('#__publication_audience_levels')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_audience_levels`";
-        }
-
-        if ($this->db->tableExists('#__publication_authors')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_authors`";
-        }
-
-        if ($this->db->tableExists('#__publication_categories')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_categories`";
-        }
-
-        if ($this->db->tableExists('#__publication_master_types')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_master_types`";
-        }
-
-        if ($this->db->tableExists('#__publication_ratings')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_ratings`";
-        }
-
-        if ($this->db->tableExists('#__publication_screenshots')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_screenshots`";
-        }
-
-        if ($this->db->tableExists('#__publication_stats')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_stats`";
-        }
-
-        if ($this->db->tableExists('#__publication_versions')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_versions`";
-        }
-
-        if ($this->db->tableExists('#__publication_licenses')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_licenses`";
-        }
-
-        if (count($queries) > 0) {
-            // Run queries
-            foreach ($queries as $query) {
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-        }
+        $schema->dropTable('#__publications');
+        $schema->dropTable('#__publication_access');
+        $schema->dropTable('#__publication_attachments');
+        $schema->dropTable('#__publication_audience');
+        $schema->dropTable('#__publication_audience_levels');
+        $schema->dropTable('#__publication_authors');
+        $schema->dropTable('#__publication_categories');
+        $schema->dropTable('#__publication_master_types');
+        $schema->dropTable('#__publication_ratings');
+        $schema->dropTable('#__publication_screenshots');
+        $schema->dropTable('#__publication_stats');
+        $schema->dropTable('#__publication_versions');
+        $schema->dropTable('#__publication_licenses');
 
         $this->deleteComponentEntry('Publications');
 

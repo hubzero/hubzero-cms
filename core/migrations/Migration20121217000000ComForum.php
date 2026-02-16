@@ -21,30 +21,22 @@ class Migration20121217000000ComForum extends Base
      **/
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
         if (
-            $this->db->tableExists('#__forum_sections')
-            && !$this->db->tableHasField('#__forum_sections', 'object_id')
+            $schema->tableExists('#__forum_sections')
+            && !$schema->hasColumn('#__forum_sections', 'object_id')
         ) {
-            $query .= "ALTER TABLE `#__forum_sections` ADD `object_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER "
-                . "`asset_id`;\n";
+            $schema->addColumn('#__forum_sections', 'object_id')->integer()->notNull()->default(0)->execute();
         }
         if (
-            $this->db->tableExists('#__forum_categories')
-            && !$this->db->tableHasField('#__forum_categories', 'object_id')
+            $schema->tableExists('#__forum_categories')
+            && !$schema->hasColumn('#__forum_categories', 'object_id')
         ) {
-            $query .= "ALTER TABLE `#__forum_categories` ADD `object_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER "
-                . "`asset_id`;\n";
+            $schema->addColumn('#__forum_categories', 'object_id')->integer()->notNull()->default(0)->execute();
         }
-        if ($this->db->tableExists('#__forum_posts') && !$this->db->tableHasField('#__forum_posts', 'object_id')) {
-            $query .= "ALTER TABLE `#__forum_posts` ADD `object_id` INT(11)  NOT NULL  DEFAULT '0'  AFTER "
-                . "`asset_id`;\n";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__forum_posts') && !$schema->hasColumn('#__forum_posts', 'object_id')) {
+            $schema->addColumn('#__forum_posts', 'object_id')->integer()->notNull()->default(0)->execute();
         }
     }
 
@@ -53,24 +45,19 @@ class Migration20121217000000ComForum extends Base
      **/
     public function down()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__forum_sections') && $this->db->tableHasField('#__forum_sections', 'object_id')) {
-            $query .= "ALTER TABLE `#__forum_sections` DROP `object_id`;\n";
+        if ($schema->tableExists('#__forum_sections') && $schema->hasColumn('#__forum_sections', 'object_id')) {
+            $schema->dropColumn('#__forum_sections', 'object_id');
         }
         if (
-            $this->db->tableExists('#__forum_categories')
-            && $this->db->tableHasField('#__forum_categories', 'object_id')
+            $schema->tableExists('#__forum_categories')
+            && $schema->hasColumn('#__forum_categories', 'object_id')
         ) {
-            $query .= "ALTER TABLE `#__forum_categories` DROP `object_id`;\n";
+            $schema->dropColumn('#__forum_categories', 'object_id');
         }
-        if ($this->db->tableExists('#__forum_posts') && $this->db->tableHasField('#__forum_posts', 'object_id')) {
-            $query .= "ALTER TABLE `#__forum_posts` DROP `object_id`;\n";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__forum_posts') && $schema->hasColumn('#__forum_posts', 'object_id')) {
+            $schema->dropColumn('#__forum_posts', 'object_id');
         }
     }
 }

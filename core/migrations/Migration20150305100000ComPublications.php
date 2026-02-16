@@ -21,11 +21,14 @@ class Migration20150305100000ComPublications extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__publications')) {
-            if (!$this->db->tableHasField('#__publications', 'master_doi')) {
-                $query = "ALTER TABLE `#__publications` ADD COLUMN master_doi varchar(255) DEFAULT '';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publications')) {
+            if (!$schema->hasColumn('#__publications', 'master_doi')) {
+                $schema->addColumn('#__publications', 'master_doi')
+                    ->string(255)
+                    ->default('')
+                    ->execute();
             }
         }
     }
@@ -35,11 +38,11 @@ class Migration20150305100000ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__publications')) {
-            if ($this->db->tableHasField('#__publications', 'master_doi')) {
-                $query = "ALTER TABLE `#__publications` DROP `master_doi`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publications')) {
+            if ($schema->hasColumn('#__publications', 'master_doi')) {
+                $schema->dropColumn('#__publications', 'master_doi');
             }
         }
     }

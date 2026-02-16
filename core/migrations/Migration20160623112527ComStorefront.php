@@ -21,14 +21,19 @@ class Migration20160623112527ComStorefront extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_collections')
-            && $this->db->tableHasField('#__storefront_collections', 'cId')
+            $schema->tableExists('#__storefront_collections')
+            && $schema->hasColumn('#__storefront_collections', 'cId')
         ) {
-            $query = "ALTER TABLE `#__storefront_collections` CHANGE `cId` `cId` int(16) unsigned NOT NULL "
-                . "AUTO_INCREMENT";
-            $this->db->setQuery($query);
-            $this->db->query();
+            // modifyColumn handles AUTO_INCREMENT appropriately for each database
+            $schema->modifyColumn('#__storefront_collections', 'cId')
+                ->integer(16)
+                ->unsigned()
+                ->notNull()
+                ->autoIncrement()
+                ->execute();
         }
     }
 
@@ -37,13 +42,17 @@ class Migration20160623112527ComStorefront extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_collections')
-            && $this->db->tableHasField('#__storefront_collections', 'cId')
+            $schema->tableExists('#__storefront_collections')
+            && $schema->hasColumn('#__storefront_collections', 'cId')
         ) {
-            $query = "ALTER TABLE `#__storefront_collections` CHANGE `cId` `cId` char(50) NOT NULL AUTO_INCREMENT";
-            $this->db->setQuery($query);
-            $this->db->query();
+            // Note: char(50) with AUTO_INCREMENT is unusual; keeping for backward compatibility
+            $schema->modifyColumn('#__storefront_collections', 'cId')
+                ->char(50)
+                ->notNull()
+                ->execute();
         }
     }
 }

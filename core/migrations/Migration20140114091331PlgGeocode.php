@@ -20,11 +20,13 @@ class Migration20140114091331PlgGeocode extends Base
      **/
     public function up()
     {
-        $query = "SELECT COUNT(*) FROM `#__extensions` WHERE `type`='plugin' AND `folder`='geocode';";
+        $count = $this->db->getQuery(true)
+            ->from('#__extensions')
+            ->where('type', '=', 'plugin')
+            ->where('folder', '=', 'geocode')
+            ->count();
 
-        $this->db->setQuery($query);
-
-        if (!$this->db->loadResult()) {
+        if (!$count) {
             $plugins = array(
                 'arcgisonline',
                 'baidu',
@@ -70,11 +72,13 @@ class Migration20140114091331PlgGeocode extends Base
      **/
     public function down()
     {
-        $query = "SELECT COUNT(*) FROM `#__extensions` WHERE `type`='plugin' AND `folder`='geocode';";
+        $count = $this->db->getQuery(true)
+            ->from('#__extensions')
+            ->where('type', '=', 'plugin')
+            ->where('folder', '=', 'geocode')
+            ->count();
 
-        $this->db->setQuery($query);
-
-        if ($this->db->loadResult()) {
+        if ($count) {
             $this->deletePluginEntry('geocode');
         }
     }

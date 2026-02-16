@@ -21,43 +21,42 @@ class Migration20160502173600ComUsers extends Base
      **/
     public function up()
     {
-        if (
-            !$this->db->tableHasField('#__users', 'homeDirectory')
-            && $this->db->tableHasField('#__xprofiles', 'homeDirectory')
-        ) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `homeDirectory` VARCHAR(255) NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` "
-                . "SET u.`homeDirectory`=x.`homeDirectory`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            !$schema->hasColumn('#__users', 'homeDirectory')
+            && $schema->hasColumn('#__xprofiles', 'homeDirectory')
+        ) {
+            $schema->addColumn('#__users', 'homeDirectory')->string()->notNull()->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__users AS u')
+                ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
+                ->set(['u.homeDirectory' => \Hubzero\Database\Expression::column('x.homeDirectory')])
+                ->execute();
         }
 
         if (
-            !$this->db->tableHasField('#__users', 'loginShell')
-            && $this->db->tableHasField('#__xprofiles', 'loginShell')
+            !$schema->hasColumn('#__users', 'loginShell')
+            && $schema->hasColumn('#__xprofiles', 'loginShell')
         ) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `loginShell` VARCHAR(255) NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__users', 'loginShell')->string()->notNull()->execute();
 
-            $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` "
-                . "SET u.`loginShell`=x.`loginShell`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__users AS u')
+                ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
+                ->set(['u.loginShell' => \Hubzero\Database\Expression::column('x.loginShell')])
+                ->execute();
         }
 
-        if (!$this->db->tableHasField('#__users', 'ftpShell') && $this->db->tableHasField('#__xprofiles', 'ftpShell')) {
-            $query = "ALTER TABLE `#__users` ADD COLUMN `ftpShell` VARCHAR(255) NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__users', 'ftpShell') && $schema->hasColumn('#__xprofiles', 'ftpShell')) {
+            $schema->addColumn('#__users', 'ftpShell')->string()->notNull()->execute();
 
-            $query = "UPDATE `#__users` AS u LEFT JOIN `#__xprofiles` AS x ON u.`id`=x.`uidNumber` "
-                . "SET u.`ftpShell`=x.`ftpShell`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__users AS u')
+                ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
+                ->set(['u.ftpShell' => \Hubzero\Database\Expression::column('x.ftpShell')])
+                ->execute();
         }
     }
 
@@ -66,22 +65,18 @@ class Migration20160502173600ComUsers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__users', 'homeDirectory')) {
-            $query = "ALTER TABLE `#__users` DROP COLUMN `homeDirectory`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__users', 'homeDirectory')) {
+            $schema->dropColumn('#__users', 'homeDirectory');
         }
 
-        if ($this->db->tableHasField('#__users', 'loginShell')) {
-            $query = "ALTER TABLE `#__users` DROP COLUMN `loginShell`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__users', 'loginShell')) {
+            $schema->dropColumn('#__users', 'loginShell');
         }
 
-        if ($this->db->tableHasField('#__users', 'ftpShell')) {
-            $query = "ALTER TABLE `#__users` DROP COLUMN `ftpShell`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__users', 'ftpShell')) {
+            $schema->dropColumn('#__users', 'ftpShell');
         }
     }
 }

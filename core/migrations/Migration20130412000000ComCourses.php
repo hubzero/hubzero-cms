@@ -18,22 +18,23 @@ class Migration20130412000000ComCourses extends Base
 {
     public function up()
     {
-        if (!$this->db->tableHasField('#__courses_offering_sections', 'grade_policy_id')) {
-            $query = "ALTER TABLE `#__courses_offering_sections` ADD `grade_policy_id` "
-                . "INT(11) NOT NULL DEFAULT '1' AFTER `enrollment`;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__courses_offering_sections', 'grade_policy_id')) {
+            $schema->addColumn('#__courses_offering_sections', 'grade_policy_id')
+                ->integer()
+                ->notNull()
+                ->default(1)
+                ->execute();
         }
     }
 
     public function down()
     {
-        if ($this->db->tableHasField('#__courses_offering_sections', 'grade_policy_id')) {
-            $query = "ALTER TABLE `#__courses_offering_sections` DROP `grade_policy_id`;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_offering_sections', 'grade_policy_id')) {
+            $schema->dropColumn('#__courses_offering_sections', 'grade_policy_id');
         }
     }
 }

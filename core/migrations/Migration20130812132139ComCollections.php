@@ -21,98 +21,121 @@ class Migration20130812132139ComCollections extends Base
      **/
     public function up()
     {
-        $query = "CREATE TABLE IF NOT EXISTS `#__collections` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `title` varchar(255) NOT NULL DEFAULT '',
-				  `alias` varchar(255) NOT NULL,
-				  `object_id` int(11) NOT NULL DEFAULT '0',
-				  `object_type` varchar(150) NOT NULL DEFAULT '',
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `created_by` int(11) NOT NULL DEFAULT '0',
-				  `state` tinyint(3) NOT NULL DEFAULT '1',
-				  `access` tinyint(3) NOT NULL DEFAULT '0',
-				  `is_default` tinyint(2) NOT NULL DEFAULT '0',
-				  `description` mediumtext NOT NULL,
-				  `positive` int(11) NOT NULL DEFAULT '0',
-				  `negative` int(11) NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_objectified` (`object_type`,`object_id`),
-				  KEY `idx_state` (`state`),
-				  KEY `idx_access` (`access`),
-				  KEY `idx_createdby` (`created_by`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+        $schema = $this->db->schema();
 
-			CREATE TABLE IF NOT EXISTS `#__collections_assets` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `item_id` int(11) NOT NULL DEFAULT '0',
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `created_by` int(11) NOT NULL DEFAULT '0',
-				  `filename` varchar(255) NOT NULL DEFAULT '',
-				  `description` mediumtext NOT NULL,
-				  `state` tinyint(2) NOT NULL DEFAULT '0',
-				  `type` varchar(50) NOT NULL DEFAULT 'file',
-				  `ordering` tinyint(3) NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_item_id` (`item_id`),
-				  KEY `idx_created_by` (`created_by`),
-				  KEY `idx_state` (`state`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__collections')) {
+            $schema->createTable('#__collections')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('title', 255)->default('')
+                ->string('alias', 255)
+                ->integer('object_id')->default(0)
+                ->string('object_type', 150)->default('')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->tinyInteger('state')->default(1)
+                ->tinyInteger('access')->default(0)
+                ->tinyInteger('is_default')->default(0)
+                ->mediumText('description')
+                ->integer('positive')->default(0)
+                ->integer('negative')->default(0)
+                ->primaryKey('id')
+                ->index('idx_objectified', ['object_type', 'object_id'])
+                ->index('idx_state', 'state')
+                ->index('idx_access', 'access')
+                ->index('idx_createdby', 'created_by')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__collections_following` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `follower_type` varchar(150) NOT NULL,
-				  `follower_id` int(11) NOT NULL DEFAULT '0',
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `following_type` varchar(150) NOT NULL DEFAULT '',
-				  `following_id` int(11) NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__collections_assets')) {
+            $schema->createTable('#__collections_assets')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('item_id')->default(0)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->string('filename', 255)->default('')
+                ->mediumText('description')
+                ->tinyInteger('state')->default(0)
+                ->string('type', 50)->default('file')
+                ->tinyInteger('ordering')->default(0)
+                ->primaryKey('id')
+                ->index('idx_item_id', 'item_id')
+                ->index('idx_created_by', 'created_by')
+                ->index('idx_state', 'state')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__collections_items` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `title` varchar(255) NOT NULL DEFAULT '',
-				  `description` mediumtext NOT NULL,
-				  `url` varchar(255) NOT NULL,
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `created_by` int(11) NOT NULL DEFAULT '0',
-				  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `modified_by` int(11) NOT NULL DEFAULT '0',
-				  `state` tinyint(3) NOT NULL DEFAULT '1',
-				  `access` tinyint(2) NOT NULL DEFAULT '0',
-				  `positive` int(11) NOT NULL DEFAULT '0',
-				  `negative` int(11) NOT NULL DEFAULT '0',
-				  `type` varchar(150) NOT NULL DEFAULT '',
-				  `object_id` int(11) NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_state` (`state`),
-				  KEY `idx_created_by` (`created_by`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__collections_following')) {
+            $schema->createTable('#__collections_following')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('follower_type', 150)
+                ->integer('follower_id')->default(0)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->string('following_type', 150)->default('')
+                ->integer('following_id')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__collections_posts` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `created_by` int(11) NOT NULL DEFAULT '0',
-				  `collection_id` int(11) NOT NULL DEFAULT '0',
-				  `item_id` int(11) NOT NULL DEFAULT '0',
-				  `description` mediumtext NOT NULL,
-				  `original` tinyint(2) NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_collection_id` (`collection_id`),
-				  KEY `idx_item_id` (`item_id`),
-				  KEY `idx_original` (`original`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__collections_items')) {
+            $schema->createTable('#__collections_items')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('title', 255)->default('')
+                ->mediumText('description')
+                ->string('url', 255)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->datetime('modified')->default('0000-00-00 00:00:00')
+                ->integer('modified_by')->default(0)
+                ->tinyInteger('state')->default(1)
+                ->tinyInteger('access')->default(0)
+                ->integer('positive')->default(0)
+                ->integer('negative')->default(0)
+                ->string('type', 150)->default('')
+                ->integer('object_id')->default(0)
+                ->primaryKey('id')
+                ->index('idx_state', 'state')
+                ->index('idx_created_by', 'created_by')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__collections_votes` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `user_id` int(11) NOT NULL DEFAULT '0',
-				  `item_id` int(11) NOT NULL DEFAULT '0',
-				  `voted` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_item_user` (`item_id`,`user_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        if (!$schema->tableExists('#__collections_posts')) {
+            $schema->createTable('#__collections_posts')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->integer('collection_id')->default(0)
+                ->integer('item_id')->default(0)
+                ->mediumText('description')
+                ->tinyInteger('original')->default(0)
+                ->primaryKey('id')
+                ->index('idx_collection_id', 'collection_id')
+                ->index('idx_item_id', 'item_id')
+                ->index('idx_original', 'original')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        if (!$schema->tableExists('#__collections_votes')) {
+            $schema->createTable('#__collections_votes')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('user_id')->default(0)
+                ->integer('item_id')->default(0)
+                ->datetime('voted')->default('0000-00-00 00:00:00')
+                ->primaryKey('id')
+                ->index('idx_item_user', ['item_id', 'user_id'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
         $this->addComponentEntry('Collections');
     }
@@ -122,14 +145,14 @@ class Migration20130812132139ComCollections extends Base
      **/
     public function down()
     {
-        $query = "DROP TABLE IF EXISTS `#__collections`;
-				DROP TABLE IF EXISTS `#__collections_assets`;
-				DROP TABLE IF EXISTS `#__collections_following`;
-				DROP TABLE IF EXISTS `#__collections_items`;
-				DROP TABLE IF EXISTS `#__collections_posts`;
-				DROP TABLE IF EXISTS `#__collections_votes`;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__collections');
+        $schema->dropTable('#__collections_assets');
+        $schema->dropTable('#__collections_following');
+        $schema->dropTable('#__collections_items');
+        $schema->dropTable('#__collections_posts');
+        $schema->dropTable('#__collections_votes');
 
         $this->deleteComponentEntry('Collections');
     }

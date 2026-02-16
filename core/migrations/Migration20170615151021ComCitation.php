@@ -21,14 +21,14 @@ class Migration20170615151021ComCitation extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__citations_authors')) {
-            $key = 'ftidx_jos_citations_authors_author_givenName_surname';
-            if (!$this->db->tableHasKey('#__citations_authors', $key)) {
-                $query = "ALTER TABLE `#__citations_authors` ADD FULLTEXT "
-                    . "`ftidx_jos_citations_authors_author_givenName_surname` (`author`, `givenName`, `surname`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__citations_authors')) {
+            $schema->addFulltextIndex(
+                '#__citations_authors',
+                'ftidx_jos_citations_authors_author_givenName_surname',
+                ['author', 'givenName', 'surname']
+            );
         }
     }
 
@@ -37,14 +37,10 @@ class Migration20170615151021ComCitation extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__citations_authors')) {
-            $key = 'ftidx_jos_citations_authors_author_givenName_surname';
-            if ($this->db->tableHasKey('#__citations_authors', $key)) {
-                $query = "ALTER TABLE `#__citations_authors` DROP INDEX "
-                    . "`ftidx_jos_citations_authors_author_givenName_surname`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__citations_authors')) {
+            $schema->dropIndex('#__citations_authors', 'ftidx_jos_citations_authors_author_givenName_surname');
         }
     }
 }

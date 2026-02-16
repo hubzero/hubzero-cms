@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for properly associating gradebook items with an offering
  *
-*/
+ */
 class Migration20140529192810ComCourses extends Base
 {
     /**
@@ -21,31 +21,41 @@ class Migration20140529192810ComCourses extends Base
      **/
     public function up()
     {
-        $query  = "SELECT ca.* FROM `#__courses_assets` ca";
-        $query .= " LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id";
-        $query .= " WHERE `type` = 'gradebook'";
-        $query .= " AND `subtype` = 'auxiliary'";
-        $query .= " AND caa.id IS NULL";
+        $results = $this->db->getQuery(true)
+            ->select('ca.*')
+            ->from('#__courses_assets', 'ca')
+            ->leftJoin('#__courses_asset_associations AS caa', 'ca.id', 'caa.asset_id')
+            ->where('type', '=', 'gradebook')
+            ->where('subtype', '=', 'auxiliary')
+            ->whereIsNull('caa.id')
+            ->loadObjectList();
 
-        $this->db->setQuery($query);
-        $results  = $this->db->loadObjectList();
         $ordering = array();
 
         if ($results && count($results) > 0) {
             foreach ($results as $result) {
-                $query  = "SELECT `id`, `title` FROM `#__courses_offerings`";
-                $query .= " WHERE `course_id` = '{$result->course_id}' AND `created` < '{$result->created}' AND "
-                    . "`state` = 1";
-                $query .= " ORDER BY `id` ASC LIMIT 1";
-                $this->db->setQuery($query);
-                $offering = $this->db->loadObject();
-                $ordering[$offering->id] = (!isset($ordering[$offering->id])) ? 0 : $ordering[$offering->id] + 1;
+                $offering = $this->db->getQuery(true)
+                    ->select(['id', 'title'])
+                    ->from('#__courses_offerings')
+                    ->where('course_id', '=', $result->course_id)
+                    ->where('created', '<', $result->created)
+                    ->where('state', '=', 1)
+                    ->order('id', 'ASC')
+                    ->first();
 
-                $query = "INSERT INTO `#__courses_asset_associations` (`asset_id`, `scope_id`, `scope`,"
-                    . "`ordering`) VALUES";
-                $query .= " ('{$result->id}', '{$offering->id}', 'offering', '{$ordering[$offering->id]}')";
-                $this->db->setQuery($query);
-                $this->db->query();
+                if ($offering) {
+                    $ordering[$offering->id] = (!isset($ordering[$offering->id])) ? 0 : $ordering[$offering->id] + 1;
+
+                    $this->db->getQuery(true)
+                        ->insert('#__courses_asset_associations')
+                        ->set([
+                            'asset_id' => $result->id,
+                            'scope_id' => $offering->id,
+                            'scope'    => 'offering',
+                            'ordering' => $ordering[$offering->id]
+                        ])
+                        ->execute();
+                }
             }
         }
     }

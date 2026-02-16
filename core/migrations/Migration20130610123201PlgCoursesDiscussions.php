@@ -21,16 +21,13 @@ class Migration20130610123201PlgCoursesDiscussions extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__forum_posts', 'scope_sub_id')) {
-            $query = "ALTER TABLE `#__forum_posts` ADD `scope_sub_id` "
-                . "INT(11) NOT NULL DEFAULT '0' AFTER `scope_id`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__forum_posts')
+            && !$schema->hasColumn('#__forum_posts', 'scope_sub_id')
+        ) {
+            $schema->addColumn('#__forum_posts', 'scope_sub_id')->integer()->notNull()->default(0)->execute();
         }
     }
 
@@ -39,15 +36,10 @@ class Migration20130610123201PlgCoursesDiscussions extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__forum_posts', 'scope_sub_id')) {
-            $query .= "ALTER TABLE `#__forum_posts` DROP `scope_sub_id`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__forum_posts', 'scope_sub_id')) {
+            $schema->dropColumn('#__forum_posts', 'scope_sub_id');
         }
     }
 }

@@ -21,29 +21,25 @@ class Migration20140410085610ComSupport extends Base
      **/
     public function up()
     {
-        // add comment ID
-        if (!$this->db->tableHasField('#__support_attachments', 'comment_id')) {
-            $query = "ALTER TABLE `#__support_attachments` ADD COLUMN `comment_id` int(11) NOT NULL DEFAULT '0';";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        // add comment ID
+        if (!$schema->hasColumn('#__support_attachments', 'comment_id')) {
+            $schema->addColumn('#__support_attachments', 'comment_id')->integer()->notNull()->default(0)->execute();
         }
 
         // add created
-        if (!$this->db->tableHasField('#__support_attachments', 'created')) {
-            $query = "ALTER TABLE `#__support_attachments` "
-                . "ADD COLUMN `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00';";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__support_attachments', 'created')) {
+            $schema->addColumn('#__support_attachments', 'created')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
         }
 
         // add created by
-        if (!$this->db->tableHasField('#__support_attachments', 'created_by')) {
-            $query = "ALTER TABLE `#__support_attachments` ADD COLUMN `created_by` int(11) NOT NULL DEFAULT '0';";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__support_attachments', 'created_by')) {
+            $schema->addColumn('#__support_attachments', 'created_by')->integer()->notNull()->default(0)->execute();
         }
     }
 
@@ -52,28 +48,21 @@ class Migration20140410085610ComSupport extends Base
      **/
     public function down()
     {
-        // remove comment ID
-        if ($this->db->tableHasField('#__support_attachments', 'comment_id')) {
-            $query = "ALTER TABLE `#__support_attachments` DROP COLUMN `comment_id`;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        // remove comment ID
+        if ($schema->hasColumn('#__support_attachments', 'comment_id')) {
+            $schema->dropColumn('#__support_attachments', 'comment_id');
         }
 
         // remove created
-        if ($this->db->tableHasField('#__support_attachments', 'created')) {
-            $query = "ALTER TABLE `#__support_attachments` DROP COLUMN `created`;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__support_attachments', 'created')) {
+            $schema->dropColumn('#__support_attachments', 'created');
         }
 
         // remove created by
-        if ($this->db->tableHasField('#__support_attachments', 'created_by')) {
-            $query = "ALTER TABLE `#__support_attachments` DROP COLUMN `created_by`;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__support_attachments', 'created_by')) {
+            $schema->dropColumn('#__support_attachments', 'created_by');
         }
     }
 }

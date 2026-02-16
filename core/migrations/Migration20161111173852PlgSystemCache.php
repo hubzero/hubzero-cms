@@ -21,27 +21,40 @@ class Migration20161111173852PlgSystemCache extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND "
-                . "`element`='disablecache'";
-            $this->db->setQuery($query);
-            if ($params = $this->db->loadResult()) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $params = $this->db->getQuery(true)
+                ->select('params')
+                ->from('#__extensions')
+                ->where('type', '=', 'plugin')
+                ->where('folder', '=', 'system')
+                ->where('element', '=', 'disablecache')
+                ->value('params');
+
+            if ($params) {
                 $params = $this->params($params);
 
                 if (isset($params->definitions)) {
-                    $query = "SELECT `params` FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND "
-                        . "`element`='cache'";
-                    $this->db->setQuery($query);
-                    $cparams = $this->db->loadResult();
+                    $cparams = $this->db->getQuery(true)
+                        ->select('params')
+                        ->from('#__extensions')
+                        ->where('type', '=', 'plugin')
+                        ->where('folder', '=', 'system')
+                        ->where('element', '=', 'cache')
+                        ->value('params');
                     $cparams = $this->params($cparams);
 
                     $cparams->cacheexempt = $params->definitions;
                     $cparams = json_encode($cparams);
 
-                    $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($cparams) . " WHERE "
-                        . "`type`='plugin' AND `folder`='system' AND `element`='cache'";
-                    $this->db->setQuery($query);
-                    $this->db->execute();
+                    $this->db->getQuery(true)
+                        ->update('#__extensions')
+                        ->set(['params' => $cparams])
+                        ->where('type', '=', 'plugin')
+                        ->where('folder', '=', 'system')
+                        ->where('element', '=', 'cache')
+                        ->execute();
                 }
             }
         }

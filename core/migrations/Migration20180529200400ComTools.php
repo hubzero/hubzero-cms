@@ -21,17 +21,22 @@ class Migration20180529200400ComTools extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__doi_mapping')) {
-            if (!$this->db->tableHasField('#__doi_mapping', 'versionid')) {
-                $query = "ALTER TABLE `#__doi_mapping` ADD `versionid` INT(11)  NULL  DEFAULT '0'  AFTER `alias`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__doi_mapping')) {
+            if (!$schema->hasColumn('#__doi_mapping', 'versionid')) {
+                $schema->addColumn('#__doi_mapping', 'versionid')
+                    ->integer()
+                    ->nullable()
+                    ->default(0)
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__doi_mapping', 'doi')) {
-                $query = "ALTER TABLE `#__doi_mapping` ADD `doi` VARCHAR(50)  NULL  DEFAULT NULL  AFTER `versionid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__doi_mapping', 'doi')) {
+                $schema->addColumn('#__doi_mapping', 'doi')
+                    ->string(50)
+                    ->nullable()
+                    ->execute();
             }
         }
     }
@@ -41,17 +46,15 @@ class Migration20180529200400ComTools extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__doi_mapping')) {
-            if ($this->db->tableHasField('#__doi_mapping', 'versionid')) {
-                $query = "ALTER TABLE `#__doi_mapping` DROP COLUMN `versionid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__doi_mapping')) {
+            if ($schema->hasColumn('#__doi_mapping', 'versionid')) {
+                $schema->dropColumn('#__doi_mapping', 'versionid');
             }
 
-            if ($this->db->tableHasField('#__doi_mapping', 'doi')) {
-                $query = "ALTER TABLE `#__doi_mapping` DROP COLUMN `doi`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__doi_mapping', 'doi')) {
+                $schema->dropColumn('#__doi_mapping', 'doi');
             }
         }
     }

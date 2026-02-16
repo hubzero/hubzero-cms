@@ -21,8 +21,10 @@ class Migration20140109101723ComProjects extends Base
      **/
     public function up()
     {
-        $query = "ALTER TABLE `#__project_microblog` MODIFY `blogentry` TEXT DEFAULT NULL;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__project_microblog', 'blogentry')) {
+            $schema->modifyColumn('#__project_microblog', 'blogentry')->text()->nullable();
+        }
     }
 }

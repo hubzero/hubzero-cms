@@ -21,15 +21,19 @@ class Migration20180828000000ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__user_profiles')) {
-            $query = "SELECT user_id, profile_key, profile_value, count(*) AS no_of_records, "
-                . "group_concat(id) AS duplicates
-				FROM `#__user_profiles`
-				GROUP BY user_id, profile_key, profile_value
-				HAVING count(*) > 1
-				ORDER BY user_id ASC, profile_key ASC;";
-            $this->db->setQuery($query);
-            $rows = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__user_profiles')) {
+            $rows = $this->db->getQuery(true)
+                ->select(['user_id', 'profile_key', 'profile_value'])
+                ->select('count(*)', 'no_of_records')
+                ->select('group_concat(id)', 'duplicates')
+                ->from('#__user_profiles')
+                ->group(['user_id', 'profile_key', 'profile_value'])
+                ->having('count(*) > 1')
+                ->order('user_id', 'ASC')
+                ->order('profile_key', 'ASC')
+                ->loadObjectList();
 
             $delete = array();
 
@@ -58,9 +62,10 @@ class Migration20180828000000ComMembers extends Base
             }
 
             if (!empty($delete)) {
-                $query = "DELETE FROM `#__user_profiles` WHERE `id` IN (" . implode(',', $delete) . ");";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__user_profiles')
+                    ->whereIn('id', $delete)
+                    ->execute();
             }
         }
     }

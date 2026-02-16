@@ -16,14 +16,9 @@ class Migration20200917100000AuthDomainIndex extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__auth_domain') &&
-            !$this->db->tableHasKey('#__auth_domain', 'authenticator_idx')
-        ) {
-            $query = "ALTER TABLE `#__auth_domain` ADD INDEX authenticator_idx (authenticator);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->addIndex('#__auth_domain', 'authenticator_idx', 'authenticator');
     }
 
     /**
@@ -31,13 +26,8 @@ class Migration20200917100000AuthDomainIndex extends Base
      **/
     public function down()
     {
-        if (
-            $this->db->tableExists('#__auth_domain') &&
-            $this->db->tableHasKey('#__auth_domain', 'authenticator_idx')
-        ) {
-            $query = "ALTER TABLE `#__auth_domain` DROP INDEX authenticator_idx;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropIndex('#__auth_domain', 'authenticator_idx');
     }
 }

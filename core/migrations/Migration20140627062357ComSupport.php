@@ -22,53 +22,74 @@ class Migration20140627062357ComSupport extends Base
      **/
     public function up()
     {
-        // Support tickets
-        $query = "DESCRIBE #__support_tickets owner";
-        $this->db->setQuery($query);
-        $uidField = $this->db->loadObject();
+        $schema = $this->db->schema();
 
-        if (strtolower($uidField->Type) != 'int(11)') {
-            $query = "SELECT DISTINCT t.owner AS username, u.id FROM `#__support_tickets` AS t "
-                . "LEFT JOIN `#__users` AS u ON u.username=t.owner "
-                . "WHERE t.owner != '' AND t.owner IS NOT NULL";
-            $this->db->setQuery($query);
-            if ($owners = $this->db->loadObjectList()) {
+        // Support tickets
+        $columns = $schema->getTableColumns('#__support_tickets');
+        $ownerType = $columns['owner'] ?? '';
+
+        // Check if column type contains 'int' (handles both 'int(11)' and 'INTEGER')
+        if (stripos($ownerType, 'int') === false) {
+            $owners = $this->db->getQuery(true)
+                ->select('t.owner', 'username')
+                ->select('u.id')
+                ->from('#__support_tickets', 't')
+                ->leftJoin('#__users AS u', 't.owner', 'u.username')
+                ->where('t.owner', '!=', '')
+                ->whereNotNull('t.owner')
+                ->loadObjectList();
+
+            if ($owners) {
                 foreach ($owners as $owner) {
-                    $query = "UPDATE `#__support_tickets` SET owner=" . $this->db->quote($owner->id)
-                        . " WHERE owner=" . $this->db->quote($owner->username);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__support_tickets')
+                        ->set(['owner' => $owner->id])
+                        ->where('owner', '=', $owner->username)
+                        ->execute();
                 }
             }
 
-            $query = "ALTER TABLE `#__support_tickets` CHANGE owner owner INT(11) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db
+                ->schema()
+                ->modifyColumn('#__support_tickets', 'owner')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
 
         // Support ticket comments
-        $query = "DESCRIBE #__support_comments created_by";
-        $this->db->setQuery($query);
-        $uidField = $this->db->loadObject();
+        $columns = $schema->getTableColumns('#__support_comments');
+        $createdByType = $columns['created_by'] ?? '';
 
-        if (strtolower($uidField->Type) != 'int(11)') {
-            $query = "SELECT DISTINCT t.created_by AS username, u.id FROM `#__support_comments` AS t "
-                . "LEFT JOIN `#__users` AS u ON u.username=t.created_by "
-                . "WHERE t.created_by != '' AND t.created_by IS NOT NULL";
-            $this->db->setQuery($query);
-            if ($creators = $this->db->loadObjectList()) {
+        // Check if column type contains 'int' (handles both 'int(11)' and 'INTEGER')
+        if (stripos($createdByType, 'int') === false) {
+            $creators = $this->db->getQuery(true)
+                ->select('t.created_by', 'username')
+                ->select('u.id')
+                ->from('#__support_comments', 't')
+                ->leftJoin('#__users AS u', 't.created_by', 'u.username')
+                ->where('t.created_by', '!=', '')
+                ->whereNotNull('t.created_by')
+                ->loadObjectList();
+
+            if ($creators) {
                 foreach ($creators as $creator) {
-                    $query = "UPDATE `#__support_comments` SET created_by=" . $this->db->quote($creator->id)
-                        . " WHERE created_by=" . $this->db->quote($creator->username);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__support_comments')
+                        ->set(['created_by' => $creator->id])
+                        ->where('created_by', '=', $creator->username)
+                        ->execute();
                 }
             }
 
-            $query = "ALTER TABLE `#__support_comments` "
-                . "CHANGE created_by created_by INT(11) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db
+                ->schema()
+                ->modifyColumn('#__support_comments', 'created_by')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 
@@ -77,51 +98,60 @@ class Migration20140627062357ComSupport extends Base
      **/
     public function down()
     {
-        // Support tickets
-        $query = "DESCRIBE #__support_tickets owner";
-        $this->db->setQuery($query);
-        $uidField = $this->db->loadObject();
+        $schema = $this->db->schema();
 
-        if (strtolower($uidField->Type) == 'int(11)') {
-            $query = "SELECT DISTINCT u.username, t.owner AS id FROM `#__support_tickets` AS t "
-                . "LEFT JOIN `#__users` AS u ON u.id=t.owner WHERE t.owner > 0";
-            $this->db->setQuery($query);
-            if ($owners = $this->db->loadObjectList()) {
+        // Support tickets
+        $columns = $schema->getTableColumns('#__support_tickets');
+        $ownerType = $columns['owner'] ?? '';
+
+        // Check if column type contains 'int' (handles both 'int(11)' and 'INTEGER')
+        if (stripos($ownerType, 'int') !== false) {
+            $owners = $this->db->getQuery(true)
+                ->select('u.username')
+                ->select('t.owner', 'id')
+                ->from('#__support_tickets', 't')
+                ->leftJoin('#__users AS u', 't.owner', 'u.id')
+                ->where('t.owner', '>', 0)
+                ->loadObjectList();
+
+            if ($owners) {
                 foreach ($owners as $owner) {
-                    $query = "UPDATE `#__support_tickets` SET owner=" . $this->db->quote($owner->username)
-                        . " WHERE owner=" . $this->db->quote($owner->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__support_tickets')
+                        ->set(['owner' => $owner->username])
+                        ->where('owner', '=', $owner->id)
+                        ->execute();
                 }
             }
 
-            $query = "ALTER TABLE `#__support_tickets` CHANGE owner owner VARCHAR(50) DEFAULT '' NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->schema()->modifyString('#__support_tickets', 'owner', 50)->notNull()->default('');
         }
 
         // Support ticket comments
-        $query = "DESCRIBE #__support_comments created_by";
-        $this->db->setQuery($query);
-        $uidField = $this->db->loadObject();
+        $columns = $schema->getTableColumns('#__support_comments');
+        $createdByType = $columns['created_by'] ?? '';
 
-        if (strtolower($uidField->Type) == 'int(11)') {
-            $query = "SELECT DISTINCT t.created_by AS id, u.username FROM `#__support_comments` AS t "
-                . "LEFT JOIN `#__users` AS u ON u.id=t.created_by WHERE t.created_by > 0";
-            $this->db->setQuery($query);
-            if ($creators = $this->db->loadObjectList()) {
+        // Check if column type contains 'int' (handles both 'int(11)' and 'INTEGER')
+        if (stripos($createdByType, 'int') !== false) {
+            $creators = $this->db->getQuery(true)
+                ->select('t.created_by', 'id')
+                ->select('u.username')
+                ->from('#__support_comments', 't')
+                ->leftJoin('#__users AS u', 't.created_by', 'u.id')
+                ->where('t.created_by', '>', 0)
+                ->loadObjectList();
+
+            if ($creators) {
                 foreach ($creators as $creator) {
-                    $query = "UPDATE `#__support_comments` SET created_by=" . $this->db->quote($creator->username)
-                        . " WHERE created_by=" . $this->db->quote($creator->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__support_comments')
+                        ->set(['created_by' => $creator->username])
+                        ->where('created_by', '=', $creator->id)
+                        ->execute();
                 }
             }
 
-            $query = "ALTER TABLE `#__support_comments` "
-                . "CHANGE created_by created_by VARCHAR(50) DEFAULT '' NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->schema()->modifyString('#__support_comments', 'created_by', 50)->notNull()->default('');
         }
     }
 }

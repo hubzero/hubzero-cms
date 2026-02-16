@@ -21,13 +21,17 @@ class Migration20240716193359ComPublications extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__publication_authors')
-            && !$this->db->tableHasField('#__publication_authors', 'orcid')
+            $schema->tableExists('#__publication_authors')
+            && !$schema->hasColumn('#__publication_authors', 'orcid')
         ) {
-            $query = "ALTER TABLE `#__publication_authors` ADD COLUMN `orcid` VARCHAR(50) NULL DEFAULT NULL";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__publication_authors', 'orcid')
+                ->string(50)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
     }
 
@@ -36,13 +40,13 @@ class Migration20240716193359ComPublications extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__publication_authors')
-            && $this->db->tableHasField('#__publication_authors', 'orcid')
+            $schema->tableExists('#__publication_authors')
+            && $schema->hasColumn('#__publication_authors', 'orcid')
         ) {
-            $query = "ALTER TABLE `#__publication_authors` DROP COLUMN `orcid`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__publication_authors', 'orcid');
         }
     }
 }

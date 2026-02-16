@@ -21,13 +21,14 @@ class Migration20141215165100ComCitations extends Base
      **/
     public function up()
     {
-        // Checks whether table exists and if the 'scope' field already exists
-        if ($this->db->tableExists('#__citations') && $this->db->tableHasField('#__citations', 'gid')) {
-            $query = "ALTER TABLE `#__citations` "
-                . "CHANGE COLUMN `gid` `scope_id` VARCHAR(45) NULL DEFAULT NULL AFTER `scope`;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__citations', 'gid')) {
+            $schema->renameColumn('#__citations', 'gid', 'scope_id')
+                ->string(45)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
     }
 
@@ -36,13 +37,14 @@ class Migration20141215165100ComCitations extends Base
      **/
     public function down()
     {
-        // Checks to see if field exists and removes it
-        if ($this->db->tableExists('#__citations') && !!$this->db->tableHasField('#__citations', 'gid')) {
-            $query = "ALTER TABLE `#__citations` "
-                . "CHANGE COLUMN `scope_id` `gid` VARCHAR(45) NULL DEFAULT NULL AFTER `scope`;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__citations', 'scope_id')) {
+            $schema->renameColumn('#__citations', 'scope_id', 'gid')
+                ->string(45)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
     }
 }

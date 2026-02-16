@@ -21,11 +21,18 @@ class Migration20160518143900PlgContentCategories extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `name`='plg_content_categories', `element`='categories' WHERE "
-                . "`folder`='content' AND `element`='joomla';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set([
+                    'name'    => 'plg_content_categories',
+                    'element' => 'categories'
+                ])
+                ->where('folder', '=', 'content')
+                ->where('element', '=', 'joomla')
+                ->execute();
         }
     }
 
@@ -34,11 +41,18 @@ class Migration20160518143900PlgContentCategories extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET `name`='plg_content_joomla', `element`='joomla' WHERE "
-                . "`folder`='content' AND `element`='categories';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set([
+                    'name'    => 'plg_content_joomla',
+                    'element' => 'joomla'
+                ])
+                ->where('folder', '=', 'content')
+                ->where('element', '=', 'categories')
+                ->execute();
         }
     }
 }

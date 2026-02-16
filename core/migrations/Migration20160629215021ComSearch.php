@@ -20,22 +20,23 @@ class Migration20160629215021ComSearch extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__search_indexqueue')) {
-            $createQuery = 'CREATE TABLE `#__search_indexqueue` (
-			`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			`hubtype` varchar(12) NOT NULL DEFAULT \'\',
-			`action` varchar(12) DEFAULT NULL,
-			`start` int(11) NOT NULL DEFAULT \'0\',
-			`lock` tinyint(1) NOT NULL DEFAULT \'0\',
-			`complete` tinyint(1) NOT NULL DEFAULT \'0\',
-			`created` timestamp NULL DEFAULT NULL,
-			`created_by` int(11) DEFAULT NULL,
-			`modified` timestamp NULL DEFAULT NULL,
-			PRIMARY KEY (`id`)
-			) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;';
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($createQuery);
-            $this->db->query();
+        if (!$schema->tableExists('#__search_indexqueue')) {
+            $schema->createTable('#__search_indexqueue')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('hubtype', 12)->default('')
+                ->string('action', 12)->nullable()
+                ->integer('start')->default(0)
+                ->tinyInteger('lock')->default(0)
+                ->tinyInteger('complete')->default(0)
+                ->timestamp('created')->nullable()
+                ->integer('created_by')->nullable()
+                ->timestamp('modified')->nullable()
+                ->primaryKey('id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -44,10 +45,8 @@ class Migration20160629215021ComSearch extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__search_indexqueue')) {
-            $dropQuery = 'DROP TABLE `#__search_indexqueue`';
-            $this->db->setQuery($dropQuery);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__search_indexqueue');
     }
 }

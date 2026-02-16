@@ -21,10 +21,10 @@ class Migration20130731203037ComResources extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__media_tracking', 'total_viewing_time')) {
-            $query = "ALTER TABLE `#__media_tracking` ADD COLUMN `total_viewing_time` int(11) DEFAULT 0;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->hasColumn('#__media_tracking', 'total_viewing_time')) {
+            $schema->addColumn('#__media_tracking', 'total_viewing_time')->integer()->default(0)->execute();
         }
     }
 
@@ -33,10 +33,10 @@ class Migration20130731203037ComResources extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__media_tracking', 'total_viewing_time')) {
-            $query = "ALTER TABLE `#__media_tracking` DROP `total_viewing_time`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__media_tracking', 'total_viewing_time')) {
+            $schema->dropColumn('#__media_tracking', 'total_viewing_time');
         }
     }
 }

@@ -18,46 +18,43 @@ class Migration20130413000000ComCourses extends Base
 {
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
+
         $runExtra = false;
 
-        // Add a unique index on grade book and asset_id field to forms table
-        if (!$this->db->tableHasKey('#__courses_grade_book', 'alternate_key')) {
-            $query .= "ALTER TABLE `#__courses_grade_book` ADD UNIQUE INDEX `alternate_key` (`user_id`, `scope`,"
-                . "`scope_id`);\n";
-        }
+        // Add a unique index on grade book
+        $schema->addUniqueIndex('#__courses_grade_book', 'alternate_key', ['user_id', 'scope', 'scope_id']);
 
-        if (!$this->db->tableHasField('#__courses_forms', 'asset_id')) {
-            $query .= "ALTER TABLE `#__courses_forms` ADD `asset_id` INT(11)  NULL  DEFAULT NULL  AFTER `created`;\n";
+        // Add asset_id field to forms table
+        if (!$schema->hasColumn('#__courses_forms', 'asset_id')) {
+            $schema->addColumn('#__courses_forms', 'asset_id')->integer()->nullable()->default(null)->execute();
             $runExtra = true;
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
         }
 
         if ($runExtra) {
             // Get the form id from the asset content fields
-            $this->db->setQuery("SELECT `id`, `content` FROM `#__courses_assets` WHERE `type`='exam';");
-            $rows = $this->db->loadObjectList();
+            $rows = $this->db->getQuery(true)
+                ->select(['id', 'content'])
+                ->from('#__courses_assets')
+                ->where('type', '=', 'exam')
+                ->loadObjectList();
 
             // Now insert those into the new forms asset_id field
             foreach ($rows as $row) {
-                $query  = "UPDATE `#__courses_forms`";
-                $query .= " SET `asset_id` = " . $this->db->Quote($row->id);
-                $query .= " WHERE `id` = " . $this->db->Quote(json_decode($row->content)->form_id) . " AND "
-                    . "`asset_id` IS NULL";
-
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__courses_forms')
+                    ->set(['asset_id' => $row->id])
+                    ->where('id', '=', json_decode($row->content)->form_id)
+                    ->whereIsNull('asset_id')
+                    ->execute();
             }
 
             // Delete the content field for asset type of exam
-            $query = "UPDATE `#__courses_assets` SET `content` = '' WHERE `type` = 'exam';";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__courses_assets')
+                ->set(['content' => ''])
+                ->where('type', '=', 'exam')
+                ->execute();
         }
     }
 }

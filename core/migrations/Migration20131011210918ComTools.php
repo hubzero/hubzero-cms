@@ -21,14 +21,16 @@ class Migration20131011210918ComTools extends Base
      **/
     public function up()
     {
-        $query = "SHOW TABLE STATUS LIKE '#__tool_licenses'";
-        $this->db->setQuery($query);
-        $obj = $this->db->loadObject();
+        $licenses = [];
 
-        if ($obj && $obj->Auto_increment == 1) {
-            $query  = "INSERT INTO `#__tool_licenses` (`name`, `text`, `title`, `ordering`) VALUES ";
-            $query .= "('default', 'All rights reserved.', 'Default license', 0), ";
-            $query .= "('BSD', 'Copyright (c) [YEAR], [OWNER]\nAll rights reserved.\n\nRedistribution and use in"
+        $licenses[] = [
+            'name'     => 'default',
+            'text'     => 'All rights reserved.',
+            'title'    => 'Default license',
+            'ordering' => 0
+        ];
+
+            $textBSD = "Copyright (c) [YEAR], [OWNER]\nAll rights reserved.\n\nRedistribution and use in"
                 . "source and binary forms, with or without modification, are permitted provided that the"
                 . "following conditions are met:\n\nRedistributions of source code must retain the above copyright"
                 . "notice, this list of conditions and the following disclaimer.\nRedistributions in binary form"
@@ -36,7 +38,7 @@ class Migration20131011210918ComTools extends Base
                 . "in the documentation and/or other materials provided with the distribution.\nNeither the name"
                 . "of the [ORGANIZATION] nor the names of its contributors may be used to endorse or promote"
                 . "products derived from this software without specific prior written permission.\nTHIS SOFTWARE"
-                . "IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \'AS IS\' AND ANY EXPRESS OR IMPLIED"
+                . "IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND ANY EXPRESS OR IMPLIED"
                 . "WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND"
                 . "FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR"
                 . "CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR"
@@ -44,8 +46,15 @@ class Migration20131011210918ComTools extends Base
                 . "SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY"
                 . "THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR"
                 . "OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE"
-                . "POSSIBILITY OF SUCH DAMAGE.', 'BSD', 1),";
-            $query .= "('GPL', '[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR]  [OWNER]\r\n\r\nThis program is"
+                . "POSSIBILITY OF SUCH DAMAGE.";
+            $licenses[] = [
+                'name'     => 'BSD',
+                'text'     => $textBSD,
+                'title'    => 'BSD',
+                'ordering' => 1
+            ];
+
+            $textGPL = "[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR]  [OWNER]\r\n\r\nThis program is"
                 . "free software: you can redistribute it and/or modify\r\nit under the terms of the GNU General"
                 . "Public License as published by\r\nthe Free Software Foundation, either version 3 of the"
                 . "License, or\r\n(at your option) any later version.\r\n\r\nThis program is distributed in the"
@@ -429,9 +438,15 @@ class Migration20131011210918ComTools extends Base
                 . "16.\r\n\r\n  If the disclaimer of warranty and limitation of liability provided\r\nabove cannot"
                 . "be given local legal effect according to their terms,\r\nreviewing courts shall apply local law"
                 . "that most closely approximates\r\nan absolute waiver of all civil liability in connection with"
-                . "the\r\nProgram, unless a warranty or assumption of liability accompanies a\r\ncopy of the"
-                . "Program in return for a fee.\r\n', 'General Public License (GPL)', 3),";
-            $query .= "('NCSA', 'Copyright (c) [YEAR] [OWNER] \nAll rights reserved.\n\nDeveloped by:	\n"
+                . "Program in return for a fee.\r\n";
+            $licenses[] = [
+                'name'     => 'GPL',
+                'text'     => $textGPL,
+                'title'    => 'General Public License (GPL)',
+                'ordering' => 3
+            ];
+
+            $textNCSA = "Copyright (c) [YEAR] [OWNER] \nAll rights reserved.\n\nDeveloped by:	\n"
                 . "[OWNER]\n			[ORGANIZATION]\n			[URL]\n\n"
                 . "Permission is hereby granted, free of charge, "
                 . "to any"
@@ -449,10 +464,22 @@ class Migration20131011210918ComTools extends Base
                 . "LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND"
                 . "NONINFRINGEMENT. IN NO EVENT SHALL THE CONTRIBUTORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY"
                 . "CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING"
-                . "FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE"
-                . "SOFTWARE.', 'NCSA Open Source License', 2),";
-            $query .= "('custom', '[ONE LINE DESCRIPTION]\nCopyright (C) [YEAR] [OWNER]', 'custom', 5), ";
-            $query .= "('LGPL', '[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR]  [OWNER]\r\n\r\nThis program is"
+                . "SOFTWARE.";
+            $licenses[] = [
+                'name'     => 'NCSA',
+                'text'     => $textNCSA,
+                'title'    => 'NCSA Open Source License',
+                'ordering' => 2
+            ];
+
+            $licenses[] = [
+                'name'     => 'custom',
+                'text'     => '[ONE LINE DESCRIPTION]\nCopyright (C) [YEAR] [OWNER]',
+                'title'    => 'custom',
+                'ordering' => 5
+            ];
+
+            $textLGPL = "[ONE LINE DESCRIPTION]\r\nCopyright (C) [YEAR]  [OWNER]\r\n\r\nThis program is"
                 . "free software: you can redistribute it and/or modify\r\nit under the terms of the GNU Lesser"
                 . "General Public License as published\r\nby the Free Software Foundation, either version 3 of the"
                 . "License, or\r\n(at your option) any later version.\r\n\r\nThis program is distributed in the"
@@ -927,11 +954,34 @@ class Migration20131011210918ComTools extends Base
                 . "16.\r\n\r\n  If the disclaimer of warranty and limitation of liability provided\r\nabove cannot"
                 . "be given local legal effect according to their terms,\r\nreviewing courts shall apply local law"
                 . "that most closely approximates\r\nan absolute waiver of all civil liability in connection with"
-                . "the\r\nProgram, unless a warranty or assumption of liability accompanies a\r\ncopy of the"
-                . "Program in return for a fee.\r\n', 'LGPL', 4);";
+                . "Program in return for a fee.\r\n";
+            $licenses[] = [
+                'name'     => 'LGPL',
+                'text'     => $textLGPL,
+                'title'    => 'LGPL',
+                'ordering' => 4
+            ];
 
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+            foreach ($licenses as $license) {
+                $existing = $this->db->getQuery(true)
+                    ->select('name', 'text')
+                    ->from('#__tool_licenses')
+                    ->whereEquals('name', $license['name'])
+                    ->first();
+
+                if (!$existing) {
+                    $this->db->getQuery(true)
+                        ->insert('#__tool_licenses')
+                        ->columns(array_keys($license))
+                        ->values(array_values($license))
+                        ->execute();
+                } elseif (empty($existing->text)) {
+                    $this->db->getQuery(true)
+                        ->update('#__tool_licenses')
+                        ->set($license)
+                        ->whereEquals('name', $license['name'])
+                        ->execute();
+                }
+            }
     }
 }

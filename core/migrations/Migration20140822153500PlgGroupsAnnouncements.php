@@ -21,42 +21,20 @@ class Migration20140822153500PlgGroupsAnnouncements extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__announcements')) {
-            if ($this->db->tableHasKey('#__announcements', 'jos_wishlist_vote_wishid_idx')) {
-                $query = "ALTER TABLE `#__wishlist_vote` DROP INDEX `jos_wishlist_vote_wishid_idx`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasKey('#__announcements', 'idx_scope_scope_id')) {
-                $query = "ALTER TABLE `#__announcements` ADD INDEX `idx_scope_scope_id` (`scope`, `scope_id`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__announcements')) {
+            $schema->dropIndex('#__announcements', 'jos_wishlist_vote_wishid_idx');
 
-            if (!$this->db->tableHasKey('#__announcements', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__announcements` ADD INDEX `idx_created_by` (`created_by`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__announcements', 'idx_scope_scope_id', ['scope', 'scope_id']);
 
-            if (!$this->db->tableHasKey('#__announcements', 'idx_state')) {
-                $query = "ALTER TABLE `#__announcements` ADD INDEX `idx_state` (`state`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__announcements', 'idx_created_by', 'created_by');
 
-            if (!$this->db->tableHasKey('#__announcements', 'idx_priority')) {
-                $query = "ALTER TABLE `#__announcements` ADD INDEX `idx_priority` (`priority`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__announcements', 'idx_state', 'state');
 
-            if (!$this->db->tableHasKey('#__announcements', 'idx_sticky')) {
-                $query = "ALTER TABLE `#__announcements` ADD INDEX `idx_sticky` (`sticky`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__announcements', 'idx_priority', 'priority');
+
+            $schema->addIndex('#__announcements', 'idx_sticky', 'sticky');
         }
     }
 
@@ -65,36 +43,18 @@ class Migration20140822153500PlgGroupsAnnouncements extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__announcements')) {
-            if ($this->db->tableHasKey('#__announcements', 'idx_state')) {
-                $query = "ALTER TABLE `#__announcements` DROP INDEX `idx_state`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__announcements', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__announcements` DROP INDEX `idx_created_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__announcements')) {
+            $schema->dropIndex('#__announcements', 'idx_state');
 
-            if ($this->db->tableHasKey('#__announcements', 'idx_scope_scope_id')) {
-                $query = "ALTER TABLE `#__announcements` DROP INDEX `idx_scope_scope_id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__announcements', 'idx_created_by');
 
-            if ($this->db->tableHasKey('#__announcements', 'idx_priority')) {
-                $query = "ALTER TABLE `#__announcements` DROP INDEX `idx_priority`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__announcements', 'idx_scope_scope_id');
 
-            if ($this->db->tableHasKey('#__announcements', 'idx_sticky')) {
-                $query = "ALTER TABLE `#__announcements` DROP INDEX `idx_sticky`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__announcements', 'idx_priority');
+
+            $schema->dropIndex('#__announcements', 'idx_sticky');
         }
     }
 }

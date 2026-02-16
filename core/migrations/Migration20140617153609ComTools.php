@@ -26,15 +26,13 @@ class Migration20140617153609ComTools extends Base
             return false;
         }
 
-        if (!$mwdb->tableHasField('sessionlog', 'zone_id')) {
-            $query = "ALTER TABLE `sessionlog` ADD `zone_id` int(11) NOT NULL DEFAULT '0'";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        $mwSchema = $mwdb->schema();
+
+        if (!$mwSchema->hasColumn('sessionlog', 'zone_id')) {
+            $mwSchema->addColumn('sessionlog', 'zone_id')->integer()->notNull()->default(0)->execute();
         }
-        if (!$mwdb->tableHasField('joblog', 'zone_id')) {
-            $query = "ALTER TABLE `joblog` ADD `zone_id` int(11) NOT NULL DEFAULT '0'";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        if (!$mwSchema->hasColumn('joblog', 'zone_id')) {
+            $mwSchema->addColumn('joblog', 'zone_id')->integer()->notNull()->default(0)->execute();
         }
     }
 
@@ -48,15 +46,13 @@ class Migration20140617153609ComTools extends Base
             return false;
         }
 
-        if ($mwdb->tableHasField('sessionlog', 'zone_id')) {
-            $query = "ALTER TABLE `sessionlog` DROP `zone_id`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        $mwSchema = $mwdb->schema();
+
+        if ($mwSchema->hasColumn('sessionlog', 'zone_id')) {
+            $mwSchema->dropColumn('sessionlog', 'zone_id');
         }
-        if ($mwdb->tableHasField('joblog', 'zone_id')) {
-            $query = "ALTER TABLE `joblog` DROP `zone_id`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        if ($mwSchema->hasColumn('joblog', 'zone_id')) {
+            $mwSchema->dropColumn('joblog', 'zone_id');
         }
     }
 }
