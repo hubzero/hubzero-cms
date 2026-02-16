@@ -8,6 +8,9 @@
 
 namespace Hubzero\Console\Command\Install;
 
+use Hubzero\Database\Connection\PdoConnection;
+use Hubzero\Database\Exception\ConnectionFailedException;
+
 /**
  * Admin user creation helper class
  *
@@ -21,11 +24,6 @@ class AdminUser
      * @var int
      **/
     private const SUPER_USERS_GROUP_ID = 8;
-
-    /**
-     * The primary group number an ordinary hub profile carries
-     **/
-    private const PROFILE_GROUP_ID = 100;
 
     /**
      * Minimum password length
@@ -59,9 +57,8 @@ class AdminUser
         self::output("\n", $ansi);
         self::output("Press Ctrl+C to cancel at any time.\n", $ansi);
 
-        // Prefer what the database step wrote over the configuration the
-        // console read at startup, which a fresh install predates.
-        $dbConfig = Database::readConfig($appPath) ?? \Config::get('database');
+        // Load database configuration from Config facade
+        $dbConfig = \Config::get('database');
         if (!$dbConfig) {
             self::output("\n", $ansi, true);
             self::output("\e[31mDatabase configuration not found.\e[39m\n", $ansi, true);
@@ -88,10 +85,6 @@ class AdminUser
             self::output("\n", $ansi);
             self::output("Skipping admin user creation.\n", $ansi);
             return $existingAdmin;
-        }
-
-        if (Answers::isUnattended()) {
-            return self::createUnattended($pdo, $prefix, $ansi, $defaults);
         }
 
         // Collect user details
@@ -156,61 +149,6 @@ class AdminUser
     }
 
     /**
-     * Create the admin account from the answers given up front
-     *
-     * @param   \PDO    $pdo       PDO connection
-     * @param   string  $prefix    Table prefix
-     * @param   bool    $ansi      Whether to use ANSI color output
-     * @param   array   $defaults  Values carried over from the site settings
-     * @return  array|null  User data array, or null if an answer was unusable
-     */
-    private static function createUnattended($pdo, $prefix, $ansi, $defaults)
-    {
-        $answers = Answers::section('admin');
-
-        $userData = [
-            'name'     => $answers['name'] ?? $defaults['name'] ?? 'Site Administrator',
-            'username' => $answers['username'] ?? 'admin',
-            'email'    => $answers['email'] ?? $defaults['email'] ?? '',
-            'password' => $answers['password'] ?? '',
-        ];
-
-        self::output("\n", $ansi);
-
-        if (!preg_match('/^[a-zA-Z][a-zA-Z0-9_]{2,29}$/', $userData['username'])) {
-            $msg = "\e[31mNot a usable username: {$userData['username']}\e[39m\n";
-            self::output($msg, $ansi, true);
-            self::output("Must start with a letter, 3-30 chars, alphanumeric/underscore only.\n", $ansi, true);
-            return null;
-        }
-
-        if (!preg_match('/^[^@]+@[^@]+$/', $userData['email'])) {
-            self::output("\e[31mNot a valid admin email address: {$userData['email']}\e[39m\n", $ansi, true);
-            return null;
-        }
-
-        if (strlen($userData['password']) < self::MIN_PASSWORD_LENGTH) {
-            $minLen = self::MIN_PASSWORD_LENGTH;
-            self::output("\e[31mThe admin password must be at least {$minLen} characters.\e[39m\n", $ansi, true);
-            return null;
-        }
-
-        self::output("Creating admin user... ", $ansi);
-
-        if (self::createUser($pdo, $prefix, $userData) === null) {
-            self::output("\e[31mFailed.\e[39m\n", $ansi, true);
-            return null;
-        }
-
-        self::output("\e[32mDone.\e[39m\n", $ansi);
-        self::output("\n", $ansi);
-        self::output("  Username: \e[32m{$userData['username']}\e[39m\n", $ansi);
-        self::output("  Email:    \e[32m{$userData['email']}\e[39m\n", $ansi);
-
-        return $userData;
-    }
-
-    /**
      * Connect to the database using configuration
      *
      * @param   array  $config  Database configuration
@@ -220,27 +158,7 @@ class AdminUser
     private static function connectToDatabase($config, $ansi)
     {
         try {
-            $dsn = 'mysql:';
-
-            if (!empty($config['socket'])) {
-                $dsn .= 'unix_socket=' . $config['socket'];
-            } else {
-                $dsn .= 'host=' . ($config['host'] ?? 'localhost');
-                if (!empty($config['port'])) {
-                    $dsn .= ';port=' . $config['port'];
-                }
-            }
-
-            $dsn .= ';dbname=' . $config['db'];
-            $dsn .= ';charset=utf8mb4';
-
-            $options = [
-                \PDO::ATTR_TIMEOUT => 30,
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8mb4'",
-            ];
-
-            return new \PDO($dsn, $config['user'], $config['password'], $options);
+            return self::connectWithPdoConnector($config);
         } catch (\PDOException $e) {
             self::output("\e[31mDatabase connection failed.\e[39m\n", $ansi, true);
             self::output("Error: {$e->getMessage()}\n", $ansi, true);
@@ -249,29 +167,76 @@ class AdminUser
     }
 
     /**
-     * Whether the hub already has its administrator
+     * Connect using Hubzero standalone PDO connector and return native PDO
      *
-     * The administrator is the last thing an install creates, so a hub that
-     * has one is installed, and one that does not is not, however far an
-     * earlier attempt got.
-     *
-     * @param   string  $appPath  Path to the app directory
-     * @return  bool|null  Null when the database is configured but cannot be reached
-     **/
-    public static function exists($appPath)
+     * @param   array  $config  Database configuration
+     * @return  \PDO
+     * @throws  \PDOException
+     */
+    private static function connectWithPdoConnector(array $config): \PDO
     {
-        $dbConfig = Database::readConfig($appPath);
-        if (!$dbConfig) {
-            return false;
-        }
-        $dbConfig = (array) $dbConfig;
+        self::resolveInstallerDriver($config);
 
-        $pdo = self::connectToDatabase($dbConfig, false);
-        if ($pdo === null) {
-            return null;
+        $dsn = 'mysql:';
+
+        if (!empty($config['socket'])) {
+            $dsn .= 'unix_socket=' . $config['socket'];
+        } else {
+            $dsn .= 'host=' . ($config['host'] ?? 'localhost');
+            if (!empty($config['port'])) {
+                $dsn .= ';port=' . $config['port'];
+            }
         }
 
-        return self::getExistingAdmin($pdo, $dbConfig['dbprefix'] ?? 'jos_') !== null;
+        if (!empty($config['db'])) {
+            $dsn .= ';dbname=' . $config['db'];
+        } elseif (!empty($config['database'])) {
+            $dsn .= ';dbname=' . $config['database'];
+        }
+
+        $dsn .= ';charset=utf8mb4';
+
+        try {
+            $connection = new PdoConnection(
+                $dsn,
+                (string) ($config['user'] ?? ''),
+                (string) ($config['password'] ?? ''),
+                []
+            );
+
+            return $connection->getNativeConnection();
+        } catch (ConnectionFailedException $e) {
+            $previous = $e->getPrevious();
+            if ($previous instanceof \PDOException) {
+                throw $previous;
+            }
+
+            throw new \PDOException($e->getMessage(), (int) $e->getCode());
+        }
+    }
+
+    /**
+     * Resolve CLI installer driver/connection combo using test-suite naming conventions
+     *
+     * @param   array   $config  Database configuration
+     * @return  string  Normalized driver name
+     * @throws  \PDOException
+     */
+    private static function resolveInstallerDriver(array $config): string
+    {
+        $requested = strtolower((string) ($config['dbtype'] ?? $config['driver'] ?? 'mysql'));
+
+        if (in_array($requested, ['mysql', 'mariadb', 'percona', 'pdo'], true)) {
+            return 'mysql';
+        }
+
+        if (in_array($requested, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
+            throw new \PDOException(
+                "CLI installer currently supports MySQL-family drivers only (mysql/mariadb/percona). Requested: {$requested}"
+            );
+        }
+
+        throw new \PDOException("Unsupported database driver: {$requested}");
     }
 
     /**
@@ -294,7 +259,7 @@ class AdminUser
                  LIMIT 1"
             );
             $stmt->execute(['group_id' => self::SUPER_USERS_GROUP_ID]);
-            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $result = $stmt->fetch();
 
             return $result ?: null;
         } catch (\PDOException $e) {
@@ -491,65 +456,20 @@ class AdminUser
             // Generate password hash (using CRYPT_SHA512 format)
             $passhash = self::hashPassword($userData['password']);
 
-            $values = [
-                'name'         => $userData['name'],
-                'username'     => $userData['username'],
-                'email'        => $userData['email'],
-                'password'     => $passhash,
-                'usertype'     => 'Super Administrator',
-                'block'        => 0,
-                'approved'     => 2,
-                'sendEmail'    => 1,
-                'registerDate' => date('Y-m-d H:i:s'),
-                'params'       => '',
-                // Answered, not left unset. A hub holds a member at the
-                // registration form until every required answer is there, and
-                // an unanswered question and an answer of "no" look the same
-                // to it, so an administrator created without these cannot use
-                // the site they have just installed.
-                'activation'   => 1,
-            ];
-
-            // A hub keeps the parts of a name as well as the whole of it, and
-            // asks for none of them, or the shell fields, to be null. Which of
-            // them the table has depends on how far the migrations have run.
-            $parts = preg_split('/\s+/', trim($userData['name']), -1, PREG_SPLIT_NO_EMPTY) ?: [];
-
-            $given  = array_shift($parts) ?? '';
-            $family = array_pop($parts) ?? '';
-
-            $optional = [
-                'givenName'      => $given,
-                'surname'        => $family,
-                'middleName'     => implode(' ', $parts),
-                'homeDirectory'  => '',
-                'loginShell'     => '',
-                'ftpShell'       => '',
-                'usageAgreement' => 1,
-                'access'         => 1,
-            ];
-
-            $present = self::getColumns($pdo, $prefix . 'users');
-
-            foreach ($optional as $column => $value) {
-                if (in_array($column, $present, true)) {
-                    $values[$column] = $value;
-                }
-            }
-
-            $columns      = array_keys($values);
-            $placeholders = [];
-
-            foreach ($columns as $column) {
-                $placeholders[] = ':' . $column;
-            }
-
             // Insert into users table
             $stmt = $pdo->prepare(
-                "INSERT INTO `{$prefix}users` (`" . implode('`, `', $columns) . "`)"
-                . ' VALUES (' . implode(', ', $placeholders) . ')'
+                "INSERT INTO `{$prefix}users`
+                 (name, username, email, password, usertype, block, approved, sendEmail, registerDate, params)
+                 VALUES
+                 (:name, :username, :email, :password, 'Super Administrator', 0, 2, 1, :registerDate, '')"
             );
-            $stmt->execute($values);
+            $stmt->execute([
+                'name' => $userData['name'],
+                'username' => $userData['username'],
+                'email' => $userData['email'],
+                'password' => $passhash,
+                'registerDate' => date('Y-m-d H:i:s'),
+            ]);
 
             $userId = $pdo->lastInsertId();
 
@@ -578,89 +498,12 @@ class AdminUser
                 'group_id' => self::SUPER_USERS_GROUP_ID,
             ]);
 
-            self::createProfile($pdo, $prefix, $userId, $userData);
-
             $pdo->commit();
 
             return $userId;
         } catch (\PDOException $e) {
             $pdo->rollBack();
             return null;
-        }
-    }
-
-    /**
-     * The hub profile behind the account
-     *
-     * A hub keeps its own record of a member alongside the Joomla one, and
-     * treats an account with no such record as a registration that was never
-     * finished. Without it the administrator is redirected to the completion
-     * form on every page of the site.
-     *
-     * @param   \PDO    $pdo       PDO connection
-     * @param   string  $prefix    Table prefix
-     * @param   int     $userId    The account just created
-     * @param   array   $userData  What was asked for
-     * @return  void
-     **/
-    private static function createProfile($pdo, $prefix, $userId, $userData)
-    {
-        $columns = self::getColumns($pdo, $prefix . 'xprofiles');
-
-        if (empty($columns)) {
-            return;
-        }
-
-        $values = [
-            'uidNumber'      => $userId,
-            'name'           => $userData['name'],
-            'username'       => $userData['username'],
-            'email'          => $userData['email'],
-            'emailConfirmed' => 1,
-            'usageAgreement' => 1,
-            'public'         => 1,
-            'gidNumber'      => self::PROFILE_GROUP_ID,
-        ];
-
-        foreach (array_keys($values) as $column) {
-            if (!in_array($column, $columns, true)) {
-                unset($values[$column]);
-            }
-        }
-
-        if (!isset($values['uidNumber'])) {
-            return;
-        }
-
-        $names        = array_keys($values);
-        $placeholders = [];
-
-        foreach ($names as $name) {
-            $placeholders[] = ':' . $name;
-        }
-
-        $stmt = $pdo->prepare(
-            "INSERT INTO `{$prefix}xprofiles` (`" . implode('`, `', $names) . '`)'
-            . ' VALUES (' . implode(', ', $placeholders) . ')'
-        );
-        $stmt->execute($values);
-    }
-
-    /**
-     * The columns a table has
-     *
-     * @param   \PDO    $pdo    PDO connection
-     * @param   string  $table  The table to describe
-     * @return  array
-     **/
-    private static function getColumns($pdo, $table)
-    {
-        try {
-            $stmt = $pdo->query('SHOW COLUMNS FROM `' . $table . '`');
-
-            return $stmt ? $stmt->fetchAll(\PDO::FETCH_COLUMN, 0) : [];
-        } catch (\PDOException $e) {
-            return [];
         }
     }
 
@@ -672,11 +515,9 @@ class AdminUser
      **/
     private static function hashPassword($password)
     {
-        // Eight hex characters between the markers, which is the shape the
-        // hub's own password code writes and the only one it reads back
-        $salt = self::generateSalt(8);
-
-        return '{CRYPT}' . crypt($password, '$6$' . $salt . '$');
+        $salt = self::generateSalt(16);
+        $encrypted = crypt($password, '$6$' . $salt . '$');
+        return '{CRYPT}' . $encrypted;
     }
 
     /**
@@ -687,7 +528,21 @@ class AdminUser
      **/
     private static function generateSalt($length)
     {
-        return substr(bin2hex(random_bytes($length)), 0, $length);
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./';
+        $salt = '';
+
+        if (function_exists('random_bytes')) {
+            $bytes = random_bytes($length);
+            for ($i = 0; $i < $length; $i++) {
+                $salt .= $chars[ord($bytes[$i]) % strlen($chars)];
+            }
+        } else {
+            for ($i = 0; $i < $length; $i++) {
+                $salt .= $chars[mt_rand(0, strlen($chars) - 1)];
+            }
+        }
+
+        return $salt;
     }
 
     /**

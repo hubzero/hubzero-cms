@@ -11,6 +11,8 @@ namespace Hubzero\Console\Command;
 use Hubzero\Utility\Date;
 use Hubzero\Config\Registry;
 use Hubzero\Content\Migration\Base as Migration;
+use Hubzero\Console\Command\Database\SchemaConverter;
+use Hubzero\Database\DatabaseManager;
 use Config;
 
 /**
@@ -33,63 +35,53 @@ class Database extends Base implements CommandInterface
     /**
      * Dump the database
      *
-     * @museDescription  Dumps the hub's database into a file
-     *
-     * Give the file to write as the argument, or leave it out to write one
-     * in the home directory. Tables without the hub's prefix are left out
-     * unless --all-tables is given. The dump is consistent without locking
-     * the hub, and only its owner can read it.
+     * @museDescription  Dumps the current site database into a file in the users home directory
      *
      * @return  void
      **/
     public function dump()
     {
-        $db       = \App::get('db');
-        $tables   = $db->getTableList();
-        $prefix   = $db->getPrefix();
+        $tables   = App::get('db')->getTableList();
+        $prefix   = App::get('db')->getPrefix();
         $excludes = [];
+        $now      = new Date();
+        $exclude  = '';
         $includes = (array)$this->arguments->getOpt('include-table', []);
 
         if (!$this->arguments->getOpt('all-tables')) {
             $this->output->addLine('Dumping database with all prefixed tables included');
             foreach ($tables as $table) {
                 if (strpos($table, $prefix) !== 0 && !in_array(str_replace('#__', $prefix, $table), $includes)) {
-                    $excludes[] = '--ignore-table=' . escapeshellarg(Config::get('db') . '.' . $table);
+                    $excludes[] = Config::get('db') . '.' . $table;
                 } elseif (in_array(str_replace('#__', $prefix, $table), $includes)) {
                     $this->output->addLine('Also including `' . $table . '`');
                 }
             }
+
+            // Build exclude list string
+            $exclude = '--ignore-table=' . implode(' --ignore-table=', $excludes);
         } else {
             $this->output->addLine('Dumping database with all tables included');
         }
 
-        if (!$filename = $this->file()) {
-            $now      = new Date();
-            $filename = tempnam(getenv('HOME'), gethostname() . '.mysql.dump.' . $now->format('Y.m.d') . '.sql.');
-        }
+        // Add save location option
 
-        // Made first, so that the dump is never readable by anyone else
-        if (!touch($filename) || !chmod($filename, 0600)) {
-            $this->output->error('Cannot write ' . $filename);
-        }
+        $home     = getenv('HOME');
+        $hostname = gethostname();
+        $filename = tempnam($home, "{$hostname}.mysql.dump." . $now->format('Y.m.d') . ".sql.");
 
-        $client      = $this->client(['mariadb-dump', 'mysqldump']);
-        $credentials = $this->credentials();
+        // Build command
+        $cmd = "mysqldump -u " .
+            Config::get('user') .
+            " -p'" .
+            Config::get('password') .
+            "' " .
+            Config::get('db') .
+            " --routines {$exclude} > {$filename}";
 
-        $cmd = escapeshellarg($client)
-            . ' --defaults-extra-file=' . escapeshellarg($credentials)
-            . ' --single-transaction --no-tablespaces --routines --triggers '
-            . implode(' ', $excludes) . ' '
-            . escapeshellarg(Config::get('db'))
-            . ' > ' . escapeshellarg($filename);
+        exec($cmd);
 
-        exec($cmd, $output, $status);
-        unlink($credentials);
-
-        if ($status !== 0) {
-            $this->output->error('The dump failed; ' . $filename . ' is incomplete.');
-        }
-
+        // Print out location of file
         $this->output->addLine('File saved to: ' . $filename, 'success');
     }
 
@@ -98,72 +90,52 @@ class Database extends Base implements CommandInterface
      *
      * @museDescription  Loads the provided database into the hubs currently configured database
      *
-     * Give the dump to load as the argument, or "-" to read it from standard
-     * input, as from a file the hub's account cannot read itself.
-     *
-     * By default the settings of a few extensions that differ between hubs,
-     * such as the paths and services of a development hub, are kept across
-     * the load. Pass --exact to restore a hub's own dump just as it was, and
-     * --drop-all-tables to remove tables the dump does not mention.
-     *
      * @return  void
      **/
     public function load()
     {
-        if (!$infile = $this->file()) {
+        if (!$infile = $this->arguments->getOpt(3)) {
             $this->output->error('Please provide an input file');
-        } elseif ($infile !== '-' && !is_file($infile)) {
-            $this->output->error("'{$infile}' does not appear to be a valid file");
+        } else {
+            if (!is_file($infile)) {
+                $this->output->error("'{$infile}' does not appear to be a valid file");
+            }
         }
-
-        $exact = (bool) $this->arguments->getOpt('exact');
-        $db    = \App::get('db');
 
         // First, set some things aside that we need to reapply after the update
         $params = [];
-        if (!$exact) {
-            $params['com_system']             = \Component::params('com_system');
-            $params['com_tools']              = \Component::params('com_tools');
-            $params['com_usage']              = \Component::params('com_usage');
-            $params['com_members']            = \Component::params('com_members');
-            $params['plg_projects_databases'] = \Plugin::params('projects', 'databases');
-        }
+        $params['com_system']             = \Component::params('com_system');
+        $params['com_tools']              = \Component::params('com_tools');
+        $params['com_usage']              = \Component::params('com_usage');
+        $params['com_members']            = \Component::params('com_members');
+        $params['plg_projects_databases'] = \Plugin::params('projects', 'databases');
+
+        $tables = App::get('db')->getTableList();
 
         // See if we should drop all tables first
         if ($this->arguments->getOpt('drop-all-tables')) {
             $this->output->addLine('Dropping all tables...');
-
-            $db->setQuery('SET FOREIGN_KEY_CHECKS = 0');
-            $db->query();
-
-            foreach ($db->getTableList() as $table) {
-                $db->dropTable($table);
+            foreach ($tables as $table) {
+                App::get('db')->dropTable($table);
             }
-
-            $db->setQuery('SET FOREIGN_KEY_CHECKS = 1');
-            $db->query();
         }
 
-        $client      = $this->client(['mariadb', 'mysql']);
-        $credentials = $this->credentials();
+        // Craft the command to be executed
+        $infile = escapeshellarg($infile);
+        $cmd    = "mysql -u " .
+            Config::get('user') .
+            " -p'" .
+            Config::get('password') .
+            "' -D " .
+            Config::get('db') .
+            " < {$infile}";
 
-        // A file of "-" is standard input, which the client inherits
-        $cmd = escapeshellarg($client)
-            . ' --defaults-extra-file=' . escapeshellarg($credentials)
-            . ' ' . escapeshellarg(Config::get('db'))
-            . ($infile === '-' ? '' : ' < ' . escapeshellarg($infile));
-
-        $this->output->addLine('Loading data from ' . ($infile === '-' ? 'standard input' : $infile) . '...');
+        $this->output->addLine('Loading data from ' . $infile . '...');
 
         // Now push the big red button
-        exec($cmd, $output, $status);
-        unlink($credentials);
+        exec($cmd);
 
-        if ($status !== 0) {
-            $this->output->error('The load failed.');
-        }
-
-        $migration = new Migration($db);
+        $migration = new Migration(App::get('db'));
 
         // Now load some things back up
         foreach ($params as $k => $v) {
@@ -176,82 +148,283 @@ class Database extends Base implements CommandInterface
     }
 
     /**
-     * The file named on the command line, before or after its options, or
-     * "-" for standard input
+     * Convert database schema from one database type to another
      *
-     * @return  string|null
+     * @museDescription  Converts schema.sql from one database type to another (e.g., mysql to sqlite)
+     *
+     * @return  void
      **/
-    private function file()
+    public function schema()
     {
-        $opts = (array) $this->arguments->getOpts();
-
-        foreach ($opts as $key => $value) {
-            if (is_int($key) && $key >= 3) {
-                return $value;
-            }
-        }
-
-        // A lone "-" reads as an option with no name
-        return array_key_exists('', $opts) ? '-' : null;
+        $converter = new SchemaConverter($this->output, $this->arguments);
+        $converter->convert();
     }
 
     /**
-     * Find the first of the named database clients that is installed
+     * Launch an interactive database CLI session
      *
-     * MariaDB's own names first; servers before 10.5 have only MySQL's.
+     * @museDescription  Opens the native database client (mysql/psql/sqlite3) with auto-configured credentials
      *
-     * @param   array   $names
-     * @return  string
+     * @return  void
      **/
-    private function client(array $names)
+    public function cli()
     {
-        foreach ($names as $name) {
-            $path = trim((string) shell_exec('command -v ' . escapeshellarg($name) . ' 2>/dev/null'));
+        $driver = strtolower(Config::get('driver', 'mysql'));
 
-            if ($path !== '') {
-                return $path;
-            }
+        // Build the command based on database driver
+        switch ($driver) {
+            case 'mysql':
+            case 'mysqli':
+            case 'mariadb':
+            case 'percona':
+                $cmd = 'mysql';
+                $cmd .= ' -u ' . escapeshellarg(Config::get('user'));
+
+                $password = Config::get('password');
+                if (!empty($password)) {
+                    $cmd .= ' -p' . escapeshellarg($password);
+                }
+
+                $host = Config::get('host', 'localhost');
+                if (!empty($host) && $host !== 'localhost') {
+                    $cmd .= ' -h ' . escapeshellarg($host);
+                }
+
+                $port = Config::get('port');
+                if (!empty($port) && $port != 3306) {
+                    $cmd .= ' -P ' . escapeshellarg($port);
+                }
+
+                $cmd .= ' ' . escapeshellarg(Config::get('db'));
+                break;
+
+            case 'pgsql':
+            case 'postgresql':
+                // PostgreSQL uses PGPASSWORD environment variable
+                $password = Config::get('password');
+                $envPrefix = !empty($password) ? 'PGPASSWORD=' . escapeshellarg($password) . ' ' : '';
+
+                $cmd = $envPrefix . 'psql';
+                $cmd .= ' -U ' . escapeshellarg(Config::get('user'));
+
+                $host = Config::get('host', 'localhost');
+                if (!empty($host)) {
+                    $cmd .= ' -h ' . escapeshellarg($host);
+                }
+
+                $port = Config::get('port');
+                if (!empty($port) && $port != 5432) {
+                    $cmd .= ' -p ' . escapeshellarg($port);
+                }
+
+                $cmd .= ' ' . escapeshellarg(Config::get('db'));
+                break;
+
+            case 'sqlite':
+            case 'sqlite3':
+                $dbPath = Config::get('database', Config::get('db'));
+                if (strpos($dbPath, '/') !== 0) {
+                    // Relative path - prepend app root
+                    $dbPath = PATH_ROOT . '/' . $dbPath;
+                }
+                $cmd = 'sqlite3 ' . escapeshellarg($dbPath);
+                break;
+
+            default:
+                $this->output->error("Unsupported database driver: {$driver}");
+                return;
         }
 
-        $this->output->error('Neither ' . implode(' nor ', $names) . ' is installed. Install the MariaDB client.');
+        $this->output->addLine("Launching {$driver} client...");
+        $this->output->addLine("Type 'exit' or 'quit' to return to the shell.");
+        $this->output->addLine('');
+
+        // Use passthru to hand over terminal control to the database client
+        passthru($cmd);
     }
 
     /**
-     * Write the hub's database credentials where only this account can read them
+     * Execute a single SQL query
      *
-     * The clients read them from the file, so the password is never on a
-     * command line, where anyone on the server could see it.
+     * @museDescription  Runs a single SQL query against the database with automatic table prefix replacement
      *
-     * @return  string  The file's path; remove it when done
+     * @return  void
      **/
-    private function credentials()
+    public function query()
     {
-        $file = tempnam(sys_get_temp_dir(), 'muse-db-');
-        chmod($file, 0600);
+        $sql = $this->arguments->getOpt('sql');
 
-        $options = [
-            'user'     => Config::get('user'),
-            'password' => Config::get('password'),
-        ];
+        // If no --sql option, check for positional argument after 'query'
+        if (empty($sql)) {
+            $sql = $this->arguments->getOpt(3);
+        }
 
-        if (Config::get('socket')) {
-            $options['socket'] = Config::get('socket');
-        } else {
-            $options['host'] = Config::get('host', 'localhost');
+        if (empty($sql)) {
+            $this->output->error('Please provide a SQL query using --sql="YOUR QUERY" or as the third argument');
+            return;
+        }
 
-            if (Config::get('port')) {
-                $options['port'] = Config::get('port');
+        // Replace #__ with the actual table prefix
+        $prefix = App::get('db')->getPrefix();
+        $sql = str_replace('#__', $prefix, $sql);
+
+        $jsonOutput = $this->arguments->getOpt('json');
+
+        try {
+            $db = App::get('db');
+            $db->setQuery($sql);
+
+            // Determine if this is a SELECT query (returns results)
+            $trimmedSql = ltrim(strtoupper($sql));
+            $isSelect = strpos($trimmedSql, 'SELECT') === 0
+                     || strpos($trimmedSql, 'SHOW') === 0
+                     || strpos($trimmedSql, 'DESCRIBE') === 0
+                     || strpos($trimmedSql, 'DESC') === 0
+                     || strpos($trimmedSql, 'EXPLAIN') === 0;
+
+            if ($isSelect) {
+                $results = $db->loadAssocList();
+
+                if ($jsonOutput) {
+                    $this->output->addLine(json_encode($results, JSON_PRETTY_PRINT));
+                } else {
+                    if (empty($results)) {
+                        $this->output->addLine('No results returned.', 'info');
+                    } else {
+                        // Get column headers from first row
+                        $headers = array_keys($results[0]);
+
+                        // Calculate column widths
+                        $widths = [];
+                        foreach ($headers as $header) {
+                            $widths[$header] = strlen($header);
+                        }
+                        foreach ($results as $row) {
+                            foreach ($row as $key => $value) {
+                                $len = strlen((string)$value);
+                                if ($len > $widths[$key]) {
+                                    $widths[$key] = min($len, 50); // Cap at 50 chars
+                                }
+                            }
+                        }
+
+                        // Print header row
+                        $headerLine = '| ';
+                        $separator = '+-';
+                        foreach ($headers as $header) {
+                            $headerLine .= str_pad($header, $widths[$header]) . ' | ';
+                            $separator .= str_repeat('-', $widths[$header]) . '-+-';
+                        }
+                        $separator = rtrim($separator, '-+') . '+';
+
+                        $this->output->addLine($separator);
+                        $this->output->addLine(rtrim($headerLine));
+                        $this->output->addLine($separator);
+
+                        // Print data rows
+                        foreach ($results as $row) {
+                            $line = '| ';
+                            foreach ($headers as $header) {
+                                $value = (string)$row[$header];
+                                if (strlen($value) > 50) {
+                                    $value = substr($value, 0, 47) . '...';
+                                }
+                                $line .= str_pad($value, $widths[$header]) . ' | ';
+                            }
+                            $this->output->addLine(rtrim($line));
+                        }
+
+                        $this->output->addLine($separator);
+                        $this->output->addLine(count($results) . ' row(s) returned.', 'info');
+                    }
+                }
+            } else {
+                // Execute non-SELECT query
+                $result = $db->execute();
+
+                if ($result) {
+                    $affected = $db->getAffectedRows();
+                    if ($jsonOutput) {
+                        $this->output->addLine(json_encode([
+                            'success' => true,
+                            'affected_rows' => $affected
+                        ], JSON_PRETTY_PRINT));
+                    } else {
+                        $this->output->addLine("Query executed successfully. {$affected} row(s) affected.", 'success');
+                    }
+                } else {
+                    if ($jsonOutput) {
+                        $this->output->addLine(json_encode([
+                            'success' => false,
+                            'error' => $db->getErrorMsg()
+                        ], JSON_PRETTY_PRINT));
+                    } else {
+                        $this->output->error('Query failed: ' . $db->getErrorMsg());
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            if ($jsonOutput) {
+                $this->output->addLine(json_encode([
+                    'success' => false,
+                    'error' => $e->getMessage()
+                ], JSON_PRETTY_PRINT));
+            } else {
+                $this->output->error('Query error: ' . $e->getMessage());
             }
         }
+    }
 
-        $content = "[client]\n";
-        foreach ($options as $key => $value) {
-            $content .= $key . '="' . addcslashes((string) $value, "\\\"") . "\"\n";
+    /**
+     * List available database drivers
+     *
+     * @museDescription  Lists all supported database drivers and their PHP extension availability
+     *
+     * @return  void
+     **/
+    public function drivers()
+    {
+        $manager = new DatabaseManager();
+        $availability = $manager->getDriverAvailability();
+
+        $this->output->addLine('');
+        $this->output->addLine('Database Drivers', ['format' => 'bold']);
+        $this->output->addLine(str_repeat('=', 68));
+        $this->output->addLine('');
+
+        $this->output->addLine(
+            sprintf('  %-12s %-36s %s', 'Name', 'Class', 'Status'),
+            ['format' => 'underline']
+        );
+
+        foreach ($availability as $name => $info) {
+            if ($info['custom']) {
+                $class  = 'custom resolver';
+                $status = 'registered';
+                $style  = 'info';
+            } elseif ($info['class']) {
+                $class  = $info['class'];
+                $status = $info['available'] ? 'available' : 'not available';
+                $style  = $info['available'] ? 'success' : ['color' => 'red'];
+            } else {
+                $class  = '—';
+                $status = 'unknown';
+                $style  = 'warning';
+            }
+
+            $this->output->addString(sprintf('  %-12s %-36s ', $name, $class));
+            $this->output->addLine($status, $style);
         }
 
-        file_put_contents($file, $content);
-
-        return $file;
+        $this->output->addLine('');
+        $this->output->addLine(
+            sprintf('  %d driver(s) total, %d available',
+                count($availability),
+                count(array_filter($availability, function ($d) { return $d['available'] === true; }))
+            ),
+            'info'
+        );
+        $this->output->addLine('');
     }
 
     /**
@@ -285,17 +458,44 @@ class Database extends Base implements CommandInterface
 				tool sessions into another environment.'
             )
             ->addArgument(
-                '--exact: Load the dump just as it was',
-                'When loading in a database dump, keep none of the current settings
-				that a load otherwise carries over. Use it to restore a hub from its
-				own backup.'
-            )
-            ->addArgument(
                 '--drop-all-tables: Drop all tables',
                 'When loading in a database dump, this option will drop all tables
 				prior to loading in the given dump. This is often helpful when the
 				applied dump is divergent in schema from the current database being
 				overwritten.'
+            )
+            ->addArgument(
+                '--from: Source database type (for schema command)',
+                'Specify the source database type for schema conversion.
+				Currently supported: mysql',
+                'Example: --from=mysql'
+            )
+            ->addArgument(
+                '--to: Target database type (for schema command)',
+                'Specify the target database type for schema conversion.
+				Currently supported: sqlite',
+                'Example: --to=sqlite'
+            )
+            ->addArgument(
+                '--input: Input schema file (for schema command)',
+                'Path to the input schema file. Defaults to Install/sql/{from}/schema.sql',
+                'Example: --input=/path/to/schema.sql'
+            )
+            ->addArgument(
+                '--output: Output schema file (for schema command)',
+                'Path to the output schema file. Defaults to Install/sql/{to}/schema.sql',
+                'Example: --output=/path/to/schema.sql'
+            )
+            ->addArgument(
+                '--sql: SQL query to execute (for query command)',
+                'The SQL query to run. Table prefix #__ will be replaced automatically.
+				Can also be provided as the third positional argument.',
+                'Example: --sql="SELECT * FROM #__users LIMIT 5"'
+            )
+            ->addArgument(
+                '--json: Output results as JSON (for query command)',
+                'When used with the query command, outputs results in JSON format
+				instead of a formatted table. Useful for scripting.'
             );
     }
 }

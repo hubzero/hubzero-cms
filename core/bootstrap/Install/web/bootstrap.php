@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Hubzero Bootstrap Installer
+ * HUBzero Bootstrap Installer
  *
  * This minimal installer runs when vendor dependencies are missing.
  * It performs preflight checks and can run composer install.
@@ -13,27 +13,15 @@
 
 namespace Bootstrap\Install\Web;
 
-
-// Prevent direct access except through index.php
-if (!defined('PATH_ROOT')) {
-    die('Direct access not permitted');
-}
-
-// Load shared classes (used by both bootstrap and main installer)
-require_once __DIR__ . '/StorageCheck.php';
-require_once __DIR__ . '/SecurityGuard.php';
-require_once __DIR__ . '/PhpCli.php';
-require_once dirname(dirname(dirname(__DIR__))) . '/libraries/Hubzero/System/Requirements.php';
-
 use Hubzero\System\Requirements;
 
 /**
- * Bootstrap Installer class
+ * Bootstrap Installer
  *
- * Handles pre-vendor installation checks and composer install
+ * Handles pre-vendor installation checks and composer install.
+ * Implemented as an anonymous class so this file contains only side effects.
  */
-class BootstrapInstaller
-{
+(new class {
     /**
      * Minimum extensions needed for bootstrap (subset of full requirements)
      * Uses Requirements::MIN_PHP_VERSION for PHP version
@@ -83,6 +71,15 @@ class BootstrapInstaller
 
     public function __construct()
     {
+        if (!defined('PATH_ROOT')) {
+            die('Direct access not permitted');
+        }
+
+        $libRoot = dirname(dirname(dirname(__DIR__))) . '/libraries';
+        require_once __DIR__ . '/StorageCheck.php';
+        require_once __DIR__ . '/SecurityGuard.php';
+        require_once $libRoot . '/Hubzero/System/Requirements.php';
+
         $this->corePath = PATH_CORE;
     }
 
@@ -91,10 +88,10 @@ class BootstrapInstaller
      */
     public function run(): void
     {
-        // Check for Windows first - Hubzero does not support Windows
+        // Check for Windows first - HUBzero does not support Windows
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             http_response_code(500);
-            include __DIR__ . '/views/windows-error.php';
+            include __DIR__ . '/views/tmpl/windows-error.php';
             exit;
         }
 
@@ -104,7 +101,7 @@ class BootstrapInstaller
         if (!$storageResult['available']) {
             $tried = $storageResult['tried'];
             $docRoot = $storageResult['docRoot'];
-            include __DIR__ . '/views/storage-error.php';
+            include __DIR__ . '/views/tmpl/storage-error.php';
             exit;
         }
 
@@ -129,7 +126,7 @@ class BootstrapInstaller
         if (!$validation['valid']) {
             $security->logSecurityEvent('CLIENT_VALIDATION_FAIL', $validation['error']);
             $errorMessage = $validation['error'];
-            include __DIR__ . '/views/bootstrap-verify.php';
+            include __DIR__ . '/views/tmpl/bootstrap-verify.php';
             return;
         }
 
@@ -202,7 +199,7 @@ class BootstrapInstaller
         }
 
         // Show verification page
-        include __DIR__ . '/views/bootstrap-verify.php';
+        include __DIR__ . '/views/tmpl/bootstrap-verify.php';
     }
 
     /**
@@ -252,15 +249,13 @@ class BootstrapInstaller
             $this->allPassed = false;
         }
 
-        // Composer, and a PHP command line to run it with
+        // Composer
         $composerPath = $this->findComposer();
-        $phpCli = PhpCli::find();
-        $composerFound = !empty($composerPath) && $phpCli !== '';
-        $composerState = $phpCli === '' ? 'No PHP command line to run it' : 'Found';
+        $composerFound = !empty($composerPath);
         $this->checks['composer'] = [
             'name'     => 'Composer',
             'required' => 'Required',
-            'current'  => empty($composerPath) ? 'Missing' : $composerState,
+            'current'  => $composerFound ? 'Found' : 'Missing',
             'passed'   => $composerFound,
             'note'     => 'PHP dependency manager',
         ];
@@ -294,7 +289,7 @@ class BootstrapInstaller
         }
 
         // Check system composer via which
-        $composerPath = trim(shell_exec('command -v composer 2>/dev/null') ?? '');
+        $composerPath = trim(shell_exec('which composer 2>/dev/null') ?? '');
         if (!empty($composerPath)) {
             return escapeshellarg($composerPath);
         }
@@ -329,12 +324,6 @@ class BootstrapInstaller
             ob_end_flush();
         }
 
-        // This takes as long as it takes. Under FrankenPHP the time limit is
-        // counted on the clock, and stopping at it killed the process half
-        // way through. Nor should leaving the page stop it.
-        set_time_limit(0);
-        ignore_user_abort(true);
-
         $composer = $this->findComposer();
         if (empty($composer)) {
             $this->sendSSE('error', 'Composer not found');
@@ -342,20 +331,10 @@ class BootstrapInstaller
             return;
         }
 
-        $php = PhpCli::find();
-        if ($php === '') {
-            $this->sendSSE('error', 'No PHP command line found to run Composer with');
-            $this->sendSSE('done', json_encode(['success' => false]));
-            return;
-        }
-
-        // Build the command. The only script the package runs after an
-        // install configures a development tool, phpcs, which a hub does not
-        // use, so scripts are skipped.
+        // Build the command
         $command = sprintf(
-            'cd %s && %s %s install --no-interaction --no-ansi --no-scripts 2>&1',
+            'cd %s && %s install --no-interaction --no-ansi 2>&1',
             escapeshellarg($this->corePath),
-            $php,
             $composer
         );
 
@@ -366,7 +345,7 @@ class BootstrapInstaller
             2 => ['pipe', 'w'],  // stderr
         ];
 
-        $process = proc_open($command, $descriptors, $pipes, null, PhpCli::environment());
+        $process = proc_open($command, $descriptors, $pipes);
 
         if (!is_resource($process)) {
             $this->sendSSE('error', 'Failed to start composer process');
@@ -380,10 +359,10 @@ class BootstrapInstaller
         // Set stdout to non-blocking
         stream_set_blocking($pipes[1], false);
 
-        // Read output in real-time, everything that has arrived each time
-        // round; one line per pass fell behind a process that writes more
+        // Read output in real-time
         while (!feof($pipes[1])) {
-            while (($line = fgets($pipes[1])) !== false) {
+            $line = fgets($pipes[1]);
+            if ($line !== false) {
                 $this->sendSSE('output', rtrim($line));
             }
             // Small delay to prevent CPU spinning
@@ -450,7 +429,7 @@ class BootstrapInstaller
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hubzero Bootstrap Setup</title>
+    <title>HUBzero Bootstrap Setup</title>
     <style>
 :root {
     --primary-color: #2563eb;
@@ -745,7 +724,7 @@ tr.failed { background: #fef2f2; }
 <body>
     <div class="container">
         <div class="header">
-            <h1>Hubzero Bootstrap Setup</h1>
+            <h1>HUBzero Bootstrap Setup</h1>
             <p>Preparing your environment for installation</p>
         </div>
 
@@ -813,7 +792,7 @@ tr.failed { background: #fef2f2; }
         </div>
 
         <div class="footer">
-            <p>&copy; <?php echo date('Y'); ?> Hubzero. Released under the MIT License.</p>
+            <p>&copy; <?php echo date('Y'); ?> HUBzero. Released under the MIT License.</p>
         </div>
     </div>
 
@@ -941,8 +920,4 @@ tr.failed { background: #fef2f2; }
 </html>
         <?php
     }
-}
-
-// Run the bootstrap installer
-$bootstrap = new BootstrapInstaller();
-$bootstrap->run();
+})->run();

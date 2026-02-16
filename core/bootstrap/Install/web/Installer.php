@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Hubzero Web Installation Wizard Controller
+ * HUBzero Web Installation Wizard Controller
  *
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2025 The Regents of the University of California.
@@ -20,24 +20,10 @@ use Bootstrap\Install\Web\Steps\Schema;
 use Bootstrap\Install\Web\Steps\Admin;
 use Bootstrap\Install\Web\Steps\Complete;
 use Exception;
-use Hubzero\Database\MysqlDatabaseConnection;
-use PDO;
+use Hubzero\Database\ConnectionInterface;
+use Hubzero\Database\Connection\PdoConnection;
+use Hubzero\Database\Exception\ConnectionFailedException;
 use PDOException;
-
-// Load security, step classes, and shared utilities (intentional side effects - no autoloader available)
-require_once __DIR__ . '/StorageCheck.php';
-require_once __DIR__ . '/SecurityGuard.php';
-require_once __DIR__ . '/PhpCli.php';
-require_once dirname(dirname(dirname(__DIR__))) . '/libraries/Hubzero/Database/MysqlDatabaseConnection.php';
-require_once __DIR__ . '/Steps/StepInterface.php';
-require_once __DIR__ . '/Steps/Verify.php';
-require_once __DIR__ . '/Steps/Welcome.php';
-require_once __DIR__ . '/Steps/Requirements.php';
-require_once __DIR__ . '/Steps/Database.php';
-require_once __DIR__ . '/Steps/Settings.php';
-require_once __DIR__ . '/Steps/Schema.php';
-require_once __DIR__ . '/Steps/Admin.php';
-require_once __DIR__ . '/Steps/Complete.php';
 
 /**
  * Main installer controller
@@ -105,12 +91,51 @@ class Installer
     private $messages = [];
 
     /**
+     * Initialize the installer and load dependencies.
+     * Required because no autoloader is available at install time.
+     */
+    public function __construct()
+    {
+        $this->loadDependencies();
+    }
+
+    /**
+     * Load required dependencies (no autoloader available at install time)
+     *
+     * @return void
+     */
+    private function loadDependencies(): void
+    {
+        $libRoot = dirname(dirname(dirname(__DIR__))) . '/libraries';
+        require_once __DIR__ . '/StorageCheck.php';
+        require_once __DIR__ . '/SecurityGuard.php';
+        require_once $libRoot . '/Hubzero/Database/Exception/RuntimeException.php';
+        require_once $libRoot . '/Hubzero/Database/Exception/ConnectionFailedException.php';
+        require_once $libRoot . '/Hubzero/Database/ConnectionInterface.php';
+        require_once $libRoot . '/Hubzero/Database/Connection/PdoConnection.php';
+        require_once $libRoot . '/Hubzero/Database/SqlParser.php';
+        require_once __DIR__ . '/Steps/StepInterface.php';
+        require_once __DIR__ . '/Steps/Verify.php';
+        require_once __DIR__ . '/Steps/Welcome.php';
+        require_once __DIR__ . '/Steps/Requirements.php';
+        require_once __DIR__ . '/Steps/Database.php';
+        require_once __DIR__ . '/Steps/Settings.php';
+        require_once __DIR__ . '/Steps/Schema.php';
+        require_once __DIR__ . '/Steps/Admin.php';
+        require_once __DIR__ . '/Steps/Complete.php';
+    }
+
+    /**
      * Run the installer
      *
      * @return void
      */
     public function run(): void
     {
+        if (!defined('HUBZERO_INSTALL')) {
+            define('HUBZERO_INSTALL', 1);
+        }
+
         // Initialize security guard
         $this->security = new SecurityGuard(defined('PATH_ROOT') ? PATH_ROOT : null);
 
@@ -131,6 +156,14 @@ class Installer
                 header('Cache-Control: no-cache');
                 echo "event: error\ndata: " . ($validation['error'] ?? 'Security verification failed') . "\n\n";
                 echo "event: done\ndata: " . json_encode(['success' => false, 'security_error' => true]) . "\n\n";
+                return;
+            }
+            if ($this->isInstalled()) {
+                $this->security->logSecurityEvent('AJAX_AFTER_INSTALL', 'Refused a migration stream on an installed site');
+                header('Content-Type: text/event-stream');
+                header('Cache-Control: no-cache');
+                echo "event: error\ndata: This site is already installed.\n\n";
+                echo "event: done\ndata: " . json_encode(['success' => false]) . "\n\n";
                 return;
             }
             $this->streamMigrations();
@@ -426,7 +459,23 @@ class Installer
      */
     private function isInstalled(): bool
     {
+        // A completed installation leaves a lock behind, so a later change to
+        // the users table cannot reopen the wizard
+        if (is_file($this->getInstallLockPath())) {
+            return true;
+        }
+
         return $this->getActualStep() === 'complete';
+    }
+
+    /**
+     * Path of the lock file written when an installation completes
+     *
+     * @return string
+     */
+    private function getInstallLockPath(): string
+    {
+        return PATH_APP . '/config/install.lock';
     }
 
     /**
@@ -447,18 +496,12 @@ class Installer
         // Step 2: Welcome - informational, always pass if verified
         // (no system state to check)
 
-        // Step 3: Requirements. The checks before Composer ran covered only
-        // what Composer needs, so a server without pdo_mysql or gd went
-        // straight on to the database step and failed there without saying
-        // why. Until the database is configured, a failed requirement is
-        // where the installer stops. Not after: an installed hub whose app
-        // directory is later made read-only must not reopen its installer.
-        $dbConfigPath = PATH_APP . '/config/database.php';
-        if (!file_exists($dbConfigPath) && !(new Requirements($this))->passed()) {
-            return 'requirements';
-        }
+        // Step 3: Requirements - check PHP requirements
+        // For now, assume requirements are met if we got past verify
+        // A more thorough check could re-run the requirements checks
 
         // Step 4: Database - check if database.php config exists and connects
+        $dbConfigPath = PATH_APP . '/config/database.php';
         if (!file_exists($dbConfigPath)) {
             return 'database';
         }
@@ -468,8 +511,8 @@ class Installer
             if (empty($dbConfig['host']) || empty($dbConfig['db']) || empty($dbConfig['user'])) {
                 return 'database';
             }
-            $pdo = $this->connectToDatabase($dbConfig);
-            if (!$pdo) {
+            $connection = $this->connectToDatabase($dbConfig);
+            if (!$connection) {
                 return 'database';
             }
         } catch (Exception $e) {
@@ -484,8 +527,10 @@ class Installer
         // Step 6: Schema - check if database tables exist
         try {
             $prefix = $dbConfig['dbprefix'] ?? 'jos_';
-            $stmt = $pdo->query("SHOW TABLES LIKE '{$prefix}users'");
-            if (!$stmt || $stmt->rowCount() === 0) {
+            $stmt = $connection->prepare("SHOW TABLES LIKE ?");
+            $connection->bind($stmt, [$prefix . 'users']);
+            $connection->execute($stmt);
+            if ($connection->fetchArray($stmt) === null) {
                 return 'schema';
             }
         } catch (Exception $e) {
@@ -494,8 +539,10 @@ class Installer
 
         // Step 7: Admin - check if admin user exists
         try {
-            $stmt = $pdo->query("SELECT COUNT(*) FROM `{$prefix}users`");
-            if (!$stmt || $stmt->fetchColumn() == 0) {
+            $stmt = $connection->prepare("SELECT COUNT(*) FROM `{$prefix}users`");
+            $connection->execute($stmt);
+            $row = $connection->fetchArray($stmt);
+            if ((int) ($row[0] ?? 0) === 0) {
                 return 'admin';
             }
         } catch (Exception $e) {
@@ -663,11 +710,111 @@ class Installer
      * Connect to database
      *
      * @param  array  $config  Database configuration
-     * @return PDO|null
+     * @return ConnectionInterface|null
      */
-    public function connectToDatabase(array $config): ?PDO
+    public function connectToDatabase(array $config): ?ConnectionInterface
     {
-        return MysqlDatabaseConnection::connect($config);
+        try {
+            return $this->connectWithPdoConnector($config);
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Connect to database and throw on failure
+     *
+     * @param  array  $config   Database configuration
+     * @param  int    $timeout  Connection timeout
+     * @return ConnectionInterface
+     * @throws PDOException
+     */
+    public function connectToDatabaseOrFail(array $config, int $timeout = 30): ConnectionInterface
+    {
+        return $this->connectWithPdoConnector($config, $timeout);
+    }
+
+    /**
+     * Resolve installer driver/connection combo using test-suite naming conventions
+     *
+     * @param  array   $config  Database configuration
+     * @return string  Normalized driver name
+     * @throws PDOException
+     */
+    private function resolveInstallerDriver(array $config): string
+    {
+        $requested = strtolower((string)($config['dbtype'] ?? $config['driver'] ?? 'mysql'));
+
+        // Match the same driver names used in Hubzero\Database\Tests setup.
+        if (in_array($requested, ['mysql', 'mariadb', 'percona', 'pdo'], true)) {
+            return 'mysql';
+        }
+
+        // Other test-suite driver names exist, but this web installer flow is MySQL-specific.
+        if (in_array($requested, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
+            throw new PDOException(
+                "Installer currently supports MySQL-family drivers only (mysql/mariadb/percona). Requested: {$requested}"
+            );
+        }
+
+        throw new PDOException("Unsupported database driver: {$requested}");
+    }
+
+    /**
+     * Build MySQL DSN from installer config
+     *
+     * @param  array  $config  Database configuration
+     * @return string
+     */
+    private function buildMysqlDsn(array $config): string
+    {
+        $dsn = 'mysql:';
+
+        if (!empty($config['socket'])) {
+            $dsn .= 'unix_socket=' . $config['socket'];
+        } else {
+            $dsn .= 'host=' . ($config['host'] ?? 'localhost');
+            if (!empty($config['port'])) {
+                $dsn .= ';port=' . $config['port'];
+            }
+        }
+
+        if (!empty($config['db'])) {
+            $dsn .= ';dbname=' . $config['db'];
+        }
+
+        $dsn .= ';charset=utf8mb4';
+
+        return $dsn;
+    }
+
+    /**
+     * Connect using Hubzero standalone PDO connector and return native PDO
+     *
+     * @param  array  $config   Database configuration
+     * @param  int    $timeout  Connection timeout
+     * @return ConnectionInterface
+     * @throws PDOException
+     */
+    private function connectWithPdoConnector(array $config, int $timeout = 30): ConnectionInterface
+    {
+        $this->resolveInstallerDriver($config);
+
+        try {
+            return new PdoConnection(
+                $this->buildMysqlDsn($config),
+                $config['user'] ?? '',
+                $config['password'] ?? '',
+                []
+            );
+        } catch (ConnectionFailedException $e) {
+            $previous = $e->getPrevious();
+            if ($previous instanceof PDOException) {
+                throw $previous;
+            }
+
+            throw new PDOException($e->getMessage(), (int) $e->getCode());
+        }
     }
 
     /**
@@ -678,6 +825,7 @@ class Installer
     private function testDatabaseAjax(): array
     {
         $config = [
+            'dbtype' => $_POST['dbtype'] ?? 'mysql',
             'host' => $_POST['host'] ?? 'localhost',
             'db' => $_POST['db'] ?? '',
             'user' => $_POST['user'] ?? '',
@@ -687,8 +835,8 @@ class Installer
         ];
 
         try {
-            $pdo = $this->connectToDatabase($config);
-            if ($pdo) {
+            $connection = $this->connectToDatabase($config);
+            if ($connection) {
                 return ['success' => true, 'message' => 'Connection successful!'];
             }
             return ['success' => false, 'message' => 'Connection failed'];
@@ -710,24 +858,18 @@ class Installer
         $socket = $_POST['socket'] ?? '';
 
         try {
-            $dsn = 'mysql:';
-            if ($connectionType === 'socket' && !empty($socket)) {
-                $dsn .= 'unix_socket=' . $socket;
-            } else {
-                $dsn .= 'host=' . $host;
-                if (!empty($port)) {
-                    $dsn .= ';port=' . $port;
-                }
-            }
-
-            $options = [
-                PDO::ATTR_TIMEOUT => 5,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            $config = [
+                'dbtype' => $_POST['dbtype'] ?? 'mysql',
+                'host' => $host,
+                'port' => $port,
+                'socket' => ($connectionType === 'socket') ? $socket : '',
+                'user' => '',
+                'password' => '',
             ];
 
             // Try to connect - this will fail with access denied if server is up
             // but that's OK - we just want to know the server is reachable
-            $pdo = new PDO($dsn, '', '', $options);
+            $connection = $this->connectWithPdoConnector($config, 5);
             return ['success' => true, 'message' => 'Server is available'];
         } catch (PDOException $e) {
             $code = $e->getCode();
@@ -780,30 +922,24 @@ class Installer
         }
 
         try {
-            $dsn = 'mysql:';
-            if ($connectionType === 'socket' && !empty($socket)) {
-                $dsn .= 'unix_socket=' . $socket;
-            } else {
-                $dsn .= 'host=' . $host;
-                if (!empty($port)) {
-                    $dsn .= ';port=' . $port;
-                }
-            }
-            $dsn .= ';charset=utf8mb4';
-
-            $options = [
-                PDO::ATTR_TIMEOUT => 10,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            $config = [
+                'dbtype' => $_POST['dbtype'] ?? 'mysql',
+                'host' => $host,
+                'port' => $port,
+                'socket' => ($connectionType === 'socket') ? $socket : '',
+                'user' => $adminUser,
+                'password' => $adminPass,
             ];
 
-            $pdo = new PDO($dsn, $adminUser, $adminPass, $options);
+            $connection = $this->connectWithPdoConnector($config, 10);
 
             // Check if user has CREATE DATABASE privilege
-            $stmt = $pdo->query("SHOW GRANTS FOR CURRENT_USER()");
-            $grants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $stmt = $connection->prepare("SHOW GRANTS FOR CURRENT_USER()");
+            $connection->execute($stmt);
             $hasPrivileges = false;
 
-            foreach ($grants as $grant) {
+            while ($row = $connection->fetchArray($stmt)) {
+                $grant = (string) ($row[0] ?? '');
                 if (
                     stripos($grant, 'ALL PRIVILEGES') !== false ||
                     stripos($grant, 'CREATE') !== false
@@ -864,27 +1000,20 @@ class Installer
         }
 
         try {
-            $dsn = 'mysql:';
-            if ($connectionType === 'socket' && !empty($socket)) {
-                $dsn .= 'unix_socket=' . $socket;
-            } else {
-                $dsn .= 'host=' . $host;
-                if (!empty($port)) {
-                    $dsn .= ';port=' . $port;
-                }
-            }
-            $dsn .= ';charset=utf8mb4';
-
-            $options = [
-                PDO::ATTR_TIMEOUT => 30,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            $config = [
+                'dbtype' => $_POST['dbtype'] ?? 'mysql',
+                'host' => $host,
+                'port' => $port,
+                'socket' => ($connectionType === 'socket') ? $socket : '',
+                'user' => $adminUser,
+                'password' => $adminPass,
             ];
 
-            $pdo = new PDO($dsn, $adminUser, $adminPass, $options);
+            $connection = $this->connectWithPdoConnector($config, 30);
 
             // Create database
             $dbName = preg_replace('/[^a-zA-Z0-9_]/', '', $newDb);
-            $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            $connection->exec("CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
 
             // Create user and grant privileges
             $userName = preg_replace('/[^a-zA-Z0-9_]/', '', $newUser);
@@ -896,18 +1025,18 @@ class Installer
 
             // Drop user if exists (ignore errors)
             try {
-                $pdo->exec("DROP USER IF EXISTS '{$userName}'@'{$userHost}'");
+                $connection->exec("DROP USER IF EXISTS '{$userName}'@'{$userHost}'");
             } catch (PDOException $e) {
                 // Ignore - user might not exist
             }
 
             // Create user with password
-            $escapedPass = $pdo->quote($newPass);
-            $pdo->exec("CREATE USER '{$userName}'@'{$userHost}' IDENTIFIED BY {$escapedPass}");
+            $escapedPass = $connection->quote($newPass);
+            $connection->exec("CREATE USER '{$userName}'@'{$userHost}' IDENTIFIED BY {$escapedPass}");
 
             // Grant privileges
-            $pdo->exec("GRANT ALL PRIVILEGES ON `{$dbName}`.* TO '{$userName}'@'{$userHost}'");
-            $pdo->exec("FLUSH PRIVILEGES");
+            $connection->exec("GRANT ALL PRIVILEGES ON `{$dbName}`.* TO '{$userName}'@'{$userHost}'");
+            $connection->exec("FLUSH PRIVILEGES");
 
             // Save configuration
             $config = [
@@ -961,7 +1090,7 @@ class Installer
         $content = "<?php\n\n";
         $content .= "/**\n";
         $content .= " * Database configuration\n";
-        $content .= " * Generated by Hubzero installer on " . date('Y-m-d H:i:s') . "\n";
+        $content .= " * Generated by HUBzero installer on " . date('Y-m-d H:i:s') . "\n";
         $content .= " */\n\n";
         $content .= "return array(\n";
         $content .= "    'dbtype'   => 'mysql',\n";
@@ -1060,12 +1189,6 @@ class Installer
             ob_end_flush();
         }
 
-        // This takes as long as it takes. Under FrankenPHP the time limit is
-        // counted on the clock, and stopping at it killed the process half
-        // way through. Nor should leaving the page stop it.
-        set_time_limit(0);
-        ignore_user_abort(true);
-
         $musePath = PATH_CORE . '/bin/muse';
 
         if (!file_exists($musePath)) {
@@ -1080,7 +1203,7 @@ class Installer
         $command = sprintf(
             'cd %s && %s %s migration run -f --no-ansi 2>&1',
             escapeshellarg(PATH_ROOT),
-            PhpCli::find(),
+            escapeshellarg(PHP_BINARY),
             escapeshellarg($musePath)
         );
 
@@ -1091,7 +1214,7 @@ class Installer
             2 => ['pipe', 'w'],  // stderr
         ];
 
-        $process = proc_open($command, $descriptors, $pipes, null, PhpCli::environment());
+        $process = proc_open($command, $descriptors, $pipes);
 
         if (!is_resource($process)) {
             $this->sendSSE('error', 'Failed to start migration process');
@@ -1105,10 +1228,10 @@ class Installer
         // Set stdout to non-blocking
         stream_set_blocking($pipes[1], false);
 
-        // Read output in real-time, everything that has arrived each time
-        // round; one line per pass fell behind a process that writes more
+        // Read output in real-time
         while (!feof($pipes[1])) {
-            while (($line = fgets($pipes[1])) !== false) {
+            $line = fgets($pipes[1]);
+            if ($line !== false) {
                 $this->sendSSE('output', rtrim($line));
             }
             // Small delay to prevent CPU spinning
@@ -1138,10 +1261,6 @@ class Installer
     {
         // Filter out unwanted lines (similar to bootstrap composer output)
         if ($event === 'output') {
-            // The migrations colour some of what they print whatever muse is
-            // told, and a browser shows the codes as text
-            $data = preg_replace('/\e\[[0-9;]*m/', '', $data);
-
             // Skip empty lines
             if (trim($data) === '') {
                 return;
@@ -1167,7 +1286,7 @@ class Installer
         $stepId = $this->currentStep;
         $messages = $this->messages;
 
-        include __DIR__ . '/views/layout.php';
+        include __DIR__ . '/views/tmpl/layout.php';
     }
 
     /**
@@ -1184,7 +1303,7 @@ class Installer
         $docRoot = $storageCheck['docRoot'];
         $installer = $this;
 
-        include __DIR__ . '/views/storage-error.php';
+        include __DIR__ . '/views/tmpl/storage-error.php';
     }
 
     /**
@@ -1210,6 +1329,7 @@ class Installer
     public function cleanup(): bool
     {
         $this->security->logSecurityEvent('INSTALL_COMPLETE', 'Installation completed successfully');
+        @file_put_contents($this->getInstallLockPath(), date('c') . "\n");
         return $this->security->cleanup();
     }
 
