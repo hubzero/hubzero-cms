@@ -276,7 +276,7 @@ class RelationalTest extends AbstractDriverTestCase
         $this->configureModels($dbName);
         Relational::setDefaultConnection($driver);
 
-        $this->expectException(\Hubzero\Error\Exception\RuntimeException::class);
+        $this->expectException(\Hubzero\Database\Exception\RuntimeException::class);
 
         // No cleanup after this — PHPUnit intercepts the exception so
         // nothing below oneOrFail() executes. seedTestData() in the

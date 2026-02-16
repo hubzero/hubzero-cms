@@ -20,9 +20,8 @@ use Hubzero\Database\Relationship\MorphTo;
 use Hubzero\Database\Relationship\MorphOne;
 use Hubzero\Database\Relationship\MorphMany;
 use Hubzero\Database\Relationship\MorphToMany;
-use Hubzero\Error\Exception\BadMethodCallException;
-use Hubzero\Error\Exception\RuntimeException;
-use Hubzero\Utility\Date;
+use Hubzero\Database\Exception\BadMethodCallException;
+use Hubzero\Database\Exception\RuntimeException;
 use Closure;
 
 /**
@@ -157,8 +156,8 @@ use Closure;
  *
  * //@FIXME: handle dates
  *
- * @uses  \Hubzero\Error\Exception\BadMethodCallException  to handle calls to undefined methods
- * @uses  \Hubzero\Error\Exception\RuntimeException        to handle scenarios with undefined rows
+ * @uses  \Hubzero\Database\Exception\BadMethodCallException  to handle calls to undefined methods
+ * @uses  \Hubzero\Database\Exception\RuntimeException        to handle scenarios with undefined rows
  */
 
 /** @phpstan-consistent-constructor */
@@ -658,7 +657,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * @param   string  $name       The method name being called
      * @param   array   $arguments  The method arguments provided
      * @return  mixed
-     * @throws  \Hubzero\Error\Exception\BadMethodCallException  If called method does not exist in
+     * @throws  \Hubzero\Database\Exception\BadMethodCallException  If called method does not exist in
      *                                                           this class or the query class, or
      *                                                           as a helper* method on the current class.
      **/
@@ -3897,7 +3896,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   mixed  $id  The primary key field value to use to retrieve one row
      * @return  \Hubzero\Database\Relational|static
-     * @throws  Hubzero\Error\Exception\RuntimeException
+     * @throws  Hubzero\Database\Exception\RuntimeException
      **/
     public static function oneOrFail($id)
     {
@@ -4312,12 +4311,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             return false;
         }
 
-        // Get current timestamp - use Date facade if available, fallback to PHP date
-        if (class_exists('\\Date')) {
-            $now = \Date::toSql();
-        } else {
-            $now = date('Y-m-d H:i:s');
-        }
+        $now = date('Y-m-d H:i:s');
 
         // Update the attribute locally
         $this->set($column, $now);
@@ -5097,7 +5091,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string  $field  The field by which creation is determined
      * @return  bool
-     * @throws  \Hubzero\Error\Exception\RuntimeException  If rows have not first been fetched
+     * @throws  \Hubzero\Database\Exception\RuntimeException  If rows have not first been fetched
      **/
     public function isCreator($field = 'created_by')
     {
@@ -5114,7 +5108,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *
      * @param   string  $name  The name of the relationship to resolve
      * @return  object
-     * @throws  \Hubzero\Error\Exception\RuntimeException  If a class of name cannot be found
+     * @throws  \Hubzero\Database\Exception\RuntimeException  If a class of name cannot be found
      **/
     private function resolve($name)
     {
@@ -6179,7 +6173,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * @param   callable|null $callback  Optional callback to add constraints to the join
      * @param   string        $type      Join type ('left', 'inner', 'right')
      * @return  self
-     * @throws  \Hubzero\Error\Exception\RuntimeException  If relationship doesn't exist or isn't supported
+     * @throws  \Hubzero\Database\Exception\RuntimeException  If relationship doesn't exist or isn't supported
      **/
     public function joinWith($relation, $callback = null, $type = 'left')
     {

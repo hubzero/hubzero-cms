@@ -412,9 +412,6 @@ trait Lockable
      */
     protected function getCurrentTimestamp(): string
     {
-        if (class_exists('\\Date')) {
-            return \Date::toSql();
-        }
         return date('Y-m-d H:i:s');
     }
 }

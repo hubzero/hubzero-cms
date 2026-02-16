@@ -8,9 +8,8 @@
 
 namespace Hubzero\Database;
 
-use Hubzero\Utility\Str;
-use Hubzero\Error\Exception\RuntimeException;
-use Hubzero\Error\Exception\BadMethodCallException;
+use Hubzero\Database\Exception\RuntimeException;
+use Hubzero\Database\Exception\BadMethodCallException;
 use Hubzero\Database\Exception\ConnectionFailedException;
 use Hubzero\Database\Exception\QueryFailedException;
 use Psr\Log\LoggerAwareInterface;
@@ -350,7 +349,7 @@ abstract class Driver implements LoggerAwareInterface
      * @param       array   $args    The array of arguments passed to the method
      * @return      string
      * @deprecated  2.0.0
-     * @throws      \Hubzero\Error\Exception\BadMethodCallException
+     * @throws      \Hubzero\Database\Exception\BadMethodCallException
      */
     public function __call($method, $args)
     {
@@ -388,7 +387,7 @@ abstract class Driver implements LoggerAwareInterface
      *
      * @param   array   $options   Parameters to construct the database driver requested
      * @return  static
-     * @throws  \Hubzero\Error\Exception\RuntimeException
+     * @throws  \Hubzero\Database\Exception\RuntimeException
      */
     public static function getInstance($options = [])
     {
@@ -1744,7 +1743,7 @@ abstract class Driver implements LoggerAwareInterface
         $differential = strlen($this->tablePrefix) - strlen($prefix);
         $count        = 0;
 
-        foreach (Str::findLiteral($prefix, $sql) as $prefixPosition) {
+        foreach (self::findLiteralInSql($prefix, $sql) as $prefixPosition) {
             $sql = substr_replace(
                 $sql,
                 $this->tablePrefix,
@@ -1769,7 +1768,7 @@ abstract class Driver implements LoggerAwareInterface
         $length  = strlen($sql);
         $queries = [];
 
-        foreach (Str::findLiteral(';', $sql) as $queryEndPosition) {
+        foreach (self::findLiteralInSql(';', $sql) as $queryEndPosition) {
             $queries[] = trim(substr($sql, $start, $queryEndPosition - $start + 1));
             $start     = $queryEndPosition + 1;
         }
@@ -1882,7 +1881,7 @@ abstract class Driver implements LoggerAwareInterface
         $offset = 0;
         $index  = 0;
 
-        foreach (Str::findLiteral('?', $query) as $placeholder) {
+        foreach (self::findLiteralInSql('?', $query) as $placeholder) {
             $sub     = (is_null($bindings[$index])) ? 'NULL' : $this->quote($bindings[$index]);
             $query   = substr_replace($query, $sub, $placeholder + $offset, 1);
             $offset += (strlen($sub) - 1);
@@ -3855,4 +3854,63 @@ abstract class Driver implements LoggerAwareInterface
      * @return  \Hubzero\Database\Drivers\Base\BaseSchemaGrammar
      */
     abstract public function getSchemaGrammar();
+
+    /**
+     * Find all unquoted occurrences of a needle in a SQL string
+     *
+     * Walks through the string character by character, tracking whether we're
+     * inside a quoted string (single or double quotes, with backslash escaping).
+     * Returns the positions of all occurrences that are outside of quotes.
+     *
+     * @param   string  $needle    The literal string to find
+     * @param   string  $haystack  The SQL string to search
+     * @return  array   Array of integer positions where the needle was found
+     */
+    private static function findLiteralInSql($needle, $haystack)
+    {
+        $open      = false;
+        $quoteChar = '';
+        $length    = strlen($haystack);
+        $instances = [];
+
+        for ($i = 0; $i < $length; $i++) {
+            $current = substr($haystack, $i, 1);
+
+            if ($current == '"' || $current == '\'') {
+                $n = 2;
+                while (substr($haystack, $i - $n + 1, 1) == '\\' && $n < $i) {
+                    $n++;
+                }
+
+                if ($n % 2 == 0) {
+                    if ($open) {
+                        if ($current == $quoteChar) {
+                            $open      = false;
+                            $quoteChar = '';
+                        }
+                    } else {
+                        $open      = true;
+                        $quoteChar = $current;
+                    }
+                }
+            }
+
+            if ($current == substr($needle, 0, 1) && !$open) {
+                $match = true;
+
+                for ($j = 0; $j < strlen($needle); $j++) {
+                    if (substr($needle, $j, 1) != substr($haystack, $i + $j, 1)) {
+                        $match = false;
+                        break;
+                    }
+                }
+
+                if ($match) {
+                    $instances[] = $i;
+                }
+            }
+        }
+
+        return $instances;
+    }
 }

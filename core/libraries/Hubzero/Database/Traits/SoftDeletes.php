@@ -230,12 +230,7 @@ trait SoftDeletes
     {
         $column = $this->getDeletedAtColumn();
 
-        // Get current timestamp
-        if (class_exists('\\Date')) {
-            $now = \Date::toSql();
-        } else {
-            $now = date('Y-m-d H:i:s');
-        }
+        $now = date('Y-m-d H:i:s');
 
         // Update the model's deleted_at attribute
         $this->set($column, $now);

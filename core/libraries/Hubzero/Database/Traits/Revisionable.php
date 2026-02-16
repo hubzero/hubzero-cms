@@ -696,9 +696,6 @@ trait Revisionable
      */
     protected function getCurrentRevisionTimestamp(): string
     {
-        if (class_exists('\\Date')) {
-            return \Date::toSql();
-        }
         return date('Y-m-d H:i:s');
     }
 

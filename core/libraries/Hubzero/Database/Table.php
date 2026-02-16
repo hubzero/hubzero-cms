@@ -756,7 +756,7 @@ abstract class Table extends Obj
         }
 
         // Get the current time in MySQL format.
-        $time = \Date::of('now')->toSql();
+        $time = date('Y-m-d H:i:s');
 
         // Check the row out by primary key.
         $query = $this->_db->getQuery();

@@ -9,7 +9,6 @@
 namespace Hubzero\Database\Schema;
 
 use Hubzero\Database\Driver;
-use Hubzero\Utility\Date;
 
 /**
  * Migration Squasher
@@ -639,7 +638,7 @@ class MigrationSquasher
      */
     protected function applyTemplate(string $component, string $description, string $upCode, string $downCode): string
     {
-        $timestamp = (new Date())->format('YmdHis');
+        $timestamp = date('YmdHis');
         $className = "Migration{$timestamp}{$component}";
 
         return str_replace(
@@ -664,7 +663,7 @@ class MigrationSquasher
         string $upCode,
         string $downCode
     ): string {
-        $timestamp = (new Date())->format('YmdHis');
+        $timestamp = date('YmdHis');
         $className = "Migration{$timestamp}{$component}";
 
         return <<<PHP
@@ -729,7 +728,7 @@ PHP;
         ?string $timestamp = null
     ): string {
         if ($timestamp === null) {
-            $timestamp = (new Date())->format('YmdHis');
+            $timestamp = date('YmdHis');
         }
 
         $className = "Migration{$timestamp}{$component}";

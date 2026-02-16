@@ -11,7 +11,6 @@ namespace Hubzero\Database\Schema;
 use Hubzero\Database\Driver;
 use Hubzero\Database\Schema\Diff\SchemaDiff;
 use Hubzero\Database\Schema\Diff\TableDiff;
-use Hubzero\Utility\Date;
 
 /**
  * Migration Generator
@@ -297,7 +296,7 @@ class MigrationGenerator
         ?string $timestamp = null
     ): string {
         if ($timestamp === null) {
-            $timestamp = (new Date())->format('YmdHis');
+            $timestamp = date('YmdHis');
         }
 
         $className = "Migration{$timestamp}{$component}";
@@ -348,7 +347,7 @@ class MigrationGenerator
     public function getClassName(string $component, ?string $timestamp = null): string
     {
         if ($timestamp === null) {
-            $timestamp = (new Date())->format('YmdHis');
+            $timestamp = date('YmdHis');
         }
 
         return "Migration{$timestamp}{$component}";
@@ -387,7 +386,7 @@ class MigrationGenerator
      */
     protected function applyTemplate(string $component, string $description, string $upCode, string $downCode): string
     {
-        $timestamp = (new Date())->format('YmdHis');
+        $timestamp = date('YmdHis');
         $className = "Migration{$timestamp}{$component}";
 
         return str_replace(
@@ -412,7 +411,7 @@ class MigrationGenerator
         string $upCode,
         string $downCode
     ): string {
-        $timestamp = (new Date())->format('YmdHis');
+        $timestamp = date('YmdHis');
         $className = "Migration{$timestamp}{$component}";
 
         return <<<PHP
