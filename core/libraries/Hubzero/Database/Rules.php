@@ -352,7 +352,17 @@ class Rules
      */
     private static function phone($key, $var)
     {
-        if (\Hubzero\Utility\Validate::phone($var)) {
+        // Matches NANPA phone numbers (US/CA/territories) with optional country code,
+        // area code, separators, and extensions
+        $areaCode = '(?![2-9]11)(?!555)([2-9][0-8][0-9])';
+        $regex = '/^(?:(?:\+?1\s*(?:[.-]\s*)?)?'
+            . '(?:\(\s*' . $areaCode . '\s*\)|' . $areaCode . ')'
+            . '\s*(?:[.-]\s*)?)'
+            . '([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?'
+            . '([0-9]{4})'
+            . '(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$/';
+
+        if (preg_match($regex, $var)) {
             return false;
         }
         return new ValidationError($key, 'phone', "{$key} does not appear to be a valid phone number");
@@ -367,7 +377,7 @@ class Rules
      */
     private static function email($key, $var)
     {
-        if (\Hubzero\Utility\Validate::email($var)) {
+        if (filter_var($var, FILTER_VALIDATE_EMAIL) !== false) {
             return false;
         }
         return new ValidationError($key, 'email', "{$key} does not appear to be a valid email address");

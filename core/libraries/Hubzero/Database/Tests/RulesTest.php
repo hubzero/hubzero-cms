@@ -103,6 +103,26 @@ class RulesTest extends TestCase
         $this->assertCount(1, $fail2, 'Rule (phone) should have returned one error for a phone of "123-456-7890"');
     }
 
+    #[Test]
+    public function phoneAdditionalFormats(): void
+    {
+        // With country code
+        $this->assertTrue(Rules::validate(['phone' => "+1 765-494-4000"], ['phone' => 'phone']));
+        $this->assertTrue(Rules::validate(['phone' => "1-765-494-4000"], ['phone' => 'phone']));
+
+        // With extension
+        $this->assertTrue(Rules::validate(['phone' => "765-494-4000 ext 1234"], ['phone' => 'phone']));
+        $this->assertTrue(Rules::validate(['phone' => "765-494-4000 x1234"], ['phone' => 'phone']));
+
+        // Invalid: letters
+        $result = Rules::validate(['phone' => "abc-def-ghij"], ['phone' => 'phone']);
+        $this->assertIsArray($result);
+
+        // Invalid: too short
+        $result = Rules::validate(['phone' => "494-4000"], ['phone' => 'phone']);
+        $this->assertIsArray($result);
+    }
+
     /**
      * Test to make sure an improper email fails validation
      *
@@ -116,6 +136,28 @@ class RulesTest extends TestCase
 
         $this->assertTrue($pass, 'Rule (email) should have validated with a email of "you@gmail.com"');
         $this->assertCount(1, $fail, 'Rule (email) should have returned one error for a email of "me.com"');
+    }
+
+    #[Test]
+    public function emailAdditionalFormats(): void
+    {
+        // Subaddressing (plus addressing)
+        $this->assertTrue(Rules::validate(['email' => "user+tag@example.com"], ['email' => 'email']));
+
+        // Subdomain
+        $this->assertTrue(Rules::validate(['email' => "user@mail.example.co.uk"], ['email' => 'email']));
+
+        // Invalid: no @
+        $result = Rules::validate(['email' => "plainaddress"], ['email' => 'email']);
+        $this->assertIsArray($result);
+
+        // Invalid: no domain
+        $result = Rules::validate(['email' => "user@"], ['email' => 'email']);
+        $this->assertIsArray($result);
+
+        // Invalid: double @
+        $result = Rules::validate(['email' => "user@@example.com"], ['email' => 'email']);
+        $this->assertIsArray($result);
     }
 
     /**
