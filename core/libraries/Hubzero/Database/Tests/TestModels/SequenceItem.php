@@ -21,4 +21,5 @@ class SequenceItem extends Relational
     protected $table = 'seq_items';
     protected $pk = 'id';
     protected $namespace = '';
+    protected $dispatchesModelEvents = true;
 }

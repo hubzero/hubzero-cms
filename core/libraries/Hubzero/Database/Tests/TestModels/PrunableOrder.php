@@ -20,6 +20,7 @@ class PrunableOrder extends Relational
 
     protected $table = 'prunable_orders';
     protected $namespace = '';
+    protected $dispatchesModelEvents = true;
 
     /**
      * Get the prunable query - completed orders older than 30 days

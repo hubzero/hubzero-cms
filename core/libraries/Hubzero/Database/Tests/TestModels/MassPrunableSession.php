@@ -20,6 +20,7 @@ class MassPrunableSession extends Relational
 
     protected $table = 'prunable_sessions';
     protected $namespace = '';
+    protected $dispatchesModelEvents = true;
 
     /**
      * Get the prunable query - expired sessions

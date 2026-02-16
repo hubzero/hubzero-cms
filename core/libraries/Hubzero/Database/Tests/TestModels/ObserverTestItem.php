@@ -17,4 +17,5 @@ class ObserverTestItem extends Relational
 {
     protected $table = 'observer_test_items';
     protected $pk = 'id';
+    protected $dispatchesModelEvents = true;
 }

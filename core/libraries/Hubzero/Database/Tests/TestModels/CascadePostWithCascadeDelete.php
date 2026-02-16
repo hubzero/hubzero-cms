@@ -17,6 +17,7 @@ class CascadePostWithCascadeDelete extends Relational
 {
     protected $table = 'cascade_posts';
     protected $namespace = '';
+    protected $cascadeRelationships = true;
 
     public function comments()
     {

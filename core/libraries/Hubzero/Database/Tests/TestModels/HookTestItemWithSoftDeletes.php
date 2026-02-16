@@ -20,4 +20,5 @@ class HookTestItemWithSoftDeletes extends Relational
 
     protected $table = 'hook_test_items';
     protected $namespace = '';
+    protected $dispatchesModelEvents = true;
 }

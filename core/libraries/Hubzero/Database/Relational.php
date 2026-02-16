@@ -4363,8 +4363,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $pk = $this->getPrimaryKey();
         $id = $this->getPkValue();
 
-        // Fetch fresh data from database
-        $fresh = static::one($id);
+        // Fetch fresh data from database, bypassing query cache
+        $fresh = static::blank()->disableCaching()
+            ->whereEquals($pk, $id)->rows()->seek($id);
 
         if ($fresh === false) {
             return false;
@@ -4408,15 +4409,19 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             return false;
         }
 
+        $pk = $this->getPrimaryKey();
         $id = $this->getPkValue();
+
+        // Always bypass query cache — fresh() must hit the database
+        $instance = static::blank()->disableCaching();
 
         // If relationships specified, use eager loading
         if ($with !== null) {
             $with = is_array($with) ? $with : [$with];
-            return static::blank()->with(...$with)->whereEquals($this->getPrimaryKey(), $id)->row();
+            return $instance->with(...$with)->whereEquals($pk, $id)->row();
         }
 
-        return static::one($id);
+        return $instance->whereEquals($pk, $id)->rows()->seek($id);
     }
 
     /**

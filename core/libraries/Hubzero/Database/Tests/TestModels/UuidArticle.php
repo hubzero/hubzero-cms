@@ -21,4 +21,5 @@ class UuidArticle extends Relational
     protected $table = 'uuid_articles';
     protected $pk = 'id';
     protected $namespace = '';
+    protected $dispatchesModelEvents = true;
 }

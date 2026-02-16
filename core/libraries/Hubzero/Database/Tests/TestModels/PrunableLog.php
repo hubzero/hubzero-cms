@@ -20,6 +20,7 @@ class PrunableLog extends Relational
 
     protected $table = 'prunable_logs';
     protected $namespace = '';
+    protected $dispatchesModelEvents = true;
 
     /**
      * Get the prunable query - logs older than 30 days

@@ -55,13 +55,10 @@ class CustomCastsTest extends AbstractDriverTestCase
     private function prepareModels(Driver $driver): void
     {
         CastTestModelJson::setDefaultConnection($driver);
-        CastTestModelJson::$columns = [];
         CastTestModelDateTime::setDefaultConnection($driver);
-        CastTestModelDateTime::$columns = [];
         CastTestModelCollection::setDefaultConnection($driver);
-        CastTestModelCollection::$columns = [];
         CastTestModelMixed::setDefaultConnection($driver);
-        CastTestModelMixed::$columns = [];
+        $driver->flushCachedTableColumns('cast_test');
     }
 
     // =========================================================================
