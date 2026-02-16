@@ -14,4 +14,5 @@ favicon.ico
 .phan/**
 psalm.xml
 .phpunit.result.cache
+phpunit.xml
 *.sqlite3
