@@ -6,8 +6,8 @@
     <title>HUBzero Installation - <?php echo htmlspecialchars($title); ?></title>
     <?php
     // Compute the assets path from filesystem location relative to document root
-    // layout.php is in /web/views/, assets are in /web/assets/
-    $webDir = dirname(__DIR__); // /core/bootstrap/Install/web
+    // layout.php is in /web/views/tmpl/, assets are in /web/assets/
+    $webDir = dirname(__DIR__, 2); // /core/bootstrap/Install/web
     $docRoot = $_SERVER['DOCUMENT_ROOT'] ?: dirname($webDir, 4); // hubzero-cms root
     $assetsPath = str_replace($docRoot, '', $webDir) . '/assets';
     ?>

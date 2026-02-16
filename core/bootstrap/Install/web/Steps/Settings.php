@@ -54,7 +54,7 @@ class Settings implements StepInterface
         $errors = $this->errors;
         $timezones = $this->timezones;
         ob_start();
-        include __DIR__ . '/../views/steps/settings.php';
+        include __DIR__ . '/../views/steps/tmpl/settings.php';
         return ob_get_clean();
     }
 
