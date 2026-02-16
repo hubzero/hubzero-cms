@@ -10,6 +10,7 @@ namespace Modules\Featuredblog;
 
 use Hubzero\Module\Module;
 use Components\Blog\Models\Entry;
+use App;
 
 /**
  * Module class for displaying a random, featured blog entry
@@ -45,7 +46,7 @@ class Helper extends Module
         $filters = array(
             'state'      => 1,
             'access'     => 1,
-            'sort'       => "RAND()",
+            'sort'       => App::get('db')->sqlRand(),
             'sort_Dir'   => '',
             'search'     => '',
             'scope'      => 'member',

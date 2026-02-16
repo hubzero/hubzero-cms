@@ -9,6 +9,7 @@
 namespace Modules\QuickTips;
 
 use Hubzero\Module\Module;
+use Hubzero\Database\Expression;
 use Cache;
 use Date;
 
@@ -47,24 +48,37 @@ class Helper extends Module
 
         $now = Date::toSql();
 
-        if ($method == 'random') {
-            $order = "RAND()";
-        } elseif ($method == 'ordering') {
-            $order = "a.ordering ASC";
-        } else {
-            $order = "a.publish_up DESC";
+        $query = $database->getQuery()
+            ->select('a.id')
+            ->select('a.title')
+            ->select('a.introtext')
+            ->select('a.created')
+            ->from('#__content', 'a')
+            ->whereEquals('a.state', 1)
+            ->whereEquals('a.checked_out', 0)
+            ->where('a.sectionid', '>', 0)
+            ->whereRaw('(a.publish_up IS NULL OR a.publish_up <= ' . $database->quote($now) . ')')
+            ->whereRaw('(a.publish_down IS NULL OR a.publish_down >= ' . $database->quote($now) . ')');
+
+        if ($catid) {
+            $query->whereIn('a.catid', array_map('intval', explode(',', $catid)));
         }
 
-        $query = "SELECT a.id, a.title, a.introtext, a.created
-				FROM `#__content` AS a
-				WHERE (a.state = '1' AND a.checked_out = '0' AND a.sectionid > '0')
-				AND (a.publish_up IS NULL OR a.publish_up <= " . $database->quote($now) . ")
-				AND (a.publish_down IS NULL OR a.publish_down >= " . $database->quote($now) . ")"
-                . ($catid ? " AND (a.catid IN (" . $catid . "))" : '')
-                . ($secid ? " AND (a.sectionid IN (" . $secid . "))" : '')
-                . " ORDER BY $order LIMIT 1";
-        $database->setQuery($query);
-        $this->rows = $database->loadObjectList();
+        if ($secid) {
+            $query->whereIn('a.sectionid', array_map('intval', explode(',', $secid)));
+        }
+
+        if ($method == 'random') {
+            $query->order(Expression::randomOrder(), 'asc');
+        } elseif ($method == 'ordering') {
+            $query->order('a.ordering', 'asc');
+        } else {
+            $query->order('a.publish_up', 'desc');
+        }
+
+        $this->rows = $query
+            ->limit(1)
+            ->fetch();
 
         require $this->getLayoutPath();
     }

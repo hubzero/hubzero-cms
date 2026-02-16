@@ -28,23 +28,21 @@ class Helper extends Module
         }
 
         $database = \App::get('db');
+        $limit = (int) $this->params->get('limit', 25);
+        $query = $database->getQuery()
+            ->select('a.*')
+            ->fromSub(function ($sub) use ($database) {
+                $this->buildActivityUnionQuery($sub, $database);
+            }, 'a');
 
-        $where = "";
         if ($start = Request::getString('start', '')) {
-            $where = "WHERE a.created > " . $database->quote($start);
+            $query->where('a.created', '>', $start);
         }
 
-        $query = "SELECT a.* FROM (
-                    (SELECT c.id, c.ticket, c.created,
-                        (CASE WHEN `comment` != '' THEN 'comment' ELSE 'change' END) AS 'category'
-                        FROM `#__support_comments` AS c)
-                    UNION
-                    (SELECT '0' AS id, t.id AS ticket, t.created, 'ticket' AS 'category'
-                        FROM `#__support_tickets` AS t)
-                ) AS a $where ORDER BY a.created DESC LIMIT 0, " . $this->params->get('limit', 25);
-
-        $database->setQuery($query);
-        $this->results = $database->loadObjectList();
+        $this->results = $query
+            ->order('a.created', 'desc')
+            ->limit($limit)
+            ->fetch();
 
         $this->feed = Request::getInt('feedactivity', 0);
 
@@ -57,5 +55,39 @@ class Helper extends Module
         }
 
         parent::display();
+    }
+
+    /**
+     * Build derived activity rows from comments and tickets.
+     *
+     * Produces:
+     * - id
+     * - ticket
+     * - created
+     * - category (comment|change|ticket)
+     *
+     * @param   object  $query
+     * @param   object  $database
+     * @return  void
+     */
+    private function buildActivityUnionQuery($query, $database)
+    {
+        $commentCategoryExpr = sprintf(
+            "(CASE WHEN %s != '' THEN 'comment' ELSE 'change' END)",
+            $database->quoteName('c.comment')
+        );
+
+        $query->select('c.id')
+            ->select('c.ticket')
+            ->select('c.created')
+            ->select($commentCategoryExpr, 'category')
+            ->from('#__support_comments', 'c')
+            ->union(function ($union) {
+                $union->select("'0'", 'id')
+                    ->select('t.id', 'ticket')
+                    ->select('t.created')
+                    ->select("'ticket'", 'category')
+                    ->from('#__support_tickets', 't');
+            });
     }
 }
