@@ -8,6 +8,16 @@
 
 namespace Hubzero\Console\Command\Install;
 
+use Hubzero\Database\Connection\PdoConnection;
+use Hubzero\Database\Exception\ConnectionFailedException;
+
+if (!class_exists(PdoConnection::class)) {
+    require_once dirname(__DIR__, 4) . '/Error/Exception/RuntimeException.php';
+    require_once dirname(__DIR__, 4) . '/Database/Exception/ConnectionFailedException.php';
+    require_once dirname(__DIR__, 4) . '/Database/ConnectionInterface.php';
+    require_once dirname(__DIR__, 4) . '/Database/Connection/PdoConnection.php';
+}
+
 /**
  * Admin user creation helper class
  *
@@ -155,32 +165,85 @@ class AdminUser
     private static function connectToDatabase($config, $ansi)
     {
         try {
-            $dsn = 'mysql:';
-
-            if (!empty($config['socket'])) {
-                $dsn .= 'unix_socket=' . $config['socket'];
-            } else {
-                $dsn .= 'host=' . ($config['host'] ?? 'localhost');
-                if (!empty($config['port'])) {
-                    $dsn .= ';port=' . $config['port'];
-                }
-            }
-
-            $dsn .= ';dbname=' . $config['db'];
-            $dsn .= ';charset=utf8mb4';
-
-            $options = [
-                \PDO::ATTR_TIMEOUT => 30,
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8mb4'",
-            ];
-
-            return new \PDO($dsn, $config['user'], $config['password'], $options);
+            return self::connectWithPdoConnector($config);
         } catch (\PDOException $e) {
             self::output("\e[31mDatabase connection failed.\e[39m\n", $ansi, true);
             self::output("Error: {$e->getMessage()}\n", $ansi, true);
             return null;
         }
+    }
+
+    /**
+     * Connect using Hubzero standalone PDO connector and return native PDO
+     *
+     * @param   array  $config  Database configuration
+     * @return  \PDO
+     * @throws  \PDOException
+     */
+    private static function connectWithPdoConnector(array $config): \PDO
+    {
+        self::resolveInstallerDriver($config);
+
+        $dsn = 'mysql:';
+
+        if (!empty($config['socket'])) {
+            $dsn .= 'unix_socket=' . $config['socket'];
+        } else {
+            $dsn .= 'host=' . ($config['host'] ?? 'localhost');
+            if (!empty($config['port'])) {
+                $dsn .= ';port=' . $config['port'];
+            }
+        }
+
+        if (!empty($config['db'])) {
+            $dsn .= ';dbname=' . $config['db'];
+        } elseif (!empty($config['database'])) {
+            $dsn .= ';dbname=' . $config['database'];
+        }
+
+        $dsn .= ';charset=utf8mb4';
+
+        try {
+            $connection = new PdoConnection(
+                $dsn,
+                (string) ($config['user'] ?? ''),
+                (string) ($config['password'] ?? ''),
+                []
+            );
+
+            return $connection->getNativeConnection();
+        } catch (ConnectionFailedException $e) {
+            $previous = $e->getPrevious();
+            if ($previous instanceof \PDOException) {
+                throw $previous;
+            }
+
+            throw new \PDOException($e->getMessage(), (int) $e->getCode());
+        }
+    }
+
+    /**
+     * Resolve CLI installer driver/connection combo using test-suite naming conventions
+     *
+     * @param   array   $config  Database configuration
+     * @return  string  Normalized driver name
+     * @throws  \PDOException
+     */
+    private static function resolveInstallerDriver(array $config): string
+    {
+        $requested = strtolower((string) ($config['dbtype'] ?? $config['driver'] ?? 'mysql'));
+
+        if (in_array($requested, ['mysql', 'mariadb', 'percona', 'pdo'], true)) {
+            return 'mysql';
+        }
+
+        if (in_array($requested, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
+            throw new \PDOException(
+                "CLI installer currently supports MySQL-family drivers only (mysql/mariadb/percona). Requested: {$requested}"
+            );
+        }
+
+        throw new \PDOException("Unsupported database driver: {$requested}");
     }
 
     /**
@@ -203,7 +266,7 @@ class AdminUser
                  LIMIT 1"
             );
             $stmt->execute(['group_id' => self::SUPER_USERS_GROUP_ID]);
-            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $result = $stmt->fetch();
 
             return $result ?: null;
         } catch (\PDOException $e) {

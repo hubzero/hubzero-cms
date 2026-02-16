@@ -10,8 +10,7 @@
 
 namespace Bootstrap\Install\Web\Steps;
 
-use Hubzero\Database\MysqlDatabaseConnection;
-use PDO;
+use Hubzero\Database\ConnectionInterface;
 use PDOException;
 
 class Database implements StepInterface
@@ -166,12 +165,12 @@ class Database implements StepInterface
         unset($configWithoutDb['db']);
 
         try {
-            $pdo = MysqlDatabaseConnection::connectOrFail($configWithoutDb, 10);
+            $connection = $this->installer->connectToDatabaseOrFail($configWithoutDb, 10);
 
             // Check if database exists
-            if (!MysqlDatabaseConnection::databaseExists($pdo, $config['db'])) {
+            if (!$this->databaseExists($connection, $config['db'])) {
                 // Try to create database
-                if (!MysqlDatabaseConnection::createDatabase($pdo, $config['db'])) {
+                if (!$this->createDatabase($connection, $config['db'])) {
                     $this->installer->addMessage(
                         "Database '{$config['db']}' does not exist and could not be created. "
                         . "Please create it manually or use an account with CREATE DATABASE privileges.",
@@ -182,10 +181,46 @@ class Database implements StepInterface
             }
 
             // Connect to the actual database
-            return MysqlDatabaseConnection::connect($config, 10);
+            return $this->installer->connectToDatabaseOrFail($config, 10);
         } catch (PDOException $e) {
             $this->installer->addMessage('Database connection failed: ' . $e->getMessage(), 'error');
             return null;
+        }
+    }
+
+    /**
+     * Check if database exists
+     */
+    private function databaseExists(ConnectionInterface $connection, string $name): bool
+    {
+        try {
+            $stmt = $connection->prepare(
+                "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?"
+            );
+            $connection->bind($stmt, [$name]);
+            $connection->execute($stmt);
+            return $connection->fetchAssoc($stmt) !== null;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Create database
+     */
+    private function createDatabase(ConnectionInterface $connection, string $name): bool
+    {
+        try {
+            if (!preg_match('/^[a-zA-Z0-9_]+$/', $name)) {
+                return false;
+            }
+
+            $connection->exec(
+                "CREATE DATABASE `{$name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+            );
+            return true;
+        } catch (PDOException $e) {
+            return false;
         }
     }
 

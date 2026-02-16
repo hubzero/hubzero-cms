@@ -8,6 +8,16 @@
 
 namespace Hubzero\Console\Command\Install;
 
+use Hubzero\Database\Connection\PdoConnection;
+use Hubzero\Database\Exception\ConnectionFailedException;
+
+if (!class_exists(PdoConnection::class)) {
+    require_once dirname(__DIR__, 4) . '/Error/Exception/RuntimeException.php';
+    require_once dirname(__DIR__, 4) . '/Database/Exception/ConnectionFailedException.php';
+    require_once dirname(__DIR__, 4) . '/Database/ConnectionInterface.php';
+    require_once dirname(__DIR__, 4) . '/Database/Connection/PdoConnection.php';
+}
+
 /**
  * Database configuration helper class
  *
@@ -139,11 +149,11 @@ class Database
                 $dsn = "mysql:host={$host};port={$port};dbname={$existing['database']}";
             }
 
-            $pdo = new \PDO(
+            $pdo = self::connectWithPdoConnectorFromDsn(
                 $dsn,
                 $existing['username'],
                 $existing['password'] ?? '',
-                [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+                []
             );
 
             // Quick test query
@@ -241,7 +251,7 @@ class Database
         self::output("------------------------------\n", $ansi);
 
         $dbConfig = [
-            'dbtype'   => 'pdo',
+            'dbtype'   => 'mysql',
             'host'     => $connection['host'] ?? 'localhost',
             'user'     => $connection['username'] ?? '',
             'password' => $connection['password'] ?? '',
@@ -467,13 +477,10 @@ class Database
 
         try {
             // Attempt connection with no credentials and short timeout
-            $options = [
-                \PDO::ATTR_TIMEOUT => 5,
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-            ];
+            $options = [];
 
             // This will likely fail, but HOW it fails tells us if MySQL is there
-            new \PDO($dsn, '', '', $options);
+            self::connectWithPdoConnectorFromDsn($dsn, '', '', $options);
 
             // If we get here, connection succeeded (anonymous access enabled)
             self::output("\e[32mMySQL is reachable.\e[39m\n", $ansi);
@@ -744,12 +751,9 @@ class Database
         // Try to connect with admin credentials
         while (true) {
             try {
-                $options = [
-                    \PDO::ATTR_TIMEOUT => 5,
-                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                ];
+                $options = [];
 
-                $adminPdo = new \PDO($connection['dsn'], $adminUser, $adminPass, $options);
+                $adminPdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], $adminUser, $adminPass, $options);
 
                 // Check who we connected as
                 $stmt = $adminPdo->query('SELECT CURRENT_USER()');
@@ -892,10 +896,7 @@ class Database
     {
         self::output("Checking for MySQL administrative access...\n", $ansi);
 
-        $options = [
-            \PDO::ATTR_TIMEOUT => 5,
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-        ];
+        $options = [];
 
         $adminPdo = null;
         $escalated = false;
@@ -965,7 +966,7 @@ class Database
                         }
                         self::output("  Trying {$displayDsn} (from {$myCnfPath}) ... ", $ansi);
                         try {
-                            $adminPdo = new \PDO($adminDsn, $adminUser, $adminPass, $options);
+                            $adminPdo = self::connectWithPdoConnectorFromDsn($adminDsn, $adminUser, $adminPass, $options);
                             self::output("\e[32mOK\e[39m\n", $ansi);
                             // Check privileges immediately - if lacking, try next strategy
                             if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
@@ -991,7 +992,7 @@ class Database
         if ($adminPdo === null) {
             self::output("  Trying {$connection['dsn']} ... ", $ansi);
             try {
-                $adminPdo = new \PDO($connection['dsn'], '', '', $options);
+                $adminPdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], '', '', $options);
                 self::output("\e[32mOK\e[39m\n", $ansi);
                 // Check privileges immediately - if lacking, try next strategy
                 if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
@@ -1024,7 +1025,7 @@ class Database
             if ($currentUser && file_exists($requestedSocket)) {
                 self::output("  Trying {$connection['dsn']};user={$currentUser} ... ", $ansi);
                 try {
-                    $adminPdo = new \PDO($connection['dsn'], $currentUser, '', $options);
+                    $adminPdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], $currentUser, '', $options);
                     self::output("\e[32mOK\e[39m\n", $ansi);
                     // Check privileges immediately - if lacking, try next strategy
                     if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
@@ -1096,7 +1097,7 @@ class Database
                             }
                             self::output("  Trying (sudo) {$displayDsn} (from {$rootMyCnfPath}) ... ", $ansi);
                             try {
-                                $adminPdo = new \PDO($adminDsn, $adminUser, $adminPass, $options);
+                                $adminPdo = self::connectWithPdoConnectorFromDsn($adminDsn, $adminUser, $adminPass, $options);
                                 self::output("\e[32mOK\e[39m\n", $ansi);
                                 // Check privileges immediately - if lacking, try next strategy
                                 if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
@@ -1120,7 +1121,7 @@ class Database
                 if ($adminPdo === null) {
                     self::output("  Trying (sudo) {$connection['dsn']} ... ", $ansi);
                     try {
-                        $adminPdo = new \PDO($connection['dsn'], '', '', $options);
+                        $adminPdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], '', '', $options);
                         self::output("\e[32mOK\e[39m\n", $ansi);
                         // Check privileges immediately - if lacking, try next strategy
                         if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
@@ -1151,7 +1152,7 @@ class Database
                     if ($currentUser && file_exists($requestedSocket)) {
                         self::output("  Trying (sudo) {$connection['dsn']};user={$currentUser} ... ", $ansi);
                         try {
-                            $adminPdo = new \PDO($connection['dsn'], $currentUser, '', $options);
+                            $adminPdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], $currentUser, '', $options);
                             self::output("\e[32mOK\e[39m\n", $ansi);
                             // Check privileges immediately - if lacking, continue (no more strategies)
                             if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
@@ -1214,7 +1215,10 @@ class Database
         try {
             // Check global privileges
             $stmt = $pdo->query("SHOW GRANTS FOR CURRENT_USER()");
-            $grants = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+            $grants = [];
+            while (($grant = $stmt->fetchColumn()) !== false) {
+                $grants[] = $grant;
+            }
 
             $hasAllPrivileges = false;
             $hasCreateUser = false;
@@ -1816,12 +1820,9 @@ class Database
     private static function testAndReturnCredentials($connection, $username, $password, $ansi)
     {
         try {
-            $options = [
-                \PDO::ATTR_TIMEOUT => 5,
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-            ];
+            $options = [];
 
-            $pdo = new \PDO($connection['dsn'], $username, $password, $options);
+            $pdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], $username, $password, $options);
 
             // Query for the current user
             $stmt = $pdo->query('SELECT CURRENT_USER()');
@@ -1904,12 +1905,9 @@ class Database
         // Try to connect with provided credentials
         while (true) {
             try {
-                $options = [
-                    \PDO::ATTR_TIMEOUT => 5,
-                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                ];
+                $options = [];
 
-                $pdo = new \PDO($connection['dsn'], $username, $password, $options);
+                $pdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], $username, $password, $options);
 
                 // Connection succeeded!
                 $stmt = $pdo->query('SELECT CURRENT_USER()');
@@ -2591,6 +2589,61 @@ class Database
         }
 
         return $dsn;
+    }
+
+    /**
+     * Connect using Hubzero standalone PDO connector and return native PDO
+     *
+     * @param   string  $dsn       PDO DSN
+     * @param   string  $username  Database username
+     * @param   string  $password  Database password
+     * @param   array   $options   PDO options
+     * @return  \PDO
+     * @throws  \PDOException
+     */
+    private static function connectWithPdoConnectorFromDsn(
+        string $dsn,
+        string $username = '',
+        string $password = '',
+        array $options = []
+    ): \PDO {
+        self::resolveInstallerDriverFromDsn($dsn);
+
+        try {
+            $connection = new PdoConnection($dsn, $username, $password, $options);
+            return $connection->getNativeConnection();
+        } catch (ConnectionFailedException $e) {
+            $previous = $e->getPrevious();
+            if ($previous instanceof \PDOException) {
+                throw $previous;
+            }
+
+            throw new \PDOException($e->getMessage(), (int) $e->getCode());
+        }
+    }
+
+    /**
+     * Resolve CLI installer driver from DSN using test-suite naming conventions
+     *
+     * @param   string  $dsn  PDO DSN
+     * @return  string  Normalized driver name
+     * @throws  \PDOException
+     */
+    private static function resolveInstallerDriverFromDsn(string $dsn): string
+    {
+        $driver = strtolower((string) strstr($dsn, ':', true));
+
+        if (in_array($driver, ['mysql', 'mariadb', 'percona', 'pdo'], true)) {
+            return 'mysql';
+        }
+
+        if (in_array($driver, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
+            throw new \PDOException(
+                "CLI installer currently supports MySQL-family drivers only (mysql/mariadb/percona). Requested DSN driver: {$driver}"
+            );
+        }
+
+        throw new \PDOException("Unsupported database driver in DSN: {$driver}");
     }
 
     /**

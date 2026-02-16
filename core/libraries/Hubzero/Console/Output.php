@@ -392,6 +392,155 @@ class Output
     }
 
     /**
+     * Iterate over items with a progress bar
+     *
+     * Provides Laravel-like convenience for processing collections with visual feedback.
+     *
+     * Usage:
+     * ```php
+     * // Simple iteration
+     * $output->withProgress($items, function ($item) {
+     *     // Process item
+     * });
+     *
+     * // With custom message
+     * $output->withProgress($items, function ($item) {
+     *     // Process item
+     * }, 'Processing records: ');
+     *
+     * // With bar style
+     * $output->withProgress($items, function ($item) {
+     *     // Process item
+     * }, 'Importing: ', 'bar_eta');
+     * ```
+     *
+     * @param   iterable  $items     Items to iterate over
+     * @param   callable  $callback  Function to call for each item, receives ($item, $key, $progress)
+     * @param   string    $message   Optional message to display before progress
+     * @param   string    $type      Progress type ('percentage', 'ratio', 'bar', 'bar_eta')
+     * @return  array     Results from each callback invocation
+     **/
+    public function withProgress($items, callable $callback, string $message = '', string $type = 'bar'): array
+    {
+        // Convert to array to get count if needed
+        if ($items instanceof \Traversable) {
+            $items = iterator_to_array($items);
+        }
+
+        $total = is_countable($items) ? count($items) : 0;
+
+        if ($total === 0) {
+            return [];
+        }
+
+        $progress = $this->getProgressOutput();
+        $progress->init($message, $type, $total);
+
+        $results = [];
+        $current = 0;
+
+        foreach ($items as $key => $item) {
+            $current++;
+            $results[$key] = $callback($item, $key, $progress);
+            $progress->setProgress($current, $total);
+        }
+
+        $progress->done();
+
+        return $results;
+    }
+
+    /**
+     * Iterate over items with a progress bar, keeping final state visible
+     *
+     * Similar to withProgress() but doesn't clear the progress bar when done.
+     *
+     * @param   iterable  $items          Items to iterate over
+     * @param   callable  $callback       Function to call for each item
+     * @param   string    $message        Optional message to display before progress
+     * @param   string    $type           Progress type
+     * @param   string    $finishMessage  Message to display when complete
+     * @return  array     Results from each callback invocation
+     **/
+    public function withProgressFinish($items, callable $callback, string $message = '', string $type = 'bar', string $finishMessage = 'Done!'): array
+    {
+        // Convert to array to get count if needed
+        if ($items instanceof \Traversable) {
+            $items = iterator_to_array($items);
+        }
+
+        $total = is_countable($items) ? count($items) : 0;
+
+        if ($total === 0) {
+            return [];
+        }
+
+        $progress = $this->getProgressOutput();
+        $progress->init($message, $type, $total);
+
+        $results = [];
+        $current = 0;
+
+        foreach ($items as $key => $item) {
+            $current++;
+            $results[$key] = $callback($item, $key, $progress);
+            $progress->setProgress($current, $total);
+        }
+
+        $progress->finish($finishMessage);
+
+        return $results;
+    }
+
+    /**
+     * Run a task with a spinner for indeterminate progress
+     *
+     * Useful when the total number of iterations is unknown.
+     *
+     * Usage:
+     * ```php
+     * $output->withSpinner('Connecting...', function ($spinner) {
+     *     while (!$connected) {
+     *         $spinner->tick();
+     *         // Try to connect
+     *     }
+     * });
+     * ```
+     *
+     * @param   string    $message   Message to display with spinner
+     * @param   callable  $callback  Function to execute, receives the progress instance
+     * @return  mixed     Result from callback
+     **/
+    public function withSpinner(string $message, callable $callback)
+    {
+        $progress = $this->getProgressOutput();
+        $progress->init($message . ' ', 'spinner');
+
+        // Create a ticker object for the callback
+        $ticker = new class($progress) {
+            private $progress;
+
+            public function __construct($progress)
+            {
+                $this->progress = $progress;
+            }
+
+            public function tick($message = null)
+            {
+                $this->progress->setSpinnerProgress($message);
+            }
+        };
+
+        try {
+            $result = $callback($ticker);
+        } finally {
+            $progress->done();
+        }
+
+        return $result;
+    }
+
+    /**
      * Take line of text and styles and give back a formatted line.
      *
      * This will also translate textual colors and formatting words

@@ -147,10 +147,8 @@ class User extends Base implements CommandInterface
             }
 
             // Figure out what the table's primary key is
-            $query = "SHOW INDEX FROM `{$table}` WHERE `Key_name` = 'PRIMARY'";
-            $dbo->setQuery($query);
-            $index = $dbo->loadObject();
-            $tablePK = (isset($index->Column_name)) ? $index->Column_name : false;
+            // Use getPrimaryKey for database compatibility (MySQL/SQLite)
+            $tablePK = $dbo->getPrimaryKey($table);
 
             // Get the columns
             $columns = $dbo->getTableColumns($table);

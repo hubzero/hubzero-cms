@@ -11,6 +11,8 @@ namespace Hubzero\Console\Command;
 use Hubzero\Utility\Date;
 use Hubzero\Config\Registry;
 use Hubzero\Content\Migration\Base as Migration;
+use Hubzero\Console\Command\Database\SchemaConverter;
+use Hubzero\Database\DatabaseManager;
 
 /**
  * Database class
@@ -145,6 +147,286 @@ class Database extends Base implements CommandInterface
     }
 
     /**
+     * Convert database schema from one database type to another
+     *
+     * @museDescription  Converts schema.sql from one database type to another (e.g., mysql to sqlite)
+     *
+     * @return  void
+     **/
+    public function schema()
+    {
+        $converter = new SchemaConverter($this->output, $this->arguments);
+        $converter->convert();
+    }
+
+    /**
+     * Launch an interactive database CLI session
+     *
+     * @museDescription  Opens the native database client (mysql/psql/sqlite3) with auto-configured credentials
+     *
+     * @return  void
+     **/
+    public function cli()
+    {
+        $driver = strtolower(Config::get('driver', 'mysql'));
+
+        // Build the command based on database driver
+        switch ($driver) {
+            case 'mysql':
+            case 'mysqli':
+            case 'mariadb':
+            case 'percona':
+                $cmd = 'mysql';
+                $cmd .= ' -u ' . escapeshellarg(Config::get('user'));
+
+                $password = Config::get('password');
+                if (!empty($password)) {
+                    $cmd .= ' -p' . escapeshellarg($password);
+                }
+
+                $host = Config::get('host', 'localhost');
+                if (!empty($host) && $host !== 'localhost') {
+                    $cmd .= ' -h ' . escapeshellarg($host);
+                }
+
+                $port = Config::get('port');
+                if (!empty($port) && $port != 3306) {
+                    $cmd .= ' -P ' . escapeshellarg($port);
+                }
+
+                $cmd .= ' ' . escapeshellarg(Config::get('db'));
+                break;
+
+            case 'pgsql':
+            case 'postgresql':
+                // PostgreSQL uses PGPASSWORD environment variable
+                $password = Config::get('password');
+                $envPrefix = !empty($password) ? 'PGPASSWORD=' . escapeshellarg($password) . ' ' : '';
+
+                $cmd = $envPrefix . 'psql';
+                $cmd .= ' -U ' . escapeshellarg(Config::get('user'));
+
+                $host = Config::get('host', 'localhost');
+                if (!empty($host)) {
+                    $cmd .= ' -h ' . escapeshellarg($host);
+                }
+
+                $port = Config::get('port');
+                if (!empty($port) && $port != 5432) {
+                    $cmd .= ' -p ' . escapeshellarg($port);
+                }
+
+                $cmd .= ' ' . escapeshellarg(Config::get('db'));
+                break;
+
+            case 'sqlite':
+            case 'sqlite3':
+                $dbPath = Config::get('database', Config::get('db'));
+                if (strpos($dbPath, '/') !== 0) {
+                    // Relative path - prepend app root
+                    $dbPath = PATH_ROOT . '/' . $dbPath;
+                }
+                $cmd = 'sqlite3 ' . escapeshellarg($dbPath);
+                break;
+
+            default:
+                $this->output->error("Unsupported database driver: {$driver}");
+                return;
+        }
+
+        $this->output->addLine("Launching {$driver} client...");
+        $this->output->addLine("Type 'exit' or 'quit' to return to the shell.");
+        $this->output->addLine('');
+
+        // Use passthru to hand over terminal control to the database client
+        passthru($cmd);
+    }
+
+    /**
+     * Execute a single SQL query
+     *
+     * @museDescription  Runs a single SQL query against the database with automatic table prefix replacement
+     *
+     * @return  void
+     **/
+    public function query()
+    {
+        $sql = $this->arguments->getOpt('sql');
+
+        // If no --sql option, check for positional argument after 'query'
+        if (empty($sql)) {
+            $sql = $this->arguments->getOpt(3);
+        }
+
+        if (empty($sql)) {
+            $this->output->error('Please provide a SQL query using --sql="YOUR QUERY" or as the third argument');
+            return;
+        }
+
+        // Replace #__ with the actual table prefix
+        $prefix = App::get('db')->getPrefix();
+        $sql = str_replace('#__', $prefix, $sql);
+
+        $jsonOutput = $this->arguments->getOpt('json');
+
+        try {
+            $db = App::get('db');
+            $db->setQuery($sql);
+
+            // Determine if this is a SELECT query (returns results)
+            $trimmedSql = ltrim(strtoupper($sql));
+            $isSelect = strpos($trimmedSql, 'SELECT') === 0
+                     || strpos($trimmedSql, 'SHOW') === 0
+                     || strpos($trimmedSql, 'DESCRIBE') === 0
+                     || strpos($trimmedSql, 'DESC') === 0
+                     || strpos($trimmedSql, 'EXPLAIN') === 0;
+
+            if ($isSelect) {
+                $results = $db->loadAssocList();
+
+                if ($jsonOutput) {
+                    $this->output->addLine(json_encode($results, JSON_PRETTY_PRINT));
+                } else {
+                    if (empty($results)) {
+                        $this->output->addLine('No results returned.', 'info');
+                    } else {
+                        // Get column headers from first row
+                        $headers = array_keys($results[0]);
+
+                        // Calculate column widths
+                        $widths = [];
+                        foreach ($headers as $header) {
+                            $widths[$header] = strlen($header);
+                        }
+                        foreach ($results as $row) {
+                            foreach ($row as $key => $value) {
+                                $len = strlen((string)$value);
+                                if ($len > $widths[$key]) {
+                                    $widths[$key] = min($len, 50); // Cap at 50 chars
+                                }
+                            }
+                        }
+
+                        // Print header row
+                        $headerLine = '| ';
+                        $separator = '+-';
+                        foreach ($headers as $header) {
+                            $headerLine .= str_pad($header, $widths[$header]) . ' | ';
+                            $separator .= str_repeat('-', $widths[$header]) . '-+-';
+                        }
+                        $separator = rtrim($separator, '-+') . '+';
+
+                        $this->output->addLine($separator);
+                        $this->output->addLine(rtrim($headerLine));
+                        $this->output->addLine($separator);
+
+                        // Print data rows
+                        foreach ($results as $row) {
+                            $line = '| ';
+                            foreach ($headers as $header) {
+                                $value = (string)$row[$header];
+                                if (strlen($value) > 50) {
+                                    $value = substr($value, 0, 47) . '...';
+                                }
+                                $line .= str_pad($value, $widths[$header]) . ' | ';
+                            }
+                            $this->output->addLine(rtrim($line));
+                        }
+
+                        $this->output->addLine($separator);
+                        $this->output->addLine(count($results) . ' row(s) returned.', 'info');
+                    }
+                }
+            } else {
+                // Execute non-SELECT query
+                $result = $db->execute();
+
+                if ($result) {
+                    $affected = $db->getAffectedRows();
+                    if ($jsonOutput) {
+                        $this->output->addLine(json_encode([
+                            'success' => true,
+                            'affected_rows' => $affected
+                        ], JSON_PRETTY_PRINT));
+                    } else {
+                        $this->output->addLine("Query executed successfully. {$affected} row(s) affected.", 'success');
+                    }
+                } else {
+                    if ($jsonOutput) {
+                        $this->output->addLine(json_encode([
+                            'success' => false,
+                            'error' => $db->getErrorMsg()
+                        ], JSON_PRETTY_PRINT));
+                    } else {
+                        $this->output->error('Query failed: ' . $db->getErrorMsg());
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            if ($jsonOutput) {
+                $this->output->addLine(json_encode([
+                    'success' => false,
+                    'error' => $e->getMessage()
+                ], JSON_PRETTY_PRINT));
+            } else {
+                $this->output->error('Query error: ' . $e->getMessage());
+            }
+        }
+    }
+
+    /**
+     * List available database drivers
+     *
+     * @museDescription  Lists all supported database drivers and their PHP extension availability
+     *
+     * @return  void
+     **/
+    public function drivers()
+    {
+        $manager = new DatabaseManager();
+        $availability = $manager->getDriverAvailability();
+
+        $this->output->addLine('');
+        $this->output->addLine('Database Drivers', ['format' => 'bold']);
+        $this->output->addLine(str_repeat('=', 68));
+        $this->output->addLine('');
+
+        $this->output->addLine(
+            sprintf('  %-12s %-36s %s', 'Name', 'Class', 'Status'),
+            ['format' => 'underline']
+        );
+
+        foreach ($availability as $name => $info) {
+            if ($info['custom']) {
+                $class  = 'custom resolver';
+                $status = 'registered';
+                $style  = 'info';
+            } elseif ($info['class']) {
+                $class  = $info['class'];
+                $status = $info['available'] ? 'available' : 'not available';
+                $style  = $info['available'] ? 'success' : ['color' => 'red'];
+            } else {
+                $class  = '—';
+                $status = 'unknown';
+                $style  = 'warning';
+            }
+
+            $this->output->addString(sprintf('  %-12s %-36s ', $name, $class));
+            $this->output->addLine($status, $style);
+        }
+
+        $this->output->addLine('');
+        $this->output->addLine(
+            sprintf('  %d driver(s) total, %d available',
+                count($availability),
+                count(array_filter($availability, function ($d) { return $d['available'] === true; }))
+            ),
+            'info'
+        );
+        $this->output->addLine('');
+    }
+
+    /**
      * Output help documentation
      *
      * @return  void
@@ -180,6 +462,39 @@ class Database extends Base implements CommandInterface
 				prior to loading in the given dump. This is often helpful when the
 				applied dump is divergent in schema from the current database being
 				overwritten.'
+            )
+            ->addArgument(
+                '--from: Source database type (for schema command)',
+                'Specify the source database type for schema conversion.
+				Currently supported: mysql',
+                'Example: --from=mysql'
+            )
+            ->addArgument(
+                '--to: Target database type (for schema command)',
+                'Specify the target database type for schema conversion.
+				Currently supported: sqlite',
+                'Example: --to=sqlite'
+            )
+            ->addArgument(
+                '--input: Input schema file (for schema command)',
+                'Path to the input schema file. Defaults to Install/sql/{from}/schema.sql',
+                'Example: --input=/path/to/schema.sql'
+            )
+            ->addArgument(
+                '--output: Output schema file (for schema command)',
+                'Path to the output schema file. Defaults to Install/sql/{to}/schema.sql',
+                'Example: --output=/path/to/schema.sql'
+            )
+            ->addArgument(
+                '--sql: SQL query to execute (for query command)',
+                'The SQL query to run. Table prefix #__ will be replaced automatically.
+				Can also be provided as the third positional argument.',
+                'Example: --sql="SELECT * FROM #__users LIMIT 5"'
+            )
+            ->addArgument(
+                '--json: Output results as JSON (for query command)',
+                'When used with the query command, outputs results in JSON format
+				instead of a formatted table. Useful for scripting.'
             );
     }
 }

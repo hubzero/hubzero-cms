@@ -8,8 +8,16 @@
 
 namespace Hubzero\Console\Command\Install;
 
-use Hubzero\Database\MysqlDatabaseConnection;
+use Hubzero\Database\Connection\PdoConnection;
+use Hubzero\Database\Exception\ConnectionFailedException;
 use Hubzero\Database\SqlParser;
+
+if (!class_exists(PdoConnection::class)) {
+    require_once dirname(__DIR__, 4) . '/Error/Exception/RuntimeException.php';
+    require_once dirname(__DIR__, 4) . '/Database/Exception/ConnectionFailedException.php';
+    require_once dirname(__DIR__, 4) . '/Database/ConnectionInterface.php';
+    require_once dirname(__DIR__, 4) . '/Database/Connection/PdoConnection.php';
+}
 
 /**
  * Schema loader helper class
@@ -240,7 +248,7 @@ class Schema
         self::output("Connecting to database... ", $ansi);
 
         try {
-            $pdo = MysqlDatabaseConnection::connectOrFail($config);
+            $pdo = self::connectWithPdoConnector($config);
             self::output("\e[32mConnected.\e[39m\n", $ansi);
             return $pdo;
         } catch (\PDOException $e) {
@@ -248,6 +256,91 @@ class Schema
             self::output("Error: {$e->getMessage()}\n", $ansi, true);
             return null;
         }
+    }
+
+    /**
+     * Connect using Hubzero standalone PDO connector and return native PDO
+     *
+     * @param   array  $config  Database configuration
+     * @return  \PDO
+     * @throws  \PDOException
+     */
+    private static function connectWithPdoConnector(array $config): \PDO
+    {
+        self::resolveInstallerDriver($config);
+
+        $dsn = self::buildMysqlDsn($config);
+        try {
+            $connection = new PdoConnection(
+                $dsn,
+                (string) ($config['user'] ?? ''),
+                (string) ($config['password'] ?? ''),
+                []
+            );
+
+            return $connection->getNativeConnection();
+        } catch (ConnectionFailedException $e) {
+            $previous = $e->getPrevious();
+            if ($previous instanceof \PDOException) {
+                throw $previous;
+            }
+
+            throw new \PDOException($e->getMessage(), (int) $e->getCode());
+        }
+    }
+
+    /**
+     * Resolve CLI installer driver/connection combo using test-suite naming conventions
+     *
+     * @param   array   $config  Database configuration
+     * @return  string  Normalized driver name
+     * @throws  \PDOException
+     */
+    private static function resolveInstallerDriver(array $config): string
+    {
+        $requested = strtolower((string) ($config['dbtype'] ?? $config['driver'] ?? 'mysql'));
+
+        if (in_array($requested, ['mysql', 'mariadb', 'percona', 'pdo'], true)) {
+            return 'mysql';
+        }
+
+        if (in_array($requested, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
+            throw new \PDOException(
+                "CLI installer currently supports MySQL-family drivers only (mysql/mariadb/percona). Requested: {$requested}"
+            );
+        }
+
+        throw new \PDOException("Unsupported database driver: {$requested}");
+    }
+
+    /**
+     * Build MySQL DSN from installer config
+     *
+     * @param   array   $config  Database configuration
+     * @return  string
+     */
+    private static function buildMysqlDsn(array $config): string
+    {
+        $dsn = 'mysql:';
+
+        if (!empty($config['socket'])) {
+            $dsn .= 'unix_socket=' . $config['socket'];
+        } else {
+            $dsn .= 'host=' . ($config['host'] ?? 'localhost');
+            if (!empty($config['port'])) {
+                $dsn .= ';port=' . $config['port'];
+            }
+        }
+
+        if (!empty($config['db'])) {
+            $dsn .= ';dbname=' . $config['db'];
+        } elseif (!empty($config['database'])) {
+            $dsn .= ';dbname=' . $config['database'];
+        }
+
+        $dsn .= ';charset=utf8mb4';
+
+        return $dsn;
     }
 
     /**

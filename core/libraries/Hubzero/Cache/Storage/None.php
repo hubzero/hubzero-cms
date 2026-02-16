@@ -38,8 +38,7 @@ class None implements StorageInterface
         }
 
         if (!isset($this->options['hash'])) {
-            $config = new \Hubzero\Config\Repository('site');
-            $this->options['hash'] = md5($config->get('secret', 'secret'));
+            $this->options['hash'] = md5('secret');
         }
     }
 

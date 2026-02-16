@@ -10,6 +10,7 @@
 
 namespace Bootstrap\Install\Web\Steps;
 
+use Hubzero\Database\ConnectionInterface;
 use Hubzero\Database\SqlParser;
 use PDOException;
 
@@ -126,8 +127,8 @@ class Schema implements StepInterface
             return;
         }
 
-        $pdo = $this->installer->connectToDatabase($dbConfig);
-        if (!$pdo) {
+        $connection = $this->installer->connectToDatabase($dbConfig);
+        if (!$connection) {
             return;
         }
 
@@ -135,13 +136,15 @@ class Schema implements StepInterface
 
         // Count tables
         try {
-            $stmt = $pdo->prepare(
+            $stmt = $connection->prepare(
                 "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES
                  WHERE TABLE_SCHEMA = DATABASE()
-                 AND TABLE_NAME LIKE :prefix"
+                 AND TABLE_NAME LIKE ?"
             );
-            $stmt->execute(['prefix' => $prefix . '%']);
-            $this->status['table_count'] = (int) $stmt->fetchColumn();
+            $connection->bind($stmt, [$prefix . '%']);
+            $connection->execute($stmt);
+            $row = $connection->fetchArray($stmt);
+            $this->status['table_count'] = (int) ($row[0] ?? 0);
             $this->status['schema_loaded'] = $this->status['table_count'] > 0;
         } catch (PDOException $e) {
             // Ignore
@@ -150,12 +153,13 @@ class Schema implements StepInterface
         // Check for base data
         if ($this->status['schema_loaded']) {
             try {
-                $stmt = $pdo->prepare(
+                $stmt = $connection->prepare(
                     "SELECT COUNT(*) FROM `{$prefix}extensions`
                      WHERE element IN ('com_content', 'com_users', 'com_menus')"
                 );
-                $stmt->execute();
-                $this->status['data_loaded'] = (int) $stmt->fetchColumn() >= 3;
+                $connection->execute($stmt);
+                $row = $connection->fetchArray($stmt);
+                $this->status['data_loaded'] = (int) ($row[0] ?? 0) >= 3;
             } catch (PDOException $e) {
                 // Ignore
             }
@@ -164,9 +168,10 @@ class Schema implements StepInterface
         // Check for sample data
         if ($this->status['data_loaded']) {
             try {
-                $stmt = $pdo->prepare("SELECT COUNT(*) FROM `{$prefix}content` WHERE state >= 0");
-                $stmt->execute();
-                $this->status['sample_loaded'] = (int) $stmt->fetchColumn() > 0;
+                $stmt = $connection->prepare("SELECT COUNT(*) FROM `{$prefix}content` WHERE state >= 0");
+                $connection->execute($stmt);
+                $row = $connection->fetchArray($stmt);
+                $this->status['sample_loaded'] = (int) ($row[0] ?? 0) > 0;
             } catch (PDOException $e) {
                 // Ignore
             }
@@ -174,24 +179,26 @@ class Schema implements StepInterface
 
         // Check migrations status
         if ($this->status['data_loaded']) {
-            $this->checkMigrationStatus($pdo, $prefix);
+            $this->checkMigrationStatus($connection, $prefix);
         }
     }
 
     /**
      * Check migration status
      */
-    private function checkMigrationStatus($pdo, $prefix)
+    private function checkMigrationStatus(ConnectionInterface $connection, $prefix)
     {
         // Check if migrations table exists
         try {
-            $stmt = $pdo->prepare(
+            $stmt = $connection->prepare(
                 "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES
                  WHERE TABLE_SCHEMA = DATABASE()
-                 AND TABLE_NAME IN ('migrations', :prefixed)"
+                 AND TABLE_NAME IN ('migrations', ?)"
             );
-            $stmt->execute(['prefixed' => $prefix . 'migrations']);
-            $migTableExists = (int) $stmt->fetchColumn() > 0;
+            $connection->bind($stmt, [$prefix . 'migrations']);
+            $connection->execute($stmt);
+            $row = $connection->fetchArray($stmt);
+            $migTableExists = (int) ($row[0] ?? 0) > 0;
         } catch (PDOException $e) {
             return;
         }
@@ -207,15 +214,17 @@ class Schema implements StepInterface
         try {
             // Try prefixed table first
             $tableName = $prefix . 'migrations';
-            $stmt = $pdo->prepare("SELECT COUNT(DISTINCT file) FROM `{$tableName}` WHERE direction = 'up'");
-            $stmt->execute();
-            $runCount = (int) $stmt->fetchColumn();
+            $stmt = $connection->prepare("SELECT COUNT(DISTINCT file) FROM `{$tableName}` WHERE direction = 'up'");
+            $connection->execute($stmt);
+            $row = $connection->fetchArray($stmt);
+            $runCount = (int) ($row[0] ?? 0);
         } catch (PDOException $e) {
             try {
                 // Try unprefixed table
-                $stmt = $pdo->prepare("SELECT COUNT(DISTINCT file) FROM `migrations` WHERE direction = 'up'");
-                $stmt->execute();
-                $runCount = (int) $stmt->fetchColumn();
+                $stmt = $connection->prepare("SELECT COUNT(DISTINCT file) FROM `migrations` WHERE direction = 'up'");
+                $connection->execute($stmt);
+                $row = $connection->fetchArray($stmt);
+                $runCount = (int) ($row[0] ?? 0);
             } catch (PDOException $e2) {
                 return;
             }
@@ -304,15 +313,15 @@ class Schema implements StepInterface
             return false;
         }
 
-        $pdo = $this->installer->connectToDatabase($dbConfig);
-        if (!$pdo) {
+        $connection = $this->installer->connectToDatabase($dbConfig);
+        if (!$connection) {
             return false;
         }
 
         $prefix = $dbConfig['dbprefix'] ?? 'jos_';
         $schemaPath = INSTALL_ROOT . '/sql/mysql/schema.sql';
 
-        return $this->executeSqlFile($pdo, $schemaPath, $prefix);
+        return $this->executeSqlFile($connection, $schemaPath, $prefix);
     }
 
     /**
@@ -327,15 +336,15 @@ class Schema implements StepInterface
             return false;
         }
 
-        $pdo = $this->installer->connectToDatabase($dbConfig);
-        if (!$pdo) {
+        $connection = $this->installer->connectToDatabase($dbConfig);
+        if (!$connection) {
             return false;
         }
 
         $prefix = $dbConfig['dbprefix'] ?? 'jos_';
         $dataPath = INSTALL_ROOT . '/sql/mysql/data.sql';
 
-        return $this->executeSqlFile($pdo, $dataPath, $prefix);
+        return $this->executeSqlFile($connection, $dataPath, $prefix);
     }
 
     /**
@@ -350,8 +359,8 @@ class Schema implements StepInterface
             return false;
         }
 
-        $pdo = $this->installer->connectToDatabase($dbConfig);
-        if (!$pdo) {
+        $connection = $this->installer->connectToDatabase($dbConfig);
+        if (!$connection) {
             return false;
         }
 
@@ -362,13 +371,13 @@ class Schema implements StepInterface
             return true; // No sample file is OK
         }
 
-        return $this->executeSqlFile($pdo, $samplePath, $prefix);
+        return $this->executeSqlFile($connection, $samplePath, $prefix);
     }
 
     /**
      * Execute a SQL file
      */
-    private function executeSqlFile($pdo, $path, $prefix)
+    private function executeSqlFile(ConnectionInterface $connection, $path, $prefix)
     {
         // Use shared SqlParser to load and split the SQL file
         $statements = SqlParser::loadFile($path, $prefix);
@@ -383,7 +392,7 @@ class Schema implements StepInterface
             }
 
             try {
-                $pdo->exec($statement);
+                $connection->exec($statement);
             } catch (PDOException $e) {
                 // Log but continue - some errors like "table already exists" are OK
                 error_log("SQL Warning: " . $e->getMessage());
