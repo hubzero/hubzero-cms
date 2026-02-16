@@ -9,15 +9,19 @@
 namespace Hubzero\Database\Casts;
 
 use Hubzero\Database\Relational;
-use Hubzero\Encryption\Encrypter;
 
 /**
  * Cast attribute to/from encrypted string
  *
- * Requires the Hubzero Encryption service to be available.
+ * Requires a StringEncrypter to be injected via setEncrypter().
+ * Without one, values pass through unencrypted.
  *
  * Usage:
  * ```php
+ * // Wire up in bootstrap:
+ * AsEncryptedString::setEncrypter($myEncrypter);
+ *
+ * // In model:
  * protected $casts = [
  *     'secret_key' => AsEncryptedString::class,
  * ];
@@ -25,6 +29,34 @@ use Hubzero\Encryption\Encrypter;
  */
 class AsEncryptedString implements CastsAttributes
 {
+    /**
+     * The encrypter instance
+     *
+     * @var StringEncrypter|null
+     */
+    protected static ?StringEncrypter $encrypter = null;
+
+    /**
+     * Set the encrypter instance
+     *
+     * @param  StringEncrypter|null  $encrypter
+     * @return void
+     */
+    public static function setEncrypter(?StringEncrypter $encrypter): void
+    {
+        static::$encrypter = $encrypter;
+    }
+
+    /**
+     * Get the encrypter instance
+     *
+     * @return StringEncrypter|null
+     */
+    public static function getEncrypter(): ?StringEncrypter
+    {
+        return static::$encrypter;
+    }
+
     /**
      * Decrypt when reading
      *
@@ -40,14 +72,12 @@ class AsEncryptedString implements CastsAttributes
             return null;
         }
 
-        $encrypter = $this->getEncrypter();
-
-        if ($encrypter === null) {
+        if (static::$encrypter === null) {
             return $value;
         }
 
         try {
-            return $encrypter->decrypt($value);
+            return static::$encrypter->decrypt($value);
         } catch (\Exception $e) {
             // Return raw value if decryption fails (might not be encrypted)
             return $value;
@@ -69,36 +99,20 @@ class AsEncryptedString implements CastsAttributes
             return null;
         }
 
-        $encrypter = $this->getEncrypter();
-
-        if ($encrypter === null) {
+        if (static::$encrypter === null) {
             return $value;
         }
 
-        return $encrypter->encrypt($value);
+        return static::$encrypter->encrypt($value);
     }
 
     /**
-     * Get the encrypter instance
+     * Reset static state (for worker mode / testing)
      *
-     * @return Encrypter|null
+     * @return void
      */
-    protected function getEncrypter()
+    public static function flush(): void
     {
-        // Try to get from app container
-        if (function_exists('app') && ($app = app()) !== null && $app->has('encrypter')) {
-            return $app->get('encrypter');
-        }
-
-        // Try to get from App facade
-        if (class_exists('App') && method_exists('App', 'get')) {
-            try {
-                return \App::get('encrypter');
-            } catch (\Exception $e) {
-                // Encrypter not available
-            }
-        }
-
-        return null;
+        static::$encrypter = null;
     }
 }

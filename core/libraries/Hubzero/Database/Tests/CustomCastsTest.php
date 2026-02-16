@@ -16,6 +16,7 @@ use Hubzero\Database\Casts\AsJson;
 use Hubzero\Database\Casts\AsCollection;
 use Hubzero\Database\Casts\AsDateTime;
 use Hubzero\Database\Casts\AsEncryptedString;
+use Hubzero\Database\Casts\StringEncrypter;
 use Hubzero\Database\Relational;
 use ArrayObject;
 use Hubzero\Database\Tests\TestModels\CastTestModelJson;
@@ -463,5 +464,93 @@ class CustomCastsTest extends AbstractDriverTestCase
         $result = $cast->set($model, 'secret', null, []);
 
         $this->assertNull($result, "[$dbName]");
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function encryptedStringEncryptsWithInjectedEncrypter(string $dbName, Driver $driver)
+    {
+        $this->prepareModels($driver);
+
+        $encrypter = new class implements StringEncrypter {
+            public function encrypt(string $value): string
+            {
+                return base64_encode($value);
+            }
+            public function decrypt(string $value): string
+            {
+                return base64_decode($value);
+            }
+        };
+
+        AsEncryptedString::setEncrypter($encrypter);
+
+        $cast = new AsEncryptedString();
+        $model = CastTestModelMixed::blank();
+
+        $encrypted = $cast->set($model, 'secret', 'my_secret', []);
+        $this->assertEquals(base64_encode('my_secret'), $encrypted, "[$dbName]");
+
+        $decrypted = $cast->get($model, 'secret', $encrypted, []);
+        $this->assertEquals('my_secret', $decrypted, "[$dbName]");
+
+        AsEncryptedString::flush();
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function encryptedStringFlushClearsEncrypter(string $dbName, Driver $driver)
+    {
+        $this->prepareModels($driver);
+
+        $encrypter = new class implements StringEncrypter {
+            public function encrypt(string $value): string
+            {
+                return 'enc:' . $value;
+            }
+            public function decrypt(string $value): string
+            {
+                return substr($value, 4);
+            }
+        };
+
+        AsEncryptedString::setEncrypter($encrypter);
+        $this->assertNotNull(AsEncryptedString::getEncrypter(), "[$dbName]");
+
+        AsEncryptedString::flush();
+        $this->assertNull(AsEncryptedString::getEncrypter(), "[$dbName]");
+
+        // Without encrypter, values pass through
+        $cast = new AsEncryptedString();
+        $model = CastTestModelMixed::blank();
+        $this->assertEquals('plain', $cast->set($model, 'secret', 'plain', []), "[$dbName]");
+    }
+
+    #[Test]
+    #[DataProvider('databaseProvider')]
+    public function encryptedStringGetReturnsRawOnDecryptFailure(string $dbName, Driver $driver)
+    {
+        $this->prepareModels($driver);
+
+        $encrypter = new class implements StringEncrypter {
+            public function encrypt(string $value): string
+            {
+                return $value;
+            }
+            public function decrypt(string $value): string
+            {
+                throw new \RuntimeException('Decryption failed');
+            }
+        };
+
+        AsEncryptedString::setEncrypter($encrypter);
+
+        $cast = new AsEncryptedString();
+        $model = CastTestModelMixed::blank();
+        $result = $cast->get($model, 'secret', 'corrupted_data', []);
+
+        $this->assertEquals('corrupted_data', $result, "[$dbName] Should return raw value on decrypt failure");
+
+        AsEncryptedString::flush();
     }
 }
