@@ -11,7 +11,6 @@ namespace Hubzero\Database;
 use Hubzero\Base\Obj;
 use RuntimeException;
 use Exception;
-use Lang;
 use App;
 use Log;
 
@@ -132,7 +131,7 @@ abstract class Table extends Obj
             $fields = $this->_db->getTableColumns($name, false);
 
             if (empty($fields)) {
-                $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_COLUMNS_NOT_FOUND'));
+                $e = new Exception('Columns not found for table ' . $this->_tbl);
                 $this->setError($e);
                 return false;
             }
@@ -379,7 +378,7 @@ abstract class Table extends Obj
     {
         // If the source value is not an array or object return false.
         if (!is_object($src) && !is_array($src)) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_BIND_FAILED_INVALID_SOURCE_ARGUMENT', get_class($this)));
+            $e = new Exception('Bind failed: invalid source argument for ' . get_class($this));
             $this->setError($e);
             return false;
         }
@@ -448,7 +447,7 @@ abstract class Table extends Obj
         foreach ($keys as $field => $value) {
             // Check that $field is in the table.
             if (!in_array($field, $fields)) {
-                $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_CLASS_IS_MISSING_FIELD', get_class($this), $field));
+                $e = new Exception(get_class($this) . ' is missing field: ' . $field);
                 $this->setError($e);
                 return false;
             }
@@ -468,7 +467,7 @@ abstract class Table extends Obj
 
         // Check that we have a result.
         if (empty($row)) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_EMPTY_ROW_RETURNED'));
+            $e = new Exception('Empty row returned');
             $this->setError($e);
             return false;
         }
@@ -526,11 +525,7 @@ abstract class Table extends Obj
         // If the store failed return false.
         if (!$stored) {
             Exception(
-                Lang::txt(
-                    'JLIB_DATABASE_ERROR_STORE_FAILED',
-                    get_class($this),
-                    $this->_db->getErrorMsg()
-                )
+                'Store failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
             return false;
@@ -600,10 +595,7 @@ abstract class Table extends Obj
 
             if (!$this->_db->execute()) {
                 Exception(
-                    Lang::txt(
-                        'JLIB_DATABASE_ERROR_STORE_FAILED_UPDATE_ASSET_ID',
-                        $this->_db->getErrorMsg()
-                    )
+                    'Failed to update asset ID: ' . $this->_db->getErrorMsg()
                 );
                 $this->setError($e);
                 return false;
@@ -677,7 +669,7 @@ abstract class Table extends Obj
 
         // If no primary key is given, return false.
         if ($pk === null) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_NULL_PRIMARY_KEY'));
+            $e = new Exception('Null primary key');
             $this->setError($e);
             return false;
         }
@@ -711,11 +703,7 @@ abstract class Table extends Obj
         // Check for a database error.
         if (!$this->_db->execute()) {
             Exception(
-                Lang::txt(
-                    'JLIB_DATABASE_ERROR_DELETE_FAILED',
-                    get_class($this),
-                    $this->_db->getErrorMsg()
-                )
+                'Delete failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
             return false;
@@ -750,7 +738,7 @@ abstract class Table extends Obj
 
         // If no primary key is given, return false.
         if ($pk === null) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_NULL_PRIMARY_KEY'));
+            $e = new Exception('Null primary key');
             $this->setError($e);
             return false;
         }
@@ -770,11 +758,7 @@ abstract class Table extends Obj
 
         if (!$this->_db->execute()) {
             Exception(
-                Lang::txt(
-                    'JLIB_DATABASE_ERROR_CHECKOUT_FAILED',
-                    get_class($this),
-                    $this->_db->getErrorMsg()
-                )
+                'Checkout failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
             return false;
@@ -808,7 +792,7 @@ abstract class Table extends Obj
 
         // If no primary key is given, return false.
         if ($pk === null) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_NULL_PRIMARY_KEY'));
+            $e = new Exception('Null primary key');
             $this->setError($e);
             return false;
         }
@@ -837,11 +821,7 @@ abstract class Table extends Obj
         // Check for a database error.
         if (!$this->_db->execute()) {
             Exception(
-                Lang::txt(
-                    'JLIB_DATABASE_ERROR_CHECKIN_FAILED',
-                    get_class($this),
-                    $this->_db->getErrorMsg()
-                )
+                'Checkin failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
             return false;
@@ -889,11 +869,7 @@ abstract class Table extends Obj
         // Check for a database error.
         if (!$this->_db->execute()) {
             Exception(
-                Lang::txt(
-                    'JLIB_DATABASE_ERROR_HIT_FAILED',
-                    get_class($this),
-                    $this->_db->getErrorMsg()
-                )
+                'Hit update failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
             return false;
@@ -954,7 +930,7 @@ abstract class Table extends Obj
     {
         // If there is no ordering field set an error and return false.
         if (!property_exists($this, 'ordering')) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_CLASS_DOES_NOT_SUPPORT_ORDERING', get_class($this)));
+            $e = new Exception(get_class($this) . ' does not support ordering');
             $this->setError($e);
             return false;
         }
@@ -974,11 +950,7 @@ abstract class Table extends Obj
         // Check for a database error.
         if ($this->_db->getErrorNum()) {
             Exception(
-                Lang::txt(
-                    'JLIB_DATABASE_ERROR_GET_NEXT_ORDER_FAILED',
-                    get_class($this),
-                    $this->_db->getErrorMsg()
-                )
+                'Failed to get next ordering for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
 
@@ -1000,7 +972,7 @@ abstract class Table extends Obj
     {
         // If there is no ordering field set an error and return false.
         if (!property_exists($this, 'ordering')) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_CLASS_DOES_NOT_SUPPORT_ORDERING', get_class($this)));
+            $e = new Exception(get_class($this) . ' does not support ordering');
             $this->setError($e);
             return false;
         }
@@ -1027,11 +999,7 @@ abstract class Table extends Obj
         // Check for a database error.
         if ($this->_db->getErrorNum()) {
             Exception(
-                Lang::txt(
-                    'JLIB_DATABASE_ERROR_REORDER_FAILED',
-                    get_class($this),
-                    $this->_db->getErrorMsg()
-                )
+                'Reorder failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
 
@@ -1056,12 +1024,7 @@ abstract class Table extends Obj
                     // Check for a database error.
                     if (!$this->_db->execute()) {
                         $e = new Exception(
-                            Lang::txt(
-                                'JLIB_DATABASE_ERROR_REORDER_UPDATE_ROW_FAILED',
-                                get_class($this),
-                                $i,
-                                $this->_db->getErrorMsg()
-                            )
+                            'Reorder update row ' . $i . ' failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
                         );
                         $this->setError($e);
 
@@ -1086,7 +1049,7 @@ abstract class Table extends Obj
     {
         // If there is no ordering field set an error and return false.
         if (!property_exists($this, 'ordering')) {
-            $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_CLASS_DOES_NOT_SUPPORT_ORDERING', get_class($this)));
+            $e = new Exception(get_class($this) . ' does not support ordering');
             $this->setError($e);
             return false;
         }
@@ -1137,11 +1100,7 @@ abstract class Table extends Obj
             // Check for a database error.
             if (!$this->_db->execute()) {
                 Exception(
-                    Lang::txt(
-                        'JLIB_DATABASE_ERROR_MOVE_FAILED',
-                        get_class($this),
-                        $this->_db->getErrorMsg()
-                    )
+                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
                 );
                 $this->setError($e);
 
@@ -1158,11 +1117,7 @@ abstract class Table extends Obj
             // Check for a database error.
             if (!$this->_db->execute()) {
                 Exception(
-                    Lang::txt(
-                        'JLIB_DATABASE_ERROR_MOVE_FAILED',
-                        get_class($this),
-                        $this->_db->getErrorMsg()
-                    )
+                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
                 );
                 $this->setError($e);
 
@@ -1182,11 +1137,7 @@ abstract class Table extends Obj
             // Check for a database error.
             if (!$this->_db->execute()) {
                 Exception(
-                    Lang::txt(
-                        'JLIB_DATABASE_ERROR_MOVE_FAILED',
-                        get_class($this),
-                        $this->_db->getErrorMsg()
-                    )
+                    'Move failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
                 );
                 $this->setError($e);
 
@@ -1224,7 +1175,7 @@ abstract class Table extends Obj
                 $pks = array($this->$k);
             } else {
             // Nothing to set publishing state on, return false.
-                $e = new Exception(Lang::txt('JLIB_DATABASE_ERROR_NO_ROWS_SELECTED'));
+                $e = new Exception('No rows selected');
                 $this->setError($e);
 
                 return false;
@@ -1254,11 +1205,7 @@ abstract class Table extends Obj
         // Check for a database error.
         if (!$this->_db->execute()) {
             Exception(
-                Lang::txt(
-                    'JLIB_DATABASE_ERROR_PUBLISH_FAILED',
-                    get_class($this),
-                    $this->_db->getErrorMsg()
-                )
+                'Publish failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
             );
             $this->setError($e);
 
@@ -1342,7 +1289,7 @@ abstract class Table extends Obj
                 $k = $table['idfield'] . $i;
 
                 if ($row->$k) {
-                    $msg[] = Lang::txt($table['label']);
+                    $msg[] = $table['label'];
                 }
 
                 $i++;
