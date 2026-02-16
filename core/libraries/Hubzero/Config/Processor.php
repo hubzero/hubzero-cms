@@ -8,7 +8,6 @@
 
 namespace Hubzero\Config;
 
-use Hubzero\Error\Exception\InvalidArgumentException;
 use Hubzero\Config\Exception\ParseException;
 
 /**
@@ -51,7 +50,10 @@ abstract class Processor
                 }
 
                 if (!class_exists($class)) {
-                    throw new InvalidArgumentException(sprintf('Unable to load format class for format "%s"', $type), 500);
+                    throw new \InvalidArgumentException(
+                        sprintf('Unable to load format class for format "%s"', $type),
+                        500
+                    );
                 }
             }
 
@@ -118,13 +120,6 @@ abstract class Processor
     }
 
     /**
-     * Converts an object into a formatted string.
-     *
-     * @param   object  $object   Data Source Object.
-     * @param   array   $options  An array of options for the formatter.
-     * @return  string  Formatted string.
-     */
-    /**
      * Make sure a config file can actually be read before parsing it
      *
      * Deliberately opens the file rather than asking is_readable(). That
@@ -134,7 +129,7 @@ abstract class Processor
      *
      * @param   string  $path
      * @return  void
-     * @throws  ParseException  If the file is missing or cannot be opened
+     * @throws  ParseException
      */
     protected function assertReadable($path)
     {
@@ -153,6 +148,13 @@ abstract class Processor
         fclose($handle);
     }
 
+    /**
+     * Converts an object into a formatted string.
+     *
+     * @param   object  $object   Data Source Object.
+     * @param   array   $options  An array of options for the formatter.
+     * @return  string  Formatted string.
+     */
     abstract public function objectToString($object, $options = null);
 
     /**
