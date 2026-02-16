@@ -8,14 +8,14 @@
 
 namespace Hubzero\Config\Tests\Processor;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Config\Processor\Json;
 use stdClass;
 
 /**
  * Json Processor tests
  */
-class JsonTest extends Basic
+class JsonTest extends TestCase
 {
     /**
      * Format processor
@@ -80,8 +80,8 @@ class JsonTest extends Basic
 
         $this->obj = $data;
         $this->arr = array(
-            'app' => (array)$data->app,
-            'seo' => (array)$data->seo
+            'app' => (array) $data->app,
+            'seo' => (array) $data->seo
         );
 
         $this->processor = new Json();
@@ -113,8 +113,8 @@ class JsonTest extends Basic
         $this->assertFalse($this->processor->canParse('Cras justo odio, dapibus ac facilisis in, egestas eget quam.'));
         $this->
             assertFalse($this->
-            processor->
-            canParse('<config><app><setting name="application_env">development</setting></app></config>'));
+                processor->
+                canParse('<config><app><setting name="application_env">development</setting></app></config>'));
         $this->assertFalse(
             $this->processor->canParse('{Cras justo odio,
             dapibus ac facilisis in,

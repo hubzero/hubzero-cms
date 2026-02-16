@@ -30,15 +30,15 @@ class Repository extends Registry
     /**
      * Create a new configuration repository.
      *
-     * @param   object  $loader
-     * @param   string  $client
+     * @param   string  $client  Client name (site, admin, api, etc)
+     * @param   object  $loader  FileLoader instance (required)
      * @return  void
+     * @throws  \InvalidArgumentException if loader not provided
      */
     public function __construct($client, $loader = null)
     {
         if (!$loader) {
-            $path = defined('PATH_APP') ? PATH_APP . DIRECTORY_SEPARATOR . 'config' : __DIR__ . 'config';
-            $loader = new FileLoader($path);
+            throw new \InvalidArgumentException('A FileLoader instance is required');
         }
         $this->loader = $loader;
         $this->client = $client;
