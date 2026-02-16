@@ -10,7 +10,6 @@ namespace Hubzero\Database;
 
 use RuntimeException;
 use Exception;
-use Log;
 
 /**
  * Abstract Table class
@@ -1440,9 +1439,6 @@ abstract class Table extends \stdClass
      */
     public function canDelete($pk = null, $joins = null)
     {
-        // Deprecation warning.
-        Log::debug('Hubzero\Database\Table::canDelete() is deprecated.');
-
         // Initialise variables.
         $k = $this->_tbl_key;
         $pk = (is_null($pk)) ? $this->$k : $pk;
@@ -1513,9 +1509,6 @@ abstract class Table extends \stdClass
      */
     public function toXML($mapKeysToText = false)
     {
-        // Deprecation warning.
-        Log::debug('Hubzero\Database\Table::toXML() is deprecated.');
-
         // Initialise variables.
         $xml = array();
         $map = $mapKeysToText ? ' mapkeystotext="true"' : '';
