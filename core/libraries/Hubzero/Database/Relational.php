@@ -463,6 +463,17 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     protected $removedScopes = [];
 
     /**
+     * Whether this model dispatches lifecycle events.
+     *
+     * Defaults to false for backwards compatibility. Models that want
+     * Eloquent-style events (retrieved, creating, saving, etc.) should
+     * set this to true.
+     *
+     * @var bool
+     */
+    protected $dispatchesModelEvents = false;
+
+    /**
      * Model event callbacks registered on each model class
      *
      * Indexed by fully-qualified class name, then by event name.
@@ -1547,6 +1558,10 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     protected function fireModelEvent($event, $halt = true)
     {
+        if (!$this->dispatchesModelEvents) {
+            return true;
+        }
+
         $class = static::class;
 
         // Execute registered callbacks
