@@ -485,6 +485,13 @@ class Application extends Container
 	 */
 	public function run()
 	{
+		// FrankenPHP requires output buffering so that headers (redirects,
+		// cookies, sessions) can be sent at any point during the request.
+		if (php_sapi_name() === 'frankenphp')
+		{
+			ob_start();
+		}
+
 		// Boot the application
 		//
 		// This allows service providers to finish performing any
