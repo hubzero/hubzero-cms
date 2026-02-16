@@ -439,6 +439,13 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     private static $classMethods = [];
 
     /**
+     * Cached introspected relationship names per model class
+     *
+     * @var array
+     **/
+    private static $introspectedRelationships = [];
+
+    /**
      * Global scopes registered on each model class
      *
      * Indexed by fully-qualified class name, then by scope name.
@@ -472,6 +479,17 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * @var bool
      */
     protected $dispatchesModelEvents = false;
+
+    /**
+     * Whether to enable cascade relationship operations (save, delete, orphan removal).
+     *
+     * Defaults to false for backwards compatibility. Models that define
+     * relationships with cascadeOnSave(), cascadeOnDelete(), or removeOrphans()
+     * should set this to true.
+     *
+     * @var bool
+     */
+    protected $cascadeRelationships = false;
 
     /**
      * Model event callbacks registered on each model class
@@ -4211,14 +4229,15 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 \Event::trigger('system.onContentSave', array($this->getTableName(), $this, $this->changes));
             }
 
-            // Handle cascade saves - save dirty related models
-            if (!$this->performCascadeSaves()) {
-                return false;
-            }
+            // Handle cascade saves and orphan removal (opt-in)
+            if ($this->cascadeRelationships) {
+                if (!$this->performCascadeSaves()) {
+                    return false;
+                }
 
-            // Handle orphan removal - delete related models no longer associated
-            if (!$this->performOrphanRemovals()) {
-                return false;
+                if (!$this->performOrphanRemovals()) {
+                    return false;
+                }
             }
 
             return $result;
@@ -4658,8 +4677,8 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         }
 
         $result = $this->executeAtomically(function () {
-            // Handle cascade deletes - delete related models first
-            if (!$this->performCascadeDeletes()) {
+            // Handle cascade deletes (opt-in)
+            if ($this->cascadeRelationships && !$this->performCascadeDeletes()) {
                 return false;
             }
 
@@ -6898,17 +6917,36 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public static function introspectRelationships()
     {
+        $class = static::class;
+
+        if (isset(self::$introspectedRelationships[$class])) {
+            $acquaintances = array_keys(static::getRelationshipRegistry()->all($class));
+            return array_merge(self::$introspectedRelationships[$class], $acquaintances);
+        }
+
         $instance     = self::blank();
         $methods      = [];
         $reflection   = new \ReflectionClass($instance);
         $relationship = __NAMESPACE__ . '\\Relationship\\Relationship';
 
-        // Classes whose methods should be skipped (framework base classes)
+        // Build a set of method names from framework base classes.
+        // We skip by name (not declaring class) so that overridden methods
+        // like save() or destroy() are still excluded from introspection.
         $skipClasses = [__CLASS__, __NAMESPACE__ . '\\Nested'];
+        $skipNames   = [];
+
+        foreach ($skipClasses as $skipClass) {
+            if (!class_exists($skipClass)) {
+                continue;
+            }
+            foreach ((new \ReflectionClass($skipClass))->getMethods(\ReflectionMethod::IS_PUBLIC) as $m) {
+                $skipNames[$m->name] = true;
+            }
+        }
 
         foreach ($reflection->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            // Skip methods from framework base classes
-            if (in_array($method->class, $skipClasses)) {
+            // Skip methods defined in framework base classes (even if overridden)
+            if (isset($skipNames[$method->name])) {
                 continue;
             }
 
@@ -6932,7 +6970,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             }
         }
 
-        $acquaintances = array_keys(static::getRelationshipRegistry()->all(static::class));
+        self::$introspectedRelationships[$class] = $methods;
+
+        $acquaintances = array_keys(static::getRelationshipRegistry()->all($class));
 
         return array_merge($methods, $acquaintances);
     }
