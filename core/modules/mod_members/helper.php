@@ -29,41 +29,53 @@ class Helper extends Module
 
         $database = App::get('db');
 
-        $database->setQuery("SELECT count(u.id) FROM `#__users` AS u WHERE u.block=0 AND u.activation < 1");
-        $this->unconfirmed = $database->loadResult();
+        $this->unconfirmed = $database->getQuery()
+            ->select('count(u.id)')
+            ->from('#__users', 'u')
+            ->whereEquals('u.block', 0)
+            ->where('u.activation', '<', 1)
+            ->value();
 
-        $database->setQuery(
-            "SELECT count(u.id) FROM `#__users` AS u WHERE u.block=0 AND u.activation >= 1"
-        );
-        $this->confirmed = $database->loadResult();
+        $this->confirmed = $database->getQuery()
+            ->select('count(u.id)')
+            ->from('#__users', 'u')
+            ->whereEquals('u.block', 0)
+            ->where('u.activation', '>=', 1)
+            ->value();
 
         $pastDayDate = gmdate('Y-m-d', (time() - 24 * 3600)) . ' 00:00:00';
-        $database->setQuery(
-            "SELECT count(u.id) FROM `#__users` AS u " .
-            "WHERE u.block=0 AND u.registerDate >= " . $database->quote($pastDayDate)
-        );
-        $this->pastDay = $database->loadResult();
+        $this->pastDay = $database->getQuery()
+            ->select('count(u.id)')
+            ->from('#__users', 'u')
+            ->whereEquals('u.block', 0)
+            ->where('u.registerDate', '>=', $pastDayDate)
+            ->value();
 
-        $database->setQuery(
-            "SELECT count(u.id) FROM `#__users` AS u " .
-            "WHERE u.block=0 AND u.activation > 0 AND u.approved > 0"
-        );
-        $this->approved = $database->loadResult();
+        $this->approved = $database->getQuery()
+            ->select('count(u.id)')
+            ->from('#__users', 'u')
+            ->whereEquals('u.block', 0)
+            ->where('u.activation', '>', 0)
+            ->where('u.approved', '>', 0)
+            ->value();
 
-        $database->setQuery(
-            "SELECT count(u.id) FROM `#__users` AS u " .
-            "WHERE u.block=0 AND u.activation > 0 AND u.approved = 0"
-        );
-        $this->unapproved = $database->loadResult();
+        $this->unapproved = $database->getQuery()
+            ->select('count(u.id)')
+            ->from('#__users', 'u')
+            ->whereEquals('u.block', 0)
+            ->where('u.activation', '>', 0)
+            ->whereEquals('u.approved', 0)
+            ->value();
 
-        $database->setQuery(
-            "SELECT substring_index(email, '@', -1) domain, COUNT(*) email_count
-			FROM `#__users`
-			WHERE `block`=0
-			GROUP BY substring_index(email, '@', -1)
-			ORDER BY email_count DESC;"
-        );
-        $this->domains = $database->loadObjectList();
+        $domainExpr = $database->sqlSubstringIndex('email', '@', -1);
+        $this->domains = $database->getQuery()
+            ->select($domainExpr, 'domain')
+            ->select('COUNT(*)', 'email_count')
+            ->from('#__users')
+            ->whereEquals('block', 0)
+            ->group($domainExpr)
+            ->order('email_count', 'desc')
+            ->fetch();
 
         // Get the view
         parent::display();

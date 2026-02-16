@@ -11,6 +11,7 @@ namespace Modules\RandomQuote;
 use Hubzero\Module\Module;
 use Components\Feedback\Models\Quote;
 use Component;
+use App;
 
 /**
  * Module class for displaying a random quote
@@ -45,7 +46,7 @@ class Helper extends Module
             'limit'         => 1,
             'notable_quote' => ($this->params->get('quotepool') == 'notable_quotes' ?  1 : 0),
             'miniquote'     => ($quotesrc == 'miniquote' ?  1 : 0),
-            'sort'          => 'RAND()',
+            'sort'          => App::get('db')->sqlRand(),
             'sort_Dir'      => ''
         ));*/
 

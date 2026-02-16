@@ -27,33 +27,44 @@ class Helper extends Module
         $db = \App::get('db');
 
         $catid   = (int) $this->params->get('catid', 0);
-        $orderby = 'a.publish_up DESC';
         $limit   = (int) $this->params->get('numitems', 0);
-        $limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
         $now = Date::toSql();
 
         $nullDate = $db->getNullDate();
 
-        // query to determine article count
-        $query = 'SELECT a.*, cc.alias as catname, cc.path as catpath, ' .
-            ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ' .
-            'ELSE a.id END as slug,' .
-            ' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(":", cc.id, cc.alias) ' .
-            'ELSE cc.id END as catslug' .
-            ' FROM #__content AS a' .
-            ' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
-            ' WHERE a.state = 1 ' .
-            ' AND (a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate) .
-            ' OR a.publish_up <= ' . $db->quote($now) . ' ) ' .
-            ' AND (a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate) .
-            ' OR a.publish_down >= ' . $db->quote($now) . ' )' .
-            ' AND cc.id = ' . (int) $catid .
-            ' AND cc.published = 1' .
-            ' ORDER BY ' . $orderby . ' ' . $limitby;
+        // Build slug expressions using database-agnostic helpers
+        $articleSlug = 'CASE WHEN ' . $db->sqlLength('a.alias') . ' THEN ' .
+            $db->sqlConcatWs(':', ['a.id', 'a.alias']) . ' ELSE a.id END';
+        $catSlug = 'CASE WHEN ' . $db->sqlLength('cc.alias') . ' THEN ' .
+            $db->sqlConcatWs(':', ['cc.id', 'cc.alias']) . ' ELSE cc.id END';
 
-        $db->setQuery($query);
-        $rows = $db->loadObjectList();
+        $query = $db->getQuery()
+            ->select('a.*')
+            ->select('cc.alias', 'catname')
+            ->select('cc.path', 'catpath')
+            ->select($articleSlug, 'slug')
+            ->select($catSlug, 'catslug')
+            ->from('#__content', 'a')
+            ->joinRaw('#__categories AS cc', 'cc.id = a.catid', 'inner')
+            ->whereEquals('a.state', 1)
+            ->whereRaw(
+                '(a.publish_up IS NULL OR a.publish_up = ' . $db->quote($nullDate) .
+                ' OR a.publish_up <= ' . $db->quote($now) . ')'
+            )
+            ->whereRaw(
+                '(a.publish_down IS NULL OR a.publish_down = ' . $db->quote($nullDate) .
+                ' OR a.publish_down >= ' . $db->quote($now) . ')'
+            )
+            ->whereEquals('cc.id', (int) $catid)
+            ->whereEquals('cc.published', 1)
+            ->order('a.publish_up', 'desc');
+
+        if ($limit > 0) {
+            $query->limit($limit);
+        }
+
+        $rows = $query->fetch();
 
         return $rows;
     }

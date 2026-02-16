@@ -10,6 +10,7 @@ namespace Modules\Featuredmember;
 
 use Hubzero\Module\Module;
 use Hubzero\Config\Registry;
+use Hubzero\Database\Expression;
 use Component;
 use User;
 
@@ -35,7 +36,7 @@ class Helper extends Module
             'limit'      => 1,
             'show'       => trim($this->params->get('show', '')),
             'start'      => 0,
-            'sortby'     => "RAND()",
+            'sortby'     => $database->sqlRand(),
             'search'     => '',
             'authorized' => false
         );
@@ -43,11 +44,16 @@ class Helper extends Module
             $filters['contributions'] = $min;
         }
 
-        $query = "SELECT id FROM `#__users` WHERE `block`=0 ORDER BY RAND() LIMIT 1";
-        $db->setQuery($query);
+        $userId = (int) $database->getQuery()
+            ->select('id')
+            ->from('#__users')
+            ->whereEquals('block', 0)
+            ->order(Expression::randomOrder(), 'asc')
+            ->limit(1)
+            ->value('id');
 
         // Load their bio
-        $this->row = User::oneOrNew($row->loadResult());
+        $this->row = User::oneOrNew($userId);
 
         if (trim(strip_tags($this->row->get('bio'))) == '') {
             return '';
