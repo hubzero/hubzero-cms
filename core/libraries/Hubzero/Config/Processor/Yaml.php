@@ -10,12 +10,12 @@ namespace Hubzero\Config\Processor;
 
 use Hubzero\Config\Exception\ParseException;
 use Hubzero\Config\Processor as Base;
-use Symfony\Component\Yaml\Yaml as SymfonyYaml;
-use Exception;
 use stdClass;
 
 /**
  * YAML Processor
+ *
+ * Uses the PECL yaml extension (yaml_parse/yaml_emit)
  */
 class Yaml extends Base
 {
@@ -34,17 +34,17 @@ class Yaml extends Base
      *
      * @param   string  $path
      * @return  array
-     * @throws  ParseException If If there is an error parsing the YAML file
+     * @throws  ParseException If there is an error parsing the YAML file
      */
     public function parse($path)
     {
-        try {
-            $data = SymfonyYaml::parse(file_get_contents($path));
-        } catch (Exception $exception) {
+        $data = @\yaml_parse_file($path);
+
+        if ($data === false) {
             throw new ParseException(
                 array(
-                    'message'   => 'Error parsing YAML',
-                    'exception' => $exception,
+                    'message' => 'Error parsing YAML file: ' . $path,
+                    'file' => $path,
                 )
             );
         }
@@ -62,10 +62,9 @@ class Yaml extends Base
     {
         $data = trim($data);
 
-        try {
-            // Parse config string
-            $parsed = SymfonyYaml::parse($data, SymfonyYaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
-        } catch (Exception $e) {
+        $parsed = @\yaml_parse($data);
+
+        if ($parsed === false) {
             return false;
         }
 
@@ -85,7 +84,7 @@ class Yaml extends Base
             return $object;
         }
 
-        return SymfonyYaml::dump((array) $this->asArray($object), 2);
+        return \yaml_emit((array) $this->asArray($object));
     }
 
     /**
@@ -124,16 +123,12 @@ class Yaml extends Base
 
         $data = trim($data);
 
-        // Try to parse, catching exception if it fails
-        try {
-            // Parse config string
-            $parsed = SymfonyYaml::parse($data, SymfonyYaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
-        } catch (Exception $e) {
-            // Throw an exception Hubzero knows how to catch
+        $parsed = @\yaml_parse($data);
+
+        if ($parsed === false) {
             throw new ParseException(
                 array(
-                    'message'   => 'Error parsing YAML',
-                    'exception' => $e,
+                    'message' => 'Error parsing YAML',
                 )
             );
         }
@@ -166,3 +161,4 @@ class Yaml extends Base
         return $obj;
     }
 }
+

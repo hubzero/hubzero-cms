@@ -8,13 +8,13 @@
 
 namespace Hubzero\Config\Tests;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Config\Processor;
 
 /**
  * Processor tests
  */
-class ProcessorTest extends Basic
+class ProcessorTest extends TestCase
 {
     /**
      * Tests all()
@@ -45,7 +45,7 @@ class ProcessorTest extends Basic
             $this->assertInstanceOf(Processor::class, $result);
         }
 
-        $this->expectException(\Hubzero\Error\Exception\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $result = Processor::instance('py');
     }

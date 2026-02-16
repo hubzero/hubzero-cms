@@ -85,7 +85,7 @@ class Application extends Container
 
         parent::__construct();
 
-        $this['request']  = ($request  ?: Request::createFromGlobals());
+        $this['request'] = ($request ?: Request::createFromGlobals());
         $this['response'] = ($response ?: new Response());
         $this['app'] = $this;
     }
@@ -288,19 +288,19 @@ class Application extends Container
         switch ($code) {
             case 405:
                 throw new MethodNotAllowedException($message, $code);
-            break;
+                break;
 
             case 404:
                 throw new NotFoundException($message, $code);
-            break;
+                break;
 
             case 403:
                 throw new NotAuthorizedException($message, $code);
-            break;
+                break;
 
             default:
                 throw new RuntimeException($message, $code);
-            break;
+                break;
         }
     }
 
@@ -357,10 +357,10 @@ class Application extends Container
             if ($environments == null) {
                 $environments = array(
                     'administrator' => 'administrator',
-                    'api'           => 'api',
-                    'cli'           => 'cli',
-                    'install'       => 'install',
-                    'files'         => 'files',
+                    'api' => 'api',
+                    'cli' => 'cli',
+                    'install' => 'install',
+                    'files' => 'files',
                 );
             }
 
@@ -371,16 +371,17 @@ class Application extends Container
 
         $client = $this['client']->name;
 
-        $this['config'] = new \Hubzero\Config\Repository($client);
+        $loader = new \Hubzero\Config\FileLoader(PATH_ROOT, PATH_APP);
+        $this['config'] = new \Hubzero\Config\Repository($client, $loader);
 
         $providers = PATH_CORE . '/bootstrap/' . $client . '/services.php';
-        $services  = file_exists($providers) ? require $providers : array();
+        $services = file_exists($providers) ? require $providers : array();
 
         $providers = PATH_CORE . '/bootstrap/' . ucfirst($client) . '/services.php';
-        $services  = file_exists($providers) ? array_merge($services, require $providers) : $services;
+        $services = file_exists($providers) ? array_merge($services, require $providers) : $services;
 
         $providers = PATH_APP . '/bootstrap/' . $client . '/services.php';
-        $services  = file_exists($providers) ? array_merge($services, require $providers) : $services;
+        $services = file_exists($providers) ? array_merge($services, require $providers) : $services;
 
         foreach ($services as $service) {
             $this->register($service);
@@ -543,7 +544,7 @@ class Application extends Container
             $hour_avg = (float) apcu_store('avg' . intdiv($time, 3600), $new_hour_avg, 86401);
 
             $new_day_count = (float) apcu_inc(intdiv($time, 86400), 1, $success, 2678401);
-            $old_day_avg = (float)  apcu_fetch('avg' . intdiv($time, 86400), $success);
+            $old_day_avg = (float) apcu_fetch('avg' . intdiv($time, 86400), $success);
             $new_day_avg = ((($new_day_count - 1) * $old_day_avg) + $ms) / $new_day_count;
             $day_avg = (float) apcu_store('avg' . intdiv($time, 86400), $new_day_avg, 2678401);
         }

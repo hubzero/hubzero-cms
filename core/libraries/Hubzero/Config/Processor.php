@@ -8,8 +8,6 @@
 
 namespace Hubzero\Config;
 
-use Hubzero\Error\Exception\InvalidArgumentException;
-
 /**
  * Abstract Registry Processor
  *
@@ -50,7 +48,7 @@ abstract class Processor
                 }
 
                 if (!class_exists($class)) {
-                    throw new InvalidArgumentException(
+                    throw new \InvalidArgumentException(
                         sprintf('Unable to load format class for format "%s"', $type),
                         500
                     );

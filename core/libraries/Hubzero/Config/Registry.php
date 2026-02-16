@@ -8,8 +8,6 @@
 
 namespace Hubzero\Config;
 
-use Hubzero\Error\Exception\InvalidArgumentException;
-use Hubzero\Utility\Arr;
 use stdClass;
 
 /**
@@ -171,13 +169,13 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
         $nodes = explode($this->separator, $path);
 
         // Initialize the current node to be the registry root.
-        $node  = $this->data;
+        $node = $this->data;
         $found = false;
 
         // Traverse the registry to find the correct node for the result.
         foreach ($nodes as $n) {
             if (is_array($node) && isset($node[$n])) {
-                $node  = $node[$n];
+                $node = $node[$n];
                 $found = true;
                 continue;
             }
@@ -186,7 +184,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
                 return $default;
             }
 
-            $node  = $node->$n;
+            $node = $node->$n;
             $found = true;
         }
 
@@ -267,7 +265,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
             return file_get_contents($file);
         }
 
-        throw new InvalidArgumentException(sprintf('File does not exist at path %s', $file));
+        throw new \InvalidArgumentException(sprintf('File does not exist at path %s', $file));
     }
 
     /**
@@ -425,7 +423,7 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
                 continue;
             }
 
-            if ($recursive && ((is_array($v) && Arr::isAssociative($v)) || is_object($v))) {
+            if ($recursive && ((is_array($v) && array_keys($v) !== range(0, count($v) - 1)) || is_object($v))) {
                 if (!isset($parent->$k) || !is_object($parent->$k)) {
                     $parent->$k = new stdClass();
                 }

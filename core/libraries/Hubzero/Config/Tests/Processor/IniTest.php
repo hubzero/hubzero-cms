@@ -8,14 +8,14 @@
 
 namespace Hubzero\Config\Tests\Processor;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Config\Processor\Ini;
 use stdClass;
 
 /**
  * Ini Processor tests
  */
-class IniTest extends Basic
+class IniTest extends TestCase
 {
     /**
      * Format processor
@@ -105,8 +105,8 @@ sitename_pagetitles=0';
 
         $this->obj = $data;
         $this->arr = array(
-            'app' => (array)$data->app,
-            'seo' => (array)$data->seo
+            'app' => (array) $data->app,
+            'seo' => (array) $data->seo
         );
 
         $this->processor = new Ini();

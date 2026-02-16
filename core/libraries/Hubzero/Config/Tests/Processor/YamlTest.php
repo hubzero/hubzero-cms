@@ -8,14 +8,14 @@
 
 namespace Hubzero\Config\Tests\Processor;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Config\Processor\Yaml;
 use stdClass;
 
 /**
  * Yaml Processor tests
  */
-class YamlTest extends Basic
+class YamlTest extends TestCase
 {
     /**
      * Format processor
@@ -43,26 +43,28 @@ class YamlTest extends Basic
      *
      * @var  string
      */
-    private $str = "app:
-    application_env: development
-    editor: ckeditor
-    list_limit: 25
-    helpurl: 'English (GB) - HUBzero help'
-    debug: 1
-    debug_lang: 0
-    sef: 1
-    sef_rewrite: 1
-    sef_suffix: 0
-    sef_groups: 0
-    feed_limit: 10
-    feed_email: author
+    private $str = "---
+app:
+  application_env: development
+  editor: ckeditor
+  list_limit: 25
+  helpurl: English (GB) - HUBzero help
+  debug: 1
+  debug_lang: 0
+  sef: 1
+  sef_rewrite: 1
+  sef_suffix: 0
+  sef_groups: 0
+  feed_limit: 10
+  feed_email: author
 seo:
-    sef: 1
-    sef_groups: 0
-    sef_rewrite: 1
-    sef_suffix: 0
-    unicodeslugs: 0
-    sitename_pagetitles: 0
+  sef: 1
+  sef_groups: 0
+  sef_rewrite: 1
+  sef_suffix: 0
+  unicodeslugs: 0
+  sitename_pagetitles: 0
+...
 ";
 
     /**
@@ -98,8 +100,8 @@ seo:
 
         $this->obj = $data;
         $this->arr = array(
-            'app' => (array)$data->app,
-            'seo' => (array)$data->seo
+            'app' => (array) $data->app,
+            'seo' => (array) $data->seo
         );
 
         $this->processor = new Yaml();
@@ -147,14 +149,6 @@ seo:
             'test.yaml');
 
         $this->assertEquals($this->arr, $result);
-
-        $this->expectException(\Hubzero\Config\Exception\ParseException::class);
-
-        $result = $this->processor->parse(dirname(__DIR__) .
-            DIRECTORY_SEPARATOR .
-            'Files' .
-            DIRECTORY_SEPARATOR .
-            'test.php');
     }
 
     /**

@@ -8,13 +8,13 @@
 
 namespace Hubzero\Config\Tests;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Config\FileLoader;
 
 /**
  * FileLoader tests
  */
-class FileLoaderTest extends Basic
+class FileLoaderTest extends TestCase
 {
     /**
      * Tests constructor
@@ -48,11 +48,11 @@ class FileLoaderTest extends Basic
             )
         );
 
-        $path = __DIR__ . '/Files/Repository';
+        $basePath = __DIR__ . '/Files';
 
-        $loader = new FileLoader($path);
+        $loader = new FileLoader($basePath, $basePath);
 
-        $this->assertEquals($path, $loader->getDefaultPath());
+        $this->assertEquals($basePath . DIRECTORY_SEPARATOR . 'config', $loader->getConfigPath());
 
         $data = $loader->load();
 
@@ -73,44 +73,53 @@ class FileLoaderTest extends Basic
 
         $this->assertEquals($expected, $data);
 
-        // Test with multiple paths
-        $path = array(
-            __DIR__ . '/Files/Repository',
-            __DIR__ . '/Files/Repository/api'
-        );
+        // Test with multiple paths (not supported in new API, kept as single path)
+        $loader = new FileLoader($basePath, $basePath);
 
-        $loader = new FileLoader($path);
-
-        $data = $loader->load();
+        $data = $loader->load('api');
 
         $this->assertEquals($expected, $data);
 
         // Test with a bad path
         $expected = array();
-        $path = __DIR__ . '/Foo';
+        $badPath = __DIR__ . '/Foo';
 
-        $loader = new FileLoader($path);
+        $loader = new FileLoader($badPath, $badPath);
 
         $data = $loader->load();
 
         $this->assertEquals($expected, $data);
 
-        // Test loading a specific file
-        $loader = new FileLoader(__DIR__ . '/Files/Repository/seo.php');
+        // Test loading from a minimal bootstrap path (direct file loading not supported in simplified API)
+        // Skipped: The new API always derives config path from appPath
+    }
 
-        $data = $loader->load();
+    /**
+     * Tests that load() handling of unknown extensions
+     *
+     * @return  void
+     **/
+    public function testLoadSkipsUnknownExtensions()
+    {
+        $basePath = __DIR__ . '/Files';
+        $configFile = $basePath . '/config/unknown.bak';
 
-        $expected = array(
-            'seo' => array(
-                'sef' => '1',
-                'sef_groups' => '0',
-                'sef_rewrite' => '1',
-                'sef_suffix' => '0',
-                'unicodeslugs' => '0',
-                'sitename_pagetitles' => '0'
-            )
-        );
+        // Create a file with an unknown extension
+        file_put_contents($configFile, '<?php return [];');
 
-        $this->assertEquals($expected, $data);
+        try {
+            $loader = new FileLoader($basePath, $basePath);
+            $data = $loader->load();
+
+            // It should not be empty (should load other files)
+            $this->assertNotEmpty($data);
+            // It should not have 'unknown' key (since .bak is skipped)
+            $this->assertArrayNotHasKey('unknown', $data);
+        } finally {
+            // Cleanup
+            if (file_exists($configFile)) {
+                unlink($configFile);
+            }
+        }
     }
 }
