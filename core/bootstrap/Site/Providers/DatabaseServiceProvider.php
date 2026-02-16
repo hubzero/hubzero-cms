@@ -9,6 +9,8 @@
 namespace Bootstrap\Site\Providers;
 
 use Hubzero\Database\Driver;
+use Hubzero\Database\Relational;
+use Hubzero\Database\Table;
 use Hubzero\Base\ServiceProvider;
 
 /**
@@ -50,7 +52,40 @@ class DatabaseServiceProvider extends ServiceProvider
                 $driver->enableDebugging();
             }
 
+            if ($app['config']->get('raw_query_mode')) {
+                $driver->setRawQueryMode(
+                    $app['config']->get('raw_query_mode')
+                );
+            }
+
             return $driver;
         };
+    }
+
+    /**
+     * Boot the service provider
+     *
+     * @return  void
+     */
+    public function boot()
+    {
+        $app = $this->app;
+
+        Relational::setDefaultConnection($app['db']);
+        Table::setDefaultAccess((int) $app['config']->get('access', 1));
+
+        Relational::setUserIdResolver(function () use ($app) {
+            if (isset($app['user'])) {
+                return (int) $app['user']->get('id', 0);
+            }
+            return 0;
+        });
+
+        Relational::setUserResolver(function (int $id) {
+            if (class_exists('\\Hubzero\\User\\User')) {
+                return \Hubzero\User\User::oneOrNew($id);
+            }
+            return null;
+        });
     }
 }
