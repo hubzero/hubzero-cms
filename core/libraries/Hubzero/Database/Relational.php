@@ -616,7 +616,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         // If table name isn't explicitly set, build it
         $namespace   = (!$this->namespace ? '' : $this->namespace . '_');
-        $plural      = \Hubzero\Utility\Inflector::pluralize(strtolower($this->getModelName()));
+        $plural      = static::pluralize(strtolower($this->getModelName()));
         $this->table = $this->table ?: '#__' . $namespace . $plural;
 
         // Note: Query object is now lazy-loaded to avoid database connection
@@ -640,6 +640,70 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         // the constructor and then call parent::__construct().
         // They can instead just add a setup() method.
         $this->setup();
+    }
+
+    /**
+     * Plural inflector rules for deriving table names from model names
+     *
+     * NOTE: Duplicated from Hubzero\Utility\Inflector to keep the Database
+     * package free of external dependencies. Changes to these rules should
+     * be kept in sync with Inflector::$plural_rules.
+     *
+     * @var array
+     */
+    private static $pluralRules = [
+        '/^(ox)$/i'                 => '\1\2en',
+        '/([m|l])ouse$/i'           => '\1ice',
+        '/(matr|vert|ind)ix|ex$/i'  => '\1ices',
+        '/(x|ch|ss|sh)$/i'          => '\1es',
+        '/([^aeiouy]|qu)y$/i'       => '\1ies',
+        '/(hive)$/i'                => '\1s',
+        '/(?:([^f])fe|([lr])f)$/i'  => '\1\2ves',
+        '/sis$/i'                   => 'ses',
+        '/([ti])um$/i'              => '\1a',
+        '/(p)erson$/i'              => '\1eople',
+        '/(m)an$/i'                 => '\1en',
+        '/(c)hild$/i'               => '\1hildren',
+        '/(buffal|tomat)o$/i'       => '\1\2oes',
+        '/(bu|campu)s$/i'           => '\1\2ses',
+        '/(alias|status|virus)$/i'  => '\1es',
+        '/(octop)us$/i'             => '\1i',
+        '/(ax|cris|test)is$/i'      => '\1es',
+        '/s$/'                      => 's',
+        '/$/'                       => 's',
+    ];
+
+    /**
+     * Words that do not have a plural form
+     *
+     * @var array
+     */
+    private static $uncountable = [
+        'equipment', 'information', 'rice', 'money',
+        'species', 'series', 'fish', 'meta', 'metadata',
+        'buffalo', 'elk', 'rhinoceros', 'salmon',
+        'bison', 'headquarters', 'moose',
+    ];
+
+    /**
+     * Pluralize a word using English inflection rules
+     *
+     * @param   string  $word  The word to pluralize
+     * @return  string
+     */
+    protected static function pluralize(string $word): string
+    {
+        if (in_array(strtolower($word), static::$uncountable)) {
+            return $word;
+        }
+
+        foreach (static::$pluralRules as $rule => $replacement) {
+            if (preg_match($rule, $word)) {
+                return preg_replace($rule, $replacement, $word);
+            }
+        }
+
+        return $word;
     }
 
     /**
