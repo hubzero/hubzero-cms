@@ -2056,4 +2056,274 @@ class QueryTest extends AbstractDriverTestCase
             "[$dbName] UNION with LIMIT should return 3 rows"
         );
     }
+
+    /**
+     * Test fluent pattern:
+     * FROM (subquery with UNION) AS alias, then outer WHERE/ORDER/LIMIT
+     *
+     * Mirrors the support-activity module pattern in a backend-agnostic way.
+     */
+    #[DataProvider('databaseProvider')]
+    public function testFromSubUnionPatternWithOuterFilterOrderAndLimit(
+        string $dbName,
+        Driver $driver
+    ) {
+        // Add group rows with high IDs for deterministic ordering.
+        $this->seedGroups($driver, [
+            ['id' => 100, 'cn' => 'group-100', 'name' => 'Group 100'],
+            ['id' => 101, 'cn' => 'group-101', 'name' => 'Group 101'],
+        ]);
+
+        $userSource = $driver->quote('user');
+        $groupSource = $driver->quote('group');
+
+        $query = (new Query($driver))
+            ->select('a.id')
+            ->select('a.label')
+            ->select('a.source')
+            ->fromSub(function ($sub) use ($userSource, $groupSource) {
+                $sub->select('id')
+                    ->select('name', 'label')
+                    ->select($userSource, 'source')
+                    ->from('users')
+                    ->union(function ($union) use ($groupSource) {
+                        $union->select('id')
+                            ->select('name', 'label')
+                            ->select($groupSource, 'source')
+                            ->from('groups');
+                    });
+            }, 'a')
+            ->where('a.id', '>', 2)
+            ->order('a.id', 'desc')
+            ->limit(3);
+
+        $results = $query->fetch();
+
+        $this->assertCount(
+            3,
+            $results,
+            "[$dbName] Pattern should return 3 rows after outer limit"
+        );
+        $this->assertEquals(
+            101,
+            (int) $results[0]->id,
+            "[$dbName] First row should be highest id from unioned derived table"
+        );
+        $this->assertEquals(
+            100,
+            (int) $results[1]->id,
+            "[$dbName] Second row should be next highest id"
+        );
+        $this->assertEquals(
+            4,
+            (int) $results[2]->id,
+            "[$dbName] Third row should be top matching users id"
+        );
+    }
+
+    /**
+     * Test fluent pattern with optional outer "start" style filtering.
+     *
+     * This mirrors the support-activity flow where the outer query applies
+     * an optional created-date filter after the unioned derived table exists.
+     */
+    #[DataProvider('databaseProvider')]
+    public function testFromSubUnionPatternWithOptionalOuterStartFilter(
+        string $dbName,
+        Driver $driver
+    ) {
+        $this->seedGroups($driver, [
+            ['id' => 100, 'cn' => 'group-100', 'name' => 'Group 100'],
+            ['id' => 101, 'cn' => 'group-101', 'name' => 'Group 101'],
+        ]);
+
+        $buildActivityPattern = function (?int $start = null) use ($driver): Query {
+            $userSource = $driver->quote('user');
+            $groupSource = $driver->quote('group');
+
+            $query = (new Query($driver))
+                ->select('a.id')
+                ->select('a.ticket')
+                ->select('a.created')
+                ->select('a.category')
+                ->fromSub(function ($sub) use ($userSource, $groupSource) {
+                    $sub->select('id')
+                        ->select('id', 'ticket')
+                        ->select('id', 'created')
+                        ->select($userSource, 'category')
+                        ->from('users')
+                        ->union(function ($union) use ($groupSource) {
+                            $union->select('id')
+                                ->select('id', 'ticket')
+                                ->select('id', 'created')
+                                ->select($groupSource, 'category')
+                                ->from('groups');
+                        });
+                }, 'a')
+                ->order('a.created', 'desc')
+                ->limit(4);
+
+            if ($start !== null) {
+                $query->where('a.created', '>', $start);
+            }
+
+            return $query;
+        };
+
+        $withoutStart = $buildActivityPattern()->fetch();
+        $withStart = $buildActivityPattern(100)->fetch();
+
+        $this->assertCount(
+            4,
+            $withoutStart,
+            "[$dbName] Without start filter, outer limit should control row count"
+        );
+        $this->assertEquals(
+            101,
+            (int) $withoutStart[0]->created,
+            "[$dbName] Highest created should appear first without start filter"
+        );
+
+        $this->assertCount(
+            1,
+            $withStart,
+            "[$dbName] Start filter should be applied at outer query level"
+        );
+        $this->assertEquals(
+            101,
+            (int) $withStart[0]->created,
+            "[$dbName] Filtered result should only contain rows above the start threshold"
+        );
+        $this->assertEquals(
+            'group',
+            $withStart[0]->category,
+            "[$dbName] Category alias from unioned subquery should be preserved"
+        );
+    }
+
+    /**
+     * Test joinRaw with aliased tables and standard fluent filters.
+     *
+     * Mirrors module patterns that use explicit join conditions with aliases.
+     */
+    #[DataProvider('databaseProvider')]
+    public function testJoinRawWithAliasedTables(string $dbName, Driver $driver)
+    {
+        $this->seedGroups($driver, [
+            ['id' => 1, 'cn' => 'g1', 'name' => 'Group 1', 'created_by' => 1],
+            ['id' => 2, 'cn' => 'g2', 'name' => 'Group 2', 'created_by' => 2],
+        ]);
+
+        $rows = (new Query($driver))
+            ->select('g.id')
+            ->select('u.name', 'creator')
+            ->from('groups', 'g')
+            ->joinRaw('users AS u', 'u.id = g.created_by', 'inner')
+            ->whereEquals('u.id', 1)
+            ->limit(1)
+            ->fetch();
+
+        $this->assertCount(1, $rows, "[$dbName] joinRaw should return matching joined rows");
+        $this->assertEquals(1, (int) $rows[0]->id);
+        $this->assertEquals('Sam Wilson', $rows[0]->creator);
+    }
+
+    /**
+     * Test expression grouping with sqlSubstringIndex().
+     *
+     * Mirrors module patterns that group by computed domain expressions.
+     */
+    #[DataProvider('databaseProvider')]
+    public function testGroupByExpressionUsingSqlSubstringIndex(string $dbName, Driver $driver)
+    {
+        (new Query($driver))->insert('users')->values([
+            'id'    => 5,
+            'name'  => 'Tony Stark',
+            'email' => 'tony@starkindustries.com',
+        ])->execute();
+
+        $domainExpr = $driver->sqlSubstringIndex('email', '@', -1);
+
+        $rows = (new Query($driver))
+            ->select($domainExpr, 'domain')
+            ->select('COUNT(*)', 'email_count')
+            ->from('users')
+            ->group($domainExpr)
+            ->order('email_count', 'desc')
+            ->fetch();
+
+        $this->assertNotEmpty($rows, "[$dbName] Grouped domain query should return rows");
+
+        $countsByDomain = [];
+        foreach ($rows as $row) {
+            $countsByDomain[(string) $row->domain] = (int) $row->email_count;
+        }
+
+        $this->assertArrayHasKey(
+            'example.com',
+            $countsByDomain,
+            "[$dbName] Expected default seeded domain to be present"
+        );
+        $this->assertSame(
+            4,
+            $countsByDomain['example.com'],
+            "[$dbName] Expected 4 seeded users in example.com"
+        );
+    }
+
+    /**
+     * Test sqlDateSub() expression inside whereRaw().
+     *
+     * Mirrors module patterns that inject portable relative-date expressions.
+     */
+    #[DataProvider('databaseProvider')]
+    public function testSqlDateSubExpressionInWhereRaw(string $dbName, Driver $driver)
+    {
+        $quotedNow = $driver->quote('2026-02-16 00:00:00');
+        $dateSubExpr = $driver->sqlDateSub($quotedNow, 30, 'DAY');
+
+        $rows = (new Query($driver))
+            ->select('id')
+            ->from('users')
+            ->whereRaw($dateSubExpr . ' IS NOT NULL')
+            ->limit(1)
+            ->fetch();
+
+        $this->assertNotEmpty(
+            $rows,
+            "[$dbName] sqlDateSub expression should compile and execute in whereRaw"
+        );
+    }
+
+    /**
+     * Test sqlRand() ordering with limit/value retrieval.
+     *
+     * Mirrors featured-member style lookup:
+     * ->order($driver->sqlRand(), 'asc')->limit(1)->value('id')
+     */
+    #[DataProvider('databaseProvider')]
+    public function testSqlRandOrderWithLimitAndValue(string $dbName, Driver $driver)
+    {
+        if ($dbName === 'mock') {
+            $this->assertStringContainsStringIgnoringCase(
+                'RANDOM',
+                $driver->sqlRand(),
+                '[mock] sqlRand() should produce a RANDOM-like SQL token'
+            );
+            return;
+        }
+
+        $userId = (int) (new Query($driver))
+            ->select('id')
+            ->from('users')
+            ->order(Expression::randomOrder(), 'asc')
+            ->limit(1)
+            ->value('id');
+
+        $this->assertContains(
+            $userId,
+            [1, 2, 3, 4],
+            "[$dbName] sqlRand order + value should return one of seeded user IDs"
+        );
+    }
 }

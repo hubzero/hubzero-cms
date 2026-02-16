@@ -492,6 +492,19 @@ class Expression
     }
 
     /**
+     * Create an ORDER BY random expression.
+     *
+     * This is intended for sort clauses (random row ordering), not for
+     * generating random numeric values in select expressions.
+     *
+     * @return static
+     */
+    public static function randomOrder(): static
+    {
+        return new static(self::TYPE_FUNCTION, 'RANDOM_ORDER', []);
+    }
+
+    /**
      * Create a percentage expression: (numerator * scale) / denominator
      *
      * @param mixed $numerator

@@ -3481,6 +3481,9 @@ abstract class BaseSqlSyntax
             case 'ABS':
                 return $function . '(' . $this->buildExpressionArgument($args[0]) . ')';
 
+            case 'RANDOM_ORDER':
+                return $this->connection->sqlRand();
+
             // Date/time functions (standard SQL)
             case 'NOW':
                 return 'CURRENT_TIMESTAMP';

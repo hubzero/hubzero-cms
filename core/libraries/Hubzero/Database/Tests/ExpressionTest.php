@@ -464,6 +464,20 @@ class ExpressionTest extends TestCase
         $this->assertEquals(['difference'], $expr->getArguments());
     }
 
+    /**
+     * Test random ORDER BY expression
+     *
+     * @return void
+     */
+    public function testRandomOrderExpression()
+    {
+        $expr = Expression::randomOrder();
+
+        $this->assertEquals(Expression::TYPE_FUNCTION, $expr->getType());
+        $this->assertEquals('RANDOM_ORDER', $expr->getFunction());
+        $this->assertSame([], $expr->getArguments());
+    }
+
     // =========================================================================
     // Date/Time Function Tests
     // =========================================================================
