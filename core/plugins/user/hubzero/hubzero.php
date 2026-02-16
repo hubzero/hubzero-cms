@@ -713,7 +713,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
      */
     protected function checkForUserSecret($userId)
     {
-        $query = new \Hubzero\Database\Query();
+        $query = \App::get('db')->getQuery();
 
         // Determine whether user's secret is different from null
         $foundSecret = $query->select('*')
@@ -755,7 +755,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
      */
     protected function saveUserSecret($userId, $secret)
     {
-        $query = new \Hubzero\Database\Query();
+        $query = \App::get('db')->getQuery();
 
         // Set the secret generated for this user:
         $query->update('#__users')
@@ -774,7 +774,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
      */
     protected function nullifyUserSecret($userId)
     {
-        $query = new \Hubzero\Database\Query();
+        $query = \App::get('db')->getQuery();
 
         // If user exists:
         $user = User::oneOrFail($userId);

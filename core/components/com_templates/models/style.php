@@ -9,7 +9,6 @@
 namespace Components\Templates\Models;
 
 use Hubzero\Database\Relational;
-use Hubzero\Database\Query;
 use Hubzero\Config\Registry;
 
 /**
@@ -152,7 +151,7 @@ class Style extends Relational
         }
 
         if ($this->get('home')) {
-            $query = new Query();
+            $query = self::$connection->getQuery();
             $query->update($this->getTableName());
             $query->set(array('home' => '0'));
             $query->whereEquals('client_id', (int)$this->get('client_id'));

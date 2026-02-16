@@ -11,7 +11,6 @@ namespace Components\Newsletter\Admin\Controllers;
 
 use Components\Newsletter\Models\Campaign;
 use Hubzero\Component\AdminController;
-use Hubzero\Database\Query;
 use stdClass;
 use Request;
 use Notify;
@@ -234,7 +233,7 @@ class Campaigns extends AdminController
                 }
 
                 // delete the campaign from the table
-                $query = new Query();
+                $query = \App::get('db')->getQuery();
                 $deleted = $query->remove('#__campaign', 'id', $id);
 
                 if (!$deleted) {

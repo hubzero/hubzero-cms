@@ -12,7 +12,6 @@ use Hubzero\Console\Command\Base;
 use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
-use Hubzero\Database\Query;
 use Hubzero\Database\Exception\QueryFailedException;
 
 /**
@@ -42,7 +41,7 @@ class Refreshtokens extends Base implements CommandInterface
     {
         // Attempt to delete tokens
         try {
-            with(new Query())->delete('#__developer_refresh_tokens')->execute();
+            \App::get('db')->getQuery()->delete('#__developer_refresh_tokens')->execute();
         } catch (QueryFailedException $e) {
             $this->output->error('Error:' . $e->getMessage());
         }
