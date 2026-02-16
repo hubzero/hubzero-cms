@@ -20,22 +20,42 @@ class Migration20151004090000ComPublications extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__publication_blocks')) {
-            $queries = array();
+        $schema = $this->db->schema();
 
-            $queries[] = "INSERT INTO `#__publication_blocks` (`block`, `label`, `title`, `status`,
-						 `minimum`, `maximum`, `ordering`, `params`, `manifest`)
-				SELECT 'citations','Citations','Publication Citations',1,1,0,7,'',''
-				FROM DUAL WHERE NOT EXISTS (SELECT `block` FROM `#__publication_blocks` WHERE `block` = 'citations');";
+        if ($schema->tableExists('#__publication_blocks')) {
+            $query = $this->db->getQuery(true)
+                ->select('block')
+                ->from('#__publication_blocks')
+                ->where('block', '=', 'citations');
 
-            $queries[] = "UPDATE `#__publication_blocks` SET ordering='8' WHERE block='notes';\n";
-            $queries[] = "UPDATE `#__publication_blocks` SET ordering='9' WHERE block='review';\n";
-
-            // Run queries
-            foreach ($queries as $query) {
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($query->doesntExist()) {
+                $this->db->getQuery(true)
+                    ->insertOrIgnore('#__publication_blocks')
+                    ->values([
+                        'block'    => 'citations',
+                        'label'    => 'Citations',
+                        'title'    => 'Publication Citations',
+                        'status'   => 1,
+                        'minimum'  => 1,
+                        'maximum'  => 0,
+                        'ordering' => 7,
+                        'params'   => '',
+                        'manifest' => ''
+                    ])
+                    ->execute();
             }
+
+            $this->db->getQuery(true)
+                ->update('#__publication_blocks')
+                ->set(['ordering' => 8])
+                ->where('block', '=', 'notes')
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__publication_blocks')
+                ->set(['ordering' => 9])
+                ->where('block', '=', 'review')
+                ->execute();
         }
     }
 }

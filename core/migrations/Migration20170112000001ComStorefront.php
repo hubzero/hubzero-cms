@@ -21,10 +21,10 @@ class Migration20170112000001ComStorefront extends Base
      **/
     public function up()
     {
-        if ($this->db->tableHasField('#__storefront_serials', 'srNumber')) {
-            $query = "ALTER TABLE `#__storefront_serials` MODIFY `srNumber` VARCHAR(255);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__storefront_serials', 'srNumber')) {
+            $schema->modifyColumn('#__storefront_serials', 'srNumber')->string(255)->execute();
         }
     }
 
@@ -33,10 +33,12 @@ class Migration20170112000001ComStorefront extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__storefront_serials', 'srNumber')) {
-            $query = "ALTER TABLE `#__storefront_serials` MODIFY `srNumber` VARCHAR(32);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__storefront_serials', 'srNumber')) {
+            $schema->modifyColumn('#__storefront_serials', 'srNumber')
+                ->string(32)
+                ->execute();
         }
     }
 }

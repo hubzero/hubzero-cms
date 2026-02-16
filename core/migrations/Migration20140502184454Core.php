@@ -21,10 +21,10 @@ class Migration20140502184454Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('migrations') && !$this->db->tableExists('#__migrations')) {
-            $query = "RENAME TABLE `migrations` TO `#__migrations`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('migrations') && !$schema->tableExists('#__migrations')) {
+            $schema->renameTable('migrations', '#__migrations');
 
             $this->callback('migration', 'setTableName', array('#__migrations'));
         }
@@ -35,10 +35,10 @@ class Migration20140502184454Core extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('migrations') && $this->db->tableExists('#__migrations')) {
-            $query = "RENAME TABLE `#__migrations` TO `migrations`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('migrations') && $schema->tableExists('#__migrations')) {
+            $schema->renameTable('#__migrations', 'migrations');
 
             $this->callback('migration', 'setTableName', array('migrations'));
         }

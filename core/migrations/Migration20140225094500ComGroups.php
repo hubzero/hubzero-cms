@@ -21,14 +21,20 @@ class Migration20140225094500ComGroups extends Base
     public function up()
     {
         // get groups who dont have a created value
-        $query = "SELECT * FROM `#__xgroups` WHERE `created` IS NULL ";
-        $this->db->setQuery($query);
-        $groups = $this->db->loadObjectList();
+        // get groups who dont have a created value
+        $groups = $this->db->getQuery(true)
+            ->select('*')
+            ->from('#__xgroups')
+            ->whereIsNull('created')
+            ->loadObjectList();
 
         // get created logs
-        $query2 = "SELECT `gidNumber`,`timestamp`,`actorid` FROM `#__xgroups_log` WHERE `action`='group_created'";
-        $this->db->setQuery($query2);
-        $logs = $this->db->loadAssocList('gidNumber');
+        // get created logs
+        $logs = $this->db->getQuery(true)
+            ->select(['gidNumber', 'timestamp', 'actorid'])
+            ->from('#__xgroups_log')
+            ->where('action', '=', 'group_created')
+            ->loadAssocList('gidNumber');
 
         //check each group to see if we have a created log
         foreach ($groups as $group) {

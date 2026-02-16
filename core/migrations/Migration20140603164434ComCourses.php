@@ -21,15 +21,17 @@ class Migration20140603164434ComCourses extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__courses_progress_factors')) {
-            $query = "CREATE TABLE `#__courses_progress_factors` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `section_id` int(11) NOT NULL,
-				  `asset_id` int(11) NOT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__courses_progress_factors')) {
+            $schema->createTable('#__courses_progress_factors')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('section_id')
+                ->integer('asset_id')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -38,10 +40,8 @@ class Migration20140603164434ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__courses_progress_factors')) {
-            $query = "DROP TABLE `#__courses_progress_factors`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__courses_progress_factors');
     }
 }

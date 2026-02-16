@@ -18,30 +18,22 @@ class Migration20130401000000ComCourses extends Base
 {
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__courses_offering_sections', 'enrollment')) {
-            $query .= "ALTER TABLE `#__courses_offering_sections` ADD `enrollment` "
-                . "TINYINT(2) NOT NULL DEFAULT '0' AFTER `created_by`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__courses_offering_sections')
+            && !$schema->hasColumn('#__courses_offering_sections', 'enrollment')
+        ) {
+            $schema->addColumn('#__courses_offering_sections', 'enrollment')->tinyInteger(2)->notNull()->default(0);
         }
     }
 
     public function down()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_offering_sections', 'enrollment')) {
-            $query .= "ALTER TABLE `#__courses_offering_sections` DROP `enrollment`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_offering_sections', 'enrollment')) {
+            $schema->dropColumn('#__courses_offering_sections', 'enrollment');
         }
     }
 }

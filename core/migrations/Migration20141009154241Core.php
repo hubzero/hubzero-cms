@@ -20,10 +20,10 @@ class Migration20141009154241Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__migrations') && strtolower($this->db->getEngine('#__migrations')) != 'myisam') {
-            $query = "ALTER TABLE `#__migrations` ENGINE = MyISAM";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__migrations') && strtolower($schema->getEngine('#__migrations')) != 'myisam') {
+            $schema->setTableEngine('#__migrations', 'MyISAM');
         }
     }
 }

@@ -20,11 +20,15 @@ class Migration20160401212121PlgTools extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT * FROM `#__extensions` WHERE `element`=" . $this->db->quote('novnc')
-                . " AND `folder`=" . $this->db->quote('tools');
-            $this->db->setQuery($query);
-            $result = $this->db->loadObject();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $result = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__extensions')
+                ->where('element', '=', 'novnc')
+                ->where('folder', '=', 'tools')
+                ->first();
 
             if ($result && $result->extension_id) {
                 $params = new \Hubzero\Config\Registry($result->params);
@@ -38,16 +42,19 @@ iOS, safari 1.0
 Windows, msie 10.0
 Windows, ie 10.0');
 
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString())
-                    . " WHERE `extension_id`=" . $this->db->quote($result->extension_id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => $params->toString()])
+                    ->where('extension_id', '=', (int)$result->extension_id)
+                    ->execute();
             }
 
-            $query = "SELECT * FROM `#__extensions` WHERE `element`=" . $this->db->quote('java')
-                . " AND `folder`=" . $this->db->quote('tools');
-            $this->db->setQuery($query);
-            $result = $this->db->loadObject();
+            $result = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__extensions')
+                ->where('element', '=', 'java')
+                ->where('folder', '=', 'tools')
+                ->first();
 
             if ($result && $result->extension_id) {
                 $params = new \Hubzero\Config\Registry($result->params);
@@ -60,10 +67,11 @@ Windows, ie 10.0');
 *, mozilla 5.0
 iOS, Safari 9999.9');
 
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString())
-                    . " WHERE `extension_id`=" . $this->db->quote($result->extension_id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => $params->toString()])
+                    ->where('extension_id', '=', (int)$result->extension_id)
+                    ->execute();
             }
         }
     }

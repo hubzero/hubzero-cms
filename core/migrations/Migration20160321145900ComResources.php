@@ -21,10 +21,14 @@ class Migration20160321145900ComResources extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__resource_types')) {
-            $query = "SELECT id FROM `#__resource_types` WHERE alias=" . $this->db->quote('windowstools');
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_types')) {
+            $id = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__resource_types')
+                ->where('alias', '=', 'windowstools')
+                ->value('id');
 
             if (!$id) {
                 $description = '<p>A simulation tool is software that allows users to run a '
@@ -38,18 +42,18 @@ class Migration20160321145900ComResources extends Base
                     . '"plg_share":"1","plg_sponsors":"1","plg_supportingdocs":"0","plg_usage":"0",'
                     . '"plg_versions":"0","plg_wishlist":"1"}';
 
-                $query = "INSERT INTO `#__resource_types` "
-                    . "(`id`, `alias`, `type`, `category`, `description`, `customFields`, "
-                    . "`contributable`, `params`) VALUES (NULL, "
-                    . $this->db->quote('windowstools') . ", "
-                    . $this->db->quote('Tools (Windows)') . ", "
-                    . $this->db->quote(27) . ", "
-                    . $this->db->quote($description) . ", "
-                    . $this->db->quote($customFields) . ", "
-                    . $this->db->quote(0) . ", "
-                    . $this->db->quote($params) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__resource_types')
+                    ->values([
+                        'alias'         => 'windowstools',
+                        'type'          => 'Tools (Windows)',
+                        'category'      => 27,
+                        'description'   => $description,
+                        'customFields'  => $customFields,
+                        'contributable' => 0,
+                        'params'        => $params
+                    ])
+                    ->execute();
             }
         }
     }
@@ -59,15 +63,20 @@ class Migration20160321145900ComResources extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__resource_types')) {
-            $query = "SELECT id FROM `#__resource_types` WHERE alias=" . $this->db->quote('windowstools');
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_types')) {
+            $id = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__resource_types')
+                ->where('alias', '=', 'windowstools')
+                ->value('id');
 
             if ($id) {
-                $query = "DELETE FROM `#__resource_types` WHERE `id`=" . $this->db->quote($id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__resource_types')
+                    ->where('id', '=', (int)$id)
+                    ->execute();
             }
         }
     }

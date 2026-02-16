@@ -17,55 +17,65 @@ class Migration20130311000000PlgHubzeroComments extends Base
 {
     public function up()
     {
-        $query = "CREATE TABLE IF NOT EXISTS `#__item_comments` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`item_id` int(11) NOT NULL DEFAULT '0',
-				`item_type` varchar(150) NOT NULL,
-				`content` text NOT NULL,
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`modified_by` int(11) NOT NULL DEFAULT '0',
-				`anonymous` tinyint(2) NOT NULL DEFAULT '0',
-				`parent` int(11) NOT NULL DEFAULT '0',
-				`notify` tinyint(2) NOT NULL DEFAULT '0',
-				`access` tinyint(2) NOT NULL DEFAULT '0',
-				`state` tinyint(2) NOT NULL DEFAULT '0',
-				`positive` int(11) NOT NULL DEFAULT '0',
-				`negative` int(11) NOT NULL DEFAULT '0',
-				`rating` int(2) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+        $schema = $this->db->schema();
 
-			CREATE TABLE IF NOT EXISTS `#__item_comment_files` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`comment_id` int(11) NOT NULL DEFAULT '0',
-				`filename` varchar(100) DEFAULT NULL,
-				KEY `id` (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+        if (!$schema->tableExists('#__item_comments')) {
+            $schema->createTable('#__item_comments')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('item_id')->default(0)
+                ->string('item_type', 150)
+                ->text('content')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->datetime('modified')->default('0000-00-00 00:00:00')
+                ->integer('modified_by')->default(0)
+                ->tinyInteger('anonymous')->default(0)
+                ->integer('parent')->default(0)
+                ->tinyInteger('notify')->default(0)
+                ->tinyInteger('access')->default(0)
+                ->tinyInteger('state')->default(0)
+                ->integer('positive')->default(0)
+                ->integer('negative')->default(0)
+                ->integer('rating')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-			CREATE TABLE IF NOT EXISTS `#__item_votes` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`item_id` int(11) NOT NULL DEFAULT '0',
-				`item_type` varchar(255) DEFAULT NULL,
-				`ip` varchar(15) DEFAULT NULL,
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`vote` tinyint(3) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        if (!$schema->tableExists('#__item_comment_files')) {
+            $schema->createTable('#__item_comment_files')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('comment_id')->default(0)
+                ->string('filename', 100)->nullable()
+                ->index('id', 'id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        if (!$schema->tableExists('#__item_votes')) {
+            $schema->createTable('#__item_votes')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('item_id')->default(0)
+                ->string('item_type', 255)->nullable()
+                ->string('ip', 15)->nullable()
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->tinyInteger('vote')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
     }
 
     public function down()
     {
-        $query = "DROP TABLE IF EXISTS `#__item_comments`;
-				DROP TABLE IF EXISTS `#__item_comment_files`;
-				DROP TABLE IF EXISTS `#__item_votes`;";
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema->dropTable('#__item_comments');
+        $schema->dropTable('#__item_comment_files');
+        $schema->dropTable('#__item_votes');
     }
 }

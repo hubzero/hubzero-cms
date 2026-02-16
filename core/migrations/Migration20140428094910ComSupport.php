@@ -21,13 +21,13 @@ class Migration20140428094910ComSupport extends Base
      **/
     public function up()
     {
-        // add comment ID
-        if ($this->db->tableHasField('#__support_attachments', 'comment_id')) {
-            $query = "ALTER TABLE `#__support_attachments` MODIFY COLUMN `comment_id` int(11) NOT NULL DEFAULT '0';";
-
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $this->db
+            ->schema()
+            ->modifyColumn('#__support_attachments', 'comment_id')
+            ->integer()
+            ->notNull()
+            ->default(0)
+            ->execute();
     }
 
     /**
@@ -35,13 +35,12 @@ class Migration20140428094910ComSupport extends Base
      **/
     public function down()
     {
-        // add comment ID
-        if ($this->db->tableHasField('#__support_attachments', 'comment_id')) {
-            $query = "ALTER TABLE `#__support_attachments` "
-                . "MODIFY COLUMN `comment_id` int(11) unsigned NOT NULL DEFAULT '0';";
-
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $this->db
+            ->schema()
+            ->modifyColumn('#__support_attachments', 'comment_id')
+            ->integer()
+            ->notNull()
+            ->default(0)
+            ->execute();
     }
 }

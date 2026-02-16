@@ -21,10 +21,15 @@ class Migration20150115234546PlgGroupsWishlist extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__wishlist')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__wishlist')) {
             // Get records
-            $this->db->setQuery("SELECT * FROM `#__wishlist` WHERE `category`='group'");
-            $lists = $this->db->loadObjectList();
+            $lists = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__wishlist')
+                ->where('category', '=', 'group')
+                ->loadObjectList();
 
             // vars to hold counts
             $deletedLists  = 0;
@@ -37,45 +42,60 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 
                 // if group doesnt exist we need to remove the list and wishes
                 if (!$group || !is_object($group)) {
-                    if ($this->db->tableExists('#__wishlist_item')) {
-                        $this->db->setQuery("SELECT * FROM `#__wishlist_item` WHERE `wishlist`=" . $list->id);
-                        $wishes = $this->db->loadObjectList();
+                    if ($schema->tableExists('#__wishlist_item')) {
+                        $wishes = $this->db->getQuery(true)
+                            ->select('*')
+                            ->from('#__wishlist_item')
+                            ->where('wishlist', '=', $list->id)
+                            ->loadObjectList();
 
                         foreach ($wishes as $wish) {
-                            if ($this->db->tableExists('#__wishlist_implementation')) {
-                                $query = "DELETE FROM `#__wishlist_implementation` "
-                                    . "WHERE `wishid`=" . $wish->id;
-                                $this->db->setQuery($query);
-                                $this->db->query();
+                            if ($schema->tableExists('#__wishlist_implementation')) {
+                                $this->db->getQuery(true)
+                                    ->delete('#__wishlist_implementation')
+                                    ->where('wishid', '=', $wish->id)
+                                    ->execute();
                             }
 
-                            if ($this->db->tableExists('#__wish_attachments')) {
-                                $this->db->setQuery("DELETE FROM `#__wish_attachments` WHERE `wish`=" . $wish->id);
-                                $this->db->query();
+                            if ($schema->tableExists('#__wish_attachments')) {
+                                $this->db->getQuery(true)
+                                    ->delete('#__wish_attachments')
+                                    ->where('wish', '=', $wish->id)
+                                    ->execute();
                             }
 
-                            if ($this->db->tableExists('#__wishlist_vote')) {
-                                $this->db->setQuery("DELETE FROM `#__wishlist_vote` WHERE `wishid`=" . $wish->id);
-                                $this->db->query();
+                            if ($schema->tableExists('#__wishlist_vote')) {
+                                $this->db->getQuery(true)
+                                    ->delete('#__wishlist_vote')
+                                    ->where('wishid', '=', $wish->id)
+                                    ->execute();
                             }
                         }
 
-                        $this->db->setQuery("DELETE FROM `#__wishlist_item` WHERE `wishlist`=" . $list->id);
-                        $this->db->query();
+                        $this->db->getQuery(true)
+                            ->delete('#__wishlist_item')
+                            ->where('wishlist', '=', $list->id)
+                            ->execute();
                     }
 
-                    if ($this->db->tableExists('#__wishlist_owners')) {
-                        $this->db->setQuery("DELETE FROM `#__wishlist_owners` WHERE `wishlist`=" . $list->id);
-                        $this->db->query();
+                    if ($schema->tableExists('#__wishlist_owners')) {
+                        $this->db->getQuery(true)
+                            ->delete('#__wishlist_owners')
+                            ->where('wishlist', '=', $list->id)
+                            ->execute();
                     }
 
-                    if ($this->db->tableExists('#__wishlist_ownergroups')) {
-                        $this->db->setQuery("DELETE FROM `#__wishlist_ownergroups` WHERE `wishlist`=" . $list->id);
-                        $this->db->query();
+                    if ($schema->tableExists('#__wishlist_ownergroups')) {
+                        $this->db->getQuery(true)
+                            ->delete('#__wishlist_ownergroups')
+                            ->where('wishlist', '=', $list->id)
+                            ->execute();
                     }
 
-                    $this->db->setQuery("DELETE FROM `#__wishlist` WHERE `id`=" . $list->id);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->delete('#__wishlist')
+                        ->where('id', '=', $list->id)
+                        ->execute();
 
                     $deletedLists++;
                 }

@@ -16,15 +16,25 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20121009000000ComWiki extends Base
 {
+    /**
+     * Up
+     **/
     public function up()
     {
-        if ($this->db->tableExists('#__plugins')) {
-            $query = "UPDATE `#__plugins` SET element='wiki' WHERE element='topics';\n";
-        } elseif ($this->db->tableExists('#__extensions')) {
-            $query = "UPDATE `#__extensions` SET element='wiki' WHERE element='topics';\n";
-        }
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        if ($schema->tableExists('#__plugins')) {
+            $this->db->getQuery(true)
+                ->update('#__plugins')
+                ->set(['element' => 'wiki'])
+                ->where('element', '=', 'topics')
+                ->execute();
+        } elseif ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set(['element' => 'wiki'])
+                ->where('element', '=', 'topics')
+                ->execute();
+        }
     }
 }

@@ -21,44 +21,44 @@ class Migration20160620172827ComStorefront extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__storefront_images')) {
-            $query = "CREATE TABLE `#__storefront_images` (
-			  `imgId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `imgName` char(255) DEFAULT NULL,
-			  `imgObject` char(25) DEFAULT NULL,
-			  `imgObjectId` int(11) DEFAULT NULL,
-			  `imgPrimary` tinyint(1) DEFAULT '1',
-			  PRIMARY KEY (`imgId`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__storefront_images')) {
+            $schema->createTable('#__storefront_images')
+                ->unsignedInteger('imgId', ['autoIncrement' => true])
+                ->char('imgName', 255)->nullable()
+                ->char('imgObject', 25)->nullable()
+                ->integer('imgObjectId')->nullable()
+                ->tinyInteger('imgPrimary')->default(1)
+                ->primaryKey('imgId')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
         if (
-            $this->db->tableExists('#__storefront_option_groups')
-            && !$this->db->tableHasField('#__storefront_option_groups', 'ogActive')
+            $schema->tableExists('#__storefront_option_groups')
+            && !$schema->hasColumn('#__storefront_option_groups', 'ogActive')
         ) {
-            $query = "ALTER TABLE `#__storefront_option_groups` ADD `ogActive` tinyint(1) NOT NULL DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_option_groups', 'ogActive')
+                ->tinyInteger()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
 
         if (
-            $this->db->tableExists('#__storefront_options')
-            && !$this->db->tableHasField('#__storefront_options', 'oActive')
+            $schema->tableExists('#__storefront_options')
+            && !$schema->hasColumn('#__storefront_options', 'oActive')
         ) {
-            $query = "ALTER TABLE `#__storefront_options` ADD `oActive` tinyint(1) NOT NULL DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_options', 'oActive')->tinyInteger()->notNull()->default(0)->execute();
         }
 
         if (
-            $this->db->tableExists('#__storefront_collections')
-            && !$this->db->tableHasField('#__storefront_collections', 'cAlias')
+            $schema->tableExists('#__storefront_collections')
+            && !$schema->hasColumn('#__storefront_collections', 'cAlias')
         ) {
-            $query = "ALTER TABLE `#__storefront_collections` ADD `cAlias` char(50)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_collections', 'cAlias')->char(50)->execute();
         }
     }
 
@@ -67,37 +67,29 @@ class Migration20160620172827ComStorefront extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__storefront_images')) {
-            $query = "DROP TABLE `#__storefront_images`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__storefront_images');
+
+        if (
+            $schema->tableExists('#__storefront_option_groups')
+            && $schema->hasColumn('#__storefront_option_groups', 'ogActive')
+        ) {
+            $schema->dropColumn('#__storefront_option_groups', 'ogActive');
         }
 
         if (
-            $this->db->tableExists('#__storefront_option_groups')
-            && $this->db->tableHasField('#__storefront_option_groups', 'ogActive')
+            $schema->tableExists('#__storefront_options')
+            && $schema->hasColumn('#__storefront_options', 'oActive')
         ) {
-            $query = "ALTER TABLE `#__storefront_option_groups` DROP COLUMN `ogActive`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__storefront_options', 'oActive');
         }
 
         if (
-            $this->db->tableExists('#__storefront_options')
-            && $this->db->tableHasField('#__storefront_options', 'oActive')
+            $schema->tableExists('#__storefront_collections')
+            && $schema->hasColumn('#__storefront_collections', 'cAlias')
         ) {
-            $query = "ALTER TABLE `#__storefront_options` DROP COLUMN `oActive`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if (
-            $this->db->tableExists('#__storefront_collections')
-            && $this->db->tableHasField('#__storefront_collections', 'cAlias')
-        ) {
-            $query = "ALTER TABLE `#__storefront_collections` DROP COLUMN `cAlias`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__storefront_collections', 'cAlias');
         }
     }
 }

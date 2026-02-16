@@ -21,33 +21,29 @@ class Migration20141021164246Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__users')) {
-            $auto = $this->db->getAutoIncrement('#__users');
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__users')) {
+            $auto = $schema->getAutoIncrement('#__users');
 
             if ($auto && is_numeric($auto) && $auto < 1000) {
-                $query = "ALTER TABLE `#__users` AUTO_INCREMENT = " . ($auto + 1000);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->setAutoIncrement('#__users', $auto + 1000);
             }
         }
 
-        if ($this->db->tableExists('#__xgroups')) {
-            $auto = $this->db->getAutoIncrement('#__xgroups');
+        if ($schema->tableExists('#__xgroups')) {
+            $auto = $schema->getAutoIncrement('#__xgroups');
 
             if ($auto && is_numeric($auto) && $auto < 1000) {
-                $query = "ALTER TABLE `#__xgroups` AUTO_INCREMENT = " . ($auto + 1000);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->setAutoIncrement('#__xgroups', $auto + 1000);
             }
         }
 
-        if ($this->db->tableExists('#__extensions')) {
-            $auto = $this->db->getAutoIncrement('#__extensions');
+        if ($schema->tableExists('#__extensions')) {
+            $auto = $schema->getAutoIncrement('#__extensions');
 
             if ($auto && is_numeric($auto) && $auto < 10000) {
-                $query = "ALTER TABLE `#__extensions` AUTO_INCREMENT = " . ($auto + 10000);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->setAutoIncrement('#__extensions', $auto + 10000);
             }
         }
     }

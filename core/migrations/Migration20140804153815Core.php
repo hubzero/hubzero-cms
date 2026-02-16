@@ -28,10 +28,8 @@ class Migration20140804153815Core extends Base
 
         /* We can just drop the old tables because they were never used on a live hub */
 
-        if ($mwdb->tableExists('sessionlog') && $mwdb->tableHasKey('sessionlog', 'sessnum')) {
-            $query = "ALTER TABLE `sessionlog` DROP INDEX `sessnum`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        if ($mwdb->schema()->tableExists('sessionlog')) {
+            $mwdb->schema()->dropIndex('sessionlog', 'sessnum');
         }
     }
 
@@ -47,10 +45,8 @@ class Migration20140804153815Core extends Base
 
         /* We can just drop the old tables because they were never used on a live hub */
 
-        if ($mwdb->tableExists('sessionlog') && !$mwdb->tableHasKey('sessionlog', 'sessnum')) {
-            $query = "CREATE UNIQUE INDEX sessnum ON `sessionlog`(`sessnum`)";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        if ($mwdb->schema()->tableExists('sessionlog')) {
+            $mwdb->schema()->addUniqueIndex('sessionlog', 'sessnum', 'sessnum');
         }
     }
 }

@@ -21,19 +21,21 @@ class Migration20160802170610PlgMembersActivity extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__activity_digests')) {
-            $query = "CREATE TABLE `#__activity_digests` (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `scope` varchar(250) NOT NULL,
-			  `scope_id` int(11) unsigned NOT NULL DEFAULT '0',
-			  `frequency` tinyint(3) unsigned NOT NULL DEFAULT '0',
-			  `sent` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-			  PRIMARY KEY (`id`),
-			  KEY `idx_user_id` (`scope_id`),
-			  KEY `idx_frequency` (`frequency`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__activity_digests')) {
+            $schema->createTable('#__activity_digests')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('scope', 250)
+                ->unsignedInteger('scope_id')->default(0)
+                ->unsignedTinyInteger('frequency')->default(0)
+                ->datetime('sent')->default('0000-00-00 00:00:00')
+                ->primaryKey('id')
+                ->index('idx_user_id', 'scope_id')
+                ->index('idx_frequency', 'frequency')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -42,10 +44,8 @@ class Migration20160802170610PlgMembersActivity extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__activity_digests')) {
-            $query = "DROP TABLE `#__activity_digests`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__activity_digests');
     }
 }

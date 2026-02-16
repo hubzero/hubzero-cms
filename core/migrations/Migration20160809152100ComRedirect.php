@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for renaming and changing value format of the column to hub standards
@@ -21,29 +22,22 @@ class Migration20160809152100ComRedirect extends Base
      **/
     public function up()
     {
-        if ($this->db->tableHasField('#__redirect_links', 'updated_date')) {
-            if ($this->db->tableHasKey('#__redirect_links', 'idx_link_updated')) {
-                $query = "ALTER TABLE `#__redirect_links` DROP KEY `idx_link_updated`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            $query = "ALTER TABLE `#__redirect_links` DROP COLUMN `updated_date`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__redirect_links', 'updated_date')) {
+            $schema->dropIndex('#__redirect_links', 'idx_link_updated');
+
+            $schema->dropColumn('#__redirect_links', 'updated_date');
         }
 
-        if (!$this->db->tableHasField('#__redirect_links', 'modified_date')) {
-            $query = "ALTER TABLE `#__redirect_links` ADD `modified_date` DATETIME NOT NULL DEFAULT '0000-00-00"
-                . "00:00:00';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__redirect_links', 'modified_date')) {
+            $schema->addColumn('#__redirect_links', 'modified_date')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
 
-            if (!$this->db->tableHasKey('#__redirect_links', 'idx_modified_date')) {
-                $query = "ALTER TABLE `#__redirect_links` ADD INDEX `idx_modified_date` (`modified_date`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__redirect_links', 'idx_modified_date', 'modified_date');
         }
     }
 
@@ -52,28 +46,22 @@ class Migration20160809152100ComRedirect extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__redirect_links', 'modified_date')) {
-            if ($this->db->tableHasKey('#__redirect_links', 'idx_modified_date')) {
-                $query = "ALTER TABLE `#__redirect_links` DROP KEY `idx_modified_date`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            $query = "ALTER TABLE `#__redirect_links` DROP COLUMN `modified_date`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__redirect_links', 'modified_date')) {
+            $schema->dropIndex('#__redirect_links', 'idx_modified_date');
+
+            $schema->dropColumn('#__redirect_links', 'modified_date');
         }
 
-        if (!$this->db->tableHasField('#__redirect_links', 'updated_date')) {
-            $query = "ALTER TABLE `#__redirect_links` ADD `updated_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__redirect_links', 'updated_date')) {
+            $schema->addColumn('#__redirect_links', 'updated_date')
+                ->timestamp()
+                ->notNull()
+                ->defaultExpression(Expression::currentTimestamp())
+                ->execute();
 
-            if (!$this->db->tableHasKey('#__redirect_links', 'idx_link_updated')) {
-                $query = "ALTER TABLE `#__redirect_links` ADD INDEX `idx_link_updated` (`updated_date`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__redirect_links', 'idx_link_updated', 'updated_date');
         }
     }
 }

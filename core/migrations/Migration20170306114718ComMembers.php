@@ -21,17 +21,23 @@ class Migration20170306114718ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__user_profile_fields')) {
-            if (!$this->db->tableHasField('#__user_profile_fields', 'min')) {
-                $query = "ALTER TABLE `#__user_profile_fields` ADD `min` int(11) NOT NULL DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__user_profile_fields')) {
+            if (!$schema->hasColumn('#__user_profile_fields', 'min')) {
+                $schema->addColumn('#__user_profile_fields', 'min')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__user_profile_fields', 'max')) {
-                $query = "ALTER TABLE `#__user_profile_fields` ADD `max` int(11) NOT NULL DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__user_profile_fields', 'max')) {
+                $schema->addColumn('#__user_profile_fields', 'max')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
         }
     }
@@ -41,17 +47,15 @@ class Migration20170306114718ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__user_profile_fields')) {
-            if ($this->db->tableHasField('#__user_profile_fields', 'min')) {
-                $query = "ALTER TABLE `#__user_profile_fields` DROP `min`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__user_profile_fields')) {
+            if ($schema->hasColumn('#__user_profile_fields', 'min')) {
+                $schema->dropColumn('#__user_profile_fields', 'min');
             }
 
-            if ($this->db->tableHasField('#__user_profile_fields', 'max')) {
-                $query = "ALTER TABLE `#__user_profile_fields` DROP `max`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__user_profile_fields', 'max')) {
+                $schema->dropColumn('#__user_profile_fields', 'max');
             }
         }
     }

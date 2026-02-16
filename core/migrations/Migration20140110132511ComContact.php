@@ -20,19 +20,22 @@ class Migration20140110132511ComContact extends Base
      **/
     public function up()
     {
-        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_contact';";
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
+        $id = $this->db->getQuery(true)
+            ->select('extension_id')
+            ->from('#__extensions')
+            ->where('type', '=', 'component')
+            ->where('element', '=', 'com_contact')
+            ->value('extension_id');
 
-        if ($id = $this->db->loadResult()) {
+        if ($id) {
             $this->deleteComponentEntry('contact');
 
             $this->deletePluginEntry('search', 'contacts');
             $this->deletePluginEntry('user', 'contactcreator');
 
-            $query = "DROP TABLE IF EXISTS `#__contact_details`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropTable('#__contact_details');
         }
     }
 
@@ -41,72 +44,77 @@ class Migration20140110132511ComContact extends Base
      **/
     public function down()
     {
-        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='component' AND `element`='com_contact';";
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
+        $id = $this->db->getQuery(true)
+            ->select('extension_id')
+            ->from('#__extensions')
+            ->where('type', '=', 'component')
+            ->where('element', '=', 'com_contact')
+            ->value('extension_id');
 
-        if (!($id = $this->db->loadResult())) {
+        if (!$id) {
             $this->addComponentEntry('contact');
 
             $this->addPluginEntry('search', 'contacts', 0);
             $this->addPluginEntry('user', 'contactcreator');
 
-            if (!$this->db->tableExists('#__contact_details')) {
-                $query = "CREATE TABLE `#__contact_details` (
-					  `id` int(11) NOT NULL AUTO_INCREMENT,
-					  `name` varchar(255) NOT NULL DEFAULT '',
-					  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-					  `con_position` varchar(255) DEFAULT NULL,
-					  `address` text,
-					  `suburb` varchar(100) DEFAULT NULL,
-					  `state` varchar(100) DEFAULT NULL,
-					  `country` varchar(100) DEFAULT NULL,
-					  `postcode` varchar(100) DEFAULT NULL,
-					  `telephone` varchar(255) DEFAULT NULL,
-					  `fax` varchar(255) DEFAULT NULL,
-					  `misc` mediumtext,
-					  `image` varchar(255) DEFAULT NULL,
-					  `imagepos` varchar(20) DEFAULT NULL,
-					  `email_to` varchar(255) DEFAULT NULL,
-					  `default_con` tinyint(1) unsigned NOT NULL DEFAULT '0',
-					  `published` tinyint(1) NOT NULL DEFAULT '0',
-					  `checked_out` int(10) unsigned NOT NULL DEFAULT '0',
-					  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `ordering` int(11) NOT NULL DEFAULT '0',
-					  `params` text NOT NULL,
-					  `user_id` int(11) NOT NULL DEFAULT '0',
-					  `catid` int(11) NOT NULL DEFAULT '0',
-					  `access` int(10) unsigned NOT NULL DEFAULT '0',
-					  `mobile` varchar(255) NOT NULL DEFAULT '',
-					  `webpage` varchar(255) NOT NULL DEFAULT '',
-					  `sortname1` varchar(255) NOT NULL,
-					  `sortname2` varchar(255) NOT NULL,
-					  `sortname3` varchar(255) NOT NULL,
-					  `language` char(7) NOT NULL,
-					  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
-					  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
-					  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
-					  `metakey` text NOT NULL,
-					  `metadesc` text NOT NULL,
-					  `metadata` text NOT NULL,
-					  `featured` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Set if article is featured.',
-					  `xreference` varchar(50) NOT NULL COMMENT 'A reference to enable linkages to external data sets.',
-					  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  PRIMARY KEY (`id`),
-					  KEY `idx_access` (`access`),
-					  KEY `idx_checkout` (`checked_out`),
-					  KEY `idx_state` (`published`),
-					  KEY `idx_catid` (`catid`),
-					  KEY `idx_createdby` (`created_by`),
-					  KEY `idx_featured_catid` (`featured`,`catid`),
-					  KEY `idx_language` (`language`),
-					  KEY `idx_xreference` (`xreference`)
-					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->tableExists('#__contact_details')) {
+                $schema->createTable('#__contact_details')
+                    ->integer('id', ['autoIncrement' => true])
+                    ->string('name', 255)->default('')
+                    ->string('alias', 255)->default('')
+                    ->string('con_position', 255)->nullable()
+                    ->text('address')->nullable()
+                    ->string('suburb', 100)->nullable()
+                    ->string('state', 100)->nullable()
+                    ->string('country', 100)->nullable()
+                    ->string('postcode', 100)->nullable()
+                    ->string('telephone', 255)->nullable()
+                    ->string('fax', 255)->nullable()
+                    ->mediumText('misc')->nullable()
+                    ->string('image', 255)->nullable()
+                    ->string('imagepos', 20)->nullable()
+                    ->string('email_to', 255)->nullable()
+                    ->unsignedTinyInteger('default_con')->default(0)
+                    ->tinyInteger('published')->default(0)
+                    ->unsignedInteger('checked_out')->default(0)
+                    ->datetime('checked_out_time')->default('0000-00-00 00:00:00')
+                    ->integer('ordering')->default(0)
+                    ->text('params')
+                    ->integer('user_id')->default(0)
+                    ->integer('catid')->default(0)
+                    ->unsignedInteger('access')->default(0)
+                    ->string('mobile', 255)->default('')
+                    ->string('webpage', 255)->default('')
+                    ->string('sortname1', 255)
+                    ->string('sortname2', 255)
+                    ->string('sortname3', 255)
+                    ->char('language', 7)
+                    ->datetime('created')->default('0000-00-00 00:00:00')
+                    ->unsignedInteger('created_by')->default(0)
+                    ->string('created_by_alias', 255)->default('')
+                    ->datetime('modified')->default('0000-00-00 00:00:00')
+                    ->unsignedInteger('modified_by')->default(0)
+                    ->text('metakey')
+                    ->text('metadesc')
+                    ->text('metadata')
+                    ->unsignedTinyInteger('featured')->default(0)
+                    ->string('xreference', 50)
+                    ->datetime('publish_up')->default('0000-00-00 00:00:00')
+                    ->datetime('publish_down')->default('0000-00-00 00:00:00')
+                    ->primaryKey('id')
+                    ->index('idx_access', 'access')
+                    ->index('idx_checkout', 'checked_out')
+                    ->index('idx_state', 'published')
+                    ->index('idx_catid', 'catid')
+                    ->index('idx_createdby', 'created_by')
+                    ->index('idx_featured_catid', ['featured', 'catid'])
+                    ->index('idx_language', 'language')
+                    ->index('idx_xreference', 'xreference')
+                    ->engine('MyISAM')
+                    ->charset('utf8')
+                    ->execute();
             }
         }
     }

@@ -18,19 +18,19 @@ class Migration20151202000001ComCart extends Base
 {
     public function up()
     {
-        if ($this->db->tableExists('#__cart_downloads') && !$this->db->tableHasField('#__cart_downloads', 'dIp')) {
-            $query = "ALTER TABLE `#__cart_downloads` ADD `dIp` INT UNSIGNED";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__cart_downloads') && !$schema->hasColumn('#__cart_downloads', 'dIp')) {
+            $schema->addColumn('#__cart_downloads', 'dIp')->integer()->unsigned()->execute();
         }
     }
 
     public function down()
     {
-        if ($this->db->tableExists('#__cart_downloads') && $this->db->tableHasField('#__cart_downloads', 'dIp')) {
-            $query = "ALTER TABLE `#__cart_downloads` DROP COLUMN `dIp`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__cart_downloads') && $schema->hasColumn('#__cart_downloads', 'dIp')) {
+            $schema->dropColumn('#__cart_downloads', 'dIp');
         }
     }
 }

@@ -21,44 +21,46 @@ class Migration20160905103000Core extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__resource_stats_clusters')
-            && !$this->db->tableHasField('#__resource_stats_clusters', 'clustersize')
-        ) {
-            $query = "ALTER TABLE `#__resource_stats_clusters` ADD COLUMN `clustersize` varchar(255) NOT NULL "
-                . "DEFAULT '' AFTER `resid`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__resource_stats_clusters')) {
+            return;
         }
 
-        if (
-            $this->db->tableExists('#__resource_stats_clusters')
-            && !$this->db->tableHasField('#__resource_stats_clusters', 'cluster_start')
-        ) {
-            $query = "ALTER TABLE `#__resource_stats_clusters` ADD COLUMN `cluster_start` datetime NOT NULL "
-                . "DEFAULT '0000-00-00 00:00:00' AFTER `clustersize`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__resource_stats_clusters', 'clustersize')) {
+            $schema->addColumn('#__resource_stats_clusters', 'clustersize')
+                ->string(255)
+                ->notNull()
+                ->default('')
+                ->after('resid')
+                ->execute();
         }
 
-        if (
-            $this->db->tableExists('#__resource_stats_clusters')
-            && !$this->db->tableHasField('#__resource_stats_clusters', 'cluster_end')
-        ) {
-            $query = "ALTER TABLE `#__resource_stats_clusters` ADD COLUMN `cluster_end` datetime NOT NULL DEFAULT "
-                . "'0000-00-00 00:00:00' AFTER `cluster_start`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__resource_stats_clusters', 'cluster_start')) {
+            $schema->addColumn('#__resource_stats_clusters', 'cluster_start')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->after('clustersize')
+                ->execute();
         }
 
-        if (
-            $this->db->tableExists('#__resource_stats_clusters')
-            && !$this->db->tableHasField('#__resource_stats_clusters', 'institution')
-        ) {
-            $query = "ALTER TABLE `#__resource_stats_clusters` ADD COLUMN  `institution` varchar(255) NOT NULL "
-                . "DEFAULT '' AFTER `cluster_end`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__resource_stats_clusters', 'cluster_end')) {
+            $schema->addColumn('#__resource_stats_clusters', 'cluster_end')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->after('cluster_start')
+                ->execute();
+        }
+
+        if (!$schema->hasColumn('#__resource_stats_clusters', 'institution')) {
+            $schema->addColumn('#__resource_stats_clusters', 'institution')
+                ->string(255)
+                ->notNull()
+                ->default('')
+                ->after('cluster_end')
+                ->execute();
         }
     }
 

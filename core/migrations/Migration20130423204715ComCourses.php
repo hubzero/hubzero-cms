@@ -20,19 +20,19 @@ class Migration20130423204715ComCourses extends Base
      **/
     public function up()
     {
-        $query = "SELECT * FROM `#__courses_roles`";
+        if (!$this->db->getQuery(true)->select('id')->from('#__courses_roles')->doesntExist()) {
+            $roles = [
+                ['offering_id' => 0, 'alias' => 'instructor', 'title' => 'Instructor', 'permissions' => ''],
+                ['offering_id' => 0, 'alias' => 'manager',    'title' => 'Manager',    'permissions' => ''],
+                ['offering_id' => 0, 'alias' => 'student',    'title' => 'Student',    'permissions' => '']
+            ];
 
-        $this->db->setQuery($query);
-
-        if (!$this->db->loadResult()) {
-            $query = "INSERT INTO `#__courses_roles` (`offering_id`, `alias`, `title`, `permissions`)
-						VALUES
-							(0, 'instructor', 'Instructor', ''),
-							(0, 'manager', 'Manager', ''),
-							(0, 'student', 'Student', '');";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+            foreach ($roles as $role) {
+                $this->db->getQuery(true)
+                    ->insertOrIgnore('#__courses_roles')
+                    ->set($role)
+                    ->execute();
+            }
         }
     }
 }

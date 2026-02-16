@@ -9,11 +9,12 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for removing duplicate plugin entries while retaining proper parameters
  *
-*/
+ */
 class Migration20150828113153Core extends Base
 {
     /**
@@ -21,13 +22,22 @@ class Migration20150828113153Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT MIN(extension_id) AS min, MAX(extension_id) as max, folder, element FROM "
-                . "`#__extensions` WHERE type='plugin' GROUP BY folder, element HAVING COUNT(*) > 1;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
+        if ($schema->tableExists('#__extensions')) {
+            $query = $this->db->getQuery(true)
+                ->select('MIN(extension_id)', 'min')
+                ->select('MAX(extension_id)', 'max')
+                ->select('folder')
+                ->select('element')
+                ->from('#__extensions')
+                ->where('type', '=', 'plugin')
+                ->group('folder')
+                ->group('element')
+                ->having(Expression::count(), '>', 1);
+            $results = $query->loadObjectList();
 
-            if ($results = $this->db->loadObjectList()) {
+            if ($results) {
                 foreach ($results as $result) {
                     if (
                         empty($result)
@@ -39,17 +49,27 @@ class Migration20150828113153Core extends Base
                         continue;
                     }
 
-                    $query = "UPDATE `#__extensions` AS e1, `#__extensions` e2 SET e1.params = e2.params WHERE "
-                        . "e1.extension_id = " . $this->db->quote($result->min) . " AND e2.extension_id = "
-                        . $this->db->quote($result->max) . ";";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    // Get params from the max ID
+                    $query = $this->db->getQuery(true)
+                        ->select('params')
+                        ->from('#__extensions')
+                        ->where('extension_id', '=', $result->max);
+                    $params = $query->value('params');
 
-                    $query = "DELETE FROM `#__extensions` WHERE folder = " . $this->db->quote($result->folder)
-                        . " AND element = " . $this->db->quote($result->element)
-                        . " AND extension_id != " . $this->db->quote($result->min);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    if ($params) {
+                        $this->db->getQuery(true)
+                            ->update('#__extensions')
+                            ->set(['params' => $params])
+                            ->where('extension_id', '=', $result->min)
+                            ->execute();
+                    }
+
+                    $this->db->getQuery(true)
+                        ->delete('#__extensions')
+                        ->where('folder', '=', $result->folder)
+                        ->where('element', '=', $result->element)
+                        ->where('extension_id', '!=', $result->min)
+                        ->execute();
                 }
             }
         }

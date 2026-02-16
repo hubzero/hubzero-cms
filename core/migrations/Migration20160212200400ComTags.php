@@ -9,11 +9,12 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for adding objects and substitutes columns to tags table
  *
-*/
+ */
 class Migration20160212200400ComTags extends Base
 {
     /**
@@ -21,35 +22,37 @@ class Migration20160212200400ComTags extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__tags')) {
-            if (!$this->db->tableHasField('#__tags', 'objects')) {
-                $query = "ALTER TABLE `#__tags` ADD COLUMN `objects` int(11) NOT NULL default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
 
-                $query = "ALTER TABLE `#__tags` ADD INDEX `idx_objects` (`objects`)";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__tags')) {
+            if (!$schema->hasColumn('#__tags', 'objects')) {
+                $schema->addColumn('#__tags', 'objects')->integer()->notNull()->default(0)->execute();
+                $schema->addIndex('#__tags', 'idx_objects', 'objects');
 
-                $query = "UPDATE `#__tags` AS t SET t.`objects`=(SELECT COUNT(*) FROM `#__tags_object` AS o WHERE "
-                    . "o.tagid=t.id)";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $subquery = $this->db->getQuery(true)
+                    ->select(Expression::count())
+                    ->from('#__tags_object', 'o')
+                    ->where('o.tagid', '=', 't.id', false);
+
+                $this->db->getQuery(true)
+                    ->update('#__tags', 't')
+                    ->set(['t.objects' => (string)$subquery])
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__tags', 'substitutes')) {
-                $query = "ALTER TABLE `#__tags` ADD COLUMN `substitutes` int(11) NOT NULL default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__tags', 'substitutes')) {
+                $schema->addColumn('#__tags', 'substitutes')->integer()->notNull()->default(0)->execute();
+                $schema->addIndex('#__tags', 'idx_substitutes', 'substitutes');
 
-                $query = "ALTER TABLE `#__tags` ADD INDEX `idx_substitutes` (`substitutes`)";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $subquery = $this->db->getQuery(true)
+                    ->select(Expression::count())
+                    ->from('#__tags_substitute', 'o')
+                    ->where('o.tag_id', '=', 't.id', false);
 
-                $query = "UPDATE `#__tags` AS t SET t.`substitutes`=(SELECT COUNT(*) FROM `#__tags_substitute` AS "
-                    . "o WHERE o.tag_id=t.id)";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__tags', 't')
+                    ->set(['t.substitutes' => (string)$subquery])
+                    ->execute();
             }
         }
     }
@@ -59,17 +62,15 @@ class Migration20160212200400ComTags extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__tags')) {
-            if ($this->db->tableHasField('#__tags', 'objects')) {
-                $query = "ALTER TABLE `#__tags` DROP `objects`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__tags')) {
+            if ($schema->hasColumn('#__tags', 'objects')) {
+                $schema->dropColumn('#__tags', 'objects');
             }
 
-            if ($this->db->tableHasField('#__tags', 'substitutes')) {
-                $query = "ALTER TABLE `#__tags` DROP `substitutes`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__tags', 'substitutes')) {
+                $schema->dropColumn('#__tags', 'substitutes');
             }
         }
     }

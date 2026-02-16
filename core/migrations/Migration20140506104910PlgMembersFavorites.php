@@ -20,14 +20,18 @@ class Migration20140506104910PlgMembersFavorites extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // add comment ID
-        if ($this->db->tableExists('#__xfavorites')) {
+        if ($schema->tableExists('#__xfavorites')) {
             $this->callback('progress', 'init', array('Running ' . __CLASS__ . '.php:'));
 
             // Check if there are any favorites
-            $query = "SELECT * FROM `#__xfavorites` ORDER BY uid ASC;";
-            $this->db->setQuery($query);
-            if ($results = $this->db->loadObjectList()) {
+            $query = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__xfavorites')
+                ->order('uid', 'ASC');
+            if ($results = $query->loadObjectList()) {
                 require_once PATH_CORE . DS . 'components' . DS . 'com_collections'
                     . DS . 'models' . DS . 'archive.php';
 
@@ -38,24 +42,27 @@ class Migration20140506104910PlgMembersFavorites extends Base
 
                 foreach ($results as $result) {
                     // Does this user already have this favorite as a collection item?
-                    $query = "SELECT p.id
-                        FROM `#__collections_posts` AS p
-                        JOIN `#__collections_items` AS i ON p.`item_id`=i.`id`
-                        WHERE p.`created_by`=" . $this->db->quote($result->uid)
-                        . " AND i.`type`='resource' AND i.`object_id`=" . $this->db->quote($result->oid);
+                    $query = $this->db->getQuery(true)
+                        ->select('p.id')
+                        ->from('#__collections_posts', 'p')
+                        ->innerJoin('#__collections_items AS i', 'p.item_id', 'i.id')
+                        ->where('p.created_by', '=', $result->uid)
+                        ->where('i.type', '=', 'resource')
+                        ->where('i.object_id', '=', $result->oid);
 
-                    $this->db->setQuery($query);
-                    if (!$this->db->loadResult()) {
+                    if ($$query->doesntExist()) {
                         // No collection item
 
                         // Do we have a collection ID for this user?
                         if (!isset($usrs[$result->uid])) {
                             // No ID yet. Check if the user has a default collection
-                            $query = "SELECT p.id FROM `#__collections` AS p "
-                                . "WHERE p.`object_id`=" . $this->db->quote($result->uid)
-                                . " AND p.`object_type`='member' AND p.`is_default`=1";
-                            $this->db->setQuery($query);
-                            if (!($collection_id = $this->db->loadResult())) {
+                            $query = $this->db->getQuery(true)
+                                ->select('p.id')
+                                ->from('#__collections', 'p')
+                                ->where('p.object_id', '=', $result->uid)
+                                ->where('p.object_type', '=', 'member')
+                                ->where('p.is_default', '=', 1);
+                            if (!($collection_id = $query->value('p.id'))) {
                                 // No default collection.
                                 // So, we make one.
                                 $tbl = new \Components\Collections\Tables\Collection($this->db);
@@ -75,10 +82,11 @@ class Migration20140506104910PlgMembersFavorites extends Base
                                 // No item entry
 
                                 // Get some resource data
-                                $query = "SELECT id, title, introtext FROM `#__resources` "
-                                    . "WHERE id=" . $this->db->quote($result->oid);
-                                $this->db->setQuery($query);
-                                $resource = $this->db->loadObject();
+                                $query = $this->db->getQuery(true)
+                                    ->select(['id', 'title', 'introtext'])
+                                    ->from('#__resources')
+                                    ->where('id', '=', $result->oid);
+                                $resource = $query->first();
                                 if (!$resource || !$resource->id) {
                                     continue;
                                 }
@@ -123,9 +131,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 
             $this->callback('progress', 'done');
 
-            $query = "DROP TABLE IF EXISTS `#__xfavorites`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropTable('#__xfavorites');
 
             $this->deletePluginEntry('members', 'favorites');
             $this->deletePluginEntry('resources', 'favorite');
@@ -139,17 +145,18 @@ class Migration20140506104910PlgMembersFavorites extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__xfavorites')) {
-            $query = "CREATE TABLE `#__xfavorites` (
-				  `id` int(11) NOT NULL AUTO_INCREMENT,
-				  `uid` int(11) DEFAULT '0',
-				  `oid` int(11) DEFAULT '0',
-				  `tbl` varchar(250) DEFAULT NULL,
-				  `faved` datetime DEFAULT '0000-00-00 00:00:00',
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__xfavorites')) {
+            $schema->createTable('#__xfavorites')
+                ->id()
+                ->integer('uid')->default(0)
+                ->integer('oid')->default(0)
+                ->string('tbl', 250)->nullable()
+                ->datetime('faved')->default('0000-00-00 00:00:00')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
             $this->addPluginEntry('members', 'favorites');
             $this->addPluginEntry('resources', 'favorite');

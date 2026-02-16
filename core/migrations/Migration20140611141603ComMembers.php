@@ -21,11 +21,15 @@ class Migration20140611141603ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__xprofiles')) {
-            if (!$this->db->tableHasField('#__xprofiles', 'orcid')) {
-                $query = "ALTER TABLE `#__xprofiles` ADD `orcid` VARCHAR(255)  NOT NULL  DEFAULT '';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xprofiles')) {
+            if (!$schema->hasColumn('#__xprofiles', 'orcid')) {
+                $schema->addColumn('#__xprofiles', 'orcid')
+                    ->string(255)
+                    ->notNull()
+                    ->default('')
+                    ->execute();
             }
         }
     }
@@ -35,11 +39,11 @@ class Migration20140611141603ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__xprofiles')) {
-            if ($this->db->tableHasField('#__xprofiles', 'orcid')) {
-                $query = "ALTER TABLE `#__xprofiles` DROP COLUMN `orcid`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xprofiles')) {
+            if ($schema->hasColumn('#__xprofiles', 'orcid')) {
+                $schema->dropColumn('#__xprofiles', 'orcid');
             }
         }
     }

@@ -21,17 +21,22 @@ class Migration20180321201800Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            if (!$this->db->tableHasField('#__extensions', 'modified')) {
-                $query = "ALTER TABLE `#__extensions` ADD `modified` datetime DEFAULT NULL";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            if (!$schema->hasColumn('#__extensions', 'modified')) {
+                $schema->addColumn('#__extensions', 'modified')
+                    ->datetime()
+                    ->nullable()
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__extensions', 'modified_by')) {
-                $query = "ALTER TABLE `#__extensions` ADD `modified_by` int(11) NOT NULL DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__extensions', 'modified_by')) {
+                $schema->addColumn('#__extensions', 'modified_by')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
         }
     }
@@ -41,17 +46,15 @@ class Migration20180321201800Core extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            if ($this->db->tableHasField('#__extensions', 'modified')) {
-                $query = "ALTER TABLE `#__extensions` DROP COLUMN `modified`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            if ($schema->hasColumn('#__extensions', 'modified')) {
+                $schema->dropColumn('#__extensions', 'modified');
             }
 
-            if ($this->db->tableHasField('#__extensions', 'modified_by')) {
-                $query = "ALTER TABLE `#__extensions` DROP COLUMN `modified_by`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__extensions', 'modified_by')) {
+                $schema->dropColumn('#__extensions', 'modified_by');
             }
         }
     }

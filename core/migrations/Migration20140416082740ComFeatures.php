@@ -23,11 +23,7 @@ class Migration20140416082740ComFeatures extends Base
     {
         $this->deleteComponentEntry('features');
 
-        if ($this->db->tableExists('#__feature_history')) {
-            $query = "DROP TABLE IF EXISTS `#__feature_history`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__feature_history');
     }
 
     /**
@@ -35,19 +31,21 @@ class Migration20140416082740ComFeatures extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $this->addComponentEntry('features');
 
-        if (!$this->db->tableExists('#__feature_history')) {
-            $query = "CREATE TABLE `#__feature_history` (
-				  `id` int(11) NOT NULL AUTO_INCREMENT,
-				  `objectid` int(11) DEFAULT NULL,
-				  `featured` datetime DEFAULT '0000-00-00 00:00:00',
-				  `tbl` varchar(255) DEFAULT NULL,
-				  `note` varchar(255) DEFAULT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__feature_history')) {
+            $schema->createTable('#__feature_history')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('objectid')->nullable()
+                ->datetime('featured')->default('0000-00-00 00:00:00')
+                ->string('tbl', 255)->nullable()
+                ->string('note', 255)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

@@ -21,34 +21,36 @@ class Migration20131016184016PlgGroupsAnnouncements extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
         // add email column
-        if (!$this->db->tableHasField('#__announcements', 'email')) {
-            $query .= "ALTER TABLE `#__announcements` ADD COLUMN `email` TINYINT(4) DEFAULT 0;";
+        if (!$schema->hasColumn('#__announcements', 'email')) {
+            $schema->addColumn('#__announcements', 'email')->tinyInteger(4)->default(0);
         }
 
         // add sent column
-        if (!$this->db->tableHasField('#__announcements', 'sent')) {
-            $query .= "ALTER TABLE `#__announcements` ADD COLUMN `sent` TINYINT(4) DEFAULT 0;";
+        if (!$schema->hasColumn('#__announcements', 'sent')) {
+            $schema->addColumn('#__announcements', 'sent')->tinyInteger(4)->default(0);
         }
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        // check for group announcements cron
+        $query = $this->db->getQuery(true)
+            ->select('title')
+            ->from('#__cron_jobs')
+            ->where('title', '=', 'Group Announcements');
 
-        $query = "SELECT title FROM `#__cron_jobs` WHERE title='Group Announcements';";
-
-        $this->db->setQuery($query);
-
-        if ($this->db->loadResult() != "Group Announcements") {
+        if ($query->doesntExist()) {
             // add group announcements cron
-            $query = "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `recurrence`)
-				   VALUES ('Group Announcements', 1, 'groups', 'sendGroupAnnouncements', '*/5 * * * *');";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insertOrIgnore('#__cron_jobs')
+                ->values([
+                    'title'      => 'Group Announcements',
+                    'state'      => 1,
+                    'plugin'     => 'groups',
+                    'event'      => 'sendGroupAnnouncements',
+                    'recurrence' => '*/5 * * * *'
+                ])
+                ->execute();
         }
     }
 
@@ -57,24 +59,22 @@ class Migration20131016184016PlgGroupsAnnouncements extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        // add email column
-        if ($this->db->tableHasField('#__announcements', 'email')) {
-            $query .= "ALTER TABLE `#__announcements` DROP COLUMN `email`;";
+        // remove email column
+        if ($schema->hasColumn('#__announcements', 'email')) {
+            $schema->dropColumn('#__announcements', 'email');
         }
 
-        // add sent column
-        if ($this->db->tableHasField('#__announcements', 'sent')) {
-            $query .= "ALTER TABLE `#__announcements` DROP COLUMN `sent`;";
+        // remove sent column
+        if ($schema->hasColumn('#__announcements', 'sent')) {
+            $schema->dropColumn('#__announcements', 'sent');
         }
 
         // remove announcements cron
-        $query .= "DELETE FROM `#__cron_jobs` WHERE event='sendGroupAnnouncements'";
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $this->db->getQuery(true)
+            ->delete('#__cron_jobs')
+            ->where('event', '=', 'sendGroupAnnouncements')
+            ->execute();
     }
 }

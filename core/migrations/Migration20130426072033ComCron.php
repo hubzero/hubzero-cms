@@ -21,26 +21,28 @@ class Migration20130426072033ComCron extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__cron_jobs')) {
-            $query = "CREATE TABLE `#__cron_jobs` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`title` varchar(255) NOT NULL DEFAULT '',
-						`state` tinyint(3) NOT NULL DEFAULT '0',
-						`plugin` varchar(255) NOT NULL DEFAULT '',
-						`event` varchar(255) NOT NULL DEFAULT '',
-						`last_run` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-						`next_run` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-						`recurrence` varchar(50) NOT NULL DEFAULT '',
-						`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-						`created_by` int(11) NOT NULL DEFAULT '0',
-						`modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-						`modified_by` int(11) NOT NULL DEFAULT '0',
-						`active` tinyint(3) NOT NULL DEFAULT '0',
-						`ordering` int(11) NOT NULL DEFAULT '0',
-						PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__cron_jobs')) {
+            $schema->createTable('#__cron_jobs')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('title', 255)->default('')
+                ->tinyInteger('state')->default(0)
+                ->string('plugin', 255)->default('')
+                ->string('event', 255)->default('')
+                ->datetime('last_run')->default('0000-00-00 00:00:00')
+                ->datetime('next_run')->default('0000-00-00 00:00:00')
+                ->string('recurrence', 50)->default('')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->datetime('modified')->default('0000-00-00 00:00:00')
+                ->integer('modified_by')->default(0)
+                ->tinyInteger('active')->default(0)
+                ->integer('ordering')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
         $this->addComponentEntry('Cron');
@@ -54,10 +56,10 @@ class Migration20130426072033ComCron extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__cron_jobs')) {
-            $query = "DROP TABLE `#__cron_jobs`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__cron_jobs')) {
+            $schema->dropTable('#__cron_jobs');
         }
 
         $this->deleteComponentEntry('Cron');

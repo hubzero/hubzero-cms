@@ -21,16 +21,9 @@ class Migration20130423115530ComTags extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasKey('#__tags_substitute', 'idx_tag_id')) {
-            $query .= "ALTER TABLE `#__tags_substitute` ADD INDEX `idx_tag_id` (`tag_id`);";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->addIndex('#__tags_substitute', 'idx_tag_id', 'tag_id');
     }
 
     /**
@@ -38,15 +31,8 @@ class Migration20130423115530ComTags extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasKey('#__tags_substitute', 'idx_tag_id')) {
-            $query .= "DROP INDEX `idx_tag_id` ON `#__tags_substitute`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropIndex('#__tags_substitute', 'idx_tag_id');
     }
 }

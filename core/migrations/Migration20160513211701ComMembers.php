@@ -21,11 +21,11 @@ class Migration20160513211701ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__user_profile_options')) {
-            if (!$this->db->tableHasField('#__user_profile_options', 'dependents')) {
-                $query = "ALTER TABLE `#__user_profile_options` ADD `dependents` TINYTEXT  NULL;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__user_profile_options')) {
+            if (!$schema->hasColumn('#__user_profile_options', 'dependents')) {
+                $schema->addColumn('#__user_profile_options', 'dependents')->tinyText()->nullable();
             }
         }
     }
@@ -35,11 +35,11 @@ class Migration20160513211701ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__user_profile_options')) {
-            if ($this->db->tableHasField('#__user_profile_options', 'dependents')) {
-                $query = "ALTER TABLE `#__user_profile_options` DROP COLUMN `dependents`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__user_profile_options')) {
+            if ($schema->hasColumn('#__user_profile_options', 'dependents')) {
+                $schema->dropColumn('#__user_profile_options', 'dependents');
             }
         }
     }

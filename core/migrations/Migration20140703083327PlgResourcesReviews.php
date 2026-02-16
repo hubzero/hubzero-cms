@@ -20,28 +20,41 @@ class Migration20140703083327PlgResourcesReviews extends Base
      **/
     public function up()
     {
-        if ($this->db->tableHasField('#__resource_ratings', 'state')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('review')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__resource_ratings', 'state')) {
+            $query = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->whereIn('category', ['review']);
+            if ($ids = $query->loadColumn()) {
                 $ids = array_map('intval', $ids);
 
-                $query = "UPDATE `#__resource_ratings` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+
+                $this->db->getQuery(true)
+                    ->update('#__resource_ratings')
+                    ->set(['state' => 3])
+                    ->whereIn('id', $ids)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableHasField('#__item_comments', 'state')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` "
-                . "WHERE state=0 AND category IN ('itemcomment', 'reviewcomment')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
+        if ($schema->hasColumn('#__item_comments', 'state')) {
+            $query = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->whereIn('category', ['itemcomment', 'reviewcomment']);
+            if ($ids = $query->loadColumn()) {
                 $ids = array_map('intval', $ids);
 
-                $query = "UPDATE `#__item_comments` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+
+                $this->db->getQuery(true)
+                    ->update('#__item_comments')
+                    ->set(['state' => 3])
+                    ->whereIn('id', $ids)
+                    ->execute();
             }
         }
     }
@@ -51,16 +64,22 @@ class Migration20140703083327PlgResourcesReviews extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__resource_ratings', 'state')) {
-            $query = "UPDATE `#__resource_ratings` SET state=1 WHERE state=3";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__resource_ratings', 'state')) {
+            $this->db->getQuery(true)
+                ->update('#__resource_ratings')
+                ->set(['state' => 1])
+                ->where('state', '=', 3)
+                ->execute();
         }
 
-        if ($this->db->tableHasField('#__item_comments', 'state')) {
-            $query = "UPDATE `#__item_comments` SET state=1 WHERE state=3";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__item_comments', 'state')) {
+            $this->db->getQuery(true)
+                ->update('#__item_comments')
+                ->set(['state' => 1])
+                ->where('state', '=', 3)
+                ->execute();
         }
     }
 }

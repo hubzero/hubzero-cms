@@ -21,14 +21,14 @@ class Migration20140521145232ComUsers extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__users')
-            && !$this->db->tableHasField('#__users', 'approved')
-            && $this->db->tableHasField('#__users', 'block')
+            $schema->tableExists('#__users')
+            && !$schema->hasColumn('#__users', 'approved')
+            && $schema->hasColumn('#__users', 'block')
         ) {
-            $query = "ALTER TABLE `#__users` ADD `approved` TINYINT(4) NOT NULL DEFAULT '2' AFTER `block`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__users', 'approved')->tinyInteger(4)->notNull()->default(2);
         }
     }
 
@@ -37,10 +37,10 @@ class Migration20140521145232ComUsers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__users') && $this->db->tableHasField('#__users', 'approved')) {
-            $query = "ALTER TABLE `#__users` DROP `approved`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__users') && $schema->hasColumn('#__users', 'approved')) {
+            $schema->dropColumn('#__users', 'approved');
         }
     }
 }

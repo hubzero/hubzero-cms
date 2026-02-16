@@ -21,15 +21,21 @@ class Migration20150901115230ComResources extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__resource_licenses')) {
-            $query = "SELECT id FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa' LIMIT 1";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_licenses')) {
+            $query = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__resource_licenses')
+                ->where('name', '=', 'cc40-by-nc-sa');
+            $id = $query->value('id');
 
             if (!$id) {
-                $query = "SELECT ordering FROM `#__resource_licenses` ORDER BY ordering DESC LIMIT 1";
-                $this->db->setQuery($query);
-                $ordering = intval($this->db->loadResult()) + 1;
+                $query = $this->db->getQuery(true)
+                    ->select('ordering')
+                    ->from('#__resource_licenses')
+                    ->order('ordering', 'desc');
+                $ordering = intval($query->value('ordering')) + 1;
 
                 // Written directly rather than through Components\Resources\Tables\License,
                 // which this migration used to include: that class was removed when
@@ -61,14 +67,16 @@ No warranties are given. The license may not give you all of the permissions nec
 
 For more information visit http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.';
 
-                $query = "INSERT INTO `#__resource_licenses` (`name`, `title`, `url`, `text`, `ordering`) VALUES ("
-                    . $this->db->quote('cc40-by-nc-sa') . ", "
-                    . $this->db->quote('Creative Commons BY-NC-SA 4.0') . ", "
-                    . $this->db->quote('http://creativecommons.org/licenses/by-nc-sa/4.0/') . ", "
-                    . $this->db->quote($text) . ", "
-                    . (int) $ordering . ");";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__resource_licenses')
+                    ->set([
+                        'name'     => 'cc40-by-nc-sa',
+                        'title'    => 'Creative Commons BY-NC-SA 4.0',
+                        'url'      => 'http://creativecommons.org/licenses/by-nc-sa/4.0/',
+                        'text'     => $text,
+                        'ordering' => $ordering
+                    ])
+                    ->execute();
             }
         }
     }
@@ -78,16 +86,21 @@ For more information visit http://creativecommons.org/licenses/by-nc-sa/4.0/lega
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__resource_licenses')) {
-            $query = "SELECT id FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa' LIMIT 1";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_licenses')) {
+            $query = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__resource_licenses')
+                ->where('name', '=', 'cc40-by-nc-sa');
+            $id = $query->value('id');
 
             if ($id) {
                 // Set the first zone as default
-                $query = "DELETE FROM `#__resource_licenses` WHERE `name` = 'cc40-by-nc-sa'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__resource_licenses')
+                    ->where('name', '=', 'cc40-by-nc-sa')
+                    ->execute();
             }
         }
     }

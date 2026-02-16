@@ -21,39 +21,38 @@ class Migration20130507030333ComCourses extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableExists('#__courses_offering_badges')) {
-            $query .= "CREATE TABLE `#__courses_offering_badges` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`offering_id` int(11) NOT NULL,
-						`badge_id` int(11) NOT NULL,
-						`img_url` varchar(255) NOT NULL DEFAULT '',
-						PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
+        if (!$schema->tableExists('#__courses_offering_badges')) {
+            $schema->createTable('#__courses_offering_badges')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('offering_id')
+                ->integer('badge_id')
+                ->string('img_url', 255)->default('')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableHasField('#__courses_offerings', 'badge_id')) {
-            $query .= "ALTER TABLE `#__courses_offerings` ADD `badge_id` INT(11)  NULL  DEFAULT NULL  AFTER `state`;\n";
+        if (!$schema->hasColumn('#__courses_offerings', 'badge_id')) {
+            $schema->addColumn('#__courses_offerings', 'badge_id')->integer()->nullable()->default(null)->execute();
         }
 
-        if (!$this->db->tableExists('#__courses_member_badges')) {
-            $query .= "CREATE TABLE `#__courses_member_badges` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`member_id` int(11) NOT NULL,
-						`earned` int(1) DEFAULT NULL,
-						`earned_on` datetime DEFAULT NULL,
-						`claim_url` varchar(255) DEFAULT NULL,
-						`claimed` int(1) DEFAULT NULL,
-						`claimed_on` datetime DEFAULT NULL,
-						PRIMARY KEY (`id`),
-						UNIQUE KEY `member_id` (`member_id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;\n";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__courses_member_badges')) {
+            $schema->createTable('#__courses_member_badges')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('member_id')
+                ->integer('earned')->nullable()
+                ->datetime('earned_on')->nullable()
+                ->string('claim_url', 255)->nullable()
+                ->integer('claimed')->nullable()
+                ->datetime('claimed_on')->nullable()
+                ->primaryKey('id')
+                ->uniqueIndex('member_id', 'member_id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -62,23 +61,14 @@ class Migration20130507030333ComCourses extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__courses_offering_badges')) {
-            $query .= "DROP TABLE `#__courses_offering_badges`;\n";
+        $schema->dropTable('#__courses_offering_badges');
+
+        if ($schema->hasColumn('#__courses_offerings', 'badge_id')) {
+            $schema->dropColumn('#__courses_offerings', 'badge_id');
         }
 
-        if ($this->db->tableHasField('#__courses_offerings', 'badge_id')) {
-            $query .= "ALTER TABLE `#__courses_offerings` DROP `badge_id`;\n";
-        }
-
-        if ($this->db->tableExists('#__courses_member_badges')) {
-            $query .= "DROP TABLE `#__courses_member_badges`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__courses_member_badges');
     }
 }

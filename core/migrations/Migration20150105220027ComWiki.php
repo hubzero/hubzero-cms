@@ -20,12 +20,15 @@ class Migration20150105220027ComWiki extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__wiki_page')) {
-            $query = "UPDATE `#__wiki_page`
-					SET `access`=0
-					WHERE `access`=1 AND `group_cn` NOT LIKE 'pr-%'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__wiki_page')) {
+            $this->db->getQuery(true)
+                ->update('#__wiki_page')
+                ->set(['access' => 0])
+                ->where('access', '=', 1)
+                ->where('group_cn', 'NOT LIKE', 'pr-%')
+                ->execute();
         }
     }
 }

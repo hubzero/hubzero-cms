@@ -21,42 +21,24 @@ class Migration20170921120323ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__user_reputation')) {
-            if (!$this->db->tableHasKey('#__user_reputation', 'idx_user_id')) {
-                $query = "ALTER TABLE `#__user_reputation` ADD INDEX `idx_user_id` (`user_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__user_reputation')) {
+            $schema->addIndex('#__user_reputation', 'idx_user_id', 'user_id');
         }
 
-        if ($this->db->tableExists('#__users_password_history')) {
-            if (!$this->db->tableHasKey('#__users_password_history', 'idx_user_id')) {
-                $query = "ALTER TABLE `#__users_password_history` ADD INDEX `idx_user_id` (`user_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__users_password_history')) {
+            $schema->addIndex('#__users_password_history', 'idx_user_id', 'user_id');
         }
 
-        if ($this->db->tableExists('#__users_points')) {
-            if (!$this->db->tableHasKey('#__users_points', 'idx_uid')) {
-                $query = "ALTER TABLE `#__users_points` ADD INDEX `idx_uid` (`uid`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__users_points')) {
+            $schema->addIndex('#__users_points', 'idx_uid', 'uid');
         }
 
-        if ($this->db->tableExists('#__users_quotas')) {
-            if (!$this->db->tableHasKey('#__users_quotas', 'idx_user_id')) {
-                $query = "ALTER TABLE `#__users_quotas` ADD INDEX `idx_user_id` (`user_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__users_quotas')) {
+            $schema->addIndex('#__users_quotas', 'idx_user_id', 'user_id');
 
-            if (!$this->db->tableHasKey('#__users_quotas', 'idx_class_id')) {
-                $query = "ALTER TABLE `#__users_quotas` ADD INDEX `idx_class_id` (`class_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__users_quotas', 'idx_class_id', 'class_id');
         }
     }
 
@@ -65,42 +47,24 @@ class Migration20170921120323ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__user_reputation')) {
-            if ($this->db->tableHasKey('#__user_reputation', 'idx_user_id')) {
-                $query = "ALTER TABLE `#__user_reputation` DROP KEY `idx_user_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__user_reputation')) {
+            $schema->dropIndex('#__user_reputation', 'idx_user_id');
         }
 
-        if ($this->db->tableExists('#__users_password_history')) {
-            if ($this->db->tableHasKey('#__users_password_history', 'idx_user_id')) {
-                $query = "ALTER TABLE `#__users_password_history` DROP KEY `idx_user_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__users_password_history')) {
+            $schema->dropIndex('#__users_password_history', 'idx_user_id');
         }
 
-        if ($this->db->tableExists('#__users_points')) {
-            if ($this->db->tableHasKey('#__users_points', 'idx_uid')) {
-                $query = "ALTER TABLE `#__users_points` DROP KEY `idx_uid`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__users_points')) {
+            $schema->dropIndex('#__users_points', 'idx_uid');
         }
 
-        if ($this->db->tableExists('#__users_quotas')) {
-            if ($this->db->tableHasKey('#__users_quotas', 'idx_user_id')) {
-                $query = "ALTER TABLE `#__users_quotas` DROP KEY `idx_user_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__users_quotas')) {
+            $schema->dropIndex('#__users_quotas', 'idx_user_id');
 
-            if ($this->db->tableHasKey('#__users_quotas', 'idx_class_id')) {
-                $query = "ALTER TABLE `#__users_quotas` DROP KEY `idx_class_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__users_quotas', 'idx_class_id');
         }
     }
 }

@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding GeoSearch cron plugin.
  *
-*/
+ */
 class Migration20150722155100PlgCronGeosearch extends Base
 {
     /**
@@ -21,11 +21,16 @@ class Migration20150722155100PlgCronGeosearch extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = 'cron' AND `element` ="
-                . "'geosearch' AND `type` = 'plugin'";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $query = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('folder', '=', 'cron')
+                ->where('element', '=', 'geosearch')
+                ->where('type', '=', 'plugin');
+            $id = $query->value('extension_id');
 
             if (!$id) {
                 $this->addPluginEntry('cron', 'geosearch');
@@ -38,11 +43,16 @@ class Migration20150722155100PlgCronGeosearch extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = 'cron' AND `element` ="
-                . "'geosearch' AND `type` = 'plugin'";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $query = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('folder', '=', 'cron')
+                ->where('element', '=', 'geosearch')
+                ->where('type', '=', 'plugin');
+            $id = $query->value('extension_id');
 
             if ($id) {
                 $this->deletePluginEntry('cron', 'geosearch');

@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding basic antispam plugin.
  *
-*/
+ */
 class Migration20150521144930PlgContentAntispam extends Base
 {
     /**
@@ -21,20 +21,26 @@ class Migration20150521144930PlgContentAntispam extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = 'content' AND `element` ="
-                . "'antispam' AND `type` = 'plugin'";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $id = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('folder', '=', 'content')
+                ->where('element', '=', 'antispam')
+                ->where('type', '=', 'plugin')
+                ->value('extension_id');
 
             if (!$id) {
                 $this->addPluginEntry('content', 'antispam');
             } else {
                 // Set the first zone as default
-                $query = "UPDATE `#__extensions` SET `state`=0 AND `name`='plg_content_antispam' "
-                    . "WHERE `extension_id` = " . $this->db->quote($id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['state' => 0, 'name' => 'plg_content_antispam'])
+                    ->where('extension_id', '=', $id)
+                    ->execute();
             }
         }
     }
@@ -44,11 +50,16 @@ class Migration20150521144930PlgContentAntispam extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = 'content' AND `element` ="
-                . "'antispam' AND `type` = 'plugin'";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $id = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('folder', '=', 'content')
+                ->where('element', '=', 'antispam')
+                ->where('type', '=', 'plugin')
+                ->value('extension_id');
 
             if ($id) {
                 $this->deletePluginEntry('content', 'antispam');

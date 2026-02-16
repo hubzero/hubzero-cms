@@ -21,10 +21,10 @@ class Migration20140807200026ComTime extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__time_hubs') && !$this->db->tableHasField('#__time_hubs', 'asset_id')) {
-            $query = "ALTER TABLE `#__time_hubs` ADD `asset_id` INT(11) NULL DEFAULT NULL AFTER `notes`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__time_hubs') && !$schema->hasColumn('#__time_hubs', 'asset_id')) {
+            $schema->addColumn('asset_id')->integer()->nullable()->default(null);
         }
     }
 
@@ -33,10 +33,10 @@ class Migration20140807200026ComTime extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__time_hubs') && $this->db->tableHasField('#__time_hubs', 'asset_id')) {
-            $query = "ALTER TABLE `#__time_hubs` DROP `asset_id`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__time_hubs') && $schema->hasColumn('#__time_hubs', 'asset_id')) {
+            $schema->dropColumn('#__time_hubs', 'asset_id');
         }
     }
 }

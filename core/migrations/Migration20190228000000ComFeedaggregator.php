@@ -23,17 +23,8 @@ class Migration20190228000000ComFeedaggregator extends Base
     {
         $this->deleteComponentEntry('feedaggregator');
 
-        if ($this->db->tableExists('#__feedaggregator_feeds')) {
-            $query = "DROP TABLE IF EXISTS `#__feedaggregator_feeds`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__feedaggregator_posts')) {
-            $query = "DROP TABLE IF EXISTS `#__feedaggregator_posts`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__feedaggregator_feeds');
+        $schema->dropTable('#__feedaggregator_posts');
 
         $this->deletePluginEntry('newsletter', 'feedaggregator');
 
@@ -45,39 +36,39 @@ class Migration20190228000000ComFeedaggregator extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $this->addComponentEntry('feedaggregator');
 
-        if (!$this->db->tableExists('#__feedaggregator_feeds')) {
-            $query = "CREATE TABLE `#__feedaggregator_feeds` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `url` varchar(255) DEFAULT NULL,
-			  `created` date DEFAULT NULL,
-			  `name` varchar(255) DEFAULT NULL,
-			  `description` varchar(255) DEFAULT NULL,
-			  `enabled` varchar(45) NOT NULL,
-			  PRIMARY KEY (`id`),
-			  UNIQUE KEY `id_UNIQUE` (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__feedaggregator_feeds')) {
+            $schema->createTable('#__feedaggregator_feeds')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('url', 255)->nullable()
+                ->date('created')->nullable()
+                ->string('name', 255)->nullable()
+                ->string('description', 255)->nullable()
+                ->string('enabled', 45)
+                ->primaryKey('id')
+                ->uniqueIndex('id_UNIQUE', 'id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__feedaggregator_posts')) {
-            $query = "CREATE TABLE `#__feedaggregator_posts` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `title` varchar(255) DEFAULT NULL,
-			  `created` datetime DEFAULT NULL,
-			  `created_by` varchar(255) DEFAULT NULL,
-			  `feed_id` int(11) NOT NULL,
-			  `status` varchar(45) DEFAULT NULL,
-			  `description` text,
-			  `url` varchar(255) DEFAULT NULL,
-			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__feedaggregator_posts')) {
+            $schema->createTable('#__feedaggregator_posts')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('title', 255)->nullable()
+                ->datetime('created')->nullable()
+                ->string('created_by', 255)->nullable()
+                ->integer('feed_id')
+                ->string('status', 45)->nullable()
+                ->text('description')->nullable()
+                ->string('url', 255)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
         $this->addPluginEntry('newsletter', 'feedaggregator');

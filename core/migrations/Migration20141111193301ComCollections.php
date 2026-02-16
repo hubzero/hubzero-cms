@@ -21,26 +21,17 @@ class Migration20141111193301ComCollections extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__collections')) {
-            if (!$this->db->tableHasField('#__collections', 'sort')) {
-                $query = "ALTER TABLE `#__collections` ADD `sort` VARCHAR(50) NOT NULL DEFAULT 'created';";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasField('#__collections', 'layout')) {
-                $query = "ALTER TABLE `#__collections` ADD `layout` VARCHAR(50) NOT NULL DEFAULT 'grid';";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__collections')) {
+            $schema->alterTable('#__collections')
+                ->addString('sort', 50)->notNull()->default('created')
+                ->addString('layout', 50)->notNull()->default('grid')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__collections_posts')) {
-            if (!$this->db->tableHasField('#__collections_posts', 'ordering')) {
-                $query = "ALTER TABLE `#__collections_posts` ADD `ordering` int(11) NOT NULL DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__collections_posts') && !$schema->hasColumn('#__collections_posts', 'ordering')) {
+            $schema->addColumn('#__collections_posts', 'ordering')->integer()->notNull()->default(0)->execute();
         }
     }
 
@@ -49,26 +40,19 @@ class Migration20141111193301ComCollections extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__collections')) {
-            if ($this->db->tableHasField('#__collections', 'sort')) {
-                $query = "ALTER TABLE `#__collections` DROP `sort`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasField('#__collections', 'layout')) {
-                $query = "ALTER TABLE `#__collections` DROP `layout`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__collections')) {
+            if ($schema->hasColumn('#__collections', 'sort')) {
+                $schema->dropColumn('#__collections', 'sort');
+            }
+            if ($schema->hasColumn('#__collections', 'layout')) {
+                $schema->dropColumn('#__collections', 'layout');
             }
         }
 
-        if ($this->db->tableExists('#__collections_posts')) {
-            if ($this->db->tableHasField('#__collections_posts', 'ordering')) {
-                $query = "ALTER TABLE `#__collections_posts` DROP `ordering`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__collections_posts') && $schema->hasColumn('#__collections_posts', 'ordering')) {
+            $schema->dropColumn('#__collections_posts', 'ordering');
         }
     }
 }

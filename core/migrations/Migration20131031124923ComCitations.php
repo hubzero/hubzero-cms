@@ -21,12 +21,11 @@ class Migration20131031124923ComCitations extends Base
      **/
     public function up()
     {
-        $query = "ALTER TABLE `#__citations` MODIFY `affiliated` int(11) NOT NULL DEFAULT 0;";
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $this->db->schema()->modifyColumn('#__citations', 'affiliated')
+            ->integer()
+            ->notNull()
+            ->default(0)
+            ->execute();
     }
 
     /**
@@ -34,11 +33,6 @@ class Migration20131031124923ComCitations extends Base
      **/
     public function down()
     {
-        $query = "ALTER TABLE `#__citations` MODIFY `affiliated` int(11) DEFAULT NULL;";
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $this->db->schema()->modifyColumn('#__citations', 'affiliated')->integer()->nullable()->execute();
     }
 }

@@ -21,30 +21,22 @@ class Migration20170920165818ComStorefront extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__storefront_permissions')) {
-            if (!$this->db->tableHasField('#__storefront_permissions', 'username')) {
-                $query = "ALTER TABLE `#__storefront_permissions` ADD `username` varchar(255) DEFAULT NULL";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__storefront_permissions')) {
+            if (!$schema->hasColumn('#__storefront_permissions', 'username')) {
+                $schema->table('#__storefront_permissions')->alter()
+                    ->addString('username', 255)->nullable()
+                    ->execute();
             }
 
-            if ($this->db->tableHasKey('#__storefront_permissions', 'single entry per item')) {
-                $query = "ALTER TABLE `#__storefront_permissions` DROP KEY `single entry per item`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasKey('#__storefront_permissions', 'single entry per item')) {
+                $schema->dropIndex('#__storefront_permissions', 'single entry per item');
             }
 
-            if (!$this->db->tableHasKey('#__storefront_permissions', 'idx_scope_scope_id')) {
-                $query = "ALTER TABLE `#__storefront_permissions` ADD INDEX `idx_scope_scope_id` (`scope`, `scope_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__storefront_permissions', 'idx_scope_scope_id', ['scope', 'scope_id']);
 
-            if (!$this->db->tableHasKey('#__storefront_permissions', 'idx_uid')) {
-                $query = "ALTER TABLE `#__storefront_permissions` ADD INDEX `idx_uid` (`uid`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__storefront_permissions', 'idx_uid', 'uid');
         }
     }
 
@@ -53,31 +45,20 @@ class Migration20170920165818ComStorefront extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__storefront_permissions')) {
-            if ($this->db->tableHasKey('#__storefront_permissions', 'idx_uid')) {
-                $query = "ALTER TABLE `#__storefront_permissions` DROP KEY `idx_uid`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__storefront_permissions')) {
+            $schema->dropIndex('#__storefront_permissions', 'idx_uid');
+
+            $schema->dropIndex('#__storefront_permissions', 'idx_scope_scope_id');
+
+            if ($schema->hasColumn('#__storefront_permissions', 'username')) {
+                $schema->table('#__storefront_permissions')->alter()
+                    ->dropColumn('username')
+                    ->execute();
             }
 
-            if ($this->db->tableHasKey('#__storefront_permissions', 'idx_scope_scope_id')) {
-                $query = "ALTER TABLE `#__storefront_permissions` DROP KEY `idx_scope_scope_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__storefront_permissions', 'username')) {
-                $query = "ALTER TABLE `#__storefront_permissions` DROP `username`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (!$this->db->tableHasKey('#__storefront_permissions', 'single entry per item')) {
-                $query = "ALTER TABLE `#__storefront_permissions` ADD INDEX `single entry per item` (`scope`,"
-                    . "`scope_id`, `uid`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__storefront_permissions', 'single entry per item', ['scope', 'scope_id', 'uid']);
         }
     }
 }

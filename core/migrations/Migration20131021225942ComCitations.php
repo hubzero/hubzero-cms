@@ -21,13 +21,14 @@ class Migration20131021225942ComCitations extends Base
      **/
     public function up()
     {
-        $query  = "ALTER TABLE `#__citations` MODIFY COLUMN `volume` VARCHAR(11);";
-        $query .= "ALTER TABLE `#__citations` MODIFY COLUMN `year` VARCHAR(4);";
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->modifyColumn('#__citations', 'volume')
+            ->string(11)
+            ->execute();
+        $schema->modifyColumn('#__citations', 'year')
+            ->string(4)
+            ->execute();
     }
 
     /**
@@ -35,12 +36,9 @@ class Migration20131021225942ComCitations extends Base
      **/
     public function down()
     {
-        $query  = "ALTER TABLE `#__citations` MODIFY COLUMN `volume` INT(11);";
-        $query .= "ALTER TABLE `#__citations` MODIFY COLUMN `year` INT(4);";
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->modifyColumn('#__citations', 'volume')->integer(11);
+        $schema->modifyColumn('#__citations', 'year')->integer(4);
     }
 }

@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for adding params field to asset groups
@@ -21,68 +22,80 @@ class Migration20140130105700ComAnswers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableHasField('#__answers_questions', 'created_by')) {
-            $query = "SELECT id, created_by FROM `#__answers_questions`";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__answers_questions', 'created_by')) {
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'created_by'])
+                ->from('#__answers_questions')
+                ->loadObjectList();
 
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
-                    $query  = "SELECT `id` FROM `#__users` WHERE `username` = '{$r->created_by}'";
-                    $this->db->setQuery($query);
-                    $id = $this->db->loadResult();
+                    $id = $this->db->getQuery(true)
+                        ->select('id')
+                        ->from('#__users')
+                        ->where('username', '=', $r->created_by)
+                        ->value('id');
 
-                    $query = "UPDATE `#__answers_questions` SET `created_by` = '{$id}' WHERE `id` = '{$r->id}'";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__answers_questions')
+                        ->set(['created_by' => (int)$id])
+                        ->where('id', '=', $r->id)
+                        ->execute();
                 }
             }
 
-            $query = "ALTER TABLE `#__answers_questions` "
-                . "CHANGE `created_by` `created_by` int(11) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__answers_questions', 'created_by')->integer()->notNull()->default(0)->execute();
         }
 
-        if ($this->db->tableHasField('#__answers_responses', 'created_by')) {
-            $query = "SELECT id, created_by FROM `#__answers_responses`";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        if ($schema->hasColumn('#__answers_responses', 'created_by')) {
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'created_by'])
+                ->from('#__answers_responses')
+                ->loadObjectList();
 
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
-                    $query  = "SELECT `id` FROM `#__users` WHERE `username` = '{$r->created_by}'";
-                    $this->db->setQuery($query);
-                    $id = $this->db->loadResult();
+                    $id = $this->db->getQuery(true)
+                        ->select('id')
+                        ->from('#__users')
+                        ->where('username', '=', $r->created_by)
+                        ->value('id');
 
-                    $query = "UPDATE `#__answers_responses` SET `created_by` = '{$id}' WHERE `id` = '{$r->id}'";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__answers_responses')
+                        ->set(['created_by' => (int)$id])
+                        ->where('id', '=', $r->id)
+                        ->execute();
                 }
             }
 
-            $query = "ALTER TABLE `#__answers_responses` "
-                . "CHANGE `created_by` `created_by` int(11) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__answers_responses', 'created_by')->integer()->notNull()->default(0)->execute();
         }
 
-        if ($this->db->tableHasField('#__answers_responses', 'qid')) {
-            $query = "ALTER TABLE `#__answers_responses` CHANGE `qid` `question_id` int(11) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__answers_responses', 'qid')) {
+            $schema->renameColumn('#__answers_responses', 'qid', 'question_id')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
 
-        if ($this->db->tableHasField('#__answers_questions_log', 'qid')) {
-            $query = "ALTER TABLE `#__answers_questions_log` CHANGE `qid` `question_id` int(11) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__answers_questions_log', 'qid')) {
+            $schema->renameColumn('#__answers_questions_log', 'qid', 'question_id')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
 
-        if ($this->db->tableHasField('#__answers_log', 'rid')) {
-            $query = "ALTER TABLE `#__answers_log` CHANGE `rid` `response_id` int(11) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__answers_log', 'rid')) {
+            $schema->renameColumn('#__answers_log', 'rid', 'response_id')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 
@@ -91,66 +104,80 @@ class Migration20140130105700ComAnswers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__answers_questions', 'created_by')) {
-            $query = "SELECT id, created_by FROM `#__answers_questions`";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__answers_questions', 'created_by')) {
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'created_by'])
+                ->from('#__answers_questions')
+                ->loadObjectList();
 
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
-                    $query  = "SELECT `username` FROM `#__users` WHERE `id` = '{$r->created_by}'";
-                    $this->db->setQuery($query);
-                    $id = $this->db->loadResult();
+                    $username = $this->db->getQuery(true)
+                        ->select('username')
+                        ->from('#__users')
+                        ->where('id', '=', (int)$r->created_by)
+                        ->value('username');
 
-                    $query = "UPDATE `#__answers_questions` SET `created_by` = '{$id}' WHERE `id` = '{$r->id}'";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__answers_questions')
+                        ->set(['created_by' => $username])
+                        ->where('id', '=', $r->id)
+                        ->execute();
                 }
             }
 
-            $query = "ALTER TABLE `#__answers_questions` CHANGE `created_by` `created_by` varchar(50) DEAULT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__answers_questions', 'created_by')->string(50)->nullable()->execute();
         }
 
-        if ($this->db->tableHasField('#__answers_responses', 'created_by')) {
-            $query = "SELECT id, created_by FROM `#__answers_responses`";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        if ($schema->hasColumn('#__answers_responses', 'created_by')) {
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'created_by'])
+                ->from('#__answers_responses')
+                ->loadObjectList();
 
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
-                    $query  = "SELECT `username` FROM `#__users` WHERE `id` = '{$r->created_by}'";
-                    $this->db->setQuery($query);
-                    $id = $this->db->loadResult();
+                    $username = $this->db->getQuery(true)
+                        ->select('username')
+                        ->from('#__users')
+                        ->where('id', '=', (int)$r->created_by)
+                        ->value('username');
 
-                    $query = "UPDATE `#__answers_responses` SET `created_by` = '{$id}' WHERE `id` = '{$r->id}'";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__answers_responses')
+                        ->set(['created_by' => $username])
+                        ->where('id', '=', $r->id)
+                        ->execute();
                 }
             }
 
-            $query = "ALTER TABLE `#__answers_responses` CHANGE `created_by` `created_by` varchar(50) DEAULT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->modifyColumn('#__answers_responses', 'created_by')->string(50)->nullable()->execute();
         }
 
-        if ($this->db->tableHasField('#__answers_responses', 'question_id')) {
-            $query = "ALTER TABLE `#__answers_responses` CHANGE `question_id` `qid` int(11) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__answers_responses', 'question_id')) {
+            $schema->renameColumn('#__answers_responses', 'question_id', 'qid')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
 
-        if ($this->db->tableHasField('#__answers_questions_log', 'question_id')) {
-            $query = "ALTER TABLE `#__answers_questions_log` CHANGE `question_id` `qid` int(11) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__answers_questions_log', 'question_id')) {
+            $schema->renameColumn('#__answers_questions_log', 'question_id', 'qid')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
 
-        if ($this->db->tableHasField('#__answers_log', 'response_id')) {
-            $query = "ALTER TABLE `#__answers_log` CHANGE `response_id` `rid` int(11) NOT NULL DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__answers_log', 'response_id')) {
+            $schema->renameColumn('#__answers_log', 'response_id', 'rid')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 }

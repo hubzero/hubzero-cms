@@ -21,12 +21,11 @@ class Migration20130524101101PlgCoursesDiscussions extends Base
      **/
     public function up()
     {
-        $query = "ALTER TABLE #__courses_member_notes CHANGE COLUMN `timestamp` `timestamp` "
-            . "time NOT NULL DEFAULT '00:00:00';";
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $this->db
+            ->schema()
+            ->modifyColumn('#__courses_member_notes', 'timestamp')
+            ->time()
+            ->notNull()
+            ->default('00:00:00');
     }
 }

@@ -21,53 +21,50 @@ class Migration20130716202127ComNewsletter extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // create component entry
         $this->addComponentEntry('Newsletters', 'com_newsletter');
 
-        $query = "";
-
-        if (!$this->db->tableExists('#__newsletters')) {
-            //add newsletter table
-            $query = "CREATE TABLE IF NOT EXISTS `#__newsletters` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `alias` varchar(150) DEFAULT NULL,
-					  `name` varchar(150) DEFAULT NULL,
-					  `issue` int(11) DEFAULT NULL,
-					  `type` varchar(50) DEFAULT 'html',
-					  `template` int(11) DEFAULT NULL,
-					  `published` int(11) DEFAULT '1',
-					  `sent` int(11) DEFAULT '0',
-					  `content` text,
-					  `tracking` int(11) DEFAULT '1',
-					  `created` datetime DEFAULT NULL,
-					  `created_by` int(11) DEFAULT NULL,
-					  `modified` datetime DEFAULT NULL,
-					  `modified_by` int(11) DEFAULT NULL,
-					  `deleted` int(11) DEFAULT '0',
-					  `params` text,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__newsletters')) {
+            $schema->createTable('#__newsletters')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('alias', 150)->nullable()
+                ->string('name', 150)->nullable()
+                ->integer('issue')->nullable()
+                ->string('type', 50)->default('html')
+                ->integer('template')->nullable()
+                ->integer('published')->default(1)
+                ->integer('sent')->default(0)
+                ->text('content')->nullable()
+                ->integer('tracking')->default(1)
+                ->datetime('created')->nullable()
+                ->integer('created_by')->nullable()
+                ->datetime('modified')->nullable()
+                ->integer('modified_by')->nullable()
+                ->integer('deleted')->default(0)
+                ->text('params')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__newsletter_templates')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_templates` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `editable` int(11) DEFAULT '1',
-					  `name` varchar(100) DEFAULT NULL,
-					  `template` text,
-					  `primary_title_color` varchar(100) DEFAULT NULL,
-					  `primary_text_color` varchar(100) DEFAULT NULL,
-					  `secondary_title_color` varchar(100) DEFAULT NULL,
-					  `secondary_text_color` varchar(100) DEFAULT NULL,
-					  `deleted` int(11) DEFAULT '0',
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__newsletter_templates')) {
+            $schema->createTable('#__newsletter_templates')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('editable')->default(1)
+                ->string('name', 100)->nullable()
+                ->text('template')->nullable()
+                ->string('primary_title_color', 100)->nullable()
+                ->string('primary_text_color', 100)->nullable()
+                ->string('secondary_title_color', 100)->nullable()
+                ->string('secondary_text_color', 100)->nullable()
+                ->integer('deleted')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
             // insert default templates
             $htmlTemplate = '<html>\n'
@@ -117,14 +114,20 @@ class Migration20130716202127ComNewsletter extends Base
                 . '	</body>\n'
                 . '</html>	';
 
-            $query = "INSERT INTO `#__newsletter_templates` "
-                . "(`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, "
-                . "`secondary_title_color`, `secondary_text_color`, `deleted`) "
-                . "VALUES (0, 'Default HTML Email Template', "
-                . $this->db->quote($htmlTemplate) . ", '', '', '', '', 0);";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__newsletter_templates')
+                ->columns([
+                    'editable',
+                    'name',
+                    'template',
+                    'primary_title_color',
+                    'primary_text_color',
+                    'secondary_title_color',
+                    'secondary_text_color',
+                    'deleted',
+                ])
+                ->values([0, 'Default HTML Email Template', $htmlTemplate, '', '', '', '', 0])
+                ->execute();
 
             $plainTemplate = 'View In Browser - {{LINK}}\n'
                 . '=====================================\n'
@@ -142,179 +145,235 @@ class Migration20130716202127ComNewsletter extends Base
                 . 'Unsubscribe - {{UNSUBSCRIBE_LINK}}\n'
                 . 'Copyright - {{COPYRIGHT}}';
 
-            $query = "INSERT INTO `#__newsletter_templates` "
-                . "(`editable`, `name`, `template`, `primary_title_color`, `primary_text_color`, "
-                . "`secondary_title_color`, `secondary_text_color`, `deleted`) "
-                . "VALUES (0, 'Default Plain Text Email Template', "
-                . $this->db->quote($plainTemplate) . ", NULL, NULL, NULL, NULL, 0);";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__newsletter_templates')
+                ->columns([
+                    'editable',
+                    'name',
+                    'template',
+                    'primary_title_color',
+                    'primary_text_color',
+                    'secondary_title_color',
+                    'secondary_text_color',
+                    'deleted',
+                ])
+                ->values([0, 'Default Plain Text Email Template', $plainTemplate, null, null, null, null, 0])
+                ->execute();
 
             // add newsletter cron jobs
             $params1 = 'newsletter_queue_limit=2\n'
                 . 'support_ticketreminder_severity=all\n'
                 . 'support_ticketreminder_group=\n\n';
 
-            $query = "INSERT INTO `#__cron_jobs` "
-                . "(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, "
-                . "`created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) "
-                . "SELECT 'Process Newsletter Mailings', 0, 'newsletter', 'processMailings', "
-                . "'0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', "
-                . "'2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, "
-                . $this->db->quote($params1) . " "
-                . "FROM DUAL WHERE NOT EXISTS "
-                . "(SELECT `title` FROM `#__cron_jobs` WHERE `title` = 'Process Newsletter Mailings');";
+            $query = $this->db->getQuery(true);
+            $query->select('title')
+                ->from('#__cron_jobs')
+                ->where('title', '=', 'Process Newsletter Mailings');
+            if ($query->doesntExist()) {
+                $this->db->getQuery(true)
+                    ->insertOrIgnore('#__cron_jobs')
+                    ->columns([
+                        'title',
+                        'state',
+                        'plugin',
+                        'event',
+                        'last_run',
+                        'next_run',
+                        'recurrence',
+                        'created',
+                        'created_by',
+                        'modified',
+                        'modified_by',
+                        'active',
+                        'ordering',
+                        'params',
+                    ])
+                    ->values([
+                        'Process Newsletter Mailings',
+                        0,
+                        'newsletter',
+                        'processMailings',
+                        '0000-00-00 00:00:00',
+                        '0000-00-00 00:00:00',
+                        '*/5 * * * *',
+                        '2013-06-25 08:23:04',
+                        1001,
+                        '2013-07-16 17:15:01',
+                        0,
+                        0,
+                        0,
+                        $params1,
+                    ])
+                    ->execute();
+            }
 
-            $this->db->setQuery($query);
-            $this->db->query();
-
-            $query = "INSERT INTO `#__cron_jobs` "
-                . "(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, "
-                . "`created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`) "
-                . "SELECT 'Process Newsletter Opens & Click IP Addresses', 0, 'newsletter', 'processIps', "
-                . "'0000-00-00 00:00:00', '0000-00-00 00:00:00', '*/5 * * * *', "
-                . "'2013-06-25 08:23:04', 1001, '2013-07-16 17:15:01', 0, 0, 0, '' "
-                . "FROM DUAL WHERE NOT EXISTS "
-                . "(SELECT `title` FROM `#__cron_jobs` "
-                . "WHERE `title` = 'Process Newsletter Opens & Click IP Addresses');";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+            $query = $this->db->getQuery(true);
+            $query->select('title')
+                ->from('#__cron_jobs')
+                ->where('title', '=', 'Process Newsletter Opens & Click IP Addresses');
+            if ($query->doesntExist()) {
+                $this->db->getQuery(true)
+                    ->insertOrIgnore('#__cron_jobs')
+                    ->columns([
+                        'title',
+                        'state',
+                        'plugin',
+                        'event',
+                        'last_run',
+                        'next_run',
+                        'recurrence',
+                        'created',
+                        'created_by',
+                        'modified',
+                        'modified_by',
+                        'active',
+                        'ordering',
+                        'params',
+                    ])
+                    ->values([
+                        'Process Newsletter Opens & Click IP Addresses',
+                        0,
+                        'newsletter',
+                        'processIps',
+                        '0000-00-00 00:00:00',
+                        '0000-00-00 00:00:00',
+                        '*/5 * * * *',
+                        '2013-06-25 08:23:04',
+                        1001,
+                        '2013-07-16 17:15:01',
+                        0,
+                        0,
+                        0,
+                        '',
+                    ])
+                    ->execute();
+            }
         }
 
-        if (!$this->db->tableExists('#__newsletter_primary_story')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_primary_story` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `nid` int(11) NOT NULL,
-					  `title` varchar(150) DEFAULT NULL,
-					  `story` text,
-					  `readmore_title` varchar(100) DEFAULT NULL,
-					  `readmore_link` varchar(200) DEFAULT NULL,
-					  `order` int(11) DEFAULT NULL,
-					  `deleted` int(11) DEFAULT '0',
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__newsletter_primary_story')) {
+            $schema->createTable('#__newsletter_primary_story')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('nid')
+                ->string('title', 150)->nullable()
+                ->text('story')->nullable()
+                ->string('readmore_title', 100)->nullable()
+                ->string('readmore_link', 200)->nullable()
+                ->integer('order')->nullable()
+                ->integer('deleted')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__newsletter_secondary_story')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_secondary_story` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `nid` int(11) NOT NULL,
-					  `title` varchar(150) DEFAULT NULL,
-					  `story` text,
-					  `readmore_title` varchar(100) DEFAULT NULL,
-					  `readmore_link` varchar(200) DEFAULT NULL,
-					  `order` int(11) DEFAULT NULL,
-					  `deleted` int(11) DEFAULT '0',
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__newsletter_secondary_story')) {
+            $schema->createTable('#__newsletter_secondary_story')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('nid')
+                ->string('title', 150)->nullable()
+                ->text('story')->nullable()
+                ->string('readmore_title', 100)->nullable()
+                ->string('readmore_link', 200)->nullable()
+                ->integer('order')->nullable()
+                ->integer('deleted')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__newsletter_mailings')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailings` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `nid` int(11) DEFAULT NULL,
-					  `lid` int(11) DEFAULT NULL,
-					  `subject` varchar(250) DEFAULT NULL,
-					  `body` longtext,
-					  `headers` text,
-					  `args` text,
-					  `tracking` int(11) DEFAULT '1',
-					  `date` datetime DEFAULT NULL,
-					  `deleted` int(11) DEFAULT '0',
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__newsletter_mailings')) {
+            $schema->createTable('#__newsletter_mailings')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('nid')->nullable()
+                ->integer('lid')->nullable()
+                ->string('subject', 250)->nullable()
+                ->longText('body')->nullable()
+                ->text('headers')->nullable()
+                ->text('args')->nullable()
+                ->integer('tracking')->default(1)
+                ->datetime('date')->nullable()
+                ->integer('deleted')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__newsletter_mailinglists')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailinglists` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `name` varchar(150) DEFAULT NULL,
-					  `description` text,
-					  `private` int(11) DEFAULT NULL,
-					  `deleted` int(11) DEFAULT '0',
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__newsletter_mailinglists')) {
+            $schema->createTable('#__newsletter_mailinglists')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('name', 150)->nullable()
+                ->text('description')->nullable()
+                ->integer('private')->nullable()
+                ->integer('deleted')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__newsletter_mailinglist_unsubscribes')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailinglist_unsubscribes` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `mid` int(11) DEFAULT NULL,
-					  `email` varchar(150) DEFAULT NULL,
-					  `reason` text,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__newsletter_mailinglist_unsubscribes')) {
+            $schema->createTable('#__newsletter_mailinglist_unsubscribes')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('mid')->nullable()
+                ->string('email', 150)->nullable()
+                ->text('reason')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__newsletter_mailinglist_emails')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailinglist_emails` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `mid` int(11) DEFAULT NULL,
-					  `email` varchar(150) DEFAULT NULL,
-					  `status` varchar(100) DEFAULT NULL,
-					  `confirmed` int(11) DEFAULT '0',
-					  `date_added` datetime DEFAULT NULL,
-					  `date_confirmed` datetime DEFAULT NULL,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__newsletter_mailinglist_emails')) {
+            $schema->createTable('#__newsletter_mailinglist_emails')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('mid')->nullable()
+                ->string('email', 150)->nullable()
+                ->string('status', 100)->nullable()
+                ->integer('confirmed')->default(0)
+                ->datetime('date_added')->nullable()
+                ->datetime('date_confirmed')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__newsletter_mailing_recipients')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailing_recipients` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `mid` int(11) DEFAULT NULL,
-					  `email` varchar(150) DEFAULT NULL,
-					  `status` varchar(100) DEFAULT NULL,
-					  `date_added` datetime DEFAULT NULL,
-					  `date_sent` datetime DEFAULT NULL,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__newsletter_mailing_recipients')) {
+            $schema->createTable('#__newsletter_mailing_recipients')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('mid')->nullable()
+                ->string('email', 150)->nullable()
+                ->string('status', 100)->nullable()
+                ->datetime('date_added')->nullable()
+                ->datetime('date_sent')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__newsletter_mailing_emails_recipient_actions')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__newsletter_mailing_recipient_actions` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `mailingid` int(11) DEFAULT NULL,
-					  `action` varchar(100) DEFAULT NULL,
-					  `action_vars` text,
-					  `email` varchar(255) DEFAULT NULL,
-					  `ip` varchar(100) DEFAULT NULL,
-					  `user_agent` varchar(255) DEFAULT NULL,
-					  `date` datetime DEFAULT NULL,
-					  `countrySHORT` char(2) DEFAULT NULL,
-					  `countryLONG` varchar(64) DEFAULT NULL,
-					  `ipREGION` varchar(128) DEFAULT NULL,
-					  `ipCITY` varchar(128) DEFAULT NULL,
-					  `ipLATITUDE` double DEFAULT NULL,
-					  `ipLONGITUDE` double DEFAULT NULL,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__newsletter_mailing_recipient_actions')) {
+            $schema->createTable('#__newsletter_mailing_recipient_actions')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('mailingid')->nullable()
+                ->string('action', 100)->nullable()
+                ->text('action_vars')->nullable()
+                ->string('email', 255)->nullable()
+                ->string('ip', 100)->nullable()
+                ->string('user_agent', 255)->nullable()
+                ->datetime('date')->nullable()
+                ->char('countrySHORT', 2)->nullable()
+                ->string('countryLONG', 64)->nullable()
+                ->string('ipREGION', 128)->nullable()
+                ->string('ipCITY', 128)->nullable()
+                ->double('ipLATITUDE')->nullable()
+                ->double('ipLONGITUDE')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
         $this->addPluginEntry('cron', 'newsletter');
@@ -325,29 +384,32 @@ class Migration20130716202127ComNewsletter extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $this->deleteComponentEntry('Newsletters');
 
         // remove all newsletter tables
-        $query .= "
-			DROP TABLE IF EXISTS `#__newsletters`;
-			DROP TABLE IF EXISTS `#__newsletter_templates`;
-			DROP TABLE IF EXISTS `#__newsletter_primary_story`;
-			DROP TABLE IF EXISTS `#__newsletter_secondary_story`;
-			DROP TABLE IF EXISTS `#__newsletter_mailings`;
-			DROP TABLE IF EXISTS `#__newsletter_mailinglists`;
-			DROP TABLE IF EXISTS `#__newsletter_mailinglist_unsubscribes`;
-			DROP TABLE IF EXISTS `#__newsletter_mailinglist_emails`;
-			DROP TABLE IF EXISTS `#__newsletter_mailing_recipients`;
-			DROP TABLE IF EXISTS `#__newsletter_mailing_recipient_actions`;";
+        $schema->dropTable('#__newsletters');
+        $schema->dropTable('#__newsletter_templates');
+        $schema->dropTable('#__newsletter_primary_story');
+        $schema->dropTable('#__newsletter_secondary_story');
+        $schema->dropTable('#__newsletter_mailings');
+        $schema->dropTable('#__newsletter_mailinglists');
+        $schema->dropTable('#__newsletter_mailinglist_unsubscribes');
+        $schema->dropTable('#__newsletter_mailinglist_emails');
+        $schema->dropTable('#__newsletter_mailing_recipients');
+        $schema->dropTable('#__newsletter_mailing_recipient_actions');
 
         //remove newsletter cron jobs
-        $query .= "DELETE FROM `#__cron_jobs` WHERE `title`='Process Newsletter Mailings';";
-        $query .= "DELETE FROM `#__cron_jobs` WHERE `title`='Process Newsletter Opens & Click IP Addresses';";
+        $query = $this->db->getQuery(true);
+        $query->delete('#__cron_jobs')
+            ->where('title', '=', 'Process Newsletter Mailings');
+        $query->execute();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $query = $this->db->getQuery(true);
+        $query->delete('#__cron_jobs')
+            ->where('title', '=', 'Process Newsletter Opens & Click IP Addresses');
+        $query->execute();
 
         $this->deletePluginEntry('cron', 'newsletter');
     }

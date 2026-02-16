@@ -21,13 +21,10 @@ class Migration20140407091900ComResources extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__resource_assoc')) {
-            if (!$this->db->tableHasKey('#__resource_assoc', 'idx_parent_id_child_id')) {
-                $query = "ALTER TABLE `#__resource_assoc` "
-                    . "ADD INDEX `idx_parent_id_child_id` (`parent_id`, `child_id`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_assoc')) {
+            $schema->addIndex('#__resource_assoc', 'idx_parent_id_child_id', ['parent_id', 'child_id']);
         }
     }
 
@@ -36,12 +33,10 @@ class Migration20140407091900ComResources extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__resource_assoc')) {
-            if ($this->db->tableHasKey('#__resource_assoc', 'idx_parent_id_child_id')) {
-                $query = "ALTER TABLE `#__resource_assoc` DROP INDEX `idx_parent_id_child_id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_assoc')) {
+            $schema->dropIndex('#__resource_assoc', 'idx_parent_id_child_id');
         }
     }
 }

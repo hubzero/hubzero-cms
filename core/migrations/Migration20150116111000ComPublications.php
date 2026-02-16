@@ -20,14 +20,18 @@ class Migration20150116111000ComPublications extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__publication_versions')
-            && !$this->db->tableHasField('#__publication_versions', 'archived')
+            $schema->tableExists('#__publication_versions')
+            && !$schema->hasColumn('#__publication_versions', 'archived')
         ) {
-            $query = "ALTER TABLE `#__publication_versions` ADD COLUMN `archived` DATETIME NOT NULL DEFAULT "
-                . "'0000-00-00 00:00:00' AFTER `accepted`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__publication_versions', 'archived')
+                ->datetime()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->after('accepted')
+                ->execute();
         }
     }
 }

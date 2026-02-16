@@ -21,10 +21,10 @@ class Migration20160911000001ComCart extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__cart_transaction_info', 'tiNotes')) {
-            $query = "ALTER TABLE `#__cart_transaction_info` ADD `tiNotes` TEXT  NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->hasColumn('#__cart_transaction_info', 'tiNotes')) {
+            $schema->addColumn('#__cart_transaction_info', 'tiNotes')->text()->nullable();
         }
     }
 
@@ -33,10 +33,10 @@ class Migration20160911000001ComCart extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__cart_transaction_info', 'tiNotes')) {
-            $query = "ALTER TABLE `#__cart_transaction_info` DROP COLUMN `tiNotes`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__cart_transaction_info', 'tiNotes')) {
+            $schema->dropColumn('#__cart_transaction_info', 'tiNotes');
         }
     }
 }

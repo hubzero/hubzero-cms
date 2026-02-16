@@ -20,12 +20,21 @@ class Migration20130618144751PlgMembersProfile extends Base
      **/
     public function up()
     {
-        $query  = "ALTER TABLE `#__xprofiles` ALTER COLUMN `mailPreferenceOption` SET DEFAULT -1;";
-        $query .= "UPDATE `#__xprofiles` SET `mailPreferenceOption`=1 WHERE `mailPreferenceOption`=2;";
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__xprofiles')
+            && $schema->hasColumn('#__xprofiles', 'mailPreferenceOption')
+        ) {
+            // Change default value for column
+            $schema->modifyColumn('#__xprofiles', 'mailPreferenceOption')->tinyInteger(4)->default(-1);
+
+            // Update existing data
+            $this->db->getQuery(true)
+                ->update('#__xprofiles')
+                ->set(['mailPreferenceOption' => 1])
+                ->where('mailPreferenceOption', '=', 2)
+                ->execute();
         }
     }
 
@@ -34,11 +43,6 @@ class Migration20130618144751PlgMembersProfile extends Base
      **/
     public function down()
     {
-        $query = "";
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        // No action needed for down migration
     }
 }

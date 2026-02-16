@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for setting ticket closed time
@@ -21,12 +22,22 @@ class Migration20150601185958ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__support_tickets')) {
-            $query = "UPDATE `#__support_tickets` AS t SET t.`closed`=(SELECT `created` FROM `#__support_comments` "
-                . "AS c WHERE c.ticket=t.id ORDER BY c.created DESC LIMIT 1) WHERE t.`open`=0 AND "
-                . "t.`closed`='0000-00-00 00:00:00';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__support_tickets')) {
+            $subquery = $this->db->getQuery(true)
+                ->select('created')
+                ->from('#__support_comments', 'c')
+                ->where('c.ticket', '=', Expression::column('t.id'))
+                ->order('c.created', 'DESC')
+                ->limit(1);
+
+            $this->db->getQuery(true)
+                ->update('#__support_tickets', 't')
+                ->set(['t.closed' => $subquery])
+                ->where('t.open', '=', 0)
+                ->where('t.closed', '=', '0000-00-00 00:00:00')
+                ->execute();
         }
     }
 }

@@ -21,11 +21,18 @@ class Migration20150224205200PlgContent extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='system' AND "
-                . "`element`='jquery' LIMIT 1;";
-            $this->db->setQuery($query);
-            if ($plugin = $this->db->loadObject()) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $plugin = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__extensions')
+                ->where('type', '=', 'plugin')
+                ->where('folder', '=', 'system')
+                ->where('element', '=', 'jquery')
+                ->first();
+
+            if ($plugin) {
                 $params = new \Hubzero\Config\Registry($plugin->params);
                 $params->set('jquery', 1);
                 $params->set('jqueryui', 1);
@@ -35,42 +42,52 @@ class Migration20150224205200PlgContent extends Base
                 $params->set('activateSite', 1);
                 $params->set('noconflictSite', 0);
 
-                $query = "UPDATE `#__extensions` SET `params`="
-                    . $this->db->quote($params->toString())
-                    . " WHERE `extension_id`=" . $this->db->quote($plugin->extension_id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => $params->toString()])
+                    ->where('extension_id', '=', $plugin->extension_id)
+                    ->execute();
             }
 
-            $query = "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' AND "
-                . "`element`='formatwiki' LIMIT 1;";
-            $this->db->setQuery($query);
-            if ($plugin = $this->db->loadObject()) {
+            $plugin = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__extensions')
+                ->where('type', '=', 'plugin')
+                ->where('folder', '=', 'content')
+                ->where('element', '=', 'formatwiki')
+                ->first();
+
+            if ($plugin) {
                 $params = new \Hubzero\Config\Registry($plugin->params);
                 $params->set('applyFormat', 1);
                 $params->set('convertFormat', 1);
 
-                $query = "UPDATE `#__extensions` SET `params`="
-                    . $this->db->quote($params->toString())
-                    . " WHERE `extension_id`=" . $this->db->quote($plugin->extension_id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => $params->toString()])
+                    ->where('extension_id', '=', $plugin->extension_id)
+                    ->execute();
             }
 
-            $query = "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='content' AND "
-                . "`element`='formathtml' LIMIT 1;";
-            $this->db->setQuery($query);
-            if ($plugin = $this->db->loadObject()) {
+            $plugin = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__extensions')
+                ->where('type', '=', 'plugin')
+                ->where('folder', '=', 'content')
+                ->where('element', '=', 'formathtml')
+                ->first();
+
+            if ($plugin) {
                 $params = new \Hubzero\Config\Registry($plugin->params);
                 $params->set('applyFormat', 1);
                 $params->set('convertFormat', 0);
                 $params->set('sanitizeBefore', 0);
 
-                $query = "UPDATE `#__extensions` SET `params`="
-                    . $this->db->quote($params->toString())
-                    . " WHERE `extension_id`=" . $this->db->quote($plugin->extension_id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => $params->toString()])
+                    ->where('extension_id', '=', $plugin->extension_id)
+                    ->execute();
 
                 if (!$plugin->enabled) {
                     $this->enablePlugin('content', 'formathtml');

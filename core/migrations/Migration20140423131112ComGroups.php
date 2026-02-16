@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for deleting duplicate groups and enforcing with index
@@ -21,13 +22,21 @@ class Migration20140423131112ComGroups extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // select all groups with duplicate cname's
-        $query = "SELECT gidNumber, cn, description
-				  FROM `#__xgroups` WHERE cn IN (
-					  SELECT cn FROM `#__xgroups` GROUP BY cn HAVING COUNT(*) > 1
-				  ) ORDER BY gidNumber;";
-        $this->db->setQuery($query);
-        $duplicateGroups = $this->db->loadObjectList();
+        $subquery = $this->db->getQuery(true)
+            ->select('cn')
+            ->from('#__xgroups')
+            ->group('cn')
+            ->having(Expression::count(), '>', 1);
+
+        $duplicateGroups = $this->db->getQuery(true)
+            ->select(['gidNumber', 'cn', 'description'])
+            ->from('#__xgroups')
+            ->whereIn('cn', $subquery)
+            ->order('gidNumber', 'asc')
+            ->loadObjectList();
 
         // var to hold original groups
         $original = array();
@@ -47,12 +56,8 @@ class Migration20140423131112ComGroups extends Base
         }
 
         // // Add unique index to cn column
-        if ($this->db->tableExists('#__xgroups')) {
-            if (!$this->db->tableHasKey('#__xgroups', 'idx_cn')) {
-                $query  = "ALTER TABLE `#__xgroups` ADD UNIQUE INDEX `idx_cn` (`cn`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups')) {
+            $schema->addUniqueIndex('#__xgroups', 'idx_cn', 'cn');
         }
     }
 
@@ -61,13 +66,11 @@ class Migration20140423131112ComGroups extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         // // Add unique index to cn column
-        if ($this->db->tableExists('#__xgroups')) {
-            if ($this->db->tableHasKey('#__xgroups', 'idx_cn')) {
-                $query  = "ALTER TABLE `#__xgroups` DROP INDEX `idx_cn`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xgroups')) {
+            $schema->dropIndex('#__xgroups', 'idx_cn');
         }
     }
 }

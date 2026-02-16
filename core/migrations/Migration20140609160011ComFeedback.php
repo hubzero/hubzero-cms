@@ -21,37 +21,53 @@ class Migration20140609160011ComFeedback extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__feedback')) {
-            if (!$this->db->tableHasField('#__feedback', 'miniquote')) {
-                $query = "ALTER TABLE `#__feedback` ADD `miniquote` VARCHAR(255)  NOT NULL  DEFAULT '';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__feedback')) {
+            if (!$schema->hasColumn('#__feedback', 'miniquote')) {
+                $schema->addColumn('#__feedback', 'miniquote')
+                    ->string(255)
+                    ->notNull()
+                    ->default('')
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__feedback', 'admin_rating')) {
-                $query = "ALTER TABLE `#__feedback` ADD `admin_rating` TINYINT(1)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__feedback', 'admin_rating')) {
+                $schema->addColumn('#__feedback', 'admin_rating')
+                    ->tinyInteger()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__feedback', 'notable_quote')) {
-                $query = "ALTER TABLE `#__feedback` ADD `notable_quote` TINYINT(1)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__feedback', 'notable_quote')) {
+                $schema->addColumn('#__feedback', 'notable_quote')
+                    ->tinyInteger()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
 
-            if (!$this->db->tableHasField('#__feedback', 'user_id')) {
-                $query = "ALTER TABLE `#__feedback` CHANGE `userid` `user_id` INT(11)  NULL  DEFAULT NULL;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__feedback', 'user_id')) {
+                $schema->renameColumn('#__feedback', 'userid', 'user_id')
+                    ->integer()
+                    ->nullable()
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__selected_quotes')) {
-            $query = "SELECT sq.*, f.id AS fid FROM `#__selected_quotes` AS sq "
-                . "LEFT JOIN `#__feedback` AS f ON f.quote=sq.quote AND f.user_id=sq.userid";
-            $this->db->setQuery($query);
-            if ($results = $this->db->loadObjectList()) {
+        if ($schema->tableExists('#__selected_quotes')) {
+            $results = $this->db->getQuery(true)
+                ->select('sq.*')
+                ->select('f.id', 'fid')
+                ->from('#__selected_quotes', 'sq')
+                ->joinOn('#__feedback AS f', [
+                    ['f.quote', '=', 'sq.quote'],
+                    ['f.user_id', '=', 'sq.userid'],
+                ], 'left')
+                ->loadObjectList();
+
+            if ($results) {
                 $path = PATH_CORE . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php';
                 if (!file_exists($path)) {
                     $path = PATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback'
@@ -81,9 +97,7 @@ class Migration20140609160011ComFeedback extends Base
                 }
             }
 
-            $query = "DROP TABLE `#__selected_quotes`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropTable('#__selected_quotes');
         }
     }
 
@@ -92,49 +106,46 @@ class Migration20140609160011ComFeedback extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__selected_quotes')) {
-            $query = "CREATE TABLE `#__selected_quotes` (
-				  `id` int(11) NOT NULL AUTO_INCREMENT,
-				  `userid` int(11) DEFAULT '0',
-				  `fullname` varchar(100) DEFAULT '',
-				  `org` varchar(200) DEFAULT '',
-				  `miniquote` varchar(200) DEFAULT '',
-				  `short_quote` text,
-				  `quote` text,
-				  `picture` varchar(250) DEFAULT '',
-				  `date` datetime DEFAULT '0000-00-00 00:00:00',
-				  `flash_rotation` tinyint(1) DEFAULT '0',
-				  `notable_quotes` tinyint(1) DEFAULT '1',
-				  `notes` text,
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__selected_quotes')) {
+            $schema->createTable('#__selected_quotes')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('userid')->default(0)
+                ->string('fullname', 100)->default('')
+                ->string('org', 200)->default('')
+                ->string('miniquote', 200)->default('')
+                ->text('short_quote')->nullable()
+                ->text('quote')->nullable()
+                ->string('picture', 250)->default('')
+                ->datetime('date')->default('0000-00-00 00:00:00')
+                ->tinyInteger('flash_rotation')->default(0)
+                ->tinyInteger('notable_quotes')->default(1)
+                ->text('notes')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__feedback')) {
-            if ($this->db->tableHasField('#__feedback', 'miniquote')) {
-                $query = "ALTER TABLE `#__feedback` DROP COLUMN `miniquote`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__feedback')) {
+            if ($schema->hasColumn('#__feedback', 'miniquote')) {
+                $schema->dropColumn('#__feedback', 'miniquote');
             }
 
-            if ($this->db->tableHasField('#__feedback', 'admin_rating')) {
-                $query = "ALTER TABLE `#__feedback` DROP COLUMN `admin_rating`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__feedback', 'admin_rating')) {
+                $schema->dropColumn('#__feedback', 'admin_rating');
             }
 
-            if ($this->db->tableHasField('#__feedback', 'notable_quote')) {
-                $query = "ALTER TABLE `#__feedback` DROP COLUMN `notable_quote`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__feedback', 'notable_quote')) {
+                $schema->dropColumn('#__feedback', 'notable_quote');
             }
 
-            if ($this->db->tableHasField('#__feedback', 'user_id')) {
-                $query = "ALTER TABLE `#__feedback` CHANGE `user_id` `userid` INT(11)  NULL  DEFAULT NULL;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__feedback', 'user_id')) {
+                $schema->renameColumn('#__feedback', 'user_id', 'userid')
+                    ->integer()
+                    ->nullable()
+                    ->execute();
             }
         }
     }

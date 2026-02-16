@@ -21,12 +21,13 @@ class Migration20140805185942ComMembers extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx')) {
-            $query = "ALTER TABLE `#__xprofiles` "
-                . "ADD FULLTEXT jos_xprofiles_fullname_ftidx (givenName, middleName, surname);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->addFulltextIndex('#__xprofiles', 'jos_xprofiles_fullname_ftidx', [
+            'givenName',
+            'middleName',
+            'surname',
+        ]);
     }
 
     /**
@@ -34,10 +35,8 @@ class Migration20140805185942ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx')) {
-            $query = "ALTER TABLE `#__xprofiles` DROP INDEX jos_xprofiles_fullname_ftidx;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropIndex('#__xprofiles', 'jos_xprofiles_fullname_ftidx');
     }
 }

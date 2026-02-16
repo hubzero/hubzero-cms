@@ -21,16 +21,22 @@ class Migration20150427221158ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__support_tickets') && $this->db->tableExists('#__support_statuses')) {
-            $query = "SELECT id FROM `#__support_statuses` WHERE `open`=1";
-            $this->db->setQuery($query);
-            $open = $this->db->loadColumn();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__support_tickets') && $schema->tableExists('#__support_statuses')) {
+            $open = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__support_statuses')
+                ->where('open', '=', 1)
+                ->loadColumn();
 
             if (count($open)) {
-                $query = "UPDATE `#__support_tickets` SET `status`=0 WHERE `open`=0 AND `status` IN ("
-                    . implode(',', $open) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__support_tickets')
+                    ->set(['status' => 0])
+                    ->where('open', '=', 0)
+                    ->whereIn('status', $open)
+                    ->execute();
             }
         }
     }

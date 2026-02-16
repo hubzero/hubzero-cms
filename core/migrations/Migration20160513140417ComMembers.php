@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for moving data from #__xprofiles to #__user_profiles
@@ -68,40 +69,59 @@ class Migration20160513140417ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__xprofiles')) {
-            if ($this->db->tableExists('#__users')) {
-                $query = "UPDATE `#__users` AS u
-						INNER JOIN `#__xprofiles` AS x ON x.`uidNumber`=u.`id`
-						SET u.`homeDirectory` = x.`homeDirectory`,
-							u.`loginShell` = x.`loginShell`,
-							u.`ftpShell` = x.`ftpShell`,
-							u.`usageAgreement` = x.`usageAgreement`,
-							u.`activation` = x.`emailConfirmed`,
-							u.`registerIP` = x.`regIP`,
-							u.`access` = x.`public`,
-							u.`sendEmail` = x.`mailPreferenceOption`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
 
-                $query = "UPDATE `#__users` AS u
-						INNER JOIN `#__xprofiles` AS x ON x.`uidNumber`=u.`id`
-						SET u.`access` = 5 WHERE x.`public` = 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__xprofiles')) {
+            if ($schema->tableExists('#__users')) {
+                // Update users table with profile data
+                $results = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__xprofiles')
+                    ->loadObjectList();
+
+                if ($results) {
+                    foreach ($results as $result) {
+                        $this->db->getQuery(true)
+                            ->update('#__users')
+                            ->set([
+                                'homeDirectory' => $result->homeDirectory,
+                                'loginShell'    => $result->loginShell,
+                                'ftpShell'      => $result->ftpShell,
+                                'usageAgreement' => $result->usageAgreement,
+                                'activation'     => $result->emailConfirmed,
+                                'registerIP'     => $result->regIP,
+                                'access'         => $result->public,
+                                'sendEmail'      => $result->mailPreferenceOption
+                            ])
+                            ->where('id', '=', (int) $result->uidNumber)
+                            ->execute();
+                    }
+                }
+
+                $this->db->getQuery(true)
+                    ->update('#__users')
+                    ->set(['access' => 5])
+                    ->where('id', 'IN', function ($query) {
+                        $query->select('uidNumber')
+                            ->from('#__xprofiles')
+                            ->where('public', '=', 0);
+                    })
+                    ->execute();
             }
 
-            if ($this->db->tableExists('#__user_profiles')) {
-                if (!$this->db->tableHasField('#__user_profiles', 'access')) {
-                    $query = "ALTER TABLE `#__user_profiles` ADD COLUMN `access` INT(10) NOT NULL DEFAULT 0;";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+            $schema = $this->db->schema();
+
+            if ($schema->tableExists('#__user_profiles')) {
+                if (!$schema->hasColumn('#__user_profiles', 'access')) {
+                    $schema->addColumn('#__user_profiles', 'access')->integer(10)->notNull()->default(0);
                 }
 
                 $fields = array();
-                if ($this->db->tableExists('#__user_profile_fields')) {
-                    $query = "SELECT * FROM `#__user_profile_fields`";
-                    $this->db->setQuery($query);
-                    $fields = $this->db->loadAssocList('name');
+                if ($schema->tableExists('#__user_profile_fields')) {
+                    $fields = $this->db->getQuery(true)
+                        ->select('*')
+                        ->from('#__user_profile_fields')
+                        ->loadAssocList('name');
                 }
 
                 foreach (self::$moveToProfile as $field) {
@@ -113,16 +133,27 @@ class Migration20160513140417ComMembers extends Base
                         $access   = (int)$fields[$field]['access'];
                     }
 
-                    $query = "INSERT INTO `#__user_profiles` "
-                        . "(`user_id`, `profile_key`, `profile_value`, `ordering`, `access`) "
-                        . "SELECT `uidNumber`, '$field', `$field`, $ordering, $access "
-                        . "FROM `#__xprofiles` WHERE `$field` != '' AND `$field` IS NOT NULL;";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $subquery = $this->db->getQuery(true)
+                        ->select([
+                            'uidNumber',
+                            Expression::literal($field),
+                            Expression::column($field),
+                            Expression::literal((int)$ordering),
+                            Expression::literal((int)$access),
+                        ])
+                        ->from('#__xprofiles')
+                        ->whereNotNull($field)
+                        ->where($field, '!=', '');
+
+                    $this->db->getQuery(true)
+                        ->insert('#__user_profiles')
+                        ->columns(['user_id', 'profile_key', 'profile_value', 'ordering', 'access'])
+                        ->select($subquery)
+                        ->execute();
                 }
 
                 foreach (self::$moveToProfileMulti as $field) {
-                    if (!$this->db->tableExists('#__xprofiles_' . $field)) {
+                    if (!$schema->tableExists('#__xprofiles_' . $field)) {
                         continue;
                     }
 
@@ -134,19 +165,31 @@ class Migration20160513140417ComMembers extends Base
                         $access   = (int)$fields[$field]['access'];
                     }
 
-                    $query = "INSERT INTO `#__user_profiles` "
-                        . "(`user_id`, `profile_key`, `profile_value`, `ordering`, `access`) "
-                        . "SELECT `uidNumber`, '$field', `$field`, $ordering, $access "
-                        . "FROM `#__xprofiles_$field` WHERE `$field` != '' AND `$field` IS NOT NULL;";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $subquery = $this->db->getQuery(true)
+                        ->select([
+                            'uidNumber',
+                            Expression::literal($field),
+                            Expression::column($field),
+                            Expression::literal((int)$ordering),
+                            Expression::literal((int)$access)
+                        ])
+                        ->from('#__xprofiles_' . $field)
+                        ->whereNotNull($field)
+                        ->where($field, '!=', '');
+
+                    $this->db->getQuery(true)
+                        ->insert('#__user_profiles')
+                        ->columns(['user_id', 'profile_key', 'profile_value', 'ordering', 'access'])
+                        ->select($subquery)
+                        ->execute();
                 }
             }
 
-            if ($this->db->tableExists('#__xprofiles_address')) {
-                $query = "SELECT * FROM `#__xprofiles_address`;";
-                $this->db->setQuery($query);
-                $addresses = $this->db->loadObjectList();
+            if ($schema->tableExists('#__xprofiles_address')) {
+                $addresses = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__xprofiles_address')
+                    ->loadObjectList();
 
                 $ordering = 0;
                 $access   = 5;
@@ -169,12 +212,16 @@ class Migration20160513140417ComMembers extends Base
 
                     $id = $address->uidNumber;
 
-                    $query = "INSERT INTO `#__user_profiles` "
-                        . "(`user_id`, `profile_key`, `profile_value`, `ordering`, `access`) "
-                        . "VALUES ($id, 'address', "
-                        . $this->db->quote(json_encode($a)) . ", $ordering, $access);";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__user_profiles')
+                        ->values([
+                            'user_id'       => $id,
+                            'profile_key'   => 'address',
+                            'profile_value' => json_encode($a),
+                            'ordering'      => $ordering,
+                            'access'        => $access
+                        ])
+                        ->execute();
                 }
             }
         }

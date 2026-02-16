@@ -34,9 +34,11 @@ class Migration20131024182332Core extends Base
         $new .= "If you're already logged in, and simply wish to change your password, go to your ";
         $new .= "<a href=\"/members/myaccount/account\">account page</a> for a quick password change form.</p>";
 
-        $query = "SELECT * FROM `#__faq` WHERE `alias` = 'pwchange'";
-        $this->db->setQuery($query);
-        $results = $this->db->loadObjectList();
+        $results = $this->db->getQuery(true)
+            ->select('*')
+            ->from('#__faq')
+            ->where('alias', '=', 'pwchange')
+            ->loadObjectList();
 
         if ($results && count($results) > 0) {
             foreach ($results as $r) {
@@ -45,10 +47,11 @@ class Migration20131024182332Core extends Base
                 $distance = levenshtein($sub1, $sub2);
 
                 if ($distance < 50) {
-                    $query = "UPDATE `#__faq` SET `fulltxt` = " . $this->db->quote($new)
-                        . " WHERE `id` = " . $this->db->quote($r->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__faq')
+                        ->set(['fulltxt' => $new])
+                        ->where('id', '=', $r->id)
+                        ->execute();
                 }
             }
         }

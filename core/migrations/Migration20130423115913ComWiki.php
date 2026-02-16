@@ -21,26 +21,23 @@ class Migration20130423115913ComWiki extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableExists('#__wiki_page_links')) {
-            $query .= "CREATE TABLE IF NOT EXISTS `#__wiki_page_links` (
-							`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-							`page_id` int(11) NOT NULL DEFAULT '0',
-							`timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-							`scope` varchar(50) NOT NULL DEFAULT '',
-							`scope_id` int(11) NOT NULL DEFAULT '0',
-							`link` varchar(255) NOT NULL DEFAULT '',
-							`url` varchar(250) NOT NULL DEFAULT '',
-							PRIMARY KEY (`id`),
-							KEY `idx_page_id` (`page_id`),
-							KEY `idx_scoped` (`scope`,`scope_id`)
-							) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__wiki_page_links')) {
+            $schema->createTable('#__wiki_page_links')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('page_id')->default(0)
+                ->datetime('timestamp')->default('0000-00-00 00:00:00')
+                ->string('scope', 50)->default('')
+                ->integer('scope_id')->default(0)
+                ->string('link', 255)->default('')
+                ->string('url', 250)->default('')
+                ->primaryKey('id')
+                ->index('idx_page_id', 'page_id')
+                ->index('idx_scoped', ['scope', 'scope_id'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -49,15 +46,8 @@ class Migration20130423115913ComWiki extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__wiki_page_links')) {
-            $query .= "DROP TABLE IF EXISTS `#__wiki_page_links`";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__wiki_page_links');
     }
 }

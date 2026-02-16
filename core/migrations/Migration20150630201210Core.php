@@ -21,10 +21,15 @@ class Migration20150630201210Core extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT * FROM `#__extensions` WHERE `folder` = 'system' ORDER BY `ordering`";
-            $this->db->setQuery($query);
-            $system = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $query = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__extensions')
+                ->where('folder', '=', 'system')
+                ->order('ordering', 'ASC');
+            $system = $query->loadObjectList();
 
             // Make sure we have results
             if (!$system || count($system) <= 0) {
@@ -48,6 +53,7 @@ class Migration20150630201210Core extends Base
 
             foreach ($ordering as $order) {
                 // Find the item that we're interested in...
+                $result = null;
                 foreach ($system as $idx => $item) {
                     if ($item->element == $order) {
                         $result     = $item;
@@ -57,10 +63,11 @@ class Migration20150630201210Core extends Base
                 }
 
                 if (isset($result)) {
-                    $query = "UPDATE `#__extensions` SET `ordering` = " . $orderIdx
-                        . " WHERE `extension_id` = " . $this->db->quote($result->extension_id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__extensions')
+                        ->set(['ordering' => $orderIdx])
+                        ->where('extension_id', '=', (int)$result->extension_id)
+                        ->execute();
                     $orderIdx++;
                 }
             }
@@ -74,10 +81,11 @@ class Migration20150630201210Core extends Base
 
             // That leaves everything else, which we'll keep in their same relative order
             foreach ($system as $plugin) {
-                $query = "UPDATE `#__extensions` SET `ordering` = " . $orderIdx
-                    . " WHERE `extension_id` = " . $this->db->quote($plugin->extension_id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['ordering' => $orderIdx])
+                    ->where('extension_id', '=', (int)$plugin->extension_id)
+                    ->execute();
                 $orderIdx++;
             }
         }
