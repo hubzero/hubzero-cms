@@ -71,6 +71,7 @@ class DatabaseServiceProvider extends ServiceProvider
     {
         $app = $this->app;
 
+        Relational::setDefaultConnection($app['db']);
         Table::setDefaultAccess((int) $app['config']->get('access', 1));
 
         Relational::setUserIdResolver(function () use ($app) {
