@@ -31,11 +31,20 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
     {
         parent::__construct($subject, $config);
 
-        // Log database queries
+        // Log database queries to sql.log file
         if ($this->params->get('log-database-queries')) {
-            // Register the HUBzero database logger
-            Event::listen(function ($event) {
-                Hubzero\Database\Log::add($event->getArgument('query'), $event->getArgument('time'));
+            $logger = new \Hubzero\Log\Writer(
+                new \Monolog\Logger(Config::get('application_env')),
+                Event::getRoot()
+            );
+            $path = is_dir('/var/log/hubzero-cms') ? '/var/log/hubzero-cms' : Config::get('log_path');
+            $logger->useFiles($path . DS . 'sql.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP", 0640);
+
+            Event::listen(function ($event) use ($logger) {
+                $query = $event->getArgument('query');
+                $time  = $event->getArgument('time');
+                list($type) = explode(' ', $query, 2);
+                $logger->info(strtoupper($type) . " {$time} " . str_replace("\n", ' ', $query));
             }, 'database_query');
         }
 
