@@ -225,6 +225,20 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public static $connection = null;
 
     /**
+     * Resolver for current user ID (callable returning int)
+     *
+     * @var callable|null
+     */
+    protected static $userIdResolver = null;
+
+    /**
+     * Resolver for user object by ID (callable accepting int, returning object|null)
+     *
+     * @var callable|null
+     */
+    protected static $userResolver = null;
+
+    /**
      * Whether or not we're caching query results
      *
      * @public string
@@ -1633,6 +1647,55 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     }
 
     /**
+     * Set the resolver for the current user ID
+     *
+     * @param  callable|null  $resolver  fn(): int
+     */
+    public static function setUserIdResolver(?callable $resolver): void
+    {
+        static::$userIdResolver = $resolver;
+    }
+
+    /**
+     * Set the resolver for looking up a user by ID
+     *
+     * @param  callable|null  $resolver  fn(int $id): ?object
+     */
+    public static function setUserResolver(?callable $resolver): void
+    {
+        static::$userResolver = $resolver;
+    }
+
+    /**
+     * Resolve the current user ID
+     *
+     * @return int
+     */
+    public static function resolveCurrentUserId(): int
+    {
+        if (static::$userIdResolver !== null) {
+            return (int) call_user_func(static::$userIdResolver);
+        }
+
+        return 0;
+    }
+
+    /**
+     * Resolve a user by ID
+     *
+     * @param  int  $id
+     * @return object|null
+     */
+    public static function resolveUser(int $id): ?object
+    {
+        if (static::$userResolver !== null) {
+            return call_user_func(static::$userResolver, $id);
+        }
+
+        return null;
+    }
+
+    /**
      * Flush static runtime state for long-lived worker processes.
      *
      * Defaults clear all static model runtime state. Pass explicit false values
@@ -1646,6 +1709,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *                           - clear_morph_map (bool, default true)
      *                           - clear_custom_casters (bool, default true)
      *                           - clear_booted_models (bool, default true)
+     *                           - clear_resolvers (bool, default true)
      * @return  void
      */
     public static function flush(array $options = []): void
@@ -1658,6 +1722,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $clearCustomCasters = $options['clear_custom_casters'] ?? true;
         $clearBootedModels = $options['clear_booted_models'] ?? true;
         $clearClassMethods = $options['clear_class_methods'] ?? true;
+        $clearResolvers = $options['clear_resolvers'] ?? true;
 
         if ($clearColumns) {
             static::clearTableColumnsCache();
@@ -1689,6 +1754,11 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
         if ($clearClassMethods) {
             static::$classMethods = [];
+        }
+
+        if ($clearResolvers) {
+            static::$userIdResolver = null;
+            static::$userResolver = null;
         }
     }
 

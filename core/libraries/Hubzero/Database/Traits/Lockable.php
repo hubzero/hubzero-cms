@@ -314,7 +314,7 @@ trait Lockable
     /**
      * Get the User model who has this record checked out
      *
-     * @return  \Hubzero\User\User|null  User model or null if not checked out
+     * @return  object|null  User object or null if not checked out
      */
     public function getCheckedOutUser()
     {
@@ -324,14 +324,7 @@ trait Lockable
             return null;
         }
 
-        if (class_exists('\\Hubzero\\User\\User')) {
-            return \Hubzero\User\User::oneOrNew($userId);
-        }
-
-        // Fallback: return stdClass with id
-        $user = new \stdClass();
-        $user->id = $userId;
-        return $user;
+        return static::resolveUser($userId);
     }
 
     /**

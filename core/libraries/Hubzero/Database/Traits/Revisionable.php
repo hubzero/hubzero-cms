@@ -706,9 +706,6 @@ trait Revisionable
      */
     protected function getCurrentRevisionUserId(): int
     {
-        if (class_exists('\\User')) {
-            return (int) \User::get('id', 0);
-        }
-        return 0;
+        return static::resolveCurrentUserId();
     }
 }
