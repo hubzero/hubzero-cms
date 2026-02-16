@@ -8,14 +8,14 @@
 
 namespace Hubzero\Config\Tests\Processor;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Config\Processor\Xml;
 use stdClass;
 
 /**
  * Xml Processor tests
  */
-class XmlTest extends Basic
+class XmlTest extends TestCase
 {
     /**
      * Format processor
@@ -110,8 +110,8 @@ class XmlTest extends Basic
 
         $this->obj = $data;
         $this->arr = array(
-            'app' => (array)$data->app,
-            'seo' => (array)$data->seo
+            'app' => (array) $data->app,
+            'seo' => (array) $data->seo
         );
 
         $this->processor = new Xml();
@@ -184,7 +184,7 @@ class XmlTest extends Basic
 
         // Test object to string conversion
         $result = $this->processor->objectToString($this->obj, array(
-            'name'     => 'config',
+            'name' => 'config',
             'nodeName' => 'setting'
         ));
 

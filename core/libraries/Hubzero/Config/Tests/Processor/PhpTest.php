@@ -8,7 +8,7 @@
 
 namespace Hubzero\Config\Tests\Processor;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Config\Processor\Php;
 use Hubzero\Config\Exception\ParseException;
 use Hubzero\Config\Exception\UnsupportedFormatException;
@@ -17,7 +17,7 @@ use stdClass;
 /**
  * Php Processor tests
  */
-class PhpTest extends Basic
+class PhpTest extends TestCase
 {
     /**
      * Format processor
@@ -92,8 +92,8 @@ class PhpTest extends Basic
         $this->arr = array(
             //'foo' => '1',
             //'bar' => '',
-            'app' => (array)$data->app,
-            'seo' => (array)$data->seo
+            'app' => (array) $data->app,
+            'seo' => (array) $data->seo
         );
 
         $this->processor = new Php();

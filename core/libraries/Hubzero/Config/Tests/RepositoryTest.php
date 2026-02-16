@@ -8,7 +8,7 @@
 
 namespace Hubzero\Config\Tests;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Config\Repository;
 use Hubzero\Config\FileLoader;
 use stdClass;
@@ -16,7 +16,7 @@ use stdClass;
 /**
  * Repository tests
  */
-class RepositoryTest extends Basic
+class RepositoryTest extends TestCase
 {
     /**
      * Tests the constructor sets loader and client
@@ -25,7 +25,9 @@ class RepositoryTest extends Basic
      **/
     public function testConstructor()
     {
-        $data = new Repository('site');
+        $basePath = __DIR__ . '/Files';
+        $loader = new FileLoader($basePath, $basePath);
+        $data = new Repository('site', $loader);
 
         // Test set and get Client
         $this->assertEquals($data->getClient(), 'site');
@@ -34,24 +36,25 @@ class RepositoryTest extends Basic
 
         $this->assertEquals($data->getClient(), 'api');
 
-        // Test that a default loader was set
+        // Test that a loader was set
         $this->assertInstanceOf('Hubzero\Config\FileLoader', $data->getLoader());
+        $this->assertEquals($basePath . DIRECTORY_SEPARATOR . 'config', $data->getLoader()->getConfigPath());
 
-        // Test setting a loader
-        $path = __DIR__ . '/Files/Repository';
-        $loader = new FileLoader($path);
+        // Test setting a different loader
+        $basePath2 = __DIR__ . '/Files';
+        $loader2 = new FileLoader($basePath2, $basePath2);
 
         // Set by method
-        $data->setLoader($loader);
+        $data->setLoader($loader2);
 
         $this->assertInstanceOf('Hubzero\Config\FileLoader', $data->getLoader());
-        $this->assertEquals($path, $data->getLoader()->getDefaultPath());
+        $this->assertEquals($basePath2 . DIRECTORY_SEPARATOR . 'config', $data->getLoader()->getConfigPath());
 
         // Set by constructor
-        $data = new Repository('files', $loader);
+        $data = new Repository('files', $loader2);
 
         $this->assertInstanceOf('Hubzero\Config\FileLoader', $data->getLoader());
-        $this->assertEquals($path, $data->getLoader()->getDefaultPath());
+        $this->assertEquals($basePath2 . DIRECTORY_SEPARATOR . 'config', $data->getLoader()->getConfigPath());
     }
 
     /**
@@ -61,7 +64,8 @@ class RepositoryTest extends Basic
      **/
     public function testSetAndGet()
     {
-        $loader = new FileLoader(__DIR__ . '/Files/Repository');
+        $basePath = __DIR__ . '/Files';
+        $loader = new FileLoader($basePath, $basePath);
 
         $data = new Repository('site', $loader);
 
@@ -72,7 +76,7 @@ class RepositoryTest extends Basic
         $this->assertEquals($data->get('app.application_env'), 'development');
         $this->assertEquals($data->get('application_env'), 'development');
 
-        $loader = new FileLoader(__DIR__ . '/Files/Repository');
+        $loader = new FileLoader($basePath, $basePath);
 
         $data = new Repository('api', $loader);
         $this->assertEquals($data->get('app.application_env'), 'production');

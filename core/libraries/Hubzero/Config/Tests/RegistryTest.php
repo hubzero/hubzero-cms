@@ -8,7 +8,7 @@
 
 namespace Hubzero\Config\Tests;
 
-use Hubzero\Test\Basic;
+use PHPUnit\Framework\TestCase;
 use Hubzero\Config\Registry;
 use Hubzero\Config\Processor;
 use stdClass;
@@ -16,7 +16,7 @@ use stdClass;
 /**
  * Registry tests
  */
-class RegistryTest extends Basic
+class RegistryTest extends TestCase
 {
     /**
      * Tests set() and get()
@@ -190,7 +190,7 @@ class RegistryTest extends Basic
 
         $this->assertEquals($str, '{"foo":"bar","bar":"foo","lorem":{"ipsum":"sham"}}');
 
-        $str = (string)$data;
+        $str = (string) $data;
 
         $this->assertEquals($str, '{"foo":"bar","bar":"foo","lorem":{"ipsum":"sham"}}');
     }
@@ -497,7 +497,7 @@ class RegistryTest extends Basic
         // Try reading a nonexistant file
         $data = new Registry();
 
-        $this->expectException(\Hubzero\Error\Exception\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $data->read(__DIR__ . '/Fles/test.md');
     }

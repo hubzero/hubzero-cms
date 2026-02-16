@@ -17,31 +17,60 @@ use Hubzero\Config\Exception\EmptyDirectoryException;
 class FileLoader
 {
     /**
-     * The default configuration path.
+     * Root path for Legacy config path rewriting.
      *
      * @var  string
      */
-    protected $defaultPath;
+    protected $rootPath;
+
+    /**
+     * App path for config files and Legacy config.
+     *
+     * @var  string
+     */
+    protected $appPath;
 
     /**
      * Create a new file configuration loader.
      *
-     * @param   string  $defaultPath
+     * @param   string  $rootPath  Root path (e.g., PATH_ROOT)
+     * @param   string  $appPath   App path (e.g., PATH_APP)
      * @return  void
      */
-    public function __construct($defaultPath)
+    public function __construct($rootPath, $appPath)
     {
-        $this->defaultPath = $defaultPath;
+        $this->rootPath = $rootPath;
+        $this->appPath = $appPath;
     }
 
     /**
-     * Get the default path
+     * Get the config path (derived from appPath)
      *
      * @return  string
      */
-    public function getDefaultPath()
+    public function getConfigPath()
     {
-        return $this->defaultPath;
+        return $this->appPath . DIRECTORY_SEPARATOR . 'config';
+    }
+
+    /**
+     * Get the root path
+     *
+     * @return  string
+     */
+    public function getRootPath()
+    {
+        return $this->rootPath;
+    }
+
+    /**
+     * Get the app path
+     *
+     * @return  string
+     */
+    public function getAppPath()
+    {
+        return $this->appPath;
     }
 
     /**
@@ -53,42 +82,47 @@ class FileLoader
     public function load($client = null)
     {
         $data = array();
+        $configPath = $this->getConfigPath();
 
         // First we'll get the root configuration path for the environment which is
         // where all of the configuration files live for that namespace, as well
         // as any environment folders with their specific configuration items.
         try {
-            $paths = $this->getPaths($this->defaultPath);
+            $paths = $this->getPaths($configPath);
 
             if (empty($paths)) {
-                throw new EmptyDirectoryException("Configuration directory: [" . $this->defaultPath . "] is empty");
+                throw new EmptyDirectoryException("Configuration directory: [" . $configPath . "] is empty");
             }
 
             foreach ($paths as $path) {
                 // Get file information
-                $info      = pathinfo($path);
-                $group     = isset($info['filename'])  ? strtolower($info['filename'])  : '';
+                $info = pathinfo($path);
+                $group = isset($info['filename']) ? strtolower($info['filename']) : '';
                 $extension = isset($info['extension']) ? strtolower($info['extension']) : '';
 
                 if (!$extension || $extension == 'html') {
                     continue;
                 }
 
-                $data[$group] = $this->getParser($extension)->parse($path);
+                try {
+                    $data[$group] = $this->getParser($extension)->parse($path);
+                } catch (UnsupportedFormatException $e) {
+                    continue;
+                }
             }
 
             if (empty($data)) {
-                throw new EmptyDirectoryException("Configuration directory: [" . $this->defaultPath . "] is empty");
+                throw new EmptyDirectoryException("Configuration directory: [" . $configPath . "] is empty");
             }
 
             // If a client is specified...
             if ($client) {
-                $paths = $this->getPaths($this->defaultPath . DIRECTORY_SEPARATOR . $client);
+                $paths = $this->getPaths($configPath . DIRECTORY_SEPARATOR . $client);
 
                 foreach ($paths as $path) {
                     // Get file information
-                    $info      = pathinfo($path);
-                    $group     = isset($info['filename'])  ? strtolower($info['filename'])  : '';
+                    $info = pathinfo($path);
+                    $group = isset($info['filename']) ? strtolower($info['filename']) : '';
                     $extension = isset($info['extension']) ? strtolower($info['extension']) : '';
 
                     if (!$extension || $extension == 'html') {
@@ -99,14 +133,18 @@ class FileLoader
                         $data[$group] = array();
                     }
 
-                    $data[$group] = array_replace_recursive(
-                        $data[$group],
-                        $this->getParser($extension)->parse($path)
-                    );
+                    try {
+                        $data[$group] = array_replace_recursive(
+                            $data[$group],
+                            $this->getParser($extension)->parse($path)
+                        );
+                    } catch (UnsupportedFormatException $e) {
+                        continue;
+                    }
                 }
             }
         } catch (\Exception $e) {
-            $loader = new Legacy();
+            $loader = new Legacy($this->rootPath, $this->rootPath, $this->appPath);
 
             $data = $loader->toArray();
 
