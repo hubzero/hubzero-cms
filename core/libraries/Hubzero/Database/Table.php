@@ -8,7 +8,6 @@
 
 namespace Hubzero\Database;
 
-use Hubzero\Base\Obj;
 use RuntimeException;
 use Exception;
 use Log;
@@ -22,7 +21,7 @@ use Log;
  *              Joomla-based code and should be expected to
  *              be removed in a future release.
  */
-abstract class Table extends Obj
+abstract class Table extends \stdClass
 {
     /**
      * Name of the database table to model.
@@ -78,6 +77,172 @@ abstract class Table extends Obj
      * @public array
      */
     private $fieldCache = null;
+
+    /**
+     * An array of error messages or Exception objects.
+     *
+     * @var  array
+     */
+    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    protected $_errors = array();
+
+    /**
+     * Magic method to convert the object to a string gracefully.
+     *
+     * @return  string  The classname.
+     */
+    public function __toString()
+    {
+        return get_class($this);
+    }
+
+    /**
+     * Sets a default value if not already assigned
+     *
+     * @param   string  $property  The name of the property.
+     * @param   mixed   $default   The default value.
+     * @return  mixed
+     */
+    public function def($property, $default = null)
+    {
+        $value = $this->get($property, $default);
+        return $this->set($property, $value);
+    }
+
+    /**
+     * Returns a property of the object or the default value if the property is not set.
+     *
+     * @param   string  $property  The name of the property.
+     * @param   mixed   $default   The default value.
+     * @return  mixed    The value of the property.
+     */
+    public function get($property, $default = null)
+    {
+        if (isset($this->$property)) {
+            return $this->$property;
+        }
+        return $default;
+    }
+
+    /**
+     * Returns an associative array of object properties.
+     *
+     * @param   boolean  $public  If true, returns only the public properties.
+     * @return  array
+     */
+    public function getProperties($public = true)
+    {
+        $vars = get_object_vars($this);
+
+        if ($public) {
+            foreach ($vars as $key => $value) {
+                if ('_' == substr($key, 0, 1)) {
+                    unset($vars[$key]);
+                }
+            }
+        }
+
+        return $vars;
+    }
+
+    /**
+     * Modifies a property of the object, creating it if it does not already exist.
+     *
+     * @param   string  $property  The name of the property.
+     * @param   mixed   $value     The value of the property to set.
+     * @return  object
+     */
+    public function set($property, $value)
+    {
+        $this->$property = $value;
+        return $this;
+    }
+
+    /**
+     * Set the object properties based on a named array/hash.
+     *
+     * @param   mixed  $properties  Either an associative array or another object.
+     * @return  boolean
+     */
+    public function setProperties($properties)
+    {
+        if (is_array($properties) || is_object($properties)) {
+            if (is_object($properties)) {
+                $properties = get_object_vars($properties);
+            }
+
+            foreach ((array) $properties as $k => $v) {
+                $this->set($k, $v);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the most recent error message.
+     *
+     * @param   integer  $i         Option error index.
+     * @param   boolean  $toString  Indicates if error objects should return their error message.
+     * @return  string   Error message
+     */
+    public function getError($i = null, $toString = true)
+    {
+        if ($i === null) {
+            $error = end($this->_errors);
+        } elseif (!array_key_exists($i, $this->_errors)) {
+            return false;
+        } else {
+            $error = $this->_errors[$i];
+        }
+
+        if ($error instanceof Exception && $toString) {
+            return (string) $error;
+        }
+
+        return $error;
+    }
+
+    /**
+     * Return all errors, if any.
+     *
+     * @return  array  Array of error messages
+     */
+    public function getErrors()
+    {
+        return $this->_errors;
+    }
+
+    /**
+     * Add an error message.
+     *
+     * @param   string  $error  Error message.
+     * @param   string  $key    Specific key to set the value to
+     * @return  object
+     */
+    public function setError($error, $key = null)
+    {
+        if ($key !== null) {
+            $this->_errors[$key] = $error;
+        } else {
+            array_push($this->_errors, $error);
+        }
+        return $this;
+    }
+
+    /**
+     * Set the list of errors
+     *
+     * @param   array   $errors  List of Error message.
+     * @return  object
+     */
+    public function setErrors($errors)
+    {
+        $this->_errors = $errors;
+        return $this;
+    }
 
     /**
      * Object constructor to set table and key fields.  In most cases this will
