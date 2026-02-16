@@ -21,153 +21,165 @@ class Migration20130812182339ComCart extends Base
      **/
     public function up()
     {
-        /*Table structure for table `#__cart` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__cart` (
-		  `id` int(10) NOT NULL AUTO_INCREMENT,
-		  `uid` int(11) NOT NULL DEFAULT '0',
-		  `itemid` int(11) NOT NULL DEFAULT '0',
-		  `type` varchar(20) DEFAULT NULL,
-		  `quantity` int(11) NOT NULL DEFAULT '0',
-		  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-		  `selections` text,
-		  PRIMARY KEY (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table #__cart
+        if (!$schema->tableExists('#__cart')) {
+            $schema->createTable('#__cart')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('uid')->default(0)
+                ->integer('itemid')->default(0)
+                ->string('type', 20)->nullable()
+                ->integer('quantity')->default(0)
+                ->datetime('added')->default('0000-00-00 00:00:00')
+                ->text('selections')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__cart_cart_items` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__cart_cart_items` (
-		  `crtId` int(16) NOT NULL,
-		  `sId` int(16) NOT NULL,
-		  `crtiQty` int(5) DEFAULT NULL,
-		  `crtiOldQty` int(5) DEFAULT NULL,
-		  `crtiPrice` decimal(10,2) DEFAULT NULL,
-		  `crtiOldPrice` decimal(10,2) DEFAULT NULL,
-		  `crtiName` varchar(255) DEFAULT NULL,
-		  `crtiAvailable` tinyint(1) DEFAULT '1',
-		  PRIMARY KEY (`crtId`,`sId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        // Table structure for table #__cart_cart_items
+        if (!$schema->tableExists('#__cart_cart_items')) {
+            $schema->createTable('#__cart_cart_items')
+                ->integer('crtId')
+                ->integer('sId')
+                ->integer('crtiQty')->nullable()
+                ->integer('crtiOldQty')->nullable()
+                ->decimal('crtiPrice', 10, 2)->nullable()
+                ->decimal('crtiOldPrice', 10, 2)->nullable()
+                ->string('crtiName', 255)->nullable()
+                ->tinyInteger('crtiAvailable')->default(1)
+                ->primaryKey(['crtId', 'sId'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table #__cart_carts
+        if (!$schema->tableExists('#__cart_carts')) {
+            $schema->createTable('#__cart_carts')
+                ->integer('crtId', ['autoIncrement' => true])
+                ->datetime('crtCreated')->nullable()
+                ->datetime('crtLastUpdated')->nullable()
+                ->integer('uidNumber')->nullable()
+                ->primaryKey('crtId')
+                ->uniqueIndex('uidNumber', 'uidNumber')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__cart_carts` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__cart_carts` (
-		  `crtId` int(16) NOT NULL AUTO_INCREMENT,
-		  `crtCreated` datetime DEFAULT NULL,
-		  `crtLastUpdated` datetime DEFAULT NULL,
-		  `uidNumber` int(16) DEFAULT NULL,
-		  PRIMARY KEY (`crtId`),
-		  UNIQUE KEY `uidNumber` (`uidNumber`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        // Table structure for table #__cart_coupons
+        if (!$schema->tableExists('#__cart_coupons')) {
+            $schema->createTable('#__cart_coupons')
+                ->integer('crtId')
+                ->integer('cnId')
+                ->datetime('crtCnAdded')->nullable()
+                ->char('crtCnStatus', 15)->nullable()
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table #__cart_memberships
+        if (!$schema->tableExists('#__cart_memberships')) {
+            $schema->createTable('#__cart_memberships')
+                ->integer('crtmId', ['autoIncrement' => true])
+                ->integer('pId')->nullable()
+                ->integer('crtId')->nullable()
+                ->datetime('crtmExpires')->nullable()
+                ->primaryKey('crtmId')
+                ->uniqueIndex('pId', ['pId', 'crtId'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__cart_coupons` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__cart_coupons` (
-		  `crtId` int(16) NOT NULL,
-		  `cnId` int(16) NOT NULL,
-		  `crtCnAdded` datetime DEFAULT NULL,
-		  `crtCnStatus` char(15) DEFAULT NULL
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        // Table structure for table #__cart_saved_addresses
+        if (!$schema->tableExists('#__cart_saved_addresses')) {
+            $schema->createTable('#__cart_saved_addresses')
+                ->integer('saId', ['autoIncrement' => true])
+                ->integer('uidNumber')
+                ->char('saToFirst', 100)
+                ->char('saToLast', 100)
+                ->char('saAddress', 255)
+                ->char('saCity', 25)
+                ->char('saState', 2)
+                ->char('saZip', 10)
+                ->primaryKey('saId')
+                ->uniqueIndex('uidNumber', ['uidNumber', 'saToFirst', 'saToLast', 'saAddress', 'saZip'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table #__cart_transaction_info
+        if (!$schema->tableExists('#__cart_transaction_info')) {
+            $schema->createTable('#__cart_transaction_info')
+                ->integer('tId')
+                ->char('tiShippingToFirst', 100)->nullable()
+                ->char('tiShippingToLast', 100)->nullable()
+                ->char('tiShippingAddress', 255)->nullable()
+                ->char('tiShippingCity', 25)->nullable()
+                ->char('tiShippingState', 2)->nullable()
+                ->char('tiShippingZip', 10)->nullable()
+                ->decimal('tiTotal', 10, 2)->nullable()
+                ->decimal('tiSubtotal', 10, 2)->nullable()
+                ->decimal('tiTax', 10, 2)->nullable()
+                ->decimal('tiShipping', 10, 2)->nullable()
+                ->decimal('tiShippingDiscount', 10, 2)->nullable()
+                ->decimal('tiDiscounts', 10, 2)->nullable()
+                ->text('tiItems')->nullable()
+                ->text('tiPerks')->nullable()
+                ->text('tiMeta')->nullable()
+                ->char('tiCustomerStatus', 15)->default('unconfirmed')
+                ->primaryKey('tId')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__cart_memberships` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__cart_memberships` (
-		  `crtmId` int(16) NOT NULL AUTO_INCREMENT,
-		  `pId` int(16) DEFAULT NULL,
-		  `crtId` int(16) DEFAULT NULL,
-		  `crtmExpires` datetime DEFAULT NULL,
-		  PRIMARY KEY (`crtmId`),
-		  UNIQUE KEY `pId` (`pId`,`crtId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        // Table structure for table #__cart_transaction_items
+        if (!$schema->tableExists('#__cart_transaction_items')) {
+            $schema->createTable('#__cart_transaction_items')
+                ->integer('tId')
+                ->integer('sId')
+                ->integer('tiQty')->nullable()
+                ->decimal('tiPrice', 10, 2)->nullable()
+                ->primaryKey(['tId', 'sId'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table #__cart_transaction_steps
+        if (!$schema->tableExists('#__cart_transaction_steps')) {
+            $schema->createTable('#__cart_transaction_steps')
+                ->integer('tsId', ['autoIncrement' => true])
+                ->integer('tId')
+                ->char('tsStep', 16)
+                ->tinyInteger('tsStatus')->default(0)
+                ->primaryKey('tsId')
+                ->uniqueIndex('tId', ['tId', 'tsStep'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
 
-        /*Table structure for table `#__cart_saved_addresses` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__cart_saved_addresses` (
-		  `saId` int(16) NOT NULL AUTO_INCREMENT,
-		  `uidNumber` int(16) NOT NULL,
-		  `saToFirst` char(100) NOT NULL,
-		  `saToLast` char(100) NOT NULL,
-		  `saAddress` char(255) NOT NULL,
-		  `saCity` char(25) NOT NULL,
-		  `saState` char(2) NOT NULL,
-		  `saZip` char(10) NOT NULL,
-		  PRIMARY KEY (`saId`),
-		  UNIQUE KEY `uidNumber` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        /*Table structure for table `#__cart_transaction_info` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__cart_transaction_info` (
-		  `tId` int(16) NOT NULL,
-		  `tiShippingToFirst` char(100) DEFAULT NULL,
-		  `tiShippingToLast` char(100) DEFAULT NULL,
-		  `tiShippingAddress` char(255) DEFAULT NULL,
-		  `tiShippingCity` char(25) DEFAULT NULL,
-		  `tiShippingState` char(2) DEFAULT NULL,
-		  `tiShippingZip` char(10) DEFAULT NULL,
-		  `tiTotal` decimal(10,2) DEFAULT NULL,
-		  `tiSubtotal` decimal(10,2) DEFAULT NULL,
-		  `tiTax` decimal(10,2) DEFAULT NULL,
-		  `tiShipping` decimal(10,2) DEFAULT NULL,
-		  `tiShippingDiscount` decimal(10,2) DEFAULT NULL,
-		  `tiDiscounts` decimal(10,2) DEFAULT NULL,
-		  `tiItems` text,
-		  `tiPerks` text,
-		  `tiMeta` text,
-		  `tiCustomerStatus` char(15) DEFAULT 'unconfirmed',
-		  PRIMARY KEY (`tId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        /*Table structure for table `#__cart_transaction_items` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__cart_transaction_items` (
-		  `tId` int(16) NOT NULL,
-		  `sId` int(16) NOT NULL,
-		  `tiQty` int(5) DEFAULT NULL,
-		  `tiPrice` decimal(10,2) DEFAULT NULL,
-		  PRIMARY KEY (`tId`,`sId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        /*Table structure for table `#__cart_transaction_steps` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__cart_transaction_steps` (
-		  `tsId` int(16) NOT NULL AUTO_INCREMENT,
-		  `tId` int(16) NOT NULL,
-		  `tsStep` char(16) NOT NULL,
-		  `tsStatus` tinyint(1) DEFAULT '0',
-		  PRIMARY KEY (`tsId`),
-		  UNIQUE KEY `tId` (`tId`,`tsStep`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        /*Table structure for table `#__cart_transactions` */
-        $query = "CREATE TABLE IF NOT EXISTS `#__cart_transactions` (
-		  `tId` int(16) NOT NULL AUTO_INCREMENT,
-		  `crtId` int(16) DEFAULT NULL,
-		  `tCreated` datetime DEFAULT NULL,
-		  `tLastUpdated` datetime DEFAULT NULL,
-		  `tStatus` char(32) DEFAULT NULL,
-		  PRIMARY KEY (`tId`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-
-        $this->db->setQuery($query);
-        $this->db->query();
+        // Table structure for table #__cart_transactions
+        if (!$schema->tableExists('#__cart_transactions')) {
+            $schema->createTable('#__cart_transactions')
+                ->integer('tId', ['autoIncrement' => true])
+                ->integer('crtId')->nullable()
+                ->datetime('tCreated')->nullable()
+                ->datetime('tLastUpdated')->nullable()
+                ->char('tStatus', 32)->nullable()
+                ->primaryKey('tId')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
     }
 
     /**
@@ -175,54 +187,17 @@ class Migration20130812182339ComCart extends Base
      **/
     public function down()
     {
-        $query = "DROP TABLE IF EXISTS `#__cart`";
+        $schema = $this->db->schema();
 
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__cart_cart_items`";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__cart_carts`";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__cart_coupons`";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__cart_memberships`";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__cart_saved_addresses`";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__cart_transaction_info`";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__cart_transaction_items`";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__cart_transaction_steps`";
-
-        $this->db->setQuery($query);
-        $this->db->query();
-
-        $query = "DROP TABLE IF EXISTS `#__cart_transactions`";
-
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema->dropTable('#__cart');
+        $schema->dropTable('#__cart_cart_items');
+        $schema->dropTable('#__cart_carts');
+        $schema->dropTable('#__cart_coupons');
+        $schema->dropTable('#__cart_memberships');
+        $schema->dropTable('#__cart_saved_addresses');
+        $schema->dropTable('#__cart_transaction_info');
+        $schema->dropTable('#__cart_transaction_items');
+        $schema->dropTable('#__cart_transaction_steps');
+        $schema->dropTable('#__cart_transactions');
     }
 }

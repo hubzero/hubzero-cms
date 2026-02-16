@@ -21,59 +21,77 @@ class Migration20130429103200PlgGroupsCalendar extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $query = '';
 
         // create event calendars table
-        if (!$this->db->tableExists('#__events_calendars')) {
-            $query .= "CREATE TABLE `#__events_calendars` (
-							`id` int(11) NOT NULL AUTO_INCREMENT,
-							`scope` varchar(100) DEFAULT NULL,
-							`scope_id` int(11) DEFAULT NULL,
-							`title` varchar(100) DEFAULT NULL,
-							`color` varchar(100) DEFAULT NULL,
-							`published` int(11) DEFAULT 1,
-							PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        if (!$schema->tableExists('#__events_calendars')) {
+            $schema->createTable('#__events_calendars')
+                ->id()
+                ->string('scope', 100)->nullable()
+                ->integer('scope_id')->nullable()
+                ->string('title', 100)->nullable()
+                ->string('color', 100)->nullable()
+                ->integer('published')->default(1)
+                ->execute();
         }
 
         // add calendar_id, scope, and scope id to events so we can have them belong to other sections
-        if (!$this->db->tableHasField('#__events', 'calendar_id')) {
-            $query .= "ALTER TABLE `#__events` ADD COLUMN calendar_id int(11) AFTER catid;\n";
+        if (!$schema->hasColumn('#__events', 'calendar_id')) {
+            $schema->addColumn('#__events', 'calendar_id')->integer(11);
         }
-        if (!$this->db->tableHasField('#__events', 'scope')) {
-            $query .= "ALTER TABLE `#__events` ADD COLUMN scope VARCHAR(100) AFTER calendar_id;\n";
+        if (!$schema->hasColumn('#__events', 'scope')) {
+            $schema->addColumn('#__events', 'scope')
+                ->string(100)
+                ->execute();
 
             // set scope on all current site events
-            $query .= "UPDATE `#__events` SET scope='event' WHERE (scope IS NULL OR scope='');";
+            $this->db->getQuery(true)
+                ->update('#__events')
+                ->set(['scope' => 'event'])
+                ->beginOrGroup()
+                    ->whereIsNull('scope')
+                    ->orWhere('scope', '=', '')
+                ->endAndGroup()
+                ->execute();
         }
-        if (!$this->db->tableHasField('#__events', 'scope_id')) {
-            $query .= "ALTER TABLE `#__events` ADD COLUMN scope_id INT(11)  AFTER scope;\n";
+        if (!$schema->hasColumn('#__events', 'scope_id')) {
+            $schema->addColumn('#__events', 'scope_id')->integer(11);
         }
 
-        if ($this->db->tableExists('#__xgroups_events')) {
+        if ($schema->tableExists('#__xgroups_events')) {
             // move group events to events table
-            $query .= "INSERT INTO `#__events`(scope, scope_id, title, content, state, "
-                . "created, created_by, publish_up, publish_down)
-						SELECT
-							'group',
-							gidNumber AS scope_id,
-							title,
-							details as content,
-							active AS state,
-							created,
-							actorid AS created,
-							start AS publish_up,
-							end AS publish_down
-						FROM
-							`#__xgroups_events`;";
+            $select = $this->db->getQuery(true);
+            $select->select($this->db->quote('group'))
+                ->select('gidNumber', 'scope_id')
+                ->select('title')
+                ->select('details', 'content')
+                ->select('active', 'state')
+                ->select('created')
+                ->select('actorid', 'created_by')
+                ->select('start', 'publish_up')
+                ->select('end', 'publish_down')
+                ->from('#__xgroups_events');
+
+            $this->db->getQuery(true)
+                ->insert('#__events')
+                ->columns([
+                    'scope',
+                    'scope_id',
+                    'title',
+                    'content',
+                    'state',
+                    'created',
+                    'created_by',
+                    'publish_up',
+                    'publish_down',
+                ])
+                ->fromSelect($select)
+                ->execute();
 
             // drop group events table
-            $query .= "DROP TABLE `#__xgroups_events`";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropTable('#__xgroups_events');
         }
     }
 }

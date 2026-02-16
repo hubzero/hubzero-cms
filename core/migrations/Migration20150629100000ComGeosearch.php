@@ -21,17 +21,18 @@ class Migration20150629100000ComGeosearch extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__geosearch_markers')) {
-            $query = "CREATE TABLE `#__geosearch_markers` (
-			  `id` int(11) DEFAULT NULL,
-			  `scope` varchar(255) DEFAULT NULL,
-			  `scope_id` int(11) DEFAULT NULL,
-			  `addressLatitude` varchar(255) DEFAULT NULL,
-			  `addressLongitude` varchar(255) DEFAULT NULL
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__geosearch_markers')) {
+            $schema->createTable('#__geosearch_markers')
+                ->integer('id')->nullable()
+                ->string('scope', 255)->nullable()
+                ->integer('scope_id')->nullable()
+                ->string('addressLatitude', 255)->nullable()
+                ->string('addressLongitude', 255)->nullable()
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -40,11 +41,8 @@ class Migration20150629100000ComGeosearch extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__geosearch_markers')) {
-            $query = "DROP TABLE `#__geosearch_markers`";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__geosearch_markers');
     }
 }

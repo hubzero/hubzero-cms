@@ -20,16 +20,17 @@ class Migration20150623144037ComUsers extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__user_reputation')) {
-            $query = "CREATE TABLE `#__user_reputation` (
-						`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`user_id` int(11) DEFAULT NULL,
-						`spam_count` int(11) NOT NULL DEFAULT '0',
-						PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__user_reputation')) {
+            $schema->createTable('#__user_reputation')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('user_id')->nullable()
+                ->integer('spam_count')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -38,11 +39,10 @@ class Migration20150623144037ComUsers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__user_reputation')) {
-            $query = "DROP TABLE `#__user_reputation`";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__user_reputation')) {
+            $schema->dropTable('#__user_reputation');
         }
     }
 }

@@ -21,16 +21,18 @@ class Migration20150317211600ComTools extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__users_tool_preferences')) {
-            $query = "CREATE TABLE IF NOT EXISTS `#__users_tool_preferences` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `params` text,
-				  PRIMARY KEY (`id`),
-				  UNIQUE KEY `idx_user_id` (`user_id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__users_tool_preferences')) {
+            $schema->createTable('#__users_tool_preferences')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('user_id')->default(0)
+                ->text('params')->nullable()
+                ->primaryKey('id')
+                ->uniqueIndex('idx_user_id', 'user_id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -39,10 +41,8 @@ class Migration20150317211600ComTools extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__users_tool_preferences')) {
-            $query = "DROP TABLE IF EXISTS `#__users_tool_preferences`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__users_tool_preferences');
     }
 }

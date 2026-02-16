@@ -22,37 +22,22 @@ class Migration20151030000001ComCart extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__cart_transaction_steps')) {
-            $query = "SELECT DISTINCT INDEX_NAME FROM information_schema.statistics WHERE table_name = '"
-                . $this->db->replacePrefix('#__cart_transaction_steps') . "' AND INDEX_NAME LIKE '%tId%'";
-            $this->db->setQuery($query);
-            $this->db->execute();
-            if ($this->db->getNumRows() > 0) {
-                $indexname = $this->db->loadResult();
+        $schema = $this->db->schema();
 
-                $query = "SHOW INDEX FROM " . $this->db->replacePrefix('#__cart_transaction_steps') . " WHERE "
-                    . "Key_name = '{$indexname}'";
-                $this->db->setQuery($query);
-                $this->db->execute();
-                if ($this->db->getNumRows() > 0) {
-                    $query = "DROP INDEX `{$indexname}` ON " . $this->db->replacePrefix('#__cart_transaction_steps');
-                    $this->db->setQuery($query);
-                    $this->db->query();
+        if ($schema->tableExists('#__cart_transaction_steps')) {
+            // Find and drop any index with 'tId' in the name
+            foreach ($schema->getIndexNames('#__cart_transaction_steps') as $keyName) {
+                if (stripos($keyName, 'tId') !== false) {
+                    $schema->dropIndex('#__cart_transaction_steps', $keyName);
+                    break;
                 }
             }
 
-            if (
-                $this->db->tableExists('#__cart_transaction_steps')
-                && !$this->db->tableHasField('#__cart_transaction_steps', 'tsMeta')
-            ) {
-                $query = "ALTER TABLE `#__cart_transaction_steps` ADD `tsMeta` CHAR(255)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            } elseif ($this->db->tableHasField('#__cart_transaction_steps', 'tsMeta')) {
+            if (!$schema->hasColumn('#__cart_transaction_steps', 'tsMeta')) {
+                $schema->addColumn('#__cart_transaction_steps', 'tsMeta')->char(255);
+            } else {
                 // Change tsMeta to 255 chars long
-                $query = "ALTER TABLE `#__cart_transaction_steps` MODIFY `tsMeta` CHAR(255)";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->modifyColumn('#__cart_transaction_steps', 'tsMeta')->char(255);
             }
         }
     }

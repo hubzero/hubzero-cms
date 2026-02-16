@@ -20,25 +20,32 @@ class Migration20121018000000ComWiki extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__wiki_page')) {
-            if (!$this->db->tableHasField('#__wiki_page', 'modified')) {
-                $query = "ALTER TABLE `#__wiki_page` ADD `modified` DATETIME NOT NULL "
-                    . "DEFAULT '0000-00-00 00:00:00' AFTER `state`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__wiki_page')) {
+            if (!$schema->hasColumn('#__wiki_page', 'modified')) {
+                $schema->addColumn('#__wiki_page', 'modified')
+                    ->datetime()
+                    ->notNull()
+                    ->default('0000-00-00 00:00:00')
+                    ->execute();
             }
-            if (!$this->db->tableHasField('#__wiki_page', 'version_id')) {
-                $query = "ALTER TABLE `#__wiki_page` ADD `version_id` INT(11)  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__wiki_page', 'version_id')) {
+                $schema->addColumn('#__wiki_page', 'version_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__wiki_version')) {
-            if (!$this->db->tableHasField('#__wiki_version', 'length')) {
-                $query = "ALTER TABLE `#__wiki_version` ADD `length` INT(11)  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_version')) {
+            if (!$schema->hasColumn('#__wiki_version', 'length')) {
+                $schema->addColumn('#__wiki_version', 'length')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
         }
     }
@@ -48,25 +55,21 @@ class Migration20121018000000ComWiki extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__wiki_page')) {
-            if ($this->db->tableHasField('#__wiki_page', 'modified')) {
-                $query = "ALTER TABLE `#__wiki_page` DROP COLUMN `modified`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__wiki_page')) {
+            if ($schema->hasColumn('#__wiki_page', 'modified')) {
+                $schema->dropColumn('#__wiki_page', 'modified');
             }
 
-            if ($this->db->tableHasField('#__wiki_page', 'version_id')) {
-                $query = "ALTER TABLE `#__wiki_page` DROP COLUMN `version_id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__wiki_page', 'version_id')) {
+                $schema->dropColumn('#__wiki_page', 'version_id');
             }
         }
 
-        if ($this->db->tableExists('#__wiki_version')) {
-            if ($this->db->tableHasField('#__wiki_version', 'length')) {
-                $query = "ALTER TABLE `#__wiki_version` DROP COLUMN `length`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__wiki_version')) {
+            if ($schema->hasColumn('#__wiki_version', 'length')) {
+                $schema->dropColumn('#__wiki_version', 'length');
             }
         }
     }

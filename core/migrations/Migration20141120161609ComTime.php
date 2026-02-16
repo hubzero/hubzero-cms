@@ -21,54 +21,61 @@ class Migration20141120161609ComTime extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__time_records') && $this->db->tableHasField('#__time_records', 'date')) {
-            $cols = $this->db->getTableColumns('#__time_records', false);
+        $schema = $this->db->schema();
 
-            if ($cols['date']->Type == 'date') {
-                $query = "ALTER TABLE `#__time_records` CHANGE `date` `date` DATETIME NOT NULL";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if (!$schema->tableExists('#__time_records') || !$schema->hasColumn('#__time_records', 'date')) {
+            return;
+        }
 
-                $query = "SELECT `id`, `date` FROM `#__time_records`";
-                $this->db->setQuery($query);
-                $results = $this->db->loadObjectList();
+        $cols = $schema->getTableColumns('#__time_records', false);
 
-                if ($results && count($results) > 0) {
-                    $total = count($results);
-                    $i     = 0;
-                    $this->callback('progress', 'init', array('Updating existing start dates to include time:'));
+        if ($cols['date']->Type == 'date') {
+            $schema->modifyColumn('#__time_records', 'date')
+                ->datetime()
+                ->notNull()
+                ->execute();
 
-                    foreach ($results as $result) {
-                        $date = with(
-                            new \Hubzero\Utility\Date($result->date, \App::get('config')->get('offset'))
-                        )->toSql();
-                        $query = "UPDATE `#__time_records` SET `date` = "
-                            . $this->db->quote($date) . " WHERE `id` = " . (int)$result->id;
-                        $this->db->setQuery($query);
-                        $this->db->query();
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'date'])
+                ->from('#__time_records')
+                ->loadObjectList();
 
-                        $i++;
-                        $progress = round($i / $total * 100);
-                        $this->callback('progress', 'setProgress', array($progress));
-                    }
+            if ($results && count($results) > 0) {
+                $total = count($results);
+                $i     = 0;
+                $this->callback('progress', 'init', array('Updating existing start dates to include time:'));
 
-                    $this->callback('progress', 'done');
+                foreach ($results as $result) {
+                    $date = with(
+                        new \Hubzero\Utility\Date($result->date, \App::get('config')->get('offset'))
+                    )->toSql();
+
+                    $this->db->getQuery(true)
+                        ->update('#__time_records')
+                        ->set(['date' => $date])
+                        ->where('id', '=', (int)$result->id)
+                        ->execute();
+
+                    $i++;
+                    $progress = round($i / $total * 100);
+                    $this->callback('progress', 'setProgress', array($progress));
                 }
+
+                $this->callback('progress', 'done');
             }
         }
 
-        if (
-            $this->db->tableExists('#__time_records')
-            && $this->db->tableHasField('#__time_records', 'date')
-            && !$this->db->tableHasField('#__time_records', 'end')
-        ) {
-            $query = "ALTER TABLE `#__time_records` ADD COLUMN `end` DATETIME NOT NULL AFTER `date`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__time_records', 'date') && !$schema->hasColumn('#__time_records', 'end')) {
+            $schema->addColumn('#__time_records', 'end')
+                ->datetime()
+                ->notNull()
+                ->after('date')
+                ->execute();
 
-            $query = "SELECT `id`, `date`, `time` FROM `#__time_records`";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'date', 'time'])
+                ->from('#__time_records')
+                ->loadObjectList();
 
             if ($results && count($results) > 0) {
                 $total = count($results);
@@ -76,12 +83,13 @@ class Migration20141120161609ComTime extends Base
                 $this->callback('progress', 'init', array('Adding end dates based on record duration:'));
 
                 foreach ($results as $result) {
-                    // Using PHP date because we're just doing a relative calculation
                     $date = date('Y-m-d H:i:s', strtotime($result->date) + $result->time * 3600);
-                    $query = "UPDATE `#__time_records` SET `end` = "
-                        . $this->db->quote($date) . " WHERE `id` = " . (int)$result->id;
-                    $this->db->setQuery($query);
-                    $this->db->query();
+
+                    $this->db->getQuery(true)
+                        ->update('#__time_records')
+                        ->set(['end' => $date])
+                        ->where('id', '=', (int)$result->id)
+                        ->execute();
 
                     $i++;
                     $progress = round($i / $total * 100);

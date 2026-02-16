@@ -21,25 +21,38 @@ class Migration20140703100727ComWiki extends Base
      **/
     public function up()
     {
-        if ($this->db->tableHasField('#__wiki_comments', 'status')) {
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__wiki_comments', 'status')) {
             // Old flagged state was 1. Change it to 3.
-            $query = "UPDATE `#__wiki_comments` SET status=3 WHERE status=1";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__wiki_comments')
+                ->set(['status' => 3])
+                ->where('status', '=', 1)
+                ->execute();
 
             // Mark all published entries as 1
-            $query = "UPDATE `#__wiki_comments` SET status=1 WHERE status=0";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__wiki_comments')
+                ->set(['status' => 1])
+                ->where('status', '=', 0)
+                ->execute();
 
-            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('wiki', 'wikicomment')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
+            $ids = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->whereIn('category', ['wiki', 'wikicomment'])
+                ->loadColumn();
+
+            if ($ids) {
                 $ids = array_map('intval', $ids);
 
-                $query = "UPDATE `#__wiki_comments` SET status=3 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_comments')
+                    ->set(['status' => 3])
+                    ->whereIn('id', $ids)
+                    ->execute();
             }
         }
 
@@ -51,14 +64,20 @@ class Migration20140703100727ComWiki extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__wiki_comments', 'status')) {
-            $query = "UPDATE `#__wiki_comments` SET status=0 WHERE status=1";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__wiki_comments` SET status=1 WHERE status=3";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__wiki_comments', 'status')) {
+            $this->db->getQuery(true)
+                ->update('#__wiki_comments')
+                ->set(['status' => 0])
+                ->where('status', '=', 1)
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__wiki_comments')
+                ->set(['status' => 1])
+                ->where('status', '=', 3)
+                ->execute();
         }
 
         $this->deletePluginEntry('support', 'wiki');

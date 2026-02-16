@@ -21,12 +21,10 @@ class Migration20160418114900ComCollections extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__collections_items')) {
-            if (!$this->db->tableHasKey('#__collections_items', 'idx_type_object_id')) {
-                $query = "ALTER TABLE `#__collections_items` ADD INDEX `idx_type_object_id` (`type`, `object_id`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__collections_items')) {
+            $schema->addIndex('#__collections_items', 'idx_type_object_id', ['type', 'object_id']);
         }
     }
 
@@ -35,12 +33,10 @@ class Migration20160418114900ComCollections extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__collections_items')) {
-            if ($this->db->tableHasKey('#__collections_items', 'idx_type_object_id')) {
-                $query = "ALTER TABLE `#__collections_items` DROP INDEX `idx_type_object_id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__collections_items')) {
+            $schema->dropIndex('#__collections_items', 'idx_type_object_id');
         }
     }
 }

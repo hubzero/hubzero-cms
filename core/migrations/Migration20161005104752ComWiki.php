@@ -21,13 +21,16 @@ class Migration20161005104752ComWiki extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__wiki_versions') && $this->db->tableExists('#__wiki_pages')) {
-            $query = "SELECT v.id, v.pagetext, v.pagehtml FROM `#__wiki_versions` AS v "
-                . "INNER JOIN `#__wiki_pages` AS p ON p.`id`=v.`page_id` "
-                . "WHERE p.`scope`='group' AND v.`pagetext` LIKE "
-                . $this->db->quote('%[?task=new Create a new article]%');
-            $this->db->setQuery($query);
-            $versions = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__wiki_versions') && $schema->tableExists('#__wiki_pages')) {
+            $versions = $this->db->getQuery(true)
+                ->select('v.id, v.pagetext, v.pagehtml')
+                ->from('#__wiki_versions', 'v')
+                ->innerJoin('#__wiki_pages AS p', 'p.id', 'v.page_id')
+                ->where('p.scope', '=', 'group')
+                ->whereLike('v.pagetext', '[?task=new Create a new article]')
+                ->loadObjectList();
 
             foreach ($versions as $version) {
                 $version->pagetext = str_replace(
@@ -41,10 +44,11 @@ class Migration20161005104752ComWiki extends Base
                     $version->pagehtml
                 );
 
-                $query = "UPDATE `#__wiki_versions` SET `pagetext`="
-                    . $this->db->quote($version->pagetext) . " WHERE `id`=" . $version->id;
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_versions')
+                    ->set(['pagetext' => $version->pagetext])
+                    ->where('id', '=', $version->id)
+                    ->execute();
             }
         }
     }
@@ -54,13 +58,16 @@ class Migration20161005104752ComWiki extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__wiki_versions') && $this->db->tableExists('#__wiki_pages')) {
-            $query = "SELECT v.id, v.pagetext, v.pagehtml FROM `#__wiki_versions` AS v "
-                . "INNER JOIN `#__wiki_pages` AS p ON p.`id`=v.`page_id` "
-                . "WHERE p.`scope`='group' AND v.`pagetext` LIKE "
-                . $this->db->quote('%[?action=new Create a new article]%');
-            $this->db->setQuery($query);
-            $versions = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__wiki_versions') && $schema->tableExists('#__wiki_pages')) {
+            $versions = $this->db->getQuery(true)
+                ->select('v.id, v.pagetext, v.pagehtml')
+                ->from('#__wiki_versions', 'v')
+                ->innerJoin('#__wiki_pages AS p', 'p.id', 'v.page_id')
+                ->where('p.scope', '=', 'group')
+                ->whereLike('v.pagetext', '[?action=new Create a new article]')
+                ->loadObjectList();
 
             foreach ($versions as $version) {
                 $version->pagetext = str_replace(
@@ -74,10 +81,11 @@ class Migration20161005104752ComWiki extends Base
                     $version->pagehtml
                 );
 
-                $query = "UPDATE `#__wiki_versions` SET `pagetext`="
-                    . $this->db->quote($version->pagetext) . " WHERE `id`=" . $version->id;
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wiki_versions')
+                    ->set(['pagetext' => $version->pagetext])
+                    ->where('id', '=', $version->id)
+                    ->execute();
             }
         }
     }

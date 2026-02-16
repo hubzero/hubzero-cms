@@ -21,15 +21,24 @@ class Migration20140702122251ComKb extends Base
      **/
     public function up()
     {
-        if ($this->db->tableHasField('#__faq_comments', 'state')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('kb')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__faq_comments', 'state')) {
+            $ids = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->whereIn('category', ['kb'])
+                ->loadColumn();
+
+            if ($ids) {
                 $ids = array_map('intval', $ids);
 
-                $query = "UPDATE `#__faq_comments` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__faq_comments')
+                    ->set(['state' => 3])
+                    ->whereIn('id', $ids)
+                    ->execute();
             }
         }
     }
@@ -39,10 +48,14 @@ class Migration20140702122251ComKb extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__faq_comments', 'state')) {
-            $query = "UPDATE `#__faq_comments` SET state=1 WHERE state=3";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__faq_comments', 'state')) {
+            $this->db->getQuery(true)
+                ->update('#__faq_comments')
+                ->set(['state' => 1])
+                ->where('state', '=', 3)
+                ->execute();
         }
     }
 }

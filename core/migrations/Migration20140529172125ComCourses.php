@@ -22,22 +22,23 @@ class Migration20140529172125ComCourses extends Base
     public function up()
     {
         // Get the problem assets
-        $query =  "SELECT ca.id FROM `#__courses_assets` ca ";
-        $query .= "LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id ";
-        $query .= "LEFT JOIN `#__courses_forms` cf ON ca.id = cf.asset_id ";
-        $query .= "WHERE caa.id IS NULL ";
-        $query .= "AND cf.id IS NULL ";
-        $query .= "AND `type`='form'";
-
-        $this->db->setQuery($query);
-        $results = $this->db->loadObjectList();
+        $results = $this->db->getQuery(true)
+            ->select('ca.id')
+            ->from('#__courses_assets', 'ca')
+            ->leftJoin('#__courses_asset_associations AS caa', 'ca.id', 'caa.asset_id')
+            ->leftJoin('#__courses_forms AS cf', 'ca.id', 'cf.asset_id')
+            ->whereIsNull('caa.id')
+            ->whereIsNull('cf.id')
+            ->where('ca.type', '=', 'form')
+            ->loadObjectList();
 
         if ($results && count($results) > 0) {
             foreach ($results as $result) {
-                $query = "UPDATE `#__courses_assets` SET `type` = 'gradebook', `subtype` = 'auxiliary' "
-                    . "WHERE `id` = '{$result->id}'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__courses_assets')
+                    ->set(['type' => 'gradebook', 'subtype' => 'auxiliary'])
+                    ->where('id', '=', $result->id)
+                    ->execute();
             }
         }
     }

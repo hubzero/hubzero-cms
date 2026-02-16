@@ -21,57 +21,59 @@ class Migration20141010090013Imports extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__imports')) {
-            $query = "CREATE TABLE `#__imports` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `type` varchar(150) NOT NULL,
-				  `name` varchar(150) DEFAULT NULL,
-				  `notes` text,
-				  `file` varchar(255) DEFAULT '',
-				  `count` int(11) unsigned NOT NULL DEFAULT '0',
-				  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
-				  `created_at` datetime DEFAULT NULL,
-				  `state` int(11) unsigned NOT NULL DEFAULT '1',
-				  `mode` varchar(10) DEFAULT 'UPDATE',
-				  `params` text,
-				  `hooks` text,
-				  `fields` text NOT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__imports')) {
+            $schema->createTable('#__imports')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('type', 150)
+                ->string('name', 150)->nullable()
+                ->text('notes')->nullable()
+                ->string('file', 255)->default('')
+                ->unsignedInteger('count')->default(0)
+                ->unsignedInteger('created_by')->default(0)
+                ->datetime('created_at')->nullable()
+                ->unsignedInteger('state')->default(1)
+                ->string('mode', 10)->default('UPDATE')
+                ->text('params')->nullable()
+                ->text('hooks')->nullable()
+                ->text('fields')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__import_hooks')) {
-            $query = "CREATE TABLE `#__import_hooks` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `event` varchar(25) DEFAULT NULL,
-				  `type` varchar(150) NOT NULL,
-				  `name` varchar(255) DEFAULT NULL,
-				  `notes` text,
-				  `file` varchar(100) DEFAULT NULL,
-				  `state` int(11) NOT NULL DEFAULT '1',
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__import_hooks')) {
+            $schema->createTable('#__import_hooks')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('event', 25)->nullable()
+                ->string('type', 150)
+                ->string('name', 255)->nullable()
+                ->text('notes')->nullable()
+                ->string('file', 100)->nullable()
+                ->integer('state')->default(1)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->unsignedInteger('created_by')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__import_runs')) {
-            $query = "CREATE TABLE `#__import_runs` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `import_id` int(11) DEFAULT NULL,
-				  `processed` int(11) DEFAULT NULL,
-				  `count` int(11) DEFAULT NULL,
-				  `ran_by` int(11) DEFAULT NULL,
-				  `ran_at` datetime DEFAULT NULL,
-				  `dry_run` int(11) DEFAULT '0',
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__import_runs')) {
+            $schema->createTable('#__import_runs')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('import_id')->nullable()
+                ->integer('processed')->nullable()
+                ->integer('count')->nullable()
+                ->integer('ran_by')->nullable()
+                ->datetime('ran_at')->nullable()
+                ->integer('dry_run')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -80,22 +82,18 @@ class Migration20141010090013Imports extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__imports')) {
-            $query = "DROP TABLE `#__imports`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__imports')) {
+            $schema->dropTable('#__imports');
         }
 
-        if ($this->db->tableExists('#__import_hooks')) {
-            $query = "DROP TABLE `#__import_hooks`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__import_hooks')) {
+            $schema->dropTable('#__import_hooks');
         }
 
-        if ($this->db->tableExists('#__import_runs')) {
-            $query = "DROP TABLE `#__import_runs`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__import_runs')) {
+            $schema->dropTable('#__import_runs');
         }
     }
 }

@@ -21,48 +21,88 @@ class Migration20121027000000ComCitations extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__citations')) {
-            $query = "ALTER TABLE `#__citations` MODIFY `type` varchar(30) DEFAULT NULL AFTER `uid`;\n";
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasField('#__citations', 'language')) {
-                $query .= "ALTER TABLE `#__citations` ADD `language` varchar(100) DEFAULT NULL;\n";
-            }
-            if (!$this->db->tableHasField('#__citations', 'accession_number')) {
-                $query .= "ALTER TABLE `#__citations` ADD `accession_number` varchar(100) DEFAULT NULL;\n";
-            }
-            if (!$this->db->tableHasField('#__citations', 'short_title')) {
-                $query .= "ALTER TABLE `#__citations` ADD `short_title` varchar(250) DEFAULT NULL;\n";
-            }
-            if (!$this->db->tableHasField('#__citations', 'author_address')) {
-                $query .= "ALTER TABLE `#__citations` ADD `author_address` text;\n";
-            }
-            if (!$this->db->tableHasField('#__citations', 'keywords')) {
-                $query .= "ALTER TABLE `#__citations` ADD `keywords` text;\n";
-            }
-            if (!$this->db->tableHasField('#__citations', 'abstract')) {
-                $query .= "ALTER TABLE `#__citations` ADD `abstract` text;\n";
-            }
-            if (!$this->db->tableHasField('#__citations', 'call_number')) {
-                $query .= "ALTER TABLE `#__citations` ADD `call_number` varchar(100) DEFAULT NULL;\n";
-            }
-            if (!$this->db->tableHasField('#__citations', 'label')) {
-                $query .= "ALTER TABLE `#__citations` ADD `label` varchar(100) DEFAULT NULL;\n";
-            }
-            if (!$this->db->tableHasField('#__citations', 'research_notes')) {
-                $query .= "ALTER TABLE `#__citations` ADD `research_notes` text;\n";
-            }
-            if (!$this->db->tableHasField('#__citations', 'params')) {
-                $query .= "ALTER TABLE `#__citations` ADD `params` text;\n";
-            }
-            if (!$this->db->tableHasKey('#__citations', 'ftidx_title_isbn_doi_abstract_author_publisher')) {
-                $query .= "CREATE FULLTEXT INDEX ftidx_title_isbn_doi_abstract_author_publisher "
-                    . "ON `#__citations` (title,isbn,doi,abstract,author,publisher);\n";
+        if ($schema->tableExists('#__citations')) {
+            // MODIFY with AFTER clause is MySQL-specific; column position change skipped for SQLite
+            if ($schema->hasColumn('#__citations', 'type')) {
+                $schema->modifyColumn('#__citations', 'type')
+                    ->string(30)
+                    ->nullable()
+                    ->default(null)
+                    ->execute();
             }
 
-            if (!empty($query)) {
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__citations', 'language')) {
+                $schema->addColumn('#__citations', 'language')
+                    ->string(100)
+                    ->nullable()
+                    ->default(null)
+                    ->execute();
             }
+            if (!$schema->hasColumn('#__citations', 'accession_number')) {
+                $schema->addColumn('#__citations', 'accession_number')
+                    ->string(100)
+                    ->nullable()
+                    ->default(null)
+                    ->execute();
+            }
+            if (!$schema->hasColumn('#__citations', 'short_title')) {
+                $schema->addColumn('#__citations', 'short_title')
+                    ->string(250)
+                    ->nullable()
+                    ->default(null)
+                    ->execute();
+            }
+            if (!$schema->hasColumn('#__citations', 'author_address')) {
+                $schema->addColumn('#__citations', 'author_address')
+                    ->text()
+                    ->execute();
+            }
+            if (!$schema->hasColumn('#__citations', 'keywords')) {
+                $schema->addColumn('#__citations', 'keywords')
+                    ->text()
+                    ->execute();
+            }
+            if (!$schema->hasColumn('#__citations', 'abstract')) {
+                $schema->addColumn('#__citations', 'abstract')
+                    ->text()
+                    ->execute();
+            }
+            if (!$schema->hasColumn('#__citations', 'call_number')) {
+                $schema->addColumn('#__citations', 'call_number')
+                    ->string(100)
+                    ->nullable()
+                    ->default(null)
+                    ->execute();
+            }
+            if (!$schema->hasColumn('#__citations', 'label')) {
+                $schema->addColumn('#__citations', 'label')
+                    ->string(100)
+                    ->nullable()
+                    ->default(null)
+                    ->execute();
+            }
+            if (!$schema->hasColumn('#__citations', 'research_notes')) {
+                $schema->addColumn('#__citations', 'research_notes')
+                    ->text()
+                    ->execute();
+            }
+            if (!$schema->hasColumn('#__citations', 'params')) {
+                $schema->addColumn('#__citations', 'params')
+                    ->text()
+                    ->execute();
+            }
+
+            // Add FULLTEXT index using helper for SQLite compatibility
+            $schema->addFulltextIndex('#__citations', 'ftidx_title_isbn_doi_abstract_author_publisher', [
+                'title',
+                'isbn',
+                'doi',
+                'abstract',
+                'author',
+                'publisher',
+            ]);
         }
     }
 
@@ -71,46 +111,41 @@ class Migration20121027000000ComCitations extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__citations')) {
-            $query = "";
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasField('#__citations', 'language')) {
-                $query .= "ALTER TABLE `#__citations` DROP COLUM `language`;\n";
+        if ($schema->tableExists('#__citations')) {
+            if ($schema->hasColumn('#__citations', 'language')) {
+                $schema->dropColumn('#__citations', 'language');
             }
-            if ($this->db->tableHasField('#__citations', 'accession_number')) {
-                $query .= "ALTER TABLE `#__citations` DROP COLUM `accession_number`;\n";
+            if ($schema->hasColumn('#__citations', 'accession_number')) {
+                $schema->dropColumn('#__citations', 'accession_number');
             }
-            if ($this->db->tableHasField('#__citations', 'short_title')) {
-                $query .= "ALTER TABLE `#__citations` DROP COLUM `short_title`;\n";
+            if ($schema->hasColumn('#__citations', 'short_title')) {
+                $schema->dropColumn('#__citations', 'short_title');
             }
-            if ($this->db->tableHasField('#__citations', 'author_address')) {
-                $query .= "ALTER TABLE `#__citations` DROP COLUM `author_address`;\n";
+            if ($schema->hasColumn('#__citations', 'author_address')) {
+                $schema->dropColumn('#__citations', 'author_address');
             }
-            if ($this->db->tableHasField('#__citations', 'keywords')) {
-                $query .= "ALTER TABLE `#__citations` DROP COLUM `keywords`;\n";
+            if ($schema->hasColumn('#__citations', 'keywords')) {
+                $schema->dropColumn('#__citations', 'keywords');
             }
-            if ($this->db->tableHasField('#__citations', 'abstract')) {
-                $query .= "ALTER TABLE `#__citations` DROP COLUM `abstract`;\n";
+            if ($schema->hasColumn('#__citations', 'abstract')) {
+                $schema->dropColumn('#__citations', 'abstract');
             }
-            if ($this->db->tableHasField('#__citations', 'call_number')) {
-                $query .= "ALTER TABLE `#__citations` DROP COLUM `call_number`;\n";
+            if ($schema->hasColumn('#__citations', 'call_number')) {
+                $schema->dropColumn('#__citations', 'call_number');
             }
-            if ($this->db->tableHasField('#__citations', 'label')) {
-                $query .= "ALTER TABLE `#__citations` DROP COLUM `label`;\n";
+            if ($schema->hasColumn('#__citations', 'label')) {
+                $schema->dropColumn('#__citations', 'label');
             }
-            if ($this->db->tableHasField('#__citations', 'research_notes')) {
-                $query .= "ALTER TABLE `#__citations` DROP COLUM `research_notes`;\n";
+            if ($schema->hasColumn('#__citations', 'research_notes')) {
+                $schema->dropColumn('#__citations', 'research_notes');
             }
-            if ($this->db->tableHasField('#__citations', 'params')) {
-                $query .= "ALTER TABLE `#__citations` DROP COLUM `params`;\n";
+            if ($schema->hasColumn('#__citations', 'params')) {
+                $schema->dropColumn('#__citations', 'params');
             }
-            if ($this->db->tableHasKey('#__citations', 'ftidx_title_isbn_doi_abstract_author_publisher')) {
-                $query .= "ALTER TABLE `#__citations` DROP KEY ftidx_title_isbn_doi_abstract_author_publisher;\n";
-            }
-
-            if (!empty($query)) {
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasKey('#__citations', 'ftidx_title_isbn_doi_abstract_author_publisher')) {
+                $schema->dropIndex('#__citations', 'ftidx_title_isbn_doi_abstract_author_publisher');
             }
         }
     }

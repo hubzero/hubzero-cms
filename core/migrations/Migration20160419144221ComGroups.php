@@ -20,18 +20,20 @@ class Migration20160419144221ComGroups extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__xgroups_recents')) {
-            $query = "CREATE TABLE `#__xgroups_recents` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `group_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_user_id` (`user_id`),
-				  KEY `idx_group_id` (`group_id`)
-				) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__xgroups_recents')) {
+            $schema->createTable('#__xgroups_recents')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('user_id')->default(0)
+                ->unsignedInteger('group_id')->default(0)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->primaryKey('id')
+                ->index('idx_user_id', 'user_id')
+                ->index('idx_group_id', 'group_id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -40,10 +42,10 @@ class Migration20160419144221ComGroups extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__xgroups_recents')) {
-            $query = "DROP TABLE `#__xgroups_recents`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xgroups_recents')) {
+            $schema->dropTable('#__xgroups_recents');
         }
     }
 }

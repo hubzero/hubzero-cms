@@ -21,26 +21,24 @@ class Migration20131106152023ComCollections extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__collections_items')
-            && !$this->db->tableHasKey('#__collections_items', 'idx_fulltxt_title_description')
-            && $this->db->tableHasField('#__collections_items', 'title')
-            && $this->db->tableHasField('#__collections_items', 'description')
+            $schema->tableExists('#__collections_items')
+            && $schema->hasColumn('#__collections_items', 'title')
+            && $schema->hasColumn('#__collections_items', 'description')
         ) {
-            $query = "ALTER TABLE `#__collections_items` ADD FULLTEXT KEY "
-                . "`idx_fulltxt_title_description` (`title`, `description`);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addFulltextIndex('#__collections_items', 'idx_fulltxt_title_description', [
+                'title',
+                'description',
+            ]);
         }
 
         if (
-            $this->db->tableExists('#__collections_posts')
-            && !$this->db->tableHasKey('#__collections_posts', 'idx_fulltxt_description')
-            && $this->db->tableHasField('#__collections_posts', 'description')
+            $schema->tableExists('#__collections_posts')
+            && $schema->hasColumn('#__collections_posts', 'description')
         ) {
-            $query = "ALTER TABLE `#__collections_posts` ADD FULLTEXT KEY `idx_fulltxt_description` (`description`);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addFulltextIndex('#__collections_posts', 'idx_fulltxt_description', ['description']);
         }
     }
 
@@ -49,22 +47,10 @@ class Migration20131106152023ComCollections extends Base
      **/
     public function down()
     {
-        if (
-            $this->db->tableExists('#__collections_items')
-            && $this->db->tableHasKey('#__collections_items', 'idx_fulltxt_title_description')
-        ) {
-            $query = "ALTER TABLE `#__collections_items` DROP INDEX `idx_fulltxt_title_description`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
 
-        if (
-            $this->db->tableExists('#__collections_posts')
-            && $this->db->tableHasKey('#__collections_posts', 'idx_fulltxt_description')
-        ) {
-            $query = "ALTER TABLE `#__collections_posts` DROP INDEX `idx_fulltxt_description`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropIndex('#__collections_items', 'idx_fulltxt_title_description');
+
+        $schema->dropIndex('#__collections_posts', 'idx_fulltxt_description');
     }
 }

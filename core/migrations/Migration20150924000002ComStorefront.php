@@ -21,14 +21,11 @@ class Migration20150924000002ComStorefront extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__storefront_product_collections')
-            && $this->db->tableHasField('#__storefront_product_collections', 'pcId')
-        ) {
-            $query = "ALTER TABLE `#__storefront_product_collections` MODIFY COLUMN `pcId` INT(16) NOT NULL "
-                . "AUTO_INCREMENT";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        // modifyColumn handles AUTO_INCREMENT appropriately for each database
+        $this->db->schema()->modifyColumn('#__storefront_product_collections', 'pcId')
+            ->integer()
+            ->notNull()
+            ->autoIncrement()
+            ->execute();
     }
 }

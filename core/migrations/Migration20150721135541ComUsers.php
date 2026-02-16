@@ -21,18 +21,20 @@ class Migration20150721135541ComUsers extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__users_log_auth')) {
-            $query = "CREATE TABLE `#__users_log_auth` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `user_id` int(11) NOT NULL,
-				  `username` varchar(150) DEFAULT NULL,
-				  `status` enum('success','failure') DEFAULT NULL,
-				  `ip` varchar(15) DEFAULT NULL,
-				  `logged` datetime DEFAULT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__users_log_auth')) {
+            $schema->createTable('#__users_log_auth')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('user_id')
+                ->string('username', 150)->nullable()
+                ->enum('status', ['success', 'failure'])->nullable()
+                ->string('ip', 15)->nullable()
+                ->datetime('logged')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -41,10 +43,8 @@ class Migration20150721135541ComUsers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__users_log_auth')) {
-            $query = "DROP TABLE `#__users_log_auth`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__users_log_auth');
     }
 }

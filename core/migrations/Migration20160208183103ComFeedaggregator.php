@@ -22,24 +22,28 @@ class Migration20160208183103ComFeedaggregator extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__feedaggregator_posts')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__feedaggregator_posts')) {
             // Grab rows first
-            $query = "SELECT * FROM `#__feedaggregator_posts`;";
-            $this->db->setQuery($query);
-            $rows = $this->db->loadObjectList();
+            $query = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__feedaggregator_posts');
+            $rows = $query->loadObjectList();
 
             // Convert the field
-            $query = "ALTER TABLE `#__feedaggregator_posts` MODIFY created DATETIME;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->schema()->modifyColumn('#__feedaggregator_posts', 'created')
+                ->datetime()
+                ->execute();
 
             // Convert each timestamp into SQL date format
             foreach ($rows as $row) {
                 $dt = \Date::of(date("F j, Y, g:i a", $row->created))->toSql();
-                $query = "UPDATE `#__feedaggregator_posts` SET `created`=" . $this->db->quote($dt) . " WHERE "
-                    . "`id`=" . $this->db->quote($row->id) . ";";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__feedaggregator_posts')
+                    ->set(['created' => $dt])
+                    ->where('id', '=', $row->id)
+                    ->execute();
             }
         }
     }
@@ -49,24 +53,28 @@ class Migration20160208183103ComFeedaggregator extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__feedaggregator_posts')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__feedaggregator_posts')) {
             // Grab rows first
-            $query = "SELECT * FROM `#__feedaggregator_posts`;";
-            $this->db->setQuery($query);
-            $rows = $this->db->loadObjectList();
+            $query = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__feedaggregator_posts');
+            $rows = $query->loadObjectList();
 
             // Convert the field
-            $query = "ALTER TABLE `#__feedaggregator_posts` MODIFY created INT(11);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->schema()->modifyColumn('#__feedaggregator_posts', 'created')
+                ->integer(11)
+                ->execute();
 
             // Convert each timestamp into SQL date format
             foreach ($rows as $row) {
                 $dt = \Date::of($row->created)->toUnix();
-                $query = "UPDATE `#__feedaggregator_posts` SET `created`=" . $this->db->quote($dt) . " WHERE "
-                    . "`id`=" . $this->db->quote($row->id) . ";";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__feedaggregator_posts')
+                    ->set(['created' => $dt])
+                    ->where('id', '=', $row->id)
+                    ->execute();
             }
         }
     }

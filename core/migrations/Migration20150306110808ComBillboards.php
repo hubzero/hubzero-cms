@@ -21,15 +21,13 @@ class Migration20150306110808ComBillboards extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__billboard_collection') && !$this->db->tableExists('#__billboards_collections')) {
-            $query = "RENAME TABLE `#__billboard_collection` TO `#__billboards_collections`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__billboard_collection') && !$schema->tableExists('#__billboards_collections')) {
+            $schema->renameTable('#__billboard_collection', '#__billboards_collections');
         }
-        if ($this->db->tableExists('#__billboards') && !$this->db->tableExists('#__billboards_billboards')) {
-            $query = "RENAME TABLE `#__billboards` TO `#__billboards_billboards`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__billboards') && !$schema->tableExists('#__billboards_billboards')) {
+            $schema->renameTable('#__billboards', '#__billboards_billboards');
         }
     }
 
@@ -38,15 +36,13 @@ class Migration20150306110808ComBillboards extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__billboard_collection') && $this->db->tableExists('#__billboards_collections')) {
-            $query = "RENAME TABLE `#__billboards_collections` TO `#__billboard_collection`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__billboard_collection') && $schema->tableExists('#__billboards_collections')) {
+            $schema->renameTable('#__billboards_collections', '#__billboard_collection');
         }
-        if (!$this->db->tableExists('#__billboards') && $this->db->tableExists('#__billboards_billboards')) {
-            $query = "RENAME TABLE `#__billboards_billboards` TO `#__billboards`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__billboards') && $schema->tableExists('#__billboards_billboards')) {
+            $schema->renameTable('#__billboards_billboards', '#__billboards');
         }
     }
 }

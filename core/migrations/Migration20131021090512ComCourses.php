@@ -21,41 +21,18 @@ class Migration20131021090512ComCourses extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__courses_inviteemails')) {
-            $query = "DROP TABLE `#__courses_inviteemails`";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__courses_inviteemails');
+        $schema->dropTable('#__courses_events');
+
+        if ($schema->tableExists('#__courses_enrollments') && $this->db->getDatabase() != 'nanohub') {
+            $schema->dropTable('#__courses_enrollments');
         }
 
-        if ($this->db->tableExists('#__courses_events')) {
-            $query = "DROP TABLE `#__courses_events`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__courses_enrollments') && $this->db->getDatabase() != 'nanohub') {
-            $query = "DROP TABLE `#__courses_enrollments`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__courses_email')) {
-            $query = "DROP TABLE `#__courses_email`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__courses_email_log')) {
-            $query = "DROP TABLE `#__courses_email_log`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        if ($this->db->tableExists('#__courses_email_version')) {
-            $query = "DROP TABLE `#__courses_email_version`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__courses_email');
+        $schema->dropTable('#__courses_email_log');
+        $schema->dropTable('#__courses_email_version');
     }
 
     /**
@@ -63,98 +40,94 @@ class Migration20131021090512ComCourses extends Base
      **/
     public function down()
     {
-        if (!$this->db->tableExists('#__courses_email')) {
-            $query = "CREATE TABLE `#__courses_email` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `offering_id` int(11) NOT NULL DEFAULT '0',
-					  `name` varchar(255) NOT NULL DEFAULT '',
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__courses_email')) {
+            $schema->createTable('#__courses_email')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('offering_id')->default(0)
+                ->string('name', 255)->default('')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__courses_email_log')) {
-            $query = "CREATE TABLE `#__courses_email_log` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `email_id` int(11) NOT NULL DEFAULT '0',
-					  `version_id` int(11) NOT NULL DEFAULT '0',
-					  `to` varchar(100) NOT NULL DEFAULT '',
-					  `sent` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `sent_by` int(11) NOT NULL DEFAULT '0',
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__courses_email_log')) {
+            $schema->createTable('#__courses_email_log')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('email_id')->default(0)
+                ->integer('version_id')->default(0)
+                ->string('to', 100)->default('')
+                ->datetime('sent')->default('0000-00-00 00:00:00')
+                ->integer('sent_by')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__courses_email_version')) {
-            $query = "CREATE TABLE `#__courses_email_version` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `email_id` int(11) NOT NULL DEFAULT '0',
-					  `subject` varchar(255) NOT NULL DEFAULT '',
-					  `body` text NOT NULL,
-					  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  `created_by` int(11) NOT NULL DEFAULT '0',
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__courses_email_version')) {
+            $schema->createTable('#__courses_email_version')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('email_id')->default(0)
+                ->string('subject', 255)->default('')
+                ->text('body')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__courses_enrollments')) {
-            $query = "CREATE TABLE `#__courses_enrollments` (
-					  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-					  `offering_id` int(11) NOT NULL DEFAULT '0',
-					  `user_id` int(11) NOT NULL DEFAULT '0',
-					  `enrollment_id` int(11) NOT NULL DEFAULT '0',
-					  `status` varchar(100) NOT NULL DEFAULT '',
-					  `fname` varchar(200) NOT NULL DEFAULT '',
-					  `lname` varchar(200) NOT NULL DEFAULT '',
-					  `email1` varchar(100) NOT NULL DEFAULT '',
-					  `email2` varchar(100) NOT NULL DEFAULT '',
-					  `hubaccount` varchar(100) NOT NULL DEFAULT '',
-					  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__courses_enrollments')) {
+            $schema->createTable('#__courses_enrollments')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('offering_id')->default(0)
+                ->integer('user_id')->default(0)
+                ->integer('enrollment_id')->default(0)
+                ->string('status', 100)->default('')
+                ->string('fname', 200)->default('')
+                ->string('lname', 200)->default('')
+                ->string('email1', 100)->default('')
+                ->string('email2', 100)->default('')
+                ->string('hubaccount', 100)->default('')
+                ->datetime('date')->default('0000-00-00 00:00:00')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__courses_events')) {
-            $query = "CREATE TABLE `#__courses_events` (
-					  `id` int(11) NOT NULL AUTO_INCREMENT,
-					  `gidNumber` int(11) NOT NULL,
-					  `actorid` int(11) NOT NULL,
-					  `title` varchar(255) NOT NULL,
-					  `details` text NOT NULL,
-					  `type` varchar(50) NOT NULL,
-					  `start` datetime NOT NULL,
-					  `end` datetime NOT NULL,
-					  `active` tinyint(1) NOT NULL,
-					  `created` datetime NOT NULL,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__courses_events')) {
+            $schema->createTable('#__courses_events')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('gidNumber')
+                ->integer('actorid')
+                ->string('title', 255)
+                ->text('details')
+                ->string('type', 50)
+                ->datetime('start')
+                ->datetime('end')
+                ->tinyInteger('active')
+                ->datetime('created')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__courses_inviteemails')) {
-            $query = "CREATE TABLE `#__courses_inviteemails` (
-					  `id` int(11) NOT NULL AUTO_INCREMENT,
-					  `email` varchar(150) NOT NULL,
-					  `gidNumber` int(11) NOT NULL,
-					  `token` varchar(255) NOT NULL,
-					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__courses_inviteemails')) {
+            $schema->createTable('#__courses_inviteemails')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('email', 150)
+                ->integer('gidNumber')
+                ->string('token', 255)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

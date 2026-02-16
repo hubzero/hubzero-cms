@@ -21,19 +21,19 @@ class Migration20151028151331ComGeosearch extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__geosearch_markers')) {
-            $query = "SHOW INDEX FROM `#__geosearch_markers`";
-            $this->db->setQuery($query);
-            $this->db->query();
-            $key = $this->db->loadAssoc();
+        $schema = $this->db->schema();
 
-            if ($key == null || $key['Key_name'] != 'PRIMARY' && $key['column'] = ! 'id') {
-                // Make an auto-incrementing index as ID
-                $query = "ALTER TABLE `#__geosearch_markers` MODIFY COLUMN id INT AUTO_INCREMENT, ADD PRIMARY KEY"
-                    . "(id);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (!$schema->tableExists('#__geosearch_markers')) {
+            return;
+        }
+
+        if (!$schema->hasPrimaryKey('#__geosearch_markers')) {
+            $schema->table('#__geosearch_markers')->alter()
+                ->modifyColumn('id')
+                ->integer()
+                ->notNull()
+                ->autoIncrement()
+                ->execute();
         }
     }
 
@@ -42,23 +42,19 @@ class Migration20151028151331ComGeosearch extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__geosearch_markers')) {
-            $query = "SHOW INDEX FROM `#__geosearch_markers`";
-            $this->db->setQuery($query);
-            $this->db->query();
-            $key = $this->db->loadAssoc();
+        $schema = $this->db->schema();
 
-            if ($key['Key_name'] == 'PRIMARY' && $key['column'] = ! 'id') {
-                // Removes the index
-                $query = "ALTER TABLE `#__geosearch_markers` MODIFY id INT NOT NULL;";
-                $this->db->setQuery($query);
-                if ($this->db->query()) {
-                    // Drop the key
-                    $query = "ALTER TABLE `#__geosearch_markers` DROP PRIMARY KEY;";
-                    $this->db->setQuery($query);
-                    $this->db->query();
-                }
-            }
+        if (!$schema->tableExists('#__geosearch_markers')) {
+            return;
+        }
+
+        if ($schema->hasPrimaryKey('#__geosearch_markers')) {
+            $schema->table('#__geosearch_markers')->alter()
+                ->modifyColumn('id')
+                ->integer()
+                ->notNull()
+                ->dropPrimaryKey()
+                ->execute();
         }
     }
 }

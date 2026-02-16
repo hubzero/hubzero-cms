@@ -34,21 +34,26 @@ class Migration20190305000000Announcements extends Base
      **/
     public function up()
     {
-        foreach (self::$tables as $table => $fields) {
+        $schema = $this->db->schema();
+
+        foreach (self::$tables as $tableName => $fields) {
+            if (!$schema->tableExists($tableName)) {
+                continue;
+            }
+
             foreach ($fields as $field) {
-                if (
-                    $this->db->tableExists($table)
-                    && $this->db->tableHasField($table, $field)
-                ) {
-                    $query = "ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NULL  DEFAULT NULL";
+                if ($schema->hasColumn($tableName, $field)) {
+                    $schema->modifyColumn($tableName, $field)
+                        ->datetime()
+                        ->nullable()
+                        ->default(null)
+                        ->execute();
 
-                    $this->db->setQuery($query);
-                    $this->db->query();
-
-                    $query = "UPDATE `$table` SET `$field`=NULL WHERE `$field`='0000-00-00 00:00:00'";
-
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update($tableName)
+                        ->set([$field => null])
+                        ->where($field, '=', '0000-00-00 00:00:00')
+                        ->execute();
                 }
             }
         }
@@ -59,17 +64,20 @@ class Migration20190305000000Announcements extends Base
      **/
     public function down()
     {
-        foreach (self::$tables as $table => $fields) {
-            foreach ($fields as $field) {
-                if (
-                    $this->db->tableExists($table)
-                    && $this->db->tableHasField($table, $field)
-                ) {
-                    $query = "ALTER TABLE `$table` CHANGE `$field` `$field` DATETIME  NOT NULL  DEFAULT "
-                        . "'0000-00-00 00:00:00'";
+        $schema = $this->db->schema();
 
-                    $this->db->setQuery($query);
-                    $this->db->query();
+        foreach (self::$tables as $tableName => $fields) {
+            if (!$schema->tableExists($tableName)) {
+                continue;
+            }
+
+            foreach ($fields as $field) {
+                if ($schema->hasColumn($tableName, $field)) {
+                    $schema->modifyColumn($tableName, $field)
+                        ->datetime()
+                        ->notNull()
+                        ->default('0000-00-00 00:00:00')
+                        ->execute();
                 }
             }
         }

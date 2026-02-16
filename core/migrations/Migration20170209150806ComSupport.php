@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for changing #__support_tickets group (cn) field to group ID
@@ -21,60 +22,30 @@ class Migration20170209150806ComSupport extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__support_tickets') && $this->db->tableHasField('#__support_tickets', 'group')
-            && $this->db->tableExists('#__xgroups') && $this->db->tableHasField('#__xgroups', 'cn')
+            $schema->tableExists('#__support_tickets') && $schema->hasColumn('#__support_tickets', 'group')
+            && $schema->tableExists('#__xgroups') && $schema->hasColumn('#__xgroups', 'cn')
         ) {
-            /*$query = "SELECT `id`, `group` FROM `#__support_tickets` WHERE `group`!='' AND `group` IS NOT NULL";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
-
-            if (count($results) > 0)
-            {
-                foreach ($results as $result)
-                {
-                    $query = "SELECT `gidNumber` FROM `#__xgroups` WHERE `cn`=" . $this->db->quote($result->group);
-                    $this->db->setQuery($query);
-
-                    $gidNumber = 0;
-                    if ($gid = $this->db->loadResult())
-                    {
-                        $gidNumber = $gid;
-                    }
-
-                    $query = "UPDATE `#__support_tickets` SET `group`="
-                        . $this->db->quote($gidNumber)
-                        . " WHERE `id`=" . $this->db->quote($result->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
-                }
-            }*/
             // Update group aliases to IDs
-            $query = "UPDATE `#__support_tickets` AS u
-						LEFT JOIN `#__xgroups` AS x ON x.`cn`=u.`group`
-						SET u.`group` = x.`gidNumber`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__support_tickets', 'u')
+                ->leftJoin('#__xgroups AS x', 'x.cn', 'u.group')
+                ->set(['u.group' => Expression::column('x.gidNumber')])
+                ->execute();
 
             // Remove the old index
-            if ($this->db->tableHasKey('#__support_tickets', 'idx_group')) {
-                $query = "ALTER TABLE `#__support_tickets` DROP KEY `idx_group`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__support_tickets', 'idx_group');
 
-            // Change the column type
-            $query = "ALTER TABLE `#__support_tickets` "
-                . "CHANGE COLUMN `group` `group_id` int(11) NOT NULL DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__support_tickets', 'group', 'group_id')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
 
             // Add the new index
-            if (!$this->db->tableHasKey('#__support_tickets', 'idx_group_id')) {
-                $query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_group_id` (`group_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__support_tickets', 'idx_group_id', 'group_id');
         }
     }
 
@@ -83,31 +54,25 @@ class Migration20170209150806ComSupport extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__support_tickets') && $this->db->tableHasField('#__support_tickets', 'group')
-            && $this->db->tableExists('#__xgroups') && $this->db->tableHasField('#__xgroups', 'cn')
+            $schema->tableExists('#__support_tickets') && $schema->hasColumn('#__support_tickets', 'group')
+            && $schema->tableExists('#__xgroups') && $schema->hasColumn('#__xgroups', 'cn')
         ) {
-            if ($this->db->tableHasKey('#__support_tickets', 'idx_group_id')) {
-                $query = "ALTER TABLE `#__support_tickets` DROP KEY `idx_group_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__support_tickets', 'idx_group_id');
 
-            $query = "ALTER TABLE `#__support_tickets` CHANGE COLUMN `group_id` `group` varchar(250)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__support_tickets', 'group_id', 'group')
+                ->string(250)
+                ->execute();
 
-            $query = "UPDATE `#__support_tickets` AS u
-						LEFT JOIN `#__xgroups` AS x ON x.`gidNumber`=u.`group`
-						SET u.`group` = x.`cn`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__support_tickets AS u')
+                ->leftJoin('#__xgroups AS x', 'x.gidNumber', 'u.group')
+                ->set(['u.group' => Expression::column('x.cn')])
+                ->execute();
 
-            if (!$this->db->tableHasKey('#__support_tickets', 'idx_group')) {
-                $query = "ALTER TABLE `#__support_tickets` ADD INDEX `idx_group` (`group`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__support_tickets', 'idx_group', 'group');
         }
     }
 }

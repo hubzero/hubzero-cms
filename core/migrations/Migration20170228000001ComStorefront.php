@@ -21,15 +21,18 @@ class Migration20170228000001ComStorefront extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_skus')
-            && !$this->db->tableHasField('#__storefront_skus', 'sCheckoutNotes')
+            $schema->tableExists('#__storefront_skus')
+            && !$schema->hasColumn('#__storefront_skus', 'sCheckoutNotes')
         ) {
-            $query = "ALTER TABLE `#__storefront_skus`
-						ADD `sCheckoutNotes` VARCHAR(255),
-						ADD `sCheckoutNotesRequired` tinyint(1) NOT NULL DEFAULT '0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__storefront_skus', 'sCheckoutNotes')->string()->execute();
+            $schema->addColumn('#__storefront_skus', 'sCheckoutNotesRequired')
+                ->tinyInteger()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 
@@ -38,15 +41,14 @@ class Migration20170228000001ComStorefront extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__storefront_skus')
-            && $this->db->tableHasField('#__storefront_skus', 'sCheckoutNotes')
+            $schema->tableExists('#__storefront_skus')
+            && $schema->hasColumn('#__storefront_skus', 'sCheckoutNotes')
         ) {
-            $query = "ALTER TABLE `#__storefront_skus`
-			DROP `sCheckoutNotes`,
-			DROP `sCheckoutNotesRequired`";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__storefront_skus', 'sCheckoutNotes');
+            $schema->dropColumn('#__storefront_skus', 'sCheckoutNotesRequired');
         }
     }
 }

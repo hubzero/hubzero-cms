@@ -21,21 +21,37 @@ class Migration20130820135328ComNewsletter extends Base
      **/
     public function up()
     {
-        $query = "
-			ALTER TABLE `#__newsletters` CONVERT TO CHARACTER SET utf8;
-			ALTER TABLE `#__newsletter_templates` CONVERT TO CHARACTER SET utf8;
-			ALTER TABLE `#__newsletter_secondary_story` CONVERT TO CHARACTER SET utf8;
-			ALTER TABLE `#__newsletter_primary_story` CONVERT TO CHARACTER SET utf8;
-			ALTER TABLE `#__newsletter_mailings` CONVERT TO CHARACTER SET utf8;
-			ALTER TABLE `#__newsletter_mailinglists` CONVERT TO CHARACTER SET utf8;
-			ALTER TABLE `#__newsletter_mailinglist_unsubscribes` CONVERT TO CHARACTER SET utf8;
-			ALTER TABLE `#__newsletter_mailinglist_emails` CONVERT TO CHARACTER SET utf8;
-			ALTER TABLE `#__newsletter_mailing_recipients` CONVERT TO CHARACTER SET utf8;
-			ALTER TABLE `#__newsletter_mailing_recipient_actions` CONVERT TO CHARACTER SET utf8;";
+        $schema = $this->db->schema();
 
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__newsletters')) {
+            $schema->convertToCharset('#__newsletters', 'utf8');
+        }
+        if ($schema->tableExists('#__newsletter_templates')) {
+            $schema->convertToCharset('#__newsletter_templates', 'utf8');
+        }
+        if ($schema->tableExists('#__newsletter_secondary_story')) {
+            $schema->convertToCharset('#__newsletter_secondary_story', 'utf8');
+        }
+        if ($schema->tableExists('#__newsletter_primary_story')) {
+            $schema->convertToCharset('#__newsletter_primary_story', 'utf8');
+        }
+        if ($schema->tableExists('#__newsletter_mailings')) {
+            $schema->convertToCharset('#__newsletter_mailings', 'utf8');
+        }
+        if ($schema->tableExists('#__newsletter_mailinglists')) {
+            $schema->convertToCharset('#__newsletter_mailinglists', 'utf8');
+        }
+        if ($schema->tableExists('#__newsletter_mailinglist_unsubscribes')) {
+            $schema->convertToCharset('#__newsletter_mailinglist_unsubscribes', 'utf8');
+        }
+        if ($schema->tableExists('#__newsletter_mailinglist_emails')) {
+            $schema->convertToCharset('#__newsletter_mailinglist_emails', 'utf8');
+        }
+        if ($schema->tableExists('#__newsletter_mailing_recipients')) {
+            $schema->convertToCharset('#__newsletter_mailing_recipients', 'utf8');
+        }
+        if ($schema->tableExists('#__newsletter_mailing_recipient_actions')) {
+            $schema->convertToCharset('#__newsletter_mailing_recipient_actions', 'utf8');
         }
     }
 }

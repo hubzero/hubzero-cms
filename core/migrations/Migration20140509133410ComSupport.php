@@ -21,45 +21,29 @@ class Migration20140509133410ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__support_categories')) {
-            if (!$this->db->tableHasField('#__support_categories', 'section_id')) {
-                $query = "ALTER TABLE `#__support_categories` "
-                    . "CHANGE `section` `section_id` INT(11)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__support_categories')) {
+            if (!$schema->hasColumn('#__support_categories', 'section_id')) {
+                $schema->renameColumn('section', 'section_id')->integer()->notNull()->default(0);
             }
-            if ($this->db->tableHasField('#__support_categories', 'category')) {
-                $query = "ALTER TABLE `#__support_categories` "
-                    . "CHANGE `category` `alias` VARCHAR(250)  NOT NULL  DEFAULT '';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__support_categories', 'category')) {
+                $schema->renameColumn('category', 'alias')->string(250)->notNull()->default('');
             }
-            if (!$this->db->tableHasField('#__support_categories', 'title')) {
-                $query = "ALTER TABLE `#__support_categories` ADD `title` VARCHAR(255)  NOT NULL  DEFAULT '';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__support_categories', 'title')) {
+                $schema->addColumn('title')->string(255)->notNull()->default('');
             }
-            if (!$this->db->tableHasField('#__support_categories', 'created')) {
-                $query = "ALTER TABLE `#__support_categories` "
-                    . "ADD `created` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__support_categories', 'created')) {
+                $schema->addColumn('created')->datetime()->notNull()->default('0000-00-00 00:00:00');
             }
-            if (!$this->db->tableHasField('#__support_categories', 'created_by')) {
-                $query = "ALTER TABLE `#__support_categories` ADD `created_by` INT(11)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__support_categories', 'created_by')) {
+                $schema->addColumn('created_by')->integer()->notNull()->default(0);
             }
-            if (!$this->db->tableHasField('#__support_categories', 'modified')) {
-                $query = "ALTER TABLE `#__support_categories` "
-                    . "ADD `modified` DATETIME  NOT NULL  DEFAULT '0000-00-00 00:00:00';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__support_categories', 'modified')) {
+                $schema->addColumn('modified')->datetime()->notNull()->default('0000-00-00 00:00:00');
             }
-            if (!$this->db->tableHasField('#__support_categories', 'modified_by')) {
-                $query = "ALTER TABLE `#__support_categories` ADD `modified_by` INT(11)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__support_categories', 'modified_by')) {
+                $schema->addColumn('modified_by')->integer()->notNull()->default(0);
             }
         }
     }
@@ -69,43 +53,29 @@ class Migration20140509133410ComSupport extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__support_categories')) {
-            if ($this->db->tableHasField('#__support_categories', 'section_id')) {
-                $query = "ALTER TABLE `#__support_categories` "
-                    . "CHANGE `section_id` `section` INT(11)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__support_categories')) {
+            if ($schema->hasColumn('#__support_categories', 'section_id')) {
+                $schema->renameColumn('section_id', 'section')->integer()->notNull()->default(0);
             }
-            if ($this->db->tableHasField('#__support_categories', 'alias')) {
-                $query = "ALTER TABLE `#__support_categories` "
-                    . "CHANGE `alias` `category` VARCHAR(50)  NOT NULL  DEFAULT '';";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__support_categories', 'alias')) {
+                $schema->renameColumn('alias', 'category')->string(50)->notNull()->default('');
             }
-            if ($this->db->tableHasField('#__support_categories', 'title')) {
-                $query = "ALTER TABLE `#__support_categories` DROP `title`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__support_categories', 'title')) {
+                $schema->dropColumn('#__support_categories', 'title');
             }
-            if ($this->db->tableHasField('#__support_categories', 'created')) {
-                $query = "ALTER TABLE `#__support_categories` DROP `created`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__support_categories', 'created')) {
+                $schema->dropColumn('#__support_categories', 'created');
             }
-            if ($this->db->tableHasField('#__support_categories', 'created_by')) {
-                $query = "ALTER TABLE `#__support_categories` DROP `created_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__support_categories', 'created_by')) {
+                $schema->dropColumn('#__support_categories', 'created_by');
             }
-            if ($this->db->tableHasField('#__support_categories', 'modified')) {
-                $query = "ALTER TABLE `#__support_categories` DROP `modified`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__support_categories', 'modified')) {
+                $schema->dropColumn('#__support_categories', 'modified');
             }
-            if ($this->db->tableHasField('#__support_categories', 'modified_by')) {
-                $query = "ALTER TABLE `#__support_categories` DROP `modified_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__support_categories', 'modified_by')) {
+                $schema->dropColumn('#__support_categories', 'modified_by');
             }
         }
     }

@@ -20,15 +20,17 @@ class Migration20150114122012ModTagcloud extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $this->deleteModuleEntry('mod_tagcloud');
 
-        if ($this->db->tableExists('#__modules')) {
-            $query = "UPDATE `#__modules` SET `module`='mod_toptags', `params`="
-                . $this->db->quote('{"numtags":"20","exclude":"","message":"No tags"
-                . "found.","sortby":"popularity","morelnk":"0","cache":"0","cache_time":"900"}') . " WHERE "
-                . "`module`='mod_tagcloud'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__modules')) {
+            $this->db->getQuery(true)
+                ->update('#__modules')
+                ->set(['module' => 'mod_toptags', 'params' => '{"numtags":"20","exclude":"","message":"No tags"
+                . "found.","sortby":"popularity","morelnk":"0","cache":"0","cache_time":"900"}'])
+                ->where('module', '=', 'mod_tagcloud')
+                ->execute();
         }
     }
 

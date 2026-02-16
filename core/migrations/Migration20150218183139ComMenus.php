@@ -21,10 +21,13 @@ class Migration20150218183139ComMenus extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__menu')) {
-            $query = "UPDATE `#__menu` SET `ordering`=0;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__menu')) {
+            $this->db->getQuery(true)
+                ->update('#__menu')
+                ->set(['ordering' => 0])
+                ->execute();
         }
     }
 }

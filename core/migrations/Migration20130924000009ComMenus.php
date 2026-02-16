@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for menu table migrations
@@ -21,350 +22,313 @@ class Migration20130924000009ComMenus extends Base
      **/
     public function up()
     {
-        $query = "ALTER TABLE `#__menu` ENGINE = MYISAM;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
+
+        $schema->setTableEngine('#__menu', 'MYISAM');
 
         $first = false;
 
-        if ($this->db->tableHasField('#__menu', 'pollid')) {
-            $query = "ALTER TABLE `#__menu` DROP COLUMN `pollid`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'pollid')) {
+            $schema->dropColumn('#__menu', 'pollid');
 
             $first = true;
         }
-        if ($this->db->tableHasField('#__menu', 'utaccess')) {
-            $query = "ALTER TABLE `#__menu` DROP COLUMN `utaccess`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'utaccess')) {
+            $schema->dropColumn('#__menu', 'utaccess');
         }
-        if ($this->db->tableHasField('#__menu', 'menutype')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `menutype` VARCHAR(24) NOT NULL COMMENT 'The type of"
-                . "menu this item belongs to. FK to #__menu_types.menutype';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'menutype')) {
+            $schema->modifyColumn('#__menu', 'menutype')->string(24)->notNull()->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'name') && !$this->db->tableHasField('#__menu', 'title')) {
-            $query = "ALTER TABLE `#__menu` CHANGE COLUMN `name` `title` VARCHAR(255) NOT NULL COMMENT 'The"
-                . "display title of the menu item.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'name') && !$schema->hasColumn('#__menu', 'title')) {
+            $schema->renameColumn('#__menu', 'name', 'title')->string(255)->notNull()->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'alias')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `alias` VARCHAR(255) CHARACTER SET 'utf8' COLLATE"
-                . "'utf8_bin' NOT NULL COMMENT 'The SEF alias of the menu item.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'alias')) {
+            $schema->modifyColumn('#__menu', 'alias')->string()->notNull()->execute();
         }
-        if (!$this->db->tableHasField('#__menu', 'note') && $this->db->tableHasField('#__menu', 'alias')) {
-            $query = "ALTER TABLE `#__menu` ADD COLUMN `note` VARCHAR(255) NOT NULL DEFAULT '' AFTER `alias`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__menu', 'note') && $schema->hasColumn('#__menu', 'alias')) {
+            $schema->addColumn('#__menu', 'note')->string()->notNull()->default('')->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'link')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `link` VARCHAR(1024) NOT NULL COMMENT 'The actually link"
-                . "the menu item refers to.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'link')) {
+            $schema->modifyColumn('#__menu', 'link')->string(1024)->notNull()->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'type')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `type` VARCHAR(16) NOT NULL COMMENT 'The type of link:"
-                . "Component, URL, Alias, Separator';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'type')) {
+            $schema->modifyColumn('#__menu', 'type')->string(16)->notNull()->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'published')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `published` TINYINT NOT NULL DEFAULT 0 COMMENT 'The"
-                . "published state of the menu link.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'published')) {
+            $schema->modifyColumn('#__menu', 'published')->tinyInteger()->notNull()->default(0)->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'parent') && !$this->db->tableHasField('#__menu', 'parent_id')) {
-            $query = "ALTER TABLE `#__menu` CHANGE COLUMN `parent` `parent_id` INT(10) UNSIGNED NOT NULL DEFAULT "
-                . "'1' COMMENT 'The parent menu item in the menu tree.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'parent') && !$schema->hasColumn('#__menu', 'parent_id')) {
+            $schema->renameColumn('#__menu', 'parent', 'parent_id')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(1)
+                ->execute();
         }
         if (
-            !$this->db->tableHasField('#__menu', 'level')
-            && $this->db->tableHasField('#__menu', 'parent_id')
-            && $this->db->tableHasField('#__menu', 'sublevel')
+            !$schema->hasColumn('#__menu', 'level')
+            && $schema->hasColumn('#__menu', 'parent_id')
+            && $schema->hasColumn('#__menu', 'sublevel')
         ) {
-            $query = "ALTER TABLE `#__menu` CHANGE COLUMN `sublevel` `level` INT UNSIGNED NOT NULL DEFAULT 0 "
-                . "COMMENT 'The relative level in the tree.' AFTER `parent_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__menu', 'sublevel', 'level')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
         if (
-            $this->db->tableHasField('#__menu', 'componentid')
-            && !$this->db->tableHasField('#__menu', 'component_id')
+            $schema->hasColumn('#__menu', 'componentid')
+            && !$schema->hasColumn('#__menu', 'component_id')
         ) {
-            $query = "ALTER TABLE `#__menu` CHANGE COLUMN `componentid` `component_id` INTEGER UNSIGNED NOT NULL "
-                . "DEFAULT 0 COMMENT 'FK to #__components.id';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__menu', 'componentid', 'component_id')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'ordering')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `ordering` INTEGER NOT NULL DEFAULT 0 COMMENT 'The "
-                . "relative ordering of the menu item in the tree.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'ordering')) {
+            $schema->modifyColumn('#__menu', 'ordering')->integer()->notNull()->default(0)->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'checked_out')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `checked_out` INTEGER UNSIGNED NOT NULL DEFAULT 0 "
-                . "COMMENT 'FK to #__users.id';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'checked_out')) {
+            $schema->modifyColumn('#__menu', 'checked_out')->integer()->unsigned()->notNull()->default(0)->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'checked_out_time')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `checked_out_time` TIMESTAMP NOT NULL DEFAULT "
-                . "'0000-00-00 00:00:00' COMMENT 'The time the menu item was checked out.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'checked_out_time')) {
+            $schema->modifyColumn('#__menu', 'checked_out_time')
+                ->timestamp()
+                ->notNull()
+                ->default('0000-00-00 00:00:00')
+                ->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'browserNav')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `browserNav` TINYINT NOT NULL DEFAULT 0 COMMENT 'The "
-                . "click behaviour of the link.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'browserNav')) {
+            $schema->modifyColumn('#__menu', 'browserNav')->tinyInteger()->notNull()->default(0)->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'access')) {
-            $query = "ALTER TABLE `#__menu` CHANGE COLUMN `access` `access` INT(10) UNSIGNED NOT NULL DEFAULT '0' "
-                . "COMMENT 'The access level required to view the menu item.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'access')) {
+            $schema->modifyColumn('#__menu', 'access')->integer(10)->unsigned()->notNull()->default(0)->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'params')) {
-            $query = "ALTER TABLE `#__menu` CHANGE COLUMN `params` `params` TEXT NOT NULL COMMENT 'JSON encoded "
-                . "data for the menu item.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'params')) {
+            $schema->modifyColumn('#__menu', 'params')->text()->notNull()->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'lft')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `lft` INTEGER NOT NULL DEFAULT 0 COMMENT 'Nested set lft.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'lft')) {
+            $schema->modifyColumn('#__menu', 'lft')->integer()->notNull()->default(0)->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'rgt')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `rgt` INTEGER NOT NULL DEFAULT 0 COMMENT 'Nested set rgt.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'rgt')) {
+            $schema->modifyColumn('#__menu', 'rgt')->integer()->notNull()->default(0)->execute();
         }
-        if ($this->db->tableHasField('#__menu', 'home')) {
-            $query = "ALTER TABLE `#__menu` MODIFY COLUMN `home` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT "
-                . "'Indicates if this menu item is the home or default page.';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu', 'home')) {
+            $schema->modifyColumn('#__menu', 'home')->tinyInteger()->unsigned()->notNull()->default(0)->execute();
         }
-        if (!$this->db->tableHasField('#__menu', 'path') && $this->db->tableHasField('#__menu', 'note')) {
-            $query = "ALTER TABLE `#__menu` ADD COLUMN `path` VARCHAR(1024) NOT NULL COMMENT 'The computed path of "
-                . "the menu item based on the alias field.' AFTER `note`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        // Use addColumn helper (AFTER position parameter removed for SQLite compatibility)
+        if (!$schema->hasColumn('#__menu', 'path') && $schema->hasColumn('#__menu', 'note')) {
+            $schema->addColumn('#__menu', 'path')->string(1024)->notNull()->execute();
         }
-        if (!$this->db->tableHasField('#__menu', 'img') && $this->db->tableHasField('#__menu', 'access')) {
-            $query = "ALTER TABLE `#__menu` ADD COLUMN `img` varchar(255) NOT NULL COMMENT 'The image of the menu "
-                . "item.' AFTER `access`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__menu', 'img') && $schema->hasColumn('#__menu', 'access')) {
+            $schema->addColumn('#__menu', 'img')->string()->notNull()->execute();
         }
-        if (!$this->db->tableHasField('#__menu', 'template_style_id') && $this->db->tableHasField('#__menu', 'img')) {
-            $query = "ALTER TABLE `#__menu` ADD COLUMN `template_style_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' "
-                . "AFTER `img`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__menu', 'template_style_id') && $schema->hasColumn('#__menu', 'img')) {
+            $schema->addColumn('#__menu', 'template_style_id')
+                ->integer(10)
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
-        if (!$this->db->tableHasField('#__menu', 'language') && $this->db->tableHasField('#__menu', 'home')) {
-            $query = "ALTER TABLE `#__menu` ADD COLUMN `language` char(7) NOT NULL DEFAULT '' AFTER `home`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__menu', 'language') && $schema->hasColumn('#__menu', 'home')) {
+            $schema->addColumn('#__menu', 'language')->string(7)->notNull()->default('')->execute();
         }
-        if (!$this->db->tableHasField('#__menu', 'client_id') && $this->db->tableHasField('#__menu', 'language')) {
-            $query = "ALTER TABLE `#__menu` ADD COLUMN `client_id` TINYINT(4) NOT NULL DEFAULT 0 AFTER `language`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__menu', 'client_id') && $schema->hasColumn('#__menu', 'language')) {
+            $schema->addColumn('#__menu', 'client_id')->tinyInteger()->notNull()->default(0)->execute();
         }
-        if ($this->db->tableHasKey('#__menu', 'componentid')) {
-            $query = "ALTER TABLE `#__menu` DROP INDEX `componentid`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if ($this->db->tableHasKey('#__menu', 'menutype')) {
-            $query = "ALTER TABLE `#__menu` DROP INDEX `menutype`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropIndex('#__menu', 'componentid');
+        $schema->dropIndex('#__menu', 'menutype');
+        $schema->addIndex('#__menu', 'idx_componentid', ['component_id', 'menutype', 'published', 'access']);
+        $schema->addIndex('#__menu', 'idx_menutype', 'menutype');
         if (
-            !$this->db->tableHasKey('#__menu', 'idx_componentid')
-                && $this->db->tableHasField('#__menu', 'component_id')
-                && $this->db->tableHasField('#__menu', 'menutype')
-                && $this->db->tableHasField('#__menu', 'published')
-                && $this->db->tableHasField('#__menu', 'access')
+            $schema->hasColumn('#__menu', 'lft')
+            && $schema->hasColumn('#__menu', 'rgt')
         ) {
-            $query = "ALTER TABLE `#__menu` ADD INDEX `idx_componentid` "
-                . "(`component_id`,`menutype`,`published`,`access`);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addIndex('#__menu', 'idx_left_right', ['lft', 'rgt']);
         }
-        if (!$this->db->tableHasKey('#__menu', 'idx_menutype') && $this->db->tableHasField('#__menu', 'menutype')) {
-            $query = "ALTER TABLE `#__menu` ADD INDEX `idx_menutype` (`menutype`);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema->addIndex('#__menu', 'idx_alias', 'alias');
+        if ($schema->hasColumn('#__menu', 'path')) {
+            $schema->addIndex('#__menu', 'idx_path', 'path');
         }
-        if (
-            !$this->db->tableHasKey('#__menu', 'idx_left_right')
-            && $this->db->tableHasField('#__menu', 'lft')
-            && $this->db->tableHasField('#__menu', 'rgt')
-        ) {
-            $query = "ALTER TABLE `#__menu` ADD INDEX `idx_left_right` (`lft`,`rgt`);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasKey('#__menu', 'idx_alias') && $this->db->tableHasField('#__menu', 'alias')) {
-            $query = "ALTER TABLE `#__menu` ADD INDEX `idx_alias` (`alias`);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasKey('#__menu', 'idx_path') && $this->db->tableHasField('#__menu', 'path')) {
-            $query = "ALTER TABLE `#__menu` ADD INDEX `idx_path` (`path`(333) ASC);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasKey('#__menu', 'idx_language') && $this->db->tableHasField('#__menu', 'language')) {
-            $query = "ALTER TABLE `#__menu` ADD INDEX idx_language(`language`);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (!$this->db->tableHasKey('#__menu', 'idx_language') && $this->db->tableHasField('#__menu', 'language')) {
-            $query = "ALTER TABLE `#__menu` ADD INDEX idx_language(`language`);";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->addIndex('#__menu', 'idx_language', 'language');
 
-        $query = "ALTER TABLE `#__menu_types` ENGINE = MYISAM;";
-        $this->db->setQuery($query);
-        $this->db->query();
-        if ($this->db->tableHasField('#__menu_types', 'menutype')) {
-            $query = "ALTER TABLE `#__menu_types` MODIFY COLUMN `menutype` VARCHAR(24) NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema->setTableEngine('#__menu_types', 'MYISAM');
+
+        if ($schema->hasColumn('#__menu_types', 'menutype')) {
+            $schema->modifyColumn('#__menu_types', 'menutype')->string(24)->notNull()->execute();
         }
-        if ($this->db->tableHasField('#__menu_types', 'title')) {
-            $query = "ALTER TABLE `#__menu_types` MODIFY COLUMN `title` VARCHAR(48) NOT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__menu_types', 'title')) {
+            $schema->modifyColumn('#__menu_types', 'title')->string(48)->notNull()->execute();
         }
-        if ($this->db->tableHasKey('#__menu_types', 'menutype')) {
-            $query = "ALTER TABLE `#__menu_types` DROP INDEX `menutype`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-        if (
-            !$this->db->tableHasKey('#__menu_types', 'idx_menutype')
-            && $this->db->tableHasField('#__menu_types', 'menutype')
-        ) {
-            $query = "ALTER TABLE `#__menu_types` ADD UNIQUE INDEX `idx_menutype` (`menutype` ASC) ;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema->dropIndex('#__menu_types', 'menutype');
+        if ($schema->hasColumn('#__menu_types', 'menutype')) {
+            $schema->addUniqueIndex('#__menu_types', 'idx_menutype', 'menutype');
         }
 
         if ($first) {
             // Joomla seems to expect the root item to be 1...blah!
             // So, if id 1 is taken, we need to clear it out
-            $query = "SELECT * FROM `#__menu` WHERE `id` = 1;";
-            $this->db->setQuery($query);
-            $result = $this->db->loadObject();
+            $result = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__menu')
+                ->where('id', '=', 1)
+                ->first();
 
             if ($result) {
                 $result->id = null;
-                $this->db->insertObject('#__menu', $result);
+                $this->db->queryBuilder()->pushObject('#__menu', $result);
                 $id = $this->db->insertid();
 
-                $query = "UPDATE `#__menu` SET `parent_id` = '{$id}' WHERE `parent_id` = '1';";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__menu')
+                    ->set(['parent_id' => $id])
+                    ->where('parent_id', '=', 1)
+                    ->execute();
 
-                $query = "UPDATE `#__modules_menu` SET `menuid` = '{$id}' WHERE `menuid` = '1';";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__modules_menu')
+                    ->set(['menuid' => $id])
+                    ->where('menuid', '=', 1)
+                    ->execute();
 
-                $query = "DELETE FROM `#__menu` WHERE `id` = '1';";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__menu')
+                    ->where('id', '=', 1)
+                    ->execute();
             }
 
             // Insert new root menu item
-            $query = "INSERT INTO `#__menu` (`id`, `menutype`, `title`, `alias`, `note`, `path`, `link`, `type`,"
-                . "`published`, `parent_id`, `level`, `component_id`, `ordering`, `checked_out`,"
-                . "`checked_out_time`, `browserNav`, `access`, `img`, `template_style_id`, `params`, `lft`, `rgt`,"
-                . "`home`, `language`, `client_id`)\n";
-            $query .= "VALUES ('1', '', 'Menu_Item_Root', 'root', '', '', '', '', 1, 0, 0, 0, 0, 0, '0000-00-00"
-                . "00:00:00', 0, 0, '', 0, '', 0, 0, 0, '*', 0);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__menu')
+                ->set([
+                    'id'               => 1,
+                    'menutype'         => '',
+                    'title'            => 'Menu_Item_Root',
+                    'alias'            => 'root',
+                    'note'             => '',
+                    'path'             => '',
+                    'link'             => '',
+                    'type'             => '',
+                    'published'        => 1,
+                    'parent_id'        => 0,
+                    'level'            => 0,
+                    'component_id'     => 0,
+                    'ordering'         => 0,
+                    'checked_out'      => 0,
+                    'checked_out_time' => '0000-00-00 00:00:00',
+                    'browserNav'       => 0,
+                    'access'           => 0,
+                    'img'              => '',
+                    'template_style_id' => 0,
+                    'params'           => '',
+                    'lft'              => 0,
+                    'rgt'              => 0,
+                    'home'             => 0,
+                    'language'         => '*',
+                    'client_id'        => 0
+                ])
+                ->execute();
 
             // Get the id of the new root menu item
-            $query = "SELECT id FROM `#__menu` WHERE alias = 'root';";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+            $id = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__menu')
+                ->where('alias', '=', 'root')
+                ->value('id');
 
-            // Shift the parent_id's of the existing menus to relate to the new root
-            $query = "UPDATE `#__menu` SET `parent_id` = {$id} WHERE `parent_id` = 0 AND `alias` != 'root';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            // Update parent_id's of existing menus to relate to the new root
+            $this->db->getQuery(true)
+                ->update('#__menu')
+                ->set(['parent_id' => $id])
+                ->where('parent_id', '=', 0)
+                ->where('alias', '!=', 'root')
+                ->execute();
 
             // Also increment the level 1
-            $query = "UPDATE `#__menu` SET `level` = `level` + 1 WHERE `alias` != 'root';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__menu')
+                ->set(['level' => Expression::column('level')->plus(1)])
+                ->where('alias', '!=', 'root')
+                ->execute();
 
             // Build paths
-            $query = "UPDATE `#__menu` SET `path` = `alias` WHERE `alias` != 'root';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__menu')
+                ->set(['path' => Expression::column('alias')])
+                ->where('alias', '!=', 'root')
+                ->execute();
 
             // Get max depth
-            $query = "SELECT max(level) AS level FROM `#__menu`;";
-            $this->db->setQuery($query);
-            $maxlevel = $this->db->loadResult();
+            $maxlevel = $this->db->getQuery(true)
+                ->select(['level'])
+                ->from('#__menu')
+                ->order('level', 'desc')
+                ->value('level');
+
+            $aliases = $this->db->getQuery(true)
+                ->select(['id', 'alias'])
+                ->from('#__menu')
+                ->pluck('alias', 'id');
 
             for ($i = 2; $i <= $maxlevel; $i++) {
-                $query = "SELECT * FROM `#__menu` WHERE level >= {$i};";
-                $this->db->setQuery($query);
-                $results = $this->db->loadObjectList();
+                $results = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__menu')
+                    ->where('level', '>=', $i)
+                    ->loadObjectList();
 
                 if (count($results) > 0) {
                     foreach ($results as $r) {
-                        $query = "SELECT `alias` FROM `#__menu` WHERE `id` = {$r->parent_id};";
-                        $this->db->setQuery($query);
-                        $alias = $this->db->loadResult();
+                        $alias = $aliases[$r->parent_id] ?? null;
 
-                        $path  = $alias . '/' . $r->path;
-                        $query = "UPDATE `#__menu` SET `path` = \"{$path}\" WHERE `id` = {$r->id};";
-                        $this->db->setQuery($query);
-                        $this->db->query();
+                        $path = $alias . '/' . $r->path;
+
+                        $this->db->getQuery(true)
+                            ->update('#__menu')
+                            ->set(['path' => $path])
+                            ->where('id', '=', $r->id)
+                            ->execute();
                     }
                 }
             }
 
             // Add entries for components menu on backend
-            $query = "SELECT * FROM `#__components` WHERE `parent` = '0' AND `iscore` = '0' AND `enabled` = '1' "
-                . "AND `admin_menu_link` != '' AND `admin_menu_link` IS NOT NULL;";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            $results = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__components')
+                ->where('parent', '=', 0)
+                ->where('iscore', '=', 0)
+                ->where('enabled', '=', 1)
+                ->whereNotNull('admin_menu_link')
+                ->where('admin_menu_link', '!=', '')
+                ->loadObjectList();
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
                     $alias = substr($r->option, 4);
                     $link  = 'index.php?' . $r->admin_menu_link;
                     // Insert item
-                    $query = "INSERT INTO `#__menu` (`menutype`, `title`, `alias`, `path`, `link`, `type`,"
-                        . "`published`, `parent_id`, `level`, `component_id`, `language`, `client_id`)\n";
-                    $query .= "VALUES ('main', '{$r->option}', '{$alias}', '{$alias}', '{$link}', 'component', 1,"
-                        . "1, 1, {$r->id}, '*', 1);";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__menu')
+                        ->set([
+                            'menutype'     => 'main',
+                            'title'        => $r->option,
+                            'alias'        => $alias,
+                            'path'         => $alias,
+                            'link'         => $link,
+                            'type'         => 'component',
+                            'published'    => 1,
+                            'parent_id'    => 1,
+                            'level'        => 1,
+                            'component_id' => $r->id,
+                            'language'     => '*',
+                            'client_id'    => 1
+                        ])
+                        ->execute();
                 }
             }
 
@@ -382,9 +346,10 @@ class Migration20130924000009ComMenus extends Base
             }
 
             // Update menu params (specifically to fix menu_image)
-            $query = "SELECT `id`, `params`, `link` FROM `#__menu`;";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'params', 'link'])
+                ->from('#__menu')
+                ->loadObjectList();
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
@@ -415,9 +380,12 @@ class Migration20130924000009ComMenus extends Base
 
                     // Need to merge in content params (if applicable), as menu item params now take precidence
                     if (isset($matches[1]) && !empty($matches[1])) {
-                        $query = "SELECT `attribs` FROM `#__content` WHERE `id` = '{$matches[1]}';";
-                        $this->db->setQuery($query);
-                        $art_params = json_decode($this->db->loadResult());
+                        $art_params = $this->db->getQuery(true)
+                            ->select('attribs')
+                            ->from('#__content')
+                            ->where('id', '=', $matches[1])
+                            ->value('attribs');
+                        $art_params = json_decode($art_params);
 
                         foreach ($art_params as $k => $v) {
                             if (($v !== null) && ($v !== '') && array_key_exists($k, $array)) {
@@ -426,51 +394,66 @@ class Migration20130924000009ComMenus extends Base
                         }
                     }
 
-                    $query = "UPDATE `#__menu` SET `params` = " . $this->db->Quote(json_encode($array)) . " WHERE "
-                        . "`id` = {$r->id};";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__menu')
+                        ->set(['params' => json_encode($array)])
+                        ->where('id', '=', $r->id)
+                        ->execute();
                 }
             }
 
             // Update component_id -> extension_id
-            $query = "SELECT `id`, `link`, `component_id` FROM `#__menu` WHERE `component_id` != '0';";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'link', 'component_id'])
+                ->from('#__menu')
+                ->where('component_id', '!=', 0)
+                ->loadObjectList();
 
             if (count($results) > 0) {
                 foreach ($results as $r) {
                     preg_match('/index\.php\?option=([a-z0-9_]+)/', $r->link, $matches);
 
                     if (isset($matches[1]) && !empty($matches[1])) {
-                        $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = '{$matches[1]}' AND "
-                            . "`type` = 'component' ORDER BY `client_id` ASC LIMIT 1;";
-                        $this->db->setQuery($query);
-                        $id = $this->db->loadResult();
+                        $id = $this->db->getQuery(true)
+                            ->select('extension_id')
+                            ->from('#__extensions')
+                            ->where('element', '=', $matches[1])
+                            ->where('type', '=', 'component')
+                            ->order('client_id', 'asc')
+                            ->value('extension_id');
 
-                        $id = (!is_null($id)) ? $id : '0';
+                        $id = (!is_null($id)) ? $id : 0;
 
-                        $query = "UPDATE `#__menu` SET `component_id` = '{$id}' WHERE `id` = '{$r->id}';";
-                        $this->db->setQuery($query);
-                        $this->db->query();
+                        $this->db->getQuery(true)
+                            ->update('#__menu')
+                            ->set(['component_id' => $id])
+                            ->where('id', '=', $r->id)
+                            ->execute();
                     }
                 }
             }
 
             // Set language for all menu items
-            $query = "UPDATE `#__menu` SET `language` = '*';";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__menu')
+                ->set(['language' => '*'])
+                ->execute();
 
             // Fix com_user->com_users in menu items
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = 'com_users';";
-            $this->db->setQuery($query);
-            $id = $this->db->loadResult();
+            $id = $this->db->getQuery(true)
+                ->select('extension_id')
+                ->from('#__extensions')
+                ->where('element', '=', 'com_users')
+                ->value('extension_id');
 
-            $query = "SELECT * FROM `#__menu` WHERE `menutype` = 'default' AND (`alias` = 'login' OR `alias` ="
-                . "'logout' OR `alias` = 'remind' OR `alias` = 'reset');";
-            $this->db->setQuery($query);
-            if ($results = $this->db->loadObjectList()) {
+            $results = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__menu')
+                ->where('menutype', '=', 'default')
+                ->whereIn('alias', ['login', 'logout', 'remind', 'reset'])
+                ->loadObjectList();
+
+            if ($results) {
                 foreach ($results as $r) {
                     $link = preg_replace('/(index\.php\?option=com_user)(&view=[a-z]+)/', '${1}s${2}', $r->link);
                     $params = json_decode($r->params);
@@ -480,39 +463,47 @@ class Migration20130924000009ComMenus extends Base
                         unset($params->login);
                     }
 
-                    $query = "UPDATE `#__menu` SET `link` = " . $this->db->quote($link) . ", `component_id` ="
-                        . "'{$id}', `params` = " . $this->db->quote(json_encode($params)) . " WHERE `id` ="
-                        . "'{$r->id}';";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__menu')
+                        ->set([
+                            'link'         => $link,
+                            'component_id' => $id,
+                            'params'       => json_encode($params)
+                        ])
+                        ->where('id', '=', $r->id)
+                        ->execute();
                 }
             }
 
             // Fix menu link type menu items to be alias type
-            $query = "UPDATE `#__menu` SET `type` = 'alias', `link` = 'index.php?Itemid=', `params` ="
-                . "REPLACE(`params`, 'menu_item', 'aliasoptions') WHERE `type` = 'menulink'";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__menu')
+                ->set([
+                    'type'   => 'alias',
+                    'link'   => 'index.php?Itemid=',
+                    'params' => Expression::replace(Expression::column('params'), 'menu_item', 'aliasoptions')
+                ])
+                ->where('type', '=', 'menulink')
+                ->execute();
         }
 
         // Now we can get rid of the components table as well
-        if ($this->db->tableExists('#__components')) {
-            $query = "DROP TABLE IF EXISTS `#__components`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__components')) {
+            $schema->dropTable('#__components');
         }
 
         if (
-            !$this->db->tableHasKey('#__menu', 'idx_client_id_parent_id_alias_language')
-                && $this->db->tableHasField('#__menu', 'client_id')
-                && $this->db->tableHasField('#__menu', 'parent_id')
-                && $this->db->tableHasField('#__menu', 'alias')
-                && $this->db->tableHasField('#__menu', 'language')
+            $schema->hasColumn('#__menu', 'client_id')
+                && $schema->hasColumn('#__menu', 'parent_id')
+                && $schema->hasColumn('#__menu', 'alias')
+                && $schema->hasColumn('#__menu', 'language')
         ) {
-            $query = "ALTER TABLE `#__menu` ADD INDEX `idx_client_id_parent_id_alias_language` (`client_id` ASC,"
-                . "`parent_id` ASC, `alias` ASC, `language` ASC);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addIndex('#__menu', 'idx_client_id_parent_id_alias_language', [
+                'client_id',
+                'parent_id',
+                'alias',
+                'language',
+            ]);
         }
     }
 }

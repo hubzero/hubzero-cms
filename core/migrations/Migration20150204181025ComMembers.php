@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for making sure usernames are all lowercase
@@ -20,63 +21,75 @@ class Migration20150204181025ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__xprofiles')) {
-            if ($this->db->tableHasField('#__xprofiles', 'username')) {
-                $query = "UPDATE `#__xprofiles` SET `username` = LOWER(`username`)";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xprofiles')) {
+            if ($schema->hasColumn('#__xprofiles', 'username')) {
+                // Note: Using Expression::lower() for database-agnostic lowercase conversion
+                $this->db->getQuery(true)
+                    ->update('#__xprofiles')
+                    ->set(['username' => Expression::lower('username')])
+                    ->execute();
             }
 
-            if ($this->db->tableHasField('#__xprofiles', 'homeDirectory')) {
-                $query = "UPDATE `#__xprofiles` SET `homeDirectory` = LOWER(`homeDirectory`)";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__xprofiles', 'homeDirectory')) {
+                $this->db->getQuery(true)
+                    ->update('#__xprofiles')
+                    ->set(['homeDirectory' => Expression::lower('homeDirectory')])
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__users') && $this->db->tableHasField('#__users', 'username')) {
-            $query = "UPDATE `#__users` SET `username` = LOWER(`username`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__users') && $schema->hasColumn('#__users', 'username')) {
+            $this->db->getQuery(true)
+                ->update('#__users')
+                ->set(['username' => Expression::lower('username')])
+                ->execute();
         }
 
         if (
-            $this->db->tableExists('#__event_registration')
-            && $this->db->tableHasField('#__event_registration', 'username')
+            $schema->tableExists('#__event_registration')
+            && $schema->hasColumn('#__event_registration', 'username')
         ) {
-            $query = "UPDATE `#__event_registration` SET `username` = LOWER(`username`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__event_registration')
+                ->set(['username' => Expression::lower('username')])
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__support_acl_aros') && $this->db->tableHasField('#__support_acl_aros', 'alias')) {
-            $query = "UPDATE `#__support_acl_aros` SET `alias` = LOWER(`alias`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__support_acl_aros') && $schema->hasColumn('#__support_acl_aros', 'alias')) {
+            $this->db->getQuery(true)
+                ->update('#__support_acl_aros')
+                ->set(['alias' => Expression::lower('alias')])
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__support_tickets') && $this->db->tableHasField('#__support_tickets', 'login')) {
-            $query = "UPDATE `#__support_tickets` SET `login` = LOWER(`login`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__support_tickets') && $schema->hasColumn('#__support_tickets', 'login')) {
+            $this->db->getQuery(true)
+                ->update('#__support_tickets')
+                ->set(['login' => Expression::lower('login')])
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__tool') && $this->db->tableHasField('#__tool', 'team')) {
-            $query = "UPDATE `#__tool` SET `team` = LOWER(`team`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__tool') && $schema->hasColumn('#__tool', 'team')) {
+            $this->db->getQuery(true)
+                ->update('#__tool')
+                ->set(['team' => Expression::lower('team')])
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__tool') && $this->db->tableHasField('#__tool', 'registered_by')) {
-            $query = "UPDATE `#__tool` SET `registered_by` = LOWER(`registered_by`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__tool') && $schema->hasColumn('#__tool', 'registered_by')) {
+            $this->db->getQuery(true)
+                ->update('#__tool')
+                ->set(['registered_by' => Expression::lower('registered_by')])
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__tool_version') && $this->db->tableHasField('#__tool_version', 'released_by')) {
-            $query = "UPDATE `#__tool_version` SET `released_by` = LOWER(`released_by`)";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__tool_version') && $schema->hasColumn('#__tool_version', 'released_by')) {
+            $this->db->getQuery(true)
+                ->update('#__tool_version')
+                ->set(['released_by' => Expression::lower('released_by')])
+                ->execute();
         }
     }
 }

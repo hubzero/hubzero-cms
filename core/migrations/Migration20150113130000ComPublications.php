@@ -21,11 +21,11 @@ class Migration20150113130000ComPublications extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__publication_versions')) {
-            if (!$this->db->tableHasField('#__publication_versions', 'curator')) {
-                $query = "ALTER TABLE `#__publication_versions` ADD COLUMN curator int(11);";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publication_versions')) {
+            if (!$schema->hasColumn('#__publication_versions', 'curator')) {
+                $schema->addColumn('#__publication_versions', 'curator')->integer(11);
             }
         }
     }
@@ -35,11 +35,11 @@ class Migration20150113130000ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__publication_versions')) {
-            if ($this->db->tableHasField('#__publication_versions', 'curator')) {
-                $query = "ALTER TABLE `#__publication_versions` DROP `curator`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publication_versions')) {
+            if ($schema->hasColumn('#__publication_versions', 'curator')) {
+                $schema->dropColumn('#__publication_versions', 'curator');
             }
         }
     }

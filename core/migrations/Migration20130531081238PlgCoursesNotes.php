@@ -21,16 +21,13 @@ class Migration20130531081238PlgCoursesNotes extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableHasField('#__courses_member_notes', 'section_id')) {
-            $query = "ALTER TABLE `#__courses_member_notes` ADD `section_id` "
-                . "INT(11) NOT NULL DEFAULT '0' AFTER `timestamp`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (
+            $schema->tableExists('#__courses_member_notes')
+            && !$schema->hasColumn('#__courses_member_notes', 'section_id')
+        ) {
+            $schema->addColumn('#__courses_member_notes', 'section_id')->integer()->notNull()->default(0)->execute();
         }
     }
 
@@ -39,15 +36,10 @@ class Migration20130531081238PlgCoursesNotes extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__courses_member_notes', 'section_id')) {
-            $query .= "ALTER TABLE `#__courses_member_notes` DROP `section_id`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__courses_member_notes', 'section_id')) {
+            $schema->dropColumn('#__courses_member_notes', 'section_id');
         }
     }
 }

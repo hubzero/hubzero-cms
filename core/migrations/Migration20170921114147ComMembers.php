@@ -21,24 +21,14 @@ class Migration20170921114147ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__users_log_auth')) {
-            if (!$this->db->tableHasKey('#__users_log_auth', 'idx_username')) {
-                $query = "ALTER TABLE `#__users_log_auth` ADD INDEX `idx_username` (`username`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasKey('#__users_log_auth', 'idx_ip')) {
-                $query = "ALTER TABLE `#__users_log_auth` ADD INDEX `idx_ip` (`ip`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__users_log_auth')) {
+            $schema->addIndex('#__users_log_auth', 'idx_username', 'username');
 
-            if (!$this->db->tableHasKey('#__users_log_auth', 'idx_status')) {
-                $query = "ALTER TABLE `#__users_log_auth` ADD INDEX `idx_status` (`status`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__users_log_auth', 'idx_ip', 'ip');
+
+            $schema->addIndex('#__users_log_auth', 'idx_status', 'status');
         }
     }
 
@@ -47,24 +37,14 @@ class Migration20170921114147ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__users_log_auth')) {
-            if ($this->db->tableHasKey('#__users_log_auth', 'idx_username')) {
-                $query = "ALTER TABLE `#__users_log_auth` DROP KEY `idx_username`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__users_log_auth', 'idx_ip')) {
-                $query = "ALTER TABLE `#__users_log_auth` DROP KEY `idx_ip`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__users_log_auth')) {
+            $schema->dropIndex('#__users_log_auth', 'idx_username');
 
-            if ($this->db->tableHasKey('#__users_log_auth', 'idx_status')) {
-                $query = "ALTER TABLE `#__users_log_auth` DROP KEY `idx_status`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__users_log_auth', 'idx_ip');
+
+            $schema->dropIndex('#__users_log_auth', 'idx_status');
         }
     }
 }

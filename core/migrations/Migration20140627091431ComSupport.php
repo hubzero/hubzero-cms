@@ -22,10 +22,14 @@ class Migration20140627091431ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableHasField('#__support_attachments', 'ticket')) {
-            $query = "ALTER TABLE `#__support_attachments` CHANGE `ticket` `ticket` INT(11)  NOT NULL  DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__support_attachments', 'ticket')) {
+            $schema->modifyColumn('#__support_attachments', 'ticket')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 
@@ -34,11 +38,15 @@ class Migration20140627091431ComSupport extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__support_attachments', 'ticket')) {
-            $query = "ALTER TABLE `#__support_attachments` "
-                . "CHANGE `ticket` `ticket` INT(11) unsigned NOT NULL  DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__support_attachments', 'ticket')) {
+            $schema->modifyColumn('#__support_attachments', 'ticket')
+                ->integer()
+                ->unsigned()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 }

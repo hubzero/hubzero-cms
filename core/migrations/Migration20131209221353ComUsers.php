@@ -20,9 +20,12 @@ class Migration20131209221353ComUsers extends Base
      **/
     public function up()
     {
-        $query = "SELECT `id`, `content` FROM `#__modules` WHERE `position` = 'footer' AND `module` = 'mod_custom'";
-        $this->db->setQuery($query);
-        $results = $this->db->loadObjectList();
+        $query = $this->db->getQuery(true)
+            ->select(['id', 'content'])
+            ->from('#__modules')
+            ->where('position', '=', 'footer')
+            ->where('module', '=', 'mod_custom');
+        $results = $query->loadObjectList();
 
         if ($results && count($results) > 0) {
             foreach ($results as $r) {
@@ -31,10 +34,11 @@ class Migration20131209221353ComUsers extends Base
                 $new_content  = str_replace($look_for, $replace_with, $r->content);
 
                 if ($new_content != $r->content) {
-                    $query = "UPDATE `#__modules` SET `content` = " . $this->db->quote($new_content)
-                        . " WHERE `id` = " . $this->db->quote($r->id);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__modules')
+                        ->set(['content' => $new_content])
+                        ->where('id', '=', $r->id)
+                        ->execute();
                 }
             }
         }

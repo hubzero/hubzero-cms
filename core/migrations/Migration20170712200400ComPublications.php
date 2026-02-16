@@ -21,17 +21,17 @@ class Migration20170712200400ComPublications extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__publication_licenses')) {
-            if (!$this->db->tableHasField('#__publication_licenses', 'derivatives')) {
-                $query = "ALTER TABLE `#__publication_licenses` ADD COLUMN `derivatives` tinyint(2) NOT NULL "
-                    . "default 0;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
 
-                $query = "UPDATE `#__publication_licenses` SET `derivatives`=1 WHERE `name` IN ('cc', 'standard',"
-                    . "'cc0', 'cc40-by-nc-sa', 'cc40-by-sa')";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__publication_licenses')) {
+            if (!$schema->hasColumn('#__publication_licenses', 'derivatives')) {
+                $schema->addColumn('#__publication_licenses', 'derivatives')->tinyInteger(2)->notNull()->default(0);
+
+                $this->db->getQuery(true)
+                    ->update('#__publication_licenses')
+                    ->set(['derivatives' => 1])
+                    ->whereIn('name', ['cc', 'standard', 'cc0', 'cc40-by-nc-sa', 'cc40-by-sa'])
+                    ->execute();
             }
         }
     }
@@ -41,11 +41,11 @@ class Migration20170712200400ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__publication_licenses')) {
-            if ($this->db->tableHasField('#__publication_licenses', 'derivatives')) {
-                $query = "ALTER TABLE `#__publication_licenses` DROP `derivatives`;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publication_licenses')) {
+            if ($schema->hasColumn('#__publication_licenses', 'derivatives')) {
+                $schema->dropColumn('#__publication_licenses', 'derivatives');
             }
         }
     }

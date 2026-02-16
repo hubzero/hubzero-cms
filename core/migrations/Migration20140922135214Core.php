@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for removing document root from migration scope
@@ -20,14 +21,16 @@ class Migration20140922135214Core extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__migrations')
-            && $this->db->tableHasField('#__migrations', 'scope')
+            $schema->tableExists('#__migrations')
+            && $schema->hasColumn('#__migrations', 'scope')
         ) {
-            $query = "UPDATE `#__migrations` SET `scope` = REPLACE(`scope`, "
-                . $this->db->quote(PATH_ROOT . DS) . ", '')";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $query = $this->db->getQuery(true);
+            $query->update('#__migrations')
+                ->set(['scope' => Expression::replace('scope', PATH_ROOT . DS, '')])
+                ->execute();
         }
     }
 }

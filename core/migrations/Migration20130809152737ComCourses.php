@@ -21,11 +21,17 @@ class Migration20130809152737ComCourses extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__courses_pages', 'section_id')) {
-            $query = "ALTER TABLE `#__courses_pages` ADD `section_id` "
-                . "INT(11) NOT NULL DEFAULT '0' AFTER `offering_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (
+            $schema->tableExists('#__courses_pages')
+            && !$schema->hasColumn('#__courses_pages', 'section_id')
+        ) {
+            $schema->addColumn('#__courses_pages', 'section_id')
+                ->integer()
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
     }
 
@@ -34,10 +40,10 @@ class Migration20130809152737ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__courses_pages', 'section_id')) {
-            $query = "ALTER TABLE `#__courses_pages` DROP `section_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__courses_pages', 'section_id')) {
+            $schema->dropColumn('#__courses_pages', 'section_id');
         }
     }
 }

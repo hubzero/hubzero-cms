@@ -21,14 +21,16 @@ class Migration20150617181839PlgAntispamBlacklist extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__antispam_words')) {
-            $query = "CREATE TABLE `#__antispam_words` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `word` varchar(256) DEFAULT NULL,
-				  PRIMARY KEY (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__antispam_words')) {
+            $schema->createTable('#__antispam_words')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->string('word', 256)->nullable()
+                ->primaryKey('id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -37,10 +39,8 @@ class Migration20150617181839PlgAntispamBlacklist extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__antispam_words')) {
-            $query = "DROP TABLE `#__antispam_words`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__antispam_words');
     }
 }

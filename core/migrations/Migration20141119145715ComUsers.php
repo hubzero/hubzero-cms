@@ -20,13 +20,17 @@ class Migration20141119145715ComUsers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__users') && $this->db->tableHasField('#__users', 'password')) {
-            $info = $this->db->getTableColumns('#__users', false);
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__users') && $schema->hasColumn('#__users', 'password')) {
+            $info = $schema->getTableColumns('#__users', false);
 
             if ($info['password']->Type != "varchar(127)") {
-                $query = "ALTER TABLE `#__users` CHANGE `password` `password` VARCHAR(127) NOT NULL DEFAULT ''";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->modifyColumn('#__users', 'password')
+                    ->string(127)
+                    ->notNull()
+                    ->default('')
+                    ->execute();
             }
         }
     }

@@ -21,28 +21,43 @@ class Migration20140702160951ComWishlist extends Base
      **/
     public function up()
     {
-        if ($this->db->tableHasField('#__wishlist_item', 'status')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` WHERE state=0 AND category IN ('wish')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__wishlist_item', 'status')) {
+            $ids = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->whereIn('category', ['wish'])
+                ->loadColumn();
+
+            if ($ids) {
                 $ids = array_map('intval', $ids);
 
-                $query = "UPDATE `#__wishlist_item` SET status=7 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__wishlist_item')
+                    ->set(['status' => 7])
+                    ->whereIn('id', $ids)
+                    ->execute();
             }
         }
 
-        if ($this->db->tableHasField('#__item_comments', 'state')) {
-            $query = "SELECT referenceid FROM `#__abuse_reports` "
-                . "WHERE state=0 AND category IN ('itemcomment', 'wishcomment')";
-            $this->db->setQuery($query);
-            if ($ids = $this->db->loadColumn()) {
+        if ($schema->hasColumn('#__item_comments', 'state')) {
+            $ids = $this->db->getQuery(true)
+                ->select('referenceid')
+                ->from('#__abuse_reports')
+                ->where('state', '=', 0)
+                ->whereIn('category', ['itemcomment', 'wishcomment'])
+                ->loadColumn();
+
+            if ($ids) {
                 $ids = array_map('intval', $ids);
 
-                $query = "UPDATE `#__item_comments` SET state=3 WHERE id IN (" . implode(',', $ids) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__item_comments')
+                    ->set(['state' => 3])
+                    ->whereIn('id', $ids)
+                    ->execute();
             }
         }
     }
@@ -52,16 +67,22 @@ class Migration20140702160951ComWishlist extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__wishlist_item', 'status')) {
-            $query = "UPDATE `#__wishlist_item` SET status=0 WHERE status=7";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__wishlist_item', 'status')) {
+            $this->db->getQuery(true)
+                ->update('#__wishlist_item')
+                ->set(['status' => 0])
+                ->where('status', '=', 7)
+                ->execute();
         }
 
-        if ($this->db->tableHasField('#__item_comments', 'state')) {
-            $query = "UPDATE `#__item_comments` SET state=1 WHERE state=3";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->hasColumn('#__item_comments', 'state')) {
+            $this->db->getQuery(true)
+                ->update('#__item_comments')
+                ->set(['state' => 1])
+                ->where('state', '=', 3)
+                ->execute();
         }
     }
 }

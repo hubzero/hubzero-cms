@@ -21,10 +21,15 @@ class Migration20150826205631PlgResourcesAbout extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__resource_types')) {
-            $this->db->setQuery("SELECT id, params FROM `#__resource_types` WHERE `category`=27 and `alias`='tools'");
+        $schema = $this->db->schema();
 
-            $records = $this->db->loadObjectList();
+        if ($schema->tableExists('#__resource_types')) {
+            $query = $this->db->getQuery(true)
+                ->select(['id', 'params'])
+                ->from('#__resource_types')
+                ->where('category', '=', 27)
+                ->where('alias', '=', 'tools');
+            $records = $query->loadObjectList();
 
             foreach ($records as $record) {
                 $params = $record->params;
@@ -45,10 +50,11 @@ class Migration20150826205631PlgResourcesAbout extends Base
                 }
 
                 if ($params != $record->params) {
-                    $query = "UPDATE `#__resource_types` SET params=" . $this->db->quote($params) . ""
-                        . "WHERE `id`=" . $this->db->quote($record->id) . ";";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__resource_types')
+                        ->set(['params' => $params])
+                        ->where('id', '=', (int)$record->id)
+                        ->execute();
                 }
             }
         }

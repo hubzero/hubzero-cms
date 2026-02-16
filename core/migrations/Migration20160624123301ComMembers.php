@@ -21,10 +21,14 @@ class Migration20160624123301ComMembers extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $query = "SELECT * FROM `#__extensions` WHERE `element` IN ('com_users', 'com_members')";
-            $this->db->setQuery($query);
-            $objs = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
+            $objs = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__extensions')
+                ->whereIn('element', ['com_users', 'com_members'])
+                ->loadObjectList();
 
             $users   = null;
             $members = null;
@@ -62,10 +66,11 @@ class Migration20160624123301ComMembers extends Base
                     $members->set($param, $users->get('param', $dflt));
                 }
 
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($members->toString()) . " WHERE "
-                    . "`element`='com_members'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => $members->toString()])
+                    ->where('element', '=', 'com_members')
+                    ->execute();
             }
         }
     }

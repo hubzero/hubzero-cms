@@ -26,27 +26,30 @@ class Migration20141009171309ComTools extends Base
             return false;
         }
 
-        if ($mwdb->tableExists('host') && $mwdb->tableHasField('host', 'venue_id')) {
-            $query = "ALTER TABLE `host` DROP COLUMN `venue_id`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        $schema = $mwdb->schema();
+
+        if ($schema->tableExists('host') && $schema->hasColumn('host', 'venue_id')) {
+            $schema->dropColumn('host', 'venue_id');
         }
 
-        if ($mwdb->tableExists('zones') && $mwdb->tableHasField('zones', 'picture')) {
-            $query = "ALTER TABLE `zones` DROP COLUMN `picture`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+        if ($schema->tableExists('zones') && $schema->hasColumn('zones', 'picture')) {
+            $schema->dropColumn('zones', 'picture');
         }
 
+        // Note: Middleware database is typically MySQL-only, so CHANGE COLUMN is kept as-is
+        // If middleware ever supports SQLite, this would need a helper method
         if (
-            $mwdb->tableExists('zones')
-            && $mwdb->tableHasField('zones', 'title')
-            && $mwdb->tableHasField('zones', 'zone')
+            $schema->tableExists('zones')
+            && $schema->hasColumn('zones', 'title')
+            && $schema->hasColumn('zones', 'zone')
         ) {
-            $query = "ALTER TABLE `zones` "
-                . "CHANGE COLUMN `title` `title` VARCHAR(255) NULL DEFAULT NULL AFTER `zone`";
-            $mwdb->setQuery($query);
-            $mwdb->query();
+            $mwdb->schema()->table('zones')->alter()
+                ->modifyColumn('title')
+                ->string(255)
+                ->nullable()
+                ->default(null)
+                ->after('zone')
+                ->execute();
         }
     }
 }

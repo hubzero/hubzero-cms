@@ -21,33 +21,42 @@ class Migration20170220041701ComSearch extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__solr_search_facets')) {
-            $sql = "CREATE TABLE `#__solr_search_facets` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`name` varchar(255) NOT NULL,
-				`facet` longtext,
-				`state` tinyint(4) NOT NULL DEFAULT '0',
-				`protected` tinyint(4) NOT NULL DEFAULT '0',
-				`ordering` varchar(45) NOT NULL DEFAULT '0',
-				`parent_id` int(11) DEFAULT NULL,
-				PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($sql);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $insert = "INSERT INTO `jos_solr_search_facets` "
-                . "(`id`,`name`,`facet`,`state`,`protected`,`ordering`,`parent_id`) VALUES
-				(1,'Content','hubtype:content',1,1,'0',0), (2,'Resources','hubtype:resource',1,1,'0',0),
-				(3,'Collections','hubtype:collection',1,1,'0',0), (4,'Members','hubtype:member',1,1,'0',0),
-				(5,'Projects','hubtype:project',1,1,'0',0), (6,'Groups','hubtype:group',1,1,'0',0), 
-				(7,'Courses','hubtype:course',1,1,'0',0), (8,'Wiki','hubtype:wiki',1,1,'0',0),
-				(9,'Events','hubtype:event',1,1,'0',0), (10,'Knowledge Base Article','hubtype:kb-article',1,1,'0',0),
-				(11,'Blog Posts','hubtype:blog-entry',1,1,'0',0), (12,'Wishes','hubtype:wishlist',1,1,'0',0),
-				(13,'Publications','hubtype:publication',1,1,'0',0), (14,'Questions','hubtype:question',1,1,'0',0),
-				(15,'Citations','hubtype:citation',1,1,'0',0);";
+        if (!$schema->tableExists('#__solr_search_facets')) {
+            $schema->createTable('#__solr_search_facets')
+                ->id()
+                ->string('name', 255)
+                ->longText('facet')->nullable()
+                ->tinyInteger('state')->default(0)
+                ->tinyInteger('protected')->default(0)
+                ->string('ordering', 45)->default('0')
+                ->integer('parent_id')->nullable()
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
-            $this->db->setQuery($insert);
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->insert('#__solr_search_facets')
+                ->columns(['id', 'name', 'facet', 'state', 'protected', 'ordering', 'parent_id'])
+                ->values([
+                    [1, 'Content', 'hubtype:content', 1, 1, '0', 0],
+                    [2, 'Resources', 'hubtype:resource', 1, 1, '0', 0],
+                    [3, 'Collections', 'hubtype:collection', 1, 1, '0', 0],
+                    [4, 'Members', 'hubtype:member', 1, 1, '0', 0],
+                    [5, 'Projects', 'hubtype:project', 1, 1, '0', 0],
+                    [6, 'Groups', 'hubtype:group', 1, 1, '0', 0],
+                    [7, 'Courses', 'hubtype:course', 1, 1, '0', 0],
+                    [8, 'Wiki', 'hubtype:wiki', 1, 1, '0', 0],
+                    [9, 'Events', 'hubtype:event', 1, 1, '0', 0],
+                    [10, 'Knowledge Base Article', 'hubtype:kb-article', 1, 1, '0', 0],
+                    [11, 'Blog Posts', 'hubtype:blog-entry', 1, 1, '0', 0],
+                    [12, 'Wishes', 'hubtype:wishlist', 1, 1, '0', 0],
+                    [13, 'Publications', 'hubtype:publication', 1, 1, '0', 0],
+                    [14, 'Questions', 'hubtype:question', 1, 1, '0', 0],
+                    [15, 'Citations', 'hubtype:citation', 1, 1, '0', 0]
+                ])
+                ->execute();
         }
     }
 
@@ -56,10 +65,10 @@ class Migration20170220041701ComSearch extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__solr_search_facets')) {
-            $sql = "DROP TABLE #__solr_search_facets;";
-            $this->db->setQuery($sql);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__solr_search_facets')) {
+            $schema->dropTable('#__solr_search_facets');
         }
     }
 }

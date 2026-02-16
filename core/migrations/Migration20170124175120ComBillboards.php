@@ -21,24 +21,14 @@ class Migration20170124175120ComBillboards extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__billboards_billboards')) {
-            if (!$this->db->tableHasKey('#__billboards_billboards', 'idx_collection_id')) {
-                $query = "ALTER TABLE `#__billboards_billboards` ADD INDEX `idx_collection_id` (`collection_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if (!$this->db->tableHasKey('#__billboards_billboards', 'idx_published')) {
-                $query = "ALTER TABLE `#__billboards_billboards` ADD INDEX `idx_published` (`published`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__billboards_billboards')) {
+            $schema->addIndex('#__billboards_billboards', 'idx_collection_id', 'collection_id');
 
-            if (!$this->db->tableHasKey('#__billboards_billboards', 'idx_alias')) {
-                $query = "ALTER TABLE `#__billboards_billboards` ADD INDEX `idx_alias` (`alias`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__billboards_billboards', 'idx_published', 'published');
+
+            $schema->addIndex('#__billboards_billboards', 'idx_alias', 'alias');
         }
     }
 
@@ -47,24 +37,14 @@ class Migration20170124175120ComBillboards extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__billboards_billboards')) {
-            if ($this->db->tableHasKey('#__billboards_billboards', 'idx_collection_id')) {
-                $query = "ALTER TABLE `#__billboards_billboards` DROP KEY `idx_collection_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__billboards_billboards', 'idx_published')) {
-                $query = "ALTER TABLE `#__billboards_billboards` DROP KEY `idx_published`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__billboards_billboards')) {
+            $schema->dropIndex('#__billboards_billboards', 'idx_collection_id');
 
-            if ($this->db->tableHasKey('#__billboards_billboards', 'idx_alias')) {
-                $query = "ALTER TABLE `#__billboards_billboards` DROP KEY `idx_alias`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__billboards_billboards', 'idx_published');
+
+            $schema->dropIndex('#__billboards_billboards', 'idx_alias');
         }
     }
 }

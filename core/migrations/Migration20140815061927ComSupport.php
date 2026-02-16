@@ -21,21 +21,15 @@ class Migration20140815061927ComSupport extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__support_statuses')) {
-            if ($this->db->tableHasField('#__support_statuses', 'alias')) {
-                // Create the table
-                $query = "ALTER TABLE `#__support_statuses` CHANGE `alias` `alias` VARCHAR(250)  NOT NULL  DEFAULT ''";
+        $schema = $this->db->schema();
 
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__support_statuses')) {
+            if ($schema->hasColumn('#__support_statuses', 'alias')) {
+                $schema->modifyColumn('#__support_statuses', 'alias')->string(250)->notNull()->default('')->execute();
             }
 
-            if (!$this->db->tableHasField('#__support_statuses', 'color')) {
-                // Create the table
-                $query = "ALTER TABLE `#__support_statuses` ADD `color` VARCHAR(50)  NOT NULL  DEFAULT ''";
-
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$schema->hasColumn('#__support_statuses', 'color')) {
+                $schema->addColumn('#__support_statuses', 'color')->string(50)->notNull()->default('')->execute();
             }
         }
     }
@@ -45,21 +39,15 @@ class Migration20140815061927ComSupport extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__support_statuses')) {
-            if ($this->db->tableHasField('#__support_statuses', 'color')) {
-                // Create the table
-                $query = "ALTER TABLE `#__support_statuses` DROP `color`;";
+        $schema = $this->db->schema();
 
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__support_statuses')) {
+            if ($schema->hasColumn('#__support_statuses', 'color')) {
+                $schema->dropColumn('#__support_statuses', 'color');
             }
 
-            if ($this->db->tableHasField('#__support_statuses', 'alias')) {
-                // Create the table
-                $query = "ALTER TABLE `#__support_statuses` CHANGE `alias` `alias` CHAR(250)  NOT NULL  DEFAULT ''";
-
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__support_statuses', 'alias')) {
+                $schema->modifyColumn('#__support_statuses', 'alias')->string(250)->notNull()->default('')->execute();
             }
         }
     }

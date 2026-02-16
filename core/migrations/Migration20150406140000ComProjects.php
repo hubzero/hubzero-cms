@@ -21,24 +21,26 @@ class Migration20150406140000ComProjects extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__project_repos')) {
-            $query = "CREATE TABLE `#__project_repos` (
-			  `id` int(10) NOT NULL AUTO_INCREMENT,
-			  `project_id` int(11) NOT NULL,
-			  `name` varchar(64) NOT NULL DEFAULT '',
-			  `about` varchar(255),
-			  `path` varchar(255) NOT NULL DEFAULT '',
-			  `status` int(11) NOT NULL DEFAULT '0',
-			  `created` datetime NOT NULL,
-			  `created_by` int(11) NOT NULL,
-			  `remote` tinyint(1) NOT NULL DEFAULT '0',
-			  `engine` varchar(100) NOT NULL DEFAULT 'git',
-			  `params` text,
-			  PRIMARY KEY (`id`),
-			  UNIQUE KEY `repo` (`project_id`,`name`, `path`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__project_repos')) {
+            $schema->createTable('#__project_repos')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('project_id')
+                ->string('name', 64)->default('')
+                ->string('about', 255)->nullable()
+                ->string('path', 255)->default('')
+                ->integer('status')->default(0)
+                ->datetime('created')
+                ->integer('created_by')
+                ->tinyInteger('remote')->default(0)
+                ->string('engine', 100)->default('git')
+                ->text('params')->nullable()
+                ->primaryKey('id')
+                ->uniqueIndex('repo', ['project_id', 'name', 'path'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 }

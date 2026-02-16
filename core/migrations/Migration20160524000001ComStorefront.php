@@ -21,17 +21,19 @@ class Migration20160524000001ComStorefront extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__storefront_serials')) {
-            $query = "	CREATE TABLE `#__storefront_serials` (
-						`srId` int(11) unsigned NOT NULL AUTO_INCREMENT,
-						`srNumber` varchar(32) DEFAULT NULL,
-						`srSId` int(11) DEFAULT NULL,
-						`srStatus` varchar(10) DEFAULT NULL,
-						PRIMARY KEY (`srId`),
-						UNIQUE KEY `unique keys for a SKU` (`srNumber`,`srSId`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__storefront_serials')) {
+            $schema->createTable('#__storefront_serials')
+                ->unsignedInteger('srId', ['autoIncrement' => true])
+                ->string('srNumber', 32)->nullable()
+                ->integer('srSId')->nullable()
+                ->string('srStatus', 10)->nullable()
+                ->primaryKey('srId')
+                ->uniqueIndex('unique keys for a SKU', ['srNumber', 'srSId'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -40,11 +42,8 @@ class Migration20160524000001ComStorefront extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__storefront_serials')) {
-            $query = "DROP TABLE `#__storefront_serials`";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema->dropTable('#__storefront_serials');
     }
 }

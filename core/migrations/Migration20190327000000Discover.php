@@ -21,24 +21,32 @@ class Migration20190327000000Discover extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__content')) {
-            $query = "SELECT * FROM `#__content` WHERE `title`='Discover' AND `alias`='discover' AND `introtext` "
-                . "LIKE '%href=\"/store\"%'";
-            $this->db->setQuery($query);
-            $pages = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__content')) {
+            $pages = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__content')
+                ->where('title', '=', 'Discover')
+                ->where('alias', '=', 'discover')
+                ->whereLike('introtext', 'href="/store"')
+                ->loadObjectList();
 
             if ($pages) {
                 foreach ($pages as $page) {
                     $content = $page->introtext;
                     $content = str_replace('href="/store"', 'href="/storefront"', $content);
 
-                    $query = "UPDATE `#__content` SET `introtext`=" . $this->db->quote($content)
-                        . " WHERE `id`=" . $this->db->quote($page->id);
-                    $this->db->setQuery($query);
-                    if ($this->db->query()) {
+                    $success = $this->db->getQuery(true)
+                        ->update('#__content')
+                        ->set(['introtext' => $content])
+                        ->where('id', '=', $page->id)
+                        ->execute();
+
+                    if ($success) {
                         $this->log('Updated Store link from /store to /storefront in default Discover page');
                     } else {
-                        $this->log($query, 'warning');
+                        $this->log('Failed to update Store link in default Discover page', 'warning');
                     }
                 }
             }
@@ -50,24 +58,32 @@ class Migration20190327000000Discover extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__content')) {
-            $query = "SELECT * FROM `#__content` WHERE `title`='Discover' AND `alias`='discover' AND `introtext` "
-                . "LIKE '%href=\"/storefront\"%'";
-            $this->db->setQuery($query);
-            $pages = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__content')) {
+            $pages = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__content')
+                ->where('title', '=', 'Discover')
+                ->where('alias', '=', 'discover')
+                ->whereLike('introtext', 'href="/storefront"')
+                ->loadObjectList();
 
             if ($pages) {
                 foreach ($pages as $page) {
                     $content = $page->introtext;
                     $content = str_replace('href="/storefront"', 'href="/store"', $content);
 
-                    $query = "UPDATE `#__content` SET `introtext`=" . $this->db->quote($content)
-                        . " WHERE `id`=" . $this->db->quote($page->id);
-                    $this->db->setQuery($query);
-                    if ($this->db->query()) {
+                    $success = $this->db->getQuery(true)
+                        ->update('#__content')
+                        ->set(['introtext' => $content])
+                        ->where('id', '=', $page->id)
+                        ->execute();
+
+                    if ($success) {
                         $this->log('Updated Store link from /storefront to /store in default Discover page');
                     } else {
-                        $this->log($query, 'warning');
+                        $this->log('Failed to update Store link in default Discover page', 'warning');
                     }
                 }
             }

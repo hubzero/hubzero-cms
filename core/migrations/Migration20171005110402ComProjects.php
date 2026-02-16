@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for moving projects activity to the global activity tables
  *
-*/
+ */
 class Migration20171005110402ComProjects extends Base
 {
     /**
@@ -21,23 +21,28 @@ class Migration20171005110402ComProjects extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $newids = array();
+        $blgids = array();
+        $tdoids = array();
 
         if (
-            $this->db->tableExists('#__activity_logs')
-            && $this->db->tableExists('#__activity_recipients')
-            && $this->db->tableExists('#__project_activity')
+            $schema->tableExists('#__activity_logs')
+            && $schema->tableExists('#__activity_recipients')
+            && $schema->tableExists('#__project_activity')
         ) {
-            $query = "SELECT * FROM `#__project_activity` ORDER BY id ASC";
-            $this->db->setQuery($query);
-            $activities = $this->db->loadObjectList();
+            $activities = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__project_activity')
+                ->order('id', 'ASC')
+                ->loadObjectList();
 
             foreach ($activities as $activity) {
                 $action = 'created';
                 $scope = 'project';
                 $scope_id = $activity->projectid;
                 $parent = 0;
-                $log_id = 0;
                 $blog = false;
                 $todo = false;
 
@@ -87,11 +92,15 @@ class Migration20171005110402ComProjects extends Base
                         $scope = 'project.comment';
                         $scope_id = $activity->projectid;
                         $blog = true;
-                        if ($this->db->tableExists('#__project_microblog')) {
-                            $query = "SELECT * FROM `#__project_microblog` WHERE id=" . $activity->referenceid;
-                            $this->db->setQuery($query);
-                            $comment = $this->db->loadObject();
-                            $activity->activity = $comment->blogentry;
+                        if ($schema->tableExists('#__project_microblog')) {
+                            $comment = $this->db->getQuery(true)
+                                ->select('*')
+                                ->from('#__project_microblog')
+                                ->where('id', '=', $activity->referenceid)
+                                ->first();
+                            if ($comment) {
+                                $activity->activity = $comment->blogentry;
+                            }
                         }
                         break;
 
@@ -101,13 +110,16 @@ class Migration20171005110402ComProjects extends Base
                         $scope = 'project.comment';
                         $scope_id = $activity->referenceid;
 
-                        if ($this->db->tableExists('#__project_comments')) {
-                            $query = "SELECT * FROM `#__project_comments` WHERE id=" . $activity->referenceid;
-                            $this->db->setQuery($query);
-                            $comment = $this->db->loadObject();
-                            //$parent = $newids[$comment->itemid];
-                            $parent = (isset($tdoids[$comment->itemid]) ? $tdoids[$comment->itemid] : 0);
-                            $activity->activity = $comment->comment;
+                        if ($schema->tableExists('#__project_comments')) {
+                            $comment = $this->db->getQuery(true)
+                                ->select('*')
+                                ->from('#__project_comments')
+                                ->where('id', '=', $activity->referenceid)
+                                ->first();
+                            if ($comment) {
+                                $parent = (isset($tdoids[$comment->itemid]) ? $tdoids[$comment->itemid] : 0);
+                                $activity->activity = $comment->comment;
+                            }
                         }
                         break;
 
@@ -116,13 +128,16 @@ class Migration20171005110402ComProjects extends Base
                         $scope = 'project.comment';
                         $scope_id = $activity->projectid;
 
-                        if ($this->db->tableExists('#__project_comments')) {
-                            $query = "SELECT * FROM `#__project_comments` WHERE id=" . $activity->referenceid;
-                            $this->db->setQuery($query);
-                            $comment = $this->db->loadObject();
-                            $parent = (isset($blgids[$comment->itemid]) ? $blgids[$comment->itemid] : 0);
-                            //$parent = $newids[$comment->itemid];
-                            $activity->activity = $comment->comment;
+                        if ($schema->tableExists('#__project_comments')) {
+                            $comment = $this->db->getQuery(true)
+                                ->select('*')
+                                ->from('#__project_comments')
+                                ->where('id', '=', $activity->referenceid)
+                                ->first();
+                            if ($comment) {
+                                $parent = (isset($blgids[$comment->itemid]) ? $blgids[$comment->itemid] : 0);
+                                $activity->activity = $comment->comment;
+                            }
                         }
                         break;
 
@@ -131,12 +146,16 @@ class Migration20171005110402ComProjects extends Base
                         $scope = 'project.comment';
                         $scope_id = $activity->projectid;
 
-                        if ($this->db->tableExists('#__project_comments')) {
-                            $query = "SELECT * FROM `#__project_comments` WHERE id=" . $activity->referenceid;
-                            $this->db->setQuery($query);
-                            $comment = $this->db->loadObject();
-                            $parent = (isset($newids[$comment->itemid]) ? $newids[$comment->itemid] : 0);
-                            $activity->activity = $comment->comment;
+                        if ($schema->tableExists('#__project_comments')) {
+                            $comment = $this->db->getQuery(true)
+                                ->select('*')
+                                ->from('#__project_comments')
+                                ->where('id', '=', $activity->referenceid)
+                                ->first();
+                            if ($comment) {
+                                $parent = (isset($newids[$comment->itemid]) ? $newids[$comment->itemid] : 0);
+                                $activity->activity = $comment->comment;
+                            }
                         }
                         break;
 
@@ -249,19 +268,20 @@ class Migration20171005110402ComProjects extends Base
                         break;
                 }
 
-                $query = "INSERT INTO `#__activity_logs` (`id`, `created`, `created_by`, "
-                    . "`description`, `action`, `scope`, `scope_id`, `details`, `anonymous`, `parent`) VALUES (null,
-							" . $this->db->quote($activity->recorded) . ",
-							" . $this->db->quote($activity->userid) . ",
-							" . $this->db->quote($activity->activity) . ",
-							" . $this->db->quote($action) . ",
-							" . $this->db->quote($scope) . ",
-							" . $this->db->quote($scope_id) . ",
-							" . $this->db->quote(json_encode($activity)) . ",
-							" . $this->db->quote(0) . ",
-							" . $this->db->quote($parent) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__activity_logs')
+                    ->set([
+                        'created'     => $activity->recorded,
+                        'created_by'  => $activity->userid,
+                        'description' => $activity->activity,
+                        'action'      => $action,
+                        'scope'       => $scope,
+                        'scope_id'    => $scope_id,
+                        'details'     => json_encode($activity),
+                        'anonymous'   => 0,
+                        'parent'      => $parent
+                    ])
+                    ->execute();
 
                 $newids[$activity->id] = $this->db->insertid();
                 if ($blog) {
@@ -272,50 +292,50 @@ class Migration20171005110402ComProjects extends Base
                 }
 
                 // Add to the project's feed
-                $query = "INSERT INTO `#__activity_recipients` (`id`, `log_id`, `scope`, `scope_id`, "
-                    . "`created`, `viewed`, `state`, `starred`) VALUES (null,
-							" . $this->db->quote($newids[$activity->id]) . ",
-							" . $this->db->quote('project') . ",
-							" . $this->db->quote($activity->projectid) . ",
-							" . $this->db->quote($activity->recorded) . ",
-							" . $this->db->quote($activity->recorded) . ",
-							" . $this->db->quote($activity->state == 2 ? $activity->state : 1) . ",
-							" . $this->db->quote(0) . ")";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->insert('#__activity_recipients')
+                    ->set([
+                        'log_id'   => $newids[$activity->id],
+                        'scope'    => 'project',
+                        'scope_id' => $activity->projectid,
+                        'created'  => $activity->recorded,
+                        'viewed'   => $activity->recorded,
+                        'state'    => ($activity->state == 2 ? $activity->state : 1),
+                        'starred'  => 0
+                    ])
+                    ->execute();
 
                 // We have a child comment
                 // So, we want to force the parent to show up more recent in the list
                 // to reflect the new comment.
                 if ($parent && $activity->state != 2) {
                     // Unset the parent's recipient record
-                    $query = "UPDATE `#__activity_recipients`
-						SET `state`=0
-						WHERE `state`=1
-						AND `log_id`=" . $this->db->quote($parent) . "
-						AND `scope`='project'
-						AND `scope_id`=" . $this->db->quote($activity->projectid);
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->update('#__activity_recipients')
+                        ->set(['state' => 0])
+                        ->where('state', '=', 1)
+                        ->where('log_id', '=', $parent)
+                        ->where('scope', '=', 'project')
+                        ->where('scope_id', '=', $activity->projectid)
+                        ->execute();
 
                     // And add a new recipient record with an updated timestamp
-                    $query = "INSERT INTO `#__activity_recipients` (`id`, `log_id`, `scope`, `scope_id`, "
-                        . "`created`, `viewed`, `state`, `starred`) VALUES (null,
-								" . $this->db->quote($parent) . ",
-								" . $this->db->quote('project') . ",
-								" . $this->db->quote($activity->projectid) . ",
-								" . $this->db->quote($activity->recorded) . ",
-								" . $this->db->quote($activity->recorded) . ",
-								" . $this->db->quote(1) . ",
-								" . $this->db->quote(0) . ")";
-                    $this->db->setQuery($query);
-                    $this->db->query();
+                    $this->db->getQuery(true)
+                        ->insert('#__activity_recipients')
+                        ->set([
+                            'log_id'   => $parent,
+                            'scope'    => 'project',
+                            'scope_id' => $activity->projectid,
+                            'created'  => $activity->recorded,
+                            'viewed'   => $activity->recorded,
+                            'state'    => 1,
+                            'starred'  => 0
+                        ])
+                        ->execute();
                 }
             }
 
-            //$query = "DROP TABLE IF EXISTS `#__project_activity`";
-            //$this->db->setQuery($query);
-            //$this->db->query();
+            //$this->db->schema()->dropTable('#__project_activity');
         }
     }
 
@@ -324,85 +344,80 @@ class Migration20171005110402ComProjects extends Base
      **/
     public function down()
     {
-        $newids = array();
-        $commentids = array();
+        $schema = $this->db->schema();
 
         // Transfer articles
-        if ($this->db->tableExists('#__activity_logs')) {
-            if (!$this->db->tableExists('#__project_activity')) {
-                $query = "CREATE TABLE `#__project_activity` (
-				  `id` int(11) NOT NULL AUTO_INCREMENT,
-				  `projectid` int(11) NOT NULL DEFAULT '0',
-				  `userid` int(11) NOT NULL DEFAULT '0',
-				  `referenceid` varchar(255) NOT NULL DEFAULT '0',
-				  `managers_only` tinyint(2) DEFAULT '0',
-				  `admin` tinyint(2) DEFAULT '0',
-				  `commentable` tinyint(2) NOT NULL DEFAULT '0',
-				  `state` tinyint(2) NOT NULL DEFAULT '0',
-				  `recorded` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `activity` varchar(255) NOT NULL DEFAULT '',
-				  `highlighted` varchar(100) NOT NULL DEFAULT '',
-				  `url` varchar(255) DEFAULT NULL,
-				  `class` varchar(150) DEFAULT NULL,
-				  `preview` mediumtext,
-				  PRIMARY KEY (`id`),
-				  KEY `idx_projectid` (`projectid`),
-				  KEY `idx_state` (`state`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-                $this->db->setQuery($query);
-                $this->db->query();
+        if ($schema->tableExists('#__activity_logs')) {
+            if (!$schema->tableExists('#__project_activity')) {
+                $schema->createTable('#__project_activity')
+                    ->id()
+                    ->integer('projectid')->default(0)
+                    ->integer('userid')->default(0)
+                    ->string('referenceid', 255)->default('0')
+                    ->tinyInteger('managers_only')->default(0)
+                    ->tinyInteger('admin')->default(0)
+                    ->tinyInteger('commentable')->default(0)
+                    ->tinyInteger('state')->default(0)
+                    ->datetime('recorded')->default('0000-00-00 00:00:00')
+                    ->string('activity', 255)->default('')
+                    ->string('highlighted', 100)->default('')
+                    ->string('url', 255)->nullable()
+                    ->string('class', 150)->nullable()
+                    ->mediumText('preview')->nullable()
+                    ->index('idx_projectid', 'projectid')
+                    ->index('idx_state', 'state')
+                    ->engine('MyISAM')
+                    ->charset('utf8')
+                    ->execute();
             }
 
-            $query = "SELECT * FROM `#__activity_logs` WHERE `scope` IN "
-                . "('project', 'project.note', 'project.todo', 'publication', 'project.comment', "
-                . "'project.file', 'project.todo.comment', 'project.database')";
-            $this->db->setQuery($query);
-            $activities = $this->db->loadObjectList();
+            $activities = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__activity_logs')
+                ->whereIn('scope', [
+                    'project',
+                    'project.note',
+                    'project.todo',
+                    'publication',
+                    'project.comment',
+                    'project.file',
+                    'project.todo.comment',
+                    'project.database',
+                ])
+                ->loadObjectList();
 
             foreach ($activities as $activity) {
                 if ($activity->details) {
                     $details = json_decode($activity->details);
                 }
 
-                $query = "INSERT INTO `#__project_activity` (
-							`id`,
-							`projectid`,
-							`userid`,
-							`referenceid`,
-							`managers_only`,
-							`admin`,
-							`commentable`,
-							`state`,
-							`recorded`,
-							`activity`,
-							`highlighted`,
-							`url`,
-							`class`,
-							`preview`
-						) VALUES (
-							null,
-							" . $this->db->quote($details->projectid) . ",
-							" . $this->db->quote($details->userid) . ",
-							" . $this->db->quote($details->referenceid) . ",
-							" . $this->db->quote($details->managers_only) . ",
-							" . $this->db->quote($details->admin) . ",
-							" . $this->db->quote($details->commentable) . ",
-							" . $this->db->quote($details->state) . ",
-							" . $this->db->quote($details->recorded) . ",
-							" . $this->db->quote($details->activity) . ",
-							" . $this->db->quote($details->highlighted) . ",
-							" . $this->db->quote($details->url) . ",
-							" . $this->db->quote($details->class) . ",
-							" . $this->db->quote($details->preview) . "
-						)";
-                $this->db->setQuery($query);
-                $this->db->query();
+                if (isset($details)) {
+                    $this->db->getQuery(true)
+                        ->insert('#__project_activity')
+                        ->set([
+                            'projectid'     => $details->projectid,
+                            'userid'        => $details->userid,
+                            'referenceid'   => $details->referenceid,
+                            'managers_only' => $details->managers_only,
+                            'admin'         => $details->admin,
+                            'commentable'   => $details->commentable,
+                            'state'         => $details->state,
+                            'recorded'      => $details->recorded,
+                            'activity'      => $details->activity,
+                            'highlighted'   => $details->highlighted,
+                            'url'           => $details->url,
+                            'class'         => $details->class,
+                            'preview'       => $details->preview
+                        ])
+                        ->execute();
+                }
             }
 
-            if ($this->db->tableExists('#__activity_recipients')) {
-                $query = "DELETE FROM `#__activity_recipients` WHERE `scope` IN ('project', 'project_managers')";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->tableExists('#__activity_recipients')) {
+                $this->db->getQuery(true)
+                    ->delete('#__activity_recipients')
+                    ->whereIn('scope', ['project', 'project_managers'])
+                    ->execute();
             }
         }
     }

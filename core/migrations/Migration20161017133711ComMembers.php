@@ -16,15 +16,15 @@ use Hubzero\Content\Migration\Base;
 */
 class Migration20161017133711ComMembers extends Base
 {
-    /**
-     * Up
-     **/
     public function up()
     {
-        $query = "UPDATE #__user_profile_fields SET action_edit=0 WHERE action_create=0 AND action_update=0 AND "
-            . "name IN ('countryresident','countryorigin','race');";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $this->db->getQuery(true)
+            ->update('#__user_profile_fields')
+            ->set(['action_edit' => 0])
+            ->where('action_create', '=', 0)
+            ->where('action_update', '=', 0)
+            ->whereIn('name', ['countryresident', 'countryorigin', 'race'])
+            ->execute();
     }
 
     /**
@@ -32,9 +32,12 @@ class Migration20161017133711ComMembers extends Base
      **/
     public function down()
     {
-        $query = "UPDATE #__user_profile_fields SET action_edit=2 WHERE action_create=0 AND action_update=0 AND "
-            . "name IN ('countryresident','countryorigin','race');";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $this->db->getQuery(true)
+            ->update('#__user_profile_fields')
+            ->set(['action_edit' => 2])
+            ->where('action_create', '=', 0)
+            ->where('action_update', '=', 0)
+            ->whereIn('name', ['countryresident', 'countryorigin', 'race'])
+            ->execute();
     }
 }

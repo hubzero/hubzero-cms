@@ -21,14 +21,10 @@ class Migration20131106150723ComProjects extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__projects')
-            && !$this->db->tableHasKey('#__projects', 'idx_fulltxt_alias_title_about')
-        ) {
-            $query = "ALTER TABLE `#__projects` ADD FULLTEXT KEY "
-                . "`idx_fulltxt_alias_title_about` (`alias`, `title`, `about`);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__projects')) {
+            $schema->addFulltextIndex('#__projects', 'idx_fulltxt_alias_title_about', ['alias', 'title', 'about']);
         }
     }
 
@@ -37,13 +33,8 @@ class Migration20131106150723ComProjects extends Base
      **/
     public function down()
     {
-        if (
-            $this->db->tableExists('#__projects')
-            && $this->db->tableHasKey('#__projects', 'idx_fulltxt_alias_title_about')
-        ) {
-            $query = "ALTER TABLE `#__projects` DROP INDEX `idx_fulltxt_alias_title_about`;";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropIndex('#__projects', 'idx_fulltxt_alias_title_about');
     }
 }

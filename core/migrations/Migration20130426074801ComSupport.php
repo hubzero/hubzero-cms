@@ -21,35 +21,22 @@ class Migration20130426074801ComSupport extends Base
      **/
     public function up()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableExists('#__support_watching')) {
-            $query .= "CREATE TABLE `#__support_watching` (
-							`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-							`ticket_id` int(11) NOT NULL DEFAULT '0',
-							`user_id` int(11) NOT NULL DEFAULT '0',
-							PRIMARY KEY (`id`)
-						) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
-
-        $query = "";
-
-        if (!$this->db->tableHasKey('#__support_watching', 'idx_ticket_id')) {
-            $query .= "ALTER TABLE `#__support_watching` ADD INDEX `idx_ticket_id` (`ticket_id`);";
-        }
-
-        if (!$this->db->tableHasKey('#__support_watching', 'idx_user_id')) {
-            $query .= "ALTER TABLE `#__support_watching` ADD INDEX `idx_user_id` (`user_id`);";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__support_watching')) {
+            $schema->createTable('#__support_watching')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('ticket_id')->default(0)
+                ->integer('user_id')->default(0)
+                ->primaryKey('id')
+                ->index('idx_ticket_id', 'ticket_id')
+                ->index('idx_user_id', 'user_id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        } else {
+            $schema->addIndex('#__support_watching', 'idx_ticket_id', 'ticket_id');
+            $schema->addIndex('#__support_watching', 'idx_user_id', 'user_id');
         }
     }
 
@@ -58,23 +45,10 @@ class Migration20130426074801ComSupport extends Base
      **/
     public function down()
     {
-        $query = "";
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__support_watching')) {
-            $query .= "DROP TABLE `#__support_watching`";
-        }
-
-        if ($this->db->tableHasKey('#__support_watching', 'idx_ticket_id')) {
-            $query .= "ALTER TABLE DROP INDEX `idx_ticket_id`;";
-        }
-
-        if ($this->db->tableHasKey('#__support_watching', 'idx_user_id')) {
-            $query .= "ALTER TABLE DROP INDEX `idx_user_id`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__support_watching')) {
+            $schema->dropTable('#__support_watching');
         }
     }
 }

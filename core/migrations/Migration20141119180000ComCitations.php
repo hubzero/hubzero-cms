@@ -21,21 +21,43 @@ class Migration20141119180000ComCitations extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         //checks whether table exists and if the 'scope' field already exists
         if (
-            $this->db->tableExists('#__citations_secondary')
-            && !$this->db->tableHasField('#__citations_secondary', 'link1_url')
+            $schema->tableExists('#__citations_secondary')
+            && !$schema->hasColumn('#__citations_secondary', 'link1_url')
         ) {
-            $query = "ALTER TABLE `#__citations_secondary`
-			ADD COLUMN `link1_url` TINYTEXT NULL DEFAULT NULL,
-			ADD COLUMN `link1_title` VARCHAR(60) NULL DEFAULT NULL,
-			ADD COLUMN `link2_url` TINYTEXT NULL DEFAULT NULL,
-			ADD COLUMN `link2_title` VARCHAR(60) NULL DEFAULT NULL,
-			ADD COLUMN `link3_url` TINYTEXT NULL DEFAULT NULL,
-			ADD COLUMN `link3_title` VARCHAR(60) NULL DEFAULT NULL;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__citations_secondary', 'link1_url')
+                ->tinyText()
+                ->nullable()
+                ->default(null)
+                ->execute();
+            $schema->addColumn('#__citations_secondary', 'link1_title')
+                ->string(60)
+                ->nullable()
+                ->default(null)
+                ->execute();
+            $schema->addColumn('#__citations_secondary', 'link2_url')
+                ->tinyText()
+                ->nullable()
+                ->default(null)
+                ->execute();
+            $schema->addColumn('#__citations_secondary', 'link2_title')
+                ->string(60)
+                ->nullable()
+                ->default(null)
+                ->execute();
+            $schema->addColumn('#__citations_secondary', 'link3_url')
+                ->tinyText()
+                ->nullable()
+                ->default(null)
+                ->execute();
+            $schema->addColumn('#__citations_secondary', 'link3_title')
+                ->string(60)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
     }
 
@@ -44,21 +66,19 @@ class Migration20141119180000ComCitations extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         // Checks to see if gid field exists and removes it
         if (
-            $this->db->tableExists('#__citations_secondary')
-            && $this->db->tableHasField('#__citations_secondary', 'link1_url')
+            $schema->tableExists('#__citations_secondary')
+            && $schema->hasColumn('#__citations_secondary', 'link1_url')
         ) {
-            $query = "ALTER TABLE `#__citations_secondary`
-			DROP COLUMN `link1_url`,
-			DROP COLUMN `link1_title`,
-			DROP COLUMN `link2_url`,
-			DROP COLUMN `link2_title`,
-			DROP COLUMN `link3_url`,
-			DROP COLUMN `link3_tile`;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__citations_secondary', 'link1_url');
+            $schema->dropColumn('#__citations_secondary', 'link1_title');
+            $schema->dropColumn('#__citations_secondary', 'link2_url');
+            $schema->dropColumn('#__citations_secondary', 'link2_title');
+            $schema->dropColumn('#__citations_secondary', 'link3_url');
+            $schema->dropColumn('#__citations_secondary', 'link3_title');
         }
     }
 }

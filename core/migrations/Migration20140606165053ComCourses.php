@@ -21,18 +21,20 @@ class Migration20140606165053ComCourses extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__courses_prerequisites')) {
-            $query = "CREATE TABLE `#__courses_prerequisites` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `section_id` int(11) NOT NULL DEFAULT '0',
-				  `item_scope` varchar(255) NOT NULL DEFAULT 'asset',
-				  `item_id` int(11) NOT NULL DEFAULT '0',
-				  `requisite_scope` varchar(255) NOT NULL DEFAULT 'asset',
-				  `requisite_id` int(11) NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`)
-				) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__courses_prerequisites')) {
+            $schema->createTable('#__courses_prerequisites')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('section_id')->default(0)
+                ->string('item_scope', 255)->default('asset')
+                ->integer('item_id')->default(0)
+                ->string('requisite_scope', 255)->default('asset')
+                ->integer('requisite_id')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -41,10 +43,8 @@ class Migration20140606165053ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__courses_prerequisites')) {
-            $query = "DROP TABLE `#__courses_prerequisites`";
-            $this->db->setQuery($query);
-            $this->db->query();
-        }
+        $schema = $this->db->schema();
+
+        $schema->dropTable('#__courses_prerequisites');
     }
 }

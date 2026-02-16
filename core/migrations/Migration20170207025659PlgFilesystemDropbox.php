@@ -13,7 +13,7 @@ use Hubzero\Content\Migration\Base;
 /**
  * Migration script for adding Dropbox filesystem plugin
  *
-*/
+ */
 class Migration20170207025659PlgFilesystemDropbox extends Base
 {
     /**
@@ -21,18 +21,25 @@ class Migration20170207025659PlgFilesystemDropbox extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $this->addPluginEntry('filesystem', 'dropbox');
 
-        if ($this->db->tableExists('#__projects_connection_providers')) {
-            $query = "SELECT * FROM `#__projects_connection_providers` WHERE `alias`='dropbox'";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        if ($schema->tableExists('#__projects_connection_providers')) {
+            $id = $this->db->getQuery(true)
+                ->select('id')
+                ->from('#__projects_connection_providers')
+                ->where('alias', '=', 'dropbox')
+                ->value('id');
 
-            if (count($results) < 1) {
-                $query = "INSERT INTO `#__projects_connection_providers` (`alias`, `name`) VALUES"
-                    . "('dropbox','Dropbox')";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (!$id) {
+                $this->db->getQuery(true)
+                    ->insert('#__projects_connection_providers')
+                    ->set([
+                        'alias' => 'dropbox',
+                        'name'  => 'Dropbox'
+                    ])
+                    ->execute();
             }
         }
     }
@@ -42,23 +49,29 @@ class Migration20170207025659PlgFilesystemDropbox extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         $this->deletePluginEntry('filesystem', 'dropbox');
 
-        if ($this->db->tableExists('#__projects_connection_providers')) {
-            $query = "SELECT * FROM `#__projects_connection_providers` WHERE `alias`='dropbox'";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        if ($schema->tableExists('#__projects_connection_providers')) {
+            $results = $this->db->getQuery(true)
+                ->select('*')
+                ->from('#__projects_connection_providers')
+                ->where('alias', '=', 'dropbox')
+                ->loadObjectList();
 
             foreach ($results as $result) {
-                $query = "DELETE FROM `#__projects_connections` WHERE `provider_id`=" . $this->db->quote($result->id);
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__projects_connections')
+                    ->where('provider_id', '=', $result->id)
+                    ->execute();
             }
 
             if (count($results) > 0) {
-                $query = "DELETE FROM `#__projects_connection_providers` WHERE `alias`='dropbox'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->delete('#__projects_connection_providers')
+                    ->where('alias', '=', 'dropbox')
+                    ->execute();
             }
         }
     }

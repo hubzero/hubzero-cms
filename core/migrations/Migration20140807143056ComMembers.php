@@ -21,23 +21,18 @@ class Migration20140807143056ComMembers extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         // drop orignal key and create new one
-        if ($this->db->tableExists('#__xprofiles')) {
-            if ($this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx')) {
-                $query = "ALTER TABLE `#__xprofiles` DROP INDEX jos_xprofiles_fullname_ftidx;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__xprofiles')) {
+            $schema->dropIndex('#__xprofiles', 'jos_xprofiles_fullname_ftidx');
 
             if (
-                !$this->db->tableHasKey('#__xprofiles', 'ftidx_fullname')
-                && $this->db->tableHasField('#__xprofiles', 'givenName')
-                && $this->db->tableHasField('#__xprofiles', 'middleName')
-                && $this->db->tableHasField('#__xprofiles', 'surname')
+                $schema->hasColumn('#__xprofiles', 'givenName')
+                && $schema->hasColumn('#__xprofiles', 'middleName')
+                && $schema->hasColumn('#__xprofiles', 'surname')
             ) {
-                $query = "ALTER TABLE `#__xprofiles` ADD FULLTEXT ftidx_fullname (givenName, middleName, surname);";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addFulltextIndex('#__xprofiles', 'ftidx_fullname', ['givenName', 'middleName', 'surname']);
             }
         }
     }
@@ -47,23 +42,21 @@ class Migration20140807143056ComMembers extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__xprofiles')) {
-            if ($this->db->tableHasKey('#__xprofiles', 'ftidx_fullname')) {
-                $query = "ALTER TABLE `#__xprofiles` DROP INDEX ftidx_fullname;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__xprofiles')) {
+            $schema->dropIndex('#__xprofiles', 'ftidx_fullname');
 
             if (
-                !$this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx')
-                && $this->db->tableHasField('#__xprofiles', 'givenName')
-                && $this->db->tableHasField('#__xprofiles', 'middleName')
-                && $this->db->tableHasField('#__xprofiles', 'surname')
+                $schema->hasColumn('#__xprofiles', 'givenName')
+                && $schema->hasColumn('#__xprofiles', 'middleName')
+                && $schema->hasColumn('#__xprofiles', 'surname')
             ) {
-                $query = "ALTER TABLE `#__xprofiles` "
-                    . "ADD FULLTEXT jos_xprofiles_fullname_ftidx (givenName, middleName, surname);";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $schema->addFulltextIndex('#__xprofiles', 'jos_xprofiles_fullname_ftidx', [
+                    'givenName',
+                    'middleName',
+                    'surname',
+                ]);
             }
         }
     }

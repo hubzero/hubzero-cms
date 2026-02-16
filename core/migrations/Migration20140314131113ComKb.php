@@ -21,14 +21,16 @@ class Migration20140314131113ComKb extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableHasField('#__faq_comments', 'state')) {
-            $query = "ALTER TABLE `#__faq_comments` ADD `state` TINYINT(2)  NOT NULL  DEFAULT '0';";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $query = "UPDATE `#__faq_comments` SET `state`=1 WHERE `state`='0'";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__faq_comments', 'state')) {
+            $schema->addColumn('#__faq_comments', 'state')->tinyInteger(2)->notNull()->default(0);
+
+            $this->db->getQuery(true)
+                ->update('#__faq_comments')
+                ->set(['state' => 1])
+                ->where('state', '=', '0')
+                ->execute();
         }
     }
 
@@ -37,10 +39,10 @@ class Migration20140314131113ComKb extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__faq_comments', 'state')) {
-            $query = "ALTER TABLE `#__faq_comments` DROP COLUMN `state`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__faq_comments', 'state')) {
+            $schema->dropColumn('#__faq_comments', 'state');
         }
     }
 }

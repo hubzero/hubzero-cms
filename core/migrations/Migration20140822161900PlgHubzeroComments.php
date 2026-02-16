@@ -20,46 +20,24 @@ class Migration20140822161900PlgHubzeroComments extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__item_comment_files')) {
-            if (!$this->db->tableHasKey('#__item_comment_files', 'idx_comment_id')) {
-                $query = "ALTER TABLE `#__item_comment_files` ADD INDEX `idx_comment_id` (`comment_id`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__item_comment_files')) {
+            $schema->addIndex('#__item_comment_files', 'idx_comment_id', 'comment_id');
         }
 
-        if ($this->db->tableExists('#__item_comments')) {
-            if (!$this->db->tableHasKey('#__item_comments', 'idx_item_type_item_id')) {
-                $query = "ALTER TABLE `#__item_comments` ADD INDEX `idx_item_type_item_id` (`item_type`, `item_id`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__item_comments')) {
+            $schema->addIndex('#__item_comments', 'idx_item_type_item_id', ['item_type', 'item_id']);
 
-            if (!$this->db->tableHasKey('#__item_comments', 'idx_parent')) {
-                $query = "ALTER TABLE `#__item_comments` ADD INDEX `idx_parent` (`parent`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__item_comments', 'idx_parent', 'parent');
 
-            if (!$this->db->tableHasKey('#__item_comments', 'idx_state')) {
-                $query = "ALTER TABLE `#__item_comments` ADD INDEX `idx_state` (`state`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__item_comments', 'idx_state', 'state');
         }
 
-        if ($this->db->tableExists('#__item_votes')) {
-            if (!$this->db->tableHasKey('#__item_votes', 'idx_item_type_item_id')) {
-                $query = "ALTER TABLE `#__item_votes` ADD INDEX `idx_item_type_item_id` (`item_type`, `item_id`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__item_votes')) {
+            $schema->addIndex('#__item_votes', 'idx_item_type_item_id', ['item_type', 'item_id']);
 
-            if (!$this->db->tableHasKey('#__item_votes', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__item_votes` ADD INDEX `idx_created_by` (`created_by`);";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__item_votes', 'idx_created_by', 'created_by');
         }
     }
 
@@ -68,46 +46,24 @@ class Migration20140822161900PlgHubzeroComments extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__item_comment_files')) {
-            if ($this->db->tableHasKey('#__item_comment_files', 'idx_comment_id')) {
-                $query = "ALTER TABLE `#__item_comment_files` DROP INDEX `idx_comment_id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__item_comment_files')) {
+            $schema->dropIndex('#__item_comment_files', 'idx_comment_id');
         }
 
-        if ($this->db->tableExists('#__item_comments')) {
-            if ($this->db->tableHasKey('#__item_comments', 'idx_item_type_item_id')) {
-                $query = "ALTER TABLE `#__item_comments` DROP INDEX `idx_item_type_item_id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__item_comments')) {
+            $schema->dropIndex('#__item_comments', 'idx_item_type_item_id');
 
-            if ($this->db->tableHasKey('#__item_comments', 'idx_parent')) {
-                $query = "ALTER TABLE `#__item_comments` DROP INDEX `idx_parent`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__item_comments', 'idx_parent');
 
-            if ($this->db->tableHasKey('#__item_comments', 'idx_state')) {
-                $query = "ALTER TABLE `#__item_comments` DROP INDEX `idx_state`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__item_comments', 'idx_state');
         }
 
-        if ($this->db->tableExists('#__item_votes')) {
-            if ($this->db->tableHasKey('#__item_votes', 'idx_item_type_item_id')) {
-                $query = "ALTER TABLE `#__item_votes` DROP INDEX `idx_item_type_item_id`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__item_votes')) {
+            $schema->dropIndex('#__item_votes', 'idx_item_type_item_id');
 
-            if ($this->db->tableHasKey('#__item_votes', 'idx_created_by')) {
-                $query = "ALTER TABLE `#__item_votes` DROP INDEX `idx_created_by`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__item_votes', 'idx_created_by');
         }
     }
 }

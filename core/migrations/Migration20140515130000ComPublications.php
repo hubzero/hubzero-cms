@@ -20,24 +20,27 @@ class Migration20140515130000ComPublications extends Base
      **/
     public function up()
     {
-        $queries = array();
+        $schema = $this->db->schema();
 
         // Add opensource field
-        if (!$this->db->tableHasField('#__publication_licenses', 'opensource')) {
-            $queries[] = "ALTER TABLE `#__publication_licenses` ADD `opensource` tinyint(1) NOT NULL DEFAULT '0';";
+        if (
+            $schema->tableExists('#__publication_licenses')
+            && !$schema->hasColumn('#__publication_licenses', 'opensource')
+        ) {
+            $schema->addColumn('#__publication_licenses', 'opensource')
+                ->tinyInteger(1)
+                ->notNull()
+                ->default(0)
+                ->execute();
         }
         // Add restriction field
-        if (!$this->db->tableHasField('#__publication_licenses', 'restriction')) {
-            $queries[] = "ALTER TABLE `#__publication_licenses` ADD `restriction` varchar(100);";
-        }
-
-        // Run queries
-        if (count($queries) > 0) {
-            // Run queries
-            foreach ($queries as $query) {
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if (
+            $schema->tableExists('#__publication_licenses')
+            && !$schema->hasColumn('#__publication_licenses', 'restriction')
+        ) {
+            $schema->addColumn('#__publication_licenses', 'restriction')
+                ->string(100)
+                ->execute();
         }
     }
 
@@ -46,22 +49,13 @@ class Migration20140515130000ComPublications extends Base
      **/
     public function down()
     {
-        $queries = array();
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__publication_licenses', 'opensource')) {
-            $queries[] = "ALTER TABLE `#__publication_licenses` DROP `opensource`";
+        if ($schema->hasColumn('#__publication_licenses', 'opensource')) {
+            $schema->dropColumn('#__publication_licenses', 'opensource');
         }
-        if ($this->db->tableHasField('#__publication_licenses', 'restriction')) {
-            $queries[] = "ALTER TABLE `#__publication_licenses` DROP `restriction`";
-        }
-
-        // Run queries
-        if (count($queries) > 0) {
-            // Run queries
-            foreach ($queries as $query) {
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->hasColumn('#__publication_licenses', 'restriction')) {
+            $schema->dropColumn('#__publication_licenses', 'restriction');
         }
     }
 }

@@ -13,7 +13,9 @@ class Migration20210105000001ComCollections extends Base
 {
     public function up()
     {
-        if ($this->db->tableExists('#__extensions')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__extensions')) {
             // Get the current params
             $params = Component::params('com_collections');
             $allow_comments = $params->get('allow_comments');
@@ -21,10 +23,12 @@ class Migration20210105000001ComCollections extends Base
             // If the comments param is not set, set it to 1-Yes
             if (!isset($allow_comments)) {
                 $params->set('allow_comments', 1);
-                $query = "UPDATE `#__extensions` SET `params`=" . $this->db->quote($params->toString()) . " WHERE "
-                    . "`name`= 'com_collections' AND `element` = 'com_collections'";
-                $this->db->setQuery($query);
-                $this->db->query();
+                $this->db->getQuery(true)
+                    ->update('#__extensions')
+                    ->set(['params' => $params->toString()])
+                    ->where('name', '=', 'com_collections')
+                    ->where('element', '=', 'com_collections')
+                    ->execute();
             }
         }
     }

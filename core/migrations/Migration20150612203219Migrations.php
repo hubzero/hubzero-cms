@@ -20,11 +20,14 @@ class Migration20150612203219Migrations extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__migrations')) {
-            $query = "UPDATE `#__migrations` SET `scope`=" . $this->db->quote('core/migrations')
-                . " WHERE `scope`=" . $this->db->quote('migrations');
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__migrations')) {
+            $this->db->getQuery(true)
+                ->update('#__migrations')
+                ->set(['scope' => $this->db->quote('core/migrations')])
+                ->where('scope', '=', 'migrations')
+                ->execute();
         }
     }
 
@@ -33,11 +36,14 @@ class Migration20150612203219Migrations extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__migrations')) {
-            $query = "UPDATE `#__migrations` SET `scope`=" . $this->db->quote('migrations')
-                . " WHERE `scope`=" . $this->db->quote('core/migrations');
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__migrations')) {
+            $this->db->getQuery(true)
+                ->update('#__migrations')
+                ->set(['scope' => $this->db->quote('migrations')])
+                ->where('scope', '=', 'core/migrations')
+                ->execute();
         }
     }
 }

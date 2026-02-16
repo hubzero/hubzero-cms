@@ -17,47 +17,37 @@ class Migration20130208000000ComGroups extends Base
 {
     public function up()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__xgroups', 'access')) {
-            $query .= "ALTER TABLE `#__xgroups` DROP `access`;\n";
+        if ($schema->hasColumn('#__xgroups', 'access')) {
+            $schema->dropColumn('#__xgroups', 'access');
         }
         if (
-            $this->db->tableHasField('#__xgroups', 'privacy')
-            && !$this->db->tableHasField('#__xgroups', 'discoverability')
+            $schema->hasColumn('#__xgroups', 'privacy')
+            && !$schema->hasColumn('#__xgroups', 'discoverability')
         ) {
-            $query .= "ALTER TABLE `#__xgroups` CHANGE `privacy` `discoverability` TINYINT(3);\n";
+            $schema->renameColumn('#__xgroups', 'privacy', 'discoverability')->tinyInteger(3);
         }
-        if (!$this->db->tableHasField('#__xgroups', 'approved')) {
-            $query .= "ALTER TABLE `#__xgroups` ADD COLUMN `approved` TINYINT(3) DEFAULT 1 AFTER `published`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups', 'approved')) {
+            $schema->addColumn('#__xgroups', 'approved')->tinyInteger(3)->default(1)->after('published');
         }
     }
 
     public function down()
     {
-        $query = '';
+        $schema = $this->db->schema();
 
-        if ($this->db->tableHasField('#__xgroups', 'approved')) {
-            $query .= "ALTER TABLE `#__xgroups` DROP `approved`;\n";
+        if ($schema->hasColumn('#__xgroups', 'approved')) {
+            $schema->dropColumn('#__xgroups', 'approved');
         }
         if (
-            !$this->db->tableHasField('#__xgroups', 'privacy')
-            && $this->db->tableHasField('#__xgroups', 'discoverability')
+            !$schema->hasColumn('#__xgroups', 'privacy')
+            && $schema->hasColumn('#__xgroups', 'discoverability')
         ) {
-            $query .= "ALTER TABLE `#__xgroups` CHANGE `discoverability` `privacy` TINYINT(3);\n";
+            $schema->renameColumn('#__xgroups', 'discoverability', 'privacy')->tinyInteger(3);
         }
-        if (!$this->db->tableHasField('#__xgroups', 'access')) {
-            $query .= "ALTER TABLE `#__xgroups` ADD COLUMN `access` tinyint(3) DEFAULT '0' AFTER `type`;";
-        }
-
-        if (!empty($query)) {
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->hasColumn('#__xgroups', 'access')) {
+            $schema->addColumn('#__xgroups', 'access')->tinyInteger(3)->default(0)->after('type');
         }
     }
 }

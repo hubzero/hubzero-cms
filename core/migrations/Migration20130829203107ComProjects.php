@@ -21,259 +21,324 @@ class Migration20130829203107ComProjects extends Base
      **/
     public function up()
     {
-        $queries = array();
+        $schema = $this->db->schema();
 
-        if (!$this->db->tableExists('#__projects')) {
-            // Create #__projects
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__projects` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`alias` varchar(30) NOT NULL DEFAULT '',
-				`title` varchar(255) NOT NULL DEFAULT '',
-				`picture` varchar(255) DEFAULT '',
-				`about` text,
-				`state` int(11) NOT NULL DEFAULT '0',
-				`type` int(11) NOT NULL DEFAULT '1',
-				`provisioned` int(11) NOT NULL DEFAULT '0',
-				`private` int(11) NOT NULL DEFAULT '1',
-				`created` datetime NOT NULL,
-				`modified` datetime DEFAULT NULL,
-				`owned_by_user` int(11) NOT NULL DEFAULT '0',
-				`created_by_user` int(11) NOT NULL,
-				`owned_by_group` int(11) DEFAULT '0',
-				`modified_by` int(11) DEFAULT '0',
-				`setup_stage` int(11) NOT NULL DEFAULT '0',
-				`params` text,
-				`admin_notes` text,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `alias` (`alias`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__projects')) {
+            $schema->createTable('#__projects')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('alias', 30)->default('')
+                ->string('title', 255)->default('')
+                ->string('picture', 255)->default('')
+                ->text('about')->nullable()
+                ->integer('state')->default(0)
+                ->integer('type')->default(1)
+                ->integer('provisioned')->default(0)
+                ->integer('private')->default(1)
+                ->datetime('created')
+                ->datetime('modified')->nullable()
+                ->integer('owned_by_user')->default(0)
+                ->integer('created_by_user')
+                ->integer('owned_by_group')->default(0)
+                ->integer('modified_by')->default(0)
+                ->integer('setup_stage')->default(0)
+                ->text('params')->nullable()
+                ->text('admin_notes')->nullable()
+                ->primaryKey('id')
+                ->uniqueIndex('alias', 'alias')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
             // Make entries to enable HUB messaging
-            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES "
-                . "('com_projects','projects_member_added','You were added or invited to a project')";
+            $this->db->getQuery(true)
+                ->insert('#__xmessage_component')
+                ->values([
+                    'component' => 'com_projects',
+                    'action'    => 'projects_member_added',
+                    'title'     => 'You were added or invited to a project'
+                ])
+                ->execute();
 
-            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES "
-                . "('com_projects','projects_new_project_admin',"
-                . "'Receive notifications about project(s) you monitor as an admin or reviewer')";
+            $this->db->getQuery(true)
+                ->insert('#__xmessage_component')
+                ->values([
+                    'component' => 'com_projects',
+                    'action'    => 'projects_new_project_admin',
+                    'title'     => 'Receive notifications about project(s) you monitor as an admin or reviewer'
+                ])
+                ->execute();
 
-            $queries[] = "INSERT INTO `#__xmessage_component` (`component`,`action`,`title`) VALUES "
-                . "('com_projects','projects_admin_message',"
-                . "'Receive administrative messages about your project(s)')";
+            $this->db->getQuery(true)
+                ->insert('#__xmessage_component')
+                ->values([
+                    'component' => 'com_projects',
+                    'action'    => 'projects_admin_message',
+                    'title'     => 'Receive administrative messages about your project(s)'
+                ])
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__project_activity')) {
-            // Create #__project_activity
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_activity` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`projectid` int(11) NOT NULL DEFAULT '0',
-				`userid` int(11) NOT NULL DEFAULT '0',
-				`referenceid` varchar(255) NOT NULL DEFAULT '0',
-				`managers_only` tinyint(2) DEFAULT '0',
-				`admin` tinyint(2) DEFAULT '0',
-				`commentable` tinyint(2) NOT NULL DEFAULT '0',
-				`state` tinyint(2) NOT NULL DEFAULT '0',
-				`recorded` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`activity` varchar(255) NOT NULL DEFAULT '',
-				`highlighted` varchar(100) NOT NULL DEFAULT '',
-				`url` varchar(255) DEFAULT NULL,
-				`class` varchar(150) DEFAULT NULL,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__project_activity')) {
+            $schema->createTable('#__project_activity')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('projectid')->default(0)
+                ->integer('userid')->default(0)
+                ->string('referenceid', 255)->default('0')
+                ->tinyInteger('managers_only')->default(0)
+                ->tinyInteger('admin')->default(0)
+                ->tinyInteger('commentable')->default(0)
+                ->tinyInteger('state')->default(0)
+                ->datetime('recorded')->default('0000-00-00 00:00:00')
+                ->string('activity', 255)->default('')
+                ->string('highlighted', 100)->default('')
+                ->string('url', 255)->nullable()
+                ->string('class', 150)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__project_comments')) {
-            // Create #__project_comments
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_comments` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`itemid` int(11) NOT NULL DEFAULT '0',
-				`comment` text NOT NULL,
-				`created` datetime DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`activityid` int(11) NOT NULL DEFAULT '0',
-				`state` tinyint(2) NOT NULL DEFAULT '0',
-				`parent_activity` int(11) DEFAULT '0',
-				`anonymous` tinyint(2) DEFAULT '0',
-				`admin` tinyint(2) DEFAULT '0',
-				`tbl` varchar(50) NOT NULL DEFAULT 'blog',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__project_comments')) {
+            $schema->createTable('#__project_comments')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('itemid')->default(0)
+                ->text('comment')
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->integer('activityid')->default(0)
+                ->tinyInteger('state')->default(0)
+                ->integer('parent_activity')->default(0)
+                ->tinyInteger('anonymous')->default(0)
+                ->tinyInteger('admin')->default(0)
+                ->string('tbl', 50)->default('blog')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__project_microblog')) {
-            // Create #__project_microblog
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_microblog` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`blogentry` varchar(255) DEFAULT NULL,
-				`posted` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`posted_by` int(11) NOT NULL DEFAULT '0',
-				`state` tinyint(2) DEFAULT '0',
-				`params` tinytext,
-				`projectid` int(11) NOT NULL DEFAULT '0',
-				`activityid` int(11) NOT NULL DEFAULT '0',
-				`managers_only` tinyint(2) DEFAULT '0',
-				PRIMARY KEY (`id`),
-				FULLTEXT KEY `title` (`blogentry`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__project_microblog')) {
+            $schema->createTable('#__project_microblog')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('blogentry', 255)->nullable()
+                ->datetime('posted')->default('0000-00-00 00:00:00')
+                ->integer('posted_by')->default(0)
+                ->tinyInteger('state')->default(0)
+                ->tinyText('params')->nullable()
+                ->integer('projectid')->default(0)
+                ->integer('activityid')->default(0)
+                ->tinyInteger('managers_only')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__project_owners')) {
-            // Create #__project_owners
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_owners` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`projectid` int(11) NOT NULL DEFAULT '0',
-				`userid` int(11) NOT NULL DEFAULT '0',
-				`groupid` int(11) DEFAULT '0',
-				`invited_name` varchar(100) DEFAULT NULL,
-				`invited_email` varchar(100) DEFAULT NULL,
-				`invited_code` varchar(10) DEFAULT NULL,
-				`added` datetime NOT NULL,
-				`lastvisit` datetime DEFAULT NULL,
-				`prev_visit` datetime DEFAULT NULL,
-				`status` int(11) NOT NULL DEFAULT '0',
-				`num_visits` int(11) NOT NULL DEFAULT '0',
-				`role` int(11) NOT NULL DEFAULT '0',
-				`native` int(11) NOT NULL DEFAULT '0',
-				`params` text,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__project_owners')) {
+            $schema->createTable('#__project_owners')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('projectid')->default(0)
+                ->integer('userid')->default(0)
+                ->integer('groupid')->default(0)
+                ->string('invited_name', 100)->nullable()
+                ->string('invited_email', 100)->nullable()
+                ->string('invited_code', 10)->nullable()
+                ->datetime('added')
+                ->datetime('lastvisit')->nullable()
+                ->datetime('prev_visit')->nullable()
+                ->integer('status')->default(0)
+                ->integer('num_visits')->default(0)
+                ->integer('role')->default(0)
+                ->integer('native')->default(0)
+                ->text('params')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__project_todo')) {
-            // Create table #__project_todo
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_todo` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`projectid` int(11) NOT NULL DEFAULT '0',
-				`todolist` varchar(255) DEFAULT NULL,
-				`created` datetime NOT NULL,
-				`duedate` datetime DEFAULT NULL,
-				`closed` datetime DEFAULT NULL,
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`assigned_to` int(11) DEFAULT '0',
-				`closed_by` int(11) DEFAULT '0',
-				`priority` int(11) DEFAULT '0',
-				`activityid` int(11) NOT NULL DEFAULT '0',
-				`state` tinyint(1) NOT NULL DEFAULT '0',
-				`milestone` tinyint(1) NOT NULL DEFAULT '0',
-				`private` tinyint(1) NOT NULL DEFAULT '0',
-				`details` text,
-				`content` varchar(255) NOT NULL,
-				`color` varchar(20) DEFAULT NULL,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__project_todo')) {
+            $schema->createTable('#__project_todo')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('projectid')->default(0)
+                ->string('todolist', 255)->nullable()
+                ->datetime('created')
+                ->datetime('duedate')->nullable()
+                ->datetime('closed')->nullable()
+                ->integer('created_by')->default(0)
+                ->integer('assigned_to')->default(0)
+                ->integer('closed_by')->default(0)
+                ->integer('priority')->default(0)
+                ->integer('activityid')->default(0)
+                ->tinyInteger('state')->default(0)
+                ->tinyInteger('milestone')->default(0)
+                ->tinyInteger('private')->default(0)
+                ->text('details')->nullable()
+                ->string('content', 255)
+                ->string('color', 20)->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__project_types')) {
-            // Create #__project_types
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_types` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`type` varchar(150) NOT NULL DEFAULT '',
-				`description` varchar(255) NOT NULL DEFAULT '',
-				`params` text,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+        if (!$schema->tableExists('#__project_types')) {
+            $schema->createTable('#__project_types')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('type', 150)->default('')
+                ->string('description', 255)->default('')
+                ->text('params')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
 
             $params1 = 'apps_dev=0\npublications_public=1\nteam_public=1\nallow_invite=0';
             $params2 = 'apps_dev=1\npublications_public=1\nteam_public=1\nallow_invite=0';
-            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "
-                . "SELECT 'General','Individual or collaborative projects of general nature','$params1' "
-                . "FROM DUAL WHERE NOT EXISTS (SELECT `type` FROM `#__project_types` WHERE `type` = 'General')";
+
+            if (
+                $this->db->getQuery(true)
+                    ->select('type')
+                    ->from('#__project_types')
+                    ->where('type', '=', 'General')
+                    ->doesntExist()
+            ) {
+                $this->db->getQuery(true)
+                    ->insertOrIgnore('#__project_types')
+                    ->values([
+                        'type'        => 'General',
+                        'description' => 'Individual or collaborative projects of general nature',
+                        'params'      => $params1
+                    ])
+                    ->execute();
+            }
+
             $desc2 = 'Projects created with the purpose to publish data as a resource '
                 . 'or a collection of related resources';
-            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "
-                . "SELECT 'Content publication','$desc2','$params1' "
-                . "FROM DUAL WHERE NOT EXISTS "
-                . "(SELECT `type` FROM `#__project_types` WHERE `type` = 'Content publication')";
+            if (
+                $this->db->getQuery(true)
+                    ->select('type')
+                    ->from('#__project_types')
+                    ->where('type', '=', 'Content publication')
+                    ->doesntExist()
+            ) {
+                $this->db->getQuery(true)
+                    ->insertOrIgnore('#__project_types')
+                    ->values([
+                        'type'        => 'Content publication',
+                        'description' => $desc2,
+                        'params'      => $params1
+                    ])
+                    ->execute();
+            }
+
             $desc3 = 'Projects created with the purpose to develop and publish a simulation tool or a code library';
-            $queries[] = "INSERT INTO `#__project_types` (`type`,`description`,`params`) "
-                . "SELECT 'Application development','$desc3','$params2' "
-                . "FROM DUAL WHERE NOT EXISTS "
-                . "(SELECT `type` FROM `#__project_types` WHERE `type` = 'Application development')";
-        }
-
-        if (!$this->db->tableExists('#__project_logs')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_logs` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`projectid` int(11) unsigned NOT NULL DEFAULT '0',
-				`userid` int(11) NOT NULL DEFAULT '0',
-				`ajax` tinyint(1) DEFAULT '0',
-				`owner` int(11) unsigned DEFAULT '0',
-				`ip` varchar(15) DEFAULT '0',
-				`section` varchar(100) DEFAULT 'general',
-				`layout` varchar(100) DEFAULT '',
-				`action` varchar(100) DEFAULT '',
-				`time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`request_uri` tinytext,
-				PRIMARY KEY (`id`),
-				KEY `projectid` (`projectid`)
-			) ENGINE=MyISAM DEFAULT CHARSET=UTF8";
-        }
-
-        if (!$this->db->tableExists('#__project_stats')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_stats` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`month` int(2) DEFAULT NULL,
-				`year` int(2) DEFAULT NULL,
-				`week` int(2) DEFAULT NULL,
-				`processed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`stats` text,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        }
-
-        if (!$this->db->tableExists('#__project_public_stamps')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_public_stamps` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`stamp` varchar(30) NOT NULL DEFAULT '0',
-				`projectid` int(11) NOT NULL DEFAULT '0',
-				`listed` tinyint(1) NOT NULL DEFAULT '0',
-				`type` varchar(50) NOT NULL DEFAULT 'files',
-				`reference` text NOT NULL,
-				`expires` datetime DEFAULT NULL,
-				`created` datetime DEFAULT NULL,
-				`created_by` int(11) DEFAULT NULL,
-				PRIMARY KEY (`id`),
-				UNIQUE KEY `stamp` (`stamp`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        }
-
-        if (!$this->db->tableExists('#__project_remote_files')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__project_remote_files` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`projectid` int(11) NOT NULL DEFAULT '0',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`modified_by` int(11) DEFAULT '0',
-				`paired` int(11) DEFAULT '0',
-				`created` datetime DEFAULT NULL,
-				`modified` datetime DEFAULT NULL,
-				`synced` datetime DEFAULT NULL,
-				`local_path` varchar(255) NOT NULL,
-				`original_path` varchar(255) NOT NULL,
-				`original_format` varchar(200) NOT NULL,
-				`local_dirpath` varchar(255) NOT NULL DEFAULT '',
-				`local_format` varchar(200) DEFAULT NULL,
-				`local_md5` varchar(32) DEFAULT NULL,
-				`service` varchar(50) NOT NULL,
-				`type` varchar(25) NOT NULL DEFAULT 'file',
-				`remote_editing` tinyint(1) NOT NULL DEFAULT '0',
-				`remote_id` varchar(100) NOT NULL,
-				`original_id` varchar(100) NOT NULL,
-				`remote_parent` varchar(100) DEFAULT NULL,
-				`remote_title` varchar(140) DEFAULT NULL,
-				`remote_md5` varchar(32) DEFAULT NULL,
-				`remote_format` varchar(200) DEFAULT NULL,
-				`remote_author` varchar(100) DEFAULT NULL,
-				`remote_modified` datetime DEFAULT NULL,
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        }
-
-        if (count($queries) > 0) {
-            // Run queries
-            foreach ($queries as $query) {
-                $this->db->setQuery($query);
-                $this->db->query();
+            if (
+                $this->db->getQuery(true)
+                    ->select('type')
+                    ->from('#__project_types')
+                    ->where('type', '=', 'Application development')
+                    ->doesntExist()
+            ) {
+                $this->db->getQuery(true)
+                    ->insertOrIgnore('#__project_types')
+                    ->values([
+                        'type'        => 'Application development',
+                        'description' => $desc3,
+                        'params'      => $params2
+                    ])
+                    ->execute();
             }
         }
+
+        if (!$schema->tableExists('#__project_logs')) {
+            $schema->createTable('#__project_logs')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('projectid')->default(0)
+                ->integer('userid')->default(0)
+                ->tinyInteger('ajax')->default(0)
+                ->unsignedInteger('owner')->default(0)
+                ->string('ip', 15)->default('0')
+                ->string('section', 100)->default('general')
+                ->string('layout', 100)->default('')
+                ->string('action', 100)->default('')
+                ->datetime('time')->default('0000-00-00 00:00:00')
+                ->tinyText('request_uri')->nullable()
+                ->primaryKey('id')
+                ->index('projectid', 'projectid')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
+
+        if (!$schema->tableExists('#__project_stats')) {
+            $schema->createTable('#__project_stats')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->integer('month')->nullable()
+                ->integer('year')->nullable()
+                ->integer('week')->nullable()
+                ->datetime('processed')->default('0000-00-00 00:00:00')
+                ->text('stats')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
+
+        if (!$schema->tableExists('#__project_public_stamps')) {
+            $schema->createTable('#__project_public_stamps')
+                ->integer('id', ['autoIncrement' => true])
+                ->string('stamp', 30)->default('0')
+                ->integer('projectid')->default(0)
+                ->tinyInteger('listed')->default(0)
+                ->string('type', 50)->default('files')
+                ->text('reference')
+                ->datetime('expires')->nullable()
+                ->datetime('created')->nullable()
+                ->integer('created_by')->nullable()
+                ->primaryKey('id')
+                ->uniqueIndex('stamp', 'stamp')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
+
+        if (!$schema->tableExists('#__project_remote_files')) {
+            $schema->createTable('#__project_remote_files')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('projectid')->default(0)
+                ->integer('created_by')->default(0)
+                ->integer('modified_by')->default(0)
+                ->integer('paired')->default(0)
+                ->datetime('created')->nullable()
+                ->datetime('modified')->nullable()
+                ->datetime('synced')->nullable()
+                ->string('local_path', 255)
+                ->string('original_path', 255)
+                ->string('original_format', 200)
+                ->string('local_dirpath', 255)->default('')
+                ->string('local_format', 200)->nullable()
+                ->string('local_md5', 32)->nullable()
+                ->string('service', 50)
+                ->string('type', 25)->default('file')
+                ->tinyInteger('remote_editing')->default(0)
+                ->string('remote_id', 100)
+                ->string('original_id', 100)
+                ->string('remote_parent', 100)->nullable()
+                ->string('remote_title', 140)->nullable()
+                ->string('remote_md5', 32)->nullable()
+                ->string('remote_format', 200)->nullable()
+                ->string('remote_author', 100)->nullable()
+                ->datetime('remote_modified')->nullable()
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
+
+        // Add FULLTEXT index for project_microblog (using helper for SQLite compatibility)
+        $schema->addFulltextIndex('#__project_microblog', 'title', 'blogentry');
 
         $componentParams = array(
             "component_on" => "0",
@@ -352,72 +417,24 @@ class Migration20130829203107ComProjects extends Base
      **/
     public function down()
     {
-        $queries = array();
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__projects')) {
-            // Create #__projects
-            $queries[] = "DROP TABLE IF EXISTS `#__projects`";
-        }
+        $schema->dropTable('#__projects');
+        $schema->dropTable('#__project_activity');
+        $schema->dropTable('#__project_comments');
+        $schema->dropTable('#__project_microblog');
+        $schema->dropTable('#__project_owners');
+        $schema->dropTable('#__project_todo');
+        $schema->dropTable('#__project_types');
+        $schema->dropTable('#__project_logs');
+        $schema->dropTable('#__project_stats');
+        $schema->dropTable('#__project_public_stamps');
+        $schema->dropTable('#__project_remote_files');
 
-        if ($this->db->tableExists('#__project_activity')) {
-            // Create #__project_activity
-            $queries[] = "DROP TABLE IF EXISTS `#__project_activity`";
-        }
-
-        if ($this->db->tableExists('#__project_comments')) {
-            // Create #__project_comments
-            $queries[] = "DROP TABLE IF EXISTS `#__project_comments`";
-        }
-
-        if ($this->db->tableExists('#__project_microblog')) {
-            // Create #__project_microblog
-            $queries[] = "DROP TABLE IF EXISTS `#__project_microblog`";
-        }
-
-        if ($this->db->tableExists('#__project_owners')) {
-            // Create #__project_owners
-            $queries[] = "DROP TABLE IF EXISTS `#__project_owners`";
-        }
-
-        if ($this->db->tableExists('#__project_todo')) {
-            // Create table #__project_todo
-            $queries[] = "DROP TABLE IF EXISTS `#__project_todo`";
-        }
-
-        if ($this->db->tableExists('#__project_types')) {
-            // Create #__project_types
-            $queries[] = "DROP TABLE IF EXISTS `#__project_types`";
-        }
-
-        if ($this->db->tableExists('#__project_logs')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__project_logs`";
-        }
-
-        if ($this->db->tableExists('#__project_stats')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__project_stats`";
-        }
-
-        if ($this->db->tableExists('#__project_stats')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__project_stats`";
-        }
-
-        if ($this->db->tableExists('#__project_public_stamps')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__project_public_stamps`";
-        }
-
-        if ($this->db->tableExists('#__project_remote_files')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__project_remote_files`";
-        }
-
-        $queries[] = "DELETE FROM `#__xmessage_component` WHERE `component` = 'com_projects'";
-
-        if (count($queries) > 0) {
-            // Run queries
-            foreach ($queries as $query) {
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-        }
+        $this->db->getQuery(true)
+            ->delete('#__xmessage_component')
+            ->where('component', '=', 'com_projects')
+            ->execute();
 
         $this->deleteComponentEntry('Projects');
 

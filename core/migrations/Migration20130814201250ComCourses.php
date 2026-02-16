@@ -21,22 +21,27 @@ class Migration20130814201250ComCourses extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableHasField('#__courses_member_badges', 'claimed')
-            && !$this->db->tableHasField('#__courses_member_badges', 'action')
+            $schema->hasColumn('#__courses_member_badges', 'claimed')
+            && !$schema->hasColumn('#__courses_member_badges', 'action')
         ) {
-            $query = "ALTER TABLE `#__courses_member_badges` CHANGE `claimed` `action` VARCHAR(255) NULL DEFAULT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__courses_member_badges', 'claimed', 'action')
+                ->string(255)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
         if (
-            $this->db->tableHasField('#__courses_member_badges', 'claimed_on')
-            && !$this->db->tableHasField('#__courses_member_badges', 'action_on')
+            $schema->hasColumn('#__courses_member_badges', 'claimed_on')
+            && !$schema->hasColumn('#__courses_member_badges', 'action_on')
         ) {
-            $query = "ALTER TABLE `#__courses_member_badges` CHANGE `claimed_on` `action_on` DATETIME NULL "
-                . "DEFAULT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__courses_member_badges', 'claimed_on', 'action_on')
+                ->datetime()
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
     }
 
@@ -45,22 +50,27 @@ class Migration20130814201250ComCourses extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            !$this->db->tableHasField('#__courses_member_badges', 'claimed')
-            && $this->db->tableHasField('#__courses_member_badges', 'action')
+            !$schema->hasColumn('#__courses_member_badges', 'claimed')
+            && $schema->hasColumn('#__courses_member_badges', 'action')
         ) {
-            $query = "ALTER TABLE `#__courses_member_badges` CHANGE `action` `claimed` INT(1) NULL DEFAULT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__courses_member_badges', 'action', 'claimed')
+                ->integer(1)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
         if (
-            !$this->db->tableHasField('#__courses_member_badges', 'claimed_on')
-            && $this->db->tableHasField('#__courses_member_badges', 'action_on')
+            !$schema->hasColumn('#__courses_member_badges', 'claimed_on')
+            && $schema->hasColumn('#__courses_member_badges', 'action_on')
         ) {
-            $query = "ALTER TABLE `#__courses_member_badges` CHANGE `action_on` `claimed_on` DATETIME NULL "
-                . "DEFAULT NULL;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->renameColumn('#__courses_member_badges', 'action_on', 'claimed_on')
+                ->datetime()
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
     }
 }

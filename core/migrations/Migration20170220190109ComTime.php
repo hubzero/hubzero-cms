@@ -21,123 +21,60 @@ class Migration20170220190109ComTime extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__time_tasks')) {
-            if (
-                $this->db->tableHasField('#__time_tasks', 'hub_id')
-                && !$this->db->tableHasKey('#__time_tasks', 'idx_hub_id')
-            ) {
-                $query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_hub_id` (`hub_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__time_tasks')) {
+            $schema->addIndex('#__time_tasks', 'idx_hub_id', 'hub_id');
+
+            if ($schema->hasColumn('#__time_tasks', 'liaison_id')) {
+                $schema->modifyColumn('#__time_tasks', 'liaison_id')->integer()->notNull()->default(0)->execute();
+                $schema->addIndex('#__time_tasks', 'idx_liaison_id', 'liaison_id');
             }
 
-            if ($this->db->tableHasField('#__time_tasks', 'liaison_id')) {
-                $query = "ALTER TABLE `#__time_tasks` CHANGE `liaison_id` `liaison_id` INT(11)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
-
-                if (!$this->db->tableHasKey('#__time_tasks', 'idx_liaison_id')) {
-                    $query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_liaison_id` (`liaison_id`)";
-                    $this->db->setQuery($query);
-                    $this->db->query();
-                }
+            if ($schema->hasColumn('#__time_tasks', 'assignee_id')) {
+                $schema->modifyColumn('#__time_tasks', 'assignee_id')->integer()->notNull()->default(0)->execute();
+                $schema->addIndex('#__time_tasks', 'idx_assignee_id', 'assignee_id');
             }
 
-            if ($this->db->tableHasField('#__time_tasks', 'assignee_id')) {
-                $query = "ALTER TABLE `#__time_tasks` CHANGE `assignee_id` `assignee_id` INT(11)  NOT NULL "
-                    . "DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
-
-                if (!$this->db->tableHasKey('#__time_tasks', 'idx_assignee_id')) {
-                    $query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_assignee_id` (`assignee_id`)";
-                    $this->db->setQuery($query);
-                    $this->db->query();
-                }
+            if ($schema->hasColumn('#__time_tasks', 'priority')) {
+                $schema->modifyColumn('#__time_tasks', 'priority')->integer()->notNull()->default(0)->execute();
+                $schema->addIndex('#__time_tasks', 'idx_priority', 'priority');
             }
 
-            if ($this->db->tableHasField('#__time_tasks', 'priority')) {
-                $query = "ALTER TABLE `#__time_tasks` CHANGE `priority` `priority` INT(1)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
-
-                if (!$this->db->tableHasKey('#__time_tasks', 'idx_priority')) {
-                    $query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_priority` (`priority`)";
-                    $this->db->setQuery($query);
-                    $this->db->query();
-                }
+            if (!$schema->hasColumn('#__time_tasks', 'billable')) {
+                $schema->addColumn('#__time_tasks', 'billable')->tinyInteger()->default(0)->execute();
             }
 
-            if (!$this->db->tableHasField('#__time_tasks', 'billable')) {
-                $query = "ALTER TABLE `#__time_tasks` ADD `billable` TINYINT(2)  NOT NULL  DEFAULT '0'";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                $this->db->tableHasField('#__time_tasks', 'billable')
-                && !$this->db->tableHasKey('#__time_tasks', 'idx_billable')
-            ) {
-                $query = "ALTER TABLE `#__time_tasks` ADD INDEX `idx_billable` (`billable`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->addIndex('#__time_tasks', 'idx_billable', 'billable');
         }
 
-        if ($this->db->tableExists('#__time_records')) {
-            if (
-                $this->db->tableHasField('#__time_records', 'task_id')
-                && !$this->db->tableHasKey('#__time_records', 'idx_task_id')
-            ) {
-                $query = "ALTER TABLE `#__time_records` ADD INDEX `idx_task_id` (`task_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if (
-                $this->db->tableHasField('#__time_records', 'user_id')
-                && !$this->db->tableHasKey('#__time_records', 'idx_user_id')
-            ) {
-                $query = "ALTER TABLE `#__time_records` ADD INDEX `idx_user_id` (`user_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__time_records')) {
+            $schema->table('#__time_records')->alter()
+                ->addIndex('idx_task_id', 'task_id')
+                ->addIndex('idx_user_id', 'user_id')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__time_hubs')) {
-            if (
-                $this->db->tableHasField('#__time_hubs', 'active')
-                && !$this->db->tableHasKey('#__time_hubs', 'idx_active')
-            ) {
-                $query = "ALTER TABLE `#__time_hubs` ADD INDEX `idx_active` (`active`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__time_hubs')) {
+            $schema->addIndex('#__time_hubs', 'idx_active', 'active');
         }
 
-        if ($this->db->tableExists('#__time_hub_contacts')) {
-            if (
-                $this->db->tableHasField('#__time_hub_contacts', 'hub_id')
-                && !$this->db->tableHasKey('#__time_hub_contacts', 'idx_hub_id')
-            ) {
-                $query = "ALTER TABLE `#__time_hub_contacts` ADD INDEX `idx_hub_id` (`hub_id`)";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__time_hub_contacts')) {
+            $schema->addIndex('#__time_hub_contacts', 'idx_hub_id', 'hub_id');
         }
 
-        if (!$this->db->tableExists('#__time_hub_allotments')) {
-            $query = "CREATE TABLE `#__time_hub_allotments` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `hub_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `start_date` date NOT NULL DEFAULT '0000-00-00',
-				  `end_date` date NOT NULL DEFAULT '0000-00-00',
-				  `hours` double NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_hub_id` (`hub_id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__time_hub_allotments')) {
+            $schema->table('#__time_hub_allotments')->create()
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('hub_id')->default(0)
+                ->date('start_date')->default('0000-00-00')
+                ->date('end_date')->default('0000-00-00')
+                ->double('hours')->default(0)
+                ->primaryKey('id')
+                ->index('idx_hub_id', 'hub_id')
+                ->engine('InnoDB')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -146,72 +83,40 @@ class Migration20170220190109ComTime extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__time_tasks')) {
-            if ($this->db->tableHasKey('#__time_tasks', 'idx_assignee_id')) {
-                $query = "ALTER TABLE `#__time_tasks` DROP KEY `idx_assignee_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            if ($this->db->tableHasKey('#__time_tasks', 'idx_liaison_id')) {
-                $query = "ALTER TABLE `#__time_tasks` DROP KEY `idx_liaison_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__time_tasks')) {
+            $schema->table('#__time_tasks')->alter()
+                ->dropIndex('idx_assignee_id')
+                ->dropIndex('idx_liaison_id')
+                ->dropIndex('idx_priority')
+                ->dropIndex('idx_billable')
+                ->execute();
 
-            if ($this->db->tableHasKey('#__time_tasks', 'idx_priority')) {
-                $query = "ALTER TABLE `#__time_tasks` DROP KEY `idx_priority`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasKey('#__time_tasks', 'idx_billable')) {
-                $query = "ALTER TABLE `#__time_tasks` DROP KEY `idx_billable`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasField('#__time_tasks', 'billable')) {
-                $query = "ALTER TABLE `#__time_tasks` DROP `billable`";
-                $this->db->setQuery($query);
-                $this->db->query();
+            if ($schema->hasColumn('#__time_tasks', 'billable')) {
+                $schema->table('#__time_tasks')->alter()
+                    ->dropColumn('billable')
+                    ->execute();
             }
         }
 
-        if ($this->db->tableExists('#__time_records')) {
-            if ($this->db->tableHasKey('#__time_records', 'idx_task_id')) {
-                $query = "ALTER TABLE `#__time_records` DROP KEY `idx_task_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-
-            if ($this->db->tableHasKey('#__time_records', 'idx_user_id')) {
-                $query = "ALTER TABLE `#__time_records` DROP KEY `idx_user_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__time_records')) {
+            $schema->table('#__time_records')->alter()
+                ->dropIndex('idx_task_id')
+                ->dropIndex('idx_user_id')
+                ->execute();
         }
 
-        if ($this->db->tableExists('#__time_hubs')) {
-            if ($this->db->tableHasKey('#__time_hubs', 'idx_active')) {
-                $query = "ALTER TABLE `#__time_hubs` DROP KEY `idx_active`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__time_hubs')) {
+            $schema->dropIndex('#__time_hubs', 'idx_active');
         }
 
-        if ($this->db->tableExists('#__time_hub_contacts')) {
-            if ($this->db->tableHasKey('#__time_hub_contacts', 'idx_hub_id')) {
-                $query = "ALTER TABLE `#__time_hub_contacts` DROP KEY `idx_hub_id`";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        if ($schema->tableExists('#__time_hub_contacts')) {
+            $schema->dropIndex('#__time_hub_contacts', 'idx_hub_id');
         }
 
-        if ($this->db->tableExists('#__time_hub_allotments')) {
-            $query = "DROP TABLE `#__time_hub_allotments`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__time_hub_allotments')) {
+            $schema->table('#__time_hub_allotments')->drop();
         }
     }
 }

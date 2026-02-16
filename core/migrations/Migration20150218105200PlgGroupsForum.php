@@ -20,16 +20,20 @@ class Migration20150218105200PlgGroupsForum extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__forum_attachments')
-            && !$this->db->tableHasField('#__forum_attachments', 'status')
+            $schema->tableExists('#__forum_attachments')
+            && !$schema->hasColumn('#__forum_attachments', 'status')
         ) {
             // adds column status to forum_attachments table
-            $query = "ALTER TABLE `#__forum_attachments` ADD COLUMN `status` INT(11) NULL DEFAULT 1 AFTER "
-                . "`description`;";
-             /* 0 = unpublished, 1 = published, 2 = deleted */
-            $this->db->setQuery($query);
-            $this->db->query();
+            /* 0 = unpublished, 1 = published, 2 = deleted */
+            $schema->addColumn('#__forum_attachments', 'status')
+                ->integer()
+                ->nullable()
+                ->default(1)
+                ->after('description')
+                ->execute();
         }
     }
 
@@ -38,14 +42,14 @@ class Migration20150218105200PlgGroupsForum extends Base
      **/
     public function down()
     {
+        $schema = $this->db->schema();
+
         if (
-            $this->db->tableExists('#__forum_attachments')
-            && $this->db->tableHasField('#__forum_attachments', 'status')
+            $schema->tableExists('#__forum_attachments')
+            && $schema->hasColumn('#__forum_attachments', 'status')
         ) {
             // drops column status from forum_attachments table
-            $query = "ALTER TABLE `#__forum_attachments` DROP COLUMN `status`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->dropColumn('#__forum_attachments', 'status');
         }
     }
 }

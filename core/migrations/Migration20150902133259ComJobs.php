@@ -21,15 +21,15 @@ class Migration20150902133259ComJobs extends Base
      **/
     public function up()
     {
-        if (
-            $this->db->tableExists('#__jobs_openings')
-                && !$this->db->tableHasField('#__jobs_openings', 'expiredate')
-        ) {
-            $query = "ALTER TABLE `#__jobs_openings` ADD COLUMN `expiredate`
-			DATETIME NULL DEFAULT '0000-00-00 00:00:00' AFTER closedate;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__jobs_openings') && !$schema->hasColumn('#__jobs_openings', 'expiredate')) {
+            $schema->addColumn('#__jobs_openings', 'expiredate')
+                ->datetime()
+                ->nullable()
+                ->default('0000-00-00 00:00:00')
+                ->after('closedate')
+                ->execute();
         }
     }
 
@@ -38,14 +38,10 @@ class Migration20150902133259ComJobs extends Base
      **/
     public function down()
     {
-        if (
-            $this->db->tableExists('#__jobs_openings')
-                && $this->db->tableHasField('#__jobs_openings', 'expiredate')
-        ) {
-            $query = "ALTER TABLE `#__jobs_openings` DROP COLUMN `expiredate`;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__jobs_openings') && $schema->hasColumn('#__jobs_openings', 'expiredate')) {
+            $schema->dropColumn('#__jobs_openings', 'expiredate');
         }
     }
 }

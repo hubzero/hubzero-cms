@@ -20,10 +20,14 @@ class Migration20150529141543ComCollections extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__collections_items')) {
-            $query = "UPDATE `#__collections_items` SET `access`=0 WHERE `access`=1";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__collections_items')) {
+            $this->db->getQuery(true)
+                ->update('#__collections_items')
+                ->set(['access' => 0])
+                ->where('access', '=', 1)
+                ->execute();
         }
     }
 }

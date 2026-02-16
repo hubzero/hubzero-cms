@@ -21,11 +21,15 @@ class Migration20170314214609ComNewsletters extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__newsletters')) {
-            if ($this->db->tableHasField('#__newsletters', 'template')) {
-                $query = "ALTER TABLE `#__newsletters` CHANGE `template` `template_id` INT(11)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__newsletters')) {
+            if ($schema->hasColumn('#__newsletters', 'template')) {
+                $schema->renameColumn('#__newsletters', 'template', 'template_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
         }
     }
@@ -35,11 +39,15 @@ class Migration20170314214609ComNewsletters extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__newsletters')) {
-            if ($this->db->tableHasField('#__newsletters', 'template_id')) {
-                $query = "ALTER TABLE `#__newsletters` CHANGE `template_id` `template` INT(11)  NOT NULL  DEFAULT '0';";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__newsletters')) {
+            if ($schema->hasColumn('#__newsletters', 'template_id')) {
+                $schema->renameColumn('#__newsletters', 'template_id', 'template')
+                    ->integer()
+                    ->notNull()
+                    ->default(0)
+                    ->execute();
             }
         }
     }

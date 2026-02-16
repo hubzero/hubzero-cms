@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for removing Tools - Java plugin
@@ -23,9 +24,10 @@ class Migration20241129223917PlgToolsJava extends Base
     {
         $this->deletePluginEntry('tools', 'java');
 
-        $query = "UPDATE `#__users_tool_preferences` SET params=REPLACE(params,'java','novnc');";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $query = $this->db->getQuery(true);
+        $query->update('#__users_tool_preferences')
+            ->set(['params' => Expression::replace('params', 'java', 'novnc')])
+            ->execute();
     }
 
     /**

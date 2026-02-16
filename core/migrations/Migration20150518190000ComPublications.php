@@ -21,11 +21,11 @@ class Migration20150518190000ComPublications extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__publication_ratings')) {
-            if (!$this->db->tableHasField('#__publication_ratings', 'state')) {
-                $query = "ALTER TABLE `#__publication_ratings` ADD COLUMN state tinyint(2) NOT NULL DEFAULT '1'";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publication_ratings')) {
+            if (!$schema->hasColumn('#__publication_ratings', 'state')) {
+                $schema->addColumn('#__publication_ratings', 'state')->tinyInteger(2)->notNull()->default('1');
             }
         }
     }
@@ -35,11 +35,11 @@ class Migration20150518190000ComPublications extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__publication_ratings')) {
-            if ($this->db->tableHasField('#__publication_ratings', 'state')) {
-                $query = "ALTER TABLE `#__publication_ratings` DROP `state`";
-                $this->db->setQuery($query);
-                $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__publication_ratings')) {
+            if ($schema->hasColumn('#__publication_ratings', 'state')) {
+                $schema->dropColumn('#__publication_ratings', 'state');
             }
         }
     }

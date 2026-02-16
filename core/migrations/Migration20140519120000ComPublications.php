@@ -21,30 +21,23 @@ class Migration20140519120000ComPublications extends Base
      **/
     public function up()
     {
-        $queries = array();
+        $schema = $this->db->schema();
 
-        // Set up curation
-        if (!$this->db->tableExists('#__publication_curation_history')) {
-            $queries[] = "CREATE TABLE IF NOT EXISTS `#__publication_curation_history` (
-				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`publication_version_id` int(11) NOT NULL DEFAULT '0',
-				`created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`created_by` int(11) NOT NULL DEFAULT '0',
-				`changelog` text NOT NULL DEFAULT '',
-				`curator` tinyint(3) NOT NULL DEFAULT '0',
-				`oldstatus` int(11) NOT NULL DEFAULT '0',
-				`newstatus` int(11) NOT NULL DEFAULT '0',
-				PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8";
-        }
-
-        // Run queries
-        if (count($queries) > 0) {
-            // Run queries
-            foreach ($queries as $query) {
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        // Set up curation history
+        if (!$schema->tableExists('#__publication_curation_history')) {
+            $schema->createTable('#__publication_curation_history')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('publication_version_id')->default(0)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->integer('created_by')->default(0)
+                ->text('changelog')->default('')
+                ->tinyInteger('curator')->default(0)
+                ->integer('oldstatus')->default(0)
+                ->integer('newstatus')->default(0)
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -53,18 +46,8 @@ class Migration20140519120000ComPublications extends Base
      **/
     public function down()
     {
-        $queries = array();
+        $schema = $this->db->schema();
 
-        if ($this->db->tableExists('#__publication_curation_history')) {
-            $queries[] = "DROP TABLE IF EXISTS `#__publication_curation_history`";
-        }
-
-        if (count($queries) > 0) {
-            // Run queries
-            foreach ($queries as $query) {
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
-        }
+        $schema->dropTable('#__publication_curation_history');
     }
 }

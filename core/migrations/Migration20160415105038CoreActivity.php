@@ -21,59 +21,58 @@ class Migration20160415105038CoreActivity extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__activity_logs')) {
-            $query = "CREATE TABLE `#__activity_logs` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `created` datetime DEFAULT '0000-00-00 00:00:00',
-				  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
-				  `description` varchar(250) DEFAULT NULL,
-				  `action` varchar(100) DEFAULT NULL,
-				  `scope` varchar(250) NOT NULL DEFAULT '',
-				  `scope_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `details` text,
-				  PRIMARY KEY (`id`),
-				  KEY `idx_created_by` (`created_by`),
-				  KEY `idx_scope_scope_id` (`scope`,`scope_id`),
-				  KEY `idx_action` (`action`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__activity_logs')) {
+            $schema->createTable('#__activity_logs')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->unsignedInteger('created_by')->default(0)
+                ->string('description', 250)->nullable()
+                ->string('action', 100)->nullable()
+                ->string('scope', 250)->default('')
+                ->unsignedInteger('scope_id')->default(0)
+                ->text('details')->nullable()
+                ->primaryKey('id')
+                ->index('idx_created_by', 'created_by')
+                ->index('idx_scope_scope_id', ['scope', 'scope_id'])
+                ->index('idx_action', 'action')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__activity_recipients')) {
-            $query = "CREATE TABLE `#__activity_recipients` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `log_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `scope` varchar(250) NOT NULL,
-				  `scope_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `viewed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  `state` tinyint(2) NOT NULL DEFAULT '0',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_log_id` (`log_id`),
-				  KEY `idx_user_id` (`scope_id`),
-				  KEY `idx_state` (`state`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__activity_recipients')) {
+            $schema->createTable('#__activity_recipients')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('log_id')->default(0)
+                ->string('scope', 250)
+                ->unsignedInteger('scope_id')->default(0)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->datetime('viewed')->default('0000-00-00 00:00:00')
+                ->tinyInteger('state')->default(0)
+                ->primaryKey('id')
+                ->index('idx_log_id', 'log_id')
+                ->index('idx_user_id', 'scope_id')
+                ->index('idx_state', 'state')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
 
-        if (!$this->db->tableExists('#__activity_subscriptions')) {
-            $query = "CREATE TABLE `#__activity_subscriptions` (
-				  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `scope` varchar(250) NOT NULL DEFAULT '',
-				  `scope_id` int(11) unsigned NOT NULL DEFAULT '0',
-				  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-				  PRIMARY KEY (`id`),
-				  KEY `idx_user_id` (`user_id`),
-				  KEY `idx_scope_scope_id` (`scope`,`scope_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if (!$schema->tableExists('#__activity_subscriptions')) {
+            $schema->createTable('#__activity_subscriptions')
+                ->unsignedInteger('id', ['autoIncrement' => true])
+                ->unsignedInteger('user_id')->default(0)
+                ->string('scope', 250)->default('')
+                ->unsignedInteger('scope_id')->default(0)
+                ->datetime('created')->default('0000-00-00 00:00:00')
+                ->primaryKey('id')
+                ->index('idx_user_id', 'user_id')
+                ->index('idx_scope_scope_id', ['scope', 'scope_id'])
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
         }
     }
 
@@ -82,25 +81,18 @@ class Migration20160415105038CoreActivity extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__activity_logs')) {
-            $query = "DROP TABLE IF EXISTS `#__activity_logs`;";
+        $schema = $this->db->schema();
 
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__activity_logs')) {
+            $schema->dropTable('#__activity_logs');
         }
 
-        if ($this->db->tableExists('#__activity_recipients')) {
-            $query = "DROP TABLE IF EXISTS `#__activity_recipients`;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__activity_recipients')) {
+            $schema->dropTable('#__activity_recipients');
         }
 
-        if ($this->db->tableExists('#__activity_subscriptions')) {
-            $query = "DROP TABLE IF EXISTS `#__activity_subscriptions`;";
-
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__activity_subscriptions')) {
+            $schema->dropTable('#__activity_subscriptions');
         }
     }
 }

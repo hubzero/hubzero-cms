@@ -9,11 +9,12 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for getting rid of duplicate section date entries
  *
-*/
+ */
 class Migration20140219221812ComCourses extends Base
 {
     /**
@@ -21,34 +22,37 @@ class Migration20140219221812ComCourses extends Base
      **/
     public function up()
     {
-        $query  = "SELECT count(id) AS num, section_id, scope, scope_id";
-        $query .= " FROM `#__courses_offering_section_dates`";
-        $query .= " GROUP BY `section_id`, `scope`, `scope_id`";
-        $query .= " HAVING num > 1";
-
-        $this->db->setQuery($query);
-        $results = $this->db->loadObjectList();
+        $results = $this->db->getQuery(true)
+            ->select(Expression::count('id'), 'num')
+            ->select('section_id')
+            ->select('scope')
+            ->select('scope_id')
+            ->from('#__courses_offering_section_dates')
+            ->group('section_id')
+            ->group('scope')
+            ->group('scope_id')
+            ->having('num', '>', 1)
+            ->loadObjectList();
 
         if ($results && count($results) > 0) {
             foreach ($results as $result) {
-                $query  = "SELECT * FROM `#__courses_offering_section_dates` WHERE";
-                $query .= " section_id = " . $this->db->quote($result->section_id);
-                $query .= " AND scope = " . $this->db->quote($result->scope);
-                $query .= " AND scope_id = " . $this->db->quote($result->scope_id);
-
-                $this->db->setQuery($query);
-                $rows = $this->db->loadObjectList();
+                $rows = $this->db->getQuery(true)
+                    ->select('*')
+                    ->from('#__courses_offering_section_dates')
+                    ->where('section_id', '=', $result->section_id)
+                    ->where('scope', '=', $result->scope)
+                    ->where('scope_id', '=', $result->scope_id)
+                    ->loadObjectList();
 
                 if ($rows && count($rows) > 1) {
                     // Leave the first one intact
                     unset($rows[0]);
 
                     foreach ($rows as $row) {
-                        $query  = "DELETE FROM `#__courses_offering_section_dates`";
-                        $query .= " WHERE id = " . $this->db->quote($row->id);
-
-                        $this->db->setQuery($query);
-                        $this->db->query();
+                        $this->db->getQuery(true)
+                            ->delete('#__courses_offering_section_dates')
+                            ->where('id', '=', $row->id)
+                            ->execute();
                     }
                 }
             }

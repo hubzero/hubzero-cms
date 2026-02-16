@@ -21,9 +21,7 @@ class Migration20140305081320ComMembers extends Base
      **/
     public function up()
     {
-        $query = "DROP TABLE IF EXISTS `#__xprofiles_tags`;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema->dropTable('#__xprofiles_tags');
     }
 
     /**
@@ -31,15 +29,19 @@ class Migration20140305081320ComMembers extends Base
      **/
     public function down()
     {
-        $query = "CREATE TABLE `#__xprofiles_tags` (
-		  `id` int(11) NOT NULL AUTO_INCREMENT,
-		  `uidNumber` int(11) DEFAULT NULL,
-		  `tagid` int(11) DEFAULT NULL,
-		  `taggerid` int(11) DEFAULT '0',
-		  `taggedon` datetime DEFAULT '0000-00-00 00:00:00',
-		  PRIMARY KEY (`id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        $this->db->setQuery($query);
-        $this->db->query();
+        $schema = $this->db->schema();
+
+        if (!$schema->tableExists('#__xprofiles_tags')) {
+            $schema->createTable('#__xprofiles_tags')
+                ->integer('id', ['autoIncrement' => true])
+                ->integer('uidNumber')->nullable()
+                ->integer('tagid')->nullable()
+                ->integer('taggerid')->default(0)
+                ->datetime('taggedon')->default('0000-00-00 00:00:00')
+                ->primaryKey('id')
+                ->engine('MyISAM')
+                ->charset('utf8')
+                ->execute();
+        }
     }
 }

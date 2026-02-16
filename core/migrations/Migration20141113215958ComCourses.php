@@ -21,10 +21,13 @@ class Migration20141113215958ComCourses extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__courses_form_deployments')) {
-            $query = "UPDATE `#__courses_form_deployments` SET `start_time` = NULL, `end_time` = NULL";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__courses_form_deployments')) {
+            $this->db->getQuery(true)
+                ->update('#__courses_form_deployments')
+                ->set(['start_time' => null, 'end_time' => null])
+                ->execute();
         }
     }
 }

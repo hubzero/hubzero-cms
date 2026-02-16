@@ -9,6 +9,7 @@
 namespace Migrations;
 
 use Hubzero\Content\Migration\Base;
+use Hubzero\Database\Expression;
 
 /**
  * Migration script for merging duplicate tags
@@ -21,11 +22,18 @@ class Migration20140310130202ComTags extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__tags')) {
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__tags')) {
             // We need to clean out duplicates first
-            $query = "SELECT *, count(id) as cnt FROM `#__tags` GROUP BY `tag` HAVING cnt > 1;";
-            $this->db->setQuery($query);
-            if ($results = $this->db->loadObjectList()) {
+            $results = $this->db->getQuery(true)
+                ->select(['*', Expression::count('id')->as('cnt')])
+                ->from('#__tags')
+                ->group('tag')
+                ->having('cnt', '>', 1)
+                ->loadObjectList();
+
+            if ($results) {
                 if (file_exists(PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php')) {
                     require_once PATH_CORE . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php';
 
@@ -37,9 +45,13 @@ class Migration20140310130202ComTags extends Base
 
                     foreach ($results as $result) {
                         // Get all duplicate tags
-                        $query = "SELECT * FROM `#__tags` WHERE `tag`=" . $this->db->quote($result->tag) . ";";
-                        $this->db->setQuery($query);
-                        if ($tags = $this->db->loadObjectList()) {
+                        $tags = $this->db->getQuery(true)
+                            ->select('*')
+                            ->from('#__tags')
+                            ->where('tag', '=', $result->tag)
+                            ->loadObjectList();
+
+                        if ($tags) {
                             foreach ($tags as $tag) {
                                 if ($tag->id == $result->id) {
                                     continue;
@@ -58,15 +70,9 @@ class Migration20140310130202ComTags extends Base
                 }
             }
 
-            if ($this->db->tableHasKey('#__tags', 'idx_tag')) {
-                $query = "ALTER TABLE `#__tags` DROP INDEX `idx_tag`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+            $schema->dropIndex('#__tags', 'idx_tag');
 
-            $query = "CREATE UNIQUE INDEX `idx_tag` ON `#__tags` (`tag`);";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addUniqueIndex('#__tags', 'idx_tag', 'tag');
         }
     }
 
@@ -75,16 +81,12 @@ class Migration20140310130202ComTags extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__tags')) {
-            if ($this->db->tableHasKey('#__tags', 'idx_tag')) {
-                $query = "ALTER TABLE `#__tags` DROP INDEX `idx_tag`;";
-                $this->db->setQuery($query);
-                $this->db->query();
-            }
+        $schema = $this->db->schema();
 
-            $query = "ALTER TABLE `#__tags` ADD INDEX `idx_tag` (`tag`);";
-            $this->db->setQuery($query);
-            $this->db->query();
+        if ($schema->tableExists('#__tags')) {
+            $schema->dropIndex('#__tags', 'idx_tag');
+
+            $schema->addIndex('#__tags', 'idx_tag', 'tag');
         }
     }
 }

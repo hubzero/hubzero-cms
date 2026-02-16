@@ -21,14 +21,18 @@ class Migration20130731170234ComCourses extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         if (
-            !$this->db->tableHasField('#__courses_grade_book', 'override')
-            && $this->db->tableHasField('#__courses_grade_book', 'scope_id')
+            $schema->tableExists('#__courses_grade_book')
+            && !$schema->hasColumn('#__courses_grade_book', 'override')
+            && $schema->hasColumn('#__courses_grade_book', 'scope_id')
         ) {
-            $query = "ALTER TABLE `#__courses_grade_book` ADD `override` DECIMAL(5,2)  NULL  DEFAULT NULL  AFTER "
-                . "`scope_id`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+            $schema->addColumn('#__courses_grade_book', 'override')
+                ->decimal(5, 2)
+                ->nullable()
+                ->default(null)
+                ->execute();
         }
     }
 
@@ -37,10 +41,10 @@ class Migration20130731170234ComCourses extends Base
      **/
     public function down()
     {
-        if ($this->db->tableHasField('#__courses_grade_book', 'override')) {
-            $query = "ALTER TABLE `#__courses_grade_book` DROP `override`;";
-            $this->db->setQuery($query);
-            $this->db->query();
+        $schema = $this->db->schema();
+
+        if ($schema->hasColumn('#__courses_grade_book', 'override')) {
+            $schema->dropColumn('#__courses_grade_book', 'override');
         }
     }
 }

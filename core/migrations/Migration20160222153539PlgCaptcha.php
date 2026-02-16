@@ -20,38 +20,46 @@ class Migration20160222153539PlgCaptcha extends Base
      **/
     public function up()
     {
+        $schema = $this->db->schema();
+
         $params = '';
 
-        if ($this->db->tableExists('#__extensions')) {
-            $this->db->setQuery(
-                "UPDATE `#__extensions` SET `folder`=" . $this->db->quote('captcha') . ", "
-                    . "`element`=" . $this->db->quote('math') . ", "
-                    . "`name`=" . $this->db->quote('plg_captcha_math')
-                    . " WHERE `folder`=" . $this->db->quote('hubzero')
-                    . " AND `element`=" . $this->db->quote('mathcaptcha')
-            );
-            $this->db->query();
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set([
+                    'folder'  => 'captcha',
+                    'element' => 'math',
+                    'name'    => 'plg_captcha_math'
+                ])
+                ->where('folder', '=', 'hubzero')
+                ->where('element', '=', 'mathcaptcha')
+                ->execute();
 
-            $this->db->setQuery(
-                "UPDATE `#__extensions` SET `folder`=" . $this->db->quote('captcha') . ", "
-                    . "`element`=" . $this->db->quote('image') . ", "
-                    . "`name`=" . $this->db->quote('plg_captcha_image')
-                    . " WHERE `folder`=" . $this->db->quote('hubzero')
-                    . " AND `element`=" . $this->db->quote('imagecaptcha')
-            );
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set([
+                    'folder'  => 'captcha',
+                    'element' => 'image',
+                    'name'    => 'plg_captcha_image'
+                ])
+                ->where('folder', '=', 'hubzero')
+                ->where('element', '=', 'imagecaptcha')
+                ->execute();
 
             // Remove the old recaptcha and move the hubzero recaptcha.
             // This will preserve existing settings.
             $this->deletePluginEntry('captcha', 'recaptcha');
-            $this->db->setQuery(
-                "UPDATE `#__extensions` SET `folder`=" . $this->db->quote('captcha') . ", "
-                    . "`element`=" . $this->db->quote('recaptcha') . ", "
-                    . "`name`=" . $this->db->quote('plg_captcha_recaptcha')
-                    . " WHERE `folder`=" . $this->db->quote('hubzero')
-                    . " AND `element`=" . $this->db->quote('recaptcha')
-            );
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set([
+                    'folder'  => 'captcha',
+                    'element' => 'recaptcha',
+                    'name'    => 'plg_captcha_recaptcha'
+                ])
+                ->where('folder', '=', 'hubzero')
+                ->where('element', '=', 'recaptcha')
+                ->execute();
         }
     }
 
@@ -60,33 +68,41 @@ class Migration20160222153539PlgCaptcha extends Base
      **/
     public function down()
     {
-        if ($this->db->tableExists('#__extensions')) {
-            $this->db->setQuery(
-                "UPDATE `#__extensions` SET `folder`=" . $this->db->quote('hubzero') . ", "
-                    . "`element`=" . $this->db->quote('mathcaptcha') . ", "
-                    . "`name`=" . $this->db->quote('plg_hubzero_mathcaptcha')
-                    . " WHERE `folder`=" . $this->db->quote('captcha')
-                    . " AND `element`=" . $this->db->quote('math')
-            );
-            $this->db->query();
+        $schema = $this->db->schema();
 
-            $this->db->setQuery(
-                "UPDATE `#__extensions` SET `folder`=" . $this->db->quote('hubzero') . ", "
-                    . "`element`=" . $this->db->quote('imagecaptcha') . ", "
-                    . "`name`=" . $this->db->quote('plg_hubzero_imagecaptcha')
-                    . " WHERE `folder`=" . $this->db->quote('captcha')
-                    . " AND `element`=" . $this->db->quote('image')
-            );
-            $this->db->query();
+        if ($schema->tableExists('#__extensions')) {
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set([
+                    'folder'  => 'hubzero',
+                    'element' => 'mathcaptcha',
+                    'name'    => 'plg_hubzero_mathcaptcha'
+                ])
+                ->where('folder', '=', 'captcha')
+                ->where('element', '=', 'math')
+                ->execute();
 
-            $this->db->setQuery(
-                "UPDATE `#__extensions` SET `folder`=" . $this->db->quote('hubzero') . ", "
-                    . "`element`=" . $this->db->quote('recaptcha') . ", "
-                    . "`name`=" . $this->db->quote('plg_hubzero_recaptcha')
-                    . " WHERE `folder`=" . $this->db->quote('captcha')
-                    . " AND `element`=" . $this->db->quote('recaptcha')
-            );
-            $this->db->query();
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set([
+                    'folder'  => 'hubzero',
+                    'element' => 'imagecaptcha',
+                    'name'    => 'plg_hubzero_imagecaptcha'
+                ])
+                ->where('folder', '=', 'captcha')
+                ->where('element', '=', 'image')
+                ->execute();
+
+            $this->db->getQuery(true)
+                ->update('#__extensions')
+                ->set([
+                    'folder'  => 'hubzero',
+                    'element' => 'recaptcha',
+                    'name'    => 'plg_hubzero_recaptcha'
+                ])
+                ->where('folder', '=', 'captcha')
+                ->where('element', '=', 'recaptcha')
+                ->execute();
             $this->addPluginEntry('captcha', 'recaptcha');
         }
     }

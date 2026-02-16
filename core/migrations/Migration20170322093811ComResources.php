@@ -26,17 +26,23 @@ class Migration20170322093811ComResources extends Base
      **/
     public function up()
     {
-        if ($this->db->tableExists('#__resource_types')) {
-            $query = "SELECT id,type FROM `#__resource_types` WHERE alias='' OR alias IS NULL";
-            $this->db->setQuery($query);
-            $results = $this->db->loadObjectList();
+        $schema = $this->db->schema();
+
+        if ($schema->tableExists('#__resource_types')) {
+            $results = $this->db->getQuery(true)
+                ->select(['id', 'type'])
+                ->from('#__resource_types')
+                ->where('alias', '=', '')
+                ->orWhereNull('alias')
+                ->loadObjectList();
 
             foreach ($results as $result) {
                 $alias = $this->normalize($result->type);
-                $query = "UPDATE #__resource_types SET alias=" . $this->db->quote($alias)
-                    . " WHERE id = " . $this->db->quote($result->id);
-                            $this->db->setQuery($query);
-                            $this->db->execute();
+                $this->db->getQuery(true)
+                    ->update('#__resource_types')
+                    ->set(['alias' => $alias])
+                    ->where('id', '=', (int)$result->id)
+                    ->execute();
             }
         }
     }
