@@ -1426,7 +1426,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *     // Fires before a new record is inserted (can return false to cancel)
      *     public function creating(Entry $entry)
      *     {
-     *         $entry->set('slug', \Hubzero\Utility\Str::slug($entry->get('title')));
+     *         $entry->set('slug', preg_replace('/[^a-z0-9]+/', '-', strtolower($entry->get('title'))));
      *     }
      *
      *     // Fires after a new record is inserted
@@ -1438,7 +1438,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      *     // Fires before an existing record is updated (can return false to cancel)
      *     public function updating(Entry $entry)
      *     {
-     *         $entry->set('modified_by', User::get('id'));
+     *         $entry->set('modified_by', static::resolveCurrentUserId());
      *     }
      *
      *     // Fires before delete (can return false to cancel)
@@ -4794,7 +4794,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             }
 
             if (isset($columns['checked_out'])) {
-                $userId = $userId ?: \User::get('id');
+                $userId = $userId ?: static::resolveCurrentUserId();
                 $data['checked_out'] = $userId;
             }
 
@@ -4885,7 +4885,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function isCheckedOut()
     {
-        return ($this->get('checked_out') && $this->get('checked_out') != \User::get('id'));
+        return ($this->get('checked_out') && $this->get('checked_out') != static::resolveCurrentUserId());
     }
 
     /**
@@ -5033,7 +5033,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function whereIsMine($column = 'created_by')
     {
-        $this->whereEquals($column, \User::get('id'));
+        $this->whereEquals($column, static::resolveCurrentUserId());
         return $this;
     }
 
@@ -5170,7 +5170,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
             throw new RuntimeException('Cannot determine creator of non-existent row(s)');
         }
 
-        return $this->$field == \User::get('id');
+        return $this->$field == static::resolveCurrentUserId();
     }
 
     /**
@@ -7094,7 +7094,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function automaticCreatedBy($data)
     {
-        return (isset($data['created_by']) && $data['created_by'] ? (int)$data['created_by'] : (int)\User::get('id'));
+        return (isset($data['created_by']) && $data['created_by'] ? (int)$data['created_by'] : static::resolveCurrentUserId());
     }
 
     /**
