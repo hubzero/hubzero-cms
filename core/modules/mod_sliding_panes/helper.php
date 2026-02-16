@@ -9,6 +9,7 @@
 namespace Modules\SlidingPanes;
 
 use Hubzero\Module\Module;
+use Hubzero\Database\Expression;
 use Date;
 
 /**
@@ -48,30 +49,41 @@ class Helper extends Module
 
         $catid   = (int) $this->params->get('catid', 0);
         $random  = $this->params->get('random', 0);
-        $orderby = $random ? 'RAND()' : 'a.ordering';
         $limit   = (int) $this->params->get('limitslides', 0);
-        $limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
         $now  = Date::toSql();
 
         $nullDate = $db->getNullDate();
 
-        // query to determine article count
-        $quotedNullDate = $db->Quote($nullDate);
-        $quotedNow = $db->Quote($now);
-        $query = 'SELECT a.* FROM `#__content` AS a'
-            . ' INNER JOIN `#__categories` AS cc ON cc.id = a.catid'
-            . ' WHERE a.state = 1 '
-            . ' AND (a.publish_up IS NULL OR a.publish_up = ' . $quotedNullDate
-            . ' OR a.publish_up <= ' . $quotedNow . ' ) '
-            . ' AND (a.publish_down IS NULL OR a.publish_down = ' . $quotedNullDate
-            . ' OR a.publish_down >= ' . $quotedNow . ' )'
-            . ' AND cc.id = ' . (int) $catid
-            . ' AND cc.published = 1'
-            . ' ORDER BY ' . $orderby . ' ' . $limitby;
+        $quotedNullDate = $db->quote($nullDate);
+        $quotedNow = $db->quote($now);
+        $query = $db->getQuery()
+            ->select('a.*')
+            ->from('#__content', 'a')
+            ->joinRaw('#__categories AS cc', 'cc.id = a.catid', 'inner')
+            ->whereEquals('a.state', 1)
+            ->whereRaw(
+                '(a.publish_up IS NULL OR a.publish_up = ' . $quotedNullDate .
+                ' OR a.publish_up <= ' . $quotedNow . ')'
+            )
+            ->whereRaw(
+                '(a.publish_down IS NULL OR a.publish_down = ' . $quotedNullDate .
+                ' OR a.publish_down >= ' . $quotedNow . ')'
+            )
+            ->whereEquals('cc.id', (int) $catid)
+            ->whereEquals('cc.published', 1);
 
-        $db->setQuery($query);
-        return $db->loadObjectList();
+        if ($random) {
+            $query->order(Expression::randomOrder(), 'asc');
+        } else {
+            $query->order('a.ordering', 'asc');
+        }
+
+        if ($limit > 0) {
+            $query->limit($limit);
+        }
+
+        return $query->fetch();
     }
 
     /**
