@@ -512,7 +512,12 @@ class Application extends Container
             ob_end_flush();
         }
 
-        flush();
+        // Guard against flushing after the response is complete.
+        // FrankenPHP's Go handler finishes before PHP destructors run,
+        // so an unconditional flush() causes a panic in go_sapi_flush.
+        if (!headers_sent()) {
+            flush();
+        }
 
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
