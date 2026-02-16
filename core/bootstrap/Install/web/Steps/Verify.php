@@ -58,7 +58,7 @@ class Verify implements StepInterface
         $installer = $this->installer;
 
         ob_start();
-        include __DIR__ . '/../views/steps/verify.php';
+        include __DIR__ . '/../views/steps/tmpl/verify.php';
         return ob_get_clean();
     }
 

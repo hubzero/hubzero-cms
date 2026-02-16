@@ -13,26 +13,15 @@
 
 namespace Bootstrap\Install\Web;
 
-
-// Prevent direct access except through index.php
-if (!defined('PATH_ROOT')) {
-    die('Direct access not permitted');
-}
-
-// Load shared classes (used by both bootstrap and main installer)
-require_once __DIR__ . '/StorageCheck.php';
-require_once __DIR__ . '/SecurityGuard.php';
-require_once dirname(dirname(dirname(__DIR__))) . '/libraries/Hubzero/System/Requirements.php';
-
 use Hubzero\System\Requirements;
 
 /**
- * Bootstrap Installer class
+ * Bootstrap Installer
  *
- * Handles pre-vendor installation checks and composer install
+ * Handles pre-vendor installation checks and composer install.
+ * Implemented as an anonymous class so this file contains only side effects.
  */
-class BootstrapInstaller
-{
+(new class {
     /**
      * Minimum extensions needed for bootstrap (subset of full requirements)
      * Uses Requirements::MIN_PHP_VERSION for PHP version
@@ -82,6 +71,15 @@ class BootstrapInstaller
 
     public function __construct()
     {
+        if (!defined('PATH_ROOT')) {
+            die('Direct access not permitted');
+        }
+
+        $libRoot = dirname(dirname(dirname(__DIR__))) . '/libraries';
+        require_once __DIR__ . '/StorageCheck.php';
+        require_once __DIR__ . '/SecurityGuard.php';
+        require_once $libRoot . '/Hubzero/System/Requirements.php';
+
         $this->corePath = PATH_CORE;
     }
 
@@ -93,7 +91,7 @@ class BootstrapInstaller
         // Check for Windows first - HUBzero does not support Windows
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             http_response_code(500);
-            include __DIR__ . '/views/windows-error.php';
+            include __DIR__ . '/views/tmpl/windows-error.php';
             exit;
         }
 
@@ -103,7 +101,7 @@ class BootstrapInstaller
         if (!$storageResult['available']) {
             $tried = $storageResult['tried'];
             $docRoot = $storageResult['docRoot'];
-            include __DIR__ . '/views/storage-error.php';
+            include __DIR__ . '/views/tmpl/storage-error.php';
             exit;
         }
 
@@ -128,7 +126,7 @@ class BootstrapInstaller
         if (!$validation['valid']) {
             $security->logSecurityEvent('CLIENT_VALIDATION_FAIL', $validation['error']);
             $errorMessage = $validation['error'];
-            include __DIR__ . '/views/bootstrap-verify.php';
+            include __DIR__ . '/views/tmpl/bootstrap-verify.php';
             return;
         }
 
@@ -201,7 +199,7 @@ class BootstrapInstaller
         }
 
         // Show verification page
-        include __DIR__ . '/views/bootstrap-verify.php';
+        include __DIR__ . '/views/tmpl/bootstrap-verify.php';
     }
 
     /**
@@ -922,8 +920,4 @@ tr.failed { background: #fef2f2; }
 </html>
         <?php
     }
-}
-
-// Run the bootstrap installer
-$bootstrap = new BootstrapInstaller();
-$bootstrap->run();
+})->run();

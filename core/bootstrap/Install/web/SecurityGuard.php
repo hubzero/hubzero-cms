@@ -494,6 +494,7 @@ class SecurityGuard
     private function saveChallengeData(array $data): bool
     {
         $this->ensureStorageDir();
+        $this->cleanupOldChallenges();
 
         // Sign the data to detect tampering
         $signature = hash_hmac('sha256', json_encode($data), $this->getServerSecret());
@@ -1212,6 +1213,11 @@ class SecurityGuard
         $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 
         $entry = "[{$timestamp}] [{$event}] IP: {$ip} | {$detail} | UA: {$userAgent}\n";
+
+        // Keep the log bounded: rotate it once it passes 5 MB
+        if (is_file($logFile) && filesize($logFile) > 5242880) {
+            @rename($logFile, $logFile . '.1');
+        }
 
         @file_put_contents($logFile, $entry, FILE_APPEND | LOCK_EX);
     }

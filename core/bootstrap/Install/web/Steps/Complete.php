@@ -34,7 +34,7 @@ class Complete implements StepInterface
         $this->installer->cleanup();
 
         ob_start();
-        include __DIR__ . '/../views/steps/complete.php';
+        include __DIR__ . '/../views/steps/tmpl/complete.php';
         return ob_get_clean();
     }
 
