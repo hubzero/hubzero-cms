@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,5 +11,7 @@ defined('_HZEXEC_') or die;
 $this->css();
 ?>
 <div id="system-environment">
-    <p class="<?php echo strtolower($this->environment); ?>"><?php echo Lang::txt('MOD_APPLICATION_ENV_' . strtoupper($this->environment)); ?></p>
+    <p class="<?php echo strtolower($this->environment); ?>">
+        <?php echo Lang::txt('MOD_APPLICATION_ENV_' . strtoupper($this->environment)); ?>
+    </p>
 </div>

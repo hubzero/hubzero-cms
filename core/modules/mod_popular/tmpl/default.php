@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -41,7 +39,9 @@
                 endif; ?>
             </th>
             <td class="center">
-                <time datetime="<?php echo $item->created; ?>"><?php echo Date::of($item->created)->toLocal('Y-m-d H:i:s'); ?></time>
+                <time datetime="<?php echo $item->created; ?>"><?php
+                    echo Date::of($item->created)->toLocal('Y-m-d H:i:s');
+                ?></time>
             </td>
             <td class="center">
                 <?php echo $item->hits; ?>

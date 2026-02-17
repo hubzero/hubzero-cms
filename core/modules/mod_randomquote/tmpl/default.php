@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,7 +26,18 @@ if ($this->quote) {
                 echo $text;
                 ?>
                 <?php if (strlen($this->quote->get('quote')) > $this->charlimit) { ?>
-                    <a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $this->quote->get('id'); ?>" title="<?php echo Lang::txt('MOD_RANDOMQUOTE_VIEW_FULL', $this->escape(stripslashes($this->quote->get('fullname')))); ?>" class="showfullquote">
+                    <?php
+                    $quoteUrl = $base . '/about/quotes/?quoteid='
+                        . $this->quote->get('id');
+                    $quoteTitle = Lang::txt(
+                        'MOD_RANDOMQUOTE_VIEW_FULL',
+                        $this->escape(stripslashes($this->quote->get('fullname')))
+                    );
+                    ?>
+                    <a href="<?php echo $quoteUrl; ?>"
+                        title="<?php echo $quoteTitle; ?>"
+                        class="showfullquote"
+                    >
                         <?php echo Lang::txt('MOD_RANDOMQUOTE_VIEW'); ?>
                     </a>
                 <?php } ?>

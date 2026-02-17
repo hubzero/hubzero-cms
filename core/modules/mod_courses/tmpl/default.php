@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,7 +47,10 @@ Html::behavior('chart');
                 ];
 
             $(document).ready(function() {
-                var chart<?php echo $this->module->id; ?> = $.plot($('#container<?php echo $this->module->id; ?>'), datasets<?php echo $this->module->id; ?>, {
+                var chart<?php echo $this->module->id; ?> = $.plot(
+                    $('#container<?php echo $this->module->id; ?>'),
+                    datasets<?php echo $this->module->id; ?>,
+                    {
                     series: {
                         bars: {
                             show: true,
@@ -102,13 +103,17 @@ Html::behavior('chart');
             <tbody>
                 <tr>
                     <td class="published-items">
-                        <a href="<?php echo Route::url('index.php?option=com_courses&state=1'); ?>" title="<?php echo Lang::txt('MOD_COURSES_PUBLISHED_TITLE'); ?>">
+                        <a href="<?php echo Route::url('index.php?option=com_courses&state=1'); ?>"
+                            title="<?php echo Lang::txt('MOD_COURSES_PUBLISHED_TITLE'); ?>"
+                        >
                             <?php echo $this->escape($this->published); ?>
                             <span><?php echo Lang::txt('MOD_COURSES_PUBLISHED'); ?></span>
                         </a>
                     </td>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_courses&state=3'); ?>" title="<?php echo Lang::txt('MOD_COURSES_DRAFT_TITLE'); ?>">
+                        <a href="<?php echo Route::url('index.php?option=com_courses&state=3'); ?>"
+                            title="<?php echo Lang::txt('MOD_COURSES_DRAFT_TITLE'); ?>"
+                        >
                             <?php echo $this->escape($this->draft); ?>
                             <span><?php echo Lang::txt('MOD_COURSES_DRAFT'); ?></span>
                         </a>
@@ -120,13 +125,17 @@ Html::behavior('chart');
             <tbody>
                 <tr>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_courses&state=0'); ?>" title="<?php echo Lang::txt('MOD_COURSES_UNPUBLISHED_TITLE'); ?>">
+                        <a href="<?php echo Route::url('index.php?option=com_courses&state=0'); ?>"
+                            title="<?php echo Lang::txt('MOD_COURSES_UNPUBLISHED_TITLE'); ?>"
+                        >
                             <?php echo $this->escape($this->unpublished); ?>
                             <span><?php echo Lang::txt('MOD_COURSES_UNPUBLISHED'); ?></span>
                         </a>
                     </td>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_courses&state=2'); ?>" title="<?php echo Lang::txt('MOD_COURSES_ARCHIVED_TITLE'); ?>">
+                        <a href="<?php echo Route::url('index.php?option=com_courses&state=2'); ?>"
+                            title="<?php echo Lang::txt('MOD_COURSES_ARCHIVED_TITLE'); ?>"
+                        >
                             <?php echo $this->escape($this->archived); ?>
                             <span><?php echo Lang::txt('MOD_COURSES_ARCHIVED'); ?></span>
                         </a>

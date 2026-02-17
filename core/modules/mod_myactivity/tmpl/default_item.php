@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,13 @@ $name = $this->escape(stripslashes($row->log->creator->get('name')));
     data-time="<?php echo $row->get('created'); ?>"
     data-id="<?php echo $row->get('id'); ?>"
     data-log_id="<?php echo $row->get('log_id'); ?>"
-    class="activity <?php echo $this->escape($row->get('scope') . '.' . $row->get('scope_id') . ' ' . $row->log->get('action')) . ' ' . $status; ?>">
+    class="activity <?php
+        echo $this->escape(
+            $row->get('scope') . '.'
+            . $row->get('scope_id') . ' '
+            . $row->log->get('action')
+        ) . ' ' . $status;
+        ?>">
 
     <div class="activity <?php echo $this->escape($row->log->get('component')); ?>">
         <span class="activity-details">
@@ -37,8 +41,17 @@ $name = $this->escape(stripslashes($row->log->creator->get('name')));
                     <?php echo $name; ?>
                 <?php } ?>
             </span>
-            <span class="activity-time"><time datetime="<?php echo $row->get('created'); ?>"><?php echo Date::of($row->get('created'))->relative(); ?></time></span>
-            <!-- <span class="activity-channel"><?php echo $this->escape($row->get('scope') . '.' . $row->get('scope_id')); ?></span> -->
+            <span class="activity-time"><time
+                datetime="<?php echo $row->get('created'); ?>"
+            ><?php echo Date::of($row->get('created'))->relative(); ?></time></span>
+            <!--
+            <span class="activity-channel"><?php
+                echo $this->escape(
+                    $row->get('scope') . '.'
+                    . $row->get('scope_id')
+                );
+                ?></span>
+            -->
         </span>
         <span class="activity-event">
             <?php echo $row->log->get('description'); ?>

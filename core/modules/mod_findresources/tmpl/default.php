@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,9 +26,17 @@ defined('_HZEXEC_') or die();
     <ol class="tags">
         <li><?php echo Lang::txt('MOD_FINDRESOURCES_POPULAR_TAGS'); ?></li>
         <?php foreach ($this->tags as $tag) { ?>
-            <li><a href="<?php echo Route::url('index.php?option=com_tags&tag=' . $tag->tag); ?>"><?php echo $this->escape(stripslashes($tag->raw_tag)); ?></a></li>
+            <li>
+                <a href="<?php echo Route::url('index.php?option=com_tags&tag=' . $tag->tag); ?>">
+                    <?php echo $this->escape(stripslashes($tag->raw_tag)); ?>
+                </a>
+            </li>
         <?php } ?>
-        <li><a href="<?php echo Route::url('index.php?option=com_tags'); ?>" class="showmore"><?php echo Lang::txt('MOD_FINDRESOURCES_MORE_TAGS'); ?></a></li>
+        <li>
+            <a href="<?php echo Route::url('index.php?option=com_tags'); ?>" class="showmore">
+                <?php echo Lang::txt('MOD_FINDRESOURCES_MORE_TAGS'); ?>
+            </a>
+        </li>
     </ol>
 <?php } else { ?>
     <p><?php echo Lang::txt('MOD_FINDRESOURCES_NO_TAGS'); ?></p>
@@ -50,14 +56,28 @@ defined('_HZEXEC_') or die();
                 $cls = substr($normalized, 0, -1);
             }
             ?>
-            <a href="<?php echo Route::url('index.php?option=com_resources&type=' . $normalized); ?>"><?php echo $this->escape(stripslashes($category->type)); ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
+            <?php
+            $typeUrl = Route::url('index.php?option=com_resources&type=' . $normalized);
+            ?>
+            <a href="<?php echo $typeUrl; ?>"><?php
+                echo $this->escape(stripslashes($category->type));
+            ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
             <?php
         }
         ?>
-        <a href="<?php echo Route::url('index.php?option=com_resources'); ?>" class="showmore"><?php echo Lang::txt('MOD_FINDRESOURCES_ALL_CATEGORIES'); ?></a>
+        <a href="<?php echo Route::url('index.php?option=com_resources'); ?>" class="showmore">
+            <?php echo Lang::txt('MOD_FINDRESOURCES_ALL_CATEGORIES'); ?>
+        </a>
     </p>
 <?php } ?>
     <div class="uploadcontent">
-        <h4><?php echo Lang::txt('MOD_FINDRESOURCES_UPLOAD_CONTENT'); ?> <span><a href="<?php echo Route::url('index.php?option=com_resources&task=new'); ?>" class="contributelink"><?php echo Lang::txt('MOD_FINDRESOURCES_GET_STARTED'); ?></a></span></h4>
+        <h4>
+            <?php echo Lang::txt('MOD_FINDRESOURCES_UPLOAD_CONTENT'); ?>
+            <span>
+                <a href="<?php echo Route::url('index.php?option=com_resources&task=new'); ?>"
+                    class="contributelink"
+                ><?php echo Lang::txt('MOD_FINDRESOURCES_GET_STARTED'); ?></a>
+            </span>
+        </h4>
     </div>
 </div><!-- / <?php echo ($this->params->get('cssId')) ? '#' . $this->params->get('cssId') : ''; ?> -->

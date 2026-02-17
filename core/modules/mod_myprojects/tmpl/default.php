@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -55,7 +53,9 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
                 } else {
                     $owned_by .= '<strong>' . $row->authorname . '</strong>';
                 }
-                $role = $row->role == 1 ? Lang::txt('MOD_MYPROJECTS_STATUS_MANAGER') : Lang::txt('MOD_MYPROJECTS_STATUS_COLLABORATOR');
+                $role = $row->role == 1
+                    ? Lang::txt('MOD_MYPROJECTS_STATUS_MANAGER')
+                    : Lang::txt('MOD_MYPROJECTS_STATUS_COLLABORATOR');
                 $setup = ($row->setup_stage < $setup_complete) ? Lang::txt('MOD_MYPROJECTS_STATUS_SETUP') : '';
 
                 $class = '';
@@ -71,8 +71,21 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
                 $i++;
                 ?>
                     <li <?php echo $class; ?>>
-                        <a href="<?php echo Route::url('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><img src="<?php echo Route::url('index.php?option=com_projects&alias=' . $row->alias . '&controller=media&media=thumb'); ?>" alt="<?php echo $this->escape($row->title); ?>" class="project-image" /></a>
-                        <a href="<?php echo Route::url('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape($row->title) . ' (' . $row->alias . ')'; ?>"><?php echo \Hubzero\Utility\Str::truncate($this->escape($row->title), 30); ?></a>
+                        <?php
+                        $viewUrl = Route::url('index.php?option=com_projects&task=view&' . $goto);
+                        $titleAttr = $this->escape($row->title) . ' (' . $row->alias . ')';
+                        $thumbUrl = Route::url('index.php?option=com_projects&alias='
+                            . $row->alias . '&controller=media&media=thumb');
+                        ?>
+                        <a href="<?php echo $viewUrl; ?>"
+                            title="<?php echo $titleAttr; ?>"
+                        ><img src="<?php echo $thumbUrl; ?>"
+                            alt="<?php echo $this->escape($row->title); ?>"
+                            class="project-image"
+                        /></a>
+                        <a href="<?php echo $viewUrl; ?>"
+                            title="<?php echo $titleAttr; ?>"
+                        ><?php echo \Hubzero\Utility\Str::truncate($this->escape($row->title), 30); ?></a>
                         <span class="sub">
                             <?php echo $owned_by; ?> | <?php echo $role; ?> <?php
                             if ($setup) {
@@ -96,7 +109,11 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 
     <?php if ($this->total > $this->limit) { ?>
         <p class="note">
-            <?php echo Lang::txt('MOD_MYPROJECTS_YOU_HAVE_MORE', $this->limit, $this->total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=projects')); ?>
+            <?php
+            $moreUrl = Route::url('index.php?option=com_members&id='
+                . User::get('id') . '&active=projects');
+            echo Lang::txt('MOD_MYPROJECTS_YOU_HAVE_MORE', $this->limit, $this->total, $moreUrl);
+            ?>
         </p>
     <?php } ?>
 </div>

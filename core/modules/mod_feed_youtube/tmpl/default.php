@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,14 +27,24 @@ if ($this->feed) {
     }
 
     // Link to more videos
-    $morelink =  $this->params->get('moreurl') ? str_replace('&', '&amp', $this->params->get('moreurl')) : str_replace('&', '&amp', $this->feed->link);
+    $morelink = $this->params->get('moreurl')
+        ? str_replace('&', '&amp', $this->params->get('moreurl'))
+        : str_replace('&', '&amp', $this->feed->link);
 
     // Feed image & title
-    if ((!is_null($this->feed->title) or $this->params->get('feedtitle', '')) && $this->params->get('rsstitle', 1)) { ?>
+    $hasTitleOrParam = !is_null($this->feed->title) or $this->params->get('feedtitle', '');
+    if ($hasTitleOrParam && $this->params->get('rsstitle', 1)) { ?>
         <h3 class="feed_title">
-            <?php if ((!is_null($this->feed->title) or $this->params->get('feedtitle', '')) && $this->params->get('rsstitle', 1)) { ?>
+            <?php
+            $hasFeedTitle = !is_null($this->feed->title) or $this->params->get('feedtitle', '');
+            if ($hasFeedTitle && $this->params->get('rsstitle', 1)) {
+                ?>
                 <a href="<?php echo $morelink; ?>" rel="external">
-                    <?php echo ($this->params->get('feedtitle')) ? $this->params->get('feedtitle') : $this->feed->title; ?>
+                    <?php
+                    echo ($this->params->get('feedtitle'))
+                        ? $this->params->get('feedtitle')
+                        : $this->feed->title;
+                    ?>
                 </a>
             <?php } ?>
             <?php if ($this->params->get('rssimage', 1) && $youtube_ima) { ?>
@@ -47,8 +55,15 @@ if ($this->feed) {
         </h3>
     <?php } ?>
 
-    <?php if ((!is_null($this->feed->description) or $this->params->get('feeddesc', '')) && $this->params->get('rssdesc', 0)) { ?>
-        <p><?php echo ($this->params->get('feeddesc')) ? $this->params->get('feeddesc') : $this->feed->description; ?></p>
+    <?php
+    $hasFeedDesc = !is_null($this->feed->description) or $this->params->get('feeddesc', '');
+    if ($hasFeedDesc && $this->params->get('rssdesc', 0)) {
+        ?>
+        <p><?php
+            echo ($this->params->get('feeddesc'))
+                ? $this->params->get('feeddesc')
+                : $this->feed->description;
+        ?></p>
     <?php } ?>
 
     <ul class="layout_<?php echo $layout; ?>">

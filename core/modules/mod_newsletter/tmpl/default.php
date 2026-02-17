@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,18 +21,31 @@ if (is_object($this->mailinglist)) : ?>
         </span>
     </div>
 
-    <form class="mailinglist-signup" action="<?php echo Route::url('index.php?option=com_newsletter'); ?>" method="post">
+    <form class="mailinglist-signup"
+        action="<?php echo Route::url('index.php?option=com_newsletter'); ?>"
+        method="post"
+    >
         <fieldset>
         <?php if (is_object($this->subscription)) : ?>
-            <span><?php echo Lang::txt('MOD_NEWSLETTER_ALREADY_SUBSCRIBED', Route::url('index.php?option=com_newsletter&task=subscribe')); ?></span>
+            <?php
+            $subscribeUrl = Route::url('index.php?option=com_newsletter&task=subscribe');
+            ?>
+            <span><?php echo Lang::txt('MOD_NEWSLETTER_ALREADY_SUBSCRIBED', $subscribeUrl); ?></span>
         <?php else : ?>
             <label for="email">
-                <?php echo Lang::txt('MOD_NEWSLETTER_EMAIL'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                <input type="text" name="email_<?php echo $token; ?>" id="email" value="<?php echo User::get('email'); ?>" data-invalid="<?php echo Lang::txt('MOD_NEWSLETTER_EMAIL_INVALID'); ?>" />
+                <?php echo Lang::txt('MOD_NEWSLETTER_EMAIL'); ?>
+                <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                <input type="text"
+                    name="email_<?php echo $token; ?>"
+                    id="email"
+                    value="<?php echo User::get('email'); ?>"
+                    data-invalid="<?php echo Lang::txt('MOD_NEWSLETTER_EMAIL_INVALID'); ?>"
+                />
             </label>
 
             <label for="hp1_<?php echo $token; ?>" id="hp1">
-                <?php echo Lang::txt('MOD_NEWSLETTER_HONEYPOT'); ?> <span class="optional"><?php echo Lang::txt('MOD_NEWSLETTER_HONEYPOT_LEAVE_BLANK'); ?></span>
+                <?php echo Lang::txt('MOD_NEWSLETTER_HONEYPOT'); ?>
+                <span class="optional"><?php echo Lang::txt('MOD_NEWSLETTER_HONEYPOT_LEAVE_BLANK'); ?></span>
                 <input type="text" name="hp1" id="hp1_<?php echo $token; ?>" value="" />
             </label>
 

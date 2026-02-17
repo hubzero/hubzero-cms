@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -41,7 +39,13 @@ defined('_HZEXEC_') or die();
                     <tr>
                         <td><?php echo $loggedin->get('name'); ?></td>
                         <td>
-                            <a href="<?php echo Route::url('index.php?option=com_members&id=' . $loggedin->get('id')); ?>">
+                            <?php
+                            $memberUrl = Route::url(
+                                'index.php?option=com_members&id='
+                                . $loggedin->get('id')
+                            );
+                            ?>
+                            <a href="<?php echo $memberUrl; ?>">
                                 <?php echo Lang::txt('MOD_WHOSONLINE_LOGGEDIN_VIEW_PROFILE'); ?>
                             </a>
                         </td>
@@ -55,7 +59,9 @@ defined('_HZEXEC_') or die();
         <tbody>
             <tr>
                 <td>
-                    <a class="btn btn-secondary opposite icon-next" href="<?php echo Route::url('index.php?option=com_members&task=activity'); ?>">
+                    <a class="btn btn-secondary opposite icon-next"
+                        href="<?php echo Route::url('index.php?option=com_members&task=activity'); ?>"
+                    >
                         <?php echo Lang::txt('MOD_WHOSONLINE_VIEW_ALL_ACTIVITIY'); ?>
                     </a>
                 </td>

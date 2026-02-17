@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -37,7 +35,9 @@ $this->css('
 
 $this->js();
 
-$total = $this->granted + $this->accepted + $this->pending + $this->removed + $this->withdrawn + $this->removed + $this->rejected;
+$total = $this->granted + $this->accepted + $this->pending
+    + $this->removed + $this->withdrawn + $this->removed
+    + $this->rejected;
 if ($total == 0) {
     // Show nothing if no wishes (otherwise get division by zero error) - snowwitje
     return false;
@@ -45,9 +45,18 @@ if ($total == 0) {
 ?>
 <div class="<?php echo $this->module->module; ?>">
     <div class="overview-container">
-        <div id="wishlist-container<?php echo $this->module->id; ?>" class="<?php echo $this->module->module; ?>-chart chrt" data-datasets="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>"></div>
+        <?php
+        $containerId = 'wishlist-container' . $this->module->id;
+        $dataId = $this->module->module . '-data' . $this->module->id;
+        ?>
+        <div id="<?php echo $containerId; ?>"
+            class="<?php echo $this->module->module; ?>-chart chrt"
+            data-datasets="<?php echo $dataId; ?>"
+        ></div>
 
-        <script type="application/json" id="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>">
+        <script type="application/json"
+            id="<?php echo $dataId; ?>"
+        >
             {
                 "datasets": [
                     {
@@ -89,74 +98,127 @@ if ($total == 0) {
     <div class="overview-container wishlist-stats-overview">
         <table>
             <tbody>
+                <?php
+                $wishBase = 'index.php?option=com_wishlist'
+                    . '&controller=wishes&wishlist=' . $this->wishlist;
+
+                $pendUrl = Route::url($wishBase . '&filterby=pending');
+                $pendTitle = Lang::txt('MOD_WISHLIST_PENDING_TITLE');
+                $accUrl = Route::url($wishBase . '&filterby=accepted');
+                $accTitle = Lang::txt('MOD_WISHLIST_ACCEPTED_TITLE');
+                $grantUrl = Route::url($wishBase . '&filterby=granted');
+                $grantTitle = Lang::txt('MOD_WISHLIST_GRANTED_TITLE');
+                $rejUrl = Route::url($wishBase . '&filterby=rejected');
+                $rejTitle = Lang::txt('MOD_WISHLIST_REJECTED_TITLE');
+                $withUrl = Route::url($wishBase . '&filterby=withdrawn');
+                $withTitle = Lang::txt('MOD_WISHLIST_WITHDRAWN_TITLE');
+                $delUrl = Route::url($wishBase . '&filterby=deleted');
+                $delTitle = Lang::txt('MOD_WISHLIST_REMOVED_TITLE');
+                ?>
                 <tr class="pending-items">
                     <th scope="row">
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=pending'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_PENDING_TITLE'); ?>">
-                            <span class="wishlist-pending"></span><?php echo Lang::txt('MOD_WISHLIST_PENDING'); ?>
+                        <a href="<?php echo $pendUrl; ?>"
+                            title="<?php echo $pendTitle; ?>"
+                        >
+                            <span class="wishlist-pending"></span><?php
+                                echo Lang::txt('MOD_WISHLIST_PENDING');
+                            ?>
                         </a>
                     </th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=pending'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_PENDING_TITLE'); ?>">
+                        <a href="<?php echo $pendUrl; ?>"
+                            title="<?php echo $pendTitle; ?>"
+                        >
                             <?php echo $this->escape($this->pending); ?>
                         </a>
                     </td>
                 </tr>
                 <tr class="accepted-items">
                     <th scope="row">
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=accepted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_ACCEPTED_TITLE'); ?>">
-                            <span class="wishlist-accepted"></span><?php echo Lang::txt('MOD_WISHLIST_ACCEPTED'); ?>
+                        <a href="<?php echo $accUrl; ?>"
+                            title="<?php echo $accTitle; ?>"
+                        >
+                            <span class="wishlist-accepted"></span><?php
+                                echo Lang::txt('MOD_WISHLIST_ACCEPTED');
+                            ?>
                         </a>
                     </th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=accepted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_ACCEPTED_TITLE'); ?>">
+                        <a href="<?php echo $accUrl; ?>"
+                            title="<?php echo $accTitle; ?>"
+                        >
                             <?php echo $this->escape($this->accepted); ?>
                         </a>
                     </td>
                 </tr>
                 <tr class="granted-items">
                     <th scope="row">
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=granted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_GRANTED_TITLE'); ?>">
-                            <span class="wishlist-granted"></span><?php echo Lang::txt('MOD_WISHLIST_GRANTED'); ?>
+                        <a href="<?php echo $grantUrl; ?>"
+                            title="<?php echo $grantTitle; ?>"
+                        >
+                            <span class="wishlist-granted"></span><?php
+                                echo Lang::txt('MOD_WISHLIST_GRANTED');
+                            ?>
                         </a>
                     </th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=granted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_GRANTED_TITLE'); ?>">
+                        <a href="<?php echo $grantUrl; ?>"
+                            title="<?php echo $grantTitle; ?>"
+                        >
                             <?php echo $this->escape($this->granted); ?>
                         </a>
                     </td>
                 </tr>
                 <tr class="rejected-items">
                     <th scope="row">
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=rejected'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_REJECTED_TITLE'); ?>">
-                            <span class="wishlist-rejected"></span><?php echo Lang::txt('MOD_WISHLIST_REJECTED'); ?>
+                        <a href="<?php echo $rejUrl; ?>"
+                            title="<?php echo $rejTitle; ?>"
+                        >
+                            <span class="wishlist-rejected"></span><?php
+                                echo Lang::txt('MOD_WISHLIST_REJECTED');
+                            ?>
                         </a>
                     </th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=rejected'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_REJECTED_TITLE'); ?>">
+                        <a href="<?php echo $rejUrl; ?>"
+                            title="<?php echo $rejTitle; ?>"
+                        >
                             <?php echo $this->escape($this->rejected); ?>
                         </a>
                     </td>
                 </tr>
                 <tr class="withdrawn-items">
                     <th scope="row">
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=withdrawn'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_WITHDRAWN_TITLE'); ?>">
-                            <span class="wishlist-withdrawn"></span><?php echo Lang::txt('MOD_WISHLIST_WITHDRAWN'); ?>
+                        <a href="<?php echo $withUrl; ?>"
+                            title="<?php echo $withTitle; ?>"
+                        >
+                            <span class="wishlist-withdrawn"></span><?php
+                                echo Lang::txt('MOD_WISHLIST_WITHDRAWN');
+                            ?>
                         </a>
                     </th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=withdrawn'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_WITHDRAWN_TITLE'); ?>">
+                        <a href="<?php echo $withUrl; ?>"
+                            title="<?php echo $withTitle; ?>"
+                        >
                             <?php echo $this->escape($this->withdrawn); ?>
                         </a>
                     </td>
                 </tr>
                 <tr class="removed-items">
                     <th scope="row">
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=deleted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_REMOVED_TITLE'); ?>">
-                            <span class="wishlist-removed"></span><?php echo Lang::txt('MOD_WISHLIST_REMOVED'); ?>
+                        <a href="<?php echo $delUrl; ?>"
+                            title="<?php echo $delTitle; ?>"
+                        >
+                            <span class="wishlist-removed"></span><?php
+                                echo Lang::txt('MOD_WISHLIST_REMOVED');
+                            ?>
                         </a>
                     </th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=deleted'); ?>" title="<?php echo Lang::txt('MOD_WISHLIST_REMOVED_TITLE'); ?>">
+                        <a href="<?php echo $delUrl; ?>"
+                            title="<?php echo $delTitle; ?>"
+                        >
                             <?php echo $this->escape($this->removed); ?>
                         </a>
                     </td>

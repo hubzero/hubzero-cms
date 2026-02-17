@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,8 +14,16 @@ $this->css();
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
     <ul class="module-nav">
-        <li><a class="icon-browse" href="<?php echo Route::url('index.php?option=com_support&task=tickets'); ?>"><?php echo Lang::txt('MOD_MYTICKETS_ALL_TICKETS'); ?></a></li>
-        <li><a class="icon-plus" href="<?php echo Route::url('index.php?option=com_support&task=new'); ?>"><?php echo Lang::txt('MOD_MYTICKETS_NEW_TICKET'); ?></a></li>
+        <li>
+            <a class="icon-browse"
+                href="<?php echo Route::url('index.php?option=com_support&task=tickets'); ?>"
+            ><?php echo Lang::txt('MOD_MYTICKETS_ALL_TICKETS'); ?></a>
+        </li>
+        <li>
+            <a class="icon-plus"
+                href="<?php echo Route::url('index.php?option=com_support&task=new'); ?>"
+            ><?php echo Lang::txt('MOD_MYTICKETS_NEW_TICKET'); ?></a>
+        </li>
     </ul>
 
     <h4>
@@ -29,10 +35,21 @@ $this->css();
         <ul class="expandedlist">
         <?php
         foreach ($this->rows1 as $row) {
+            $ticketUrl = Route::url('index.php?option=com_support&task=ticket&id=' . $row->id);
+            $ticketTitle = '#' . $row->id . ' :: '
+                . $this->escape($this->escape(stripslashes($row->summary)));
+            $ticketLabel = '#' . $row->id . ': '
+                . \Hubzero\Utility\Str::truncate($this->escape(stripslashes($row->summary)), 35);
             ?>
             <li class="support-ticket <?php echo $this->escape($row->severity); ?>">
-                <a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\Str::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-                <span><span><?php echo Date::of($row->created)->relative(); ?></span>, <span><?php echo Lang::txt('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+                <a href="<?php echo $ticketUrl; ?>"
+                    class="tooltips"
+                    title="<?php echo $ticketTitle; ?>"
+                ><?php echo $ticketLabel; ?></a>
+                <span>
+                    <span><?php echo Date::of($row->created)->relative(); ?></span>,
+                    <span><?php echo Lang::txt('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span>
+                </span>
             </li>
             <?php
         }
@@ -49,10 +66,21 @@ $this->css();
         <ul class="expandedlist">
         <?php
         foreach ($this->rows2 as $row) {
+            $ticketUrl = Route::url('index.php?option=com_support&task=ticket&id=' . $row->id);
+            $ticketTitle = '#' . $row->id . ' :: '
+                . $this->escape($this->escape(stripslashes($row->summary)));
+            $ticketLabel = '#' . $row->id . ': '
+                . \Hubzero\Utility\Str::truncate($this->escape(stripslashes($row->summary)), 35);
             ?>
             <li class="support-ticket <?php echo $this->escape($row->severity); ?>">
-                <a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\Str::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-                <span><span><?php echo Date::of($row->created)->relative(); ?></span>, <span><?php echo Lang::txt('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+                <a href="<?php echo $ticketUrl; ?>"
+                    class="tooltips"
+                    title="<?php echo $ticketTitle; ?>"
+                ><?php echo $ticketLabel; ?></a>
+                <span>
+                    <span><?php echo Date::of($row->created)->relative(); ?></span>,
+                    <span><?php echo Lang::txt('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span>
+                </span>
             </li>
             <?php
         }
@@ -69,10 +97,21 @@ $this->css();
         <ul class="expandedlist">
         <?php
         foreach ($this->rows3 as $row) {
+            $ticketUrl = Route::url('index.php?option=com_support&task=ticket&id=' . $row->id);
+            $ticketTitle = '#' . $row->id . ' :: '
+                . $this->escape($this->escape(stripslashes($row->summary)));
+            $ticketLabel = '#' . $row->id . ': '
+                . \Hubzero\Utility\Str::truncate($this->escape(stripslashes($row->summary)), 35);
             ?>
             <li class="support-ticket <?php echo $this->escape($row->severity); ?>">
-                <a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $row->id); ?>" class="tooltips" title="#<?php echo $row->id . ' :: ' . $this->escape($this->escape(stripslashes($row->summary))); ?>">#<?php echo $row->id . ': ' . \Hubzero\Utility\Str::truncate($this->escape(stripslashes($row->summary)), 35); ?></a>
-                <span><span><?php echo Date::of($row->created)->relative(); ?></span>, <span><?php echo Lang::txt('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span></span>
+                <a href="<?php echo $ticketUrl; ?>"
+                    class="tooltips"
+                    title="<?php echo $ticketTitle; ?>"
+                ><?php echo $ticketLabel; ?></a>
+                <span>
+                    <span><?php echo Date::of($row->created)->relative(); ?></span>,
+                    <span><?php echo Lang::txt('MOD_MYTICKETS_COMMENTS', $row->comments); ?></span>
+                </span>
             </li>
             <?php
         }

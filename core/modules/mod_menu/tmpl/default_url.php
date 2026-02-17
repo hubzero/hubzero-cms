@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,9 +20,13 @@ if ($rootLink) {
 $class = $item->anchor_css   ? 'class="' . $item->anchor_css . '" '   : '';
 $title = $item->anchor_title ? 'title="' . $item->anchor_title . '" ' : '';
 if ($item->menu_image) {
+    $imgTag = '<img src="' . $item->menu_image
+        . '" alt="' . $item->title . '" />';
     $item->params->get('menu_text', 1) ?
-        $linktype = '<img src="' . $item->menu_image . '" alt="' . $item->title . '" /><span class="image-title">' . $item->title . '</span> ' :
-        $linktype = '<img src="' . $item->menu_image . '" alt="' . $item->title . '" />';
+        $linktype = $imgTag
+            . '<span class="image-title">'
+            . $item->title . '</span> ' :
+        $linktype = $imgTag;
 } else {
     $linktype = $item->title;
 }
@@ -40,7 +42,11 @@ switch ($item->browserNav) :
     case 0:
         if ($parentLink && $disclosureMenu  && $toplevelLinks) {
             ?>
-    <button type="button" aria-expanded="false" aria-controls="<?php echo $ariaControlTarget; ?>" aria-label="More pages for: <?php echo $linktype; ?>">
+    <button type="button"
+        aria-expanded="false"
+        aria-controls="<?php echo $ariaControlTarget; ?>"
+        aria-label="More pages for: <?php echo $linktype; ?>"
+    >
             <?php echo $linktype; ?>
     </button>
             <?php
@@ -54,17 +60,27 @@ switch ($item->browserNav) :
         break;
     case 1:
         // _blank
-        ?><a <?php echo $class; ?>href="<?php echo $flink; ?>" rel="noreferrer" target="_blank" <?php echo $title; ?>><?php echo $linktype; ?></a><?php
+        ?><a <?php echo $class; ?>href="<?php echo $flink; ?>"
+            rel="noreferrer" target="_blank"
+            <?php echo $title; ?>><?php echo $linktype; ?></a><?php
         break;
     case 2:
         // window.open
-        $options = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,' . $params->get('window_open');
-        ?><a <?php echo $class; ?>href="<?php echo $flink; ?>" onclick="window.open(this.href,'targetWindow','<?php echo $options;?>');return false;" <?php echo $title; ?>><?php echo $linktype; ?></a><?php
+        $options = 'toolbar=no,location=no,status=no,'
+            . 'menubar=no,scrollbars=yes,resizable=yes,'
+            . $params->get('window_open');
+        ?><a <?php echo $class; ?>href="<?php echo $flink; ?>"
+            onclick="window.open(this.href,'targetWindow','<?php echo $options; ?>');return false;"
+            <?php echo $title; ?>><?php echo $linktype; ?></a><?php
         break;
 endswitch;
 
 if ($parentLink && $disclosureMenu && !$toplevelLinks) {
-    ?><button type="button" aria-expanded="false" aria-controls="<?php echo $ariaControlTarget; ?>" aria-label="More pages for: <?php echo $linktype; ?>"> </button><?php
+    ?><button type="button"
+        aria-expanded="false"
+        aria-controls="<?php echo $ariaControlTarget; ?>"
+        aria-label="More pages for: <?php echo $linktype; ?>"
+    > </button><?php
 }
 
 if ($disclosureMenu) {

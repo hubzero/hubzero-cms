@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -36,13 +34,21 @@ if ($this->getError()) { ?>
             <a href="<?php echo Route::url($this->row->link()); ?>">
                 <?php echo $this->escape(strip_tags($this->row->subject)); ?>
             </a>
-            <?php if ($this->row->get('question')) { ?>
-                : <?php echo \Hubzero\Utility\Str::truncate($this->escape(strip_tags($this->row->question)), $this->txt_length); ?>
-            <?php } ?>
+            <?php if ($this->row->get('question')) {
+                $truncated = \Hubzero\Utility\Str::truncate(
+                    $this->escape(strip_tags($this->row->question)),
+                    $this->txt_length
+                );
+                echo ': ' . $truncated;
+            } ?>
             <br />
             <span><?php echo Lang::txt('MOD_FEATUREDQUESTION_ASKED_BY', $name); ?></span> -
             <span><?php echo Lang::txt('MOD_FEATUREDQUESTION_AGO', $when); ?></span> -
-            <span><?php echo ($rcount == 1) ? Lang::txt('MOD_FEATUREDQUESTION_RESPONSE', $rcount) : Lang::txt('MOD_FEATUREDQUESTION_RESPONSES', $rcount); ?></span>
+            <span><?php
+                echo ($rcount == 1)
+                    ? Lang::txt('MOD_FEATUREDQUESTION_RESPONSE', $rcount)
+                    : Lang::txt('MOD_FEATUREDQUESTION_RESPONSES', $rcount);
+            ?></span>
         </p>
     </div>
         <?php

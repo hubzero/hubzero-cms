@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +10,10 @@ defined('_HZEXEC_') or die;
 
 $morelink = count($this->content) > 0 ? $this->content[0]->catpath : 'announcements';
 $morelink = $this->params->get('show_viewall', '') ? $morelink : '';
-$subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get('subscribe_path', '') ?  $this->params->get('subscribe_path', '') : '';
+$subscribelink = $this->params->get('show_subscribe', '')
+    && $this->params->get('subscribe_path', '')
+    ? $this->params->get('subscribe_path', '')
+    : '';
 
 ?>
 <?php if ($morelink or $subscribelink) { ?>
@@ -24,7 +25,9 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
         ?> <span>|</span> <?php
     } ?>
     <?php if ($subscribelink) {
-        ?><a href="<?php echo $subscribelink;  ?>" class="add"><?php echo $this->params->get('subscribe_label', Lang::txt('MOD_ANNOUNCEMENTS_SUBSCRIBE')); ?></a><?php
+        ?><a href="<?php echo $subscribelink; ?>" class="add"><?php
+            echo $this->params->get('subscribe_label', Lang::txt('MOD_ANNOUNCEMENTS_SUBSCRIBE'));
+?></a><?php
     } ?>
 </p>
 <?php } ?>

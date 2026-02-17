@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,10 @@ defined('_HZEXEC_') or die;
             <a href="<?php echo $item->route; ?>">
                 <?php
                 if ($showDate) :
-                    echo '<time datetime="' . $item->created . '">' . Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_LC4')) . '</time> - ';
+                    $formattedDate = Date::of($item->created)
+                        ->toLocal(Lang::txt('DATE_FORMAT_LC4'));
+                    echo '<time datetime="' . $item->created . '">'
+                        . $formattedDate . '</time> - ';
                 endif;
                 ?>
                 <?php echo $item->title; ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,14 @@ $this->css()
 ?>
 <div class="mod_<?php echo $this->module->name; ?>">
     <?php if ($this->results) { ?>
-        <ul id="activity-list<?php echo $this->module->id; ?>" data-url="<?php echo Request::base(true) . '?task=module&amp;no_html=1&amp;module=' . $this->module->name . '&amp;feedactivity=1&amp;start='; ?>">
+        <?php
+        $activityUrl = Request::base(true)
+            . '?task=module&amp;no_html=1&amp;module='
+            . $this->module->name . '&amp;feedactivity=1&amp;start=';
+        ?>
+        <ul id="activity-list<?php echo $this->module->id; ?>"
+            data-url="<?php echo $activityUrl; ?>"
+        >
             <?php
             foreach ($this->results as $result) {
                 require $this->getLayoutPath('default_item');

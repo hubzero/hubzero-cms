@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,9 +15,18 @@ $this->css()
 ?>
 <div class="<?php echo $this->module->module; ?>">
     <div class="overview-container">
-        <div id="tools-container<?php echo $this->module->id; ?>" class="<?php echo $this->module->module; ?>-chart chrt" data-datasets="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>"></div>
+        <?php
+        $containerId = 'tools-container' . $this->module->id;
+        $dataId = $this->module->module . '-data' . $this->module->id;
+        ?>
+        <div id="<?php echo $containerId; ?>"
+            class="<?php echo $this->module->module; ?>-chart chrt"
+            data-datasets="<?php echo $dataId; ?>"
+        ></div>
 
-        <script type="application/json" id="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>">
+        <script type="application/json"
+            id="<?php echo $dataId; ?>"
+        >
             {
                 "datasets": [
                     {

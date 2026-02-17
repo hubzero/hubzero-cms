@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,9 @@
 // no direct access
 defined('_HZEXEC_') or die;
 ?>
-<span class="breadcrumbs<?php echo $moduleclass_sfx; ?> pathway<?php echo $moduleclass_sfx; ?>" aria-label="<?php echo Lang::txt('MOD_BREADCRUMBS'); ?>">
+<span class="breadcrumbs<?php echo $moduleclass_sfx; ?> pathway<?php echo $moduleclass_sfx; ?>"
+    aria-label="<?php echo Lang::txt('MOD_BREADCRUMBS'); ?>"
+>
     <?php
     if ($params->get('showHere', 1)) {
         echo '<span class="showHere">' . Lang::txt('MOD_BREADCRUMBS_HERE') . '</span>';
@@ -19,7 +19,11 @@ defined('_HZEXEC_') or die;
 
     // Get rid of duplicated entries on trail including home page when using multilanguage
     for ($i = 0; $i < $count; $i++) {
-        if ($i == 1 && !empty($list[$i]->link) && !empty($list[$i - 1]->link) && $list[$i]->link == $list[$i - 1]->link) {
+        if (
+            $i == 1 && !empty($list[$i]->link)
+            && !empty($list[$i - 1]->link)
+            && $list[$i]->link == $list[$i - 1]->link
+        ) {
             unset($list[$i]);
         }
     }

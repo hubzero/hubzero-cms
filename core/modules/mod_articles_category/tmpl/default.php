@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,15 +18,21 @@ defined('_HZEXEC_') or die;
                 <li>
                     <h<?php echo $item_heading + 1; ?>>
                         <?php if ($params->get('link_titles') == 1) : ?>
-                            <a class="mod-articles-category-title <?php echo $item->active; ?>" href="/<?php echo $item->link; ?>">
+                            <a class="mod-articles-category-title <?php echo $item->active; ?>"
+                                href="/<?php echo $item->link; ?>"
+                            >
                             <?php echo $item->title; ?>
                             <?php if ($item->displayHits) :?>
-                                <span class="mod-articles-category-hits">(<?php echo $item->displayHits; ?>)</span>
+                                <span class="mod-articles-category-hits">
+                                    (<?php echo $item->displayHits; ?>)
+                                </span>
                             <?php endif; ?></a>
                         <?php else : ?>
                             <?php echo $item->title; ?>
                             <?php if ($item->displayHits) :?>
-                                <span class="mod-articles-category-hits">(<?php echo $item->displayHits; ?>)</span>
+                                <span class="mod-articles-category-hits">
+                                    (<?php echo $item->displayHits; ?>)
+                                </span>
                             <?php endif; ?></a>
                         <?php endif; ?>
                     </h<?php echo $item_heading + 1; ?>>
@@ -55,20 +59,31 @@ defined('_HZEXEC_') or die;
 
                     <?php if ($params->get('show_readmore')) :?>
                         <p class="mod-articles-category-readmore">
-                            <a class="mod-articles-category-title <?php echo $item->active; ?>" href="/<?php echo $item->link; ?>">
+                            <a class="mod-articles-category-title <?php echo $item->active; ?>"
+                                href="/<?php echo $item->link; ?>"
+                            >
                             <?php if ($item->params->get('access-view') == false) :
                                     echo Lang::txt('MOD_ARTICLES_CATEGORY_REGISTER_TO_READ_MORE');
                             elseif ($readmore = $item->alternative_readmore) :
                                     echo $readmore;
-                                    echo \Hubzero\Utility\Str::truncate($item->title, $params->get('readmore_limit'));
+                                    echo \Hubzero\Utility\Str::truncate(
+                                        $item->title,
+                                        $params->get('readmore_limit')
+                                    );
                                 if ($params->get('show_readmore_title', 0) != 0) :
-                                    echo \Hubzero\Utility\Str::truncate($this->item->title, $params->get('readmore_limit'));
+                                    echo \Hubzero\Utility\Str::truncate(
+                                        $this->item->title,
+                                        $params->get('readmore_limit')
+                                    );
                                 endif;
                             elseif ($params->get('show_readmore_title', 0) == 0) :
                                     echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE_TITLE');
                             else :
                                     echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE');
-                                    echo \Hubzero\Utility\Str::truncate($item->title, $params->get('readmore_limit'));
+                                    echo \Hubzero\Utility\Str::truncate(
+                                        $item->title,
+                                        $params->get('readmore_limit')
+                                    );
                             endif; ?>
                             </a>
                         </p>
@@ -118,17 +133,25 @@ defined('_HZEXEC_') or die;
 
         <?php if ($params->get('show_readmore')) :?>
             <p class="mod-articles-category-readmore">
-                <a class="mod-articles-category-title <?php echo $item->active; ?>" href="/<?php echo $item->link; ?>">
+                <a class="mod-articles-category-title <?php echo $item->active; ?>"
+                    href="/<?php echo $item->link; ?>"
+                >
                     <?php if ($item->params->get('access-view') == false) :
                         echo Lang::txt('MOD_ARTICLES_CATEGORY_REGISTER_TO_READ_MORE');
                     elseif ($readmore = $item->alternative_readmore) :
                         echo $readmore;
-                        echo \Hubzero\Utility\Str::truncate($item->title, $params->get('readmore_limit'));
+                        echo \Hubzero\Utility\Str::truncate(
+                            $item->title,
+                            $params->get('readmore_limit')
+                        );
                     elseif ($params->get('show_readmore_title', 0) == 0) :
                         echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE_TITLE');
                     else :
                         echo Lang::txt('MOD_ARTICLES_CATEGORY_READ_MORE');
-                        echo \Hubzero\Utility\Str::truncate($item->title, $params->get('readmore_limit'));
+                        echo \Hubzero\Utility\Str::truncate(
+                            $item->title,
+                            $params->get('readmore_limit')
+                        );
                     endif; ?>
                 </a>
             </p>

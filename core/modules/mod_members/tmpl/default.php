@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -55,9 +53,19 @@ $this->css();
         $css = '';
         ?>
         <div class="overview-container">
-            <div id="user-domains-container<?php echo $this->module->id; ?>" class="<?php echo $this->module->module; ?>-chart chrt" data-datasets="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>"></div>
+            <?php
+            $containerId = 'user-domains-container' . $this->module->id;
+            $chartClass = $this->module->module . '-chart chrt';
+            $datasetId = $this->module->module . '-data' . $this->module->id;
+            ?>
+            <div id="<?php echo $containerId; ?>"
+                class="<?php echo $chartClass; ?>"
+                data-datasets="<?php echo $datasetId; ?>"
+            ></div>
 
-            <script type="application/json" id="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>">
+            <script type="application/json"
+                id="<?php echo $datasetId; ?>"
+            >
                 {
                     "datasets": [
                     <?php
@@ -69,7 +77,14 @@ $this->css();
 
                         $this->domains[$i]->color = $colors[$k];
 
-                        $css .= '.' . preg_replace('/[^a-zA-Z0-9]/', '', $domain->domain) . ' { background-color: ' . $colors[$k] . '; }';
+                        $domainClass = preg_replace(
+                            '/[^a-zA-Z0-9]/',
+                            '',
+                            $domain->domain
+                        );
+                        $css .= '.' . $domainClass
+                            . ' { background-color: '
+                            . $colors[$k] . '; }';
 
                         $data  = '{';
                         $data .= '"label": "' . $domain->domain . '",';
@@ -115,19 +130,43 @@ $this->css();
                     </tr>
                     <tr>
                         <td class="confirmed">
-                            <a href="<?php echo Route::url('index.php?option=com_members&activation=1&registerDate='); ?>" title="<?php echo Lang::txt('MOD_MEMBERS_CONFIRMED_TITLE'); ?>">
+                            <?php
+                            $confirmedUrl = Route::url(
+                                'index.php?option=com_members'
+                                . '&activation=1&registerDate='
+                            );
+                            ?>
+                            <a href="<?php echo $confirmedUrl; ?>"
+                                title="<?php echo Lang::txt('MOD_MEMBERS_CONFIRMED_TITLE'); ?>"
+                            >
                                 <?php echo $this->escape($this->confirmed); ?>
                                 <span><?php echo Lang::txt('MOD_MEMBERS_CONFIRMED'); ?></span>
                             </a>
                         </td>
                         <td class="unconfirmed">
-                            <a href="<?php echo Route::url('index.php?option=com_members&activation=-1&registerDate='); ?>" title="<?php echo Lang::txt('MOD_MEMBERS_UNCONFIRMED_TITLE'); ?>">
+                            <?php
+                            $unconfirmedUrl = Route::url(
+                                'index.php?option=com_members'
+                                . '&activation=-1&registerDate='
+                            );
+                            ?>
+                            <a href="<?php echo $unconfirmedUrl; ?>"
+                                title="<?php echo Lang::txt('MOD_MEMBERS_UNCONFIRMED_TITLE'); ?>"
+                            >
                                 <?php echo $this->escape($this->unconfirmed); ?>
                                 <span><?php echo Lang::txt('MOD_MEMBERS_UNCONFIRMED'); ?></span>
                             </a>
                         </td>
                         <td class="newest">
-                            <a href="<?php echo Route::url('index.php?option=com_members&activation=0&registerDate=' . gmdate("Y-m-d H:i:s", strtotime('-1 day'))); ?>" title="<?php echo Lang::txt('MOD_MEMBERS_NEW_TITLE'); ?>">
+                            <?php
+                            $newUrl = Route::url(
+                                'index.php?option=com_members&activation=0&registerDate='
+                                . gmdate("Y-m-d H:i:s", strtotime('-1 day'))
+                            );
+                            ?>
+                            <a href="<?php echo $newUrl; ?>"
+                                title="<?php echo Lang::txt('MOD_MEMBERS_NEW_TITLE'); ?>"
+                            >
                                 <?php echo $this->escape($this->pastDay); ?>
                                 <span><?php echo Lang::txt('MOD_MEMBERS_NEW'); ?></span>
                             </a>
@@ -162,13 +201,17 @@ $this->css();
                     </tr>
                     <tr>
                         <td class="approved">
-                            <a href="<?php echo Route::url('index.php?option=com_members&approved=1'); ?>" title="<?php echo Lang::txt('MOD_MEMBERS_APPROVED_TITLE'); ?>">
+                            <a href="<?php echo Route::url('index.php?option=com_members&approved=1'); ?>"
+                                title="<?php echo Lang::txt('MOD_MEMBERS_APPROVED_TITLE'); ?>"
+                            >
                                 <?php echo $this->escape($this->approved); ?>
                                 <span><?php echo Lang::txt('MOD_MEMBERS_APPROVED'); ?></span>
                             </a>
                         </td>
                         <td class="unapproved">
-                            <a href="<?php echo Route::url('index.php?option=com_members&approved=0'); ?>" title="<?php echo Lang::txt('MOD_MEMBERS_UNAPPROVED_TITLE'); ?>">
+                            <a href="<?php echo Route::url('index.php?option=com_members&approved=0'); ?>"
+                                title="<?php echo Lang::txt('MOD_MEMBERS_UNAPPROVED_TITLE'); ?>"
+                            >
                                 <?php echo $this->escape($this->unapproved); ?>
                                 <span><?php echo Lang::txt('MOD_MEMBERS_UNAPPROVED'); ?></span>
                             </a>
@@ -191,7 +234,14 @@ $this->css();
                         ?>
                         <tr>
                             <th scope="row">
-                                <span class="pie-key <?php echo preg_replace('/[^a-zA-Z0-9]/', '', $domain->domain); ?>"></span><?php echo $domain->domain; ?>
+                                <?php
+                                $pieClass = preg_replace(
+                                    '/[^a-zA-Z0-9]/',
+                                    '',
+                                    $domain->domain
+                                );
+                                ?>
+                                <span class="pie-key <?php echo $pieClass; ?>"></span><?php echo $domain->domain; ?>
                             </th>
                             <td class="val">
                                 <?php echo $domain->email_count; ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,9 +25,22 @@ $c = 0;
                         $post->set('category', $this->categories[$post->get('category_id')]->alias);
 
                     if ($post->get('scope_id') == 0) {
-                        $location = '<a href="' . Route::url('index.php?option=com_forum') . '">' . Lang::txt('MOD_LATESTDISCUSSIONS_SITE_FORUM') . '</a>';
+                        $location = '<a href="'
+                            . Route::url('index.php?option=com_forum')
+                            . '">'
+                            . Lang::txt('MOD_LATESTDISCUSSIONS_SITE_FORUM')
+                            . '</a>';
                     } else {
-                        $location = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $post->get('group_alias')) . '">' . $this->escape(stripslashes($post->get('group_title'))) . '</a>';
+                        $location = '<a href="'
+                            . Route::url(
+                                'index.php?option=com_groups&cn='
+                                . $post->get('group_alias')
+                            )
+                            . '">'
+                            . $this->escape(
+                                stripslashes($post->get('group_title'))
+                            )
+                            . '</a>';
                     }
                     ?>
                     <li>
@@ -47,7 +58,15 @@ $c = 0;
                             if ($post->get('anonymous')) {
                                 echo '<em>' . Lang::txt('JANONYMOUS') . '</em>';
                             } else {
-                                echo '<a href="' . Route::url('index.php?option=com_members&id=' . $post->creator()->get('id')) . '">' . $this->escape(stripslashes($post->creator()->get('name'))) . '</a>';
+                                $creatorUrl = Route::url(
+                                    'index.php?option=com_members&id='
+                                    . $post->creator()->get('id')
+                                );
+                                $creatorName = $this->escape(
+                                    stripslashes($post->creator()->get('name'))
+                                );
+                                echo '<a href="' . $creatorUrl . '">'
+                                    . $creatorName . '</a>';
                             }
                                 echo ', in&nbsp;'
                             ?>
@@ -56,11 +75,24 @@ $c = 0;
                             <?php echo $location; ?>
                         </span>
                         <span class="discussion-date">
-                            <time datetime="<?php echo $post->get('created'); ?>"><?php echo Lang::txt('MOD_LATESTDISCUSSIONS_AT_TIME_ON_DATE', $post->created('time'), $post->created('date')); ?></time>
+                            <time datetime="<?php echo $post->get('created'); ?>">
+                                <?php
+                                echo Lang::txt(
+                                    'MOD_LATESTDISCUSSIONS_AT_TIME_ON_DATE',
+                                    $post->created('time'),
+                                    $post->created('date')
+                                );
+                                ?>
+                            </time>
                         </span>
                     <?php if ($this->charlimit > 0) : ?>
                         <span class="discussion-comment">
-                            <?php echo \Hubzero\Utility\Str::truncate(strip_tags($post->get('comment')), $this->charlimit); ?>
+                            <?php
+                            echo \Hubzero\Utility\Str::truncate(
+                                strip_tags($post->get('comment')),
+                                $this->charlimit
+                            );
+                            ?>
                         </span>
                     <?php endif; ?>
                     </li>
@@ -80,7 +112,14 @@ $c = 0;
 
     <?php if ($this->params->get('feedlink', 'yes') == 'yes') : ?>
         <p>
-            <a href="<?php echo Route::url('index.php?option=com_forum&task=latest.rss', true, -1); ?>" class="newsfeed">
+            <?php
+            $rssUrl = Route::url(
+                'index.php?option=com_forum&task=latest.rss',
+                true,
+                -1
+            );
+            ?>
+            <a href="<?php echo $rssUrl; ?>" class="newsfeed">
                 <?php echo Lang::txt('MOD_LATESTDISCUSSIONS_FEED'); ?>
             </a>
         </p>

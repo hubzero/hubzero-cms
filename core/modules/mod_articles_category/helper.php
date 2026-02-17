@@ -252,7 +252,8 @@ class Helper extends Module
             $fld = str_replace('a.', '`#__content`.`', $params->get('date_field', 'a.created')) . '`';
             if ($relativeDate = $params->get('relative_date', 30)) {
                 $db = App::get('db');
-                $query->whereRaw($fld . " >= " . $db->sqlDateSub($db->quote(Date::toSql()), (int) $relativeDate, 'DAY'));
+                $dateSub = $db->sqlDateSub($db->quote(Date::toSql()), (int) $relativeDate, 'DAY');
+                $query->whereRaw($fld . " >= " . $dateSub);
             }
         }
 

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,9 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
     <div id="content-header-extra">
         <ul id="useroptions">
             <li>
-                <a href="<?php echo Route::url('index.php?option=com_feedback&task=success_story'); ?>" class="icon-add btn add">
+                <a href="<?php echo Route::url('index.php?option=com_feedback&task=success_story'); ?>"
+                    class="icon-add btn add"
+                >
                     <?php echo Lang::txt('MOD_QUOTES_ADD_YOUR_STORY'); ?>
                 </a>
             </li>
@@ -40,7 +40,12 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                 <?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
                     <div class="breadcrumbs">
                         <p>
-                            <a href="<?php echo rtrim(str_replace('quoteid=' . $this->filters['id'], '', $base), '?'); ?>" class="breadcrumbs"><?php echo Lang::txt('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
+                            <?php
+                            $quotesUrl = rtrim(str_replace('quoteid=' . $this->filters['id'], '', $base), '?');
+                            ?>
+                            <a href="<?php echo $quotesUrl; ?>"
+                                class="breadcrumbs"
+                            ><?php echo Lang::txt('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
                             &rsaquo;
                             <strong><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></strong>
                         </p>
@@ -61,7 +66,17 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                             <?php if ($quote->get('short_quote') != $quote->get('quote')) { ?>
                                 <?php echo rtrim($quote->get('short_quote'), '.'); ?>
                                  &#8230;
-                                <a href="<?php echo $base . (strstr($base, '?') ? '&amp;' : '?'); ?>quoteid=<?php echo $quote->get('id'); ?>" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname')))); ?>">
+                                <?php
+                                $quoteUrl = $base . (strstr($base, '?') ? '&amp;' : '?')
+                                    . 'quoteid=' . $quote->get('id');
+                                $quoteTitle = Lang::txt(
+                                    'MOD_QUOTES_VIEW_QUOTE_BY',
+                                    $this->escape(stripslashes($quote->get('fullname')))
+                                );
+                                ?>
+                                <a href="<?php echo $quoteUrl; ?>"
+                                    title="<?php echo $quoteTitle; ?>"
+                                >
                                     <?php echo Lang::txt('MOD_QUOTES_MORE'); ?>
                                 </a>
                             <?php } else { ?>
@@ -74,9 +89,12 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                     <?php
                     $user = $quote->user;
                     $userPicture = $user->picture();
-                    echo '<img src="' . $userPicture . '" alt="' . $this->escape($quote->get('fullname')) . '" width="40" height="40" />';
+                    echo '<img src="' . $userPicture . '"'
+                        . ' alt="' . $this->escape($quote->get('fullname')) . '"'
+                        . ' width="40" height="40" />';
                     ?>
-                    <cite><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?> <span><?php echo $this->escape(stripslashes($quote->get('org'))); ?></span></cite>
+                    <cite><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>
+                        <span><?php echo $this->escape(stripslashes($quote->get('org'))); ?></span></cite>
                 </p>
                 <?php
                 $pictures = $quote->files();

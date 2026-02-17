@@ -133,13 +133,6 @@ class Helper extends Module
         }
 
         // Closed tickets
-        /*$sql = "SELECT c.ticket, c.created_by, c.created, " . $database->sqlYear('c.created') . " AS `year`,
-                " . $database->sqlMonth('c.created') . " AS `month`, " . $database->sqlUnixTimestamp('t.created') . " AS opened,
-                " . $database->sqlUnixTimestamp('c.created') . " AS closed
-                FROM `#__support_comments` AS c
-                LEFT JOIN `#__support_tickets` AS t ON c.ticket=t.id
-                WHERE t.report!=''
-                AND type=0 AND open=0";*/
         $clsd = $database->getQuery()
             ->select('t.id', 'ticket')
             ->select('t.closed')

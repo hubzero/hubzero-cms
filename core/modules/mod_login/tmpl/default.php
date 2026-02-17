@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -40,8 +38,15 @@ foreach ($authenticators as $a) {
         $html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(null, $returnQueryString);
         $login_provider_html .= is_array($html) ? implode("\n", $html) : $html;
     } else {
-        $login_provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $returnQueryString) . '">';
-        $login_provider_html .= '<div class="signin">' . Lang::txt('MOD_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
+        $authUrl = Route::url(
+            'index.php?option=com_users&view=login&authenticator='
+            . $a['name'] . $returnQueryString
+        );
+        $login_provider_html .= '<a class="' . $a['name']
+            . ' account" href="' . $authUrl . '">';
+        $login_provider_html .= '<div class="signin">'
+            . Lang::txt('MOD_LOGIN_SIGN_IN_WITH_METHOD', $a['display'])
+            . '</div>';
         $login_provider_html .= '</a>';
     }
 }
@@ -56,7 +61,13 @@ $current .= (strstr($current, '?') ? '&' : '?');
 <div class="hz_user">
 
 <?php if ($primary && $primary != 'hubzero') : ?>
-    <a class="primary" href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $primary . $returnQueryString); ?>">
+    <?php
+    $primaryUrl = Route::url(
+        'index.php?option=com_users&view=login&authenticator='
+        . $primary . $returnQueryString
+    );
+    ?>
+    <a class="primary" href="<?php echo $primaryUrl; ?>">
         <div class="<?php echo $primary; ?> upper"></div>
         <div class="auth">
             <div class="person">
@@ -65,7 +76,23 @@ $current .= (strstr($current, '?') ? '&' : '?');
                 <?php endif; ?>
             </div>
             <div class="lower">
-                <div class="instructions"><?php echo isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(null, $returnQueryString) : Lang::txt('MOD_LOGIN_SIGN_IN_WITH_METHOD', ucfirst($primary)); ?></div>
+                <div class="instructions"><?php
+                if (
+                        isset($refl[$primary])
+                        && $refl[$primary]->hasMethod(
+                            'onGetSubsequentLoginDescription'
+                        )
+                ) {
+                    echo $refl[$primary]
+                        ->getMethod('onGetSubsequentLoginDescription')
+                        ->invoke(null, $returnQueryString);
+                } else {
+                    echo Lang::txt(
+                        'MOD_LOGIN_SIGN_IN_WITH_METHOD',
+                        ucfirst($primary)
+                    );
+                }
+                ?></div>
             </div>
         </div>
     </a>
@@ -75,7 +102,10 @@ $current .= (strstr($current, '?') ? '&' : '?');
             <?php if (isset($user_img) && file_exists($user_img)) : ?>
                 <?php $img_properties = getimagesize(PATH_APP . DS . $user_img); ?>
                 <?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
-                <img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('MOD_LOGIN_USER_PICTURE'); ?>" />
+                <img class="<?php echo $class; ?>"
+                    src="<?php echo $user_img; ?>"
+                    alt="<?php echo Lang::txt('MOD_LOGIN_USER_PICTURE'); ?>"
+                />
             <?php endif; ?>
         </div>
         <div class="default <?php echo ($primary || count($authenticators) == 0) ? 'none' : 'block'; ?>">
@@ -86,7 +116,15 @@ $current .= (strstr($current, '?') ? '&' : '?');
             <div class="or"></div>
             <div class="local">
                 <a href="<?php echo $current . 'primary=hubzero&reset=1';// . $returnQueryString; ?>">
-                    <?php echo Lang::txt('MOD_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($site_display)) ? $site_display : Config::get('sitename'))); ?>
+                    <?php
+                    $siteName = (isset($site_display))
+                        ? $site_display
+                        : Config::get('sitename');
+                    echo Lang::txt(
+                        'MOD_LOGIN_SIGN_IN_WITH_ACCOUNT',
+                        $siteName
+                    );
+                    ?>
                 </a>
             </div>
         </div>
@@ -101,12 +139,25 @@ $current .= (strstr($current, '?') ? '&' : '?');
                     <?php else : ?>
                         <div class="label-input-pair username">
                             <label for="username"><?php echo Lang::txt('MOD_LOGIN_USERNAME'); ?>:</label>
-                            <input tabindex="1" type="text" name="username" id="username" class="username" placeholder="<?php echo Lang::txt('MOD_LOGIN_USERNAME'); ?>" />
+                            <input tabindex="1"
+                                type="text"
+                                name="username"
+                                id="username"
+                                class="username"
+                                placeholder="<?php echo Lang::txt('MOD_LOGIN_USERNAME'); ?>"
+                            />
                         </div>
                     <?php endif; ?>
                     <div class="label-input-pair">
                         <label for="password"><?php echo Lang::txt('MOD_LOGIN_PASSWORD'); ?>:</label>
-                        <input tabindex="2" type="password" name="passwd" id="password" class="passwd" placeholder="<?php echo Lang::txt('MOD_LOGIN_PASSWORD'); ?>" autocomplete="off" />
+                        <input tabindex="2"
+                            type="password"
+                            name="passwd"
+                            id="password"
+                            class="passwd"
+                            placeholder="<?php echo Lang::txt('MOD_LOGIN_PASSWORD'); ?>"
+                            autocomplete="off"
+                        />
                         <div class="spinner">
                             <div class="bounce1"></div>
                             <div class="bounce2"></div>
@@ -116,19 +167,39 @@ $current .= (strstr($current, '?') ? '&' : '?');
                     <div class="input-error"></div>
                 </div>
                 <div class="submission">
-                    <input type="submit" value="<?php echo Lang::txt('Sign in'); ?>" class="login-submit btn btn-primary" />
+                    <input type="submit"
+                        value="<?php echo Lang::txt('Sign in'); ?>"
+                        class="login-submit btn btn-primary"
+                    />
                     <?php if (Plugin::isEnabled('system', 'remember')) : ?>
                         <div class="remember-wrap">
-                            <input type="checkbox" class="remember option" name="remember" id="remember" value="yes" title="<?php echo Lang::txt('Remember Me'); ?>" <?php echo ($remember_me_default) ? 'checked="checked"' : ''; ?> />
-                            <label for="remember" class="remember-me-label"><?php echo Lang::txt('MOD_LOGIN_KEEP_LOGGED_IN'); ?></label>
+                            <?php
+                            $rememberChk = ($remember_me_default)
+                                ? 'checked="checked"' : '';
+                            ?>
+                            <input type="checkbox"
+                                class="remember option"
+                                name="remember"
+                                id="remember"
+                                value="yes"
+                                title="<?php echo Lang::txt('Remember Me'); ?>"
+                                <?php echo $rememberChk; ?>
+                            />
+                            <label for="remember"
+                                class="remember-me-label"
+                            ><?php echo Lang::txt('MOD_LOGIN_KEEP_LOGGED_IN'); ?></label>
                         </div>
                     <?php endif; ?>
                 </div>
                 <div class="forgots">
                     <?php if (!isset($user)) : ?>
-                        <a class="forgot-username" href="<?php echo Route::url('index.php?option=com_members&task=remind'); ?>"><?php echo Lang::txt('MOD_LOGIN_REMIND');?></a>
+                        <a class="forgot-username"
+                            href="<?php echo Route::url('index.php?option=com_members&task=remind'); ?>"
+                        ><?php echo Lang::txt('MOD_LOGIN_REMIND'); ?></a>
                     <?php endif; ?>
-                    <a class="forgot-password" href="<?php echo Route::url('index.php?option=com_members&task=reset'); ?>"><?php echo Lang::txt('MOD_LOGIN_RESET'); ?></a>
+                    <a class="forgot-password"
+                        href="<?php echo Route::url('index.php?option=com_members&task=reset'); ?>"
+                    ><?php echo Lang::txt('MOD_LOGIN_RESET'); ?></a>
                 </div>
                 <input type="hidden" name="option" value="com_login" />
                 <input type="hidden" name="authenticator" value="hubzero" />
@@ -148,7 +219,11 @@ $current .= (strstr($current, '?') ? '&' : '?');
     </div>
 <?php elseif ($usersConfig->get('allowUserRegistration') != '0') : ?>
     <p class="create">
-        <a href="<?php echo Request::base(true); ?>/register<?php echo $return ? '?return=' . $return : ''; ?>" class="register">
+        <?php
+        $regUrl = Request::base(true) . '/register'
+            . ($return ? '?return=' . $return : '');
+        ?>
+        <a href="<?php echo $regUrl; ?>" class="register">
             <?php echo Lang::txt('MOD_LOGIN_CREATE_ACCOUNT'); ?>
         </a>
     </p>

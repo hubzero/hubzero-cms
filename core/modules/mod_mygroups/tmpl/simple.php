@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -38,14 +36,20 @@ $this->css();
         <?php } ?>
 
         <?php if ($total > $this->limit) { ?>
-            <p class="note"><?php echo Lang::txt('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, $total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=groups')); ?></p>
+            <?php
+            $moreUrl = Route::url('index.php?option=com_members&id='
+                . User::get('id') . '&active=groups');
+            ?>
+            <p class="note"><?php echo Lang::txt('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, $total, $moreUrl); ?></p>
         <?php } ?>
     </div>
 
     <?php if ($this->params->get('button_show_add', 1)) { ?>
         <ul class="module-nav grouped">
             <li>
-                <a class="icon-plus" href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>"><?php echo Lang::txt('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
+                <a class="icon-plus"
+                    href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>"
+                ><?php echo Lang::txt('MOD_MYGROUPS_NEW_GROUP'); ?></a>
             </li>
         </ul>
     <?php } ?>

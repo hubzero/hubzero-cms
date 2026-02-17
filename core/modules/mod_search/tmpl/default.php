@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,16 +9,34 @@
 // no direct access
 defined('_HZEXEC_') or die;
 ?>
-<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" id="searchform<?php echo (self::$instances) > 1 ? $this->module->id : ''; ?>" class="<?php echo $moduleclass_sfx; ?>searchform">
+<?php
+$formSuffix = (self::$instances > 1) ? $this->module->id : '';
+?>
+<form action="<?php echo Route::url('index.php?option=com_search'); ?>"
+    method="get"
+    id="searchform<?php echo $formSuffix; ?>"
+    class="<?php echo $moduleclass_sfx; ?>searchform"
+>
     <fieldset>
         <legend><?php echo $text; ?></legend>
 
         <?php
-            $output  = '<label for="searchword' . (self::$instances > 1 ? $this->module->id : '') . '" class="' . $moduleclass_sfx . 'searchword-label" id="searchword-label' . (self::$instances > 1 ? $this->module->id : '') . '">' . $label . '</label>';
-            $output .= '<input type="text" name="terms" class="' . $moduleclass_sfx . 'searchword" id="searchword' . (self::$instances > 1 ? $this->module->id : '') . '" size="' . $width . '" placeholder="' . $text . '" />';
+            $sfx = self::$instances > 1 ? $this->module->id : '';
+            $output = '<label for="searchword' . $sfx . '"'
+                . ' class="' . $moduleclass_sfx . 'searchword-label"'
+                . ' id="searchword-label' . $sfx . '">'
+                . $label . '</label>';
+            $output .= '<input type="text" name="terms"'
+                . ' class="' . $moduleclass_sfx . 'searchword"'
+                . ' id="searchword' . $sfx . '"'
+                . ' size="' . $width . '"'
+                . ' placeholder="' . $text . '" />';
 
         if ($button) :
-            $button = '<input type="submit" class="' . $moduleclass_sfx . 'searchsubmit" id="submitquery' . (self::$instances > 1 ? $this->module->id : '') . '" value="' . $button_text . '" />';
+            $button = '<input type="submit"'
+                . ' class="' . $moduleclass_sfx . 'searchsubmit"'
+                . ' id="submitquery' . $sfx . '"'
+                . ' value="' . $button_text . '" />';
         endif;
 
         switch ($button_pos) :

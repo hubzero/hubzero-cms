@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,13 @@
 // no direct access
 defined('_HZEXEC_') or die();
 ?>
-<div id="youtube_feed_<?php echo $this->id; ?>" class="youtube_<?php echo $this->params->get('layout') . ' ' . $this->params->get('moduleclass_sfx'); ?>">
+<?php
+$ytClass = 'youtube_' . $this->params->get('layout')
+    . ' ' . $this->params->get('moduleclass_sfx');
+?>
+<div id="youtube_feed_<?php echo $this->id; ?>"
+    class="<?php echo $ytClass; ?>"
+>
     <?php if ($this->lazy) { ?>
         <?php echo Lang::txt('MOD_YOUTUBE_LOADING_FEED'); ?>
         <noscript><p class="error"><?php echo Lang::txt('MOD_YOUTUBE_ERROR_JAVASCRIPT_REQUIRED'); ?></p></noscript>

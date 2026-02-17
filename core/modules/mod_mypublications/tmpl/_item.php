@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,7 +28,13 @@ endif;
 
         <?php if (!$item->publication->project->isProvisioned()) : ?>
             <span class="project">
-                <?php echo Lang::txt('MOD_MYPUBLICATIONS_PROJECT', Hubzero\Utility\Str::truncate($item->publication->project->get('title'), 100)); ?>
+                <?php
+                $projectTitle = Hubzero\Utility\Str::truncate(
+                    $item->publication->project->get('title'),
+                    100
+                );
+                echo Lang::txt('MOD_MYPUBLICATIONS_PROJECT', $projectTitle);
+                ?>
             </span>
         <?php endif; ?>
     </span>

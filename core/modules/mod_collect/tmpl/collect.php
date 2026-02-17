@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,7 +26,11 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
                 <p><?php echo Lang::txt('MOD_COLLECT_ALREADY_COLLECTED'); ?></p>
                 <ul>
                     <?php foreach ($this->collections as $collection) { ?>
-                        <li><a href="<?php echo Route::url($collection->link()); ?>"><?php echo $this->escape(stripslashes($collection->get('title'))); ?></a></li>
+                        <li>
+                            <a href="<?php echo Route::url($collection->link()); ?>">
+                                <?php echo $this->escape(stripslashes($collection->get('title'))); ?>
+                            </a>
+                        </li>
                     <?php } ?>
                 </ul>
             </div>
@@ -48,7 +50,8 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
                                 ?>
                                 <option<?php if ($i == 0) {
                                     echo ' selected="selected"';
-                                       } ?> value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+                                       } ?> value="<?php echo $this->escape($board->id); ?>"
+                                ><?php echo $this->escape(stripslashes($board->title)); ?></option>
                                 <?php
                                 $i++;
                             }
@@ -68,7 +71,8 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
                                         ?>
                                         <option<?php if ($i == 0) {
                                             echo ' selected="selected"';
-                                               } ?> value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+                                               } ?> value="<?php echo $this->escape($board->id); ?>"
+                                        ><?php echo $this->escape(stripslashes($board->title)); ?></option>
                                         <?php
                                         $i++;
                                     }
@@ -96,7 +100,21 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
 
         <label for="field_description">
             <?php echo Lang::txt('MOD_COLLECT_ADD_DESCRIPTION'); ?>
-            <?php echo App::get('editor')->display('collectible[description]', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+            <?php
+            echo App::get('editor')->display(
+                'collectible[description]',
+                '',
+                '',
+                '',
+                35,
+                5,
+                false,
+                'field_description',
+                null,
+                null,
+                array('class' => 'minimal no-footer')
+            );
+            ?>
         </label>
     </fieldset>
 

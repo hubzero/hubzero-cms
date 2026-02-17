@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -73,16 +71,28 @@ $editAuthorized = User::authorise('core.manage', 'com_members');
 
                                     // Display link if we are authorized
                                 if ($editAuthorized) :
-                                    echo '<a href="' . Route::url('index.php?option=com_members&task=edit&id=' . $row->userid) . '" title="' . Lang::txt('MOD_WHOSONLINE_EDIT_USER') . '">' . $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']' . '</a>';
+                                    $editUrl = Route::url(
+                                        'index.php?option=com_members&task=edit&id='
+                                        . $row->userid
+                                    );
+                                    $editTitle = Lang::txt('MOD_WHOSONLINE_EDIT_USER');
+                                    $userName = $this->escape($user->get('name'))
+                                        . ' [' . $this->escape($user->get('username')) . ']';
+                                    echo '<a href="' . $editUrl . '" title="'
+                                        . $editTitle . '">' . $userName . '</a>';
                                 else :
-                                        echo $this->escape($user->get('name')) . ' [' . $this->escape($user->get('username')) . ']';
+                                    echo $this->escape($user->get('name'))
+                                        . ' [' . $this->escape($user->get('username')) . ']';
                                 endif;
                                 ?>
                             </td>
                             <td>
                                 <?php
                                     $clientInfo = \Hubzero\Base\ClientManager::client($row->client_id);
-                                    echo '<span class="client client-' . $clientInfo->name . '" data-client="' . substr($clientInfo->name, 0, 1) . '">' . ucfirst($clientInfo->name) . '</span>';
+                                    echo '<span class="client client-'
+                                        . $clientInfo->name . '" data-client="'
+                                        . substr($clientInfo->name, 0, 1) . '">'
+                                        . ucfirst($clientInfo->name) . '</span>';
                                 ?>
                             </td>
                             <td class="priority-3">
@@ -90,7 +100,16 @@ $editAuthorized = User::authorise('core.manage', 'com_members');
                             </td>
                             <?php if ($editAuthorized) : ?>
                                 <td>
-                                    <a class="force-logout" href="<?php echo Route::url('index.php?option=com_login&task=logout&uid=' . $row->userid . '&' . Session::getFormToken() . '=1'); ?>">
+                                    <?php
+                                    $logoutUrl = Route::url(
+                                        'index.php?option=com_login&task=logout&uid='
+                                        . $row->userid . '&'
+                                        . Session::getFormToken() . '=1'
+                                    );
+                                    ?>
+                                    <a class="force-logout"
+                                        href="<?php echo $logoutUrl; ?>"
+                                    >
                                         <span><?php echo Lang::txt('JLOGOUT'); ?></span>
                                     </a>
                                 </td>
@@ -100,7 +119,9 @@ $editAuthorized = User::authorise('core.manage', 'com_members');
                 <?php endforeach; ?>
                 <tr>
                     <td colspan="<?php echo ($editAuthorized) ? 4 : 3; ?>" class="view-all">
-                        <a href="<?php echo Route::url('index.php?option=com_members&controller=whosonline'); ?>"><?php echo Lang::txt('MOD_WHOSONLINE_VIEW_ALL'); ?></a>
+                        <a href="<?php echo Route::url('index.php?option=com_members&controller=whosonline'); ?>"><?php
+                            echo Lang::txt('MOD_WHOSONLINE_VIEW_ALL');
+                        ?></a>
                     </td>
                 </tr>
             <?php else : ?>

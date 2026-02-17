@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,14 @@ $this->css();
 <?php if ($this->recipient === '') : ?>
     <p class="error"><?php echo Lang::txt('MOD_RAPID_CONTACT_ERROR_NO_RECIPIENT'); ?></p>
 <?php else : ?>
-    <form method="post" action="<?php echo $this->url; ?>" id="<?php echo $this->module->module; ?>-form-<?php echo $this->module->id; ?>" class="<?php echo $this->mod_class_suffix; ?>">
+    <?php
+    $formId = $this->module->module . '-form-' . $this->module->id;
+    ?>
+    <form method="post"
+        action="<?php echo $this->url; ?>"
+        id="<?php echo $formId; ?>"
+        class="<?php echo $this->mod_class_suffix; ?>"
+    >
         <fieldset>
             <legend><?php echo Lang::txt('MOD_RAPID_CONTACT_FORM'); ?></legend>
 
@@ -36,16 +41,27 @@ $this->css();
                     <?php echo $this->name_label; ?>
                 </label>
                 <span class="input">
-                    <input type="text" class="form-control" id="contact-name<?php echo $this->module->id; ?>" name="rp[name]" value="<?php echo $this->escape($this->posted['name']); ?>" />
+                    <input type="text"
+                        class="form-control"
+                        id="contact-name<?php echo $this->module->id; ?>"
+                        name="rp[name]"
+                        value="<?php echo $this->escape($this->posted['name']); ?>"
+                    />
                 </span>
             </div>
 
             <div class="form-group input-wrap">
                 <label for="contact-email<?php echo $this->module->id; ?>">
-                    <?php echo $this->email_label; ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                    <?php echo $this->email_label; ?>
+                    <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
                 </label>
                 <span class="input">
-                    <input type="email" class="form-control" id="contact-email<?php echo $this->module->id; ?>" name="rp[email]" value="<?php echo $this->escape($this->posted['email']); ?>" />
+                    <input type="email"
+                        class="form-control"
+                        id="contact-email<?php echo $this->module->id; ?>"
+                        name="rp[email]"
+                        value="<?php echo $this->escape($this->posted['email']); ?>"
+                    />
                 </span>
             </div>
 
@@ -54,7 +70,12 @@ $this->css();
                     <?php echo $this->subject_label; ?>
                 </label>
                 <span class="input">
-                    <input type="text" class="form-control" id="contact-subject<?php echo $this->module->id; ?>" name="rp[subject]" value="<?php echo $this->escape($this->posted['subject']); ?>" />
+                    <input type="text"
+                        class="form-control"
+                        id="contact-subject<?php echo $this->module->id; ?>"
+                        name="rp[subject]"
+                        value="<?php echo $this->escape($this->posted['subject']); ?>"
+                    />
                 </span>
             </div>
 
@@ -63,17 +84,31 @@ $this->css();
                     <?php echo $this->message_label; ?>
                 </label>
                 <span class="input">
-                    <textarea class="form-control" name="rp[message]" id="contact-comments<?php echo $this->module->id; ?>" cols="35" rows="10"><?php echo $this->escape(!isset($this->posted['message']) ? '' : $this->posted['message']); ?></textarea>
+                    <?php
+                    $msgValue = !isset($this->posted['message'])
+                        ? '' : $this->posted['message'];
+                    $commentId = 'contact-comments' . $this->module->id;
+                    ?><textarea class="form-control"
+                        name="rp[message]"
+                        id="<?php echo $commentId; ?>"
+                        cols="35"
+                        rows="10"
+                    ><?php echo $this->escape($msgValue); ?></textarea>
                 </span>
             </div>
 
             <?php if ($this->enable_anti_spam) : ?>
                 <div class="form-group input-wrap">
                     <label for="contact-antispam<?php echo $this->module->id; ?>">
-                        <?php echo $this->anti_spam_q; ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                        <?php echo $this->anti_spam_q; ?>
+                        <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
                     </label>
                     <span class="input">
-                        <input type="text" class="form-control" id="contact-antispam<?php echo $this->module->id; ?>" name="rp[anti_spam_answer]" />
+                        <input type="text"
+                            class="form-control"
+                            id="contact-antispam<?php echo $this->module->id; ?>"
+                            name="rp[anti_spam_answer]"
+                        />
                     </span>
                 </div>
             <?php endif; ?>

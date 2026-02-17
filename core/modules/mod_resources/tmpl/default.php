@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,15 +32,26 @@ $this->css('
 
 $this->js();
 
-$total = $this->draftInternal + $this->draftUser + $this->pending + $this->published + $this->unpublished + $this->removed;
+$total = $this->draftInternal + $this->draftUser
+    + $this->pending + $this->published
+    + $this->unpublished + $this->removed;
 
 $this->draft = $this->draftInternal + $this->draftUser;
 ?>
 <div class="mod_resources">
     <div class="overview-container">
-        <div id="resources-container<?php echo $this->module->id; ?>" class="<?php echo $this->module->module; ?>-chart chrt" data-datasets="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>"></div>
+        <?php
+        $containerId = 'resources-container' . $this->module->id;
+        $dataId = $this->module->module . '-data' . $this->module->id;
+        ?>
+        <div id="<?php echo $containerId; ?>"
+            class="<?php echo $this->module->module; ?>-chart chrt"
+            data-datasets="<?php echo $dataId; ?>"
+        ></div>
         <?php if ($total > 0) : ?>
-            <script type="application/json" id="<?php echo $this->module->module; ?>-data<?php echo $this->module->id; ?>">
+            <script type="application/json"
+                id="<?php echo $dataId; ?>"
+            >
             {
                 "datasets": [
                     {
@@ -80,61 +89,121 @@ $this->draft = $this->draftInternal + $this->draftUser;
         <table>
             <tbody>
                 <tr>
+                    <?php
+                    $pubUrl = Route::url(
+                        'index.php?option=com_resources&c=resources&status=1'
+                    );
+                    $pubTitle = Lang::txt('MOD_RESOURCES_PUBLISHED_TITLE');
+                    ?>
                     <th scope="row">
-                        <a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=1'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_PUBLISHED_TITLE'); ?>">
-                            <span class="resource-published"></span><?php echo Lang::txt('MOD_RESOURCES_PUBLISHED'); ?>
+                        <a href="<?php echo $pubUrl; ?>"
+                            title="<?php echo $pubTitle; ?>"
+                        >
+                            <span class="resource-published"></span><?php
+                                echo Lang::txt('MOD_RESOURCES_PUBLISHED');
+                            ?>
                         </a>
                     </th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=1'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_PUBLISHED_TITLE'); ?>">
+                        <a href="<?php echo $pubUrl; ?>"
+                            title="<?php echo $pubTitle; ?>"
+                        >
                             <?php echo $this->escape($this->published); ?>
                         </a>
                     </td>
                 </tr>
                 <tr>
+                    <?php
+                    $pendUrl = Route::url(
+                        'index.php?option=com_resources&c=resources&status=3'
+                    );
+                    $pendTitle = Lang::txt('MOD_RESOURCES_PENDING_TITLE');
+                    ?>
                     <th scope="row" class="pending-items">
-                        <a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=3'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_PENDING_TITLE'); ?>">
-                            <span class="resource-pending"></span><?php echo Lang::txt('MOD_RESOURCES_PENDING'); ?>
+                        <a href="<?php echo $pendUrl; ?>"
+                            title="<?php echo $pendTitle; ?>"
+                        >
+                            <span class="resource-pending"></span><?php
+                                echo Lang::txt('MOD_RESOURCES_PENDING');
+                            ?>
                         </a>
                     </th>
                     <td class="pending-items">
-                        <a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=3'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_PENDING_TITLE'); ?>">
+                        <a href="<?php echo $pendUrl; ?>"
+                            title="<?php echo $pendTitle; ?>"
+                        >
                             <?php echo $this->escape($this->pending); ?>
                         </a>
                     </td>
                 </tr>
                 <tr>
+                    <?php
+                    $draftUrl = Route::url(
+                        'index.php?option=com_resources&c=resources&status=2'
+                    );
+                    $draftTitle = Lang::txt('MOD_RESOURCES_DRAFT_TITLE');
+                    ?>
                     <th scope="row">
-                        <a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=2'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_DRAFT_TITLE'); ?>">
-                            <span class="resource-draft"></span><?php echo Lang::txt('MOD_RESOURCES_DRAFT'); ?>
+                        <a href="<?php echo $draftUrl; ?>"
+                            title="<?php echo $draftTitle; ?>"
+                        >
+                            <span class="resource-draft"></span><?php
+                                echo Lang::txt('MOD_RESOURCES_DRAFT');
+                            ?>
                         </a>
                     </th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=2'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_DRAFT_TITLE'); ?>">
+                        <a href="<?php echo $draftUrl; ?>"
+                            title="<?php echo $draftTitle; ?>"
+                        >
                             <?php echo $this->escape($this->draft); ?>
                         </a>
                     </td>
                 </tr>
                 <tr>
+                    <?php
+                    $unpubUrl = Route::url(
+                        'index.php?option=com_resources&c=resources&status=0'
+                    );
+                    $unpubTitle = Lang::txt('MOD_RESOURCES_UNPUBLISHED_TITLE');
+                    ?>
                     <th scope="row">
-                        <a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=0'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_UNPUBLISHED_TITLE'); ?>">
-                            <span class="resource-removed"></span><?php echo Lang::txt('MOD_RESOURCES_UNPUBLISHED'); ?>
+                        <a href="<?php echo $unpubUrl; ?>"
+                            title="<?php echo $unpubTitle; ?>"
+                        >
+                            <span class="resource-removed"></span><?php
+                                echo Lang::txt('MOD_RESOURCES_UNPUBLISHED');
+                            ?>
                         </a>
                     </th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=0'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_UNPUBLISHED_TITLE'); ?>">
+                        <a href="<?php echo $unpubUrl; ?>"
+                            title="<?php echo $unpubTitle; ?>"
+                        >
                             <?php echo $this->escape($this->unpublished); ?>
                         </a>
                     </td>
                 </tr>
                 <tr>
+                    <?php
+                    $remUrl = Route::url(
+                        'index.php?option=com_resources&c=resources&status=4'
+                    );
+                    $remTitle = Lang::txt('MOD_RESOURCES_REMOVED_TITLE');
+                    ?>
                     <th scope="row">
-                        <a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=4'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_REMOVED_TITLE'); ?>">
-                            <span class="resource-unpublished"></span><?php echo Lang::txt('MOD_RESOURCES_REMOVED'); ?>
+                        <a href="<?php echo $remUrl; ?>"
+                            title="<?php echo $remTitle; ?>"
+                        >
+                            <span class="resource-unpublished"></span><?php
+                                echo Lang::txt('MOD_RESOURCES_REMOVED');
+                            ?>
                         </a>
                     </th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_resources&c=resources&status=4'); ?>" title="<?php echo Lang::txt('MOD_RESOURCES_REMOVED_TITLE'); ?>">
+                        <a href="<?php echo $remUrl; ?>"
+                            title="<?php echo $remTitle; ?>"
+                        >
                             <?php echo $this->escape($this->removed); ?>
                         </a>
                     </td>

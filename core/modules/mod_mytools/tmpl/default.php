@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,12 @@ if ($this->fav || $this->no_html) { ?>
     <?php echo $this->buildList($this->favtools, 'fav'); ?>
     <p><?php echo Lang::txt('MOD_MYTOOLS_EXPLANATION'); ?></p>
 <?php } else { ?>
-    <div id="myToolsTabs" data-api="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard&no_html=1&init=1&action=module&moduleid=' . $this->module->id); ?>">
+    <?php
+    $apiUrl = Route::url('index.php?option=com_members&id=' . User::get('id')
+        . '&active=dashboard&no_html=1&init=1&action=module&moduleid='
+        . $this->module->id);
+    ?>
+    <div id="myToolsTabs" data-api="<?php echo $apiUrl; ?>">
         <ul class="tab_titles">
             <li title="recenttools" class="active"><?php echo Lang::txt('MOD_MYTOOLS_RECENT'); ?></li>
             <li title="favtools"><?php echo Lang::txt('MOD_MYTOOLS_FAVORITES'); ?></li>

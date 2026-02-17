@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -50,7 +48,13 @@ jQuery(function($) {
                     else if (k == 'plugins') {
                         var plg = [];
                         for (var idx = 0; idx < val[k].length; ++idx) {
-                            plg.push(val[k][idx].name + ' ' + val[k][idx].description + (val[k][idx].version ? ' ' + val[k][idx].version : ''));
+                            plg.push(
+                            val[k][idx].name + ' '
+                            + val[k][idx].description
+                            + (val[k][idx].version
+                                ? ' ' + val[k][idx].version
+                                : '')
+                        );
                         }
                         pod[k] = plg;
                     }

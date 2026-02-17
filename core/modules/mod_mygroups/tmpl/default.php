@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,9 +15,10 @@ $this->css()
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
     <ul class="tab_titles">
-        <li rel="recentgroups<?php echo $this->module->id; ?>" class="tab_title<?php if (count($this->recentgroups) > 0) {
-            echo ' active';
-                             } ?>"><?php echo Lang::txt('MOD_MYGROUPS_RECENT'); ?></li>
+        <?php $recentActive = (count($this->recentgroups) > 0) ? ' active' : ''; ?>
+        <li rel="recentgroups<?php echo $this->module->id; ?>"
+            class="tab_title<?php echo $recentActive; ?>"
+        ><?php echo Lang::txt('MOD_MYGROUPS_RECENT'); ?></li>
         <li rel="allgroups<?php echo $this->module->id; ?>" class="tab_title<?php if (!count($this->recentgroups)) {
             echo ' active';
                           } ?>"><?php echo Lang::txt('MOD_MYGROUPS_ALL'); ?></li>
@@ -70,18 +69,31 @@ $this->css()
         <?php } ?>
 
         <?php if ($total > $this->limit) { ?>
-            <p class="note"><?php echo Lang::txt('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, $total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=groups')); ?></p>
+            <?php
+            $groupsUrl = Route::url(
+                'index.php?option=com_members&id='
+                . User::get('id') . '&active=groups'
+            );
+            $note = Lang::txt('MOD_MYGROUPS_YOU_HAVE_MORE', $this->limit, $total, $groupsUrl);
+            ?>
+            <p class="note"><?php echo $note; ?></p>
         <?php } ?>
     </div>
 
     <?php if ($this->params->get('button_show_add', 1)) { ?>
         <ul class="module-nav grouped">
             <li>
-                <a class="icon-plus" href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>"><?php echo Lang::txt('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
+                <a class="icon-plus"
+                    href="<?php echo Route::url('index.php?option=com_groups&task=new'); ?>"
+                ><?php echo Lang::txt('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
             </li>
-            <?php /*if ($this->params->get('button_show_all', 1)) { ?>
-                <p><a class="icon-browse" href="<?php echo Route::url('index.php?option=com_groups&task=browse'); ?>"><?php echo Lang::txt('MOD_MYGROUPS_ALL_GROUPS'); ?></a></p>
-            <?php }*/ ?>
+            <?php
+            /*if ($this->params->get('button_show_all', 1)) { ?>
+                <p><a class="icon-browse"
+                    href="<?php echo Route::url('index.php?option=com_groups&task=browse'); ?>"
+                ><?php echo Lang::txt('MOD_MYGROUPS_ALL_GROUPS'); ?></a></p>
+            <?php }*/
+            ?>
         </ul>
     <?php } ?>
 </div>

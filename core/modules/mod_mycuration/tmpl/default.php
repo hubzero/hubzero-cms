@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +14,11 @@ $this->css();
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
     <ul class="module-nav">
-        <li><a class="icon-browse" href="<?php echo Route::url('index.php?option=com_publications&controller=curation'); ?>"><?php echo Lang::txt('MOD_MYCURATION_ALL_TASKS'); ?></a></li>
+        <li>
+            <a class="icon-browse"
+                href="<?php echo Route::url('index.php?option=com_publications&controller=curation'); ?>"
+            ><?php echo Lang::txt('MOD_MYCURATION_ALL_TASKS'); ?></a>
+        </li>
     </ul>
 
     <h4>
@@ -34,13 +36,47 @@ $this->css();
             $class = $row->state == 5 ? 'status-pending' : 'status-wip';
             ?>
             <li class="curation-task <?php echo $class; ?>">
-                <a href="<?php echo $row->state == 5 ? Route::url('index.php?option=com_publications&controller=curation&id=' . $row->id) : Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>"><img src="<?php echo Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb'; ?>" alt="" />
-                <?php echo $row->title . ' v.' . $row->version_label; ?></a>
-                <span><?php if ($row->state == 5) {
-                    ?><a href="<?php echo Route::url('index.php?option=com_publications&controller=curation&id=' . $row->id); ?>"><?php echo Lang::txt('MOD_MYCURATION_REVIEW'); ?></a><?php
-                      } ?><?php if ($row->state == 7) {
-                      echo Lang::txt('MOD_MYCURATION_PENDING_CHANGES');
-                      } ?></span>
+                <?php
+                if ($row->state == 5) {
+                    $rowUrl = Route::url(
+                        'index.php?option=com_publications'
+                        . '&controller=curation&id=' . $row->id
+                    );
+                } else {
+                    $rowUrl = Route::url(
+                        'index.php?option=com_publications&id='
+                        . $row->id . '&v=' . $row->version_number
+                    );
+                }
+                $thumbUrl = Route::url(
+                    'index.php?option=com_publications&id='
+                    . $row->id . '&v=' . $row->version_id
+                ) . '/Image:thumb';
+                ?>
+                <a href="<?php echo $rowUrl; ?>">
+                    <img src="<?php echo $thumbUrl; ?>"
+                        alt=""
+                    />
+                    <?php echo $row->title . ' v.'
+                        . $row->version_label; ?>
+                </a>
+                <span><?php
+                if ($row->state == 5) {
+                    $curationUrl = Route::url(
+                        'index.php?option=com_publications'
+                        . '&controller=curation&id='
+                        . $row->id
+                    );
+                    ?><a href="<?php echo $curationUrl; ?>"><?php
+                        echo Lang::txt('MOD_MYCURATION_REVIEW');
+?></a><?php
+                }
+                if ($row->state == 7) {
+                    echo Lang::txt(
+                        'MOD_MYCURATION_PENDING_CHANGES'
+                    );
+                }
+                ?></span>
             </li>
             <?php
         }

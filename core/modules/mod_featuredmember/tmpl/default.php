@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,13 +22,27 @@ if ($this->getError()) { ?>
             <?php if (is_file(PATH_APP . $this->row->picture())) { ?>
                 <p class="featured-img">
                     <a href="<?php echo Route::url($this->row->link()); ?>">
-                        <img width="50" height="50" src="<?php echo $this->row->picture(); ?>" alt="<?php echo $this->escape(stripslashes($this->row->get('name', $this->row->get('givenName') . ' ' . $this->row->get('surname')))); ?>" />
+                        <?php
+                        $memberName = $this->row->get(
+                            'name',
+                            $this->row->get('givenName') . ' ' . $this->row->get('surname')
+                        );
+                        ?>
+                        <img width="50" height="50"
+                            src="<?php echo $this->row->picture(); ?>"
+                            alt="<?php echo $this->escape(stripslashes($memberName)); ?>" />
                     </a>
                 </p>
             <?php } ?>
             <p>
                 <a href="<?php echo Route::url($this->row->link()); ?>">
-                    <?php echo $this->escape(stripslashes($this->row->get('name', $this->row->get('givenName') . ' ' . $this->row->get('surname')))); ?>
+                    <?php
+                    $displayName = $this->row->get(
+                        'name',
+                        $this->row->get('givenName') . ' ' . $this->row->get('surname')
+                    );
+                    echo $this->escape(stripslashes($displayName));
+                    ?>
                 </a>:
                 <?php if ($txt = $this->row->get('bio')) { ?>
                     <?php echo \Hubzero\Utility\Str::truncate($this->escape(strip_tags($txt)), $this->txt_length); ?>

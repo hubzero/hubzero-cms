@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,12 +47,22 @@ $this->css();
             ?>
             <li class="question">
                 <a href="<?php echo Route::url($this->openquestions[$i]->link()); ?>">
-                    <?php echo $this->escape(\Hubzero\Utility\Str::truncate(strip_tags($this->openquestions[$i]->subject), 60)); ?>
+                    <?php
+                    $subject = \Hubzero\Utility\Str::truncate(
+                        strip_tags($this->openquestions[$i]->subject),
+                        60
+                    );
+                    echo $this->escape($subject);
+                    ?>
                 </a>
                 <span><span class="responses_<?php echo $rclass; ?>"><?php echo $rcount; ?></span></span>
 
             <?php if ($rcount > 0 && $this->banking) { ?>
-                <p class="earnpoints"><?php echo Lang::txt('MOD_MYQUESTIONS_CLOSE_THIS_QUESTION') . ' ' . $this->escape($this->openquestions[$i]->get('maxaward', 0)) . ' ' . Lang::txt('MOD_MYQUESTIONS_POINTS'); ?></p>
+                <p class="earnpoints"><?php
+                    echo Lang::txt('MOD_MYQUESTIONS_CLOSE_THIS_QUESTION') . ' '
+                        . $this->escape($this->openquestions[$i]->get('maxaward', 0))
+                        . ' ' . Lang::txt('MOD_MYQUESTIONS_POINTS');
+                ?></p>
             <?php } ?>
             </li>
             <?php
@@ -74,7 +82,9 @@ $this->css();
         </a>
     </h4>
     <?php if ($this->assigned) { ?>
-        <p class="incentive"><span><?php echo strtolower(Lang::txt('MOD_MYQUESTIONS_BEST_ANSWER_MAY_EARN')); ?></span></p>
+        <p class="incentive"><span><?php
+            echo strtolower(Lang::txt('MOD_MYQUESTIONS_BEST_ANSWER_MAY_EARN'));
+        ?></span></p>
         <ul class="compactlist">
         <?php
         for ($i = 0; $i < count($this->assigned); $i++) {
@@ -82,10 +92,19 @@ $this->css();
                 ?>
                 <li class="question">
                     <a href="<?php echo Route::url($this->assigned[$i]->link()); ?>">
-                        <?php echo $this->escape(\Hubzero\Utility\Str::truncate(strip_tags($this->assigned[$i]->subject), 60)); ?>
+                        <?php
+                        $subject = \Hubzero\Utility\Str::truncate(
+                            strip_tags($this->assigned[$i]->subject),
+                            60
+                        );
+                        echo $this->escape($subject);
+                        ?>
                     </a>
                 <?php if ($this->banking) { ?>
-                    <span ><span class="pts"><?php echo $this->escape($this->assigned[$i]->get('maxaward', 0)) . ' ' . strtolower(Lang::txt('MOD_MYQUESTIONS_PTS')); ?></span></span>
+                    <span><span class="pts"><?php
+                        echo $this->escape($this->assigned[$i]->get('maxaward', 0))
+                            . ' ' . strtolower(Lang::txt('MOD_MYQUESTIONS_PTS'));
+                    ?></span></span>
                 <?php } ?>
                 </li>
                 <?php
@@ -99,15 +118,24 @@ $this->css();
 <?php } ?>
 
 <?php if ($this->show_interests) { // Questions of interest ?>
+    <?php
+    $interestUrl = Route::url(
+        'index.php?option=com_answers&task=search&area=interest&filterby=open'
+    );
+    ?>
     <h4>
-        <a href="<?php echo Route::url('index.php?option=com_answers&task=search&area=interest&filterby=open'); ?>">
+        <a href="<?php echo $interestUrl; ?>">
             <?php echo Lang::txt('MOD_MYQUESTIONS_QUESTIONS_TO_ANSWER'); ?>
             <span><?php echo Lang::txt('MOD_MYQUESTIONS_VIEW_ALL'); ?></span>
         </a>
     </h4>
     <p class="category-header-details">
         <span class="configure">
-            [<a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile#profile-interests'); ?>">
+            <?php
+            $profileUrl = Route::url('index.php?option=com_members&id='
+                . User::get('id') . '&active=profile#profile-interests');
+            ?>
+            [<a href="<?php echo $profileUrl; ?>">
             <?php if ($this->interests) { ?>
                 <?php echo Lang::txt('JACTION_EDIT'); ?>
             <?php } else { ?>
@@ -115,10 +143,14 @@ $this->css();
             <?php } ?>
             </a>]
         </span>
-        <span class="q"><?php echo Lang::txt('MOD_MYQUESTIONS_MY_INTERESTS') . ': ' . $this->intext; ?></span>
+        <span class="q"><?php
+            echo Lang::txt('MOD_MYQUESTIONS_MY_INTERESTS') . ': ' . $this->intext;
+        ?></span>
     </p>
     <?php if ($this->otherquestions) { ?>
-        <p class="incentive"><span><?php echo strtolower(Lang::txt('MOD_MYQUESTIONS_BEST_ANSWER_MAY_EARN')); ?></span></p>
+        <p class="incentive"><span><?php
+            echo strtolower(Lang::txt('MOD_MYQUESTIONS_BEST_ANSWER_MAY_EARN'));
+        ?></span></p>
         <ul class="compactlist">
         <?php
         for ($i = 0; $i < count($this->otherquestions); $i++) {
@@ -126,10 +158,19 @@ $this->css();
                 ?>
                 <li class="question">
                     <a href="<?php echo Route::url($this->otherquestions[$i]->link()); ?>">
-                        <?php echo $this->escape(\Hubzero\Utility\Str::truncate(strip_tags($this->otherquestions[$i]->subject), 60)); ?>
+                        <?php
+                        $subject = \Hubzero\Utility\Str::truncate(
+                            strip_tags($this->otherquestions[$i]->subject),
+                            60
+                        );
+                        echo $this->escape($subject);
+                        ?>
                     </a>
                 <?php if ($this->banking) { ?>
-                    <span><span class="pts"><?php echo $this->escape($this->otherquestions[$i]->get('maxaward', 0)) . ' ' . strtolower(Lang::txt('MOD_MYQUESTIONS_PTS')); ?></span></span>
+                    <span><span class="pts"><?php
+                        echo $this->escape($this->otherquestions[$i]->get('maxaward', 0))
+                            . ' ' . strtolower(Lang::txt('MOD_MYQUESTIONS_PTS'));
+                    ?></span></span>
                 <?php } ?>
                 </li>
                 <?php

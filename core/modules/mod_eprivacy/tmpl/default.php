@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,11 @@ $this->js();
     <div class="<?php echo $this->module->module; ?>-message">
         <?php echo $this->message; ?>
 
-        <a class="<?php echo $this->module->module; ?>-close" href="<?php echo $this->uri; ?>" data-duration="<?php echo $this->duration; ?>" title="<?php echo Lang::txt('MOD_EPRIVACY_CLOSE_TITLE'); ?>">
+        <a class="<?php echo $this->module->module; ?>-close"
+            href="<?php echo $this->uri; ?>"
+            data-duration="<?php echo $this->duration; ?>"
+            title="<?php echo Lang::txt('MOD_EPRIVACY_CLOSE_TITLE'); ?>"
+        >
             <span><?php echo Lang::txt('MOD_EPRIVACY_CLOSE'); ?></span>
         </a>
     </div>

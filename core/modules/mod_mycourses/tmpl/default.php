@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -44,12 +42,19 @@ $total = count($this->courses);
                     //$status = $this->getStatus($group);
                     ?>
                     <li class="course">
-                        <a href="<?php echo Route::url('index.php?option=com_courses&gid=' . $course->alias . $sfx); ?>">
+                        <?php
+                        $courseUrl = Route::url(
+                            'index.php?option=com_courses&gid='
+                            . $course->alias . $sfx
+                        );
+                        ?>
+                        <a href="<?php echo $courseUrl; ?>">
                             <?php echo $this->escape(stripslashes($course->title)); ?>
                         </a>
                         <?php if ($course->section_title) { ?>
                             <small>
-                                <strong><?php echo Lang::txt('MOD_MYCOURSES_SECTION'); ?></strong> <?php echo $this->escape($course->section_title); ?>
+                                <strong><?php echo Lang::txt('MOD_MYCOURSES_SECTION'); ?></strong>
+                                <?php echo $this->escape($course->section_title); ?>
                             </small>
                         <?php } ?>
                         <?php
@@ -69,7 +74,9 @@ $total = count($this->courses);
                         }
                         ?>
                         <span>
-                            <span class="<?php echo $this->escape($course->role); ?> status"><?php echo $this->escape($course->role); ?></span>
+                            <span class="<?php echo $this->escape($course->role); ?> status">
+                                <?php echo $this->escape($course->role); ?>
+                            </span>
                         </span>
                     </li>
                     <?php
@@ -83,6 +90,13 @@ $total = count($this->courses);
     <?php } ?>
 
     <?php if ($total > $this->limit) { ?>
-        <p class="note"><?php echo Lang::txt('MOD_MYCOURSES_YOU_HAVE_MORE', $this->limit, $total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=courses')); ?></p>
+        <?php
+        $coursesUrl = Route::url(
+            'index.php?option=com_members&id='
+            . User::get('id') . '&active=courses'
+        );
+        $note = Lang::txt('MOD_MYCOURSES_YOU_HAVE_MORE', $this->limit, $total, $coursesUrl);
+        ?>
+        <p class="note"><?php echo $note; ?></p>
     <?php } ?>
 </div>

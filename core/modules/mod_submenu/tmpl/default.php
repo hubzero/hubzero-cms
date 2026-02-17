@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,9 +23,11 @@ $hide = Request::getInt('hidemainmenu');
             else :
                 if (strlen($item[1])) :
                     if (isset($item[2]) && $item[2] == 1) :
-                        ?><a class="active" href="<?php echo \Hubzero\Utility\Str::ampReplace($item[1]); ?>"><?php echo $item[0]; ?></a><?php
+                        $ampUrl = \Hubzero\Utility\Str::ampReplace($item[1]);
+                        ?><a class="active" href="<?php echo $ampUrl; ?>"><?php echo $item[0]; ?></a><?php
                     else :
-                        ?><a href="<?php echo \Hubzero\Utility\Str::ampReplace($item[1]); ?>"><?php echo $item[0]; ?></a><?php
+                        $ampUrl = \Hubzero\Utility\Str::ampReplace($item[1]);
+                        ?><a href="<?php echo $ampUrl; ?>"><?php echo $item[0]; ?></a><?php
                     endif;
                 else :
                     ?><?php echo $item[0]; ?><?php
@@ -60,9 +60,11 @@ if (is_array($list) && count($list)) {
                     else :
                         if (strlen($item[1])) :
                             if (isset($item[2]) && $item[2] == 1) :
-                                ?><a class="active" href="<?php echo \Hubzero\Utility\Str::ampReplace($item[1]); ?>"><?php echo $item[0]; ?></a><?php
+                                $ampUrl = \Hubzero\Utility\Str::ampReplace($item[1]);
+                                ?><a class="active" href="<?php echo $ampUrl; ?>"><?php echo $item[0]; ?></a><?php
                             else :
-                                ?><a href="<?php echo \Hubzero\Utility\Str::ampReplace($item[1]); ?>"><?php echo $item[0]; ?></a><?php
+                                $ampUrl = \Hubzero\Utility\Str::ampReplace($item[1]);
+                                ?><a href="<?php echo $ampUrl; ?>"><?php echo $item[0]; ?></a><?php
                             endif;
                         else :
                             ?><?php echo $item[0]; ?><?php

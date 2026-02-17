@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,12 +16,25 @@ if (!$this->no_html) {
     ?>
     <ul class="module-nav">
         <li>
-            <a class="icon-browse" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=contributions&area=resources'); ?>">
+            <?php
+            $contribUrl = Route::url('index.php?option=com_members&id='
+                . User::get('id') . '&active=contributions&area=resources');
+            ?>
+            <a class="icon-browse" href="<?php echo $contribUrl; ?>">
                 <?php echo Lang::txt('MOD_MYRESOURCES_ALL_PUBLICATIONS'); ?>
             </a>
         </li>
     </ul>
-    <form method="get" action="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard'); ?>" data-module="<?php echo $this->module->id; ?>" id="myresources-form" enctype="multipart/form-data">
+    <?php
+    $dashUrl = Route::url('index.php?option=com_members&id='
+        . User::get('id') . '&active=dashboard');
+    ?>
+    <form method="get"
+        action="<?php echo $dashUrl; ?>"
+        data-module="<?php echo $this->module->id; ?>"
+        id="myresources-form"
+        enctype="multipart/form-data"
+    >
 <?php } ?>
         <div id="myresources-content">
             <?php if (!$this->contributions) { ?>
@@ -48,14 +59,25 @@ if (!$this->no_html) {
                                 break;
                         }
 
-                        $thedate = Date::of($this->contributions[$i]->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                        $thedate = Date::of($this->contributions[$i]->publish_up)
+                            ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                         ?>
                         <li class="<?php echo $class; ?>">
-                            <a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->contributions[$i]->id); ?>">
-                                <?php echo \Hubzero\Utility\Str::truncate(stripslashes($this->contributions[$i]->title), 40); ?>
+                            <?php
+                            $resUrl = Route::url('index.php?option=com_resources&id='
+                                . $this->contributions[$i]->id);
+                            ?>
+                            <a href="<?php echo $resUrl; ?>">
+                                <?php
+                                echo \Hubzero\Utility\Str::truncate(
+                                    stripslashes($this->contributions[$i]->title),
+                                    40
+                                );
+                                ?>
                             </a>
                             <span class="under">
-                                <?php echo $thedate . ' &nbsp; ' . $this->escape(stripslashes($this->contributions[$i]->typetitle)); ?>
+                                <?php echo $thedate . ' &nbsp; '
+                                    . $this->escape(stripslashes($this->contributions[$i]->typetitle)); ?>
                             </span>
                         </li>
                         <?php

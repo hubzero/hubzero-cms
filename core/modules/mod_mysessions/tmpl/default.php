@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,9 +19,14 @@ $this->js();
 
 $base = rtrim(Request::base(true), '/');
 ?>
-<div class="<?php echo $this->module->module . ' ' . $this->params->get('moduleclass_sfx', ''); ?> session-list <?php if (!$this->params->get('show_storage', 1)) {
-    echo 'without-storage';
-            } ?>">
+<?php
+$sessionClass = $this->module->module . ' '
+    . $this->params->get('moduleclass_sfx', '') . ' session-list';
+if (!$this->params->get('show_storage', 1)) {
+    $sessionClass .= ' without-storage';
+}
+?>
+<div class="<?php echo $sessionClass; ?>">
     <ul>
         <?php if (count($this->sessions) > 0) : ?>
             <?php foreach ($this->sessions as $k => $session) : ?>
@@ -35,20 +38,37 @@ $base = rtrim(Request::base(true), '/');
                     $bit = (count($bits) > 1) ? array_pop($bits) : '';
                     $appname = implode('_', $bits);
 
-                    $resumeLink = Route::url('index.php?option=com_tools&task=session&sess=' . $session->sessnum . '&app=' . $appname);
+                    $resumeLink = Route::url(
+                        'index.php?option=com_tools&task=session&sess='
+                        . $session->sessnum . '&app=' . $appname
+                    );
 
                     //terminate & disconnect links
-                    $terminateLink  = Route::url('index.php?option=com_tools&task=stop&sess=' . $session->sessnum . '&app=' . $appname);
-                    $disconnectLink = Route::url('index.php?option=com_tools&task=unshare&sess=' . $session->sessnum . '&app=' . $appname);
+                    $terminateLink = Route::url(
+                        'index.php?option=com_tools&task=stop&sess='
+                        . $session->sessnum . '&app=' . $appname
+                    );
+                    $disconnectLink = Route::url(
+                        'index.php?option=com_tools&task=unshare&sess='
+                        . $session->sessnum . '&app=' . $appname
+                    );
 
                     //get snapshot
-                    $snapshot = $base . '/api/tools/screenshot?sessionid=' . $session->sessnum . '&notfound=1';
+                    $snapshot = $base . '/api/tools/screenshot?sessionid='
+                        . $session->sessnum . '&notfound=1';
                 ?>
                 <li class="session <?php echo $cls; ?>">
                     <div class="session-title-bar">
                         <?php if ($this->params->get('show_screenshots', 1)) : ?>
                             <?php if ($this->params->get('quick_launch', 1)) : ?>
-                                <a class="session-title-quicklaunch tooltips" title="<?php echo Lang::txt('MOD_MYSESSIONS_QUICK_LAUNCH'); ?> :: <?php echo Lang::txt('MOD_MYSESSIONS_RESUME_TITLE'); ?>" href="<?php echo $resumeLink; ?>">
+                                <?php
+                                $qlTitle = Lang::txt('MOD_MYSESSIONS_QUICK_LAUNCH')
+                                    . ' :: ' . Lang::txt('MOD_MYSESSIONS_RESUME_TITLE');
+                                ?>
+                                <a class="session-title-quicklaunch tooltips"
+                                    title="<?php echo $qlTitle; ?>"
+                                    href="<?php echo $resumeLink; ?>"
+                                >
                                     <img class="snapshot" data-src="<?php echo $snapshot; ?>" />
                                 </a>
                             <?php else : ?>
@@ -70,8 +90,14 @@ $base = rtrim(Request::base(true), '/');
                         <?php if ($this->params->get('show_screenshots', 1)) : ?>
                             <div class="session-details-left">
                                 <div class="session-snapshot">
-                                    <a class="session-snapshot-link" href="<?php echo $snapshot; ?>" title="<?php echo $session->sessname; ?>">
-                                        <img class="snapshot snapshot-main" src="<?php echo $snapshot; ?>" data-src="<?php echo $snapshot; ?>" />
+                                    <a class="session-snapshot-link"
+                                        href="<?php echo $snapshot; ?>"
+                                        title="<?php echo $session->sessname; ?>"
+                                    >
+                                        <img class="snapshot snapshot-main"
+                                            src="<?php echo $snapshot; ?>"
+                                            data-src="<?php echo $snapshot; ?>"
+                                        />
                                     </a>
                                 </div>
                             </div>
@@ -100,16 +126,28 @@ $base = rtrim(Request::base(true), '/');
                             <?php endif; ?>
 
                             <div class="session-buttons">
-                                <a class="btn icon-resume resume" href="<?php echo $resumeLink; ?>" title="<?php echo Lang::txt('MOD_MYSESSIONS_RESUME_TITLE'); ?>">
+                                <a class="btn icon-resume resume"
+                                    href="<?php echo $resumeLink; ?>"
+                                    title="<?php echo Lang::txt('MOD_MYSESSIONS_RESUME_TITLE'); ?>"
+                                >
                                     <?php echo ucfirst(Lang::txt('MOD_MYSESSIONS_RESUME')); ?>
                                 </a>
-                                <?php $tcls = ($this->params->get('terminate_double_check', 1)) ? 'terminate-confirm' : 'terminate'; ?>
+                                <?php
+                                $tcls = ($this->params->get('terminate_double_check', 1))
+                                    ? 'terminate-confirm' : 'terminate';
+                                ?>
                                 <?php if (User::get('username') == $session->username) : ?>
-                                    <a class="btn icon-terminate <?php echo $tcls; ?>" href="<?php echo $terminateLink; ?>" title="<?php echo Lang::txt('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>">
+                                    <a class="btn icon-terminate <?php echo $tcls; ?>"
+                                        href="<?php echo $terminateLink; ?>"
+                                        title="<?php echo Lang::txt('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>"
+                                    >
                                         <?php echo ucfirst(Lang::txt('MOD_MYSESSIONS_TERMINATE')); ?>
                                     </a>
                                 <?php else : ?>
-                                    <a class="btn icon-disconnect disconnect" href="<?php echo $disconnectLink; ?>" title="<?php echo Lang::txt('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>">
+                                    <a class="btn icon-disconnect disconnect"
+                                        href="<?php echo $disconnectLink; ?>"
+                                        title="<?php echo Lang::txt('MOD_MYSESSIONS_DISCONNECT_TITLE'); ?>"
+                                    >
                                         <?php echo ucfirst(Lang::txt('MOD_MYSESSIONS_DISCONNECT')); ?>
                                     </a>
                                 <?php endif; ?>
@@ -128,7 +166,10 @@ $base = rtrim(Request::base(true), '/');
 
 <?php if ($this->params->get('show_storage', 1)) : ?>
     <div class="session-storage">
-        <span><?php echo Lang::txt('MOD_MYSESSIONS_STORAGE'); ?> (<a href="<?php echo Route::url('index.php?option=com_tools&task=storage'); ?>"><?php echo Lang::txt('MOD_MYSESSIONS_MANAGE'); ?></a>)</span>
+        <span><?php echo Lang::txt('MOD_MYSESSIONS_STORAGE'); ?>
+            (<a href="<?php echo Route::url('index.php?option=com_tools&task=storage'); ?>"><?php
+                echo Lang::txt('MOD_MYSESSIONS_MANAGE');
+            ?></a>)</span>
         <?php
             $diskUsage = \Components\Tools\Helpers\Utils::getDiskUsage(User::get('username'));
         if (!is_array($diskUsage) || !isset($diskUsage['space'])) {
@@ -153,7 +194,9 @@ $base = rtrim(Request::base(true), '/');
         }
 
         if ($amount > 0) {
-            $this->css('.' . $this->module->module . ' .session-storage .storage-meter-percent { width: ' . $percent . '%; }');
+            $this->css('.' . $this->module->module
+                . ' .session-storage .storage-meter-percent { width: '
+                . $percent . '%; }');
         }
         ?>
 

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,8 +17,22 @@ if ($this->getError()) {
     ?>
     <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
         <ul class="module-nav">
-            <li><a class="icon-email-alt" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages'); ?>"><?php echo Lang::txt('MOD_MYMESSAGES_ALL_MESSAGES'); ?></a></li>
-            <li><a class="icon-plus" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages&task=settings'); ?>"><?php echo Lang::txt('MOD_MYMESSAGES_MESSAGE_SETTINGS'); ?></a></li>
+            <?php
+            $messagesUrl = Route::url('index.php?option=com_members&id='
+                . User::get('id') . '&active=messages');
+            $settingsUrl = Route::url('index.php?option=com_members&id='
+                . User::get('id') . '&active=messages&task=settings');
+            ?>
+            <li>
+                <a class="icon-email-alt"
+                    href="<?php echo $messagesUrl; ?>"
+                ><?php echo Lang::txt('MOD_MYMESSAGES_ALL_MESSAGES'); ?></a>
+            </li>
+            <li>
+                <a class="icon-plus"
+                    href="<?php echo $settingsUrl; ?>"
+                ><?php echo Lang::txt('MOD_MYMESSAGES_MESSAGE_SETTINGS'); ?></a>
+            </li>
         </ul>
 
         <?php if (count($this->rows) <= 0) { ?>
@@ -40,12 +52,18 @@ if ($this->getError()) {
                     }
                     ?>
                     <li class="<?php echo $cls; ?>">
-                        <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages&msg=' . $row->id); ?>">
+                        <?php
+                        $msgUrl = Route::url('index.php?option=com_members&id='
+                            . User::get('id') . '&active=messages&msg=' . $row->id);
+                        ?>
+                        <a href="<?php echo $msgUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->subject)); ?>
                         </a>
                         <span>
                             <span>
-                                <time datetime="<?php echo $this->escape($row->created); ?>"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                                <time datetime="<?php echo $this->escape($row->created); ?>"><?php
+                                    echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                ?></time>
                             </span>
                         </span>
                     </li>
@@ -55,7 +73,13 @@ if ($this->getError()) {
             </ul>
         <?php } ?>
         <?php if ($this->total > $this->limit) { ?>
-            <p class="note"><?php echo Lang::txt('MOD_MYMESSAGES_YOU_HAVE_MORE', $this->limit, $this->total, Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages')); ?></p>
+            <?php
+            $moreUrl = Route::url('index.php?option=com_members&id='
+                . User::get('id') . '&active=messages');
+            ?>
+            <p class="note"><?php
+                echo Lang::txt('MOD_MYMESSAGES_YOU_HAVE_MORE', $this->limit, $this->total, $moreUrl);
+            ?></p>
         <?php } ?>
     </div>
     <?php
