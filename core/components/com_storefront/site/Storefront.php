@@ -26,48 +26,52 @@ class Storefront extends AbstractComponent
         //build controller path and name
         $controllerName = \Request::getCmd('controller', '');
 
-		if (empty($controllerName)) {
-		    // Load default controller if no controller provided
-		    $controllerName = 'storefront';
-		} elseif (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-		    \App::abort(404, \Lang::txt('Page Not Found'));
-		}
+        if (empty($controllerName)) {
+            // Load default controller if no controller provided
+            $controllerName = 'storefront';
+        } elseif (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+            \App::abort(404, \Lang::txt('Page Not Found'));
+        }
 
-		$controllerRequested = $controllerName;
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        $controllerRequested = $controllerName;
 
-		// Instantiate controller and execute
-		$controller = new $controllerName();
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// See if user has to be logged in to see the component
-		$loginRequired = $controller->config->get('requirelogin', 0);
+        // Instantiate controller and execute
+        $controller = new $controllerName();
 
-		if ($loginRequired && $controllerRequested != 'overview') {
-		    // Check if they're logged in
-		    if (\User::isGuest()) {
-		        $return = base64_encode($_SERVER['REQUEST_URI']);
-		        // Redirect to the landing page
-		        if ($controllerRequested == 'storefront') {
-		            \App::redirect(
-		                \Route::url('index.php?option=com_storefront') . 'overview'
-		            );
-		        }
-		        // Require login
-		        \App::redirect(
-		            \Route::url('index.php?option=com_users&view=login&return=' . $return),
-		            'Please login to continue',
-		            'warning'
-		        );
-		    }
-		}
+        // See if user has to be logged in to see the component
+        $loginRequired = $controller->config->get('requirelogin', 0);
 
-		// Update any restrictions that were entered before the account existed
-		// @TODO: Move to a plugin that responds after login?
-		if (!\User::isGuest()) {
-		    \Components\Storefront\Admin\Helpers\RestrictionsHelper::updateUser(\User::get('id'), \User::get('username'));
-		}
+        if ($loginRequired && $controllerRequested != 'overview') {
+            // Check if they're logged in
+            if (\User::isGuest()) {
+                $return = base64_encode($_SERVER['REQUEST_URI']);
+                // Redirect to the landing page
+                if ($controllerRequested == 'storefront') {
+                    \App::redirect(
+                        \Route::url('index.php?option=com_storefront') . 'overview'
+                    );
+                }
+                // Require login
+                \App::redirect(
+                    \Route::url('index.php?option=com_users&view=login&return=' . $return),
+                    'Please login to continue',
+                    'warning'
+                );
+            }
+        }
 
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Update any restrictions that were entered before the account existed
+        // @TODO: Move to a plugin that responds after login?
+        if (!\User::isGuest()) {
+            \Components\Storefront\Admin\Helpers\RestrictionsHelper::updateUser(
+                \User::get('id'),
+                \User::get('username')
+            );
+        }
+
+        $controller->execute();
+        $controller->redirect();
+    }
 }

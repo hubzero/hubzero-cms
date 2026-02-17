@@ -23,8 +23,8 @@ class Kb extends AbstractComponent
     protected function execute(): void
     {
 
-		// Instantiate controller
-		$controller = new Controllers\Articles();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new Controllers\Articles();
+        $controller->execute();
+    }
 }

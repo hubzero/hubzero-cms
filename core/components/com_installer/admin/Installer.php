@@ -15,37 +15,37 @@ use Hubzero\Component\AbstractComponent;
  */
 class Installer extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Access check.
-		if (!\User::authorise('core.manage', 'com_installer')) {
-			\App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-			return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Access check.
+        if (!\User::authorise('core.manage', 'com_installer')) {
+            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-		if ($task = \Request::getCmd('task')) {
-			if (strstr($task, '.')) {
-				@list($c, $t) = explode('.', $task);
-				$t = \Request::setVar('task', trim($t));
-				$c = \Request::setVar('controller', trim($c));
-			}
-		}
-		$controllerName = \Request::getCmd('controller', 'manage');
-		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
-			\App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+        if ($task = \Request::getCmd('task')) {
+            if (strstr($task, '.')) {
+                @list($c, $t) = explode('.', $task);
+                $t = \Request::setVar('task', trim($t));
+                $c = \Request::setVar('controller', trim($c));
+            }
+        }
+        $controllerName = \Request::getCmd('controller', 'manage');
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		\Components\Installer\Admin\Helpers\Installer::addSubmenu($controllerName);
+        \Components\Installer\Admin\Helpers\Installer::addSubmenu($controllerName);
 
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-		// initiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // initiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

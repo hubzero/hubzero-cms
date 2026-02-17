@@ -15,15 +15,15 @@ use Hubzero\Component\AbstractComponent;
  */
 class Mailto extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
 
-		$controller = new Controllers\Mailings();
-		$controller->execute();
-	}
+        $controller = new Controllers\Mailings();
+        $controller->execute();
+    }
 }

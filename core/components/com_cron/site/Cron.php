@@ -15,16 +15,16 @@ use Hubzero\Component\AbstractComponent;
  */
 class Cron extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
 
-		// Instantiate controller
-		$controller = new Controllers\Jobs();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new Controllers\Jobs();
+        $controller->execute();
+    }
 }

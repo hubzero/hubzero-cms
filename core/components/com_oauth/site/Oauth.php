@@ -15,24 +15,24 @@ use Hubzero\Component\AbstractComponent;
  */
 class Oauth extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		$controllerName = \Request::getCmd('controller', 'authorize');
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        $controllerName = \Request::getCmd('controller', 'authorize');
 
-		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-			throw new \Exception('Specified controller does not exist.', 404);
-		}
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+            throw new \Exception('Specified controller does not exist.', 404);
+        }
 
 
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

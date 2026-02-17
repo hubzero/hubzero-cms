@@ -28,8 +28,8 @@ class Tags extends AbstractComponent
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

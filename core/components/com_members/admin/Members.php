@@ -15,30 +15,30 @@ use Hubzero\Component\AbstractComponent;
  */
 class Members extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		if (!\User::authorise('core.manage', 'com_members')) {
-			\App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-			return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!\User::authorise('core.manage', 'com_members')) {
+            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-		$controllerName = \Request::getCmd('controller', 'members');
-		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
-			$controllerName = 'members';
-		}
+        $controllerName = \Request::getCmd('controller', 'members');
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
+            $controllerName = 'members';
+        }
 
         // Build sub-menu
         \Components\Members\Admin\Helpers\MembersHelper::addSubmenu($controllerName);
 
-		// Instantiate controller
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+        // Instantiate controller
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

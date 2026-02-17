@@ -15,21 +15,22 @@ use Hubzero\Component\AbstractComponent;
  */
 class Cache extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Access check.
-		if (!\User::authorise('core.manage', 'com_cache')) {
-		    \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Access check.
+        if (!\User::authorise('core.manage', 'com_cache')) {
+            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-		// Instantiate controller
-		$controller = new Controllers\Cleanser();
-		$controller->execute();
-	}
+
+        // Instantiate controller
+        $controller = new Controllers\Cleanser();
+        $controller->execute();
+    }
 }
