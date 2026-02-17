@@ -6,9 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Class to perform secondary replacement within each replacement string
- *
  */
 class DoubleReplacer extends Replacer
 {

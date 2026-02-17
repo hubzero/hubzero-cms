@@ -7,7 +7,9 @@
  *
  */
 
-class HTMLPurifier_Filter_GroupInclude extends HTMLPurifier_Filter
+namespace Components\Groups\Helpers\Filters;
+
+class GroupInclude extends \HTMLPurifier_Filter
 {
     /**
      * Name

@@ -6,11 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Delete operation
- *
  */
-class _DiffOp_Delete extends _DiffOp
+class DiffOpDelete extends DiffOp
 {
     /**
      * Description for 'type'
@@ -20,7 +21,7 @@ class _DiffOp_Delete extends _DiffOp
     public $type = 'delete';
 
     /**
-     * Short description for '_DiffOp_Delete'
+     * Short description for 'DiffOpDelete'
      *
      * Long description (if any) ...
      *
@@ -42,6 +43,6 @@ class _DiffOp_Delete extends _DiffOp
      */
     public function reverse()
     {
-        return new _DiffOp_Add($this->orig);
+        return new DiffOpAdd($this->orig);
     }
 }

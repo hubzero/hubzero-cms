@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 //-------------------------------------------------------------
 //  Div style diff formatter. Highlights blocks that have
 //  changed following a format like this:

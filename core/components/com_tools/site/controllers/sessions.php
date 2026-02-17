@@ -1220,8 +1220,7 @@ class Sessions extends SiteController
             } else {
                 $componentPath = Component::path('com_redirect');
                 if ($componentPath) {
-                    require_once($componentPath . DS . "helpers" . DS . "converter.php");
-                    $redirect_url = \Component\Redirect\Helpers\Converter::encode($output->redirect_url);
+                    $redirect_url = \Components\Redirect\Helpers\Converter::encode($output->redirect_url);
                     App::Redirect($redirect_url);
                 } else {
                     App::Redirect($output->redirect_url);

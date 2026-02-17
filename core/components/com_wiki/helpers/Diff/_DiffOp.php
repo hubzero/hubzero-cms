@@ -6,11 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Diff operation
- *
  */
-class _DiffOp
+class DiffOp
 {
     /**
      * Description for 'type'

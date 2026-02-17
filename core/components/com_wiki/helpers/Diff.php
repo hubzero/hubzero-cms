@@ -7,14 +7,14 @@
  */
 
 // No direct access.
-defined('_HZEXEC_') or die();
-
 /**
  * Constant to indicate diff cache compatibility.
  * Bump this when changing the diff formatting in a way that
  * fixes important bugs or such to force cached diff views to
  * clear.
  */
+namespace Components\Wiki\Helpers;
+
 define('MW_DIFF_VERSION', '1.11a');
 
 /**
@@ -45,7 +45,7 @@ require_once __DIR__ . '/Diff/TableDiffFormatter.php';
 /**
  * Class representing a 'diff' between two sequences of strings.
  */
-class WikiDiff
+class Diff
 {
     /**
      * Description for 'edits'
@@ -64,7 +64,7 @@ class WikiDiff
      */
     public function __construct($from_lines, $to_lines)
     {
-        $eng = new _DiffEngine();
+        $eng = new DiffEngine();
         $this->edits = $eng->diff($from_lines, $to_lines);
         //$this->_check($from_lines, $to_lines);
     }
@@ -74,7 +74,7 @@ class WikiDiff
      *
      * SYNOPSIS:
      *
-     *    $diff = new WikiDiff($lines1, $lines2);
+     *    $diff = new Diff($lines1, $lines2);
      *    $rev = $diff->reverse();
      *
      * @return  object  A Diff object representing the inverse of the original diff.
