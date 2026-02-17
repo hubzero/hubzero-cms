@@ -199,7 +199,8 @@ class Loader
         define('JPATH_COMPONENT_ADMINISTRATOR', PATH_COMPONENT_ADMINISTRATOR);
 
         $path      = PATH_COMPONENT . DIRECTORY_SEPARATOR . $file . '.php';
-        $namespace = '\\Components\\' . ucfirst(substr($option, 4)) . '\\' . ucfirst($client) . '\\Bootstrap';
+        $compName  = ucfirst(substr($option, 4));
+        $namespace = '\\Components\\' . $compName . '\\' . ucfirst($client) . '\\' . $compName;
         $found     = false;
         $react_path = PATH_COMPONENT .
             DIRECTORY_SEPARATOR .
