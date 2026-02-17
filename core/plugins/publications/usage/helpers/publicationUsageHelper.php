@@ -1,13 +1,12 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Publications\Usage\Helpers;
 
 class PublicationUsageHelper
 {
@@ -59,7 +58,7 @@ class PublicationUsageHelper
      */
     public function __construct($args = [])
     {
-        $this->_db = App::get('db');
+        $this->_db = \App::get('db');
         $this->_publication = $args['publication'];
     }
 

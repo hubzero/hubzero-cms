@@ -112,7 +112,7 @@ class Usage extends Plugin
         $stats = new \Components\Publications\Tables\Stats($database);
         $stats->loadStats($publication->id, $period, $dthis);
 
-        $usageHelper = new PublicationUsageHelper(['publication' => $publication]);
+        $usageHelper = new Helpers\PublicationUsageHelper(['publication' => $publication]);
         $views = $usageHelper->totalViews();
         $downloads = $usageHelper->totalDownloads();
 

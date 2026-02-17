@@ -1,8 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Files.SideEffects
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -11,13 +8,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
+namespace Plugins\Publications\Reviews\Models;
+
+require_once \Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
 require_once __DIR__ . '/comment.php';
 
 /**
- * Publications review mdoel
+ * Publications review model
  */
-class PublicationsModelReview extends \Hubzero\Base\Model
+class Review extends \Hubzero\Base\Model
 {
     /**
      * ResourcesReview
@@ -89,8 +88,8 @@ class PublicationsModelReview extends \Hubzero\Base\Model
         }
         // Reports hasn't been set
         if ($this->get('reports', -1) == -1) {
-            if (is_file(Component::path('com_support') . DS . 'models' . DS . 'report.php')) {
-                include_once Component::path('com_support') . DS . 'models' . DS . 'report.php';
+            if (is_file(\Component::path('com_support') . DS . 'models' . DS . 'report.php')) {
+                include_once \Component::path('com_support') . DS . 'models' . DS . 'report.php';
 
                 $val = \Components\Support\Models\Report::all()
                     ->whereEquals('referenceid', $this->get('id'))
@@ -117,11 +116,11 @@ class PublicationsModelReview extends \Hubzero\Base\Model
     {
         switch (strtolower($as)) {
             case 'date':
-                return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                return \Date::of($this->get('created'))->toLocal(\Lang::txt('DATE_FORMAT_HZ1'));
             break;
 
             case 'time':
-                return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                return \Date::of($this->get('created'))->toLocal(\Lang::txt('TIME_FORMAT_HZ1'));
             break;
 
             default:
@@ -186,7 +185,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
         switch (strtolower($rtrn)) {
             case 'count':
                 if (!isset($this->comments_count) || !is_numeric($this->comments_count) || $clear) {
-                    $this->comments_count = Components\Publications\Reviews\Models\Comment::all()
+                    $this->comments_count = \Components\Publications\Reviews\Models\Comment::all()
                         ->whereEquals('item_id', $filters['item_id'])
                         ->whereEquals('item_type', $filters['item_type'])
                         ->whereIn('state', $filters['state'])
@@ -199,7 +198,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
             case 'results':
             default:
                 if (!$this->comments || $clear) {
-                    $results = Components\Publications\Reviews\Models\Comment::all()
+                    $results = \Components\Publications\Reviews\Models\Comment::all()
                         ->whereEquals('parent', $filters['parent'])
                         ->whereEquals('item_id', $filters['item_id'])
                         ->whereEquals('item_type', $filters['item_type'])
@@ -232,7 +231,7 @@ class PublicationsModelReview extends \Hubzero\Base\Model
 
                 if ($content === null) {
                     $config = array(
-                        'option'   => $this->get('option', Request::getCmd('option', 'com_publications')),
+                        'option'   => $this->get('option', \Request::getCmd('option', 'com_publications')),
                         'scope'    => 'reviews',
                         'pagename' => $this->get('publication_id'),
                         'pageid'   => 0,
@@ -316,3 +315,5 @@ class PublicationsModelReview extends \Hubzero\Base\Model
         return $link;
     }
 }
+
+class_alias(__NAMESPACE__ . '\Review', 'PublicationsModelReview');

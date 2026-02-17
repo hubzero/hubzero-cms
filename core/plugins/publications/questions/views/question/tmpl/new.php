@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Generic.Files.LineLength.TooLong
 
 /**
