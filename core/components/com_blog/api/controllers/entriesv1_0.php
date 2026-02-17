@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 // phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 
 namespace Components\Blog\Api\Controllers;
@@ -22,8 +21,6 @@ use Route;
 use Event;
 use User;
 use Lang;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
 
 /**
  * API controller class for blog entries

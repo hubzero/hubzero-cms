@@ -18,9 +18,6 @@ $asset = new \Components\Courses\Models\Asset($id);
 $asset->set('section_id', $this->course->offering()->section()->get('id'));
 $toolAsset = $asset->loadHandler();
 $assets = array();
-include_once Component::path('com_projects') . '/models/orm/owner.php';
-include_once Component::path('com_projects') . '/models/orm/description/field.php';
-include_once Component::path('com_tools') . '/models/tool.php';
 $projects = \Components\Projects\Models\Orm\Owner::all()
     ->join('#__projects', 'projectid', '#__projects.id')
     ->whereEquals('userid', User::get('id'))

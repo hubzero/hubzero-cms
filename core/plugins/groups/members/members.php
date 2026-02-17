@@ -15,9 +15,9 @@ use Hubzero\Plugin\Plugin;
 // No direct access
 defined('_HZEXEC_') or die();
 
-// include role lib
-require_once Component::path('com_groups') . DS . 'models' . DS . 'role.php';
 use Components\Groups\Tables\Reason;
+use Components\Groups\Models\Role;
+use Components\Groups\Models\Member\Role as MemberRole;
 
 /**
  * Groups Plugin class for group members
@@ -847,7 +847,7 @@ class Members extends Plugin
                     $users_man[] = $uid;
                 }
 
-                Components\Groups\Models\Member\Role::destroyByUser($uid);
+                MemberRole::destroyByUser($uid);
 
                 // Log activity
                 $recipients = array(
@@ -1221,7 +1221,7 @@ class Members extends Plugin
     {
         if (!$role) {
             // load role object
-            $role = Components\Groups\Models\Role::oneOrNew(Request::getInt('role', 0));
+            $role = Role::oneOrNew(Request::getInt('role', 0));
         }
 
         // pass vars to view
@@ -1254,7 +1254,7 @@ class Members extends Plugin
         $fields['permissions'] = json_encode($fields['permissions']);
 
         // load role object
-        $role = Components\Groups\Models\Role::blank()->set($fields);
+        $role = Role::blank()->set($fields);
 
         // attempt to save new role
         if (!$role->save()) {
@@ -1313,7 +1313,7 @@ class Members extends Plugin
             return false;
         }
 
-        $role = Components\Groups\Models\Role::oneOrFail($role);
+        $role = Role::oneOrFail($role);
 
         if (!$role->destroy()) {
             $this->setError('An error occurred while trying to remove the member role. Please try again.');

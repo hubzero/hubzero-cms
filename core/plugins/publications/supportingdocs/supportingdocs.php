@@ -3,14 +3,11 @@ namespace Plugins\Publications\Supportingdocs;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
 
 /**
  * Publications Plugin class for supporting docs
@@ -100,9 +97,6 @@ class Supportingdocs extends Plugin
                     'order' => 'a.role DESC, a.ordering ASC'
                 )
             );
-
-            // Get projects html helper
-            require_once Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
 
             // Build publication path
             $path = \Components\Publications\Helpers\Html::buildPubPath(

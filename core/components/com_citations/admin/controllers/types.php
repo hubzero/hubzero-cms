@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,8 +7,6 @@
  */
 
 namespace Components\Citations\Admin\Controllers;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'type.php';
 
 use Hubzero\Component\AdminController;
 use Components\Citations\Models\Type;

@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,9 +12,6 @@ use Hubzero\Database\Relational;
 use Components\Groups\Models\Orm\Answer;
 use Date;
 use User;
-
-include_once __DIR__ . DS . 'option.php';
-include_once __DIR__ . DS . 'answer.php';
 
 /**
  * Group description field model

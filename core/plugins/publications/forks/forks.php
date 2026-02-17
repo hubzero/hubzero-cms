@@ -3,14 +3,11 @@ namespace Plugins\Publications\Forks;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
 
 /**
  * Publications Plugin class for forks
@@ -229,11 +226,8 @@ class Forks extends Plugin
      */
     private function fork($publication)
     {
-        // Load classes
-        require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
-
         // Model
-        $model = new Components\Projects\Models\Project();
+        $model = new \Components\Projects\Models\Project();
 
         // Set filters
         $filters = array(

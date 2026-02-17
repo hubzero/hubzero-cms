@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,10 +20,6 @@ use Config;
 use Lang;
 use User;
 use Date;
-
-include_once dirname(__DIR__) . '/orm/group.php';
-include_once dirname(__DIR__) . '/orm/field.php';
-include_once dirname(__DIR__) . '/tags.php';
 
 /**
  * Member Record importer

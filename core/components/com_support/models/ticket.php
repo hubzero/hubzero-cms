@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,15 +11,6 @@ namespace Components\Support\Models;
 use Hubzero\Database\Relational;
 use Components\Support\Helpers\ACL;
 use App;
-
-require_once __DIR__ . DS . 'comment.php';
-require_once __DIR__ . DS . 'status.php';
-require_once __DIR__ . DS . 'category.php';
-require_once __DIR__ . DS . 'watching.php';
-require_once __DIR__ . DS . 'tags.php';
-require_once __DIR__ . DS . 'message.php';
-require_once __DIR__ . DS . 'queryfolder.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'acl.php';
 
 /**
  * Support ticket model

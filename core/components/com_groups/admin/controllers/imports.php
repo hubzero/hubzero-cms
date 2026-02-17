@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,9 +22,6 @@ use User;
 use Date;
 use Lang;
 use App;
-
-include_once dirname(dirname(__DIR__)) . '/models/orm/group.php';
-include_once dirname(dirname(__DIR__)) . '/models/import.php';
 
 /**
  * Member importer
@@ -587,8 +583,6 @@ class Imports extends AdminController
             array_push($row, $example);
             array_push($fields, $key);
         }
-
-        include_once dirname(dirname(__DIR__)) . '/models/orm/field.php';
 
         $attribs = \Components\Groups\Models\Orm\Field::all()
             ->including(['options', function ($option) {

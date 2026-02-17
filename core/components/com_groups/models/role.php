@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,8 +11,6 @@ namespace Components\Groups\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Hubzero\User\Group;
-
-include_once __DIR__ . DS . 'member' . DS . 'role.php';
 
 /**
  * Group role

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,10 +18,6 @@ use Request;
 use Route;
 use Lang;
 use App;
-
-require_once \Component::path('com_cart') . DS . 'helpers' . DS . 'Download.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php';
 
 /**
  * Controller class for knowledge base categories

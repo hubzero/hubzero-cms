@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +11,6 @@ namespace Components\Storefront\Admin\Controllers;
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Collection;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php';
 
 /**
  * Controller class for storefront collections

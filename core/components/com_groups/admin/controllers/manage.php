@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,8 +26,6 @@ use Lang;
 use User;
 use Date;
 use App;
-
-include_once dirname(dirname(__DIR__)) . '/models/orm/field.php';
 
 /**
  * Groups controller class for managing membership and group info

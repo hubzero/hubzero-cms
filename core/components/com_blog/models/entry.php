@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Blog\Models;
 
 use Hubzero\Database\Relational;
@@ -19,9 +17,6 @@ use Lang;
 use User;
 use Date;
 use stdClass;
-
-require_once __DIR__ . DS . 'tags.php';
-require_once __DIR__ . DS . 'comment.php';
 
 /**
  * Model class for a blog entry
@@ -305,8 +300,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     public function creator()
     {
         if (file_exists(Component::path('com_members') . DS . 'models' . DS . 'member.php')) {
-            include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
             return $this->belongsToOne('Components\Members\Models\Member', 'created_by');
         }
         return $this->belongsToOne('Hubzero\User\User', 'created_by');

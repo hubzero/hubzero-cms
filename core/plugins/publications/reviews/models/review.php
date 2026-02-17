@@ -10,7 +10,6 @@
 
 namespace Plugins\Publications\Reviews\Models;
 
-require_once \Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
 require_once __DIR__ . '/comment.php';
 
 /**

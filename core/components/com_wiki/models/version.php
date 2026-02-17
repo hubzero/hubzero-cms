@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +12,6 @@ use Components\Wiki\Helpers\Parser;
 use Hubzero\Database\Relational;
 use Lang;
 use Date;
-
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Wiki model for a page version

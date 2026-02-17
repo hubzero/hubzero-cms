@@ -6,16 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Blog\Models\Adapters;
 
 use Hubzero\User\User;
 use Hubzero\Utility\Str;
 use Plugin;
 use Date;
-
-require_once __DIR__ . DS . 'base.php';
 
 /**
  * Adapter class for an entry link for member blog

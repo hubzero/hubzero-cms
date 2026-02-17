@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,8 +14,6 @@ use Hubzero\Content\Import\Model\Import as Base;
 use Hubzero\Content\Importer;
 use Hubzero\Utility\Sanitize;
 use stdClass;
-
-include_once __DIR__ . DS . 'import' . DS . 'record.php';
 
 /**
  * Member importer
@@ -312,8 +309,6 @@ class Import extends Base
     public function fieldMap()
     {
         if (!$this->mapped) {
-            include_once __DIR__ . DS . 'orm' . DS . 'field.php';
-
             $fields = Field::all()
                 ->ordered()
                 ->rows();

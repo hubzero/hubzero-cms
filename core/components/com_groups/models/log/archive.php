@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,9 +12,6 @@ use Components\Groups\Tables;
 use Components\Groups\Models\Log;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
-
-// include needed models
-require_once dirname(__DIR__) . DS . 'log.php';
 
 /**
  * Group log archive model class

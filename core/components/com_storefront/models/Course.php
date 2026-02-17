@@ -8,15 +8,8 @@
 
 namespace Components\Storefront\Models;
 
-// phpcs:disable PSR1.Files.SideEffects
-
 // No direct access
 defined('_HZEXEC_') or die();
-
-
-require_once __DIR__ . DS . 'SingleSkuProduct.php';
-require_once __DIR__ . DS . 'CourseOffering.php';
-require_once __DIR__ . DS . 'Warehouse.php';
 
 /**
  *

@@ -15,7 +15,7 @@ use Hubzero\Plugin\Plugin;
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
+use Components\Resources\Models\Entry;
 
 /**
  * Groups Plugin class for resources
@@ -386,9 +386,9 @@ class Resources extends Plugin
             // Loop through all the IDs for resources associated with this group
             foreach ($ids as $id) {
                 // Disassociate the resource from the group and unpublish it
-                $rr = Components\Resources\Models\Entry::oneOrFail($id->id);
+                $rr = Entry::oneOrFail($id->id);
                 $rr->set('group_owner', '');
-                $rr->set('published', Components\Resources\Models\Entry::STATE_UNPUBLISHED);
+                $rr->set('published', Entry::STATE_UNPUBLISHED);
                 $rr->save();
 
                 // Add the page ID to the log
@@ -426,7 +426,7 @@ class Resources extends Plugin
         }
         $database = App::get('db');
 
-        $rr = \Components\Resources\Models\Entry::blank();
+        $rr = Entry::blank();
 
         $sql = "SELECT id FROM " . $rr->getTableName() . " AS r "
             . "WHERE r.group_owner=" . $database->quote($gid);
@@ -570,7 +570,7 @@ class Resources extends Plugin
             // Get results
 
             if (isset($filters['group_cn'])) {
-                     $rows = Components\Resources\Models\Entry::allWithFilters($filters)
+                     $rows = Entry::allWithFilters($filters)
                      ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
                      ->whereEquals('#__resources' . '.group_owner', (string) $filters['group_cn'], 1)
                      ->orWhereEquals('#__resource_acl_group.group_id', $filters['group_id'], 1)
@@ -580,7 +580,7 @@ class Resources extends Plugin
                      ->start($limitstart)
                      ->rows();
             } else {
-                     $rows = Components\Resources\Models\Entry::allWithFilters($filters)
+                     $rows = Entry::allWithFilters($filters)
                      ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
                      ->whereEquals('#__resource_acl_group.group_id', $filters['group_id'])
                      ->order($filters['sortby'], $filters['sortdir'])
@@ -661,7 +661,7 @@ class Resources extends Plugin
      */
     public static function allWithFilters($filters = array())
     {
-        $query = \Components\Resources\Models\Entry::all();
+        $query = Entry::all();
 
         $r = $query->getTableName();
         $a = \Components\Resources\Models\Author::blank()->getTableName();

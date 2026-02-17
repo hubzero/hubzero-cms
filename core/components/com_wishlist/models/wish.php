@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,13 +12,6 @@ use Hubzero\Database\Relational;
 use User;
 use Lang;
 use Date;
-
-require_once __DIR__ . DS . 'attachment.php';
-require_once __DIR__ . DS . 'comment.php';
-require_once __DIR__ . DS . 'tags.php';
-require_once __DIR__ . DS . 'plan.php';
-require_once __DIR__ . DS . 'vote.php';
-require_once __DIR__ . DS . 'rank.php';
 
 /**
  * Model class for a wishlist item

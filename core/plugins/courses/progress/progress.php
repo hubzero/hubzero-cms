@@ -3,14 +3,11 @@ namespace Plugins\Courses\Progress;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-require_once Component::path('com_courses') . DS . 'models' . DS . 'gradepolicies.php';
-require_once Component::path('com_courses') . DS . 'models' . DS . 'gradebook.php';
 
 /**
  * Courses Plugin class for user progress
@@ -172,8 +169,6 @@ class Progress extends Plugin
         $layout = 'assessmentdetails_partial';
 
         $asset_id = Request::getInt('asset_id', false);
-
-        require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
 
         $this->view->details = \Components\Courses\Models\FormReport::getLetterResponseCountsForAssetId(
             $this->db,
@@ -552,8 +547,6 @@ class Progress extends Plugin
      **/
     private function downloadresponses()
     {
-        require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
-
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
             App::abort(403, 'Sorry, you don\'t have permission to do this');

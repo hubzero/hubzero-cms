@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +11,6 @@ namespace Components\Tags\Models;
 use Hubzero\Component\View;
 use User;
 use Date;
-
-require_once __DIR__ . DS . 'tag.php';
 
 /**
  * Cloud model for Tags

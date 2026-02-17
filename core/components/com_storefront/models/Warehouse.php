@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,13 +16,6 @@ use Components\Storefront\Models\Sku;
 use Components\Storefront\Models\Coupon;
 use Components\Storefront\Models\Collection;
 use Lang;
-
-require_once __DIR__ . DS . 'Product.php';
-require_once __DIR__ . DS . 'Course.php';
-require_once __DIR__ . DS . 'CourseOffering.php';
-require_once __DIR__ . DS . 'Sku.php';
-require_once __DIR__ . DS . 'Coupon.php';
-require_once __DIR__ . DS . 'Collection.php';
 
 /**
  *

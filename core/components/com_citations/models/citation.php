@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,17 +16,6 @@ use stdClass;
 use Request;
 use Route;
 use User;
-
-require_once __DIR__ . DS . 'association.php';
-require_once __DIR__ . DS . 'author.php';
-require_once __DIR__ . DS . 'format.php';
-require_once __DIR__ . DS . 'link.php';
-require_once __DIR__ . DS . 'secondary.php';
-require_once __DIR__ . DS . 'sponsor.php';
-require_once __DIR__ . DS . 'type.php';
-require_once \Component::path('com_tags') . DS . 'models' . DS . 'tag.php';
-require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-require_once \Component::path('com_publications') . DS . 'models' . DS . 'orm' . DS . 'publication.php';
 
 /**
  * Hubs database model

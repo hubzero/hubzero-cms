@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,9 +18,6 @@ use Config;
 use Route;
 use Lang;
 use User;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'acl.php';
 
 /**
  * API controller class for support tickets

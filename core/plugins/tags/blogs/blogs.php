@@ -4,8 +4,6 @@ namespace Plugins\Tags\Blogs;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -138,8 +136,6 @@ class Blogs extends Plugin
      */
     public static function out($row)
     {
-        include_once \Component::path('com_blog') . DS . 'models' . DS . 'entry.php';
-
         $row->scope    = $row->rcount;
         $row->scope_id = $row->data2;
         $row->content  = $row->ftext;

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,9 +11,6 @@ namespace Components\Support\Api\Controllers;
 use Components\Support\Models\Criterion;
 use Hubzero\Component\ApiController;
 use Component;
-
-require_once Component::path('com_support') . '/models/criterion.php';
-require_once Component::path('com_support') . '/helpers/acl.php';
 
 /**
  * API controller class for outstanding support tickets

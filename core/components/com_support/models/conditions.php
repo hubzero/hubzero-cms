@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,10 +16,6 @@ use stdClass;
 use Component;
 use User;
 use Lang;
-
-include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
-include_once __DIR__ . DS . 'status.php';
-include_once __DIR__ . DS . 'category.php';
 
 /*
  * Support model class for query conditions

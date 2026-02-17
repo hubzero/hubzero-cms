@@ -15,13 +15,6 @@ use Hubzero\Plugin\Plugin;
 // No direct access
 defined('_HZEXEC_') or die();
 
-// include needed libs
-require_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'tag.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'tagobject.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'importer.php';
-
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Cloud;

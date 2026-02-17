@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,15 +15,6 @@ use stdClass;
 use Event;
 use Lang;
 use Date;
-
-require_once __DIR__ . DS . 'invitee.php';
-require_once __DIR__ . DS . 'applicant.php';
-require_once __DIR__ . DS . 'member.php';
-require_once __DIR__ . DS . 'manager.php';
-require_once __DIR__ . DS . 'page.php';
-require_once __DIR__ . DS . 'module.php';
-require_once __DIR__ . DS . 'role.php';
-require_once __DIR__ . DS . 'log.php';
 
 /**
  * Group model

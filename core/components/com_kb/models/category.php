@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +9,6 @@
 namespace Components\Kb\Models;
 
 use Hubzero\Database\Relational;
-
-require_once __DIR__ . DS . 'article.php';
 
 /**
  * Knowledgebase model for a category

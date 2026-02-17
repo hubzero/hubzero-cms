@@ -15,10 +15,6 @@ use Hubzero\Plugin\Plugin;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$pluginDirectory = __DIR__;
-
-require_once "$pluginDirectory/helpers/userLocalizer.php";
-
 /**
  * Groups Plugin class for calendar
  *

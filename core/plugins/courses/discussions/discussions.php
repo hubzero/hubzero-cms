@@ -3,7 +3,6 @@ namespace Plugins\Courses\Discussions;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +14,6 @@ use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
-require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 /**
  * Courses Plugin class for forum entries
@@ -130,8 +128,6 @@ class Discussions extends Plugin
             return;
         }
 
-        require_once \Component::path('com_courses') . DS . 'models' . DS . 'unit.php';
-
         // Load the parent unit
         $unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
 
@@ -211,8 +207,6 @@ class Discussions extends Plugin
         if (!$assetgroup->exists()) {
             return;
         }
-
-        require_once \Component::path('com_courses') . DS . 'models' . DS . 'unit.php';
 
         $unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
 

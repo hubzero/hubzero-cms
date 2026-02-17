@@ -3,14 +3,11 @@ namespace Plugins\Publications\Questions;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
 
 /**
  * Publications Plugin class for questions
@@ -78,9 +75,6 @@ class Questions extends Plugin
 
         $this->publication = $publication;
         $this->option      = $option;
-
-        // Get a needed library
-        require_once Component::path('com_answers') . DS . 'models' . DS . 'question.php';
 
         // Get all the questions for this publication
         $this->filters = array(
