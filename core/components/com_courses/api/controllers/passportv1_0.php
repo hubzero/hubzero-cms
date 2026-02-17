@@ -17,9 +17,6 @@ use User;
 use App;
 use Date;
 
-require_once __DIR__ . DS . 'base.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section' . DS . 'badge.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'memberBadge.php';
 
 /**

@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models\Item;
 
 use Hubzero\User\Group;
@@ -16,8 +15,6 @@ use Components\Wiki\Models\Page;
 use Request;
 use Route;
 use Lang;
-
-require_once dirname(__DIR__) . DS . 'item.php';
 
 /**
  * Collections model for an item

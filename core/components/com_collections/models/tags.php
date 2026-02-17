@@ -6,15 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models;
 
 use Hubzero\Base\ItemList;
 use Components\Tags\Models\Cloud;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Objct;
-
-require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Collections Tagging class

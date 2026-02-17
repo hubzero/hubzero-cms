@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,15 +12,9 @@ use Components\Courses\Tables;
 use Hubzero\Config\Registry;
 
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'grade.book.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'member.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'progress.factors.php';
-require_once __DIR__ . DS . 'base.php';
-require_once __DIR__ . DS . 'gradepolicies.php';
 require_once __DIR__ . DS . 'memberBadge.php';
-require_once __DIR__ . DS . 'section' . DS . 'badge.php';
-require_once __DIR__ . DS . 'form.php';
 require_once __DIR__ . DS . 'formRespondent.php';
 require_once __DIR__ . DS . 'formDeployment.php';
 

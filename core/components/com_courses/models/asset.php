@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,11 +18,6 @@ use Lang;
 use App;
 
 require_once Component::path('com_courses') . '/tables/asset.association.php';
-require_once Component::path('com_courses') . '/tables/asset.php';
-require_once Component::path('com_courses') . '/models/assets/handler.php';
-require_once Component::path('com_courses') . '/models/assets/content.php';
-require_once Component::path('com_courses') . '/models/base.php';
-require_once Component::path('com_courses') . '/models/section/date.php';
 
 /**
  * Asset model class for a course

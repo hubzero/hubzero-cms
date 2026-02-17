@@ -6,11 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models\Following;
-
-require_once __DIR__ . DS . 'base.php';
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Model class for following a member

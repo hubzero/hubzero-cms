@@ -22,18 +22,7 @@ use User;
 use App;
 use Hubzero\User\Group;
 
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php';
 include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php';
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php';
-
-include_once Component::path('com_support') . DS . 'helpers' . DS . 'utilities.php';
-include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
-
-require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-include_once Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
 
 /**
  * Controller class for contributing a tool

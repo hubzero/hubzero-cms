@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models;
 
 use Components\Members\Models\Member;
@@ -19,11 +18,6 @@ use Request;
 use Date;
 use User;
 use Lang;
-
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'item.php';
-require_once __DIR__ . DS . 'asset.php';
-require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Collections model for an item

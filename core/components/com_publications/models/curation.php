@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,20 +18,9 @@ use Lang;
 use User;
 use Date;
 
-// Include building blocks
-include_once __DIR__ . DS . 'blocks.php';
-include_once __DIR__ . DS . 'status.php';
-include_once __DIR__ . DS . 'attachments.php';
-include_once __DIR__ . DS . 'blockelements.php';
-include_once __DIR__ . DS . 'handlers.php';
-
-// Include tables
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'curation.php';
+// Include table classes with dotted filenames (not autoloadable)
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'curation.history.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'curation.version.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'block.php';
-
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
 
 /**
  * Publications curation class

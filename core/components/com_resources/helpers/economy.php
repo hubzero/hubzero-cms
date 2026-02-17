@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +12,6 @@ use Hubzero\Base\Obj;
 use Hubzero\Bank\Teller;
 use User;
 use Lang;
-
-include_once __DIR__ . DS . 'economy' . DS . 'reviews.php';
 
 /**
  * Resources Economy class:

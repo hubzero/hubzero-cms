@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,9 +17,6 @@ use Route;
 use Lang;
 use Html;
 use App;
-
-// Course model pulls in other classes we need
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 /**
  * Courses controller class for managing course pages

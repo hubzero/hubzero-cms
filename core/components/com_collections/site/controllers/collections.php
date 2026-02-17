@@ -6,10 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Site\Controllers;
-
-require_once Component::path('com_collections') . '/models/orm/post.php';
 
 use Components\Collections\Models\Collection;
 use Components\Collections\Models\Orm\Post;

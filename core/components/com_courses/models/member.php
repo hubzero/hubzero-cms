@@ -12,11 +12,7 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'member.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'role.php';
-require_once __DIR__ . DS . 'base.php';
 require_once __DIR__ . DS . 'memberBadge.php';
-require_once __DIR__ . DS . 'prerequisite.php';
 
 /**
  * Member model class for a course

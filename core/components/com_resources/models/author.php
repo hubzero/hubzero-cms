@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,10 +10,6 @@ namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
 use Components\Members\Models\Member;
-
-require_once __DIR__ . DS . 'author' . DS . 'role.php';
-require_once __DIR__ . DS . 'author' . DS . 'role' . DS . 'type.php';
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Resource license model

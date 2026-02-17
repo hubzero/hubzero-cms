@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,9 +13,6 @@ use Components\Projects\Helpers;
 use Component;
 use Filesystem;
 use Lang;
-
-// Get git helper
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'githelper.php';
 
 /**
  * Projects Git adapter class

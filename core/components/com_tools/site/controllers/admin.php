@@ -1,6 +1,4 @@
 <?php
-// phpcs:ignoreFile PSR1.Files.SideEffects.FoundWithSymbols -- has require_once statements
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,10 +16,6 @@ use Lang;
 use User;
 use Log;
 use App;
-
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php';
 
 /**
  * Controller class for contributing a tool

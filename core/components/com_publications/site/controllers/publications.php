@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,10 +7,6 @@
  */
 
 namespace Components\Publications\Site\Controllers;
-
-$componentPath = Component::path('com_publications');
-
-require_once "$componentPath/models/bundle.php";
 
 use Hubzero\Component\SiteController;
 use Hubzero\Pagination\Paginator;

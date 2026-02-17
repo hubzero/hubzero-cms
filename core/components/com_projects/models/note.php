@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,10 +9,6 @@
 namespace Components\Projects\Models;
 
 use Components\Projects\Tables;
-
-include_once \Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
-include_once \Component::path('com_wiki') . DS . 'helpers' . DS . 'editor.php';
-include_once \Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
 
 /**
  * Project Note model

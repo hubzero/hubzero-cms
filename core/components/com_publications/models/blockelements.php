@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,9 +10,6 @@ namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
 use Filesystem;
-
-include_once dirname(__FILE__) . DS . 'blockelement.php';
-include_once dirname(__FILE__) . DS . 'status.php';
 
 /**
  * Publications block elements class

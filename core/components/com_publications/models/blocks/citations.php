@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,9 +10,6 @@ namespace Components\Publications\Models\Block;
 
 use Components\Publications\Models\Block as Base;
 use stdClass;
-
-include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
 /**
  * Citations block

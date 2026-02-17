@@ -6,15 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models\Item;
 
 use Components\Collections\Models\Item as GenericItem;
 use Components\Forum\Models\Post;
 use Request;
 use Lang;
-
-require_once dirname(__DIR__) . DS . 'item.php';
 
 /**
  * Collections model for an item

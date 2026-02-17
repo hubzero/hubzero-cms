@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,10 +14,6 @@ use Components\Tools\Helpers\Utils;
 use Hubzero\Geocode\Geocode;
 use Hubzero\Base\ItemList;
 use Hubzero\Base\Obj;
-
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php';
-require_once __DIR__ . DS . 'middleware' . DS . 'zone.php';
-require_once __DIR__ . DS . 'middleware' . DS . 'session.php';
 
 /**
  * Tools middleware model

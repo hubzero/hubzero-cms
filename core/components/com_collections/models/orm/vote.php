@@ -6,12 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
-
-require_once __DIR__ . DS . 'item.php';
 
 /**
  * Collection vote model

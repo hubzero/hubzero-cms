@@ -1,7 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,10 +16,6 @@ use Route;
 use Lang;
 use User;
 use App;
-
-require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-require_once Component::path('com_resources') . DS . 'helpers' . DS . 'utilities.php';
-require_once Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
 
 /**
  * Methods for listing and managing files and folders

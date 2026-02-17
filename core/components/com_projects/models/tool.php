@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,15 +8,10 @@
 
 namespace Components\Projects\Models;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.instance.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.status.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.log.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.view.php';
-require_once __DIR__ . DS . 'tool' . DS . 'instance.php';
-require_once __DIR__ . DS . 'tool' . DS . 'log.php';
-require_once __DIR__ . DS . 'tool' . DS . 'status.php';
-require_once __DIR__ . DS . 'tool' . DS . 'view.php';
 
 use Hubzero\Base\Model;
 use Components\Projects\Tables;

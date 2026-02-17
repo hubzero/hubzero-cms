@@ -6,15 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models;
 
 use Hubzero\Utility\Str;
 use Request;
 use Lang;
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'post.php';
-require_once __DIR__ . DS . 'item.php';
 
 /**
  * Collections model for a post

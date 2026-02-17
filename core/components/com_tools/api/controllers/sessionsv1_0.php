@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,11 +16,6 @@ use stdClass;
 use Request;
 use Lang;
 use User;
-
-$componentPath = Component::path('com_tools');
-
-include_once "$componentPath/helpers/utils.php";
-include_once "$componentPath/models/tool.php";
 
 /**
  * API controller class for tool sessions

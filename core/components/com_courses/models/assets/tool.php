@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,15 +8,13 @@
 
 namespace Components\Courses\Models\Assets;
 
-require_once \Component::path('com_projects') . '/models/project.php';
-require_once \Component::path('com_projects') . '/models/orm/connection.php';
-
 use Component;
 use Request;
 use Components\Projects\Models\Project;
 use Components\Projects\Models\Orm\Connection;
 use Hubzero\Filesystem\Entity;
 use Hubzero\Filesystem\Manager;
+
 /**
  * Tool asset handler class
  */

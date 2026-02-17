@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Resources\Helpers;
 
 use Document;
@@ -15,8 +13,6 @@ use Pathway;
 use Lang;
 use User;
 use Date;
-
-include_once __DIR__ . DS . 'tags.php';
 
 /**
  * Resources helper class for misc. HTML and display

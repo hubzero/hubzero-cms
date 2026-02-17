@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,10 +10,6 @@ namespace Components\Courses\Models;
 
 use Components\Courses\Tables;
 use Hubzero\Base\Obj;
-
-require_once __DIR__ . DS . 'course.php';
-require_once __DIR__ . DS . 'iterator.php';
-require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Courses model class for a course

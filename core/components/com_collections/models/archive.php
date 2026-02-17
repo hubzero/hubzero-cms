@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models;
 
 use Components\Collections\Tables;
@@ -15,10 +14,6 @@ use Hubzero\Base\ItemList;
 use Hubzero\Plugin\Params;
 use User;
 use Lang;
-
-require_once __DIR__ . DS . 'post.php';
-require_once __DIR__ . DS . 'following.php';
-require_once __DIR__ . DS . 'collection.php';
 
 /**
  * Collections archive model

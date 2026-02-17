@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Api\Controllers;
 
 use Components\Collections\Models\Archive;
@@ -20,8 +19,6 @@ use stdClass;
 use Request;
 use Route;
 use Lang;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
 
 /**
  * API controller class for collection posts

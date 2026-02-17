@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,13 +12,6 @@ use Hubzero\Config\Registry;
 use Components\Courses\Tables;
 use Lang;
 use Date;
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'section.php';
-require_once __DIR__ . DS . 'base.php';
-require_once __DIR__ . DS . 'section' . DS . 'code.php';
-require_once __DIR__ . DS . 'section' . DS . 'date.php';
-require_once __DIR__ . DS . 'section' . DS . 'badge.php';
-require_once __DIR__ . DS . 'member.php';
 
 /**
  * Courses model class for a course

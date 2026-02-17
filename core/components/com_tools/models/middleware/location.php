@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,9 +7,6 @@
  */
 
 namespace Components\Tools\Models\Middleware;
-
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'zonelocations.php';
-require_once __DIR__ . DS . 'base.php';
 
 /**
  * Middleware zone location model

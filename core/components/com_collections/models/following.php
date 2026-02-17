@@ -6,13 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models;
 
 use Hubzero\Base\Model;
 use Lang;
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'following.php';
 
 /**
  * Collections model class for following something/one

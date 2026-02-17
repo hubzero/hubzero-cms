@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,33 +19,9 @@ use User;
 use Date;
 use Lang;
 
-// Include table classes
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'publication.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'access.php';
+// Include table classes with dotted filenames (not autoloadable)
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'author.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'license.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'logs.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'collaborator.php';
-
-// Projects
-require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
-require_once \Component::path('com_projects') . DS . 'models' . DS . 'repo.php';
-
-// Common models
-require_once __DIR__ . DS . 'curation.php';
-require_once __DIR__ . DS . 'doi.php';
-
-// Helpers
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
 
 /**
  * Information retrieval for items/info linked to a publication

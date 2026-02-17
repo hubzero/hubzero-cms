@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +8,6 @@
 
 namespace Components\Courses\Site\Controllers;
 
-require_once Component::path('com_courses') . '/models/assets/tool.php';
 use Components\Courses\Models\Assets\Tool;
 use Components\Courses\Models;
 use Hubzero\Component\SiteController;

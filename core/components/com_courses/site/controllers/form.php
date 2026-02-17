@@ -22,8 +22,6 @@ use Lang;
 use Date;
 use App;
 
-// Include required forms models
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'form.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'form.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'formRespondent.php';
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'formDeployment.php';

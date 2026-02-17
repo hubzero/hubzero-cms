@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +12,6 @@ use Hubzero\Content\Server;
 use Request;
 use App;
 use Config;
-
-require_once __DIR__ . DS . 'base.php';
 
 /**
  * API controller for the time component

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,13 +13,6 @@ use Hubzero\Base\ItemList;
 use Hubzero\User\Group;
 use User;
 use Lang;
-
-$base = dirname(dirname(__DIR__));
-require_once $base . DS . 'models' . DS . 'middleware' . DS . 'base.php';
-require_once $base . DS . 'tables' . DS . 'session.php';
-require_once $base . DS . 'tables' . DS . 'view.php';
-require_once $base . DS . 'tables' . DS . 'viewperm.php';
-require_once $base . DS . 'tables' . DS . 'job.php';
 
 /**
  * Middleware model for a tool session

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,8 +17,6 @@ use Request;
 use Config;
 use Route;
 use Lang;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'publication.php';
 
 /**
  * API controller for the publications component

@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
-
 namespace Components\Courses\Tests\Helpers;
 
 use Hubzero\Test\Basic;

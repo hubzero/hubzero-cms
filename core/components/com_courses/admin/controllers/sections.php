@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,11 +16,6 @@ use Config;
 use Route;
 use Date;
 use Lang;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'section' . DS . 'badge.php';
 
 /**
  * Courses controller class for managing sections

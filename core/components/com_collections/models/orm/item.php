@@ -6,17 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
 use Hubzero\Item\Comment;
 use Lang;
 use Date;
-
-require_once __DIR__ . DS . 'asset.php';
-require_once __DIR__ . DS . 'vote.php';
-require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Collection item model

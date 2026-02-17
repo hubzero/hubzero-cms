@@ -6,12 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Collections\Models\Adapters;
 
 use Lang;
-
-require_once __DIR__ . DS . 'base.php';
 
 /**
  * Adapter class for an entry link for the group blog

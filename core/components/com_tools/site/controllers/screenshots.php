@@ -23,9 +23,6 @@ use User;
 use App;
 
 include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for contributing a tool
