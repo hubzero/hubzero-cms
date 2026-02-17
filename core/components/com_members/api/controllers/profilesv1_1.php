@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Members\Api\Controllers;
 
 use Hubzero\Component\ApiController;
@@ -22,10 +21,6 @@ use Lang;
 use User;
 use App;
 use Date;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters.php';
 
 /**
  * Members API controller class
@@ -404,7 +399,6 @@ class Profilesv1_1 extends ApiController
             $profile[$key] = $val;
         }
 
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tags.php';
         $cloud = new \Components\Members\Models\Tags($userid);
 
         foreach ($cloud->tags('list') as $i => $tag) {

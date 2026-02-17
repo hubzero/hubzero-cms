@@ -25,9 +25,6 @@ use App;
 use Notify;
 use Session;
 
-include_once dirname(dirname(__DIR__)) . '/models/orm/group.php';
-include_once dirname(dirname(__DIR__)) . '/models/import.php';
-
 /**
  * Member importer
  */
@@ -588,8 +585,6 @@ class Imports extends AdminController
             array_push($row, $example);
             array_push($fields, $key);
         }
-
-        include_once dirname(dirname(__DIR__)) . '/models/orm/field.php';
 
         $attribs = \Components\Groups\Models\Orm\Field::all()
             ->including(['options', function ($option) {

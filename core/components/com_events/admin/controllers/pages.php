@@ -19,8 +19,6 @@ use Lang;
 use Date;
 use App;
 
-require_once dirname(dirname(__DIR__)) . '/models/orm/event.php';
-
 /**
  * Events controller for pages
  */

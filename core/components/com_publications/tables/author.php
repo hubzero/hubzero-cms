@@ -13,8 +13,6 @@ use Lang;
 use Date;
 use User;
 
-require_once \Component::path('com_members') . '/models/member.php';
-
 /**
  * Table class for publication author
  */
@@ -502,8 +500,6 @@ class Author extends Table
         if (!$author) {
             return false;
         }
-
-        require_once \Component::path('com_projects') . DS . 'tables' . DS . 'owner.php';
 
         // Get project owner info
         $objO = new \Components\Projects\Tables\Owner($this->_db);

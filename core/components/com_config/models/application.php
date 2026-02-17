@@ -21,8 +21,6 @@ use Lang;
 use User;
 use App;
 
-include_once __DIR__ . '/extension.php';
-
 /**
  * Model class for Application config
  */

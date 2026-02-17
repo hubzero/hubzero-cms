@@ -9,10 +9,6 @@
 // Include [temporary] ORM models (these will be merged with existing models at some point in the future)
 namespace Plugins\Projects\Files;
 
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'project.php';
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'provider.php';
-
 use Components\Projects\Models\Orm\Project;
 use Components\Projects\Models\Orm\Connection;
 use Components\Projects\Models\Orm\Provider;

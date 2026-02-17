@@ -69,8 +69,6 @@ class Profile extends Plugin
             }
         }
 
-        include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
-
         $arr = array(
             'html' => '',
             'metadata' => ''
@@ -297,7 +295,6 @@ class Profile extends Plugin
      */
     public function editAddress($address = null)
     {
-        include_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
         // get member addresses
         if (!$address) {
@@ -323,7 +320,6 @@ class Profile extends Plugin
      */
     public function saveAddress()
     {
-        include_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
         // get request vars
         $data = Request::getArray('address', array());
@@ -355,7 +351,6 @@ class Profile extends Plugin
      */
     public function deleteAddress()
     {
-        include_once Component::path('com_members') . DS . 'models' . DS . 'address.php';
 
         // get request vars
         $addressId = Request::getInt('addressid', 0);

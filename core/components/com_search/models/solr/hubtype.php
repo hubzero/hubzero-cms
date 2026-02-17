@@ -59,8 +59,6 @@ class HubType extends Relational
      */
     public function structure()
     {
-        require_once PATH_ROOT . DS . $this->get('file_path');
-
         $classpath = $this->get('class_path');
 
         if (strpos($classpath, 'Tables') === false) {

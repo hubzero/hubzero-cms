@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,8 +10,6 @@ namespace Components\Forum\Models\Adapters;
 
 use Hubzero\Utility\Str;
 use Request;
-
-require_once __DIR__ . DS . 'base.php';
 
 /**
  * Adapter class for a forum post link for course forum
@@ -38,8 +35,6 @@ class Course extends Base
     public function __construct($scope_id = 0)
     {
         $this->set('scope_id', $scope_id);
-
-        include_once \Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
 
         $offering = \Components\Courses\Models\Offering::getInstance($this->get('scope_id'));
         $course   = \Components\Courses\Models\Course::getInstance($offering->get('course_id'));

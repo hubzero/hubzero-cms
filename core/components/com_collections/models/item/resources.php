@@ -14,8 +14,6 @@ use Request;
 use Route;
 use Lang;
 
-require_once dirname(__DIR__) . DS . 'item.php';
-
 /**
  * Collections model for an item
  */
@@ -77,7 +75,6 @@ class Resources extends GenericItem
 
         $id = ($id ?: Request::getInt('id', 0));
 
-        include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
         $resource = null;
 
         if (!$id) {

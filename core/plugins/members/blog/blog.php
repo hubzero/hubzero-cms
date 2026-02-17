@@ -68,8 +68,6 @@ class Blog extends Plugin
             'metadata' => array()
         );
 
-        include_once \Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
-
         // Get our model
         $this->model = new \Components\Blog\Models\Archive('member', $member->get('id'));
 
@@ -902,7 +900,6 @@ class Blog extends Plugin
         ) {
             try {
                 // Mark all content as trashed
-                include_once \Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
                 $entries = \Components\Blog\Models\Entry::all()
                     ->whereEquals('created_by', $user['id'])
@@ -941,8 +938,6 @@ class Blog extends Plugin
 
         if ($userId) {
             try {
-                include_once \Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
-
                 $entries = \Components\Blog\Models\Entry::all()
                     ->whereEquals('created_by', $user['id'])
                     ->rows();

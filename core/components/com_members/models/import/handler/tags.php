@@ -6,13 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Members\Models\Import\Handler;
 
 use Hubzero\Base\Obj;
 use User;
-
-include_once dirname(dirname(__DIR__)) . '/tags.php';
 
 /**
  * Member Tags import handler

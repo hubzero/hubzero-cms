@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,8 +15,6 @@ use App;
 use Lang;
 use Pathway;
 use Route;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
 
 /**
  * Cart controller class

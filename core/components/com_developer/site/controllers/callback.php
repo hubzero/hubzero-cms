@@ -8,9 +8,6 @@
 
 namespace Components\Developer\Site\Controllers;
 
-require_once \Component::path('com_projects') . '/models/orm/connection.php';
-require_once PATH_CORE . '/plugins/filesystem/dropbox/helpers/dropboxOauthClient.php';
-
 use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Hubzero\Component\SiteController;
 use Hubzero\Session;
@@ -142,8 +139,6 @@ class Callback extends SiteController
         if ($state != Session::get('globus.state')) {
             throw new \Exception("State mismatch", 500);
         }
-
-        require_once PATH_CORE . '/plugins/authentication/globus/Provider/Globus.php';
 
         $provider = new \Globus\OAuth2\Client\Provider\Globus([
             'clientId'     => $params->get('app_id'),

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,8 +16,6 @@ use Route;
 use Lang;
 use User;
 use App;
-
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'status.php';
 
 /**
  * Controller class for contributing a tool

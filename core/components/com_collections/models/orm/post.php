@@ -15,9 +15,6 @@ use stdClass;
 use Request;
 use Route;
 
-require_once __DIR__ . DS . 'item.php';
-require_once __DIR__ . DS . 'collection.php';
-
 /**
  * Collection post model
  */

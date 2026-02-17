@@ -28,7 +28,6 @@ class Helper extends Module
      */
     private function getToollist($lst = null)
     {
-        require_once Component::path('com_tools') . DS . 'models' . DS . 'tool.php';
 
         $toollist = array();
 
@@ -199,15 +198,6 @@ class Helper extends Module
      */
     public function display()
     {
-        include_once Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'job.php';
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'view.php';
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'viewperm.php';
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'session.php';
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'host.php';
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'hosttype.php';
-        include_once Component::path('com_tools') . DS . 'tables' . DS . 'recent.php';
-        include_once __DIR__ . DS . 'app.php';
 
         $params = $this->params;
 
@@ -232,7 +222,7 @@ class Helper extends Module
 
         $database = \App::get('db');
         if ($this->supportedtag) {
-            include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
+
             $this->rt = new \Components\Resources\Helpers\Tags(0);
             $this->supportedtagusage = $this->rt->getTagUsage($this->supportedtag, 'alias');
         }

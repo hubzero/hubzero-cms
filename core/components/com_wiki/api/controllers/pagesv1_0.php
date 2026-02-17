@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,8 +20,6 @@ use Route;
 use Lang;
 use User;
 use Date;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'book.php';
 
 /**
  * API controller class for Wiki Pages

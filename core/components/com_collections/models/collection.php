@@ -16,9 +16,6 @@ use Request;
 use User;
 use Lang;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'collection.php';
-require_once __DIR__ . DS . 'post.php';
-
 /**
  * Collections model class for a collection
  */
@@ -613,16 +610,11 @@ class Collection extends Base
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
             if (!class_exists($cls)) {
-                $path = __DIR__ . '/adapters/' . $scope . '.php';
-                if (!is_file($path)) {
-                    $msg = Lang::txt(
-                        'Invalid scope of "%s" for collection #%s',
-                        $scope,
-                        $this->get('id')
-                    );
-                    throw new \InvalidArgumentException($msg);
-                }
-                include_once $path;
+                throw new \InvalidArgumentException(Lang::txt(
+                    'Invalid scope of "%s" for collection #%s',
+                    $scope,
+                    $this->get('id')
+                ));
             }
 
             $this->adapter = new $cls($this->get('object_id'));

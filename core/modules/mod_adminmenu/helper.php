@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\AdminMenu;
+namespace Modules\Adminmenu;
 
 use Hubzero\Module\Module;
 use Hubzero\Utility\Arr;
@@ -33,7 +33,7 @@ class Helper extends Module
         }
 
         // Include the module helper classes.
-        if (!class_exists('\\Modules\\AdminMenu\\Tree')) {
+        if (!class_exists('\\Modules\\Adminmenu\\Tree')) {
             require __DIR__ . DS . 'tree.php';
         }
 

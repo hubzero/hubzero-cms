@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,9 +18,6 @@ use Lang;
 use App;
 use Date;
 use User;
-
-// require the campaign model
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'campaign.php';
 
 /**
  * Campaign Controller

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,9 +17,6 @@ use Hubzero\Base\Obj;
 use Exception;
 use stdClass;
 use Lang;
-
-// include elements model
-include_once dirname(__DIR__) . DS . 'elements.php';
 
 /**
  * Resource Import Record Model

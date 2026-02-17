@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,8 +7,6 @@
  */
 
 namespace Components\Projects\Models;
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'comment.php';
 
 use Hubzero\Base\Model;
 use Date;

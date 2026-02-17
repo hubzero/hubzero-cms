@@ -12,6 +12,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Plugins\Wiki\Parserdefault\WikiParser;
 
 class FootNote extends WikiMacro
 {

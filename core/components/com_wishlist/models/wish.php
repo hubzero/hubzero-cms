@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,13 +14,6 @@ use Lang;
 use Date;
 use Html;
 use Request;
-
-require_once __DIR__ . DS . 'attachment.php';
-require_once __DIR__ . DS . 'comment.php';
-require_once __DIR__ . DS . 'tags.php';
-require_once __DIR__ . DS . 'plan.php';
-require_once __DIR__ . DS . 'vote.php';
-require_once __DIR__ . DS . 'rank.php';
 
 /**
  * Model class for a wishlist item
@@ -523,8 +515,6 @@ class Wish extends Relational
                 if ($file == 'base.php') {
                     continue;
                 }
-
-                include_once __DIR__ . '/adapters/' . $file;
 
                 // Derive the class name from the type
                 $cls = __NAMESPACE__ . '\\Adapters\\' . str_ireplace('.php', '', ucfirst(trim($file)));

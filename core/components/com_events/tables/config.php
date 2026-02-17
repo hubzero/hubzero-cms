@@ -11,8 +11,6 @@ namespace Components\Events\Tables;
 use Hubzero\Database\Table;
 use Lang;
 
-include_once __DIR__ . DS . 'configs.php';
-
 /**
  * Events table class for configuration
  */

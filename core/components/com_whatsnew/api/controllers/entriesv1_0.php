@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,8 +14,6 @@ use stdClass;
 use Request;
 use Event;
 use Lang;
-
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'period.php';
 
 /**
  * API controller class for What's New

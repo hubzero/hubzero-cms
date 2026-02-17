@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,8 +11,6 @@ namespace Components\Projects\Models\Orm;
 use Hubzero\Database\Relational;
 use Hubzero\Filesystem\Manager;
 use User;
-
-include_once __DIR__ . '/provider.php';
 
 /**
  * Connections model

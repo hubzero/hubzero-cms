@@ -18,8 +18,6 @@ use Lang;
 use App;
 use Config;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php';
-
 /**
  * Courses controller class for managing course pages
  */

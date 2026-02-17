@@ -122,7 +122,6 @@ class Members extends Plugin
      */
     public static function out($row)
     {
-        require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
         $member = \Components\Members\Models\Member::oneOrNew($row->id);
 

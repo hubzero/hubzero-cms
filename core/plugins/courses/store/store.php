@@ -14,8 +14,6 @@ use Hubzero\Utility\Date;
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
-
 /**
  * Courses Plugin class for course store
  */
@@ -140,8 +138,6 @@ class Store extends Plugin
             $duration = $params->get('store_membership_duration', '1 YEAR');
 
             if (!$params->get('store_product_id', 0)) {
-                include_once Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';
-
                 $product = new \Components\Storefront\Models\Course();
                 $product->setName($title);
                 $product->setDescription($description);
@@ -277,8 +273,6 @@ class Store extends Plugin
             return;
         }
         if ($isNew && Request::getInt('store_product', 0)) {
-            include_once Component::path('com_storefront') . DS . 'models' . DS . 'Coupon.php';
-
             try {
                 // Constructor take the coupon code
                 $coupon = new \Components\Storefront\Models\Coupon($model->get('code'));
@@ -294,8 +288,6 @@ class Store extends Plugin
                 // second parameter [optional, unlimited by default]: max quantity of products coupon
                 // will be applied to (if buying multiple)
                 //$section = new CorusesModelSection($model->get('section_id'));
-
-                include_once Component::path('com_storefront') . DS . 'models' . DS . 'Course.php';
 
                 $product = new \Components\Storefront\Models\Course();
                 $product->setCourseId($model->find('course'));

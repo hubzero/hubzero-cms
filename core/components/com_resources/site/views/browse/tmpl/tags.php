@@ -80,8 +80,6 @@ $this->css()
 
         <?php
         if ($this->supportedtag) {
-            include_once Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
-
             $tag = \Components\Tags\Models\Tag::oneByTag($this->supportedtag);
 
             if ($sl = $this->config->get('supportedlink')) {
@@ -106,8 +104,6 @@ $this->css()
                 $supported = array();
 
                 if ($this->supportedtag) {
-                    include_once Component::path('com_resources') . DS . 'helpers' . DS . 'tags.php';
-
                     $rt = new \Components\Resources\Helpers\Tags(0);
                     $supported = $rt->getTagUsage($this->supportedtag, 'id');
                 }

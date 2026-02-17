@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,9 +17,6 @@ use Route;
 use Lang;
 use App;
 use User;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'certificate.php';
 
 /**
  * Courses controller class for managing membership and course info

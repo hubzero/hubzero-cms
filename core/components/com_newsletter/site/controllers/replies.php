@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package   hubzero-cms
  * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,11 +7,6 @@
  */
 
 namespace Components\Newsletter\Site\Controllers;
-
-$componentPath = Component::path('com_newsletter');
-
-require_once  "$componentPath/helpers/codeHelper.php";
-require_once  "$componentPath/models/reply.php";
 
 use Components\Newsletter\Helpers\CodeHelper;
 use Components\Newsletter\Models\Reply;

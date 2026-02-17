@@ -20,9 +20,6 @@ use Lang;
 use App;
 use Component;
 
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'permissions.php';
-include_once Component::path('com_groups') . '/models/orm/field.php';
-
 /**
  * Groups controller class
  */

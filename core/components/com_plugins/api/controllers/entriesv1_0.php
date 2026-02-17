@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,8 +17,6 @@ use Event;
 use Lang;
 use App;
 use User;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'plugin.php';
 
 /**
  * API controller class for resources

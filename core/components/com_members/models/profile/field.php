@@ -6,13 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Members\Models\Profile;
 
 use Hubzero\Database\Relational;
 use Component;
-
-include_once __DIR__ . DS . 'option.php';
 
 /**
  * User profile field model

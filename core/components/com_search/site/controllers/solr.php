@@ -8,17 +8,6 @@
 
 namespace Components\Search\Site\Controllers;
 
-$componentPath = Component::path('com_search');
-$resourcesPath = Component::path('com_resources');
-$tagsPath = Component::path('com_tags');
-
-require_once "$componentPath/models/solr/facet.php";
-require_once "$componentPath/models/solr/searchcomponent.php";
-require_once "$componentPath/helpers/boostQueryHelper.php";
-require_once "$componentPath/helpers/urlqueryhelper.php";
-require_once "$resourcesPath/models/entry.php";
-require_once "$tagsPath/models/tag.php";
-
 use Hubzero\Component\SiteController;
 use Components\Search\Helpers\BoostQueryHelper;
 use Components\Search\Models\Solr\Facet;

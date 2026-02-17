@@ -15,7 +15,7 @@ use User;
 /**
  * Table class for job seeker
  */
-class JobSeeker extends Table
+class Seeker extends Table
 {
     /**
      * Constructor

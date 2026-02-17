@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,8 +19,6 @@ use Request;
 use Lang;
 use User;
 use Component;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
 
 /**
  * Collections controller class for media

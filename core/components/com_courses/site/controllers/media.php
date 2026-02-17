@@ -38,8 +38,6 @@ class Media extends SiteController
         }
 
         // Include need media tracking library
-        require_once \Component::path('com_resources') . DS . 'models' . DS . 'mediatracking.php';
-        require_once \Component::path('com_resources') . DS . 'models' . DS . 'mediatracking' . DS . 'detailed.php';
 
         // Instantiate objects
         $database = \App::get('db');

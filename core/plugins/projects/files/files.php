@@ -11,24 +11,7 @@ namespace Plugins\Projects\Files;
 
 use Hubzero\Plugin\Plugin;
 
-require_once Component::path('com_projects') . DS . 'tables' . DS . 'remotefile.php';
-require_once Component::path('com_projects') . DS . 'helpers' . DS . 'connect.php';
-
-// Include some helpers
-require_once Component::path('com_projects') . DS . 'helpers' . DS . 'compiler.php';
-
-// Get repo model
-require_once Component::path('com_projects') . DS . 'models' . DS . 'repo.php';
-
-require_once __DIR__ . '/helpers/sync.php';
-
-// Include [temporary] ORM models (these will be merged with existing models at some point in the future)
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'project.php';
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'provider.php';
-require_once Component::path('com_projects') . '/helpers/accessHelper.php';
-require_once Component::path('com_projects') . '/helpers/urlHelper.php';
-
+use Plugins\Projects\Files\Helpers\Sync;
 use Components\Projects\Models\Orm\Connection;
 use Components\Projects\Helpers\AccessHelper;
 use Components\Projects\Helpers\UrlHelper;
@@ -335,8 +318,7 @@ class Files extends Plugin
 
                 // New connected methods
                 case 'connections':
-                    require_once __DIR__ . DS . 'connections.php';
-                    $controller  = new connections($this, $this->_option, $connection);
+                    $controller = new Connections($this, $this->_option, $connection);
                     $arr['html'] = $controller->execute($ctask);
                     break;
                 // File browser
@@ -2573,8 +2555,6 @@ class Files extends Plugin
 
         // Get publication usage
         if (\Plugin::isEnabled('projects', 'publications') && $by == 'admin') {
-            require_once Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
-
             $filters = array();
             $filters['project']       = $model->get('id');
             $filters['ignore_access'] = 1;

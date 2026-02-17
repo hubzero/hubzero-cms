@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +9,6 @@
 namespace Components\Courses\Models;
 
 use Components\Courses\Models\Member;
-
-require_once __DIR__ . DS . 'member.php';
 
 /**
  * Courses model class for a student

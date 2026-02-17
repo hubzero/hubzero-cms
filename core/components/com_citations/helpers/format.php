@@ -8,10 +8,6 @@
 
 namespace Components\Citations\Helpers;
 
-require_once dirname(__DIR__) . DS . 'models' . DS . 'association.php';
-require_once dirname(__DIR__) . DS . 'models' . DS . 'type.php';
-require_once dirname(__DIR__) . DS . 'models' . DS . 'format.php';
-
 use Components\Citations\Models\Association;
 use Components\Citations\Models\Type;
 use Components\Citations\Models\Format as CitationFormat;

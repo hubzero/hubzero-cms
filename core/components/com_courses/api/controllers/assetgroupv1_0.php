@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,15 +16,6 @@ use App;
 use Request;
 use Date;
 use stdClass;
-
-require_once __DIR__ . DS . 'base.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetgroup.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'tool.php';
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assetgroup.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'unit.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 /**
  * API controller for the course asset groups

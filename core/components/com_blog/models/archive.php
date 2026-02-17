@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Blog\Models;
 
 use Hubzero\Base\Obj;
@@ -14,8 +13,6 @@ use Component;
 use Lang;
 use User;
 use Date;
-
-require_once __DIR__ . DS . 'entry.php';
 
 /**
  * Blog archive model class
@@ -202,11 +199,7 @@ class Archive extends Obj
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
             if (!class_exists($cls)) {
-                $path = __DIR__ . '/adapters/' . $scope . '.php';
-                if (!is_file($path)) {
-                    throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
-                }
-                include_once $path;
+                throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
             }
 
             $this->_adapter = new $cls($this->get('scope_id'));

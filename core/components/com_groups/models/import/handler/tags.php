@@ -11,8 +11,6 @@ namespace Components\Groups\Models\Import\Handler;
 use Hubzero\Base\Obj;
 use User;
 
-include_once dirname(dirname(__DIR__)) . '/tags.php';
-
 /**
  * Groups Tags import handler
  */

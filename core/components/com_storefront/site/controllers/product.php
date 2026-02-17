@@ -21,9 +21,6 @@ use App;
 use Document;
 use Route;
 
-require_once \Component::path('com_cart') . DS . 'models' . DS . 'CurrentCart.php';
-require_once \Component::path('com_cart') . DS . 'helpers' . DS . 'Audit.php';
-
 
 /**
  * Product viewing controller class

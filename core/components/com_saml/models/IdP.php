@@ -378,8 +378,6 @@ class IdP
         if (strpos($source, 'profile:') === 0) {
             $key = substr($source, strlen('profile:'));
 
-            require_once \Component::path('com_members') . DS . 'models' . DS . 'profile.php';
-
             $profile = \Components\Members\Models\Profile::oneByKeyAndUser($key, $user->get('id'));
 
             return $profile ? (string) $profile->get('profile_value', '') : '';

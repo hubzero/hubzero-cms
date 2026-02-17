@@ -48,7 +48,6 @@ Html::behavior('tooltip');
                     <option value="0"><?php echo Lang::txt('COM_COURSES_OFFERING_SELECT'); ?></option>
                     <?php
                     $offerings = array();
-                    require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
                     $model = \Components\Courses\Models\Courses::getInstance();
                     if ($model->courses()->total() > 0) {
                         foreach ($model->courses() as $course) {

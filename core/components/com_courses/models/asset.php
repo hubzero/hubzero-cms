@@ -18,13 +18,6 @@ use Lang;
 use App;
 use Filesystem;
 
-require_once Component::path('com_courses') . '/tables/asset.association.php';
-require_once Component::path('com_courses') . '/tables/asset.php';
-require_once Component::path('com_courses') . '/models/assets/handler.php';
-require_once Component::path('com_courses') . '/models/assets/content.php';
-require_once Component::path('com_courses') . '/models/base.php';
-require_once Component::path('com_courses') . '/models/section/date.php';
-
 /**
  * Asset model class for a course
  */
@@ -263,8 +256,6 @@ class Asset extends Base
      */
     public function logView($course = null)
     {
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php';
-
         if (!$course || !is_object($course)) {
             $gid      = Request::getString('gid');
             $offering = Request::getString('offering');
@@ -469,10 +460,6 @@ class Asset extends Base
 
         // If this is a form...
         if ($forms && $this->get('type') == 'form') {
-            require_once __DIR__ . DS . 'form.php';
-            require_once __DIR__ . DS . 'formDeployment.php';
-            require_once __DIR__ . DS . 'formRespondent.php';
-
             // Copy the form as well...look up by asset_id
             if ($form = PdfForm::loadByAssetId($originalId)) {
                 // This will either return the form id or the deployment crumb
@@ -564,10 +551,8 @@ class Asset extends Base
     public function loadHandler()
     {
         $handlerName = $this->get('type');
-        $filePath = Component::path('com_courses') . '/models/assets/' . $handlerName . '.php';
-        if (file_exists($filePath)) {
-            require_once $filePath;
-            $handlerClassString = 'Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
+        $handlerClassString = '\Components\\Courses\\Models\\Assets\\' . ucfirst($handlerName);
+        if (class_exists($handlerClassString)) {
             $handlerModel = new $handlerClassString($this->_db);
             return $handlerModel;
         }

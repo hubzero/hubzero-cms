@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,9 +18,6 @@ use Route;
 use Lang;
 use App;
 use Notify;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'OptionGroup.php';
 
 /**
  * Controller class for knowledge base collections

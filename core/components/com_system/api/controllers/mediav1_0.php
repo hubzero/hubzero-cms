@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,9 +15,6 @@ use App;
 use Request;
 use User;
 use Date;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatrackingdetailed.php';
 
 /**
  * API controller class for system tasks

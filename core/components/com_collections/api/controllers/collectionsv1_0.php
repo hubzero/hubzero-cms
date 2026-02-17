@@ -18,8 +18,6 @@ use Request;
 use Route;
 use Lang;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
-
 /**
  * API controller class for collections
  */

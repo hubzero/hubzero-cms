@@ -16,8 +16,6 @@ defined('_HZEXEC_') or die();
 
 use Components\Groups\Models\Orm\Group;
 
-require_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . 'group.php';
-
 /**
  * Search groups
  */

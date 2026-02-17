@@ -11,7 +11,6 @@ namespace Plugins\Groups\Members;
 
 use Hubzero\Plugin\Plugin;
 
-require_once Component::path('com_groups') . DS . 'models' . DS . 'role.php';
 use Components\Groups\Tables\Reason;
 
 /**
@@ -349,8 +348,6 @@ class Members extends Plugin
      */
     private function sortAlphabetically($userIds)
     {
-        require_once Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
-
         // get each users name
         $users = array();
         $emails = array();
@@ -1230,8 +1227,6 @@ class Members extends Plugin
         // Set a flag for emailing any changes made
         $admchange = '';
 
-        require_once Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
-
         foreach ($mbrs as $mbr) {
             //if an email address
             if (\Components\Members\Helpers\Utility::validemail($mbr)) {
@@ -1732,16 +1727,12 @@ class Members extends Plugin
             return;
         }
 
-        include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
         $id = Request::getInt('member', 0);
         $profile = \Components\Members\Models\Member::oneOrFail($id);
 
         if (!$profile->get('id')) {
             App::abort(404, Lang::txt('PLG_GROUPS_MEMBERS_PROFILE_NOT_FOUND'));
         }
-
-        include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
         $fields = \Components\Members\Models\Profile\Field::all()
             ->including(['options', function ($option) {

@@ -11,8 +11,6 @@ namespace Plugins\Projects\Todo;
 
 use Hubzero\Plugin\Plugin;
 
-include_once \Component::path('com_projects') . DS . 'models' . DS . 'todo.php';
-
 use Hubzero\Utility\Arr;
 
 /**

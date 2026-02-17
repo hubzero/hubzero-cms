@@ -103,10 +103,6 @@ class Wiki extends Plugin
             return $arr;
         }
 
-        include_once Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
-        include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'editor.php';
-        include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
-
         \Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/group.php');
 
         $book = new \Components\Wiki\Models\Book('group', $group->get('gidNumber'));
@@ -267,7 +263,6 @@ class Wiki extends Plugin
             if (!file_exists(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php')) {
                 $controllerName = 'pages';
             }
-            require_once Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $controllerName . '.php';
             $controllerName = '\\Components\\Wiki\\Site\\Controllers\\' . ucfirst($controllerName);
 
             // Instantiate controller
@@ -346,7 +341,6 @@ class Wiki extends Plugin
     public function getPages($gid = null)
     {
         // Import needed libraries
-        include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
         $pages = \Components\Wiki\Models\Page::all()
             ->whereEquals('scope', 'group')

@@ -14,8 +14,6 @@ use Request;
 use Route;
 use Lang;
 
-require_once dirname(__DIR__) . DS . 'item.php';
-
 /**
  * Collections model for a wish
  */
@@ -80,8 +78,6 @@ class Wishlist extends GenericItem
         if ($this->exists()) {
             return true;
         }
-
-        include_once \Component::path('com_wishlist') . DS . 'models' . DS . 'wishlist.php';
 
         $wish = new Wish($id);
 

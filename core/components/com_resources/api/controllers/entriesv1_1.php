@@ -87,15 +87,11 @@ class Entriesv1_1 extends ApiController
             $admin = true;
             $filters['tag'] = '';
             $searchable = Request::getBool('searchable', false);
-
-            require_once Component::path('com_tags') . '/models/cloud.php';
         }
 
         if (!in_array($filters['sortby'], array('date', 'date_published', 'date_created', 'date_modified', 'title', 'rating', 'ranking', 'random'))) {
             App::abort(404, Lang::txt('Invalid sort value of "%s" used.', $filters['sortby']));
         }
-
-        require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
         $query = Entry::all();
 
@@ -345,8 +341,6 @@ class Entriesv1_1 extends ApiController
         $period   = Request::getString('period', 'month');
         $category = Request::getString('category', 'resources');
 
-        require_once Component::path('com_whatsnew') . DS . 'helpers' . DS . 'finder.php';
-
         $whatsnew = \Components\Whatsnew\Helpers\Finder::getBasedOnPeriodAndCategory($period, $category, $limit);
 
         // encode results and return response
@@ -390,7 +384,6 @@ class Entriesv1_1 extends ApiController
         $search   = Request::getString('search', '');
         $existingCids = Request::getArray('existingCids');
 
-        require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
         $response = new stdClass();
 
         $query = Entry::all();

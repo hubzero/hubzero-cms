@@ -226,7 +226,6 @@ class Router extends Base
                         $blocks = array();
 
                         if (is_file(\Component::path('com_publications') . DS . 'tables' . DS . 'block.php')) {
-                            include_once \Component::path('com_publications') . DS . 'tables' . DS . 'block.php';
                             $database = \App::get('db');
 
                             $b = new \Components\Publications\Tables\Block($database);

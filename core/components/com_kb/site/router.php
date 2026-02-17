@@ -110,8 +110,6 @@ class Router extends Base
                 $articleAlias = urldecode($segments[1]);
                 $articleAlias = str_replace(':', '-', $articleAlias);
 
-                include_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
-
                 $category = Category::all()
                     ->whereEquals('alias', $categoryAlias)
                     ->whereEquals('published', Category::STATE_PUBLISHED)
@@ -147,8 +145,6 @@ class Router extends Base
                     $vars['alias'] = str_replace(':', '-', $vars['alias']);
                     $vars['category'] = $segments[0];
                 } else {
-                    include_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
-
                     $categoryAlias = urldecode($segments[1]);
                     $categoryAlias = str_replace(':', '-', $categoryAlias);
 

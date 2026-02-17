@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,12 +27,6 @@ use User;
 use Lang;
 use App;
 use Route;
-
-require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
-require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';
-require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'searchcomponent.php';
-require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'facet.php';
-require_once Component::path('com_developer') . DS . 'models' . DS . 'application.php';
 
 /**
  * Search AdminController Class

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,10 +9,6 @@
 namespace Components\Projects\Models;
 
 use Components\Projects\Tables;
-
-include_once \Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
-include_once \Component::path('com_wiki') . DS . 'helpers' . DS . 'editor.php';
-include_once \Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
 
 /**
  * Project Note model
@@ -85,8 +80,6 @@ class Note extends \Components\Wiki\Models\Book
         if (!$page) {
             return false;
         }
-
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'publicstamp.php';
 
         $objSt = new Tables\Stamp($this->_db);
 

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,13 +12,9 @@ use Components\Storefront\Models\Product;
 use Hubzero\Base\Model;
 use Lang;
 use Components\Storefront\Models\Warehouse;
-use Components\Cart\Helpers\CartHelper;
+use Components\Cart\Helpers\Helper;
 use Components\Cart\Helpers\Audit;
 use Component;
-
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Audit.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Core shopping cart
@@ -127,7 +122,7 @@ abstract class Cart
      */
     public function getSavedShippingAddresses($uId)
     {
-        if (!CartHelper::isNonNegativeInt($uId, false)) {
+        if (!Helper::isNonNegativeInt($uId, false)) {
             throw new \Exception(JGLOBAL_AUTH_USER_NOT_FOUND);
         }
 
@@ -393,7 +388,7 @@ abstract class Cart
     protected function doItem($sId, $mode = 'add', $qty = 1, $retainOldValue = false)
     {
         // Check quantity: must be a positive integer or zero
-        if (!CartHelper::isNonNegativeInt($qty)) {
+        if (!Helper::isNonNegativeInt($qty)) {
             //throw new \Exception(Lang::txt('COM_CART_INCORRECT_QTY'));
             throw new \Exception('Product quantity is incorrect');
         } elseif ($qty == 0 && !$retainOldValue) {
@@ -564,7 +559,7 @@ abstract class Cart
      */
     public static function generateSecurityToken($tId)
     {
-        if (!CartHelper::isNonNegativeInt($tId, false)) {
+        if (!Helper::isNonNegativeInt($tId, false)) {
             throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
         }
         return md5(self::$securitySalt . $tId);
@@ -579,7 +574,7 @@ abstract class Cart
      */
     public static function verifySecurityToken($token, $tId)
     {
-        if (!CartHelper::isNonNegativeInt($tId, false)) {
+        if (!Helper::isNonNegativeInt($tId, false)) {
             throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
         }
         return md5(self::$securitySalt . $tId) == $token;
@@ -781,8 +776,6 @@ abstract class Cart
 
         // Extract transaction items
         $transactionItems = unserialize($tInfo->info->tiItems);
-
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'ProductHandler.php';
 
         // Handle each item in the transaction
         foreach ($transactionItems as $sId => $item) {
@@ -1172,8 +1165,6 @@ abstract class Cart
         $warehouse = new Warehouse();
 
         if (!empty($tItems)) {
-            require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
-
             foreach ($tItems as $sId => $itemInfo) {
                 $qty = $itemInfo['transactionInfo']->qty;
                 $sku = \Components\Storefront\Models\Sku::getInstance($sId);

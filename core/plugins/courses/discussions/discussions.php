@@ -9,14 +9,11 @@
 namespace Plugins\Courses\Discussions;
 
 use Hubzero\Plugin\Plugin;
-
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
-
-require_once \Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 /**
  * Courses Plugin class for forum entries
@@ -82,8 +79,6 @@ class Discussions extends Plugin
         if (!$assetgroup->params('discussions_category')) {
             return;
         }
-
-        require_once \Component::path('com_courses') . DS . 'models' . DS . 'unit.php';
 
         // Load the parent unit
         $unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
@@ -164,8 +159,6 @@ class Discussions extends Plugin
         if (!$assetgroup->exists()) {
             return;
         }
-
-        require_once \Component::path('com_courses') . DS . 'models' . DS . 'unit.php';
 
         $unit = \Components\Courses\Models\Unit::getInstance($assetgroup->get('unit_id'));
 

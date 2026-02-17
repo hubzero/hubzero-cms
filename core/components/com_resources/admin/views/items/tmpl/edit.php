@@ -84,8 +84,7 @@ $this->view('_edit_script')
                 <legend><span><?php echo Lang::txt('Custom fields'); ?></span></legend>
                 <div id="resource-custom-fields">
                     <?php
-                    include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
-                    $elements = new Components\Resources\Models\Elements($data, $type->customFields);
+                    $elements = new \Components\Resources\Models\Elements($data, $type->customFields);
 
                     $fields = $elements->getElements('nbtag');
 

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,12 +7,6 @@
  */
 
 namespace Components\Search\Models\Solr;
-
-$componentPath = Component::path('com_search');
-
-require_once "$componentPath/helpers/boostDocumentTypeMap.php";
-require_once "$componentPath/helpers/mockProxy.php";
-require_once "$componentPath/traits/isUnique.php";
 
 use Components\Search\Helpers\BoostDocumentTypeMap as Map;
 use Components\Search\Helpers\MockProxy;

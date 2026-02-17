@@ -21,8 +21,6 @@ use Date;
 use Lang;
 use Request;
 
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'application.php';
-
 /**
  * Controller class for the Application config
  */

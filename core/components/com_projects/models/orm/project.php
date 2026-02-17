@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,12 +15,6 @@ use Route;
 use User;
 use Lang;
 use stdClass;
-
-include_once __DIR__ . '/owner.php';
-include_once __DIR__ . '/description.php';
-include_once __DIR__ . '/connection.php';
-include_once __DIR__ . '/activity.php';
-include_once __DIR__ . '/type.php';
 
 /**
  * Projects database model
@@ -581,8 +574,6 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 
             // No thumb. Try to create it...
             if (!$src && $this->get('picture')) {
-                include_once dirname(dirname(__DIR__)) . '/helpers/html.php';
-
                 $thumb = \Components\Projects\Helpers\Html::createThumbName($this->get('picture'));
 
                 if ($thumb && file_exists($path . DS . $thumb)) {

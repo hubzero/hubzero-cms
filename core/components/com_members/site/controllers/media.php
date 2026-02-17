@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Members\Site\Controllers;
 
 use Components\Members\Models\Member;
@@ -18,8 +17,6 @@ use Lang;
 use User;
 use App;
 use Plugin;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 
 /**
  * Members controller class for media

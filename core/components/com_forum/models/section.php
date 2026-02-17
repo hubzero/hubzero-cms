@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +12,6 @@ use Hubzero\Database\Relational;
 use Hubzero\Form\Form;
 use Lang;
 use Date;
-
-require_once __DIR__ . DS . 'category.php';
 
 /**
  * Forum model for a section
@@ -225,11 +222,7 @@ class Section extends Relational
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
             if (!class_exists($cls)) {
-                $path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
-                if (!is_file($path)) {
-                    throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
-                }
-                include_once $path;
+                throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
             }
 
             $this->adapter = new $cls($this->get('scope_id'));

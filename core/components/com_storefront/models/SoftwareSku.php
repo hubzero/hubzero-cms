@@ -8,16 +8,9 @@
 
 namespace Components\Storefront\Models;
 
-
-// No direct access
-defined('_HZEXEC_') or die();
-
 use Components\Storefront\Helpers\Serials;
 use Component;
 use Lang;
-
-require_once __DIR__ . DS . 'Sku.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Serials.php';
 
 /**
  *

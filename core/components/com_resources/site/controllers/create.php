@@ -657,7 +657,6 @@ class Create extends SiteController
         // Get custom areas, add wrapper tags, and compile into fulltxt
         $type = Type::oneOrFail($row->get('type'));
 
-        include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
         $elements = new Elements(array(), $type->customFields);
         $schema = $elements->getSchema();
 
@@ -773,7 +772,6 @@ class Create extends SiteController
             Request::setVar('id', $row->get('id'));
             Request::setVar('authid', User::get('id'));
 
-            include_once __DIR__ . DS . 'authors.php';
             $authors = new Authors();
             $authors->saveTask(0);
         }

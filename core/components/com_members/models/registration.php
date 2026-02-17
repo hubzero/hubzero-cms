@@ -1,6 +1,7 @@
 <?php
 
 // phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,9 +18,6 @@ use User;
 use App;
 use Config;
 use Event;
-
-include_once __DIR__ . DS . 'profile' . DS . 'field.php';
-include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utility.php';
 
 /**
  * Description for ''REG_HIDE''
@@ -237,8 +235,7 @@ class Registration
         }
 
         //get member addresses
-        /*require_once __DIR__ . DS . 'address.php';
-        $addresses = Address::getAddressesForMember($xprofile->get("uidNumber"));
+        /*$addresses = Address::getAddressesForMember($xprofile->get("uidNumber"));
 
         $this->set('countryresident', $xprofile->get('countryresident'));
         $this->set('countryorigin', $xprofile->get('countryorigin'));

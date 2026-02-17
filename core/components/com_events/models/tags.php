@@ -1,4 +1,5 @@
 <?php
+
 // phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
 /**
@@ -10,8 +11,6 @@
 namespace Components\Events\Models;
 
 use Components\Tags\Models\Cloud;
-
-require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Events Tagging class

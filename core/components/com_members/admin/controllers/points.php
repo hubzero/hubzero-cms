@@ -507,10 +507,8 @@ class Points extends AdminController
 
         // Include economy classes
         if (is_file(Component::path('com_answers') . DS . 'helpers' . DS . 'economy.php')) {
-            require_once Component::path('com_answers') . DS . 'helpers' . DS . 'economy.php';
         }
         if (is_file(Component::path('com_resources') . DS . 'helpers' . DS . 'economy.php')) {
-            require_once Component::path('com_resources') . DS . 'helpers' . DS . 'economy.php';
         }
 
         $AE = new \Components\Answers\Helpers\Economy($this->database);

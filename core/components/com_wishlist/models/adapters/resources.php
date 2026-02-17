@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,9 +11,6 @@ namespace Components\Wishlist\Models\Adapters;
 use Components\Resources\Models\Entry;
 use Pathway;
 use Lang;
-
-require_once __DIR__ . DS . 'base.php';
-require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Adapter class for a forum post link for course forum

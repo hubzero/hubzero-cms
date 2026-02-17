@@ -96,8 +96,6 @@ class Comment extends ItemComment
                 }
 
                 if ($field == 'content') {
-                    require_once __DIR__ . '/attachment.php';
-
                     if (preg_match('/{attachment#([0-9]*)}/sU', $this->$property, $matches)) {
                         foreach ($matches as $i => $match) {
                             if ($i == 0) {

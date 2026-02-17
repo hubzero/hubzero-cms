@@ -13,8 +13,6 @@ use Components\Forum\Models\Post;
 use Request;
 use Lang;
 
-require_once dirname(__DIR__) . DS . 'item.php';
-
 /**
  * Collections model for an item
  */
@@ -79,8 +77,6 @@ class Forum extends GenericItem
         if ($this->exists()) {
             return true;
         }
-
-        include_once \Component::path('com_forum') . DS . 'models' . DS . 'post.php';
 
         $thread = Post::oneOrNew($id);
 

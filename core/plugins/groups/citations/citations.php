@@ -11,12 +11,6 @@ namespace Plugins\Groups\Citations;
 
 use Hubzero\Plugin\Plugin;
 
-require_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'tag.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'tagobject.php';
-require_once Component::path('com_citations') . DS . 'models' . DS . 'importer.php';
-
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Cloud;
@@ -891,7 +885,6 @@ class Citations extends Plugin
             foreach ($citationIDs as $id) {
                 $citation = \Components\Citations\Models\Citation::oneOrFail($id);
 
-
                 // toggle the state
                 $citation->set('published', $citation::STATE_DELETED);
 
@@ -1231,7 +1224,6 @@ class Citations extends Plugin
         );
 
         if (isset($group) && $group != '') {
-            require_once Component::path('com_groups') . DS . 'tables' . DS . 'group.php';
             $gob = new \Components\Groups\Tables\Group($this->database);
             $cn = $gob->getName($group);
 
@@ -1423,7 +1415,6 @@ class Citations extends Plugin
                     ->whereIn('scope_id', $members)
                     ->where('published', '=', $citations::STATE_PUBLISHED); // don't include deleted citations
 
-
                 // push them to an array
                 $memberCites = array();
                 foreach ($memberCitations as $mC) {
@@ -1449,7 +1440,6 @@ class Citations extends Plugin
                     ->where('scope', '=', 'member')
                     ->whereIn('scope_id', $members)
                     ->where('published', '=', $citations::STATE_PUBLISHED); // don't include deleted citations
-
 
                 // push them to an array
                 $memberCites = array();

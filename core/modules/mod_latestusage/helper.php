@@ -24,7 +24,6 @@ class Helper extends Module
     {
         $database = \App::get('db');
 
-        include_once \Component::path('com_usage') . DS . 'helpers' . DS . 'helper.php';
         $udb = \Components\Usage\Helpers\Helper::getUDBO();
 
         $this->cls = trim($this->params->get('moduleclass_sfx', ''));

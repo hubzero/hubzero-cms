@@ -83,17 +83,34 @@ class Migration20150326183839ComTools extends Base
                     ->loadObjectList();
 
                 if ($rows) {
-                    $path = PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'tables'
-                        . DS . 'preferences.php';
-                    include_once $path;
-
                     foreach ($rows as $row) {
-                        $preferences = new \Components\Tools\Tables\Preferences($this->db);
-                        $preferences->loadByUser($row->uidNumber);
-                        $preferences->user_id  = $row->uidNumber;
-                        $preferences->class_id = 0;
-                        $preferences->jobs     = ($row->jobsAllowed ? $row->jobsAllowed : 10);
-                        $preferences->store();
+                        $exists = $this->db->getQuery(true)
+                            ->select('id')
+                            ->from('#__users_tool_preferences')
+                            ->where('user_id', '=', $row->uidNumber)
+                            ->exists();
+
+                        $jobs = ($row->jobsAllowed ? $row->jobsAllowed : 10);
+
+                        if ($exists) {
+                            $this->db->getQuery(true)
+                                ->update('#__users_tool_preferences')
+                                ->set([
+                                    'class_id' => 0,
+                                    'jobs'     => $jobs,
+                                ])
+                                ->where('user_id', '=', $row->uidNumber)
+                                ->execute();
+                        } else {
+                            $this->db->getQuery(true)
+                                ->insert('#__users_tool_preferences')
+                                ->set([
+                                    'user_id'  => $row->uidNumber,
+                                    'class_id' => 0,
+                                    'jobs'     => $jobs,
+                                ])
+                                ->execute();
+                        }
                     }
                 }
 

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,9 +18,6 @@ use App;
 use Component;
 use Lang;
 use Route;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Product viewing controller class

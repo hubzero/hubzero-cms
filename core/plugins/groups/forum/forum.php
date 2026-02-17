@@ -108,8 +108,6 @@ class Forum extends Plugin
         $this->group    = $group;
         $this->database = App::get('db');
 
-        require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
-
         $this->forum = new Manager('group', $group->get('gidNumber'));
 
         // Determine if we need to return any HTML (meaning this is the active plugin)
@@ -483,10 +481,8 @@ class Forum extends Plugin
         // Email settings data
         $recvEmailOptionID = 0;
         $recvEmailOptionValue = 0;
-        if (file_exists(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php')) {
-            include_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php';
-
-            $recvEmailOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+        if (class_exists(\Plugins\Groups\Memberoptions\Models\Memberoption::class)) {
+            $recvEmailOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
                 $this->group->get('gidNumber'),
                 User::get('id'),
                 'receive-forum-email'
@@ -1736,8 +1732,7 @@ class Forum extends Plugin
     {
         $memberoptions = false;
 
-        if (file_exists(PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php')) {
-            include_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php';
+        if (class_exists(\Plugins\Groups\Memberoptions\Models\Memberoption::class)) {
             $memberoptions = true;
         }
 
@@ -2063,8 +2058,6 @@ class Forum extends Plugin
     {
         $log = Lang::txt('PLG_GROUPS_FORUM') . ': ';
 
-        require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
-
         $sections = Section::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $group->get('gidNumber'))
@@ -2227,9 +2220,7 @@ class Forum extends Plugin
             );
         }
 
-        // neede member option lib
-        include_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php';
-
+        // needed member option lib
         // Find the user's group settings, do they want to get email (0 or 1)?
         $groupMemberOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $this->group->get('gidNumber'),

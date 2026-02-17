@@ -146,8 +146,6 @@ class Doi extends Relational
 
         $metadata['authors'] = $authors;
 
-        include_once dirname(__DIR__) . '/helpers/doiService.php';
-
         $service = new \Components\Resources\Helpers\DoiService($metadata);
 
         // Register metadata

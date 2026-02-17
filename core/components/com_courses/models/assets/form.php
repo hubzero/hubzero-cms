@@ -37,7 +37,6 @@ class Form extends Content
     public function create()
     {
         // Include needed files
-        require_once dirname(__DIR__) . DS . 'form.php';
 
         // Check to make sure a file was provided
         if (isset($_FILES['files'])) {
@@ -171,7 +170,7 @@ class Form extends Content
     public function preview($asset)
     {
         // Get form object
-        require_once dirname(__DIR__) . DS . 'form.php';
+
         $form = PdfForm::loadByAssetId($asset->get('id'));
 
         // Make sure we got a proper object

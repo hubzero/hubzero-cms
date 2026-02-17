@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +9,6 @@
 namespace Components\Courses\Models;
 
 use Components\Tags\Models\Cloud;
-
-require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Helper class for handling course tags

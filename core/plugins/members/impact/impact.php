@@ -68,14 +68,6 @@ class Impact extends Plugin
         parent::__construct($subject, $config);
 
         $this->_database = App::get('db');
-
-        $path = \Component::path('com_publications');
-
-        include_once $path . DS . 'tables' . DS . 'logs.php';
-        include_once $path . DS . 'tables' . DS . 'publication.php';
-        include_once $path . DS . 'tables' . DS . 'author.php';
-        include_once $path . DS . 'tables' . DS . 'category.php';
-        include_once $path . DS . 'helpers' . DS . 'html.php';
     }
 
     /**
@@ -140,8 +132,6 @@ class Impact extends Plugin
         );
 
         if ($returnhtml) {
-            include_once \Component::path('com_publications') . DS . 'tables' . DS . 'version.php';
-
             $this->_option = $option;
 
             // Which view

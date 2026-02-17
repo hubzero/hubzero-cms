@@ -173,8 +173,6 @@ class Progress extends Plugin
 
         $asset_id = Request::getInt('asset_id', false);
 
-        require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
-
         $this->view->details = \Components\Courses\Models\FormReport::getLetterResponseCountsForAssetId(
             $this->db,
             $asset_id,
@@ -552,8 +550,6 @@ class Progress extends Plugin
      **/
     private function downloadresponses()
     {
-        require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formReport.php';
-
         // Only allow for instructors
         if (!$this->course->offering()->section()->access('manage')) {
             App::abort(403, 'Sorry, you don\'t have permission to do this');

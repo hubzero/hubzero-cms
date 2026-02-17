@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +9,6 @@
 namespace Components\Resources\Models;
 
 use Hubzero\Database\Relational;
-
-include_once __DIR__ . DS . 'mediatracking' . DS . 'detailed.php';
 
 /**
  * Media tracking model
