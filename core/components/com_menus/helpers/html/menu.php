@@ -1,6 +1,6 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+// phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -8,11 +8,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-//namespace Hubzero\Html\Builder;
-
-//use Lang;
-//use Html;
-//use App;
+namespace Components\Menus\Helpers\Html;
 
 include_once dirname(__DIR__) . '/menus.php';
 

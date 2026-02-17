@@ -289,7 +289,7 @@ class Sku
 
         // Integrity check
         require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php';
-        $integrityCheck = \Integrity::skuIntegrityCheck($this);
+        $integrityCheck = \Components\Storefront\Helpers\Integrity::skuIntegrityCheck($this);
 
         if ($integrityCheck->status != 'ok') {
             $errorMessage = "Integrity check error:";

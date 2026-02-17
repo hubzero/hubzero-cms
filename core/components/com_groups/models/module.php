@@ -320,7 +320,7 @@ class Module extends Model
 
         //create array of custom filters
         $filters = array(
-            new \HTMLPurifier_Filter_GroupInclude()
+            new \Components\Groups\Helpers\Filters\HTMLPurifier_Filter_GroupInclude()
         );
 
         // is this trusted content
@@ -331,8 +331,8 @@ class Module extends Model
             $options['CSS.Trusted'] = true;
             $options['HTML.Trusted'] = true;
 
-            $filters[] = new \HTMLPurifier_Filter_ExternalScripts();
-            $filters[] = new \HTMLPurifier_Filter_Php();
+            $filters[] = new \Components\Groups\Helpers\Filters\HTMLPurifier_Filter_ExternalScripts();
+            $filters[] = new \Components\Groups\Helpers\Filters\HTMLPurifier_Filter_Php();
         }
 
         // add our custom filters

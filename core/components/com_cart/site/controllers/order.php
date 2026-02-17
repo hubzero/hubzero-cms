@@ -17,6 +17,8 @@ use Request;
 use Route;
 use Event;
 use Lang;
+use Components\Cart\Lib\Cartmessenger\CartMessenger;
+use Components\Cart\Lib\Cartmessenger\LoggingLevel;
 use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
@@ -201,7 +203,7 @@ class Order extends ComponentController
         }
 
         // Initialize logger
-        $logger = new \CartMessenger('Payment Postback');
+        $logger = new CartMessenger('Payment Postback');
 
         // Get the plugins working
         $pay = Event::trigger('cart.onPostback', array($_POST, User::getRoot()));
@@ -211,7 +213,7 @@ class Order extends ComponentController
                 if ($response['status'] == 'ok') {
                     $logger->setMessage($response['msg']);
                     $logger->setPostback($_POST);
-                    $logger->log(\LoggingLevel::INFO);
+                    $logger->log(LoggingLevel::INFO);
 
                     if (empty($response['payment'])) {
                         $response['payment'] = false;
@@ -221,7 +223,7 @@ class Order extends ComponentController
                 } else {
                     $logger->setMessage($response['error']);
                     $logger->setPostback($_POST);
-                    $logger->log(\LoggingLevel::ERROR);
+                    $logger->log(LoggingLevel::ERROR);
                 }
 
                 break;
@@ -242,7 +244,7 @@ class Order extends ComponentController
         Cart::completeTransaction($tInfo, $paymentInfo);
 
         // Send emails to customer and admin
-        $logger = new \CartMessenger('Complete order');
+        $logger = new CartMessenger('Complete order');
         $logger->emailOrderComplete($tInfo);
 
         return true;

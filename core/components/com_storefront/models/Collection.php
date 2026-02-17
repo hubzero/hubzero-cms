@@ -229,7 +229,7 @@ class Collection
     public function verify()
     {
         require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php';
-        $integrityCheck = \Integrity::collectionIntegrityCheck($this);
+        $integrityCheck = \Components\Storefront\Helpers\Integrity::collectionIntegrityCheck($this);
 
         if ($integrityCheck->status != 'ok') {
             $errorMessage = "Integrity check error:";

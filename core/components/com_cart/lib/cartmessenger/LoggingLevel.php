@@ -8,13 +8,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Cart\Lib\Cartmessenger;
+
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
 /**
  * Log levels
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class LoggingLevel
 {
     public const INFO = 2;

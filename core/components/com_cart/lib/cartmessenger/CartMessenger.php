@@ -8,6 +8,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Cart\Lib\Cartmessenger;
+
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
@@ -16,7 +18,6 @@ include_once __DIR__ . '/LoggingLevel.php';
 /**
  * Logs cart activity and sends emails out as necessary
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class CartMessenger
 {
     /**

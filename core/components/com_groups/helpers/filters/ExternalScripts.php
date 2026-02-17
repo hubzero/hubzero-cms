@@ -5,11 +5,13 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
 
-class HTMLPurifier_Filter_ExternalScripts extends HTMLPurifier_Filter
+namespace Components\Groups\Helpers\Filters;
+
+// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
+class HTMLPurifier_Filter_ExternalScripts extends \HTMLPurifier_Filter
 {
     /**
      * Name

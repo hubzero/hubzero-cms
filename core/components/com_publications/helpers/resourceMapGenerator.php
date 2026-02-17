@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Publications\Helpers;
+
 /**
  * Resource map generator in XML+RDFa format
  *
  * Generates resource map in XML+RDFa format. Inserts link into header
  * and provides download for the end user.
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class ResourceMapGenerator
 {
     // Add namespaces as needed
@@ -131,7 +132,7 @@ class ResourceMapGenerator
 
         if (!$resource) {
             // Return if ID does not exist
-            throw new Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
+            throw new \Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
             return false;
         }
 
@@ -244,7 +245,7 @@ class ResourceMapGenerator
         }
 
         // Creates new XMLWriter
-        $writer = new XMLWriter();
+        $writer = new \XMLWriter();
 
         // Writes XML to buffer
         $writer->openMemory();
@@ -362,7 +363,7 @@ class ResourceMapGenerator
         $rdfa = $this->getResourceMap();
 
         if ($rdfa == null) {
-            throw new Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
+            throw new \Exception(Lang::txt('COM_PUBLICATIONS_FILE_NOT_FOUND'), 404);
             return false;
         }
 

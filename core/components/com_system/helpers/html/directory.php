@@ -6,11 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\System\Helpers\Html;
+
 /**
  * Utility class working with directory
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
-class ComponentsSystemHelpersHtmlDirectory
+class Directory
 {
     /**
      * Method to generate a (un)writable message for directory

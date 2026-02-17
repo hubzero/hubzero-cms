@@ -26,7 +26,7 @@ if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) 
 // Build sub-menu
 require_once __DIR__ . DS . 'helpers' . DS . 'members.php';
 
-\MembersHelper::addSubmenu($controllerName);
+\Components\Members\Admin\Helpers\MembersHelper::addSubmenu($controllerName);
 
 // Instantiate controller
 require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';

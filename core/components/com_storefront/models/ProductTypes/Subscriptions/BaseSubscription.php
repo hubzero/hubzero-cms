@@ -6,7 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
+namespace Components\Storefront\Models\ProductTypes\Subscriptions;
+
 class BaseSubscription
 {
     /**

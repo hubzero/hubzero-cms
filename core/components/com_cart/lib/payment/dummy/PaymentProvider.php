@@ -8,13 +8,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Cart\Lib\Payment\Dummy;
+
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
 /**
  * UPay payment provider
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class PaymentProvider
 {
     /**

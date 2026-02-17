@@ -401,7 +401,7 @@ class Collections extends AdminController
         }
 
         require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Integrity.php';
-        $integrityCheck = \Integrity::collectionIntegrityCheck($collection);
+        $integrityCheck = \Components\Storefront\Helpers\Integrity::collectionIntegrityCheck($collection);
 
         if ($integrityCheck->status != 'ok') {
             $errorMessage = "Integrity check error:";

@@ -8,11 +8,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Storefront\Helpers;
+
 require_once dirname(__DIR__) . DS . 'models' . DS . 'Warehouse.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'Collection.php';
-// phpcs:enable PSR1.Files.SideEffects.FoundWithSymbols
 
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
+/**
+ * Storefront integrity checks
+ */
 class Integrity
 {
     public static function skuIntegrityCheck($sku)

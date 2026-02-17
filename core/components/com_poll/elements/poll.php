@@ -8,14 +8,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Poll\Elements;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
 /**
  * JElementPoll class
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
-class JElementPoll extends JElement
+class JElementPoll extends \JElement
 {
     /**
      * Element name

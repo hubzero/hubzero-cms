@@ -6,11 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\System\Helpers\Html;
+
 /**
  * Utility class working with phpsetting
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
-class ComponentsSystemHelpersHtmlPhpsetting
+class Phpsetting
 {
     /**
      * Method to generate a boolean message for a value

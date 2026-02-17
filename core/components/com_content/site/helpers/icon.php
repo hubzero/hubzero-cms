@@ -8,13 +8,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Content\Site\Helpers;
+
 // no direct access
 defined('_HZEXEC_') or die();
 
 /**
  * Content Component HTML Helper
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class HtmlIcon
 {
     /**

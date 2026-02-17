@@ -6,10 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Installer\Admin\Helpers\Html;
+
 /**
  * HTML Helper
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 abstract class InstallerHtmlManage
 {
     /**

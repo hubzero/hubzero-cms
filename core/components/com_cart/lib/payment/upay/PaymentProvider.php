@@ -8,6 +8,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Cart\Lib\Payment\Upay;
+
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 
@@ -16,7 +18,6 @@ defined('_HZEXEC_') or die('Restricted access');
  *
  * Long description (if any) ...
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class PaymentProvider
 {
     private $options;
