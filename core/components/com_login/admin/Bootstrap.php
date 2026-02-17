@@ -8,17 +8,19 @@
 
 namespace Components\Login\Admin;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		require_once dirname(__DIR__) . DS . 'models' . DS . 'login.php';
 		require_once __DIR__ . DS . 'controllers' . DS . 'login.php';

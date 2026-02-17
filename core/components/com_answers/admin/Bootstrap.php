@@ -8,20 +8,23 @@
 
 namespace Components\Answers\Admin;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		if (!\User::authorise('core.manage', 'com_answers')) {
-		    return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    return;
 		}
 
 		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php';

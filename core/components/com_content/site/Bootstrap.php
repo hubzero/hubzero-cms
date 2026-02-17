@@ -8,17 +8,19 @@
 
 namespace Components\Content\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		// Include dependencies
 		require_once dirname(__DIR__) . '/models/article.php';

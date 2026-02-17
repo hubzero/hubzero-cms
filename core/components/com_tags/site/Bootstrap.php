@@ -8,17 +8,19 @@
 
 namespace Components\Tags\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		require_once dirname(__DIR__) . DS . 'models' . DS . 'cloud.php';
 

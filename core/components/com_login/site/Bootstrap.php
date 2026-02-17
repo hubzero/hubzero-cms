@@ -8,17 +8,19 @@
 
 namespace Components\Login\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		// Maintian backwards compatibility
 		if ($view = \Request::getCmd('view')) {

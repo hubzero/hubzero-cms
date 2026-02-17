@@ -8,21 +8,23 @@
 
 namespace Components\Plugins\Admin;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		// Access check.
 		if (!\User::authorise('core.manage', 'com_plugins')) {
-		    return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		$task = \Request::getCmd('task');

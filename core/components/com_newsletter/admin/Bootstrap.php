@@ -8,20 +8,23 @@
 
 namespace Components\Newsletter\Admin;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		if (!\User::authorise('core.manage', 'com_newsletter')) {
-		    return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    return;
 		}
 
 		// Include models
@@ -37,7 +40,8 @@ class Bootstrap
 		// Instantiate controller
 		$controllerName = \Request::getCmd('controller', 'newsletters');
 		if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-		    return \App::abort(404, \Lang::txt('JERROR_INVALID_CONTROLLER'));
+		    \App::abort(404, \Lang::txt('JERROR_INVALID_CONTROLLER'));
+		    return;
 		}
 		require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

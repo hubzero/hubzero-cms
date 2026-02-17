@@ -8,21 +8,24 @@
 
 namespace Components\Wishlist\Admin;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		// Authorization check
 		if (!\User::authorise('core.manage', 'com_wishlist')) {
-		    return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    return;
 		}
 
 		// Include scripts

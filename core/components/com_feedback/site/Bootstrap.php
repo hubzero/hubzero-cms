@@ -8,17 +8,19 @@
 
 namespace Components\Feedback\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		include_once dirname(__DIR__) . DS . 'models' . DS . 'quote.php';
 

@@ -8,17 +8,19 @@
 
 namespace Components\Mailto\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		require_once __DIR__ . '/helpers/mailto.php';
 		require_once __DIR__ . '/controllers/mailings.php';

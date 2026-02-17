@@ -8,20 +8,22 @@
 
 namespace Components\Tags\Admin;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		if (!\User::authorise('core.manage', 'com_tags')) {
-		    return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
 		}
 
 		require_once dirname(__DIR__) . DS . 'models' . DS . 'cloud.php';

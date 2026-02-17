@@ -8,17 +8,19 @@
 
 namespace Components\Groups\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		// include tables
 		require_once dirname(__DIR__) . DS . 'tables' . DS . 'reason.php';

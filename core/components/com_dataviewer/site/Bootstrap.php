@@ -8,9 +8,11 @@
 
 namespace Components\Dataviewer\Site;
 
-class Bootstrap
+use Hubzero\Component\AbstractComponent;
+
+class Bootstrap extends AbstractComponent
 {
-	public function start()
+	protected function execute(): void
 	{
 		DvConfig::init();
 		Controller::dispatch();

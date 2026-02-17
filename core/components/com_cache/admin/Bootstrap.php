@@ -8,21 +8,24 @@
 
 namespace Components\Cache\Admin;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		// Access check.
 		if (!\User::authorise('core.manage', 'com_cache')) {
-		    return \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    return;
 		}
 
 		require_once dirname(__DIR__) . DS . 'models' . DS . 'manager.php';

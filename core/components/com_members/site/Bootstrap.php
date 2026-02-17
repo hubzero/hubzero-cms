@@ -8,17 +8,19 @@
 
 namespace Components\Members\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'profiles'));
 		if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

@@ -10,18 +10,19 @@ namespace Components\Newsletter\Site;
 
 use Hubzero\Utility\Arr;
 use Request;
+use Hubzero\Component\AbstractComponent;
 
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		require_once dirname(__DIR__) . DS . 'models' . DS . 'newsletter.php';
 		require_once dirname(__DIR__) . DS . 'models' . DS . 'mailinglist.php';

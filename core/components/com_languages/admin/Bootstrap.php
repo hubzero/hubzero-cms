@@ -11,22 +11,24 @@ namespace Components\Languages\Admin;
 use Submenu;
 use Lang;
 use App;
+use Hubzero\Component\AbstractComponent;
 
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		// Access check.
 		if (!\User::authorise('core.manage', 'com_languages')) {
-		    return App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    return;
 		}
 
 		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';

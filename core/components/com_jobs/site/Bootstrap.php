@@ -8,17 +8,19 @@
 
 namespace Components\Jobs\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		include_once \Component::path('com_services') . DS . 'models' . DS . 'service.php';
 		include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';

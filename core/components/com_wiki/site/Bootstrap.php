@@ -8,17 +8,19 @@
 
 namespace Components\Wiki\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		include_once dirname(__DIR__) . DS . 'models' . DS . 'book.php';
 		include_once dirname(__DIR__) . DS . 'helpers' . DS . 'editor.php';

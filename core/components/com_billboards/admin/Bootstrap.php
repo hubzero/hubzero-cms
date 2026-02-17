@@ -8,20 +8,23 @@
 
 namespace Components\Billboards\Admin;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		if (!\User::authorise('core.manage', 'com_billboards')) {
-		    return \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    return;
 		}
 
 		// Include needed models and controller

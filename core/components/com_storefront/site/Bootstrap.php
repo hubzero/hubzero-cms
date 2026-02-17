@@ -8,17 +8,19 @@
 
 namespace Components\Storefront\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		// require base component controller
 		require_once __DIR__ . DS . 'controllers' . DS . 'component.php';

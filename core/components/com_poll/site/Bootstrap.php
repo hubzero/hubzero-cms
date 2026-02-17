@@ -8,17 +8,19 @@
 
 namespace Components\Poll\Site;
 
+use Hubzero\Component\AbstractComponent;
+
 /**
  * Component bootstrap
  */
-class Bootstrap
+class Bootstrap extends AbstractComponent
 {
 	/**
 	 * Entry point
 	 *
 	 * @return  void
 	 */
-	public function start()
+	protected function execute(): void
 	{
 		// Require the base controller
 		require_once __DIR__ . DS . 'controllers' . DS . 'polls.php';
