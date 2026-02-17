@@ -6,12 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Members\Admin\Helpers;
+
 /**
  * Members admin component helper.
- *
- * NOTE: This class isn't namespaced to allow for use by some core
- * components. When those components are rewritten, this
- * class should get updated.
  */
 class MembersHelper
 {

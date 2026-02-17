@@ -7,7 +7,9 @@
  *
  */
 
-class HTMLPurifier_Filter_ExternalScripts extends HTMLPurifier_Filter
+namespace Components\Groups\Helpers\Filters;
+
+class ExternalScripts extends \HTMLPurifier_Filter
 {
     /**
      * Name

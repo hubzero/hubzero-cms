@@ -158,8 +158,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                                     $val = htmlspecialchars_decode($this->question->question);
                                     $componentPath = Component::path('com_redirect');
                                 if ($componentPath) {
-                                    require_once($componentPath . DS . "helpers" . DS . "converter.php");
-                                    $val = \Component\Redirect\Helpers\Converter::convert($val);
+                                    $val = \Components\Redirect\Helpers\Converter::convert($val);
                                 } else {
                                     $val = preg_replace(
                                         '#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is',

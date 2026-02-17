@@ -7,9 +7,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Storefront\Helpers;
+
 require_once dirname(__DIR__) . DS . 'models' . DS . 'Warehouse.php';
 require_once dirname(__DIR__) . DS . 'models' . DS . 'Collection.php';
 
+/**
+ * Storefront integrity checks
+ */
 class Integrity
 {
     public static function skuIntegrityCheck($sku)

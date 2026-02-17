@@ -6,10 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Installer\Admin\Helpers\Html;
+
 /**
  * HTML Helper
  */
-abstract class InstallerHtmlManage
+abstract class Manage
 {
     /**
      * Returns a published state on a grid

@@ -97,7 +97,9 @@ class Memberships
 
         require_once $lookupPath . DS . $objectClass . '.php';
 
-        return new $objectClass($pId, $uId);
+        $fqcn = 'Components\\Storefront\\Models\\ProductTypes\\Subscriptions\\' . $objectClass;
+
+        return new $fqcn($pId, $uId);
     }
 
     /**

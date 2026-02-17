@@ -7,6 +7,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Cart\Lib\Cartmessenger;
+
 // No direct access
 defined('_HZEXEC_') or die('Restricted access');
 

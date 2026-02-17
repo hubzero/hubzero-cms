@@ -180,9 +180,9 @@ $this->css()
                                 };
 
                                 // out formatted diff table
-                                $formatter = new TableDiffFormatter();
+                                $formatter = new \Components\Wiki\Helpers\TableDiffFormatter();
                                 $diff = $formatter->
-                                    format(new \WikiDiff($previous, $current), $contextFormatter);
+                                    format(new \Components\Wiki\Helpers\Diff($previous, $current), $contextFormatter);
                                 echo $diff;
     ?>
                         </div>

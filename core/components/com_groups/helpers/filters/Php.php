@@ -7,7 +7,9 @@
  *
  */
 
-class HTMLPurifier_Filter_Php extends HTMLPurifier_Filter
+namespace Components\Groups\Helpers\Filters;
+
+class Php extends \HTMLPurifier_Filter
 {
     /**
      * Name
