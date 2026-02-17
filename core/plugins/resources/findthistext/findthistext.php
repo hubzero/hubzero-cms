@@ -91,6 +91,21 @@ class plgResourcesFindThisText extends \Hubzero\Plugin\Plugin
      */
     private function getOpenUrl()
     {
+        // The OCLC WorldCat Registry (worldcatlibraries.org) previously provided an
+        // IP-based lookup service that identified a user's institutional library and
+        // returned its OpenURL resolver endpoint. This allowed citations to display a
+        // "Find it at your library" link that directed users to full-text articles
+        // through their institution's subscriptions.
+        //
+        // The WorldCat Registry lookup service has been discontinued and the endpoint
+        // is no longer responsive, resulting in page load delays equal to the curl
+        // timeout (10 seconds) on every request. OCLC's replacement services (e.g.,
+        // WorldCat Discovery, WorldCat Search API v2) are not drop-in replacements
+        // and would require a rewrite of this functionality.
+        //
+        // Bypassing the lookup until a replacement implementation is available.
+        return null;
+
         // Var to store open url stuff
         $openUrl = null;
 
