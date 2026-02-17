@@ -52,15 +52,20 @@ use Hubzero\System\Requirements;
         ],
         'composer' => [
             'title' => 'Composer',
-            'debian' => 'sudo apt install composer\n# Or: curl -sS https://getcomposer.org/installer | php',
-            'rhel' => 'sudo dnf install composer\n# Or: curl -sS https://getcomposer.org/installer | php',
+            'debian' => 'sudo apt install composer\n'
+                . '# Or: curl -sS https://getcomposer.org/installer | php',
+            'rhel' => 'sudo dnf install composer\n'
+                . '# Or: curl -sS https://getcomposer.org/installer | php',
             'mac' => 'brew install composer',
         ],
         'writable' => [
             'title' => 'Directory Permissions',
-            'debian' => 'sudo chown -R www-data:www-data /path/to/core\nsudo chmod -R 755 /path/to/core',
-            'rhel' => 'sudo chown -R apache:apache /path/to/core\nsudo chmod -R 755 /path/to/core',
-            'mac' => 'sudo chown -R _www:_www /path/to/core\nsudo chmod -R 755 /path/to/core',
+            'debian' => 'sudo chown -R www-data:www-data /path/to/core\n'
+                . 'sudo chmod -R 755 /path/to/core',
+            'rhel' => 'sudo chown -R apache:apache /path/to/core\n'
+                . 'sudo chmod -R 755 /path/to/core',
+            'mac' => 'sudo chown -R _www:_www /path/to/core\n'
+                . 'sudo chmod -R 755 /path/to/core',
         ],
     ];
 
@@ -752,7 +757,9 @@ tr.failed { background: #fef2f2; }
                     <tr class="<?php echo $rowClass; ?>">
                         <td>
                             <?php if (isset(self::HELP_TEXT[$key])) : ?>
-                            <span class="help-icon" onclick="showHelp('<?php echo $key; ?>')" title="How to install">?</span>
+                            <span class="help-icon"
+                                onclick="showHelp('<?php echo $key; ?>')"
+                                title="How to install">?</span>
                             <?php endif; ?>
                             <?php echo htmlspecialchars($check['name']); ?>
                             <?php if (!empty($check['note']) && !$check['passed']) : ?>
@@ -780,10 +787,15 @@ tr.failed { background: #fef2f2; }
             </div>
 
             <!-- CSRF token for AJAX security -->
-            <input type="hidden" name="csrf_token" id="csrf_token" value="<?php echo htmlspecialchars($this->security->generateCsrfToken()); ?>">
+            <?php $csrfVal = htmlspecialchars($this->security->generateCsrfToken()); ?>
+            <input type="hidden" name="csrf_token" id="csrf_token"
+                value="<?php echo $csrfVal; ?>">
 
             <div class="actions">
-                <button type="button" class="btn btn-primary" id="run-composer-btn" onclick="runComposer()" <?php echo $this->allPassed ? '' : 'disabled'; ?>>
+                <?php $disabledAttr = $this->allPassed ? '' : 'disabled'; ?>
+                <button type="button" class="btn btn-primary"
+                    id="run-composer-btn" onclick="runComposer()"
+                    <?php echo $disabledAttr; ?>>
                     Run Composer
                 </button>
                 <a href="?" class="btn btn-secondary" id="refresh-btn">Refresh</a>
@@ -890,16 +902,20 @@ tr.failed { background: #fef2f2; }
             var actionsEl = document.querySelector('.actions');
 
             if (result.success) {
-                statusEl.innerHTML = '<div class="info-box success"><strong>Success!</strong> Dependencies installed.</div>';
+                statusEl.innerHTML = '<div class="info-box success">'
+                    + '<strong>Success!</strong> Dependencies installed.</div>';
                 btn.style.display = 'none';
                 document.getElementById('refresh-btn').style.display = 'none';
                 document.getElementById('continue-btn').style.display = 'inline-flex';
             } else if (result.security_error) {
                 // Security validation failed - reload to get new token
-                statusEl.innerHTML = '<div class="info-box error"><strong>Security validation failed.</strong> Reloading page...</div>';
+                statusEl.innerHTML = '<div class="info-box error">'
+                    + '<strong>Security validation failed.</strong> Reloading page...</div>';
                 setTimeout(function() { window.location.reload(); }, 2000);
             } else {
-                statusEl.innerHTML = '<div class="info-box error"><strong>Installation failed.</strong> Check the output above for details.</div>';
+                statusEl.innerHTML = '<div class="info-box error">'
+                    + '<strong>Installation failed.</strong>'
+                    + ' Check the output above for details.</div>';
                 btn.disabled = false;
                 btn.textContent = 'Run Composer';
             }
@@ -912,7 +928,10 @@ tr.failed { background: #fef2f2; }
             eventSource.close();
             btn.disabled = false;
             btn.textContent = 'Run Composer';
-            statusEl.innerHTML = '<div class="info-box error"><strong>Connection error.</strong> The composer process may still be running. Try refreshing the page.</div>';
+            statusEl.innerHTML = '<div class="info-box error">'
+                + '<strong>Connection error.</strong>'
+                + ' The composer process may still be running.'
+                + ' Try refreshing the page.</div>';
         };
     }
     </script>
