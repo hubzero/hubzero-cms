@@ -23,8 +23,8 @@ class Whatsnew extends AbstractComponent
     protected function execute(): void
     {
 
-		// Instantiate controller
-		$controller = new Controllers\Results();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new Controllers\Results();
+        $controller->execute();
+    }
 }

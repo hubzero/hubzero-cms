@@ -17,25 +17,25 @@ use Hubzero\Component\AbstractComponent;
  */
 class Cart extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
 
-		$controllerName = Request::getCmd('controller', '');
-		if (empty($controllerName)) {
-		    App::redirect(Request::base() . 'cart/cart');
-		}
-		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-		    App::abort(404, \Lang::txt('Page Not Found'));
-		}
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        $controllerName = Request::getCmd('controller', '');
+        if (empty($controllerName)) {
+            App::redirect(Request::base() . 'cart/cart');
+        }
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+            App::abort(404, \Lang::txt('Page Not Found'));
+        }
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

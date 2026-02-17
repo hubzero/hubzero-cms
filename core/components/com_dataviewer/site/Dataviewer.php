@@ -12,9 +12,9 @@ use Hubzero\Component\AbstractComponent;
 
 class Dataviewer extends AbstractComponent
 {
-	protected function execute(): void
-	{
-		DvConfig::init();
-		Controller::dispatch();
-	}
+    protected function execute(): void
+    {
+        DvConfig::init();
+        Controller::dispatch();
+    }
 }

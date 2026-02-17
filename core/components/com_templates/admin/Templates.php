@@ -15,17 +15,17 @@ use Hubzero\Component\AbstractComponent;
  */
 class Templates extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Access check.
-		if (!\User::authorise('core.manage', 'com_templates')) {
-		    \App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Access check.
+        if (!\User::authorise('core.manage', 'com_templates')) {
+            \App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
         // Include controller
         $controllerName = \Request::getCmd('controller', 'styles');
@@ -33,12 +33,12 @@ class Templates extends AbstractComponent
             $controllerName = 'styles';
         }
 
-		\Components\Templates\Helpers\Utilities::addSubmenu($controllerName);
+        \Components\Templates\Helpers\Utilities::addSubmenu($controllerName);
 
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-		// Initiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Initiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

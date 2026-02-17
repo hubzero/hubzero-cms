@@ -10,23 +10,23 @@ namespace Components\Dataviewer\Admin\Libs;
 
 class Security
 {
-	public static function check_rid()
-	{
-		if (isset($_POST[DB_RID]) && $_POST[DB_RID] == DB_RID) {
-			return true;
-		}
+    public static function checkRid()
+    {
+        if (isset($_POST[DB_RID]) && $_POST[DB_RID] == DB_RID) {
+            return true;
+        }
 
-		exit;
-	}
+        exit;
+    }
 
-	public static function dv_identifier($value, $label = 'identifier')
-	{
-		$value = (string) $value;
+    public static function dvIdentifier($value, $label = 'identifier')
+    {
+        $value = (string) $value;
 
-		if ($value === '' || !preg_match('/^[A-Za-z0-9_.-]+$/', $value) || strpos($value, '..') !== false) {
-			\App::abort(400, 'Invalid ' . $label);
-		}
+        if ($value === '' || !preg_match('/^[A-Za-z0-9_.-]+$/', $value) || strpos($value, '..') !== false) {
+            \App::abort(400, 'Invalid ' . $label);
+        }
 
-		return $value;
-	}
+        return $value;
+    }
 }

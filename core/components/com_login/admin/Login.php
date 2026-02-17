@@ -23,7 +23,7 @@ class Login extends AbstractComponent
     protected function execute(): void
     {
 
-		$controller = new Controllers\Login();
-		$controller->execute();
-	}
+        $controller = new Controllers\Login();
+        $controller->execute();
+    }
 }

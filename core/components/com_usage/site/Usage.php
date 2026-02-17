@@ -15,22 +15,22 @@ use Hubzero\Component\AbstractComponent;
  */
 class Usage extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'results'));
-		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-			$controllerName = 'results';
-		}
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'results'));
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+            $controllerName = 'results';
+        }
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+        $controller->redirect();
+    }
 }

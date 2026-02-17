@@ -29,9 +29,9 @@ class Groups extends AbstractComponent
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate controller and execute
-		$controller = new $controllerName();
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Instantiate controller and execute
+        $controller = new $controllerName();
+        $controller->execute();
+        $controller->redirect();
+    }
 }

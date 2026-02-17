@@ -32,27 +32,27 @@ class Jobs extends AbstractComponent
             $controllerName = 'jobs';
         }
 
-		\Submenu::addEntry(
-		    \Lang::txt('COM_JOBS_JOBS'),
-		    \Route::url('index.php?option=com_jobs&controller=jobs'),
-		    $controllerName == 'jobs'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_JOBS_CATEGORIES'),
-		    \Route::url('index.php?option=com_jobs&controller=categories'),
-		    $controllerName == 'categories'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_JOBS_TYPES'),
-		    \Route::url('index.php?option=com_jobs&controller=types'),
-		    $controllerName == 'types'
-		);
+        \Submenu::addEntry(
+            \Lang::txt('COM_JOBS_JOBS'),
+            \Route::url('index.php?option=com_jobs&controller=jobs'),
+            $controllerName == 'jobs'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_JOBS_CATEGORIES'),
+            \Route::url('index.php?option=com_jobs&controller=categories'),
+            $controllerName == 'categories'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_JOBS_TYPES'),
+            \Route::url('index.php?option=com_jobs&controller=types'),
+            $controllerName == 'types'
+        );
 
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-		// Initiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Initiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+        $controller->redirect();
+    }
 }

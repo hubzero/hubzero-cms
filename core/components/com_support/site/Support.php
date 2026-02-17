@@ -28,8 +28,8 @@ class Support extends AbstractComponent
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

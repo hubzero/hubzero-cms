@@ -10,26 +10,26 @@ namespace Components\Dataviewer\Admin\Libs;
 
 class Messages
 {
-	public static function init()
-	{
-		if (!isset($_SESSION['databases']['notifications'])) {
-			$_SESSION['databases']['notifications'] = array();
-		}
-	}
+    public static function init()
+    {
+        if (!isset($_SESSION['databases']['notifications'])) {
+            $_SESSION['databases']['notifications'] = array();
+        }
+    }
 
-	public static function db_msg($msg, $type = 'error')
-	{
-		self::init();
-		$_SESSION['databases']['notifications'][] = array('message' => $msg, 'type' => $type);
-	}
+    public static function dbMsg($msg, $type = 'error')
+    {
+        self::init();
+        $_SESSION['databases']['notifications'][] = array('message' => $msg, 'type' => $type);
+    }
 
-	public static function db_show_msg()
-	{
-		self::init();
-		foreach ($_SESSION['databases']['notifications'] as $notification) {
-			print "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
-		}
+    public static function dbShowMsg()
+    {
+        self::init();
+        foreach ($_SESSION['databases']['notifications'] as $notification) {
+            print "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
+        }
 
-		$_SESSION['databases']['notifications'] = array();
-	}
+        $_SESSION['databases']['notifications'] = array();
+    }
 }

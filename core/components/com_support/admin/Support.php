@@ -15,68 +15,68 @@ use Hubzero\Component\AbstractComponent;
  */
 class Support extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		if (!\User::authorise('core.manage', 'com_support')) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!\User::authorise('core.manage', 'com_support')) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
         $controllerName = \Request::getCmd('controller', 'tickets');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'tickets';
         }
 
-		\Submenu::addEntry(
-		    \Lang::txt('COM_SUPPORT_TICKETS'),
-		    \Route::url('index.php?option=com_support&controller=tickets'),
-		    $controllerName == 'tickets'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_SUPPORT_CATEGORIES'),
-		    \Route::url('index.php?option=com_support&controller=categories'),
-		    $controllerName == 'categories'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_SUPPORT_QUERIES'),
-		    \Route::url('index.php?option=com_support&controller=queries'),
-		    $controllerName == 'queries'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_SUPPORT_MESSAGES'),
-		    \Route::url('index.php?option=com_support&controller=messages'),
-		    $controllerName == 'messages'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_SUPPORT_STATUSES'),
-		    \Route::url('index.php?option=com_support&controller=statuses'),
-		    $controllerName == 'statuses'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_SUPPORT_ABUSE'),
-		    \Route::url('index.php?option=com_support&controller=abusereports'),
-		    $controllerName == 'abusereports'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_SUPPORT_STATS'),
-		    \Route::url('index.php?option=com_support&controller=stats'),
-		    $controllerName == 'stats'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_SUPPORT_ACL'),
-		    \Route::url('index.php?option=com_support&controller=acl'),
-		    $controllerName == 'acl'
-		);
+        \Submenu::addEntry(
+            \Lang::txt('COM_SUPPORT_TICKETS'),
+            \Route::url('index.php?option=com_support&controller=tickets'),
+            $controllerName == 'tickets'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_SUPPORT_CATEGORIES'),
+            \Route::url('index.php?option=com_support&controller=categories'),
+            $controllerName == 'categories'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_SUPPORT_QUERIES'),
+            \Route::url('index.php?option=com_support&controller=queries'),
+            $controllerName == 'queries'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_SUPPORT_MESSAGES'),
+            \Route::url('index.php?option=com_support&controller=messages'),
+            $controllerName == 'messages'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_SUPPORT_STATUSES'),
+            \Route::url('index.php?option=com_support&controller=statuses'),
+            $controllerName == 'statuses'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_SUPPORT_ABUSE'),
+            \Route::url('index.php?option=com_support&controller=abusereports'),
+            $controllerName == 'abusereports'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_SUPPORT_STATS'),
+            \Route::url('index.php?option=com_support&controller=stats'),
+            $controllerName == 'stats'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_SUPPORT_ACL'),
+            \Route::url('index.php?option=com_support&controller=acl'),
+            $controllerName == 'acl'
+        );
 
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

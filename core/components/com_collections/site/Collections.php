@@ -28,9 +28,9 @@ class Collections extends AbstractComponent
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+        $controller->redirect();
+    }
 }
