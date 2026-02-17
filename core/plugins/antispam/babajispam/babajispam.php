@@ -10,8 +10,6 @@ namespace Plugins\Antispam\Babajispam;
 
 use Hubzero\Plugin\Plugin;
 
-
-
 /**
  * Babajispam Anti-spam Plugin
  */

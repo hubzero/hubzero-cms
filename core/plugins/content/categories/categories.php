@@ -4,14 +4,11 @@ namespace Plugins\Content\Categories;
 
 use Hubzero\Plugin\Plugin;
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-defined('_HZEXEC_') or die;
 
 /**
  * Plugin for ensuring categories are empty before deleting

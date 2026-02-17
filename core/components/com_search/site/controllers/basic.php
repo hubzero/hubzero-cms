@@ -30,6 +30,7 @@ class Basic extends SiteController
      */
     public function displayTask()
     {
+
         Plugin::import('search');
 
         // Set breadcrumbs

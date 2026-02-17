@@ -11,8 +11,6 @@ namespace Plugins\Oaipmh\Publications\Data;
 use Hubzero\Base\Obj;
 use Components\Oaipmh\Models\Provider;
 
-require_once \Component::path('com_oaipmh') . '/models/provider.php';
-
 /**
  * Data miner for publications to be used by OAI-PMH
  */

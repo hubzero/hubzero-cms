@@ -10,8 +10,6 @@ namespace Plugins\Antispam\Akismet;
 
 use Hubzero\Plugin\Plugin;
 
-
-
 /**
  * Akismet antispam Plugin
  */

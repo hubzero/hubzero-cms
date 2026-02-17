@@ -16,6 +16,12 @@ use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
 
 /**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/**
  * Groups Plugin class for forum entries
  */
 class Forum extends Plugin

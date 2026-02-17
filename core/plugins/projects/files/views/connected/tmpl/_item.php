@@ -10,6 +10,8 @@
 
 use Components\Projects\Helpers\Html;
 
+defined('_HZEXEC_') or die();
+
 $item = $this->item;
 $itemIsFile = $item->isFile();
 $itemName = $item->getName();

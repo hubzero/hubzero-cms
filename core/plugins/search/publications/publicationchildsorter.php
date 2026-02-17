@@ -8,9 +8,6 @@
 
 namespace Plugins\Search\Publications;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Publications child sorter class
  *

@@ -443,7 +443,19 @@ class Html extends Obj
      */
     public static function replaceUrls($string, $rel = 'nofollow')
     {
-        //return preg_replace('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@', "<a href=\"$1\" rel=\"{$rel}\">$1</a>", $string);
+        // Originally used a single preg_replace with a broad URL pattern that
+        // matched hostnames without a scheme:
+        //
+        //   preg_replace(
+        //       '@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@',
+        //       "<a href=\"$1\" rel=\"{$rel}\">$1</a>",
+        //       $string
+        //   );
+        //
+        // Replaced with two-pass approach: first emails, then URLs — to avoid
+        // mangling email addresses and to better handle edge cases like trailing
+        // punctuation and parentheses.
+
         // Replace email links
         $string = preg_replace('/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/', '<a href="mailto:$1">$1</a>', $string);
 

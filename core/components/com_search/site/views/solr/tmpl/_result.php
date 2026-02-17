@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
+
 // Nearly every indexer writes 'url' with Route::urlForClient(), whose $xhtml
 // argument defaults to true, so the stored value can already contain &amp;
 // (com_groups is the exception -- it builds root . 'groups/' . cn by hand).

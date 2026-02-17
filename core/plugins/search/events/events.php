@@ -2,19 +2,14 @@
 
 namespace Plugins\Search\Events;
 
+use Components\Events\Models\Orm\Event as CalEvent;
 use Hubzero\Plugin\Plugin;
-
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
-
-use Components\Events\Models\Orm\Event as CalEvent;
 
 /**
  * Search events
