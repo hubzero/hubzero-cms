@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for displaying an image slider
  */
-class SliderMacro extends WikiMacro
+class Slider extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -51,7 +54,7 @@ class SliderMacro extends WikiMacro
         $id = uniqid();
 
         //get the group
-        $gid = Request::getString('cn');
+        $gid = \Request::getString('cn');
 
         //get the group object based on gid
         $group = \Hubzero\User\Group::getInstance($gid);

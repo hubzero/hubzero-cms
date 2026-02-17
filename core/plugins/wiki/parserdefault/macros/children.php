@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for listing children of a page
  */
-class ChildrenMacro extends WikiMacro
+class Children extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -103,7 +106,7 @@ class ChildrenMacro extends WikiMacro
             foreach ($rows as $row) {
                 $row = new \Components\Wiki\Models\Page($row);
 
-                $html .= '<li><a href="' . Route::url($row->link()) . '">';
+                $html .= '<li><a href="' . \Route::url($row->link()) . '">';
                 $html .= stripslashes($row->get('title', $row->get('pagename')));
                 $html .= '</a>';
                 $html .= $this->listChildren($currentDepth + 1, $targetDepth, $row->get('id'));

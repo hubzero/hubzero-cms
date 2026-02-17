@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for dipslaying group events
  */
-class GroupEventMacro extends WikiMacro
+class GroupEvent extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -62,7 +65,7 @@ class GroupEventMacro extends WikiMacro
         //    : $default_events;
 
         //get the group
-        $cn = Request::getString('cn');
+        $cn = \Request::getString('cn');
 
         //get the group object based on gid
         $group = \Hubzero\User\Group::getInstance($cn);
@@ -107,7 +110,7 @@ class GroupEventMacro extends WikiMacro
     private function getGroupEvents($group, $filters = array())
     {
         //instantiate database
-        $database = App::get('db');
+        $database = \App::get('db');
 
         //build query
         $sql = "SELECT * FROM `#__events`
@@ -147,7 +150,7 @@ class GroupEventMacro extends WikiMacro
         if (count($events) > 0) {
             foreach ($events as $event) {
                 //build link
-                $link = Route::url('index
+                $link = \Route::url('index
                     . php?option=com_groups&cn='
                     . $group->get('cn')
                     . '&active=calendar&action=details&event_id='
@@ -158,17 +161,17 @@ class GroupEventMacro extends WikiMacro
                 $publishUp   = strtotime($event->publish_up);
                 $publishDown = strtotime($event->publish_down);
                 if (date("z", $publishUp) == date("z", $publishDown)) {
-                    $date  = Date::of($publishUp)->format('m/d/Y @ g:i a');
-                    $date .= ' &mdash; ' . Date::of($publishDown)->format('g:i a');
+                    $date  = \Date::of($publishUp)->format('m/d/Y @ g:i a');
+                    $date .= ' &mdash; ' . \Date::of($publishDown)->format('g:i a');
                 } elseif (
                     isset($event->publish_down)
                     && $event->publish_down
                     && $event->publish_down != '0000-00-00 00:00:00'
                 ) {
-                    $date  = Date::of($publishUp)->format('m/d/Y @ g:i a');
-                    $date .= ' &mdash; <br />&nbsp;&nbsp;&nbsp;' . Date::of($publishDown)->format('m/d/Y @ g:i a');
+                    $date  = \Date::of($publishUp)->format('m/d/Y @ g:i a');
+                    $date .= ' &mdash; <br />&nbsp;&nbsp;&nbsp;' . \Date::of($publishDown)->format('m/d/Y @ g:i a');
                 } else {
-                    $date  = Date::of($publishUp)->format('m/d/Y @ g:i a');
+                    $date  = \Date::of($publishUp)->format('m/d/Y @ g:i a');
                 }
 
                 //shorten content
@@ -193,7 +196,7 @@ class GroupEventMacro extends WikiMacro
             $content
                 .= '<p>Currently there are no upcoming group events
                 . Add an event by <a href="'
-                . Route::url('index
+                . \Route::url('index
                 . php?option=com_groups&cn='
                 . $group->get('cn')
                 . '&active=calendar&action=add')

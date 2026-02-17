@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * A wiki macro for embedding or linking to files
  */
-class FileMacro extends WikiMacro
+class File extends WikiMacro
 {
     /**
      * Allow macro in partial parsing?
@@ -124,7 +127,7 @@ class FileMacro extends WikiMacro
         $attr = $this->attr;
 
         // Get wiki config
-        $this->config = Component::params('com_wiki');
+        $this->config = \Component::params('com_wiki');
         if ($this->filepath != '') {
             $this->config->set('filepath', $this->filepath);
         }
@@ -437,8 +440,8 @@ class FileMacro extends WikiMacro
             $link .= $this->pagename;
         }
         $type = 'File';
-        if (in_array(strtolower(Filesystem::extension($file)), $this->imgs)) {
-            if (Request::getCmd('format') == 'pdf') {
+        if (in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
+            if (\Request::getCmd('format') == 'pdf') {
                 return $this->path($file);
             }
             $type = 'Image';
@@ -446,7 +449,7 @@ class FileMacro extends WikiMacro
         $link = rtrim($link, '/');
         $link .= '/' . $type . ':' . $file;
 
-        return Route::url($link);
+        return \Route::url($link);
     }
 
     /**
@@ -458,7 +461,7 @@ class FileMacro extends WikiMacro
      */
     private function embed($file, $attr = array())
     {
-        $ext = strtolower(Filesystem::extension($file));
+        $ext = strtolower(\Filesystem::extension($file));
 
         switch ($ext) {
             case 'unity3d':
@@ -671,11 +674,11 @@ class FileMacro extends WikiMacro
                     if ($size !== null && $attr['details']) {
                         $html .= ' (<span class="file-atts">' . \Hubzero\Utility\Number::formatBytes($size);
                         if (isset($attr['created_by'])) {
-                            $user = User::getInstance($attr['created_by']);
-                            $html .= ', ' . Lang::txt('uploaded by %s ', stripslashes($user->get('name', '')));
+                            $user = \User::getInstance($attr['created_by']);
+                            $html .= ', ' . \Lang::txt('uploaded by %s ', stripslashes($user->get('name', '')));
                         }
                         if (isset($attr['created'])) {
-                            $html .= ' ' . Date::of($attr['created'])->relative();
+                            $html .= ' ' . \Date::of($attr['created'])->relative();
                         }
                         $html .= '</span>)';
                     }

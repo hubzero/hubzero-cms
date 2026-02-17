@@ -1360,7 +1360,7 @@ class WikiParser
      */
     private function getMath($matches)
     {
-        $m = MathRenderer::renderMath(trim($matches[1]), array(
+        $m = Math\MathRenderer::renderMath(trim($matches[1]), array(
             'option' => $this->get('option')
         ));
 

@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for linking contributor
  */
-class ContributorMacro extends WikiMacro
+class Contributor extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -73,7 +76,7 @@ class ContributorMacro extends WikiMacro
             if (!strpos($n, ' ')) {
                 // No, then we must have a username
                 // Get user's name
-                $cuser = User::getInstance($n);
+                $cuser = \User::getInstance($n);
                 if (is_object($cuser)) {
                     $name = $cuser->get('name');
                     $id   = $cuser->get('id');
@@ -106,8 +109,8 @@ class ContributorMacro extends WikiMacro
 
         // Did we get a result from the database?
         if ($name && $id) {
-            return '<a href="' . Route::url('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
-            //return '['.Route::url('index.php?option=com_members&id='.$id).' '.$name.']';
+            return '<a href="' . \Route::url('index.php?option=com_members&id=' . $id) . '">' . $name . '</a>';
+            //return '['.\Route::url('index.php?option=com_members&id='.$id).' '.$name.']';
         } else {
             // Return error message
             return '(contributor:' . $et . ' not found)';

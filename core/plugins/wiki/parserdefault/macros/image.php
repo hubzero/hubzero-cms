@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * A wiki macro for embedding images
  */
-class ImageMacro extends WikiMacro
+class Image extends WikiMacro
 {
     /**
      * Allow macro in partial parsing?
@@ -108,7 +111,7 @@ class ImageMacro extends WikiMacro
         $attr = $this->attr;
 
         // Get wiki config
-        $this->config = Component::params('com_wiki');
+        $this->config = \Component::params('com_wiki');
         if ($this->filepath != '') {
             $this->config->set('filepath', $this->filepath);
         }
@@ -160,7 +163,7 @@ class ImageMacro extends WikiMacro
 
         // Does the file exist?
         if ($ret) {
-            if (!in_array(strtolower(Filesystem::extension($file)), $this->imgs)) {
+            if (!in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
                 return '(Image(' . $content . ') failed - File provided is not an allowed image type)';
             }
 
@@ -375,7 +378,7 @@ class ImageMacro extends WikiMacro
 
         $file = trim($file, DS);
 
-        if (Request::getString('format') == 'pdf') {
+        if (\Request::getString('format') == 'pdf') {
             return $this->path($file);
         }
 
@@ -394,7 +397,7 @@ class ImageMacro extends WikiMacro
         $link = rtrim($link, '/');
         $link .= '/Image:' . $file;
 
-        return Route::url($link);
+        return \Route::url($link);
     }
 
     /**

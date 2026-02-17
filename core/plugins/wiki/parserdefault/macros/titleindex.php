@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for displaying a list of pages
  */
-class TitleIndexMacro extends WikiMacro
+class TitleIndex extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -115,7 +118,7 @@ class TitleIndexMacro extends WikiMacro
                     $row->set('scope_id', $this->domain_id);
                 }
 
-                $html .= '<li><a href="' . Route::url($row->link()) . '">';
+                $html .= '<li><a href="' . \Route::url($row->link()) . '">';
                 $html .= stripslashes($row->get('title', $row->get('pagename')) ?? '');
                 $html .= '</a></li>' . "\n";
             }

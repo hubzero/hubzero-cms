@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for getting a linked title to a wiki page
  */
-class PageMacro extends WikiMacro
+class Page extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -74,7 +77,7 @@ class PageMacro extends WikiMacro
 
         // Build and return the link
         return '<a href="'
-            . Route::url($row->link())
+            . \Route::url($row->link())
             . '">'
             . stripslashes($row->get('title', $row->get('pagename')))
             . '</a>';

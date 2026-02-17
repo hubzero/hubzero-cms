@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for displaying a tree of page parents
  */
-class ParentsMacro extends WikiMacro
+class Parents extends WikiMacro
 {
     /**
      * Returns a description of how to use the macro
@@ -104,7 +107,7 @@ class ParentsMacro extends WikiMacro
 
             // Build the HTML
             $html .= '<ul>';
-            $html .= '<li><a href="' . Route::url($row->link()) . '">';
+            $html .= '<li><a href="' . \Route::url($row->link()) . '">';
             $html .= stripslashes($row->title);
             $html .= '</a>';
             $html .= $this->buildTree($rows);

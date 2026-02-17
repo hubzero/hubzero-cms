@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for displaying a youtube video
  */
-class VideoMacro extends WikiMacro
+class Video extends WikiMacro
 {
     /**
      * Container for parsed attributes
@@ -89,7 +92,7 @@ class VideoMacro extends WikiMacro
         $default_width  = 640;
         $default_height = 380;
 
-        $this->config = Component::params('com_wiki');
+        $this->config = \Component::params('com_wiki');
         if ($this->filepath != '') {
             $this->config->set('filepath', $this->filepath);
         }
@@ -227,10 +230,10 @@ class VideoMacro extends WikiMacro
 
         // Local
         if ($type == 'local') {
-            $ext = strtolower(Filesystem::extension($video_url));
+            $ext = strtolower(\Filesystem::extension($video_url));
 
-            Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
-            Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
+            \Document::addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
+            \Document::addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
 
             $html  = '<div class="flowplayer" data-width="' . $width . '" data-height="' . $height . '">';
             $html
@@ -464,14 +467,14 @@ class VideoMacro extends WikiMacro
         }
         $type = 'File';
         $this->imgs = array('jpg', 'jpe', 'jpeg', 'gif', 'png');
-        if (in_array(strtolower(Filesystem::extension($file)), $this->imgs)) {
-            if (Request::getString('format') == 'pdf') {
+        if (in_array(strtolower(\Filesystem::extension($file)), $this->imgs)) {
+            if (\Request::getString('format') == 'pdf') {
                 return $this->path($file);
             }
             $type = 'Image';
         }
         $link .= $this->pagename . DS . $type . ':' . $file;
 
-        return Route::url($link);
+        return \Route::url($link);
     }
 }

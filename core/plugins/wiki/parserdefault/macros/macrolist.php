@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for displaying all available macros and their documentation
  */
-class MacrolistMacro extends WikiMacro
+class Macrolist extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -68,14 +71,19 @@ class MacrolistMacro extends WikiMacro
 
             $macroname = ucfirst($f) . 'Macro';
 
+            // Try namespaced class name (preferred)
+            if (!class_exists($macroname)) {
+                $macroname = __NAMESPACE__ . '\\' . ucfirst($f);
+            }
+
             if (class_exists($macroname)) {
                 $macro = new $macroname();
 
-                $macroname = substr($macroname, 0, (strlen($macroname) - 5));
-                $m[strtolower($macroname)] = '<dt id="'
-                    . strtolower($macroname)
+                $displayname = $macro->name();
+                $m[strtolower($displayname)] = '<dt id="'
+                    . strtolower($displayname)
                     . '"><code>&#91;&#91;'
-                    . $macroname
+                    . ucfirst($displayname)
                     . '(args)&#93;&#93;</code></dt><dd>'
                     . $macro->description()
                     . '</dd>';

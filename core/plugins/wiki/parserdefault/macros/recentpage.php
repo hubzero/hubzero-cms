@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for displaying a link to a recently created or updated page page.
  */
-class RecentPageMacro extends WikiMacro
+class RecentPage extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -22,17 +25,17 @@ class RecentPageMacro extends WikiMacro
     {
         $txt = array();
 
-        $txt['wiki'] = Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE') . "\n\n" .
-                        Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_ARGUMENTS') . "\n\n" .
-                        ' * ' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_LIMIT') . "\n" .
-                        ' * ' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_CLASS') . "\n";
+        $txt['wiki'] = \Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE') . "\n\n" .
+                        \Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_ARGUMENTS') . "\n\n" .
+                        ' * ' . \Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_LIMIT') . "\n" .
+                        ' * ' . \Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_CLASS') . "\n";
 
         $txt['html'] = '
-            <p>' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE') . '</p>
-            <p>' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_ARGUMENTS') . '</p>
+            <p>' . \Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE') . '</p>
+            <p>' . \Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_ARGUMENTS') . '</p>
             <ul>
-                <li>' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_LIMIT') . '</li>
-                <li>' . Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_CLASS') . '</li>
+                <li>' . \Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_LIMIT') . '</li>
+                <li>' . \Lang::txt('PLG_WIKI_PARSERDEFAULT_MACRO_RECENT_PAGE_CLASS') . '</li>
             </ul>';
 
         return $txt['html'];
@@ -98,21 +101,21 @@ class RecentPageMacro extends WikiMacro
                 $html
                     .= "\t"
                     . '<h3><a href="'
-                    . Route::url($row->link())
+                    . \Route::url($row->link())
                     . '">'
                     . stripslashes($row->title)
                     . '</a></h3>'
                     . "\n";
                 $html .= "\t" . '<p class="modified-date">';
                 if ($row->get('version') > 1) {
-                    $html .= Lang::txt(
+                    $html .= \Lang::txt(
                         'PLG_WIKI_PARSERDEFAULT_MODIFIED_ON',
-                        Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                        \Date::of($row->get('created'))->toLocal(\Lang::txt('DATE_FORMAT_HZ1'))
                     );
                 } else {
-                    $html .= Lang::txt(
+                    $html .= \Lang::txt(
                         'PLG_WIKI_PARSERDEFAULT_CREATED_ON',
-                        Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                        \Date::of($row->get('created'))->toLocal(\Lang::txt('DATE_FORMAT_HZ1'))
                     );
                 }
                 $html .= '</p>' . "\n";
@@ -120,15 +123,15 @@ class RecentPageMacro extends WikiMacro
                 $html
                     .= "\t"
                     . '<p><a href="'
-                    . Route::url($row->link())
+                    . \Route::url($row->link())
                     . '">'
-                    . Lang::txt('PLG_WIKI_PARSERDEFAULT_READ_MORE')
+                    . \Lang::txt('PLG_WIKI_PARSERDEFAULT_READ_MORE')
                     . '</a></p>'
                     . "\n";
                 $html .= '</div>' . "\n";
             }
         } else {
-            $html .= '<p class="warning">' . Lang::txt('PLG_WIKI_PARSERDEFAULT_NO_RESULTS') . '</p>' . "\n";
+            $html .= '<p class="warning">' . \Lang::txt('PLG_WIKI_PARSERDEFAULT_NO_RESULTS') . '</p>' . "\n";
         }
 
         return $html;

@@ -1,17 +1,20 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 
 /**
  * Wiki macro class for displaying a random page
  */
-class RandomPageMacro extends WikiMacro
+class RandomPage extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -41,6 +44,6 @@ class RandomPageMacro extends WikiMacro
             ->row();
 
         // Build and return the link
-        return '<a href="' . Route::url($row->link()) . '">' . $row->title . '</a>';
+        return '<a href="' . \Route::url($row->link()) . '">' . $row->title . '</a>';
     }
 }
