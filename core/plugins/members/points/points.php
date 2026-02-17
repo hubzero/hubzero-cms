@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Members\Points;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package   hubzero-cms
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for points
  */
-class PlgMembersPoints extends \Hubzero\Plugin\Plugin
+class Points extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -142,17 +146,17 @@ class PlgMembersPoints extends \Hubzero\Plugin\Plugin
                 $entry = \Hubzero\Bank\Account::oneByUserId($user['id']);
 
                 if (!$entry->destroy()) {
-                    throw new Exception($entry->getError());
+                    throw new \Exception($entry->getError());
                 }
 
                 $transactions = \Hubzero\Bank\Transaction::all()->whereEquals('uid', $user['id']);
 
                 foreach ($transactions->rows() as $row) {
                     if (!$row->destroy()) {
-                        throw new Exception($row->getError());
+                        throw new \Exception($row->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return false;
             }
         }

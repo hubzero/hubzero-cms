@@ -9,7 +9,11 @@
 /**
  * HUBzero plugin class for system overview
  */
-class plgHubzeroSysusers extends \Hubzero\Plugin\Plugin
+namespace Plugins\Hubzero\Sysusers;
+
+use Hubzero\Plugin\Plugin;
+
+class Sysusers extends Plugin
 {
     /**
      * Return information about this hub
@@ -21,7 +25,7 @@ class plgHubzeroSysusers extends \Hubzero\Plugin\Plugin
     {
         $database = App::get('db');
 
-        $response = new stdClass();
+        $response = new \stdClass();
         $response->name  = 'users';
         $response->label = 'Users';
         $response->data  = array();
@@ -68,7 +72,7 @@ class plgHubzeroSysusers extends \Hubzero\Plugin\Plugin
      */
     private function obj($label, $value)
     {
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->label = $label;
         $obj->value = $value;
 

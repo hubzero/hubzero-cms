@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Courses\Reviews;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +18,7 @@ include_once __DIR__ . DS . 'models' . DS . 'comment.php';
 /**
  * Courses Plugin class for review
  */
-class plgCoursesReviews extends \Hubzero\Plugin\Plugin
+class Reviews extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -326,8 +330,8 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
             ->whereEquals('item_id', $this->obj->get('id'))
             ->whereEquals('parent', 0)
             ->whereIn('state', array(
-                Components\Courses\Models\Comment::STATE_PUBLISHED,
-                Components\Courses\Models\Comment::STATE_FLAGGED
+                \Components\Courses\Models\Comment::STATE_PUBLISHED,
+                \Components\Courses\Models\Comment::STATE_FLAGGED
             ))
             ->limit($this->params->get('display_limit', 25))
             ->ordered()

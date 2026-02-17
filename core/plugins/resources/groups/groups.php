@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Display groups associated with a resource
  */
-class plgResourcesGroups extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Groups;
+
+use Hubzero\Plugin\Plugin;
+
+class Groups extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

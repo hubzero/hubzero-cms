@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Plugin for sending notifications to Slack about support tickets
  */
-class plgSupportSlack extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Slack;
+
+use Hubzero\Plugin\Plugin;
+
+class Slack extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -102,7 +103,7 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
 
         try {
             $client->attach($data)->send();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // Fail silently
             return false;
         }
@@ -136,7 +137,7 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
                 $url = rtrim(Request::root(), '/') . '/support/ticket/' . $ticket->get('id');
             }
             $pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_CREATED', Config::get('sitename')); //, $ticket->get('name', $ticket->get('email')));
-            $text    = Hubzero\Utility\Str::truncate(Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')), 300);
+            $text    = \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')), 300);
 
             if (Component::params('com_support')->get('email_terse')) {
                 $text = Lang::txt('PLG_SUPPORT_SLACK_TICKET_NEW');
@@ -205,7 +206,7 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
             }
             $pretext = Lang::txt('PLG_SUPPORT_SLACK_TICKET_UPDATED', Config::get('sitename')); //, $comment->creator()->get('name'));
             $text    = preg_replace("/<br\s?\/>/i", '', $comment->get('comment'));
-            $text    = Hubzero\Utility\Str::truncate(Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
+            $text    = \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
 
             $color = 'good';
             if ($comment->isPrivate()) {

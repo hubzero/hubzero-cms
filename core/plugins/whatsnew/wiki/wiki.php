@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Whatsnew\Wiki;
+
+use Hubzero\Plugin\Plugin;
+
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * What's New Plugin class for com_wiki articles
  */
-class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
+class Wiki extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -67,15 +71,15 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
         // @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions
 
         if (!$limit) {
-            return Components\Wiki\Models\Page::all()
-                ->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+            return \Components\Wiki\Models\Page::all()
+                ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
                 ->where('created', '>=', $period->cStartDate)
                 ->where('created', '<', $period->cEndDate)
                 ->order('created', 'desc')
                 ->count();
         } else {
-            $pages = Components\Wiki\Models\Page::all()
-                ->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+            $pages = \Components\Wiki\Models\Page::all()
+                ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
                 ->order('created', 'desc')
                 ->where('created', '>=', $period->cStartDate)
                 ->where('created', '<', $period->cEndDate)
@@ -86,7 +90,7 @@ class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
             $rows = array();
 
             foreach ($pages as $page) {
-                $row = new stdClass();
+                $row = new \stdClass();
                 $row->title = $page->title;
                 $row->href = Route::url($page->link());
                 $row->text = strip_tags($page->version->get('pagehtml', ''));

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Events;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -17,7 +21,7 @@ use Components\Events\Models\Orm\Event as CalEvent;
  */
 /**
  */
-class plgSearchEvents extends \Hubzero\Plugin\Plugin
+class Events extends Plugin
 {
     /**
      * Build search query and add it to the $results

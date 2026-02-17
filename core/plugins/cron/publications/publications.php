@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Cron plugin for publications
  */
-class plgCronPublications extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Publications;
+
+use Hubzero\Plugin\Plugin;
+
+class Publications extends Plugin
 {
     /**
      * Return a list of events
@@ -23,7 +24,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = 'publications';
 
         $obj->events = array(
@@ -154,7 +155,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
             }
 
             // Plain text
-            $eview = new Hubzero\Mail\View(
+            $eview = new \Hubzero\Mail\View(
                 array(
                     'base_path' => __DIR__,
                     'name'      => 'emails',

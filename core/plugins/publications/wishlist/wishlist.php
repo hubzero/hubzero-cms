@@ -1,4 +1,7 @@
 <?php
+namespace Plugins\Publications\Wishlist;
+
+use Hubzero\Plugin\Plugin;
 
 
 /**
@@ -11,7 +14,7 @@
 /**
  * Publications Plugin class for wishes
  */
-class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
+class Wishlist extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

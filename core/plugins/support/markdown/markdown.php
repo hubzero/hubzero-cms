@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +8,11 @@
 /**
  * Plugin for converting support comments from MarkDown to HTML
  */
-class plgSupportMarkdown extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Markdown;
+
+use Hubzero\Plugin\Plugin;
+
+class Markdown extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

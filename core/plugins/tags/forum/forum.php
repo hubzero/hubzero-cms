@@ -1,5 +1,10 @@
 <?php
 
+namespace Plugins\Tags\Forum;
+
+use Hubzero\Plugin\Plugin;
+
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
 /**
  * @package    hubzero-cms
@@ -10,7 +15,7 @@
 /**
  * Tags plugin class for forum entries
  */
-class plgTagsForum extends \Hubzero\Plugin\Plugin
+class Forum extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

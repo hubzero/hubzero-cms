@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * GoogleMaps plugin for geocode
  *
  * The GoogleMapsProvider is able to geocode and reverse geocode
  * street addresses.
  */
-class plgGeocodeGooglemaps extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Googlemaps;
+
+use Hubzero\Plugin\Plugin;
+
+class Googlemaps extends Plugin
 {
     /**
      * Return a geocode provider

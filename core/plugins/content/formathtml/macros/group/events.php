@@ -8,8 +8,8 @@
 
 namespace Plugins\Content\Formathtml\Macros\Group;
 
+// GroupMacro lives in group.php, so the autoloader cannot resolve it by name yet
 require_once dirname(__DIR__) . DS . 'group.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_events' . DS . 'models' . DS . 'calendar.php';
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
 use Components\Events\Models\Calendar;

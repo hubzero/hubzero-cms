@@ -6,13 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+/**
+ * A wiki macro for embedding images
+ */
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * A wiki macro for embedding images
  */
-class ImageMacro extends WikiMacro
+class Image extends WikiMacro
 {
     /**
      * Allow macro in partial parsing?

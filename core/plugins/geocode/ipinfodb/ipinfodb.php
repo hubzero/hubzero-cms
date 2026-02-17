@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * IpInfoDb plugin for geocode
  *
  * The IpInfoDbProvider is able to geocode IPv4 addresses
  * only. A valid api key is required.
  */
-class plgGeocodeIpinfodb extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Ipinfodb;
+
+use Hubzero\Plugin\Plugin;
+
+class Ipinfodb extends Plugin
 {
     /**
      * Return a geocode provider

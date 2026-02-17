@@ -6,12 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Redirect;
+
+use Hubzero\Plugin\Plugin;
+
 // no direct access
 
 /**
  * Plugin class for redirect handling.
  */
-class plgSystemRedirect extends \Hubzero\Plugin\Plugin
+class Redirect extends Plugin
 {
     /**
      * Object Constructor.
@@ -55,7 +59,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
         }
 
         // Get the full current URI.
-        $uri = Hubzero\Utility\Uri::getInstance();
+        $uri = \Hubzero\Utility\Uri::getInstance();
         $current = $uri->toString(array('scheme', 'host', 'port', 'path', 'query', 'fragment'));
 
         // Attempt to ignore idiots.
@@ -73,7 +77,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
             $current = rtrim($current);
 
             // See if the current url exists in the database as a redirect.
-            $link = Components\Redirect\Models\Link::all()
+            $link = \Components\Redirect\Models\Link::all()
                 ->whereEquals('old_url', $current)
                 ->row();
 
@@ -82,7 +86,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
                 $currRel = $uri->toString(array('path', 'query', 'fragment'));
                 $currRel = '/' . trim($currRel, '/');
 
-                $link = Components\Redirect\Models\Link::all()
+                $link = \Components\Redirect\Models\Link::all()
                     ->whereEquals('old_url', $currRel)
                     ->orWhereEquals('old_url', ltrim($currRel, '/'))
                     ->row();
@@ -90,7 +94,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 
             // If a redirect exists and is published, permanently redirect.
             if ($link->get('id') && $link->isPublished()) {
-                $redirect = new Hubzero\Http\RedirectResponse($link->new_url, $link->get('status_code', 301));
+                $redirect = new \Hubzero\Http\RedirectResponse($link->new_url, $link->get('status_code', 301));
                 $redirect->setRequest(App::get('request'));
                 $redirect->send();
 
@@ -99,7 +103,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 
             $referer = empty($_SERVER['HTTP_REFERER']) ? '' : $_SERVER['HTTP_REFERER'];
 
-            $row = Components\Redirect\Models\Link::all()
+            $row = \Components\Redirect\Models\Link::all()
                 ->whereEquals('old_url', substr($current, 0, 255))
                 ->row();
 

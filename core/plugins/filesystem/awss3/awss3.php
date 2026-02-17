@@ -6,16 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Filesystem\Awss3;
 
+use Hubzero\Plugin\Plugin;
 use Aws\S3\S3Client;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 
 /**
  * Plugin class for AWS S3 filesystem connectivity
  */
-class plgFilesystemAWSS3 extends \Hubzero\Plugin\Plugin
+class Awss3 extends Plugin
 {
     /**
      * Initializes the AWS S3 connection
@@ -26,7 +26,7 @@ class plgFilesystemAWSS3 extends \Hubzero\Plugin\Plugin
     public static function init($params = [])
     {
         // Get the params
-        $pparams = Plugin::params('filesystem', 'awss3');
+        $pparams = \Plugin::params('filesystem', 'awss3');
 
         $app_id = $params['app_id'];
         $app_secret = $params['app_secret'];

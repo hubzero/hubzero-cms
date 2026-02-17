@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Members Plugin class for contributions
  */
-class plgMembersContributions extends \Hubzero\Plugin\Plugin
+namespace Plugins\Members\Contributions;
+
+use Hubzero\Plugin\Plugin;
+
+class Contributions extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

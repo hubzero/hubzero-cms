@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Wishlist;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Groups Plugin class for wishlist
  *
  */
-class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
+class Wishlist extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Courses;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Members Plugin class for courses
  *
  */
-class plgGroupsCourses extends \Hubzero\Plugin\Plugin
+class Courses extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -37,7 +41,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
             $extension = 'plg_' . $this->_type . '_' . $this->_name;
         }
 
-        $group = Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+        $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
         if ($group && $group->isSuperGroup()) {
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
@@ -104,7 +108,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
         }
 
         require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
-        $model = Components\Courses\Models\Courses::getInstance();
+        $model = \Components\Courses\Models\Courses::getInstance();
 
         $filters = array(
             'group'    => $group->get('cn'),

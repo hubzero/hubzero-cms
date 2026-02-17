@@ -9,7 +9,11 @@
 /**
  * System plugin checking for spam offences after routing
  */
-class plgSystemPassword extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Password;
+
+use Hubzero\Plugin\Plugin;
+
+class Password extends Plugin
 {
     /**
      * Hook for after parsing route

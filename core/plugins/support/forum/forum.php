@@ -12,7 +12,11 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin for abuse reports for forum posts
  */
-class plgSupportForum extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Forum;
+
+use Hubzero\Plugin\Plugin;
+
+class Forum extends Plugin
 {
     /**
      * Get items reported as abusive

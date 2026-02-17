@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Members\Resume;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for resumes
  */
-class plgMembersResume extends \Hubzero\Plugin\Plugin
+class Resume extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -470,7 +474,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_FILE_TOO_LARGE', Hubzero\Utility\Number::formatBytes($sizeLimit)));
+            $this->setError(Lang::txt('PLG_MEMBERS_RESUME_ERROR_FILE_TOO_LARGE', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
             return $this->_view($database, $option, $member, $emp);
         }
 

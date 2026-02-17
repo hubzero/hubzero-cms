@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class for displaying a timestamp
  */
-class TimestampMacro extends WikiMacro
+class Timestamp extends WikiMacro
 {
     /**
      * Allow macro in partial parsing?

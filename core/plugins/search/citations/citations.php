@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Citations;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * Search citation entries
  */
-class plgSearchCitations extends \Hubzero\Plugin\Plugin
+class Citations extends Plugin
 {
     /**
      * Build search query and add it to the $results

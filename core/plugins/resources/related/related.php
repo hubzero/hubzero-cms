@@ -1,4 +1,7 @@
 <?php
+namespace Plugins\Resources\Related;
+
+use Hubzero\Plugin\Plugin;
 
 
 /**
@@ -13,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * Resources Plugin class for related resources
  */
-class plgResourcesRelated extends \Hubzero\Plugin\Plugin
+class Related extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

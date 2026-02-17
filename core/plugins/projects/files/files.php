@@ -6,10 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 // Include external file connection
+namespace Plugins\Projects\Files;
+
+use Hubzero\Plugin\Plugin;
+
 require_once Component::path('com_projects') . DS . 'tables' . DS . 'remotefile.php';
 require_once Component::path('com_projects') . DS . 'helpers' . DS . 'connect.php';
 
@@ -36,7 +37,7 @@ use Components\Projects\Models\Orm\Project;
 /**
  * Projects Files plugin
  */
-class plgProjectsFiles extends \Hubzero\Plugin\Plugin
+class Files extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -82,7 +83,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
         );
 
         if ($this->params->get('default_action', 'browse') == 'connections') {
-            $model = new Components\Projects\Models\Project(Request::getString('alias', ''));
+            $model = new \Components\Projects\Models\Project(Request::getString('alias', ''));
             $userIsMember = $model->access('member');
             $active = Request::getInt('connection', 0);
 
@@ -97,7 +98,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
             );
 
             if ($model->exists()) {
-                $connections = Components\Projects\Models\Orm\Project::oneOrFail($model->get('id'))->connections()->thatICanView();
+                $connections = \Components\Projects\Models\Orm\Project::oneOrFail($model->get('id'))->connections()->thatICanView();
 
                 if ($connections->count()) {
                     foreach ($connections as $connection) {
@@ -183,7 +184,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
             $default = $this->params->get('default_action', 'browse');
 
-            $this->_publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+            $this->_publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
             $this->_database   = \App::get('db');
             $this->_uid        = User::get('id');
             $this->_task       = $action ? $action : Request::getString('action', $default);
@@ -978,7 +979,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -987,7 +988,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
         $newDir = \Hubzero\Filesystem\SafePath::relative(trim((string) Request::getString('newdir', '')));
 
         if ($newDir === false) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         // Set params
@@ -1932,7 +1933,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
                 );
 
                 // Tex file?
-                $tex    = Components\Projects\Helpers\Compiler::isTexFile($file->get('remoteTitle'), $file->get('originalFormat'));
+                $tex    = \Components\Projects\Helpers\Compiler::isTexFile($file->get('remoteTitle'), $file->get('originalFormat'));
 
                 $cExt   = $tex ? 'tex' : \Components\Projects\Helpers\Google::getGoogleImportExt($file->get('mimeType'));
                 $url    = \Components\Projects\Helpers\Google::getDownloadUrl($resource, $cExt);
@@ -2175,9 +2176,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
             // Write content to temp file
             $this->_connect->fetchFile($view->data, $tempBase, PATH_APP . $outputDir);
             $contentFile = $tempBase;
-        }
-        // Local file
-        elseif (!$this->getError()) {
+        } elseif (!$this->getError()) {
+            // Local file
             // Make sure we can handle preview of this type of file
             if ($file->get('ext') == 'pdf' || $file->isImage() || !$file->isBinary()) {
                 Filesystem::copy($file->get('fullPath'), PATH_APP . $outputDir . DS . $tempBase);
@@ -2498,15 +2498,14 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
                     // Force sync
                     $sync = true;
                 }
-            }
-            // Export local file
-            else {
+            } else {
+                // Export local file
                 // Check that local file exists
                 if (!$this->repo->fileExists($file->get('localPath'))) {
                     $this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_LOCAL_FILE_MISSING'));
                 } else {
                     // LaTeX?
-                    $tex = Components\Projects\Helpers\Compiler::isTexFile($file->get('name'), $file->getMimeType());
+                    $tex = \Components\Projects\Helpers\Compiler::isTexFile($file->get('name'), $file->getMimeType());
 
                     // Check format
                     if (!in_array($file->get('ext'), $formats) && !$tex) {
@@ -2666,7 +2665,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
         }
 
         // Get publication usage
-        if (Plugin::isEnabled('projects', 'publications') && $by == 'admin') {
+        if (\Plugin::isEnabled('projects', 'publications') && $by == 'admin') {
             require_once Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
 
             $filters = array();
@@ -2997,9 +2996,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
             return false;
         }
 
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
 
-        if ($zip->open($tarpath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
+        if ($zip->open($tarpath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
             $i = 0;
 
             foreach ($items as $element) {

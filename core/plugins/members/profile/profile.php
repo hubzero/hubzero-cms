@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Members\Profile;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package   hubzero-cms
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for profile
  */
-class PlgMembersProfile extends \Hubzero\Plugin\Plugin
+class Profile extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -119,7 +123,7 @@ class PlgMembersProfile extends \Hubzero\Plugin\Plugin
 
         $xreg = null;
 
-        $fields = Components\Members\Models\Profile\Field::all()
+        $fields = \Components\Members\Models\Profile\Field::all()
             ->including(
                 [
                 'options',
@@ -134,7 +138,7 @@ class PlgMembersProfile extends \Hubzero\Plugin\Plugin
             ->where(
                 'action_edit',
                 '!=',
-                Components\Members\Models\Profile\Field::STATE_HIDDEN
+                \Components\Members\Models\Profile\Field::STATE_HIDDEN
             )
             ->ordered()
             ->rows();
@@ -155,17 +159,17 @@ class PlgMembersProfile extends \Hubzero\Plugin\Plugin
             }
 
             // Validate profile fields
-            $form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+            $form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
             $form->load(
-                Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile)
+                \Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile)
             );
-            $form->bind(new Hubzero\Config\Registry($profile));
+            $form->bind(new \Hubzero\Config\Registry($profile));
 
             if (!$form->validate($profile)) {
                 $check = false;
 
                 foreach ($form->getErrors() as $key => $error) {
-                    if ($error instanceof Hubzero\Form\Exception\MissingData) {
+                    if ($error instanceof \Hubzero\Form\Exception\MissingData) {
                         $xreg->_missing[$key] = (string) $error;
                     }
 
@@ -300,7 +304,7 @@ class PlgMembersProfile extends \Hubzero\Plugin\Plugin
             //get request vars
             $addressId = Request::getInt('addressid', 0);
 
-            $address = Components\Members\Models\Address::oneOrNew($addressId);
+            $address = \Components\Members\Models\Address::oneOrNew($addressId);
         }
 
         // addressid= resolves any row; only the owner edits (or adds) an address
@@ -340,7 +344,7 @@ class PlgMembersProfile extends \Hubzero\Plugin\Plugin
         // set up objects
         // An address may only be edited by its owner
         $aid = isset($data['id']) ? (int) $data['id'] : 0;
-        $address = Components\Members\Models\Address::oneOrNew($aid);
+        $address = \Components\Members\Models\Address::oneOrNew($aid);
         if (!$address->isNew() && $address->get('uidNumber') != User::get('id')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
@@ -379,7 +383,7 @@ class PlgMembersProfile extends \Hubzero\Plugin\Plugin
         $addressId = Request::getInt('addressid', 0);
 
         // set up objects
-        $address = Components\Members\Models\Address::oneOrNew($addressId);
+        $address = \Components\Members\Models\Address::oneOrNew($addressId);
 
         // make sure we have a valid member address object
         if (!$address->get('id')) {

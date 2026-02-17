@@ -9,7 +9,11 @@
 /**
  * System plugin to force .rss and .atom URLs to raw document mode
  */
-class plgSystemXFeed extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Xfeed;
+
+use Hubzero\Plugin\Plugin;
+
+class Xfeed extends Plugin
 {
     /**
      * Perform actions after initialization

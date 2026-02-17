@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Projects;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -20,7 +24,7 @@ require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS .
  */
 /**
  */
-class plgSearchProjects extends \Hubzero\Plugin\Plugin
+class Projects extends Plugin
 {
     /**
      * Build search query and add it to the $results

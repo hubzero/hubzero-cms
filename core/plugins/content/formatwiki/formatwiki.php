@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Formatwiki;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +16,7 @@ defined('_HZEXEC_') or die;
 /**
  * Wiki formatted Content Plugin
  */
-class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
+class Formatwiki extends Plugin
 {
     /**
      * Output this plugin produced during this request, keyed by md5. formathtml

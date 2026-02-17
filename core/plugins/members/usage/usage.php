@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Members\Usage;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package   hubzero-cms
@@ -10,7 +14,7 @@
 /**
  * Members Plugin class for usage
  */
-class PlgMembersUsage extends \Hubzero\Plugin\Plugin
+class Usage extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

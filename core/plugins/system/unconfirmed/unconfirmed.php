@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * System plugin checking for unconfirmed user emails
  */
-class plgSystemUnconfirmed extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Unconfirmed;
+
+use Hubzero\Plugin\Plugin;
+
+class Unconfirmed extends Plugin
 {
     /**
      * Hook for after parsing route

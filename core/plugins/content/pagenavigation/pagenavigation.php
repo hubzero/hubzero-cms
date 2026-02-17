@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Pagenavigation;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die;
  * Pagenavigation plugin class.
  *
  */
-class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
+class Pagenavigation extends Plugin
 {
     /**
      * Prepare the content for display
@@ -169,7 +173,7 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
             }
 
             if ($row->prev) {
-                $prevRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+                $prevRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                     $row->prev->slug,
                     $row->prev->catslug,
                     $row->prev->language
@@ -180,7 +184,7 @@ class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
             }
 
             if ($row->next) {
-                $nextRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+                $nextRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                     $row->next->slug,
                     $row->next->catslug,
                     $row->next->language

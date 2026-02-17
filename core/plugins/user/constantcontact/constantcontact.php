@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Constantcontact;
+
 use Hubzero\Plugin\Plugin;
 
 /**
  * User plugin for syncing email preferences with Constant Contact (V3 API)
  */
-class plgUserConstantContact extends Plugin
+class Constantcontact extends Plugin
 {
     /**
      * Build the API client from plugin params

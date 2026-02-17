@@ -6,10 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 // Include needed libs
+namespace Plugins\Members\Citations;
+
+use Hubzero\Plugin\Plugin;
+
 $base = Component::path('com_citations');
 require_once $base . DS . 'helpers' . DS . 'format.php';
 require_once $base . DS . 'models' . DS . 'citation.php';
@@ -29,7 +30,7 @@ use Components\Citations\Models\Importer;
 /**
  * Groups plugin class for citations
  */
-class plgMembersCitations extends \Hubzero\Plugin\Plugin
+class Citations extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -328,7 +329,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Create view object
@@ -476,7 +477,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
         Request::checkToken();
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Set scope & scope id in save so no one can access hidden form inputs
@@ -630,7 +631,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(\Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Incoming
@@ -989,7 +990,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         //are we allowing importing
@@ -1025,7 +1026,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         Request::checkToken();
@@ -1056,7 +1057,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
 
         // make sure we dont have any file errors
         if ($file->getError() > 0) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_FAILURE'), 500);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_FAILURE'), 500);
         }
 
         // call the plugins
@@ -1106,7 +1107,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         $citations_require_attention    = $this->importer->readRequiresAttention();
@@ -1160,7 +1161,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         Request::checkToken();
@@ -1251,7 +1252,7 @@ class plgMembersCitations extends \Hubzero\Plugin\Plugin
         }
 
         if (!$this->params->get('access-manage')) {
-            throw new Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('PLG_MEMBERS_CITATIONS_NOT_AUTHORIZED'), 403);
         }
 
         // Get the session object

@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Newsletter\Jobs;
+
+use Hubzero\Plugin\Plugin;
+
 
 use Components\Feedaggregator\Models\Orm\Post;
 
@@ -14,7 +18,7 @@ require_once \Component::path('com_feedaggregator') . DS . 'models' . DS . 'orm'
 /**
  * Plugin class for Newsletter jobs
  */
-class plgNewsletterFeedaggregator extends \Hubzero\Plugin\Plugin
+class Jobs extends Plugin
 {
     /**
      * Event call to get the name
@@ -42,7 +46,7 @@ class plgNewsletterFeedaggregator extends \Hubzero\Plugin\Plugin
         $objects = array();
 
         foreach ($model as $m) {
-            $object = new stdClass();
+            $object = new \stdClass();
             $object->title = $m->title;
             $object->body  = preg_replace('/[^ .,;a-zA-Z0-9_-]|[,;]/', '', $m->description);
             $object->date  = Date::of($m->created)->toLocal("F j, Y");

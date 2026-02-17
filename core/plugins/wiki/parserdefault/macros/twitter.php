@@ -6,13 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
 defined('_HZEXEC_') or die('Restricted access');
 
 /**
  * Wiki macro class for dipslaying a twitter feed
  */
-class TwitterMacro extends WikiMacro
+class Twitter extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments

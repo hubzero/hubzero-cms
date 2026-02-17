@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\EditorsXtd\Image;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Editor Image buton
  *
  */
-class plgButtonImage extends \Hubzero\Plugin\Plugin
+class Image extends Plugin
 {
     /**
      * Constructor

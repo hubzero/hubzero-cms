@@ -6,12 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Blacklist;
+
+use Hubzero\Plugin\Plugin;
+
 
 
 /**
  * Antispam plugin for a Black Listed word detector
  */
-class plgAntispamBlackList extends \Hubzero\Plugin\Plugin
+class Blacklist extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

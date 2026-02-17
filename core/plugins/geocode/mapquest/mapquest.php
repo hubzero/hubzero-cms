@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * MapQuest plugin for geocode
  *
  * The MapQuestProvider is able to geocode and reverse geocode
  * street addresses. A valid api key is required.
  */
-class plgGeocodeMapquest extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Mapquest;
+
+use Hubzero\Plugin\Plugin;
+
+class Mapquest extends Plugin
 {
     /**
      * Return a geocode provider

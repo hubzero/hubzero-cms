@@ -9,7 +9,11 @@
 /**
  * System plugin for Mobile template
  */
-class plgSystemMobile extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Mobile;
+
+use Hubzero\Plugin\Plugin;
+
+class Mobile extends Plugin
 {
     /**
      * Method to carry template setting in user session if

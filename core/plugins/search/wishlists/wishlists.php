@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Wishlists;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -15,7 +19,7 @@ defined('_HZEXEC_') or die();
  */
 /**
  */
-class plgSearchWishlists extends \Hubzero\Plugin\Plugin
+class Wishlists extends Plugin
 {
     /**
      * Basic search

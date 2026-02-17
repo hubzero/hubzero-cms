@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * TomTom plugin for geocode
  *
@@ -15,7 +14,11 @@
  * you can choose between de, es, fr, it, nl, pl, pt and sv.
  * A valid api key is required.
  */
-class plgGeocodeTomTom extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Tomtom;
+
+use Hubzero\Plugin\Plugin;
+
+class Tomtom extends Plugin
 {
     /**
      * Return a geocode provider

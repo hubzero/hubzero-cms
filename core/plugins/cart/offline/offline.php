@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Cart\Offline;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +17,7 @@ require_once Component::path('com_cart') . DS . 'models' . DS . 'Cart.php';
 /**
  * Cart plugin for Payment: Offline
  */
-class plgCartOffline extends \Hubzero\Plugin\Plugin
+class Offline extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

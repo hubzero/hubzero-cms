@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,8 +7,6 @@
  */
 
 namespace Plugins\Content\Formathtml\Macros\Group;
-
-require_once dirname(__DIR__) . '/group.php';
 
 use Plugins\Content\Formathtml\Macros\GroupMacro;
 

@@ -1,20 +1,21 @@
 <?php
 
+namespace Plugins\Handlers\Markdown;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Plugin\Plugin;
-
 // No direct access
 defined('_HZEXEC_') or die();
 
 /**
  * Plugin class for MD file handling
  */
-class PlgHandlersMarkdown extends Plugin
+class Markdown extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -30,7 +31,7 @@ class PlgHandlersMarkdown extends Plugin
      * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to assess
      * @return  void
      **/
-    public function canHandle(Hubzero\Filesystem\Collection $collection)
+    public function canHandle(\Hubzero\Filesystem\Collection $collection)
     {
         $need = [
             'md' => 1
@@ -50,7 +51,7 @@ class PlgHandlersMarkdown extends Plugin
      * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to view
      * @return  void
      **/
-    public function onHandleView(Hubzero\Filesystem\Collection $collection)
+    public function onHandleView(\Hubzero\Filesystem\Collection $collection)
     {
         if (!$this->canHandle($collection)) {
             return false;
@@ -58,7 +59,7 @@ class PlgHandlersMarkdown extends Plugin
 
         $file = $collection->findFirstWithExtension('md');
 
-        if (!$file || !($file instanceof Hubzero\Filesystem\File)) {
+        if (!$file || !($file instanceof \Hubzero\Filesystem\File)) {
             return false;
         }
 

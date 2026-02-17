@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Publications Plugin class for versions
  */
-class plgPublicationsVersions extends \Hubzero\Plugin\Plugin
+namespace Plugins\Publications\Versions;
+
+use Hubzero\Plugin\Plugin;
+
+class Versions extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -84,7 +87,7 @@ class plgPublicationsVersions extends \Hubzero\Plugin\Plugin
             $versions = $objV->getVersions($publication->id, $filters = array('public' => 1));
 
             // Are we allowing contributions
-            $contributable = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+            $contributable = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
             // Instantiate a view
             $view = $this->view('default', 'browse')

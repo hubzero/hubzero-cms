@@ -9,7 +9,11 @@
 /**
  * Cron plugin for support tickets
  */
-class plgCronSupport extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Support;
+
+use Hubzero\Plugin\Plugin;
+
+class Support extends Plugin
 {
     /**
      * Return a list of events
@@ -20,7 +24,7 @@ class plgCronSupport extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = 'support';
 
         $obj->events = array(

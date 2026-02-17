@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Filesystem\Dropbox;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +22,7 @@ use Hubzero\Session;
 /**
  * Plugin class for dropbox filesystem connectivity
  */
-class plgFilesystemDropbox extends \Hubzero\Plugin\Plugin
+class Dropbox extends Plugin
 {
     /**
      * Initializes the Dropbox connection

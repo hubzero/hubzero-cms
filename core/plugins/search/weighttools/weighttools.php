@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Weighttools;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -15,7 +19,7 @@ defined('_HZEXEC_') or die();
  */
 /**
  */
-class plgSearchWeightTools extends \Hubzero\Plugin\Plugin
+class Weighttools extends Plugin
 {
     /**
      * Short description for 'onSearchWeightResources'

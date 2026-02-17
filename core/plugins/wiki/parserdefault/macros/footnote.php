@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Wiki macro class for linking footnotes
  */
-class FootNoteMacro extends WikiMacro
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
+
+class FootNote extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -50,7 +51,7 @@ Examples:
         static $wm;
 
         if (!is_object($wm)) {
-            $wm = new stdClass();
+            $wm = new \stdClass();
             $wm->footnotes = array();
             $wm->footnotes_stubs = array();
             $wm->footnotes_count = 0;
@@ -84,7 +85,7 @@ Examples:
 
             $i = count($wm->footnotes) + 1;
 
-            $footnote = new stdClass();
+            $footnote = new \stdClass();
             $footnote->content = $note;
             $footnote->id      = 'fnref-' . $i;
             $footnote->refs    = array(

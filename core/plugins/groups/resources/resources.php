@@ -1,5 +1,10 @@
 <?php
 
+namespace Plugins\Groups\Resources;
+
+use Hubzero\Plugin\Plugin;
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +19,7 @@ include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php'
 /**
  * Groups Plugin class for resources
  */
-class plgGroupsResources extends \Hubzero\Plugin\Plugin
+class Resources extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -364,9 +369,9 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
             // Loop through all the IDs for resources associated with this group
             foreach ($ids as $id) {
                 // Disassociate the resource from the group and unpublish it
-                $rr = Components\Resources\Models\Entry::oneOrFail($id->id);
+                $rr = \Components\Resources\Models\Entry::oneOrFail($id->id);
                 $rr->set('group_owner', '');
-                $rr->set('published', Components\Resources\Models\Entry::STATE_UNPUBLISHED);
+                $rr->set('published', \Components\Resources\Models\Entry::STATE_UNPUBLISHED);
                 $rr->save();
 
                 // Add the page ID to the log
@@ -424,7 +429,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 
         if (!is_array($this->_cats)) {
             // Get categories
-            $this->_cats = Components\Resources\Models\Type::getMajorTypes();
+            $this->_cats = \Components\Resources\Models\Type::getMajorTypes();
         }
         $categories = $this->_cats;
 
@@ -499,7 +504,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
         // Get categories
         $categories = $this->_cats;
         if (!is_array($categories)) {
-            $categories = Components\Resources\Models\Type::getMajorTypes();
+            $categories = \Components\Resources\Models\Type::getMajorTypes();
         }
 
         // Normalize the category names
@@ -538,7 +543,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
             // Get results
 
             if (isset($filters['group_cn'])) {
-                     $rows = Components\Resources\Models\Entry::allWithFilters($filters)
+                     $rows = \Components\Resources\Models\Entry::allWithFilters($filters)
                      ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
                      ->whereEquals('#__resources' . '.group_owner', (string) $filters['group_cn'], 1)
                      ->orWhereEquals('#__resource_acl_group.group_id', $filters['group_id'], 1)
@@ -548,7 +553,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
                      ->start($limitstart)
                      ->rows();
             } else {
-                     $rows = Components\Resources\Models\Entry::allWithFilters($filters)
+                     $rows = \Components\Resources\Models\Entry::allWithFilters($filters)
                      ->join('#__resource_acl_group', '#__resource_acl_group.resource_id', '#__resources.id', 'left')
                      ->whereEquals('#__resource_acl_group.group_id', $filters['group_id'])
                      ->order($filters['sortby'], $filters['sortdir'])

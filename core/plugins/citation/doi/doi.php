@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Citation\Doi;
+
+use Hubzero\Plugin\Plugin;
+
 
 
 
@@ -9,13 +13,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once Component::path('com_publications') . '/tables/version.php'; // phpcs:ignore Generic.Files.SideEffects
-require_once Component::path('com_publications') . '/models/doi.php'; // phpcs:ignore Generic.Files.SideEffects
 
 /**
  * Citation Plugin class for doi
  */
-class plgCitationDoi extends \Hubzero\Plugin\Plugin
+class Doi extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -339,7 +341,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
             $dom = new \DomDocument();
             $dom->loadXML($xml);
 
-            $xpath = new DOMXPath($dom);
+            $xpath = new \DOMXPath($dom);
             $xpath->registerNamespace('ns', "http://datacite.org/schema/kernel-4");
 
             $query = "//ns:relatedIdentifier[text()=" . "'" . $relatedIdentifierVal
@@ -515,7 +517,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
         if (empty($this->_configs)) {
             $params = Component::params('com_publications');
 
-            $configs = new stdClass();
+            $configs = new \stdClass();
             $configs->dataciteEZIDSwitch = $params->get('datacite_ezid_doi_service_switch');
             $configs->dataciteServiceURL = $params->get('datacite_doi_service');
             $configs->dataciteUserPW = $params->get('datacite_doi_userpw');

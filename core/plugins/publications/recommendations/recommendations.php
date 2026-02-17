@@ -1,4 +1,7 @@
 <?php
+namespace Plugins\Publications\Recommendations;
+
+use Hubzero\Plugin\Plugin;
 
 
 /**
@@ -11,7 +14,7 @@
 /**
  * Publications Plugin class for recommendations
  */
-class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
+class Recommendations extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -46,7 +49,7 @@ class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
         include_once __DIR__ . DS . 'models' . DS . 'recommendation.php';
 
         // Get recommendations
-        $r = Plugins\Publications\Recommendations\Models\Recommendation::find(
+        $r = \Plugins\Publications\Recommendations\Models\Recommendation::find(
             $publication->id,
             $this->params->get('threshold', '0.21')
         );

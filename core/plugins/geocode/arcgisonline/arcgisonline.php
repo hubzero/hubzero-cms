@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * ArcGISOnline plugin for geocode
  *
@@ -18,7 +15,11 @@ defined('_HZEXEC_') or die();
  * time (note that this doesn't work on reverse geocoding).
  * This provider also supports SSL.
  */
-class plgGeocodeArcgisonline extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Arcgisonline;
+
+use Hubzero\Plugin\Plugin;
+
+class Arcgisonline extends Plugin
 {
     /**
      * Return a geocode provider

@@ -6,13 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Helper Class
  */
-class plgGroupsCalendarHelper
+namespace Plugins\Groups\Calendar;
+
+class Helper
 {
     /**
      * Link string patterns that ook like URLs or email addresses

@@ -1,20 +1,21 @@
 <?php
 
+namespace Plugins\Handlers\Ipynb;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Plugin\Plugin;
-
 // No direct access
 defined('_HZEXEC_') or die();
 
 /**
  * Plugin class for file Jupyter notebooks
  */
-class PlgHandlersIpynb extends Plugin
+class Ipynb extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -30,7 +31,7 @@ class PlgHandlersIpynb extends Plugin
      * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to assess
      * @return  boolean
      **/
-    public function canHandle(Hubzero\Filesystem\Collection $collection)
+    public function canHandle(\Hubzero\Filesystem\Collection $collection)
     {
         // We can handle 1 file
         $need = [
@@ -51,7 +52,7 @@ class PlgHandlersIpynb extends Plugin
      * @param   \Hubzero\Filesystem\Collection  $collection  The file collection to view
      * @return  mixed
      **/
-    public function onHandleView(Hubzero\Filesystem\Collection $collection)
+    public function onHandleView(\Hubzero\Filesystem\Collection $collection)
     {
         if (!$this->canHandle($collection)) {
             return false;
@@ -59,7 +60,7 @@ class PlgHandlersIpynb extends Plugin
 
         $file = $collection->findFirstWithExtension('ipynb');
 
-        if (!$file || !($file instanceof Hubzero\Filesystem\File)) {
+        if (!$file || !($file instanceof \Hubzero\Filesystem\File)) {
             return false;
         }
 

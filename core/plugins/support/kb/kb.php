@@ -12,7 +12,11 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin for abuse reports on KB comments
  */
-class plgSupportKb extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Kb;
+
+use Hubzero\Plugin\Plugin;
+
+class Kb extends Plugin
 {
     /**
      * Get items reported as abusive

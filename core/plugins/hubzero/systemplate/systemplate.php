@@ -9,7 +9,11 @@
 /**
  * HUBzero plugin class for system overview
  */
-class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
+namespace Plugins\Hubzero\Systemplate;
+
+use Hubzero\Plugin\Plugin;
+
+class Systemplate extends Plugin
 {
     /**
      * Return information about this hub
@@ -23,7 +27,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
             return;
         }
 
-        $response = new stdClass();
+        $response = new \stdClass();
         $response->name  = 'template';
         $response->label = 'Template';
         $response->data  = array();
@@ -93,7 +97,7 @@ class plgHubzeroSystemplate extends \Hubzero\Plugin\Plugin
      */
     private function obj($label, $value)
     {
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->label = $label;
         $obj->value = $value;
 

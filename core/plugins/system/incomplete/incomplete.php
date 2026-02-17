@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * System plugin checking for missing/required registration fields
  */
-class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Incomplete;
+
+use Hubzero\Plugin\Plugin;
+
+class Incomplete extends Plugin
 {
     /**
      * Hook for after parsing route
@@ -122,7 +123,7 @@ class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
                 {
                     // Does the user even have access to the profile plugin?
                     // If not, then we can't redirect them there
-                    $plugin = Plugin::byType('members', 'profile');
+                    $plugin = \Plugin::byType('members', 'profile');
 
                     if (!empty($plugin)) {
                         Request::setVar('option', 'com_members');
