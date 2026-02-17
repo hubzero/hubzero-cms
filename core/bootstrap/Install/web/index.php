@@ -94,7 +94,8 @@ new class {
     <div class="error-box">
         <div class="error-icon">&#10060;</div>
         <h1>Unsupported Operating System</h1>
-        <p>HUBzero CMS is designed for Unix-like operating systems and <strong>cannot run on Windows</strong>.</p>
+        <p>HUBzero CMS is designed for Unix-like operating systems
+            and <strong>cannot run on Windows</strong>.</p>
         <p>The platform relies on POSIX features, Unix file permissions, and system utilities
             that are not available on Windows.</p>
         <div class="supported-os">
