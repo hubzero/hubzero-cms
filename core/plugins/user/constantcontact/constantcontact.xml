@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="1.7" type="plugin" group="user">
+<extension version="2.2" type="plugin" group="user" method="upgrade">
 	<name>User - Constant Contact</name>
 	<author>HUBzero</author>
 	<authorUrl>hubzero.org</authorUrl>
@@ -9,18 +9,28 @@
 	<description>PLG_USER_CONSTANTCONTACT_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="constantcontact">constantcontact.php</filename>
+		<filename>helpers/ConstantContactClient.php</filename>
 	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_user_constantcontact.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_user_constantcontact.sys.ini</language>
+	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field type="list" name="ccManageEmailPreference" label="PLG_USER_CONSTANTCONTACT_PARAM_EMAIL_LABEL" default="0">
+				<field type="list" name="ccManageEmailPreference" label="PLG_USER_CONSTANTCONTACT_PARAM_EMAIL_LABEL" description="PLG_USER_CONSTANTCONTACT_PARAM_EMAIL_DESC" default="0">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
-				<field type="spacer" />
-				<field name="ccUsername" type="text" default="" label="PLG_USER_CONSTANTCONTACT_PARAM_CCUSERNAME_LABEL" description="PLG_USER_CONSTANTCONTACT_PARAM_CCUSERNAME_DESC" />
-				<field name="ccPassword" type="password" default="" label="PLG_USER_CONSTANTCONTACT_PARAM_CCPASSWORD_LABEL" description="PLG_USER_CONSTANTCONTACT_PARAM_CCPASSWORD_DESC" />
-				<field name="ccApiKey" type="text" default="" label="PLG_USER_CONSTANTCONTACT_PARAM_CCAPIKEY_LABEL" description="PLG_USER_CONSTANTCONTACT_PARAM_CCAPIKEY_DESC" />
+				<field type="spacer" label="PLG_USER_CONSTANTCONTACT_OAUTH_HEADER" />
+				<field name="ccClientId" type="text" default="" label="PLG_USER_CONSTANTCONTACT_PARAM_CLIENT_ID_LABEL" description="PLG_USER_CONSTANTCONTACT_PARAM_CLIENT_ID_DESC" />
+				<field name="ccClientSecret" type="password" default="" label="PLG_USER_CONSTANTCONTACT_PARAM_CLIENT_SECRET_LABEL" description="PLG_USER_CONSTANTCONTACT_PARAM_CLIENT_SECRET_DESC" />
+				<field type="spacer" label="PLG_USER_CONSTANTCONTACT_TOKEN_HEADER" />
+				<field name="ccAccessToken" type="textarea" default="" rows="3" label="PLG_USER_CONSTANTCONTACT_PARAM_ACCESS_TOKEN_LABEL" description="PLG_USER_CONSTANTCONTACT_PARAM_ACCESS_TOKEN_DESC" />
+				<field name="ccRefreshToken" type="textarea" default="" rows="3" label="PLG_USER_CONSTANTCONTACT_PARAM_REFRESH_TOKEN_LABEL" description="PLG_USER_CONSTANTCONTACT_PARAM_REFRESH_TOKEN_DESC" />
+				<field name="ccTokenExpires" type="hidden" default="0" />
+				<field type="spacer" label="PLG_USER_CONSTANTCONTACT_LIST_HEADER" />
+				<field name="ccListId" type="text" default="" label="PLG_USER_CONSTANTCONTACT_PARAM_LIST_ID_LABEL" description="PLG_USER_CONSTANTCONTACT_PARAM_LIST_ID_DESC" />
 			</fieldset>
 		</fields>
 	</config>
