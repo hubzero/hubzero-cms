@@ -113,7 +113,6 @@ class Dashboard extends Plugin
             $this->params->set('position', 'memberDashboard');
 
             // include dasboard models
-            include_once __DIR__ . DS . 'models' . DS . 'preference.php';
 
             // add assets
             $this->css();
@@ -365,7 +364,6 @@ class Dashboard extends Plugin
         $this->database   = App::get('db');
 
         // include dasboard models
-        include_once __DIR__ . DS . 'models' . DS . 'preference.php';
 
         // add assets
         Html::behavior('modal');

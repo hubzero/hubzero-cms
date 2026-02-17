@@ -40,12 +40,7 @@ abstract class Format
             // Only load the file the class does not exist.
             $class = __NAMESPACE__ . '\\Format\\' . $type;
             if (!class_exists($class)) {
-                $path = dirname(__FILE__) . '/format/' . $type . '.php';
-                if (is_file($path)) {
-                    include_once $path;
-                } else {
-                    throw new Exception(Lang::txt('Format not found.'), 500);
-                }
+                throw new Exception(Lang::txt('Format not found.'), 500);
             }
 
             $instances[$type] = new $class();

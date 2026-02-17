@@ -110,8 +110,6 @@ class Citations extends Plugin
             return $types;
         }
 
-        require_once \Component::path('com_citations') . DS . 'models' . DS . 'type.php';
-
         $types = \Components\Citations\Models\Type::all()->rows();
 
         return $types;
@@ -139,9 +137,6 @@ class Citations extends Plugin
         $row->type      = isset($row->data1)  ? $row->data1  : '';
         $row->pages     = isset($row->data2)  ? $row->data2  : '';
         $row->publisher = isset($row->data3)  ? $row->data3  : '';
-
-        require_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-        require_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 
         $config = \Component::params('com_citations');
 

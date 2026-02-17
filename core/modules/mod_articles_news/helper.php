@@ -47,8 +47,6 @@ class Helper extends Module
      */
     public static function getList(&$params)
     {
-        require_once Component::path('com_content') . '/site/helpers/route.php';
-        require_once Component::path('com_content') . '/models/article.php';
 
         $query = Article::all();
 

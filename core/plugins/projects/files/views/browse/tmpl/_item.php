@@ -11,7 +11,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once Component::path('com_tools') . '/models/orm/handler.php';
 
 use Components\Tools\Models\Orm\Handler;
 

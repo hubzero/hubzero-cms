@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,9 +13,6 @@ use stdClass;
 use Date;
 use Request;
 use App;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'job.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'job.php';
 
 /**
  * API controller for the time component

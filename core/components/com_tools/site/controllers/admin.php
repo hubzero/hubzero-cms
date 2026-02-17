@@ -19,10 +19,6 @@ use Log;
 use App;
 use Date;
 
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php';
-
 /**
  * Controller class for contributing a tool
  */
@@ -488,7 +484,6 @@ class Admin extends SiteController
 
         // Register DOI handle
         if ($result && $this->config->get('new_doi', 0)) {
-            include_once \Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
 
             // Collect metadata
             $url = Request::base() . ltrim(Route::url('index.php?option=com_resources&id=' . $status['resourceid'] . '&rev=' . $status['revision']), DS);
@@ -658,7 +653,6 @@ class Admin extends SiteController
 
                 // transfer screenshots
                 if ($devid && $currentid) {
-                    include_once __DIR__ . DS . 'screenshots.php';
 
                     $screenshots = new Screenshots();
                     if ($screenshots->transfer($devid, $currentid, $status['resourceid'])) {
@@ -667,8 +661,6 @@ class Admin extends SiteController
                         $this->setError(Lang::txt('COM_TOOLS_ERROR_TRANSFERRING_SCREENSHOTS'));
                     }
                 }
-
-                include_once __DIR__ . DS . 'resources.php';
 
                 $resource = new Resources();
                 // update and publish resource page

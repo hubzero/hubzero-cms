@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,8 +16,6 @@ use Pathway;
 use Request;
 use Event;
 use Lang;
-
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php';
 
 /**
  * Usage controller class for results

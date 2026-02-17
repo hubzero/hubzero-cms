@@ -8,8 +8,6 @@
 
 namespace Plugins\Wiki\Parserdefault\Macros\Group;
 
-require_once dirname(__DIR__) . DS . 'group.php';
-
 use Plugins\Wiki\Parserdefault\Macros\GroupMacro;
 
 /**
@@ -54,7 +52,6 @@ class DefaultHomePage extends GroupMacro
         }
 
         // add required helper lib
-        require_once \Component::path('com_groups') . DS . 'helpers' . DS . 'pages.php';
 
         // get default home page
         $html = \GroupsHelperPages::getDefaultHomePage($this->group);

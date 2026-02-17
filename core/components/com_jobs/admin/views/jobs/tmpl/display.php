@@ -144,8 +144,8 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
 
         $database = App::get('db');
 
-        $jt = new \Components\Jobs\Tables\JobType($database);
-        $jc = new \Components\Jobs\Tables\JobCategory($database);
+        $jt = new \Components\Jobs\Tables\Type($database);
+        $jc = new \Components\Jobs\Tables\Category($database);
 
         for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
             $row =& $this->rows[$i];

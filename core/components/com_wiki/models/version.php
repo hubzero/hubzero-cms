@@ -13,8 +13,6 @@ use Hubzero\Database\Relational;
 use Lang;
 use Date;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Wiki model for a page version
  */

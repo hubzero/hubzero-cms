@@ -98,7 +98,7 @@ class Tools extends SiteController
      */
     public function displayTask()
     {
-        include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'tools.php';
+
         $model = new \Components\Tools\Models\Tools();
 
         // Get the tool list

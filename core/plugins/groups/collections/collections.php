@@ -70,7 +70,6 @@ class Collections extends Plugin
     public function onGroupDelete($group)
     {
         // Import needed libraries
-        include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
         // Get all the IDs for collections
         $database = App::get('db');
@@ -121,7 +120,6 @@ class Collections extends Plugin
      */
     public function onGroupDeleteCount($group)
     {
-        include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
         $database = App::get('db');
         $sql = "SELECT COUNT(*) FROM `#__collections` WHERE `object_type`="
@@ -185,8 +183,6 @@ class Collections extends Plugin
 
         $this->group    = $group;
         $this->database = App::get('db');
-
-        include_once Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
         $this->model = new \Components\Collections\Models\Archive('group', $this->group->get('gidNumber'));
 

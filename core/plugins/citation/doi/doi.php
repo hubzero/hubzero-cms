@@ -4,15 +4,11 @@ namespace Plugins\Citation\Doi;
 
 use Hubzero\Plugin\Plugin;
 
-
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
 
 /**
  * Citation Plugin class for doi
@@ -163,7 +159,6 @@ class Doi extends Plugin
         $citationArr = [];
 
         if (!empty($citation['type'])) {
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'type.php';
             $types = \Components\Citations\Models\Type::all();
             $typeRecord = $types->select($types->getQualifiedFieldName('type_desc'))
                 ->whereEquals($types->getQualifiedFieldName('id'), $citation['type'])

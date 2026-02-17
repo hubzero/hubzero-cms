@@ -11,9 +11,6 @@ namespace Plugins\Antispam\SpamAssassin\Service\Client;
 use Plugins\Antispam\SpamAssassin\Service\Client\Remote\Exception;
 use Plugins\Antispam\SpamAssassin\Service\Client\Remote\Result;
 
-require_once __DIR__ . '/Remote/Exception.php';
-require_once __DIR__ . '/Remote/Result.php';
-
 /**
  * Client for accessing a remote SpamAssassin service
  */

@@ -225,7 +225,6 @@ class License extends Relational
      */
     public function isUsed()
     {
-        require_once __DIR__ . DS . 'version.php';
 
         $total = Version::all()
             ->whereEquals('license_type', $this->get('id'))

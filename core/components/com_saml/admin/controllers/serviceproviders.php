@@ -8,8 +8,6 @@
 
 namespace Components\Saml\Admin\Controllers;
 
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Metadata.php';
-
 use Hubzero\Component\AdminController;
 use Components\Saml\Models\ServiceProvider;
 use Components\Saml\Models\IdP;

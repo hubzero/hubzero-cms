@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,12 +17,6 @@ use Html;
 use stdClass;
 use Request;
 use Route;
-
-require_once Component::path('com_courses') . '/models/tags.php';
-require_once __DIR__ . DS . 'offering.php';
-require_once __DIR__ . DS . 'page.php';
-require_once __DIR__ . DS . 'member.php';
-require_once __DIR__ . DS . 'role.php';
 
 /**
  * Model class for a course entry

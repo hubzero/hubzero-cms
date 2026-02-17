@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,8 +11,6 @@ namespace Components\Resources\Models;
 use Components\Resources\Models\Author\Role\Type as RoleType;
 use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
-
-include_once __DIR__ . DS . 'author' . DS . 'role.php';
 
 /**
  * Resource type model

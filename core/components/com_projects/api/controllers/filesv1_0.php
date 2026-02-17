@@ -22,11 +22,6 @@ use Lang;
 use Event;
 use Filesystem;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'project.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'project.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'connection.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'provider.php';
-
 /**
  * API controller for the projects files
  */

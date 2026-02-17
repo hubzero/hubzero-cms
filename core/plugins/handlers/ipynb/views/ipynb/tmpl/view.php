@@ -20,35 +20,7 @@ $this->js('highlighter/shCore.js')
             <?php
             $contents = json_decode($this->file->read());
 
-            $parser = null;
-            $mdpath = Plugin::path('handlers', 'markdown');
-
-            if ($mdpath) :
-                $md = array(
-                    'block/CodeTrait.php',
-                    'block/FencedCodeTrait.php',
-                    'block/HeadlineTrait.php',
-                    'block/HtmlTrait.php',
-                    'block/ListTrait.php',
-                    'block/QuoteTrait.php',
-                    'block/RuleTrait.php',
-                    'block/TableTrait.php',
-                    'inline/CodeTrait.php',
-                    'inline/EmphStrongTrait.php',
-                    'inline/LinkTrait.php',
-                    'inline/StrikeoutTrait.php',
-                    'inline/UrlLinkTrait.php',
-                    'Parser.php',
-                    'Markdown.php',
-                    'MarkdownExtra.php',
-                    'GithubMarkdown.php'
-                );
-                foreach ($md as $mdfile) :
-                    include_once $mdpath . '/markdown/' . $mdfile;
-                endforeach;
-
-                $parser = new cebe\Markdown\GithubMarkdown();
-            endif;
+            $parser = new cebe\markdown\GithubMarkdown();
 
             $output = array();
 

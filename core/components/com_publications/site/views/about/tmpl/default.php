@@ -36,8 +36,6 @@ if (count($matches) > 0) {
 $category = $this->publication->_category;
 $customFields = $this->publication->_curationModel->getMetaSchema();
 
-include_once Component::path('com_publications') . DS . 'models' . DS . 'elements.php';
-
 $metaElements = new \Components\Publications\Models\Elements($data, $customFields);
 $schema = $metaElements->getSchema();
 

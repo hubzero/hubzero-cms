@@ -31,12 +31,6 @@ use Notify;
 use Request;
 use Route;
 
-require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
-require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'blacklist.php';
-require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'searchcomponent.php';
-require_once Component::path('com_search') . DS . 'models' . DS . 'solr' . DS . 'facet.php';
-require_once Component::path('com_developer') . DS . 'models' . DS . 'application.php';
-
 /**
  * Search AdminController Class
  */

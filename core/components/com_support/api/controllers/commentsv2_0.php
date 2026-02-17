@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,10 +18,6 @@ use Config;
 use Route;
 use Lang;
 use User;
-
-require_once dirname(dirname(__DIR__)) . '/models/ticket.php';
-require_once dirname(dirname(__DIR__)) . '/helpers/acl.php';
-require_once dirname(dirname(__DIR__)) . '/helpers/utilities.php';
 
 /**
  * API controller class for support tickets
@@ -317,7 +312,6 @@ class Commentsv2_0 extends ApiController
         // Check if the notify list has eny entries
         if (count($comment->to()))
         {
-            include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utilities.php';
 
             $allowEmailResponses = $ticket->config('email_processing');
             if ($allowEmailResponses)

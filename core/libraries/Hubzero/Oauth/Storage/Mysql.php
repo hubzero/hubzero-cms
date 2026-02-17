@@ -20,9 +20,6 @@ use OAuth2\Storage\RefreshTokenInterface;
 use Hubzero\Oauth\Storage\SessionTokenInterface;
 use Hubzero\Oauth\Storage\ToolSessionTokenInterface;
 
-// include developer model
-require_once PATH_CORE . DS . 'components' . DS . 'com_developer' . DS . 'models' . DS . 'application.php';
-
 /**
  * Custom Hubzero OAuth2 Storage Class
  */
@@ -511,9 +508,6 @@ class Mysql implements
      */
     public function validateToolSessionData($toolSessionId, $toolSessionToken)
     {
-        // include neede libs
-        require_once PATH_CORE . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
-
         // instantiate middleware database
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 

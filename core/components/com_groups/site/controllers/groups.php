@@ -99,7 +99,7 @@ class Groups extends Base
         // If we have a users profile load their groups and groups matching their tags
         if (!User::isGuest()) {
             // Get users tags
-            include_once \Component::path('com_members') . DS . 'models' . DS . 'tags.php';
+
             $mt = new \Components\Members\Models\Tags(User::get('id'));
             $mytags = $mt->render('string');
 
@@ -287,8 +287,6 @@ class Groups extends Base
 
         // Record the user
         if (!User::isGuest() && in_array(User::get('id'), $this->view->group->get('members'))) {
-            include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'recent.php';
-
             Recent::hit(User::get('id'), $this->view->group->get('gidNumber'));
         }
 
@@ -1366,7 +1364,7 @@ class Groups extends Base
             }
 
             // Load wiki page from db
-            require_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
+
             $page = new \Components\Wiki\Models\Page();
 
             $pagename = Request::getString('pagename');

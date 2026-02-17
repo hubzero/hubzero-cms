@@ -16,8 +16,6 @@ use Config;
 use Lang;
 use User;
 
-include_once __DIR__ . DS . 'publication.php';
-
 /**
  * Publication doi model class
  */

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,8 +24,6 @@ use User;
 use Date;
 use App;
 use Notify;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'report.php';
 
 /**
  * Support cotnroller for Abuse Reports

@@ -127,8 +127,6 @@ class Group extends Table
             return false;
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'tool.php';
-
         $membergroups = \Components\Tools\Models\Tool::getToolGroups($toolid);
         $membergroups = \Components\Tools\Helpers\Utils::transform($membergroups, 'cn');
         $newgroups = \Components\Tools\Helpers\Utils::transform($newgroups, 'cn');

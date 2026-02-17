@@ -27,11 +27,6 @@ use Filesystem;
 use Notify;
 use Session;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'description' . DS . 'field.php';
-require_once dirname(dirname(__DIR__)) . '/models/orm/owner.php';
-require_once dirname(dirname(__DIR__)) . '/helpers/accessHelper.php';
-
 /**
  * Primary component controller
  */

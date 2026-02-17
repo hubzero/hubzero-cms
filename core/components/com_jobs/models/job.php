@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,9 +13,6 @@ use Hubzero\Base\Model;
 use Hubzero\Utility\Str;
 use Date;
 use Lang;
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'job.php';
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
 /**
  * Courses model class for a forum

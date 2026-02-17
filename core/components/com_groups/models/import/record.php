@@ -21,10 +21,6 @@ use Lang;
 use User;
 use Date;
 
-include_once dirname(__DIR__) . '/orm/group.php';
-include_once dirname(__DIR__) . '/orm/field.php';
-include_once dirname(__DIR__) . '/tags.php';
-
 /**
  * Member Record importer
  */
@@ -515,10 +511,6 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
             if (!isset(self::$handlers[$type])) {
                 $class = __NAMESPACE__ . '\\Handler\\' . ucfirst($type);
-
-                if (!class_exists($class)) {
-                    include_once $path;
-                }
 
                 self::$handlers[$type] = new $class();
             }

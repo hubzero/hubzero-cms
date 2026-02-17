@@ -8,8 +8,6 @@
 
 namespace Plugins\Wiki\Parserdefault\Macros\Group;
 
-require_once dirname(__DIR__) . DS . 'group.php';
-
 use Plugins\Wiki\Parserdefault\Macros\GroupMacro;
 
 /**
@@ -62,8 +60,6 @@ class Resources extends GroupMacro
         $type  = $this->getType($args, 'all');
         $limit = $this->getLimit($args, 5);
         $class = $this->getClass($args);
-
-        require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
         //get resources
         $groupResources = $this->getResources($type, $limit);

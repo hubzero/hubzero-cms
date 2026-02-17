@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,8 +18,6 @@ use Route;
 use Event;
 use Lang;
 use User;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'cloud.php';
 
 /**
  * API controller class for tags

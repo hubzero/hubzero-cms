@@ -1,15 +1,14 @@
 <?php
+
 namespace Plugins\Publications\Wishlist;
 
 use Hubzero\Plugin\Plugin;
-
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
 
 /**
  * Publications Plugin class for wishes
@@ -86,10 +85,6 @@ class Wishlist extends Plugin
         $items  = 0;
         $admin  = 0;
         $html   = '';
-
-        // Include some classes & scripts
-        require_once Component::path($option) . DS . 'models' . DS . 'wishlist.php';
-        require_once Component::path($option) . DS . 'site' . DS . 'controllers' . DS . 'wishlists.php';
 
         // Configure controller
         $controller = new \Components\Wishlist\Site\Controllers\Wishlists();

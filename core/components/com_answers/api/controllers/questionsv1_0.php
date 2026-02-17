@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,8 +17,6 @@ use Request;
 use Route;
 use Lang;
 use User;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'question.php';
 
 /**
  * API controller class for Questions

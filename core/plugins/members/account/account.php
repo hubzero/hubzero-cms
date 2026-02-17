@@ -672,7 +672,6 @@ class Account extends Plugin
         }
 
         // Try to create their home directory
-        require_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
 
         return (bool) \Components\Tools\Helpers\Utils::createHomeDirectory($this->member->get('username'));
     }

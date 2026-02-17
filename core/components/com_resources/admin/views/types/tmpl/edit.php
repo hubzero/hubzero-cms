@@ -396,7 +396,6 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
             </tfoot>
             <tbody id="field-items">
             <?php
-            include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
             $elements = new \Components\Resources\Models\Elements('', $this->row->customFields);
             $schema = $elements->getSchema();
 

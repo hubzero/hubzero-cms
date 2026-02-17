@@ -97,7 +97,6 @@ class Custom_extensions extends Relational
         'created_by'
     );
 
-
     /**
      * Delete the existing/current model
      *
@@ -107,7 +106,6 @@ class Custom_extensions extends Relational
     {
         return parent::destroy();
     }
-
 
     /**
      * Publsh an entry
@@ -130,7 +128,6 @@ class Custom_extensions extends Relational
     {
         if ($this->get('type') == 'template') {
             if (is_file(\Component::path('com_templates') . '/models/style.php')) {
-                include_once \Component::path('com_templates') . '/models/style.php';
 
                 $style = \Components\Templates\Models\Style::all()
                     ->whereEquals('template', $this->get('element'))

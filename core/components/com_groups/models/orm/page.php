@@ -10,10 +10,6 @@ namespace Components\Groups\Models\Orm;
 
 use Hubzero\Database\Relational;
 
-require_once __DIR__ . DS . 'page' . DS . 'category.php';
-require_once __DIR__ . DS . 'page' . DS . 'version.php';
-require_once __DIR__ . DS . 'page' . DS . 'hit.php';
-
 /**
  * Group page model
  */

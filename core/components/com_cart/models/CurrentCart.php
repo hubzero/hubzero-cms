@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,7 @@
 namespace Components\Cart\Models;
 
 use Components\Cart\Models\Cart;
-use Components\Cart\Helpers\CartHelper;
+use Components\Cart\Helpers\Helper;
 use Hubzero\Base\Model;
 use User;
 use Components\Storefront\Models\Product;
@@ -19,9 +18,6 @@ use Component;
 use Lang;
 use Request;
 use Route;
-
-require_once 'Cart.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';
 
 /**
  * Current user shopping cart
@@ -504,7 +500,7 @@ class CurrentCart extends Cart
         }
 
         // Check values
-        if (empty($errors) && !CartHelper::validZip(Request::getString('shippingZip', false, 'post'))) {
+        if (empty($errors) && !Helper::validZip(Request::getString('shippingZip', false, 'post'))) {
             $errors[] = Lang::txt('COM_CART_INCORRECT_ZIP');
         }
 
@@ -567,7 +563,6 @@ class CurrentCart extends Cart
      */
     public function setTransactionShippingCost($shippingCost)
     {
-
         if (empty($this->tInfo)) {
             throw new \Exception(Lang::txt('No transaction info.'));
         }
@@ -761,7 +756,7 @@ class CurrentCart extends Cart
     public function setSavedShippingAddress($saId)
     {
         // check if the address correct
-        if (!CartHelper::isNonNegativeInt($saId)) {
+        if (!Helper::isNonNegativeInt($saId)) {
             throw new \Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
         }
 
@@ -869,7 +864,6 @@ class CurrentCart extends Cart
         return true;
     }
 
-
     /********************************************* Coupon functions **********************************************/
 
     /**
@@ -880,7 +874,7 @@ class CurrentCart extends Cart
     public function addCoupon($couponCode)
     {
         // Check if coupon is valid and active (throws exception if invalid)
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
+
         $coupons = new \Components\Storefront\Models\Coupons();
 
         // Get coupons
@@ -919,7 +913,6 @@ class CurrentCart extends Cart
      */
     public function applyCoupon($cnId)
     {
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
         $storefrontCoupons = new \Components\Storefront\Models\Coupons();
         $coupon = $storefrontCoupons->getCouponInfo($cnId, true, true, true, true);
 
@@ -992,7 +985,7 @@ class CurrentCart extends Cart
         $cnIds = $this->db->loadColumn();
 
         // Get coupon types
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
+
         $storefrontCoupons = new \Components\Storefront\Models\Coupons();
         $coupons = $storefrontCoupons->getCouponsInfo($cnIds);
 
@@ -1359,7 +1352,6 @@ class CurrentCart extends Cart
         // init membership info
         $memberships = array();
 
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
         $ms = new \Components\Storefront\Models\Memberships();
 
         // Get membership types
@@ -1769,7 +1761,7 @@ class CurrentCart extends Cart
         } else {
             // Merge session and user carts. Not so easy.
             // Get a static instance of the users' cart
-            require_once __DIR__ . DS . 'UserCart.php';
+
             $userCart = new UserCart($userCartId);
             // Get items from the user's cart to see if it is empty or nor
             $userCartItems = $userCart->getCartItems();
@@ -1829,7 +1821,6 @@ class CurrentCart extends Cart
             $this->crtId = $userCartId;
         }
 
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Coupons.php';
         $storefrontCoupons = new \Components\Storefront\Models\Coupons();
 
         // Go through each coupon and apply all that are not applied
@@ -1942,7 +1933,7 @@ class CurrentCart extends Cart
             }
 
             // Reserve/lock items
-            require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
+
             $sku = \Components\Storefront\Models\Sku::getInstance($sId);
 
             $sku->reserveInventory($skuInfo['cartInfo']->qty);
@@ -2022,8 +2013,6 @@ class CurrentCart extends Cart
 
         // lock transaction items
         $warehouse = $this->warehouse;
-
-        require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
 
         foreach ($tItems as $sId => $item) {
             $sku = \Components\Storefront\Models\Sku::getInstance($sId);

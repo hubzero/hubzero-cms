@@ -1,20 +1,18 @@
 <?php
 
-namespace Plugins\Authentication\Globus;
-
-use Hubzero\Plugin\Plugin;
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2022 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Authentication\Globus;
+
+use Plugins\Authentication\Globus\Provider\Globus as GlobusProvider;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once('Provider/Globus.php');
-require_once('Provider/GlobusResourceOwner.php');
 class Globus extends \Hubzero\Plugin\OauthClient
 {
     /**
@@ -45,7 +43,7 @@ class Globus extends \Hubzero\Plugin\OauthClient
                 $redirect = self::getRedirectUri('globus');
             }
 
-            $this->globus = new \Globus\OAuth2\Client\Provider\Globus([
+            $this->globus = new GlobusProvider([
                 'clientId' => $this->params->get('app_id'),
                 'clientSecret' => $this->params->get('app_secret'),
                 'redirectUri' => $redirect

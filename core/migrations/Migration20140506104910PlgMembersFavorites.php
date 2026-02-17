@@ -32,9 +32,6 @@ class Migration20140506104910PlgMembersFavorites extends Base
                 ->from('#__xfavorites')
                 ->order('uid', 'ASC');
             if ($results = $query->loadObjectList()) {
-                require_once PATH_CORE . DS . 'components' . DS . 'com_collections'
-                    . DS . 'models' . DS . 'archive.php';
-
                 $objs  = array();
                 $usrs  = array();
                 $total = count($results);

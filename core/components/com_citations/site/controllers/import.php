@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,8 +24,6 @@ use User;
 use Date;
 use Lang;
 use App;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'importer.php';
 
 /**
  * Citations controller class for importing citation entries
@@ -301,7 +298,6 @@ class Import extends SiteController
         );
 
         if (isset($group) && $group != '') {
-            require_once \Component::path('com_groups') . DS . 'tables' . DS . 'group.php';
             $gob = new \Components\Groups\Tables\Group($this->database);
             $cn = $gob->getName($group);
 

@@ -119,7 +119,6 @@ class Projects extends Plugin
         }
 
         // Load classes
-        require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
         // Model
         $this->model = new \Components\Projects\Models\Project();
@@ -229,7 +228,6 @@ class Projects extends Plugin
     public function onAfterStoreGroup($group)
     {
         // Load classes
-        require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
         // Model
         $this->model = new \Components\Projects\Models\Project();
@@ -268,7 +266,6 @@ class Projects extends Plugin
         // Is this group now archived?
         if ($before->published != 2 && $after->published == 2) {
             // Load classes
-            require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
             // Model
             $model = new \Components\Projects\Models\Project();

@@ -14,9 +14,6 @@ use Date;
 use User;
 use Lang;
 
-include_once __DIR__ . DS . 'option.php';
-include_once __DIR__ . DS . 'answer.php';
-
 /**
  * Group description field model
  */

@@ -19,12 +19,6 @@ use Plugin;
 use Lang;
 use Component;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'repo.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'githelper.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'nogithelper.php';
-require_once __DIR__ . DS . 'file.php';
-require_once __DIR__ . DS . 'adapter.php';
-
 /**
  * Project Repository model
  */
@@ -161,11 +155,7 @@ class Repo extends Obj
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($engine);
 
             if (!class_exists($cls)) {
-                $path = __DIR__ . '/adapters/' . $engine . '.php';
-                if (!is_file($path)) {
-                    throw new \InvalidArgumentException(Lang::txt('Invalid engine of "%s"', $engine));
-                }
-                include_once $path;
+                throw new \InvalidArgumentException(Lang::txt('Invalid engine of "%s"', $engine));
             }
 
             $this->_adapter = new $cls($this->get('path'), $this->get('remote'));
@@ -1317,7 +1307,6 @@ class Repo extends Obj
 
         // Initialize
         $this->_adapter->ini();
-
 
         return true;
     }

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +9,6 @@
 namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
-
-require_once __DIR__ . DS . 'block.php';
 
 /**
  * Model class for publication type
@@ -64,7 +61,6 @@ class Type extends Relational
      */
     public function checkUsage()
     {
-        require_once __DIR__ . DS . 'publication.php';
 
         return Publication::all()
             ->whereEquals('master_type', $this->get('id'))

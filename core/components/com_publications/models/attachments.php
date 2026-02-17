@@ -12,11 +12,6 @@ use Hubzero\Base\Obj;
 use Filesystem;
 use Lang;
 
-include_once dirname(__FILE__) . DS . 'attachment.php';
-include_once dirname(__FILE__) . DS . 'status.php';
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php';
-
 /**
  * Publications attachments class
  *
@@ -53,7 +48,7 @@ class Attachments extends Obj
     public function __construct(&$db)
     {
         $this->_db = $db;
-        $this->_path[] = dirname(__FILE__) . DS . 'attachments';
+        $this->_path[] = dirname(__FILE__) . DS . 'attachment';
     }
 
     /**
@@ -470,22 +465,6 @@ class Attachments extends Obj
         }
 
         $elementClass = __NAMESPACE__ . '\\Attachment\\' . ucfirst($name);
-        if (!class_exists($elementClass)) {
-            if (isset($this->_path)) {
-                $dirs = $this->_path;
-            } else {
-                $dirs = array();
-            }
-
-            $file = Filesystem::clean(str_replace('_', DS, $name) . '.php');
-
-            if ($elementFile = Filesystem::find($dirs, $file)) {
-                include_once $elementFile;
-            } else {
-                return false;
-            }
-        }
-
         if (!class_exists($elementClass)) {
             return false;
         }

@@ -26,10 +26,6 @@ use Components\Members\Helpers\ReturnUrl;
 use Notify;
 use Plugin;
 
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'returnurl.php';
-
 /**
  * Controller class for member registration
  */
@@ -1418,7 +1414,7 @@ class Register extends SiteController
             if ($email != false && \Plugin::isEnabled('authentication', 'emailtoken')) {
                 // An email was provided
                 // Get the Users controller
-                require_once Component::path('com_login') . '/site/controllers/auth.php';
+
                 $authController = new \Components\Login\Site\Controllers\Auth();
 
                 // Return back here while resetting the return to here
@@ -1463,7 +1459,6 @@ class Register extends SiteController
 
             $redirect = Route::url('index.php?option=com_users&view=login&task=logout&return=' . $logout_return);
         }
-
 
         $email_confirmed = $xprofile->get('activation');
 

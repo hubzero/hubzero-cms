@@ -12,10 +12,6 @@ use Hubzero\Database\Relational;
 use User;
 use Date;
 
-include_once __DIR__ . '/calendar.php';
-include_once __DIR__ . '/category.php';
-include_once __DIR__ . '/page.php';
-
 /**
  * Hubs database model
  *

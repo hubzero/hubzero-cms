@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,11 +10,6 @@ namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
 use Filesystem;
-
-include_once __DIR__ . DS . 'format.php';
-include_once __DIR__ . DS . 'block.php';
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'block.php';
 
 /**
  * Publications blocks class
@@ -64,7 +58,7 @@ class Blocks extends Obj
     public function __construct(&$db)
     {
         $this->_db = $db;
-        $this->_blockPath[] = dirname(__FILE__) . DS . 'blocks';
+        $this->_blockPath[] = dirname(__FILE__) . DS . 'block';
 
         $this->_objBlock = new \Components\Publications\Tables\Block($db);
     }
@@ -115,22 +109,6 @@ class Blocks extends Obj
         }
 
         $elementClass = __NAMESPACE__ . '\\Block\\' . ucfirst($name);
-        if (!class_exists($elementClass)) {
-            if (isset($this->_blockPath)) {
-                $dirs = $this->_blockPath;
-            } else {
-                $dirs = array();
-            }
-
-            $file = Filesystem::clean(str_replace('_', DS, $name) . '.php', 'path');
-
-            if ($elementFile = Filesystem::find($dirs, $file)) {
-                include_once $elementFile;
-            } else {
-                return false;
-            }
-        }
-
         if (!class_exists($elementClass)) {
             return false;
         }

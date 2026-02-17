@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Blog\Models;
 
 use Hubzero\Database\Relational;
@@ -20,9 +19,6 @@ use Date;
 use stdClass;
 use Request;
 use Route;
-
-require_once __DIR__ . DS . 'tags.php';
-require_once __DIR__ . DS . 'comment.php';
 
 /**
  * Model class for a blog entry
@@ -306,8 +302,6 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     public function creator()
     {
         if (file_exists(Component::path('com_members') . DS . 'models' . DS . 'member.php')) {
-            include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
             return $this->belongsToOne('Components\Members\Models\Member', 'created_by');
         }
         return $this->belongsToOne('Hubzero\User\User', 'created_by');
@@ -471,15 +465,9 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
             if (!class_exists($cls)) {
-                $path = __DIR__ . '/adapters/' . $scope . '.php';
-
-                if (!is_file($path)) {
-                    throw new \InvalidArgumentException(
-                        Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id'))
-                    );
-                }
-
-                include_once $path;
+                throw new \InvalidArgumentException(
+                    Lang::txt('Invalid scope of "%s" for entry #%s', $scope, $this->get('id'))
+                );
             }
 
             $this->adapter = with(new $cls($this->get('scope_id')))

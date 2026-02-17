@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +13,6 @@ use Hubzero\Component\AdminController;
 use Lang;
 use Request;
 use User;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 /**
  * Manage a course's manager entries
@@ -165,8 +162,6 @@ class Managers extends AdminController
         $model = \Components\Courses\Models\Course::getInstance($id);
 
         $entries = Request::getArray('entries', array(0), 'post');
-
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'member.php';
 
         foreach ($entries as $key => $data) {
             // Retrieve user's account info

@@ -13,9 +13,6 @@ use Components\Groups\Models\Log;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 
-// include needed models
-require_once dirname(__DIR__) . DS . 'log.php';
-
 /**
  * Group log archive model class
  *

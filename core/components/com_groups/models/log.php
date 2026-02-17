@@ -12,9 +12,6 @@ use Hubzero\Base\Model;
 use Date;
 use User;
 
-// include needed tables
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'log.php';
-
 /**
  * Group log model class
  *

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,8 +14,6 @@ use Hubzero\Form\Form;
 use Filesystem;
 use Lang;
 use App;
-
-include_once __DIR__ . '/menu.php';
 
 /**
  * Module extension model

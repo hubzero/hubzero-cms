@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\AdminMenu;
+namespace Modules\Adminmenu;
 
 require_once __DIR__ . DS . 'helper.php';
 

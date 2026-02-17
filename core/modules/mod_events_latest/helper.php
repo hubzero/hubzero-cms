@@ -67,7 +67,7 @@ class Helper extends Module
         // Check the events component
         if (file_exists(\Component::path('com_events') . DS . 'helpers' . DS . 'html.php')) {
             include_once \Component::path('com_events') . DS . 'helpers' . DS . 'html.php';
-            include_once \Component::path('com_events') . DS . 'helpers' . DS . 'date.php';
+            include_once \Component::path('com_events') . DS . 'helpers' . DS . 'EventsDate.php';
         } else {
             $this->error = Lang::txt('MOD_EVENTS_LATEST_COMPONENT_REQUIRED');
             return;

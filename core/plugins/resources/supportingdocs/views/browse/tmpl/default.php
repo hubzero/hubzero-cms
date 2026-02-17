@@ -258,7 +258,6 @@ if ($this->model->isTool()) {
             $data[$match[1]] = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $match[2]);
         }
     }
-        include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
         $elements = new \Components\Resources\Models\Elements($data, $this->model->type->customFields);
         $schema = $elements->getSchema();
         $tab = Request::getCmd('active', 'supportingdocs');  // The active tab (section)

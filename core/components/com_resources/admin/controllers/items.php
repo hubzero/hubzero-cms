@@ -8,13 +8,11 @@
 
 namespace Components\Resources\Admin\Controllers;
 
-require_once Component::path('com_resources') . '/helpers/badges.php';
-
 use Components\Members\Models\Member;
 use Components\Resources\Models\Entry;
 use Components\Resources\Models\Type;
 use Components\Resources\Models\Association;
-use Components\Resources\Models\Rating;
+use Components\Resources\Models\Review as Rating;
 use Components\Resources\Models\Author;
 use Components\Resources\Models\AclUser;
 use Components\Resources\Models\AclGroup;
@@ -332,7 +330,6 @@ class Items extends AdminController
      */
     public function ratingsTask()
     {
-        require_once dirname(dirname(__DIR__)) . '/models/rating.php';
 
         // Incoming
         $id = Request::getInt('id', 0);
@@ -828,7 +825,6 @@ class Items extends AdminController
         if (!empty($nbtag)) {
             $type = $row->type;
 
-            include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
             $elements = new \Components\Resources\Models\Elements(array(), $type->customFields);
             $schema = $elements->getSchema();
 
@@ -1726,7 +1722,6 @@ class Items extends AdminController
      */
     public function checkTask()
     {
-        include_once dirname(dirname(__DIR__)) . '/helpers/tests/links.php';
 
         $auditor = new \Hubzero\Content\Auditor('resource');
         $auditor->registerTest(new \Components\Resources\Helpers\Tests\Links());

@@ -196,7 +196,6 @@ class Credentials extends SiteController
         }
 
         // Make sure it looks like a valid username
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
 
         // Determine if attempting to log in via username or email address
         if (strpos($username, '@')) {
@@ -506,8 +505,6 @@ class Credentials extends SiteController
         } else {
             $msg = array();
         }
-
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
 
         $error    = false;
         $changing = true;

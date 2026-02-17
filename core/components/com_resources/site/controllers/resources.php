@@ -212,8 +212,6 @@ class Resources extends SiteController
         }
 
         if (isset($filters['tag']) && $filters['tag'] != '') {
-            include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'tags.php';
-
             $tagging = new Tags(0);
             $tags = $tagging->parseTags($filters['tag']);
             if (count($tags) > 5) {
@@ -550,8 +548,6 @@ class Resources extends SiteController
                 // Get extra filter options
                 $bits['filters'] = array();
                 if ($this->config->get('show_audience') && $bits['type'] == 7) {
-                    include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'audience.php';
-
                     $bits['filters'] = Level::all();
                 }
 
@@ -731,7 +727,6 @@ class Resources extends SiteController
         $errors = array();
 
         //inlude the HUBpresenter library
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'hubpresenter.php';
 
         //get the presentation id
         //$id = Request::getInt('id', '');
@@ -886,7 +881,6 @@ class Resources extends SiteController
         }
 
         //media tracking object
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
 
         //get tracking for this user for this resource
         $tracking = MediaTracking::oneByUserAndResource(User::get('id'), $child);
@@ -1023,7 +1017,6 @@ class Resources extends SiteController
         }
 
         // Media tracking object
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'mediatracking.php';
 
         // Get tracking for this user for this resource
         $tracking = MediaTracking::oneByUserAndResource(User::get('id'), $activechild->id);
@@ -2366,8 +2359,6 @@ class Resources extends SiteController
         $revision = Request::getString('rev', 0);
         $handle = '';
         if ($revision) {
-            require_once dirname(dirname(__DIR__)) . '/models/doi.php';
-
             $rdoi = Doi::oneByResource($id, $revision);
 
             if ($rdoi->get('doi') && ($rdoi->get('doi_shoulder') || $tconfig->get('doi_shoulder'))) {
@@ -2441,9 +2432,7 @@ class Resources extends SiteController
 
             case 'bibtex':
             default:
-                include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
-
-                $bibtex = new \Structures_BibTex();
+                $bibtex = new \Components\Citations\Helpers\BibTex();
                 $addarray = array();
                 $addarray['type']  = 'misc';
                 $addarray['cite']  = $this->config['sitename'] . $row->id;

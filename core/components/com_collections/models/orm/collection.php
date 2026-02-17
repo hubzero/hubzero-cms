@@ -13,8 +13,6 @@ use Component;
 use Lang;
 use Date;
 
-require_once __DIR__ . DS . 'post.php';
-
 /**
  * Collection model
  */

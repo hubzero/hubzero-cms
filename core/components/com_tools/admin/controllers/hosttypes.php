@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,8 +17,6 @@ use Notify;
 use Route;
 use Lang;
 use App;
-
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'hosttype.php';
 
 /**
  * Tools controller for host types

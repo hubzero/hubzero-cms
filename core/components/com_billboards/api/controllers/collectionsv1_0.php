@@ -14,9 +14,6 @@ use Hubzero\Component\ApiController;
 use Request;
 use Lang;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'collection.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'billboard.php';
-
 /**
  * Billboards collections API controller
  */

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,9 +14,6 @@ use Route;
 use User;
 use Lang;
 use Date;
-
-require_once __DIR__ . DS . 'attachment.php';
-require_once __DIR__ . DS . 'changelog.php';
 
 /**
  * Support ticket comment model

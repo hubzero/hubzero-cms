@@ -15,9 +15,6 @@ use Hubzero\Base\Model;
 use Request;
 use App;
 
-// Include needed tables
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'page.version.php';
-
 /**
  * Group page version model class
  *
@@ -184,8 +181,6 @@ class Version extends Model
         // array to hold options
         $options = array();
 
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters' . DS . 'GroupInclude.php';
-
         // Create array of custom filters
         $filters = array(
             new \Components\Groups\Helpers\Filters\GroupInclude()
@@ -193,9 +188,6 @@ class Version extends Model
 
         // Is this trusted content
         if ($trustedContent) {
-            require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters' . DS . 'ExternalScripts.php';
-            require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters' . DS . 'Php.php';
-
             $options['CSS.Trusted']  = true;
             $options['HTML.Trusted'] = true;
 

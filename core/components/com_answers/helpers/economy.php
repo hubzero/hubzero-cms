@@ -76,8 +76,6 @@ class Economy extends Obj
             return false;
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
-
         // Get point values for actions
         $BC = Config::values();
         $p_Q  = $BC->get('ask');
@@ -143,8 +141,6 @@ class Economy extends Obj
             $qid = $this->qid;
         }
         $cat = 'answers';
-
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
 
         $points = $this->calculate_marketvalue($qid, $type);
 

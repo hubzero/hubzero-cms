@@ -13,8 +13,6 @@ use Hubzero\Console\Command\CommandInterface;
 use Components\Projects\Tables\Owner;
 use Hubzero\Utility\Ldap;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'owner.php';
-
 /**
  * Re-sync project login groups (pr-<alias>) to LDAP.
  *

@@ -1239,7 +1239,6 @@ class Items extends AdminController
 
                     // Append comment to activity
                     if ($message && $aid) {
-                        require_once \Component::path('com_projects') . DS . 'tables' . DS . 'comment.php';
                         $objC = new \Components\Projects\Tables\Comment($this->database);
 
                         $comment = \Hubzero\Utility\Str::truncate($message, 250);
@@ -1481,8 +1480,6 @@ class Items extends AdminController
         }
 
         $version = count($ids) == 1 ? Request::getString('version', 'all') : 'all';
-
-        require_once \Component::path('com_projects') . DS . 'tables' . DS . 'activity.php';
 
         foreach ($ids as $id) {
             // Load publication
@@ -1760,7 +1757,6 @@ class Items extends AdminController
         // served while it rebuilds (gated; off = the legacy synchronous rebuild
         // below).
         if ((int) \Component::params('com_publications')->get('bundle_async', 0)) {
-            require_once \Component::path('com_publications') . '/models/bundlequeue.php';
             \Components\Publications\Models\BundleQueue::enqueueVersion($pub->get('version_id'));
             $pub->_curationModel->removeLink();
             $pub->publication->checkin();

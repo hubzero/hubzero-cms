@@ -8,10 +8,6 @@
 
 namespace Components\Publications\Site\Controllers;
 
-$componentPath = Component::path('com_publications');
-
-require_once "$componentPath/models/bundle.php";
-
 use Hubzero\Component\SiteController;
 use Hubzero\Pagination\Paginator;
 use Components\Projects\Tables\Project;
@@ -937,8 +933,6 @@ class Publications extends SiteController
         // the queue would never accept (and the worker never build) it. This is
         // the same test BundleQueue::enqueueVersion gates on.
         try {
-            require_once \Component::path('com_publications') . '/models/bundlequeue.php';
-
             return \Components\Publications\Models\BundleQueue::isAsyncBuildable($versionId);
         } catch (\Throwable $e) {
             return false;
@@ -956,8 +950,6 @@ class Publications extends SiteController
      */
     protected function serveAsyncBundle()
     {
-        require_once \Component::path('com_publications') . '/models/bundlequeue.php';
-
         $versionId = (int) $this->model->get('version_id');
         $bq        = \Components\Publications\Models\BundleQueue::forVersion($versionId);
         $status    = ($bq && $bq->get('id')) ? $bq->get('status') : null;
@@ -1023,8 +1015,6 @@ class Publications extends SiteController
             return true;
         }
 
-        require_once \Component::path('com_publications') . '/models/bundlebuilder.php';
-
         $builder = new \Components\Publications\Models\BundleBuilder();
 
         return $bq->isFresh($builder->currentSourceHash($versionId));
@@ -1045,8 +1035,6 @@ class Publications extends SiteController
         $out = array('status' => 'unknown', 'ready' => false);
 
         if ($this->model->exists() && !$this->model->isDeleted() && $this->model->access('view-all')) {
-            require_once \Component::path('com_publications') . '/models/bundlequeue.php';
-
             $vid = (int) $this->model->get('version_id');
             $bq  = \Components\Publications\Models\BundleQueue::forVersion($vid);
 
@@ -1171,9 +1159,7 @@ class Publications extends SiteController
 
             case 'bibtex':
             default:
-                include_once Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
-
-                $bibtex = new \Structures_BibTex();
+                $bibtex = new \Components\Citations\Helpers\BibTex();
                 $addarray = array();
                 $addarray['type']    = 'misc';
                 $addarray['cite']    = Config::get('sitename') . $this->model->get('id');
@@ -1566,8 +1552,6 @@ class Publications extends SiteController
                 return;
             }*/
         } else {
-            include_once Component::path('com_projects') . '/helpers/html.php';
-
             // Need to provision a project
             $alias = 'pub-' . strtolower(\Components\Projects\Helpers\Html::generateCode(10, 10, 0, 1, 1));
 
@@ -1623,8 +1607,6 @@ class Publications extends SiteController
         //
         // Let's start copying...
         //
-
-        include_once dirname(dirname(__DIR__)) . '/models/orm/publication.php';
 
         // Load the version
         $version = Models\Orm\Version::oneOrFail($vid);
@@ -1706,7 +1688,6 @@ class Publications extends SiteController
         $newpubfilespace = $version->filespace();
 
         // Copy tags
-        include_once dirname(dirname(__DIR__))  . DS . 'helpers' . DS . 'tags.php';
 
         $rt = new Helpers\Tags($this->database);
         if ($tags = $rt->get_tag_string($pub_id)) {
@@ -1714,7 +1695,6 @@ class Publications extends SiteController
         }
 
         // Copy citations
-        include_once Component::path('com_citations')  . '/models/association.php';
 
         $citations = \Components\Citations\Models\Association::all()
             ->whereEquals('tbl', 'publication')
@@ -2125,7 +2105,6 @@ class Publications extends SiteController
         }
 
         // Get our model and load publication data
-        include_once dirname(dirname(__DIR__)) . '/models/orm/publication.php';
 
         // Load the lft version and make sure the user has access
         $lversion = Models\Orm\Version::oneOrFail($lft);

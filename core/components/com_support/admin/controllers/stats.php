@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +12,6 @@ use Hubzero\Component\AdminController;
 use Request;
 use Date;
 use Lang;
-
-include_once dirname(dirname(__DIR__)) . '/models/status.php';
 
 /**
  * Support controller class for ticket stats

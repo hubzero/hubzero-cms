@@ -14,9 +14,6 @@ use Component;
 use Filesystem;
 use Lang;
 
-// Get git helper
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'githelper.php';
-
 /**
  * Projects Git adapter class
  */
@@ -614,16 +611,12 @@ class Git extends Models\Adapter
         $objDiff = new \Diff($rev1['text'], $rev2['text'], $options);
 
         if ($mode == 'side-by-side') {
-            include_once PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'helpers' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubSideBySide.php';
-
             // Generate a side by side diff
-            $renderer = new \Plugins\Projects\Files\Helpers\HubSideBySide();
+            $renderer = new \Plugins\Projects\Files\Helpers\Diff\Renderer\Html\HubSideBySide();
             $diff = $objDiff->Render($renderer);
         } elseif ($mode == 'inline') {
-            include_once PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'helpers' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html' . DS . 'hubInline.php';
-
             // Generate inline diff
-            $renderer = new \Plugins\Projects\Files\Helpers\HubInline();
+            $renderer = new \Plugins\Projects\Files\Helpers\Diff\Renderer\Html\HubInline();
             $diff = $objDiff->Render($renderer);
         } else {
             // Print git diff

@@ -11,8 +11,6 @@ namespace Plugins\Projects\Notes;
 
 use Hubzero\Plugin\Plugin;
 
-include_once \Component::path('com_projects') . DS . 'models' . DS . 'note.php';
-
 /**
  * Projects Notes (wiki) plugin
  */
@@ -248,9 +246,6 @@ class Notes extends Plugin
             if (!file_exists(Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php')) {
                 $this->_controllerName = 'pages';
             }
-            // Include controller
-            require_once Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php';
-
             \Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/project.php');
 
             // Listing/unlisting?
@@ -656,9 +651,6 @@ class Notes extends Plugin
         $groupname = $this->model->config()->get('group_prefix', 'pr-') . $this->model->get('alias');
         $scope = 'projects' . DS . $this->model->get('alias') . DS . 'notes';
 
-        // Include note model
-        include_once PATH_CORE . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'note.php';
-
         // Get our model
         $this->note = new \Components\Projects\Models\Note($scope, $groupname, $projectid);
 
@@ -756,8 +748,6 @@ class Notes extends Plugin
                 'name'    => 'publist'
             )
         );
-
-        require_once \Component::path('com_projects') . DS . 'tables' . DS . 'publicstamp.php';
 
         $database = App::get('db');
         $objSt    = new \Components\Projects\Tables\Stamp($database);

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,8 +17,6 @@ use Lang;
 use Notify;
 use Request;
 use Route;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php';
 
 /**
  * Controller class for storefront collections
@@ -405,7 +402,6 @@ class Collections extends AdminController
             return true;
         }
 
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Integrity.php';
         $integrityCheck = \Components\Storefront\Helpers\Integrity::collectionIntegrityCheck($collection);
 
         if ($integrityCheck->status != 'ok') {

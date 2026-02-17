@@ -102,8 +102,6 @@ class Router extends Base
                 $vars['id'] = $segments[1];
             }
         } else {
-            include_once dirname(__DIR__) . DS . 'models' . DS . 'type.php';
-
             $types = Type::getMajorTypes();
 
             // Normalize the title

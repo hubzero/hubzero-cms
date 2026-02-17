@@ -14,8 +14,6 @@ use Lang;
 use Date;
 use User;
 
-require_once __DIR__ . DS . 'vote.php';
-
 /**
  * Knowledgebase model for a comment
  */

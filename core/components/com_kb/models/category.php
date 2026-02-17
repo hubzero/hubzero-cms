@@ -12,8 +12,6 @@ use Hubzero\Database\Relational;
 use Filesystem;
 use Lang;
 
-require_once __DIR__ . DS . 'article.php';
-
 /**
  * Knowledgebase model for a category
  */

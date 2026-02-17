@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,9 +15,6 @@ use Component;
 use Filesystem;
 use Request;
 use Lang;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Collection.php';
 
 /**
  * Manage logo for a course

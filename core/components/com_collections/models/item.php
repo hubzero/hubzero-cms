@@ -20,11 +20,6 @@ use User;
 use Lang;
 use Component;
 
-require_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'item.php';
-require_once __DIR__ . DS . 'asset.php';
-require_once __DIR__ . DS . 'tags.php';
-
 /**
  * Collections model for an item
  */
@@ -415,7 +410,6 @@ class Item extends Base
      */
     public function vote()
     {
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'vote.php';
 
         $vote = new Tables\Vote($this->_db);
         $vote->loadByBulletin($this->get('id'), User::get('id'));
@@ -764,8 +758,6 @@ class Item extends Base
         $id = ($id ?: Request::getInt('post', 0));
 
         if ($id) {
-            require_once dirname(__DIR__) . DS . 'tables' . DS . 'post.php';
-
             $post = new Tables\Post($this->_db);
             $post->load($id);
 

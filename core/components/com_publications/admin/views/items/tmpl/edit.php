@@ -51,8 +51,6 @@ $customFields = $rt->customFields && $rt->customFields != '{"fields":[]}'
 
 $customFields = $this->model->_curationModel->getMetaSchema();
 
-include_once Component::path('com_publications') . DS . 'models' . DS . 'elements.php';
-
 $elements = new \Components\Publications\Models\Elements($data, $customFields);
 $fields   = $elements->render();
 $schema   = $elements->getSchema();

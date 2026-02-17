@@ -70,9 +70,6 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
         }
 
         if ($this->model->params->get('show_audience')) {
-            include_once Component::path($this->option) . DS . 'models' . DS . 'audience.php';
-            include_once Component::path($this->option) . DS . 'models' . DS . 'audience' . DS . 'level.php';
-
             $audience = \Components\Resources\Models\Audience::all()
                 ->whereEquals('rid', $this->model->id)
                 ->row();
@@ -88,8 +85,6 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
         if ($this->model->params->get('supportedtag')) {
             $rt = new \Components\Resources\Helpers\Tags($this->model->id);
             if ($rt->checkTagUsage($this->model->params->get('supportedtag'), $this->model->id)) {
-                include_once Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
-
                 $tag = \Components\Tags\Models\Tag::oneByTag($this->model->params->get('supportedtag'));
                 ?>
             <p class="supported">

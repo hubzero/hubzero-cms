@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,8 +7,6 @@
  */
 
 namespace Components\Content\Site\Helpers;
-
-require_once \Component::path('com_categories') . '/helpers/categories.php';
 
 /**
  * Content Component Category Tree

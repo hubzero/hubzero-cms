@@ -18,12 +18,6 @@ use Lang;
 use Date;
 use User;
 
-// include tables
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'calendar.php';
-
-// include icalendar file reader
-require_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'icalparser.php';
-
 /**
  * Event calendar model
  */

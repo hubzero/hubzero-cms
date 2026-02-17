@@ -1,16 +1,14 @@
 <?php
+
 namespace Plugins\Publications\Reviews;
 
 use Hubzero\Plugin\Plugin;
-
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-require_once Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
 
 /**
  * Publications Plugin class for reviews
@@ -96,9 +94,6 @@ class Reviews extends Plugin
         if (!$model->category()->_params->get('plg_reviews') || !$extended) {
             return $arr;
         }
-
-        include_once __DIR__ . DS . 'models' . DS . 'review.php';
-        include_once __DIR__ . DS . 'helper.php';
 
         // Instantiate a helper object and perform any needed actions
         $h = new Helper();
@@ -211,8 +206,6 @@ class Reviews extends Plugin
      */
     public function getAbuseReports($item, $category)
     {
-        include_once Component::path('com_support') . DS . 'models' . DS . 'report.php';
-
         return \Components\Support\Models\Report::all()
             ->whereEquals('referenceid', $item)
             ->whereEquals('category', $category)

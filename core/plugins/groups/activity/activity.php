@@ -123,8 +123,6 @@ class Activity extends Plugin
                 return $arr;
             }
 
-            include_once __DIR__ . '/models/attachment.php';
-
             $this->group = $group;
             $this->base  = 'index.php?option=com_groups&cn=' . $group->get('cn');
 

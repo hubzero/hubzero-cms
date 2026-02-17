@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    framework
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +12,6 @@ use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 use Components\Search\Models\Solr\SearchComponent;
 use Component;
-
-require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 
 /**
  * Migration class

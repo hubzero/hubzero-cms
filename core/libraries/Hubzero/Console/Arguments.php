@@ -276,21 +276,7 @@ class Arguments
                 }
             }
 
-            // Load the command file before asking whether the class exists.
-            // Probing first would trigger the facade alias loader, which claims
-            // the name (see isCommand below) and would then collide with the
-            // real declaration when the file is required.
-            if (!empty($paths)) {
-                foreach ($paths as $path) {
-                    $path = strtolower($path);
-                    if (file_exists($path . '.php')) {
-                        require_once $path . '.php';
-                        break;
-                    }
-                }
-            }
-
-            if (self::isCommand($namespace)) {
+            if (class_exists($namespace)) {
                 $class = $namespace;
                 break;
             }

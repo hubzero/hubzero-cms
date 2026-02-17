@@ -58,7 +58,6 @@ class Category extends Relational
      */
     public function isUsed()
     {
-        require_once __DIR__ . DS . 'publication.php';
 
         $total = Publication::all()
             ->whereEquals('category', $this->get('id'))

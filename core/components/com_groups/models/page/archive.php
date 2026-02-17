@@ -13,10 +13,6 @@ use Components\Groups\Tables;
 use Hubzero\Base\Obj;
 use Hubzero\Base\Model\ItemList;
 
-// include needed models
-require_once dirname(__DIR__) . DS . 'page.php';
-require_once __DIR__ . DS . 'category' . DS . 'archive.php';
-
 /**
  * Group page archive model class
  *

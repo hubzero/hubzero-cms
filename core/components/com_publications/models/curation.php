@@ -19,21 +19,6 @@ use User;
 use Date;
 use Component;
 
-// Include building blocks
-include_once __DIR__ . DS . 'blocks.php';
-include_once __DIR__ . DS . 'status.php';
-include_once __DIR__ . DS . 'attachments.php';
-include_once __DIR__ . DS . 'blockelements.php';
-include_once __DIR__ . DS . 'handlers.php';
-
-// Include tables
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'curation.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'curation.history.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'curation.version.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'block.php';
-
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
-
 /**
  * Publications curation class
  *

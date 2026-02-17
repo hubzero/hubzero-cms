@@ -33,8 +33,6 @@ class Reviews extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        include_once __DIR__ . DS . 'helper.php';
     }
 
     /**
@@ -116,8 +114,6 @@ class Reviews extends Plugin
             $rtrn = '';
         }
 
-        include_once __DIR__ . DS . 'models' . DS . 'review.php';
-
         $authors = array();
         foreach ($model->contributors() as $con) {
             $authors[] = $con->authorid;
@@ -133,11 +129,11 @@ class Reviews extends Plugin
         $h->execute();
 
         // Get reviews for this resource
-        $reviews = \Components\Resources\Reviews\Models\Review::all()
+        $reviews = \Components\Resources\Models\Review::all()
             ->whereEquals('resource_id', $model->get('id'))
             ->whereIn('state', array(
-                \Components\Resources\Reviews\Models\Review::STATE_PUBLISHED,
-                \Components\Resources\Reviews\Models\Review::STATE_FLAGGED
+                \Components\Resources\Models\Review::STATE_PUBLISHED,
+                \Components\Resources\Models\Review::STATE_FLAGGED
             ))
             ->ordered()
             ->rows();

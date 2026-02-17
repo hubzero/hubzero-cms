@@ -6,14 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Members\Models;
 
 use Hubzero\Database\Relational;
 use Date;
 use User;
-
-include_once __DIR__ . DS . 'note' . DS . 'category.php';
 
 /**
  * User note model

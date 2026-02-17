@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +13,6 @@ use Components\Resources\Models\Audience\Level;
 use Date;
 use User;
 use Lang;
-
-include_once __DIR__ . DS . 'audience' . DS . 'level.php';
 
 /**
  * Resource audience model

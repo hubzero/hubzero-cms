@@ -17,13 +17,6 @@ use Components\Storefront\Models\Coupon;
 use Components\Storefront\Models\Collection;
 use Lang;
 
-require_once __DIR__ . DS . 'Product.php';
-require_once __DIR__ . DS . 'Course.php';
-require_once __DIR__ . DS . 'CourseOffering.php';
-require_once __DIR__ . DS . 'Sku.php';
-require_once __DIR__ . DS . 'Coupon.php';
-require_once __DIR__ . DS . 'Collection.php';
-
 /**
  *
  * Products inventory and structure (only product lookup and inventory management)
@@ -382,8 +375,8 @@ class Warehouse extends \Hubzero\Base\Obj
         // Get the SKUs whitelist for a user
         if ($this->userScope) {
             $allProductSkus = $this->getProductSkus($pInfo->pId);
-            require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
-            $this->userWhitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
+            $this->userWhitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper
+                ::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
         }
 
         // Check if the product can be viewed (if access level scope is set)
@@ -593,7 +586,6 @@ class Warehouse extends \Hubzero\Base\Obj
 
             // compare the two results and find those that didn't make the permissions test
             $notAuthorizedProducts = [];
-            require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
             foreach ($allProducts as $pId => $product) {
                 if (!array_key_exists($pId, $products)) {
                     // Get all SKUs for this product and check if the user is whitelisted
@@ -733,8 +725,6 @@ class Warehouse extends \Hubzero\Base\Obj
             // Go through each SKU and do the checks to determine what needs to be returned
             // default value
             $permissionsRestricted = false;
-
-            require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
 
             foreach ($res as $k => $line) {
                 // see if the user is whitelisted for this SKU

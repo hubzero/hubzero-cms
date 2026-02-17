@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,9 +9,6 @@
 namespace Components\Support\Models\Acl;
 
 use Hubzero\Database\Relational;
-
-include_once __DIR__ . '/aco.php';
-include_once __DIR__ . '/aro.php';
 
 /**
  * Support ticket ACL map model

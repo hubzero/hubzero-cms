@@ -11,8 +11,6 @@ namespace Components\Collections\Models;
 use Hubzero\Base\Model;
 use Lang;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'following.php';
-
 /**
  * Collections model class for following something/one
  */
@@ -135,11 +133,7 @@ class Following extends Model
         $cls = __NAMESPACE__ . '\\Following\\' . ucfirst($scope);
 
         if (!class_exists($cls)) {
-            $path = __DIR__ . '/following/' . $scope . '.php';
-            if (!is_file($path)) {
-                throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
-            }
-            include_once $path;
+            throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
         }
 
         return new $cls($this->get($key . '_id'));
