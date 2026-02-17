@@ -35,24 +35,18 @@ class Datastore
 
         mb_internal_encoding('UTF-8');
 
-        // com_dataviewer site library (procedural)
-        $dv = \Component::path('com_dataviewer') . DS . 'site';
+        // com_dataviewer is a set of namespaced classes; the autoloader finds them
+        \Components\Dataviewer\Site\DvConfig::init();
 
-        require_once $dv . DS . 'dv_config.php';
-        require_once $dv . DS . 'lib' . DS . 'db.php';
-        require_once $dv . DS . 'modes' . DS . 'mode_dsl.php';
-        require_once $dv . DS . 'filter' . DS . 'csv.php';
-
-        $dv_conf = get_conf(null);
-        $dd      = get_dd(null, $dbName, $version);
+        $dd = \Components\Dataviewer\Site\Modes\ModeDsl::getDd(null, $dbName, $version);
 
         $dd['serverside'] = false;
 
-        $sql    = query_gen($dd);
-        $result = get_results($sql, $dd);
+        $sql    = \Components\Dataviewer\Site\Lib\Db::query_gen($dd);
+        $result = \Components\Dataviewer\Site\Lib\Db::get_results($sql, $dd);
 
         ob_start();
-        filter($result, $dd, true);
+        \Components\Dataviewer\Site\Filter\Csv::filter($result, $dd, true);
         $csv = ob_get_contents();
         ob_end_clean();
 
