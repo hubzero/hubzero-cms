@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\Resources\Admin;
+
+use Hubzero\Component\AbstractComponent;
+
+/**
+ * Component entry point
+ */
+class Resources extends AbstractComponent
+{
+	/**
+	 * Entry point
+	 *
+	 * @return  void
+	 */
+	protected function execute(): void
+	{
+		$option = \Request::getCmd('option', 'com_resources');
+		$task = \Request::getWord('task', '');
+
+		if (!\User::authorise('core.manage', $option)) {
+		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		    return;
+		}
+
+        // Get controller name
+        $controllerName = \Request::getCmd('controller', 'items');
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
+            $controllerName = 'items';
+        }
+
+		\Submenu::addEntry(
+		    \Lang::txt('COM_RESOURCES'),
+		    \Route::url('index.php?option=' . $option),
+		    ($controllerName == 'items' && $task != 'orphans')
+		);
+		\Submenu::addEntry(
+		    \Lang::txt('COM_RESOURCES_ORPHANS'),
+		    \Route::url('index.php?option=' . $option . '&controller=items&task=orphans'),
+		    $task == 'orphans'
+		);
+		\Submenu::addEntry(
+		    \Lang::txt('COM_RESOURCES_TYPES'),
+		    \Route::url('index.php?option=' . $option . '&controller=types'),
+		    $controllerName == 'types'
+		);
+		\Submenu::addEntry(
+		    \Lang::txt('COM_RESOURCES_LICENSES'),
+		    \Route::url('index.php?option=' . $option . '&controller=licenses'),
+		    $controllerName == 'licenses'
+		);
+		\Submenu::addEntry(
+		    \Lang::txt('COM_RESOURCES_AUTHORS'),
+		    \Route::url('index.php?option=' . $option . '&controller=authors'),
+		    $controllerName == 'authors'
+		);
+		\Submenu::addEntry(
+		    \Lang::txt('COM_RESOURCES_ROLES'),
+		    \Route::url('index.php?option=' . $option . '&controller=roles'),
+		    $controllerName == 'roles'
+		);
+		if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
+		    \Submenu::addEntry(
+		        \Lang::txt('COM_RESOURCES_PLUGINS'),
+		        \Route::url('index.php?option=' . $option . '&controller=plugins'),
+		        $controllerName == 'plugins'
+		    );
+		}
+		\Submenu::addEntry(
+		    \Lang::txt('COM_RESOURCES_IMPORT'),
+		    \Route::url('index.php?option=' . $option . '&controller=imports'),
+		    $controllerName == 'imports'
+		);
+		\Submenu::addEntry(
+		    \Lang::txt('COM_RESOURCES_IMPORTHOOK'),
+		    \Route::url('index.php?option=' . $option . '&controller=importhooks'),
+		    $controllerName == 'importhooks'
+		);
+
+		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+
+		// Instantiate controller
+		$controller = new $controllerName();
+		$controller->execute();
+	}
+}
