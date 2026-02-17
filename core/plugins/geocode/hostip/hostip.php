@@ -6,13 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * HostIp plugin for geocode
  *
  * The HostIpProvider is able to geocode IPv4 addresses only.
  */
-class plgGeocodeHostip extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Hostip;
+
+use Hubzero\Plugin\Plugin;
+
+class Hostip extends Plugin
 {
     /**
      * Return a geocode provider

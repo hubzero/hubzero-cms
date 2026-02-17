@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Support plugin class for wiki comments
  */
-class plgSupportWiki extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Wiki;
+
+use Hubzero\Plugin\Plugin;
+
+class Wiki extends Plugin
 {
     /**
      * Is the category one this plugin handles?

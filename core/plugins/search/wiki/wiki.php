@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Wiki;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -15,7 +19,7 @@ defined('_HZEXEC_') or die();
  */
 /**
  */
-class plgSearchWiki extends \Hubzero\Plugin\Plugin
+class Wiki extends Plugin
 {
     /**
      * Build search query and add it to the $results
@@ -99,8 +103,8 @@ class plgSearchWiki extends \Hubzero\Plugin\Plugin
         include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
         // @TODO: Move these to separate plugins so Wiki doesn't directly reference other extensions
-        Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/group.php');
-        Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
+        \Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/groups/wiki/adapters/group.php');
+        \Components\Wiki\Models\Page::addAdapterPath(PATH_CORE . '/plugins/projects/notes/adapters/project.php');
 
         foreach ($rows->to_associative() as $row) {
             if (!$row) {

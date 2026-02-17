@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Geonames plugin for geocode
  *
  * The GeonamesProvider named geonames is able to geocode and
  * reverse geocode places. A valid username is required.
  */
-class plgGeocodeGeonames extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Geonames;
+
+use Hubzero\Plugin\Plugin;
+
+class Geonames extends Plugin
 {
     /**
      * Return a geocode provider

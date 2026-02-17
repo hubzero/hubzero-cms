@@ -7,12 +7,16 @@
  */
 
 // no direct access
+namespace Plugins\Content\Loadmodule;
+
+use Hubzero\Plugin\Plugin;
+
 defined('_HZEXEC_') or die;
 
 /**
  * Plugin that loads module positions within content
  */
-class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
+class Loadmodule extends Plugin
 {
     /**
      * List of modules by position
@@ -148,7 +152,7 @@ class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
      */
     protected function byName($module, $title, $style = 'none')
     {
-        $moduleinstance = $module . Hubzero\Utility\Str::camel($title);
+        $moduleinstance = $module . \Hubzero\Utility\Str::camel($title);
 
         if (!isset(self::$mods[$moduleinstance])) {
             self::$mods[$moduleinstance] = '';

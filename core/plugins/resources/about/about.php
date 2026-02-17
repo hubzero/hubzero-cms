@@ -1,19 +1,21 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Resources\About;
+
+use Hubzero\Plugin\Plugin;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Objct;
 
 /**
  * Resources Plugin class for about tab
  */
-class plgResourcesAbout extends \Hubzero\Plugin\Plugin
+class About extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

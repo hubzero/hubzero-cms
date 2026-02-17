@@ -9,7 +9,11 @@
 /**
  * System plugin checking for spam offences after routing
  */
-class plgSystemSpamjail extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Spamjail;
+
+use Hubzero\Plugin\Plugin;
+
+class Spamjail extends Plugin
 {
     /**
      * Hook for after parsing route

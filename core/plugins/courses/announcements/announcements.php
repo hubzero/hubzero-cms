@@ -6,13 +6,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Utility\Date;
+namespace Plugins\Courses\Announcements;
+
 use Hubzero\Plugin\Plugin;
+use Hubzero\Utility\Date;
 
 /**
  * Plugin class for course announcements
  */
-class PlgCoursesAnnouncements extends Plugin
+class Announcements extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -236,7 +238,7 @@ class PlgCoursesAnnouncements extends Plugin
 
         $no_html = Request::getInt('no_html', 0);
 
-        $response = new stdClass();
+        $response = new \stdClass();
         $response->code = 0;
 
         // Incoming

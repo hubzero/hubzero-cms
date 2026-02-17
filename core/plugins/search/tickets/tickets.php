@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Tickets;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -17,7 +21,7 @@ use Hubzero\Utility\Sanitize;
  */
 /**
  */
-class plgSearchTickets extends \Hubzero\Plugin\Plugin
+class Tickets extends Plugin
 {
     /**
      * onGetTypes - Announces the available hubtype

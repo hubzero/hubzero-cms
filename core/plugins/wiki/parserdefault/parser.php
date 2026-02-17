@@ -6,8 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Wiki\Parserdefault;
 
 /**
  * Wiki parser class
@@ -1319,7 +1318,7 @@ class WikiParser
      */
     private function _getMath($matches)
     {
-        $m = MathRenderer::renderMath(trim($matches[1]), array(
+        $m = Math\MathRenderer::renderMath(trim($matches[1]), array(
             'option' => $this->get('option')
         ));
 
@@ -2841,7 +2840,7 @@ class WikiParser
             // Save headline for section edit hint before it's escaped
             $headline_hint = $canonized_headline;
 
-            $canonized_headline = Sanitizer::escapeId($canonized_headline);
+            $canonized_headline = \Components\Wiki\Helpers\Sanitizer::escapeId($canonized_headline);
             $refers[$headlineCount] = $canonized_headline;
 
             // count how many in assoc. array so we can track dupes in anchors

@@ -6,13 +6,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Utility\Date;
+namespace Plugins\Courses\Guide;
+
 use Hubzero\Plugin\Plugin;
+use Hubzero\Utility\Date;
 
 /**
  * Courses Plugin class for intro guide
  */
-class PlgCoursesGuide extends Plugin
+class Guide extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Newsletter\Resource;
+
+use Hubzero\Plugin\Plugin;
+
 
 use Components\Resources\Models\Entry;
 
@@ -14,7 +18,7 @@ require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php'
 /**
  * Plugin class for Newsletter resources
  */
-class plgNewsletterResource extends \Hubzero\Plugin\Plugin
+class Resource extends Plugin
 {
     /**
      * Event call to get the name
@@ -42,7 +46,7 @@ class plgNewsletterResource extends \Hubzero\Plugin\Plugin
         $objects = array();
 
         foreach ($model as $m) {
-            $object = new stdClass();
+            $object = new \stdClass();
             $object->title = $m->title;
             $object->body  = htmlspecialchars_decode($m->introtext);
             $object->date  = Date::of($m->publish_up)->toLocal("F j, Y");

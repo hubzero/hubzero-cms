@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Citations;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -15,7 +19,7 @@ defined('_HZEXEC_') or die();
  */
 /**
  */
-class plgSearchCitations extends \Hubzero\Plugin\Plugin
+class Citations extends Plugin
 {
     /**
      * Build search query and add it to the $results

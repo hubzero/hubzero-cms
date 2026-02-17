@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Nominatim plugin for geocode
  *
@@ -16,7 +13,11 @@ defined('_HZEXEC_') or die();
  * street addresses. Access to a Nominatim server is required.
  * See the Nominatim Wiki Page for more information.
  */
-class plgGeocodeNominatim extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Nominatim;
+
+use Hubzero\Plugin\Plugin;
+
+class Nominatim extends Plugin
 {
     /**
      * Return a geocode provider

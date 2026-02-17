@@ -6,12 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Linkrife;
+
+use Hubzero\Plugin\Plugin;
+
 
 
 /**
  * Antispam plugin for a LinkRife spam detector
  */
-class plgAntispamLinkRife extends \Hubzero\Plugin\Plugin
+class Linkrife extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

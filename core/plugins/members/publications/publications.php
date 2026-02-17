@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Members\Publications;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package   hubzero-cms
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for publications
  */
-class PlgMembersPublications extends \Hubzero\Plugin\Plugin
+class Publications extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -138,7 +142,7 @@ class PlgMembersPublications extends \Hubzero\Plugin\Plugin
             'notauthorrole' => 'submitter',
             'sortby'        => $sort,
             'usergroups'    => array(),
-            'published'     => Components\Publications\Models\Orm\Version::STATE_PUBLISHED
+            'published'     => \Components\Publications\Models\Orm\Version::STATE_PUBLISHED
         );
 
         if ($filters['sortby'] == 'date') {
@@ -161,8 +165,8 @@ class PlgMembersPublications extends \Hubzero\Plugin\Plugin
         // Get categories
         $categories = $this->cats;
         if (!$categories) {
-            $categories = Components\Publications\Models\Orm\Category::all()
-                ->whereEquals('state', Components\Publications\Models\Orm\Category::STATE_PUBLISHED)
+            $categories = \Components\Publications\Models\Orm\Category::all()
+                ->whereEquals('state', \Components\Publications\Models\Orm\Category::STATE_PUBLISHED)
                 ->order('name', 'asc')
                 ->rows();
         }
@@ -205,11 +209,11 @@ class PlgMembersPublications extends \Hubzero\Plugin\Plugin
     {
         $database = App::get('db');
 
-        $query = Components\Publications\Models\Orm\Version::all();
+        $query = \Components\Publications\Models\Orm\Version::all();
 
         $r = $query->getTableName();
-        $p = Components\Publications\Models\Orm\Publication::blank()->getTableName();
-        $a = Components\Publications\Models\Orm\Author::blank()->getTableName();
+        $p = \Components\Publications\Models\Orm\Publication::blank()->getTableName();
+        $a = \Components\Publications\Models\Orm\Author::blank()->getTableName();
 
         $query
             ->select($r . '.*')
@@ -221,16 +225,16 @@ class PlgMembersPublications extends \Hubzero\Plugin\Plugin
 
         if (isset($filters['type'])) {
             if (!is_numeric($filters['type'])) {
-                $filters['type'] = Components\Publications\Models\Orm\Category::oneByAlias($filters['type'])->get('id');
+                $filters['type'] = \Components\Publications\Models\Orm\Category::oneByAlias($filters['type'])->get('id');
             }
             $query->whereEquals($p . '.category', $filters['type']);
         }
 
         if (isset($filters['tag']) && $filters['tag']) {
-            $to = Components\Tags\Models\Objct::blank()->getTableName();
-            $tg = Components\Tags\Models\Tag::blank()->getTableName();
+            $to = \Components\Tags\Models\Objct::blank()->getTableName();
+            $tg = \Components\Tags\Models\Tag::blank()->getTableName();
 
-            $cloud = new Components\Publications\Helpers\Tags($database);
+            $cloud = new \Components\Publications\Helpers\Tags($database);
             $tags = $cloud->parse($filters['tag']);
 
             $query->join($to, $to . '.objectid', $r . '.id');
@@ -330,7 +334,7 @@ class PlgMembersPublications extends \Hubzero\Plugin\Plugin
 
         // Get parameters
         $params = clone($config);
-        $rparams = new Hubzero\Config\Registry($row->get('params'));
+        $rparams = new \Hubzero\Config\Registry($row->get('params'));
         $params->merge($rparams);
 
         $show_date = 3;
@@ -353,7 +357,7 @@ class PlgMembersPublications extends \Hubzero\Plugin\Plugin
 
         $thedate = Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
-        $view = new Hubzero\Component\View(
+        $view = new \Hubzero\Component\View(
             array(
             'base_path' => Component::path('com_publications') . '/site',
             'name'      => 'browse',
@@ -378,7 +382,7 @@ class PlgMembersPublications extends \Hubzero\Plugin\Plugin
     public static function documents()
     {
         // Push some CSS and JS to the tmeplate that may be needed
-        Hubzero\Document\Assets::addComponentStylesheet('com_publications');
+        \Hubzero\Document\Assets::addComponentStylesheet('com_publications');
 
         include_once Component::path('com_publications') . '/helpers/usage.php';
     }

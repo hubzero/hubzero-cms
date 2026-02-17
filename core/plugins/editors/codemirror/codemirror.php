@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * CodeMirror Editor Plugin.
  */
-class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
+namespace Plugins\Editors\Codemirror;
+
+use Hubzero\Plugin\Plugin;
+
+class Codemirror extends Plugin
 {
     /**
      * Base path for editor files
@@ -186,7 +189,7 @@ class plgEditorCodemirror extends \Hubzero\Plugin\Plugin
             $style = Request::root() . '/' . $this->_basePath . 'assets/css/' . $style;
         }
 
-        $options = new stdClass();
+        $options = new \stdClass();
 
         $options->basefiles  = array('basefiles' . $compressed . '.js');
         $options->path       = Request::root() . '/' . $this->_basePath . 'assets/js/';

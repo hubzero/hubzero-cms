@@ -1,5 +1,8 @@
 <?php
 
+namespace Plugins\Xmessage\Internal;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -10,7 +13,7 @@
 /**
  * XMessage plugin class for internal messages
  */
-class plgXMessageInternal extends \Hubzero\Plugin\Plugin
+class Internal extends Plugin
 {
     /**
      * Return this messaging type

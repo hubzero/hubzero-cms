@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Resources Plugin class for adding COinS metadata to the document
  */
-class plgResourcesCoins extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Coins;
+
+use Hubzero\Plugin\Plugin;
+
+class Coins extends Plugin
 {
     /**
      * Return data on a resource view (this will be some form of HTML)
@@ -160,7 +163,7 @@ class plgResourcesCoins extends \Hubzero\Plugin\Plugin
                 ->row();
 
             if ($firstchild && $firstchild->id) {
-                $doi = Components\Resources\Helpers\Html::processPath('com_resources', $firstChild, $model->id, '');
+                $doi = \Components\Resources\Helpers\Html::processPath('com_resources', $firstChild, $model->id, '');
                 if (substr($doi, 0, strlen('http')) != 'http') {
                     $doi = Route::url($doi, true, 1);
                 }
@@ -172,7 +175,7 @@ class plgResourcesCoins extends \Hubzero\Plugin\Plugin
         }
 
         if (!$doi) {
-            $uri = Hubzero\Utility\Uri::getInstance();
+            $uri = \Hubzero\Utility\Uri::getInstance();
 
             $doi = $uri->getUriVar('host') . ':' . Config::get('sitename');
         }

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Cart\Upay;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +17,7 @@ require_once Component::path('com_cart') . DS . 'models' . DS . 'Cart.php';
 /**
  * Cart plugin for Payment: UPay
  */
-class plgCartUpay extends \Hubzero\Plugin\Plugin
+class Upay extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\EditorsXtd\Article;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Editor Article buton
  *
  */
-class plgButtonArticle extends \Hubzero\Plugin\Plugin
+class Article extends Plugin
 {
     /**
      * Constructor

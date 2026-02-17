@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Weightcontributor;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -17,7 +21,7 @@ defined('_HZEXEC_') or die();
  */
 /**
  */
-class plgSearchWeightContributor extends \Hubzero\Plugin\Plugin
+class Weightcontributor extends Plugin
 {
     /**
      * Short description for 'onSearchWeightAll'

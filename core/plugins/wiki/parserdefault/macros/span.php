@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class that will wrap some content in a <span> tag
  */
-class SpanMacro extends WikiMacro
+class Span extends WikiMacro
 {
     /**
      * Allow macro in partial parsing?

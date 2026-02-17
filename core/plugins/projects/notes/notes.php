@@ -6,16 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 // Include note model
+namespace Plugins\Projects\Notes;
+
+use Hubzero\Plugin\Plugin;
+
 include_once \Component::path('com_projects') . DS . 'models' . DS . 'note.php';
 
 /**
  * Projects Notes (wiki) plugin
  */
-class plgProjectsNotes extends \Hubzero\Plugin\Plugin
+class Notes extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -250,7 +251,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
             // Include controller
             require_once Component::path('com_wiki') . DS . 'site' . DS . 'controllers' . DS . $this->_controllerName . '.php';
 
-            Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/project.php');
+            \Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/project.php');
 
             // Listing/unlisting?
             if ($this->_task == 'publist' || $this->_task == 'unlist') {
@@ -338,7 +339,7 @@ class plgProjectsNotes extends \Hubzero\Plugin\Plugin
         if ($this->_task == 'edit' || $this->_task == 'new' || $this->_task == 'save') {
             $basePath = __DIR__;
             if (!$this->model->access('content')) {
-                throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+                throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             }
         }
 

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Authentication\Cilogon;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,8 +12,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
-class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
+class Cilogon extends \Hubzero\Plugin\OauthClient
 {
     /**
      * Affects constructor behavior.
@@ -135,7 +138,7 @@ class plgAuthenticationCILogon extends \Hubzero\Plugin\OauthClient
             $storedState = Session::get('state', null, 'cilogon');
             $state = Request::getVar('state');
             if (empty($state) || $storedState !== $state) {
-                throw new Exception('Mismatched state');
+                throw new \Exception('Mismatched state');
             }
             Session::clear('state', 'cilogon');
 

@@ -6,19 +6,19 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Groups\Forum;
+
+use Hubzero\Plugin\Plugin;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Groups Plugin class for forum entries
  */
-class plgGroupsForum extends \Hubzero\Plugin\Plugin
+class Forum extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -1479,7 +1479,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
                 try {
                     $encryptor = new \Hubzero\Mail\Token();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $allowEmailResponses = false;
                 }
 
@@ -1794,7 +1794,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
             $sendEmail = $usersCategory->isNew() ? 0 : 1;
         } elseif ($memberoptions) {
             $groupId = $this->group->get('gidNumber');
-            $usersGroupSettings = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+            $usersGroupSettings = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
                 $groupId,
                 $userId,
                 'receive-forum-email'
@@ -2231,7 +2231,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
         include_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'models' . DS . 'memberoption.php';
 
         // Find the user's group settings, do they want to get email (0 or 1)?
-        $groupMemberOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+        $groupMemberOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $this->group->get('gidNumber'),
             $tokenDetails[0],
             'receive-forum-email'

@@ -1,5 +1,10 @@
 <?php
 
+namespace Plugins\Tags\Wiki;
+
+use Hubzero\Plugin\Plugin;
+
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
 /**
  * @package    hubzero-cms
@@ -10,7 +15,7 @@
 /**
  * Tags plugin class for wiki pages
  */
-class plgTagsWiki extends \Hubzero\Plugin\Plugin
+class Wiki extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

@@ -1,4 +1,7 @@
 <?php
+namespace Plugins\Wiki\Parsermarkdown;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -12,7 +15,7 @@ defined('_HZEXEC_') or die();
 /**
  * Wiki plugin class for loading the default parser
  */
-class plgWikiParsermarkdown extends \Hubzero\Plugin\Plugin
+class Parsermarkdown extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

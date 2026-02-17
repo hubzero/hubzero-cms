@@ -6,12 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Spamassassin;
+
+use Hubzero\Plugin\Plugin;
+
 
 
 /**
  * Spam Assassin antispam Plugin
  */
-class plgAntispamSpamassassin extends \Hubzero\Plugin\Plugin
+class Spamassassin extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

@@ -57,11 +57,11 @@ final class GoogleQrUrl
     public static function generate($accountName, $secret, $issuer = null, $size = 200)
     {
         if ('' === $accountName || false !== strpos($accountName, ':')) {
-            throw RuntimeException::invalidAccountName($accountName);
+            throw \RuntimeException::invalidAccountName($accountName);
         }
 
         if ('' === $secret) {
-            throw RuntimeException::invalidSecret();
+            throw \RuntimeException::invalidSecret();
         }
 
         $label = $accountName;
@@ -69,7 +69,7 @@ final class GoogleQrUrl
 
         if (null !== $issuer) {
             if ('' === $issuer || false !== strpos($issuer, ':')) {
-                throw RuntimeException::invalidIssuer($issuer);
+                throw \RuntimeException::invalidIssuer($issuer);
             }
 
             // use both the issuer parameter and label prefix as recommended by Google for BC reasons

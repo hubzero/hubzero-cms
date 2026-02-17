@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Projects Feed plugin
  */
-class plgProjectsFeed extends \Hubzero\Plugin\Plugin
+namespace Plugins\Projects\Feed;
+
+use Hubzero\Plugin\Plugin;
+
+class Feed extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -268,10 +269,10 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
             'search' => Request::getString('search', '')
         );
 
-        $recipient = Hubzero\Activity\Recipient::all();
+        $recipient = \Hubzero\Activity\Recipient::all();
 
         $r = $recipient->getTableName();
-        $l = Hubzero\Activity\Log::blank()->getTableName();
+        $l = \Hubzero\Activity\Log::blank()->getTableName();
 
         $scopes = array('project');
         $managers = $this->model->table('Owner')->getIds($this->model->get('id')); //team(array('role' => 1));
@@ -285,7 +286,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
             ->join($l, $l . '.id', $r . '.log_id')
             ->whereIn($r . '.scope', $scopes)
             ->whereEquals($r . '.scope_id', $this->model->get('id'))
-            ->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED);
+            ->whereEquals($r . '.state', \Hubzero\Activity\Recipient::STATE_PUBLISHED);
 
         if ($filters['search']) {
             $recipient->whereLike($l . '.description', $filters['search']);
@@ -325,7 +326,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         // Check for request forgeries
@@ -346,7 +347,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
         $comment['description'] = \Hubzero\Utility\Sanitize::stripScripts($comment['description']);
         $comment['description'] = \Hubzero\Utility\Sanitize::stripImages($comment['description']);
 
-        $row = Hubzero\Activity\Log::oneOrNew($comment['id'])->set($comment);
+        $row = \Hubzero\Activity\Log::oneOrNew($comment['id'])->set($comment);
 
         if ($row->get('id')) {
             $isNew = false;
@@ -380,9 +381,9 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
                     // We have a child comment
                     // So, we want to force the parent to show up more recent in the list
                     // to reflect the new comment.
-                    $currentRecipients = Hubzero\Activity\Recipient::all()
+                    $currentRecipients = \Hubzero\Activity\Recipient::all()
                         ->whereEquals('log_id', $row->get('parent'))
-                        ->whereEquals('state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
+                        ->whereEquals('state', \Hubzero\Activity\Recipient::STATE_PUBLISHED)
                         ->rows();
 
                     foreach ($currentRecipients as $recipient) {
@@ -439,12 +440,12 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         $id = Request::getInt('activity', 0);
 
-        $entry = Hubzero\Activity\Log::oneOrFail($id);
+        $entry = \Hubzero\Activity\Log::oneOrFail($id);
 
         if ($this->model->access('content') || $entry->get('created_by') == User::get('id')) {
             foreach ($entry->recipients as $recipient) {
@@ -502,10 +503,10 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
             $filters['sortdir'] = 'ASC';
         }
 
-        $recipient = Hubzero\Activity\Recipient::all();
+        $recipient = \Hubzero\Activity\Recipient::all();
 
         $r = $recipient->getTableName();
-        $l = Hubzero\Activity\Log::blank()->getTableName();
+        $l = \Hubzero\Activity\Log::blank()->getTableName();
 
         $scopes = array('project');
         $managers = $this->model->table('Owner')->getIds($this->model->get('id')); //team(array('role' => 1));
@@ -519,7 +520,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
             ->join($l, $l . '.id', $r . '.log_id')
             ->whereIn($r . '.scope', $scopes)
             ->whereEquals($r . '.scope_id', $this->model->get('id'))
-            ->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
+            ->whereEquals($r . '.state', \Hubzero\Activity\Recipient::STATE_PUBLISHED)
             ->whereEquals($l . '.parent', 0);
 
         if ($filters['created']) {
@@ -537,7 +538,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
         // In this case, we're expecting JSON output
         // @TODO: Move to API
         if (isset($filters['created']) && $filters['created']) {
-            $data = new stdClass();
+            $data = new \stdClass();
             $data->activities = array();
 
             if (count($activities)) {
@@ -617,10 +618,10 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
         }
 
         // Get and sort activities
-        $recipient = Hubzero\Activity\Recipient::all();
+        $recipient = \Hubzero\Activity\Recipient::all();
 
         $r = $recipient->getTableName();
-        $l = Hubzero\Activity\Log::blank()->getTableName();
+        $l = \Hubzero\Activity\Log::blank()->getTableName();
 
         $recipient
             ->select($r . '.*')
@@ -655,7 +656,7 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
         }
 
         $recipient
-            ->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED)
+            ->whereEquals($r . '.state', \Hubzero\Activity\Recipient::STATE_PUBLISHED)
             ->whereEquals($l . '.parent', 0);
         $total = $recipient->copy()->total();
 
@@ -693,8 +694,8 @@ class plgProjectsFeed extends \Hubzero\Plugin\Plugin
             return;
         }
 
-        $entry = Hubzero\Utility\Sanitize::stripScripts((string) $entry);
-        $entry = Hubzero\Utility\Sanitize::stripImages($entry);
+        $entry = \Hubzero\Utility\Sanitize::stripScripts((string) $entry);
+        $entry = \Hubzero\Utility\Sanitize::stripImages($entry);
 
         // Record the activity
         $recipients = array();

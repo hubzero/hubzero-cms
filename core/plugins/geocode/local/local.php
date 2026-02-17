@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Geocode plugin for Hubzero
  */
-class plgGeocodeLocal extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Local;
+
+use Hubzero\Plugin\Plugin;
+
+class Local extends Plugin
 {
     /**
      * Return a geocode provider

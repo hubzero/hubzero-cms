@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,11 @@
 /**
  * Plugin for abuse reports for forum posts
  */
-class plgSupportForum extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Forum;
+
+use Hubzero\Plugin\Plugin;
+
+class Forum extends Plugin
 {
     /**
      * Get items reported as abusive

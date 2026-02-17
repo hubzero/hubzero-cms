@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Members Plugin class for resources
  */
-class plgMembersResources extends \Hubzero\Plugin\Plugin
+namespace Plugins\Members\Resources;
+
+use Hubzero\Plugin\Plugin;
+
+class Resources extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -52,8 +53,6 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        include_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
     }
 
     /**
@@ -186,7 +185,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 
             //$filters['published'] = 1;
             $filters['access'] = array(0, 3);
-            if (!\User::isGuest()) {
+            if (!\Hubzero\Facades\User::isGuest()) {
                 $filters['access'][] = 1;
             }
         }
@@ -206,8 +205,8 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
         }
 
         if ($limit) {
+            $total = 0;
             if ($this->_total != null) {
-                $total = 0;
                 $t = $this->_total;
                 foreach ($t as $l) {
                     $total += $l;
@@ -233,8 +232,6 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
             $query = \Components\Resources\Models\Entry::allWithFilters($filters);
 
             if (isset($filters['sortby']) && ($filters['sortby'] == 'usage' || $filters['sortby'] == 'users')) {
-                include_once \Component::path('com_resources') . DS . 'models' . DS . 'stat.php';
-
                 $s = \Components\Resources\Models\Stat::blank()->getTableName();
 
                 $query->select('(SELECT rs.users FROM ' . $s . ' AS rs WHERE rs.resid=' . $query->getTableName() . '.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1)', 'users');
@@ -442,7 +439,5 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
     {
         // Push some CSS and JS to the tmeplate that may be needed
         \Hubzero\Document\Assets::addComponentStylesheet('com_resources');
-
-        include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
     }
 }

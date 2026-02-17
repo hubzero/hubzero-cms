@@ -1,4 +1,7 @@
 <?php
+namespace Plugins\Publications\Forks;
+
+use Hubzero\Plugin\Plugin;
 
 
 /**
@@ -11,7 +14,7 @@
 /**
  * Publications Plugin class for forks
  */
-class plgPublicationsForks extends \Hubzero\Plugin\Plugin
+class Forks extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -196,7 +199,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
             $forked = $db->loadObjectList();
 
             foreach ($forked as $i => $fork) {
-                $forks[$i] = new Components\Publications\Models\Publication(
+                $forks[$i] = new \Components\Publications\Models\Publication(
                     $fork->publication_id,
                     'default',
                     $fork->id
@@ -229,7 +232,7 @@ class plgPublicationsForks extends \Hubzero\Plugin\Plugin
         require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
         // Model
-        $model = new Components\Projects\Models\Project();
+        $model = new \Components\Projects\Models\Project();
 
         // Set filters
         $filters = array(

@@ -1,4 +1,7 @@
 <?php
+namespace Plugins\Resources\Sponsors;
+
+use Hubzero\Plugin\Plugin;
 
 
 /**
@@ -13,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * Display sponsors on a resource page
  */
-class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
+class Sponsors extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

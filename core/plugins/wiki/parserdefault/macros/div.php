@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class for wrapping content in a div
  */
-class DivMacro extends WikiMacro
+class Div extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments

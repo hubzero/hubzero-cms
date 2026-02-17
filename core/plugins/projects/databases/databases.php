@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Projects\Databases;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -16,7 +20,7 @@ require_once Component::path('com_projects') . DS . 'tables' . DS . 'database.ve
 /**
  * Projects - Databases plugin
  */
-class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
+class Databases extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -157,7 +161,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
             } else {
                 $this->_configured = true;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_configured = false;
         }
 
@@ -497,7 +501,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
         // Set params
@@ -824,7 +828,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1149,7 +1153,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1217,7 +1221,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 

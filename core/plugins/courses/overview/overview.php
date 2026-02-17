@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Plugin\Plugin;
-
 /**
  * Courses Plugin class for the course overview page
  */
-class PlgCoursesOverview extends Plugin
+namespace Plugins\Courses\Overview;
+
+use Hubzero\Plugin\Plugin;
+
+class Overview extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

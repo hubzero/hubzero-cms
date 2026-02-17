@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Groups Plugin class for wiki
  */
-class plgGroupsWiki extends \Hubzero\Plugin\Plugin
+namespace Plugins\Groups\Wiki;
+
+use Hubzero\Plugin\Plugin;
+
+class Wiki extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -106,11 +107,11 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
         include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'editor.php';
         include_once Component::path('com_wiki') . DS . 'helpers' . DS . 'parser.php';
 
-        Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/group.php');
+        \Components\Wiki\Models\Page::addAdapterPath(__DIR__ . '/adapters/group.php');
 
-        $book = new Components\Wiki\Models\Book('group', $group->get('gidNumber'));
+        $book = new \Components\Wiki\Models\Book('group', $group->get('gidNumber'));
         $arr['metadata']['count'] = $book->pages()
-            ->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+            ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
             ->total();
 
         if ($arr['metadata']['count'] <= 0) {
@@ -119,7 +120,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
             }
 
             $arr['metadata']['count'] = $book->pages()
-                ->whereEquals('state', Components\Wiki\Models\Page::STATE_PUBLISHED)
+                ->whereEquals('state', \Components\Wiki\Models\Page::STATE_PUBLISHED)
                 ->total();
         }
 
@@ -143,7 +144,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
                 $url = $_SERVER['REQUEST_URI'];
-                if (!Hubzero\Utility\Uri::isInternal($url)) {
+                if (!\Hubzero\Utility\Uri::isInternal($url)) {
                     $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
                 }
 
@@ -311,7 +312,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
         if ($pages->count() > 0) {
             // Loop through all the IDs for pages associated with this group
             foreach ($pages as $page) {
-                $page->set('state', Components\Wiki\Models\Page::STATE_DELETED);
+                $page->set('state', \Components\Wiki\Models\Page::STATE_DELETED);
                 $page->save();
 
                 // Add the page ID to the log
@@ -347,7 +348,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
         // Import needed libraries
         include_once Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
 
-        $pages = Components\Wiki\Models\Page::all()
+        $pages = \Components\Wiki\Models\Page::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $gid)
             ->rows();

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Activity;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Group plugin class for activity
  *
  */
-class plgGroupsActivity extends \Hubzero\Plugin\Plugin
+class Activity extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -153,7 +157,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
         }
 
         // Get the number of unread messages
-        $unread = Hubzero\Activity\Recipient::all()
+        $unread = \Hubzero\Activity\Recipient::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $group->get('gidNumber'))
             ->whereEquals('state', 1)
@@ -184,10 +188,10 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
             $filters['filter'] = '';
         }
 
-        $recipient = Hubzero\Activity\Recipient::all();
+        $recipient = \Hubzero\Activity\Recipient::all();
 
         $r = $recipient->getTableName();
-        $l = Hubzero\Activity\Log::blank()->getTableName();
+        $l = \Hubzero\Activity\Log::blank()->getTableName();
 
         $scopes = array('group');
         if (in_array(User::get('id'), $this->group->get('managers'))) {
@@ -200,7 +204,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
             ->join($l, $l . '.id', $r . '.log_id')
             ->whereIn($r . '.scope', $scopes)
             ->whereEquals($r . '.scope_id', $this->group->get('gidNumber'))
-            ->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED);
+            ->whereEquals($r . '.state', \Hubzero\Activity\Recipient::STATE_PUBLISHED);
 
         if ($filters['filter'] == 'starred') {
             $recipient->whereEquals($r . '.starred', 1);
@@ -247,7 +251,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
         $id      = Request::getInt('activity', 0);
         $no_html = Request::getInt('no_html', 0);
 
-        $entry = Hubzero\Activity\Recipient::oneOrFail($id);
+        $entry = \Hubzero\Activity\Recipient::oneOrFail($id);
 
         if (!$entry->markAsUnpublished()) {
             $this->setError($entry->getError());
@@ -256,7 +260,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
         $success = Lang::txt('PLG_GROUPS_ACTIVITY_RECORD_REMOVED');
 
         if ($no_html) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->success = true;
             $response->message = $success;
             if ($err = $this->getError()) {
@@ -293,7 +297,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
         $no_html = Request::getInt('no_html', 0);
         $action  = Request::getWord('action', 'star');
 
-        $entry = Hubzero\Activity\Recipient::oneOrFail($id);
+        $entry = \Hubzero\Activity\Recipient::oneOrFail($id);
         $entry->set('starred', ($action == 'star' ? 1 : 0));
 
         if (!$entry->save()) {
@@ -305,7 +309,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
             : Lang::txt('PLG_GROUPS_ACTIVITY_RECORD_UNSTARRED');
 
         if ($no_html) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->success = true;
             $response->message = $success;
             if ($err = $this->getError()) {
@@ -345,7 +349,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
         $comment = Request::getArray('activity', array(), 'post');
 
         // Instantiate a new object and bind data
-        $row = Hubzero\Activity\Log::oneOrNew($comment['id'])->set($comment);
+        $row = \Hubzero\Activity\Log::oneOrNew($comment['id'])->set($comment);
 
         // Process attachment
         $upload = Request::getArray('activity_file', '', 'files');
@@ -355,7 +359,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
                 $this->setError(\Lang::txt('PLG_GROUPS_ACTIVITY_ERROR_UPLOADING_FILE'));
             }
 
-            $file = new Plugins\Groups\Activity\Models\Attachment();
+            $file = new \Plugins\Groups\Activity\Models\Attachment();
             $file->setUploadDir('/site/groups/' . $this->group->get('gidNumber') . '/uploads');
 
             if (!$file->upload($upload['name'], $upload['tmp_name'], $upload['size'])) {

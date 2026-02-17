@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Oaipmh\Publications;
+
+use Hubzero\Plugin\Plugin;
+
 
 
 
@@ -16,7 +20,7 @@ defined('_HZEXEC_') or die();
  * Plugin class for providing data to OAI-PMH.
  *
  */
-class plgOaipmhPublications extends \Hubzero\Plugin\Plugin
+class Publications extends Plugin
 {
     /**
      * Instantiate and registers a provider with the

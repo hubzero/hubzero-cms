@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\EditorsXtd\Readmore;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Editor Readmore buton
  *
  */
-class plgButtonReadmore extends \Hubzero\Plugin\Plugin
+class Readmore extends Plugin
 {
     /**
      * Constructor

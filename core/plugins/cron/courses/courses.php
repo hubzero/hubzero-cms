@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,7 +8,11 @@
 /**
  * Cron plugin for courses
  */
-class plgCronCourses extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Courses;
+
+use Hubzero\Plugin\Plugin;
+
+class Courses extends Plugin
 {
     /**
      * Return a list of events
@@ -20,7 +23,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(
@@ -48,7 +51,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
     {
         $params = Component::params('com_courses');
 
-        $badgesHandler  = new Hubzero\Badges\Wallet('passport', $params->get('badges_request_type'));
+        $badgesHandler  = new \Hubzero\Badges\Wallet('passport', $params->get('badges_request_type'));
         $badgesProvider = $badgesHandler->getProvider();
 
         $creds = new \stdClass();

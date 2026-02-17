@@ -6,10 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 // Include model
+namespace Plugins\Projects\Todo;
+
+use Hubzero\Plugin\Plugin;
+
 include_once \Component::path('com_projects') . DS . 'models' . DS . 'todo.php';
 
 use Hubzero\Utility\Arr;
@@ -17,7 +18,7 @@ use Hubzero\Utility\Arr;
 /**
  * Projects todo's
  */
-class plgProjectsTodo extends \Hubzero\Plugin\Plugin
+class Todo extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -319,7 +320,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
         // Check permission
         if ($this->_task == 'edit' && !$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -391,7 +392,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -612,7 +613,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -757,7 +758,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -807,7 +808,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 

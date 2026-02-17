@@ -6,13 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Base class for wiki macros
  * Should be extended
  */
+namespace Plugins\Wiki\Parserdefault;
+
 class WikiMacro
 {
     /**
@@ -89,7 +88,7 @@ class WikiMacro
                 $this->_name = $config['name'];
             } else {
                 // Get the reflection info
-                $r = new ReflectionClass($this);
+                $r = new \ReflectionClass($this);
 
                 // Is it namespaced?
                 if ($r->inNamespace()) {
@@ -98,7 +97,7 @@ class WikiMacro
                 } elseif (preg_match('/(.*)Macro/i', get_class($this), $r)) {
                     $this->_name = strtolower($r[1]);
                 } else {
-                    throw new RuntimeException(__CLASS__ . '::__construct(); Can\'t get or parse class name.');
+                    throw new \RuntimeException(__CLASS__ . '::__construct(); Can\'t get or parse class name.');
                 }
             }
         }

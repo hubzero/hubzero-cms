@@ -1,5 +1,10 @@
 <?php
 
+namespace Plugins\Members\Dashboard;
+
+use Hubzero\Plugin\Plugin;
+
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for dashboard
  */
-class plgMembersDashboard extends \Hubzero\Plugin\Plugin
+class Dashboard extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -38,9 +43,9 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
     public function __construct($subject, $config)
     {
         // get all public methods ending in 'action'
-        $reflectionClass = new ReflectionClass($this);
+        $reflectionClass = new \ReflectionClass($this);
 
-        foreach ($reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+        foreach ($reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
             $name = $method->getName();
             if (substr(strtolower($name), -6) == 'action') {
                 $this->_actionMap[] = $name;
@@ -130,7 +135,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
             if (in_array($doAction, $this->_actionMap)) {
                 $arr['html'] = $this->$doAction();
             } else {
-                throw new Exception(Lang::txt('Members dashboard action does not exist: [%s].', $doAction), 404);
+                throw new \Exception('Members dashboard action does not exist: [$doAction].', 404);
             }
         }
 
@@ -160,10 +165,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
         foreach ($preferences as $preference) {
             if (isset($dashboardModules[$preference->module])) {
                 // create module objects
-                $module                      = $dashboardModules[$preference->module];
-                $module->positioning         = new stdClass();
-                $module->positioning->col    = $preference->col;
-                $module->positioning->row    = $preference->row;
+                $module = $dashboardModules[$preference->module];
+                $module->positioning = new \stdClass();
+                $module->positioning->col = $preference->col;
+                $module->positioning->row = $preference->row;
                 $module->positioning->size_x = $preference->size_x;
                 $module->positioning->size_y = $preference->size_y;
 
@@ -203,7 +208,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
         $preferences = $this->_loadPreferences();
 
         // get module preferences for moduleid
-        $preference = new stdClass();
+        $preference = new \stdClass();
         foreach ($preferences as $p) {
             if ($p->module == $moduleId) {
                 $preference = $p;
@@ -214,10 +219,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
         // get the module
         $module = null;
         if (in_array($moduleId, array_keys($modulesList))) {
-            $module                      = $modulesList[$moduleId];
-            $module->positioning         = new stdClass();
-            $module->positioning->col    = 1;
-            $module->positioning->row    = 1;
+            $module = $modulesList[$moduleId];
+            $module->positioning = new \stdClass();
+            $module->positioning->col = 1;
+            $module->positioning->row = 1;
             $module->positioning->size_x = 1;
             $module->positioning->size_y = 2;
 
@@ -314,7 +319,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
         }
 
         // load member preferences
-        $preferences = Plugins\Members\Dashboard\Models\Preference::oneByUser(User::get('id'));
+        $preferences = \Plugins\Members\Dashboard\Models\Preference::oneByUser(User::get('id'));
 
         // update the user preferences
         $preferences->set('uidNumber', User::get('id'));
@@ -401,10 +406,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
         foreach ($preferences as $preference) {
             if (isset($dashboardModules[$preference->module])) {
                 // create module objects
-                $module                      = $dashboardModules[$preference->module];
-                $module->positioning         = new stdClass();
-                $module->positioning->col    = $preference->col;
-                $module->positioning->row    = $preference->row;
+                $module = $dashboardModules[$preference->module];
+                $module->positioning = new \stdClass();
+                $module->positioning->col = $preference->col;
+                $module->positioning->row = $preference->row;
                 $module->positioning->size_x = $preference->size_x;
                 $module->positioning->size_y = $preference->size_y;
 
@@ -487,10 +492,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
         // get the module
         $module = null;
         if (in_array($moduleId, array_keys($modulesList))) {
-            $module                      = $modulesList[$moduleId];
-            $module->positioning         = new stdClass();
-            $module->positioning->col    = 1;
-            $module->positioning->row    = 1;
+            $module = $modulesList[$moduleId];
+            $module->positioning = new \stdClass();
+            $module->positioning->col = 1;
+            $module->positioning->row = 1;
             $module->positioning->size_x = 1;
             $module->positioning->size_y = 2;
         }
@@ -544,7 +549,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
         }
 
         // load all member preferences
-        $memberPreferences = Plugins\Members\Dashboard\Models\Preference::all()
+        $memberPreferences = \Plugins\Members\Dashboard\Models\Preference::all()
             ->ordered()
             ->rows();
 
@@ -575,7 +580,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
             }
 
             // create new module object
-            $newModule = new stdClass();
+            $newModule = new \stdClass();
             $newModule->module = $module;
             $newModule->col    = $column;
             $newModule->size_x = $width;
@@ -651,7 +656,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
         }
 
         // load member preferences
-        $model = Plugins\Members\Dashboard\Models\Preference::oneByUser($uidNumber);
+        $model = \Plugins\Members\Dashboard\Models\Preference::oneByUser($uidNumber);
         $preferences = $model->get('preferences');
 
         // no user preferences, use default

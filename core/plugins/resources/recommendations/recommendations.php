@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Resources Plugin class for recommendations
  */
-class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Recommendations;
+
+use Hubzero\Plugin\Plugin;
+
+class Recommendations extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -54,7 +57,7 @@ class plgResourcesRecommendations extends \Hubzero\Plugin\Plugin
         include_once __DIR__ . DS . 'models' . DS . 'recommendation.php';
 
         // Get recommendations
-        $r = Plugins\Resources\Recommendations\Models\Recommendation::find(
+        $r = \Plugins\Resources\Recommendations\Models\Recommendation::find(
             $resource->id,
             $this->params->get('threshold', '0.21')
         );

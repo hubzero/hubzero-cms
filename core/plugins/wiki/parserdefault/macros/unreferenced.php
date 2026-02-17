@@ -6,12 +6,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro for unreferenced page
  */
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class UnreferencedMacro extends WikiMacro
+class Unreferenced extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments

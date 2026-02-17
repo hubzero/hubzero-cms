@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Yandex plugin for geocode
  *
@@ -17,7 +16,11 @@
  * possible to precise the toponym to get more accurate result for reverse
  * geocoding: house, street, metro, district and locality.
  */
-class plgGeocodeYandex extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Yandex;
+
+use Hubzero\Plugin\Plugin;
+
+class Yandex extends Plugin
 {
     /**
      * Return a geocode provider

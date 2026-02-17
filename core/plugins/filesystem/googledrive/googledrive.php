@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Filesystem\Googledrive;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +20,7 @@ use Hubzero\Utility\Arr;
 /**
  * Plugin class for Google Drive filesystem connectivity
  */
-class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
+class Googledrive extends Plugin
 {
     /**
      * Initializes the Google Drive connection
@@ -27,7 +31,7 @@ class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
     public static function init($params = [])
     {
         // Get the params
-        $pparams = Plugin::params('filesystem', 'googledrive');
+        $pparams = \Plugin::params('filesystem', 'googledrive');
 
         $app_id = isset($params['app_id']) && $params['app_id'] != '' ? $params['app_id'] : $pparams->get('app_id');
         $app_secret = isset($params['app_secret']) && $params['app_secret'] != ''

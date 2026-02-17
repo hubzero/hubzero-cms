@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Authentication\Emailtoken;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * Authentication plugin for HUBzero
  */
-class plgAuthenticationEmailtoken extends \Hubzero\Plugin\Plugin
+class Emailtoken extends Plugin
 {
     /**
      * Affects constructor behavior.
@@ -141,7 +145,7 @@ class plgAuthenticationEmailtoken extends \Hubzero\Plugin\Plugin
             $result = false;
         } else {
             // Log attempt to the database
-            Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save(
+            \Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save(
                 [
                 'username' => $user->username,
                 'status'   => 'blocked'

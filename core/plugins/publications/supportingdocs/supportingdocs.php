@@ -1,4 +1,7 @@
 <?php
+namespace Plugins\Publications\Supportingdocs;
+
+use Hubzero\Plugin\Plugin;
 
 
 /**
@@ -11,7 +14,7 @@
 /**
  * Publications Plugin class for supporting docs
  */
-class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
+class Supportingdocs extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

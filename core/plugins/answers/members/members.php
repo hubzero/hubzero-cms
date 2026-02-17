@@ -10,7 +10,11 @@
  * Answers plugin for members
  *
  */
-class plgAnswersMembers extends \Hubzero\Plugin\Plugin
+namespace Plugins\Answers\Members;
+
+use Hubzero\Plugin\Plugin;
+
+class Members extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -32,7 +36,7 @@ class plgAnswersMembers extends \Hubzero\Plugin\Plugin
             require_once Component::path('com_members') . DS . 'models' . DS . 'tags.php';
 
             // Get tags of interest
-            $mt = new Components\Members\Models\Tags(User::get('id'));
+            $mt = new \Components\Members\Models\Tags(User::get('id'));
 
             $filters['tag'] .= ($filters['tag'] ? ',' : '') . $mt->render('string');
 

@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Members Plugin class for collections
  */
-class plgMembersCollections extends \Hubzero\Plugin\Plugin
+namespace Plugins\Members\Collections;
+
+use Hubzero\Plugin\Plugin;
+
+class Collections extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -568,7 +569,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
         }
 
         if (Request::getInt('no_html', 0)) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->href = Route::url($this->member->link() . '&active=collections' . $sfx);
             $response->success = true;
             if ($this->getError()) {
@@ -628,7 +629,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
         }
 
         if (Request::getInt('no_html', 0)) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->href = Route::url($this->member->link() . '&active=collections' . $sfx);
             $response->success = true;
             if ($this->getError()) {
@@ -1855,10 +1856,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
                     $entry->set('state', 2);
 
                     if (!$entry->store(false)) {
-                        throw new Exception($entry->getError());
+                        throw new \Exception($entry->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return false;
             }
         }
@@ -1898,10 +1899,10 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
                     $entry = new \Components\Collections\Models\Collection($entry);
 
                     if (!$entry->delete()) {
-                        throw new Exception($entry->getError());
+                        throw new \Exception($entry->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return false;
             }
         }

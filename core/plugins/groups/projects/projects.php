@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Projects;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Groups Plugin class for projects
  *
  */
-class plgGroupsProjects extends \Hubzero\Plugin\Plugin
+class Projects extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -51,7 +55,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
             $extension = 'plg_' . $this->_type . '_' . $this->_name;
         }
 
-        $group = Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+        $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
         if ($group && $group->isSuperGroup()) {
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
@@ -118,7 +122,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
         require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
         // Model
-        $this->model = new Components\Projects\Models\Project();
+        $this->model = new \Components\Projects\Models\Project();
 
         $this->_projects = $this->model->table()->getGroupProjectIds(
             $group->get('gidNumber'),
@@ -228,7 +232,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
         require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
         // Model
-        $this->model = new Components\Projects\Models\Project();
+        $this->model = new \Components\Projects\Models\Project();
 
         // Get group projects
         $projects = $this->model->table()->getGroupProjects(
@@ -267,7 +271,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
             require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
 
             // Model
-            $model = new Components\Projects\Models\Project();
+            $model = new \Components\Projects\Models\Project();
 
             // Get group projects
             $projects = $model->table()->getGroupProjects(
@@ -282,7 +286,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
                         continue;
                     }
 
-                    $model = new Components\Projects\Models\Project($project->id);
+                    $model = new \Components\Projects\Models\Project($project->id);
                     $model->set('state', 3);
                     $model->store(false);
 
@@ -410,7 +414,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
         // Add the post to each project
         foreach ($projects as $id) {
-            $project = new Components\Projects\Models\Project($id);
+            $project = new \Components\Projects\Models\Project($id);
 
             Event::trigger('projects.onSharedUpdate', array(
                 $project,

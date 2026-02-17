@@ -9,7 +9,11 @@
 /**
  * Cron plugin for handling/cleaning cached data
  */
-class plgCronCache extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Cache;
+
+use Hubzero\Plugin\Plugin;
+
+class Cache extends Plugin
 {
     /**
      * Path to cache directory
@@ -42,7 +46,7 @@ class plgCronCache extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(

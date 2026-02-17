@@ -6,12 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Bayesian;
+
+use Hubzero\Plugin\Plugin;
+
 
 
 /**
  * Antispam plugin for a basic Bayesian filter
  */
-class plgAntispamBayesian extends \Hubzero\Plugin\Plugin
+class Bayesian extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

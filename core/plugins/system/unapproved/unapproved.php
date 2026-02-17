@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * System plugin checking for unapproved users
  */
-class plgSystemUnapproved extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Unapproved;
+
+use Hubzero\Plugin\Plugin;
+
+class Unapproved extends Plugin
 {
     /**
      * Hook for after parsing route

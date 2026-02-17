@@ -6,10 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Authentication\Facebook;
 
-class plgAuthenticationFacebook extends \Hubzero\Plugin\OauthClient
+use Hubzero\Plugin\Plugin;
+
+class Facebook extends \Hubzero\Plugin\OauthClient
 {
     /**
      * Affects constructor behavior.

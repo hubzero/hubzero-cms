@@ -9,7 +9,11 @@
 /**
  * Plugin class for logout redirect handling.
  */
-class plgSystemLogout extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Logout;
+
+use Hubzero\Plugin\Plugin;
+
+class Logout extends Plugin
 {
     /**
      * Object Constructor.
@@ -73,7 +77,7 @@ class plgSystemLogout extends \Hubzero\Plugin\Plugin
             App::redirect('index.php', Lang::txt('PLG_SYSTEM_LOGOUT_REDIRECT'), null, true, false);
         } else {
             // Render the error page.
-            $renderer = new Hubzero\Error\Renderer\Page(
+            $renderer = new \Hubzero\Error\Renderer\Page(
                 App::get('document'),
                 App::get('template')->template,
                 App::get('config')->get('debug')

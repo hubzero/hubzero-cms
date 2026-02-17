@@ -6,13 +6,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Courses\Notes;
+
+use Hubzero\Plugin\Plugin;
+use Hubzero\Utility\Date;
 
 /**
  * Courses Plugin class for user notes
  */
-class plgCoursesNotes extends \Hubzero\Plugin\Plugin
+class Notes extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -88,7 +90,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
             }
 
             if ($this->view->no_html && $result) {
-                $note = new stdClass();
+                $note = new \stdClass();
                 $note->id = $result;
                 $note->success = true;
                 if ($this->getError()) {

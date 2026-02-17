@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class for displaying hello world
  */
-class HelloWorldMacro extends WikiMacro
+class HelloWorld extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments

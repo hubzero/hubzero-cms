@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Sortevents;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -17,7 +21,7 @@ defined('_HZEXEC_') or die();
  */
 /**
  */
-class plgSearchSortEvents extends \Hubzero\Plugin\Plugin
+class Sortevents extends Plugin
 {
     /**
      * Short description for 'onYSearchSort'

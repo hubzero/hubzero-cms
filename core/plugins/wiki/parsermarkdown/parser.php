@@ -6,8 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Wiki\Parsermarkdown;
 
 include_once __DIR__ . '/markdown/block/CodeTrait.php';
 include_once __DIR__ . '/markdown/block/FencedCodeTrait.php';

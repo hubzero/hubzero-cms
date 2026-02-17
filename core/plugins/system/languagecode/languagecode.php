@@ -9,7 +9,11 @@
 /**
  * Language Code plugin class.
  */
-class plgSystemLanguagecode extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Languagecode;
+
+use Hubzero\Plugin\Plugin;
+
+class Languagecode extends Plugin
 {
     /**
      * Plugin that change the language code used in the <html /> tag
@@ -88,7 +92,7 @@ class plgSystemLanguagecode extends \Hubzero\Plugin\Plugin
     public function onContentPrepareForm($form, $data)
     {
         // Check we have a form
-        if (!($form instanceof Hubzero\Form\Form)) {
+        if (!($form instanceof \Hubzero\Form\Form)) {
             $this->setError('JERROR_NOT_A_FORM');
             return false;
         }

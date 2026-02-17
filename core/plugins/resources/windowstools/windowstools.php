@@ -1,6 +1,8 @@
 <?php
 
+namespace Plugins\Resources\Windowstools;
 
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -14,7 +16,7 @@ require_once Component::path('com_tools') . DS . 'tables' . DS . 'session.php';
 /**
  * Resources Plugin class for Windows tools
  */
-class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
+class Windowstools extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -243,9 +245,9 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
             // Get the current page
             include_once __DIR__ . DS . 'models' . DS . 'page.php';
 
-            $page = Plugins\Resources\Windowstools\Models\Page::all()
+            $page = \Plugins\Resources\Windowstools\Models\Page::all()
                 ->whereIn('access', User::getAuthorisedViewLevels())
-                ->whereEquals('state', Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED)
+                ->whereEquals('state', \Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED)
                 ->whereEquals('plugin', $this->_name)
                 ->order('ordering', 'asc')
                 ->row();
@@ -256,7 +258,7 @@ class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
 
                     $page->set('content', $contents);
                     $page->set('title', Lang::txt('PLG_RESOURCES_WINDOWSTOOLS'));
-                    $page->set('state', Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED);
+                    $page->set('state', \Plugins\Resources\Windowstools\Models\Page::STATE_PUBLISHED);
                     $page->set('plugin', $this->_name);
                     $page->set('access', 1);
                     $page->save();

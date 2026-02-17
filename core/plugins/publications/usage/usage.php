@@ -1,4 +1,7 @@
 <?php
+namespace Plugins\Publications\Usage;
+
+use Hubzero\Plugin\Plugin;
 
 
 /**
@@ -12,7 +15,7 @@ require_once __DIR__ . '/helpers/publicationUsageHelper.php';
 /**
  * Publications Plugin class for usage
  */
-class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
+class Usage extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -106,7 +109,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
         $stats = new \Components\Publications\Tables\Stats($database);
         $stats->loadStats($publication->id, $period, $dthis);
 
-        $usageHelper = new PublicationUsageHelper(['publication' => $publication]);
+        $usageHelper = new Helpers\PublicationUsageHelper(['publication' => $publication]);
         $views = $usageHelper->totalViews();
         $downloads = $usageHelper->totalDownloads();
 

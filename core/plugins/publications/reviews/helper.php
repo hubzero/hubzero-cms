@@ -1,17 +1,17 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Publications\Reviews;
 
 /**
  * Helper class for reviews
  */
-class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
+class Helper extends \Hubzero\Base\Obj
 {
     /**
      * Execute an action
@@ -213,7 +213,7 @@ class PlgPublicationsReviewsHelper extends \Hubzero\Base\Obj
                 )
             );
             $view->option = $this->_option;
-            $view->item   = new PublicationsModelReview($response[0]);
+            $view->item   = new Models\Review($response[0]);
             $view->rid    = $publication->get('id');
 
             $view->display();

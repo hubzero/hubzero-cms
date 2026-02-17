@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Support plugin class for CAPTCHA
  */
-class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Captcha;
+
+use Hubzero\Plugin\Plugin;
+
+class Captcha extends Plugin
 {
     /**
      * If the user is a verified, logged-in user

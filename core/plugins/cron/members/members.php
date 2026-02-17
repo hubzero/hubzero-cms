@@ -9,7 +9,11 @@
 /**
  * Cron plugin for members
  */
-class plgCronMembers extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Members;
+
+use Hubzero\Plugin\Plugin;
+
+class Members extends Plugin
 {
     /**
      * Return a list of events
@@ -20,7 +24,7 @@ class plgCronMembers extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = 'members';
         $obj->events = array(
             array(
@@ -110,7 +114,7 @@ class plgCronMembers extends \Hubzero\Plugin\Plugin
             $reviews = $RE->getReviews();
 
             // do we have ratings on reviews enabled?
-            $param = Plugin::byType('resources', 'reviews');
+            $param = \Plugin::byType('resources', 'reviews');
             $plparam = new \Hubzero\Config\Registry($param->params);
             $voting = $plparam->get('voting');
 

@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Courses Plugin class for pages
  */
-class plgCoursesPages extends \Hubzero\Plugin\Plugin
+namespace Plugins\Courses\Pages;
+
+use Hubzero\Plugin\Plugin;
+
+class Pages extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -520,7 +521,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
         $sizeLimit = $sizeLimit * 1024 * 1024;
 
         if ($file['size'] > $sizeLimit) {
-            $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', Hubzero\Utility\Number::formatBytes($sizeLimit)));
+            $this->setError(Lang::txt('PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE', \Hubzero\Utility\Number::formatBytes($sizeLimit)));
             return $this->_files();
         }
 

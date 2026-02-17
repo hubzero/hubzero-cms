@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Allow saving of hipaa compliance checkbox
  */
-class plgResourcesHipaacompliant extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Hipaacompliant;
+
+use Hubzero\Plugin\Plugin;
+
+class Hipaacompliant extends Plugin
 {
     /**
      * Event call before a resource is submitted

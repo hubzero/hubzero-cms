@@ -6,17 +6,18 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 // include role lib
+namespace Plugins\Groups\Members;
+
+use Hubzero\Plugin\Plugin;
+
 require_once Component::path('com_groups') . DS . 'models' . DS . 'role.php';
 use Components\Groups\Tables\Reason;
 
 /**
  * Groups Plugin class for group members
  */
-class plgGroupsMembers extends \Hubzero\Plugin\Plugin
+class Members extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -150,7 +151,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
             $this->css('members.css')
                  ->js('members.js');
 
-            $gparams = new Hubzero\Config\Registry($group->get('params'));
+            $gparams = new \Hubzero\Config\Registry($group->get('params'));
             $this->membership_control = $gparams->get('membership_control', 1);
 
             if ($group->published != 1) {
@@ -220,7 +221,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
                 try {
                     // Get messages plugin access level
                     $view->messages_acl = \Hubzero\User\Group\Helper::getPluginAccess($group, 'messages');
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     // Plugin is not enabled.
                     $view->messages_acl = 'nobody';
                 }
@@ -467,7 +468,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
                 }
 
                 // Remove record of reason wanting to join group
-                $reason = new Components\Groups\Tables\Reason($database);
+                $reason = new \Components\Groups\Tables\Reason($database);
                 $reason->deleteReason($targetuser->get('id'), $this->group->get('gidNumber'));
 
                 // Are they approved for membership?
@@ -968,7 +969,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
                     $users_man[] = $uid;
                 }
 
-                Components\Groups\Models\Member\Role::destroyByUserAndGroup($uid, $this->group->get('gidNumber'));
+                \Components\Groups\Models\Member\Role::destroyByUserAndGroup($uid, $this->group->get('gidNumber'));
 
                 // Log activity
                 $recipients = array(
@@ -1328,7 +1329,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
     {
         if (!$role) {
             // load role object
-            $role = Components\Groups\Models\Role::oneOrNew(Request::getInt('role', 0));
+            $role = \Components\Groups\Models\Role::oneOrNew(Request::getInt('role', 0));
         }
 
         // pass vars to view
@@ -1361,7 +1362,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
         $fields['permissions'] = json_encode($fields['permissions']);
 
         // load role object
-        $role = Components\Groups\Models\Role::blank()->set($fields);
+        $role = \Components\Groups\Models\Role::blank()->set($fields);
 
         // attempt to save new role
         if (!$role->save()) {
@@ -1419,7 +1420,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
             return false;
         }
 
-        $role = Components\Groups\Models\Role::oneOrFail($role);
+        $role = \Components\Groups\Models\Role::oneOrFail($role);
 
         if (!$role->destroy()) {
             $this->setError('An error occurred while trying to remove the member role. Please try again.');
@@ -1658,7 +1659,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
         );
 
         // create message object
-        $message = new Hubzero\Mail\Message();
+        $message = new \Hubzero\Mail\Message();
 
         // set message details and send
         $message->setSubject($subject)
@@ -1706,7 +1707,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
         //send the message
         if ($email) {
             // create message object
-            $message = new Hubzero\Mail\Message();
+            $message = new \Hubzero\Mail\Message();
 
             // set message details and send
             $message->setSubject($subject)
@@ -1734,7 +1735,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
         include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
         $id = Request::getInt('member', 0);
-        $profile = Components\Members\Models\Member::oneOrFail($id);
+        $profile = \Components\Members\Models\Member::oneOrFail($id);
 
         if (!$profile->get('id')) {
             App::abort(404, Lang::txt('PLG_GROUPS_MEMBERS_PROFILE_NOT_FOUND'));
@@ -1742,21 +1743,21 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 
         include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
-        $fields = Components\Members\Models\Profile\Field::all()
+        $fields = \Components\Members\Models\Profile\Field::all()
             ->including(['options', function ($option) {
                 $option
                     ->select('*')
                     ->ordered();
             }])
-            ->where('action_edit', '!=', Components\Members\Models\Profile\Field::STATE_HIDDEN)
+            ->where('action_edit', '!=', \Components\Members\Models\Profile\Field::STATE_HIDDEN)
             ->ordered()
             ->rows();
 
         // Set the page title
         Document::setTitle(Lang::txt(strtoupper($this->name)) . ': ' . $this->group->get('description') . ': ' . Lang::txt(strtoupper($profile->get('name'))));
 
-        $params = Plugin::params('members', 'profile');
-        $params->merge(new Hubzero\Config\Registry($profile->get('params')));
+        $params = \Plugin::params('members', 'profile');
+        $params->merge(new \Hubzero\Config\Registry($profile->get('params')));
 
         // Display form asking for a reason to deny membership
         $view = $this->view('default', 'profile')
