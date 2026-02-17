@@ -10,27 +10,22 @@ namespace Plugins\User\Domainrestriction;
 
 use Hubzero\Plugin\Plugin;
 
-// No direct access
-
 /**
  * User plugin for blocking registration by domains or IPs
  */
-// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 class Domainrestriction extends Plugin
 {
-// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
-    private $_tlds;
-    private $_domains;
-    private $_emails;
-    private $_badtlds;
-    private $_baddomains;
-    private $_bademails;
-    private $_email;
-    private $_domain;
-    private $_tld;
-    private $_allowed;
-    private $_gmp;
-    // phpcs:enable
+    private $_tlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_domains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_emails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_badtlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_baddomains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_bademails; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_email; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_domain; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_tld; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_allowed; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+    private $_gmp; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Constructor
