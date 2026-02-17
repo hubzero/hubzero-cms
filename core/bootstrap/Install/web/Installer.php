@@ -752,9 +752,9 @@ class Installer
 
         // Other test-suite driver names exist, but this web installer flow is MySQL-specific.
         if (in_array($requested, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
-            throw new PDOException(
-                "Installer currently supports MySQL-family drivers only (mysql/mariadb/percona). Requested: {$requested}"
-            );
+            $msg = 'Installer currently supports MySQL-family drivers only'
+                . " (mysql/mariadb/percona). Requested: {$requested}";
+            throw new PDOException($msg);
         }
 
         throw new PDOException("Unsupported database driver: {$requested}");
@@ -1013,7 +1013,9 @@ class Installer
 
             // Create database
             $dbName = preg_replace('/[^a-zA-Z0-9_]/', '', $newDb);
-            $connection->exec("CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            $connection->exec(
+                "CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+            );
 
             // Create user and grant privileges
             $userName = preg_replace('/[^a-zA-Z0-9_]/', '', $newUser);
