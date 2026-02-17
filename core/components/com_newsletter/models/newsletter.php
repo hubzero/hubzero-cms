@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,10 +11,6 @@ namespace Components\Newsletter\Models;
 use Hubzero\Database\Relational;
 use Date;
 use User;
-
-require_once __DIR__ . DS . 'template.php';
-require_once __DIR__ . DS . 'primary.php';
-require_once __DIR__ . DS . 'secondary.php';
 
 /**
  * Newsletter model

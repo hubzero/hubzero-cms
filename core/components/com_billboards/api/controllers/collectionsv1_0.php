@@ -6,16 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Billboards\Api\Controllers;
 
 use Components\Billboards\Models\Collection;
 use Components\Billboards\Models\Billboard;
 use Hubzero\Component\ApiController;
 use Request;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'collection.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'billboard.php';
 
 /**
  * Billboards collections API controller

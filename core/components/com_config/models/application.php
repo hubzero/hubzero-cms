@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Config\Models;
 
 use Components\Config\Models\Extension;
@@ -22,8 +20,6 @@ use Cache;
 use Lang;
 use User;
 use App;
-
-include_once __DIR__ . '/extension.php';
 
 /**
  * Model class for Application config

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,8 +7,6 @@
  */
 
 namespace Components\Redirect\Migrations;
-
-include_once \Component::path('com_config') . DS . 'models' . DS . 'extension.php';
 
 use Hubzero\Content\Migration\Base;
 

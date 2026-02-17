@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Models;
 
 use Hubzero\Database\Relational;
@@ -15,9 +13,6 @@ use Components\Members\Models\Quota\Category;
 use Components\Members\Models\Quota\Log;
 use User;
 use Lang;
-
-include_once __DIR__ . DS . 'quota' . DS . 'category.php';
-include_once __DIR__ . DS . 'member.php';
 
 /**
  * User quota model

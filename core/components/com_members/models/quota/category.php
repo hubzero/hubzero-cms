@@ -6,16 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Models\Quota;
 
 use Hubzero\Database\Relational;
 use User;
 use Lang;
-
-include_once __DIR__ . DS . 'group.php';
-include_once __DIR__ . DS . 'log.php';
 
 /**
  * Quota class model

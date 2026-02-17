@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,10 +11,6 @@ namespace Components\Cart\Lib\Auditors;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Memberships;
 use User;
-
-require_once __DIR__ . DS . 'BaseAuditor.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Memberships.php';
 
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Membership_Auditor extends BaseAuditor

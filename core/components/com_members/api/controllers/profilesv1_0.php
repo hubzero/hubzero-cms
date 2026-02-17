@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Api\Controllers;
 
 use Hubzero\Component\ApiController;
@@ -22,10 +20,6 @@ use Route;
 use Lang;
 use User;
 use App;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters.php';
 
 /**
  * Members API controller class

@@ -6,13 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Models;
 
 use Components\Tags\Models\Cloud;
-
-require_once \Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
 /**
  * Members Tagging class

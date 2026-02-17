@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,9 +18,6 @@ use Lang;
 use Components\Cart\Lib\Cartmessenger\CartMessenger;
 use Components\Cart\Lib\Cartmessenger\LoggingLevel;
 use App;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
-require_once dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php';
 
 /**
  * Cart order controller class

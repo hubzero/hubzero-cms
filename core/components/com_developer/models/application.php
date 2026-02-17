@@ -6,18 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Developer\Models;
 
 use Hubzero\Database\Relational;
 use Hubzero\Utility\Validate;
 use Session;
 use Lang;
-
-include_once __DIR__ . DS . 'accesstoken.php';
-include_once __DIR__ . DS . 'refreshtoken.php';
-include_once __DIR__ . DS . 'authorizationcode.php';
-include_once __DIR__ . DS . 'application' . DS . 'member.php';
 
 /**
  * Develper mdoel for an application

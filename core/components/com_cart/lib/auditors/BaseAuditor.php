@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,8 +7,6 @@
  */
 
 namespace Components\Cart\Lib\Auditors;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
 
 class BaseAuditor
 {

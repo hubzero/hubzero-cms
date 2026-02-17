@@ -6,14 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Models\Import\Handler;
 
 use Hubzero\Base\Obj;
 use User;
-
-include_once dirname(dirname(__DIR__)) . '/tags.php';
 
 /**
  * Member Tags import handler

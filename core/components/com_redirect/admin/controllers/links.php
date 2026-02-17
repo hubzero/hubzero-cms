@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,9 +17,6 @@ use Route;
 use User;
 use Lang;
 use App;
-
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'redirect.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'link.php';
 
 /**
  * Redirect link list controller class.

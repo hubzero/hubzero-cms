@@ -13,11 +13,6 @@ namespace Components\Storefront\Models;
 // No direct access
 defined('_HZEXEC_') or die();
 
-
-require_once __DIR__ . DS . 'Product.php';
-require_once __DIR__ . DS . 'Sku.php';
-require_once __DIR__ . DS . 'Warehouse.php';
-
 /**
  *
  * Storefront single sku product class

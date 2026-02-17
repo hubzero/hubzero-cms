@@ -6,13 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Models\Profile;
 
 use Hubzero\Database\Relational;
-
-include_once __DIR__ . DS . 'option.php';
 
 /**
  * User profile field model

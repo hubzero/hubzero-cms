@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Site\Controllers;
 
 use Hubzero\Component\SiteController;
@@ -24,9 +22,6 @@ use Lang;
 use User;
 use Date;
 use App;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
 
 /**
  * Controller class for member registration

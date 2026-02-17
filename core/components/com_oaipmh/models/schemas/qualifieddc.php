@@ -6,16 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Oaipmh\Models\Schemas;
 
 use Components\Oaipmh\Models\Xml\Response;
 use Components\Oaipmh\Models\Service;
 use Components\Oaipmh\Models\Schema;
 use Date;
-
-require_once __DIR__ . '/dublincore.php';
 
 /**
  * Qualified Dublin Core schema handler

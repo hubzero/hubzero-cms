@@ -6,18 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 use Route;
 use Lang;
 use App;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'incremental' . DS . 'awards.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'incremental' . DS . 'groups.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'incremental' . DS . 'options.php';
 
 /**
  * Controller class for incremental registration

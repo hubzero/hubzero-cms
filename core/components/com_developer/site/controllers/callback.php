@@ -9,7 +9,6 @@
 // phpcs:disable PSR1.Files.SideEffects
 namespace Components\Developer\Site\Controllers;
 
-require_once \Component::path('com_projects') . '/models/orm/connection.php';
 require_once PATH_CORE . '/plugins/filesystem/dropbox/helpers/dropboxOauthClient.php';
 
 use Plugins\Filesystem\Dropbox\DropboxOauthClient;

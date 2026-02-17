@@ -18,8 +18,6 @@ use Components\Cart\Helpers\CartHelper;
 use Components\Cart\Helpers\Audit;
 
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Audit.php';
-require_once PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Core shopping cart

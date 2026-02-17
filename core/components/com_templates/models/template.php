@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Templates\Models;
 
 use Hubzero\Database\Relational;
@@ -14,9 +13,6 @@ use Hubzero\Config\Registry;
 use Hubzero\Base\Obj;
 use Filesystem;
 use Lang;
-
-include_once __DIR__ . DS . 'file.php';
-include_once __DIR__ . DS . 'style.php';
 
 /**
  * Template style model

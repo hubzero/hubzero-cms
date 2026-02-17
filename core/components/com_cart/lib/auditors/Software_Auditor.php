@@ -15,9 +15,6 @@ use Components\Storefront\Models\Sku;
 use Components\Cart\Helpers\CartDownload;
 use User;
 
-require_once __DIR__ . DS . 'BaseAuditor.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php';
 
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps

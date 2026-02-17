@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Oaipmh\Models;
 
 use Components\Oaipmh\Models\Xml\Response;
@@ -17,8 +15,6 @@ use Hubzero\Database\Driver;
 use Exception;
 use Event;
 use Lang;
-
-require_once __DIR__ . DS . 'xml' . DS . 'response.php';
 
 /**
  * OAIPMH Provider for building responses

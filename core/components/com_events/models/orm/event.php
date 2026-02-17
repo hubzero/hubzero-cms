@@ -1,4 +1,4 @@
-<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
+<?php
 
 /**
  * @package    hubzero-cms
@@ -11,10 +11,6 @@ namespace Components\Events\Models\Orm;
 use Hubzero\Database\Relational;
 use User;
 use Date;
-
-include_once __DIR__ . '/calendar.php';
-include_once __DIR__ . '/category.php';
-include_once __DIR__ . '/page.php';
 
 /**
  * Hubs database model

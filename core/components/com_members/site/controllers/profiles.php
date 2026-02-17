@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Site\Controllers;
 
 use Hubzero\Session\Helper as SessionHelper;
@@ -29,10 +27,6 @@ use Lang;
 use User;
 use Date;
 use App;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'registration.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'filters.php';
 
 /**
  * Members controller class for profiles

@@ -17,7 +17,6 @@ use Date;
 use User;
 
 require_once __DIR__ . '/usersCategory.php';
-require_once __DIR__ . DS . 'post.php';
 
 /**
  * Forum model for a category

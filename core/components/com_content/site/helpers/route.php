@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +12,6 @@ use Components\Categories\Helpers\Node;
 use Component;
 use Lang;
 use App;
-
-require_once __DIR__ . '/category.php';
 
 /**
  * Content Component Route Helper

@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Models\Import\Handler;
 
 use Hubzero\Base\Obj;
@@ -16,8 +14,6 @@ use Components\Projects\Tables;
 use Component;
 use User;
 use Lang;
-
-include_once Component::path('com_projects') . '/models/project.php';
 
 /**
  * Member Projects import handler

@@ -1,4 +1,4 @@
-<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
+<?php
 
 /**
  * @package    hubzero-cms
@@ -9,8 +9,6 @@
 namespace Components\Events\Models\Orm;
 
 use Hubzero\Database\Relational;
-
-include_once __DIR__ . '/race.php';
 
 /**
  * Hubs database model

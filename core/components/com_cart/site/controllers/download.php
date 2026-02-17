@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,9 +14,6 @@ use Components\Storefront\Models\Warehouse;
 use User;
 //use Hubzero\User\Group;
 use Hubzero\Access\Group as Accessgroup;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Product viewing controller class

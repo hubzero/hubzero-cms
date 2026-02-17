@@ -17,9 +17,6 @@ use Request;
 use User;
 use App;
 
-include_once __DIR__ . DS . 'profile' . DS . 'field.php';
-include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utility.php';
-
 /**
  * Description for ''REG_HIDE''
  */

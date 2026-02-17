@@ -22,8 +22,6 @@ use User;
 use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Orders.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Cart.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Controller class for knowledge base categories

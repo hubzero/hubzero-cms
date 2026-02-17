@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,8 +7,6 @@
  */
 
 namespace Components\Storefront\Models\ProductTypes\Subscriptions;
-
-require_once __DIR__ . '/BaseSubscription.php';
 
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Access_Group_Membership_Subscription extends BaseSubscription

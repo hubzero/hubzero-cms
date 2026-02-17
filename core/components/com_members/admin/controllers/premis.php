@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
@@ -17,8 +15,6 @@ use Config;
 use Route;
 use Lang;
 use App;
-
-require_once \Component::path('com_members') . DS . 'helpers' . DS . 'permissions.php';
 
 /**
  * Import PREMIS redistration dump files

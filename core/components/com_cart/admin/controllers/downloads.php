@@ -20,7 +20,6 @@ use Lang;
 use App;
 
 require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Controller class for knowledge base categories

@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Admin\Controllers;
 
 use Components\Members\Models\Member;
@@ -21,9 +19,6 @@ use User;
 use Date;
 use Lang;
 use App;
-
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'permissions.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
 
 /**
  * Member exporter

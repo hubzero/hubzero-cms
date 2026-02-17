@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
@@ -19,8 +17,6 @@ use Notify;
 use Event;
 use Route;
 use App;
-
-include_once dirname(__DIR__) . '/helpers/cli.php';
 
 /**
  * Packages Controller

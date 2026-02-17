@@ -13,9 +13,6 @@ namespace Components\Storefront\Models;
 // No direct access
 defined('_HZEXEC_') or die();
 
-
-require_once __DIR__ . DS . 'Sku.php';
-
 class CourseOffering extends Sku
 {
     public function __construct()

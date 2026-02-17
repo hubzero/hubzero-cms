@@ -1,4 +1,4 @@
-<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
+<?php
 
 /**
  * @package    hubzero-cms
@@ -18,8 +18,6 @@ use Notify;
 use Route;
 use Lang;
 use App;
-
-require_once dirname(dirname(__DIR__)) . '/models/orm/event.php';
 
 /**
  * Events controller class for respondents

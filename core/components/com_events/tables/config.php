@@ -1,4 +1,4 @@
-<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
+<?php
 
 /**
  * @package    hubzero-cms
@@ -10,8 +10,6 @@ namespace Components\Events\Tables;
 
 use Hubzero\Database\Table;
 use Lang;
-
-include_once __DIR__ . DS . 'configs.php';
 
 /**
  * Events table class for configuration

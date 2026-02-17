@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
@@ -18,8 +16,6 @@ use Lang;
 use Html;
 use User;
 use App;
-
-include_once dirname(__DIR__) . DS . 'models' . DS . 'extension.php';
 
 /**
  * Controller for managing extensions

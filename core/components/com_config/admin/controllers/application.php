@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Config\Admin\Controllers;
 
 use Components\Config\Models;
@@ -19,8 +17,6 @@ use Notify;
 use Route;
 use User;
 use App;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'application.php';
 
 /**
  * Controller class for the Application config

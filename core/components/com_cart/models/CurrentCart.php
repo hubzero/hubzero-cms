@@ -16,7 +16,6 @@ use Hubzero\Base\Model;
 use User;
 use Components\Storefront\Models\Product;
 
-require_once 'Cart.php';
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';
 
 /**

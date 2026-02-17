@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,9 +13,6 @@ use Hubzero\Database\Value\Raw;
 use Hubzero\Form\Form;
 use Lang;
 use Date;
-
-require_once __DIR__ . DS . 'attachment.php';
-require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Forum model for a post
