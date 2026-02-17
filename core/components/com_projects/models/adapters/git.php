@@ -611,9 +611,6 @@ class Git extends Models\Adapter
         $rev1['text'] = $this->_git->gitLog($rev1['fpath'], $rev1['hash'], 'blob');
         $rev2['text'] = $this->_git->gitLog($rev2['fpath'], $rev2['hash'], 'blob');
 
-        // Diff class
-        include_once PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files' . DS . 'helpers' . DS . 'Diff.php';
-
         $context = ($rev1['text'] == $rev2['text'] || $full) ? count($rev1['text']) : 10;
         $options = array('context' => $context);
 
@@ -621,22 +618,20 @@ class Git extends Models\Adapter
         $objDiff = new \Diff($rev1['text'], $rev2['text'], $options);
 
         if ($mode == 'side-by-side') {
-            $sideBySidePath = PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
-                . DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html'
+            include_once PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
+                . DS . 'helpers' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html'
                 . DS . 'hubSideBySide.php';
-            include_once $sideBySidePath;
 
             // Generate a side by side diff
-            $renderer = new \Diff_Renderer_Html_SideBySide();
+            $renderer = new \Plugins\Projects\Files\Helpers\HubSideBySide();
             $diff = $objDiff->Render($renderer);
         } elseif ($mode == 'inline') {
-            $inlinePath = PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
-                . DS . 'php-diff' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html'
+            include_once PATH_CORE . DS . 'plugins' . DS . 'projects' . DS . 'files'
+                . DS . 'helpers' . DS . 'Diff' . DS . 'Renderer' . DS . 'Html'
                 . DS . 'hubInline.php';
-            include_once $inlinePath;
 
             // Generate inline diff
-            $renderer = new \Diff_Renderer_Html_Inline();
+            $renderer = new \Plugins\Projects\Files\Helpers\HubInline();
             $diff = $objDiff->Render($renderer);
         } else {
             // Print git diff
