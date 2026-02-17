@@ -211,8 +211,14 @@ class Loader
 
         // Make sure the component is enabled
         if ($this->isEnabled($option)) {
-            // Check to see if the class is autoload-able
-            if (class_exists($namespace)) {
+            // Include the CamelCase bootstrap file if it exists (Components\ is not in composer PSR-4)
+            $bootstrapPath = PATH_COMPONENT . DIRECTORY_SEPARATOR . $compName . '.php';
+            if (!class_exists($namespace, false) && is_file($bootstrapPath)) {
+                require_once $bootstrapPath;
+            }
+
+            // Check if the bootstrap class is available (no autoload to avoid executing procedural entry files)
+            if (class_exists($namespace, false)) {
                 $found = true;
                 $path  = $namespace;
                 $type  = 'bootstrap';
@@ -233,7 +239,7 @@ class Loader
             } elseif (is_dir($react_path)) {
                 $found = true;
                 $path = $react_path;
-                $ype = 'react';
+                $type = 'react';
 
                 // Load local language files
                 $lang->load($option, PATH_COMPONENT, null, false, true);
@@ -360,7 +366,15 @@ class Loader
      */
     protected function executeBootstrap($namespace)
     {
-        with(new $namespace())->start();
+        if (is_subclass_of($namespace, AbstractComponent::class)) {
+            $option = $this->app->get('scope');
+            $params = $this->params($option);
+            $component = new $namespace($params);
+        } else {
+            $component = new $namespace();
+        }
+
+        $component->start();
     }
 
     /**
