@@ -3,7 +3,8 @@
 namespace Plugins\Authfactors\Google;
 
 use Hubzero\Plugin\Plugin;
-
+use Hubzero\Auth\Factor;
+use Hubzero\Utility\Validate;
 
 /**
  * @package    hubzero-cms
@@ -11,8 +12,6 @@ use Hubzero\Plugin\Plugin;
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Auth\Factor;
-use Hubzero\Utility\Validate;
 
 require_once \Plugin::path('authfactors', 'google') . DS . 'helpers' . DS . 'GoogleAuthenticator.php';
 

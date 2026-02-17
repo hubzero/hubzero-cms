@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
+
 Request::setVar('hidemainmenu', 1);
 Toolbar::title(Lang::txt('COM_LOGIN_FACTORS_VERIFICATION'));
 

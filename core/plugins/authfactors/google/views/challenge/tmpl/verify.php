@@ -1,6 +1,8 @@
 <?php
 
 
+defined('_HZEXEC_') or die();
+
 $this->css('enroll');
 ?>
 

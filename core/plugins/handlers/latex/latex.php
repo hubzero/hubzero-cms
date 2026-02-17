@@ -3,17 +3,14 @@
 namespace Plugins\Handlers\Latex;
 
 use Hubzero\Plugin\Plugin;
+use Hubzero\Filesystem\Manager;
+use Hubzero\Filesystem\File;
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-use Hubzero\Filesystem\Manager;
-use Hubzero\Filesystem\File;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Plugin class for latex file handling

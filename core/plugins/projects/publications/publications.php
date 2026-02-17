@@ -387,7 +387,6 @@ class Publications extends Plugin
             )
         );
 
-
         // Instantiate a publication object
         $view->pub = new \Components\Publications\Models\Publication();
 

@@ -1,5 +1,7 @@
 <?php
 
+defined('_HZEXEC_') or die();
+
     $this->js('customfields');
     $xml = Components\Groups\Models\Orm\Field::toXml($this->customFields);
     $formInfo = array('control' => 'customfields');

@@ -10,8 +10,6 @@ namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
 
-defined('_HZEXEC_') or die('Restricted access');
-
 /**
  * Wiki macro class for dipslaying a twitter feed
  */

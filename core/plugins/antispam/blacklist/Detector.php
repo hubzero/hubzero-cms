@@ -13,8 +13,6 @@ use Hubzero\Spam\Detector\DetectorInterface;
 use Hubzero\Database\Relational;
 use Exception;
 
-include_once __DIR__ . DS . 'models' . DS . 'word.php';
-
 /**
  * Spam detector for black listed words
  */

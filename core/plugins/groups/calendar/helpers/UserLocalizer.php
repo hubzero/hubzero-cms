@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,9 +7,6 @@
  */
 
 namespace Plugins\Groups\Calendar\Helpers;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 use Hubzero\Utility\Arr;
 

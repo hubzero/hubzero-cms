@@ -10,8 +10,6 @@ namespace Plugins\Antispam\Bayesian;
 
 use Hubzero\Plugin\Plugin;
 
-
-
 /**
  * Antispam plugin for a basic Bayesian filter
  */

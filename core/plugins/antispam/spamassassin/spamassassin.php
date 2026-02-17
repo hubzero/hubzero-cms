@@ -10,8 +10,6 @@ namespace Plugins\Antispam\Spamassassin;
 
 use Hubzero\Plugin\Plugin;
 
-
-
 /**
  * Spam Assassin antispam Plugin
  */
