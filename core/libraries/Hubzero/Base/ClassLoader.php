@@ -217,11 +217,29 @@ class ClassLoader
                 break;
         }
 
-        // Build all file path variants (CamelCase + lowercase)
+        // Build all file path variants (CamelCase + lowercase + lowercase-dirs)
         $fileVariants = [];
         foreach ($relativePaths as $relativePath) {
             $fileVariants[] = $relativePath;
             $fileVariants[] = strtolower($relativePath);
+            // Lowercase directory parts but preserve filename case
+            $lastSlash = strrpos($relativePath, '/');
+            if ($lastSlash !== false) {
+                $fileVariants[] = strtolower(substr($relativePath, 0, $lastSlash))
+                    . substr($relativePath, $lastSlash);
+            }
+            // Lowercase only the leading client segment, keep the rest as-is:
+            // Components\Dataviewer\Site\Modes\ModeDb lives in
+            // com_dataviewer/site/Modes/ModeDb.php - a lowercase client
+            // directory holding capitalised ones.
+            $parts = explode('/', $relativePath);
+            foreach ([2, 3] as $depth) {
+                if (count($parts) > $depth) {
+                    $lowered = $parts;
+                    $lowered[$depth - 1] = strtolower($lowered[$depth - 1]);
+                    $fileVariants[] = implode('/', $lowered);
+                }
+            }
         }
 
         // Framework classes (psr4) are searched across every directory: an app
