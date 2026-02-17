@@ -126,16 +126,14 @@ class Database extends Store
                 // Try to update the session data in the database table.
                 $this->connection->setQuery($query->toString());
 
-                if ($this->connection->execute()) {
-                    if ($this->profiler) {
-                        $this->profiler->mark('sessionStore');
-                    }
-                    return true;
-                }
+                // execute() returns affected row count for UPDATE queries.
+                // Use !== false since 0 affected rows (identical data) is still success.
+                $this->connection->execute();
 
-                // Since $db->execute did not throw an exception, so the query was successful.
-                // Either the data changed, or the data was identical.
-                // In either case we are done.
+                if ($this->profiler) {
+                    $this->profiler->mark('sessionStore');
+                }
+                return true;
             } catch (Exception $e) {
             }
         }
