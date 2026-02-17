@@ -20,8 +20,6 @@ use Route;
 use Event;
 use Lang;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'cloud.php';
-
 /**
  * API controller class for tags
  */

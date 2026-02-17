@@ -15,13 +15,6 @@ use Hubzero\Plugin\Plugin;
 // No direct access
 defined('_HZEXEC_') or die();
 
-/**
- * Handles asynchrous enqueuement, helps maintain the index
- */
-require_once Component::path('com_search') . DS . 'helpers' . DS . 'discoveryhelper.php';
-require_once Component::path('com_search') . DS . 'helpers' . DS . 'solr.php';
-require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
-
 use Components\Search\Helpers\DiscoveryHelper;
 use Components\Search\Models\Solr\SearchComponent;
 use Components\Search\Models\Solr\Blacklist;

@@ -17,9 +17,6 @@ defined('_HZEXEC_') or die();
 
 use Components\Resources\Models\Entry;
 
-require_once \Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-include_once __DIR__ . '/children.php';
-
 /**
  * Search plugin for resources
  */

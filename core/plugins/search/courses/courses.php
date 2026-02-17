@@ -17,8 +17,6 @@ defined('_HZEXEC_') or die();
 
 use Components\Courses\Models\Orm\Course;
 
-require_once Component::path('com_courses') . DS . 'models' . DS . 'orm' . DS . 'course.php';
-
 /**
  * Search course entries
  */

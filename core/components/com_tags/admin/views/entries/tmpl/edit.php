@@ -11,10 +11,6 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$componentPath = Component::path('com_tags');
-
-require_once "$componentPath/helpers/activityLogPresenter.php";
-
 $canDo = Components\Tags\Helpers\Permissions::getActions();
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 

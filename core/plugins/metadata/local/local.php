@@ -9,9 +9,6 @@ namespace Plugins\Metadata\Local;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-require_once __DIR__ . DS . 'models' . DS . 'metadata.php';
-
 /**
  * Plugin class for fez metadata handling
  */

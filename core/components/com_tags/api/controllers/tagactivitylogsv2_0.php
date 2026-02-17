@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,11 +7,6 @@
  */
 
 namespace Components\Tags\Api\Controllers;
-
-$componentPath = Component::path('com_tags');
-
-require_once "$componentPath/helpers/activityLogPresenter.php";
-require_once "$componentPath/models/log.php";
 
 use Components\Tags\Helpers\ActivityLogPresenter;
 use Components\Tags\Models\Log;

@@ -17,9 +17,6 @@ defined('_HZEXEC_') or die();
 
 use Components\Members\Models\Member;
 
-require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
-require_once __DIR__ . DS . 'contributionsorter.php';
-
 /**
  * Search members
  */

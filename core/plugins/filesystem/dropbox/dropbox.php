@@ -4,15 +4,11 @@ namespace Plugins\Filesystem\Dropbox;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-require_once PATH_CORE . '/plugins/filesystem/dropbox/helpers/dropboxOauthClient.php';
-require_once Component::path('projects') . '/models/orm/connection.php';
 
 use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Srmklive\Dropbox\Adapter\DropboxAdapter;

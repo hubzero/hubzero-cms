@@ -10,11 +10,7 @@
 
 namespace Components\Newsletter\Helpers;
 
-$componentPath = Component::path('com_newsletter');
-
-require_once  "$componentPath/models/campaign.php";
-require_once  "$componentPath/models/page.php";
-require_once  "$componentPath/secrets/page_code.php";
+require_once Component::path('com_newsletter') . '/secrets/page_code.php';
 
 use Components\Newsletter\Models\Campaign;
 use Components\Newsletter\Models\Page;

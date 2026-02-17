@@ -18,8 +18,6 @@ defined('_HZEXEC_') or die();
 use Components\Projects\Models\Orm\Project;
 use Hubzero\User\Group;
 
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'project.php';
-
 /**
  * Search groups
  */

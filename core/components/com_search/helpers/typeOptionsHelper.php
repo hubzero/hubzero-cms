@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,10 +7,6 @@
  */
 
 namespace Components\Search\Helpers;
-
-$resourceComponentPath = Component::path('com_resources');
-
-require_once "$resourceComponentPath/models/type.php";
 
 use Components\Resources\Models\Type;
 use Hubzero\Utility\Arr;

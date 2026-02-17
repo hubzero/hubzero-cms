@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,12 +7,6 @@
  */
 
 namespace Components\Search\Helpers;
-
-$componentPath = Component::path('com_search');
-
-require_once "$componentPath/helpers/mockProxy.php";
-require_once "$componentPath/helpers/solariumBoostQueries.php";
-require_once "$componentPath/models/solr/boost.php";
 
 use Components\Search\Helpers\MockProxy;
 use Hubzero\Utility\Arr;

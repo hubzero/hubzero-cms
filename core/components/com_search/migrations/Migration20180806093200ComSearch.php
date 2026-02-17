@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,6 @@ namespace Components\Search\Migrations;
 use Hubzero\Content\Migration\Base;
 use Components\Search\Models\Solr\SearchComponent;
 
-require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 /**
  * Migration script for adding title column to SearchComponents
  **/

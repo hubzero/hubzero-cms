@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    framework
  * @copyright  Copyright 2005-2019 HUBzero Foundation, LLC.
@@ -12,8 +10,6 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
-
-require_once Component::path('com_resources') . '/models/entry.php';
 use Components\Resources\Models\Entry;
 
 /**

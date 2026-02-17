@@ -17,10 +17,6 @@ defined('_HZEXEC_') or die();
 
 use Components\Publications\Models\Orm\Publication;
 
-require_once Component::path('com_publications') . DS . 'models' . DS . 'orm' . DS . 'publication.php';
-require_once __DIR__ . DS . 'childsorter.php';
-
-
 /**
  * Search plugin class for publications
  */

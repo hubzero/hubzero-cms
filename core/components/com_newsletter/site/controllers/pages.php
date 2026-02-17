@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package   hubzero-cms
  * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,10 +7,6 @@
  */
 
 namespace Components\Newsletter\Site\Controllers;
-
-$componentPath = Component::path('com_newsletter');
-
-require_once  "$componentPath/helpers/codeHelper.php";
 
 use Hubzero\Component\SiteController;
 use Components\Newsletter\Helpers\CodeHelper;
