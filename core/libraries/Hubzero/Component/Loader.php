@@ -192,14 +192,21 @@ class Loader
         define('JPATH_COMPONENT_ADMINISTRATOR', PATH_COMPONENT_ADMINISTRATOR);
 
         $path      = PATH_COMPONENT . DIRECTORY_SEPARATOR . $file . '.php';
-        $namespace = '\\Components\\' . ucfirst(substr($option, 4)) . '\\' . ucfirst($client) . '\\Bootstrap';
+        $compName  = ucfirst(substr($option, 4));
+        $namespace = '\\Components\\' . $compName . '\\' . ucfirst($client) . '\\' . $compName;
         $found     = false;
         $react_path = PATH_COMPONENT . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'react' . DIRECTORY_SEPARATOR . $file;
 
         // Make sure the component is enabled
         if ($this->isEnabled($option)) {
-            // Check to see if the class is autoload-able
-            if (class_exists($namespace)) {
+            // Include the CamelCase bootstrap file if it exists (Components\ is not in composer PSR-4)
+            $bootstrapPath = PATH_COMPONENT . DIRECTORY_SEPARATOR . $compName . '.php';
+            if (!class_exists($namespace, false) && is_file($bootstrapPath)) {
+                require_once $bootstrapPath;
+            }
+
+            // Check if the bootstrap class is available (no autoload to avoid executing procedural entry files)
+            if (class_exists($namespace, false)) {
                 $found = true;
                 $path  = $namespace;
                 $type  = 'bootstrap';
@@ -332,14 +339,24 @@ class Loader
     }
 
     /**
-     * Execute the component from a new bootstrapped component
+     * Execute the component from a bootstrapped component class.
      *
-     * @param   string  $namespace  The namespace of the component to start
+     * The class must extend AbstractComponent and implement execute().
+     *
+     * @param   string  $namespace  The fully-qualified class name
      * @return  void
      */
     protected function executeBootstrap($namespace)
     {
-        with(new $namespace())->start();
+        if (is_subclass_of($namespace, AbstractComponent::class)) {
+            $option = $this->app->get('scope');
+            $params = $this->params($option);
+            $component = new $namespace($params);
+        } else {
+            $component = new $namespace();
+        }
+
+        $component->start();
     }
 
     /**
