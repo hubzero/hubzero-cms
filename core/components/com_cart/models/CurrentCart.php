@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,12 +9,10 @@
 namespace Components\Cart\Models;
 
 use Components\Cart\Models\Cart;
-use Components\Cart\Helpers\CartHelper;
+use Components\Cart\Helpers\Helper;
 use Hubzero\Base\Model;
 use User;
 use Components\Storefront\Models\Product;
-
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Helper.php';
 
 /**
  * Current user shopping cart
@@ -499,7 +495,7 @@ class CurrentCart extends Cart
         }
 
         // Check values
-        if (empty($errors) && !CartHelper::validZip(Request::getString('shippingZip', false, 'post'))) {
+        if (empty($errors) && !Helper::validZip(Request::getString('shippingZip', false, 'post'))) {
             $errors[] = Lang::txt('COM_CART_INCORRECT_ZIP');
         }
 
@@ -756,7 +752,7 @@ class CurrentCart extends Cart
     public function setSavedShippingAddress($saId)
     {
         // check if the address correct
-        if (!CartHelper::isNonNegativeInt($saId)) {
+        if (!Helper::isNonNegativeInt($saId)) {
             throw new \Exception(Lang::txt('COM_CART_INCORRECT_SAVED_SHIPPING_ADDRESS'));
         }
 

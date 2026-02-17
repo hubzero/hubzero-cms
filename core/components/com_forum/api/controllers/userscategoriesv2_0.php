@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +12,6 @@ use Hubzero\Component\ApiController;
 use Components\Forum\Models\UsersCategory;
 use Request;
 use User;
-
-require_once dirname(dirname(__DIR__)) . '/models/usersCategory.php';
 
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class UsersCategoriesv2_0 extends ApiController

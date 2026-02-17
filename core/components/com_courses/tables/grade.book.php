@@ -248,7 +248,6 @@ class GradeBook extends Table
                     continue;
                 }
 
-                include_once dirname(__DIR__) . DS . 'models' . DS . 'formDeployment.php';
                 $sectionId = $course->offering()->section()->get('id');
                 $dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb($crumb, $sectionId);
 

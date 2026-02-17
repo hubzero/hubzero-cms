@@ -461,9 +461,6 @@ class Asset extends Base
 
         // If this is a form...
         if ($forms && $this->get('type') == 'form') {
-            require_once __DIR__ . DS . 'form.php';
-            require_once __DIR__ . DS . 'formDeployment.php';
-            require_once __DIR__ . DS . 'formRespondent.php';
 
             // Copy the form as well...look up by asset_id
             if ($form = PdfForm::loadByAssetId($originalId)) {

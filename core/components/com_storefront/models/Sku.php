@@ -8,11 +8,6 @@
 
 namespace Components\Storefront\Models;
 
-// phpcs:disable PSR1.Files.SideEffects
-
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  *
  * Storefront SKU class
@@ -281,7 +276,6 @@ class Sku
         }
 
         // Integrity check
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php';
         $integrityCheck = \Components\Storefront\Helpers\Integrity::skuIntegrityCheck($this);
 
         if ($integrityCheck->status != 'ok') {
@@ -746,10 +740,8 @@ class Sku
     {
         // Initialize the correct SKU based on the product type
         if ($productType && $productType == 'Software Download') {
-            require_once __DIR__ . DS . 'SoftwareSku.php';
             $sku = new SoftwareSku($sId);
         } elseif ($productType && $productType == 'Course') {
-            require_once __DIR__ . DS . 'CourseOffering.php';
             $sku = new CourseOffering();
         } else {
             $sku = new Sku($sId);

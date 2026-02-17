@@ -13,7 +13,7 @@ use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Product;
 use Hubzero\Html\Builder\Access;
-use Components\Cart\Helpers\CartDownload;
+use Components\Cart\Helpers\Download;
 use Request;
 use Route;
 use Lang;
@@ -190,7 +190,7 @@ class Products extends AdminController
             $this->view->metaNeeded = true;
 
             // Get number of downloads
-            $downloaded = CartDownload::countProductDownloads($id);
+            $downloaded = Download::countProductDownloads($id);
             $this->view->downloaded = $downloaded;
         }
 

@@ -14,9 +14,6 @@ use Hubzero\Config\Registry;
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'grade.book.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php';
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'progress.factors.php';
-require_once __DIR__ . DS . 'memberBadge.php';
-require_once __DIR__ . DS . 'formRespondent.php';
-require_once __DIR__ . DS . 'formDeployment.php';
 
 /**
  * Courses model class for grade book

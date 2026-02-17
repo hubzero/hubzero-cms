@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,15 +9,13 @@
 namespace Components\Cart\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Cart\Helpers\CartDownload;
+use Components\Cart\Helpers\Download;
 use Components\Storefront\Models\Warehouse;
 use Request;
 use Config;
 use Route;
 use Lang;
 use App;
-
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php';
 
 /**
  * Controller class for knowledge base categories
@@ -134,10 +130,10 @@ class Downloads extends AdminController
         }
 
         // Get record count
-        $this->view->total = CartDownload::getDownloads('count', $this->view->filters);
+        $this->view->total = Download::getDownloads('count', $this->view->filters);
 
         // Get records
-        $this->view->rows = CartDownload::getDownloads('list', $this->view->filters);
+        $this->view->rows = Download::getDownloads('list', $this->view->filters);
 
         // Output the HTML
         $this->view->display();
@@ -194,10 +190,10 @@ class Downloads extends AdminController
         );
 
         // Get record count
-        $this->view->total = CartDownload::getDownloadsSku('count', $this->view->filters);
+        $this->view->total = Download::getDownloadsSku('count', $this->view->filters);
 
         // Get records
-        $this->view->rows = CartDownload::getDownloadsSku('list', $this->view->filters);
+        $this->view->rows = Download::getDownloadsSku('list', $this->view->filters);
 
         // Output the HTML
         //print_r($this->view); die;
@@ -247,7 +243,7 @@ class Downloads extends AdminController
 
         // Save downloads
         try {
-            CartDownload::setStatus($ids, $state);
+            Download::setStatus($ids, $state);
         } catch (\Exception $e) {
             \Notify::error($e->getMessage());
             return;
@@ -340,14 +336,14 @@ class Downloads extends AdminController
         flush();
 
         //get a count of records
-        $rowsCount = CartDownload::getDownloads('count', $filters);
+        $rowsCount = Download::getDownloads('count', $filters);
 
         // in chunks of 5000, grab results and start outputting to filestream
         $filters['limit'] = 5000;
         for ($i = 0; $i < $rowsCount; $i += 5000) {
             // get up to another 5000 records
             $filters['start'] = $i;
-            $rowsRaw = CartDownload::getDownloads('array', $filters);
+            $rowsRaw = Download::getDownloads('array', $filters);
 
             // parse the metadata
             foreach ($rowsRaw as $row) {
@@ -428,7 +424,7 @@ class Downloads extends AdminController
                 date('m/d/Y')
             )
         );
-        $rowsRaw = CartDownload::getDownloadsSku('array', $filters);
+        $rowsRaw = Download::getDownloadsSku('array', $filters);
 
         $rows = array();
 

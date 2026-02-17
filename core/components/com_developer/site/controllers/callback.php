@@ -6,10 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
 namespace Components\Developer\Site\Controllers;
-
-require_once PATH_CORE . '/plugins/filesystem/dropbox/helpers/dropboxOauthClient.php';
 
 use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Hubzero\Component\SiteController;

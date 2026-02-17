@@ -11,8 +11,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once dirname(dirname(dirname(dirname(__DIR__)))) . DS . 'helpers' . DS . 'Helper.php';
-$states = \Components\Cart\Helpers\CartHelper::getUsStates();
+$states = \Components\Cart\Helpers\Helper::getUsStates();
 
 $this->css();
 ?>

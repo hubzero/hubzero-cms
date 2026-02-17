@@ -11,7 +11,7 @@ namespace Components\Cart\Helpers;
 /**
  * Cart download helpers
  */
-class CartDownload
+class Download
 {
     /**
      * Cound product downloads

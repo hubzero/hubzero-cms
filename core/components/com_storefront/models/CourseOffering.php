@@ -8,11 +8,6 @@
 
 namespace Components\Storefront\Models;
 
-// phpcs:disable PSR1.Files.SideEffects
-
-// No direct access
-defined('_HZEXEC_') or die();
-
 class CourseOffering extends Sku
 {
     public function __construct()

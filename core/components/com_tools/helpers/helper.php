@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,15 +8,12 @@
 
 namespace Components\Tools\Helpers;
 
-// No direct access.
-defined('_HZEXEC_') or die();
-
 /**
- * Short description for 'ContribtoolHelper'
+ * Short description for 'Helper'
  *
  * Long description (if any) ...
  */
-class ContribtoolHelper
+class Helper
 {
     /**
      * Turn a string into an array

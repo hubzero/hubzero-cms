@@ -11,7 +11,7 @@ namespace Components\Cart\Helpers;
 /**
  * Cart orders helpers
  */
-class CartOrders
+class Orders
 {
     /**
      * Get a count or list of items ordered

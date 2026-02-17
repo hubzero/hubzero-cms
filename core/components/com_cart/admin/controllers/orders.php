@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,7 @@
 namespace Components\Cart\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
-use Components\Cart\Helpers\CartOrders;
+use Components\Cart\Helpers\Orders as OrdersHelper;
 use Components\Cart\Models\Cart;
 use Components\Storefront\Models\Warehouse;
 use Request;
@@ -20,8 +18,6 @@ use Route;
 use Lang;
 use User;
 use App;
-
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Orders.php';
 
 /**
  * Controller class for knowledge base categories
@@ -159,7 +155,7 @@ class Orders extends AdminController
         $user = User::getInstance($userId);
 
         // Get the log of changes
-        $changesLog = CartOrders::getOrderChangesLog($id);
+        $changesLog = OrdersHelper::getOrderChangesLog($id);
 
         // Build log messages
         if (!empty($changesLog)) {
@@ -340,7 +336,7 @@ class Orders extends AdminController
         //print_r($orderChanges); die;
 
         if (!empty($orderChanges)) {
-            CartOrders::logOrderChanges($id, $orderChanges);
+            OrdersHelper::logOrderChanges($id, $orderChanges);
         }
 
         if ($redirect) {
@@ -441,10 +437,10 @@ class Orders extends AdminController
         }
 
         // Get orders count
-        $this->view->total = CartOrders::getItemsOrdered('count', $this->view->filters);
+        $this->view->total = OrdersHelper::getItemsOrdered('count', $this->view->filters);
 
         // Get orders
-        $orders = CartOrders::getItemsOrdered('list', $this->view->filters);
+        $orders = OrdersHelper::getItemsOrdered('list', $this->view->filters);
 
         foreach ($orders as $order) {
             $orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);
@@ -630,7 +626,7 @@ class Orders extends AdminController
         );
 
         // Get orders, request array to be returned
-        $orders = CartOrders::getItemsOrdered('list', $filters);
+        $orders = OrdersHelper::getItemsOrdered('list', $filters);
 
         foreach ($orders as $order) {
             $orderItems = unserialize(Cart::getTransactionInfo($order->tId)->tiItems);

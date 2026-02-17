@@ -61,7 +61,6 @@ class Courses extends Plugin
         $badgesProvider->setCredentials($creds);
 
         require_once Component::path('com_courses') . '/models/courses.php';
-        require_once Component::path('com_courses') . '/models/memberBadge.php';
 
         $coursesObj = new \Components\Courses\Models\Courses();
         $courses    = $coursesObj->courses();

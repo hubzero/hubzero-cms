@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,9 +7,6 @@
  */
 
 namespace Components\Poll\Elements;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * JElementPoll class
@@ -36,8 +31,6 @@ class JElementPoll extends \JElement
      */
     public function fetchElement($name, $value, &$node, $control_name)
     {
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'poll.php';
-
         $options = \Components\Poll\Models\Poll::all()
             ->whereEquals('published', 1)
             ->rows()

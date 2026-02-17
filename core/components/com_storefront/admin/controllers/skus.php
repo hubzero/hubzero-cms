@@ -13,7 +13,7 @@ use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Warehouse;
-use Components\Cart\Helpers\CartDownload;
+use Components\Cart\Helpers\Download;
 use Request;
 use Config;
 use Route;
@@ -157,7 +157,7 @@ class Skus extends AdminController
         $this->view->options = $row->getOptions();
 
         // Get number of downloads
-        $downloaded = CartDownload::countSkuDownloads($id);
+        $downloaded = Download::countSkuDownloads($id);
         $this->view->downloaded = $downloaded;
 
         // Set any errors

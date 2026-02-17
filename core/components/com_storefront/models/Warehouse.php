@@ -375,7 +375,6 @@ class Warehouse extends \Hubzero\Base\Obj
         // Get the SKUs whitelist for a user
         if ($this->userScope) {
             $allProductSkus = $this->getProductSkus($pInfo->pId);
-            require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
             $this->userWhitelistedSkus = \Components\Storefront\Admin\Helpers\RestrictionsHelper
                 ::checkWhitelistedSkusUser($this->userScope, $allProductSkus);
         }
@@ -592,7 +591,6 @@ class Warehouse extends \Hubzero\Base\Obj
 
             // compare the two results and find those that didn't make the permissions test
             $notAuthorizedProducts = [];
-            require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
             foreach ($allProducts as $pId => $product) {
                 if (!array_key_exists($pId, $products)) {
                     // Get all SKUs for this product and check if the user is whitelisted
@@ -735,8 +733,6 @@ class Warehouse extends \Hubzero\Base\Obj
             // Go through each SKU and do the checks to determine what needs to be returned
             // default value
             $permissionsRestricted = false;
-
-            require_once dirname(__DIR__) . DS . 'admin' . DS . 'helpers' . DS . 'restrictions.php';
 
             foreach ($res as $k => $line) {
                 // see if the user is whitelisted for this SKU
