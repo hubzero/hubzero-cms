@@ -8,6 +8,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * XHTML sanitizer for MediaWiki
  *
@@ -346,7 +348,6 @@ include_once __DIR__ . DS . 'utfnormalutil.php';
  * XHTML sanitizer for MediaWiki
  *
  * @addtogroup Parser
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  */
 class Sanitizer
 {
@@ -710,7 +711,7 @@ class Sanitizer
         $stripped = preg_replace_callback(
             '!\\\\([0-9A-Fa-f]{1,6})[ \\n\\r\\t\\f]?!',
             function ($m) {
-                return codepointToUtf8(hexdec($m[1]));
+                return \codepointToUtf8(hexdec($m[1]));
             },
             $stripped
         );
@@ -810,8 +811,8 @@ class Sanitizer
 
         // Stupid hack
         $encValue = preg_replace_callback(
-            '/(' . wfUrlProtocols() . ')/',
-            array('Sanitizer', 'armorLinksCallback'),
+            '/(' . \wfUrlProtocols() . ')/',
+            array(self::class, 'armorLinksCallback'),
             $encValue
         );
         return $encValue;
@@ -1010,7 +1011,7 @@ class Sanitizer
     {
         return preg_replace_callback(
             MW_CHAR_REFS_REGEX,
-            array('Sanitizer', 'normalizeCharReferencesCallback'),
+            array(self::class, 'normalizeCharReferencesCallback'),
             $text
         );
     }
@@ -1126,7 +1127,7 @@ class Sanitizer
     {
         return preg_replace_callback(
             MW_CHAR_REFS_REGEX,
-            array('Sanitizer', 'decodeCharReferencesCallback'),
+            array(self::class, 'decodeCharReferencesCallback'),
             $text
         );
     }
@@ -1160,9 +1161,9 @@ class Sanitizer
     public static function decodeChar($codepoint)
     {
         if (self::validateCodepoint($codepoint)) {
-            return codepointToUtf8($codepoint);
+            return \codepointToUtf8($codepoint);
         } else {
-            return UTF8_REPLACEMENT;
+            return \UTF8_REPLACEMENT;
         }
     }
 
@@ -1183,7 +1184,7 @@ class Sanitizer
         }
 
         if (isset($wgHtmlEntities[$name])) {
-            return codepointToUtf8($wgHtmlEntities[$name]);
+            return \codepointToUtf8($wgHtmlEntities[$name]);
         } else {
             return "&$name;";
         }

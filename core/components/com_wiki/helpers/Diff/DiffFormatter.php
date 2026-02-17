@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * A class to format Diffs
  *
@@ -14,7 +16,6 @@
  * to obtain fancier outputs.
  *
  * @todo document
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
  * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
@@ -53,7 +54,7 @@ class DiffFormatter
      * @param   object  $diff  A Diff object.
      * @return  string  The formatted output.
      */
-    public function format($diff, ?Closure $formatContextOutput = null)
+    public function format($diff, ?\Closure $formatContextOutput = null)
     {
         $xi = $yi = 1;
         $block = false;
@@ -75,7 +76,7 @@ class DiffFormatter
                     } else {
                         if ($ntrail) {
                             $context = array_slice($edit->orig, 0, $ntrail);
-                            $block[] = new _DiffOp_Copy($context);
+                            $block[] = new DiffOpCopy($context);
                         }
                         $this->_block(
                             $x0,
@@ -95,7 +96,7 @@ class DiffFormatter
                     $y0 = $yi - count($context);
                     $block = array();
                     if ($context) {
-                        $block[] = new _DiffOp_Copy($context);
+                        $block[] = new DiffOpCopy($context);
                     }
                 }
                 $block[] = $edit;

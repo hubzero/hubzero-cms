@@ -1,23 +1,15 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once __DIR__ . '/replacer.php';
-require_once __DIR__ . '/regexlikereplacer.php';
-require_once __DIR__ . '/doublereplacer.php';
-require_once __DIR__ . '/hashtablereplacer.php';
-require_once __DIR__ . '/replacementarray.php';
+namespace Components\Wiki\Helpers;
 
 /**
  * A collection of static methods to play with strings.
- *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  */
 class StringUtils
 {
@@ -108,7 +100,7 @@ class StringUtils
                 $tokenType = 'end';
                 $tokenLength = strlen($m[0][0]);
             } else {
-                throw new Exception('Invalid delimiter given to ' . __METHOD__);
+                throw new \Exception('Invalid delimiter given to ' . __METHOD__);
             }
 
             if ($tokenType == 'start') {
@@ -137,7 +129,7 @@ class StringUtils
                 }
                 $inputPos = $outputPos = $tokenOffset + $tokenLength;
             } else {
-                throw new Exception('Invalid delimiter given to ' . __METHOD__);
+                throw new \Exception('Invalid delimiter given to ' . __METHOD__);
             }
         }
         if ($outputPos < strlen($subject)) {

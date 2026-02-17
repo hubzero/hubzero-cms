@@ -200,8 +200,8 @@ class History extends SiteController
         $ota = explode("\n", $or->get('pagetext', ''));
         $nta = explode("\n", $dr->get('pagetext', ''));
 
-        $formatter = new \TableDiffFormatter();
-        $result = $formatter->format(new \Diff($ota, $nta));
+        $formatter = new \Components\Wiki\Helpers\TableDiffFormatter();
+        $result = $formatter->format(new \Components\Wiki\Helpers\Diff($ota, $nta));
 
         // Set the page's <title> tag
         Document::setTitle(

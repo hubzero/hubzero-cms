@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 //-------------------------------------------------------------
 //  Div style diff formatter. Highlights blocks that have
 //  changed following a format like this:
@@ -21,7 +23,6 @@
  *
  * Long description (if any) ...
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
  * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */

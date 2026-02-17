@@ -8,13 +8,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Constant to indicate diff cache compatibility.
  * Bump this when changing the diff formatting in a way that
  * fixes important bugs or such to force cached diff views to
  * clear.
  */
-define('MW_DIFF_VERSION', '1.11a');
+if (!defined('MW_DIFF_VERSION')) {
+    define('MW_DIFF_VERSION', '1.11a');
+}
 
 /**
  * A PHP diff engine for phpwiki. (Taken from phpwiki-1.3.3)
@@ -22,29 +26,13 @@ define('MW_DIFF_VERSION', '1.11a');
  * Copyright (C) 2000, 2001 Geoffrey T. Dairiki <dairiki@dairiki.org>
  * You may copy this code freely under the conditions of the GPL.
  */
-define('USE_ASSERTS', function_exists('assert'));
-
-// Operations
-require_once __DIR__ . '/Diff/_DiffOp.php';
-require_once __DIR__ . '/Diff/_DiffOp_Add.php';
-require_once __DIR__ . '/Diff/_DiffOp_Change.php';
-require_once __DIR__ . '/Diff/_DiffOp_Copy.php';
-require_once __DIR__ . '/Diff/_DiffOp_Delete.php';
-require_once __DIR__ . '/Diff/_DiffEngine.php';
-require_once __DIR__ . '/Diff/_HWLDF_WordAccumulator.php';
-
-require_once __DIR__ . '/Diff/MappedDiff.php';
-require_once __DIR__ . '/Diff/WordLevelDiff.php';
-
-// Formatters
-require_once __DIR__ . '/Diff/DiffFormatter.php';
-require_once __DIR__ . '/Diff/DivDiffFormatter.php';
-require_once __DIR__ . '/Diff/TableDiffFormatter.php';
+if (!defined('USE_ASSERTS')) {
+    define('USE_ASSERTS', function_exists('assert'));
+}
 
 /**
  * Class representing a 'diff' between two sequences of strings.
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
  */
 class Diff
@@ -66,7 +54,7 @@ class Diff
      */
     public function __construct($from_lines, $to_lines)
     {
-        $eng = new _DiffEngine();
+        $eng = new DiffEngine();
         $this->edits = $eng->diff($from_lines, $to_lines);
         //$this->_check($from_lines, $to_lines);
     }

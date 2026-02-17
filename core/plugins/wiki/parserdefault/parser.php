@@ -2796,7 +2796,7 @@ class WikiParser
             // Save headline for section edit hint before it's escaped
             $headline_hint = $canonized_headline;
 
-            $canonized_headline = Sanitizer::escapeId($canonized_headline);
+            $canonized_headline = \Components\Wiki\Helpers\Sanitizer::escapeId($canonized_headline);
             $refers[$headlineCount] = $canonized_headline;
 
             // count how many in assoc. array so we can track dupes in anchors

@@ -6,10 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Class to perform replacement based on a simple hashtable lookup
- *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  */
 class HashtableReplacer extends Replacer
 {

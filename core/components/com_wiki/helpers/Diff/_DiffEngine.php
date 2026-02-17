@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Class used internally by Diff to actually compute the diffs.
  *
@@ -26,12 +28,10 @@
  * Line length limits for robustness added by Tim Starling, 2005-08-31
  *
  * @author Geoffrey T. Dairiki, Tim Starling
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
  * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class _DiffEngine
+class DiffEngine
 {
     /**
      * Description for 'AX_XREF_LENGTH'
@@ -129,7 +129,7 @@ class _DiffEngine
                 ++$yi;
             }
             if ($copy) {
-                $edits[] = new _DiffOp_Copy($copy);
+                $edits[] = new DiffOpCopy($copy);
             }
 
             // Find deletes & adds.
@@ -144,11 +144,11 @@ class _DiffEngine
             }
 
             if ($delete && $add) {
-                $edits[] = new _DiffOp_Change($delete, $add);
+                $edits[] = new DiffOpChange($delete, $add);
             } elseif ($delete) {
-                $edits[] = new _DiffOp_Delete($delete);
+                $edits[] = new DiffOpDelete($delete);
             } elseif ($add) {
-                $edits[] = new _DiffOp_Add($add);
+                $edits[] = new DiffOpAdd($add);
             }
         }
 

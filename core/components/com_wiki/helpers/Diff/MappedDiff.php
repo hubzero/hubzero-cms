@@ -6,12 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Short description for 'class'
  *
  * Long description (if any) ...
- *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  */
 class MappedDiff extends Diff
 {

@@ -6,13 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Add operation
- *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class _DiffOp_Add extends _DiffOp
+class DiffOpAdd extends DiffOp
 {
     /**
      * Description for 'type'
@@ -22,7 +21,7 @@ class _DiffOp_Add extends _DiffOp
     public $type = 'add';
 
     /**
-     * Short description for '_DiffOp_Add'
+     * Short description for 'DiffOpAdd'
      *
      * Long description (if any) ...
      *
@@ -44,6 +43,6 @@ class _DiffOp_Add extends _DiffOp
      */
     public function reverse()
     {
-        return new _DiffOp_Delete($this->closing);
+        return new DiffOpDelete($this->closing);
     }
 }

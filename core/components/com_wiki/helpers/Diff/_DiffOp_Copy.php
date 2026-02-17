@@ -6,13 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Copy operation
- *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class _DiffOp_Copy extends _DiffOp
+class DiffOpCopy extends DiffOp
 {
     /**
      * Description for 'type'
@@ -22,7 +21,7 @@ class _DiffOp_Copy extends _DiffOp
     public $type = 'copy';
 
     /**
-     * Short description for '_DiffOp_Copy'
+     * Short description for 'DiffOpCopy'
      *
      * Long description (if any) ...
      *
@@ -48,6 +47,6 @@ class _DiffOp_Copy extends _DiffOp
      */
     public function reverse()
     {
-        return new _DiffOp_Copy($this->closing, $this->orig);
+        return new DiffOpCopy($this->closing, $this->orig);
     }
 }

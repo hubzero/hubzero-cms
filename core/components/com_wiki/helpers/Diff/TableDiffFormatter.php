@@ -6,10 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Wikipedia Table style diff formatter.
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
  * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */

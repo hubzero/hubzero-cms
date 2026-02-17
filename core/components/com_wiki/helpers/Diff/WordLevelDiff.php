@@ -6,12 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Short description for 'WordLevelDiff'
  *
  * Long description (if any) ...
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
  */
 class WordLevelDiff extends MappedDiff
@@ -83,7 +84,7 @@ class WordLevelDiff extends MappedDiff
      */
     public function orig()
     {
-        $orig = new _HWLDF_WordAccumulator();
+        $orig = new WordAccumulator();
 
         foreach ($this->edits as $edit) {
             if ($edit->type == 'copy') {
@@ -106,7 +107,7 @@ class WordLevelDiff extends MappedDiff
      */
     public function closing()
     {
-        $closing = new _HWLDF_WordAccumulator();
+        $closing = new WordAccumulator();
 
         foreach ($this->edits as $edit) {
             if ($edit->type == 'copy') {
