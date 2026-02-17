@@ -1,23 +1,23 @@
 <?php
 
-namespace Cron;
+namespace Components\Cron\Helpers;
 
 use DateTime;
 use DateInterval;
 
 /**
- * Hours field.  Allows: * , / -
+ * Year field.  Allows: * , / -
  *
  * @author Michael Dowling <mtdowling@gmail.com>
  */
-class HoursField extends AbstractField
+class YearField extends AbstractField
 {
     /**
      * {@inheritdoc}
      */
     public function isSatisfiedBy(DateTime $date, $value)
     {
-        return $this->isSatisfied($date->format('H'), $value);
+        return $this->isSatisfied($date->format('Y'), $value);
     }
 
     /**
@@ -26,11 +26,13 @@ class HoursField extends AbstractField
     public function increment(DateTime $date, $invert = false)
     {
         if ($invert) {
-            $date->sub(new DateInterval('PT1H'));
-            $date->setTime($date->format('H'), 59, 0);
+            $date->sub(new DateInterval('P1Y'));
+            $date->setDate($date->format('Y'), 12, 31);
+            $date->setTime(23, 59, 0);
         } else {
-            $date->add(new DateInterval('PT1H'));
-            $date->setTime($date->format('H'), 0, 0);
+            $date->add(new DateInterval('P1Y'));
+            $date->setDate($date->format('Y'), 1, 1);
+            $date->setTime(0, 0, 0);
         }
 
         return $this;

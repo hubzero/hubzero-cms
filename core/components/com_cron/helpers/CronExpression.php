@@ -1,23 +1,11 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
-namespace Cron;
+namespace Components\Cron\Helpers;
 
 use DateInterval;
 use DateTime;
 use RuntimeException;
 use InvalidArgumentException;
-
-require_once(__DIR__ . DS . 'FieldInterface.php');
-require_once(__DIR__ . DS . 'AbstractField.php');
-require_once(__DIR__ . DS . 'DayOfMonthField.php');
-require_once(__DIR__ . DS . 'DayOfWeekField.php');
-require_once(__DIR__ . DS . 'FieldFactory.php');
-require_once(__DIR__ . DS . 'HoursField.php');
-require_once(__DIR__ . DS . 'MinutesField.php');
-require_once(__DIR__ . DS . 'MonthField.php');
-require_once(__DIR__ . DS . 'YearField.php');
 
 /**
  * CRON expression parser that can determine whether or not a CRON expression is

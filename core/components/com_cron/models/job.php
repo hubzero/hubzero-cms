@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,10 +11,9 @@ namespace Components\Cron\Models;
 use Hubzero\Database\Relational;
 use Hubzero\Debug\Profiler;
 use Hubzero\Config\Registry;
+use Components\Cron\Helpers\CronExpression;
 use Lang;
 use Date;
-
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Cron' . DS . 'CronExpression.php';
 
 /**
  * Cron model for a job
@@ -241,8 +238,8 @@ class Job extends Relational
      */
     public function expression()
     {
-        if (!($this->expression instanceof \Cron\CronExpression)) {
-            $this->expression = \Cron\CronExpression::factory($this->get('recurrence'));
+        if (!($this->expression instanceof CronExpression)) {
+            $this->expression = CronExpression::factory($this->get('recurrence'));
         }
         return $this->expression;
     }

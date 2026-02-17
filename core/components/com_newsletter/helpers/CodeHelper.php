@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /*
  * @package   hubzero-cms
  * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,8 +7,6 @@
  */
 
 namespace Components\Newsletter\Helpers;
-
-require_once Component::path('com_newsletter') . '/secrets/page_code.php';
 
 use Components\Newsletter\Models\Campaign;
 use Components\Newsletter\Models\Page;
@@ -50,6 +46,8 @@ class CodeHelper
     // Validate code obtained from user's URL, using email subscription page id
     public static function validateEmailSubscriptionsCode($username, $campaignId, $code)
     {
+        require_once \Component::path('com_newsletter') . '/secrets/page_code.php';
+
         // Acquire page Id for email subscription:
         $emailSubsPageId = PAGE_CODE['email_subscriptions_page_id'];
 

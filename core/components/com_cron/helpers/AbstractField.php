@@ -1,6 +1,6 @@
 <?php
 
-namespace Cron;
+namespace Components\Cron\Helpers;
 
 use InvalidArgumentException;
 
