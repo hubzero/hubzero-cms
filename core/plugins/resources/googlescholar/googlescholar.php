@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Resources Plugin class for adding Google Scholar metadata to the document
  */
-class plgResourcesGooglescholar extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Googlescholar;
+
+use Hubzero\Plugin\Plugin;
+
+class Googlescholar extends Plugin
 {
     /**
      * Return data on a resource view (this will be some form of HTML)

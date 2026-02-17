@@ -6,9 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Account Plugin class for members
  *
@@ -16,7 +13,11 @@ defined('_HZEXEC_') or die();
  * as well as uploading/managing ssh keys, and adding or remove linked accounts
  *
  */
-class plgMembersAccount extends \Hubzero\Plugin\Plugin
+namespace Plugins\Members\Account;
+
+use Hubzero\Plugin\Plugin;
+
+class Account extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -168,19 +169,19 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
         $view = $this->view('default', 'overview');
 
         // Get linked accounts, if any
-        Plugin::import('authentication');
-        $view->domains_avail = Plugin::byType('authentication');
+        \Plugin::import('authentication');
+        $view->domains_avail = \Plugin::byType('authentication');
         $view->hzalaccounts  = \Hubzero\Auth\Link::find_by_user_id($this->user->get('id'));
 
         // Put the used domains into an array with details available from the providers (if applicable)
         $view->domains_used = array();
         $view->domain_names = array();
         if ($view->hzalaccounts) {
-            Plugin::import('authentication');
+            \Plugin::import('authentication');
 
             $i = 0;
             foreach ($view->hzalaccounts as $authenticators) {
-                $plugin = Plugin::byType('authentication', $authenticators['auth_domain_name']);
+                $plugin = \Plugin::byType('authentication', $authenticators['auth_domain_name']);
 
                 // Make sure we got the plugin
                 if (!is_object($plugin)) {

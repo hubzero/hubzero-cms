@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Blogs;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -17,7 +21,7 @@ use Hubzero\User\Group;
  * Search blog entries
  *
  */
-class plgSearchBlogs extends \Hubzero\Plugin\Plugin
+class Blogs extends Plugin
 {
     /**
      * Description for 'FIRST_CLASS_CHILDREN'

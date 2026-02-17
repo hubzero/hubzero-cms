@@ -9,7 +9,11 @@
 /**
  * Cron plugin for forum
  */
-class plgCronForum extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Forum;
+
+use Hubzero\Plugin\Plugin;
+
+class Forum extends Plugin
 {
     /**
      * Return a list of events
@@ -20,7 +24,7 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(
@@ -168,7 +172,7 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
      **/
     private function sendEmail($user, $posts, $interval = 'daily')
     {
-        $eview = new Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View(array(
             'base_path' => Component::path('com_forum') . DS . 'site',
             'name'      => 'emails',
             'layout'    => 'digest_plain'

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Citation\Endnote;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -12,7 +16,7 @@ use Components\Citations\Models\Citation;
 /**
  * Citations plugin class for bibtex
  */
-class plgCitationEndnote extends \Hubzero\Plugin\Plugin
+class Endnote extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

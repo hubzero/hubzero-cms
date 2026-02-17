@@ -1,4 +1,7 @@
 <?php
+namespace Plugins\Publications\Citations;
+
+use Hubzero\Plugin\Plugin;
 
 
 /**
@@ -11,7 +14,7 @@
 /**
  * Publications Plugin class for citations
  */
-class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
+class Citations extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

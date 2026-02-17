@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Resources Plugin class for supporting documentss
  */
-class plgResourcesSupportingDocs extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Supportingdocs;
+
+use Hubzero\Plugin\Plugin;
+
+class Supportingdocs extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -33,12 +36,12 @@ class plgResourcesSupportingDocs extends \Hubzero\Plugin\Plugin
 
         if ($model->isTool()) {
             $children = $model->children()
-                ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+                ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                 ->order('ordering', 'asc')
                 ->rows();
         } else {
             $children = $model->children()
-                ->whereEquals('published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+                ->whereEquals('published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                 ->whereEquals('standalone', 0)
                 ->order('ordering', 'asc')
                 ->rows();

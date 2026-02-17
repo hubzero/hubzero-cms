@@ -6,11 +6,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Sef;
+
+use Hubzero\Plugin\Plugin;
+
 // no direct access
 /**
  * SEF Plugin
  */
-class plgSystemSef extends \Hubzero\Plugin\Plugin
+class Sef extends Plugin
 {
     /**
      * Converting the site URL to fit to the HTTP request

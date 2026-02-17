@@ -6,10 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 // Include [temporary] ORM models (these will be merged with existing models at some point in the future)
+namespace Plugins\Projects\Files;
+
 require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'project.php';
 require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
 require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'provider.php';
@@ -24,7 +23,7 @@ use Hubzero\Filesystem\Manager;
 /**
  * Projects Files plugin (connections extension)
  */
-class connections
+class Connections
 {
     /**
      * the plugin that spawned this object
@@ -120,7 +119,7 @@ class connections
             return call_user_func([$this, $task]);
         }
 
-        throw new Exception("Call to undefined action", 500);
+        throw new \Exception("Call to undefined action", 500);
     }
 
     /**
@@ -583,7 +582,7 @@ class connections
 
         if (!$result) {
             // Should only get here on error
-            throw new Exception(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
+            throw new \Exception(Lang::txt('PLG_PROJECTS_FILES_SERVER_ERROR'), 404);
         } else {
             exit;
         }
@@ -624,7 +623,7 @@ class connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -661,7 +660,7 @@ class connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         // Incoming
@@ -699,7 +698,7 @@ class connections
             $upload = Request::getArray('upload', '', 'files');
 
             if (empty($upload['name']) or $upload['name'][0] == '') {
-                throw new Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);
+                throw new \Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);
             }
 
             // Go through uploaded files
@@ -851,7 +850,7 @@ class connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         // Incoming
@@ -979,7 +978,7 @@ class connections
             $upload = Request::getArray('upload', '', 'files');
 
             if (empty($upload['name']) || $upload['name'][0] == '') {
-                throw new Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);
+                throw new \Exception(Lang::txt('COM_PROJECTS_UPLOAD_NO_FILES'), 404);
             }
 
             // Go through uploaded files
@@ -1054,7 +1053,7 @@ class connections
     {
         // Check permissions
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1089,7 +1088,7 @@ class connections
     {
         // Check permissions
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1128,7 +1127,7 @@ class connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1169,7 +1168,7 @@ class connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1227,7 +1226,7 @@ class connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1266,7 +1265,7 @@ class connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1332,7 +1331,7 @@ class connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1409,7 +1408,7 @@ class connections
     {
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1432,7 +1431,7 @@ class connections
         }
 
         // Look for plugins that know how to handle them
-        $plugins = Plugin::byType('metadata');
+        $plugins = \Plugin::byType('metadata');
 
         if (count($plugins) == 0) {
             \Notify::message(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_ANNOTATION_PLUGINS'), 'error', 'projects');

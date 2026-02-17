@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Members\Messages;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package   hubzero-cms
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for messages
  */
-class PlgMembersMessages extends \Hubzero\Plugin\Plugin
+class Messages extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -179,7 +183,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
         $arr['metadata'] = array();
 
         //get the number of unread messages
-        $recipient = Hubzero\Message\Recipient::blank();
+        $recipient = \Hubzero\Message\Recipient::blank();
         $inboxCount = $recipient->getMessagesCount($member->get('id'), array('state' => 0));
         $unreadMessages = $recipient->getUnreadMessagesCount($member->get('id'));
 
@@ -229,13 +233,13 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
         $filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
 
         // Retrieve data
-        $recipient = Hubzero\Message\Recipient::blank();
+        $recipient = \Hubzero\Message\Recipient::blank();
 
         $total = $recipient->getMessagesCount($member->get('id'), $filters);
 
         $rows = $recipient->getMessages($member->get('id'), $filters);
 
-        $components = Hubzero\Message\Component::blank()->getComponents();
+        $components = \Hubzero\Message\Component::blank()->getComponents();
 
         // Output view
         $view = $this->view('inbox', 'default')
@@ -280,13 +284,13 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
         $filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
 
         // Retrieve data
-        $recipient = Hubzero\Message\Recipient::blank();
+        $recipient = \Hubzero\Message\Recipient::blank();
 
         $total = $recipient->getMessagesCount($member->get('id'), $filters);
 
         $rows = $recipient->getMessages($member->get('id'), $filters);
 
-        $components = Hubzero\Message\Component::blank()->getComponents();
+        $components = \Hubzero\Message\Component::blank()->getComponents();
 
         // Output view
         $view = $this->view('archive', 'default')
@@ -331,13 +335,13 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
         $filters['filter'] = ($filters['filter'] ? 'com_' . $filters['filter'] : '');
 
         // Retrieve data
-        $recipient = Hubzero\Message\Recipient::blank();
+        $recipient = \Hubzero\Message\Recipient::blank();
 
         $total = $recipient->getMessagesCount($member->get('id'), $filters);
 
         $rows = $recipient->getMessages($member->get('id'), $filters);
 
-        $components = Hubzero\Message\Component::blank()->getComponents();
+        $components = \Hubzero\Message\Component::blank()->getComponents();
 
         // Output view
         $view = $this->view('trash', 'default')
@@ -378,7 +382,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
             'created_by' => $member->get('id')
         );
 
-        $recipient = Hubzero\Message\Message::blank();
+        $recipient = \Hubzero\Message\Message::blank();
 
         $total = $recipient->getSentMessagesCount($filters);
 
@@ -405,7 +409,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
      */
     public function settings($database, $option, $member)
     {
-        $xmc = Hubzero\Message\Component::blank();
+        $xmc = \Hubzero\Message\Component::blank();
         $components = $xmc->getRecords();
 
         $view = $this->view('settings', 'default')
@@ -432,7 +436,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
         $default_method = null;
 
         // Instantiate our notify object
-        $notify = Hubzero\Message\Notify::blank();
+        $notify = \Hubzero\Message\Notify::blank();
 
         // Get the user's selected methods
         $methods = $notify->getRecords($member->get('id'));
@@ -508,9 +512,9 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
      */
     public function message($database, $option, $member, $mid)
     {
-        $xmessage = Hubzero\Message\Message::oneOrFail($mid);
+        $xmessage = \Hubzero\Message\Message::oneOrFail($mid);
 
-        $recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+        $recipient = \Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
 
         if (substr($xmessage->get('component'), 0, 4) == 'com_') {
             $xmessage->set('component', substr($xmessage->get('component'), 4));
@@ -551,7 +555,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
             Request::checkToken(['get', 'post']);
 
             foreach ($mids as $mid) {
-                $recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+                $recipient = \Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
                 $recipient->set('mid', $mid);
                 $recipient->set('uid', $member->get('id'));
                 $recipient->set('state', 1);
@@ -605,7 +609,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
             Request::checkToken(['get', 'post']);
 
             foreach ($mids as $mid) {
-                $recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+                $recipient = \Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
                 $recipient->set('mid', $mid);
                 $recipient->set('uid', $member->get('id'));
                 $recipient->set('state', 0);
@@ -653,7 +657,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
             Request::checkToken(['get', 'post']);
 
             foreach ($mids as $mid) {
-                $recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+                $recipient = \Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
                 $recipient->set('mid', $mid);
                 $recipient->set('uid', $member->get('id'));
                 $recipient->set('state', 2);
@@ -699,7 +703,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
      */
     public function emptytrash($database, $option, $member)
     {
-        $recipient = Hubzero\Message\Recipient::blank();
+        $recipient = \Hubzero\Message\Recipient::blank();
 
         if (!$recipient->deleteTrash($member->get('id'))) {
             $this->setError($recipient->getError());
@@ -727,7 +731,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
             Request::checkToken(['get', 'post']);
 
             foreach ($mids as $mid) {
-                $recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+                $recipient = \Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
                 if (!$recipient->get('id')) {
                     // User isn't a recipient
                     // This shouldn't ever happen
@@ -776,7 +780,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
             Request::checkToken(['get', 'post']);
 
             foreach ($ids as $mid) {
-                $recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+                $recipient = \Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
                 if (!$recipient->get('id')) {
                     // User isn't a recipient
                     // This shouldn't ever happen
@@ -826,7 +830,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
             Request::checkToken(['get', 'post']);
 
             foreach ($ids as $mid) {
-                $recipient = Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
+                $recipient = \Hubzero\Message\Recipient::oneByMessageAndUser($mid, $member->get('id'));
 
                 if (!$recipient->markAsUnread()) {
                     $this->setError($recipient->getError());
@@ -878,7 +882,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
                 foreach ($value as $v) {
                     if ($v) {
                         // Instantiate a Notify object and set its values
-                        $notify = Hubzero\Message\Notify::blank();
+                        $notify = \Hubzero\Message\Notify::blank();
                         $notify->set('uid', $member->get('id'));
                         $notify->set('method', $v);
                         $notify->set('type', $key);
@@ -907,7 +911,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
             foreach ($ids as $key => $value) {
                 foreach ($value as $k => $v) {
                     if ($v > 0) {
-                        $notify = Hubzero\Message\Notify::oneOrNew($v);
+                        $notify = \Hubzero\Message\Notify::oneOrNew($v);
                         $notify->destroy();
                     }
                 }
@@ -927,7 +931,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
             // It ensures we can know the difference between someone who has never changed
             // their settings (thus, no database entries)
             // and someone who purposely wants everything turned off.
-            $notify = Hubzero\Message\Notify::blank();
+            $notify = \Hubzero\Message\Notify::blank();
             $notify->set('uid', $member->get('id'));
 
             $records = $notify->getRecords($member->get('id'), 'all');
@@ -997,7 +1001,7 @@ class PlgMembersMessages extends \Hubzero\Plugin\Plugin
                 } else {
                     // User not found
                     // Maybe it was a group?
-                    $grp = Hubzero\User\Group::getInstance($mbr);
+                    $grp = \Hubzero\User\Group::getInstance($mbr);
 
                     if ($grp && $grp->get('gidNumber')) {
                         $email_users = array_merge($email_users, $grp->get('members'));

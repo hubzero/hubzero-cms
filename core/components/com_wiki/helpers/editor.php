@@ -261,7 +261,7 @@ class Editor extends Obj
         $plugin->params = $params;
 
         // Build editor plugin classname
-        $name = 'plgWiki' . $this->name;
+        $name = 'Plugins\\Wiki\\' . ucfirst($this->name) . '\\' . ucfirst($this->name);
 
         if ($this->editor = new $name($this, (array)$plugin)) {
             // Load plugin parameters

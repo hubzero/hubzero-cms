@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Domainrestriction;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * User plugin for blocking registration by domains or IPs
  */
-class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
+class Domainrestriction extends Plugin
 {
     private $_tlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_domains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
@@ -214,10 +217,11 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
         }
 
         if (count(array_merge($whitelistnet, $blacklistnet))) {
-            $require = $this->_gmp ? 'IPv6Net' : 'SimpleCIDR';
+            $require = $this->_gmp ? Helpers\IPv6Net::class : Helpers\SimpleCIDR::class;
 
             if (!class_exists($require)) {
-                require_once __DIR__ . '/helpers/' . $require . '.php';
+                $file = $this->_gmp ? 'IPv6Net' : 'SimpleCIDR';
+                require_once __DIR__ . '/helpers/' . $file . '.php';
             }
 
             foreach ($whitelistnet as $net) {
@@ -247,7 +251,7 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
      */
     private function bwnet($net)
     {
-        return $this->_gmp ? (new IPv6Net($net)) : SimpleCIDR::getInstance($net);
+        return $this->_gmp ? (new Helpers\IPv6Net($net)) : Helpers\SimpleCIDR::getInstance($net);
     }
 
     /**
@@ -376,20 +380,20 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
             $groupchange = false;
             foreach ($assignments[$akey] as $groupid) {
                 if (!in_array($groupid, $user->groups)) {
-                    Hubzero\Access\Map::addUserToGroup($user->id, $groupid);
+                    \Hubzero\Access\Map::addUserToGroup($user->id, $groupid);
                     $groupchange = true;
                 }
             }
             foreach ($user->groups as $groupid) {
                 if (!in_array($groupid, $assignments[$akey])) {
-                    Hubzero\Access\Map::removeUserFromGroup($user->id, $groupid);
+                    \Hubzero\Access\Map::removeUserFromGroup($user->id, $groupid);
                     $groupchange = true;
                 }
             }
 
             if ($groupchange) {
-                $user->set('groups', Hubzero\Access\Access::getGroupsByUser($user->id));
-                $user->set('authlevels', Hubzero\Access\Access::getAuthorisedViewLevels($user->id));
+                $user->set('groups', \Hubzero\Access\Access::getGroupsByUser($user->id));
+                $user->set('authlevels', \Hubzero\Access\Access::getAuthorisedViewLevels($user->id));
             }
         }
         return true;

@@ -9,7 +9,11 @@
 /**
  * P3P Header Plugin
  */
-class plgSystemP3p extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\P3p;
+
+use Hubzero\Plugin\Plugin;
+
+class P3p extends Plugin
 {
     /**
      * Hook for after app initialization

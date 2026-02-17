@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Groups;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -19,7 +23,7 @@ require_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . '
  */
 /**
  */
-class plgSearchGroups extends \Hubzero\Plugin\Plugin
+class Groups extends Plugin
 {
     /**
      * Build search query and add it to the $results

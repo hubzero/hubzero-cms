@@ -6,10 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Resources\Reviews;
+
 /**
  * Helper class for reviews
  */
-class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
+class Helper extends \Hubzero\Base\Obj
 {
     /**
      * Execute an action

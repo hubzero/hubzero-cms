@@ -100,29 +100,28 @@ foreach ($this->cats as $cat) {
             $foundresults = false;
             $dopaging = false;
             $html = '';
-            $k = 1;
-
-            foreach ($this->results as $category) {
+            foreach ($this->results as $k => $category) {
+                $ci = $k + 1; // cats index offset by "all" at position 0
                 $amt = count($category);
 
-                if ($amt > 0) {
+                if ($amt > 0 && isset($this->cats[$ci])) {
                     $foundresults = true;
 
                     // Is this category the active category?
-                    if (!$this->active || $this->active == $this->cats[$k]['category']) {
+                    if (!$this->active || $this->active == $this->cats[$ci]['category']) {
                         // It is - get some needed info
-                        $name  = $this->cats[$k]['title'];
-                        $total = $this->cats[$k]['total'];
-                        $divid = 'search' . $this->cats[$k]['category'];
+                        $name  = $this->cats[$ci]['title'];
+                        $total = $this->cats[$ci]['total'];
+                        $divid = 'search' . $this->cats[$ci]['category'];
 
-                        if ($this->active == $this->cats[$k]['category']) {
+                        if ($this->active == $this->cats[$ci]['category']) {
                             $dopaging = true;
                         }
                     } else {
                         // It is not - does this category have sub-categories?
-                        if (isset($this->cats[$k]['_sub']) && is_array($this->cats[$k]['_sub'])) {
+                        if (isset($this->cats[$ci]['_sub']) && is_array($this->cats[$ci]['_sub'])) {
                             // It does - loop through them and see if one is the active category
-                            foreach ($this->cats[$k]['_sub'] as $sub) {
+                            foreach ($this->cats[$ci]['_sub'] as $sub) {
                                 if ($this->active == $sub['category']) {
                                     // Found an active category
                                     $name  = $sub['title'];
@@ -141,17 +140,18 @@ foreach ($this->cats as $cat) {
 
                     // A function for category specific items that may be needed
                     // Check if a function exist (using old style plugins)
-                    $f = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']) . 'Doc';
+                    $f = 'plgWhatsnew' . ucfirst($this->cats[$ci]['category']) . 'Doc';
                     if (function_exists($f)) {
                         $f();
                     }
                     // Check if a method exist (using JPlugin style)
-                    $obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+                    $catName = ucfirst($this->cats[$ci]['category']);
+                    $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'documents')) {
                         $html .= call_user_func(array($obj, 'documents'));
                     }
 
-                    $act = ($this->active) ? $this->active : $this->cats[$k]['category'];
+                    $act = ($this->active) ? $this->active : $this->cats[$ci]['category'];
 
                     $feed = Route::url('index.php?option=' . $this->option . '&task=feed.rss&period=' . urlencode(strToLower($act) . ':' . stripslashes($this->period)));
                     if (substr($feed, 0, 4) != 'http') {
@@ -165,12 +165,13 @@ foreach ($this->cats as $cat) {
 
                     // Does this category have custom output?
                     // Check if a function exist (using old style plugins)
-                    $func = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']) . 'Before';
+                    $func = 'plgWhatsnew' . ucfirst($this->cats[$ci]['category']) . 'Before';
                     if (function_exists($func)) {
                         $html .= $func($this->period);
                     }
                     // Check if a method exist (using JPlugin style)
-                    $obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+                    $catName = ucfirst($this->cats[$ci]['category']);
+                    $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'before')) {
                         $html .= call_user_func(array($obj,'before'), $this->period);
                     }
@@ -183,7 +184,8 @@ foreach ($this->cats as $cat) {
                         // Does this category have a unique output display?
                         $func = 'plgWhatsnew' . ucfirst($row->section == null ? '' : $row->section) . 'Out';
                         // Check if a method exist (using JPlugin style)
-                        $obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+                        $catName = ucfirst($this->cats[$ci]['category']);
+                        $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
 
                         if (function_exists($func)) {
                             $html .= $func($row, $this->period);
@@ -232,26 +234,33 @@ foreach ($this->cats as $cat) {
                             }
                         }
                         if ($ttl > 5) {
-                            $html .= ' | <a href="' . Route::url('index.php?option=' . $this->option . '&period=' . urlencode(strToLower($this->cats[$k]['category']) . ':' . stripslashes($this->period))) . '">' . Lang::txt('COM_WHATSNEW_SEE_MORE_RESULTS') . '</a>';
+                            $morePeriod = urlencode(
+                                strToLower($this->cats[$ci]['category']) . ':' . stripslashes($this->period)
+                            );
+                            $moreUrl = Route::url(
+                                'index.php?option=' . $this->option . '&period=' . $morePeriod
+                            );
+                            $html .= ' | <a href="' . $moreUrl . '">'
+                                . Lang::txt('COM_WHATSNEW_SEE_MORE_RESULTS') . '</a>';
                         }
                         $html .= '</p>' . "\n\n";
                     }
 
                     // Does this category have custom output?
                     // Check if a function exist (using old style plugins)
-                    $func = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']) . 'After';
+                    $func = 'plgWhatsnew' . ucfirst($this->cats[$ci]['category']) . 'After';
                     if (function_exists($func)) {
                         $html .= $func($this->period);
                     }
                     // Check if a method exist (using JPlugin style)
-                    $obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+                    $catName = ucfirst($this->cats[$ci]['category']);
+                    $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'after')) {
                         $html .= call_user_func(array($obj,'after'), $this->period);
                     }
 
                     $html .= '</div><!-- / #' . $divid . ' -->' . "\n";
                 }
-                $k++;
             }
             echo $html;
             ?>

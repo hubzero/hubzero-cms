@@ -6,21 +6,22 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Courses\Discussions;
+
+use Hubzero\Plugin\Plugin;
+
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 require_once \Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 /**
  * Courses Plugin class for forum entries
  */
-class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
+class Discussions extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -580,17 +581,17 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
         // Called via AJAX?
         $no_html = Request::getInt('no_html', 0);
         if ($no_html) {
-            $data = new stdClass();
+            $data = new \stdClass();
             $data->success = true;
 
-            $data->threads = new stdClass();
+            $data->threads = new \stdClass();
             $data->threads->lastchange = '0000-00-00 00:00:00';
             $data->threads->lastid     = 0;
             $data->threads->total      = 0;
             $data->threads->posts      = null;
             $data->threads->html       = null;
 
-            $data->thread  = new stdClass();
+            $data->thread  = new \stdClass();
             $data->thread->lastchange = '0000-00-00 00:00:00';
             $data->thread->lastid     = 0;
             $data->thread->posts      = null;
@@ -743,7 +744,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
      */
     protected function _thread($post, $filters = array())
     {
-        $thread = new stdClass();
+        $thread = new \stdClass();
         $thread->lastchange = '0000-00-00 00:00:00';
         $thread->lastid     = $post->get('id');
         $thread->posts      = null;
@@ -813,7 +814,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
      */
     protected function _threadsSearch($post, $filters = array())
     {
-        $threads = new stdClass();
+        $threads = new \stdClass();
         $threads->lastchange = '0000-00-00 00:00:00';
         $threads->lastid     = 0;
         $threads->total      = 0;
@@ -876,7 +877,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
      */
     protected function _threads($post, $filters = array())
     {
-        $threads = new stdClass();
+        $threads = new \stdClass();
         $threads->lastchange = '0000-00-00 00:00:00';
         $threads->lastid     = 0;
         $threads->posts      = array();
@@ -949,7 +950,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
      */
     protected function _posts($post, $filters = array())
     {
-        $thread = new stdClass();
+        $thread = new \stdClass();
         $thread->lastchange = '0000-00-00 00:00:00';
         $thread->lastid     = 0;
         $thread->posts      = null;
@@ -980,7 +981,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
                                     ? $row->get('created')
                                     : $thread->lastchange;
 
-                $res[$i] = new stdClass();
+                $res[$i] = new \stdClass();
                 $res[$i]->replies = null;
 
                 $cview = $this->view('comment', 'threads')
@@ -1141,17 +1142,17 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
             $post = Post::blank();
 
-            $data = new stdClass();
+            $data = new \stdClass();
             $data->success = true;
 
-            $data->threads = new stdClass();
+            $data->threads = new \stdClass();
             $data->threads->lastchange = '0000-00-00 00:00:00';
             $data->threads->lastid     = 0;
             $data->threads->total      = 0;
             $data->threads->posts      = null;
             $data->threads->html       = null;
 
-            $data->thread  = new stdClass();
+            $data->thread  = new \stdClass();
             $data->thread->lastchange = '0000-00-00 00:00:00';
             $data->thread->lastid     = 0;
             $data->thread->posts      = null;
@@ -1240,7 +1241,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
             $sects = $this->sections;
         }
 
-        $stats = new stdClass();
+        $stats = new \stdClass();
         $stats->categories = 0;
         $stats->threads    = 0;
         $stats->posts      = 0;
@@ -1373,7 +1374,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
             ->ordered()
             ->rows();
 
-        $stats = new stdClass();
+        $stats = new \stdClass();
         $stats->categories = 0;
         $stats->threads    = 0;
         $stats->posts      = 0;

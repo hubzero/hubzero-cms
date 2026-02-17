@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Tools\Novnc;
+
+use Hubzero\Plugin\Plugin;
+
 
 
 
@@ -16,7 +20,7 @@ defined('_HZEXEC_') or die();
  * Plugin class for NoVNC session rendering
  *
  */
-class plgToolsNovnc extends \Hubzero\Plugin\Plugin
+class Novnc extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -33,7 +37,7 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
      */
     public function onToolSessionIdentify()
     {
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->name  = $this->_name;
         $obj->type  = $this->_type;
         $obj->title = Lang::txt('PLG_' . $this->_type . '_' . $this->_name . '_TITLE');
@@ -108,7 +112,7 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
                 $allow = trim($allow);
 
                 if (preg_match('/(.+?),\s+([^\s]+)\s+(\d+)\.(\d+)/i', $allow, $matches)) {
-                    $req = new stdClass();
+                    $req = new \stdClass();
                     $req->name  = strtolower(trim($matches[2]));
                     $req->major = intval($matches[3]);
                     $req->minor = intval($matches[4]);

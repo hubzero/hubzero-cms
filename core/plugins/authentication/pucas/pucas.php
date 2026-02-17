@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Authentication Plugin class for PUCAS
  */
-class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
+namespace Plugins\Authentication\Pucas;
+
+use Hubzero\Plugin\Plugin;
+
+class Pucas extends Plugin
 {
     /**
      * Affects constructor behavior.
@@ -147,7 +148,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
         try {
             $authenticated = phpCAS::isAuthenticated();
         } catch (CAS_AuthenticationException $e) {
-            throw new Exception(Lang::txt('PLG_AUTHENTICATION_PUCAS_ERROR_EXPIRED_TICKET'), 400);
+            throw new \Exception(Lang::txt('PLG_AUTHENTICATION_PUCAS_ERROR_EXPIRED_TICKET'), 400);
         }
 
 
@@ -229,7 +230,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
             // Save extra data
             if ($this->params->get('profile_i2a2')) {
                 $val = phpCAS::getAttribute('i2a2characteristics');
-                $datum = Hubzero\Auth\Link\Data::oneByLinkAndKey($hzal->id, 'i2a2');
+                $datum = \Hubzero\Auth\Link\Data::oneByLinkAndKey($hzal->id, 'i2a2');
                 $datum->set(array(
                     'link_id'      => $hzal->id,
                     'domain_key'   => 'i2a2',

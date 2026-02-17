@@ -1,20 +1,21 @@
 <?php
 
+namespace Plugins\Handlers\Pdf;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Plugin\Plugin;
-
 // No direct access
 defined('_HZEXEC_') or die();
 
 /**
  * Plugin class for pdf file handling
  */
-class PlgHandlersPdf extends Plugin
+class Pdf extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

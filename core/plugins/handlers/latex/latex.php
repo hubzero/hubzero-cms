@@ -1,12 +1,14 @@
 <?php
 
+namespace Plugins\Handlers\Latex;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Plugin\Plugin;
 use Hubzero\Filesystem\Manager;
 use Hubzero\Filesystem\File;
 
@@ -16,7 +18,7 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for latex file handling
  */
-class PlgHandlersLatex extends Plugin
+class Latex extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

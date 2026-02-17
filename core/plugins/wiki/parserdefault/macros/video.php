@@ -6,13 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+/**
+ * Wiki macro class for displaying a youtube video
+ */
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class for displaying a youtube video
  */
-class VideoMacro extends WikiMacro
+class Video extends WikiMacro
 {
     /**
      * Container for parsed attributes

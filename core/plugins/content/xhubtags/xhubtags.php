@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Xhubtags;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Content Plugin class for {xhub} tags
  *
  */
-class plgContentXhubtags extends \Hubzero\Plugin\Plugin
+class Xhubtags extends Plugin
 {
     /**
      * Plugin that loads module positions within content

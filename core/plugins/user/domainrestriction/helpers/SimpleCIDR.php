@@ -1,15 +1,14 @@
 <?php
 
-
 // phpcs:disable PSR1.Methods.CamelCapsMethodName
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-
+namespace Plugins\User\Domainrestriction\Helpers;
 
 class SimpleCIDR
 {

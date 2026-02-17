@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Members Plugin class for blog entries
  */
-class plgMembersBlog extends \Hubzero\Plugin\Plugin
+namespace Plugins\Members\Blog;
+
+use Hubzero\Plugin\Plugin;
+
+class Blog extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -911,10 +912,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
                     $entry->set('state', 2);
 
                     if (!$entry->save()) {
-                        throw new Exception($entry->getError());
+                        throw new \Exception($entry->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return false;
             }
         }
@@ -948,10 +949,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
                 foreach ($entries as $entry) {
                     if (!$entry->destroy()) {
-                        throw new Exception($entry->getError());
+                        throw new \Exception($entry->getError());
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return false;
             }
         }

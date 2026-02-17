@@ -6,11 +6,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Cache;
+
+use Hubzero\Plugin\Plugin;
+
 // no direct access
 /**
  * Page Cache Plugin
  */
-class plgSystemCache extends \Hubzero\Plugin\Plugin
+class Cache extends Plugin
 {
     /**
      * Constructor

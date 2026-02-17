@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Filesystem\Local;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +15,7 @@ require_once __DIR__ . DS . 'LocalAdapter.php';
 /**
  * Plugin class for local filesystem connectivity
  */
-class plgFilesystemLocal extends \Hubzero\Plugin\Plugin
+class Local extends Plugin
 {
     /**
      * Initializes the local filesystem connection

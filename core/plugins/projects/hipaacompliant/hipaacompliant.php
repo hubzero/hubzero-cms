@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Projects\Hipaacompliant;
+
+use Hubzero\Plugin\Plugin;
+
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
@@ -15,7 +19,7 @@ defined('_HZEXEC_') or die();
 /**
  * Allow saving of hipaa compliance checkbox
  */
-class PlgProjectsHipaacompliant extends \Hubzero\Plugin\Plugin
+class Hipaacompliant extends Plugin
 {
     /**
      * Event call to return data for a specific project

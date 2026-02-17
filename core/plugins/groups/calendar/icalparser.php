@@ -1,11 +1,13 @@
 <?php
 
-
 /**
  * Copyright (c) 2004 Roman Ožana (http://www.omdesign.cz)
  *
  * @author Roman Ožana <ozana@omdesign.cz>
  */
+
+namespace Plugins\Groups\Calendar;
+
 class IcalParser
 {
     /**

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Members\Groups;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package   hubzero-cms
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for groups
  */
-class PlgMembersGroups extends \Hubzero\Plugin\Plugin
+class Groups extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -81,18 +85,18 @@ class PlgMembersGroups extends \Hubzero\Plugin\Plugin
         $managers = array();
 
         // Look for any invites by email
-        $emails = Hubzero\User\Group\InviteEmail::all()
+        $emails = \Hubzero\User\Group\InviteEmail::all()
             ->whereEquals('email', $member->get('email'))
             ->rows();
 
         foreach ($emails as $emailed) {
-            $g = Hubzero\User\Group::getInstance($emailed->get('gidNumber'));
+            $g = \Hubzero\User\Group::getInstance($emailed->get('gidNumber'));
 
             if (!$g || !$g->get('gidNumber')) {
                 continue;
             }
 
-            $group = new stdClass();
+            $group = new \stdClass();
             $group->gidNumber = $g->gidNumber;
             $group->published = $g->published;
             $group->approved = $g->approved;

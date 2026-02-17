@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Sortcourses;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -17,7 +21,7 @@ defined('_HZEXEC_') or die();
  */
 /**
  */
-class plgSearchSortCourses extends \Hubzero\Plugin\Plugin
+class Sortcourses extends Plugin
 {
     /**
      * Short description for 'onYSearchSort'

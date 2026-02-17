@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\EditorsXtd\Pagebreak;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Editor Pagebreak buton
  *
  */
-class plgButtonPagebreak extends \Hubzero\Plugin\Plugin
+class Pagebreak extends Plugin
 {
     /**
      * Constructor

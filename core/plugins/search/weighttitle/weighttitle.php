@@ -6,15 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Short description for 'plgSearchWeightTitle'
  *
  * Long description (if any) ...
  */
-class plgSearchWeightTitle extends \Hubzero\Plugin\Plugin
+namespace Plugins\Search\Weighttitle;
+
+use Hubzero\Plugin\Plugin;
+
+class Weighttitle extends Plugin
 {
     /**
      * Short description for 'onSearchWeightAll'

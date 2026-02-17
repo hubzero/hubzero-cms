@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Messages;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Groups Plugin class for messages
  *
  */
-class plgGroupsMessages extends \Hubzero\Plugin\Plugin
+class Messages extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -197,7 +201,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
         // Instantiate our message object
         $database = App::get('db');
-        $recipient = Hubzero\Message\Message::blank();
+        $recipient = \Hubzero\Message\Message::blank();
 
         // Retrieve data
         $total = $recipient->getSentMessagesCount($filters);
@@ -245,7 +249,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
         $database = App::get('db');
 
         // Load the message and parse it
-        $xmessage = Hubzero\Message\Message::oneOrFail($message);
+        $xmessage = \Hubzero\Message\Message::oneOrFail($message);
 
         if (substr($xmessage->get('component'), 0, 4) == 'com_') {
             $xmessage->set('component', substr($xmessage->get('component'), 4));

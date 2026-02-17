@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Redirect Macro
  */
-class RedirectMacro extends WikiMacro
+class Redirect extends WikiMacro
 {
     /**
      * Allow macro in partial parsing?

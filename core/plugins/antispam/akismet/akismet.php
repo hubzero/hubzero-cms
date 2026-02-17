@@ -6,12 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Akismet;
+
+use Hubzero\Plugin\Plugin;
+
 
 
 /**
  * Akismet antispam Plugin
  */
-class plgAntispamAkismet extends \Hubzero\Plugin\Plugin
+class Akismet extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

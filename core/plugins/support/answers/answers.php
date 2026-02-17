@@ -1,21 +1,20 @@
 <?php
 
-
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
-
 /**
  * Support plugin class for com_answers entries
  *
  */
-class plgSupportAnswers extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Answers;
+
+use Hubzero\Plugin\Plugin;
+
+class Answers extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

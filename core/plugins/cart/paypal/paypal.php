@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Cart\Paypal;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,7 +13,7 @@
 /**
  * Cart plugin for Payment: Paypal
  */
-class plgCartPaypal extends \Hubzero\Plugin\Plugin
+class Paypal extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

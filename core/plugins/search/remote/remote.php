@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Remote;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -24,7 +28,7 @@ use GuzzleHttp\Client;
 
 /**
  */
-class plgSearchRemote extends \Hubzero\Plugin\Plugin
+class Remote extends Plugin
 {
     /**
      * onContentSave
@@ -41,7 +45,7 @@ class plgSearchRemote extends \Hubzero\Plugin\Plugin
                 $result = SearchComponent::addDomainNameSpace($result);
             }
             unset($result);
-            $params = Plugin::params('search', 'remote');
+            $params = \Plugin::params('search', 'remote');
             $url = $params->get('app_url');
             $token = $params->get('app_token');
             $client = new \GuzzleHttp\Client(['verify' => false]);
@@ -53,7 +57,7 @@ class plgSearchRemote extends \Hubzero\Plugin\Plugin
                 ]
             ]);
             $body = $response->getBody();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
     }
 
@@ -68,11 +72,11 @@ class plgSearchRemote extends \Hubzero\Plugin\Plugin
     {
         $className = strtolower(preg_replace('/([A-Z])/', '_$1', get_class($this)));
         if ($model->name === $className) {
-            $params = Plugin::params('search', 'remote');
+            $params = \Plugin::params('search', 'remote');
             $url = $params->get('app_url');
             $token = $params->get('app_token');
             if (!empty($url) && !empty($token)) {
-                $result = new stdClass();
+                $result = new \stdClass();
                 $this->sendSolrRequest($result, 'delete');
             }
         }

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Publications;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -21,7 +25,7 @@ require_once __DIR__ . DS . 'childsorter.php';
  */
 /**
  */
-class plgSearchPublications extends \Hubzero\Plugin\Plugin
+class Publications extends Plugin
 {
     /**
      * Build search query and add it to the $results

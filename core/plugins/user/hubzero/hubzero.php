@@ -6,13 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
+namespace Plugins\User\Hubzero;
+
+use Hubzero\Plugin\Plugin;
+
 defined('_HZEXEC_') or die;
 
 /**
  * Hubzero User plugin
  */
-class plgUserHubzero extends \Hubzero\Plugin\Plugin
+class Hubzero extends Plugin
 {
     /**
      * True when the user array looks like a third-party-auth auto-create
@@ -212,7 +215,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
                 if (!$mail->send()) {
                     // TODO: Probably should raise a plugin error but this event is not error checked.
-                    throw new Exception(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR'), 500);
+                    throw new \Exception(Lang::txt('PLG_USER_HUBZERO_EMAIL_ERROR'), 500);
                 }
             }
         }
@@ -230,7 +233,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
         $instance = $this->_getUser($user, $options);
 
         // If _getUser returned an error, then pass it back.
-        if ($instance instanceof Exception) {
+        if ($instance instanceof \Exception) {
             return false;
         }
 
@@ -441,7 +444,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
             $domain = Hubzero\Auth\Domain::find_by_id($user['auth_link']->auth_domain_id);
 
             if ($domain && is_object($domain)) {
-                $params = Plugin::params('authentication', $domain->authenticator);
+                $params = \Plugin::params('authentication', $domain->authenticator);
 
                 if ($params && is_object($params) && $params->get('auto_approve', false)) {
                     $instance->set('approved', 2);
@@ -454,7 +457,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
         if ($autoregister) {
             if (!$instance->save()) {
-                return new Exception($instance->getError());
+                return new \Exception($instance->getError());
             }
         } else {
             // No existing user and autoregister off, this is a temporary user.

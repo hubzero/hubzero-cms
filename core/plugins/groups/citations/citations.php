@@ -6,10 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 // include needed libs
+namespace Plugins\Groups\Citations;
+
+use Hubzero\Plugin\Plugin;
+
 require_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
 require_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 require_once Component::path('com_citations') . DS . 'models' . DS . 'tag.php';
@@ -28,7 +29,7 @@ use Components\Citations\Models\Importer;
 /**
  * Groups plugin class for citations
  */
-class plgGroupsCitations extends \Hubzero\Plugin\Plugin
+class Citations extends Plugin
 {
     /**
      * Plugin scope
@@ -948,7 +949,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
             $params = json_decode($this->group->get('params'));
             if (!is_object($params)) {
-                $params = new stdClass();
+                $params = new \stdClass();
             }
 
             // craft a clever name

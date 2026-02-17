@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Cron\Search;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +20,7 @@ require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 /**
  * Cron plugin for Search indexing
  */
-class plgCronSearch extends \Hubzero\Plugin\Plugin
+class Search extends Plugin
 {
     /**
      * Return a list of events
@@ -27,7 +31,7 @@ class plgCronSearch extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(

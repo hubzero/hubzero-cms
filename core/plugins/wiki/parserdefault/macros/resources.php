@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class that will insert a linked title to a resource
  */
-class ResourcesMacro extends WikiMacro
+class Resources extends WikiMacro
 {
     /**
      * Allow macro in partial parsing?
@@ -105,7 +108,7 @@ class ResourcesMacro extends WikiMacro
             if ($nolink) {
                 return stripslashes($r[1]);
             } else {
-                return '<a href="' . Route::url($link) . '">' . stripslashes($r[1]) . '</a>';
+                return '<a href="' . \Route::url($link) . '">' . stripslashes($r[1]) . '</a>';
             }
         }
 
@@ -122,7 +125,7 @@ class ResourcesMacro extends WikiMacro
      */
     public function screenshots($alias, $num = 1)
     {
-        $config = Component::params('com_resources');
+        $config = \Component::params('com_resources');
         $path = DS . trim($config->get('toolpath', '/site/tools'), DS);
 
         $alias = strtolower($alias);

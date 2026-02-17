@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Resources Plugin class for adding Open Graph metadata to the document
  */
-class plgResourcesOpengraph extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Opengraph;
+
+use Hubzero\Plugin\Plugin;
+
+class Opengraph extends Plugin
 {
     /**
      * Return data on a resource view (this will be some form of HTML)

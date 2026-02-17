@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Publications Plugin class for related content
  */
-class plgPublicationsRelated extends \Hubzero\Plugin\Plugin
+namespace Plugins\Publications\Related;
+
+use Hubzero\Plugin\Plugin;
+
+class Related extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

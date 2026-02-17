@@ -6,7 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// no direct access
+/**
+ * CKEditor Plugin
+ */
+namespace Plugins\Editors\Ckeditor5;
+
+use Hubzero\Plugin\Plugin;
+
 defined('_HZEXEC_') or die;
 
 Html::behavior('core');
@@ -14,7 +20,7 @@ Html::behavior('core');
 /**
  * CKEditor Plugin
  */
-class plgEditorCkeditor5 extends \Hubzero\Plugin\Plugin
+class Ckeditor5 extends Plugin
 {
     /**
      * Base path for editor files

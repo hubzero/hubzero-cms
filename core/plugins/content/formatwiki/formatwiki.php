@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Formatwiki;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die;
  * Wiki formatted Content Plugin
  *
  */
-class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
+class Formatwiki extends Plugin
 {
     /**
      * Finder before save content method

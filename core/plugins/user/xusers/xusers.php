@@ -1,18 +1,21 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Xusers;
+
+use Hubzero\Plugin\Plugin;
+
 // No direct access
 
 /**
  * User plugin for hub users
  */
-class plgUserXusers extends \Hubzero\Plugin\Plugin
+class Xusers extends Plugin
 {
     /**
      * Constructor
@@ -54,7 +57,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
         if ($xuser->isGuest()) {
             // user plugin hasn't run or something went very badly
 
-            $plugins = Plugin::byType('user');
+            $plugins = \Plugin::byType('user');
             $xuser_order = false;
             $hubzero_order = false;
             $i = 0;
@@ -72,14 +75,14 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
             }
 
             if ($hubzero_order === false) {
-                throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
+                throw new \Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
             }
 
             if ($xuser_order <= $hubzero_order) {
-                throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
+                throw new \Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'), 500);
             }
 
-            throw new Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_FAILED'), 500);
+            throw new \Exception(Lang::txt('E_HUBZERO_USER_PLUGIN_FAILED'), 500);
         }
 
         // log login to auth log
@@ -91,7 +94,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
         }
 
         // Log attempt to the database
-        Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
+        \Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
             [
             'username' => $xuser->get('username'),
             'status'   => 'success'
@@ -135,9 +138,9 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
         $hash = App::hash(App::get('client')->name . ':tracker');
 
         $key = App::hash('');
-        $crypt = new Hubzero\Encryption\Encrypter(
-            new Hubzero\Encryption\Cipher\Simple(),
-            new Hubzero\Encryption\Key('simple', $key, $key)
+        $crypt = new \Hubzero\Encryption\Encrypter(
+            new \Hubzero\Encryption\Cipher\Simple(),
+            new \Hubzero\Encryption\Key('simple', $key, $key)
         );
 
         $tracker = array();
@@ -206,12 +209,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
         if ($params->get('manage_quotas', false)) {
             require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
-            $quota = Components\Members\Models\Quota::all()
+            $quota = \Components\Members\Models\Quota::all()
                 ->whereEquals('user_id', $xuser->get('id'))
                 ->row();
 
             if (!$quota->get('id')) {
-                $class = Components\Members\Models\Quota\Category::defaultEntry();
+                $class = \Components\Members\Models\Quota\Category::defaultEntry();
 
                 if ($class->get('id')) {
                     $quota->set('user_id', $xuser->get('id'));
@@ -224,7 +227,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
                 }
             } elseif ($quota->get('class_id')) {
                 // Here, we're checking to make sure their class matches their actual quota values
-                $class = Components\Members\Models\Quota\Category::oneOrNew($quota->get('class_id'));
+                $class = \Components\Members\Models\Quota\Category::oneOrNew($quota->get('class_id'));
 
                 if (
                     $quota->get('soft_blocks') != $class->get('soft_blocks')
@@ -357,7 +360,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
             $result = $xprofile->create();
 
             if (!$result) {
-                return new Exception('Unable to create \Hubzero\User\Profile record', 500);
+                return new \Exception('Unable to create \Hubzero\User\Profile record', 500);
             }
         } else {
             $update = false;
@@ -469,12 +472,12 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
         if ($params->get('manage_quotas', false)) {
             require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
-            $quota = Components\Members\Models\Quota::all()
+            $quota = \Components\Members\Models\Quota::all()
                 ->whereEquals('user_id', $user['id'])
                 ->row();
 
             if (!$quota->get('id')) {
-                $class = Components\Members\Models\Quota\Category::defaultEntry();
+                $class = \Components\Members\Models\Quota\Category::defaultEntry();
 
                 if ($class->get('id')) {
                     $quota->set('user_id', $user['id']);
@@ -568,7 +571,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
         // Check if quota exists for the user
         require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
-        $quota = Components\Members\Models\Quota::all()
+        $quota = \Components\Members\Models\Quota::all()
             ->whereEquals('user_id', $user['id'])
             ->row();
 
@@ -635,7 +638,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
     public function onUserLoginFailure($response)
     {
         // Log attempt to the database
-        Hubzero\User\User::blank()->logger()->auth()->set(
+        \Hubzero\User\User::blank()->logger()->auth()->set(
             [
             'user_id'  => 0,
             'username' => isset($response['username']) ? $response['username'] : '[unknown]',

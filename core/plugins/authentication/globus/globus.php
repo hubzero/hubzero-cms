@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Authentication\Globus;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2022 The Regents of the University of California.
@@ -11,8 +15,7 @@ defined('_HZEXEC_') or die();
 
 require_once('Provider/Globus.php');
 require_once('Provider/GlobusResourceOwner.php');
-
-class plgAuthenticationGlobus extends \Hubzero\Plugin\OauthClient
+class Globus extends \Hubzero\Plugin\OauthClient
 {
     /**
      * Affects constructor behavior.
@@ -134,7 +137,7 @@ class plgAuthenticationGlobus extends \Hubzero\Plugin\OauthClient
             $storedState = Session::get('state', null, 'globus');
             $state = Request::getVar('state');
             if (empty($state) || $storedState !== $state) {
-                throw new Exception('Mismatched state');
+                throw new \Exception('Mismatched state');
             }
             Session::clear('state', 'globus');
             $token = $this->globus()->getAccessToken('authorization_code', array('code' => Request::getString('code')));

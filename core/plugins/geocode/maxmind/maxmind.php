@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * MaxMind plugin for geocode
  *
@@ -15,7 +14,11 @@
  * key is required. This provider provides two constants
  * CITY_EXTENDED_SERVICE by default and OMNI_SERVICE.
  */
-class plgGeocodeMaxmind extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Maxmind;
+
+use Hubzero\Plugin\Plugin;
+
+class Maxmind extends Plugin
 {
     /**
      * Return a geocode provider

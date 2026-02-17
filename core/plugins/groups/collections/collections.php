@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Collections;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Groups Plugin class for assets
  *
  */
-class plgGroupsCollections extends \Hubzero\Plugin\Plugin
+class Collections extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -722,7 +726,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         }
 
         if (Request::getInt('no_html', 0)) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $colUrl = 'index.php?option=com_groups&cn=' . $this->group->get('cn');
             $colUrl .= '&active=collections' . $sfx;
             $response->href = Route::url($colUrl);
@@ -777,7 +781,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
         }
 
         if (Request::getInt('no_html', 0)) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $colUrl = 'index.php?option=com_groups&cn=' . $this->group->get('cn');
             $colUrl .= '&active=collections' . $sfx;
             $response->href = Route::url($colUrl);

@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class for getting the page title or pagename of a page
  */
-class PageNameMacro extends WikiMacro
+class PageName extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments

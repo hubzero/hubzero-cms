@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Sitemap;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -15,7 +19,7 @@ defined('_HZEXEC_') or die();
  */
 /**
  */
-class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
+class Sitemap extends Plugin
 {
     /**
      * Get the plugin name

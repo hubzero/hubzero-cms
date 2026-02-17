@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * HUBzero plugin class for displaying a wiki editor toolbar
  */
-class plgEditorWikiwyg extends \Hubzero\Plugin\Plugin
+namespace Plugins\Editors\Wikiwyg;
+
+use Hubzero\Plugin\Plugin;
+
+class Wikiwyg extends Plugin
 {
     /**
      * Flag for if scripts need to be pushed to the document or not

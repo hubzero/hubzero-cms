@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Captcha\Recaptcha;
+
+use Hubzero\Plugin\Plugin;
+
 defined('_HZEXEC_') or die;
 
 /**
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die;
  *
  * Based on the official recaptcha library( https://developers.google.com/recaptcha/docs/php )
  */
-class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
+class Recaptcha extends Plugin
 {
     /**
      * Path to JS library needed for ReCAPTCHA to display
@@ -57,7 +61,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
     public function onInit($id = 'dynamic_recaptcha_1')
     {
         if (!$this->params->get('public') || !$this->params->get('private')) {
-            throw new Exception(Lang::txt('PLG_CAPTCHA_RECAPTCHA_ERROR_NO_PUBLIC_KEY'));
+            throw new \Exception(Lang::txt('PLG_CAPTCHA_RECAPTCHA_ERROR_NO_PUBLIC_KEY'));
         }
 
         return true;
@@ -75,7 +79,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
     {
         try {
             $this->onInit($id);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return '<p class="error">' . Lang::txt('PLG_CAPTCHA_RECAPTCHA_API_NEEDED') . '</p>';
         }
 

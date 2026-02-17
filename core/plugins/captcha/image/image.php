@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Plugin class for displaying image CAPTCHAs
  */
-class plgCaptchaImage extends \Hubzero\Plugin\Plugin
+namespace Plugins\Captcha\Image;
+
+use Hubzero\Plugin\Plugin;
+
+class Image extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

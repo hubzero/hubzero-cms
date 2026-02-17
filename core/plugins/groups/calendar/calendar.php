@@ -6,8 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Groups\Calendar;
+
+use Hubzero\Plugin\Plugin;
 
 $pluginDirectory = __DIR__;
 
@@ -16,7 +17,7 @@ require_once "$pluginDirectory/helpers/userLocalizer.php";
 /**
  * Groups Plugin class for calendar
  */
-class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
+class Calendar extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -352,7 +353,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 
         // add each calendar to the sources
         foreach ($calendars as $calendar) {
-            $source            = new stdClass();
+            $source            = new \stdClass();
             $source->title     = $calendar->get('title');
             $source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calendar_id=' . $calendar->get('id'));
             $source->className = ($calendar->get('color')) ? 'fc-event-' . $calendar->get('color') : 'fc-event-default';
@@ -360,7 +361,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
         }
 
         // add uncategorized source
-        $source            = new stdClass();
+        $source            = new \stdClass();
         $source->title     = 'Uncategorized';
         $source->url       = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar&action=events&calendar_id=0');
         $source->className = 'fc-event-default';
@@ -398,7 +399,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
         $start = Date::of($start . ' 00:00:00');
         $end   = Date::of($end . ' 00:00:00');
         $end->modify('-1 second');
-        $userLocalizer = new UserLocalizer();
+        $userLocalizer = new Helpers\UserLocalizer();
 
         // get calendar events
         $eventsCalendar = \Components\Events\Models\Calendar::getInstance();
@@ -441,7 +442,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
             $localFormat = 'Y-m-d\TH:i:s';
             $abbr        = Date::of($rawEvent->get('publish_up'))->toTimeZone($eventTz, 'T');
 
-            $event            = new stdClass();
+            $event            = new \stdClass();
             $event->id        = $rawEvent->get('id');
             $event->allDay    = $rawEvent->get('allday') == 1;
             $event->title     = $rawEvent->get('title') . ($event->allDay ? '' : ' (' . $abbr . ')');
@@ -1037,20 +1038,20 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
         $description = (isset($icalEvent['DESCRIPTION'])) ? $icalEvent['DESCRIPTION'] : '';
         $location    = (isset($icalEvent['LOCATION'])) ? $icalEvent['LOCATION'] : '';
         $website     = (isset($icalEvent['URL'])) ? $icalEvent['URL'] : '';
-        $start       = (isset($icalEvent['DTSTART']) && ($icalEvent['DTSTART'] instanceof DateTime)) ? $icalEvent['DTSTART'] : new DateTime();
-        $end         = (isset($icalEvent['DTEND']) && ($icalEvent['DTEND'] instanceof DateTime)) ? $icalEvent['DTEND'] : new DateTime();
+        $start       = (isset($icalEvent['DTSTART']) && ($icalEvent['DTSTART'] instanceof \DateTime)) ? $icalEvent['DTSTART'] : new \DateTime();
+        $end         = (isset($icalEvent['DTEND']) && ($icalEvent['DTEND'] instanceof \DateTime)) ? $icalEvent['DTEND'] : new \DateTime();
         $recurrence  = (isset($icalEvent['RRULE'])) ? $icalEvent['RRULE'] : array();
 
         // normalize until date
         if (isset($recurrence['UNTIL'])) {
             $tz = Config::get('offset');
-            $until = new DateTime($recurrence['UNTIL']);
+            $until = new \DateTime($recurrence['UNTIL']);
             $until->setTimezone(new DateTimezone($tz));
             $recurrence['UNTIL'] = $until->format('m/d/Y');
         }
 
         //object to hold event data
-        $event             = new stdClass();
+        $event             = new \stdClass();
         $event->title      = $title;
         $event->content    = stripslashes(str_replace('\n', "\n", $description));
         $event->start      = $start->format("m/d/Y");
@@ -1538,7 +1539,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
         $view = $this->view('edit', 'calendars');
 
         // get the calendar
-        $view->calendar = Components\Events\Models\Calendar::getInstance($calendarId);
+        $view->calendar = \Components\Events\Models\Calendar::getInstance($calendarId);
 
         //push some vars to the view
         $view->month      = $this->month;

@@ -1,5 +1,10 @@
 <?php
 
+namespace Plugins\Tags\Publications;
+
+use Hubzero\Plugin\Plugin;
+
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
 /**
  * @package    hubzero-cms
@@ -10,7 +15,7 @@
 /**
  * Tags plugin class for publications
  */
-class plgTagsPublications extends \Hubzero\Plugin\Plugin
+class Publications extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

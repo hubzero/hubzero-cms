@@ -9,7 +9,11 @@
 /**
  * Cron plugin for activity
  */
-class plgCronActivity extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Activity;
+
+use Hubzero\Plugin\Plugin;
+
+class Activity extends Plugin
 {
     /**
      * Return a list of events
@@ -20,7 +24,7 @@ class plgCronActivity extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(
@@ -46,7 +50,7 @@ class plgCronActivity extends \Hubzero\Plugin\Plugin
     public function emailMemberDigest(\Components\Cron\Models\Job $job)
     {
         // Make sure digests are enabled?  The cron job being on may be evidence enough...
-        if (!Plugin::params('members', 'activity')->get('email_digests', false)) {
+        if (!\Plugin::params('members', 'activity')->get('email_digests', false)) {
             return true;
         }
 

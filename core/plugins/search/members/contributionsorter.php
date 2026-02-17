@@ -1,11 +1,12 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+namespace Plugins\Search\Members;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -67,3 +68,6 @@ class ContributionSorter
         return strcmp($a->get_title(), $b->get_title());
     }
 }
+
+// BC alias for non-namespaced code
+class_alias('Plugins\Search\Members\ContributionSorter', 'ContributionSorter');

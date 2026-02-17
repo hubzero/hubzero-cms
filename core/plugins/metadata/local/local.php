@@ -1,18 +1,20 @@
 <?php
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Metadata\Local;
+
+use Hubzero\Plugin\Plugin;
+
 require_once __DIR__ . DS . 'models' . DS . 'metadata.php';
 
 /**
  * Plugin class for fez metadata handling
  */
-class plgMetadataLocal extends \Hubzero\Plugin\Plugin
+class Local extends Plugin
 {
     /**
      * Responds to events for saving file metadata
@@ -21,14 +23,14 @@ class plgMetadataLocal extends \Hubzero\Plugin\Plugin
      * @param   array                    $metadata  The metadata itself
      * @return  void
      **/
-    public function onMetadataSave(Hubzero\Filesystem\File $file, $metadata)
+    public function onMetadataSave(\Hubzero\Filesystem\File $file, $metadata)
     {
         foreach ($metadata as $key => $value) {
             if (!$file->isLocal()) {
                 return false;
             }
 
-            $metadata = Metadata::oneOrNewByPathAndKey($file->getAbsolutePath(), $key);
+            $metadata = Models\Metadata::oneOrNewByPathAndKey($file->getAbsolutePath(), $key);
 
             $metadata->set('value', (string) $value)->save();
         }
@@ -41,13 +43,13 @@ class plgMetadataLocal extends \Hubzero\Plugin\Plugin
      * @param   int                      $maxEntries  The maximum number of entries to return
      * @return  array
      **/
-    public function onMetadataGet(Hubzero\Filesystem\File $file, $maxEntries = 1)
+    public function onMetadataGet(\Hubzero\Filesystem\File $file, $maxEntries = 1)
     {
         if (!$file->isLocal()) {
             return false;
         }
 
-        $metadata = Metadata::loadAllByPath($file->getAbsolutePath());
+        $metadata = Models\Metadata::loadAllByPath($file->getAbsolutePath());
         $results  = [];
 
         foreach ($metadata as $data) {
@@ -66,6 +68,6 @@ class plgMetadataLocal extends \Hubzero\Plugin\Plugin
      **/
     public function onFileMove($old, $new)
     {
-        return Metadata::relocateByPath($old, $new);
+        return Models\Metadata::relocateByPath($old, $new);
     }
 }

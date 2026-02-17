@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Display Watch feature on resources page
  */
-class plgResourcesWatch extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Watch;
+
+use Hubzero\Plugin\Plugin;
+
+class Watch extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

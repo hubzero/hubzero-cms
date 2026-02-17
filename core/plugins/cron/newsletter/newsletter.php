@@ -12,7 +12,11 @@ defined('_HZEXEC_') or die();
 /**
  * Cron plugin for newsletters
  */
-class plgCronNewsletter extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Newsletter;
+
+use Hubzero\Plugin\Plugin;
+
+class Newsletter extends Plugin
 {
     /**
      * Return a list of events
@@ -23,7 +27,7 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(
@@ -187,7 +191,7 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
                     // If there is no mailing set for the next interval, create it.
                     if ($windowMax - $windowMin == 0) {
                         // Create mailing
-                        $newMailing = Components\Newsletter\Models\Mailing::blank();
+                        $newMailing = \Components\Newsletter\Models\Mailing::blank();
                         foreach (get_object_vars($latestMailing) as $k => $v) {
                             $newMailing->set($k, $v);
                         }
@@ -196,7 +200,7 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
                         $newMailing->save();
 
                         // Add recipients
-                        $mailingList = Components\Newsletter\Models\MailingList::oneOrNew($newMailing->lid);
+                        $mailingList = \Components\Newsletter\Models\MailingList::oneOrNew($newMailing->lid);
                         $emails = $mailingList->emails()->rows();
 
                         // @TODO Verify there is no helper method to determine whether or not to send email
@@ -260,8 +264,8 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
         foreach ($unconvertedActions as $action) {
             // attempt to locate
             try {
-                $location = Hubzero\Geocode\Geocode::locate($action->ip);
-            } catch (Exception $e) {
+                $location = \Hubzero\Geocode\Geocode::locate($action->ip);
+            } catch (\Exception $e) {
                 continue;
 
                 /*$location = array(

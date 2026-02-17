@@ -1,13 +1,14 @@
 <?php
 
+namespace Plugins\Courses\Reviews;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Plugin\Plugin;
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -16,7 +17,7 @@ include_once __DIR__ . DS . 'models' . DS . 'comment.php';
 /**
  * Courses Plugin class for review
  */
-class PlgCoursesReviews extends Plugin
+class Reviews extends Plugin
 {
     /**
      * Constructor
@@ -326,8 +327,8 @@ class PlgCoursesReviews extends Plugin
             ->whereEquals('item_id', $this->obj->get('id'))
             ->whereEquals('parent', 0)
             ->whereIn('state', array(
-                Components\Courses\Models\Comment::STATE_PUBLISHED,
-                Components\Courses\Models\Comment::STATE_FLAGGED
+                \Components\Courses\Models\Comment::STATE_PUBLISHED,
+                \Components\Courses\Models\Comment::STATE_FLAGGED
             ))
             ->limit($this->params->get('display_limit', 25))
             ->ordered()

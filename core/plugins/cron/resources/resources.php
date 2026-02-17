@@ -9,7 +9,11 @@
 /**
  * Cron plugin for resources
  */
-class plgCronResources extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Resources;
+
+use Hubzero\Plugin\Plugin;
+
+class Resources extends Plugin
 {
     /**
      * Return a list of events
@@ -20,7 +24,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = 'resources';
 
         $obj->events = array(
@@ -315,7 +319,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
             foreach ($results as $reportcard) {
                 // Loop through each test result and save to the database
                 foreach ($reportcard['tests'] as $result) {
-                    $prev = Hubzero\Content\Auditor\Result::oneByScope(
+                    $prev = \Hubzero\Content\Auditor\Result::oneByScope(
                         $result->get('scope'),
                         $result->get('scope_id')
                     );
@@ -382,14 +386,14 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
             $limit = intval($params->get('digest_limit', 3));
 
             foreach ($users as $user) {
-                $query = Components\Resources\Models\Entry::all();
+                $query = \Components\Resources\Models\Entry::all();
 
                 $r = $query->getTableName();
 
                 $query
                     ->deselect()
                     ->select('DISTINCT ' . $r . '.*')
-                    ->whereEquals($r . '.published', Components\Resources\Models\Entry::STATE_PUBLISHED)
+                    ->whereEquals($r . '.published', \Components\Resources\Models\Entry::STATE_PUBLISHED)
                     ->whereIn($r . '.access', array(0, 1))
                     ->whereEquals($r . '.standalone', 1);
 
@@ -403,7 +407,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
                     ->orWhere($r . '.publish_down', '>=', Date::toSql(), 1)
                     ->resetDepth();
 
-                $tags = Components\Tags\Models\Objct::all()
+                $tags = \Components\Tags\Models\Objct::all()
                     ->whereEquals('objectid', $user)
                     ->whereEquals('tbl', 'xprofiles')
                     ->rows()
@@ -479,7 +483,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
             return false;
         }
 
-        $eview = new Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View(array(
             'base_path' => __DIR__,
             'name'      => 'emails',
             'layout'    => 'digest_plain'

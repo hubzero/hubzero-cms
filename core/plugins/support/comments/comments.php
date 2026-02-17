@@ -1,9 +1,5 @@
 <?php
 
-
-
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +9,11 @@
 /**
  * Support plugin class for comments
  */
-class plgSupportComments extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Comments;
+
+use Hubzero\Plugin\Plugin;
+
+class Comments extends Plugin
 {
     /**
      * Retrieves a row from the database

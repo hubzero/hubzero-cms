@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * MaxMindBinary plugin for geocode
  */
-class plgGeocodeMaxmindbinary extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Maxmindbinary;
+
+use Hubzero\Plugin\Plugin;
+
+class Maxmindbinary extends Plugin
 {
     /**
      * Return a geocode provider

@@ -6,16 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Projects\Links;
+
+use Hubzero\Plugin\Plugin;
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Association;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Projects Links plugin
  */
-class plgProjectsLinks extends \Hubzero\Plugin\Plugin
+class Links extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -168,7 +168,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
         }
 
         // Make sure this publication belongs to this project
-        $objP = new Components\Publications\Tables\Publication($this->_database);
+        $objP = new \Components\Publications\Tables\Publication($this->_database);
         if (!$objP->load($pid) || $objP->project_id != $this->model->get('id')) {
             $this->setError(Lang::txt('PLG_PROJECTS_LINKS_ERROR_CITATION_DELETE'));
         }
@@ -258,7 +258,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
         if (!$vid || !$cite['type'] || !$cite['title']) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
         } else {
-            $citation = Components\Citations\Models\Citation::blank()->set($cite);
+            $citation = \Components\Citations\Models\Citation::blank()->set($cite);
             $citation->set('created', $new == true ? Date::toSql() : $citation->get('created'));
             $citation->set('uid', $new == true ? $this->_uid : $citation->get('uid'));
             $citation->set('published', 1);
@@ -446,7 +446,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
                     $citation->set('pages', $data->page);
 
                     // Get type ID
-                    $types = Components\Citations\Models\Type::all()->rows()->toArray();
+                    $types = \Components\Citations\Models\Type::all()->rows()->toArray();
                     $dType = isset($data->type) ? $data->type : 'article';
 
                     // Hub types don't match library types
@@ -486,7 +486,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
                 // Create association
                 if ($citation->get('id')) {
-                    $assoc = Components\Citations\Models\Association::blank();
+                    $assoc = \Components\Citations\Models\Association::blank();
                     $assoc->set('oid', $vid);
                     $assoc->set('tbl', 'publication');
                     $assoc->set('type', 'owner');
@@ -546,7 +546,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
         $layout = $this->_task == 'newcite' ? 'edit' : 'default';
 
         // Output HTML
-        $view = new Hubzero\Plugin\View(
+        $view = new \Hubzero\Plugin\View(
             array(
                 'folder'  => 'projects',
                 'element' => 'links',
@@ -555,12 +555,12 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
             )
         );
 
-        $view->publication = new Components\Publications\Models\Publication($pid, null, $vid);
+        $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
         // On error
         if (!$view->publication->exists()) {
             // Output error
-            $view = new Hubzero\Plugin\View(
+            $view = new \Hubzero\Plugin\View(
                 array(
                     'folder'  => 'projects',
                     'element' => 'files',
@@ -587,7 +587,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 
         // Add css?
         if (!$ajax) {
-            Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
+            \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
         }
 
         if ($this->_task == 'newcite') {
@@ -597,10 +597,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
             include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
             // Load the object
-            $view->row = Components\Citations\Models\Citation::oneOrNew($cid);
+            $view->row = \Components\Citations\Models\Citation::oneOrNew($cid);
 
             // get the citation types
-            $view->types = Components\Citations\Models\Type::all()->rows()->toArray();
+            $view->types = \Components\Citations\Models\Type::all()->rows()->toArray();
         }
 
         $view->option   = $this->_option;
@@ -634,7 +634,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
         $vid = Request::getInt('vid', 0);
 
         // Output HTML
-        $view = new Hubzero\Plugin\View(
+        $view = new \Hubzero\Plugin\View(
             array(
                 'folder'  => 'projects',
                 'element' => 'links',
@@ -644,8 +644,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
         );
 
         // Load classes
-        $objP = new Components\Publications\Tables\Publication($this->_database);
-        $view->version = new Components\Publications\Tables\Version($this->_database);
+        $objP = new \Components\Publications\Tables\Publication($this->_database);
+        $view->version = new \Components\Publications\Tables\Version($this->_database);
 
         // Load publication version
         $view->version->load($vid);
@@ -680,10 +680,10 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
         include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
         // Load the object
-        $view->row = Components\Citations\Models\Citation::oneOrNew($cid);
+        $view->row = \Components\Citations\Models\Citation::oneOrNew($cid);
 
         // get the citation types
-        $view->types = Components\Citations\Models\Type::all()->rows()->toArray();
+        $view->types = \Components\Citations\Models\Type::all()->rows()->toArray();
 
         $view->option   = $this->_option;
         $view->database = $this->_database;
@@ -715,7 +715,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
         }
 
         // Output HTML
-        $view = new Hubzero\Plugin\View(
+        $view = new \Hubzero\Plugin\View(
             array(
                 'folder'  => 'projects',
                 'element' => 'links',
@@ -724,7 +724,7 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
         );
 
         // Get current attachments
-        $pContent = new Components\Publications\Tables\Attachment($this->_database);
+        $pContent = new \Components\Publications\Tables\Attachment($this->_database);
         $role  = $primary ? '1' : '0';
         $other = $primary ? '0' : '1';
 
@@ -929,8 +929,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
                 }
 
                 $out .= $description
-                        ? stripslashes('<p>' . Hubzero\Utility\Str::truncate(addslashes($description), 200) . '</p>')
-                        : '<p>' . Hubzero\Utility\Str::truncate(addslashes($finalUrl), 200) . '</p>';
+                        ? stripslashes('<p>' . \Hubzero\Utility\Str::truncate(addslashes($description), 200) . '</p>')
+                        : '<p>' . \Hubzero\Utility\Str::truncate(addslashes($finalUrl), 200) . '</p>';
 
                 if ($images) {
                     $out .= '<span class="clear"></span>';

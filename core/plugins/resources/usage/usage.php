@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Resources Plugin class for usage
  */
-class plgResourcesUsage extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Usage;
+
+use Hubzero\Plugin\Plugin;
+
+class Usage extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -143,7 +144,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
                     ->rows();
 
                 foreach ($options as $opt) {
-                    $type = new stdClass();
+                    $type = new \stdClass();
                     $type->id    = $opt->get('id');
                     $type->type  = $opt->get('value');
                     $type->title = $opt->get('label');
@@ -342,7 +343,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
         // $sessions = array();
         $runs = array();
 
-        $data = new stdClass();
+        $data = new \stdClass();
         $data->points = array();
         //$data->runs = array();
 
@@ -447,7 +448,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
             $this->params->get('pie_chart_color10', '#3a3a3a'),
         );
 
-        $json = new stdClass();
+        $json = new \stdClass();
 
         $database = App::get('db');
 
@@ -471,7 +472,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
                     $i = 0;
                 }
 
-                $obj = new stdClass();
+                $obj = new \stdClass();
                 $obj->label = $row->name;
                 $obj->data  = (int) $row->value;
                 $obj->color = $colors[$i];
@@ -509,7 +510,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
                     $i = 0;
                 }
 
-                $obj = new stdClass();
+                $obj = new \stdClass();
                 $obj->label = $row->name;
                 $obj->data  = (int) $row->value;
                 $obj->color = $colors[$i];
@@ -539,7 +540,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
                     $i = 0;
                 }
 
-                $obj = new stdClass();
+                $obj = new \stdClass();
                 $obj->label = $row->name;
                 $obj->data  = (int) $row->value;
                 $obj->color = $colors[$i];

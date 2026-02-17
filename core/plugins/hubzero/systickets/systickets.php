@@ -9,7 +9,11 @@
 /**
  * HUBzero plugin class for system overview
  */
-class plgHubzeroSystickets extends \Hubzero\Plugin\Plugin
+namespace Plugins\Hubzero\Systickets;
+
+use Hubzero\Plugin\Plugin;
+
+class Systickets extends Plugin
 {
     /**
      * Return information about this hub
@@ -23,7 +27,7 @@ class plgHubzeroSystickets extends \Hubzero\Plugin\Plugin
             return;
         }
 
-        $response = new stdClass();
+        $response = new \stdClass();
         $response->name  = 'tickets';
         $response->label = 'Support Tickets';
         $response->data  = array();
@@ -88,7 +92,7 @@ class plgHubzeroSystickets extends \Hubzero\Plugin\Plugin
      */
     private function obj($label, $value)
     {
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->label = $label;
         $obj->value = $value;
 

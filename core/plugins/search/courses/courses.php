@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Courses;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -19,7 +23,7 @@ require_once Component::path('com_courses') . DS . 'models' . DS . 'orm' . DS . 
  */
 /**
  */
-class plgSearchCourses extends \Hubzero\Plugin\Plugin
+class Courses extends Plugin
 {
     /**
      * Build search query and add it to the $results

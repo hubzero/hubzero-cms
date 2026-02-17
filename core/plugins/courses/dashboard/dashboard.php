@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Plugin\Plugin;
-
 /**
  * Courses Plugin class for the dashboard
  */
-class PlgCoursesDashboard extends Plugin
+namespace Plugins\Courses\Dashboard;
+
+use Hubzero\Plugin\Plugin;
+
+class Dashboard extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

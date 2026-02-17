@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Plugin\Plugin;
-
 /**
  * Courses Plugin class for the outline
  */
-class PlgCoursesOutline extends Plugin
+namespace Plugins\Courses\Outline;
+
+use Hubzero\Plugin\Plugin;
+
+class Outline extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

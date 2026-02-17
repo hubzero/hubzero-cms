@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Categories;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die;
  * Plugin for ensuring categories are empty before deleting
  *
  */
-class plgContentCategories extends \Hubzero\Plugin\Plugin
+class Categories extends Plugin
 {
     /**
      * Don't allow categories to be deleted if they contain items or subcategories with items

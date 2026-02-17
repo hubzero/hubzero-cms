@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Members\Todo;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package   hubzero-cms
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for todo entries
  */
-class PlgMembersTodo extends \Hubzero\Plugin\Plugin
+class Todo extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

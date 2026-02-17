@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Filesystem\Local;
+
 /**
  * HUBzero extension of flysystem local adapter
  */
@@ -17,7 +19,7 @@ class LocalAdapter extends \League\Flysystem\Adapter\Local
      * @param   \SplFileInfo  $file  The original file info class
      * @return  array
      */
-    protected function mapFileInfo(SplFileInfo $file)
+    protected function mapFileInfo(\SplFileInfo $file)
     {
         $default = parent::mapFileInfo($file);
 

@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Update plugin for handling/cleaning cached data
  */
-class plgUpdateCache extends \Hubzero\Plugin\Plugin
+namespace Plugins\Update\Cache;
+
+use Hubzero\Plugin\Plugin;
+
+class Cache extends Plugin
 {
     /**
      * Trash all expired cache data

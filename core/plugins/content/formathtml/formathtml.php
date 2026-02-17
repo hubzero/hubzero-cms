@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Formathtml;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die;
  * HTML formatted Content Plugin
  *
  */
-class plgContentFormathtml extends \Hubzero\Plugin\Plugin
+class Formathtml extends Plugin
 {
     /**
      * Before save content method

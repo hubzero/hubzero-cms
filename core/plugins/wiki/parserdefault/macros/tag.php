@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class for dipslaying a tag
  */
-class TagMacro extends WikiMacro
+class Tag extends WikiMacro
 {
     /**
      * Allow macro in partial parsing?
@@ -50,7 +53,7 @@ class TagMacro extends WikiMacro
             if ($a) {
                 // Build and return the link
                 return '<a href="'
-                    . Route::url('index
+                    . \Route::url('index
                     . php?option=com_tags&tag='
                     . $tag)
                     . '">'
