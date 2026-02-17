@@ -11,7 +11,6 @@ namespace Plugins\Antispam\SpamAssassin\Service\Client;
 use Plugins\Antispam\SpamAssassin\Service\Client\Local\Exception;
 use Plugins\Antispam\SpamAssassin\Service\Client\Local\Result;
 
-// phpcs:disable PSR1.Files.SideEffects
 require_once __DIR__ . '/Local/Exception.php';
 require_once __DIR__ . '/Local/Result.php';
 

@@ -1,4 +1,5 @@
-<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols, PSR2.Classes.PropertyDeclaration.Underscore
+<?php
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
 /**
  * @package    hubzero-cms
@@ -18,10 +19,7 @@ use Lang;
 use Date;
 use User;
 
-// include tables
 require_once dirname(__DIR__) . DS . 'tables' . DS . 'calendar.php';
-
-// include icalendar file reader
 require_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'icalparser.php';
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Squiz.ControlStructures.ControlSignature, PSR2.ControlStructures.ElseIfDeclaration, PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace
+// @phpcs:disable Squiz.ControlStructures.ControlSignature, PSR2.ControlStructures.ElseIfDeclaration, PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace
 
 namespace Plugins\Projects\Todo;
 
@@ -11,9 +11,6 @@ use Hubzero\Plugin\Plugin;
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 // Include model
 include_once \Component::path('com_projects') . DS . 'models' . DS . 'todo.php';

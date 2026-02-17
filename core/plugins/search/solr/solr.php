@@ -3,22 +3,16 @@
 namespace Plugins\Search\Solr;
 
 use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
+use Components\Search\Helpers\DiscoveryHelper;
+use Components\Search\Models\Solr\SearchComponent;
+use Components\Search\Models\Solr\Blacklist;
+use Hubzero\Search\Index;
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
-
-use Components\Search\Helpers\DiscoveryHelper;
-use Components\Search\Models\Solr\SearchComponent;
-use Components\Search\Models\Solr\Blacklist;
-use Hubzero\Search\Index;
 
 /**
  */

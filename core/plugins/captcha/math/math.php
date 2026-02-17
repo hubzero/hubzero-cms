@@ -10,10 +10,6 @@ namespace Plugins\Captcha\Math;
 
 use Hubzero\Plugin\Plugin;
 
-// No direct access
-// @phpcs:disable PSR1.Files.SideEffects
-defined('_HZEXEC_') or die();
-
 /**
  * Plugin class for displaying math CAPTCHAs
  */

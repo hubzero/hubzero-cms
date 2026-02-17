@@ -3,23 +3,17 @@
 namespace Plugins\Groups\Forum;
 
 use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
-
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
 
-// No direct access
-defined('_HZEXEC_') or die();
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 /**
  * Groups Plugin class for forum entries

@@ -10,9 +10,6 @@ namespace Plugins\Antispam\Babajispam;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-
-
 /**
  * Babajispam Anti-spam Plugin
  */

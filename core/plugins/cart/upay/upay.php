@@ -1,19 +1,15 @@
 <?php
 
-namespace Plugins\Cart\Upay;
-
-use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Components\Cart\Models\Cart;
+namespace Plugins\Cart\Upay;
 
-require_once Component::path('com_cart') . DS . 'models' . DS . 'Cart.php';
+use Hubzero\Plugin\Plugin;
+use Components\Cart\Models\Cart;
 
 /**
  * Cart plugin for Payment: UPay

@@ -10,9 +10,6 @@ namespace Plugins\Antispam\Linkrife;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-
-
 /**
  * Antispam plugin for a LinkRife spam detector
  */

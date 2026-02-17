@@ -9,12 +9,7 @@
 namespace Plugins\Newsletter\Jobs;
 
 use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
-
 use Components\Feedaggregator\Models\Orm\Post;
-
-require_once \Component::path('com_feedaggregator') . DS . 'models' . DS . 'orm' . DS . 'post.php';
 
 /**
  * Plugin class for Newsletter jobs
@@ -53,7 +48,6 @@ class Jobs extends Plugin
             $object->date  = Date::of($m->created)->toLocal("F j, Y");
             $object->path  = $m->url;
             $object->id    = $m->id;
-
 
             array_push($objects, $object);
         }

@@ -3,17 +3,14 @@
 namespace Plugins\Authfactors\Google;
 
 use Hubzero\Plugin\Plugin;
-
-// phpcs:disable Generic.Files.SideEffects, PSR1.Files.SideEffects
+use Hubzero\Auth\Factor;
+use Hubzero\Utility\Validate;
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Auth\Factor;
-use Hubzero\Utility\Validate;
 
 require_once Plugin::path('authfactors', 'google') . DS . 'helpers' . DS . 'GoogleAuthenticator.php';
 

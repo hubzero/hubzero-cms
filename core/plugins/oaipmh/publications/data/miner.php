@@ -1,10 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
-
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,8 +10,6 @@ namespace Plugins\Oaipmh\Publications\Data;
 
 use Hubzero\Base\Obj;
 use Components\Oaipmh\Models\Provider;
-
-require_once \Component::path('com_oaipmh') . '/models/provider.php';
 
 /**
  * Data miner for publications to be used by OAI-PMH

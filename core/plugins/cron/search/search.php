@@ -1,22 +1,18 @@
 <?php
 
-namespace Plugins\Cron\Search;
-
-use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Cron\Search;
+
+use Hubzero\Plugin\Plugin;
 use Hubzero\Search\Query;
 use Hubzero\Search\Index;
 use Components\Search\Models\Solr\QueueDB;
 use Components\Search\Models\Solr\SearchComponent as SearchComponent;
-
-require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 
 /**
  * Cron plugin for Search indexing

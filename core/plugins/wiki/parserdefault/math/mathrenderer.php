@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Plugins\Wiki\Parserdefault\Math;
 
 /**

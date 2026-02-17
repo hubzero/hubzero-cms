@@ -1,23 +1,16 @@
 <?php
 
-namespace Plugins\Authentication\Scistarter;
-
-use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Authentication\Scistarter;
 
+use Hubzero\Plugin\Plugin;
 use SciStarter\Oauth;
 
-require_once __DIR__ . '/SciStarter/Http/Curl.php';
-require_once __DIR__ . '/SciStarter/Oauth.php';
 class Scistarter extends \Hubzero\Plugin\OauthClient
 {
     /**
@@ -28,6 +21,17 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
      */
 // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
+
+    /**
+     * @param   object  $subject  Event dispatcher
+     * @param   array   $config   Plugin config
+     */
+    public function __construct($subject, $config)
+    {
+        require_once __DIR__ . '/SciStarter/Http/Curl.php';
+        require_once __DIR__ . '/SciStarter/Oauth.php';
+        parent::__construct($subject, $config);
+    }
 
     /**
      * Perform logout (not currently used)

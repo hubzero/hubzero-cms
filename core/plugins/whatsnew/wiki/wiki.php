@@ -10,11 +10,6 @@ namespace Plugins\Whatsnew\Wiki;
 
 use Hubzero\Plugin\Plugin;
 
-// @phpcs:disable PSR1.Files.SideEffects
-
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * What's New Plugin class for com_wiki articles
  */

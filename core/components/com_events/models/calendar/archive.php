@@ -1,4 +1,5 @@
-<?php // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols, PSR2.Classes.PropertyDeclaration.Underscore
+<?php
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
 /**
  * @package    hubzero-cms
@@ -16,7 +17,6 @@ use DateTimezone;
 use DateTime;
 use Date;
 
-// include calendar model
 require_once dirname(__DIR__) . DS . 'calendar.php';
 
 /**

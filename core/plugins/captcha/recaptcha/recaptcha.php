@@ -10,9 +10,6 @@ namespace Plugins\Captcha\Recaptcha;
 
 use Hubzero\Plugin\Plugin;
 
-// @phpcs:disable PSR1.Files.SideEffects
-defined('_HZEXEC_') or die;
-
 /**
  * Recaptcha Plugin.
  *

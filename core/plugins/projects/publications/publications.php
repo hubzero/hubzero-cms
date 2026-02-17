@@ -1,11 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore, PSR2.Methods.MethodDeclaration.Underscore, Squiz.ControlStructures.ControlSignature
-
-namespace Plugins\Projects\Publications;
-
-use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -13,11 +8,9 @@ use Hubzero\Plugin\Plugin;
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Projects\Publications;
 
-include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
-
+use Hubzero\Plugin\Plugin;
 use Components\Projects\Helpers\Html;
 use Components\Publications\Models\Publication;
 use Components\Publications\Models\Handlers;
@@ -403,7 +396,6 @@ class Publications extends Plugin
                 'name' => 'browse'
             )
         );
-
 
         // Instantiate a publication object
         $view->pub = new Publication();

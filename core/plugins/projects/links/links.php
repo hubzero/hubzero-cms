@@ -3,8 +3,9 @@
 namespace Plugins\Projects\Links;
 
 use Hubzero\Plugin\Plugin;
+use Components\Citations\Models\Citation;
+use Components\Citations\Models\Association;
 
-// @phpcs:disable PSR1.Files.SideEffects
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
@@ -13,12 +14,6 @@ use Hubzero\Plugin\Plugin;
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Components\Citations\Models\Citation;
-use Components\Citations\Models\Association;
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Projects Links plugin

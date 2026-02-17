@@ -15,12 +15,6 @@ use Hubzero\Spam\Detector\DetectorInterface;
 use Exception;
 use stdClass;
 
-// phpcs:disable PSR1.Files.SideEffects
-
-include_once __DIR__ . DS . 'models' . DS . 'MessageHash.php';
-include_once __DIR__ . DS . 'models' . DS . 'TokenCount.php';
-include_once __DIR__ . DS . 'models' . DS . 'TokenProb.php';
-
 /**
  * Bayesian filter
  */

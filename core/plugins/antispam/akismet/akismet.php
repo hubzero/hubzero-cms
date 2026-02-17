@@ -10,9 +10,6 @@ namespace Plugins\Antispam\Akismet;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-
-
 /**
  * Akismet antispam Plugin
  */

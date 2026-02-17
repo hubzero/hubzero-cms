@@ -11,7 +11,6 @@ namespace Plugins\Antispam\Akismet\Service;
 use Hubzero\Spam\Detector\Service as AbstractService;
 use Exception;
 
-// phpcs:disable PSR1.Files.SideEffects
 require_once __DIR__ . DS . 'SocketWriteRead.php';
 
 /**

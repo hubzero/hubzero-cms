@@ -1,4 +1,4 @@
-<?php // phpcs:ignore Generic.Files.SideEffects
+<?php
 
 /*
  * This file is part of the Sonata Project package.

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Squiz.ControlStructures.ControlSignature
+// @phpcs:disable Squiz.ControlStructures.ControlSignature
 
 namespace Plugins\Projects\Files;
 
@@ -11,9 +11,6 @@ use Hubzero\Plugin\Plugin;
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 // Include external file connection
 require_once Component::path('com_projects') . DS . 'tables' . DS . 'remotefile.php';

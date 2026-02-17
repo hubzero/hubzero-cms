@@ -1,18 +1,14 @@
 <?php
 
-namespace Plugins\Filesystem\Googledrive;
-
-use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once \Component::path('projects') . '/models/orm/connection.php';
+namespace Plugins\Filesystem\Googledrive;
 
+use Hubzero\Plugin\Plugin;
 use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;

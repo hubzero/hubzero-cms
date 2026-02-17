@@ -10,9 +10,6 @@ namespace Plugins\Antispam\Bayesian;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-
-
 /**
  * Antispam plugin for a basic Bayesian filter
  */

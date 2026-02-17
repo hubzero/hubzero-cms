@@ -10,9 +10,6 @@ namespace Plugins\Antispam\Spamassassin;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-
-
 /**
  * Spam Assassin antispam Plugin
  */

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,8 +9,6 @@
 namespace Components\Dataviewer\Site;
 
 use Hubzero\Component\Router\Base;
-
-defined('_HZEXEC_') or die();
 
 /**
  * Routing class for the component

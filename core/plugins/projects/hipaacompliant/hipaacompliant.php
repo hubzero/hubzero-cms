@@ -4,7 +4,6 @@ namespace Plugins\Projects\Hipaacompliant;
 
 use Hubzero\Plugin\Plugin;
 
-// @phpcs:disable PSR1.Files.SideEffects
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
@@ -13,9 +12,6 @@ use Hubzero\Plugin\Plugin;
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Allow saving of hipaa compliance checkbox

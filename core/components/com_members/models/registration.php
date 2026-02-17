@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects
-
 namespace Components\Members\Models;
 
 use Components\Members\Models\Profile\Field;
@@ -18,88 +16,43 @@ use User;
 use App;
 
 /**
- * Description for ''REG_HIDE''
- */
-define('REG_HIDE', 0);
-
-/**
- * Description for ''REG_OPTIONAL''
- */
-define('REG_OPTIONAL', 1);
-
-/**
- * Description for ''REG_REQUIRED''
- */
-define('REG_REQUIRED', 2);
-
-/**
- * Description for ''REG_READONLY''
- */
-define('REG_READONLY', 4);
-
-/**
- * Description for ''PASS_SCORE_BAD''
- */
-define('PASS_SCORE_BAD', 0);
-
-/**
- * Description for ''PASS_SCORE_MEDIOCRE''
- */
-define('PASS_SCORE_MEDIOCRE', 34);
-
-/**
- * Description for ''PASS_SCORE_GOOD''
- */
-define('PASS_SCORE_GOOD', 50);
-
-/**
- * Description for ''PASS_SCORE_STRONG''
- */
-define('PASS_SCORE_STRONG', 68);
-
-/**
  * Model class for a registration
  */
 class Registration
 {
+    const REG_HIDE     = 0;
+    const REG_OPTIONAL = 1;
+    const REG_REQUIRED = 2;
+    const REG_READONLY = 4;
+
+    const PASS_SCORE_BAD      = 0;
+    const PASS_SCORE_MEDIOCRE = 34;
+    const PASS_SCORE_GOOD     = 50;
+    const PASS_SCORE_STRONG   = 68;
+
     /**
-     * Description for '_registration'
-     *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_registration;
 
     /**
-     * Description for '_encoded'
-     *
      * @var  unknown
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_encoded;
 
     /**
-     * Description for '_missing'
-     *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_missing;
 
     /**
-     * Description for '_invalid'
-     *
      * @var  mixed
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_invalid;
 
     /**
-     * Description for '_checked'
-     *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_checked;
 
     /**
@@ -379,17 +332,17 @@ class Registration
 
         switch ($value) {
             case 'R':
-                return REG_REQUIRED;
+                return self::REG_REQUIRED;
             case 'O':
-                return REG_OPTIONAL;
+                return self::REG_OPTIONAL;
             case 'H':
-                return REG_HIDE;
+                return self::REG_HIDE;
             case '-':
-                return REG_HIDE;
+                return self::REG_HIDE;
             case 'U':
-                return REG_READONLY;
+                return self::REG_READONLY;
             default:
-                return REG_HIDE;
+                return self::REG_HIDE;
         }
     }
 
@@ -440,28 +393,28 @@ class Registration
 
         if ($task == 'update') {
             if (empty($registration['login'])) {
-                $registrationUsername = REG_REQUIRED;
+                $registrationUsername = self::REG_REQUIRED;
             } else {
-                $registrationUsername = REG_READONLY;
+                $registrationUsername = self::REG_READONLY;
             }
 
-            $registrationPassword = REG_HIDE;
-            $registrationConfirmPassword = REG_HIDE;
+            $registrationPassword = self::REG_HIDE;
+            $registrationConfirmPassword = self::REG_HIDE;
 
             if (empty($registration['email'])) {
-                $registrationEmail = REG_REQUIRED;
+                $registrationEmail = self::REG_REQUIRED;
             }
         }
 
         if ($task == 'edit') {
-            $registrationUsername = REG_READONLY;
-            $registrationPassword = REG_HIDE;
-            $registrationConfirmPassword = REG_HIDE;
+            $registrationUsername = self::REG_READONLY;
+            $registrationPassword = self::REG_HIDE;
+            $registrationConfirmPassword = self::REG_HIDE;
         }
 
         if (User::get('auth_link_id') && $task == 'create') {
-            $registrationPassword = REG_HIDE;
-            $registrationConfirmPassword = REG_HIDE;
+            $registrationPassword = self::REG_HIDE;
+            $registrationConfirmPassword = self::REG_HIDE;
         }
 
         $login = $registration['login'];
@@ -469,14 +422,14 @@ class Registration
         $email = $registration['email'];
         $confirmEmail = $registration['confirmEmail'];
 
-        if ($registrationUsername == REG_REQUIRED) {
+        if ($registrationUsername == self::REG_REQUIRED) {
             if (empty($login)) {
                 $this->_missing['login'] = 'User Login';
                 $this->_invalid['login'] = 'Please provide a username';
             }
         }
 
-        if ($registrationUsername != REG_HIDE) {
+        if ($registrationUsername != self::REG_HIDE) {
             $allowNumericFirstCharacter = ($task == 'update') ? true : false;
             if (!empty($login) && !Helpers\Utility::validlogin($login, $allowNumericFirstCharacter)) {
                 $this->_invalid['login'] = 'Invalid login name. Please type at least 2 characters '
@@ -507,7 +460,7 @@ class Registration
             }
         }
 
-        if ($registrationPassword == REG_REQUIRED) {
+        if ($registrationPassword == self::REG_REQUIRED) {
             if (empty($registration['password'])) {
                 $this->_missing['password'] = 'Password';
                 $this->_invalid['password'] = 'Please provide a password.';
@@ -515,7 +468,7 @@ class Registration
         }
 
         /*
-        if ($registrationPassword != REG_HIDE)
+        if ($registrationPassword != self::REG_HIDE)
         {
             if (!empty($registration['password']))
             {
@@ -527,28 +480,28 @@ class Registration
         }
         */
 
-        if ($registrationConfirmPassword == REG_REQUIRED) {
+        if ($registrationConfirmPassword == self::REG_REQUIRED) {
             if (empty($registration['confirmPassword'])) {
                 $this->_missing['confirmPassword'] = 'Password Confirmation';
                 $this->_invalid['confirmPassword'] = 'Please provide the password again.';
             }
         }
 
-        if ($registrationPassword != REG_HIDE && $registrationConfirmPassword != REG_HIDE) {
+        if ($registrationPassword != self::REG_HIDE && $registrationConfirmPassword != self::REG_HIDE) {
             if ($registration['password'] != $registration['confirmPassword']) {
                 $this->_invalid['confirmPassword'] = 'Passwords do not match. Please correct and try again.';
             }
         }
 
-        if ($registrationPassword == REG_REQUIRED) {
+        if ($registrationPassword == self::REG_REQUIRED) {
             $score = $this->scorePassword($registration['password'], $registration['login']);
-            if ($score < PASS_SCORE_MEDIOCRE) {
+            if ($score < self::PASS_SCORE_MEDIOCRE) {
                 $this->_invalid['password'] = 'Password strength is too weak.';
-            } elseif ($score >= PASS_SCORE_MEDIOCRE && $score < PASS_SCORE_GOOD) {
+            } elseif ($score >= self::PASS_SCORE_MEDIOCRE && $score < self::PASS_SCORE_GOOD) {
                 // Mediocre pass
-            } elseif ($score >= PASS_SCORE_GOOD && $score < PASS_SCORE_STRONG) {
+            } elseif ($score >= self::PASS_SCORE_GOOD && $score < self::PASS_SCORE_STRONG) {
                 // Good pass
-            } elseif ($score >= PASS_SCORE_STRONG) {
+            } elseif ($score >= self::PASS_SCORE_STRONG) {
                 // Strong pass
             }
 
@@ -562,7 +515,7 @@ class Registration
             }
         }
 
-        if ($registrationFullname == REG_REQUIRED) {
+        if ($registrationFullname == self::REG_REQUIRED) {
             if (empty($registration['name'])) {
                 $this->_missing['name'] = 'Full Name';
                 $this->_invalid['name'] = 'Please provide a name.';
@@ -592,20 +545,20 @@ class Registration
             }
         }
 
-        if ($registrationFullname != REG_HIDE) {
+        if ($registrationFullname != self::REG_HIDE) {
             if (!empty($registration['name']) && !Helpers\Utility::validname($registration['name'])) {
                 $this->_invalid['name'] = 'Invalid name. You may be using characters that are not allowed.';
             }
         }
 
-        if ($registrationEmail == REG_REQUIRED) {
+        if ($registrationEmail == self::REG_REQUIRED) {
             if (empty($email)) {
                 $this->_missing['email'] = 'Valid Email';
                 $this->_invalid['email'] = 'Please provide a valid e-mail address.';
             }
         }
 
-        if ($registrationEmail != REG_HIDE) {
+        if ($registrationEmail != self::REG_HIDE) {
             if (empty($email)) {
                 $this->_missing['email'] = 'Valid Email';
             } elseif (!Helpers\Utility::validemail($email)) {
@@ -649,14 +602,14 @@ class Registration
             }
         }
 
-        if ($registrationConfirmEmail == REG_REQUIRED) {
+        if ($registrationConfirmEmail == self::REG_REQUIRED) {
             if (empty($confirmEmail) && empty($this->_invalid['email'])) {
                 $this->_missing['confirmEmail'] = 'Valid Email Confirmation';
                 $this->_invalid['confirmEmail'] = 'Please provide a valid e-mail address again.';
             }
         }
 
-        if ($registrationConfirmEmail != REG_HIDE) {
+        if ($registrationConfirmEmail != self::REG_HIDE) {
             if ($email != $confirmEmail) {
                 if (empty($this->_invalid['email'])) {
                     $this->_invalid['confirmEmail'] = 'Email addresses do not match. Please correct and try again.';
@@ -665,14 +618,14 @@ class Registration
             }
         }
 
-        if ($registrationOptIn == REG_REQUIRED) {
+        if ($registrationOptIn == self::REG_REQUIRED) {
             if (is_null($registration['sendEmail']) || intval($registration['sendEmail']) < 0) {
                 $this->_missing['sendEmail'] = 'Receive Email Updates';
                 $this->_invalid['sendEmail'] = 'Receive Email Updates has not been selected';
             }
         }
 
-        if ($registrationCAPTCHA == REG_REQUIRED) {
+        if ($registrationCAPTCHA == self::REG_REQUIRED) {
             $botcheck = Request::getString('botcheck', '');
             if ($botcheck) {
                 $this->_invalid['captcha'] = 'Error: Invalid CAPTCHA response.';
@@ -688,7 +641,7 @@ class Registration
             }
         }
 
-        if ($registrationTOU == REG_REQUIRED) {
+        if ($registrationTOU == self::REG_REQUIRED) {
             if (empty($registration['usageAgreement'])) {
                 $this->_missing['usageAgreement'] = 'Usage Agreement';
                 $this->_invalid['usageAgreement'] = 'Registration requires acceptance of the usage agreement';
@@ -698,7 +651,7 @@ class Registration
         /* Everything below is currently done elsewhere
            @TODO  Move code to here or refactor?
 
-        if ($registrationAddress == REG_REQUIRED)
+        if ($registrationAddress == self::REG_REQUIRED)
         {
             if (count($registration['address']) == 0)
             {

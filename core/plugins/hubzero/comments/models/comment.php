@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +9,6 @@
 namespace Plugins\Hubzero\Comments\Models;
 
 use Hubzero\Item\Comment as ItemComment;
-
-require_once __DIR__ . DS . 'file.php';
 
 /**
  * Model for a comment

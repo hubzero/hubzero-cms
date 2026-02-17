@@ -9,12 +9,7 @@
 namespace Plugins\Newsletter\Resource;
 
 use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
-
 use Components\Resources\Models\Entry;
-
-require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Plugin class for Newsletter resources

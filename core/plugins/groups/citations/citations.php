@@ -3,18 +3,6 @@
 namespace Plugins\Groups\Citations;
 
 use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
-
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-// No direct access
-defined('_HZEXEC_') or die();
-
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Cloud;
@@ -23,6 +11,12 @@ use Components\Citations\Models\Author;
 use Components\Citations\Models\Type;
 use Components\Citations\Models\Format;
 use Components\Citations\Models\Importer;
+
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
 
 /**
  * Groups plugin class for citations

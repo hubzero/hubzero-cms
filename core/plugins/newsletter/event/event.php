@@ -9,12 +9,7 @@
 namespace Plugins\Newsletter\Event;
 
 use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
-
 use Components\Events\Models\Orm\Event as CalEvent;
-
-require_once \Component::path('com_events') . DS . 'models' . DS . 'orm' . DS . 'event.php';
 
 /**
  * Plugin class for Newsletter event

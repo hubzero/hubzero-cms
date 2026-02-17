@@ -4,19 +4,11 @@ namespace Plugins\Oaipmh\Resources;
 
 use Hubzero\Plugin\Plugin;
 
-// phpcs:disable PSR1.Files.SideEffects
-
-
-// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
 
 /**
  * Plugin class for providing data to OAI-PMH.

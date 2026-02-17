@@ -10,11 +10,6 @@ namespace Plugins\System\Languagefilter;
 
 use Hubzero\Plugin\Plugin;
 
-// no direct access
-// phpcs:disable PSR1.Files.SideEffects
-require_once Component::path('com_menus') . '/helpers/menus.php';
-require_once Component::path('com_languages') . '/helpers/multilangstatus.php';
-
 /**
  * Language Filter Plugin
  */

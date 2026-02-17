@@ -2,23 +2,17 @@
 
 namespace Plugins\Search\Remote;
 
+use Components\Search\Helpers\DiscoveryHelper;
+use Components\Search\Models\Solr\Blacklist;
+use Components\Search\Models\Solr\SearchComponent;
+use GuzzleHttp\Client;
 use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
-
-use Components\Search\Helpers\DiscoveryHelper;
-use Components\Search\Models\Solr\SearchComponent;
-use Components\Search\Models\Solr\Blacklist;
-use GuzzleHttp\Client;
 
 /**
  */

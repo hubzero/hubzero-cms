@@ -1,22 +1,14 @@
 <?php
 
-namespace Plugins\Projects\Notes;
-
-use Hubzero\Plugin\Plugin;
-
-// @phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Projects\Notes;
 
-// Include note model
-include_once \Component::path('com_projects') . DS . 'models' . DS . 'note.php';
+use Hubzero\Plugin\Plugin;
 
 /**
  * Projects Notes (wiki) plugin

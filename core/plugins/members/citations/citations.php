@@ -1,28 +1,14 @@
 <?php
 
-namespace Plugins\Members\Citations;
-
-use Hubzero\Plugin\Plugin;
-
-// @phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package   hubzero-cms
  * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Members\Citations;
 
-// Include needed libs
-$base = Component::path('com_citations');
-require_once $base . DS . 'helpers' . DS . 'format.php';
-require_once $base . DS . 'models' . DS . 'citation.php';
-require_once $base . DS . 'models' . DS . 'tag.php';
-require_once $base . DS . 'models' . DS . 'tagobject.php';
-require_once $base . DS . 'models' . DS . 'importer.php';
-
+use Hubzero\Plugin\Plugin;
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Cloud;
@@ -442,7 +428,6 @@ class Citations extends Plugin
                 $authorString = '';
                 $totalAuths = count($authors);
                 $x = 0;
-
 
                 foreach ($authors as &$author) {
                     /***
@@ -1133,7 +1118,6 @@ class Citations extends Plugin
                 $citation['duplicate'] = $citeCollection->seek($citation['duplicate']);
             }
         }
-
 
         $view = $this->view('review', 'import');
         $view->citations_require_attention = $citations_require_attention;

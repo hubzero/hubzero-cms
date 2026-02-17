@@ -3,21 +3,15 @@
 namespace Plugins\Groups\Members;
 
 use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
+use Components\Groups\Tables\Reason;
+use Components\Groups\Models\Role;
+use Components\Groups\Models\Member\Role as MemberRole;
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// No direct access
-defined('_HZEXEC_') or die();
-
-use Components\Groups\Tables\Reason;
-use Components\Groups\Models\Role;
-use Components\Groups\Models\Member\Role as MemberRole;
 
 /**
  * Groups Plugin class for group members

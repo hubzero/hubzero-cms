@@ -11,6 +11,7 @@ namespace Components\Members\Site\Controllers;
 use Hubzero\Component\SiteController;
 use Components\Members\Models\Profile\Field;
 use Components\Members\Models\Member;
+use Components\Members\Models\Registration;
 use Component;
 use Pathway;
 use Session;
@@ -1014,16 +1015,16 @@ class Register extends SiteController
         $score = $xregistration->scorePassword($password, $username);
 
         // Determine strength
-        if ($score < PASS_SCORE_MEDIOCRE) {
+        if ($score < Registration::PASS_SCORE_MEDIOCRE) {
             $cls = 'bad';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_BAD');
-        } elseif ($score >= PASS_SCORE_MEDIOCRE && $score < PASS_SCORE_GOOD) {
+        } elseif ($score >= Registration::PASS_SCORE_MEDIOCRE && $score < Registration::PASS_SCORE_GOOD) {
             $cls = 'mediocre';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_MEDIOCRE');
-        } elseif ($score >= PASS_SCORE_GOOD && $score < PASS_SCORE_STRONG) {
+        } elseif ($score >= Registration::PASS_SCORE_GOOD && $score < Registration::PASS_SCORE_STRONG) {
             $cls = 'good';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_GOOD');
-        } elseif ($score >= PASS_SCORE_STRONG) {
+        } elseif ($score >= Registration::PASS_SCORE_STRONG) {
             $cls = 'strong';
             $txt = Lang::txt('COM_MEMBERS_REGISTER_PASS_STRONG');
         }
