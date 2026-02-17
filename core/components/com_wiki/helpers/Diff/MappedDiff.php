@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Short description for 'class'
  *
  * Long description (if any) ...
- *
  */
-class MappedDiff extends WikiDiff
+class MappedDiff extends Diff
 {
     /**
      * Constructor.

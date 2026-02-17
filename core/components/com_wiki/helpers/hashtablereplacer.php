@@ -6,9 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Class to perform replacement based on a simple hashtable lookup
- *
  */
 class HashtableReplacer extends Replacer
 {

@@ -6,10 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\System\Helpers\Html;
+
 /**
  * Utility class working with system
  */
-class ComponentsSystemHelpersHtmlSystem
+class System
 {
     /**
      * Method to generate a string message for a value

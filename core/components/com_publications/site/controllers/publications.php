@@ -505,7 +505,7 @@ class Publications extends SiteController
      */
     protected function _resourceMap()
     {
-        $resourceMap = new \ResourceMapGenerator();
+        $resourceMap = new \Components\Publications\Helpers\ResourceMapGenerator();
         $id = '';
 
         // Retrieves the ID from alias
@@ -707,7 +707,7 @@ class Publications extends SiteController
             ->display();
 
         // Insert .rdf link in the header
-        \ResourceMapGenerator::putRDF($this->model->publication->id);
+        \Components\Publications\Helpers\ResourceMapGenerator::putRDF($this->model->publication->id);
     }
 
     /**

@@ -6,10 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\System\Helpers\Html;
+
 /**
  * Utility class working with phpsetting
  */
-class ComponentsSystemHelpersHtmlPhpsetting
+class Phpsetting
 {
     /**
      * Method to generate a boolean message for a value

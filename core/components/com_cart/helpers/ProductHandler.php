@@ -16,7 +16,7 @@ require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehous
 /**
  * Product handler. Handles purchased products/items. Runs a proper handler on each purchased item.
  */
-class CartProductHandler
+class ProductHandler
 {
     // Item info
     public $item;
