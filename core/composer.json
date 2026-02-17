@@ -27,6 +27,7 @@
         "apereo/phpcas": "1.6.*",
         "bordoni/phpass": "0.3.*",
         "bshaffer/oauth2-server-php": "1.11.*",
+        "cebe/markdown": "^1.2",
         "cilogon/oauth2-cilogon": "1.1.*",
         "composer/composer": "2.8.*",
         "ezyang/htmlpurifier": "4.18.*",

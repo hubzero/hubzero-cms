@@ -66,29 +66,6 @@ class Markdown extends Plugin
 
         $source = rtrim($file->read());
 
-        $md = array(
-            'block/CodeTrait.php',
-            'block/FencedCodeTrait.php',
-            'block/HeadlineTrait.php',
-            'block/HtmlTrait.php',
-            'block/ListTrait.php',
-            'block/QuoteTrait.php',
-            'block/RuleTrait.php',
-            'block/TableTrait.php',
-            'inline/CodeTrait.php',
-            'inline/EmphStrongTrait.php',
-            'inline/LinkTrait.php',
-            'inline/StrikeoutTrait.php',
-            'inline/UrlLinkTrait.php',
-            'Parser.php',
-            'Markdown.php',
-            'MarkdownExtra.php',
-            'GithubMarkdown.php'
-        );
-        foreach ($md as $mdfile) {
-            include_once __DIR__ . '/markdown/' . $mdfile;
-        }
-
         $cls = '\\cebe\\markdown\\' . $this->params->get('style', 'Markdown');
 
         $parser = new $cls();
