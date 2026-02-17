@@ -3,8 +3,7 @@
 namespace Plugins\Content\Geshi;
 
 use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR1.Files.SideEffects
+use Highlight\Highlighter;
 
 /**
  * @package    hubzero-cms
@@ -18,9 +17,24 @@ defined('_HZEXEC_') or die;
 /**
  * Code syntax highlighting plugin
  *
+ * Uses scrivo/highlight.php (a PHP port of highlight.js)
  */
 class Geshi extends Plugin
 {
+    /**
+     * GeSHi language names to highlight.php equivalents
+     *
+     * @var array
+     */
+    private static $langMap = [
+        'js'           => 'javascript',
+        'sh'           => 'bash',
+        'asp'          => 'vbnet',
+        'html4strict'  => 'xml',
+        'php-brief'    => 'php',
+        'mysql'        => 'sql',
+    ];
+
     /**
      * Prepare the content for display
      *
@@ -47,6 +61,9 @@ class Geshi extends Plugin
         // Perform the replacement.
         $article->text = preg_replace_callback($regex, array(&$this, '_replace'), $article->text);
 
+        // Load highlight.js CSS theme
+        $this->css('highlight.css');
+
         return true;
     }
 
@@ -56,11 +73,9 @@ class Geshi extends Plugin
      * @param   array   $matches  An array of matches (see preg_match_all)
      * @return  string
      */
-// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _replace(&$matches)
     {
-        require_once __DIR__ . '/geshi/geshi.php';
-
         $args = self::parseAttributes($matches[1]);
         $text = $matches[2];
 
@@ -75,13 +90,39 @@ class Geshi extends Plugin
         $text = str_replace('&gt;', '>', $text);
         $text = str_replace("\t", '  ', $text);
 
-        $geshi = new GeSHi($text, $lang);
-        if ($lines == 'true') {
-            $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS);
-        }
-        $text = $geshi->parse_code();
+        // Map legacy GeSHi language names to highlight.php names
+        $hlLang = self::$langMap[$lang] ?? $lang;
 
-        return $text;
+        $hl = new Highlighter();
+        try {
+            $result = $hl->highlight($hlLang, $text);
+            $html = $result->value;
+        } catch (\DomainException $e) {
+            $html = htmlspecialchars($text);
+        }
+
+        if ($lines == 'true') {
+            $html = self::addLineNumbers($html);
+        }
+
+        return '<pre><code class="hljs ' . htmlspecialchars($lang) . '">' . $html . '</code></pre>';
+    }
+
+    /**
+     * Wrap highlighted code with line numbers
+     *
+     * @param   string  $html  Highlighted HTML from highlight.php
+     * @return  string
+     */
+    protected static function addLineNumbers($html)
+    {
+        $lines = explode("\n", $html);
+        $numbered = '<ol class="linenums">';
+        foreach ($lines as $line) {
+            $numbered .= '<li>' . $line . '</li>';
+        }
+        $numbered .= '</ol>';
+        return $numbered;
     }
 
     /**

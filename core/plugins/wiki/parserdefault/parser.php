@@ -1091,19 +1091,22 @@ class WikiParser
                 case 'sql':
                 case 'xml':
                 case 'sh':
-                    if (file_exists(PATH_CORE . '/plugins/content/geshi/geshi/geshi.php')) {
-                        include_once PATH_CORE . '/plugins/content/geshi/geshi/geshi.php';
-                    }
-
                     $txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
                     $txt = trim($txt, "\n\r\t");
 
-                    if (class_exists('GeSHi')) {
-                        $geshi = new \GeSHi('', $t);
-                        $geshi->set_header_type(GESHI_HEADER_DIV);
-                        $geshi->set_source($txt);
-
-                        return '<div class="pre ' . $t . '">' . $geshi->parse_code() . '</div>';
+                    if (class_exists('\\Highlight\\Highlighter')) {
+                        static $hlLangMap = [
+                            'js' => 'javascript', 'sh' => 'bash',
+                            'asp' => 'vbnet', 'html4strict' => 'xml',
+                        ];
+                        $hl = new \Highlight\Highlighter();
+                        try {
+                            $result = $hl->highlight($hlLangMap[$t] ?? $t, $txt);
+                            \Document::addStyleSheet('/core/plugins/content/geshi/assets/css/highlight.css');
+                            return '<div class="pre ' . $t . '"><code class="hljs">' . $result->value . '</code></div>';
+                        } catch (\DomainException $e) {
+                            // Fall through to plain output
+                        }
                     }
 
                     return '<div class="pre ' . $t . '">' . $txt . '</div>';
