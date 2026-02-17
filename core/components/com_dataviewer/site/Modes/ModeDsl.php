@@ -12,226 +12,227 @@ use Components\Dataviewer\Site\DvConfig;
 
 class ModeDsl
 {
-	public static function get_conf($db_id)
-	{
-		$params = \Plugin::params('projects', 'databases');
+    public static function getConf($db_id)
+    {
+        $params = \Plugin::params('projects', 'databases');
 
-		DvConfig::$dv_conf['db']['host'] = $params->get('db_host');
-		DvConfig::$dv_conf['db']['user'] = $params->get('db_ro_user');
-		DvConfig::$dv_conf['db']['password'] = $params->get('db_ro_password');
+        DvConfig::$dv_conf['db']['host'] = $params->get('db_host');
+        DvConfig::$dv_conf['db']['user'] = $params->get('db_ro_user');
+        DvConfig::$dv_conf['db']['password'] = $params->get('db_ro_password');
 
-		return DvConfig::$dv_conf;
-	}
+        return DvConfig::$dv_conf;
+    }
 
-	public static function get_dd($db_id, $dv_id = false, $version = false)
-	{
-		$dd = false;
-		$db = \App::get('db');
+    public static function getDd($db_id, $dv_id = false, $version = false)
+    {
+        $dd = false;
+        $db = \App::get('db');
 
-		if (!$dv_id) {
-			$dv_id = \Request::getString('dv');
-		}
+        if (!$dv_id) {
+            $dv_id = \Request::getString('dv');
+        }
 
-		if (!$version) {
-			$version = \Request::getInt('v', false);
-		}
+        if (!$version) {
+            $version = \Request::getInt('v', false);
+        }
 
-		$name = $dv_id;
-
-
-		// Curators
-		$curator = '';
-		$curator_groups = array();
-
-		if (!$version) {
-			$sql = 'SELECT data_definition FROM `#__project_databases` WHERE `database_name` = ' . $db->quote($name);
-			$db->setQuery($sql);
-			$database = $db->loadAssoc();
-
-			if ($database === null) {
-				return null;
-			}
-
-			$dd = json_decode($database['data_definition'] ?? '', true);
-		} else {
-			$sql = 'SELECT data_definition FROM #__project_database_versions WHERE database_name=' . $db->quote($name) .
-				' AND version=' . $db->quote($version);
-			$db->setQuery($sql);
-			$ver = $db->loadAssoc();
-
-			if ($ver === null) {
-				return null;
-			}
-
-			$dd = json_decode($ver['data_definition'], true);
-
-			// Check publication state
-			$sql = 'SELECT state, curator FROM #__publication_versions ' .
-				'LEFT JOIN #__publication_attachments ON ' .
-					'(#__publication_versions.publication_id=#__publication_attachments.publication_id ' .
-					'AND #__publication_versions.id=#__publication_attachments.publication_version_id) ' .
-				'WHERE object_name=' . $db->quote($name) . 'AND object_revision=' . $db->quote($version);
-
-			$db->setQuery($sql);
-			$pub_version = $db->loadAssoc();
-
-			$state = $pub_version['state'];
-
-			$dd['version'] = $version;
-			$dd['publication_state'] = $state;
-
-			if ($state != 1) {
-				// curator groups
-				$curation_enabled = \Component::params('com_publications')->get('curation');
-
-				$curator_group = trim(\Component::params('com_publications')->get('curatorgroup'));
-
-				if ($curation_enabled && $curator_group != '') {
-					$curator_groups[] = $curator_group;
-				}
-
-				$sql = "SELECT cn FROM #__xgroups g "
-					. "LEFT JOIN #__publication_master_types t ON (g.gidNumber = t.curatorgroup) "
-					. "WHERE t.type = 'Databases'";
-				$db = \App::get('db');
-				$db->setQuery($sql);
-				$dsl_curators = $db->loadResult();
-
-				if ($curation_enabled && $dsl_curators != '') {
-					$curator_groups[] = $dsl_curators;
-				}
-
-				if ($curation_enabled && $curator != '') {
-					$curator = $pub_version['curator'];
-					$curator = \User::getInstance($curator)->get('username');
-				}
-			}
-		}
-
-		// Access control
-		if (!isset($dd['publication_state']) || $dd['publication_state'] != 1) {
-			// Project owners
-			$sql = "SELECT username FROM #__project_owners po "
-				. "JOIN #__users u ON (u.id = po.userid) "
-				. "WHERE projectid = {$dd['project']}";
-			$db = \App::get('db');
-			$db->setQuery($sql);
-			$dd['acl']['allowed_users'] = $db->loadColumn();
-
-			// Curators
-			if (isset($dd['publication_state'])) {
-				$dd['acl']['allowed_groups'] = $curator_groups;
-
-				if (isset($dd['acl']['allowed_users']) && is_array($dd['acl']['allowed_users'])) {
-					$dd['acl']['allowed_users'][] = $curator;
-				}
-			}
-		} elseif (isset($dd['publication_state']) && $dd['publication_state'] == 1) {
-			$dd['acl']['allowed_users'] = false;
-			$dd['acl']['allowed_groups'] = false;
-			$dd['acl']['public'] = true;
-		}
+        $name = $dv_id;
 
 
-		DvConfig::$dv_conf['db']['database'] = $dd['database'];
+        // Curators
+        $curator = '';
+        $curator_groups = array();
 
-		$dd['db_id'] = $db_id;
-		$dd['dv_id'] = $dv_id;
+        if (!$version) {
+            $sql = 'SELECT data_definition FROM `#__project_databases` WHERE `database_name` = ' . $db->quote($name);
+            $db->setQuery($sql);
+            $database = $db->loadAssoc();
 
-		self::_dd_post($dd);
+            if ($database === null) {
+                return null;
+            }
 
-		/* Dynamically set processing mode */
-		$link = \Components\Dataviewer\Site\Lib\Db::get_db(DvConfig::$dv_conf['db']);
-		$hasThreshold = isset(DvConfig::$dv_conf['proc_switch_threshold']) && DvConfig::$dv_conf['proc_switch_threshold'] != 0;
-		$cell_count_threshold = $hasThreshold ? DvConfig::$dv_conf['proc_switch_threshold'] : 20000;
-		$link->setQuery(\Components\Dataviewer\Site\Lib\Db::query_gen_total($dd));
-		$link->loadAssoc();
-		$link->setQuery('SELECT FOUND_ROWS() AS total');
-		$total = $link->loadAssoc();
-		$total = isset($total['total']) ? $total['total'] : 0;
-		$dd['total_records'] = $total;
+            $dd = json_decode($database['data_definition'] ?? '', true);
+        } else {
+            $sql = 'SELECT data_definition FROM #__project_database_versions WHERE database_name=' . $db->quote($name) .
+                ' AND version=' . $db->quote($version);
+            $db->setQuery($sql);
+            $ver = $db->loadAssoc();
 
-		$vis_col_count = count(array_filter($dd['cols'], function ($col) {
-			return !isset($col['hide']);
-		}));
+            if ($ver === null) {
+                return null;
+            }
 
-		if ($cell_count_threshold < ($total * $vis_col_count)) {
-			$dd['serverside'] = true;
-		}
+            $dd = json_decode($ver['data_definition'], true);
 
-		return $dd;
-	}
+            // Check publication state
+            $sql = 'SELECT state, curator FROM #__publication_versions ' .
+                'LEFT JOIN #__publication_attachments ON ' .
+                    '(#__publication_versions.publication_id=#__publication_attachments.publication_id ' .
+                    'AND #__publication_versions.id=#__publication_attachments.publication_version_id) ' .
+                'WHERE object_name=' . $db->quote($name) . 'AND object_revision=' . $db->quote($version);
 
-	public static function _dd_post($dd)
-	{
-		$id = \Request::getString('id', false);
+            $db->setQuery($sql);
+            $pub_version = $db->loadAssoc();
 
-		if ($id) {
-			$dd['where'][] = array('field' => $dd['pk'], 'value' => $id);
-			$dd['single'] = true;
-		}
+            $state = $pub_version['state'];
 
-		$custom_field =  \Request::getString('custom_field', false);
-		if ($custom_field) {
-			$custom_field = explode('|', $custom_field);
-			$dd['where'][] = array('field' => $custom_field[0], 'value' => $custom_field[1]);
-			$dd['single'] = true;
-		}
+            $dd['version'] = $version;
+            $dd['publication_state'] = $state;
 
-		// Data for Custom Views
-		$custom_view = \Request::getArray('custom_view', array());
-		if (count($custom_view) > 0) {
-			unset($dd['customizer']);
+            if ($state != 1) {
+                // curator groups
+                $curation_enabled = \Component::params('com_publications')->get('curation');
 
-			// Custom Title
-			$custom_title = \Request::getString('custom_title', '');
-			if ($custom_title !== '') {
-				$dd['title'] = htmlspecialchars($custom_title);
-			}
+                $curator_group = trim(\Component::params('com_publications')->get('curatorgroup'));
 
-			// Custom Group by
-			$group_by = \Request::getString('group_by', '');
-			if ($group_by !== '') {
-				$dd['group_by'] = htmlspecialchars($group_by);
-			}
+                if ($curation_enabled && $curator_group != '') {
+                    $curator_groups[] = $curator_group;
+                }
 
-			// Ordering
-			$order_cols = $dd['cols'];
-			$dd['cols'] = array();
-			foreach ($custom_view as $cv_col) {
-				$dd['cols'][$cv_col] = $order_cols[$cv_col];
-			}
+                $sql = "SELECT cn FROM #__xgroups g "
+                    . "LEFT JOIN #__publication_master_types t ON (g.gidNumber = t.curatorgroup) "
+                    . "WHERE t.type = 'Databases'";
+                $db = \App::get('db');
+                $db->setQuery($sql);
+                $dsl_curators = $db->loadResult();
 
-			// Hiding
-			foreach ($order_cols as $id => $prop) {
-				if (!in_array($id, $custom_view)) {
-					$dd['cols'][$id] = $prop;
+                if ($curation_enabled && $dsl_curators != '') {
+                    $curator_groups[] = $dsl_curators;
+                }
 
-					if (!isset($dd['cols'][$id]['hide'])) {
-						$dd['cols'][$id]['hide'] = 'custom';
-					}
-				}
-			}
-		}
+                if ($curation_enabled && $curator != '') {
+                    $curator = $pub_version['curator'];
+                    $curator = \User::getInstance($curator)->get('username');
+                }
+            }
+        }
 
-		return $dd;
-	}
+        // Access control
+        if (!isset($dd['publication_state']) || $dd['publication_state'] != 1) {
+            // Project owners
+            $sql = "SELECT username FROM #__project_owners po "
+                . "JOIN #__users u ON (u.id = po.userid) "
+                . "WHERE projectid = {$dd['project']}";
+            $db = \App::get('db');
+            $db->setQuery($sql);
+            $dd['acl']['allowed_users'] = $db->loadColumn();
 
-	public static function pathway($dd)
-	{
-		$db_id = $dd['db_id'];
+            // Curators
+            if (isset($dd['publication_state'])) {
+                $dd['acl']['allowed_groups'] = $curator_groups;
 
-		\Document::setTitle($dd['title']);
+                if (isset($dd['acl']['allowed_users']) && is_array($dd['acl']['allowed_users'])) {
+                    $dd['acl']['allowed_users'][] = $curator;
+                }
+            }
+        } elseif (isset($dd['publication_state']) && $dd['publication_state'] == 1) {
+            $dd['acl']['allowed_users'] = false;
+            $dd['acl']['allowed_groups'] = false;
+            $dd['acl']['public'] = true;
+        }
 
-		if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
-			$ref_title = "Datastore";
-			\Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
-		} elseif (isset($_SERVER['HTTP_REFERER'])) {
-			$ref_title = \Request::getString('ref_title', $dd['title'] . " Resource");
-			$ref_title = htmlentities($ref_title);
-			\Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
-		}
 
-		\Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
-	}
+        DvConfig::$dv_conf['db']['database'] = $dd['database'];
+
+        $dd['db_id'] = $db_id;
+        $dd['dv_id'] = $dv_id;
+
+        self::ddPost($dd);
+
+        /* Dynamically set processing mode */
+        $link = \Components\Dataviewer\Site\Lib\Db::getDb(DvConfig::$dv_conf['db']);
+        $hasThreshold = isset(DvConfig::$dv_conf['proc_switch_threshold'])
+            && DvConfig::$dv_conf['proc_switch_threshold'] != 0;
+        $cell_count_threshold = $hasThreshold ? DvConfig::$dv_conf['proc_switch_threshold'] : 20000;
+        $link->setQuery(\Components\Dataviewer\Site\Lib\Db::queryGenTotal($dd));
+        $link->loadAssoc();
+        $link->setQuery('SELECT FOUND_ROWS() AS total');
+        $total = $link->loadAssoc();
+        $total = isset($total['total']) ? $total['total'] : 0;
+        $dd['total_records'] = $total;
+
+        $vis_col_count = count(array_filter($dd['cols'], function ($col) {
+            return !isset($col['hide']);
+        }));
+
+        if ($cell_count_threshold < ($total * $vis_col_count)) {
+            $dd['serverside'] = true;
+        }
+
+        return $dd;
+    }
+
+    public static function ddPost($dd)
+    {
+        $id = \Request::getString('id', false);
+
+        if ($id) {
+            $dd['where'][] = array('field' => $dd['pk'], 'value' => $id);
+            $dd['single'] = true;
+        }
+
+        $custom_field =  \Request::getString('custom_field', false);
+        if ($custom_field) {
+            $custom_field = explode('|', $custom_field);
+            $dd['where'][] = array('field' => $custom_field[0], 'value' => $custom_field[1]);
+            $dd['single'] = true;
+        }
+
+        // Data for Custom Views
+        $custom_view = \Request::getArray('custom_view', array());
+        if (count($custom_view) > 0) {
+            unset($dd['customizer']);
+
+            // Custom Title
+            $custom_title = \Request::getString('custom_title', '');
+            if ($custom_title !== '') {
+                $dd['title'] = htmlspecialchars($custom_title);
+            }
+
+            // Custom Group by
+            $group_by = \Request::getString('group_by', '');
+            if ($group_by !== '') {
+                $dd['group_by'] = htmlspecialchars($group_by);
+            }
+
+            // Ordering
+            $order_cols = $dd['cols'];
+            $dd['cols'] = array();
+            foreach ($custom_view as $cv_col) {
+                $dd['cols'][$cv_col] = $order_cols[$cv_col];
+            }
+
+            // Hiding
+            foreach ($order_cols as $id => $prop) {
+                if (!in_array($id, $custom_view)) {
+                    $dd['cols'][$id] = $prop;
+
+                    if (!isset($dd['cols'][$id]['hide'])) {
+                        $dd['cols'][$id]['hide'] = 'custom';
+                    }
+                }
+            }
+        }
+
+        return $dd;
+    }
+
+    public static function pathway($dd)
+    {
+        $db_id = $dd['db_id'];
+
+        \Document::setTitle($dd['title']);
+
+        if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
+            $ref_title = "Datastore";
+            \Pathway::append($ref_title, '/datastores/' . $db_id['name'] . '#tables');
+        } elseif (isset($_SERVER['HTTP_REFERER'])) {
+            $ref_title = \Request::getString('ref_title', $dd['title'] . " Resource");
+            $ref_title = htmlentities($ref_title);
+            \Pathway::append($ref_title, $_SERVER['HTTP_REFERER']);
+        }
+
+        \Pathway::append($dd['title'], $_SERVER['REQUEST_URI']);
+    }
 }

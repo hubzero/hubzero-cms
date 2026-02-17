@@ -15,42 +15,43 @@ use Hubzero\Component\AbstractComponent;
  */
 class Events extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		if (!\User::authorise('core.manage', 'com_events')) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!\User::authorise('core.manage', 'com_events')) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$controllerName = \Request::getCmd('controller', 'events');
-		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-		    $controllerName = 'events';
-		}
+        $controllerName = \Request::getCmd('controller', 'events');
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+            $controllerName = 'events';
+        }
 
-		\Submenu::addEntry(
-		    \Lang::txt('COM_EVENTS'),
-		    \Route::url('index.php?option=com_events&controller=events'),
-		    $controllerName == 'events'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_EVENTS_CATEGORIES'),
-		    \Route::url('index.php?option=com_categories&extension=com_events'),
-		    $controllerName == 'categories'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_EVENTS_CONFIGURATION'),
-		    \Route::url('index.php?option=com_events&controller=configure'),
-		    $controllerName == 'configure'
-		);
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+        \Submenu::addEntry(
+            \Lang::txt('COM_EVENTS'),
+            \Route::url('index.php?option=com_events&controller=events'),
+            $controllerName == 'events'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_EVENTS_CATEGORIES'),
+            \Route::url('index.php?option=com_categories&extension=com_events'),
+            $controllerName == 'categories'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_EVENTS_CONFIGURATION'),
+            \Route::url('index.php?option=com_events&controller=configure'),
+            $controllerName == 'configure'
+        );
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-		$controller->redirect();
-	}
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+        $controller->redirect();
+    }
 }

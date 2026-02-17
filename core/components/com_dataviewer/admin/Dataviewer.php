@@ -12,19 +12,19 @@ use Hubzero\Component\AbstractComponent;
 
 class Dataviewer extends AbstractComponent
 {
-	protected function execute(): void
-	{
-		DvConfig::init();
+    protected function execute(): void
+    {
+        DvConfig::init();
 
-		$document = \App::get('document');
-		$document->addCustomTag('<meta name="csrf-token" content="' . DB_RID . '" />');
-		$document->addStyleSheet(DB_PATH . '/html/smoothness/jquery-ui.css');
-		$document->addStyleSheet(DB_PATH . '/html/main.css');
-		$document->addScript(DB_PATH . '/html/main.js');
-		$document->setTitle(DvConfig::$conf['app_title']);
+        $document = \App::get('document');
+        $document->addCustomTag('<meta name="csrf-token" content="' . DB_RID . '" />');
+        $document->addStyleSheet(DB_PATH . '/html/smoothness/jquery-ui.css');
+        $document->addStyleSheet(DB_PATH . '/html/main.css');
+        $document->addScript(DB_PATH . '/html/main.js');
+        $document->setTitle(DvConfig::$conf['app_title']);
 
-		Controller::dispatch();
+        Controller::dispatch();
 
-		umask(DvConfig::$conf['sys_umask']);
-	}
+        umask(DvConfig::$conf['sys_umask']);
+    }
 }

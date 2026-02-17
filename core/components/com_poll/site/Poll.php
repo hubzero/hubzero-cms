@@ -15,16 +15,16 @@ use Hubzero\Component\AbstractComponent;
  */
 class Poll extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Require the base controller
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Require the base controller
 
-		$controller = new Controllers\Polls();
-		$controller->execute();
-	}
+        $controller = new Controllers\Polls();
+        $controller->execute();
+    }
 }

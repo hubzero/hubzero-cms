@@ -23,9 +23,9 @@ class Help extends AbstractComponent
     protected function execute(): void
     {
 
-		// Instantiate controller and execute
-		$controller = new Controllers\Help();
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Instantiate controller and execute
+        $controller = new Controllers\Help();
+        $controller->execute();
+        $controller->redirect();
+    }
 }

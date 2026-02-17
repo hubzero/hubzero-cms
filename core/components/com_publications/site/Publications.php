@@ -15,30 +15,31 @@ use Hubzero\Component\AbstractComponent;
  */
 class Publications extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Include publication model
-		$componentPath = Component::path('com_publications');
-		$sitePath = "$componentPath/site";
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Include publication model
+        $componentPath = Component::path('com_publications');
+        $sitePath = "$componentPath/site";
 
-		$view = Request::getCmd('view', 'publications');
-		$controllerName = Request::getCmd('controller', $view);
-		$task = Request::getCmd('task', $view);
 
-		if (!file_exists("$sitePath/controllers/$controllerName.php")) {
-			$controllerName = 'publications';
-			Request::setVar('task', $task);
-		}
+        $view = Request::getCmd('view', 'publications');
+        $controllerName = Request::getCmd('controller', $view);
+        $task = Request::getCmd('task', $view);
 
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        if (!file_exists("$sitePath/controllers/$controllerName.php")) {
+            $controllerName = 'publications';
+            Request::setVar('task', $task);
+        }
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

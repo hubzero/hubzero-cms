@@ -16,8 +16,6 @@ use Config;
 use Route;
 use App;
 
-ini_set("auto_detect_line_endings", true);
-
 /**
  * Controller class for knowledge base categories
  */
