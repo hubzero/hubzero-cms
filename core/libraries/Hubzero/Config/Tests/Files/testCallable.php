@@ -1,8 +1,8 @@
 <?php
 
-// phpcs:ignoreFile PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
-
 // @codeCoverageIgnoreStart
+if (!class_exists('ConfigGetter', false)) {
+    eval(<<<'CONFIGGETTER'
 class ConfigGetter
 {
     public function getConfig()
@@ -34,6 +34,8 @@ class ConfigGetter
 
         return $config;
     }
+}
+CONFIGGETTER);
 }
 
 return array(new ConfigGetter(), 'getConfig');
