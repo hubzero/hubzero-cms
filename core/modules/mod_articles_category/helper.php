@@ -343,7 +343,7 @@ class Helper extends Module
             $item->displayAuthorName = $show_author ? $item->author : '';
             if ($show_introtext) {
                 $item->introtext = Html::content('prepare', $item->introtext, '', 'mod_articles_category.content');
-                $item->introtext = self::_cleanIntrotext($item->introtext);
+                $item->introtext = self::cleanIntrotext($item->introtext);
             }
             $item->displayIntrotext = $show_introtext ? self::truncate($item->introtext, $introtext_limit) : '';
             $item->displayReadmore  = $item->alternative_readmore;
@@ -374,8 +374,7 @@ class Helper extends Module
      * @param   string  $introtext
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public static function _cleanIntrotext($introtext)
+    public static function cleanIntrotext($introtext)
     {
         $introtext = str_replace('<p>', ' ', $introtext);
         $introtext = str_replace('</p>', ' ', $introtext);

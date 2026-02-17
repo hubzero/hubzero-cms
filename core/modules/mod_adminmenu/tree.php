@@ -10,8 +10,6 @@ namespace Modules\AdminMenu;
 
 /**
  * Extended class for rendering nested menus
- *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Tree extends \Hubzero\Base\Obj
 {
@@ -20,21 +18,21 @@ class Tree extends \Hubzero\Base\Obj
      *
      * @var  string
      */
-    protected $_css = null;
+    protected $css = null;
 
     /**
      * Root node
      *
      * @var  object
      */
-    protected $_root = null;
+    protected $root = null;
 
     /**
      * Current working node
      *
      * @var  object
      */
-    protected $_current = null;
+    protected $current = null;
 
     /**
      * Constructor
@@ -43,8 +41,8 @@ class Tree extends \Hubzero\Base\Obj
      */
     public function __construct()
     {
-        $this->_root = new Node('ROOT');
-        $this->_current =& $this->_root;
+        $this->root = new Node('ROOT');
+        $this->current =& $this->root;
     }
 
     /**
@@ -56,10 +54,10 @@ class Tree extends \Hubzero\Base\Obj
      */
     public function addChild($node, $setCurrent = false)
     {
-        $this->_current->addChild($node);
+        $this->current->addChild($node);
 
         if ($setCurrent) {
-            $this->_current = &$node;
+            $this->current = &$node;
         }
     }
 
@@ -70,7 +68,7 @@ class Tree extends \Hubzero\Base\Obj
      */
     public function getParent()
     {
-        $this->_current = &$this->_current->getParent();
+        $this->current = &$this->current->getParent();
     }
 
     /**
@@ -80,7 +78,7 @@ class Tree extends \Hubzero\Base\Obj
      */
     public function reset()
     {
-        $this->_current = &$this->_root;
+        $this->current = &$this->root;
     }
 
     /**
@@ -113,18 +111,18 @@ class Tree extends \Hubzero\Base\Obj
         }
 
         // Recurse through children if they exist
-        while ($this->_current->hasChildren()) {
+        while ($this->current->hasChildren()) {
             echo '<ul ' . $id . ' ' . $class . ">\n";
-            foreach ($this->_current->getChildren() as $child) {
-                $this->_current =& $child;
+            foreach ($this->current->getChildren() as $child) {
+                $this->current =& $child;
                 $this->renderLevel($depth++);
             }
             echo "</ul>\n";
         }
 
-        if ($this->_css) {
+        if ($this->css) {
             // Add style to document head
-            \Document::addStyleDeclaration($this->_css);
+            \Document::addStyleDeclaration($this->css);
         }
     }
 
@@ -142,8 +140,8 @@ class Tree extends \Hubzero\Base\Obj
         $iconClass = '';
         $classes = array();
 
-        if ($this->_current->class) {
-            $classes = explode(' ', trim($this->_current->class));
+        if ($this->current->class) {
+            $classes = explode(' ', trim($this->current->class));
             foreach ($classes as $i => $clas) {
                 if (substr($clas, 0, strlen('class:')) == 'class:') {
                     $iconClass = $clas;
@@ -152,11 +150,11 @@ class Tree extends \Hubzero\Base\Obj
             }
         }
 
-        if ($this->_current->hasChildren()) {
+        if ($this->current->hasChildren()) {
             $classes[] = 'node';
         }
 
-        if ($this->_current->active) {
+        if ($this->current->active) {
             $classes[] = 'active';
         }
 
@@ -173,20 +171,20 @@ class Tree extends \Hubzero\Base\Obj
             $linkClass = ' class="' . $linkClass . '"';
         }
 
-        if ($this->_current->link != null && $this->_current->target != null) {
-            echo '<a' . $linkClass . ' href="' . $this->_current->link . '" rel="noopener" target="'
-                . $this->_current->target . '">' . $this->_current->title . '</a>';
-            if ($this->_current->hasChildren()) {
+        if ($this->current->link != null && $this->current->target != null) {
+            echo '<a' . $linkClass . ' href="' . $this->current->link . '" rel="noopener" target="'
+                . $this->current->target . '">' . $this->current->title . '</a>';
+            if ($this->current->hasChildren()) {
                 echo '<span class="toggler" aria-hidden="true"></span>';
             }
-        } elseif ($this->_current->link != null && $this->_current->target == null) {
-            echo '<a' . $linkClass . ' href="' . $this->_current->link . '">' . $this->_current->title . '</a>';
-            if ($this->_current->hasChildren()) {
+        } elseif ($this->current->link != null && $this->current->target == null) {
+            echo '<a' . $linkClass . ' href="' . $this->current->link . '">' . $this->current->title . '</a>';
+            if ($this->current->hasChildren()) {
                 echo '<span class="toggler" aria-hidden="true"></span>';
             }
-        } elseif ($this->_current->title != null) {
-            echo '<a' . $linkClass . '>' . $this->_current->title . '</a>';
-            if ($this->_current->hasChildren()) {
+        } elseif ($this->current->title != null) {
+            echo '<a' . $linkClass . '>' . $this->current->title . '</a>';
+            if ($this->current->hasChildren()) {
                 echo '<span class="toggler" aria-hidden="true"></span>';
             }
         } else {
@@ -194,19 +192,19 @@ class Tree extends \Hubzero\Base\Obj
         }
 
         // Recurse through children if they exist
-        while ($this->_current->hasChildren()) {
-            if ($this->_current->class) {
+        while ($this->current->hasChildren()) {
+            if ($this->current->class) {
                 $id = '';
-                if (!empty($this->_current->id)) {
-                    $id = ' id="menu-' . strtolower($this->_current->id) . '"';
+                if (!empty($this->current->id)) {
+                    $id = ' id="menu-' . strtolower($this->current->id) . '"';
                 }
                 echo '<ul' . $id . ' class="menu-component">' . "\n";
             } else {
                 echo '<ul>' . "\n";
             }
 
-            foreach ($this->_current->getChildren() as $child) {
-                $this->_current =& $child;
+            foreach ($this->current->getChildren() as $child) {
+                $this->current =& $child;
                 $this->renderLevel($depth++);
             }
 
@@ -247,7 +245,7 @@ class Tree extends \Hubzero\Base\Obj
                 $class = preg_replace('#\.[^.]*$#', '', basename($identifier));
                 $class = preg_replace('#\.\.[^A-Za-z0-9\.\_\- ]#', '', $class);
 
-                $this->_css  .= "\n.icon-$class {\n" .
+                $this->css  .= "\n.icon-$class {\n" .
                         "\tbackground: url($identifier) no-repeat;\n" .
                     "}\n";
 

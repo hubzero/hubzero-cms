@@ -12,8 +12,6 @@ use Hubzero\Base\Obj;
 
 /**
  * Menu node class
- *
- * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
 class Node extends Obj
 {
@@ -23,7 +21,7 @@ class Node extends Obj
      *
      * @since  2.1.13
      */
-    protected $_parent = null;
+    protected $parent = null;
 
     /**
      * Array of Children
@@ -31,7 +29,7 @@ class Node extends Obj
      * @var    array
      * @since  2.1.13
      */
-    protected $_children = array();
+    protected $children = array();
 
     /**
      * Node Title
@@ -134,13 +132,13 @@ class Node extends Obj
     {
         if ($parent instanceof Node || is_null($parent)) {
             $hash = spl_object_hash($this);
-            if (!is_null($this->_parent)) {
-                unset($this->_parent->children[$hash]);
+            if (!is_null($this->parent)) {
+                unset($this->parent->children[$hash]);
             }
             if (!is_null($parent)) {
-                $parent->_children[$hash] = & $this;
+                $parent->children[$hash] = & $this;
             }
-            $this->_parent = & $parent;
+            $this->parent = & $parent;
         }
     }
 
@@ -152,7 +150,7 @@ class Node extends Obj
      */
     public function &getChildren()
     {
-        return $this->_children;
+        return $this->children;
     }
 
     /**
@@ -163,7 +161,7 @@ class Node extends Obj
      */
     public function &getParent()
     {
-        return $this->_parent;
+        return $this->parent;
     }
 
     /**
@@ -174,7 +172,7 @@ class Node extends Obj
      */
     public function hasChildren()
     {
-        return (bool) count($this->_children);
+        return (bool) count($this->children);
     }
 
     /**
