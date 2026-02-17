@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Antispam;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -12,10 +16,8 @@
 /**
  * Antispam Content Plugin
  *
- * phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgContentAntispam extends \Hubzero\Plugin\Plugin
+class Antispam extends Plugin
 {
     /**
      * Before save content method

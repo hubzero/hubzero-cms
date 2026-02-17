@@ -1,14 +1,15 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Courses\Reviews;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Plugin\Plugin;
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -17,7 +18,7 @@ include_once __DIR__ . DS . 'models' . DS . 'comment.php';
 /**
  * Courses Plugin class for review
  */
-class PlgCoursesReviews extends Plugin
+class Reviews extends Plugin
 {
     /**
      * Constructor
@@ -35,7 +36,7 @@ class PlgCoursesReviews extends Plugin
      *
      * @var  boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -129,7 +130,7 @@ class PlgCoursesReviews extends Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'comment', $assetId = null)
     {
         // Are comments public or registered members only?
@@ -239,7 +240,7 @@ class PlgCoursesReviews extends Plugin
      *
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _login()
     {
         $return = base64_encode(
@@ -258,7 +259,7 @@ class PlgCoursesReviews extends Plugin
      *
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _vote()
     {
         // Ensure the user is logged in
@@ -318,7 +319,7 @@ class PlgCoursesReviews extends Plugin
      *
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _view()
     {
         // Get comments on this article
@@ -344,7 +345,7 @@ class PlgCoursesReviews extends Plugin
      *
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _save()
     {
         // Ensure the user is logged in
@@ -393,7 +394,7 @@ class PlgCoursesReviews extends Plugin
      *
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _delete()
     {
         // Ensure the user is logged in

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Vote;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,11 +18,9 @@ defined('_HZEXEC_') or die;
 /**
  * Vote plugin.
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
-class plgContentVote extends \Hubzero\Plugin\Plugin
+class Vote extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -62,7 +64,7 @@ class plgContentVote extends \Hubzero\Plugin\Plugin
             $html .= "</span>\n<br />\n";
 
             if ($view == 'article' && $row->state == 1) {
-                $uri = Hubzero\Utility\Uri::getInstance();
+                $uri = \Hubzero\Utility\Uri::getInstance();
                 $uri->setQuery($uri->getQuery() . '&hitcount=0');
 
                 $action = htmlspecialchars($uri->toString());

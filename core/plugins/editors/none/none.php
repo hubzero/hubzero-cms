@@ -5,14 +5,14 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * Plain Textarea Editor Plugin
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgEditorNone extends \Hubzero\Plugin\Plugin
+namespace Plugins\Editors\None;
+
+use Hubzero\Plugin\Plugin;
+
+class None extends Plugin
 {
     /**
      * Method to handle the onInitEditor event.
@@ -170,7 +170,7 @@ class plgEditorNone extends \Hubzero\Plugin\Plugin
         return $editor;
     }
 
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _displayButtons($name, $buttons, $asset, $author)
     {
         // Load modal popup behavior

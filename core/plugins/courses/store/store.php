@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Courses\Store;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,8 +12,6 @@
  */
 
 use Hubzero\Utility\Date;
-use Hubzero\Plugin\Plugin;
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -18,7 +20,7 @@ include_once Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse
 /**
  * Courses Plugin class for course store
  */
-class PlgCoursesStore extends Plugin
+class Store extends Plugin
 {
     /**
      * Constructor
@@ -36,7 +38,7 @@ class PlgCoursesStore extends Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

@@ -1,6 +1,9 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
+namespace Plugins\Usage\Domains;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -11,14 +14,14 @@
 /**
  * Usage plugin class for domains
  */
-class plgUsageDomains extends \Hubzero\Plugin\Plugin
+class Domains extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

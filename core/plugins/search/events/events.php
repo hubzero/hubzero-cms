@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Events;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -17,10 +21,8 @@ use Components\Events\Models\Orm\Event as CalEvent;
  * Search events
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchEvents extends \Hubzero\Plugin\Plugin
+class Events extends Plugin
 {
     /**
      * Build search query and add it to the $results

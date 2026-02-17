@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Members\Projects;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -14,14 +18,14 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for projects
  */
-class PlgMembersProjects extends \Hubzero\Plugin\Plugin
+class Projects extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -180,7 +184,7 @@ class PlgMembersProjects extends \Hubzero\Plugin\Plugin
      * @param  string  $which  The type of entries to display
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _view($which = 'all')
     {
         // Build the final HTML
@@ -226,7 +230,7 @@ class PlgMembersProjects extends \Hubzero\Plugin\Plugin
      *
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _updates()
     {
         // Build the final HTML

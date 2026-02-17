@@ -5,9 +5,6 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * Nominatim plugin for geocode
  *
@@ -15,8 +12,11 @@
  * street addresses. Access to a Nominatim server is required.
  * See the Nominatim Wiki Page for more information.
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeNominatim extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Nominatim;
+
+use Hubzero\Plugin\Plugin;
+
+class Nominatim extends Plugin
 {
     /**
      * Return a geocode provider

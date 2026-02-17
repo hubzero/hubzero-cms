@@ -1,13 +1,13 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR2.Classes.PropertyDeclaration.Underscore
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
+namespace Plugins\Projects\Files;
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -24,9 +24,7 @@ use Components\Projects\Models\Orm\Provider;
  * Projects Files plugin (connections extension)
  */
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// @phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class connections
+class Connections
 {
     /**
      * the plugin that spawned this object
@@ -154,7 +152,7 @@ class connections
      *
      * @return  void
      **/
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function newconnection()
     {
         /*$connection = Connection::blank();
@@ -174,7 +172,7 @@ class connections
      *
      * @return  string
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function editconnection()
     {
         $this->connection = Connection::oneOrNew(Request::getInt('connection'));
@@ -211,7 +209,7 @@ class connections
      *
      * @return void
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function refreshaccess()
     {
         $connection = Connection::oneOrNew(Request::getInt('connection'));
@@ -232,7 +230,7 @@ class connections
      *
      * @return void
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function refreshpath()
     {
         $connection = Connection::oneOrNew(Request::getInt('connection'));
@@ -253,7 +251,7 @@ class connections
      *
      * @return  void
      **/
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function saveconnection()
     {
         $data = Request::getArray('connect', array(), 'post');
@@ -290,7 +288,7 @@ class connections
      *
      * @return  void
      **/
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function deleteconnection()
     {
         if (!$this->connection) {
@@ -357,7 +355,7 @@ class connections
      *
      * @return string
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function setup_base_dir()
     {
         $view = new \Hubzero\Plugin\View([
@@ -393,7 +391,7 @@ class connections
      *
      * @return void
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function setprefix()
     {
         $prefix = urldecode(Request::getString('prefix', ''));
@@ -717,7 +715,7 @@ class connections
      *
      * @return  void
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function chunkedSave()
     {
         // Check permission

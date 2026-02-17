@@ -9,9 +9,11 @@
 /**
  * Content Security Policy Header Plugin
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemCsp extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Csp;
+
+use Hubzero\Plugin\Plugin;
+
+class Csp extends Plugin
 {
     /**
      * Modes that can be enabled

@@ -1,8 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,15 +9,18 @@
 /**
  * Plugin for sending notifications to Slack about support tickets
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSupportSlack extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Slack;
+
+use Hubzero\Plugin\Plugin;
+
+class Slack extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -152,8 +151,8 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
                 'PLG_SUPPORT_SLACK_TICKET_CREATED',
                 Config::get('sitename')
             ); //, $ticket->get('name', $ticket->get('email')));
-            $text = Hubzero\Utility\Str::truncate(
-                Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')),
+            $text = \Hubzero\Utility\Str::truncate(
+                \Hubzero\Utility\Sanitize::stripWhitespace($ticket->get('report')),
                 300
             );
 
@@ -227,7 +226,7 @@ class plgSupportSlack extends \Hubzero\Plugin\Plugin
                 Config::get('sitename')
             ); //, $comment->creator()->get('name'));
             $text = preg_replace("/<br\s?\/>/i", '', $comment->get('comment'));
-            $text = Hubzero\Utility\Str::truncate(Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
+            $text = \Hubzero\Utility\Str::truncate(\Hubzero\Utility\Sanitize::stripWhitespace($text), 300);
 
             $color = 'good';
             if ($comment->isPrivate()) {

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Resources;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -16,10 +20,8 @@ include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php'
 /**
  * Groups Plugin class for resources
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsResources extends \Hubzero\Plugin\Plugin
+class Resources extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

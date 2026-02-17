@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\EditorsXtd\Article;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Editor Article buton
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgButtonArticle extends \Hubzero\Plugin\Plugin
+class Article extends Plugin
 {
     /**
      * Constructor

@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,8 +9,11 @@
 /**
  * Plugin class for displaying a wiki editor toolbar
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgWikiEditortoolbar extends \Hubzero\Plugin\Plugin
+namespace Plugins\Wiki\Editortoolbar;
+
+use Hubzero\Plugin\Plugin;
+
+class Editortoolbar extends Plugin
 {
     /**
      * Flag for if scripts need to be pushed to the document or not

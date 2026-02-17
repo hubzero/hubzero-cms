@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Collections;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Groups Plugin class for assets
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsCollections extends \Hubzero\Plugin\Plugin
+class Collections extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -2088,7 +2090,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      * @param   integer  $group_id
      * @return  object
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _params($group_id)
     {
         if (!$this->_params) {
@@ -2104,7 +2106,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'plugin', $assetId = null)
     {
         // Everyone can view by default

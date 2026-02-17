@@ -1,13 +1,12 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * Copyright (c) 2004 Roman Ožana (http://www.omdesign.cz)
  *
  * @author Roman Ožana <ozana@omdesign.cz>
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  */
+
+namespace Plugins\Groups\Calendar;
 class IcalParser
 {
     /**

@@ -1,6 +1,9 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
+namespace Plugins\Xmessage\Internal;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -11,7 +14,7 @@
 /**
  * XMessage plugin class for internal messages
  */
-class plgXMessageInternal extends \Hubzero\Plugin\Plugin
+class Internal extends Plugin
 {
     /**
      * Return this messaging type

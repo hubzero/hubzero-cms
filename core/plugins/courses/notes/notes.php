@@ -1,19 +1,19 @@
 <?php
-
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Utility\Date;
+namespace Plugins\Courses\Notes;
+
 use Hubzero\Plugin\Plugin;
 
+use Hubzero\Utility\Date;
 /**
  * Courses Plugin class for notes
  */
-class PlgCoursesNotes extends Plugin
+class Notes extends Plugin
 {
     /**
      * Constructor
@@ -32,7 +32,7 @@ class PlgCoursesNotes extends Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -182,7 +182,7 @@ class PlgCoursesNotes extends Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _download()
     {
         $format = strtolower(Request::getWord('frmt', 'txt'));
@@ -231,7 +231,7 @@ class PlgCoursesNotes extends Plugin
      *
      * @return  mixed
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _save()
     {
         $note_id = Request::getInt('note', 0);
@@ -287,7 +287,7 @@ class PlgCoursesNotes extends Plugin
      *
      * @return  mixed
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _delete()
     {
         $note_id = Request::getInt('note', 0);

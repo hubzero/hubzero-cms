@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.ControlStructures.ControlSignature
+// @phpcs:disable PSR1.Files.SideEffects, Squiz.ControlStructures.ControlSignature
+
+namespace Plugins\Projects\Files;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -38,7 +42,7 @@ use Components\Projects\Models\Orm\Project;
 /**
  * Projects Files plugin
  */
-class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
+class Files extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -351,7 +355,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
                 // New connected methods
                 case 'connections':
                     require_once __DIR__ . DS . 'connections.php';
-                    $controller = new connections($this, $this->_option, $connection);
+                    $controller = new Connections($this, $this->_option, $connection);
                     $arr['html'] = $controller->execute($ctask);
                     break;
                 // File browser
@@ -409,7 +413,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      * @param   integer  $sync
      * @return  string
      */
-    protected function _browse($sync = 0) // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _browse($sync = 0) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View(
@@ -490,7 +494,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    protected function _select() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _select() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $props = Request::getString('p', '');
@@ -784,7 +788,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _upload() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _upload() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -823,7 +827,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _save() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -919,7 +923,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _newDir() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _newDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $newdir = Request::getString('newdir', '', 'post');
@@ -952,7 +956,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _saveDir() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _saveDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -995,7 +999,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return     void, redirect
      */
-    protected function _deleteDir() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _deleteDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1036,7 +1040,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _delete() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _delete() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1161,7 +1165,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _rename() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _rename() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1239,7 +1243,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _move() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _move() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1375,7 +1379,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _history() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _history() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Combine file and folder data
         $items = $this->sortIncoming();
@@ -1511,7 +1515,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _diff() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _diff() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Combine file and folder data
         $items = $this->sortIncoming();
@@ -1658,7 +1662,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _restore() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _restore() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -1704,7 +1708,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _download() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _download() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $render = Request::getString('render', 'download');
@@ -1968,7 +1972,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  mixed  array or false
      */
-    protected function _compile() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _compile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Combine file and folder data
         $items = $this->sortIncoming();
@@ -2252,7 +2256,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _share() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _share() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -2559,7 +2563,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      * @param   string  $repoName
      * @return  string
      */
-    public function _optimize($model, $repoName = 'local') // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _optimize($model, $repoName = 'local') // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!isset($this->repo)) {
             $this->repo = new \Components\Projects\Models\Repo($model, $repoName);
@@ -2803,7 +2807,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    protected function _iniSync() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _iniSync() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $ajax = Request::getInt('ajax', 0);
@@ -2866,7 +2870,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    public function _syncError() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _syncError() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $service = Request::getString('service', 'google');
 
@@ -2881,7 +2885,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    public function _syncStatus() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _syncStatus() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_rSync = new Sync($this->_connect);
 
@@ -3305,7 +3309,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
-    protected function _cleanData() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _cleanData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Clean up empty values
         $checked = Request::getArray('asset', array());
@@ -3338,7 +3342,7 @@ class PlgProjectsFiles extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
-    protected function _sortIncoming() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _sortIncoming() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Clean incoming data
         $this->_cleanData();

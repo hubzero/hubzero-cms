@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\EditorsXtd\Image;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Editor Image buton
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgButtonImage extends \Hubzero\Plugin\Plugin
+class Image extends Plugin
 {
     /**
      * Constructor

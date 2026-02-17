@@ -1,7 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,8 +8,11 @@
 /**
  * Resources Plugin class for adding Dublin Core metadata to the document
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgResourcesDublincore extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Dublincore;
+
+use Hubzero\Plugin\Plugin;
+
+class Dublincore extends Plugin
 {
     /**
      * Return data on a resource view (this will be some form of HTML)

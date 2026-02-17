@@ -9,9 +9,11 @@
 /**
  * System plugin checking for spam offences after routing
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemSpamjail extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Spamjail;
+
+use Hubzero\Plugin\Plugin;
+
+class Spamjail extends Plugin
 {
     /**
      * Hook for after parsing route

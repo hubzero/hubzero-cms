@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Wishlists;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -15,10 +19,8 @@ defined('_HZEXEC_') or die();
  * Plugin class for Wishlists
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchWishlists extends \Hubzero\Plugin\Plugin
+class Wishlists extends Plugin
 {
     /**
      * Basic search

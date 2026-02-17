@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Members\Todo;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -14,14 +18,14 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for todo entries
  */
-class PlgMembersTodo extends \Hubzero\Plugin\Plugin
+class Todo extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -168,7 +172,7 @@ class PlgMembersTodo extends \Hubzero\Plugin\Plugin
      *
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _new()
     {
         $view = $this->view('default', 'new');
@@ -197,7 +201,7 @@ class PlgMembersTodo extends \Hubzero\Plugin\Plugin
      *
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _save()
     {
         if (User::isGuest()) {

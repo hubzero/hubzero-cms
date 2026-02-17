@@ -1,29 +1,28 @@
 <?php
+namespace Plugins\Courses\Progress;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Plugin\Plugin;
-
 require_once Component::path('com_courses') . DS . 'models' . DS . 'gradepolicies.php';
 require_once Component::path('com_courses') . DS . 'models' . DS . 'gradebook.php';
 
 /**
  * Courses Plugin class for user progress
  */
-class PlgCoursesProgress extends Plugin
+class Progress extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

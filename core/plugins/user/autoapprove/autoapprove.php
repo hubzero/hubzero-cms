@@ -1,20 +1,20 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Autoapprove;
+
+use Hubzero\Plugin\Plugin;
+
 // No direct access.
 
 /**
  * Plugin for auto-approving users with specified email domains
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgUserAutoapprove extends \Hubzero\Plugin\Plugin
+class Autoapprove extends Plugin
 {
     /**
      * Utility method to act on a user after it has been saved.

@@ -1,11 +1,13 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+namespace Plugins\Filesystem\Github;
+
+use Hubzero\Plugin\Plugin;
 
 use Potherca\Flysystem\Github\Api;
 use Potherca\Flysystem\Github\GithubAdapter;
@@ -14,8 +16,7 @@ use Potherca\Flysystem\Github\Settings;
 /**
  * Plugin class for github filesystem connectivity
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgFilesystemGithub extends \Hubzero\Plugin\Plugin
+class Github extends Plugin
 {
     /**
      * Initializes the github connection

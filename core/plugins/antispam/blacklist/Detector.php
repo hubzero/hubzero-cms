@@ -109,7 +109,7 @@ class Detector implements DetectorInterface
     public function setModel($model)
     {
         if (!($model instanceof Relational)) {
-            throw new Exception('Model must extend the Hubzero\\Database\\Relational');
+            throw new Exception('Model must extend the \Hubzero\\Database\\Relational');
         }
 
         $this->model = $model;

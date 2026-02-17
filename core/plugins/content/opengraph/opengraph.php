@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Opengraph;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -16,11 +20,9 @@ defined('_HZEXEC_') or die();
  *
  * Inspired by work from Jan Pavelka (www.phoca.cz)
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
-class plgContentOpenGraph extends \Hubzero\Plugin\Plugin
+class Opengraph extends Plugin
 {
     /**
      * Affects constructor behavior.

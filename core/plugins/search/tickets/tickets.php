@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Tickets;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -17,10 +21,8 @@ use Hubzero\Utility\Sanitize;
  * Search ticket object?
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchTickets extends \Hubzero\Plugin\Plugin
+class Tickets extends Plugin
 {
     /**
      * onGetTypes - Announces the available hubtype

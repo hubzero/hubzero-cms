@@ -1,6 +1,10 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps, Generic.Files.SideEffects
+namespace Plugins\Citation\DefaultHandler;
+
+use Hubzero\Plugin\Plugin;
+
+// phpcs:disable Generic.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -9,16 +13,16 @@
  */
 
 /**
- * Citations plugin class for bibtex
+ * Citations plugin class for default format
  */
-class plgCitationDefault extends \Hubzero\Plugin\Plugin
+class DefaultHandler extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

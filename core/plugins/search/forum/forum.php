@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Forum;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -15,10 +19,8 @@ defined('_HZEXEC_') or die();
  * Search forum entries
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchForum extends \Hubzero\Plugin\Plugin
+class Forum extends Plugin
 {
     /**
      * Get the name of the area being searched

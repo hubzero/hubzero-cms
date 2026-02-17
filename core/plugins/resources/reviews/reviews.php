@@ -1,7 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,15 +8,18 @@
 /**
  * Resources Plugin class for review
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgResourcesReviews extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Reviews;
+
+use Hubzero\Plugin\Plugin;
+
+class Reviews extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -71,7 +71,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
 
         $resource = \Components\Resources\Models\Entry::oneOrFail($id);
 
-        $h = new PlgResourcesReviewsHelper();
+        $h = new Helper();
         $h->resource = $resource;
         $h->option   = $option;
         $h->_option  = $option;
@@ -124,7 +124,7 @@ class plgResourcesReviews extends \Hubzero\Plugin\Plugin
         $isAuthor = (in_array(User::get('id'), $authors));
 
         // Instantiate a helper object and perform any needed actions
-        $h = new PlgResourcesReviewsHelper();
+        $h = new Helper();
         $h->resource = $model;
         $h->isAuthor = $isAuthor;
         $h->option   = $option;

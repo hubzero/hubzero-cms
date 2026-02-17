@@ -9,9 +9,11 @@
 /**
  * System plugin for hubzero
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Supergroup;
+
+use Hubzero\Plugin\Plugin;
+
+class Supergroup extends Plugin
 {
     /**
      * Method that fires after before a super group displays a super group comonent
@@ -32,7 +34,7 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
         $active = Request::getString('active', '');
 
         // load group object
-        $group  = Hubzero\User\Group::getInstance($cn);
+        $group  = \Hubzero\User\Group::getInstance($cn);
 
         // make sure we have all the needed stuff
         if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active)) {
@@ -134,7 +136,7 @@ class plgSystemSupergroup extends \Hubzero\Plugin\Plugin
             $active = Request::getVar('active', '');
 
             // load group object
-            $group  = Hubzero\User\Group::getInstance($cn);
+            $group  = \Hubzero\User\Group::getInstance($cn);
 
             // make sure we have all the needed stuff
             if (is_object($group) && $group->isSuperGroup() && isset($cn) && isset($active)) {

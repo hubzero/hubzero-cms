@@ -5,20 +5,19 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
-
 /**
  * CKEditor Plugin
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgEditorCkeditor extends \Hubzero\Plugin\Plugin
+namespace Plugins\Editors\Ckeditor;
+
+use Hubzero\Plugin\Plugin;
+
+class Ckeditor extends Plugin
 {
     /**
      * Base path for editor files
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_basePath = 'core/plugins/editors/ckeditor/assets/';
 
     /**

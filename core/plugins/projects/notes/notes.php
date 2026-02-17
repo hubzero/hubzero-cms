@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+namespace Plugins\Projects\Notes;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -17,63 +21,63 @@ include_once \Component::path('com_projects') . DS . 'models' . DS . 'note.php';
 /**
  * Projects Notes (wiki) plugin
  */
-class PlgProjectsNotes extends \Hubzero\Plugin\Plugin
+class Notes extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    protected $_autoloadLanguage = true; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Name of project group
      *
      * @var  array
      */
-    protected $_group = null; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Name of master scope
      *
      * @var  array
      */
-    protected $_masterScope = null; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Name of page
      *
      * @var  array
      */
-    protected $_pagename = null; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Tool record (tool wiki)
      *
      * @var  array
      */
-    protected $_tool = null; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Controller name
      *
      * @var  array
      */
-    protected $_controllerName = null; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Store internal message
      *
      * @var  array
      */
-    protected $_msg = null; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Component name
      *
      * @var  string
      */
-    protected $_option = 'com_projects'; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
     /**
      * Event call to determine if this plugin should return data
@@ -283,7 +287,7 @@ class PlgProjectsNotes extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _page()
     {
         // Incoming
@@ -434,7 +438,7 @@ class PlgProjectsNotes extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _list()
     {
         // Incoming
@@ -471,7 +475,7 @@ class PlgProjectsNotes extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _share()
     {
         // Incoming
@@ -597,7 +601,7 @@ class PlgProjectsNotes extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _browser()
     {
         // Incoming

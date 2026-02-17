@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +8,11 @@
 /**
  * Cron plugin for forum
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCronForum extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Forum;
+
+use Hubzero\Plugin\Plugin;
+
+class Forum extends Plugin
 {
     /**
      * Return a list of events
@@ -170,7 +171,7 @@ class plgCronForum extends \Hubzero\Plugin\Plugin
      **/
     private function sendEmail($user, $posts, $interval = 'daily')
     {
-        $eview = new Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View(array(
             'base_path' => Component::path('com_forum') . DS . 'site',
             'name'      => 'emails',
             'layout'    => 'digest_plain'

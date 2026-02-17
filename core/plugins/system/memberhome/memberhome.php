@@ -6,14 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Memberhome;
+
+use Hubzero\Plugin\Plugin;
+
 // no direct access
 
 /**
  * Redirect to Member Home Page
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemMemberHome extends \Hubzero\Plugin\Plugin
+class Memberhome extends Plugin
 {
     /**
      * Method to catch the onAfterRoute event.

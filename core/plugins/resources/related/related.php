@@ -1,6 +1,8 @@
 <?php
+namespace Plugins\Resources\Related;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -15,14 +17,14 @@ defined('_HZEXEC_') or die();
 /**
  * Resources Plugin class for related resources
  */
-class plgResourcesRelated extends \Hubzero\Plugin\Plugin
+class Related extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var    boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

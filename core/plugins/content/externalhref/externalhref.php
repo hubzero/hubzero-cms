@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Externalhref;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die;
 /**
  * External HREF processor
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgContentExternalhref extends \Hubzero\Plugin\Plugin
+class Externalhref extends Plugin
 {
     /**
      * Before save content method
@@ -67,8 +69,8 @@ class plgContentExternalhref extends \Hubzero\Plugin\Plugin
         $key = $this->key($context);
 
         if (
-            $article instanceof Hubzero\Base\Obj
-            || $article instanceof Hubzero\Database\Relational
+            $article instanceof \Hubzero\Base\Obj
+            || $article instanceof \Hubzero\Database\Relational
         ) {
             $content = $article->get($key);
         } elseif (isset($article->$key)) {
@@ -179,8 +181,8 @@ class plgContentExternalhref extends \Hubzero\Plugin\Plugin
         }
 
         if (
-            $article instanceof Hubzero\Base\Obj
-            || $article instanceof Hubzero\Database\Relational
+            $article instanceof \Hubzero\Base\Obj
+            || $article instanceof \Hubzero\Database\Relational
         ) {
             $article->set($key, $content);
         } else {

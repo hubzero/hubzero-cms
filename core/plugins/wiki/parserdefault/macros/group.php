@@ -8,7 +8,7 @@
 
 namespace Plugins\Wiki\Parserdefault\Macros;
 
-use WikiMacro;
+use Plugins\Wiki\Parserdefault\WikiMacro;
 use Hubzero\User\Group;
 
 /**

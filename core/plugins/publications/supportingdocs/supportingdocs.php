@@ -1,6 +1,8 @@
 <?php
+namespace Plugins\Publications\Supportingdocs;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -13,15 +15,14 @@
 /**
  * Publications Plugin class for supporting docs
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
+class Supportingdocs extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Publications;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -21,10 +25,8 @@ require_once __DIR__ . DS . 'childsorter.php';
  * Search plugin class for publications
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchPublications extends \Hubzero\Plugin\Plugin
+class Publications extends Plugin
 {
     /**
      * Build search query and add it to the $results

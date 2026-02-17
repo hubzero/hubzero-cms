@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\EditorsXtd\Readmore;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Editor Readmore buton
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgButtonReadmore extends \Hubzero\Plugin\Plugin
+class Readmore extends Plugin
 {
     /**
      * Constructor

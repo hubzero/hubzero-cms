@@ -1,6 +1,9 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
+namespace Plugins\Authfactors\Certificate;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +17,7 @@ use Hubzero\Notification\Storage\Cookie;
 /**
  * Factor Auth plugin for certificate based identity verification
  */
-class plgAuthfactorsCertificate extends \Hubzero\Plugin\Plugin
+class Certificate extends Plugin
 {
     /**
      * Renders the auth factor challenge

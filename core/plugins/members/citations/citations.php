@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Members\Citations;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -31,14 +35,14 @@ use Components\Citations\Models\Importer;
 /**
  * Groups plugin class for citations
  */
-class PlgMembersCitations extends \Hubzero\Plugin\Plugin
+class Citations extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

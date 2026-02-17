@@ -1,25 +1,24 @@
 <?php
-
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Plugin\Plugin;
-
 /**
  * Courses Plugin class for course pages
  */
-class PlgCoursesPages extends Plugin
+namespace Plugins\Courses\Pages;
+
+use Hubzero\Plugin\Plugin;
+
+class Pages extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -153,7 +152,7 @@ class PlgCoursesPages extends Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _list()
     {
         $this->view->setLayout('default');
@@ -349,7 +348,7 @@ class PlgCoursesPages extends Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _ajaxUpload()
     {
         // Check if they're logged in
@@ -490,7 +489,7 @@ class PlgCoursesPages extends Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _fileUpload()
     {
         // Check if they're logged in
@@ -539,7 +538,7 @@ class PlgCoursesPages extends Plugin
         if ($file['size'] > $sizeLimit) {
             $this->setError(Lang::txt(
                 'PLG_COURSES_PAGES_ERROR_FILE_TOO_LARGE',
-                Hubzero\Utility\Number::formatBytes($sizeLimit)
+                \Hubzero\Utility\Number::formatBytes($sizeLimit)
             ));
             return $this->_files();
         }
@@ -614,7 +613,7 @@ class PlgCoursesPages extends Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _fileDelete()
     {
         // Check if they're logged in
@@ -685,7 +684,7 @@ class PlgCoursesPages extends Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _files()
     {
         $this->view->setLayout('files');
@@ -702,7 +701,7 @@ class PlgCoursesPages extends Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _fileList()
     {
         $page = new \Components\Courses\Models\Page(Request::getInt('page', 0));

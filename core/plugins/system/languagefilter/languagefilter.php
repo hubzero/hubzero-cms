@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Languagefilter;
+
+use Hubzero\Plugin\Plugin;
+
 // no direct access
 // phpcs:disable PSR1.Files.SideEffects
 require_once Component::path('com_menus') . '/helpers/menus.php';
@@ -14,9 +18,7 @@ require_once Component::path('com_languages') . '/helpers/multilangstatus.php';
 /**
  * Language Filter Plugin
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
+class Languagefilter extends Plugin
 {
     /**
      * SEF mode
@@ -116,7 +118,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
 
                 App::forget('language.filter');
                 App::set('language.filter', true);
-                $uri = Hubzero\Utility\Uri::getInstance();
+                $uri = \Hubzero\Utility\Uri::getInstance();
 
                 if (self::$mode_sef) {
                     // Get the route path from the request.
@@ -398,7 +400,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
     public function onUserBeforeSave($user, $isnew, $new)
     {
         if ($this->params->get('automatic_change', '1') == '1' && array_key_exists('params', $user)) {
-            $registry = new Hubzero\Config\Registry($user['params']);
+            $registry = new \Hubzero\Config\Registry($user['params']);
 
             self::$userLangCode = $registry->get('language');
 
@@ -422,7 +424,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
     public function onUserAfterSave($user, $isnew, $success, $msg)
     {
         if ($this->params->get('automatic_change', '1') == '1' && key_exists('params', $user) && $success) {
-            $registry = new Hubzero\Config\Registry($user['params']);
+            $registry = new \Hubzero\Config\Registry($user['params']);
 
             $lang_code = $registry->get('language');
             if (empty($lang_code)) {
@@ -553,7 +555,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                 // Associated menu items in other languages
                 if ($associations && $this->params->get('menu_associations')) {
                     $menu   = App::get('menu');
-                    $server = Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
+                    $server = \Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
 
                     foreach (Lang::available() as $language) {
                         if (isset($associations[$language->lang_code])) {
@@ -601,7 +603,7 @@ class plgSystemLanguageFilter extends \Hubzero\Plugin\Plugin
                 } elseif ($active->home) {
                 // Homepages in other languages
                     $menu   = App::get('menu');
-                    $server = Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
+                    $server = \Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
 
                     foreach (Lang::available() as $language) {
                         $item = $menu->getDefault($language->lang_code);

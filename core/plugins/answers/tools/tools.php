@@ -9,10 +9,12 @@
 /**
  * Answers plugin for tools
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgAnswersTools extends \Hubzero\Plugin\Plugin
+namespace Plugins\Answers\Tools;
+
+use Hubzero\Plugin\Plugin;
+
+class Tools extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

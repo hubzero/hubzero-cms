@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +8,11 @@
 /**
  * Cron plugin for newsletters
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCronNewsletter extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Newsletter;
+
+use Hubzero\Plugin\Plugin;
+
+class Newsletter extends Plugin
 {
     /**
      * Return a list of events
@@ -284,7 +285,7 @@ class plgCronNewsletter extends \Hubzero\Plugin\Plugin
         foreach ($unconvertedActions as $action) {
             // attempt to locate
             try {
-                $location = Hubzero\Geocode\Geocode::locate($action->ip);
+                $location = \Hubzero\Geocode\Geocode::locate($action->ip);
             } catch (Exception $e) {
                 continue;
 

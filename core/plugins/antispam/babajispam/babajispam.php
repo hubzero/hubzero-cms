@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Babajispam;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 
 /**
  * Babajispam Anti-spam Plugin
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAntispamBabajispam extends \Hubzero\Plugin\Plugin
+class Babajispam extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

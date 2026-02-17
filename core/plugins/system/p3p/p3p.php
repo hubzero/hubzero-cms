@@ -9,9 +9,11 @@
 /**
  * P3P Header Plugin
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemP3p extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\P3p;
+
+use Hubzero\Plugin\Plugin;
+
+class P3p extends Plugin
 {
     /**
      * Hook for after app initialization

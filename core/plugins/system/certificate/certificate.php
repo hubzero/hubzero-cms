@@ -9,9 +9,11 @@
 /**
  * System plugin for client side certificate restrictions
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemCertificate extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Certificate;
+
+use Hubzero\Plugin\Plugin;
+
+class Certificate extends Plugin
 {
     /**
      * Hook for after parsing route
@@ -36,8 +38,8 @@ class plgSystemCertificate extends \Hubzero\Plugin\Plugin
         }
 
         // Check if user is registered and if current session is linked to cert identity
-        $hzad = Hubzero\Auth\Domain::getInstance('authentication', 'certificate', $_SERVER['SSL_CLIENT_I_DN_CN']);
-        if ($link = Hubzero\Auth\Link::getInstance($hzad->id, $_SERVER['SSL_CLIENT_S_DN_CN'])) {
+        $hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'certificate', $_SERVER['SSL_CLIENT_I_DN_CN']);
+        if ($link = \Hubzero\Auth\Link::getInstance($hzad->id, $_SERVER['SSL_CLIENT_S_DN_CN'])) {
             if ($link->user_id == User::get('id')) {
                 // All clear...return nothing
                 return;

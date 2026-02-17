@@ -6,7 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+namespace Plugins\Newsletter\Jobs;
+
+use Hubzero\Plugin\Plugin;
+
+// phpcs:disable PSR1.Files.SideEffects
 
 use Components\Feedaggregator\Models\Orm\Post;
 
@@ -15,8 +19,7 @@ require_once \Component::path('com_feedaggregator') . DS . 'models' . DS . 'orm'
 /**
  * Plugin class for Newsletter jobs
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgNewsletterFeedaggregator extends \Hubzero\Plugin\Plugin
+class Jobs extends Plugin
 {
     /**
      * Event call to get the name

@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Filesystem\Googledrive;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,8 +21,7 @@ use Hubzero\Utility\Arr;
 /**
  * Plugin class for Google Drive filesystem connectivity
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgFilesystemGoogleDrive extends \Hubzero\Plugin\Plugin
+class Googledrive extends Plugin
 {
     /**
      * Initializes the Google Drive connection

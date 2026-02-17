@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Blogs;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -17,10 +21,8 @@ use Hubzero\User\Group;
 /**
  * Search blog entries
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchBlogs extends \Hubzero\Plugin\Plugin
+class Blogs extends Plugin
 {
     /**
      * Description for 'FIRST_CLASS_CHILDREN'

@@ -5,14 +5,14 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * PageDown Editor Plugin
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgEditorPageDown extends \Hubzero\Plugin\Plugin
+namespace Plugins\Editors\Pagedown;
+
+use Hubzero\Plugin\Plugin;
+
+class Pagedown extends Plugin
 {
     public const BUTTON_BAR_ID = 'wmd-button-bar';
     public const INPUT_ID = 'wmd-input';
@@ -21,7 +21,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
     public const CSS_DIRECTORY = 'core/plugins/editors/pagedown/assets/css';
     public const JS_DIRECTORY = 'core/plugins/editors/pagedown/assets/js';
 
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_editorCount = 1;
 
     /*
@@ -40,7 +40,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addScripts()
     {
         $scriptPaths = $this->_getScriptPaths();
@@ -55,7 +55,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addStylesheets()
     {
         $stylesheetPaths = $this->_getStylesheetPaths();
@@ -70,7 +70,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getScriptPaths()
     {
         $scriptNames = [
@@ -92,7 +92,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getStylesheetPaths()
     {
         $stylesheetNames = [
@@ -111,7 +111,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      * @param   string   $assetDirectory    Subdirectory within /assets
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildAssetPaths($assetFileNames, $assetDirectory)
     {
         $assetPaths = array_map(function ($fileName) use ($assetDirectory) {
@@ -169,7 +169,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      * @param   array   $params   Editor configuration data
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _parseClasses(&$params)
     {
         if (!isset($params['class'])) {
@@ -191,7 +191,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      * @param   int     $rows     Number of rows for the textarea
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setDefaultHeight(&$params, $rows)
     {
         if (!isset($params['height'])) {
@@ -209,7 +209,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      * @param   int      $rows     Number of rows for the textarea
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildEditorDomElements($content, $name, $columns, $rows)
     {
         $editorDomElements = '<div>';
@@ -231,7 +231,7 @@ class plgEditorPageDown extends \Hubzero\Plugin\Plugin
      * @param   int      $rows     Number of rows for the textarea
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _buildTextarea($content, $name, $columns, $rows, $idPostfix)
     {
         $textarea = "<textarea name=\"$name\" id=\"" . self::INPUT_ID . $idPostfix . "\" cols=\"$columns\""

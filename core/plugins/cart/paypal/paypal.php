@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Cart\Paypal;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,15 +14,14 @@
 /**
  * Cart plugin for Payment: Paypal
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCartPaypal extends \Hubzero\Plugin\Plugin
+class Paypal extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

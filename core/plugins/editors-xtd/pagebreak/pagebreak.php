@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\EditorsXtd\Pagebreak;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Editor Pagebreak buton
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgButtonPagebreak extends \Hubzero\Plugin\Plugin
+class Pagebreak extends Plugin
 {
     /**
      * Constructor

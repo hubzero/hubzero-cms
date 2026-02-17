@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Courses;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for courses
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsCourses extends \Hubzero\Plugin\Plugin
+class Courses extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -40,7 +42,7 @@ class plgGroupsCourses extends \Hubzero\Plugin\Plugin
             $extension = 'plg_' . $this->_type . '_' . $this->_name;
         }
 
-        $group = Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+        $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
         if ($group && $group->isSuperGroup()) {
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }

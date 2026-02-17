@@ -5,17 +5,17 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * GoogleMaps plugin for geocode
  *
  * The GoogleMapsProvider is able to geocode and reverse geocode
  * street addresses.
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeGooglemaps extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Googlemaps;
+
+use Hubzero\Plugin\Plugin;
+
+class Googlemaps extends Plugin
 {
     /**
      * Return a geocode provider

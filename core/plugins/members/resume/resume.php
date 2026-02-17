@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Members\Resume;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -14,14 +18,14 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for resumes
  */
-class PlgMembersResume extends \Hubzero\Plugin\Plugin
+class Resume extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -239,7 +243,7 @@ class PlgMembersResume extends \Hubzero\Plugin\Plugin
      * @param  integer  $emp       Is user employer?
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _save($database, $option, $member, $task, $emp)
     {
         $lookingfor = Request::getString('lookingfor', '');
@@ -288,7 +292,7 @@ class PlgMembersResume extends \Hubzero\Plugin\Plugin
      * @param  integer  $emp       Is user employer?
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _activate($database, $option, $member, $emp)
     {
         // are we activating or disactivating?
@@ -327,7 +331,7 @@ class PlgMembersResume extends \Hubzero\Plugin\Plugin
      * @param  integer  $editpref   Parameter description (if any) ...
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _view($database, $option, $member, $emp, $edittitle = 0, $editpref = 0)
     {
         $out = '';
@@ -432,7 +436,7 @@ class PlgMembersResume extends \Hubzero\Plugin\Plugin
      * @param  object  $member    Profile
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _upload($database, $option, $member)
     {
         $path = $this->buildPath($member->get('id'));
@@ -465,7 +469,7 @@ class PlgMembersResume extends \Hubzero\Plugin\Plugin
             $this->setError(
                 Lang::txt(
                     'PLG_MEMBERS_RESUME_ERROR_FILE_TOO_LARGE',
-                    Hubzero\Utility\Number::formatBytes($sizeLimit)
+                    \Hubzero\Utility\Number::formatBytes($sizeLimit)
                 )
             );
             return $this->_view($database, $option, $member, $emp);
@@ -555,7 +559,7 @@ class PlgMembersResume extends \Hubzero\Plugin\Plugin
      * @param  integer  $emp       Is user employer?
      * @return string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _deleteresume($database, $option, $member, $emp)
     {
         $row = new \Components\Jobs\Tables\Resume($database);
@@ -728,7 +732,7 @@ class PlgMembersResume extends \Hubzero\Plugin\Plugin
      * @param  object  $member
      * @return void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _download($member)
     {
         $database = App::get('db');

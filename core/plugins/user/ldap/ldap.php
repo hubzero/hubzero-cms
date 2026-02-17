@@ -1,20 +1,20 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Ldap;
+
+use Hubzero\Plugin\Plugin;
+
 // No direct access
 
 /**
  * User plugin for hub users
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgUserLdap extends \Hubzero\Plugin\Plugin
+class Ldap extends Plugin
 {
     /**
      * This method is an alias for onAfterStoreUser

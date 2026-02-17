@@ -5,17 +5,17 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * BingMaps plugin for geocode
  *
  * The BingMapsProvider is able to geocode and reverse geocode
  * street addresses. A valid api key is required.
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeBingmaps extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Bingmaps;
+
+use Hubzero\Plugin\Plugin;
+
+class Bingmaps extends Plugin
 {
     /**
      * Return a geocode provider

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Geshi;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die;
 /**
  * Code syntax highlighting plugin
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgContentGeshi extends \Hubzero\Plugin\Plugin
+class Geshi extends Plugin
 {
     /**
      * Prepare the content for display
@@ -35,7 +37,7 @@ class plgContentGeshi extends \Hubzero\Plugin\Plugin
         }
 
         // Simple performance check to determine whether bot should process further.
-        if (Hubzero\Utility\Str::contains($article->text, 'pre>') === false) {
+        if (\Hubzero\Utility\Str::contains($article->text, 'pre>') === false) {
             return true;
         }
 
@@ -54,7 +56,7 @@ class plgContentGeshi extends \Hubzero\Plugin\Plugin
      * @param   array   $matches  An array of matches (see preg_match_all)
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _replace(&$matches)
     {
         require_once __DIR__ . '/geshi/geshi.php';
@@ -62,8 +64,8 @@ class plgContentGeshi extends \Hubzero\Plugin\Plugin
         $args = self::parseAttributes($matches[1]);
         $text = $matches[2];
 
-        $lang  = Hubzero\Utility\Arr::getValue($args, 'lang', 'php');
-        $lines = Hubzero\Utility\Arr::getValue($args, 'lines', 'false');
+        $lang  = \Hubzero\Utility\Arr::getValue($args, 'lang', 'php');
+        $lines = \Hubzero\Utility\Arr::getValue($args, 'lines', 'false');
 
         $html_entities_match   = array("|\<br \/\>|", "#<#", "#>#", "|&#39;|", '#&quot;#', '#&nbsp;#');
         $html_entities_replace = array("\n", '&lt;', '&gt;', "'", '"', ' ');

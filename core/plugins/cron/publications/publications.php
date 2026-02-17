@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +8,11 @@
 /**
  * Cron plugin for publications
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCronPublications extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Publications;
+
+use Hubzero\Plugin\Plugin;
+
+class Publications extends Plugin
 {
     /**
      * Return a list of events
@@ -148,7 +149,7 @@ class plgCronPublications extends \Hubzero\Plugin\Plugin
             }
 
             // Plain text
-            $eview = new Hubzero\Mail\View(
+            $eview = new \Hubzero\Mail\View(
                 array(
                     'base_path' => __DIR__,
                     'name'      => 'emails',

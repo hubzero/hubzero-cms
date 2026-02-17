@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 /**
  * @package    hubzero-cms
@@ -8,11 +7,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
+namespace Plugins\Resources\Reviews;
 /**
  * Helper class for reviews
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class PlgResourcesReviewsHelper extends \Hubzero\Base\Obj
+class Helper extends \Hubzero\Base\Obj
 {
     /**
      * Execute an action

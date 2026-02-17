@@ -6,13 +6,15 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Cache;
+
+use Hubzero\Plugin\Plugin;
+
 // no direct access
 /**
  * Page Cache Plugin
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemCache extends \Hubzero\Plugin\Plugin
+class Cache extends Plugin
 {
     /**
      * Constructor

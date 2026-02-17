@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Wishlist;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Groups Plugin class for wishlist
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
+class Wishlist extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

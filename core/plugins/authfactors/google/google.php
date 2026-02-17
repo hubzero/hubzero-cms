@@ -1,6 +1,10 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps, Generic.Files.SideEffects, PSR1.Files.SideEffects
+namespace Plugins\Authfactors\Google;
+
+use Hubzero\Plugin\Plugin;
+
+// phpcs:disable Generic.Files.SideEffects, PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -16,7 +20,7 @@ require_once Plugin::path('authfactors', 'google') . DS . 'helpers' . DS . 'Goog
 /**
  * Factor Auth plugin for based identity verification
  */
-class plgAuthfactorsGoogle extends \Hubzero\Plugin\Plugin
+class Google extends Plugin
 {
     /**
      * Renders the auth factor challenge

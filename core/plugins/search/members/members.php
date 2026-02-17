@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Members;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -20,10 +24,8 @@ require_once __DIR__ . DS . 'contributionsorter.php';
  * Search members
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchMembers extends \Hubzero\Plugin\Plugin
+class Members extends Plugin
 {
     /**
      * onGetTypes - Announces the available hubtype
@@ -296,7 +298,7 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
                 $row->add_weight(1);
                 $added[$link] = 1;
             }
-            $row->sort_children(array('ContributionSorter', 'sort'));
+            $row->sort_children(array(ContributionSorter::class, 'sort'));
 
             $workp = new \Components\Search\Models\Basic\Result\Sql(
                 "SELECT
@@ -327,11 +329,11 @@ class plgSearchMembers extends \Hubzero\Plugin\Plugin
                 $row->add_weight(1);
                 $added[$link] = 1;
             }
-            $row->sort_children(array('ContributionSorter', 'sort'));
+            $row->sort_children(array(ContributionSorter::class, 'sort'));
 
             $resp[] = $row;
         }
-        usort($resp, array('ContributionSorter', 'sort_weight'));
+        usort($resp, array(ContributionSorter::class, 'sort_weight'));
         foreach ($resp as $row) {
             $results->add($row);
         }

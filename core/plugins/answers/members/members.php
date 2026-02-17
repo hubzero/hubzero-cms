@@ -9,10 +9,12 @@
 /**
  * Answers plugin for members
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgAnswersMembers extends \Hubzero\Plugin\Plugin
+namespace Plugins\Answers\Members;
+
+use Hubzero\Plugin\Plugin;
+
+class Members extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Members\Groups;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -14,14 +18,14 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for groups
  */
-class PlgMembersGroups extends \Hubzero\Plugin\Plugin
+class Groups extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -82,12 +86,12 @@ class PlgMembersGroups extends \Hubzero\Plugin\Plugin
         $managers = array();
 
         // Look for any invites by email
-        $emails = Hubzero\User\Group\InviteEmail::all()
+        $emails = \Hubzero\User\Group\InviteEmail::all()
             ->whereEquals('email', $member->get('email'))
             ->rows();
 
         foreach ($emails as $emailed) {
-            $g = Hubzero\User\Group::getInstance($emailed->get('gidNumber'));
+            $g = \Hubzero\User\Group::getInstance($emailed->get('gidNumber'));
 
             if (!$g || !$g->get('gidNumber')) {
                 continue;

@@ -1,9 +1,10 @@
 <?php
 
+namespace Plugins\Resources\Windowstools;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,15 +17,14 @@ require_once Component::path('com_tools') . DS . 'tables' . DS . 'session.php';
 /**
  * Resources Plugin class for Windows tools
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgResourcesWindowstools extends \Hubzero\Plugin\Plugin
+class Windowstools extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

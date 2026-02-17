@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Oaipmh\Resources;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 
@@ -17,10 +21,8 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for providing data to OAI-PMH.
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgOaipmhResources extends \Hubzero\Plugin\Plugin
+class Resources extends Plugin
 {
     /**
      * Instantiate and registers a provider with the

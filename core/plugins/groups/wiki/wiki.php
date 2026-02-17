@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Wiki;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Groups Plugin class for wiki
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsWiki extends \Hubzero\Plugin\Plugin
+class Wiki extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -152,7 +154,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
                 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members')
             ) {
                 $url = $_SERVER['REQUEST_URI'];
-                if (!Hubzero\Utility\Uri::isInternal($url)) {
+                if (!\Hubzero\Utility\Uri::isInternal($url)) {
                     $url = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=' . $active);
                 }
 

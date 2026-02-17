@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Citations;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -30,10 +34,8 @@ use Components\Citations\Models\Importer;
 /**
  * Groups plugin class for citations
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsCitations extends \Hubzero\Plugin\Plugin
+class Citations extends Plugin
 {
     /**
      * Plugin scope

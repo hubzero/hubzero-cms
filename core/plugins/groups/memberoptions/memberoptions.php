@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Memberoptions;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Groups plugin class for Member Options
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
+class Memberoptions extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -175,7 +177,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
     public function onGroupUserEnrollment($gidNumber, $userid)
     {
         // get group
-        $group = Hubzero\User\Group::getInstance($gidNumber);
+        $group = \Hubzero\User\Group::getInstance($gidNumber);
 
         // is auto-subscribe on for discussion forum
         $autosubscribe = $group->get('discussion_email_autosubscribe');

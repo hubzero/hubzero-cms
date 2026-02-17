@@ -1,9 +1,13 @@
 <?php
 
+namespace Plugins\Citation\Doi;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps, Generic.Files.SideEffects
+// phpcs:disable Generic.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -11,20 +15,20 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once Component::path('com_publications') . '/tables/version.php'; // phpcs:ignore Generic.Files.SideEffects
-require_once Component::path('com_publications') . '/models/doi.php'; // phpcs:ignore Generic.Files.SideEffects
+// phpcs:ignore Generic.Files.SideEffects
+// phpcs:ignore Generic.Files.SideEffects
 
 /**
  * Citation Plugin class for doi
  */
-class plgCitationDoi extends \Hubzero\Plugin\Plugin
+class Doi extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -32,7 +36,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
      *
      * @var object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     public $_configs = null;
 
     /**
@@ -214,7 +218,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
      * @param   array   $doi
      * @return  mixed   XML or false
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getDoiXml($doi)
     {
         if (
@@ -483,7 +487,7 @@ class plgCitationDoi extends \Hubzero\Plugin\Plugin
      * @param   string  $xml  the DOI metadata xml file
      * @return  bool    curl command response code
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _regMetadata($xml)
     {
         $url = rtrim($this->_configs->dataciteServiceURL, '/') . '/' . 'metadata';

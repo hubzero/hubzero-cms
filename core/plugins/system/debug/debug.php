@@ -9,9 +9,11 @@
 /**
  * Debug plugin
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemDebug extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Debug;
+
+use Hubzero\Plugin\Plugin;
+
+class Debug extends Plugin
 {
     /**
      * Link format
@@ -195,7 +197,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
                  . '">' . $this->displayMemoryUsage() . '</span></span>';
             }
 
-            $dumper = Hubzero\Debug\Dumper::getInstance();
+            $dumper = \Hubzero\Debug\Dumper::getInstance();
             if ($dumper->hasMessages()) {
                 $html .= '<a href="#debug-debug" class="debug-tab debug-tab-console"><span class="text">
 				' . Lang::txt('PLG_DEBUG_CONSOLE')
@@ -391,25 +393,25 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
 			<dt class="key">$_GET</dt>
 			<dd class="value">
 				<span id="debug-get-short" data-section="get" class="debug-toggle open">
-				' . Hubzero\Utility\Str::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
+				' . \Hubzero\Utility\Str::truncate(strip_tags($get), 100, array('exact' => true)) . '</span>
 				<span id="debug-get-full" data-section="get" class="debug-toggle">' . nl2br($get) . '</span>
 			</dd>
 			<dt class="key">$_POST</dt>
 			<dd class="value">
 				<span id="debug-post-short" data-section="post" class="debug-toggle open">
-				' . Hubzero\Utility\Str::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
+				' . \Hubzero\Utility\Str::truncate(strip_tags($post), 100, array('exact' => true)) . '</span>
 				<span id="debug-post-full" data-section="post" class="debug-toggle">' . nl2br($post) . '</span>
 			</dd>
 			<dt class="key">$_COOKIE</dt>
 			<dd class="value">
 				<span id="debug-cookies-short" data-section="cookies" class="debug-toggle open">
-				' . Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
+				' . \Hubzero\Utility\Str::truncate(strip_tags($cookies), 100, array('exact' => true)) . '</span>
 				<span id="debug-cookies-full" data-section="cookies" class="debug-toggle">' . nl2br($cookies) . '</span>
 			</dd>
 			<dt class="key">$_SERVER</dt>
 			<dd class="value">
 				<span id="debug-server-short" data-section="server" class="debug-toggle open">
-				' . Hubzero\Utility\Str::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
+				' . \Hubzero\Utility\Str::truncate(strip_tags($server), 100, array('exact' => true)) . '</span>
 				<span id="debug-server-full" data-section="server" class="debug-toggle">' . nl2br($server) . '</span>
 			</dd>
 		</dl>';
@@ -424,7 +426,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
      */
     protected function displayDebug()
     {
-        $dumper = Hubzero\Debug\Dumper::getInstance();
+        $dumper = \Hubzero\Debug\Dumper::getInstance();
 
         return $dumper->render();
     }
@@ -435,7 +437,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
      * @param   array  $arr
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _arr($arr)
     {
         $html = 'Array( ' . "\n";
@@ -492,7 +494,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
                 }
 
                 if (is_object($entries)) {
-                    $o = Hubzero\Utility\Arr::fromObject($entries);
+                    $o = \Hubzero\Utility\Arr::fromObject($entries);
 
                     if ($o) {
                         $entries = $o;
@@ -577,7 +579,7 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
     {
         $bytes = App::get('profiler')->memory();
 
-        return Hubzero\Utility\Number::formatBytes($bytes);
+        return \Hubzero\Utility\Number::formatBytes($bytes);
     }
 
     /**
@@ -787,14 +789,8 @@ class plgSystemDebug extends \Hubzero\Plugin\Plugin
                     ? '<span class="debug-loaded"><strong>' . Lang::txt('PLG_DEBUG_LANG_LOADED')
 
 
-
-
-
                  . '</strong>'
                     : '<span class="debug-notloaded"><strong>' . Lang::txt('PLG_DEBUG_LANG_NOT_LOADED')
-
-
-
 
 
                  . '</strong>';

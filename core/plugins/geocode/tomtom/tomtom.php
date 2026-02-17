@@ -5,9 +5,6 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * TomTom plugin for geocode
  *
@@ -16,8 +13,11 @@
  * you can choose between de, es, fr, it, nl, pl, pt and sv.
  * A valid api key is required.
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeTomTom extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Tomtom;
+
+use Hubzero\Plugin\Plugin;
+
+class Tomtom extends Plugin
 {
     /**
      * Return a geocode provider

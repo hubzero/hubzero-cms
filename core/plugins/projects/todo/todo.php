@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.ControlStructures.ControlSignature, PSR2.ControlStructures.ElseIfDeclaration, PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace
+// @phpcs:disable PSR1.Files.SideEffects, Squiz.ControlStructures.ControlSignature, PSR2.ControlStructures.ElseIfDeclaration, PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace
+
+namespace Plugins\Projects\Todo;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -17,7 +21,7 @@ include_once \Component::path('com_projects') . DS . 'models' . DS . 'todo.php';
 /**
  * Projects todo's
  */
-class plgProjectsTodo extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
+class Todo extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -251,7 +255,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      *
      * @return  string
      */
-    protected function _page() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _page() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Get default view from owner params
         $member = $this->model->member();
@@ -312,7 +316,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      *
      * @return  string
      */
-    protected function _item() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _item() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $todoid = $this->_todoid ? $this->_todoid : Request::getInt('todoid', 0);
@@ -370,7 +374,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      *
      * @return  string
      */
-    protected function _save() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check for request forgeries
         Request::checkToken(['get', 'post']);
@@ -625,7 +629,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      *
      * @return  string
      */
-    protected function _delete() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _delete() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -722,7 +726,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      *
      * @return  string
      */
-    protected function _reorder() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _reorder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -770,7 +774,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      *
      * @return  void  redirect
      */
-    protected function _deleteComment() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _deleteComment() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -817,7 +821,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      *
      * @return  void  redirect
      */
-    protected function _saveComment() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _saveComment() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check for request forgeries
         Request::checkToken();

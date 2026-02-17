@@ -9,9 +9,11 @@
 /**
  * System plugin checking for spam offences after routing
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemPassword extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Password;
+
+use Hubzero\Plugin\Plugin;
+
+class Password extends Plugin
 {
     /**
      * Hook for after parsing route

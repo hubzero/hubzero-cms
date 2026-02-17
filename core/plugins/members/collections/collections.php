@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Members\Collections;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -14,14 +18,14 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for collections
  */
-class PlgMembersCollections extends \Hubzero\Plugin\Plugin
+class Collections extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -1850,7 +1854,7 @@ class PlgMembersCollections extends \Hubzero\Plugin\Plugin
      * @param  integer  $assetId    Specific object to check permissions for
      * @return void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'plugin', $assetId = null)
     {
         // Everyone can view by default

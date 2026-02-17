@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,8 +9,11 @@
 /**
  * Wiki plugin class for displaying a WYSIWYG wiki editor
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgWikiEditorwykiwyg extends \Hubzero\Plugin\Plugin
+namespace Plugins\Wiki\Editorwykiwyg;
+
+use Hubzero\Plugin\Plugin;
+
+class Editorwykiwyg extends Plugin
 {
     /**
      * Flag for if scripts need to be pushed to the document or not

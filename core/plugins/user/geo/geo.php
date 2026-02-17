@@ -1,20 +1,20 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Geo;
+
+use Hubzero\Plugin\Plugin;
+
 // No direct access
 
 /**
  * Plugin for automatically adding users to a specified group based on geolocation
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgUserGeo extends \Hubzero\Plugin\Plugin
+class Geo extends Plugin
 {
     /**
      * This method should handle any login logic and report back to the subject

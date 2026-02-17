@@ -1,13 +1,12 @@
 <?php
-
-// phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
+namespace Plugins\Wiki\Parsermarkdown;
 // No direct access
 defined('_HZEXEC_') or die();
 

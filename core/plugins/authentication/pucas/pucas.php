@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Authentication\Pucas;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Authentication Plugin class for PUCAS
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
+class Pucas extends Plugin
 {
     /**
      * Affects constructor behavior.
@@ -23,7 +25,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     protected $stream_handler = null;
@@ -222,7 +224,7 @@ class plgAuthenticationPUCAS extends \Hubzero\Plugin\Plugin
             if ($this->params->get('profile_i2a2')) {
                 $val = phpCAS::getAttribute('i2a2characteristics');
 
-                $datum = Hubzero\Auth\Link\Data::oneByLinkAndKey($hzal->id, 'i2a2');
+                $datum = \Hubzero\Auth\Link\Data::oneByLinkAndKey($hzal->id, 'i2a2');
                 $datum->set(array(
                     'link_id'      => $hzal->id,
                     'domain_key'   => 'i2a2',

@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +8,11 @@
 /**
  * Cron plugin for user events
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCronUsers extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Users;
+
+use Hubzero\Plugin\Plugin;
+
+class Users extends Plugin
 {
     /**
      * Return a list of events

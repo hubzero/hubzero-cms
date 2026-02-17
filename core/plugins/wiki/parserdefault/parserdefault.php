@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,15 +9,18 @@
 /**
  * Wiki plugin class for loading the default parser
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
+namespace Plugins\Wiki\Parserdefault;
+
+use Hubzero\Plugin\Plugin;
+
+class Parserdefault extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

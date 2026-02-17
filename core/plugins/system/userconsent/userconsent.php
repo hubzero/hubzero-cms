@@ -9,9 +9,11 @@
 /**
  * System plugin checking for getting user consent to monitor
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemUserconsent extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Userconsent;
+
+use Hubzero\Plugin\Plugin;
+
+class Userconsent extends Plugin
 {
     /**
      * Hook for after parsing route

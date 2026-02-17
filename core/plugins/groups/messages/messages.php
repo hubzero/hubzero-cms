@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Messages;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Groups Plugin class for messages
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsMessages extends \Hubzero\Plugin\Plugin
+class Messages extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -183,7 +185,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _sent()
     {
         // Set the page title
@@ -200,7 +202,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
 
         // Instantiate our message object
         $database = App::get('db');
-        $recipient = Hubzero\Message\Message::blank();
+        $recipient = \Hubzero\Message\Message::blank();
 
         // Retrieve data
         $total = $recipient->getSentMessagesCount($filters);
@@ -233,7 +235,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
      * @param   string  $name    View name (unused, for parent compatibility)
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _view($layout = 'default', $name = '')
     {
         //get the message id
@@ -248,7 +250,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
         $database = App::get('db');
 
         // Load the message and parse it
-        $xmessage = Hubzero\Message\Message::oneOrFail($message);
+        $xmessage = \Hubzero\Message\Message::oneOrFail($message);
 
         if (substr($xmessage->get('component'), 0, 4) == 'com_') {
             $xmessage->set('component', substr($xmessage->get('component'), 4));
@@ -277,7 +279,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _create()
     {
         // Ensure only admins and group managers can create messages
@@ -326,7 +328,7 @@ class plgGroupsMessages extends \Hubzero\Plugin\Plugin
      *
      * @return     mixed
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _send()
     {
         // Ensure the user is logged in

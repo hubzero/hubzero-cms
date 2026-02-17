@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Members;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -18,10 +22,8 @@ use Components\Groups\Tables\Reason;
 /**
  * Groups Plugin class for group members
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsMembers extends \Hubzero\Plugin\Plugin
+class Members extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -168,7 +170,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
             $this->css('members.css')
                  ->js('members.js');
 
-            $gparams = new Hubzero\Config\Registry($group->get('params'));
+            $gparams = new \Hubzero\Config\Registry($group->get('params'));
             $this->membership_control = $gparams->get('membership_control', 1);
 
             if ($group->published != 1) {
@@ -1564,7 +1566,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
         );
 
         // create message object
-        $message = new Hubzero\Mail\Message();
+        $message = new \Hubzero\Mail\Message();
 
         // set message details and send
         $message->setSubject($subject)
@@ -1613,7 +1615,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
         //send the message
         if ($email) {
             // create message object
-            $message = new Hubzero\Mail\Message();
+            $message = new \Hubzero\Mail\Message();
 
             // set message details and send
             $message->setSubject($subject)
@@ -1665,7 +1667,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
         Document::setTitle($pageTitle);
 
         $params = Plugin::params('members', 'profile');
-        $params->merge(new Hubzero\Config\Registry($profile->get('params')));
+        $params->merge(new \Hubzero\Config\Registry($profile->get('params')));
 
         // Display form asking for a reason to deny membership
         $view = $this->view('default', 'profile')

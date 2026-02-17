@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Authentication\Shibboleth;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,8 +19,7 @@ use Hubzero\Utility\Cookie;
 /**
  * Authentication Plugin class for Shibboleth/InCommon
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAuthenticationShibboleth extends \Hubzero\Plugin\Plugin
+class Shibboleth extends Plugin
 {
     /**
      * Logs data to the shibboleth debug log

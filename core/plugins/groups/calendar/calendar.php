@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Calendar;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -18,10 +22,8 @@ require_once "$pluginDirectory/helpers/userLocalizer.php";
 /**
  * Groups Plugin class for calendar
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
+class Calendar extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Whatsnew\Wiki;
+
+use Hubzero\Plugin\Plugin;
+
 // @phpcs:disable PSR1.Files.SideEffects
 
 // No direct access
@@ -14,15 +18,14 @@ defined('_HZEXEC_') or die();
 /**
  * What's New Plugin class for com_wiki articles
  */
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class plgWhatsnewWiki extends \Hubzero\Plugin\Plugin
+class Wiki extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-	// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 	// @phpcs:enable PSR2.Classes.PropertyDeclaration.Underscore
 

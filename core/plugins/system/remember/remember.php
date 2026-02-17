@@ -9,9 +9,11 @@
 /**
  * System Remember Me Plugin
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemRemember extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Remember;
+
+use Hubzero\Plugin\Plugin;
+
+class Remember extends Plugin
 {
     /**
      * Hook for after app initialization
@@ -36,9 +38,9 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
                 // Since we're decoding, no UA validity check is required.
                 $privateKey = App::hash(@$_SERVER['HTTP_USER_AGENT']);
 
-                $crypt = new Hubzero\Encryption\Encrypter(
-                    new Hubzero\Encryption\Cipher\Simple(),
-                    new Hubzero\Encryption\Key('simple', $privateKey, $privateKey)
+                $crypt = new \Hubzero\Encryption\Encrypter(
+                    new \Hubzero\Encryption\Cipher\Simple(),
+                    new \Hubzero\Encryption\Key('simple', $privateKey, $privateKey)
                 );
 
                 try {
@@ -71,7 +73,7 @@ class plgSystemRemember extends \Hubzero\Plugin\Plugin
                     }
 
                     if (isset($cookieData->password) && is_string($cookieData->password)) {
-                        $credentials['password'] = Hubzero\Utility\Sanitize::clean($cookieData->password);
+                        $credentials['password'] = \Hubzero\Utility\Sanitize::clean($cookieData->password);
                     } else {
                         throw new Exception('Malformed password.');
                     }

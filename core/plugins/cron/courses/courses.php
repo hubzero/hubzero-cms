@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +8,11 @@
 /**
  * Cron plugin for courses
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCronCourses extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Courses;
+
+use Hubzero\Plugin\Plugin;
+
+class Courses extends Plugin
 {
     /**
      * Return a list of events
@@ -50,7 +51,7 @@ class plgCronCourses extends \Hubzero\Plugin\Plugin
     {
         $params = Component::params('com_courses');
 
-        $badgesHandler  = new Hubzero\Badges\Wallet('passport', $params->get('badges_request_type'));
+        $badgesHandler  = new \Hubzero\Badges\Wallet('passport', $params->get('badges_request_type'));
         $badgesProvider = $badgesHandler->getProvider();
 
         $creds = new \stdClass();

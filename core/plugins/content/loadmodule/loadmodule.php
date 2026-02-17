@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Loadmodule;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die;
 /**
  * Plugin that loads module positions within content
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
+class Loadmodule extends Plugin
 {
     /**
      * List of modules by position
@@ -157,7 +159,7 @@ class plgContentLoadmodule extends \Hubzero\Plugin\Plugin
      */
     protected function byName($module, $title, $style = 'none')
     {
-        $moduleinstance = $module . Hubzero\Utility\Str::camel($title);
+        $moduleinstance = $module . \Hubzero\Utility\Str::camel($title);
 
         if (!isset(self::$mods[$moduleinstance])) {
             self::$mods[$moduleinstance] = '';

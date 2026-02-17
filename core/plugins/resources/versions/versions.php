@@ -1,7 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,15 +8,18 @@
 /**
  * Resources Plugin class for versions
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgResourcesVersions extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Versions;
+
+use Hubzero\Plugin\Plugin;
+
+class Versions extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

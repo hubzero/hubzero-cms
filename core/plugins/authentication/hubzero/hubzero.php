@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Authentication\Hubzero;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Authentication plugin for HUBzero
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
+class Hubzero extends Plugin
 {
     /**
      * Affects constructor behavior.
@@ -23,7 +25,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -95,7 +97,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
 
         // Remove old records
         if ($duration = Component::params('com_members')->get('login_log_timeframe')) {
-            $authlog = Hubzero\User\Log\Auth::blank();
+            $authlog = \Hubzero\User\Log\Auth::blank();
             $authlog->delete($authlog->getTableName())
                 ->where('logged', '<', Date::of('now')->modify('-' . $duration)->toSql())
                 ->execute();
@@ -192,7 +194,7 @@ class plgAuthenticationHubzero extends \Hubzero\Plugin\Plugin
             $result = false;
         } else {
             // Log attempt to the database
-            Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save(
+            \Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save(
                 [
                 'username' => $user->username,
                 'status'   => 'blocked'

@@ -1,20 +1,20 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Hubzero;
+
+use Hubzero\Plugin\Plugin;
+
 // No direct access
 
 /**
  * Hubzero User plugin
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgUserHubzero extends \Hubzero\Plugin\Plugin
+class Hubzero extends Plugin
 {
     /**
      * Remove all sessions for the user name
@@ -72,7 +72,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
                 $emailAddress = $config->get('mailfrom');
 
-                $eview = new Hubzero\Mail\View(array(
+                $eview = new \Hubzero\Mail\View(array(
                     'base_path'     => __DIR__,
                     'name'          => 'emails',
                     'layout'        => 'admincreate_plain',
@@ -91,7 +91,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
                 $html = str_replace("\n", "\r\n", $html);
 
                 // Assemble the email data
-                $mail = new Hubzero\Mail\Message();
+                $mail = new \Hubzero\Mail\Message();
                 $mail
                     ->addFrom(
                         $emailAddress,
@@ -120,7 +120,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
                 // Look for user language. Priority:
                 //  1. User frontend language
                 //  2. User backend language
-                $userParams = new Hubzero\Config\Registry($user['params']);
+                $userParams = new \Hubzero\Config\Registry($user['params']);
                 $userLocale = $userParams->get('language', $userParams->get('admin_language', $defaultLocale));
 
                 if ($userLocale != $defaultLocale) {
@@ -149,7 +149,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
                 );
 
                 // Assemble the email data...the sexy way!
-                $mail = new Hubzero\Mail\Message();
+                $mail = new \Hubzero\Mail\Message();
                 $mail
                     ->addFrom(
                         $config->get('mailfrom'),
@@ -273,7 +273,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
             // Session doesn't exist yet, so create session variables
             if ($session->isNew()) {
-                $session->set('registry', new Hubzero\Config\Registry('session'));
+                $session->set('registry', new \Hubzero\Config\Registry('session'));
                 $session->set('user', $instance);
             }
         }
@@ -350,10 +350,10 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
      * @param   array   $options  Array holding options (remember, autoregister, group).
      * @return  object  A User object
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getUser($user, $options = array())
     {
-        $instance = Hubzero\User\User::oneByUsername($user['username']);
+        $instance = \Hubzero\User\User::oneByUsername($user['username']);
 
         if ($id = intval($instance->get('id'))) {
             return $instance;
@@ -393,7 +393,7 @@ class plgUserHubzero extends \Hubzero\Plugin\Plugin
 
         // Now, also check to see if user came in via an auth plugin, as that may affect their approval status
         if (isset($user['auth_link'])) {
-            $domain = Hubzero\Auth\Domain::find_by_id($user['auth_link']->auth_domain_id);
+            $domain = \Hubzero\Auth\Domain::find_by_id($user['auth_link']->auth_domain_id);
 
             if ($domain && is_object($domain)) {
                 $params = Plugin::params('authentication', $domain->authenticator);

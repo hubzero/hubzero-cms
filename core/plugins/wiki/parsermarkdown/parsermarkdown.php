@@ -1,6 +1,8 @@
 <?php
+namespace Plugins\Wiki\Parsermarkdown;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
@@ -14,15 +16,14 @@ defined('_HZEXEC_') or die();
 /**
  * Wiki plugin class for loading the default parser
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgWikiParsermarkdown extends \Hubzero\Plugin\Plugin
+class Parsermarkdown extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

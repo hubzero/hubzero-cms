@@ -9,9 +9,11 @@
 /**
  * System plugin checking auth factors after routing
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Authfactors;
+
+use Hubzero\Plugin\Plugin;
+
+class Authfactors extends Plugin
 {
     /**
      * Hook for after parsing route

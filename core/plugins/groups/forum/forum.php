@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Forum;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -20,10 +24,8 @@ defined('_HZEXEC_') or die();
 /**
  * Groups Plugin class for forum entries
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsForum extends \Hubzero\Plugin\Plugin
+class Forum extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -375,7 +377,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'component', $assetId = null)
     {
         $this->params->set('access-view', true);
@@ -1696,7 +1698,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
      * @param   object  $category
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getEmailRecipientIds($category)
     {
         $userIDsToEmail = array();
@@ -1727,7 +1729,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
      *
      * @return  bool
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _loadMemberOptions()
     {
         $memberoptions = false;
@@ -1750,7 +1752,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
      * @param   array  $userIds
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _loadExistingUsers($userIds)
     {
         $users = array_map(function ($userId) {
@@ -1775,7 +1777,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
      * @param   object   $category
      * @return  array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _shouldUserReceiveEmail($userId, $memberoptions, $categorySubscriptionsEnabled, $category)
     {
         $categoryId = $category->get('id');

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Content;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -15,10 +19,8 @@ defined('_HZEXEC_') or die();
  * Search content articles
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchContent extends \Hubzero\Plugin\Plugin
+class Content extends Plugin
 {
     /**
      * Build search query and add it to the $results

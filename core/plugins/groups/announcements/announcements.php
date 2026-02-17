@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Announcements;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Group Announcements
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
+class Announcements extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -40,7 +42,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             $extension = 'plg_' . $this->_type . '_' . $this->_name;
         }
 
-        $group = Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+        $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
         if ($group && $group->isSuperGroup()) {
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
@@ -80,7 +82,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
     public function onBeforeGroup($group, $authorized)
     {
         // Get plugin access
-        $access = Hubzero\User\Group\Helper::getPluginAccess($group, 'announcements');
+        $access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'announcements');
 
         // if set to nobody make sure cant access
         // check if guest and force login if plugin access is registered or members
@@ -94,10 +96,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Find announcements
-        $rows = Hubzero\Item\Announcement::all()
+        $rows = \Hubzero\Item\Announcement::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $group->get('gidNumber'))
-            ->whereEquals('state', Hubzero\Item\Announcement::STATE_PUBLISHED)
+            ->whereEquals('state', \Hubzero\Item\Announcement::STATE_PUBLISHED)
             ->whereEquals('sticky', 1)
             ->where('publish_up', 'IS', null, 'and', 1)
                 ->orWhere('publish_up', '<=', Date::toSql(), 1)
@@ -226,7 +228,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
         if (!isset($this->total)) {
             // Find announcements
-            $model = Hubzero\Item\Announcement::all()
+            $model = \Hubzero\Item\Announcement::all()
                 ->whereEquals('scope', 'group')
                 ->whereEquals('scope_id', $group->get('gidNumber'))
                 ->whereEquals('state', 1);
@@ -267,10 +269,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         );
 
         // Find announcements
-        $model = Hubzero\Item\Announcement::all()
+        $model = \Hubzero\Item\Announcement::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $this->group->get('gidNumber'))
-            ->whereEquals('state', Hubzero\Item\Announcement::STATE_PUBLISHED);
+            ->whereEquals('state', \Hubzero\Item\Announcement::STATE_PUBLISHED);
 
         if ($filters['search']) {
             $model->whereLike('content', $filters['search']);
@@ -318,7 +320,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             $id = Request::getInt('id', 0);
 
             // Create new announcement Object
-            $model = Hubzero\Item\Announcement::oneOrNew($id);
+            $model = \Hubzero\Item\Announcement::oneOrNew($id);
         }
 
         // Make sure the group is published
@@ -408,7 +410,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Bind data
-        $model = Hubzero\Item\Announcement::oneOrNew($fields['id'])->set($fields);
+        $model = \Hubzero\Item\Announcement::oneOrNew($fields['id'])->set($fields);
 
         if (
             $model->get('publish_down')
@@ -443,7 +445,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             $recipients[] = ['user', $recipient];
         }
 
-        $truncatedContent = Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70);
+        $truncatedContent = \Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70);
         $announcementLink = '<a href="' . Route::url($url) . '">' . $truncatedContent . '</a>';
         $activityKey = 'PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED');
 
@@ -493,7 +495,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         // Incoming
         $id = Request::getInt('id', 0);
 
-        $model = Hubzero\Item\Announcement::oneOrFail($id);
+        $model = \Hubzero\Item\Announcement::oneOrFail($id);
 
         // Make sure we are the one who created it
         if ($model->get('created_by') != User::get('id') && $this->authorized != 'manager') {
@@ -503,7 +505,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Set to deleted state
-        $model->set('state', Hubzero\Item\Announcement::STATE_DELETED);
+        $model->set('state', \Hubzero\Item\Announcement::STATE_DELETED);
 
         // Attempt to delete announcement
         if (!$model->save()) {
@@ -520,7 +522,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             $recipients[] = ['user', $recipient];
         }
 
-        $truncatedContent = Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70);
+        $truncatedContent = \Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70);
         $announcementLink = '<a href="' . Route::url($url) . '">' . $truncatedContent . '</a>';
 
         Event::trigger('system.logActivity', [
@@ -588,7 +590,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         || $lang->load($extension, PATH_CORE . $pluginPath, null, false, true);
 
         // Create view object
-        $eview = new Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View(array(
             'base_path' => __DIR__,
             'name'      => 'email',
             'layout'    => 'announcement_plain'
@@ -615,7 +617,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
         foreach ($groupMembers as $email => $name) {
             // Create message object
-            $message = new Hubzero\Mail\Message();
+            $message = new \Hubzero\Mail\Message();
 
             // Set message details and send
             $message->setSubject($subject)
@@ -651,11 +653,11 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             'search'   => strtolower(Request::getString('q', '')),
             'scope'    => 'group',
             'scope_id' => $group->get('gidNumber'),
-            'state'    => Hubzero\Item\Announcement::STATE_PUBLISHED
+            'state'    => \Hubzero\Item\Announcement::STATE_PUBLISHED
         );
 
         // Find announcements
-        $model = Hubzero\Item\Announcement::all()
+        $model = \Hubzero\Item\Announcement::all()
             ->whereEquals('scope', $filters['scope'])
             ->whereEquals('scope_id', $filters['scope_id'])
             ->whereEquals('state', $filters['state']);
@@ -723,7 +725,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Bind data
-        $model = Hubzero\Item\Announcement::blank()->set($fields);
+        $model = \Hubzero\Item\Announcement::blank()->set($fields);
 
         // Validate
         if (
@@ -757,7 +759,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Load the record
-        $model = Hubzero\Item\Announcement::oneOrFail($id);
+        $model = \Hubzero\Item\Announcement::oneOrFail($id);
 
         // Was it actually found?
         if (!$model->get('id')) {
@@ -786,7 +788,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
         }
 
-        $model = Hubzero\Item\Announcement::oneOrFail($id);
+        $model = \Hubzero\Item\Announcement::oneOrFail($id);
 
         // Incoming data
         $fields = array(
@@ -853,7 +855,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Load the record
-        $model = Hubzero\Item\Announcement::oneOrFail($id);
+        $model = \Hubzero\Item\Announcement::oneOrFail($id);
 
         // Was it actually found?
         if (!$model->get('id')) {
@@ -861,7 +863,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Mark as deleted and save the change
-        $model->set('state', Hubzero\Item\Announcement::STATE_DELETED);
+        $model->set('state', \Hubzero\Item\Announcement::STATE_DELETED);
 
         if (!$model->save()) {
             throw new Exception($model->getError(), 500);

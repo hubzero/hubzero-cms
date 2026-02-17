@@ -5,14 +5,14 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * Geocode plugin for Hubzero
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeLocal extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Local;
+
+use Hubzero\Plugin\Plugin;
+
+class Local extends Plugin
 {
     /**
      * Return a geocode provider

@@ -1,7 +1,11 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+// @phpcs:disable PSR1.Files.SideEffects
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore, PSR2.Methods.MethodDeclaration.Underscore, Squiz.ControlStructures.ControlSignature
+
+namespace Plugins\Projects\Publications;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -23,7 +27,7 @@ use Components\Publications\Helpers\Html as PubHtml;
 /**
  * Project publications
  */
-class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
+class Publications extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -379,7 +383,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    protected function _browse() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _browse() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Build query
         $filters = array();
@@ -447,7 +451,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    protected function _handler() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _handler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $props = Request::getString('p', '');
@@ -535,7 +539,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    protected function _select() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _select() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $props = Request::getString('p', '');
@@ -625,7 +629,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    protected function _saveParam() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _saveParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
@@ -661,7 +665,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    protected function _checkStatus() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _checkStatus() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
@@ -709,7 +713,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    protected function _saveDraft() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _saveDraft() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
@@ -921,7 +925,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      * @param   string  $dir
      * @return  void
      */
-    protected function _reorder($dir = 'down') // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _reorder($dir = 'down') // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if ($this->model->exists() && !$this->model->access('content')) {
@@ -1026,7 +1030,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    protected function _startDraft() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _startDraft() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Get contributable types
         $mt = new \Components\Publications\Tables\MasterType($this->_database);
@@ -1093,7 +1097,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return     object
      */
-    protected function _createDraft() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _createDraft() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $base = Request::getString('base', 'files');
@@ -1248,7 +1252,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    protected function _editDraft() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _editDraft() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
@@ -1372,7 +1376,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    protected function _editItem() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _editItem() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $id = Request::getInt('aid', 0);
@@ -1672,7 +1676,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    protected function _newVersion() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _newVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
@@ -1858,7 +1862,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    protected function _publishDraft() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _publishDraft() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
@@ -2380,7 +2384,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return     string
      */
-    protected function _cancelDraft() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _cancelDraft() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
@@ -2587,7 +2591,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return     string (html)
      */
-    protected function _versions() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _versions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
@@ -2641,7 +2645,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      *
      * @return  string  (html)
      */
-    protected function _contribute() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _contribute() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $choices = array();
 
@@ -2766,7 +2770,7 @@ class PlgProjectsPublications extends \Hubzero\Plugin\Plugin
      * @param      object   $model
      * @return     string
      */
-    protected function _pubDiskSpace($model) // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _pubDiskSpace($model) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Output HTML
         $view = new \Hubzero\Plugin\View(

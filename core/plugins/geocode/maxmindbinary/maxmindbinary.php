@@ -5,14 +5,14 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * MaxMindBinary plugin for geocode
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeMaxmindbinary extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Maxmindbinary;
+
+use Hubzero\Plugin\Plugin;
+
+class Maxmindbinary extends Plugin
 {
     /**
      * Return a geocode provider

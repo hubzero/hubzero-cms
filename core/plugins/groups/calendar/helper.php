@@ -1,23 +1,21 @@
 <?php
 
-// phpcs:disable PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+
+namespace Plugins\Groups\Calendar;
 // No direct access
 defined('_HZEXEC_') or die();
 
 /**
  * Helper Class
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsCalendarHelper
+class Helper
 {
     /**
      * Link string patterns that ook like URLs or email addresses
@@ -96,3 +94,6 @@ class plgGroupsCalendarHelper
         return (isset($abbreviations[$timezone])) ? $abbreviations[$timezone] : null;
     }
 }
+
+// BC alias for non-namespaced code
+class_alias('Plugins\Groups\Calendar\Helper', 'plgGroupsCalendarHelper');

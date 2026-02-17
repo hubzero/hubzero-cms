@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+namespace Plugins\Projects\Links;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
@@ -19,14 +23,14 @@ defined('_HZEXEC_') or die();
 /**
  * Projects Links plugin
  */
-class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
+class Links extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -34,7 +38,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      *
      * @var  string
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_option = 'com_projects';
 
     /**
@@ -167,7 +171,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _deleteCitation()
     {
         // Incoming
@@ -218,7 +222,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _addCitation()
     {
         // Incoming
@@ -263,7 +267,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _savecite()
     {
         // Incoming
@@ -331,7 +335,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      * @param   boolean  $returnStatus
      * @return  boolean
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _unattachCitation($vid = 0, $cid = 0, $returnStatus = false)
     {
         include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
@@ -385,7 +389,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      * @param   boolean  $returnStatus
      * @return  boolean
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _attachCitation($vid = 0, $doi = null, $format = 'apa', $actor = 0, $returnStatus = false)
     {
         $componentPath = Component::path('com_citations');
@@ -554,7 +558,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _select()
     {
         // Incoming
@@ -653,7 +657,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _editcite()
     {
         // Incoming
@@ -735,7 +739,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _browser()
     {
         // Incoming
@@ -783,7 +787,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _parseDoi()
     {
         // Incoming
@@ -808,7 +812,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      * @param   string   $format
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _parseUrl($url = '', $citation = true, $incPreview = true, $format = 'apa')
     {
         // Incoming
@@ -1000,7 +1004,7 @@ class PlgProjectsLinks extends \Hubzero\Plugin\Plugin
      * @param   string   $format
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getDoiMetadata($doi, $citation, &$url, $rawData = false, $format = 'apa')
     {
         // Include metadata model

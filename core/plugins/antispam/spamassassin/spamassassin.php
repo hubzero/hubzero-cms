@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Spamassassin;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 
 /**
  * Spam Assassin antispam Plugin
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAntispamSpamassassin extends \Hubzero\Plugin\Plugin
+class Spamassassin extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

@@ -5,17 +5,17 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * Geoplugin plugin for geocode
  *
  * The GeoPluginProvider named geo_plugin is able to geocode
  * IPv4 addresses and IPv6 addresses only.
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeGeoplugin extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Geoplugin;
+
+use Hubzero\Plugin\Plugin;
+
+class Geoplugin extends Plugin
 {
     /**
      * Return a geocode provider

@@ -5,14 +5,14 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * Update plugin for support tickets
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgUpdateSupport extends \Hubzero\Plugin\Plugin
+namespace Plugins\Update\Support;
+
+use Hubzero\Plugin\Plugin;
+
+class Support extends Plugin
 {
     /**
      * Close tickets in a specified state

@@ -1,6 +1,8 @@
 <?php
+namespace Plugins\Publications\Reviews;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 // phpcs:disable PSR1.Files.SideEffects
 // phpcs:disable PSR1.Files.SideEffects
@@ -17,15 +19,14 @@ require_once Component::path('com_publications') . DS . 'tables' . DS . 'review.
 /**
  * Publications Plugin class for reviews
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
+class Reviews extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -60,7 +61,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
             'metadata' => ''
         );
 
-        $h = new PlgPublicationsReviewsHelper();
+        $h = new Helper();
         $h->option   = $option;
         $h->_option  = $option;
         $h->execute();
@@ -104,7 +105,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
         include_once __DIR__ . DS . 'helper.php';
 
         // Instantiate a helper object and perform any needed actions
-        $h = new PlgPublicationsReviewsHelper();
+        $h = new Helper();
         $h->publication = $model;
         $h->option      = $option;
         $h->_option     = $option;

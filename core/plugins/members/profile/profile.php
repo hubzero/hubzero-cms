@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Members\Profile;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -14,14 +18,14 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for profile
  */
-class PlgMembersProfile extends \Hubzero\Plugin\Plugin
+class Profile extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -156,17 +160,17 @@ class PlgMembersProfile extends \Hubzero\Plugin\Plugin
             }
 
             // Validate profile fields
-            $form = new Hubzero\Form\Form('profile', array('control' => 'profile'));
+            $form = new \Hubzero\Form\Form('profile', array('control' => 'profile'));
             $form->load(
                 Components\Members\Models\Profile\Field::toXml($fields, 'edit', $profile)
             );
-            $form->bind(new Hubzero\Config\Registry($profile));
+            $form->bind(new \Hubzero\Config\Registry($profile));
 
             if (!$form->validate($profile)) {
                 $check = false;
 
                 foreach ($form->getErrors() as $key => $error) {
-                    if ($error instanceof Hubzero\Form\Exception\MissingData) {
+                    if ($error instanceof \Hubzero\Form\Exception\MissingData) {
                         $xreg->_missing[$key] = (string) $error;
                     }
 

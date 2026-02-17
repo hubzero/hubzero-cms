@@ -1,25 +1,24 @@
 <?php
-
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Hubzero\Plugin\Plugin;
-
 /**
  * Courses Plugin class for the outline
  */
-class PlgCoursesOutline extends Plugin
+namespace Plugins\Courses\Outline;
+
+use Hubzero\Plugin\Plugin;
+
+class Outline extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

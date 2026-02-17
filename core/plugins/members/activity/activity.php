@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Members\Activity;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -14,14 +18,14 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for activity
  */
-class PlgMembersActivity extends \Hubzero\Plugin\Plugin
+class Activity extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -109,7 +113,7 @@ class PlgMembersActivity extends \Hubzero\Plugin\Plugin
         $arr['metadata'] = array();
 
         // Get the number of unread messages
-        $unread = Hubzero\Activity\Recipient::all()
+        $unread = \Hubzero\Activity\Recipient::all()
             ->whereEquals('scope', 'user')
             ->whereEquals('scope_id', $member->get('id'))
             ->whereEquals('state', 1)
@@ -173,10 +177,10 @@ class PlgMembersActivity extends \Hubzero\Plugin\Plugin
         }
 
         // Build query to retrieve records
-        $recipient = Hubzero\Activity\Recipient::all();
+        $recipient = \Hubzero\Activity\Recipient::all();
 
         $r = $recipient->getTableName();
-        $l = Hubzero\Activity\Log::blank()->getTableName();
+        $l = \Hubzero\Activity\Log::blank()->getTableName();
 
         $recipient
             ->select($r . '.*')
@@ -184,7 +188,7 @@ class PlgMembersActivity extends \Hubzero\Plugin\Plugin
             ->join($l, $l . '.id', $r . '.log_id')
             ->whereEquals($r . '.scope', 'user')
             ->whereEquals($r . '.scope_id', $this->member->get('id'))
-            ->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED);
+            ->whereEquals($r . '.state', \Hubzero\Activity\Recipient::STATE_PUBLISHED);
 
         if ($filters['filter'] == 'starred') {
             $recipient->whereEquals($r . '.starred', 1);
@@ -252,7 +256,7 @@ class PlgMembersActivity extends \Hubzero\Plugin\Plugin
         $id      = Request::getInt('activity', 0);
         $no_html = Request::getInt('no_html', 0);
 
-        $entry = Hubzero\Activity\Recipient::oneOrFail($id);
+        $entry = \Hubzero\Activity\Recipient::oneOrFail($id);
 
         if (!$entry->markAsUnpublished()) {
             $this->setError($entry->getError());
@@ -307,7 +311,7 @@ class PlgMembersActivity extends \Hubzero\Plugin\Plugin
         $scope   = Request::getCmd('scope');
         $no_html = Request::getInt('no_html', 0);
 
-        $entry = Hubzero\Activity\Subscription::all()
+        $entry = \Hubzero\Activity\Subscription::all()
             ->whereEquals('scope', $scope)
             ->whereEquals('action', $act)
             ->whereEquals('user_id', User::get('id'))
@@ -325,9 +329,9 @@ class PlgMembersActivity extends \Hubzero\Plugin\Plugin
             $this->setError($entry->getError());
         }
 
-        $result = Hubzero\Activity\Recipient::blank()
+        $result = \Hubzero\Activity\Recipient::blank()
             ->update()
-            ->set('state', Hubzero\Activity\Recipient::STATE_UNPUBLISHED)
+            ->set('state', \Hubzero\Activity\Recipient::STATE_UNPUBLISHED)
             ->whereEquals('user_id', User::get('id'))
             ->execute();
 
@@ -382,7 +386,7 @@ class PlgMembersActivity extends \Hubzero\Plugin\Plugin
         $no_html = Request::getInt('no_html', 0);
         $action  = Request::getString('action', 'star');
 
-        $entry = Hubzero\Activity\Recipient::oneOrFail($id);
+        $entry = \Hubzero\Activity\Recipient::oneOrFail($id);
         $entry->set('starred', ($action == 'star' ? 1 : 0));
 
         if (!$entry->save()) {
@@ -439,7 +443,7 @@ class PlgMembersActivity extends \Hubzero\Plugin\Plugin
             return $this->feedAction();
         }
 
-        $settings = Hubzero\Activity\Digest::oneByScope(
+        $settings = \Hubzero\Activity\Digest::oneByScope(
             $this->member->get('id'),
             'user'
         );
@@ -478,7 +482,7 @@ class PlgMembersActivity extends \Hubzero\Plugin\Plugin
         $settings['scope']    = 'user';
         $settings['scope_id'] = $this->member->get('id');
 
-        $row = Hubzero\Activity\Digest::blank()->set($settings);
+        $row = \Hubzero\Activity\Digest::blank()->set($settings);
 
         // Store new content
         if (!$row->save()) {

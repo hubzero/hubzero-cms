@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Authentication\Twitter;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,9 +16,7 @@ defined('_HZEXEC_') or die();
 
 // Include php library
 require_once __DIR__ . DS . 'twitteroauth' . DS . 'twitteroauth.php';
-
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
+class Twitter extends \Hubzero\Plugin\OauthClient
 {
     /**
      * Affects constructor behavior.
@@ -23,7 +24,7 @@ class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

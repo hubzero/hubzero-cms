@@ -5,17 +5,17 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * Geonames plugin for geocode
  *
  * The GeonamesProvider named geonames is able to geocode and
  * reverse geocode places. A valid username is required.
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeGeonames extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Geonames;
+
+use Hubzero\Plugin\Plugin;
+
+class Geonames extends Plugin
 {
     /**
      * Return a geocode provider

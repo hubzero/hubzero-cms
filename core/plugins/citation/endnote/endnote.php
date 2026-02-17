@@ -1,6 +1,10 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps, Generic.Files.SideEffects
+namespace Plugins\Citation\Endnote;
+
+use Hubzero\Plugin\Plugin;
+
+// phpcs:disable Generic.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -13,14 +17,14 @@ use Components\Citations\Models\Citation;
 /**
  * Citations plugin class for bibtex
  */
-class plgCitationEndnote extends \Hubzero\Plugin\Plugin
+class Endnote extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -388,7 +392,7 @@ class plgCitationEndnote extends \Hubzero\Plugin\Plugin
      * @param   string  $string
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _cleanText($string)
     {
         $translations = get_html_translation_table(HTML_ENTITIES);

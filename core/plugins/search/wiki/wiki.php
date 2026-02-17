@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Wiki;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -15,10 +19,8 @@ defined('_HZEXEC_') or die();
  * Search plugin for wiki pages
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchWiki extends \Hubzero\Plugin\Plugin
+class Wiki extends Plugin
 {
     /**
      * Build search query and add it to the $results

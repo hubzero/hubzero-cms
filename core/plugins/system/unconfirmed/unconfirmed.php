@@ -9,9 +9,11 @@
 /**
  * System plugin checking for unconfirmed user emails
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemUnconfirmed extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Unconfirmed;
+
+use Hubzero\Plugin\Plugin;
+
+class Unconfirmed extends Plugin
 {
     /**
      * Hook for after parsing route

@@ -5,14 +5,14 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * TinyMCE Editor Plugin
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgEditorTinymce extends \Hubzero\Plugin\Plugin
+namespace Plugins\Editors\Tinymce;
+
+use Hubzero\Plugin\Plugin;
+
+class Tinymce extends Plugin
 {
     /**
      * Affects constructor behavior.
@@ -20,13 +20,13 @@ class plgEditorTinymce extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
      * Base path for editor files
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_basePath = 'core/plugins/editors/tinymce/assets/jscripts/tiny_mce';
 
     /**

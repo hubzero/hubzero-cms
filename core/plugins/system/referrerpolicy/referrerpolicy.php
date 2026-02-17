@@ -9,9 +9,11 @@
 /**
  * Referrer Policy Header Plugin
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemReferrerpolicy extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Referrerpolicy;
+
+use Hubzero\Plugin\Plugin;
+
+class Referrerpolicy extends Plugin
 {
     /**
      * Hook for after app initialization

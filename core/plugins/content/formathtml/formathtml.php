@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Formathtml;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die;
 /**
  * HTML formatted Content Plugin
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgContentFormathtml extends \Hubzero\Plugin\Plugin
+class Formathtml extends Plugin
 {
     /**
      * Before save content method

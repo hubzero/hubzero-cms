@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Search;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Groups Plugin class for usage
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsSearch extends \Hubzero\Plugin\Plugin
+class Search extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

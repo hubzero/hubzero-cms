@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Weighttools;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -15,10 +19,8 @@ defined('_HZEXEC_') or die();
  * Search pluginf or weighting tools
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchWeightTools extends \Hubzero\Plugin\Plugin
+class Weighttools extends Plugin
 {
     /**
      * Short description for 'onSearchWeightResources'

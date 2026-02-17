@@ -5,17 +5,17 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * IpInfoDb plugin for geocode
  *
  * The IpInfoDbProvider is able to geocode IPv4 addresses
  * only. A valid api key is required.
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeIpinfodb extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Ipinfodb;
+
+use Hubzero\Plugin\Plugin;
+
+class Ipinfodb extends Plugin
 {
     /**
      * Return a geocode provider

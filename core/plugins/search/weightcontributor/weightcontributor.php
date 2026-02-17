@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Weightcontributor;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -17,10 +21,8 @@ defined('_HZEXEC_') or die();
  * Long description (if any) ...
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchWeightContributor extends \Hubzero\Plugin\Plugin
+class Weightcontributor extends Plugin
 {
     /**
      * Short description for 'onSearchWeightAll'

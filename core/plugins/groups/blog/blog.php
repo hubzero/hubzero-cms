@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Blog;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Groups Plugin class for blog entries
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsBlog extends \Hubzero\Plugin\Plugin
+class Blog extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -166,7 +168,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
             $this->database   = App::get('db');
 
             //get the plugins params
-            $this->params = Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->_name);
+            $this->params = \Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->_name);
 
             if ($authorized == 'manager' || $authorized == 'admin') {
                 $this->params->set('access-edit-comment', true);
@@ -477,15 +479,15 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
         // Start outputing results if any found
         if ($rows->count() > 0) {
             foreach ($rows as $row) {
-                $item = new Hubzero\Document\Type\Feed\Item();
+                $item = new \Hubzero\Document\Type\Feed\Item();
 
                 // Strip html from feed item description text
                 $item->description = $row->content;
-                $item->description = Hubzero\Utility\Sanitize::stripAll(
+                $item->description = \Hubzero\Utility\Sanitize::stripAll(
                     strip_tags(html_entity_decode($item->description))
                 );
                 if ($this->params->get('feed_entries') == 'partial') {
-                    $item->description = Hubzero\Utility\Str::truncate($item->description, 300);
+                    $item->description = \Hubzero\Utility\Str::truncate($item->description, 300);
                 }
                 $item->description = '<![CDATA[' . $item->description . ']]>';
 

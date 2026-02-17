@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,15 +8,18 @@
 /**
  * Cron plugin for handling/cleaning cached data
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCronCache extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Cache;
+
+use Hubzero\Plugin\Plugin;
+
+class Cache extends Plugin
 {
     /**
      * Path to cache directory
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_path = null;
 
     /**

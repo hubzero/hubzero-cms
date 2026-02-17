@@ -1,6 +1,8 @@
 <?php
+namespace Plugins\Courses\Discussions;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 /**
  * @package    hubzero-cms
@@ -13,21 +15,19 @@ use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;
 use Components\Forum\Models\Post;
 use Components\Forum\Models\Attachment;
-use Hubzero\Plugin\Plugin;
-
 require_once Component::path('com_forum') . DS . 'models' . DS . 'manager.php';
 
 /**
  * Courses Plugin class for forum entries
  */
-class PlgCoursesDiscussions extends Plugin
+class Discussions extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -53,7 +53,7 @@ class PlgCoursesDiscussions extends Plugin
     /**
      * @var string
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_active = null;
 
     /**
@@ -69,7 +69,7 @@ class PlgCoursesDiscussions extends Plugin
     /**
      * @var array
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_instructors = null;
 
     /**
@@ -766,7 +766,7 @@ class PlgCoursesDiscussions extends Plugin
      *
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _instructors()
     {
         if (!isset($this->_instructors) || !is_array($this->_instructors)) {
@@ -790,7 +790,7 @@ class PlgCoursesDiscussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  stdClass
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _thread($post, $filters = array())
     {
         $thread = new stdClass();
@@ -867,7 +867,7 @@ class PlgCoursesDiscussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  stdClass
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _threadsSearch($post, $filters = array())
     {
         $threads = new stdClass();
@@ -931,7 +931,7 @@ class PlgCoursesDiscussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  stdClass
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _threads($post, $filters = array())
     {
         $threads = new stdClass();
@@ -1005,7 +1005,7 @@ class PlgCoursesDiscussions extends Plugin
      * @param   array   $filters  Filters to apply
      * @return  stdClass
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _posts($post, $filters = array())
     {
         $thread = new stdClass();
@@ -1103,7 +1103,7 @@ class PlgCoursesDiscussions extends Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'component', $assetId = null)
     {
         $this->params->set('access-view', true);
@@ -2119,7 +2119,7 @@ class PlgCoursesDiscussions extends Plugin
      * @param   integer  $type      Indention type
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _treeRecurse($id, $indent, $list, $children, $maxlevel = 9999, $level = 0, $type = 1)
     {
         if (@$children[$id] && $level <= $maxlevel) {

@@ -6,16 +6,19 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Domainrestriction;
+
+use Hubzero\Plugin\Plugin;
+
 // No direct access
 
 /**
  * User plugin for blocking registration by domains or IPs
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR2.Methods.MethodDeclaration.Underscore
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+class Domainrestriction extends Plugin
 {
-    // phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     private $_tlds;
     private $_domains;
     private $_emails;
@@ -381,20 +384,20 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
             $groupchange = false;
             foreach ($assignments[$akey] as $groupid) {
                 if (!in_array($groupid, $user->groups)) {
-                    Hubzero\Access\Map::addUserToGroup($user->id, $groupid);
+                    \Hubzero\Access\Map::addUserToGroup($user->id, $groupid);
                     $groupchange = true;
                 }
             }
             foreach ($user->groups as $groupid) {
                 if (!in_array($groupid, $assignments[$akey])) {
-                    Hubzero\Access\Map::removeUserFromGroup($user->id, $groupid);
+                    \Hubzero\Access\Map::removeUserFromGroup($user->id, $groupid);
                     $groupchange = true;
                 }
             }
 
             if ($groupchange) {
-                $user->set('groups', Hubzero\Access\Access::getGroupsByUser($user->id));
-                $user->set('authlevels', Hubzero\Access\Access::getAuthorisedViewLevels($user->id));
+                $user->set('groups', \Hubzero\Access\Access::getGroupsByUser($user->id));
+                $user->set('authlevels', \Hubzero\Access\Access::getAuthorisedViewLevels($user->id));
             }
         }
         return true;

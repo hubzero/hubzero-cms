@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Authentication\Globus;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2022 The Regents of the University of California.
@@ -13,9 +16,7 @@ defined('_HZEXEC_') or die();
 
 require_once('Provider/Globus.php');
 require_once('Provider/GlobusResourceOwner.php');
-
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAuthenticationGlobus extends \Hubzero\Plugin\OauthClient
+class Globus extends \Hubzero\Plugin\OauthClient
 {
     /**
      * Affects constructor behavior.
@@ -23,7 +24,7 @@ class plgAuthenticationGlobus extends \Hubzero\Plugin\OauthClient
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

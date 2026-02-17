@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Cron\Search;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,8 +21,7 @@ require_once Component::path('com_search') . '/models/solr/searchcomponent.php';
 /**
  * Cron plugin for Search indexing
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCronSearch extends \Hubzero\Plugin\Plugin
+class Search extends Plugin
 {
     /**
      * Return a list of events

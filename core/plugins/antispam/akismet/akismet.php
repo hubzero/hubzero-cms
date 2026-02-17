@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Akismet;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 
 /**
  * Akismet antispam Plugin
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAntispamAkismet extends \Hubzero\Plugin\Plugin
+class Akismet extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

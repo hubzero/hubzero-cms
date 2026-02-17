@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Resources;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -20,10 +24,8 @@ include_once __DIR__ . '/children.php';
  * Search plugin for resources
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchResources extends \Hubzero\Plugin\Plugin
+class Resources extends Plugin
 {
     /**
      * Build search query and add it to the $results

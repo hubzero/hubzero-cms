@@ -1,8 +1,12 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+// @phpcs:disable PSR1.Files.SideEffects
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
+namespace Plugins\Projects\Feed;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -16,7 +20,7 @@ defined('_HZEXEC_') or die();
 /**
  * Projects Feed plugin
  */
-class PlgProjectsFeed extends \Hubzero\Plugin\Plugin
+class Feed extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -261,7 +265,7 @@ class PlgProjectsFeed extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    protected function _page() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _page() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $limit = intval($this->params->get('limit', 25));
 
@@ -325,7 +329,7 @@ class PlgProjectsFeed extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _save() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _save() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -443,7 +447,7 @@ class PlgProjectsFeed extends \Hubzero\Plugin\Plugin
      *
      * @return  void  redirect
      */
-    protected function _delete() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _delete() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Check permission
         if (!$this->model->access('content')) {
@@ -494,7 +498,7 @@ class PlgProjectsFeed extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    protected function _updateFeed() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _updateFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $limit = intval($this->params->get('limit', 25));
 

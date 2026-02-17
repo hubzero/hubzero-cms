@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,6 +7,8 @@
  */
 
 
+
+namespace Plugins\Wiki\Parserdefault;
 /**
  * Base class for wiki macros
  * Should be extended
@@ -19,7 +20,7 @@ class WikiMacro
      *
      * @var  string
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_name = null;
 
     /**
@@ -27,7 +28,7 @@ class WikiMacro
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_data = array();
 
     /**
@@ -35,7 +36,7 @@ class WikiMacro
      *
      * @var  object
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_db = null;
 
     /**
@@ -43,7 +44,7 @@ class WikiMacro
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_error = null;
 
     /**
@@ -51,7 +52,7 @@ class WikiMacro
      *
      * @var  array
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_arguments = null;
 
     /**
@@ -192,7 +193,7 @@ class WikiMacro
      *
      * @return  array  List of arguments
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getArguments()
     {
         if (!is_array($this->_arguments)) {
@@ -213,7 +214,7 @@ class WikiMacro
      * @param   mixed   $default
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getArgument($key, $default = null)
     {
         $arguments = $this->_getArguments();
@@ -233,7 +234,7 @@ class WikiMacro
      * @param   array   $data
      * @return  object
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setArguments($data)
     {
         $this->_arguments = (array)$data;
@@ -248,7 +249,7 @@ class WikiMacro
      * @param   mixed   $val
      * @return  object
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setArgument($key, $val)
     {
         $this->_arguments[$key] = $val;
@@ -261,7 +262,7 @@ class WikiMacro
      *
      * @return  boolean
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _hasArguments()
     {
         $arguments = $this->_getArguments();
@@ -275,7 +276,7 @@ class WikiMacro
      * @param   string   $key
      * @return  boolean
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _hasArgument($key)
     {
         $arguments = $this->_getArguments();
@@ -283,3 +284,6 @@ class WikiMacro
         return isset($arguments[$key]);
     }
 }
+
+// BC alias for non-namespaced code
+class_alias('Plugins\Wiki\Parserdefault\WikiMacro', 'WikiMacro');

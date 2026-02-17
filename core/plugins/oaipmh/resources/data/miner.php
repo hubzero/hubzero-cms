@@ -69,7 +69,7 @@ class Miner extends Obj implements Provider
         }
 
         if (!($db instanceof \Hubzero\Database\Driver)) {
-            throw new \Exception(\Lang::txt('Database must be of type Hubzero\\Database\\Driver'), 500);
+            throw new \Exception(\Lang::txt('Database must be of type \Hubzero\\Database\\Driver'), 500);
         }
 
         $this->database = $db;

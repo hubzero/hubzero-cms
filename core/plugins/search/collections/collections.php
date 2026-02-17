@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Collections;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -15,10 +19,8 @@ defined('_HZEXEC_') or die();
  * Search Collections
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchCollections extends \Hubzero\Plugin\Plugin
+class Collections extends Plugin
 {
     /**
      * Build search query and add it to the $results

@@ -1,6 +1,10 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR2.Methods.MethodDeclaration.Underscore
+namespace Plugins\Tags\Wiki;
+
+use Hubzero\Plugin\Plugin;
+
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
 /**
  * @package    hubzero-cms
@@ -11,15 +15,14 @@
 /**
  * Tags plugin class for wiki pages
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgTagsWiki extends \Hubzero\Plugin\Plugin
+class Wiki extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

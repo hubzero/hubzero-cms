@@ -285,7 +285,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
             );
         }
 
-        // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         $retriever = '_get' . ucfirst($this->type);
 
         return $this->$retriever($address);
@@ -297,7 +297,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      * @param  string $code Two letter country code
      * @return array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getCountry($code)
     {
         if ($code) {
@@ -323,7 +323,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      * @param  string $address Address
      * @return array
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getCountries($address)
     {
         $address = strtolower(trim($address));
@@ -372,7 +372,7 @@ class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider impleme
      * @param  string $address
      * @return string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getContinent($address)
     {
         $address = trim($address);

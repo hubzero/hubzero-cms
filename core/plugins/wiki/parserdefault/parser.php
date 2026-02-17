@@ -1,7 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,6 +6,8 @@
  */
 
 
+
+namespace Plugins\Wiki\Parserdefault;
 include_once \Component::path('com_wiki') . DS . 'models' . DS . 'book.php';
 
 /**
@@ -1100,7 +1099,7 @@ class WikiParser
                     $txt = trim($txt, "\n\r\t");
 
                     if (class_exists('GeSHi')) {
-                        $geshi = new GeSHi('', $t);
+                        $geshi = new \GeSHi('', $t);
                         $geshi->set_header_type(GESHI_HEADER_DIV);
                         $geshi->set_source($txt);
 
@@ -1481,7 +1480,7 @@ class WikiParser
      */
     private function getMacro($matches)
     {
-        // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
         static $_macros;
 
         if (isset($matches[1]) && $matches[1] != '') {

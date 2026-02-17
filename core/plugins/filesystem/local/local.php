@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Filesystem\Local;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +16,7 @@ require_once __DIR__ . DS . 'LocalAdapter.php';
 /**
  * Plugin class for local filesystem connectivity
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgFilesystemLocal extends \Hubzero\Plugin\Plugin
+class Local extends Plugin
 {
     /**
      * Initializes the local filesystem connection

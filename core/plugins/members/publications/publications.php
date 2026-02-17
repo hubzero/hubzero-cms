@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Members\Publications;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -14,14 +18,14 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for publications
  */
-class PlgMembersPublications extends \Hubzero\Plugin\Plugin
+class Publications extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -331,7 +335,7 @@ class PlgMembersPublications extends \Hubzero\Plugin\Plugin
 
         // Get parameters
         $params = clone($config);
-        $rparams = new Hubzero\Config\Registry($row->get('params'));
+        $rparams = new \Hubzero\Config\Registry($row->get('params'));
         $params->merge($rparams);
 
         $show_date = 3;
@@ -354,7 +358,7 @@ class PlgMembersPublications extends \Hubzero\Plugin\Plugin
 
         $thedate = Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
-        $view = new Hubzero\Component\View(
+        $view = new \Hubzero\Component\View(
             array(
             'base_path' => Component::path('com_publications') . '/site',
             'name'      => 'browse',
@@ -379,7 +383,7 @@ class PlgMembersPublications extends \Hubzero\Plugin\Plugin
     public static function documents()
     {
         // Push some CSS and JS to the tmeplate that may be needed
-        Hubzero\Document\Assets::addComponentStylesheet('com_publications');
+        \Hubzero\Document\Assets::addComponentStylesheet('com_publications');
 
         include_once Component::path('com_publications') . '/helpers/usage.php';
     }

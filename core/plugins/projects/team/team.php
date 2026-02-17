@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.ControlStructures.ControlSignature
+// @phpcs:disable PSR1.Files.SideEffects, Squiz.ControlStructures.ControlSignature
+
+namespace Plugins\Projects\Team;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
 /**
  * Projects team
  */
-class plgProjectsTeam extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
+class Team extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -250,7 +254,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      * @param   integer  $edit
      * @return  string
      */
-    protected function _display($edit = 0) // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _display($edit = 0) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $layout = $edit ? 'edit' : 'view';
         $setup = $this->_task == 'setup' ? 1 : 0;
@@ -373,7 +377,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      *
      * @return  string
      */
-    protected function _select() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _select() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $props = Request::getString('p', '');
@@ -713,7 +717,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      *
      * @return  void
      */
-    protected function _sync() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _sync() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Setup stage?
         $setup = $this->model->inSetup();
@@ -759,7 +763,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin // phpcs:ignore Squiz.Class
      *
      * @return  mixed
      */
-    protected function _delete() // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _delete() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Incoming
         $checked = Request::getArray('owner', array());

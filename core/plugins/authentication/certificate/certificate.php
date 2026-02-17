@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Authentication\Certificate;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Auth plugin for certificate based authentication
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
+class Certificate extends Plugin
 {
     /**
      * Affects constructor behavior.
@@ -23,7 +25,7 @@ class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

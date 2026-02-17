@@ -5,9 +5,6 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * ArcGISOnline plugin for geocode
  *
@@ -17,8 +14,11 @@
  * time (note that this doesn't work on reverse geocoding).
  * This provider also supports SSL.
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeArcgisonline extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Arcgisonline;
+
+use Hubzero\Plugin\Plugin;
+
+class Arcgisonline extends Plugin
 {
     /**
      * Return a geocode provider

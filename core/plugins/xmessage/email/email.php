@@ -1,6 +1,9 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
+namespace Plugins\Xmessage\Email;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -11,7 +14,7 @@
 /**
  * XMessage plugin class for email
  */
-class plgXMessageEmail extends \Hubzero\Plugin\Plugin
+class Email extends Plugin
 {
     /**
      * Return this messaging type

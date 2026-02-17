@@ -6,7 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+namespace Plugins\Newsletter\Event;
+
+use Hubzero\Plugin\Plugin;
+
+// phpcs:disable PSR1.Files.SideEffects
 
 use Components\Events\Models\Orm\Event as CalEvent;
 
@@ -15,8 +19,7 @@ require_once \Component::path('com_events') . DS . 'models' . DS . 'orm' . DS . 
 /**
  * Plugin class for Newsletter event
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgNewsletterEvent extends \Hubzero\Plugin\Plugin
+class Event extends Plugin
 {
     /**
      * Event call to get the name

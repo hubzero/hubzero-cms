@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Files.SideEffects
+namespace Plugins\Members\Blog;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 // phpcs:disable PSR1.Files.SideEffects
 
@@ -16,10 +20,8 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for blog entries
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class PlgMembersBlog extends \Hubzero\Plugin\Plugin
+class Blog extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -28,7 +30,7 @@ class PlgMembersBlog extends \Hubzero\Plugin\Plugin
      *
      * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

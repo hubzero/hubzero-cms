@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Captcha\Image;
+
+use Hubzero\Plugin\Plugin;
+
 // No direct access
 // @phpcs:disable PSR1.Files.SideEffects
 defined('_HZEXEC_') or die();
@@ -13,15 +17,14 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for displaying image CAPTCHAs
  */
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCaptchaImage extends \Hubzero\Plugin\Plugin
+class Image extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-	// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

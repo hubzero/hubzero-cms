@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Formatwiki;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die;
 /**
  * Wiki formatted Content Plugin
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgContentFormatwiki extends \Hubzero\Plugin\Plugin
+class Formatwiki extends Plugin
 {
     /**
      * Finder before save content method

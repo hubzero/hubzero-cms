@@ -9,9 +9,11 @@
 /**
  * System Logging Plugin
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemLog extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Log;
+
+use Hubzero\Plugin\Plugin;
+
+class Log extends Plugin
 {
     /**
      * Method to log login failures
@@ -28,12 +30,12 @@ class plgSystemLog extends \Hubzero\Plugin\Plugin
         $errorlog = array();
 
         switch ($response['status']) {
-            case Hubzero\Auth\Status::SUCCESS:
+            case \Hubzero\Auth\Status::SUCCESS:
                 $errorlog['status']  = $response['type'] . ' CANCELED: ';
                 $errorlog['comment'] = $response['error_message'];
                 break;
 
-            case Hubzero\Auth\Status::FAILURE:
+            case \Hubzero\Auth\Status::FAILURE:
                 $errorlog['status']  = $response['type'] . ' FAILURE: ';
                 $errorlog['comment'] = $response['error_message'];
 

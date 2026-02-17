@@ -1,11 +1,13 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+namespace Plugins\Filesystem\Awss3;
+
+use Hubzero\Plugin\Plugin;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
@@ -16,8 +18,7 @@ use League\Flysystem\Filesystem;
 /**
  * Plugin class for AWS S3 filesystem connectivity
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgFilesystemAWSS3 extends \Hubzero\Plugin\Plugin
+class Awss3 extends Plugin
 {
     /**
      * Initializes the AWS S3 connection

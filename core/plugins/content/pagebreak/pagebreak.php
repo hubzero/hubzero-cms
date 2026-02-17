@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Pagebreak;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -24,10 +28,8 @@ defined('_HZEXEC_') or die;
  * or
  * <code><hr class="system-pagebreak" alt="The first page" title="The page title" /></code>
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgContentPagebreak extends \Hubzero\Plugin\Plugin
+class Pagebreak extends Plugin
 {
     /**
      * Prepares page?
@@ -66,7 +68,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
         }
 
         // Simple performance check to determine whether bot should process further.
-        if (Hubzero\Utility\Str::contains($row->text, 'class="system-pagebreak') === false) {
+        if (\Hubzero\Utility\Str::contains($row->text, 'class="system-pagebreak') === false) {
             return true;
         }
 
@@ -140,7 +142,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
                 }
 
                 // traditional mos page navigation
-                $pageNav = new Hubzero\Pagination\Paginator($n, $page, 1);
+                $pageNav = new \Hubzero\Pagination\Paginator($n, $page, 1);
 
                 // Page counter.
                 $row->text .= '<div class="pagenavcounter">';
@@ -208,7 +210,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
      * @param   integer  $page
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _createTOC(&$row, &$matches, &$page)
     {
         $heading    = isset($row->title) ? $row->title : Lang::txt('PLG_CONTENT_PAGEBREAK_NO_TITLE');
@@ -288,7 +290,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
      * @param   integer  $n
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _createNavigation(&$row, $page, $n)
     {
         $pnSpace = '';

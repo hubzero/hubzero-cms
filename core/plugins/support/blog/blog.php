@@ -1,8 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +10,11 @@
  * Support plugin class for com_blog entries
  *
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSupportBlog extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Blog;
+
+use Hubzero\Plugin\Plugin;
+
+class Blog extends Plugin
 {
     /**
      * Is the category one this plugin handles?

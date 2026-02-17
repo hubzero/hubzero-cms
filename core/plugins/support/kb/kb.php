@@ -1,8 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +9,11 @@
 /**
  * Plugin for abuse reports on KB comments
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSupportKb extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Kb;
+
+use Hubzero\Plugin\Plugin;
+
+class Kb extends Plugin
 {
     /**
      * Get items reported as abusive

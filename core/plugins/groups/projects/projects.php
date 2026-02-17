@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Projects;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Groups Plugin class for projects
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgGroupsProjects extends \Hubzero\Plugin\Plugin
+class Projects extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -54,7 +56,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
             $extension = 'plg_' . $this->_type . '_' . $this->_name;
         }
 
-        $group = Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+        $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
         if ($group && $group->isSuperGroup()) {
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
@@ -301,7 +303,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
      * @param   string  $which  The type of entries to display
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _view($which = 'owned')
     {
         $which = strtolower($which);
@@ -345,7 +347,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
      *
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _updates()
     {
         $filters = array(
@@ -393,7 +395,7 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _update()
     {
         // Check for request forgeries

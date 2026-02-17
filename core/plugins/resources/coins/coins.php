@@ -1,7 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,8 +8,11 @@
 /**
  * Resources Plugin class for adding COinS metadata to the document
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgResourcesCoins extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Coins;
+
+use Hubzero\Plugin\Plugin;
+
+class Coins extends Plugin
 {
     /**
      * Return data on a resource view (this will be some form of HTML)
@@ -174,7 +174,7 @@ class plgResourcesCoins extends \Hubzero\Plugin\Plugin
         }
 
         if (!$doi) {
-            $uri = Hubzero\Utility\Uri::getInstance();
+            $uri = \Hubzero\Utility\Uri::getInstance();
 
             $doi = $uri->getUriVar('host') . ':' . Config::get('sitename');
         }

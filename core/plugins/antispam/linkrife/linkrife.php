@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Linkrife;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 
 /**
  * Antispam plugin for a LinkRife spam detector
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAntispamLinkRife extends \Hubzero\Plugin\Plugin
+class Linkrife extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

@@ -5,9 +5,6 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * Yandex plugin for geocode
  *
@@ -18,8 +15,11 @@
  * possible to precise the toponym to get more accurate result for reverse
  * geocoding: house, street, metro, district and locality.
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeYandex extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Yandex;
+
+use Hubzero\Plugin\Plugin;
+
+class Yandex extends Plugin
 {
     /**
      * Return a geocode provider

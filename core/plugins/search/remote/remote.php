@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Remote;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -24,10 +28,8 @@ use Components\Search\Models\Solr\Blacklist;
 use GuzzleHttp\Client;
 
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchRemote extends \Hubzero\Plugin\Plugin
+class Remote extends Plugin
 {
     /**
      * onContentSave

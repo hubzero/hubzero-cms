@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+namespace Plugins\Projects\Watch;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
@@ -16,7 +20,7 @@ defined('_HZEXEC_') or die();
 /**
  * Let project members/public subscribe to project activity notifications
  */
-class PlgProjectsWatch extends \Hubzero\Plugin\Plugin
+class Watch extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

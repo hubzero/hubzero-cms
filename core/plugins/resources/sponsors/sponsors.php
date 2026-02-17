@@ -1,6 +1,8 @@
 <?php
+namespace Plugins\Resources\Sponsors;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -15,14 +17,14 @@ defined('_HZEXEC_') or die();
 /**
  * Display sponsors on a resource page
  */
-class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
+class Sponsors extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

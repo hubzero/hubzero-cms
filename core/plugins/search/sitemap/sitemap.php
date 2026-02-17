@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Sitemap;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -15,10 +19,8 @@ defined('_HZEXEC_') or die();
  * Search plugin for site map
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchSiteMap extends \Hubzero\Plugin\Plugin
+class Sitemap extends Plugin
 {
     /**
      * Get the plugin name

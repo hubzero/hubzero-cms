@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Categories;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -13,10 +17,8 @@ defined('_HZEXEC_') or die;
 /**
  * Plugin for ensuring categories are empty before deleting
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgContentCategories extends \Hubzero\Plugin\Plugin
+class Categories extends Plugin
 {
     /**
      * Don't allow categories to be deleted if they contain items or subcategories with items

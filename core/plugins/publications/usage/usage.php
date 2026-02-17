@@ -1,6 +1,8 @@
 <?php
+namespace Plugins\Publications\Usage;
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 // phpcs:disable PSR1.Files.SideEffects
 // phpcs:disable PSR1.Files.SideEffects
@@ -16,15 +18,14 @@ require_once __DIR__ . '/helpers/publicationUsageHelper.php';
 /**
  * Publications Plugin class for usage
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
+class Usage extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

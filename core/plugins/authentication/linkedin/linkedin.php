@@ -1,7 +1,10 @@
 <?php
 
+namespace Plugins\Authentication\Linkedin;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,9 +16,7 @@ defined('_HZEXEC_') or die();
 
 // Include LinkedIn php library
 require_once __DIR__ . DS . 'simplelinkedin-php' . DS . 'linkedin_3.2.0.class.php';
-
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
+class Linkedin extends \Hubzero\Plugin\OauthClient
 {
     /**
      * Affects constructor behavior.
@@ -23,7 +24,7 @@ class plgAuthenticationLinkedIn extends \Hubzero\Plugin\OauthClient
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

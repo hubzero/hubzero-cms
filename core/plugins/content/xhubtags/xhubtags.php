@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Xhubtags;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Content Plugin class for {xhub} tags
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgContentXhubtags extends \Hubzero\Plugin\Plugin
+class Xhubtags extends Plugin
 {
     /**
      * Plugin that loads module positions within content

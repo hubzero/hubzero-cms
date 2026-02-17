@@ -1,7 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,8 +9,11 @@
 /**
  * Publications Plugin class for adding Open Graph metadata to the document
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgPublicationsOpengraph extends \Hubzero\Plugin\Plugin
+namespace Plugins\Publications\Opengraph;
+
+use Hubzero\Plugin\Plugin;
+
+class Opengraph extends Plugin
 {
     /**
      * Return data on a resource view (this will be some form of HTML)

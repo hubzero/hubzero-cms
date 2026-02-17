@@ -9,9 +9,11 @@
 /**
  * System plugin checking for missing/required registration fields
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemIncomplete extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Incomplete;
+
+use Hubzero\Plugin\Plugin;
+
+class Incomplete extends Plugin
 {
     /**
      * Hook for after parsing route

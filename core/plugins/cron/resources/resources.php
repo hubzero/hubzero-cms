@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +8,11 @@
 /**
  * Cron plugin for resources
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCronResources extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Resources;
+
+use Hubzero\Plugin\Plugin;
+
+class Resources extends Plugin
 {
     /**
      * Return a list of events
@@ -317,7 +318,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
             foreach ($results as $reportcard) {
                 // Loop through each test result and save to the database
                 foreach ($reportcard['tests'] as $result) {
-                    $prev = Hubzero\Content\Auditor\Result::oneByScope($result->get('scope'), $result->get('scope_id'));
+                    $prev = \Hubzero\Content\Auditor\Result::oneByScope($result->get('scope'), $result->get('scope_id'));
 
                     if ($prev->get('id')) {
                         $result->set('id', $prev->get('id'));
@@ -478,7 +479,7 @@ class plgCronResources extends \Hubzero\Plugin\Plugin
             return false;
         }
 
-        $eview = new Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View(array(
             'base_path' => __DIR__,
             'name'      => 'emails',
             'layout'    => 'digest_plain'

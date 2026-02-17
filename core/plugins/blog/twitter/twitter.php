@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Blog\Twitter;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die();
 /**
  * Resources Plugin class for adding Twitter metadata to the document
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgBlogTwitter extends \Hubzero\Plugin\Plugin
+class Twitter extends Plugin
 {
     /**
      * Return data on a resource view (this will be some form of HTML)
@@ -47,10 +49,10 @@ class plgBlogTwitter extends \Hubzero\Plugin\Plugin
 
         Document::addCustomTag('<meta property="twitter:site" content="@' . $view->escape($user) . '" />');
 
-        $title = $view->escape(Hubzero\Utility\Str::truncate(strip_tags($model->title), 40));
+        $title = $view->escape(\Hubzero\Utility\Str::truncate(strip_tags($model->title), 40));
         Document::addCustomTag('<meta property="twitter:title" content="' . $title . '" />');
 
-        $content = Hubzero\Utility\Str::truncate(strip_tags($model->content), 140);
+        $content = \Hubzero\Utility\Str::truncate(strip_tags($model->content), 140);
         $content = str_replace(array("\n", "\t", "\r"), ' ', $content);
         $content = trim($content);
 

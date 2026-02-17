@@ -9,9 +9,11 @@
 /**
  * System plugin for content events
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemContent extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Content;
+
+use Hubzero\Plugin\Plugin;
+
+class Content extends Plugin
 {
     /**
      * Hook for after parsing route

@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +8,11 @@
 /**
  * Cron plugin for support tickets
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCronSupport extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Support;
+
+use Hubzero\Plugin\Plugin;
+
+class Support extends Plugin
 {
     /**
      * Return a list of events

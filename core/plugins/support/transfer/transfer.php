@@ -1,8 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,15 +9,18 @@
 /**
  * Support plugin class for transfer
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSupportTransfer extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Transfer;
+
+use Hubzero\Plugin\Plugin;
+
+class Transfer extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

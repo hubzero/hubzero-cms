@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,15 +8,18 @@
 /**
  * HUBzero plugin class for displaying comments
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgHubzeroComments extends \Hubzero\Plugin\Plugin
+namespace Plugins\Hubzero\Comments;
+
+use Hubzero\Plugin\Plugin;
+
+class Comments extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -117,7 +118,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
      * @param   integer  $assetId    Specific object to check permissions for
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _authorize($assetType = 'comment', $assetId = null)
     {
         // Are comments public or registered members only?
@@ -204,7 +205,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _login()
     {
         App::redirect(
@@ -219,7 +220,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _vote()
     {
         // Ensure the user is logged in
@@ -273,7 +274,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
      * @param   string  $name    View name (unused, for parent compatibility)
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _view($layout = 'default', $name = '')
     {
         // Get the plugin parameter for the default sorting (Newest first vs Oldest first)
@@ -307,7 +308,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _save()
     {
         // Ensure the user is logged in
@@ -380,7 +381,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _delete()
     {
         // Ensure the user is logged in
@@ -425,7 +426,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _feed()
     {
         if (!$this->params->get('comments_feeds')) {

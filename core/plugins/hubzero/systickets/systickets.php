@@ -1,6 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +8,11 @@
 /**
  * HUBzero plugin class for system overview
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgHubzeroSystickets extends \Hubzero\Plugin\Plugin
+namespace Plugins\Hubzero\Systickets;
+
+use Hubzero\Plugin\Plugin;
+
+class Systickets extends Plugin
 {
     /**
      * Return information about this hub

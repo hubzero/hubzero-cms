@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Groups;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -19,10 +23,8 @@ require_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . '
  * Search groups
  */
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchGroups extends \Hubzero\Plugin\Plugin
+class Groups extends Plugin
 {
     /**
      * Build search query and add it to the $results

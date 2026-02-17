@@ -1,26 +1,26 @@
 <?php
-
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Utility\Date;
+namespace Plugins\Courses\Guide;
+
 use Hubzero\Plugin\Plugin;
 
+use Hubzero\Utility\Date;
 /**
  * Courses Plugin class for intro guide
  */
-class PlgCoursesGuide extends Plugin
+class Guide extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -140,7 +140,7 @@ class PlgCoursesGuide extends Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _default()
     {
         $this->view->setLayout('overlay');
@@ -151,7 +151,7 @@ class PlgCoursesGuide extends Plugin
      *
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     public function _mark()
     {
         $this->view->setLayout('mark');

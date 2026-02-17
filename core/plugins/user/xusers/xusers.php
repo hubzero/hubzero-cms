@@ -1,20 +1,20 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Xusers;
+
+use Hubzero\Plugin\Plugin;
+
 // No direct access
 
 /**
  * User plugin for hub users
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgUserXusers extends \Hubzero\Plugin\Plugin
+class Xusers extends Plugin
 {
     /**
      * Constructor
@@ -93,7 +93,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
         }
 
         // Log attempt to the database
-        Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
+        \Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
             [
             'username' => $xuser->get('username'),
             'status'   => 'success'
@@ -137,9 +137,9 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
         $hash = App::hash(App::get('client')->name . ':tracker');
 
         $key = App::hash('');
-        $crypt = new Hubzero\Encryption\Encrypter(
-            new Hubzero\Encryption\Cipher\Simple(),
-            new Hubzero\Encryption\Key('simple', $key, $key)
+        $crypt = new \Hubzero\Encryption\Encrypter(
+            new \Hubzero\Encryption\Cipher\Simple(),
+            new \Hubzero\Encryption\Key('simple', $key, $key)
         );
 
         $tracker = array();
@@ -637,7 +637,7 @@ class plgUserXusers extends \Hubzero\Plugin\Plugin
     public function onUserLoginFailure($response)
     {
         // Log attempt to the database
-        Hubzero\User\User::blank()->logger()->auth()->set(
+        \Hubzero\User\User::blank()->logger()->auth()->set(
             [
             'user_id'  => 0,
             'username' => isset($response['username']) ? $response['username'] : '[unknown]',

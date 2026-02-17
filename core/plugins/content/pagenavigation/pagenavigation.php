@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Pagenavigation;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,10 +18,8 @@ defined('_HZEXEC_') or die;
 /**
  * Pagenavigation plugin class.
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgContentPagenavigation extends \Hubzero\Plugin\Plugin
+class Pagenavigation extends Plugin
 {
     /**
      * Prepare the content for display

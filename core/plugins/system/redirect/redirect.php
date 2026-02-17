@@ -6,14 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Redirect;
+
+use Hubzero\Plugin\Plugin;
+
 // no direct access
 
 /**
  * Plugin class for redirect handling.
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemRedirect extends \Hubzero\Plugin\Plugin
+class Redirect extends Plugin
 {
     /**
      * Object Constructor.
@@ -57,7 +59,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
         }
 
         // Get the full current URI.
-        $uri = Hubzero\Utility\Uri::getInstance();
+        $uri = \Hubzero\Utility\Uri::getInstance();
         $current = $uri->toString(array('scheme', 'host', 'port', 'path', 'query', 'fragment'));
 
         // Attempt to ignore idiots.
@@ -92,7 +94,7 @@ class plgSystemRedirect extends \Hubzero\Plugin\Plugin
 
             // If a redirect exists and is published, permanently redirect.
             if ($link->get('id') && $link->isPublished()) {
-                $redirect = new Hubzero\Http\RedirectResponse($link->new_url, $link->get('status_code', 301));
+                $redirect = new \Hubzero\Http\RedirectResponse($link->new_url, $link->get('status_code', 301));
                 $redirect->setRequest(App::get('request'));
                 $redirect->send();
 

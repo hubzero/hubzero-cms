@@ -1,6 +1,10 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, PSR1.Classes.ClassDeclaration.MissingNamespace
+namespace Plugins\Projects\Databases;
+
+use Hubzero\Plugin\Plugin;
+
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -17,14 +21,14 @@ require_once Component::path('com_projects') . DS . 'tables' . DS . 'database.ve
 /**
  * Projects - Databases plugin
  */
-class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
+class Databases extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
      *
      * @var  boolean
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**
@@ -39,7 +43,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @var  string
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_option = 'com_projects';
 
     /**
@@ -47,7 +51,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @var  array
      */
-    // @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_msg = null;
 
     /**
@@ -130,7 +134,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  boolean
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _checkConfig()
     {
         if (isset($this->_configured)) {
@@ -438,7 +442,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_list()
     {
         // Get project path
@@ -493,7 +497,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_create()
     {
         // Check permission
@@ -582,7 +586,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_preview_data()
     {
         // Incoming
@@ -765,7 +769,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      * @param   integer  $max_len
      * @return  string
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
     protected function _guess_data_type($data, $type, $max_len)
     {
         $data = trim($data);
@@ -820,7 +824,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  void
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_create_database()
     {
         // Check permission
@@ -1052,7 +1056,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      * @param   integer  $id  Database ID
      * @return  void
      */
-    // @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, PSR1.Methods.CamelCapsMethodName
     public function _save_csv($id)
     {
         $db = $this->get_ds_db($this->model->get('id'));
@@ -1145,7 +1149,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_delete()
     {
         // Check permission
@@ -1213,7 +1217,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      *
      * @return  array
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function act_update()
     {
         // Check permission
@@ -1268,7 +1272,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      * @param   string   $base_path   File-repository base path
      * @return  integer
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function clone_database($identifier = 0, $project = null, $base_path = null)
     {
         if (!$identifier || $project == null) {
@@ -1341,7 +1345,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      * @param   integer  $version     Database version
      * @return  bool
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function remove_database($identifier = 0, $project = null, $version = null)
     {
         if (!$identifier || $project == null) {
@@ -1385,7 +1389,7 @@ class PlgProjectsDatabases extends \Hubzero\Plugin\Plugin
      * @param   string  $id
      * @return  object
      */
-    // @phpcs:ignore PSR1.Methods.CamelCapsMethodName
+// @phpcs:ignore PSR1.Methods.CamelCapsMethodName
     public function get_ds_db($id)
     {
         $opt = array();

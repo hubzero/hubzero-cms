@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Captcha\Recaptcha;
+
+use Hubzero\Plugin\Plugin;
+
 // @phpcs:disable PSR1.Files.SideEffects
 defined('_HZEXEC_') or die;
 
@@ -14,8 +18,7 @@ defined('_HZEXEC_') or die;
  *
  * Based on the official recaptcha library( https://developers.google.com/recaptcha/docs/php )
  */
-// @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
+class Recaptcha extends Plugin
 {
     /**
      * Path to JS library needed for ReCAPTCHA to display
@@ -47,7 +50,7 @@ class plgCaptchaRecaptcha extends \Hubzero\Plugin\Plugin
      *
      * @var  boolean
      */
-    // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+// @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
     /**

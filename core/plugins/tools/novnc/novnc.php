@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Tools\Novnc;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 
@@ -17,10 +21,8 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for NoVNC session rendering
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgToolsNovnc extends \Hubzero\Plugin\Plugin
+class Novnc extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

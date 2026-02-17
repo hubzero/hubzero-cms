@@ -1,10 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
-
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,8 +9,11 @@
 /**
  * Support plugin class for comments
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSupportComments extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Comments;
+
+use Hubzero\Plugin\Plugin;
+
+class Comments extends Plugin
 {
     /**
      * Retrieves a row from the database

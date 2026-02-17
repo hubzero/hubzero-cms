@@ -1,7 +1,4 @@
 <?php
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,8 +9,11 @@
 /**
  * Support plugin class for CAPTCHA
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Captcha;
+
+use Hubzero\Plugin\Plugin;
+
+class Captcha extends Plugin
 {
     /**
      * If the user is a verified, logged-in user

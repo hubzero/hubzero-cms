@@ -5,16 +5,16 @@
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-
 /**
  * HostIp plugin for geocode
  *
  * The HostIpProvider is able to geocode IPv4 addresses only.
  */
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgGeocodeHostip extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Hostip;
+
+use Hubzero\Plugin\Plugin;
+
+class Hostip extends Plugin
 {
     /**
      * Return a geocode provider

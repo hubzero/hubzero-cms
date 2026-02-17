@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Questions;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -14,11 +18,9 @@ defined('_HZEXEC_') or die();
 /**
  * Search questions
  *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class plgSearchQuestions extends \Hubzero\Plugin\Plugin
+class Questions extends Plugin
 {
     /**
      * Short description for 'sort_by_date'

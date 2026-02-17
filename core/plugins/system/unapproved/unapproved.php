@@ -9,9 +9,11 @@
 /**
  * System plugin checking for unapproved users
  */
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
-class plgSystemUnapproved extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Unapproved;
+
+use Hubzero\Plugin\Plugin;
+
+class Unapproved extends Plugin
 {
     /**
      * Hook for after parsing route

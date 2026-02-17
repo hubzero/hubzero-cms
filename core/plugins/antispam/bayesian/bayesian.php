@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Bayesian;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 
 /**
  * Antispam plugin for a basic Bayesian filter
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class plgAntispamBayesian extends \Hubzero\Plugin\Plugin
+class Bayesian extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

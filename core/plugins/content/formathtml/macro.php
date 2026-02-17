@@ -208,7 +208,7 @@ class Macro
      *
      * @return  array  List of arguments
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getArguments()
     {
         if (!is_array($this->_arguments)) {
@@ -236,7 +236,7 @@ class Macro
      * @param   mixed   $default
      * @return  string
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getArgument($key, $default = null)
     {
         $arguments = $this->_getArguments();
@@ -256,7 +256,7 @@ class Macro
      * @param   array   $data
      * @return  object
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setArguments($data)
     {
         $this->arguments = (array)$data;
@@ -271,7 +271,7 @@ class Macro
      * @param   mixed   $val
      * @return  object
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _setArgument($key, $val)
     {
         $this->_arguments[$key] = $val;
@@ -284,7 +284,7 @@ class Macro
      *
      * @return  boolean
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _hasArguments()
     {
         $arguments = $this->_getArguments();
@@ -298,7 +298,7 @@ class Macro
      * @param   string   $key
      * @return  boolean
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _hasArgument($key)
     {
         $arguments = $this->_getArguments();

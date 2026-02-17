@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Solr;
+
+use Hubzero\Plugin\Plugin;
+
 // phpcs:disable PSR1.Files.SideEffects
 
 /**
@@ -24,10 +28,8 @@ use Components\Search\Models\Solr\Blacklist;
 use Hubzero\Search\Index;
 
 /**
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
- * @phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
  */
-class plgSearchSolr extends \Hubzero\Plugin\Plugin
+class Solr extends Plugin
 {
     /**
      * Table exists or not
@@ -74,7 +76,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
             if ($indexResultModel) {
                 $config = Component::params('com_search');
                 $commitWithin = $config->get('solr_commit');
-                $index = new Hubzero\Search\Index($config);
+                $index = new \Hubzero\Search\Index($config);
                 $method = '';
                 $modelIndex = $indexResultModel->searchResult();
                 $blackListIds = Blacklist::getDocIdsByScope($indexResultModel::searchNamespace());
@@ -120,7 +122,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
                 $indexResultModel = $this->getSearchableModel($table, $model, $searchComponent);
                 if ($indexResultModel) {
                     $config = Component::params('com_search');
-                    $index = new Hubzero\Search\Index($config);
+                    $index = new \Hubzero\Search\Index($config);
                     $modelIndexId = $indexResultModel->searchId();
                     $index->delete($modelIndexId);
                     $method = 'delete';

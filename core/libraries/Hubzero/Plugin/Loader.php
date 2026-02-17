@@ -216,31 +216,45 @@ class Loader implements LoaderInterface
         $plugin->type = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->type);
         $plugin->name = preg_replace('/[^A-Z0-9_\.-]/i', '', $plugin->name);
 
-        $classNameL = 'plg' . $plugin->type . $plugin->name;
-        $classNameN = 'Plugins\\' . ucfirst($plugin->type) . '\\' . ucfirst($plugin->name);
+        $nsType = self::toNamespacePart($plugin->type);
+        $nsName = self::toNamespacePart($plugin->name);
 
-        // If the class exists, the file was already loaded
-        if (!class_exists($classNameL) && !class_exists($classNameN)) {
+        // Namespaced: Plugins\{Type}\{Name}\{Name} (preferred)
+        $classNameN = 'Plugins\\' . $nsType . '\\' . $nsName . '\\' . $nsName;
+        // Legacy: plg{type}{name} (BC — case-insensitive, covers PlgTypeName too)
+        $classNameL = 'plg' . $plugin->type . $plugin->name;
+
+        // Include the file only if neither class is already defined.
+        // Use class_exists(..., false) to avoid triggering the autoloader here:
+        // if the autoloader were invoked and successfully loaded the class, the
+        // outer condition would become false and we'd skip instantiation entirely.
+        if (!class_exists($classNameN, false) && !class_exists($classNameL, false)) {
             $path = $this->path($plugin->type, $plugin->name) . DS . $plugin->name . '.php';
 
             if (file_exists($path)) {
                 require_once $path;
+            }
+        }
 
-                if ($autocreate) {
-                    foreach (array($classNameL, $classNameN) as $className) {
-                        if (!class_exists($className)) {
-                            continue;
-                        }
-
-                        // Makes sure we have an event dispatcher
-                        if (!($dispatcher instanceof DispatcherInterface)) {
-                            $dispatcher = new Dispatcher();
-                        }
-
-                        // Instantiate and register the plugin.
-                        return new $className($dispatcher, (array) $plugin);
-                    }
+        if ($autocreate) {
+            // Try namespaced first, then legacy
+            foreach (array($classNameN, $classNameL) as $className) {
+                if (!class_exists($className)) {
+                    continue;
                 }
+
+                // BC alias: register legacy name so old references still resolve
+                if ($className === $classNameN && !class_exists($classNameL, false)) {
+                    class_alias($classNameN, $classNameL);
+                }
+
+                // Makes sure we have an event dispatcher
+                if (!($dispatcher instanceof DispatcherInterface)) {
+                    $dispatcher = new Dispatcher();
+                }
+
+                // Instantiate and register the plugin.
+                return new $className($dispatcher, (array) $plugin);
             }
         }
 
@@ -301,5 +315,36 @@ class Loader implements LoaderInterface
     public function language($extension, $basePath = PATH_CORE)
     {
         return App::get('language')->load(strtolower($extension), $basePath);
+    }
+
+    /**
+     * Names that need special handling for valid PHP identifiers.
+     *
+     * Covers PHP reserved words (default) and names with invalid
+     * characters that can't be handled by simple PascalCase conversion.
+     *
+     * @var array<string, string>
+     */
+    private static $nameOverrides = [
+        'default' => 'DefaultHandler',
+    ];
+
+    /**
+     * Convert a plugin type or name to a valid PHP identifier.
+     *
+     * Handles hyphens (editors-xtd -> EditorsXtd) and reserved words
+     * (default -> DefaultHandler).
+     *
+     * @param  string  $name  Directory name (e.g. 'system', 'editors-xtd', 'default')
+     * @return string  Valid PHP identifier (e.g. 'System', 'EditorsXtd', 'DefaultHandler')
+     */
+    private static function toNamespacePart(string $name): string
+    {
+        if (isset(self::$nameOverrides[$name])) {
+            return self::$nameOverrides[$name];
+        }
+
+        // Convert hyphens to PascalCase: editors-xtd -> EditorsXtd
+        return implode('', array_map('ucfirst', explode('-', $name)));
     }
 }
