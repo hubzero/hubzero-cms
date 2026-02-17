@@ -31,7 +31,7 @@ class Local extends Plugin
                 return false;
             }
 
-            $metadata = Metadata::oneOrNewByPathAndKey($file->getAbsolutePath(), $key);
+            $metadata = Models\Metadata::oneOrNewByPathAndKey($file->getAbsolutePath(), $key);
 
             $metadata->set('value', (string) $value)->save();
         }
@@ -50,7 +50,7 @@ class Local extends Plugin
             return false;
         }
 
-        $metadata = Metadata::loadAllByPath($file->getAbsolutePath());
+        $metadata = Models\Metadata::loadAllByPath($file->getAbsolutePath());
         $results  = [];
 
         foreach ($metadata as $data) {
@@ -69,6 +69,6 @@ class Local extends Plugin
      **/
     public function onFileMove($old, $new)
     {
-        return Metadata::relocateByPath($old, $new);
+        return Models\Metadata::relocateByPath($old, $new);
     }
 }

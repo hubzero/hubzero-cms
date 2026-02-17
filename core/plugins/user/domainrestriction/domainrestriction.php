@@ -222,10 +222,11 @@ class Domainrestriction extends Plugin
         }
 
         if (count(array_merge($whitelistnet, $blacklistnet))) {
-            $require = $this->_gmp ? 'IPv6Net' : 'SimpleCIDR';
+            $require = $this->_gmp ? Helpers\IPv6Net::class : Helpers\SimpleCIDR::class;
 
             if (!class_exists($require)) {
-                require_once __DIR__ . '/helpers/' . $require . '.php';
+                $file = $this->_gmp ? 'IPv6Net' : 'SimpleCIDR';
+                require_once __DIR__ . '/helpers/' . $file . '.php';
             }
 
             foreach ($whitelistnet as $net) {
@@ -255,7 +256,7 @@ class Domainrestriction extends Plugin
      */
     private function bwnet($net)
     {
-        return $this->_gmp ? (new IPv6Net($net)) : SimpleCIDR::getInstance($net);
+        return $this->_gmp ? (new Helpers\IPv6Net($net)) : Helpers\SimpleCIDR::getInstance($net);
     }
 
     /**

@@ -8,6 +8,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Groups\Calendar\Helpers;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -15,8 +17,6 @@ use Hubzero\Utility\Arr;
 
 /**
  * User Localizer helper class
- *
- * @phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
  */
 class UserLocalizer
 {
@@ -41,8 +41,8 @@ class UserLocalizer
      */
     public function __construct()
     {
-        $this->db = App::get('db');
-        $this->systemTimezone = Config::get('offset');
+        $this->db = \App::get('db');
+        $this->systemTimezone = \Config::get('offset');
     }
 
     /**
@@ -52,7 +52,7 @@ class UserLocalizer
      */
     public function getTimezone()
     {
-        if (!User::isGuest()) {
+        if (!\User::isGuest()) {
             $timezone = $this->_getUserTimezone();
         } else {
             $timezone = $this->systemTimezone;
@@ -69,8 +69,10 @@ class UserLocalizer
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     protected function _getUserTimezone()
     {
-        $userParams = json_decode(User::get('params', '[]'), 1);
+        $userParams = json_decode(\User::get('params', '[]'), 1);
 
         return Arr::getValue($userParams, 'timezone', $this->systemTimezone);
     }
 }
+
+class_alias(__NAMESPACE__ . '\UserLocalizer', 'UserLocalizer');

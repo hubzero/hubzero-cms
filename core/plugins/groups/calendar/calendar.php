@@ -420,7 +420,7 @@ class Calendar extends Plugin
         $start = Date::of($start . ' 00:00:00');
         $end   = Date::of($end . ' 00:00:00');
         $end->modify('-1 second');
-        $userLocalizer = new UserLocalizer();
+        $userLocalizer = new Helpers\UserLocalizer();
 
         // get calendar events
         $eventsCalendar = \Components\Events\Models\Calendar::getInstance();

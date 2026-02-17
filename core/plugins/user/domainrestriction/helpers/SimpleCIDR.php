@@ -1,6 +1,6 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Methods.CamelCapsMethodName
+// phpcs:disable PSR1.Methods.CamelCapsMethodName
 
 /**
  * @package    hubzero-cms
@@ -8,8 +8,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-
+namespace Plugins\User\Domainrestriction\Helpers;
 
 class SimpleCIDR
 {

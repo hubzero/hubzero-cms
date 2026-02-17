@@ -1,6 +1,8 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace, PSR1.Methods.CamelCapsMethodName
+// phpcs:disable PSR1.Methods.CamelCapsMethodName
+
+namespace Plugins\User\Domainrestriction\Helpers;
 
 /*------------------------------------------------------------------------------
 ** File:        IPv6Net.php
@@ -145,7 +147,7 @@ class IPv6Net
         }
         $net_addr = @inet_pton($addr);
         if ($net_addr == false) {
-            throw new Exception("invalid ip address {$addr}");
+            throw new \Exception("invalid ip address {$addr}");
         }
         $net_addr_long = self::inet_ntogmp($net_addr);
         return self::inet_gmptofull($net_addr_long);
@@ -333,7 +335,7 @@ class IPv6Net
     {
         $this->net_addr = @inet_pton($addr);
         if ($this->net_addr == false) {
-            throw new Exception("invalid ip address {$addr}");
+            throw new \Exception("invalid ip address {$addr}");
         }
         $this->valid = true;
         $this->net_addr_long = $this->inet_ntogmp($this->net_addr);
