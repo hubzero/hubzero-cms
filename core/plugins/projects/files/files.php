@@ -1,7 +1,5 @@
 <?php
 
-// @phpcs:disable Squiz.ControlStructures.ControlSignature
-
 namespace Plugins\Projects\Files;
 
 use Hubzero\Plugin\Plugin;
@@ -1892,9 +1890,8 @@ class Files extends Plugin
 
                 $this->_connect->fetchFile($data, $ftname, $temp_path);
                 $downloadPath = $temp_path . DS . $ftname;
-            }
-            // Download local revision
-            elseif ($hash) {
+            } elseif ($hash) {
+                // Download local revision
                 $tempPath = 'temp-' . \Components\Projects\Helpers\Html::generateCode(4, 4, 0, 1, 0);
                 $tempPath .= $serveas;
                 $downloadPath = sys_get_temp_dir() . DS . $tempPath;
@@ -2118,9 +2115,8 @@ class Files extends Plugin
             // Write content to temp file
             $this->_connect->fetchFile($view->data, $tempBase, PATH_APP . $outputDir);
             $contentFile = $tempBase;
-        }
-        // Local file
-        elseif (!$this->getError()) {
+        } elseif (!$this->getError()) {
+            // Local file
             // Make sure we can handle preview of this type of file
             if ($file->get('ext') == 'pdf' || $file->isImage() || !$file->isBinary()) {
                 Filesystem::copy($file->get('fullPath'), PATH_APP . $outputDir . DS . $tempBase);
@@ -2447,9 +2443,8 @@ class Files extends Plugin
                     // Force sync
                     $sync = true;
                 }
-            }
-            // Export local file
-            else {
+            } else {
+                // Export local file
                 // Check that local file exists
                 if (!$this->repo->fileExists($file->get('localPath'))) {
                     $this->setError(Lang::txt('PLG_PROJECTS_FILES_SHARING_LOCAL_FILE_MISSING'));

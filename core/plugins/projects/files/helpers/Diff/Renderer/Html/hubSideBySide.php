@@ -2,8 +2,6 @@
 
 namespace Plugins\Projects\Files\Helpers;
 
-// @phpcs:disable PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace, Squiz.ControlStructures.ControlSignature, PSR2.ControlStructures.ElseIfDeclaration
-
 /**
  * Side by side HTML diff generator for PHP DiffLib.
  *
@@ -53,9 +51,8 @@ class HubSideBySide extends \Diff_Renderer_Html_Array
                         $html .= '<td class="Right"><span>' . $line . '</span>&nbsp;</span></td>';
                         $html .= '</tr>';
                     }
-                }
-                // Added lines only on the right side
-                elseif ($change['tag'] == 'insert') {
+                } elseif ($change['tag'] == 'insert') {
+                    // Added lines only on the right side
                     foreach ($change['changed']['lines'] as $no => $line) {
                         $toLine = $change['changed']['offset'] + $no + 1;
                         $html .= '<tr>';
@@ -65,9 +62,8 @@ class HubSideBySide extends \Diff_Renderer_Html_Array
                         $html .= '<td class="Right"><ins>' . $line . '</ins>&nbsp;</td>';
                         $html .= '</tr>';
                     }
-                }
-                // Show deleted lines only on the left side
-                elseif ($change['tag'] == 'delete') {
+                } elseif ($change['tag'] == 'delete') {
+                    // Show deleted lines only on the left side
                     foreach ($change['base']['lines'] as $no => $line) {
                         $fromLine = $change['base']['offset'] + $no + 1;
                         $html .= '<tr>';
@@ -77,9 +73,8 @@ class HubSideBySide extends \Diff_Renderer_Html_Array
                         $html .= '<td class="Right">&nbsp;</td>';
                         $html .= '</tr>';
                     }
-                }
-                // Show modified lines on both sides
-                elseif ($change['tag'] == 'replace') {
+                } elseif ($change['tag'] == 'replace') {
+                    // Show modified lines on both sides
                     if (count($change['base']['lines']) >= count($change['changed']['lines'])) {
                         foreach ($change['base']['lines'] as $no => $line) {
                             $fromLine = $change['base']['offset'] + $no + 1;

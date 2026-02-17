@@ -1,19 +1,14 @@
 <?php
 
-// @phpcs:disable Squiz.ControlStructures.ControlSignature, PSR2.ControlStructures.ElseIfDeclaration, PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace
-
-namespace Plugins\Projects\Todo;
-
-use Hubzero\Plugin\Plugin;
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// Include model
-include_once \Component::path('com_projects') . DS . 'models' . DS . 'todo.php';
+namespace Plugins\Projects\Todo;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * Projects todo's
@@ -493,9 +488,8 @@ class Todo extends Plugin
                     ? Lang::txt('PLG_PROJECTS_TODO_TODO_ITEM_SAVED')
                     : Lang::txt('PLG_PROJECTS_TODO_TODO_NEW_ITEM_SAVED');
             }
-        }
-        // Assign todo
-        elseif ($task == 'assign') {
+        } elseif ($task == 'assign') {
+            // Assign todo
             $changed = $objTD->assigned_to == $assigned ? 0 : 1;
             if ($changed) {
                 $objTD->assigned_to = $assigned;
@@ -510,9 +504,8 @@ class Todo extends Plugin
                         : Lang::txt('PLG_PROJECTS_TODO_TODO_REASSIGNED');
                 }
             }
-        }
-        // Complete todo
-        elseif ($task == 'changestate') {
+        } elseif ($task == 'changestate') {
+            // Complete todo
             $changed = $objTD->state == $state ? 0 : 1;
             if ($changed) {
                 $objTD->state = $state;

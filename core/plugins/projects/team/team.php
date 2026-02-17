@@ -1,7 +1,5 @@
 <?php
 
-// @phpcs:disable Squiz.ControlStructures.ControlSignature
-
 namespace Plugins\Projects\Team;
 
 use Hubzero\Plugin\Plugin;
@@ -539,17 +537,14 @@ class Team extends Plugin
                     if (count($parts) == 2) {
                         $name = $parts[0];
                         $uid = preg_replace('/[)]/', '', $parts[1]);
-                    }
-                    // By user ID
-                    elseif (intval($cid) && $uid) {
+                    } elseif (intval($cid) && $uid) {
+                        // By user ID
                         $uid = $cid;
-                    }
-                    // By username
-                    elseif (!strstr($cid, ' ') && $uid) {
+                    } elseif (!strstr($cid, ' ') && $uid) {
+                        // By username
                         $uid = $validUser->get('id');
-                    }
-                    // By email
-                    else {
+                    } else {
+                        // By email
                         $regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
                         if (preg_match($regex, $cid)) {
                             // This is an email - check if user with the email exists
