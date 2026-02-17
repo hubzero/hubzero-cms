@@ -1,5 +1,8 @@
 <?php
 
+namespace Plugins\Xmessage\Handler;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -10,7 +13,7 @@
 /**
  * XMessage plugin class for handling message routing
  */
-class plgXMessageHandler extends \Hubzero\Plugin\Plugin
+class Handler extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -43,12 +46,12 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
             // Loop through each ID
             foreach ($uids as $uid) {
                 // Find any actions the user needs to take for this $component and $element
-                $mids = Hubzero\Message\Action::getActionItems($type, $component, $element, $uid);
+                $mids = \Hubzero\Message\Action::getActionItems($type, $component, $element, $uid);
 
                 // Check if the user has any action items
                 if (count($mids) > 0) {
                     foreach ($mids as $mid) {
-                        $xseen = Hubzero\Message\Seen::oneByMessageAndUser($mid, $uid);
+                        $xseen = \Hubzero\Message\Seen::oneByMessageAndUser($mid, $uid);
 
                         if (
                             $xseen->get('whenseen') == ''
@@ -103,7 +106,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
         $database = App::get('db');
 
         // Create the message object
-        $xmessage = Hubzero\Message\Message::blank();
+        $xmessage = \Hubzero\Message\Message::blank();
 
         if ($type == 'member_message') {
             $time_limit  = intval($this->params->get('time_limit', 30));
@@ -213,7 +216,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
             // Loop through each recipient
             foreach ($to as $uid) {
                 // Create a recipient object that ties a user to a message
-                $recipient = Hubzero\Message\Recipient::blank();
+                $recipient = \Hubzero\Message\Recipient::blank();
                 $recipient->set('uid', $uid);
                 $recipient->set('mid', $xmessage->get('id'));
                 $recipient->set('created', Date::toSql());
@@ -222,7 +225,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
                 // (is_object($action)) ? $action->id : 0; [zooley] Phasing out action items
 
                 // Get the user's methods for being notified
-                $notify = Hubzero\Message\Notify::blank();
+                $notify = \Hubzero\Message\Notify::blank();
                 $methods = $notify->getRecords($uid, $type);
 
                 $user = User::getInstance($uid);
@@ -277,7 +280,7 @@ class plgXMessageHandler extends \Hubzero\Plugin\Plugin
                     $methods = $notify->getRecords($uid);
                     if (!$methods || $methods->count() <= 0) {
                         // Load the default method
-                        $p = Plugin::byType('members', 'messages');
+                        $p = \Plugin::byType('members', 'messages');
                         $pp = new \Hubzero\Config\Registry((is_object($p) ? $p->params : ''));
 
                         $d = $pp->get('default_method', 'email');

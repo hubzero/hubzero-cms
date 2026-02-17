@@ -6,12 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Plugin\Plugin;
-
 /**
  * Courses Plugin class for related course
  */
-class PlgCoursesRelated extends Plugin
+namespace Plugins\Courses\Related;
+
+use Hubzero\Plugin\Plugin;
+
+class Related extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

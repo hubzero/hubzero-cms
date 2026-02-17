@@ -6,13 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+/**
+ * Wiki macro class for displaying a list of pages
+ */
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class for displaying a list of pages
  */
-class TitleIndexMacro extends WikiMacro
+class TitleIndex extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments

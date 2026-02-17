@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Citation\Bibtex;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -12,7 +16,7 @@ use Components\Citations\Models\Citation;
 /**
  * Citations plugin class for bibtex
  */
-class plgCitationBibtex extends \Hubzero\Plugin\Plugin
+class Bibtex extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

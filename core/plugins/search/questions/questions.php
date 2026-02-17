@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Questions;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -15,7 +19,7 @@ defined('_HZEXEC_') or die();
  *
  * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
  */
-class plgSearchQuestions extends \Hubzero\Plugin\Plugin
+class Questions extends Plugin
 {
     /**
      * Short description for 'sort_by_date'

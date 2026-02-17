@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Authentication\Google;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,8 +12,7 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
-
-class plgAuthenticationGoogle extends \Hubzero\Plugin\OauthClient
+class Google extends \Hubzero\Plugin\OauthClient
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

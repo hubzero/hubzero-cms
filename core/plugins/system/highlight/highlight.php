@@ -9,7 +9,11 @@
 /**
  * System plugin to highlight terms.
  */
-class PlgSystemHighlight extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Highlight;
+
+use Hubzero\Plugin\Plugin;
+
+class Highlight extends Plugin
 {
     /**
      * Method to catch the onAfterDispatch event.
@@ -52,7 +56,7 @@ class PlgSystemHighlight extends \Hubzero\Plugin\Plugin
         // Clean the terms array
         $cleanTerms = array();
         foreach ($terms as $term) {
-            $cleanTerms[] = htmlspecialchars(Hubzero\Utility\Sanitize::clean($term));
+            $cleanTerms[] = htmlspecialchars(\Hubzero\Utility\Sanitize::clean($term));
         }
 
         // Activate the highlighter.

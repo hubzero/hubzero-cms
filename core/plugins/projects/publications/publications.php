@@ -6,15 +6,21 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Projects\Publications;
+
+use Hubzero\Plugin\Plugin;
+use Components\Projects\Helpers\Html;
+use Components\Publications\Models\Publication;
+use Components\Publications\Models\Handlers;
+use Components\Publications\Models\Status;
+use Components\Publications\Helpers\Html as PubHtml;
 
 include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
 
 /**
  * Project publications
  */
-class plgProjectsPublications extends \Hubzero\Plugin\Plugin
+class Publications extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -614,7 +620,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -712,7 +718,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         // Check permission
         if ($this->model->exists() && !$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -911,7 +917,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
     {
         // Check permission
         if ($this->model->exists() && !$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -935,7 +941,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         $db = App::get('db');
 
-        $attachment = new Components\Publications\Tables\Attachment($db);
+        $attachment = new \Components\Publications\Tables\Attachment($db);
         $attachment->load($aid);
         $attachment->reorder($dir);
 
@@ -1021,7 +1027,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         // Check permission
         if ($this->model->exists() && !$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1082,7 +1088,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         // Check permission
         if ($this->model->exists() && !$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1116,7 +1122,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
             // Save changes
             if (!$this->model->store()) {
-                throw new Exception($this->model->getError());
+                throw new \Exception($this->model->getError());
                 return false;
             }
         }
@@ -1126,7 +1132,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         // Make sure we got type info
         if (!$mType) {
-            throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOAD_TYPE'));
+            throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_LOAD_TYPE'));
             return false;
         }
 
@@ -1152,7 +1158,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
         $objP->created     = Date::toSql();
         $objP->access      = 0;
         if (!$objP->store()) {
-            throw new Exception($objP->getError());
+            throw new \Exception($objP->getError());
             return false;
         }
         if (!$objP->id) {
@@ -1167,7 +1173,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
                 $this->model->delete();
                 $objP->delete();
 
-                throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO'));
+                throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_INI_GIT_REPO'));
                 return false;
             } else {
                 // Add creator as project owner
@@ -1183,7 +1189,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
                         1
                     )
                 ) {
-                    throw new Exception(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
+                    throw new \Exception(Lang::txt('COM_PROJECTS_ERROR_SAVING_AUTHORS') . ': ' . $objO->getError());
                     return false;
                 }
             }
@@ -1208,7 +1214,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
             // Roll back
             $objP->delete();
 
-            throw new Exception($row->getError(), 500);
+            throw new \Exception($row->getError(), 500);
             return false;
         }
         if (!$row->id) {
@@ -1243,7 +1249,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
         if (!$pid) {
             $pub = $this->createDraft();
             if (!$pub || !$pub->exists()) {
-                throw new Exception(Lang::txt('Error creating a publication draft'), 500);
+                throw new \Exception(Lang::txt('Error creating a publication draft'), 500);
                 return;
             }
 
@@ -1661,7 +1667,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -1846,7 +1852,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
             return;
         }
 
@@ -2150,7 +2156,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
             // Save data
             if (!$pub->version->store()) {
-                throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
+                throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_FAILED'), 403);
             }
 
             // Remove main flag from previous default version
@@ -2383,14 +2389,14 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         // Check permission
         if (!$this->model->access('content')) {
-            throw new Exception(Lang::txt('ALERTNOTAUTH'), 403);
+            throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
         }
 
         // Load publication model
         $pub  = new \Components\Publications\Models\Publication($pid, $version);
 
         if (!$pub->exists() || !$pub->belongsToProject($this->model->get('id'))) {
-            throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
+            throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
         }
 
         // Save version ID
@@ -2429,7 +2435,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
                     $pub->version->set('state', 0);
 
                     if (!$pub->version->store()) {
-                        throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED'), 403);
+                        throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNPUBLISH_FAILED'), 403);
                     } else {
                         $this->_msg = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_UNPUBLISHED');
 
@@ -2451,7 +2457,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
                     // Delete draft version
                     if (!$pub->version->delete()) {
-                        throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED'), 403);
+                        throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_DELETE_DRAFT_FAILED'), 403);
                     }
 
                     // Delete authors
@@ -2496,7 +2502,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
                         $pub->publication->deleteExistence($pid);
 
                         // Delete related publishing activity from feed
-                        $activities = Hubzero\Activity\Log::all()
+                        $activities = \Hubzero\Activity\Log::all()
                             ->whereEquals('scope', 'publication')
                             ->whereEquals('scope_id', $pid)
                             ->rows()
@@ -2507,7 +2513,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
                             $logs[] = $activity['id'];
                         }
 
-                        $past = Hubzero\Activity\Recipient::all()
+                        $past = \Hubzero\Activity\Recipient::all()
                             ->whereIn('log_id', $logs)
                             ->whereEquals('state', 1)
                             ->rows();
@@ -2592,7 +2598,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
         $view->pub  = new \Components\Publications\Models\Publication($pid, 'default');
 
         if (!$view->pub->exists() || !$view->pub->belongsToProject($this->model->get('id'))) {
-            throw new Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
+            throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
             return;
         }
 
@@ -2840,7 +2846,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         if (!$model->exists() || ($limited == 1 && !$model->access('member'))) {
             // Throw error
-            throw new Exception(Lang::txt('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'), 403);
+            throw new \Exception(Lang::txt('COM_PROJECTS_ERROR_ACTION_NOT_AUTHORIZED'), 403);
         }
 
         // Get referenced path
@@ -2853,7 +2859,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
         // Ensure the file exist
         if (!file_exists($serve)) {
             // Throw error
-            throw new Exception(Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'), 404);
+            throw new \Exception(Lang::txt('COM_PROJECTS_FILE_NOT_FOUND'), 404);
         }
 
         // Initiate a new content server and serve up the file
@@ -2865,7 +2871,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
         if (!$server->serve()) {
             // Should only get here on error
-            throw new Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
+            throw new \Exception(Lang::txt('COM_PUBLICATIONS_SERVER_ERROR'), 404);
         }
 
         exit;

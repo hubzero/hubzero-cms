@@ -6,8 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Filesystem\Github;
+
+use Hubzero\Plugin\Plugin;
 
 require_once __DIR__ . '/src/GithubAdapter.php';
 
@@ -16,7 +17,7 @@ use Hubzero\Plugin\Filesystem\Github\GithubAdapter;
 /**
  * Plugin class for github filesystem connectivity
  */
-class plgFilesystemGithub extends \Hubzero\Plugin\Plugin
+class Github extends Plugin
 {
     /**
      * Initializes the github connection
@@ -52,7 +53,7 @@ class plgFilesystemGithub extends \Hubzero\Plugin\Plugin
      **/
     public static function authorize($params = [])
     {
-        $pparams = Plugin::params('filesystem', 'github');
+        $pparams = \Plugin::params('filesystem', 'github');
         $app_key = $pparams['app_key'];
 
         $repository = isset($params['repository']) ? $params['repository'] : '';

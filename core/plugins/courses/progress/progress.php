@@ -8,12 +8,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Courses\Progress;
+
 use Hubzero\Plugin\Plugin;
 
 /**
  * Courses Plugin class for user progress
  */
-class PlgCoursesProgress extends Plugin
+class Progress extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -278,7 +280,7 @@ class PlgCoursesProgress extends Plugin
             $this->course->offering()->section()->get('grade_policy_id'),
             $this->course->offering()->section()->get('id')
         );
-        $policy = new stdClass();
+        $policy = new \stdClass();
         $policy->description = $gradePolicy->get('description');
         $policy->exam_weight = $gradePolicy->get('exam_weight') * 100;
         $policy->quiz_weight = $gradePolicy->get('quiz_weight') * 100;
@@ -589,9 +591,9 @@ class PlgCoursesProgress extends Plugin
         $asset_ids = explode('-', $asset_ids);
 
         // Set up our zip archive
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
         $path = PATH_APP . DS . $tmp . DS . time() . '.responses.zip';
-        $zip->open($path, ZipArchive::CREATE);
+        $zip->open($path, \ZipArchive::CREATE);
 
         // Loop through the assets
         foreach ($asset_ids as $asset_id) {

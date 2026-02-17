@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Usage plugin class for regions
  */
-class plgUsageRegion extends \Hubzero\Plugin\Plugin
+namespace Plugins\Usage\Region;
+
+use Hubzero\Plugin\Plugin;
+
+class Region extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

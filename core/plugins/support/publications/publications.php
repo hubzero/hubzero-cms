@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,11 @@
 /**
  * Support plugin class for com_resources entries
  */
-class plgSupportPublications extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Publications;
+
+use Hubzero\Plugin\Plugin;
+
+class Publications extends Plugin
 {
     /**
      * Get items reported as abusive

@@ -6,8 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Wiki\Parserdefault;
 
 /**
  * Wiki parser class
@@ -1324,7 +1323,7 @@ class WikiParser
      */
     private function _getMath($matches)
     {
-        $m = MathRenderer::renderMath(trim($matches[1]), array(
+        $m = Math\MathRenderer::renderMath(trim($matches[1]), array(
             'option' => $this->get('option')
         ));
 

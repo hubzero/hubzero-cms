@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Resources Plugin class for versions
  */
-class plgResourcesVersions extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Versions;
+
+use Hubzero\Plugin\Plugin;
+
+class Versions extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

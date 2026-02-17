@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Newsletter\Event;
+
+use Hubzero\Plugin\Plugin;
+
 
 use Components\Events\Models\Orm\Event as CalEvent;
 
@@ -14,7 +18,7 @@ require_once \Component::path('com_events') . DS . 'models' . DS . 'orm' . DS . 
 /**
  * Plugin class for Newsletter event
  */
-class plgNewsletterEvent extends \Hubzero\Plugin\Plugin
+class Event extends Plugin
 {
     /**
      * Event call to get the name
@@ -42,7 +46,7 @@ class plgNewsletterEvent extends \Hubzero\Plugin\Plugin
         $objects = array();
 
         foreach ($model as $m) {
-            $object = new stdClass();
+            $object = new \stdClass();
             $object->title = $m->title;
             $object->body  = htmlspecialchars_decode($m->content);
             $object->date  = Date::of($m->publish_up)->toLocal("F j, Y");

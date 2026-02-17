@@ -1,5 +1,8 @@
 <?php
 
+
+namespace Plugins\Wiki\Parserdefault\Math;
+
 /**
  * Short description for 'file'
  *
@@ -77,7 +80,6 @@ define('MW_MATH_MATHML', 5);
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Math Renderer
  * Renders TeX using standard tools
@@ -144,7 +146,7 @@ class MathRenderer
     {
         $this->tex    = $tex;
         $this->params = $params;
-        $this->config = Component::params('com_wiki');
+        $this->config = \Component::params('com_wiki');
     }
 
     /**
@@ -524,7 +526,7 @@ class MathRenderer
      */
     public static function renderMath($tex, $params = array())
     {
-        $math = new MathRenderer($tex, $params);
+        $math = new self($tex, $params);
         return $math->render();
     }
 }

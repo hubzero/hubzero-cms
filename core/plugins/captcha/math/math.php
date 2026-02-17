@@ -6,13 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Captcha\Math;
+
+use Hubzero\Plugin\Plugin;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
 /**
  * Plugin class for displaying math CAPTCHAs
  */
-class plgCaptchaMath extends \Hubzero\Plugin\Plugin
+class Math extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

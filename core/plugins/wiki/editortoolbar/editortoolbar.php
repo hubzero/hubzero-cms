@@ -12,7 +12,11 @@ defined('_HZEXEC_') or die();
 /**
  * Plugin class for displaying a wiki editor toolbar
  */
-class plgWikiEditortoolbar extends \Hubzero\Plugin\Plugin
+namespace Plugins\Wiki\Editortoolbar;
+
+use Hubzero\Plugin\Plugin;
+
+class Editortoolbar extends Plugin
 {
     /**
      * Flag for if scripts need to be pushed to the document or not

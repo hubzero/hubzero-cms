@@ -1,4 +1,7 @@
 <?php
+namespace Plugins\Publications\Questions;
+
+use Hubzero\Plugin\Plugin;
 
 
 /**
@@ -11,7 +14,7 @@
 /**
  * Publications Plugin class for questions
  */
-class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
+class Questions extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

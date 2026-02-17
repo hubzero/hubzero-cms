@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Members\Impact;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package   hubzero-cms
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * Members Plugin class for author's impact
  */
-class PlgMembersImpact extends \Hubzero\Plugin\Plugin
+class Impact extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

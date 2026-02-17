@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Memberoptions;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * Groups plugin class for Member Options
  */
-class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
+class Memberoptions extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -98,7 +102,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
     protected function edit($group, $user, $recvEmailOptionID, $recvEmailOptionValue)
     {
         // Load the options
-        $recvEmailOption = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+        $recvEmailOption = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $group->get('gidNumber'),
             $user->get('id'),
             'receive-forum-email'
@@ -132,7 +136,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
 
         // Save the GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting
         // Load this user's own option row rather than trusting a request-supplied id
-        $row = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+        $row = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $group->get('gidNumber'),
             $user->get('id'),
             'receive-forum-email'
@@ -175,7 +179,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
     public function onGroupUserEnrollment($gidNumber, $userid)
     {
         // get group
-        $group = Hubzero\User\Group::getInstance($gidNumber);
+        $group = \Hubzero\User\Group::getInstance($gidNumber);
 
         // is auto-subscribe on for discussion forum
         $autosubscribe = $group->get('discussion_email_autosubscribe');
@@ -191,7 +195,7 @@ class plgGroupsMemberOptions extends \Hubzero\Plugin\Plugin
         include_once __DIR__ . DS . 'models' . DS . 'memberoption.php';
 
         // see if they've already got something, they shouldn't, but you never know
-        $row = Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
+        $row = \Plugins\Groups\Memberoptions\Models\Memberoption::oneByUserAndOption(
             $gidNumber,
             $userid,
             'receive-forum-email'

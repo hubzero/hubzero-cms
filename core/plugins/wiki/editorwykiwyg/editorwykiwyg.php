@@ -12,7 +12,11 @@ defined('_HZEXEC_') or die();
 /**
  * Wiki plugin class for displaying a WYSIWYG wiki editor
  */
-class plgWikiEditorwykiwyg extends \Hubzero\Plugin\Plugin
+namespace Plugins\Wiki\Editorwykiwyg;
+
+use Hubzero\Plugin\Plugin;
+
+class Editorwykiwyg extends Plugin
 {
     /**
      * Flag for if scripts need to be pushed to the document or not

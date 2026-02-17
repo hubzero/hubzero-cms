@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Authfactors\Google;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -10,12 +14,12 @@
 use Hubzero\Auth\Factor;
 use Hubzero\Utility\Validate;
 
-require_once Plugin::path('authfactors', 'google') . DS . 'helpers' . DS . 'GoogleAuthenticator.php';
+require_once \Plugin::path('authfactors', 'google') . DS . 'helpers' . DS . 'GoogleAuthenticator.php';
 
 /**
  * Factor Auth plugin for based identity verification
  */
-class plgAuthfactorsGoogle extends \Hubzero\Plugin\Plugin
+class Google extends Plugin
 {
     /**
      * Renders the auth factor challenge

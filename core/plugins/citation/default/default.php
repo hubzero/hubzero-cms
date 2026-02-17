@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Citation\DefaultHandler;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -8,9 +12,9 @@
  */
 
 /**
- * Citations plugin class for bibtex
+ * Citations plugin class for default format
  */
-class plgCitationDefault extends \Hubzero\Plugin\Plugin
+class DefaultHandler extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

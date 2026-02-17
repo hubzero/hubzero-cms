@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Plain Textarea Editor Plugin
  */
-class plgEditorNone extends \Hubzero\Plugin\Plugin
+namespace Plugins\Editors\None;
+
+use Hubzero\Plugin\Plugin;
+
+class None extends Plugin
 {
     /**
      * Method to handle the onInitEditor event.

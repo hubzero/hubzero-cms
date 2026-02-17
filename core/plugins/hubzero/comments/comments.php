@@ -12,7 +12,11 @@ defined('_HZEXEC_') or die();
 /**
  * HUBzero plugin class for displaying comments
  */
-class plgHubzeroComments extends \Hubzero\Plugin\Plugin
+namespace Plugins\Hubzero\Comments;
+
+use Hubzero\Plugin\Plugin;
+
+class Comments extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -312,8 +316,8 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
             ->whereEquals('item_id', $this->obj_id)
             ->whereEquals('parent', 0)
             ->whereIn('state', array(
-                Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
-                Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
+                \Plugins\Hubzero\Comments\Models\Comment::STATE_PUBLISHED,
+                \Plugins\Hubzero\Comments\Models\Comment::STATE_FLAGGED
             ))
             ->limit($this->params->get('display_limit', 25))
             ->ordered()

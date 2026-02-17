@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Projects\Info;
+
+use Hubzero\Plugin\Plugin;
+
 // @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 // @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
 
@@ -15,7 +19,7 @@ defined('_HZEXEC_') or die();
 /**
  * Projects Info plugin
  */
-class PlgProjectsInfo extends \Hubzero\Plugin\Plugin
+class Info extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -81,11 +85,11 @@ class PlgProjectsInfo extends \Hubzero\Plugin\Plugin
 
         // Are we returning HTML?
         if ($returnhtml) {
-            $fields = Components\Projects\Models\Orm\Description\Field::all()
+            $fields = \Components\Projects\Models\Orm\Description\Field::all()
                 ->order('ordering', 'ASC')
                 ->rows();
 
-            $projectDescription = Components\Projects\Models\Orm\Description::all()
+            $projectDescription = \Components\Projects\Models\Orm\Description::all()
                 ->where('project_id', '=', $model->get('id'))
                 ->rows();
 
@@ -93,7 +97,7 @@ class PlgProjectsInfo extends \Hubzero\Plugin\Plugin
             foreach ($fields as $field) {
                 foreach ($projectDescription as $description) {
                     if ($description->description_key == $field->name) {
-                        $f = new stdClass();
+                        $f = new \stdClass();
                         $f->label = $field->label;
                         $f->value = $description->description_value;
                         array_push($info, $f);
@@ -126,11 +130,11 @@ class PlgProjectsInfo extends \Hubzero\Plugin\Plugin
             return;
         }
 
-        $fields = Components\Projects\Models\Orm\Description\Field::all()
+        $fields = \Components\Projects\Models\Orm\Description\Field::all()
             ->order('ordering', 'ASC')
             ->rows();
 
-        $projectDescription = Components\Projects\Models\Orm\Description::all()
+        $projectDescription = \Components\Projects\Models\Orm\Description::all()
             ->where('project_id', '=', $model->get('id'))
             ->rows();
 
@@ -138,7 +142,7 @@ class PlgProjectsInfo extends \Hubzero\Plugin\Plugin
         foreach ($fields as $field) {
             foreach ($projectDescription as $description) {
                 if ($description->description_key == $field->name) {
-                    $f = new stdClass();
+                    $f = new \stdClass();
                     $f->label = $field->label;
                     $f->value = $description->description_value;
                     array_push($info, $f);

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Tags plugin class for events
  */
-class plgTagsEvents extends \Hubzero\Plugin\Plugin
+namespace Plugins\Tags\Events;
+
+use Hubzero\Plugin\Plugin;
+
+class Events extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Tags plugin class for members
  */
-class plgTagsMembers extends \Hubzero\Plugin\Plugin
+namespace Plugins\Tags\Members;
+
+use Hubzero\Plugin\Plugin;
+
+class Members extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

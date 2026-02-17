@@ -9,7 +9,11 @@
 /**
  * Referrer Policy Header Plugin
  */
-class plgSystemReferrerpolicy extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Referrerpolicy;
+
+use Hubzero\Plugin\Plugin;
+
+class Referrerpolicy extends Plugin
 {
     /**
      * Hook for after app initialization

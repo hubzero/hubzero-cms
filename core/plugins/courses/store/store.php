@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Courses\Store;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -7,8 +11,6 @@
  */
 
 use Hubzero\Utility\Date;
-use Hubzero\Plugin\Plugin;
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -17,7 +19,7 @@ include_once Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse
 /**
  * Courses Plugin class for course store
  */
-class PlgCoursesStore extends Plugin
+class Store extends Plugin
 {
     /**
      * Constructor
@@ -103,7 +105,7 @@ class PlgCoursesStore extends Plugin
             // Get course by pID returned with $course->add() above
             try {
                 $product = $warehouse->getCourse($offering->params('store_product_id', 0));
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 echo 'ERROR: ' . $e->getMessage();
             }
         }
@@ -163,7 +165,7 @@ class PlgCoursesStore extends Plugin
 
                     $model->set('params', $params->toString());
                     $model->store();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $this->setError('ERROR: ' . $e->getMessage());
                 }
             } else {
@@ -181,7 +183,7 @@ class PlgCoursesStore extends Plugin
                         $product->setActiveStatus(1);
                     }
                     $product->save();
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $this->setError('ERROR: ' . $e->getMessage());
                 }
             }
@@ -304,7 +306,7 @@ class PlgCoursesStore extends Plugin
                 $coupon->setAction('discount', '100%');
                 // Add coupon
                 $coupon->add();
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 echo 'ERROR: ' . $e->getMessage();
             }
             return;
@@ -326,7 +328,7 @@ class PlgCoursesStore extends Plugin
         $warehouse = new \Components\Storefront\Models\Warehouse();
         try {
             $warehouse->deleteCoupon($model->get('code'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo 'ERROR: ' . $e->getMessage();
         }
         return;

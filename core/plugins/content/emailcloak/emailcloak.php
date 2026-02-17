@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Emailcloak;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die;
  * Email cloack plugin class.
  *
  */
-class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
+class Emailcloak extends Plugin
 {
     /**
      * Plugin that cloaks all emails in content from spambots via Javascript.
@@ -91,13 +95,13 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
          * Check for presence of {emailcloak=off} which is explicits disables this
          * bot for the item.
          */
-        if (Hubzero\Utility\Str::contains($text, '{emailcloak=off}') !== false) {
+        if (\Hubzero\Utility\Str::contains($text, '{emailcloak=off}') !== false) {
             $text = str_ireplace('{emailcloak=off}', '', $text);
             return true;
         }
 
         // Simple performance check to determine whether bot should process further.
-        if (Hubzero\Utility\Str::contains($text, '@') === false) {
+        if (\Hubzero\Utility\Str::contains($text, '@') === false) {
             return true;
         }
 
@@ -569,8 +573,8 @@ class plgContentEmailcloak extends \Hubzero\Plugin\Plugin
      */
     public function cloak($mail, $mailto = true, $text = '', $email = true)
     {
-        $obfuscatedMail = Hubzero\Utility\Str::obfuscate($mail);
-        $obfuscatedText = Hubzero\Utility\Str::obfuscate($text ? $text : $mail);
+        $obfuscatedMail = \Hubzero\Utility\Str::obfuscate($mail);
+        $obfuscatedText = \Hubzero\Utility\Str::obfuscate($text ? $text : $mail);
         return '<a href="mailto:' . $obfuscatedMail . '">' . $obfuscatedText . '</a>';
     }
 }

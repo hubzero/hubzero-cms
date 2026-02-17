@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Content\Pagebreak;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -24,7 +28,7 @@ defined('_HZEXEC_') or die;
  * <code><hr class="system-pagebreak" alt="The first page" title="The page title" /></code>
  *
  */
-class plgContentPagebreak extends \Hubzero\Plugin\Plugin
+class Pagebreak extends Plugin
 {
     /**
      * Prepares page?
@@ -63,7 +67,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
         }
 
         // Simple performance check to determine whether bot should process further.
-        if (Hubzero\Utility\Str::contains($row->text, 'class="system-pagebreak') === false) {
+        if (\Hubzero\Utility\Str::contains($row->text, 'class="system-pagebreak') === false) {
             return true;
         }
 
@@ -137,7 +141,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
                 }
 
                 // traditional mos page navigation
-                $pageNav = new Hubzero\Pagination\Paginator($n, $page, 1);
+                $pageNav = new \Hubzero\Pagination\Paginator($n, $page, 1);
 
                 // Page counter.
                 $row->text .= '<div class="pagenavcounter">';
@@ -226,7 +230,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
 
         // TOC first Page link.
         $class = ($limitstart === 0 && $showall === 0) ? 'toclink active' : 'toclink';
-        $articleRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+        $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $row->slug,
             $row->catid,
             $row->language
@@ -293,7 +297,7 @@ class plgContentPagebreak extends \Hubzero\Plugin\Plugin
             $pnSpace = ' ';
         }
 
-        $articleRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+        $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $row->slug,
             $row->catid,
             $row->language

@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * IPstack plugin for geocode
  */
-class plgGeocodeIpstack extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Ipstack;
+
+use Hubzero\Plugin\Plugin;
+
+class Ipstack extends Plugin
 {
     /**
      * Return a geocode provider

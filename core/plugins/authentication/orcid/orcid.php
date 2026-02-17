@@ -6,10 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Plugins\Authentication\Orcid;
 
-class plgAuthenticationOrcid extends \Hubzero\Plugin\OauthClient
+use Hubzero\Plugin\Plugin;
+
+class Orcid extends \Hubzero\Plugin\OauthClient
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

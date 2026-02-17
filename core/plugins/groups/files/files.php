@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Groups Plugin class for group members
  */
-class plgGroupsFiles extends \Hubzero\Plugin\Plugin
+namespace Plugins\Groups\Files;
+
+use Hubzero\Plugin\Plugin;
+
+class Files extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

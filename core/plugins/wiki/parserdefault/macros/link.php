@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * A wiki macro for embedding links
  */
-class LinkMacro extends WikiMacro
+class Link extends WikiMacro
 {
     /**
      * Allow macro in partial parsing?

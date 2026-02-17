@@ -9,7 +9,11 @@
 /**
  * Wiki plugin class for loading the default parser
  */
-class plgWikiParserdefault extends \Hubzero\Plugin\Plugin
+namespace Plugins\Wiki\Parserdefault;
+
+use Hubzero\Plugin\Plugin;
+
+class Parserdefault extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

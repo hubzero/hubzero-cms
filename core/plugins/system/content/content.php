@@ -9,7 +9,11 @@
 /**
  * System plugin for content events
  */
-class plgSystemContent extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Content;
+
+use Hubzero\Plugin\Plugin;
+
+class Content extends Plugin
 {
     /**
      * Hook for after parsing route

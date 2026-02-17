@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * PageDown Editor Plugin
  */
-class plgEditorPageDown extends \Hubzero\Plugin\Plugin
+namespace Plugins\Editors\Pagedown;
+
+use Hubzero\Plugin\Plugin;
+
+class Pagedown extends Plugin
 {
     public const BUTTON_BAR_ID = 'wmd-button-bar';
     public const INPUT_ID = 'wmd-input';

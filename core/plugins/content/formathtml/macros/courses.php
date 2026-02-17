@@ -10,8 +10,6 @@ namespace Plugins\Content\Formathtml\Macros;
 
 use Plugins\Content\Formathtml\Macro;
 
-require_once \Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
-
 /**
  * Wiki macro class for displaying hello world
  */

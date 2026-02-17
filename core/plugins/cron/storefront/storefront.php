@@ -9,7 +9,11 @@
 /**
  * Cron plugin for forum
  */
-class plgCronStorefront extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Storefront;
+
+use Hubzero\Plugin\Plugin;
+
+class Storefront extends Plugin
 {
     /**
      * Return a list of events
@@ -20,7 +24,7 @@ class plgCronStorefront extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(

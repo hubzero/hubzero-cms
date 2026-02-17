@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class for creating columns
  */
-class ColumnMacro extends WikiMacro
+class Column extends WikiMacro
 {
     /**
      * Number of columns to dipslay

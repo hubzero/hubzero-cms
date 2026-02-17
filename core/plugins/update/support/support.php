@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * Update plugin for support tickets
  */
-class plgUpdateSupport extends \Hubzero\Plugin\Plugin
+namespace Plugins\Update\Support;
+
+use Hubzero\Plugin\Plugin;
+
+class Support extends Plugin
 {
     /**
      * Close tickets in a specified state

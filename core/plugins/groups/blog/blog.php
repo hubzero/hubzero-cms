@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Groups Plugin class for blog entries
  */
-class plgGroupsBlog extends \Hubzero\Plugin\Plugin
+namespace Plugins\Groups\Blog;
+
+use Hubzero\Plugin\Plugin;
+
+class Blog extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -99,7 +100,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
         include_once Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
-        $this->model = new Components\Blog\Models\Archive('group', $group->get('gidNumber'));
+        $this->model = new \Components\Blog\Models\Archive('group', $group->get('gidNumber'));
 
         // are we returning html
         if ($return == 'html') {
@@ -153,7 +154,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
             $this->database   = App::get('db');
 
             //get the plugins params
-            $this->params = Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->_name);
+            $this->params = \Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->_name);
 
             if ($authorized == 'manager' || $authorized == 'admin') {
                 $this->params->set('access-edit-comment', true);
@@ -240,7 +241,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
         // Import needed libraries
         include_once Component::path('com_blog') . DS . 'models' . DS . 'archive.php';
 
-        $entries = Components\Blog\Models\Entry::all()
+        $entries = \Components\Blog\Models\Entry::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $group->get('gidNumber'))
             ->rows();
@@ -454,13 +455,13 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
         // Start outputing results if any found
         if ($rows->count() > 0) {
             foreach ($rows as $row) {
-                $item = new Hubzero\Document\Type\Feed\Item();
+                $item = new \Hubzero\Document\Type\Feed\Item();
 
                 // Strip html from feed item description text
                 $item->description = $row->content;
-                $item->description = Hubzero\Utility\Sanitize::stripAll(strip_tags(html_entity_decode($item->description)));
+                $item->description = \Hubzero\Utility\Sanitize::stripAll(strip_tags(html_entity_decode($item->description)));
                 if ($this->params->get('feed_entries') == 'partial') {
-                    $item->description = Hubzero\Utility\Str::truncate($item->description, 300);
+                    $item->description = \Hubzero\Utility\Str::truncate($item->description, 300);
                 }
                 $item->description = '<![CDATA[' . $item->description . ']]>';
 
@@ -697,7 +698,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
         $entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 
         // Instantiate model
-        $row = Components\Blog\Models\Entry::oneOrNew(isset($entry['id']) ? (int) $entry['id'] : 0);
+        $row = \Components\Blog\Models\Entry::oneOrNew(isset($entry['id']) ? (int) $entry['id'] : 0);
 
         if (!$row->isNew() && $row->get('scope_id') != $this->group->get('gidNumber')) {
             App::abort(403, Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'));
@@ -727,7 +728,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
         }
 
         if ($row->isNew()) {
-            $item = Components\Blog\Models\Entry::oneByScope(
+            $item = \Components\Blog\Models\Entry::oneByScope(
                 $alias,
                 $this->model->get('scope'),
                 $this->model->get('scope_id')
@@ -808,7 +809,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
         $confirmdel = Request::getString('confirmdel', '');
 
         // Initiate a blog entry object
-        $entry = Components\Blog\Models\Entry::oneOrFail($id);
+        $entry = \Components\Blog\Models\Entry::oneOrFail($id);
 
         // The entry must belong to this group
         if ($entry->get('scope_id') != $this->group->get('gidNumber')) {
@@ -913,7 +914,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
         // Instantiate a new comment object and pass it the data
         $cid = isset($data['id']) ? (int) $data['id'] : 0;
-        $comment = Components\Blog\Models\Comment::oneOrNew($cid);
+        $comment = \Components\Blog\Models\Comment::oneOrNew($cid);
 
         if (
             !$comment->isNew()
@@ -926,7 +927,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
         $__isNew = $comment->isNew();
         if ($__isNew) {
             // A new comment goes on an entry of this group's blog
-            $__entry = Components\Blog\Models\Entry::oneOrNew(isset($data['entry_id']) ? (int) $data['entry_id'] : 0);
+            $__entry = \Components\Blog\Models\Entry::oneOrNew(isset($data['entry_id']) ? (int) $data['entry_id'] : 0);
             if (
                 !$__entry->get('id')
                 || $__entry->get('scope') != 'group'
@@ -951,7 +952,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
         }
 
         // Record the activity
-        $entry = Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+        $entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
 
         $recipients = array(['group', $this->group->get('gidNumber')]);
 
@@ -1021,9 +1022,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
         }
 
         // Initiate a blog comment object
-        $comment = Components\Blog\Models\Comment::oneOrFail($id);
+        $comment = \Components\Blog\Models\Comment::oneOrFail($id);
 
-        $targetEntry = Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+        $targetEntry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
         if (
             $targetEntry->get('scope_id') != $this->group->get('gidNumber')
             || ($comment->get('created_by') != User::get('id')
@@ -1051,7 +1052,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
             $recipients[] = ['user', $recipient];
         }
 
-        $entry = Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
+        $entry = \Components\Blog\Models\Entry::oneOrFail($comment->get('entry_id'));
 
         Event::trigger('system.logActivity', [
             'activity' => [

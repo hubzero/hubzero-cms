@@ -6,6 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Whatsnew\Content;
+
+use Hubzero\Plugin\Plugin;
+
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -13,7 +17,7 @@ defined('_HZEXEC_') or die();
 /**
  * What's New Plugin class for com_content articles
  */
-class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
+class Content extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

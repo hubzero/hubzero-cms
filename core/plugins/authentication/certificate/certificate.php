@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Authentication\Certificate;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * Auth plugin for certificate based authentication
  */
-class plgAuthenticationCertificate extends \Hubzero\Plugin\Plugin
+class Certificate extends Plugin
 {
     /**
      * Affects constructor behavior.

@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Usage plugin class for domain class
  */
-class plgUsageDomainclass extends \Hubzero\Plugin\Plugin
+namespace Plugins\Usage\Domainclass;
+
+use Hubzero\Plugin\Plugin;
+
+class Domainclass extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

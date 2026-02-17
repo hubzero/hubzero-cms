@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +9,11 @@
 /**
  * Publications Plugin class for adding Dublin Core metadata to the document
  */
-class plgPublicationsDublincore extends \Hubzero\Plugin\Plugin
+namespace Plugins\Publications\Dublincore;
+
+use Hubzero\Plugin\Plugin;
+
+class Dublincore extends Plugin
 {
     /**
      * Return data on a resource view (this will be some form of HTML)

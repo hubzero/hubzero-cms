@@ -1,18 +1,16 @@
 <?php
 
+namespace Plugins\Authentication\Twitter;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Hubzero\Plugin\Plugin;
-
-
-// No direct access
-defined('_HZEXEC_') or die();
-
-class plgAuthenticationTwitter extends \Hubzero\Plugin\OauthClient
+class Twitter extends \Hubzero\Plugin\OauthClient
 {
     /**
      * Affects constructor behavior.

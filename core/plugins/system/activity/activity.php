@@ -9,7 +9,11 @@
 /**
  * System plugin for activity
  */
-class plgSystemActivity extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Activity;
+
+use Hubzero\Plugin\Plugin;
+
+class Activity extends Plugin
 {
     /**
      * Log an activity
@@ -28,6 +32,6 @@ class plgSystemActivity extends \Hubzero\Plugin\Plugin
             return;
         }
 
-        Hubzero\Activity\Log::log($activity, $recipients);
+        \Hubzero\Activity\Log::log($activity, $recipients);
     }
 }

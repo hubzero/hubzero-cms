@@ -6,12 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\System\Jquery;
+
+use Hubzero\Plugin\Plugin;
+
 // no direct access
 
 /**
  * System plugin for adding jQuery to the document
  */
-class plgSystemJquery extends \Hubzero\Plugin\Plugin
+class Jquery extends Plugin
 {
     /**
      * Hook for after routing application

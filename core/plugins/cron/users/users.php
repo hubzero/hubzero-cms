@@ -9,7 +9,11 @@
 /**
  * Cron plugin for user events
  */
-class plgCronUsers extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Users;
+
+use Hubzero\Plugin\Plugin;
+
+class Users extends Plugin
 {
     /**
      * Return a list of events
@@ -20,7 +24,7 @@ class plgCronUsers extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = $this->_name;
         $obj->events = array(
             array(

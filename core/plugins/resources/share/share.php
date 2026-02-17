@@ -12,7 +12,11 @@ defined('_HZEXEC_') or die();
 /**
  * Resources Plugin class for showing social sharing options
  */
-class plgResourcesShare extends \Hubzero\Plugin\Plugin
+namespace Plugins\Resources\Share;
+
+use Hubzero\Plugin\Plugin;
+
+class Share extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

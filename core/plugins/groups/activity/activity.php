@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Activity;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +16,7 @@ defined('_HZEXEC_') or die();
 /**
  * Group plugin class for activity
  */
-class plgGroupsActivity extends \Hubzero\Plugin\Plugin
+class Activity extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -146,7 +150,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
         }
 
         // Get the number of unread messages
-        $unread = Hubzero\Activity\Recipient::all()
+        $unread = \Hubzero\Activity\Recipient::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $group->get('gidNumber'))
             ->whereEquals('state', 1)
@@ -177,10 +181,10 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
             $filters['filter'] = '';
         }
 
-        $recipient = Hubzero\Activity\Recipient::all();
+        $recipient = \Hubzero\Activity\Recipient::all();
 
         $r = $recipient->getTableName();
-        $l = Hubzero\Activity\Log::blank()->getTableName();
+        $l = \Hubzero\Activity\Log::blank()->getTableName();
 
         $scopes = array('group');
         if (in_array(User::get('id'), $this->group->get('managers'))) {
@@ -193,7 +197,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
             ->join($l, $l . '.id', $r . '.log_id')
             ->whereIn($r . '.scope', $scopes)
             ->whereEquals($r . '.scope_id', $this->group->get('gidNumber'))
-            ->whereEquals($r . '.state', Hubzero\Activity\Recipient::STATE_PUBLISHED);
+            ->whereEquals($r . '.state', \Hubzero\Activity\Recipient::STATE_PUBLISHED);
 
         if ($filters['filter'] == 'starred') {
             $recipient->whereEquals($r . '.starred', 1);
@@ -234,7 +238,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
      * Is this a post (a comment or a reply) written in this feed by the
      * current user? Only those can be edited here.
      *
-     * @param   object   $log  Hubzero\Activity\Log
+     * @param   object   $log  \Hubzero\Activity\Log
      * @return  boolean
      */
     public function isOwnPost($log)
@@ -255,7 +259,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
      * the id of the user they are about, so authorship alone doesn't make
      * an entry theirs to hide.
      *
-     * @param   object   $log  Hubzero\Activity\Log
+     * @param   object   $log  \Hubzero\Activity\Log
      * @return  boolean
      */
     public function isOwnContent($log)
@@ -276,7 +280,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
     /**
      * Did the current (logged-in) user create this log entry?
      *
-     * @param   object   $log  Hubzero\Activity\Log
+     * @param   object   $log  \Hubzero\Activity\Log
      * @return  boolean
      */
     protected function isAuthor($log)
@@ -304,7 +308,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
      */
     protected function groupAudience($logId)
     {
-        $scopes = Hubzero\Activity\Recipient::all()
+        $scopes = \Hubzero\Activity\Recipient::all()
             ->select('scope')
             ->whereEquals('log_id', (int) $logId)
             ->whereIn('scope', array('group', 'group_managers'))
@@ -327,7 +331,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
      */
     protected function groupEntry($id)
     {
-        $entry = Hubzero\Activity\Recipient::oneOrFail($id);
+        $entry = \Hubzero\Activity\Recipient::oneOrFail($id);
 
         if (!in_array($entry->get('scope'), array('group', 'group_managers')) || $entry->get('scope_id') != $this->group->get('gidNumber')) {
             App::abort(403, Lang::txt('You are not authorized to perform this action.'));
@@ -383,7 +387,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
         $success = Lang::txt('PLG_GROUPS_ACTIVITY_RECORD_REMOVED');
 
         if ($no_html) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->success = true;
             $response->message = $success;
             if ($err = $this->getError()) {
@@ -449,7 +453,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
             : Lang::txt('PLG_GROUPS_ACTIVITY_RECORD_UNSTARRED');
 
         if ($no_html) {
-            $response = new stdClass();
+            $response = new \stdClass();
             $response->success = true;
             $response->message = $success;
             $response->starred = ($action == 'star');
@@ -495,7 +499,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
 
         // Instantiate a new object and bind data
         $lid = isset($comment['id']) ? (int) $comment['id'] : 0;
-        $row = Hubzero\Activity\Log::oneOrNew($lid);
+        $row = \Hubzero\Activity\Log::oneOrNew($lid);
 
         // An id that matches no entry makes a new post, checked as one
         $isEdit = !$row->isNew();
@@ -533,7 +537,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
             // A reply inherits the scope of the entry it answers, which has to
             // be one this group received
             if ($parent) {
-                $parentLog = Hubzero\Activity\Log::oneOrNew($parent);
+                $parentLog = \Hubzero\Activity\Log::oneOrNew($parent);
 
                 if (!$parentLog->get('id') || !$this->receivedByGroup($parent)) {
                     App::abort(404, Lang::txt('You are not authorized to perform this action.'));
@@ -558,7 +562,7 @@ class plgGroupsActivity extends \Hubzero\Plugin\Plugin
                 $this->setError(\Lang::txt('PLG_GROUPS_ACTIVITY_ERROR_UPLOADING_FILE'));
             }
 
-            $file = new Plugins\Groups\Activity\Models\Attachment();
+            $file = new \Plugins\Groups\Activity\Models\Attachment();
             $file->setUploadDir('/site/groups/' . $this->group->get('gidNumber') . '/uploads');
 
             if (!$file->upload($upload['name'], $upload['tmp_name'], $upload['size'])) {

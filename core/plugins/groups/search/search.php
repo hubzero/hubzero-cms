@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Groups\Search;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Groups Plugin class for usage
  *
  */
-class plgGroupsSearch extends \Hubzero\Plugin\Plugin
+class Search extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -37,7 +41,7 @@ class plgGroupsSearch extends \Hubzero\Plugin\Plugin
 
         include_once Component::path('com_groups') . '/models/orm/group.php';
 
-        $ormGroup = Components\Groups\Models\Orm\Group::one($groupId);
+        $ormGroup = \Components\Groups\Models\Orm\Group::one($groupId);
         $attributes = $ormGroup->getAttributes();
 
         if ($ormGroup) {

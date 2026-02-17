@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Solr;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -24,7 +28,7 @@ use Hubzero\Search\Index;
 
 /**
  */
-class plgSearchSolr extends \Hubzero\Plugin\Plugin
+class Solr extends Plugin
 {
     /**
      * Table exists or not
@@ -62,7 +66,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
             return;
         }
 
-        $modelClass = new ReflectionClass($model);
+        $modelClass = new \ReflectionClass($model);
         $modelNamespace = explode('\\', $modelClass->getNamespaceName());
         $componentName = strtolower($modelNamespace[1]);
         $searchComponent = SearchComponent::all()->whereEquals('name', $componentName)->row();
@@ -71,7 +75,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
             if ($indexResultModel) {
                 $config = Component::params('com_search');
                 $commitWithin = $config->get('solr_commit');
-                $index = new Hubzero\Search\Index($config);
+                $index = new \Hubzero\Search\Index($config);
                 $method = '';
                 $modelIndex = $indexResultModel->searchResult();
                 $blackListIds = Blacklist::getDocIdsByScope($indexResultModel::searchNamespace());
@@ -110,14 +114,14 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
         // @TODO: Implement mechanism to send to Solr index
         // This Event is called in the Relational save() method.
         $modelName = '';
-        if ($modelName = Components\Search\Helpers\DiscoveryHelper::isSearchable($model)) {
+        if ($modelName = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model)) {
             $extensionName = strtolower(explode('\\', $modelName)[1]);
             $searchComponent = SearchComponent::all()->whereEquals('name', $extensionName)->row();
             if ($searchComponent->get('state') == 1) {
                 $indexResultModel = $this->getSearchableModel($table, $model, $searchComponent);
                 if ($indexResultModel) {
                     $config = Component::params('com_search');
-                    $index = new Hubzero\Search\Index($config);
+                    $index = new \Hubzero\Search\Index($config);
                     $modelIndexId = $indexResultModel->searchId();
                     $index->delete($modelIndexId);
                     $method = 'delete';
@@ -136,7 +140,7 @@ class plgSearchSolr extends \Hubzero\Plugin\Plugin
      */
     private function getSearchableModel($table, $model, $searchComponent)
     {
-        $searchModel = Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
+        $searchModel = \Components\Search\Helpers\DiscoveryHelper::isSearchable($model);
         $indexResultModel = $model;
         if ($searchModel === false) {
             $searchModel = $searchComponent->getSearchableModel();

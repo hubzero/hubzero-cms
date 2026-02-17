@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * BingMaps plugin for geocode
  *
  * The BingMapsProvider is able to geocode and reverse geocode
  * street addresses. A valid api key is required.
  */
-class plgGeocodeBingmaps extends \Hubzero\Plugin\Plugin
+namespace Plugins\Geocode\Bingmaps;
+
+use Hubzero\Plugin\Plugin;
+
+class Bingmaps extends Plugin
 {
     /**
      * Return a geocode provider

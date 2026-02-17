@@ -6,12 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Antispam\Babajispam;
+
+use Hubzero\Plugin\Plugin;
+
 
 
 /**
  * Babajispam Anti-spam Plugin
  */
-class plgAntispamBabajispam extends \Hubzero\Plugin\Plugin
+class Babajispam extends Plugin
 {
     /**
      * Instantiate and return a spam detector.

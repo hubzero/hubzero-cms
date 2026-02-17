@@ -6,13 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Group Announcements
  */
-class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
+namespace Plugins\Groups\Announcements;
+
+use Hubzero\Plugin\Plugin;
+
+class Announcements extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
@@ -34,7 +35,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             $extension = 'plg_' . $this->_type . '_' . $this->_name;
         }
 
-        $group = Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+        $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
         if ($group && $group->isSuperGroup()) {
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
@@ -73,7 +74,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
     public function onBeforeGroup($group, $authorized)
     {
         // Get plugin access
-        $access = Hubzero\User\Group\Helper::getPluginAccess($group, 'announcements');
+        $access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'announcements');
 
         // if set to nobody make sure cant access
         // check if guest and force login if plugin access is registered or members
@@ -87,10 +88,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Find announcements
-        $rows = Hubzero\Item\Announcement::all()
+        $rows = \Hubzero\Item\Announcement::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $group->get('gidNumber'))
-            ->whereEquals('state', Hubzero\Item\Announcement::STATE_PUBLISHED)
+            ->whereEquals('state', \Hubzero\Item\Announcement::STATE_PUBLISHED)
             ->whereEquals('sticky', 1)
             ->where('publish_up', 'IS', null, 'and', 1)
                 ->orWhere('publish_up', '<=', Date::toSql(), 1)
@@ -216,7 +217,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
         if (!isset($this->total)) {
             // Find announcements
-            $model = Hubzero\Item\Announcement::all()
+            $model = \Hubzero\Item\Announcement::all()
                 ->whereEquals('scope', 'group')
                 ->whereEquals('scope_id', $group->get('gidNumber'))
                 ->whereEquals('state', 1);
@@ -257,10 +258,10 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         );
 
         // Find announcements
-        $model = Hubzero\Item\Announcement::all()
+        $model = \Hubzero\Item\Announcement::all()
             ->whereEquals('scope', 'group')
             ->whereEquals('scope_id', $this->group->get('gidNumber'))
-            ->whereEquals('state', Hubzero\Item\Announcement::STATE_PUBLISHED);
+            ->whereEquals('state', \Hubzero\Item\Announcement::STATE_PUBLISHED);
 
         if ($filters['search']) {
             $model->whereLike('content', $filters['search']);
@@ -308,7 +309,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             $id = Request::getInt('id', 0);
 
             // Create new announcement Object
-            $model = Hubzero\Item\Announcement::oneOrNew($id);
+            $model = \Hubzero\Item\Announcement::oneOrNew($id);
         }
 
         // Make sure the group is published
@@ -389,7 +390,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             // and created_by all ride in through the set() below, so this was a
             // way to rewrite any group's announcement and re-scope it into your
             // own group.
-            $__existing = Hubzero\Item\Announcement::oneOrNew($__aid);
+            $__existing = \Hubzero\Item\Announcement::oneOrNew($__aid);
 
             if (
                 !$__existing->get('id')
@@ -420,7 +421,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Bind data
-        $model = Hubzero\Item\Announcement::oneOrNew($__aid)->set($fields);
+        $model = \Hubzero\Item\Announcement::oneOrNew($__aid)->set($fields);
 
         if (
             $model->get('publish_down')
@@ -460,7 +461,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
                 'action'      => ($fields['id'] ? 'updated' : 'created'),
                 'scope'       => 'announcement',
                 'scope_id'    => $model->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70) . '</a>'),
+                'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_' . ($fields['id'] ? 'UPDATED' : 'CREATED'), '<a href="' . Route::url($url) . '">' . \Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70) . '</a>'),
                 'details'     => array(
                     'url'   => Route::url($url),
                     'id'    => $this->group->get('gidNumber'),
@@ -501,7 +502,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         // Incoming
         $id = Request::getInt('id', 0);
 
-        $model = Hubzero\Item\Announcement::oneOrFail($id);
+        $model = \Hubzero\Item\Announcement::oneOrFail($id);
 
         // It has to be this group's announcement. oneOrFail() resolves any row on
         // the hub, and the ownership test below cannot refuse anything: it is
@@ -524,7 +525,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         Request::checkToken();
 
         // Set to deleted state
-        $model->set('state', Hubzero\Item\Announcement::STATE_DELETED);
+        $model->set('state', \Hubzero\Item\Announcement::STATE_DELETED);
 
         // Attempt to delete announcement
         if (!$model->save()) {
@@ -546,7 +547,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
                 'action'      => 'deleted',
                 'scope'       => 'announcement',
                 'scope_id'    => $model->get('id'),
-                'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_DELETED', '<a href="' . Route::url($url) . '">' . Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70) . '</a>'),
+                'description' => Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ACTIVITY_DELETED', '<a href="' . Route::url($url) . '">' . \Hubzero\Utility\Str::truncate(strip_tags($model->get('content')), 70) . '</a>'),
                 'details'     => array(
                     'url'   => Route::url($url),
                     'id'    => $this->group->get('gidNumber'),
@@ -605,7 +606,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         || $lang->load($extension, PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'announcements', null, false, true);
 
         // Create view object
-        $eview = new Hubzero\Mail\View(array(
+        $eview = new \Hubzero\Mail\View(array(
             'base_path' => __DIR__,
             'name'      => 'email',
             'layout'    => 'announcement_plain'
@@ -632,7 +633,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
 
         foreach ($groupMembers as $email => $name) {
             // Create message object
-            $message = new Hubzero\Mail\Message();
+            $message = new \Hubzero\Mail\Message();
 
             // Set message details and send
             $message->setSubject($subject)
@@ -668,11 +669,11 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             'search'   => strtolower(Request::getString('q', '')),
             'scope'    => 'group',
             'scope_id' => $group->get('gidNumber'),
-            'state'    => Hubzero\Item\Announcement::STATE_PUBLISHED
+            'state'    => \Hubzero\Item\Announcement::STATE_PUBLISHED
         );
 
         // Find announcements
-        $model = Hubzero\Item\Announcement::all()
+        $model = \Hubzero\Item\Announcement::all()
             ->whereEquals('scope', $filters['scope'])
             ->whereEquals('scope_id', $filters['scope_id'])
             ->whereEquals('state', $filters['state']);
@@ -714,7 +715,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         // Only admins and group managers. (This was ||, which demanded both, so a
         // group manager who was not also a super admin was always refused.)
         if (!User::authorise('core.admin') && !in_array(User::get('id'), (array) $group->get('managers'))) {
-            throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
+            throw new \Exception(Lang::txt('You are not authorized to perform this action.'), 403);
         }
 
         // Incoming data
@@ -726,7 +727,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             // saved empty and unpublished, and could not be updated or deleted
             // afterwards (save() then failed "content cannot be empty")
             'content'      => trim(Request::getString('content', '', 'post')),
-            'state'        => Request::getInt('state', Hubzero\Item\Announcement::STATE_PUBLISHED, 'post'),
+            'state'        => Request::getInt('state', \Hubzero\Item\Announcement::STATE_PUBLISHED, 'post'),
             'sticky'       => Request::getInt('sticky', 0, 'post'),
             'priority'     => Request::getInt('priority', 0, 'post'),
             'publish_up'   => Request::getString('publish_up', '', 'post'),
@@ -744,7 +745,7 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Bind data
-        $model = Hubzero\Item\Announcement::blank()->set($fields);
+        $model = \Hubzero\Item\Announcement::blank()->set($fields);
 
         // Validate
         if (
@@ -752,12 +753,12 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             && $model->get('publish_down') != '0000-00-00 00:00:00'
             && $model->get('publish_up') > $model->get('publish_down')
         ) {
-            throw new Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
+            throw new \Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
         }
 
         // Save
         if (!$model->save()) {
-            throw new Exception($model->getError(), 500);
+            throw new \Exception($model->getError(), 500);
         }
 
         return $model->toObject();
@@ -778,12 +779,12 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         }
 
         // Load the record
-        $model = Hubzero\Item\Announcement::oneOrFail($id);
+        $model = \Hubzero\Item\Announcement::oneOrFail($id);
 
         // Was it actually found? The id names any announcement on the hub,
         // so it also has to be this group's.
         if (!$model->get('id') || !$model->belongsToObject('group', $group->get('gidNumber'))) {
-            throw new Exception(Lang::txt('Announcement not found.'), 404);
+            throw new \Exception(Lang::txt('Announcement not found.'), 404);
         }
 
         return $model->toObject();
@@ -806,14 +807,14 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         // Only admins and group managers. (This was ||, which demanded both, so a
         // group manager who was not also a super admin was always refused.)
         if (!User::authorise('core.admin') && !in_array(User::get('id'), (array) $group->get('managers'))) {
-            throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
+            throw new \Exception(Lang::txt('You are not authorized to perform this action.'), 403);
         }
 
-        $model = Hubzero\Item\Announcement::oneOrFail($id);
+        $model = \Hubzero\Item\Announcement::oneOrFail($id);
 
         // Managing this group's announcements is not managing another group's.
         if (!$model->belongsToObject('group', $group->get('gidNumber'))) {
-            throw new Exception(Lang::txt('Announcement not found.'), 404);
+            throw new \Exception(Lang::txt('Announcement not found.'), 404);
         }
 
         // Incoming data
@@ -851,12 +852,12 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
             && $model->get('publish_down') != '0000-00-00 00:00:00'
             && $model->get('publish_up') > $model->get('publish_down')
         ) {
-            throw new Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
+            throw new \Exception(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_INVALID_PUBLISH_DATES'), 422);
         }
 
         // Save
         if (!$model->save()) {
-            throw new Exception($model->getError(), 500);
+            throw new \Exception($model->getError(), 500);
         }
 
         return $model->toObject();
@@ -879,22 +880,22 @@ class plgGroupsAnnouncements extends \Hubzero\Plugin\Plugin
         // Only admins and group managers. (This was ||, which demanded both, so a
         // group manager who was not also a super admin was always refused.)
         if (!User::authorise('core.admin') && !in_array(User::get('id'), (array) $group->get('managers'))) {
-            throw new Exception(Lang::txt('You are not authorized to perform this action.'), 403);
+            throw new \Exception(Lang::txt('You are not authorized to perform this action.'), 403);
         }
 
         // Load the record
-        $model = Hubzero\Item\Announcement::oneOrFail($id);
+        $model = \Hubzero\Item\Announcement::oneOrFail($id);
 
         // Was it actually found, in this group?
         if (!$model->get('id') || !$model->belongsToObject('group', $group->get('gidNumber'))) {
-            throw new Exception(Lang::txt('Announcement not found.'), 404);
+            throw new \Exception(Lang::txt('Announcement not found.'), 404);
         }
 
         // Mark as deleted and save the change
-        $model->set('state', Hubzero\Item\Announcement::STATE_DELETED);
+        $model->set('state', \Hubzero\Item\Announcement::STATE_DELETED);
 
         if (!$model->save()) {
-            throw new Exception($model->getError(), 500);
+            throw new \Exception($model->getError(), 500);
         }
 
         return true;

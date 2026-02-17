@@ -9,7 +9,11 @@
 /**
  * System plugin checking auth factors after routing
  */
-class plgSystemAuthfactors extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Authfactors;
+
+use Hubzero\Plugin\Plugin;
+
+class Authfactors extends Plugin
 {
     /**
      * Hook for after parsing route

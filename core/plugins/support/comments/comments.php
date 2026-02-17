@@ -12,7 +12,11 @@ defined('_HZEXEC_') or die();
 /**
  * Support plugin class for comments
  */
-class plgSupportComments extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Comments;
+
+use Hubzero\Plugin\Plugin;
+
+class Comments extends Plugin
 {
     /**
      * Retrieves a row from the database

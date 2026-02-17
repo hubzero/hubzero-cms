@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Blog\Opengraph;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -14,7 +18,7 @@ defined('_HZEXEC_') or die();
  * Blog Plugin class for adding Open Graph metadata to the document
  *
  */
-class plgBlogOpengraph extends \Hubzero\Plugin\Plugin
+class Opengraph extends Plugin
 {
     /**
      * Return data on a resource view (this will be some form of HTML)
@@ -34,10 +38,10 @@ class plgBlogOpengraph extends \Hubzero\Plugin\Plugin
 
         $view = $this->view();
 
-        $title = $view->escape(Hubzero\Utility\Str::truncate(strip_tags($model->title), 40));
+        $title = $view->escape(\Hubzero\Utility\Str::truncate(strip_tags($model->title), 40));
         Document::addCustomTag('<meta property="og:title" content="' . $title . '" />');
 
-        $content = Hubzero\Utility\Str::truncate(strip_tags($model->content), 300);
+        $content = \Hubzero\Utility\Str::truncate(strip_tags($model->content), 300);
         $content = str_replace(array("\n", "\t", "\r"), ' ', $content);
         $content = trim($content);
 

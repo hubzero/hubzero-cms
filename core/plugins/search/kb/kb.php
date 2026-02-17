@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Kb;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -15,7 +19,7 @@ defined('_HZEXEC_') or die();
  */
 /**
  */
-class plgSearchKB extends \Hubzero\Plugin\Plugin
+class Kb extends Plugin
 {
     /**
      * Get the name of the area being searched

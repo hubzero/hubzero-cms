@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Resources;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -20,7 +24,7 @@ include_once __DIR__ . '/children.php';
  */
 /**
  */
-class plgSearchResources extends \Hubzero\Plugin\Plugin
+class Resources extends Plugin
 {
     /**
      * Build search query and add it to the $results

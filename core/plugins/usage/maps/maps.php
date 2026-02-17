@@ -1,5 +1,8 @@
 <?php
 
+namespace Plugins\Usage\Maps;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -10,7 +13,7 @@
 /**
  * Usage plugin class for overview
  */
-class plgUsageMaps extends \Hubzero\Plugin\Plugin
+class Maps extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

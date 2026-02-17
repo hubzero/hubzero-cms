@@ -6,13 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 // No direct access
 defined('_HZEXEC_') or die();
 
 /**
  * Wiki macro class for getting a linked title to a wiki page
  */
-class PageMacro extends WikiMacro
+class Page extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments
@@ -73,6 +76,6 @@ class PageMacro extends WikiMacro
         }
 
         // Build and return the link
-        return '<a href="' . Route::url($row->link()) . '">' . htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8') . '</a>';
+        return '<a href="' . \Route::url($row->link()) . '">' . htmlspecialchars(stripslashes((string) $row->get('title', $row->get('pagename'))), ENT_QUOTES, 'UTF-8') . '</a>';
     }
 }

@@ -1,5 +1,8 @@
 <?php
 
+namespace Plugins\Content\Antispam;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -12,7 +15,7 @@
  * Antispam Content Plugin
  *
  */
-class plgContentAntispam extends \Hubzero\Plugin\Plugin
+class Antispam extends Plugin
 {
     /**
      * Before save content method

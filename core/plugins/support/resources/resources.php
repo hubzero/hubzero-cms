@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,11 @@
 /**
  * Support plugin class for com_resources entries
  */
-class plgSupportResources extends \Hubzero\Plugin\Plugin
+namespace Plugins\Support\Resources;
+
+use Hubzero\Plugin\Plugin;
+
+class Resources extends Plugin
 {
     /**
      * Is the category one this plugin handles?

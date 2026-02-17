@@ -12,7 +12,11 @@ defined('_HZEXEC_') or die();
 /**
  * Display Watch feature on publication page
  */
-class plgPublicationsWatch extends \Hubzero\Plugin\Plugin
+namespace Plugins\Publications\Watch;
+
+use Hubzero\Plugin\Plugin;
+
+class Watch extends Plugin
 {
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.

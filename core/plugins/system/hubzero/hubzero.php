@@ -9,7 +9,11 @@
 /**
  * System plugin for hubzero
  */
-class plgSystemHubzero extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Hubzero;
+
+use Hubzero\Plugin\Plugin;
+
+class Hubzero extends Plugin
 {
     /**
      * Hook for after app initialization
@@ -28,9 +32,9 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
             $hash = App::hash(App::get('client')->name . ':tracker');
 
             $key = App::hash('');
-            $crypt = new Hubzero\Encryption\Encrypter(
-                new Hubzero\Encryption\Cipher\Simple(),
-                new Hubzero\Encryption\Key('simple', $key, $key)
+            $crypt = new \Hubzero\Encryption\Encrypter(
+                new \Hubzero\Encryption\Cipher\Simple(),
+                new \Hubzero\Encryption\Key('simple', $key, $key)
             );
 
             if ($str = Request::getString($hash, '', 'cookie', 1 | 2)) {
@@ -41,9 +45,9 @@ class plgSystemHubzero extends \Hubzero\Plugin\Plugin
                 // old tracking cookies encrypted with UA which is too short term for a tracking cookie
                 //Create the encryption key, apply extra hardening using the user agent string
                     $key = App::hash(@$_SERVER['HTTP_USER_AGENT']);
-                    $crypt = new Hubzero\Encryption\Encrypter(
-                        new Hubzero\Encryption\Cipher\Simple(),
-                        new Hubzero\Encryption\Key('simple', $key, $key)
+                    $crypt = new \Hubzero\Encryption\Encrypter(
+                        new \Hubzero\Encryption\Cipher\Simple(),
+                        new \Hubzero\Encryption\Key('simple', $key, $key)
                     );
                     $sstr = $crypt->decrypt($str);
                     $tracker = @unserialize($sstr);

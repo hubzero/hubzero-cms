@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Search\Suffixes;
+
+use Hubzero\Plugin\Plugin;
+
 
 /**
  * @package    hubzero-cms
@@ -17,7 +21,7 @@ defined('_HZEXEC_') or die();
  */
 /**
  */
-class plgSearchSuffixes extends \Hubzero\Plugin\Plugin
+class Suffixes extends Plugin
 {
     /**
      * Short description for 'onSearchExpandTerms'

@@ -1,5 +1,9 @@
 <?php
 
+namespace Plugins\Authentication\Scistarter;
+
+use Hubzero\Plugin\Plugin;
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +17,7 @@ use SciStarter\Oauth;
 
 require_once __DIR__ . '/SciStarter/Http/Curl.php';
 require_once __DIR__ . '/SciStarter/Oauth.php';
-
-class plgAuthenticationSciStarter extends \Hubzero\Plugin\OauthClient
+class Scistarter extends \Hubzero\Plugin\OauthClient
 {
     /**
      * Affects constructor behavior.

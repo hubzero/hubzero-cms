@@ -6,13 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+/**
+ * Wiki macro class for displaying a link to a recently created or updated page page.
+ */
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class for displaying a link to a recently created or updated page page.
  */
-class RecentPageMacro extends WikiMacro
+class RecentPage extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments

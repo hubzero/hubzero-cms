@@ -6,13 +6,16 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\User\Domainrestriction;
+
+use Hubzero\Plugin\Plugin;
 
 use Hubzero\Utility\Network;
 
 /**
  * User plugin for blocking registration by domains or IPs
  */
-class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
+class Domainrestriction extends Plugin
 {
     private $_tlds; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     private $_domains; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
@@ -382,20 +385,20 @@ class plgUserDomainRestriction extends Hubzero\Plugin\Plugin
             $groupchange = false;
             foreach ($assignments[$akey] as $groupid) {
                 if (!in_array($groupid, $user->groups)) {
-                    Hubzero\Access\Map::addUserToGroup($user->id, $groupid);
+                    \Hubzero\Access\Map::addUserToGroup($user->id, $groupid);
                     $groupchange = true;
                 }
             }
             foreach ($user->groups as $groupid) {
                 if (!in_array($groupid, $assignments[$akey])) {
-                    Hubzero\Access\Map::removeUserFromGroup($user->id, $groupid);
+                    \Hubzero\Access\Map::removeUserFromGroup($user->id, $groupid);
                     $groupchange = true;
                 }
             }
 
             if ($groupchange) {
-                $user->set('groups', Hubzero\Access\Access::getGroupsByUser($user->id));
-                $user->set('authlevels', Hubzero\Access\Access::getAuthorisedViewLevels($user->id));
+                $user->set('groups', \Hubzero\Access\Access::getGroupsByUser($user->id));
+                $user->set('authlevels', \Hubzero\Access\Access::getAuthorisedViewLevels($user->id));
             }
         }
         return true;

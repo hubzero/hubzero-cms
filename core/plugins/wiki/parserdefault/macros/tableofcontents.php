@@ -6,13 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+/**
+ * Wiki macro class for displaying a table of contents for a page
+ */
+namespace Plugins\Wiki\Parserdefault\Macros;
+
+use Plugins\Wiki\Parserdefault\WikiMacro;
 
 /**
  * Wiki macro class for displaying a table of contents for a page
  */
-class TableOfContentsMacro extends WikiMacro
+class TableOfContents extends WikiMacro
 {
     /**
      * Returns description of macro, use, and accepted arguments

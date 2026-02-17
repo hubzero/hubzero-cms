@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 /**
  * TinyMCE Editor Plugin
  */
-class plgEditorTinymce extends \Hubzero\Plugin\Plugin
+namespace Plugins\Editors\Tinymce;
+
+use Hubzero\Plugin\Plugin;
+
+class Tinymce extends Plugin
 {
     /**
      * Affects constructor behavior.

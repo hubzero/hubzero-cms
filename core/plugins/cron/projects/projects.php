@@ -9,7 +9,11 @@
 /**
  * Cron plugin for projects
  */
-class plgCronProjects extends \Hubzero\Plugin\Plugin
+namespace Plugins\Cron\Projects;
+
+use Hubzero\Plugin\Plugin;
+
+class Projects extends Plugin
 {
     /**
      * Return a list of events
@@ -20,7 +24,7 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
     {
         $this->loadLanguage();
 
-        $obj = new stdClass();
+        $obj = new \stdClass();
         $obj->plugin = 'projects';
 
         $obj->events = array(
@@ -53,7 +57,7 @@ class plgCronProjects extends \Hubzero\Plugin\Plugin
     public function computeStats(\Components\Cron\Models\Job $job)
     {
         $database   = App::get('db');
-        $publishing = Plugin::isEnabled('projects', 'publications') ? 1 : 0;
+        $publishing = \Plugin::isEnabled('projects', 'publications') ? 1 : 0;
 
         require_once Component::path('com_projects') . DS . 'models' . DS . 'project.php';
         require_once Component::path('com_projects') . DS . 'tables' . DS . 'stats.php';
