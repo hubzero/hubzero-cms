@@ -48,6 +48,7 @@
         "phpoffice/phpspreadsheet": "1.30.*",
         "predis/predis": "1.1.*",
         "psr/log": "^1.0 || ^2.0 || ^3.0",
+        "scrivo/highlight.php": "^9.18",
         "simplepie/simplepie": "1.7.*",
         "simshaun/recurr": "4.0.*",
         "solarium/solarium": "6.2.*",
