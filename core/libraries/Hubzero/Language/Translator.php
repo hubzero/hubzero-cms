@@ -182,8 +182,13 @@ class Translator extends Obj
             unset($contents);
         }
 
-        // Look for a language specific localise class
-        $class = str_replace('-', '_', $lang . 'Localise');
+        // Look for a language specific localise class.
+        // Supports both PSR-compliant namespaced classes (Bootstrap\X\Language\EnGBLocalise)
+        // and legacy global classes (en_GBLocalise) for backward compatibility with PATH_APP overrides.
+        $classLegacy = str_replace('-', '_', $lang . 'Localise');
+        $classCamel = implode('', array_map('ucfirst', explode('-', $lang))) . 'Localise';
+        $ns = 'Bootstrap\\' . ucfirst($client) . '\\Language\\';
+        $class = $classLegacy;
         $paths = array();
 
         // Client directories are all lowercase under PATH_APP (for now)
@@ -196,11 +201,16 @@ class Translator extends Obj
         ksort($paths);
         $path = reset($paths);
 
-        while (!class_exists($class) && $path) {
+        while (!class_exists($class) && !class_exists($ns . $classCamel) && $path) {
             if (file_exists($path)) {
                 require_once $path;
             }
             $path = next($paths);
+        }
+
+        // Prefer the PSR-compliant namespaced class if available
+        if (class_exists($ns . $classCamel)) {
+            $class = $ns . $classCamel;
         }
 
         if (class_exists($class)) {
