@@ -45,6 +45,19 @@ class ClassLoader
     protected static bool $registered = false;
 
     /**
+     * Reverse map from namespace segments to directory names where they differ.
+     *
+     * Used by plugin type resolution where directory names contain characters
+     * invalid in PHP identifiers (e.g. hyphens) or map to reserved words.
+     *
+     * @var array<string, string>
+     */
+    protected static array $pluginDirMap = [
+        'editorsxtd'     => 'editors-xtd',
+        'defaulthandler' => 'default',
+    ];
+
+    /**
      * Add a namespace prefix mapping
      *
      * @param string $prefix  Namespace prefix (with trailing backslash)
@@ -164,6 +177,11 @@ class ClassLoader
                 $type = strtolower(array_shift($parts));
                 $name = array_shift($parts);
                 $lname = strtolower($name);
+
+                // Reverse-map namespace segments to directory names where they differ
+                $type = self::$pluginDirMap[$type] ?? $type;
+                $lname = self::$pluginDirMap[$lname] ?? $lname;
+
                 $file = implode('/', $parts) . '.php';
                 if (empty($file) || $file === '.php') {
                     $file = "{$name}.php";
