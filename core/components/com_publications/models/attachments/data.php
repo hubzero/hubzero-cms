@@ -810,23 +810,15 @@ class Data extends Base
 
         mb_internal_encoding('UTF-8');
 
-        // component path for "com_dataviewer"
-        $dv_com_path = \Component::path('com_dataviewer') . DS . 'site';
-
-        require_once $dv_com_path . DS . 'dv_config.php';
-        require_once $dv_com_path . DS . 'lib' . DS . 'db.php';
-        require_once $dv_com_path . DS . 'modes' . DS . 'mode_dsl.php';
-        require_once $dv_com_path . DS . 'filter' . DS . 'csv.php';
-
-        $dv_conf = get_conf(null);
-        $dd = get_dd(null, $db_name, $version);
+        \Components\Dataviewer\Site\DvConfig::init();
+        $dd = \Components\Dataviewer\Site\Modes\ModeDsl::getDd(null, $db_name, $version);
         $dd['serverside'] = false;
 
-        $sql = query_gen($dd);
-        $result = get_results($sql, $dd);
+        $sql = \Components\Dataviewer\Site\Lib\Db::query_gen($dd);
+        $result = \Components\Dataviewer\Site\Lib\Db::get_results($sql, $dd);
 
         ob_start();
-        filter($result, $dd, true);
+        \Components\Dataviewer\Site\Filter\Csv::filter($result, $dd, true);
         $csv = ob_get_contents();
         ob_end_clean();
 
