@@ -8,6 +8,8 @@
  * @license   http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
+
 if ($this->isUser) : ?>
     <div class="section-edit-container">
         <?php if ($this->registration == Components\Members\Models\Profile\Field::STATE_READONLY) : ?>

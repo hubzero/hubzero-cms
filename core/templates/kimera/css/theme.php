@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,8 +8,7 @@
 
 defined('_HZEXEC_') or die();
 
-function hex2rgb($hex)
-{
+$hex2rgb = function ($hex) {
     $hex = str_replace('#', '', $hex);
 
     if (strlen($hex) == 3) {
@@ -25,7 +23,7 @@ function hex2rgb($hex)
     $rgb = array($r, $g, $b);
 
     return implode(',', $rgb);
-}
+};
 
 $tmpl = dirname(__DIR__);
 $base = dirname(dirname(dirname($tmpl)));
@@ -346,7 +344,7 @@ $styles .= '
 	a,
 	a:active,
 	a:visited {
-		color: ' . ($opacity2 ? 'rgba(' . hex2rgb($color2) . ', ' . $opacity2 . ')' : '#' . $color2) . ';
+		color: ' . ($opacity2 ? 'rgba(' . $hex2rgb($color2) . ', ' . $opacity2 . ')' : '#' . $color2) . ';
 	}
 	a.btn,
 	a.btn:active,
@@ -355,10 +353,10 @@ $styles .= '
 		border-color: rgba(0,0,0,0.2);
 	}
 	#top {
-		background-color: rgba(' . hex2rgb($color1) . ', ' . $opacity . ');
+		background-color: rgba(' . $hex2rgb($color1) . ', ' . $opacity . ');
 	}
 	#wrap {
-		background-color: rgba(' . hex2rgb($color1) . ', ' . $opacity . ');
+		background-color: rgba(' . $hex2rgb($color1) . ', ' . $opacity . ');
 	}
 ';
 

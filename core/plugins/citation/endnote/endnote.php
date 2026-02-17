@@ -3,15 +3,13 @@
 namespace Plugins\Citation\Endnote;
 
 use Hubzero\Plugin\Plugin;
-
+use Components\Citations\Models\Citation;
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
-use Components\Citations\Models\Citation;
 
 /**
  * Citations plugin class for bibtex

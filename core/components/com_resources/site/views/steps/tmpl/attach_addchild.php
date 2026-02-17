@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
+
 $baseUrl = '/resources/draft?controller=attachments&no_html=1';
 $actionUrl = $baseUrl . '&task=create';
 ?>

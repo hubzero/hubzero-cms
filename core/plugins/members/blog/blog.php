@@ -13,6 +13,16 @@ namespace Plugins\Members\Blog;
 
 use Hubzero\Plugin\Plugin;
 
+/**
+ * @package   hubzero-cms
+ * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license   http://opensource.org/licenses/MIT MIT
+ */
+
+/**
+ * Members Plugin class for blog entries
+ *
+ */
 class Blog extends Plugin
 {
     /**

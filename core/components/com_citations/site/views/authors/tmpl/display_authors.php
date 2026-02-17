@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
+
 $authors = $this->row->relatedAuthors;
 if (count($authors)) { ?>
     <?php foreach ($authors as $author) { ?>

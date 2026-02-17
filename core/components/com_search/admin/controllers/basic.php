@@ -10,19 +10,6 @@ namespace Components\Search\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
 
-if (!function_exists('stem')) {
-    /**
-     * Stem a string
-     *
-     * @param  string $str
-     * @return string
-     */
-    function stem($str)
-    {
-        return $str;
-    }
-}
-
 /**
  * Search controller class
  */

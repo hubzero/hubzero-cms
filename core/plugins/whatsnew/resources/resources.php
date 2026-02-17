@@ -10,10 +10,6 @@ namespace Plugins\Whatsnew\Resources;
 
 use Hubzero\Plugin\Plugin;
 
-
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * What's New Plugin class for com_resources entries
  */

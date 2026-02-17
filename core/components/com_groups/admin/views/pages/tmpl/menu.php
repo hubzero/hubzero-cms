@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
+
 Submenu::addEntry(
     Lang::txt('COM_GROUPS_PAGES'),
     Route::url('index.php?option=com_groups&controller=pages&gid=' . $this->group->get('cn')),

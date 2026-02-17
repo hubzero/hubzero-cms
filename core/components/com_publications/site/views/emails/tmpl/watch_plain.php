@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
+
 $base = trim(preg_replace('/\/administrator/', '', Request::base()), '/');
 
 echo $this->subject; ?>

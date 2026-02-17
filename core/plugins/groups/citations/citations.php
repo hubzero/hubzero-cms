@@ -21,6 +21,12 @@ use Components\Citations\Models\Format;
 use Components\Citations\Models\Importer;
 
 /**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+/**
  * Groups plugin class for citations
  */
 class Citations extends Plugin

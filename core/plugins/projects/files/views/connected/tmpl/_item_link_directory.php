@@ -10,6 +10,8 @@
 
 use Components\Projects\Helpers\Html;
 
+defined('_HZEXEC_') or die();
+
 $directoryBrowseUrl = Route::url($this->model->link('files') .
 "&action=browse&connection=$this->connectionId&subdir=$this->urlEncodedItemPath");
 $directoryDisplayName = Html::shortenFileName($this->itemDisplayName, 60);

@@ -1,4 +1,6 @@
   <?php
+    defined('_HZEXEC_') or die();
+
     $url = $this->url;
     $seconds = $this->time;
     $domain = $this->domain;

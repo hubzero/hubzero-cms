@@ -13,6 +13,8 @@
 use Components\Tools\Models\Orm\Handler;
 use Components\Projects\Helpers\Html;
 
+defined('_HZEXEC_') or die();
+
 $model = $this->model;
 $handlerPath = str_replace(
     ['{project}', '{file}'],
