@@ -2370,9 +2370,6 @@ class Publications extends SiteController
 		$customFields = json_decode($rpublica->_curationModel->getMetaSchema(), true);
 
 		// Diff the two versions
-		require_once dirname(dirname(__DIR__)) . '/helpers/Diff.php';
-		require_once dirname(dirname(__DIR__)) . '/helpers/Diff/Renderer/Html/SideBySide.php';
-
 		$diffs = array();
 
 		$l = explode("\n", $lversion->get('title'));
