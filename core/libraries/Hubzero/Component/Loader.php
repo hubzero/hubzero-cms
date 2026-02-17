@@ -359,9 +359,11 @@ class Loader
     }
 
     /**
-     * Execute the component from a new bootstrapped component
+     * Execute the component from a bootstrapped component class.
      *
-     * @param   string  $namespace  The namespace of the component to start
+     * The class must extend AbstractComponent and implement execute().
+     *
+     * @param   string  $namespace  The fully-qualified class name
      * @return  void
      */
     protected function executeBootstrap($namespace)
