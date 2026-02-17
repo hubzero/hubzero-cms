@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
 ?>
     <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="">
         <fieldset>

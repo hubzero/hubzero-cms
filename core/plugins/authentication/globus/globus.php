@@ -10,9 +10,6 @@ namespace Plugins\Authentication\Globus;
 
 use Plugins\Authentication\Globus\Provider\Globus as GlobusProvider;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 class Globus extends \Hubzero\Plugin\OauthClient
 {
     /**

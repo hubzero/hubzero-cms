@@ -8,9 +8,6 @@
 
 namespace Plugins\Search\Resources;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Short description for 'ResourceChildSorter'
  *

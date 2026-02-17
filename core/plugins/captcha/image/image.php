@@ -13,6 +13,9 @@ namespace Plugins\Captcha\Image;
 
 use Hubzero\Plugin\Plugin;
 
+/**
+ * Plugin class for displaying image CAPTCHAs
+ */
 class Image extends Plugin
 {
     /**

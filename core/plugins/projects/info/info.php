@@ -13,9 +13,6 @@ use Hubzero\Plugin\Plugin;
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Projects Info plugin
  */

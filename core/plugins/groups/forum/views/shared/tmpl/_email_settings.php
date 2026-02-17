@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
+
 $base = $this->base;
 
 if (Component::params('com_groups')->get('email_forum_comments') && $this->config->get('access-view-section')) : ?>

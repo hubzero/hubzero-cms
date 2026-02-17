@@ -10,9 +10,6 @@ namespace Plugins\Captcha\Math;
 
 use Hubzero\Plugin\Plugin;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Plugin class for displaying math CAPTCHAs
  */

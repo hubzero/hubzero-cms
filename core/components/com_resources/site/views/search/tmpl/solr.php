@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
+
 $id = str_replace('resource-', '', $this->result['id']);
 $extras = Event::trigger('resources.onResourcesList', array($id));
 ?>

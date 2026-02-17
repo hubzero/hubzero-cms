@@ -7,6 +7,9 @@
  */
 
 // Compute some counts for later use
+
+defined('_HZEXEC_') or die();
+
 $groups = count($this->posts);
 $posts  = 0;
 

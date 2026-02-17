@@ -8,9 +8,6 @@
 
 namespace Plugins\Search\Members;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Contributions sorter
  *

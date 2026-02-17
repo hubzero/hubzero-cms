@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Plugins\Wiki\Parserdefault\Math;
 
 /**

@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
 ?>
 
 <div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>" id="<?php echo $this->result['id']; ?>">

@@ -10,8 +10,6 @@ namespace Plugins\Captcha\Recaptcha;
 
 use Hubzero\Plugin\Plugin;
 
-defined('_HZEXEC_') or die;
-
 /**
  * Recaptcha Plugin.
  *

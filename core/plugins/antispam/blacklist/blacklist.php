@@ -10,8 +10,6 @@ namespace Plugins\Antispam\Blacklist;
 
 use Hubzero\Plugin\Plugin;
 
-
-
 /**
  * Antispam plugin for a Black Listed word detector
  */

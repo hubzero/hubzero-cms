@@ -415,7 +415,6 @@ class Citations extends Plugin
                 $totalAuths = count($authors);
                 $x = 0;
 
-
                 foreach ($authors as &$author) {
                     /***
                     * Because the multi-select keys off of a comma,
@@ -1086,7 +1085,6 @@ class Citations extends Plugin
                 $citation['duplicate'] = $citeCollection->seek($citation['duplicate']);
             }
         }
-
 
         $view = $this->view('review', 'import');
         $view->citations_require_attention    = $citations_require_attention;
