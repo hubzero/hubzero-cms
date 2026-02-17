@@ -1,14 +1,16 @@
-<?php // phpcs:disable Generic.Files.LineLength ?>
 <div class="verify-content">
     <div class="warning-box">
         <h3>Why This Step?</h3>
-        <p>This verification prevents unauthorized users from running the installer on your server. Only someone with file system access should be able to install HUBzero.</p>
+        <p>This verification prevents unauthorized users from running the installer on your server.
+        Only someone with file system access should be able to install HUBzero.</p>
     </div>
 
     <?php if ($security->isLockedOut()) : ?>
         <div class="error-box">
             <h3>Access Temporarily Blocked</h3>
-            <p>Too many failed verification attempts. Please wait <strong><?php echo ceil($security->getLockoutRemaining() / 60); ?> minute(s)</strong> before trying again.</p>
+            <?php $lockoutMins = ceil($security->getLockoutRemaining() / 60); ?>
+            <p>Too many failed verification attempts. Please wait
+            <strong><?php echo $lockoutMins; ?> minute(s)</strong> before trying again.</p>
         </div>
     <?php else : ?>
         <div class="info-box verify-instructions">
@@ -16,7 +18,8 @@
             <p>Create an <strong>empty file</strong> with the following name in your document root:</p>
 
             <div class="filename-display">
-                <code id="verification-filename"><?php echo htmlspecialchars($security->getVerificationFilename()); ?></code>
+                <?php $verifyFilename = htmlspecialchars($security->getVerificationFilename()); ?>
+                <code id="verification-filename"><?php echo $verifyFilename; ?></code>
                 <button type="button" class="btn btn-small btn-copy" onclick="copyFilename()" title="Copy filename">
                     Copy
                 </button>
@@ -29,17 +32,24 @@
 
             <div class="time-remaining">
                 <span class="timer-icon">&#9202;</span>
-                Time remaining: <strong id="time-remaining"><?php echo $security->formatTime($security->getTokenTimeRemaining()); ?></strong>
+                <?php $timeRemaining = $security->formatTime($security->getTokenTimeRemaining()); ?>
+                Time remaining: <strong id="time-remaining"><?php echo $timeRemaining; ?></strong>
             </div>
 
             <div class="instructions-detail">
                 <h4>How to create the file:</h4>
                 <ul>
                     <li><strong>Via SSH/Terminal:</strong>
-                        <code>touch <?php echo htmlspecialchars($security->getDocumentRoot() . '/' . $security->getVerificationFilename()); ?></code>
+                        <?php
+                        $touchPath = htmlspecialchars(
+                            $security->getDocumentRoot() . '/' . $security->getVerificationFilename()
+                        );
+                        ?>
+                        <code>touch <?php echo $touchPath; ?></code>
                     </li>
                     <li><strong>Via FTP:</strong> Create a new empty text file and upload it to your document root</li>
-                    <li><strong>Via File Manager:</strong> Navigate to your document root and create an empty file with the exact name shown above</li>
+                    <li><strong>Via File Manager:</strong> Navigate to your document root and
+                        create an empty file with the exact name shown above</li>
                 </ul>
             </div>
 
@@ -48,13 +58,15 @@
             if ($attempts > 0) :
                 ?>
             <div class="attempts-warning">
-                <strong>Note:</strong> <?php echo $attempts; ?> of <?php echo $security->getMaxAttempts(); ?> attempts used.
+                <strong>Note:</strong> <?php echo $attempts; ?> of
+                <?php echo $security->getMaxAttempts(); ?> attempts used.
             </div>
             <?php endif; ?>
         </div>
 
         <form method="post" class="step-form">
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($security->generateCsrfToken()); ?>">
+            <?php $verifyCsrf = htmlspecialchars($security->generateCsrfToken()); ?>
+            <input type="hidden" name="csrf_token" value="<?php echo $verifyCsrf; ?>">
 
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Verify &amp; Next</button>

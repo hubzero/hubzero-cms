@@ -25,24 +25,6 @@ use Hubzero\Database\Connection\PdoConnection;
 use Hubzero\Database\Exception\ConnectionFailedException;
 use PDOException;
 
-// phpcs:disable PSR1.Files.SideEffects
-// Load security, step classes, and shared utilities (intentional side effects - no autoloader available)
-require_once __DIR__ . '/StorageCheck.php';
-require_once __DIR__ . '/SecurityGuard.php';
-require_once dirname(dirname(dirname(__DIR__))) . '/libraries/Hubzero/Error/Exception/RuntimeException.php';
-require_once dirname(dirname(dirname(__DIR__))) . '/libraries/Hubzero/Database/Exception/ConnectionFailedException.php';
-require_once dirname(dirname(dirname(__DIR__))) . '/libraries/Hubzero/Database/ConnectionInterface.php';
-require_once dirname(dirname(dirname(__DIR__))) . '/libraries/Hubzero/Database/Connection/PdoConnection.php';
-require_once __DIR__ . '/Steps/StepInterface.php';
-require_once __DIR__ . '/Steps/Verify.php';
-require_once __DIR__ . '/Steps/Welcome.php';
-require_once __DIR__ . '/Steps/Requirements.php';
-require_once __DIR__ . '/Steps/Database.php';
-require_once __DIR__ . '/Steps/Settings.php';
-require_once __DIR__ . '/Steps/Schema.php';
-require_once __DIR__ . '/Steps/Admin.php';
-require_once __DIR__ . '/Steps/Complete.php';
-
 /**
  * Main installer controller
  */
@@ -109,12 +91,50 @@ class Installer
     private $messages = [];
 
     /**
+     * Initialize the installer and load dependencies.
+     * Required because no autoloader is available at install time.
+     */
+    public function __construct()
+    {
+        $this->loadDependencies();
+    }
+
+    /**
+     * Load required dependencies (no autoloader available at install time)
+     *
+     * @return void
+     */
+    private function loadDependencies(): void
+    {
+        $libRoot = dirname(dirname(dirname(__DIR__))) . '/libraries';
+        require_once __DIR__ . '/StorageCheck.php';
+        require_once __DIR__ . '/SecurityGuard.php';
+        require_once $libRoot . '/Hubzero/Error/Exception/RuntimeException.php';
+        require_once $libRoot . '/Hubzero/Database/Exception/ConnectionFailedException.php';
+        require_once $libRoot . '/Hubzero/Database/ConnectionInterface.php';
+        require_once $libRoot . '/Hubzero/Database/Connection/PdoConnection.php';
+        require_once __DIR__ . '/Steps/StepInterface.php';
+        require_once __DIR__ . '/Steps/Verify.php';
+        require_once __DIR__ . '/Steps/Welcome.php';
+        require_once __DIR__ . '/Steps/Requirements.php';
+        require_once __DIR__ . '/Steps/Database.php';
+        require_once __DIR__ . '/Steps/Settings.php';
+        require_once __DIR__ . '/Steps/Schema.php';
+        require_once __DIR__ . '/Steps/Admin.php';
+        require_once __DIR__ . '/Steps/Complete.php';
+    }
+
+    /**
      * Run the installer
      *
      * @return void
      */
     public function run(): void
     {
+        if (!defined('HUBZERO_INSTALL')) {
+            define('HUBZERO_INSTALL', 1);
+        }
+
         // Initialize security guard
         $this->security = new SecurityGuard(defined('PATH_ROOT') ? PATH_ROOT : null);
 
@@ -678,9 +698,9 @@ class Installer
 
         // Other test-suite driver names exist, but this web installer flow is MySQL-specific.
         if (in_array($requested, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
-            throw new PDOException(
-                "Installer currently supports MySQL-family drivers only (mysql/mariadb/percona). Requested: {$requested}"
-            );
+            $msg = 'Installer currently supports MySQL-family drivers only'
+                . " (mysql/mariadb/percona). Requested: {$requested}";
+            throw new PDOException($msg);
         }
 
         throw new PDOException("Unsupported database driver: {$requested}");
@@ -939,7 +959,9 @@ class Installer
 
             // Create database
             $dbName = preg_replace('/[^a-zA-Z0-9_]/', '', $newDb);
-            $connection->exec("CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+            $connection->exec(
+                "CREATE DATABASE IF NOT EXISTS `{$dbName}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+            );
 
             // Create user and grant privileges
             $userName = preg_replace('/[^a-zA-Z0-9_]/', '', $newUser);

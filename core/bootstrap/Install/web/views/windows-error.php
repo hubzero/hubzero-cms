@@ -11,7 +11,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,7 +97,8 @@
         </div>
         <div class="error-body">
             <p><strong>HUBzero cannot be installed on Windows.</strong></p>
-            <p>HUBzero is designed exclusively for Unix-like operating systems and relies on features that are not available on Windows, including:</p>
+            <p>HUBzero is designed exclusively for Unix-like operating systems and relies on
+            features that are not available on Windows, including:</p>
             <ul>
                 <li>POSIX file permissions and ownership</li>
                 <li>Unix process management</li>
@@ -112,7 +112,8 @@
             </ul>
             <div class="info-box">
                 <h3>Using Windows for Development?</h3>
-                <p>Consider using Windows Subsystem for Linux (WSL2), Docker, or a virtual machine running Linux to develop and test HUBzero.</p>
+                <p>Consider using Windows Subsystem for Linux (WSL2), Docker, or a virtual
+                machine running Linux to develop and test HUBzero.</p>
             </div>
         </div>
     </div>

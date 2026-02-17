@@ -13,27 +13,15 @@
 
 namespace Bootstrap\Install\Web;
 
-// phpcs:disable PSR1.Files.SideEffects
-
-// Prevent direct access except through index.php
-if (!defined('PATH_ROOT')) {
-    die('Direct access not permitted');
-}
-
-// Load shared classes (used by both bootstrap and main installer)
-require_once __DIR__ . '/StorageCheck.php';
-require_once __DIR__ . '/SecurityGuard.php';
-require_once dirname(dirname(dirname(__DIR__))) . '/libraries/Hubzero/System/Requirements.php';
-
 use Hubzero\System\Requirements;
 
 /**
- * Bootstrap Installer class
+ * Bootstrap Installer
  *
- * Handles pre-vendor installation checks and composer install
+ * Handles pre-vendor installation checks and composer install.
+ * Implemented as an anonymous class so this file contains only side effects.
  */
-class BootstrapInstaller
-{
+(new class {
     /**
      * Minimum extensions needed for bootstrap (subset of full requirements)
      * Uses Requirements::MIN_PHP_VERSION for PHP version
@@ -43,7 +31,6 @@ class BootstrapInstaller
         'curl'      => 'Required for downloading packages',
     ];
 
-    // phpcs:disable Generic.Files.LineLength
     private const HELP_TEXT = [
         'php' => [
             'title' => 'PHP Version',
@@ -65,18 +52,22 @@ class BootstrapInstaller
         ],
         'composer' => [
             'title' => 'Composer',
-            'debian' => 'sudo apt install composer\n# Or: curl -sS https://getcomposer.org/installer | php',
-            'rhel' => 'sudo dnf install composer\n# Or: curl -sS https://getcomposer.org/installer | php',
+            'debian' => 'sudo apt install composer\n'
+                . '# Or: curl -sS https://getcomposer.org/installer | php',
+            'rhel' => 'sudo dnf install composer\n'
+                . '# Or: curl -sS https://getcomposer.org/installer | php',
             'mac' => 'brew install composer',
         ],
         'writable' => [
             'title' => 'Directory Permissions',
-            'debian' => 'sudo chown -R www-data:www-data /path/to/core\nsudo chmod -R 755 /path/to/core',
-            'rhel' => 'sudo chown -R apache:apache /path/to/core\nsudo chmod -R 755 /path/to/core',
-            'mac' => 'sudo chown -R _www:_www /path/to/core\nsudo chmod -R 755 /path/to/core',
+            'debian' => 'sudo chown -R www-data:www-data /path/to/core\n'
+                . 'sudo chmod -R 755 /path/to/core',
+            'rhel' => 'sudo chown -R apache:apache /path/to/core\n'
+                . 'sudo chmod -R 755 /path/to/core',
+            'mac' => 'sudo chown -R _www:_www /path/to/core\n'
+                . 'sudo chmod -R 755 /path/to/core',
         ],
     ];
-    // phpcs:enable Generic.Files.LineLength
 
     private $corePath;
     private $checks = [];
@@ -85,6 +76,15 @@ class BootstrapInstaller
 
     public function __construct()
     {
+        if (!defined('PATH_ROOT')) {
+            die('Direct access not permitted');
+        }
+
+        $libRoot = dirname(dirname(dirname(__DIR__))) . '/libraries';
+        require_once __DIR__ . '/StorageCheck.php';
+        require_once __DIR__ . '/SecurityGuard.php';
+        require_once $libRoot . '/Hubzero/System/Requirements.php';
+
         $this->corePath = PATH_CORE;
     }
 
@@ -423,7 +423,6 @@ class BootstrapInstaller
         return $protocol . '://' . $host . $uri;
     }
 
-    // phpcs:disable Generic.Files.LineLength
     /**
      * Render the bootstrap installer page
      */
@@ -758,7 +757,9 @@ tr.failed { background: #fef2f2; }
                     <tr class="<?php echo $rowClass; ?>">
                         <td>
                             <?php if (isset(self::HELP_TEXT[$key])) : ?>
-                            <span class="help-icon" onclick="showHelp('<?php echo $key; ?>')" title="How to install">?</span>
+                            <span class="help-icon"
+                                onclick="showHelp('<?php echo $key; ?>')"
+                                title="How to install">?</span>
                             <?php endif; ?>
                             <?php echo htmlspecialchars($check['name']); ?>
                             <?php if (!empty($check['note']) && !$check['passed']) : ?>
@@ -786,10 +787,15 @@ tr.failed { background: #fef2f2; }
             </div>
 
             <!-- CSRF token for AJAX security -->
-            <input type="hidden" name="csrf_token" id="csrf_token" value="<?php echo htmlspecialchars($this->security->generateCsrfToken()); ?>">
+            <?php $csrfVal = htmlspecialchars($this->security->generateCsrfToken()); ?>
+            <input type="hidden" name="csrf_token" id="csrf_token"
+                value="<?php echo $csrfVal; ?>">
 
             <div class="actions">
-                <button type="button" class="btn btn-primary" id="run-composer-btn" onclick="runComposer()" <?php echo $this->allPassed ? '' : 'disabled'; ?>>
+                <?php $disabledAttr = $this->allPassed ? '' : 'disabled'; ?>
+                <button type="button" class="btn btn-primary"
+                    id="run-composer-btn" onclick="runComposer()"
+                    <?php echo $disabledAttr; ?>>
                     Run Composer
                 </button>
                 <a href="?" class="btn btn-secondary" id="refresh-btn">Refresh</a>
@@ -896,16 +902,20 @@ tr.failed { background: #fef2f2; }
             var actionsEl = document.querySelector('.actions');
 
             if (result.success) {
-                statusEl.innerHTML = '<div class="info-box success"><strong>Success!</strong> Dependencies installed.</div>';
+                statusEl.innerHTML = '<div class="info-box success">'
+                    + '<strong>Success!</strong> Dependencies installed.</div>';
                 btn.style.display = 'none';
                 document.getElementById('refresh-btn').style.display = 'none';
                 document.getElementById('continue-btn').style.display = 'inline-flex';
             } else if (result.security_error) {
                 // Security validation failed - reload to get new token
-                statusEl.innerHTML = '<div class="info-box error"><strong>Security validation failed.</strong> Reloading page...</div>';
+                statusEl.innerHTML = '<div class="info-box error">'
+                    + '<strong>Security validation failed.</strong> Reloading page...</div>';
                 setTimeout(function() { window.location.reload(); }, 2000);
             } else {
-                statusEl.innerHTML = '<div class="info-box error"><strong>Installation failed.</strong> Check the output above for details.</div>';
+                statusEl.innerHTML = '<div class="info-box error">'
+                    + '<strong>Installation failed.</strong>'
+                    + ' Check the output above for details.</div>';
                 btn.disabled = false;
                 btn.textContent = 'Run Composer';
             }
@@ -918,7 +928,10 @@ tr.failed { background: #fef2f2; }
             eventSource.close();
             btn.disabled = false;
             btn.textContent = 'Run Composer';
-            statusEl.innerHTML = '<div class="info-box error"><strong>Connection error.</strong> The composer process may still be running. Try refreshing the page.</div>';
+            statusEl.innerHTML = '<div class="info-box error">'
+                + '<strong>Connection error.</strong>'
+                + ' The composer process may still be running.'
+                + ' Try refreshing the page.</div>';
         };
     }
     </script>
@@ -926,9 +939,4 @@ tr.failed { background: #fef2f2; }
 </html>
         <?php
     }
-    // phpcs:enable Generic.Files.LineLength
-}
-
-// Run the bootstrap installer
-$bootstrap = new BootstrapInstaller();
-$bootstrap->run();
+})->run();

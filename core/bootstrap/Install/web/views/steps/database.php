@@ -1,5 +1,4 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
 
 // Determine current connection type from config
 $connectionType = '';
@@ -284,8 +283,11 @@ if (!empty($connectionType)) {
 
 <div class="database-content">
     <form method="post" class="step-form" id="database-form">
-        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>">
-        <input type="hidden" name="connection_type" id="connection_type_hidden" value="<?php echo htmlspecialchars($connectionType); ?>">
+        <?php $dbCsrf = htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>
+        <input type="hidden" name="csrf_token" value="<?php echo $dbCsrf; ?>">
+        <input type="hidden" name="connection_type"
+            id="connection_type_hidden"
+            value="<?php echo htmlspecialchars($connectionType); ?>">
         <input type="hidden" name="setup_mode" id="setup_mode_hidden" value="existing">
 
         <!-- Substep indicator -->
@@ -308,8 +310,12 @@ if (!empty($connectionType)) {
             <h3 class="substep-title">How should we connect to MySQL?</h3>
 
             <div class="connection-types">
-                <label class="connection-type-option <?php echo $connectionType === 'localhost' ? 'selected' : ''; ?>" data-type="localhost">
-                    <input type="radio" name="connection_type_select" value="localhost" <?php echo $connectionType === 'localhost' ? 'checked' : ''; ?>>
+                <?php $localhostSel = $connectionType === 'localhost' ? 'selected' : ''; ?>
+                <?php $localhostChk = $connectionType === 'localhost' ? 'checked' : ''; ?>
+                <label class="connection-type-option <?php echo $localhostSel; ?>"
+                    data-type="localhost">
+                    <input type="radio" name="connection_type_select"
+                        value="localhost" <?php echo $localhostChk; ?>>
                     <div class="connection-type-info">
                         <span class="connection-type-label">Standard (localhost)</span>
                         <span class="connection-type-desc">MySQL running on the same server with default port</span>
@@ -318,17 +324,24 @@ if (!empty($connectionType)) {
                     </div>
                 </label>
 
-                <label class="connection-type-option <?php echo $connectionType === 'socket' ? 'selected' : ''; ?>">
-                    <input type="radio" name="connection_type_select" value="socket" <?php echo $connectionType === 'socket' ? 'checked' : ''; ?>>
+                <?php $socketSel = $connectionType === 'socket' ? 'selected' : ''; ?>
+                <?php $socketChk = $connectionType === 'socket' ? 'checked' : ''; ?>
+                <label class="connection-type-option <?php echo $socketSel; ?>">
+                    <input type="radio" name="connection_type_select"
+                        value="socket" <?php echo $socketChk; ?>>
                     <div class="connection-type-info">
                         <span class="connection-type-label">Unix Socket</span>
-                        <span class="connection-type-desc">Connect via local socket file (faster, Linux/macOS only)</span>
+                        <span class="connection-type-desc">Connect via local socket file
+                            (faster, Linux/macOS only)</span>
                         <span class="connection-type-dsn">/var/run/mysqld/mysqld.sock</span>
                     </div>
                 </label>
 
-                <label class="connection-type-option <?php echo $connectionType === 'custom' ? 'selected' : ''; ?>">
-                    <input type="radio" name="connection_type_select" value="custom" <?php echo $connectionType === 'custom' ? 'checked' : ''; ?>>
+                <?php $customSel = $connectionType === 'custom' ? 'selected' : ''; ?>
+                <?php $customChk = $connectionType === 'custom' ? 'checked' : ''; ?>
+                <label class="connection-type-option <?php echo $customSel; ?>">
+                    <input type="radio" name="connection_type_select"
+                        value="custom" <?php echo $customChk; ?>>
                     <div class="connection-type-info">
                         <span class="connection-type-label">Custom</span>
                         <span class="connection-type-desc">Remote server or non-standard port</span>
@@ -349,7 +362,9 @@ if (!empty($connectionType)) {
                 <h3 class="substep-title">Socket Configuration</h3>
                 <div class="form-group">
                     <label for="socket">Socket Path</label>
-                    <input type="text" id="socket" name="socket" value="<?php echo $socketVal; ?>" placeholder="/var/run/mysqld/mysqld.sock">
+                    <input type="text" id="socket" name="socket"
+                        value="<?php echo $socketVal; ?>"
+                        placeholder="/var/run/mysqld/mysqld.sock">
                     <small>Path to the MySQL socket file on this server</small>
                 </div>
                 <div id="socket-connection-error" class="connection-result error" style="display: none;"></div>
@@ -361,7 +376,9 @@ if (!empty($connectionType)) {
                 <div class="form-row">
                     <div class="form-group <?php echo isset($errors['host']) ? 'has-error' : ''; ?>">
                         <label for="host">Hostname / IP Address</label>
-                        <input type="text" id="host" name="host" value="<?php echo $hostVal; ?>" placeholder="db.example.com">
+                        <input type="text" id="host" name="host"
+                            value="<?php echo $hostVal; ?>"
+                            placeholder="db.example.com">
                         <?php if (isset($errors['host'])) : ?>
                             <span class="error"><?php echo htmlspecialchars($errors['host']); ?></span>
                         <?php endif; ?>
@@ -391,7 +408,8 @@ if (!empty($connectionType)) {
                     <input type="radio" name="setup_mode_select" value="existing" checked>
                     <div class="connection-type-info">
                         <span class="connection-type-label">I have credentials ready</span>
-                        <span class="connection-type-desc">Use an existing database and user account that has already been created</span>
+                        <span class="connection-type-desc">Use an existing database and user account
+                            that has already been created</span>
                     </div>
                 </label>
 
@@ -399,7 +417,8 @@ if (!empty($connectionType)) {
                     <input type="radio" name="setup_mode_select" value="create">
                     <div class="connection-type-info">
                         <span class="connection-type-label">Create a database for me</span>
-                        <span class="connection-type-desc">Enter MySQL admin credentials (like root) to automatically create the database and user</span>
+                        <span class="connection-type-desc">Enter MySQL admin credentials (like root)
+                            to automatically create the database and user</span>
                     </div>
                 </label>
             </div>
@@ -428,7 +447,8 @@ if (!empty($connectionType)) {
                 <div class="form-row">
                     <div class="form-group <?php echo isset($errors['user']) ? 'has-error' : ''; ?>">
                         <label for="user">Username</label>
-                        <input type="text" id="user" name="user" value="<?php echo $userVal; ?>" placeholder="hubzero">
+                        <input type="text" id="user" name="user"
+                            value="<?php echo $userVal; ?>" placeholder="hubzero">
                         <?php if (isset($errors['user'])) : ?>
                             <span class="error"><?php echo htmlspecialchars($errors['user']); ?></span>
                         <?php endif; ?>
@@ -443,7 +463,8 @@ if (!empty($connectionType)) {
                 <div id="connection-result" class="connection-result" style="display: none;"></div>
 
                 <div class="substep-actions">
-                    <button type="button" id="test-connection" class="btn btn-secondary btn-test">Test Connection</button>
+                    <button type="button" id="test-connection"
+                        class="btn btn-secondary btn-test">Test Connection</button>
                     <button type="button" class="btn btn-secondary" id="step4-back-existing">Back</button>
                     <button type="submit" class="btn btn-primary">Next</button>
                 </div>
@@ -452,7 +473,8 @@ if (!empty($connectionType)) {
             <!-- Create mode: Enter admin credentials to connect -->
             <div id="admin-credentials" style="display: none;">
                 <h3 class="substep-title">Administrator Credentials</h3>
-                <p class="substep-desc">Enter credentials for a MySQL user with privileges to create databases and users (typically root).</p>
+                <p class="substep-desc">Enter credentials for a MySQL user with privileges
+                    to create databases and users (typically root).</p>
 
                 <div class="form-row">
                     <div class="form-group">
@@ -469,7 +491,8 @@ if (!empty($connectionType)) {
                 <div id="admin-connection-result" class="connection-result" style="display: none;"></div>
 
                 <div class="substep-actions">
-                    <button type="button" id="test-admin-connection" class="btn btn-secondary btn-test">Test Connection</button>
+                    <button type="button" id="test-admin-connection"
+                        class="btn btn-secondary btn-test">Test Connection</button>
                     <button type="button" class="btn btn-secondary" id="step4-back-create">Back</button>
                     <button type="button" class="btn btn-primary" id="step4-next-create">Next</button>
                 </div>

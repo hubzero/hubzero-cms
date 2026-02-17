@@ -1,4 +1,3 @@
-<?php // phpcs:disable Generic.Files.LineLength ?>
 <div class="schema-content">
     <p>The database schema and essential data will be loaded into your database.</p>
 
@@ -25,7 +24,8 @@
             <span class="status-info">(optional demo content)</span>
         </div>
 
-        <div class="status-item <?php echo $status['migrations_run'] ? 'complete' : 'pending'; ?>" id="status-migrations">
+        <?php $migrClass = $status['migrations_run'] ? 'complete' : 'pending'; ?>
+        <div class="status-item <?php echo $migrClass; ?>" id="status-migrations">
             <span class="status-icon"><?php echo $status['migrations_run'] ? '&#10004;' : '&#9679;'; ?></span>
             <span class="status-text">Database Migrations</span>
             <?php if ($status['migrations_run']) : ?>
@@ -44,7 +44,8 @@
         </div>
     <?php else : ?>
         <div class="info-box warning" id="warning-box">
-            <p><strong>Note:</strong> This process may take several minutes. Please do not close or refresh this page.</p>
+            <p><strong>Note:</strong> This process may take several minutes.
+                Please do not close or refresh this page.</p>
         </div>
     <?php endif; ?>
 
@@ -56,7 +57,8 @@
     </div>
 
     <form method="post" class="step-form" id="schema-form">
-        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>">
+        <?php $schemaCsrf = htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>
+        <input type="hidden" name="csrf_token" value="<?php echo $schemaCsrf; ?>">
         <?php if (!$status['sample_loaded'] && !$status['schema_loaded']) : ?>
         <div class="form-group checkbox-group">
             <label>
@@ -74,8 +76,10 @@
             <?php if ($status['schema_loaded'] && $status['data_loaded'] && $status['migrations_run']) : ?>
                 <button type="submit" class="btn btn-primary">Next</button>
             <?php elseif ($status['schema_loaded'] && $status['data_loaded']) : ?>
-                <button type="button" class="btn btn-primary" id="run-migrations-btn" onclick="runMigrations()">Run Migrations</button>
-                <button type="submit" class="btn btn-primary" id="continue-btn" style="display: none;">Continue</button>
+                <button type="button" class="btn btn-primary"
+                    id="run-migrations-btn" onclick="runMigrations()">Run Migrations</button>
+                <button type="submit" class="btn btn-primary"
+                    id="continue-btn" style="display: none;">Continue</button>
             <?php else : ?>
                 <button type="submit" class="btn btn-primary" id="load-schema-btn">Load Database</button>
             <?php endif; ?>
@@ -175,7 +179,8 @@ function runMigrations() {
         var result = JSON.parse(e.data);
 
         if (result.success) {
-            statusEl.innerHTML = '<div class="info-box success"><strong>Success!</strong> Database migrations completed.</div>';
+            statusEl.innerHTML = '<div class="info-box success">'
+                + '<strong>Success!</strong> Database migrations completed.</div>';
             // Update status item
             statusItem.classList.remove('pending');
             statusItem.classList.add('complete');
@@ -189,7 +194,9 @@ function runMigrations() {
             var warningBox = document.getElementById('warning-box');
             if (warningBox) warningBox.style.display = 'none';
         } else {
-            statusEl.innerHTML = '<div class="info-box error"><strong>Migration failed.</strong> Check the output above for details.</div>';
+            statusEl.innerHTML = '<div class="info-box error">'
+                + '<strong>Migration failed.</strong>'
+                + ' Check the output above for details.</div>';
             statusItem.querySelector('.status-icon').innerHTML = '&#10008;';
             if (btn) {
                 btn.disabled = false;
@@ -207,7 +214,10 @@ function runMigrations() {
             btn.disabled = false;
             btn.textContent = 'Retry Migrations';
         }
-        statusEl.innerHTML = '<div class="info-box error"><strong>Connection error.</strong> The migration process may still be running. Try refreshing the page.</div>';
+        statusEl.innerHTML = '<div class="info-box error">'
+            + '<strong>Connection error.</strong>'
+            + ' The migration process may still be running.'
+            + ' Try refreshing the page.</div>';
     };
 }
 </script>

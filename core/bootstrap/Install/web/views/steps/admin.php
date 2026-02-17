@@ -1,5 +1,4 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
 $nameVal = htmlspecialchars($_POST['name'] ?? ($existingAdmin['name'] ?? 'Site Administrator'));
 $emailVal = htmlspecialchars($_POST['email'] ?? ($existingAdmin['email'] ?? $defaultEmail));
 $adminExists = !empty($existingAdmin);
@@ -104,7 +103,8 @@ $adminExists = !empty($existingAdmin);
         </div>
 
         <form method="post" class="step-form" id="admin-form">
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>">
+            <?php $csrfToken = htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>
+            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken; ?>">
             <input type="hidden" name="existing_admin" value="1">
 
             <div class="form-group horizontal">
@@ -150,12 +150,15 @@ $adminExists = !empty($existingAdmin);
                         </div>
                     </div>
 
-                    <div class="form-group horizontal <?php echo isset($errors['password_confirm']) ? 'has-error' : ''; ?>">
+                    <?php $confirmClass = isset($errors['password_confirm']) ? 'has-error' : ''; ?>
+                    <div class="form-group horizontal <?php echo $confirmClass; ?>">
                         <label for="password_confirm">Confirm Password</label>
                         <div class="input-wrapper">
                             <input type="password" id="password_confirm" name="password_confirm">
                             <?php if (isset($errors['password_confirm'])) : ?>
-                                <span class="error"><?php echo htmlspecialchars($errors['password_confirm']); ?></span>
+                                <span class="error">
+                                    <?php echo htmlspecialchars($errors['password_confirm']); ?>
+                                </span>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -194,7 +197,8 @@ $adminExists = !empty($existingAdmin);
         <p>Create the administrator account for your hub. The username will be <strong>admin</strong>.</p>
 
         <form method="post" class="step-form">
-            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>">
+            <?php $csrfToken2 = htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>
+            <input type="hidden" name="csrf_token" value="<?php echo $csrfToken2; ?>">
 
             <div class="form-group horizontal">
                 <label>Username</label>

@@ -1,4 +1,3 @@
-<?php // phpcs:disable Generic.Files.LineLength ?>
 <?php
 // Extension package names for each OS
 $extPackages = [
@@ -223,7 +222,9 @@ $helpText = [
                     <?php endif; ?>
                     <?php echo htmlspecialchars($req['name']); ?>
                     <?php if (!empty($req['description']) && !$req['passed']) : ?>
-                        <br><small style="color: var(--gray-500);"><?php echo htmlspecialchars($req['description']); ?></small>
+                        <br><small style="color: var(--gray-500);">
+                            <?php echo htmlspecialchars($req['description']); ?>
+                        </small>
                     <?php endif; ?>
                 </td>
                 <td><?php echo htmlspecialchars($req['required']); ?></td>
@@ -243,7 +244,8 @@ $helpText = [
     </table>
 
     <form method="post" class="step-form">
-        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>">
+        <?php $reqCsrf = htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>
+        <input type="hidden" name="csrf_token" value="<?php echo $reqCsrf; ?>">
         <div class="form-actions">
             <a href="?step=welcome" class="btn btn-secondary">Back</a>
             <?php if ($passed) : ?>

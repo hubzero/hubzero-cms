@@ -1,5 +1,4 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
 $sitenameVal = htmlspecialchars($config['sitename'] ?? 'My Hub');
 $mailfromVal = htmlspecialchars($config['mailfrom'] ?? '');
 $timezoneVal = $config['timezone'] ?? 'UTC';
@@ -10,7 +9,8 @@ $metadescVal = htmlspecialchars($config['metadesc'] ?? '');
     <p>Configure your site's basic settings.</p>
 
     <form method="post" class="step-form">
-        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>">
+        <?php $settingsCsrf = htmlspecialchars($installer->getSecurityGuard()->generateCsrfToken()); ?>
+        <input type="hidden" name="csrf_token" value="<?php echo $settingsCsrf; ?>">
         <div class="form-group <?php echo isset($errors['sitename']) ? 'has-error' : ''; ?>">
             <label for="sitename">Site Name</label>
             <input type="text" id="sitename" name="sitename" value="<?php echo $sitenameVal; ?>" required>
