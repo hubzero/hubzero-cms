@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,13 +21,6 @@ if (!function_exists('stem')) {
     {
         return $str;
     }
-}
-
-foreach (array('request', 'result', 'terms', 'authorization', 'documentmetadata') as $mdl) {
-    require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
-}
-foreach (array('assoc', 'assoclist', 'assocscalar', 'blank', 'set', 'sql') as $mdl) {
-    require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'basic' . DS . 'result' . DS . $mdl . '.php';
 }
 
 /**

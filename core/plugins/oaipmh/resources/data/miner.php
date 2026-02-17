@@ -370,9 +370,6 @@ class Miner extends Obj implements Provider
 			ORDER BY a.ordering, a.grouping"
         );
         if ($children = $this->database->loadObjectList()) {
-            require_once Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
-            require_once Component::path('com_resources') . DS . 'models' . DS . 'type.php';
-
             foreach ($children as $child) {
                 $child->type = \Components\Resources\Models\Type::oneOrNew($child->type);
 
@@ -478,8 +475,6 @@ class Miner extends Obj implements Provider
             );
             $references = $this->database->loadObjectList();
             if (count($references) && file_exists($formatterPath)) {
-                include_once $formatterPath;
-
                 $formatter = new \Components\Citations\Helpers\Format();
                 $formatter->setTemplate('apa');
 
@@ -508,8 +503,6 @@ class Miner extends Obj implements Provider
             );
             $references = $this->database->loadObjectList();
             if (count($references) && file_exists($formatterPath)) {
-                include_once $formatterPath;
-
                 $formatter = new \Components\Citations\Helpers\Format();
                 $formatter->setTemplate('apa');
 

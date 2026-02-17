@@ -227,7 +227,6 @@ class Preferences extends Table
      */
     public function updateUsersByClassId($id)
     {
-        include_once __DIR__ . DS . 'sessionclass.php';
 
         $class = new \Components\Tools\Tables\SessionClass($this->_db);
         $class->load($id);
@@ -258,7 +257,6 @@ class Preferences extends Table
      */
     public function restoreDefaultClass($id)
     {
-        include_once __DIR__ . DS . 'sessionclass.php';
 
         $class = new SessionClass($this->_db);
         $class->load(array('alias' => 'default'));

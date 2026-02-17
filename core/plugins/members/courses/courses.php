@@ -80,7 +80,6 @@ class Courses extends Plugin
         $this->database = App::get('db');
         $this->member = $member;
 
-        include_once \Component::path('com_courses') . DS . 'models' . DS . 'offering.php';
         $model = \Components\Courses\Models\Offering::getInstance();
         $roles = $model->roles();
 
@@ -429,8 +428,6 @@ class Courses extends Plugin
                 $username = $member->username;
             }
         }
-
-        include_once \Component::path('com_courses') . DS . 'tables' . DS . 'course.php';
 
         // Instantiate some needed objects
         $tbl = new \Components\Courses\Tables\Course($database);

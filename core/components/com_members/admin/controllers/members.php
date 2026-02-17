@@ -28,10 +28,6 @@ use Date;
 use Lang;
 use App;
 
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'utility.php';
-include_once \Component::path('members') . '/models/registration.php';
-
 /**
  * Manage site members
  */
@@ -1381,7 +1377,6 @@ class Members extends AdminController
      */
     public function debugTask()
     {
-        include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'debug.php';
 
         // Get filters
         $filters = array(
@@ -1760,7 +1755,6 @@ class Members extends AdminController
 
         echo json_encode($object);
     }
-
 
     /**
      * Perform querying of research organization based on the input value

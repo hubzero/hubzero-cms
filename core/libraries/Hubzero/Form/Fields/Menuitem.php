@@ -41,10 +41,7 @@ class Menuitem extends Groupedlist
 
         // Get the menu items.
         $items = array();
-        if (file_exists(PATH_CORE . '/components/com_menus/helpers/menus.php')) {
-            // Import the com_menus helper.
-            require_once PATH_CORE . '/components/com_menus/helpers/menus.php';
-
+        if (class_exists('\\Components\\Menus\\Helpers\\Menus')) {
             $items = \Components\Menus\Helpers\Menus::getMenuLinks($menuType, 0, 0, $published, $language);
         }
 

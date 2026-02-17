@@ -38,8 +38,6 @@ class Resourcetype extends Select
         $options   = array();
         $options[] =  Html::select('option', '0', Lang::txt('All'));
 
-        include_once \Component::path('com_resources') . '/models/type.php';
-
         $types = Type::getMajorTypes();
 
         foreach ($types as $anode) {

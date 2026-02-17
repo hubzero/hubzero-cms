@@ -32,8 +32,6 @@ class Constantcontact extends Plugin
             return null;
         }
 
-        require_once __DIR__ . '/helpers/ConstantContactClient.php';
-
         return new Helpers\ConstantContactClient(
             $clientId,
             $clientSecret,

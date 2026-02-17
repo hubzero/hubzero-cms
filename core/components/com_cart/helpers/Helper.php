@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -9,14 +8,11 @@
 
 namespace Components\Cart\Helpers;
 
-// No direct access
-defined('_HZEXEC_') or die('Restricted access');
-
 /**
  * Cart helper functions
  *
  */
-class CartHelper
+class Helper
 {
     public static function getUsStates()
     {

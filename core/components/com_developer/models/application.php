@@ -14,11 +14,6 @@ use Session;
 use Lang;
 use Date;
 
-include_once __DIR__ . DS . 'accesstoken.php';
-include_once __DIR__ . DS . 'refreshtoken.php';
-include_once __DIR__ . DS . 'authorizationcode.php';
-include_once __DIR__ . DS . 'application' . DS . 'member.php';
-
 /**
  * Develper mdoel for an application
  */

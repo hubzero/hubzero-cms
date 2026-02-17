@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +12,6 @@ use Exception;
 use Component;
 use Filesystem;
 use Lang;
-
-require_once __DIR__ . DS . 'Warehouse.php';
 
 /**
  *
@@ -230,7 +227,7 @@ class Collection
      */
     public function verify()
     {
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'Integrity.php';
+
         $integrityCheck = \Components\Storefront\Helpers\Integrity::collectionIntegrityCheck($this);
 
         if ($integrityCheck->status != 'ok') {

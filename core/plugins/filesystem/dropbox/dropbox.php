@@ -1,18 +1,14 @@
 <?php
 
-namespace Plugins\Filesystem\Dropbox;
-
-use Hubzero\Plugin\Plugin;
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once PATH_CORE . '/plugins/filesystem/dropbox/helpers/dropboxOauthClient.php';
-require_once Component::path('projects') . '/models/orm/connection.php';
+namespace Plugins\Filesystem\Dropbox;
 
+use Hubzero\Plugin\Plugin;
 use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 use Spatie\Dropbox\Client as DropboxClient;

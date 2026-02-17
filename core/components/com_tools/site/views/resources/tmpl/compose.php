@@ -28,8 +28,6 @@ $this->status['fulltxt'] = preg_replace(
 );
 $this->status['fulltxt'] = trim($this->status['fulltxt']);
 
-include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
-
 $elements = new \Components\Resources\Models\Elements($data, $type->customFields);
 $fields = $elements->render();
 

@@ -14,11 +14,6 @@ use Components\Members\Models\Quota\Log;
 use Components\Tools\Helpers\Utils;
 use User;
 use Lang;
-
-include_once __DIR__ . DS . 'quota' . DS . 'category.php';
-include_once __DIR__ . DS . 'member.php';
-include_once \Component::path('com_tools') . DS . 'helpers' . DS . 'utils.php';
-
 /**
  * User quota model
  */

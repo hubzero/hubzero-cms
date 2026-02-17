@@ -8,8 +8,6 @@
 
 namespace Components\Citations\Admin\Controllers;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'type.php';
-
 use Hubzero\Component\AdminController;
 use Components\Citations\Models\Type;
 use Request;

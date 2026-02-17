@@ -6,12 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Oaipmh\Models\Xml;
 
 use DOMDocument;
-
-require_once __DIR__ . DS . 'element.php';
 
 /**
  * XML Response Builder

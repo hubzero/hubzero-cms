@@ -205,7 +205,14 @@ class Toolbar extends Obj
         }
 
         if (!class_exists($buttonClass)) {
-            throw new \Exception("Module file $buttonFile does not contain class $buttonClass.", 500);
+            throw new \InvalidArgumentException(
+                \Lang::txt(
+                    'JLIB_HTML_BUTTON_NO_LOAD',
+                    $buttonClass,
+                    ''
+                ),
+                500
+            );
         }
 
         $this->_buttons[$signature] = new $buttonClass($this);

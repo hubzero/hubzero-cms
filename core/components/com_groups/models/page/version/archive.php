@@ -15,9 +15,6 @@ use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 use Request;
 
-// include needed modelss
-require_once dirname(__DIR__) . DS . 'version.php';
-
 /**
  * Group page version archive model class
  *

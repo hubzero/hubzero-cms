@@ -45,8 +45,6 @@ class Helper extends Module
      */
     public static function getList(&$params)
     {
-        require_once Component::path('com_content') . '/site/helpers/route.php';
-        require_once Component::path('com_categories') . '/models/category.php';
 
         $parent = $params->get('parent', 'root');
         if ($parent == 'root') {

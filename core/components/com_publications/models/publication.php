@@ -21,34 +21,6 @@ use Lang;
 use Config;
 use Request;
 
-// Include table classes
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'publication.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'access.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'author.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'license.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'screenshot.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'attachment.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'logs.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'collaborator.php';
-
-// Projects
-require_once \Component::path('com_projects') . DS . 'models' . DS . 'project.php';
-require_once \Component::path('com_projects') . DS . 'models' . DS . 'repo.php';
-
-// Common models
-require_once __DIR__ . DS . 'curation.php';
-require_once __DIR__ . DS . 'doi.php';
-
-// Helpers
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
-
 /**
  * Information retrieval for items/info linked to a publication
  */
@@ -1590,8 +1562,6 @@ class Publication extends Obj
             return false;
         }
         if (!isset($this->_citations)) {
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-
             $cc = \Components\Citations\Models\Citation::all();
 
             $a = \Components\Citations\Models\Association::blank()->getTableName();
@@ -1633,8 +1603,6 @@ class Publication extends Obj
             return false;
         }
         if (!isset($this->_lastCitationDate)) {
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-
             $cc = \Components\Citations\Models\Citation::all();
 
             $a = \Components\Citations\Models\Association::blank()->getTableName();
@@ -1664,10 +1632,6 @@ class Publication extends Obj
             return false;
         }
         if (!isset($this->citationsForMetadataSet)) {
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'association.php';
-            include_once Component::path('com_citations') . DS . 'models' . DS . 'type.php';
-
             $citations = \Components\Citations\Models\Citation::all();
             $typesTbl = \Components\Citations\Models\Type::blank()->getTableName();
             $assocTbl = \Components\Citations\Models\Association::blank()->getTableName();
@@ -1704,8 +1668,6 @@ class Publication extends Obj
             return false;
         }
         if (!isset($this->_tags)) {
-            include_once dirname(__DIR__)  . DS . 'helpers' . DS . 'tags.php';
-
             $rt = new Helpers\Tags($this->_db);
             $this->_tags = $rt->get_tags_on_object($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
         }
@@ -1727,8 +1689,6 @@ class Publication extends Obj
             return false;
         }
 
-        include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
-
         $rt = new Helpers\Tags($this->_db);
         $this->_tagsForEditing = $rt->get_tag_string($this->version->get('id'), 0, 0, $tagger_id, $strength, $admin);
         return $this->_tagsForEditing;
@@ -1747,8 +1707,6 @@ class Publication extends Obj
         }
 
         if (!isset($this->_tagCloud)) {
-            include_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
-
             $rt = new Helpers\Tags($this->_db);
             $this->_tagCloud = $rt->get_tag_cloud(0, $admin, $this->version->get('id'));
         }
@@ -2315,8 +2273,6 @@ class Publication extends Obj
             return false;
         }
 
-        include_once dirname(__DIR__)  . DS . 'helpers' . DS . 'tags.php';
-
         $tagsObj = new Helpers\Tags($this->_db);
 
         return $tagsObj->getAllUserTags($this->version->id);
@@ -2333,8 +2289,6 @@ class Publication extends Obj
         if (!$this->exists()) {
             return false;
         }
-
-        include_once dirname(__DIR__)  . DS . 'helpers' . DS . 'tags.php';
 
         $tagsObj = new Helpers\Tags($this->_db);
 
@@ -2393,8 +2347,7 @@ class Publication extends Obj
 
         // citation
         $citationType = 'bibtex';
-        include_once Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
-        $bibtex = new \Structures_BibTex();
+        $bibtex = new \Components\Citations\Helpers\BibTex();
         $arr = [];
         $arr['type'] = 'misc';
         $arr['cite'] = Config::get('sitename') . $this->version->publication_id;

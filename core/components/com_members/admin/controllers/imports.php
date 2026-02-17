@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Members\Admin\Controllers;
 
 use Components\Members\Helpers\Admin;
@@ -28,10 +27,6 @@ use Lang;
 use App;
 use Notify;
 use Session;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'profile' . DS . 'field.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'import.php';
 
 /**
  * Member importer

@@ -10,10 +10,6 @@ namespace Plugins\Filesystem\Github;
 
 use Hubzero\Plugin\Plugin;
 
-require_once __DIR__ . '/src/GithubAdapter.php';
-
-use Hubzero\Plugin\Filesystem\Github\GithubAdapter;
-
 /**
  * Plugin class for github filesystem connectivity
  */

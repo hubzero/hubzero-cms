@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Plugins\Geocode;
+namespace Plugins\Geocode\Local;
 
 class LocalProvider extends \Geocoder\Http\Provider\AbstractHttpProvider implements \Geocoder\Provider\Provider
 {

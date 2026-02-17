@@ -71,7 +71,6 @@ class Collections extends Plugin
 
         $this->_authorize('collection');
 
-        include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
         $this->model = new \Components\Collections\Models\Archive('member', $this->member->get('id'));
 
         //are we returning html
@@ -2190,7 +2189,6 @@ class Collections extends Plugin
         ) {
             try {
                 // Mark all content as trashed
-                include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
 
                 $db = App::get('db');
 
@@ -2234,8 +2232,6 @@ class Collections extends Plugin
 
         if ($userId) {
             try {
-                include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
-
                 $db = App::get('db');
 
                 $model = new \Components\Collections\Tables\Collection($db);

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,8 +11,6 @@ namespace Modules\Billboards;
 use Hubzero\Module\Module;
 use Component;
 use Components\Billboards\Models\Billboard;
-
-require_once Component::path('com_billboards') . DS . 'models' . DS . 'billboard.php';
 
 /**
  * Module helper class, used to query for billboards and contains the display method

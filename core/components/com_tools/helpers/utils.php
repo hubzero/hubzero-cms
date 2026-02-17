@@ -258,7 +258,6 @@ class Utils
     public static function getResourcePath($createdDate, $resourceId, $versionId)
     {
         //include the resources html helper file
-        include_once \Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
 
         //get resource upload path
         $resourceParams = Component::params('com_resources');
@@ -286,9 +285,6 @@ class Utils
     public static function getToolAccess($tool, $login = '')
     {
         //include tool models
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'group.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
 
         // The API does not load the component's strings; the site does
         Lang::load('com_tools', dirname(__DIR__) . DS . 'site');
@@ -423,7 +419,6 @@ class Utils
         return $access;
     }
 
-
     /**
      * Return a tool export access
      *
@@ -507,8 +502,6 @@ class Utils
     public static function recordToolUsage($tool, $userid = '')
     {
         //include needed files
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'version.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'recent.php';
 
         //instantiate needed objects
         $database = \App::get('db');

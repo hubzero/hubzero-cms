@@ -25,7 +25,6 @@ class Helper extends Module
      */
     public function display()
     {
-        require_once Component::path('com_poll') . '/models/poll.php';
 
         $menu   = App::get('menu');
         $items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');

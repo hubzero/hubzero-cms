@@ -18,8 +18,7 @@ require_once dirname(__DIR__) . DS . 'models' . DS . 'emailSubscription.php';
 
 
 require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'codeHelper.php';
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'subscriptionsHelper.php';
+require_once dirname(__DIR__) . DS . 'helpers' . DS . 'SubscriptionsHelper.php';
 
 // determine the controller to use:
 $defaultController = 'newsletters';

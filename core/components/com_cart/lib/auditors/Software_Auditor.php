@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,13 +10,8 @@ namespace Components\Cart\Lib\Auditors;
 
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Sku;
-use Components\Cart\Helpers\CartDownload;
+use Components\Cart\Helpers\Download;
 use User;
-
-require_once __DIR__ . DS . 'BaseAuditor.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Product.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Sku.php';
-require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Download.php';
 
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
 class Software_Auditor extends BaseAuditor
@@ -53,7 +47,7 @@ class Software_Auditor extends BaseAuditor
                 $skuDownloadLimit = $sku->getMeta('downloadLimit');
                 if ($skuDownloadLimit > 0) {
                     // Get SKU download count
-                    $skuDownloadCount = CartDownload::countUserSkuDownloads($this->sId, $this->uId);
+                    $skuDownloadCount = Download::countUserSkuDownloads($this->sId, $this->uId);
                     // Check if the limit is reached
                     if ($skuDownloadCount >= $skuDownloadLimit) {
                         $this->setResponseStatus('error');
@@ -76,7 +70,7 @@ class Software_Auditor extends BaseAuditor
             $skuDownloadLimit = $sku->getMeta('globalDownloadLimit');
             if ($skuDownloadLimit > 0) {
                 // Get SKU download count
-                $skuDownloadCount = CartDownload::countSkuDownloads($this->sId);
+                $skuDownloadCount = Download::countSkuDownloads($this->sId);
                 // Check if the limit is reached
                 if ($skuDownloadCount >= $skuDownloadLimit) {
                     $this->setResponseStatus('error');
@@ -97,7 +91,7 @@ class Software_Auditor extends BaseAuditor
         $productDownloadLimit = Product::getMetaValue($this->pId, 'globalDownloadLimit');
         // Get product downloads count
         if ($productDownloadLimit > 0) {
-            $productDownloadCount = CartDownload::countProductDownloads($this->pId);
+            $productDownloadCount = Download::countProductDownloads($this->pId);
             // Check if the limit is reached
             if ($productDownloadCount >= $productDownloadLimit) {
                 $this->setResponseStatus('error');

@@ -10,7 +10,10 @@ namespace Components\Storefront\Models;
 
 use Lang;
 
-require_once __DIR__ . DS . 'Sku.php';
+// phpcs:disable PSR1.Files.SideEffects
+
+// No direct access
+defined('_HZEXEC_') or die();
 
 class CourseOffering extends Sku
 {

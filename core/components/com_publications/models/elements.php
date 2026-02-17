@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,9 +11,6 @@ namespace Components\Publications\Models;
 use stdClass;
 use Filesystem;
 use Lang;
-
-include_once __DIR__ . DS . 'format.php';
-include_once __DIR__ . DS . 'element.php';
 
 /**
  * Publications elements class
@@ -692,22 +688,6 @@ class Elements
 
         $type = ($type == 'list' ? 'select' : $type);
         $elementClass = __NAMESPACE__ . '\\Element\\' . $type;
-        if (!class_exists($elementClass)) {
-            if (isset($this->_elementPath)) {
-                $dirs = $this->_elementPath;
-            } else {
-                $dirs = array();
-            }
-
-            $file = Filesystem::clean(str_replace('_', DS, $type) . '.php', 'path');
-
-            if ($elementFile = Filesystem::find($dirs, $file)) {
-                include_once $elementFile;
-            } else {
-                return false;
-            }
-        }
-
         if (!class_exists($elementClass)) {
             return false;
         }

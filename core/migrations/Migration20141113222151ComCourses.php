@@ -49,8 +49,6 @@ class Migration20141113222151ComCourses extends Base
             ->loadObjectList();
 
         if ($assetIds && count($assetIds) > 0) {
-            require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
-
             foreach ($assetIds as $aa) {
                 $toChange = $this->db->getQuery(true)
                     ->select('*')

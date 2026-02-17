@@ -229,8 +229,6 @@ class SessionClass extends Table
         $groups = array();
 
         if ($id) {
-            require_once __DIR__ . DS . 'sessionclassgroup.php';
-
             $qcGroups = new SessionClassGroup($this->_db);
             foreach ($qcGroups->find('list', array('class_id' => $id)) as $group) {
                 $groups[] = $group->group_id;
@@ -252,8 +250,6 @@ class SessionClass extends Table
             $groups = array($groups);
         }
         $groups = array_map('intval', $groups);
-
-        require_once __DIR__ . DS . 'sessionclassgroup.php';
 
         $qcGroups = new SessionClassGroup($this->_db);
         $qcGroups->class_id = $this->id;

@@ -40,7 +40,6 @@ $tiTotalAmount = $this->transaction->tInfo->tiSubtotal
 
         //print_r($transactionItems); die;
 
-        require_once PATH_CORE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php';
         $warehouse = new \Components\Storefront\Models\Warehouse();
 
         foreach ($transactionItems as $sId => $item) {

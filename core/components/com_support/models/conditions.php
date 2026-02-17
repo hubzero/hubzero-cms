@@ -17,10 +17,6 @@ use Component;
 use User;
 use Lang;
 
-include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
-include_once __DIR__ . DS . 'status.php';
-include_once __DIR__ . DS . 'category.php';
-
 /*
  * Support model class for query conditions
  */

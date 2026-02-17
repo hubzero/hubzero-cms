@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,9 +14,6 @@ use Exception;
 use Date;
 use Lang;
 use User;
-
-include_once __DIR__ . DS . 'import' . DS . 'hook.php';
-include_once __DIR__ . DS . 'import' . DS . 'run.php';
 
 /**
  * Resource import model

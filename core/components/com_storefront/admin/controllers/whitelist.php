@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,8 +7,6 @@
  */
 
 namespace Components\Storefront\Admin\Controllers;
-
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'restrictions.php';
 
 use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Sku;

@@ -8,11 +8,6 @@
 
 namespace Components\Search\Tests;
 
-$componentPath = Component::path('com_search');
-
-require_once "$componentPath/helpers/solariumBoostQueries.php";
-require_once "$componentPath/tests/traits/canMock.php";
-
 use Components\Search\Helpers\SolariumBoostQueries as Queries;
 use Components\Search\Tests\Traits\canMock;
 use Hubzero\Test\Basic;

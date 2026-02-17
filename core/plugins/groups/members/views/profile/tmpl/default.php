@@ -11,7 +11,6 @@ defined('_HZEXEC_') or die();
 
 $this->css('profile.css');
 
-include_once Component::path('com_members') . DS . 'helpers' . DS . 'html.php';
 
 $loggedin = (! User::isGuest());
 $isUser   = false;

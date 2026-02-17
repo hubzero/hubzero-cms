@@ -54,10 +54,6 @@ class Newsletter extends Plugin
     public function processMailings(\Components\Cron\Models\Job $job)
     {
         // load needed libraries
-        require_once Component::path('com_newsletter') . DS . 'models' . DS . 'newsletter.php';
-        require_once Component::path('com_newsletter') . DS . 'models' . DS . 'mailinglist.php';
-        require_once Component::path('com_newsletter') . DS . 'models' . DS . 'mailing.php';
-        require_once Component::path('com_newsletter') . DS . 'helpers' . DS . 'helper.php';
 
         // needed vars
         $limit     = 25;
@@ -241,9 +237,6 @@ class Newsletter extends Plugin
      */
     public function processIps(\Components\Cron\Models\Job $job)
     {
-        // load needed libraries
-        require_once Component::path('com_newsletter') . DS . 'models' . DS . 'mailing' . DS . 'recipient' . DS . 'action.php';
-
         // get db
         $database = App::get('db');
 

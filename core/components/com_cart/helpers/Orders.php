@@ -13,7 +13,7 @@ use User;
 /**
  * Cart orders helpers
  */
-class CartOrders
+class Orders
 {
     /**
      * Get a count or list of items ordered

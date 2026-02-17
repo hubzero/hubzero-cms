@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +13,6 @@ use Hubzero\Config\Registry;
 use Component;
 use Lang;
 use User;
-
-require_once __DIR__ . DS . 'section.php';
 
 /**
  * Model class for a forum
@@ -431,11 +428,7 @@ class Manager extends Obj
         $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
         if (!class_exists($cls)) {
-            $path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
-            if (!is_file($path)) {
-                throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
-            }
-            include_once $path;
+            throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
         }
 
         return new $cls($this->get('scope_id'));

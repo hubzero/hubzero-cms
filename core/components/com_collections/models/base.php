@@ -15,8 +15,6 @@ use Date;
 use User;
 use Lang;
 
-require_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
 /**
  * Abstract model for collections
  */

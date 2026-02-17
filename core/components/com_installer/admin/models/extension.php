@@ -164,7 +164,6 @@ class Extension extends Relational
     {
         if ($this->get('type') == 'template') {
             if (is_file(\Component::path('com_templates') . '/models/style.php')) {
-                include_once \Component::path('com_templates') . '/models/style.php';
 
                 $style = \Components\Templates\Models\Style::all()
                     ->whereEquals('template', $this->get('element'))

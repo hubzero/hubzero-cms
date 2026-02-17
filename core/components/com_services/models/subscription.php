@@ -12,8 +12,6 @@ use Hubzero\Database\Relational;
 use Hubzero\Config\Registry;
 use Date;
 
-require_once __DIR__ . DS . 'service.php';
-
 /**
  * Subscription model
  *

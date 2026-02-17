@@ -17,15 +17,6 @@ use Lang;
 use Date;
 use User;
 
-require_once __DIR__ . DS . 'invitee.php';
-require_once __DIR__ . DS . 'applicant.php';
-require_once __DIR__ . DS . 'member.php';
-require_once __DIR__ . DS . 'manager.php';
-require_once __DIR__ . DS . 'page.php';
-require_once __DIR__ . DS . 'module.php';
-require_once __DIR__ . DS . 'role.php';
-require_once __DIR__ . DS . 'log.php';
-
 /**
  * Group model
  *

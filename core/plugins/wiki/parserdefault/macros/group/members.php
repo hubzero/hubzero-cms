@@ -8,8 +8,6 @@
 
 namespace Plugins\Wiki\Parserdefault\Macros\Group;
 
-require_once dirname(__DIR__) . DS . 'group.php';
-
 use Plugins\Wiki\Parserdefault\Macros\GroupMacro;
 
 /**
@@ -138,8 +136,6 @@ class Members extends GroupMacro
     {
         $content = '<div class="member_browser">';
         if (count($members) > 0) {
-            include_once \Component::path('com_members') . DS . 'models' . DS . 'member.php';
-
             foreach ($members as $member) {
                 $profile = \Components\Members\Models\Member::oneOrNew($member);
                 $link    = \Route::url($profile->link());

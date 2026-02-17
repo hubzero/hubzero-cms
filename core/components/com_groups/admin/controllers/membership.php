@@ -20,8 +20,6 @@ use User;
 use App;
 use Component;
 
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
-
 /**
  * Groups controller class for managing membership and group info
  */

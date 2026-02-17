@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,9 +17,6 @@ use Route;
 use App;
 use User;
 use Lang;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'author' . DS . 'role.php';
 
 /**
  * Manage resource authors

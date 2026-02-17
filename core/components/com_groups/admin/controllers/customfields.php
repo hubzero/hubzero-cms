@@ -20,8 +20,6 @@ use Lang;
 use Date;
 use App;
 
-require_once \Component::path('com_groups') . '/models/orm/field.php';
-
 /**
  * Applications controller class for forms
  */

@@ -25,8 +25,7 @@ class Request extends ComponentController
         $response = new \stdClass();
         $response->status = 'ok';
 
-        include_once \Component::path($this->option) . DS . 'models' . DS . 'cart.php';
-        $cart = new CurrentCart();
+        $cart = new \Components\Cart\Models\CurrentCart();
 
         // update cart
         $updateCartRequest = \Request::getBool('updateCart', false, 'post');

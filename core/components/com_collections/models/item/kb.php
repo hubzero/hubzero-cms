@@ -15,8 +15,6 @@ use Request;
 use Route;
 use Lang;
 
-require_once dirname(__DIR__) . DS . 'item.php';
-
 /**
  * Collections model for a Knowledge base article
  */
@@ -76,7 +74,6 @@ class Kb extends GenericItem
 
         $id = ($id ?: Request::getInt('id', 0));
 
-        include_once \Component::path('com_kb') . DS . 'models' . DS . 'article.php';
         $article = null;
 
         if (!$id) {

@@ -12,8 +12,6 @@ use Hubzero\Component\Router\Base;
 use Component;
 use App;
 
-include_once __DIR__ . '/helpers/route.php';
-
 /**
  * Routing class for the component
  */

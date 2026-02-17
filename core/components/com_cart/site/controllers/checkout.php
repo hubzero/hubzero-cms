@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,9 +19,6 @@ use Lang;
 use User;
 use App;
 use Event;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'CurrentCart.php';
-require_once \Component::path('com_storefront') . DS . 'models' . DS . 'Warehouse.php';
 
 /**
  * Courses controller class
@@ -570,11 +566,10 @@ class Checkout extends ComponentController
         // Generate payment code
         /*
         $params = Component::params(Request::getCmd('option'));
-        $paymentGatewayProivder = $params->get('paymentProvider');
+        $paymentGatewayProvider = $params->get('paymentProvider');
 
-        require_once dirname(dirname(__DIR__)) . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php';
-        $paymentDispatcher = new \PaymentDispatcher($paymentGatewayProivder);
-        $pay = $paymentDispatcher->getPaymentProvider();
+        $providerClass = '\\Components\\Cart\\Lib\\Payment\\' . ucfirst($paymentGatewayProvider) . '\\PaymentProvider';
+        $pay = new $providerClass();
 
         $pay->setTransactionDetails($transaction);
 

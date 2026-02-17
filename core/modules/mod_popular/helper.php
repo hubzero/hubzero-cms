@@ -33,8 +33,6 @@ class Helper extends Module
             return;
         }
 
-        require_once Component::path('com_content') . '/models/article.php';
-
         // [!] Legacy compatibility
         $params = $this->params;
 
@@ -105,7 +103,6 @@ class Helper extends Module
         $catid = (int) $params->get('catid');
 
         if ($catid) {
-            require_once Component::path('com_categories') . '/models/category.php';
 
             $category = Category::one($catid);
             if ($category) {

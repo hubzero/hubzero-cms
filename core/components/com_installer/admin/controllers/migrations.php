@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Installer\Admin\Controllers;
 
 use Hubzero\Component\AdminController;
@@ -18,8 +17,6 @@ use Route;
 use App;
 use Lang;
 use User;
-
-require_once dirname(__DIR__) . '/helpers/cli.php';
 
 /**
  * Migrations Controller

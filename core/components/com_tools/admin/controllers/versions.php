@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,9 +19,6 @@ use Notify;
 use Route;
 use Lang;
 use App;
-
-require_once dirname(dirname(dirname(__FILE__))) . DS . 'models' . DS . 'version' . DS . 'zone.php';
-require_once dirname(dirname(dirname(__FILE__))) . DS . 'tables' . DS . 'zones.php';
 
 /**
  * Tools controller class for tool versions
@@ -104,7 +100,6 @@ class Versions extends AdminController
             $this->config->get('new_doi')
             && file_exists(\Component::path('com_resources') . '/models/doi.php')
         ) {
-            require_once \Component::path('com_resources') . '/models/doi.php';
 
             $dois = \Components\Resources\Models\Doi::all()
                 ->whereEquals('alias', $tool->toolname)
@@ -171,7 +166,6 @@ class Versions extends AdminController
             $this->config->get('new_doi')
             && file_exists(\Component::path('com_resources') . '/models/doi.php')
         ) {
-            require_once \Component::path('com_resources') . '/models/doi.php';
 
             $doi = \Components\Resources\Models\Doi::all()
                 ->whereEquals('alias', $row->toolname)
@@ -266,7 +260,6 @@ class Versions extends AdminController
             && file_exists(\Component::path('com_resources') . '/models/doi.php')
             && substr($row->instance, -4) != '_dev'
         ) {
-            require_once \Component::path('com_resources') . '/models/doi.php';
 
             // Save DOI data
             $dois = Request::getArray('doi', array(), 'post');
@@ -274,7 +267,6 @@ class Versions extends AdminController
             if ($dois['doi']) {
                 if (!$dois['rid']) {
                     if (file_exists(\Component::path('com_resources') . '/models/entry.php')) {
-                        require_once \Component::path('com_resources') . '/models/entry.php';
 
                         $dois['rid'] = \Components\Resources\Models\Entry::oneByAlias($version->toolname)->get('id');
                     }

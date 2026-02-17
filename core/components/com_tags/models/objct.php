@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +13,6 @@ use stdClass;
 use Lang;
 use Date;
 use User;
-
-require_once __DIR__ . DS . 'log.php';
 
 /**
  * Tag object association

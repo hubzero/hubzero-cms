@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,19 +19,6 @@ use Lang;
 use User;
 use App;
 use Date;
-
-/**
- * Tool classes
- */
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php';
-
-/**
- * Resource classes
- */
-require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for contributing a tool
@@ -124,7 +110,6 @@ class Resources extends SiteController
             // Get custom areas, add wrapper tags, and compile into fulltxt
             $type = $row->type;
 
-            include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
             $elements = new \Components\Resources\Models\Elements(array(), $type->customFields);
             $schema = $elements->getSchema();
 
@@ -468,7 +453,6 @@ class Resources extends SiteController
         $tagcloud->setTags($newtags, User::get('id'));
 
         // Get some needed libraries
-        include_once Component::path('com_resources') . DS . 'helpers' . DS . 'html.php';
 
         // Load the resource object
         $resource = Entry::oneByAlias($alias);

@@ -8,19 +8,12 @@
 
 namespace Components\Storefront\Models;
 
-
-// No direct access
-defined('_HZEXEC_') or die();
-
-
 use Components\Storefront\Models\Course;
 use Components\Storefront\Models\Warehouse;
 use Exception;
 use Filesystem;
 use Component;
 use Lang;
-
-require_once __DIR__ . DS . 'Warehouse.php';
 
 /**
  * Storefront product class
@@ -336,10 +329,8 @@ class Product
                 // Find out product type to instantiate the correct object
                 // software
                 if ($this->getTypeInfo() && $this->getTypeInfo()->name == 'Software Download') {
-                    require_once __DIR__ . DS . 'SoftwareSku.php';
                     $instanceName = '\Components\Storefront\Models\SoftwareSku';
                 } else {
-                    require_once __DIR__ . DS . 'Sku.php';
                     $instanceName = '\Components\Storefront\Models\Sku';
                 }
 

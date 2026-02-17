@@ -25,7 +25,6 @@ class Babajispam extends Plugin
      */
     public function onAntispamDetector()
     {
-        include_once __DIR__ . DS . 'Detector.php';
 
         return new \Plugins\Antispam\Babajispam\Detector();
     }

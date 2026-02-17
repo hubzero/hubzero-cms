@@ -180,8 +180,6 @@ class Managers extends SiteController
 
         $entries = Request::getArray('entries', array(0), 'post');
 
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'member.php';
-
         foreach ($entries as $key => $data) {
             // The default above is array(0), so with no `entries` parameter at all
             // $data is the int 0 and writing to it is a PHP 8 fatal ("Cannot use a

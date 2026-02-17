@@ -8,19 +8,6 @@
 
 namespace Components\Projects\Models;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'project.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'activity.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'microblog.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'comment.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'owner.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'type.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'todo.php';
-require_once Component::path('com_projects') . '/models/orm/owner.php';
-
-require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
-
-require_once __DIR__ . DS . 'tags.php';
-
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
 use Hubzero\Base\ItemList;
@@ -179,7 +166,7 @@ class Project extends Model
      */
     public function repo()
     {
-        require_once __DIR__ . DS . 'repo.php';
+
         if (!isset($this->_repo)) {
             $this->_repo = new Repo($this, 'local');
         }
@@ -237,7 +224,6 @@ class Project extends Model
             case 'timeago':
                 return \Components\Projects\Helpers\Html::timeAgo($this->get($key));
             break;
-
 
             default:
                 return $this->get($key);

@@ -8,8 +8,6 @@
 
 namespace Components\Citations\Admin\Controllers;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'citation.php';
-
 use Components\Citations\Models\Citation;
 use Components\Citations\Models\Association;
 use Components\Citations\Models\Type;

@@ -56,7 +56,6 @@ $this->js();
                     <select name="fields[offering_id]" id="offering_id">
                         <option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
                         <?php
-                        require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
                         $model = \Components\Courses\Models\Courses::getInstance();
                         if ($model->courses()->total() > 0) {
                             foreach ($model->courses() as $course) {

@@ -123,7 +123,6 @@ class Collections extends Plugin
      */
     public static function out($row)
     {
-        include_once \Component::path('com_collections') . DS . 'models' . DS . 'post.php';
 
         $row->object_type     = $row->params;
         $row->object_id     = $row->rcount;

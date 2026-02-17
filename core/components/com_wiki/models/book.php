@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,8 +16,6 @@ use Exception;
 use Component;
 use Request;
 use Lang;
-
-require_once __DIR__ . DS . 'page.php';
 
 /**
  * Wiki model for a book

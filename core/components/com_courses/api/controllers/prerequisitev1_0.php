@@ -12,9 +12,6 @@ use Components\Courses\Tables\Prerequisites;
 use Request;
 use App;
 
-require_once __DIR__ . DS . 'base.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'prerequisite.php';
-
 /**
  * API controller for the time component
  */

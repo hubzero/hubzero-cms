@@ -9,8 +9,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-include_once Component::path('com_resources') . DS . 'helpers' . DS . 'usage.php';
-
 $params = $this->row->params;
 
 switch ($this->row->access) {

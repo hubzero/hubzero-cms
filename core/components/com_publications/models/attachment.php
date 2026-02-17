@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +9,6 @@
 namespace Components\Publications\Models;
 
 use Hubzero\Base\Obj;
-
-include_once \Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
 
 /**
  * Publication attachment model class

@@ -12,8 +12,6 @@ use Hubzero\Component\View;
 use User;
 use Date;
 
-require_once __DIR__ . DS . 'tag.php';
-
 /**
  * Cloud model for Tags
  */

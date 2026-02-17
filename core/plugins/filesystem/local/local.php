@@ -10,8 +10,6 @@ use Hubzero\Plugin\Plugin;
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once __DIR__ . DS . 'LocalAdapter.php';
-
 /**
  * Plugin class for local filesystem connectivity
  */

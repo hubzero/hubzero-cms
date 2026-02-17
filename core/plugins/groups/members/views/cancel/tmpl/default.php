@@ -9,7 +9,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'utility.php';
 
 $formUrl = Route::url(
     'index.php?option=' . $this->option

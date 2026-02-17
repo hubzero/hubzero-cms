@@ -8,8 +8,6 @@
 
 namespace Components\Collections\Models\Following;
 
-require_once __DIR__ . DS . 'base.php';
-
 /**
  * Model class for following a group
  */

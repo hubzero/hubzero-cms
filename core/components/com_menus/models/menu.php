@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,10 +13,6 @@ use Hubzero\Form\Form;
 use Filesystem;
 use Lang;
 use User;
-
-require_once __DIR__ . '/item.php';
-require_once __DIR__ . '/module.php';
-require_once __DIR__ . '/menutype.php';
 
 /**
  * Menu type model

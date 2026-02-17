@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +12,6 @@
 namespace Components\Storefront\Site;
 
 use Hubzero\Component\Router\Base;
-
-defined('_HZEXEC_') or die();
 
 /**
  * Routing class for the component

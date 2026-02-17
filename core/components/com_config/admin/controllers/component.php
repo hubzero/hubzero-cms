@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Config\Admin\Controllers;
 
 use Components\Config\Models;
@@ -18,8 +17,6 @@ use Lang;
 use User;
 use App;
 use Route;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'component.php';
 
 /**
  * Controller class for a component's config

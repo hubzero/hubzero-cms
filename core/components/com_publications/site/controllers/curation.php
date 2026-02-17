@@ -27,10 +27,6 @@ use Config;
 use Date;
 use Event;
 
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'publication.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'curation.php';
-require_once \Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
-
 /**
  * Primary component controller (extends \Hubzero\Component\SiteController)
  */
@@ -525,7 +521,6 @@ class Curation extends SiteController
         // user asks for it (gated; when async is off the synchronous bundle
         // produced during curation is used as before).
         if ((int) $this->config->get('bundle_async', 0)) {
-            require_once \Component::path('com_publications') . '/models/bundlequeue.php';
             \Components\Publications\Models\BundleQueue::enqueueVersion($this->_pub->version->get('id'));
         }
 

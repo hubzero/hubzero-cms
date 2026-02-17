@@ -13,9 +13,6 @@ use Hubzero\Console\Command\CommandInterface;
 use Components\Publications\Models\BundleBuilder;
 use Components\Publications\Models\BundleQueue;
 
-require_once dirname(__DIR__) . DS . 'models' . DS . 'bundlebuilder.php';
-require_once dirname(__DIR__) . DS . 'models' . DS . 'bundlequeue.php';
-
 /**
  * Build publication download bundles (core; replaces the PURR-only
  * app/bin/rebuild-publication-bundle).

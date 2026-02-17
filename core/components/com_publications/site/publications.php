@@ -16,9 +16,9 @@ $componentPath = Component::path('com_publications');
 $sitePath = "$componentPath/site";
 
 require_once "$componentPath/models/publication.php";
-require_once "$componentPath/tables/logs.php";
+require_once "$componentPath/tables/Log.php";
 require_once "$componentPath/helpers/usage.php";
-require_once "$componentPath/helpers/resourceMapGenerator.php";
+require_once "$componentPath/helpers/ResourceMapGenerator.php";
 
 $view = Request::getCmd('view', 'publications');
 $controllerName = Request::getCmd('controller', $view);

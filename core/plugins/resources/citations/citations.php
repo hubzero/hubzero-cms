@@ -74,7 +74,6 @@ class Citations extends Plugin
         }
 
         // Get a needed library
-        include_once \Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
         $cc = \Components\Citations\Models\Citation::all();
 

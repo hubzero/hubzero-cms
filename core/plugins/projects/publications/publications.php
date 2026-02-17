@@ -15,8 +15,6 @@ use Components\Publications\Models\Handlers;
 use Components\Publications\Models\Status;
 use Components\Publications\Helpers\Html as PubHtml;
 
-include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
-
 /**
  * Project publications
  */
@@ -1475,8 +1473,6 @@ class Publications extends Plugin
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
         $version = Request::getString('version', 'default');
 
-        require_once Component::path('com_publications') . DS . 'tables' . DS . 'logs.php';
-
         $view = new \Hubzero\Plugin\View(
             array(
                 'folder'  => 'projects',
@@ -1546,7 +1542,6 @@ class Publications extends Plugin
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGESTION_ERROR'));
             } else {
                 // Include support scripts
-                include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
 
                 // Load the support config
                 $sparams = Component::params('com_support');

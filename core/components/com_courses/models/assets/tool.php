@@ -8,9 +8,6 @@
 
 namespace Components\Courses\Models\Assets;
 
-require_once \Component::path('com_projects') . '/models/project.php';
-require_once \Component::path('com_projects') . '/models/orm/connection.php';
-
 use Component;
 use Request;
 use Components\Projects\Models\Project;
@@ -18,6 +15,7 @@ use Components\Projects\Models\Orm\Connection;
 use Hubzero\Filesystem\Entity;
 use Hubzero\Filesystem\Manager;
 use Filesystem;
+
 /**
  * Tool asset handler class
  */
@@ -94,9 +92,8 @@ class Tool extends Content
             $cconfig = Component::params('com_courses');
 
             // Build the upload path if it doesn't exist
-            require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
-
-            // Loop through files and save them (they will potentially be coming in together, in a single request)
+            // Loop through files and save them
+            // (they will potentially be coming in together, in a single request)
             for ($i = 0; $i < count($_FILES['files']['name']); $i++) {
                 $file = $_FILES['files']['name'][$i];
                 $size = (int) $_FILES['files']['size'][$i];

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -59,9 +60,6 @@ class Courses extends Plugin
         $creds->consumer_secret = $params->get('passport_consumer_secret');
 
         $badgesProvider->setCredentials($creds);
-
-        require_once Component::path('com_courses') . '/models/courses.php';
-        require_once Component::path('com_courses') . '/models/memberBadge.php';
 
         $coursesObj = new \Components\Courses\Models\Courses();
         $courses    = $coursesObj->courses();
@@ -139,8 +137,6 @@ class Courses extends Plugin
 
         $subject = Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SUBJECT_EMAIL_DIGEST');
 
-        require_once Component::path('com_courses') . '/models/courses.php';
-
         $course_id = 0;
 
         $params = $job->params;
@@ -178,8 +174,6 @@ class Courses extends Plugin
                         $failing = $offering->gradebook()->countFailing(false);
 
                         if (isset($managers) && count($managers) > 0) {
-                            require_once Component::path('com_forum') . '/models/manager.php';
-
                             foreach ($managers as $manager) {
                                 // Get the user's account
                                 $user = User::getInstance($manager->get('user_id'));

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,8 +10,6 @@ namespace Components\Search\Models\Basic\Result;
 
 use Components\Search\Models\Basic\Result as SearchResult;
 use Exception;
-
-include_once dirname(__DIR__) . DS . 'result.php';
 
 /**
  * Empty result

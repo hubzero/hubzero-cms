@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,9 +7,6 @@
  */
 
 namespace Components\Resources\Helpers;
-
-require_once Component::path('com_tags') . '/models/objct.php';
-require_once Component::path('com_tags') . '/models/tag.php';
 
 use Components\Tags\Models\Objct;
 use Components\Tags\Models\Tag;

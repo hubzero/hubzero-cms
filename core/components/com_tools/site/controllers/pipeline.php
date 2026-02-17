@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,19 +24,6 @@ use Date;
 use Event;
 use Log;
 use Notify;
-
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'group.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'author.php';
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php';
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'html.php';
-
-include_once Component::path('com_support') . DS . 'helpers' . DS . 'utilities.php';
-include_once Component::path('com_support') . DS . 'models' . DS . 'ticket.php';
-
-require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-include_once Component::path('com_resources') . DS . 'models' . DS . 'doi.php';
 
 /**
  * Controller class for contributing a tool
@@ -1138,8 +1124,6 @@ class Pipeline extends SiteController
         $rid = \Components\Tools\Models\Tool::getResourceId($hzt->toolname, $hzt->id);
 
         if (empty($rid)) {
-            include_once __DIR__ . DS . 'resources.php';
-
             $resource = new Resources();
 
             $rid = $resource->createPage($this->_toolid, $tool);
@@ -1147,8 +1131,6 @@ class Pipeline extends SiteController
             //$objA = new \Components\Tools\Tables\Author($this->database);
             //if (!$id) { $objA->saveAuthors($tool['developers'], 'dev', $rid, '', $tool['toolname']); }
             if (!$id) {
-                require_once __DIR__ . DS . 'authors.php';
-
                 $controller = new Authors();
                 $controller->saveAuthors($rid, $tool['developers'], 0);
 
@@ -1537,8 +1519,6 @@ class Pipeline extends SiteController
 
                 Log::debug("update: to=$to from=$from   dev=" . $dev_hztv->id . " current=" . $current_hztv->id);
                 if ($to && $from) {
-                    require_once __DIR__ . DS . 'screenshots.php';
-
                     $ss = new Screenshots();
                     $ss->transfer($from, $to, $rid);
                 }
@@ -1546,8 +1526,6 @@ class Pipeline extends SiteController
 
             // If the tool was cancelled ...
             if ($oldstatus['state'] == \Components\Tools\Helpers\Html::getStatusNum('Abandoned')) {
-                include_once __DIR__ . DS . 'resources.php';
-
                 $r = \Components\Resources\Models\Entry::oneByAlias($hzt->toolname);
 
                 if ($r && $r->id) {
@@ -2307,7 +2285,6 @@ class Pipeline extends SiteController
         }
 
         // unpublish resource page
-        include_once __DIR__ . DS . 'resources.php';
 
         $resource = new Resources();
         $resource->updatePage($status['resourceid'], $status, '4');

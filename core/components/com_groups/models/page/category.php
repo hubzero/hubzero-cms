@@ -13,9 +13,6 @@ use Components\Groups\Tables;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
 
-// include needed tables
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'page.category.php';
-
 /**
  * Group page category model class
  *

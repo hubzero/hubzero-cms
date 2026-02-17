@@ -56,8 +56,6 @@ class Sponsors extends Plugin
             'metadata' => ''
         );
 
-        require_once __DIR__ . DS . 'models' . DS . 'sponsor.php';
-
         $records = \Plugins\Resources\Sponsors\Models\Sponsor::all()
             ->whereEquals('state', 1)
             ->rows();
@@ -127,8 +125,6 @@ class Sponsors extends Plugin
         }
 
         $task = ($task) ?  $task : 'default';
-
-        require_once __DIR__ . DS . 'models' . DS . 'sponsor.php';
 
         $this->_option     = $option;
         $this->_controller = $controller;
@@ -252,8 +248,6 @@ class Sponsors extends Plugin
             $this->setError($row->getError());
             return $this->editTask($row);
         }
-
-        require_once Component::path('com_tags') . DS . 'models' . DS . 'cloud.php';
 
         $t = \Components\Tags\Models\Tag::oneByTag($row->get('alias'));
         if ($t->isNew()) {

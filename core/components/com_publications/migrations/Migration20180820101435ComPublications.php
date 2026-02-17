@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,8 +10,6 @@ namespace Components\Publications\Migrations;
 
 use Hubzero\Content\Migration\Base;
 use Components\Publications\Models\Publication;
-
-include Component::path('com_publications') . '/models/publication.php';
 
 /**
  * Migration script for creating links in the SFTP directory

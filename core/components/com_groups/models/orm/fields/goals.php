@@ -49,8 +49,6 @@ class Goals extends Radio
         $skills = null;
 
         if (isset($this->element['option_other']) && $this->element['option_other']) {
-            include_once dirname(__DIR__) . '/field.php';
-
             $skills = Field::all()
                 ->whereEquals('type', 'scale')
                 ->order('ordering', 'asc')
@@ -366,8 +364,6 @@ class Goals extends Radio
                 }
                 if (isset($goal['skills_level']) && $goal['skills_level']) {
                     $skl = json_decode($goal['skills_level'], true);
-
-                    include_once dirname(__DIR__) . '/field.php';
 
                     $skills = Field::all()
                         ->whereEquals('type', 'scale')

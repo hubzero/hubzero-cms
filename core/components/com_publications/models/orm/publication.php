@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,11 +10,6 @@ namespace Components\Publications\Models\Orm;
 
 use Hubzero\Database\Relational;
 use stdClass;
-
-require_once __DIR__ . DS . 'version.php';
-require_once __DIR__ . DS . 'rating.php';
-require_once __DIR__ . DS . 'type.php';
-require_once __DIR__ . DS . 'category.php';
 
 /**
  * Model class for publication
@@ -136,7 +130,6 @@ class Publication extends Relational
      */
     public function project()
     {
-        require_once \Component::path('com_projects') . '/models/orm/project.php';
 
         return $this->belongsToOne('Components\Projects\Models\Orm\Project', 'project_id');
     }
@@ -204,7 +197,6 @@ class Publication extends Relational
      */
     public function tags()
     {
-        include_once \Component::path('com_tags') . '/models/cloud.php';
 
         $cloud = new \Components\Tags\Models\Cloud();
 

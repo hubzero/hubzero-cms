@@ -13,8 +13,6 @@ use Components\Groups\Models\Orm\Field;
 use Components\Groups\Models\Orm\Answer;
 use Components\Groups\Models\Orm\Group;
 
-require_once \Component::path('com_groups') . '/models/orm/group.php';
-require_once \Component::path('com_groups') . '/models/orm/field.php';
 /**
  * Migration script for adding custom fields
  *

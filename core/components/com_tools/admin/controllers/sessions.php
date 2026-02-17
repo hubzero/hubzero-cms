@@ -19,14 +19,6 @@ use Event;
 use Lang;
 use App;
 
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'job.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'session.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'view.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'viewperm.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclass.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'sessionclassgroup.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'preferences.php';
-
 /**
  * Controller class for tool sessions
  */

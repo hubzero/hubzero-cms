@@ -40,13 +40,6 @@ class Parserdefault extends Plugin
     public function onGetWikiParser($config, $getnew = false)
     {
         if (!is_object($this->parser) || $getnew) {
-            $path = dirname(__FILE__);
-            if (is_file($path . DS . 'parser.php')) {
-                include_once $path . DS . 'parser.php';
-            } else {
-                return null;
-            }
-
             $config['option'] = (isset($config['option'])) ? $config['option'] : 'com_wiki';
             $config['scope'] = (isset($config['scope'])) ? $config['scope'] : '';
             $config['pagename'] = (isset($config['pagename'])) ? $config['pagename'] : '';

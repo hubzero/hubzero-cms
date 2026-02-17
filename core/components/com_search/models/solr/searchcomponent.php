@@ -19,12 +19,6 @@ use Config;
 use Event;
 use Route;
 
-//use Component;
-
-require_once Component::path('com_search') . '/helpers/discoveryhelper.php';
-require_once Component::path('com_search') . '/models/solr/filters/filter.php';
-require_once Component::path('com_search') . '/models/solr/blacklist.php';
-
 /**
  * Database model for search components
  *

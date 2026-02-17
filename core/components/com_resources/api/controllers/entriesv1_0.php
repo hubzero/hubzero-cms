@@ -89,8 +89,6 @@ class Entriesv1_0 extends ApiController
             App::abort(403, Lang::txt('COM_RESOURCES_SEARCH_LOGIN_REQUIRED'));
         }
 
-        require_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
-
         $query = Entry::all();
 
         $r = $query->getTableName();
@@ -255,8 +253,6 @@ class Entriesv1_0 extends ApiController
         $limit    = Request::getInt('limit', 25);
         $period   = Request::getString('period', 'month');
         $category = Request::getString('category', 'resources');
-
-        require_once Component::path('com_whatsnew') . DS . 'helpers' . DS . 'finder.php';
 
         $whatsnew = \Components\Whatsnew\Helpers\Finder::getBasedOnPeriodAndCategory($period, $category, $limit);
 

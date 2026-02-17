@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,10 +7,6 @@
  */
 
 namespace Components\Search\Tests;
-
-$componentPath = Component::path('com_search');
-
-require_once "$componentPath/helpers/errorMessageHelper.php";
 
 use Components\Search\Helpers\ErrorMessageHelper;
 use Hubzero\Test\Basic;

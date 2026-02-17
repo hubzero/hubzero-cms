@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,11 +21,6 @@ use User;
 use App;
 use Filesystem;
 use Log;
-
-include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'helper.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'tool.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'version.php';
-include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
 
 /**
  * Controller class for contributing a tool

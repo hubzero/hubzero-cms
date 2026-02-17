@@ -116,8 +116,6 @@ class File extends Macro
         $ret = false;
         // Is it numeric?
         if (is_numeric($file)) {
-            include_once \Component::path('com_wiki') . DS . 'models' . DS . 'attachment.php';
-
             // Get resource by ID
             $attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
 
@@ -135,7 +133,6 @@ class File extends Macro
         }
         // Check for file existence
         else if (file_exists($this->path($file)) || file_exists($this->path($file, true))) {
-            include_once \Component::path('com_wiki') . DS . 'models' . DS . 'attachment.php';
 
             // Get resource by ID
             $attach = \Components\Wiki\Models\Attachment::oneByFilename($file, $this->pageid);
