@@ -5,151 +5,185 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Plugin\Plugin;
 
 /**
- * User plugin for hub users
+ * User plugin for syncing email preferences with Constant Contact (V3 API)
  */
-class plgUserConstantContact extends \Hubzero\Plugin\Plugin
+class plgUserConstantContact extends Plugin
 {
+	/**
+	 * Build the API client from plugin params
+	 *
+	 * @return ConstantContactClient|null  Client or null if unconfigured
+	 */
+	protected function getClient(): ?ConstantContactClient
+	{
+		$clientId     = $this->params->get('ccClientId', '');
+		$clientSecret = $this->params->get('ccClientSecret', '');
+		$accessToken  = $this->params->get('ccAccessToken', '');
+		$refreshToken = $this->params->get('ccRefreshToken', '');
+		$tokenExpires = (int) $this->params->get('ccTokenExpires', 0);
+
+		if (!$clientId || !$clientSecret || !$refreshToken) {
+			return null;
+		}
+
+		require_once __DIR__ . '/helpers/ConstantContactClient.php';
+
+		return new ConstantContactClient(
+			$clientId,
+			$clientSecret,
+			$accessToken,
+			$refreshToken,
+			$tokenExpires,
+			[$this, 'persistTokens']
+		);
+	}
+
+	/**
+	 * Persist refreshed OAuth2 tokens back to the database
+	 *
+	 * Called automatically by the client when tokens are refreshed.
+	 *
+	 * @param  string $accessToken
+	 * @param  string $refreshToken
+	 * @param  int    $tokenExpires
+	 * @return void
+	 */
+	public function persistTokens(string $accessToken, string $refreshToken, int $tokenExpires): void
+	{
+		$this->params->set('ccAccessToken', $accessToken);
+		$this->params->set('ccRefreshToken', $refreshToken);
+		$this->params->set('ccTokenExpires', $tokenExpires);
+
+		try {
+			$db = \App::get('db');
+			$db->setQuery(
+				"UPDATE `#__extensions` SET `params` = " . $db->quote($this->params->toString())
+				. " WHERE `type` = 'plugin' AND `folder` = 'user' AND `element` = 'constantcontact'"
+			);
+			$db->query();
+		} catch (\Exception $e) {
+			\Log::error('Constant Contact: failed to persist refreshed tokens: ' . $e->getMessage());
+		}
+	}
+
+	/**
+	 * Determine the contact list ID to use
+	 *
+	 * Uses the configured list ID if set, otherwise falls back to the
+	 * first list returned by the API (matching V1 behavior).
+	 *
+	 * @param  ConstantContactClient $client
+	 * @return string|null
+	 */
+	protected function getDefaultListId(ConstantContactClient $client): ?string
+	{
+		$listId = $this->params->get('ccListId', '');
+		if ($listId) {
+			return $listId;
+		}
+
+		$lists = $client->getLists();
+
+		return !empty($lists) ? $lists[0]['list_id'] : null;
+	}
+
 	/**
 	 * Method is called after user data is stored in the database
 	 *
-	 * @param   object  $user  holds the new profile data (\Hubzero\User\User)
-	 * @return  void
+	 * Syncs the user's email preference with Constant Contact:
+	 * - Creates a contact if none exists
+	 * - Re-subscribes if user opts in (sendEmail == 2) and contact is unsubscribed
+	 * - Opts out if user opts out (sendEmail == 0) and contact is active
+	 *
+	 * @param  object $user  The user profile (\Hubzero\User\User)
+	 * @return void
 	 */
 	public function onAfterStoreProfile($user)
 	{
-		//get the user's email and mail preference option
-		$userEmailAddress          = $user->get('email');
-		$userEmailPreferenceOption = $user->get('sendEmail');
-
-		//get values from plugin params
-		$_ccUsername   = $this->params->get('ccUsername', '');
-		$_ccPassword   = $this->params->get('ccPassword', '');
-		$_ccApiKey     = $this->params->get('ccApiKey', '');
-		$_ccManagePref = $this->params->get('ccManageEmailPreference', 0);
-
-		//make sure we want Constant Contact to manage email preferences
-		if (!$_ccManagePref)
-		{
+		if (!$this->params->get('ccManageEmailPreference', 0)) {
 			return;
 		}
 
-		//make sure we have a valid email address
-		if (!$userEmailAddress || !filter_var($userEmailAddress, FILTER_VALIDATE_EMAIL))
-		{
+		$email     = $user->get('email');
+		$sendEmail = $user->get('sendEmail');
+
+		if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			return;
 		}
 
-		//include constant contact library
-		require_once __DIR__ . DS . 'lib' . DS . 'ConstantContact.php';
-
-		//build constant contact object
-		$ConstantContact = new Constantcontact('basic', $_ccApiKey, $_ccUsername, $_ccPassword);
-
-		//if we are unable to get lists that means authentication stuff is broken
-		try
-		{
-			$ccContactLists = $ConstantContact->getLists();
-		}
-		catch (CTCTException $e)
-		{
+		$client = $this->getClient();
+		if (!$client) {
 			return;
 		}
 
-		//get the default list
-		$defaultList = $ccContactLists['lists'][0]->id;
+		try {
+			$listId = $this->getDefaultListId($client);
+			if (!$listId) {
+				return;
+			}
 
-		//load contact by email
-		$ccContact = $ConstantContact->searchContactsByEmail($userEmailAddress);
+			$contact = $client->searchContactByEmail($email);
 
-		//create contact if one does not exist
-		if (!$ccContact)
-		{
-			//build new contact
-			$Contact = new Contact();
-			$Contact->emailAddress = $userEmailAddress;
-			$Contact->lists = array($defaultList);
+			if (!$contact) {
+				$client->createContact($email, $listId);
+				return;
+			}
 
-			//add new contact
-			$ccContact = $ConstantContact->addContact($Contact);
-			$ccContact = array($ccContact);
-		}
+			$contactId        = $contact['contact_id'];
+			$permissionToSend = $contact['email_address']['permission_to_send'] ?? '';
 
-		//if we are wanting to opt in and we currently are on do-not-mail
-		if ($ccContact[0]->status == 'Do Not Mail' && $userEmailPreferenceOption == 2)
-		{
-			//load contact
-			$Contact = $ConstantContact->getContactDetails($ccContact[0]);
-
-			//set new contact details
-			$Contact->optInSource = 'ACTION_BY_CONTACT';
-			$Contact->lists = array($defaultList);
-
-			//update contact
-			$ccContact = $ConstantContact->updateContact($Contact);
-		}
-		else if ($ccContact[0]->status == 'Active' && $userEmailPreferenceOption == 0)
-		{
-			//load contact
-			$Contact = $ConstantContact->getContactDetails($ccContact[0]);
-
-			//put on do not mail list
-			$ccContact = $ConstantContact->deleteContact($Contact);
+			// Unsubscribed + user opts in → re-subscribe
+			if ($permissionToSend === 'unsubscribed' && $sendEmail == 2) {
+				$client->updateContact($contactId, [
+					'email_address' => [
+						'address'            => $email,
+						'permission_to_send' => 'implicit',
+					],
+					'list_memberships' => [$listId],
+					'update_source'    => 'Contact',
+				]);
+			}
+			// Active + user opts out → unsubscribe
+			elseif (in_array($permissionToSend, ['implicit', 'explicit']) && $sendEmail == 0) {
+				$client->deleteContact($contactId);
+			}
+		} catch (\RuntimeException $e) {
+			\Log::error('Constant Contact: onAfterStoreProfile: ' . $e->getMessage());
 		}
 	}
 
 	/**
 	 * Method is called after user data is deleted from the database
 	 *
-	 * @param   object  $user  holds the new profile data (\Hubzero\User\User)
-	 * @return  void
+	 * Removes the contact from Constant Contact (opts them out).
+	 *
+	 * @param  object $user  The user profile (\Hubzero\User\User)
+	 * @return void
 	 */
 	public function onAfterDeleteProfile($user)
 	{
-		//get the user's email
-		$userEmailAddress = $user->get('email');
+		$email = $user->get('email');
 
-		//make sure we have a valid email address
-		if (!$userEmailAddress || !filter_var($userEmailAddress, FILTER_VALIDATE_EMAIL))
-		{
+		if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			return;
 		}
 
-		//include constant contact library
-		require_once __DIR__ . DS . 'lib' . DS . 'ConstantContact.php';
-
-		//get values from plugin params
-		$_ccUsername = $this->params->get('ccUsername', '');
-		$_ccPassword = $this->params->get('ccPassword', '');
-		$_ccApiKey   = $this->params->get('ccApiKey', '');
-
-		//build constant contact object
-		$ConstantContact = new Constantcontact("basic", $_ccApiKey, $_ccUsername, $_ccPassword);
-
-		//if we are unable to get lists that means authentication stuff is broken
-		try
-		{
-			$ccContactLists = $ConstantContact->getLists();
-		}
-		catch (CTCTException $e)
-		{
+		$client = $this->getClient();
+		if (!$client) {
 			return;
 		}
 
-		//load contact by email
-		$ccContact = $ConstantContact->searchContactsByEmail($userEmailAddress);
+		try {
+			$contact = $client->searchContactByEmail($email);
 
-		//if we have contact object
-		if ($ccContact)
-		{
-			//load contact
-			$Contact = $ConstantContact->getContactDetails($ccContact[0]);
-
-			//put on do not mail list
-			$ccContact = $ConstantContact->deleteContact($Contact);
+			if ($contact) {
+				$client->deleteContact($contact['contact_id']);
+			}
+		} catch (\RuntimeException $e) {
+			\Log::error('Constant Contact: onAfterDeleteProfile: ' . $e->getMessage());
 		}
 	}
 }
