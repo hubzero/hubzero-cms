@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,13 +11,6 @@ namespace Components\Publications\Models;
 use Hubzero\Base\Obj;
 use Filesystem;
 use Component;
-
-include_once dirname(__FILE__) . DS . 'attachment.php';
-include_once dirname(__FILE__) . DS . 'handler.php';
-include_once dirname(__FILE__) . DS . 'editor.php';
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'handler.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'handlerassoc.php';
 
 /**
  * Publications handlers class
@@ -408,22 +400,6 @@ class Handlers extends Obj
         }
 
         $elementClass = '\Components\Publications\Models\Handlers\\' . ucfirst($name);
-        if (!class_exists($elementClass)) {
-            if (isset($this->_path)) {
-                $dirs = $this->_path;
-            } else {
-                $dirs = array();
-            }
-
-            $file = Filesystem::clean(str_replace('_', DS, $name) . '.php', 'path');
-
-            if ($elementFile = Filesystem::find($dirs, $file)) {
-                include_once $elementFile;
-            } else {
-                return false;
-            }
-        }
-
         if (!class_exists($elementClass)) {
             return false;
         }

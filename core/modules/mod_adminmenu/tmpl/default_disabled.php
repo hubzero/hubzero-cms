@@ -6,7 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-use Modules\AdminMenu\Node;
+use Modules\Adminmenu\Node;
 
 defined('_HZEXEC_') or die;
 

@@ -19,11 +19,6 @@ use User;
 use Component;
 use Filesystem;
 
-require_once __DIR__ . DS . 'vote.php';
-require_once __DIR__ . DS . 'comment.php';
-require_once __DIR__ . DS . 'tags.php';
-require_once Component::path('com_categories') . '/models/category.php';
-
 /**
  * Knowledgebase model for an article
  */

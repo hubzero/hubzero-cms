@@ -8,9 +8,6 @@
 
 namespace Hubzero\Content\Migration;
 
-require_once __DIR__ . '/helpers/queryAddColumnStatement.php';
-require_once __DIR__ . '/helpers/queryDropColumnStatement.php';
-
 use Hubzero\Content\Migration\Helpers\QueryAddColumnStatement;
 use Hubzero\Content\Migration\Helpers\QueryDropColumnStatement;
 use Hubzero\Database\Driver;
@@ -468,12 +465,6 @@ class Base
 
         foreach (self::$macroNamespaces as $namespace => $paths) {
             $invokable = $namespace . '\\' . ucfirst($method);
-
-            if (!class_exists($invokable)) {
-                foreach ($paths as $path) {
-                    include_once $path . DIRECTORY_SEPARATOR . $method . '.php';
-                }
-            }
 
             if (class_exists($invokable)) {
                 $callback = new $invokable();

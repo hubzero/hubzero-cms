@@ -168,9 +168,6 @@ if (!$contributions) {
         . Lang::txt('MOD_MYCONTRIBUTIONS_NONE_FOUND')
         . '</p>' . "\n";
 } else {
-    require_once Component::path('com_members')
-        . DS . 'models' . DS . 'member.php';
-
     $html .= '<ul class="expandedlist">' . "\n";
     for ($i = 0; $i < count($contributions); $i++) {
         if ($i < $this->limit_other) {

@@ -1,15 +1,12 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\AdminMenu;
-
-include_once __DIR__ . DS . 'node.php';
+namespace Modules\Adminmenu;
 
 /**
  * Extended class for rendering nested menus

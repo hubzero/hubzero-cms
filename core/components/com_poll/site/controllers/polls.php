@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,8 +18,6 @@ use Route;
 use Lang;
 use Html;
 use App;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'poll.php';
 
 /**
  * Poll controller

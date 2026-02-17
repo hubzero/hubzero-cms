@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +13,7 @@ use Hubzero\Component\AdminController;
 use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Warehouse;
-use Components\Cart\Helpers\CartDownload;
+use Components\Cart\Helpers\Download;
 use Request;
 use Config;
 use Route;
@@ -22,8 +21,6 @@ use Lang;
 use App;
 use Date;
 use Notify;
-
-require_once \Component::path('com_cart') . DS . 'helpers' . DS . 'Download.php';
 
 /**
  * Controller class for knowledge base categories
@@ -162,7 +159,7 @@ class Skus extends AdminController
         $this->view->options = $row->getOptions();
 
         // Get number of downloads
-        $downloaded = CartDownload::countSkuDownloads($id);
+        $downloaded = Download::countSkuDownloads($id);
         $this->view->downloaded = $downloaded;
 
         // Set any errors

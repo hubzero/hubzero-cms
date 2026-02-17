@@ -20,10 +20,6 @@ use Route;
 use Lang;
 use App;
 
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'zones.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'host.php';
-include_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'hosttype.php';
-
 /**
  * Tools controller class for hosts
  */

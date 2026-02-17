@@ -11,8 +11,6 @@ namespace Components\Projects\Models\Orm\Description;
 use Hubzero\Database\Relational;
 use Component;
 
-include_once __DIR__ . DS . 'option.php';
-
 /**
  * User profile field model
  */

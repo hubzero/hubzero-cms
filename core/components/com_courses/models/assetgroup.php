@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,12 +11,6 @@ namespace Components\Courses\Models;
 use Components\Courses\Tables;
 use Hubzero\Config\Registry;
 use Lang;
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.group.php';
-require_once __DIR__ . DS . 'base.php';
-require_once __DIR__ . DS . 'asset.php';
-require_once __DIR__ . DS . 'iterator.php';
-require_once __DIR__ . DS . 'section' . DS . 'date.php';
 
 /**
  * Courses model class for an asset group

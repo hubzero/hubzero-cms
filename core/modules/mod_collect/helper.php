@@ -33,8 +33,6 @@ class Helper extends Module
             return;
         }
 
-        include_once \Component::path('com_collections') . DS . 'models' . DS . 'archive.php';
-
         $this->model = new Archive('member', User::get('id'));
 
         $this->item = $this->model->collectible(Request::getCmd('option'));

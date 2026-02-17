@@ -1,15 +1,14 @@
 <?php
+
 namespace Plugins\Publications\Citations;
 
 use Hubzero\Plugin\Plugin;
-
 
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
 
 /**
  * Publications Plugin class for citations
@@ -75,9 +74,6 @@ class Citations extends Plugin
         if (!$publication->_category->_params->get('plg_citations')) {
             return $arr;
         }
-
-        // Get a needed library
-        include_once Component::path('com_citations') . DS . 'models' . DS . 'citation.php';
 
         // Get citations for this publication
         $c = \Components\Citations\Models\Association::all()

@@ -16,8 +16,6 @@ use Components\Cron\Models\Job;
 use Event;
 use Lang;
 
-require_once dirname(__DIR__) . '/models/job.php';
-
 /**
  * CRON jobs
  **/

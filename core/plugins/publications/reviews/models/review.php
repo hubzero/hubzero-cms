@@ -10,9 +10,6 @@
 
 namespace Plugins\Publications\Reviews\Models;
 
-require_once \Component::path('com_publications') . DS . 'tables' . DS . 'review.php';
-require_once __DIR__ . '/comment.php';
-
 /**
  * Publications review model
  */
@@ -89,7 +86,6 @@ class Review extends \Hubzero\Base\Model
         // Reports hasn't been set
         if ($this->get('reports', -1) == -1) {
             if (is_file(\Component::path('com_support') . DS . 'models' . DS . 'report.php')) {
-                include_once \Component::path('com_support') . DS . 'models' . DS . 'report.php';
 
                 $val = \Components\Support\Models\Report::all()
                     ->whereEquals('referenceid', $this->get('id'))
@@ -185,7 +181,7 @@ class Review extends \Hubzero\Base\Model
         switch (strtolower($rtrn)) {
             case 'count':
                 if (!isset($this->comments_count) || !is_numeric($this->comments_count) || $clear) {
-                    $this->comments_count = \Components\Publications\Reviews\Models\Comment::all()
+                    $this->comments_count = Comment::all()
                         ->whereEquals('item_id', $filters['item_id'])
                         ->whereEquals('item_type', $filters['item_type'])
                         ->whereIn('state', $filters['state'])
@@ -198,7 +194,7 @@ class Review extends \Hubzero\Base\Model
             case 'results':
             default:
                 if (!$this->comments || $clear) {
-                    $results = \Components\Publications\Reviews\Models\Comment::all()
+                    $results = Comment::all()
                         ->whereEquals('parent', $filters['parent'])
                         ->whereEquals('item_id', $filters['item_id'])
                         ->whereEquals('item_type', $filters['item_type'])

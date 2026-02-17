@@ -114,8 +114,6 @@ class Activity extends Plugin
                 return $arr;
             }
 
-            include_once __DIR__ . '/models/attachment.php';
-
             // Managers and site administrators may hide any entry in the feed.
             // Starring marks the entry for the whole group, so it is for members.
             $this->canModerate = ($authorized == 'manager' || $siteAdmin);

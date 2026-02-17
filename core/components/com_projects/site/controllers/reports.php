@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,8 +17,6 @@ use User;
 use Date;
 use App;
 use Notify;
-
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'stats.php';
 
 /**
  * Projects Reports controller class
@@ -104,8 +101,6 @@ class Reports extends Base
 
         // Get stats
         if (!$this->getError()) {
-            require_once \Component::path('com_publications') . DS . 'tables' . DS . 'logs.php';
-
             $objLog = new \Components\Publications\Tables\Log($this->database);
 
             // Get all test projects

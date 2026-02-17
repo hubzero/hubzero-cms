@@ -13,10 +13,6 @@ use Hubzero\Plugin\Plugin;
 // No direct access
 defined('_HZEXEC_') or die();
 
-use SciStarter\Oauth;
-
-require_once __DIR__ . '/SciStarter/Http/Curl.php';
-require_once __DIR__ . '/SciStarter/Oauth.php';
 class Scistarter extends \Hubzero\Plugin\OauthClient
 {
     /**
@@ -28,6 +24,10 @@ class Scistarter extends \Hubzero\Plugin\OauthClient
 // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
     protected $_autoloadLanguage = true;
 
+    /**
+     * @param   object  $subject  Event dispatcher
+     * @param   array   $config   Plugin config
+     */
     /**
      * Perform logout (not currently used)
      *

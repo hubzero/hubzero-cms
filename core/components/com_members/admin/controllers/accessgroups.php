@@ -327,7 +327,6 @@ class Accessgroups extends AdminController
      */
     public function debugTask()
     {
-        include_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'debug.php';
 
         // Get filters
         $filters = array(

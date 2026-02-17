@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,9 +21,6 @@ use Lang;
 use User;
 use App;
 use Notify;
-
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'queryfolder.php';
 
 /**
  * Support controller class for ticket queries
@@ -128,7 +124,6 @@ class Queries extends AdminController
             $row->set('sort_dir', 'desc');
         }
 
-        include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'conditions.php';
         $con = new Conditions();
         $conditions = $con->getConditions();
 

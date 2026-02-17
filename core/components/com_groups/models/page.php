@@ -13,14 +13,6 @@ use Hubzero\Base\Model;
 use Hubzero\Base\Model\ItemList;
 use Lang;
 
-// include tables
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.hit.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.version.php';
-
-// include models
-require_once dirname(__DIR__) . DS . 'models' . DS . 'page' . DS . 'version' . DS . 'archive.php';
-
 /**
  * Group page model class
  */

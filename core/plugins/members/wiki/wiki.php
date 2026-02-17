@@ -99,8 +99,6 @@ class Wiki extends Plugin
             }
         }
 
-        include_once \Component::path('com_wiki') . DS . 'models' . DS . 'page.php';
-
         $versions = \Components\Wiki\Models\Version::all()
             ->whereEquals('created_by', $uidNumber)
             ->whereEquals('approved', 1)

@@ -2249,7 +2249,6 @@ class BundleBuilder
         if (!is_dir($dataDir) && @mkdir($dataDir, 0775, true)) {
             @chgrp($dataDir, 'access-content');
         }
-        require_once \Component::path('com_publications') . DS . 'helpers' . DS . 'datastore.php';
         foreach ($dataAtts as $da) {
             $title   = ($da->title !== '' && $da->title !== null) ? $da->title : $da->object_name;
             $csvName = $title . '-' . $da->object_revision . '.csv';

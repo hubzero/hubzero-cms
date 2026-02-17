@@ -106,7 +106,6 @@ class Courses extends Plugin
      */
     public static function out($row)
     {
-        include_once Component::path('com_courses') . DS . 'models' . DS . 'course.php';
 
         $course = new \Components\Courses\Models\Course($row);
         $course->set('blurb', $row->itext);

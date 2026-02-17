@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,8 +14,6 @@ use Lang;
 use User;
 use Log;
 use Hubzero\User\Group;
-
-include_once dirname(__DIR__) . DS . 'helpers' . DS . 'version.php';
 
 /**
  * Hubzero class for tools

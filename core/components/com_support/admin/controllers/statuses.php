@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,8 +16,6 @@ use Route;
 use Lang;
 use App;
 use User;
-
-require_once dirname(dirname(__DIR__)) . '/models/status.php';
 
 /**
  * Support controller class for managing ticket statuses

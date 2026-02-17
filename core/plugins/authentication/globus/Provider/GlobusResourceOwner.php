@@ -12,7 +12,7 @@
  * @link      https://github.com/cilogon/oauth2-cilogon GitHub
  */
 
-namespace Globus\OAuth2\Client\Provider;
+namespace Plugins\Authentication\Globus\Provider;
 
 use League\OAuth2\Client\Provider\ResourceOwnerInterface;
 

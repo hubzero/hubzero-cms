@@ -13,7 +13,6 @@ use stdClass;
 use Lang;
 use Component;
 
-require_once Component::path('resources') . '/models/element.php';
 /**
  * Renders a category element
  */

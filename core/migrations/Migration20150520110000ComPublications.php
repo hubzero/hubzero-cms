@@ -66,10 +66,6 @@ class Migration20150520110000ComPublications extends Base
                 $results = $query->loadObjectList();
 
                 if ($results && count($results) > 0) {
-                    $path = PATH_CORE . DS . 'components' . DS . 'com_publications'
-                        . DS . 'tables' . DS . 'curation.version.php';
-                    include_once $path;
-
                     foreach ($results as $result) {
                         // Determine version number
                         $query = $this->db->getQuery(true)

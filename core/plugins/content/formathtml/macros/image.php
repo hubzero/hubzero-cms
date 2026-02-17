@@ -164,8 +164,6 @@ Examples:
         $ret = false;
         // Is it numeric?
         if (is_numeric($file)) {
-            include_once \Component::path('com_wiki') . DS . 'models' . DS . 'attachment.php';
-
             // Get resource by ID
             $attach = \Components\Wiki\Models\Attachment::oneOrNew(intval($file));
 

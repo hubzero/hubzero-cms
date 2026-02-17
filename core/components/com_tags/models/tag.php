@@ -13,10 +13,6 @@ use Lang;
 use Date;
 use User;
 
-require_once __DIR__ . DS . 'objct.php';
-require_once __DIR__ . DS . 'substitute.php';
-require_once __DIR__ . DS . 'log.php';
-
 /**
  * Tag model
  */

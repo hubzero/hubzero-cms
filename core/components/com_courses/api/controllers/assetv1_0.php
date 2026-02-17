@@ -19,12 +19,6 @@ use Date;
 use Filesystem;
 use Route;
 
-require_once __DIR__ . DS . 'base.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'asset.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'assets' . DS . 'handler.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php';
-
 /**
  * API controller for the course assets
  */

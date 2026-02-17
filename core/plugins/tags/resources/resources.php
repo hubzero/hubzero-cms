@@ -1,17 +1,16 @@
 <?php
 
-namespace Plugins\Tags\Resources;
-
-use Hubzero\Plugin\Plugin;
-
-// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Tags\Resources;
+
+// phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
+
+use Hubzero\Plugin\Plugin;
 use Components\Resources\Models\Entry;
 
 /**
@@ -37,8 +36,6 @@ class Resources extends Plugin
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
-
-        include_once Component::path('com_resources') . DS . 'models' . DS . 'entry.php';
     }
 
     /**

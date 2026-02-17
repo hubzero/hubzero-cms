@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,8 +20,6 @@ use Lang;
 use App;
 use Cache;
 use Notify;
-
-include_once \Component::path('com_plugins') . '/models/plugin.php';
 
 /**
  * Manage resource types

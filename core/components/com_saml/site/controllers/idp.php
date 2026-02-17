@@ -8,10 +8,6 @@
 
 namespace Components\Saml\Site\Controllers;
 
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'IdP.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ServiceProvider.php';
-include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'SamlSession.php';
-
 use Hubzero\Component\SiteController;
 use Components\Saml\Models\IdP as IdPModel;
 use Components\Saml\Models\ServiceProvider;

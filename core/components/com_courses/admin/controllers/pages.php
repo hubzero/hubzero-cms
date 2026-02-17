@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,9 +18,6 @@ use Lang;
 use Html;
 use App;
 use Config;
-
-// Course model pulls in other classes we need
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
 
 /**
  * Courses controller class for managing course pages

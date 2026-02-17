@@ -10,8 +10,6 @@ namespace Components\Collections\Models\Orm;
 
 use Hubzero\Database\Relational;
 
-require_once __DIR__ . DS . 'item.php';
-
 /**
  * Collection vote model
  */

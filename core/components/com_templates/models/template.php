@@ -14,9 +14,6 @@ use Hubzero\Base\Obj;
 use Filesystem;
 use Lang;
 
-include_once __DIR__ . DS . 'file.php';
-include_once __DIR__ . DS . 'style.php';
-
 /**
  * Template style model
  */

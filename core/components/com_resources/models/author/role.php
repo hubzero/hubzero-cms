@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +12,6 @@ use Hubzero\Database\Relational;
 use Components\Resources\Models\Author\Role\Type;
 use Date;
 use Lang;
-
-include_once __DIR__ . DS . 'role' . DS . 'type.php';
 
 /**
  * Resource author role model

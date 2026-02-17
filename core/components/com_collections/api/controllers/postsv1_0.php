@@ -21,8 +21,6 @@ use Route;
 use Lang;
 use App;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'archive.php';
-
 /**
  * API controller class for collection posts
  */

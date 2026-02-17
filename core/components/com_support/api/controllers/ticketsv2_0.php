@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,11 +20,6 @@ use Config;
 use Route;
 use Lang;
 use User;
-
-require_once dirname(dirname(__DIR__)) . '/models/ticket.php';
-require_once dirname(dirname(__DIR__)) . '/helpers/acl.php';
-require_once dirname(dirname(__DIR__)) . '/helpers/utilities.php';
-require_once Component::path('com_groups') . DS . 'models' . DS . 'orm' . DS . 'group.php';
 
 /**
  * API controller class for support tickets

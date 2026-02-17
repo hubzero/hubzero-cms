@@ -21,8 +21,6 @@ use Lang;
 use Event;
 use User;
 
-require_once dirname(dirname(__DIR__)) . '/models/orm/project.php';
-
 /**
  * API controller for the projects component
  */
@@ -601,8 +599,6 @@ class Projectsv2_0 extends ApiController
         if (!$row->syncSystemGroup()) {
             throw new Exception($row->getError());
         }
-
-        require_once \Component::path('com_projects') . '/models/repo.php';
 
         $repo = new Repo($row, 'local');
         if (!$repo->iniLocal()) {

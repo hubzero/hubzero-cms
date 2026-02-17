@@ -26,8 +26,6 @@ class Migration20250411110620ComUsage extends Base
             return;
         }
 
-        include_once dirname(__DIR__) . '/helpers/helper.php';
-
         $statsDb = \Components\Usage\Helpers\Helper::getUDBO();
 
         if (!$statsDb) {

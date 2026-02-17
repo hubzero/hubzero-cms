@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,8 +22,6 @@ use Lang;
 use User;
 use Date;
 use App;
-
-require_once dirname(dirname(__DIR__)) . '/models/import.php';
 
 /**
  * Resource importer

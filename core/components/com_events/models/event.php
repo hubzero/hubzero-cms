@@ -16,8 +16,6 @@ use Route;
 use Lang;
 use Date;
 
-// include tables
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'event.php';
 /**
  * Event model
  */

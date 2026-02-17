@@ -16,8 +16,6 @@ use Lang;
 use App;
 use Config;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
-
 /**
  * Courses controller class for membership codes
  */

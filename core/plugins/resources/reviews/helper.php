@@ -107,7 +107,7 @@ class Helper extends \Hubzero\Base\Obj
         } else {
             // A new reply goes on a review of this resource, under a reply to that review
             $itemId = isset($comment['item_id']) ? (int) $comment['item_id'] : 0;
-            $parentReview = \Components\Resources\Reviews\Models\Review::oneOrNew($itemId);
+            $parentReview = \Components\Resources\Models\Review::oneOrNew($itemId);
             if (!isset($comment['item_type']) || $comment['item_type'] != 'review' || $parentReview->get('resource_id') != $this->resource->id) {
                 $this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_COMMENT_ERROR_NO_REFERENCE_ID'));
                 return;
@@ -172,7 +172,7 @@ class Helper extends \Hubzero\Base\Obj
         $reply = \Hubzero\Item\Comment::oneOrFail($replyid);
 
         // The reply must hang off a review of this resource
-        $parentReview = \Components\Resources\Reviews\Models\Review::oneOrNew((int) $reply->get('item_id'));
+        $parentReview = \Components\Resources\Models\Review::oneOrNew((int) $reply->get('item_id'));
         if ($reply->get('item_type') != 'review' || $parentReview->get('resource_id') != $this->resource->id) {
             return;
         }
@@ -223,7 +223,7 @@ class Helper extends \Hubzero\Base\Obj
         }
 
         // Load entry
-        $rev = \Components\Resources\Reviews\Models\Review::oneOrNew($id);
+        $rev = \Components\Resources\Models\Review::oneOrNew($id);
 
         if (!$rev->vote($vote, User::get('id'), $ip)) {
             $this->setError($rev->getError());
@@ -280,9 +280,9 @@ class Helper extends \Hubzero\Base\Obj
         $myr = Request::getInt('comment', 0);
 
         if ($myr) {
-            $review = \Components\Resources\Reviews\Models\Review::oneOrNew($myr);
+            $review = \Components\Resources\Models\Review::oneOrNew($myr);
         } else {
-            $review = \Components\Resources\Reviews\Models\Review::oneByUser($this->resource->id, User::get('id'));
+            $review = \Components\Resources\Models\Review::oneByUser($this->resource->id, User::get('id'));
         }
 
         if (!$review->get('id')) {
@@ -294,7 +294,7 @@ class Helper extends \Hubzero\Base\Obj
             $review->set('comment', str_replace('<br />', '', $review->get('comment')));
         }
         $review->set('rating', ($myr ? $myr : $review->get('rating')));
-        $review->set('state', \Components\Resources\Reviews\Models\Review::STATE_PUBLISHED);
+        $review->set('state', \Components\Resources\Models\Review::STATE_PUBLISHED);
 
         // Store the object in our registry
         $this->myreview = $review;
@@ -328,7 +328,7 @@ class Helper extends \Hubzero\Base\Obj
 
         // Bind the form data to our object
         $__rid = isset($data['id']) ? (int) $data['id'] : 0;
-        $row = \Components\Resources\Reviews\Models\Review::oneOrNew($__rid);
+        $row = \Components\Resources\Models\Review::oneOrNew($__rid);
 
         // A review may only be edited by its author or a resources moderator (the
         // browse view offers Edit to core.manage as well)
@@ -345,7 +345,7 @@ class Helper extends \Hubzero\Base\Obj
         } else {
             // A new review is on the resource being viewed, one per user
             $data['resource_id'] = $this->resource->id;
-            if (\Components\Resources\Reviews\Models\Review::oneByUser($this->resource->id, User::get('id'))->get('id')) {
+            if (\Components\Resources\Models\Review::oneByUser($this->resource->id, User::get('id'))->get('id')) {
                 $this->setError(Lang::txt('PLG_RESOURCES_REVIEWS_ERROR_ALREADY_REVIEWED'));
                 return;
             }
@@ -358,7 +358,7 @@ class Helper extends \Hubzero\Base\Obj
 
         // Perform some text cleaning, etc.
         if ($row->isNew()) {
-            $row->set('state', \Components\Resources\Reviews\Models\Review::STATE_PUBLISHED);
+            $row->set('state', \Components\Resources\Models\Review::STATE_PUBLISHED);
         }
         $row->set('comment', \Hubzero\Utility\Sanitize::stripImages(
             \Hubzero\Utility\Sanitize::clean($row->get('comment'))
@@ -372,7 +372,7 @@ class Helper extends \Hubzero\Base\Obj
         }
 
         // Calculate the new average rating for the parent resource
-        $calculated = \Components\Resources\Reviews\Models\Review::averageByResource($this->resource->get('id'));
+        $calculated = \Components\Resources\Models\Review::averageByResource($this->resource->get('id'));
 
         // Recalculate the average rating for the parent resource
         $this->resource->set('rating', $calculated['rating']);
@@ -449,7 +449,7 @@ class Helper extends \Hubzero\Base\Obj
             return;
         }
 
-        $review = \Components\Resources\Reviews\Models\Review::oneOrFail($reviewid);
+        $review = \Components\Resources\Models\Review::oneOrFail($reviewid);
 
         // The review must belong to this resource
         if ($review->get('resource_id') != $this->resource->id) {
@@ -461,10 +461,10 @@ class Helper extends \Hubzero\Base\Obj
             return;
         }
 
-        $review->set('state', \Components\Resources\Reviews\Models\Review::STATE_DELETED);
+        $review->set('state', \Components\Resources\Models\Review::STATE_DELETED);
         $review->save();
 
-        $ratings = \Components\Resources\Reviews\Models\Review::all()
+        $ratings = \Components\Resources\Models\Review::all()
             ->whereEquals('resource_id', $this->resource->get('id'))
             ->rows()
             ->fieldsByKey('rating');

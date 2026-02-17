@@ -3,6 +3,8 @@ namespace Plugins\Publications\Usage;
 
 use Hubzero\Plugin\Plugin;
 
+        require_once \Component::path($option) . DS . 'tables' . DS . 'stats.php';
+
 
 /**
  * @package    hubzero-cms
@@ -105,9 +107,6 @@ class Usage extends Plugin
             $dthis = date('Y') . '-' . date('m');
         }
         $period = Request::getInt('period', $this->params->get('period', 14));
-
-        require_once \Component::path($option) . DS . 'tables' . DS . 'stats.php';
-        require_once \Component::path($option) . DS . 'helpers' . DS . 'usage.php';
 
         $stats = new \Components\Publications\Tables\Stats($database);
         $stats->loadStats($publication->id, $period, $dthis);

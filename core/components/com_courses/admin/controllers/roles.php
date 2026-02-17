@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,8 +18,6 @@ use Lang;
 use Request;
 use Route;
 use User;
-
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'role.php';
 
 /**
  * Manage course roles
@@ -121,7 +118,6 @@ class Roles extends AdminController
             $this->view->row->created    = Date::toSql();
         }
 
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'courses.php';
         $model = \Components\Courses\Models\Courses::getInstance();
         $this->view->courses = $model->courses();
 

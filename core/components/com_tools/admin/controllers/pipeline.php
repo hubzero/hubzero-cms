@@ -181,7 +181,6 @@ class Pipeline extends AdminController
         // If the tool state was changed...
         if ($oldstate != $row->state && file_exists(\Component::path('com_resources') . '/models/entry.php')) {
             // Trash the associated resource page
-            require_once \Component::path('com_resources') . '/models/entry.php';
 
             $resource = Entry::oneByAlias($row->toolname);
 
@@ -228,8 +227,6 @@ class Pipeline extends AdminController
         $database = App::get('db');
 
         // Initiate extended database classes
-        require_once \Component::path('com_resources') . '/models/entry.php';
-        require_once \Component::path('com_resources') . '/models/doi.php';
 
         $objV     = new \Components\Tools\Tables\Version($database);
         $objA     = new \Components\Tools\Tables\Author($database);

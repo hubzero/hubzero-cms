@@ -14,8 +14,6 @@ use Request;
 use Lang;
 use App;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
-
 /**
  * Manage logo for a course
  */

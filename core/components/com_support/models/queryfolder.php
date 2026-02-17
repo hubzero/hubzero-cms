@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,8 +11,6 @@ namespace Components\Support\Models;
 use Hubzero\Database\Relational;
 use User;
 use Date;
-
-include_once __DIR__ . '/query.php';
 
 /**
  * Support ticket message model

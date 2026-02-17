@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,13 +7,6 @@
  */
 
 namespace Components\Search\Admin\Controllers;
-
-$componentPath = Component::path('com_search');
-
-require_once "$componentPath/helpers/boostFactory.php";
-require_once "$componentPath/helpers/recordProcessingHelper.php";
-require_once "$componentPath/helpers/typeOptionsHelper.php";
-require_once "$componentPath/models/solr/boost.php";
 
 use Components\Search\Helpers\BoostFactory;
 use Components\Search\Helpers\RecordProcessingHelper;

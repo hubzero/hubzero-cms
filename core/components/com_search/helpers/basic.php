@@ -7,16 +7,22 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Search\Helpers;
+
 defined('_HZEXEC_') or die();
 
-if (!function_exists('stem')) {
+/**
+ * Basic text stemming helper
+ */
+class Basic
+{
     /**
      * Stem a string
      *
-     * @param  string $str
-     * @return string
+     * @param   string  $str
+     * @return  string
      */
-    function stem($str)
+    public static function stem($str)
     {
         return $str;
     }

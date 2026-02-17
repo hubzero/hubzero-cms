@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +13,7 @@ use Components\Storefront\Models\Archive;
 use Components\Storefront\Models\Warehouse;
 use Components\Storefront\Models\Product;
 use Hubzero\Html\Builder\Access;
-use Components\Cart\Helpers\CartDownload;
+use Components\Cart\Helpers\Download;
 use Request;
 use Route;
 use Lang;
@@ -22,10 +21,6 @@ use App;
 use Config;
 use Date;
 use Notify;
-
-require_once \Component::path('com_cart') . DS . 'helpers' . DS . 'Download.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Warehouse.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'Product.php';
 
 /**
  * Controller class for knowledge base categories
@@ -198,7 +193,7 @@ class Products extends AdminController
             $this->view->metaNeeded = true;
 
             // Get number of downloads
-            $downloaded = CartDownload::countProductDownloads($id);
+            $downloaded = Download::countProductDownloads($id);
             $this->view->downloaded = $downloaded;
         }
 

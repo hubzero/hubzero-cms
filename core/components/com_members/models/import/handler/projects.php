@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Members\Models\Import\Handler;
 
 use Hubzero\Base\Obj;
@@ -16,8 +15,6 @@ use Component;
 use User;
 use Lang;
 use App;
-
-include_once Component::path('com_projects') . '/models/project.php';
 
 /**
  * Member Projects import handler

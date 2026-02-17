@@ -212,8 +212,6 @@ class Xusers extends Plugin
         $params = Component::params('com_members');
 
         if ($params->get('manage_quotas', false)) {
-            require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
-
             $quota = \Components\Members\Models\Quota::all()
                 ->whereEquals('user_id', $xuser->get('id'))
                 ->row();
@@ -447,8 +445,6 @@ class Xusers extends Plugin
         $params = Component::params('com_members');
 
         if ($params->get('manage_quotas', false)) {
-            require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
-
             $quota = \Components\Members\Models\Quota::all()
                 ->whereEquals('user_id', $user['id'])
                 ->row();
@@ -546,7 +542,6 @@ class Xusers extends Plugin
         \Hubzero\Auth\Link::delete_by_user_id($user['id']);
 
         // Check if quota exists for the user
-        require_once Component::path('com_members') . DS . 'models' . DS . 'quota.php';
 
         $quota = \Components\Members\Models\Quota::all()
             ->whereEquals('user_id', $user['id'])

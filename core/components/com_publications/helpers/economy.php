@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +12,6 @@ use Hubzero\Base\Obj;
 use Hubzero\Bank\Teller;
 use Lang;
 use User;
-
-include_once __DIR__ . DS . 'economy' . DS . 'reviews.php';
 
 /**
  * Publications Economy class:

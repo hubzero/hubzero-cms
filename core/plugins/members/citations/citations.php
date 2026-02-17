@@ -11,13 +11,6 @@ namespace Plugins\Members\Citations;
 
 use Hubzero\Plugin\Plugin;
 
-$base = Component::path('com_citations');
-require_once $base . DS . 'helpers' . DS . 'format.php';
-require_once $base . DS . 'models' . DS . 'citation.php';
-require_once $base . DS . 'models' . DS . 'tag.php';
-require_once $base . DS . 'models' . DS . 'tagobject.php';
-require_once $base . DS . 'models' . DS . 'importer.php';
-
 use Hubzero\Config\Registry;
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Cloud;

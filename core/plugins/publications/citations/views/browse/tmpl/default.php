@@ -14,9 +14,6 @@ $numnon = 0;
 
 // Did we get any results back?
 if ($this->citations) {
-    // Get a needed library
-    include_once Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
-
     // Set some vars
     $affiliated    = '';
     $nonaffiliated = '';

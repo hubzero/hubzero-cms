@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,11 +7,6 @@
  */
 
 namespace Components\Search\Tests;
-
-$componentPath = Component::path('com_search');
-
-require_once "$componentPath/models/solr/boost.php";
-require_once "$componentPath/tests/traits/canMock.php";
 
 use Components\Search\Models\Solr\Boost;
 use Components\Search\Tests\Traits\canMock;

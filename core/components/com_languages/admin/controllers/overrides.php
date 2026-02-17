@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,9 +19,6 @@ use User;
 use Lang;
 use App;
 use Config;
-
-require_once dirname(dirname(__DIR__)) . '/models/override.php';
-require_once dirname(dirname(__DIR__)) . '/models/overrider.php';
 
 /**
  * Languages Overrides Controller

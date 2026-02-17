@@ -43,8 +43,6 @@ if (in_array(User::get('id'), $group->get('managers'))) {
     $isInvitee = true;
 }
 
-include_once Component::path('com_groups') . DS . 'helpers' . DS . 'permissions.php';
-
 //is membership control managed on group?
 $params = new \Hubzero\Config\Registry($group->get('params'));
 $membership_control = $params->get('membership_control', 1);

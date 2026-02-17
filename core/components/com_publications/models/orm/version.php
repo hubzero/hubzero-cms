@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,10 +16,6 @@ use Lang;
 use stdClass;
 use Request;
 use Route;
-
-require_once __DIR__ . DS . 'attachment.php';
-require_once __DIR__ . DS . 'author.php';
-require_once __DIR__ . DS . 'license.php';
 
 /**
  * Model class for publication version
@@ -726,7 +721,6 @@ class Version extends Relational implements \Hubzero\Search\Searchable
      */
     public function tags()
     {
-        include_once \Component::path('com_tags') . '/models/cloud.php';
 
         $cloud = new \Components\Tags\Models\Cloud();
 

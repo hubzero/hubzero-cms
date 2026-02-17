@@ -107,7 +107,6 @@ class Courses extends Plugin
             }
         }
 
-        require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
         $model = \Components\Courses\Models\Courses::getInstance();
 
         $filters = array(

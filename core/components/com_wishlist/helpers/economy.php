@@ -88,7 +88,7 @@ class Economy extends Obj
         if (!$wishid) {
             return null;
         }
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php';
+
         $wish = Wish::oneOrNew($wishid);
 
         if (is_object($wish) && $wish->bonus > 0) {
@@ -125,7 +125,6 @@ class Economy extends Obj
             return null;
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php';
         $wish = Wish::oneOrNew($wishid);
 
         $points = !$points ? $wish->bonus : $points;

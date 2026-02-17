@@ -26,7 +26,6 @@ class Helper extends Module
      */
     public function run()
     {
-        include_once Component::path('com_members') . DS . 'models' . DS . 'member.php';
 
         $database = \App::get('db');
         $this->row = null;

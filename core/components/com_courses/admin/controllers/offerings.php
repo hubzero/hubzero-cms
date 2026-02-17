@@ -16,9 +16,6 @@ use Lang;
 use Request;
 use Route;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'offering.php';
-
 /**
  * Courses controller class for managing membership and course info
  */

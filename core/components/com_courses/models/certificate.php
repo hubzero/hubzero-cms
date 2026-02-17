@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,9 +12,6 @@ use Hubzero\Database\Table;
 use ImagickException;
 use Imagick;
 use Lang;
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'certificate.php';
-require_once __DIR__ . DS . 'base.php';
 
 /**
  * Courses model class for a certificate
@@ -298,11 +294,8 @@ class Certificate extends Base
         }
 
         if (!class_exists('\Components\Courses\Models\Course')) {
-            require_once __DIR__ . DS . 'course.php';
         }
         $course = Course::getInstance($this->get('course_id'));
-
-        require_once __DIR__ . DS . 'certificatepdf.php';
 
         $img = $this->path('system') . '/1.png';
 

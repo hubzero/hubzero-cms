@@ -9,9 +9,9 @@
 namespace Components\Jobs\Admin\Controllers;
 
 use Components\Jobs\Tables\Job;
-use Components\Jobs\Tables\JobAdmin;
-use Components\Jobs\Tables\JobCategory;
-use Components\Jobs\Tables\JobType;
+use Components\Jobs\Tables\Admin;
+use Components\Jobs\Tables\Category;
+use Components\Jobs\Tables\Type;
 use Components\Jobs\Tables\Employer;
 use Hubzero\Component\AdminController;
 use Exception;
@@ -124,7 +124,7 @@ class Jobs extends AdminController
 
         $this->view->row = new Job($this->database);
 
-        $this->view->jobadmin = new JobAdmin($this->database);
+        $this->view->jobadmin = new Admin($this->database);
         $this->view->employer = new Employer($this->database);
 
         // Is this a new job?
@@ -165,14 +165,13 @@ class Jobs extends AdminController
         }
 
         // Get subscription info
-        include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
 
         $subId = $this->view->employer->subscriptionid;
         $this->view->subscription = \Components\Services\Models\Subscription::oneOrNew($subId);
 
         // Get job types and categories
-        $jt = new JobType($this->database);
-        $jc = new JobCategory($this->database);
+        $jt = new Type($this->database);
+        $jc = new Category($this->database);
 
         // get job types
         $this->view->types = $jt->getTypes();
@@ -228,7 +227,6 @@ class Jobs extends AdminController
                 return;
             }
         } else { // saving new job
-            include_once \Component::path('com_services') . DS . 'models' . DS . 'subscription.php';
             $subscription = \Components\Services\Models\Subscription::blank();
             $code = $subscription->generateCode(8, 8, 0, 1, 0);
             $job->code = $code;
@@ -346,7 +344,6 @@ class Jobs extends AdminController
     private function checkQuota($job, $uid, $database)
     {
         // make sure we aren't over quota
-        include_once \Component::path('com_services') . DS . 'models' . DS . 'service.php';
 
         $maxads = 3;
         if (

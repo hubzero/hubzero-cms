@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,8 +20,6 @@ use Lang;
 use App;
 use Config;
 use User;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'category.php';
 
 /**
  * Manage publication categories
@@ -209,8 +206,6 @@ class Categories extends AdminController
                 }
             }
 
-            include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
-
             $re = new Elements($elements);
             $row->set('customFields', $re->toString());
         }
@@ -310,8 +305,6 @@ class Categories extends AdminController
             $option,
             $option
         );
-
-        include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'elements.php';
 
         $elements = new Elements();
         echo $elements->getElementOptions($field->name, $field, $ctrl);

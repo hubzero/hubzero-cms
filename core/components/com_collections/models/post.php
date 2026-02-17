@@ -12,9 +12,6 @@ use Hubzero\Utility\Str;
 use Request;
 use Lang;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'post.php';
-require_once __DIR__ . DS . 'item.php';
-
 /**
  * Collections model for a post
  */
@@ -268,11 +265,7 @@ class Post extends Base
             $cls = __NAMESPACE__ . '\\Adapters\\' . ucfirst($scope);
 
             if (!class_exists($cls)) {
-                $path = __DIR__ . DS . 'adapters' . DS . $scope . '.php';
-                if (!is_file($path)) {
-                    throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
-                }
-                include_once $path;
+                throw new \InvalidArgumentException(Lang::txt('Invalid scope of "%s"', $scope));
             }
 
             $this->adapterInstance = new $cls($this->get('object_id'));

@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Config\Models;
 
 use Hubzero\Config\Registry;
@@ -18,8 +17,6 @@ use Request;
 use Event;
 use Cache;
 use Lang;
-
-include_once __DIR__ . '/extension.php';
 
 /**
  * Model class for Component config

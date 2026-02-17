@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,11 +15,6 @@ use Components\Courses\Tables\GradeBook;
 use Request;
 use App;
 use Date;
-
-require_once __DIR__ . DS . 'base.php';
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'course.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.unity.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'grade.book.php';
 
 /**
  * API controller for the time component

@@ -237,8 +237,6 @@ class Membership extends Base
                     }
                 }
             } else {
-                require_once \Component::path('com_members') . DS . 'helpers' . DS . 'utility.php';
-
                 $l = strtolower($l);
 
                 // If not a userid check if proper email
@@ -777,7 +775,6 @@ class Membership extends Base
         }
 
         // delete member roles
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'member' . DS . 'role.php';
 
         \Components\Groups\Models\Member\Role::destroyByUserAndGroup(User::get('id'), $this->view->group->get('gidNumber'));
 

@@ -10,7 +10,6 @@
 defined('_HZEXEC_') or die();
 
 if ($this->results) {
-    include_once \Component::path('com_resources') . DS . 'tables' . DS . 'review.php';
 
     plgGroupsResources::documents();
 

@@ -6,7 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Components\Members\Models;
 
 use Components\Members\Models\Import\Record;
@@ -15,8 +14,6 @@ use Hubzero\Content\Import\Model\Import as Base;
 use Hubzero\Content\Importer;
 use Hubzero\Utility\Sanitize;
 use stdClass;
-
-include_once __DIR__ . DS . 'import' . DS . 'record.php';
 
 /**
  * Member importer
@@ -498,8 +495,6 @@ class Import extends Base
     public function fieldMap()
     {
         if (!$this->mapped) {
-            include_once __DIR__ . DS . 'profile' . DS . 'field.php';
-
             $fields = Field::all()
                 ->ordered()
                 ->rows();

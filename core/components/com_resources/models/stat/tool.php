@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,10 +11,6 @@ namespace Components\Resources\Models\Stat;
 use Hubzero\Database\Relational;
 use Date;
 use Lang;
-
-include_once __DIR__ . DS . 'tool' . DS . 'top.php';
-include_once __DIR__ . DS . 'tool' . DS . 'topval.php';
-include_once __DIR__ . DS . 'tool' . DS . 'user.php';
 
 /**
  * Resource stats tools model

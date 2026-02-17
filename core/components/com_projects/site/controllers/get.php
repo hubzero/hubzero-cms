@@ -27,7 +27,6 @@ class Get extends SiteController
      */
     public function displayTask()
     {
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'publicstamp.php';
 
         $route = Route::url('index.php?option=' . $this->_option, false);
 

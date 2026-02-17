@@ -21,8 +21,6 @@ use User;
 use App;
 use Component;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'ticket.php';
-
 /**
  * Collections controller class for media
  */

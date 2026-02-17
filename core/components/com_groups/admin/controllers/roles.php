@@ -19,8 +19,6 @@ use User;
 use App;
 use Notify;
 
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'role.php';
-
 /**
  * Groups controller class for managing membership roles
  */

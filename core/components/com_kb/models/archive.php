@@ -8,8 +8,6 @@
 
 namespace Components\Kb\Models;
 
-require_once __DIR__ . DS . 'category.php';
-
 /**
  * Knowledgebase archive model class
  */

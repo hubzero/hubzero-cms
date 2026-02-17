@@ -34,7 +34,6 @@ class Config extends AdminController
      */
     public function schemasTask()
     {
-        require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'service.php';
 
         // display panel
         $this->view

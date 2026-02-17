@@ -260,10 +260,12 @@ class Miner extends Obj implements Provider
         // Size and MIME type
         $record->format = [];
 
-        if (file_exists(\Component::path('com_publications') . DS . 'helpers' . DS . 'html.php')) {
-            include_once \Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
-
-            $this->database->setQuery("SELECT master_type FROM `#__publications` WHERE id = " . $this->database->quote($record->publication_id));
+        $pubHelper = \Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
+        if (file_exists($pubHelper)) {
+            $pubIdQuoted = $this->database->quote($record->publication_id);
+            $this->database->setQuery(
+                "SELECT master_type FROM `#__publications` WHERE id = " . $pubIdQuoted
+            );
             $masterType = $this->database->loadResult();
 
             $this->database->setQuery("SELECT * FROM `#__publication_attachments` WHERE publication_version_id = " . $this->database->quote($record->version_id));
@@ -393,9 +395,8 @@ class Miner extends Obj implements Provider
 			ORDER BY `year` DESC"
         );
         $references = $this->database->loadObjectList();
-        if (count($references) && file_exists(\Component::path('com_citations') . DS . 'helpers' . DS . 'format.php')) {
-            include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
-
+        $citationHelper = \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
+        if (count($references) && file_exists($citationHelper)) {
             $formatter = new \Components\Citations\Helpers\Format();
             $formatter->setTemplate('apa');
 
@@ -418,9 +419,7 @@ class Miner extends Obj implements Provider
 			ORDER BY `year` DESC"
         );
         $references = $this->database->loadObjectList();
-        if (count($references) && file_exists(\Component::path('com_citations') . DS . 'helpers' . DS . 'format.php')) {
-            include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'format.php';
-
+        if (count($references) && file_exists($citationHelper)) {
             $formatter = new \Components\Citations\Helpers\Format();
             $formatter->setTemplate('apa');
 

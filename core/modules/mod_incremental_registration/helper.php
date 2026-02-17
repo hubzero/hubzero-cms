@@ -70,11 +70,6 @@ class Helper extends Module
         $uid = (int) User::get('id');
         $dbh = App::get('db');
 
-        require_once Component::path('com_members') . '/models/member.php';
-        require_once Component::path('com_members') . '/models/incremental/awards.php';
-        require_once Component::path('com_members') . '/models/incremental/groups.php';
-        require_once Component::path('com_members') . '/models/incremental/options.php';
-
         $opts = new Options();
         if (!$opts->isEnabled($uid)) {
             return;

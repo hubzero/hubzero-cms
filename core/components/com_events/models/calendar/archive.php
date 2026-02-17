@@ -1,4 +1,5 @@
 <?php
+
 // phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
 /**
@@ -17,9 +18,6 @@ use DateTimezone;
 use DateTime;
 use Date;
 use Request;
-
-// include calendar model
-require_once dirname(__DIR__) . DS . 'calendar.php';
 
 /**
  * Calendar archive model

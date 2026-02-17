@@ -12,8 +12,6 @@ use Hubzero\Database\Relational;
 use User;
 use Date;
 
-include_once __DIR__ . '/respondent.php';
-
 /**
  * Event Page model
  *

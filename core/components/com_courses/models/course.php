@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,14 +12,6 @@ use Components\Courses\Tables;
 use Hubzero\Config\Registry;
 use Filesystem;
 use Lang;
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'course.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'page.php';
-require_once __DIR__ . DS . 'base.php';
-require_once __DIR__ . DS . 'permissions.php';
-require_once __DIR__ . DS . 'offering.php';
-require_once __DIR__ . DS . 'iterator.php';
-require_once __DIR__ . DS . 'tags.php';
 
 /**
  * Courses model class for a course
@@ -942,8 +933,6 @@ class Course extends Base
     public function certificate()
     {
         if (!$this->_certificate) {
-            include_once __DIR__ . DS . 'certificate.php';
-
             $this->_certificate = Certificate::getInstance(0, $this->get('id'));
         }
 

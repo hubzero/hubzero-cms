@@ -14,8 +14,6 @@ use Request;
 use Route;
 use Lang;
 
-require_once dirname(__DIR__) . DS . 'item.php';
-
 /**
  * Collections model for a course
  */
@@ -75,7 +73,6 @@ class Courses extends GenericItem
 
         $id = ($id ?: Request::getInt('id', 0));
 
-        include_once \Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
         $course = null;
 
         if (!$id) {

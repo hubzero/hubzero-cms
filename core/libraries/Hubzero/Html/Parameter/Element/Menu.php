@@ -10,6 +10,7 @@ namespace Hubzero\Html\Parameter\Element;
 
 use Hubzero\Html\Parameter\Element;
 use Hubzero\Html\Builder;
+use Components\Menus\Helpers\Menus as MenusHelper;
 
 /**
  * Renders a menu element
@@ -35,8 +36,7 @@ class Menu extends Element
      */
     public function fetchElement($name, $value, &$node, $control_name)
     {
-        require_once PATH_CORE . '/components/com_menus/admin/helpers/menus.php';
-        $menuTypes = \MenusHelper::getMenuTypes();
+        $menuTypes = MenusHelper::getMenuTypes();
 
         foreach ($menuTypes as $menutype) {
             $options[] = Builder\Select::option($menutype, $menutype);

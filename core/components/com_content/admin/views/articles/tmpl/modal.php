@@ -13,8 +13,6 @@ if (App::isSite()) {
     Session::checkToken('get') or die(Lang::txt('JINVALID_TOKEN'));
 }
 
-require_once Component::path('com_content') . '/site/helpers/route.php';
-
 Html::addIncludePath(Component::path('com_content') . '/admin/helpers/html');
 Html::behavior('tooltip');
 

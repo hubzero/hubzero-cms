@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,8 +17,6 @@ use Lang;
 use App;
 use Config;
 use User;
-
-require_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'orm' . DS . 'license.php';
 
 /**
  * Manage publication licenses

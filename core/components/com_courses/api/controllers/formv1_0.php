@@ -13,8 +13,6 @@ use Request;
 use App;
 use Config;
 
-require_once __DIR__ . DS . 'base.php';
-
 /**
  * API controller for the time component
  */
