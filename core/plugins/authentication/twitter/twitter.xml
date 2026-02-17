@@ -7,15 +7,15 @@
 	<authorEmail>support@hubzero.org</authorEmail>
 	<copyright>Copyright (c) 2005-2020 The Regents of the University of California.</copyright>
 	<license>http://opensource.org/licenses/MIT MIT</license>
-	<version>1.7</version>
+	<version>2.0</version>
 	<description>PLG_AUTHENTICATION_TWITTER_XML_DESCRIPTION</description>
 	<files>
-		<filename plugin="twitter.php">twitter.php</filename>
+		<filename plugin="twitter">twitter.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="app_id"       type="text" size="20" label="PLG_AUTHENTICATION_TWITTER_PARAM_KEY_LABEL"    description="PLG_AUTHENTICATION_TWITTER_PARAM_KEY_DESC" />
+				<field name="app_id"       type="text" size="32" label="PLG_AUTHENTICATION_TWITTER_PARAM_KEY_LABEL"    description="PLG_AUTHENTICATION_TWITTER_PARAM_KEY_DESC" />
 				<field name="app_secret"   type="text" size="32" label="PLG_AUTHENTICATION_TWITTER_PARAM_SECRET_LABEL" description="PLG_AUTHENTICATION_TWITTER_PARAM_SECRET_DESC" />
 				<field name="display_name" type="text" size="32" label="PLG_AUTHENTICATION_TWITTER_PARAM_NAME_LABEL"   description="PLG_AUTHENTICATION_TWITTER_PARAM_NAME_DESC" default="Twitter" />
 				<field name="site_login"   type="radio" label="PLG_AUTHENTICATION_TWITTER_PARAM_SITELOGIN_LABEL" default="1" description="PLG_AUTHENTICATION_TWITTER_PARAM_SITELOGIN_DESC">

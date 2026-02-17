@@ -14,8 +14,6 @@ use Hubzero\Plugin\Plugin;
 // No direct access
 defined('_HZEXEC_') or die();
 
-// Include php library
-require_once __DIR__ . DS . 'twitteroauth' . DS . 'twitteroauth.php';
 class Twitter extends \Hubzero\Plugin\OauthClient
 {
     /**
@@ -28,13 +26,44 @@ class Twitter extends \Hubzero\Plugin\OauthClient
     protected $_autoloadLanguage = true;
 
     /**
+     * The initialized OAuth2 provider.
+     *
+     * @var  \Smolblog\OAuth2\Client\Provider\Twitter
+     */
+    private $provider = null;
+
+    /**
+     * Session scope key for namespacing session variables.
+     *
+     * @var  string
+     */
+    private $name = 'twitter';
+
+    /**
+     * Initialize the OAuth2 provider.
+     *
+     * @param   object  $subject
+     * @param   array   $config
+     */
+    public function __construct($subject, $config)
+    {
+        parent::__construct($subject, $config);
+
+        $this->provider = new \Smolblog\OAuth2\Client\Provider\Twitter([
+            'clientId'     => $this->params->get('app_id'),
+            'clientSecret' => $this->params->get('app_secret'),
+            'redirectUri'  => $this->getReturnUrl(),
+        ]);
+    }
+
+    /**
      * Perform logout (not currently used)
      *
      * @return  void
      */
     public function logout()
     {
-        // @TODO: implement me
+        // Cannot be done server side with current API
     }
 
     /**
@@ -44,12 +73,12 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      */
     public function status()
     {
-        // @TODO: implement me
+        // No JS SDK available for server-side status check
     }
 
     /**
-     * Method to call when redirected back from twitter after authentication
-     * Grab the return URL if set and handle denial of app privileges from twitter
+     * Method to call when redirected back from twitter after authentication.
+     * Grab the return URL if set and handle denial of app privileges.
      *
      * @param   object  $credentials
      * @param   object  $options
@@ -57,8 +86,12 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      */
     public function login(&$credentials, &$options)
     {
-        if ($return = Request::getString('return', '')) {
+        $return = '';
+        $b64dreturn = '';
+
+        if ($return = Session::get('returnUrl', null, $this->name)) {
             $b64dreturn = base64_decode($return);
+
             if (!\Hubzero\Utility\Uri::isInternal($b64dreturn)) {
                 $b64dreturn = '';
             }
@@ -66,15 +99,15 @@ class Twitter extends \Hubzero\Plugin\OauthClient
 
         $options['return'] = $b64dreturn;
 
+        Session::clear('returnUrl', $this->name);
+
         // Check to make sure they didn't deny our application permissions
-        if (Request::getWord('denied', false)) {
-            // User didn't authorize our app or clicked cancel
+        if (Request::getVar('error', null)) {
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
                 Lang::txt('PLG_AUTHENTICATION_TWITTER_MUST_AUTHORIZE_TO_LOGIN', Config::get('sitename')),
                 'error'
             );
-            return;
         }
     }
 
@@ -87,27 +120,18 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      */
     public function display($view, $tpl)
     {
-        // Check if a return is specified
-        if ($view->return) {
-            $return = '&return=' . $view->return;
-        }
+        $params = array(
+            'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access'],
+            'redirect_uri' => $this->getReturnUrl()
+        );
 
-        // Build twitter object
-        $twitter = new TwitterOAuth($this->params->get('app_id'), $this->params->get('app_secret'));
+        $loginUrl = $this->provider->getAuthorizationUrl($params);
 
-        // Set callback url and get temp credentials
-        $temporary_credentials = $twitter->getRequestToken(self::getRedirectUri('twitter') . $return);
+        Session::set('oauth2state', $this->provider->getState(), $this->name);
+        Session::set('oauth2verifier', $this->provider->getPkceVerifier(), $this->name);
+        Session::set('returnUrl', $view->return, $this->name);
 
-        // Store temp credentials in session for use after authentication redirect from twitter
-        App::get('session')->set('twitter.oauth.token', $temporary_credentials['oauth_token']);
-        App::get('session')->set('twitter.oauth.token_secret', $temporary_credentials['oauth_token_secret']);
-
-        // Get login url
-        $redirect_url = $twitter->getAuthorizeURL($temporary_credentials);
-
-        // Redirect to the login URL
-        App::redirect($redirect_url);
-        return;
+        App::redirect($loginUrl);
     }
 
     /**
@@ -133,38 +157,61 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      */
     public function onUserAuthenticate($credentials, $options, &$response)
     {
-        // Build twitter object using temp credentials saved in session
-        $twitter = new TwitterOAuth(
-            $this->params->get('app_id'),
-            $this->params->get('app_secret'),
-            App::get('session')->get('twitter.oauth.token'),
-            App::get('session')->get('twitter.oauth.token_secret')
-        );
+        $code = Request::getVar('code', null);
+        $state = Request::getVar('state', null);
 
-        // Request user specific (longer lasting) credentials
-        $token_credentials = $twitter->getAccessToken(Request::getString('oauth_verifier'));
+        if ($code == null) {
+            $authUrl = $this->provider->getAuthorizationUrl(array(
+                'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access']
+            ));
 
-        // Build new twitter object with user credentials
-        $twitter = new TwitterOAuth(
-            $this->params->get('app_id'),
-            $this->params->get('app_secret'),
-            $token_credentials['oauth_token'],
-            $token_credentials['oauth_token_secret']
-        );
+            Session::set('oauth2state', $this->provider->getState(), $this->name);
+            Session::set('oauth2verifier', $this->provider->getPkceVerifier(), $this->name);
 
-        // Get user account info
-        $account = $twitter->get('account/verify_credentials');
+            App::redirect($authUrl);
+        } elseif ($state !== Session::get('oauth2state', null, $this->name)) {
+            Session::clear('oauth2state', $this->name);
+            Session::clear('oauth2verifier', $this->name);
 
-        // Make sure we have a twitter account
-        if (!$account->errors && $account->id > 0) {
-            // Get id as username (silly, but we cast to string, otherwise find_or_create bellow fails)
-            $username = (string) $account->id;
+            $response->status = \Hubzero\Auth\Status::FAILURE;
+            $response->error_message = Lang::txt(
+                'PLG_AUTHENTICATION_TWITTER_ERROR_RETRIEVING_PROFILE',
+                'Mismatched state'
+            );
+
+            return;
+        }
+
+        $token = $this->provider->getAccessToken('authorization_code', array(
+            'code' => Request::getString('code'),
+            'code_verifier' => Session::get('oauth2verifier', null, $this->name),
+        ));
+
+        Session::clear('oauth2state', $this->name);
+        Session::clear('oauth2verifier', $this->name);
+
+        if (isset($token) && $token) {
+            try {
+                $owner = $this->provider->getResourceOwner($token);
+
+                $id       = $owner->getId();
+                $fullname = $owner->getName();
+                $username = $owner->getUsername();
+                $email    = $owner->getEmail();
+            } catch (\Exception $e) {
+                $response->status = \Hubzero\Auth\Status::FAILURE;
+                $response->error_message = Lang::txt(
+                    'PLG_AUTHENTICATION_TWITTER_ERROR_RETRIEVING_PROFILE',
+                    $e->getMessage()
+                );
+                return;
+            }
 
             // Create the hubzero auth link
             $method = (Component::params('com_members')->get('allowUserRegistration', false))
                 ? 'find_or_create'
                 : 'find';
-            $hzal = \Hubzero\Auth\Link::$method('authentication', 'twitter', null, $username);
+            $hzal = \Hubzero\Auth\Link::$method('authentication', $this->name, null, $id);
 
             if ($hzal === false) {
                 $response->status = \Hubzero\Auth\Status::FAILURE;
@@ -174,9 +221,9 @@ class Twitter extends \Hubzero\Plugin\OauthClient
 
             // Set response variables
             $response->auth_link = $hzal;
-            $response->type      = 'twitter';
+            $response->type      = $this->name;
             $response->status    = \Hubzero\Auth\Status::SUCCESS;
-            $response->fullname  = $account->name;
+            $response->fullname  = $fullname;
 
             if ($hzal->user_id) {
                 $user = User::getInstance($hzal->user_id);
@@ -189,18 +236,22 @@ class Twitter extends \Hubzero\Plugin\OauthClient
                 $response->email    = $response->username . '@invalid';
 
                 // Also set a suggested username for their hub account
-                App::get('session')->set('auth_link.tmp_username', $account->screen_name);
+                if ($username) {
+                    Session::set('auth_link.tmp_username', $username);
+                } elseif ($email) {
+                    $sub_email = explode('@', $email, 2);
+                    Session::set('auth_link.tmp_username', $sub_email[0]);
+                }
             }
 
             $hzal->update();
 
             // If we have a real user, drop the authenticator cookie
             if (isset($user) && is_object($user)) {
-                // Set cookie with login preference info
                 $prefs = array(
                     'user_id'       => $user->get('id'),
-                    'user_img'      => str_replace('_normal', '', $account->profile_image_url_https),
-                    'authenticator' => 'twitter'
+                    'user_img'      => $owner->getImageUrl(),
+                    'authenticator' => $this->name,
                 );
 
                 $namespace = 'authenticator';
@@ -222,57 +273,71 @@ class Twitter extends \Hubzero\Plugin\OauthClient
      */
     public function link($options = array())
     {
-        // Build twitter object using temp credentials saved in session
-        $twitter = new TwitterOAuth(
-            $this->params->get('app_id'),
-            $this->params->get('app_secret'),
-            App::get('session')->get('twitter.oauth.token'),
-            App::get('session')->get('twitter.oauth.token_secret')
-        );
+        $code = Request::getVar('code', null);
+        $state = Request::getVar('state', null);
 
-        // Request user specific (longer lasting) credentials
-        $token_credentials = $twitter->getAccessToken(Request::getString('oauth_verifier'));
+        if ($code == null) {
+            $authUrl = $this->provider->getAuthorizationUrl(array(
+                'scope' => ['tweet.read', 'users.read', 'users.email', 'offline.access']
+            ));
 
-        // Build new twitter object with user credentials
-        $twitter = new TwitterOAuth(
-            $this->params->get('app_id'),
-            $this->params->get('app_secret'),
-            $token_credentials['oauth_token'],
-            $token_credentials['oauth_token_secret']
-        );
+            Session::set('oauth2state', $this->provider->getState(), $this->name);
+            Session::set('oauth2verifier', $this->provider->getPkceVerifier(), $this->name);
 
-        // Get user account info
-        $account = $twitter->get('account/verify_credentials');
+            App::redirect($authUrl);
+        } elseif ($state !== Session::get('oauth2state', null, $this->name)) {
+            Session::clear('oauth2state', $this->name);
+            Session::clear('oauth2verifier', $this->name);
 
-        // Make sure we have a twitter account
-        if (!$account->errors && $account->id > 0) {
-            // Get unique username
-            $username = (string) $account->id;
+            App::redirect(
+                Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+                Lang::txt('PLG_AUTHENTICATION_TWITTER_ERROR'),
+                'error'
+            );
+            return;
+        }
 
-            $hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'twitter', '');
+        $token = $this->provider->getAccessToken('authorization_code', array(
+            'code' => Request::getString('code'),
+            'code_verifier' => Session::get('oauth2verifier', null, $this->name),
+        ));
+
+        Session::clear('oauth2state', $this->name);
+        Session::clear('oauth2verifier', $this->name);
+
+        if (isset($token) && $token) {
+            try {
+                $owner = $this->provider->getResourceOwner($token);
+                $id    = $owner->getId();
+            } catch (\Exception $e) {
+                App::redirect(
+                    Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
+                    Lang::txt('PLG_AUTHENTICATION_TWITTER_ERROR'),
+                    'error'
+                );
+                return;
+            }
+
+            $hzad = \Hubzero\Auth\Domain::getInstance('authentication', $this->name, '');
 
             // Create the link
-            if (\Hubzero\Auth\Link::getInstance($hzad->id, $username)) {
-                // This twitter account is already linked to another hub account
+            if (\Hubzero\Auth\Link::getInstance($hzad->id, $id)) {
+                // This account is already linked to another hub account
                 App::redirect(
                     Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=account'),
                     Lang::txt('PLG_AUTHENTICATION_TWITTER_ACCOUNT_ALREADY_LINKED'),
                     'error'
                 );
-                return;
             } else {
-                $hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'twitter', null, $username);
-                // if `$hzal` === false, then either:
-                //    the authenticator Domain couldn't be found,
-                //    no username was provided,
-                //    or the Link record failed to be created
+                $hzal = \Hubzero\Auth\Link::find_or_create('authentication', $this->name, null, $id);
+
                 if ($hzal) {
                     $hzal->set('user_id', User::get('id'));
                     $hzal->update();
                 } else {
                     Log::error(sprintf(
                         'Hubzero\Auth\Link::find_or_create("authentication", "twitter", null, %s) returned false',
-                        $username
+                        $id
                     ));
                 }
             }
@@ -283,8 +348,33 @@ class Twitter extends \Hubzero\Plugin\OauthClient
                 Lang::txt('PLG_AUTHENTICATION_TWITTER_MUST_AUTHORIZE_TO_LINK', Config::get('sitename')),
                 'error'
             );
-            return;
         }
+    }
+
+    /**
+     * Generate return url
+     *
+     * @param   string  $return  url
+     * @param   bool    $encode  whether or not to encode return before using
+     * @return  string  url
+     */
+    private function getReturnUrl($return = null, $encode = false)
+    {
+        $service = trim(Request::base(), '/');
+
+        if (empty($service)) {
+            $service = $_SERVER['HTTP_HOST'];
+        }
+
+        $rtrn = '';
+        if (isset($return) && !empty($return)) {
+            if ($encode) {
+                $return = base64_encode($return);
+            }
+            $rtrn = '&return=' . $return;
+        }
+
+        return self::getRedirectUri($this->name) . $rtrn;
     }
 
     /**
