@@ -8,6 +8,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+defined('_HZEXEC_') or die();
+
 // Initialise variables.
 $limits = array();
 
