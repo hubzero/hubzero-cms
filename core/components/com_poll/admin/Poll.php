@@ -15,20 +15,21 @@ use Hubzero\Component\AbstractComponent;
  */
 class Poll extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Authorization check
-		if (!\User::authorise('core.manage', 'com_poll')) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Authorization check
+        if (!\User::authorise('core.manage', 'com_poll')) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		// Create the controller
-		$controller = new Controllers\Polls();
-		$controller->execute();
-	}
+
+        // Create the controller
+        $controller = new Controllers\Polls();
+        $controller->execute();
+    }
 }

@@ -16,18 +16,18 @@ use Hubzero\Component\AbstractComponent;
  */
 class Categories extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Access check.
-		if (!\User::authorise('core.manage', Request::getCmd('extension'))) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Access check.
+        if (!\User::authorise('core.manage', Request::getCmd('extension'))) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
         // Determine task
         $task = Request::getCmd('task');
@@ -36,16 +36,16 @@ class Categories extends AbstractComponent
             Request::setVar('task', $splitTask[1]);
         }
 
-		// Get the controller
-		$defaultController = 'categories';
-		$controllerName = Request::getCmd('controller', $defaultController);
-		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-			$controllerName = $defaultController;
-		}
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        // Get the controller
+        $defaultController = 'categories';
+        $controllerName = Request::getCmd('controller', $defaultController);
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+            $controllerName = $defaultController;
+        }
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Execute
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Execute
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

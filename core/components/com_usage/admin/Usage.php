@@ -15,28 +15,28 @@ use Hubzero\Component\AbstractComponent;
  */
 class Usage extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Authorization check
-		if (!\User::authorise('core.manage', 'com_usage')) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Authorization check
+        if (!\User::authorise('core.manage', 'com_usage')) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-		$controllerName = \Request::getCmd('controller', 'data');
-		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
-			$controllerName = 'data';
-		}
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+        $controllerName = \Request::getCmd('controller', 'data');
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
+            $controllerName = 'data';
+        }
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+        $controller->redirect();
+    }
 }

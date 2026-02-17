@@ -15,32 +15,33 @@ use Hubzero\Component\AbstractComponent;
  */
 class Cron extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		if (!\User::authorise('core.manage', 'com_cron')) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!\User::authorise('core.manage', 'com_cron')) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-		\Submenu::addEntry(
-		    \Lang::txt('COM_CRON_JOBS'),
-		    \Route::url('index.php?option=com_cron'),
-		    true
-		);
+        \Submenu::addEntry(
+            \Lang::txt('COM_CRON_JOBS'),
+            \Route::url('index.php?option=com_cron'),
+            true
+        );
 
-		if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
-		    \Submenu::addEntry(
-		        \Lang::txt('COM_CRON_PLUGINS'),
-		        \Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
-		    );
-		}
+        if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
+            \Submenu::addEntry(
+                \Lang::txt('COM_CRON_PLUGINS'),
+                \Route::url('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
+            );
+        }
 
-		$controller = new Controllers\Jobs();
-		$controller->execute();
-	}
+
+        $controller = new Controllers\Jobs();
+        $controller->execute();
+    }
 }

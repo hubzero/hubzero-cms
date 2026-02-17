@@ -33,7 +33,7 @@ class Content extends AbstractComponent
             \Request::setVar('task', \Request::getCmd('view', 'article'));
         }
 
-		$controller = new Controllers\Articles();
-		$controller->execute();
-	}
+        $controller = new Controllers\Articles();
+        $controller->execute();
+    }
 }

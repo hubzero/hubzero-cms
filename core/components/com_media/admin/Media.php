@@ -15,35 +15,35 @@ use Hubzero\Component\AbstractComponent;
  */
 class Media extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		if (!\User::authorise('core.manage', 'com_media')) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!\User::authorise('core.manage', 'com_media')) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-		$params = \Component::params('com_media');
-		$path = trim($params->get('file_path', 'site/media'), '/');
-		$path = $path ? $path . '/' : '';
+        $params = \Component::params('com_media');
+        $path = trim($params->get('file_path', 'site/media'), '/');
+        $path = $path ? $path . '/' : '';
 
-		define('COM_MEDIA_BASE', PATH_APP . '/' . $path);
+        define('COM_MEDIA_BASE', PATH_APP . '/' . $path);
 
-		$baseurl = rtrim(\Request::root(), '/') . substr(COM_MEDIA_BASE, strlen(PATH_ROOT));
-		define('COM_MEDIA_BASEURL', $baseurl);
+        $baseurl = rtrim(\Request::root(), '/') . substr(COM_MEDIA_BASE, strlen(PATH_ROOT));
+        define('COM_MEDIA_BASEURL', $baseurl);
 
         $controllerName = \Request::getCmd('controller', 'media_test');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
             $controllerName = 'media';
         }
 
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

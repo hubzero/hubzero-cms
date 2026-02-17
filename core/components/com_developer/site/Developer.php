@@ -15,22 +15,22 @@ use Hubzero\Component\AbstractComponent;
  */
 class Developer extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
 
-		$controllerName = \Request::getCmd('controller', 'developer');
-		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-			$controllerName = 'developer';
-		}
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        $controllerName = \Request::getCmd('controller', 'developer');
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+            $controllerName = 'developer';
+        }
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate the controller
-		$component = new $controllerName();
-		$component->execute();
-	}
+        // Instantiate the controller
+        $component = new $controllerName();
+        $component->execute();
+    }
 }

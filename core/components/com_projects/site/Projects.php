@@ -23,14 +23,14 @@ class Projects extends AbstractComponent
     protected function execute(): void
     {
 
-		$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'projects'));
-		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
-			$controllerName = 'projects';
-		}
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'projects'));
+        if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName)))) {
+            $controllerName = 'projects';
+        }
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

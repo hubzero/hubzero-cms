@@ -15,17 +15,17 @@ use Hubzero\Component\AbstractComponent;
  */
 class Cpanel extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// No access check.
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // No access check.
 
-		// Instantiate controller
-		$controller = new Controllers\Cpanel();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new Controllers\Cpanel();
+        $controller->execute();
+    }
 }

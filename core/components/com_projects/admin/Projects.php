@@ -15,38 +15,38 @@ use Hubzero\Component\AbstractComponent;
  */
 class Projects extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		if (!\User::authorise('core.manage', 'com_projects')) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!\User::authorise('core.manage', 'com_projects')) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
         $controllerName = \Request::getCmd('controller', 'projects');
         if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
             $controllerName = 'projects';
         }
 
-		\Submenu::addEntry(
-		    \Lang::txt('COM_PROJECTS'),
-		    \Route::url('index.php?option=com_projects'),
-		    ($controllerName == 'projects' || $controllerName == 'team')
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_PROJECTS_ACTIVITY'),
-		    \Route::url('index.php?option=com_projects&controller=activity&project=0'),
-		    $controllerName == 'activity'
-		);
+        \Submenu::addEntry(
+            \Lang::txt('COM_PROJECTS'),
+            \Route::url('index.php?option=com_projects'),
+            ($controllerName == 'projects' || $controllerName == 'team')
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_PROJECTS_ACTIVITY'),
+            \Route::url('index.php?option=com_projects&controller=activity&project=0'),
+            $controllerName == 'activity'
+        );
 
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-		// initiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // initiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }
