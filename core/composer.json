@@ -41,6 +41,7 @@
         "league/flysystem-aws-s3-v3": "1.0.*",
         "league/oauth2-client": "~2.8.1",
         "league/oauth2-facebook": "2.0.*",
+        "league/oauth2-linkedin": "^5.1",
         "litesaml/lightsaml": "2.3.*",
         "monolog/monolog": "1.27.*",
         "nao-pon/flysystem-google-drive": "1.1.*",
