@@ -7,6 +7,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Storefront\Models\ProductTypes\Subscriptions;
+
 require_once __DIR__ . '/BaseSubscription.php';
 
 // phpcs:ignore Squiz.Classes.ValidClassName.NotCamelCaps
@@ -34,6 +36,6 @@ class Access_Group_Membership_Subscription extends BaseSubscription
     public function _getExpiration()
     {
         // This will get expiration from the correct place
-        throw new Exception('not implemented');
+        throw new \Exception('not implemented');
     }
 }

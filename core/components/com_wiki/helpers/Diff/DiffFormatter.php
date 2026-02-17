@@ -7,8 +7,6 @@
  */
 
 // No direct access.
-defined('_HZEXEC_') or die();
-
 /**
  * A class to format Diffs
  *
@@ -18,6 +16,8 @@ defined('_HZEXEC_') or die();
  *
  * @todo document
  */
+namespace Components\Wiki\Helpers;
+
 class DiffFormatter
 {
     /**
@@ -53,7 +53,7 @@ class DiffFormatter
      * @param   object  $diff  A Diff object.
      * @return  string  The formatted output.
      */
-    public function format($diff, ?Closure $formatContextOutput = null)
+    public function format($diff, ?\Closure $formatContextOutput = null)
     {
         $xi = $yi = 1;
         $block = false;
@@ -75,7 +75,7 @@ class DiffFormatter
                     } else {
                         if ($ntrail) {
                             $context = array_slice($edit->orig, 0, $ntrail);
-                            $block[] = new _DiffOp_Copy($context);
+                            $block[] = new DiffOpCopy($context);
                         }
                         $this->_block(
                             $x0,
@@ -95,7 +95,7 @@ class DiffFormatter
                     $y0 = $yi - count($context);
                     $block = array();
                     if ($context) {
-                        $block[] = new _DiffOp_Copy($context);
+                        $block[] = new DiffOpCopy($context);
                     }
                 }
                 $block[] = $edit;

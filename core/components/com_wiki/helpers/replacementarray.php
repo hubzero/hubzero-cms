@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Replacement array for FSS with fallback to strtr()
  * Supports lazy initialisation of FSS resource

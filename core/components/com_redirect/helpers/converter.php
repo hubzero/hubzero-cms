@@ -6,7 +6,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  */
 
-namespace Component\Redirect\Helpers;
+namespace Components\Redirect\Helpers;
 
 use Component;
 use Route;

@@ -7,6 +7,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Content\Site\Helpers;
+
 // no direct access
 defined('_HZEXEC_') or die();
 

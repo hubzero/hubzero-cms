@@ -6,10 +6,11 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Base class for "replacers", objects used in preg_replace_callback() and
  * StringUtils::delimiterReplaceCallback()
- *
  */
 class Replacer
 {

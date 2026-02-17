@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Members\Admin\Helpers\Html;
+
 /**
  * Extended Utility class for the Users component.
  */

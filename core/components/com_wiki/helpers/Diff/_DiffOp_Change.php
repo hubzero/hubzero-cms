@@ -6,11 +6,12 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Change operation
- *
  */
-class _DiffOp_Change extends _DiffOp
+class DiffOpChange extends DiffOp
 {
     /**
      * Description for 'type'
@@ -20,7 +21,7 @@ class _DiffOp_Change extends _DiffOp
     public $type = 'change';
 
     /**
-     * Short description for '_DiffOp_Change'
+     * Short description for 'DiffOpChange'
      *
      * Long description (if any) ...
      *
@@ -43,6 +44,6 @@ class _DiffOp_Change extends _DiffOp
      */
     public function reverse()
     {
-        return new _DiffOp_Change($this->closing, $this->orig);
+        return new DiffOpChange($this->closing, $this->orig);
     }
 }

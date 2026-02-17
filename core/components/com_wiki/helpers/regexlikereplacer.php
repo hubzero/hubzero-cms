@@ -6,9 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * Class to replace regex matches with a string similar to that used in preg_replace()
- *
  */
 class RegexlikeReplacer extends Replacer
 {

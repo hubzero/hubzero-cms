@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Storefront\Models\ProductTypes\Subscriptions;
+
 class BaseSubscription
 {
     /**

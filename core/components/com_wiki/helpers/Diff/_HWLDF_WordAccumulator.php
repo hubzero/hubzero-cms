@@ -7,10 +7,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Components\Wiki\Helpers;
+
 /**
  * iso-8859-x non-breaking space.
  */
-define('NBSP', '&#160;');
+if (!defined('NBSP')) {
+    define('NBSP', '&#160;');
+}
 
 /**
  * Additions by Axel Boldt follow,
@@ -19,7 +23,7 @@ define('NBSP', '&#160;');
  * @phpcs:disable PSR2.Methods.MethodDeclaration.Underscore
  * @phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
  */
-class _HWLDF_WordAccumulator
+class WordAccumulator
 {
     public $_lines = '';
     public $_line = '';
@@ -27,7 +31,7 @@ class _HWLDF_WordAccumulator
     public $_tag = '';
 
     /**
-     * Short description for '_HWLDF_WordAccumulator'
+     * Short description for 'WordAccumulator'
      *
      * Long description (if any) ...
      *
