@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\Cart\Admin;
+
+use Hubzero\Component\AbstractComponent;
+
+/**
+ * Component entry point
+ */
+class Cart extends AbstractComponent
+{
+	/**
+	 * Entry point
+	 *
+	 * @return  void
+	 */
+	protected function execute(): void
+	{
+		$option = 'com_cart';
+
+		if (!\User::authorise('core.manage', $option)) {
+		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+		}
+
+        $scope = \Request::getCmd('scope', 'site');
+        $controllerName = \Request::getCmd('controller', 'downloads');
+
+		\Submenu::addEntry(
+			\Lang::txt('COM_CART_SOFTWARE_DOWNLOADS'),
+			\Route::url('index.php?option=com_cart&controller=downloads'),
+			$controllerName == 'downloads'
+		);
+
+		\Submenu::addEntry(
+			\Lang::txt('COM_CART_ORDERS'),
+			\Route::url('index.php?option=com_cart&controller=orders'),
+			$controllerName == 'orders'
+		);
+
+		if (!class_exists(__NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName))) {
+			$controllerName = 'downloads';
+		}
+		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+
+		// Instantiate controller
+		$controller = new $controllerName();
+
+		$controller->execute();
+		$controller->redirect();
+	}
+}
