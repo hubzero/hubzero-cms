@@ -1,5 +1,6 @@
 <?php
 
+namespace Bootstrap\Cli\Language;
 
 /**
  * @package    hubzero-cms
@@ -10,7 +11,7 @@
 /**
  * en-GB localise class
  */
-abstract class en_GBLocalise
+abstract class EnGBLocalise
 {
     /**
      * Returns the potential suffixes for a specific number of items
