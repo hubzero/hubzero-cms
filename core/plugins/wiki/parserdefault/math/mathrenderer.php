@@ -1,83 +1,12 @@
 <?php
 
-namespace Plugins\Wiki\Parserdefault\Math;
-
-/**
- * Short description for 'file'
- *
- * Long description (if any) ...
- *
- * PHP version 5
- *
- * All rights reserved.
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted provided that the following conditions are met:
- * + Redistributions of source code must retain the above copyright notice,
- * this list of conditions and the following disclaimer.
- * + Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- * + Neither the name of the <ORGANIZATION> nor the names of its contributors
- * may be used to endorse or promote products derived
- * from this software without specific prior written permission.
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * @category  CategoryName
- * @package   MathRenderer
- * @author    Author's name <author@mail.com>
- * @copyright 2011 Author's name
- * @license   http://www.opensource.org/licenses/bsd-license.php The BSD License
- * @version   CVS: $Id:$
- * @link      http://pear.php.net/package/MathRenderer
- * @see       References to other sections (if any)...
- */
-
-/**
- * Output PNG file
- */
-
-define('MW_MATH_PNG', 0);
-
-/**
- * Output simple rendering
- */
-define('MW_MATH_SIMPLE', 1);
-
-/**
- * Output HTML
- */
-define('MW_MATH_HTML', 2);
-
-/**
- * Output Source
- */
-define('MW_MATH_SOURCE', 3);
-
-/**
- * Output modern
- */
-define('MW_MATH_MODERN', 4);
-
-/**
- * Output Math ML
- */
-define('MW_MATH_MATHML', 5);
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
+
+namespace Plugins\Wiki\Parserdefault\Math;
 
 /**
  * Math Renderer
@@ -85,12 +14,19 @@ define('MW_MATH_MATHML', 5);
  */
 class MathRenderer
 {
+    public const MATH_PNG = 0;
+    public const MATH_SIMPLE = 1;
+    public const MATH_HTML = 2;
+    public const MATH_SOURCE = 3;
+    public const MATH_MODERN = 4;
+    public const MATH_MATHML = 5;
+
     /**
      * Operation mode
      *
      * @var  integer
      */
-    public $mode = MW_MATH_MODERN;
+    public $mode = self::MATH_MODERN;
 
     /**
      * TeX string
@@ -213,7 +149,7 @@ class MathRenderer
         $b = '/usr/bin'; // dirname(__FILE__);
         $texvc = $b . DS . 'texvc';
 
-        if ($this->mode == MW_MATH_SOURCE) {
+        if ($this->mode == self::MATH_SOURCE) {
             // No need to render or parse anything more!
             return ('$ ' . htmlspecialchars($this->tex) . ' $');
         }
@@ -428,13 +364,14 @@ class MathRenderer
      */
     private function doRender()
     {
-        if ($this->mode == MW_MATH_MATHML && $this->mathml != '') {
+        if ($this->mode == self::MATH_MATHML && $this->mathml != '') {
             return '<math xmlns="http://www.w3.org/1998/Math/MathML">' . $this->mathml . '</math>';
         }
         if (
-            ($this->mode == MW_MATH_PNG) || ($this->html == '')
-            || (($this->mode == MW_MATH_SIMPLE) && ($this->conservativeness != 2))
-            || (($this->mode == MW_MATH_MODERN || $this->mode == MW_MATH_MATHML) && ($this->conservativeness == 0))
+            ($this->mode == self::MATH_PNG) || ($this->html == '')
+            || (($this->mode == self::MATH_SIMPLE) && ($this->conservativeness != 2))
+            || (($this->mode == self::MATH_MODERN || $this->mode == self::MATH_MATHML)
+                && ($this->conservativeness == 0))
         ) {
             return $this->linkToMathImage();
         } else {
