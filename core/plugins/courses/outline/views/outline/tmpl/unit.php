@@ -17,12 +17,11 @@ if (!$unit) :
 endif;
 
 if (!$this->course->offering()->access('view')) : ?>
-    <p class="info"><?php
-        echo Lang::txt(
-            'Access to the "Syllabus" section of this course is restricted'
-            . ' to members only. You must be a member to view the content.'
-                    );
-                    ?></p>
+    <?php $restrictedMsg = Lang::txt(
+        'Access to the "Syllabus" section of this course is restricted'
+        . ' to members only. You must be a member to view the content.'
+    ); ?>
+    <p class="info"><?php echo $restrictedMsg; ?></p>
 <?php else : ?>
     <?php echo $unit->get('title'); ?>
 <?php endif;
