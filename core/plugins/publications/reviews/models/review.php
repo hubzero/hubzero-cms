@@ -311,5 +311,3 @@ class Review extends \Hubzero\Base\Model
         return $link;
     }
 }
-
-class_alias(__NAMESPACE__ . '\Review', 'PublicationsModelReview');

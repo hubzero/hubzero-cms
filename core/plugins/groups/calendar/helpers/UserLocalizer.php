@@ -69,5 +69,3 @@ class UserLocalizer
         return Arr::getValue($userParams, 'timezone', $this->systemTimezone);
     }
 }
-
-class_alias(__NAMESPACE__ . '\UserLocalizer', 'UserLocalizer');
