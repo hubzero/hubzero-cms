@@ -8,8 +8,6 @@
 
 namespace Plugins\Wiki\Parserdefault\Macros\Group;
 
-require_once dirname(__DIR__) . DS . 'group.php';
-
 use Plugins\Wiki\Parserdefault\Macros\GroupMacro;
 
 /**
