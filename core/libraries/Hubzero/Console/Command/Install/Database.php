@@ -959,7 +959,12 @@ class Database
                         }
                         self::output("  Trying {$displayDsn} (from {$myCnfPath}) ... ", $ansi);
                         try {
-                            $adminPdo = self::connectWithPdoConnectorFromDsn($adminDsn, $adminUser, $adminPass, $options);
+                            $adminPdo = self::connectWithPdoConnectorFromDsn(
+                                $adminDsn,
+                                $adminUser,
+                                $adminPass,
+                                $options
+                            );
                             self::output("\e[32mOK\e[39m\n", $ansi);
                             // Check privileges immediately - if lacking, try next strategy
                             if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
@@ -1090,7 +1095,12 @@ class Database
                             }
                             self::output("  Trying (sudo) {$displayDsn} (from {$rootMyCnfPath}) ... ", $ansi);
                             try {
-                                $adminPdo = self::connectWithPdoConnectorFromDsn($adminDsn, $adminUser, $adminPass, $options);
+                                $adminPdo = self::connectWithPdoConnectorFromDsn(
+                                    $adminDsn,
+                                    $adminUser,
+                                    $adminPass,
+                                    $options
+                                );
                                 self::output("\e[32mOK\e[39m\n", $ansi);
                                 // Check privileges immediately - if lacking, try next strategy
                                 if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
@@ -1145,7 +1155,12 @@ class Database
                     if ($currentUser && file_exists($requestedSocket)) {
                         self::output("  Trying (sudo) {$connection['dsn']};user={$currentUser} ... ", $ansi);
                         try {
-                            $adminPdo = self::connectWithPdoConnectorFromDsn($connection['dsn'], $currentUser, '', $options);
+                            $adminPdo = self::connectWithPdoConnectorFromDsn(
+                                $connection['dsn'],
+                                $currentUser,
+                                '',
+                                $options
+                            );
                             self::output("\e[32mOK\e[39m\n", $ansi);
                             // Check privileges immediately - if lacking, continue (no more strategies)
                             if (!self::checkAdminPrivileges($adminPdo, $ansi)) {
@@ -2632,7 +2647,8 @@ class Database
 
         if (in_array($driver, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
             throw new \PDOException(
-                "CLI installer currently supports MySQL-family drivers only (mysql/mariadb/percona). Requested DSN driver: {$driver}"
+                "CLI installer currently supports MySQL-family drivers only"
+                . " (mysql/mariadb/percona). Requested DSN driver: {$driver}"
             );
         }
 
