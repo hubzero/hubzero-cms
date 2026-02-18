@@ -17,8 +17,6 @@ use User;
 use Lang;
 use App;
 
-require_once Component::path('com_courses') . '/tables/asset.association.php';
-
 /**
  * Asset model class for a course
  */
@@ -253,8 +251,6 @@ class Asset extends Base
      */
     public function logView($course = null)
     {
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php';
-
         if (!$course || !is_object($course)) {
             $gid      = Request::getString('gid');
             $offering = Request::getString('offering');

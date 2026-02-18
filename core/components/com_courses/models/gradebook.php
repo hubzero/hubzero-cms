@@ -11,10 +11,6 @@ namespace Components\Courses\Models;
 use Components\Courses\Tables;
 use Hubzero\Config\Registry;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'grade.book.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.views.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'progress.factors.php';
-
 /**
  * Courses model class for grade book
  */

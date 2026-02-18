@@ -18,10 +18,6 @@ use Lang;
 use User;
 use Date;
 
-// Include table classes with dotted filenames (not autoloadable)
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'curation.history.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'curation.version.php';
-
 /**
  * Publications curation class
  *

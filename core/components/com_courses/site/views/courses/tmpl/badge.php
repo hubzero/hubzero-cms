@@ -58,9 +58,7 @@ switch ($this->action) {
             App::abort(404, Lang::txt('COM_COURSES_INVALID_REQUEST'));
         }
 
-        require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.badge.php';
         require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.php';
-        require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'section.badge.criteria.php';
 
         $db = \App::get('db');
 

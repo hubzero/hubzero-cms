@@ -8,8 +8,6 @@
 
 namespace Components\Courses\Models;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'member.badge.php';
-
 /**
  * Courses model class for badges
  */

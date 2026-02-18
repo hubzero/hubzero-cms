@@ -14,9 +14,6 @@ use Request;
 use App;
 use Date;
 
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.unity.php';
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'grade.book.php';
-
 /**
  * API controller for the time component
  */

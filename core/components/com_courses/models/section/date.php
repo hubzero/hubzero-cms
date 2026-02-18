@@ -10,8 +10,6 @@ namespace Components\Courses\Models\Section;
 
 use Components\Courses\Models\Base;
 
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.date.php';
-
 /**
  * Courses model class for a course
  */

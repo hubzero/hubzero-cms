@@ -10,8 +10,6 @@ namespace Components\Courses\Models;
 
 use Component;
 
-require_once PATH_CORE . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.policies.php';
-
 /**
  * Courses model class for grade book
  */

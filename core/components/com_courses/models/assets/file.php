@@ -43,7 +43,6 @@ class File extends Handler
     public function create($localPath = null)
     {
         // Include needed files
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php';
         require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.php';
         require_once dirname(__DIR__) . DS . 'asset.php';
 

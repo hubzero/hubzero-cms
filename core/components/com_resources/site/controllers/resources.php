@@ -2533,9 +2533,7 @@ class Resources extends SiteController
 
             case 'bibtex':
             default:
-                include_once \Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
-
-                $bibtex = new \Structures_BibTex();
+                $bibtex = new \Components\Citations\Helpers\BibTex();
                 $addarray = array();
                 $addarray['type']  = 'misc';
                 $addarray['cite']  = $this->config['sitename'] . $row->id;

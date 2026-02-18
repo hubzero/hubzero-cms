@@ -12,8 +12,6 @@ use Components\Courses\Tables;
 use Hubzero\Config\Registry;
 use Lang;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'asset.group.php';
-
 /**
  * Courses model class for an asset group
  */

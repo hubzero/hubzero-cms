@@ -29,7 +29,6 @@ class Helper extends Module
 
         // Get some classes we need
         require_once Component::path('com_publications') . '/tables/publication.php';
-        require_once Component::path('com_publications') . '/tables/master.type.php';
 
         $this->moduleclass = $this->params->get('moduleclass');
 

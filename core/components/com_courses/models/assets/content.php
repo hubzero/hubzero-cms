@@ -37,7 +37,6 @@ class Content extends Handler
     {
         // Include needed files
         require_once dirname(__DIR__) . DS . 'asset.php';
-        require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php';
 
         if (!empty($this->asset['tool-alias'])) {
             $this->asset['url'] = '/tools/' . $this->asset['tool-alias'] . '/invoke';
@@ -207,7 +206,6 @@ class Content extends Handler
         // Only worry about this if scope id is changing
         if (!is_null($scope_id) && !is_null($original_scope_id) && $scope_id != $original_scope_id) {
             // Create asset assoc object
-            require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php';
             $assoc = new Tables\AssetAssociation($this->db);
 
             if (!$assoc->loadByAssetScope($asset->get('id'), $original_scope_id, $scope)) {

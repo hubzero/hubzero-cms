@@ -973,9 +973,7 @@ class Publications extends SiteController
 
             case 'bibtex':
             default:
-                include_once Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
-
-                $bibtex = new \Structures_BibTex();
+                $bibtex = new \Components\Citations\Helpers\BibTex();
                 $addarray = array();
                 $addarray['type']    = 'misc';
                 $addarray['cite']    = Config::get('sitename') . $this->model->get('id');

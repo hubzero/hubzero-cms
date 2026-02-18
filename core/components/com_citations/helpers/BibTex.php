@@ -1,13 +1,6 @@
 <?php
 
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-// No direct access
-defined('_HZEXEC_') or die();
+namespace Components\Citations\Helpers;
 
 /* vim: set ts=4 sw=4: */
 /**
@@ -83,8 +76,7 @@ defined('_HZEXEC_') or die();
  * @version   Release: @package_version@
  * @link      http://pear.php.net/Structures/Structure_BibTex
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace, Squiz.Classes.ValidClassName.NotCamelCaps
-class Structures_BibTex
+class BibTex
 {
     /**
      * Array with the BibTex Data

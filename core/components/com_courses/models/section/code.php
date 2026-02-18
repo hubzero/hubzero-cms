@@ -12,8 +12,6 @@ use Components\Courses\Models\Base;
 use Components\Courses\Tables;
 use User;
 
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'section.code.php';
-
 /**
  * Courses model class for a course
  */

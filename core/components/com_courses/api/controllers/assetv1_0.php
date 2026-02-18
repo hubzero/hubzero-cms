@@ -18,8 +18,6 @@ use App;
 use Date;
 use Filesystem;
 
-require_once dirname(dirname(__DIR__)) . DS . 'tables' . DS . 'asset.association.php';
-
 /**
  * API controller for the course assets
  */

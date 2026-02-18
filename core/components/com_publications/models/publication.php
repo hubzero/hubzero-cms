@@ -19,10 +19,6 @@ use User;
 use Date;
 use Lang;
 
-// Include table classes with dotted filenames (not autoloadable)
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'audience.level.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'master.type.php';
-
 /**
  * Information retrieval for items/info linked to a publication
  */
@@ -2410,8 +2406,7 @@ class Publication extends Obj
 
         // citation
         $citationType = 'bibtex';
-        include_once Component::path('com_citations') . DS . 'helpers' . DS . 'BibTex.php';
-        $bibtex = new \Structures_BibTex();
+        $bibtex = new \Components\Citations\Helpers\BibTex();
         $arr = [];
         $arr['type'] = 'misc';
         $arr['cite'] = Config::get('sitename') . $this->version->publication_id;

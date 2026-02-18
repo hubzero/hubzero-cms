@@ -8,11 +8,6 @@
 
 namespace Components\Projects\Models;
 
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.instance.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.status.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.log.php';
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'tool.view.php';
-
 use Hubzero\Base\Model;
 use Components\Projects\Tables;
 use Hubzero\Base\ItemList;

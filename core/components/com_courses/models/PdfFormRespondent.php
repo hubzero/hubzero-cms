@@ -142,8 +142,6 @@ class PdfFormRespondent
      **/
     public function saveToGradebook()
     {
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'grade.book.php';
-
         $database  = \App::get('db');
 
         // Get the asset id
