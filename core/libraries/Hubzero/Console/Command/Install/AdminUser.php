@@ -232,7 +232,8 @@ class AdminUser
 
         if (in_array($requested, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
             throw new \PDOException(
-                "CLI installer currently supports MySQL-family drivers only (mysql/mariadb/percona). Requested: {$requested}"
+                "CLI installer currently supports MySQL-family drivers only"
+                . " (mysql/mariadb/percona). Requested: {$requested}"
             );
         }
 

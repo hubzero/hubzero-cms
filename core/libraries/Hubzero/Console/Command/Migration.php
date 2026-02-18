@@ -396,9 +396,12 @@ class Migration extends Base implements CommandInterface
         // Display counts
         $this->output->addLine(sprintf('  Available:  %d', $status['counts']['available']));
         $this->output->addLine(sprintf('  Executed:   %d', $status['counts']['executed']), 'success');
-        $this->output->addLine(sprintf('  Pending:    %d', $status['counts']['pending']), $status['counts']['pending'] > 0 ? 'warning' : null);
-        $this->output->addLine(sprintf('  Failed:     %d', $status['counts']['failed']), $status['counts']['failed'] > 0 ? 'error' : null);
-        $this->output->addLine(sprintf('  Skipped:    %d', $status['counts']['skipped']), $status['counts']['skipped'] > 0 ? 'warning' : null);
+        $pendingStyle = $status['counts']['pending'] > 0 ? 'warning' : null;
+        $failedStyle = $status['counts']['failed'] > 0 ? 'error' : null;
+        $skippedStyle = $status['counts']['skipped'] > 0 ? 'warning' : null;
+        $this->output->addLine(sprintf('  Pending:    %d', $status['counts']['pending']), $pendingStyle);
+        $this->output->addLine(sprintf('  Failed:     %d', $status['counts']['failed']), $failedStyle);
+        $this->output->addLine(sprintf('  Skipped:    %d', $status['counts']['skipped']), $skippedStyle);
         $this->output->addLine('');
 
         // Display last executed migration
