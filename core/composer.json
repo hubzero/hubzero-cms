@@ -72,6 +72,7 @@
         "solarium/solarium": "6.2.*",
         "splitbrain/lesserphp": "0.10.*",
         "spatie/flysystem-dropbox": "3.1.*",
+        "spomky-labs/otphp": "^11.4",
         "stevenmaguire/oauth2-dropbox": "3.1.*",
         "symfony/console": "v5.4.*",
         "symfony/event-dispatcher": "v5.0.11",
