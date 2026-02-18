@@ -10,6 +10,7 @@ namespace Components\Events\Models\Orm;
 
 use Hubzero\Database\Relational;
 use User;
+use Plugins\Groups\Calendar\Helper as CalendarHelper;
 use Date;
 
 /**
@@ -124,7 +125,7 @@ class Calendar extends Relational
 
             // get event timezone setting
             // use this in "DTSTART;TZID="
-            $tzInfo = \plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
+            $tzInfo = CalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
             $tzName = timezone_name_from_abbr($tzInfo['abbreviation']);
 
             // get publish up/down dates in UTC

@@ -9,7 +9,7 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$userLocalizer = new UserLocalizer();
+$userLocalizer = new Plugins\Groups\Calendar\Helpers\UserLocalizer();
 $timezone = $userLocalizer->getTimezone();
 ?>
 
