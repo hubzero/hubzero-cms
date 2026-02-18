@@ -84,7 +84,7 @@ class Google extends Plugin
     private function verify()
     {
         // Get secret and entered token and verify them
-        $ga = new \Google\Authenticator\GoogleAuthenticator();
+        $ga = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
 
         $data = json_decode(Factor::currentOrFailByDomain('google')->data);
         $entered_code = Request::getString('token');

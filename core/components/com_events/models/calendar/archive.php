@@ -13,6 +13,7 @@ use Components\Events\Models\Calendar;
 use Components\Events\Tables;
 use Hubzero\Base\Model\ItemList;
 use Hubzero\Base\Model;
+use Plugins\Groups\Calendar\Helper as CalendarHelper;
 use DateTimezone;
 use DateTime;
 use Date;
@@ -159,7 +160,7 @@ class Archive extends Model
 
             // get event timezone setting
             // use this in "DTSTART;TZID="
-            $tzInfo = \plgGroupsCalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
+            $tzInfo = CalendarHelper::getTimezoneNameAndAbbreviation($event->get('time_zone'));
             $tzName = timezone_name_from_abbr($tzInfo['abbreviation'] ?? '');
 
             // get publish up/down dates in UTC

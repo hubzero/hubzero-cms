@@ -8,9 +8,6 @@
 
 namespace Plugins\Groups\Calendar;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  * Helper Class
  *
@@ -94,6 +91,3 @@ class Helper
         return (isset($abbreviations[$timezone])) ? $abbreviations[$timezone] : null;
     }
 }
-
-// BC alias for non-namespaced code
-class_alias('Plugins\Groups\Calendar\Helper', 'plgGroupsCalendarHelper');

@@ -205,7 +205,7 @@ $canManage = $isPublished && ($isCreator || $isManager);
             <tr>
                 <th class="author"></th>
                 <td colspan="3">
-                    <?php echo plgGroupsCalendarHelper::autoLinkText(
+                    <?php echo Plugins\Groups\Calendar\Helper::autoLinkText(
                         $this->event->get('contact_info')
                     ); ?>
                 </td>
@@ -227,7 +227,7 @@ $canManage = $isPublished && ($isCreator || $isManager);
             <tr>
                 <th class="details"></th>
                 <td colspan="3">
-                    <?php echo plgGroupsCalendarHelper::autoLinkText(
+                    <?php echo Plugins\Groups\Calendar\Helper::autoLinkText(
                         nl2br($this->event->get('content'))
                     ); ?>
                 </td>

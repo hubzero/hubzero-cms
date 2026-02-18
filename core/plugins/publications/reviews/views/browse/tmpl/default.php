@@ -16,7 +16,7 @@ if (!isset($this->reviews) || !$this->reviews) {
 }
 
 foreach ($this->reviews as $k => $review) {
-    $this->reviews[$k] = new PublicationsModelReview($review);
+    $this->reviews[$k] = new Plugins\Publications\Reviews\Models\Review($review);
 }
 $this->reviews = new \Hubzero\Base\ItemList($this->reviews);
 ?>

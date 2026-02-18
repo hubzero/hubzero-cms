@@ -283,6 +283,3 @@ class WikiMacro
         return isset($arguments[$key]);
     }
 }
-
-// BC alias for non-namespaced code
-class_alias('Plugins\Wiki\Parserdefault\WikiMacro', 'WikiMacro');
