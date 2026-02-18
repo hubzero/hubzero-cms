@@ -1,15 +1,14 @@
 <?php
 
-namespace Plugins\Courses\Discussions;
-
-use Hubzero\Plugin\Plugin;
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Courses\Discussions;
+
+use Hubzero\Plugin\Plugin;
 use Components\Forum\Models\Manager;
 use Components\Forum\Models\Section;
 use Components\Forum\Models\Category;

@@ -165,11 +165,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 <?php } ?>
             </span>
             <noscript>
-                <span class="faded ipadded"><?php
-                    echo Lang::txt(
-                        'Enable JavaScript in your browser for advanced file management.'
-                                            );
-                                            ?></span>
+                <?php $noJsMsg = Lang::txt('Enable JavaScript in your browser for advanced file management.'); ?>
+                <span class="faded ipadded"><?php echo $noJsMsg; ?></span>
             </noscript>
                 <?php if ($sharing && $versionTracking == 1) { ?>
             <span class="rightfloat">

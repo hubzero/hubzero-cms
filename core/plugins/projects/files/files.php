@@ -1,34 +1,15 @@
 <?php
 
-namespace Plugins\Projects\Files;
-
-use Hubzero\Plugin\Plugin;
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// Include external file connection
-require_once Component::path('com_projects') . DS . 'tables' . DS . 'remotefile.php';
-require_once Component::path('com_projects') . DS . 'helpers' . DS . 'connect.php';
+namespace Plugins\Projects\Files;
 
-// Include some helpers
-require_once Component::path('com_projects') . DS . 'helpers' . DS . 'compiler.php';
-
-// Get repo model
-require_once Component::path('com_projects') . DS . 'models' . DS . 'repo.php';
-
-require_once __DIR__ . '/helpers/sync.php';
-
-// Include [temporary] ORM models (these will be merged with existing models at some point in the future)
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'project.php';
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'connection.php';
-require_once Component::path('com_projects') . DS . 'models' . DS . 'orm' . DS . 'provider.php';
-require_once Component::path('com_projects') . '/helpers/accessHelper.php';
-require_once Component::path('com_projects') . '/helpers/urlHelper.php';
-
+use Hubzero\Plugin\Plugin;
+use Plugins\Projects\Files\Helpers\Sync;
 use Components\Projects\Models\Orm\Connection;
 use Components\Projects\Helpers\AccessHelper;
 use Components\Projects\Helpers\UrlHelper;
@@ -2629,8 +2610,6 @@ class Files extends Plugin
 
         // Get publication usage
         if (Plugin::isEnabled('projects', 'publications') && $by == 'admin') {
-            require_once Component::path('com_publications') . DS . 'helpers' . DS . 'html.php';
-
             $filters = array();
             $filters['project'] = $model->get('id');
             $filters['ignore_access'] = 1;

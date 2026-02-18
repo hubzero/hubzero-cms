@@ -24,21 +24,21 @@ class ConstantContactClient
      *
      * @var string
      */
-    const BASE_URL = 'https://api.cc.email/v3';
+    public const BASE_URL = 'https://api.cc.email/v3';
 
     /**
      * OAuth2 token endpoint
      *
      * @var string
      */
-    const TOKEN_URL = 'https://authz.constantcontact.com/oauth2/default/v1/token';
+    public const TOKEN_URL = 'https://authz.constantcontact.com/oauth2/default/v1/token';
 
     /**
      * Seconds before actual expiry to trigger a refresh
      *
      * @var int
      */
-    const TOKEN_EXPIRY_BUFFER = 300;
+    public const TOKEN_EXPIRY_BUFFER = 300;
 
     /**
      * OAuth2 client ID

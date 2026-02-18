@@ -11,8 +11,6 @@ namespace Plugins\Antispam\Akismet\Service;
 use Hubzero\Spam\Detector\Service as AbstractService;
 use Exception;
 
-require_once __DIR__ . DS . 'SocketWriteRead.php';
-
 /**
  * Akismet anti-comment spam service
  *

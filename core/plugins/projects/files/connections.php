@@ -30,14 +30,14 @@ class Connections
      *
      * @var string
      */
-    public $_option;
+    public $option;
 
     /**
      * the task being called
      *
      * @var string
      */
-    public $_task;
+    public $task;
 
     /**
      * the connection id
@@ -57,7 +57,7 @@ class Connections
     public function __construct($plugin, $option, $connection = null)
     {
         $this->plugin = $plugin;
-        $this->_option = $option;
+        $this->option = $option;
 
         if (isset($connection) && $connection > 0) {
             $this->connection = Connection::oneOrFail($connection);
@@ -96,7 +96,7 @@ class Connections
     public function execute($task)
     {
         // Set task in case referenced later
-        $this->_task = $task;
+        $this->task = $task;
 
         $reflection = with(new \ReflectionClass($this))->getMethods(\ReflectionMethod::IS_PUBLIC);
         $excludes = ['__construct', '__get', '__call', 'execute'];
@@ -329,7 +329,7 @@ class Connections
         // Assign view vars
         $view->set('items', $dir->listContents()->sort($sortby, $sortasc));
         $view->set('title', $this->_area['title']);
-        $view->set('option', $this->_option);
+        $view->set('option', $this->option);
         $view->set('sortby', $sortby);
         $view->set('sortdir', $sortasc);
         $view->set('subdir', $this->subdir);
@@ -368,7 +368,7 @@ class Connections
 
         $view->set('items', $dirs);
         $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
-        $view->set('option', $this->_option);
+        $view->set('option', $this->option);
         $view->set('parent', $dir->getParent(true));
         $view->set('subdir', $subdir);
         $view->set('current_dir', $dir);
@@ -473,7 +473,7 @@ class Connections
 
         $file = Request::getString('asset');
         $path = trim($this->subdir, '/') . '/' . $file;
-        $view->set('option', $this->_option);
+        $view->set('option', $this->option);
         $view->set('model', $this->model);
         $view->set('file', \Hubzero\Filesystem\Entity::fromPath($path, $this->connection->adapter()));
 
@@ -505,7 +505,7 @@ class Connections
         ]);
 
         $view->set('url', $this->model->link('files') . '&connection=' . $this->connection->id);
-        $view->set('option', $this->_option);
+        $view->set('option', $this->option);
         $view->set('model', $this->model);
         $view->set('subdir', $this->subdir);
         $view->set('ajax', $ajax);
@@ -899,7 +899,7 @@ class Connections
         ]);
 
         $view->set('items', $this->getCollection());
-        $view->set('option', $this->_option);
+        $view->set('option', $this->option);
         $view->set('model', $this->model);
         $view->set('ajax', Request::getInt('ajax', 0));
         $view->set('subdir', $this->subdir);
@@ -977,7 +977,7 @@ class Connections
 
         $view->set('list', $dirs);
         $view->set('items', $this->getCollection());
-        $view->set('option', $this->_option);
+        $view->set('option', $this->option);
         $view->set('model', $this->model);
         $view->set('ajax', Request::getInt('ajax', 0));
         $view->set('subdir', $this->subdir);
@@ -1079,7 +1079,7 @@ class Connections
         }
 
         $view->set('item ', $items->first());
-        $view->set('option', $this->_option);
+        $view->set('option', $this->option);
         $view->set('model', $this->model);
         $view->set('ajax', 1);
         $view->set('connection', $this->connection);
@@ -1141,7 +1141,7 @@ class Connections
             'layout' => 'newfolder'
         ]);
 
-        $view->set('option', $this->_option);
+        $view->set('option', $this->option);
         $view->set('model', $this->model);
         $view->set('ajax', 1);
         $view->set('subdir', $this->subdir);
@@ -1222,7 +1222,7 @@ class Connections
 
         $view->set('item', $entity);
         $view->set('metadata', isset($metadata[0]) ? $metadata[0] : array());
-        $view->set('option', $this->_option);
+        $view->set('option', $this->option);
         $view->set('model', $this->model);
         $view->set('ajax', 1);
         $view->set('subdir', $this->subdir);
@@ -1330,7 +1330,7 @@ class Connections
 
         $view->set('items', $items);
         $view->set('subdir', $this->subdir);
-        $view->set('option', $this->_option);
+        $view->set('option', $this->option);
         $view->set('connection', $this->connection);
 
         return $view->loadTemplate();

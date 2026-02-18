@@ -148,9 +148,7 @@ class Constantcontact extends Plugin
                     'list_memberships' => [$listId],
                     'update_source'    => 'Contact',
                 ]);
-            }
-            // Active + user opts out → unsubscribe
-            elseif (in_array($permissionToSend, ['implicit', 'explicit']) && $sendEmail == 0) {
+            } elseif (in_array($permissionToSend, ['implicit', 'explicit']) && $sendEmail == 0) {
                 $client->deleteContact($contactId);
             }
         } catch (\RuntimeException $e) {

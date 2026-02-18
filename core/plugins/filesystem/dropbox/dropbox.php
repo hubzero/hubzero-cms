@@ -1,15 +1,14 @@
 <?php
 
-namespace Plugins\Filesystem\Dropbox;
-
-use Hubzero\Plugin\Plugin;
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+namespace Plugins\Filesystem\Dropbox;
+
+use Hubzero\Plugin\Plugin;
 use Plugins\Filesystem\Dropbox\DropboxOauthClient;
 use Srmklive\Dropbox\Adapter\DropboxAdapter;
 use Srmklive\Dropbox\Client\DropboxClient;

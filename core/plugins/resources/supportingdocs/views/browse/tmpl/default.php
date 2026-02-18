@@ -262,13 +262,12 @@ if ($this->model->isTool()) {
                 'index.php?option=com_users&view=login&return='
                 . base64_encode($url)
             );
+            $warningMsg = Lang::txt(
+                'PLG_RESOURCES_SUPPORTINGDOCS_LOGIN_TO_SEE_MORE',
+                $loginUrl
+            );
             ?>
-            <p class="warning"><?php
-                echo Lang::txt(
-                    'PLG_RESOURCES_SUPPORTINGDOCS_LOGIN_TO_SEE_MORE',
-                    $loginUrl
-                               );
-                                ?></p>
+            <p class="warning"><?php echo $warningMsg; ?></p>
             <?php
         }
         ?>
@@ -302,7 +301,6 @@ if ($this->model->isTool()) {
                     );
                 }
             }
-                include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
                 $elements = new \Components\Resources\Models\Elements($data, $this->model->type->customFields);
                 $schema = $elements->getSchema();
                 $tab = Request::getCmd('active', 'supportingdocs');  // The active tab (section)
