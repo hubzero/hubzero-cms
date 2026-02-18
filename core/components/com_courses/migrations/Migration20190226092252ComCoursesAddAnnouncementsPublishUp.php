@@ -9,12 +9,6 @@
 namespace Components\Courses\Migrations;
 
 use Hubzero\Content\Migration\Base;
-
-$componentPath = Component::path('com_courses');
-
-require_once "$componentPath/helpers/queryAddColumnStatement.php";
-require_once "$componentPath/helpers/queryDropColumnStatement.php";
-
 use Components\Courses\Helpers\QueryAddColumnStatement;
 use Components\Courses\Helpers\QueryDropColumnStatement;
 

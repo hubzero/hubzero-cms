@@ -8,10 +8,6 @@
 
 namespace Components\Courses\Tests;
 
-$componentPath = Component::path('com_courses');
-
-require_once "$componentPath/helpers/queryAddColumnStatement.php";
-
 use Hubzero\Test\Basic;
 use Components\Courses\Helpers\QueryAddColumnStatement;
 

@@ -13,8 +13,6 @@ use Components\Courses\Helpers\QueryDropColumnStatement;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-require_once dirname(__DIR__, 2) . '/helpers/queryDropColumnStatement.php';
-
 /**
  * QueryDropColumnStatement tests
  */

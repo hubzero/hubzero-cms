@@ -13,8 +13,6 @@ use Components\Courses\Helpers\QueryAddColumnStatement;
 use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-require_once dirname(__DIR__, 2) . '/helpers/queryAddColumnStatement.php';
-
 /**
  * QueryAddColumnStatement tests
  */
