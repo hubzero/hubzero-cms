@@ -1251,5 +1251,4 @@ class TableBuilder
 
         return true;
     }
-
 }

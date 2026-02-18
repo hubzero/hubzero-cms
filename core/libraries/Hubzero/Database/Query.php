@@ -4563,7 +4563,11 @@ class Query
         } catch (\Exception $e) {
             // For INSERT IGNORE, silently ignore duplicate key errors
             // (databases without native INSERT IGNORE syntax like Firebird, Oracle, DB2, SQL Server, Informix)
-            if ($this->type === 'insert' && $this->syntax->isIgnore() && $this->connection->isDuplicateKeyException($e)) {
+            if (
+                $this->type === 'insert'
+                && $this->syntax->isIgnore()
+                && $this->connection->isDuplicateKeyException($e)
+            ) {
                 // Silently ignore the duplicate - clear state and return success
                 $this->reset();
                 return true;

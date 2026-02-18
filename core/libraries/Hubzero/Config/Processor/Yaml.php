@@ -161,4 +161,3 @@ class Yaml extends Base
         return $obj;
     }
 }
-

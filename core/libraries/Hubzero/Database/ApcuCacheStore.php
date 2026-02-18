@@ -79,4 +79,3 @@ class ApcuCacheStore
         return $success;
     }
 }
-

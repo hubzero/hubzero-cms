@@ -477,7 +477,8 @@ class AseGrammar extends BaseSchemaGrammar
         // implicit defaults matching MySQL non-strict mode zero-values.
         if ($isExplicitlyNotNullable && !$hasDefault && !$isAutoIncrement) {
             $implicit = null;
-            if (str_starts_with($resolved, 'VARCHAR') || str_starts_with($resolved, 'CHAR')
+            if (
+                str_starts_with($resolved, 'VARCHAR') || str_starts_with($resolved, 'CHAR')
                 || str_starts_with($resolved, 'NVARCHAR') || str_starts_with($resolved, 'NCHAR')
             ) {
                 $implicit = '';
@@ -600,7 +601,8 @@ class AseGrammar extends BaseSchemaGrammar
         $sqlType = strtoupper($this->getColumnType($column));
 
         // String types → DEFAULT ''
-        if (in_array($type, ['string', 'char', 'tinyText', 'uuid', 'ulid', 'ipAddress', 'macAddress'])
+        if (
+            in_array($type, ['string', 'char', 'tinyText', 'uuid', 'ulid', 'ipAddress', 'macAddress'])
             || str_starts_with($sqlType, 'VARCHAR')
             || str_starts_with($sqlType, 'CHAR')
         ) {
@@ -608,14 +610,19 @@ class AseGrammar extends BaseSchemaGrammar
         }
 
         // Integer types → DEFAULT 0
-        if (in_array($type, ['tinyInteger', 'smallInteger', 'mediumInteger', 'integer', 'bigInteger', 'boolean', 'year'])
+        if (
+            in_array(
+                $type,
+                ['tinyInteger', 'smallInteger', 'mediumInteger', 'integer', 'bigInteger', 'boolean', 'year']
+            )
             || in_array($sqlType, ['INT', 'BIGINT', 'SMALLINT', 'TINYINT', 'BIT'])
         ) {
             return '0';
         }
 
         // Float/decimal → DEFAULT 0
-        if (in_array($type, ['float', 'double', 'decimal'])
+        if (
+            in_array($type, ['float', 'double', 'decimal'])
             || in_array($sqlType, ['FLOAT', 'DECIMAL'])
             || str_starts_with($sqlType, 'DECIMAL')
         ) {

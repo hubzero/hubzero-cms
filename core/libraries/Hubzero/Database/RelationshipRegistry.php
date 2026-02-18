@@ -91,4 +91,3 @@ class RelationshipRegistry
         unset($this->relationshipsByClass[$modelClass]);
     }
 }
-

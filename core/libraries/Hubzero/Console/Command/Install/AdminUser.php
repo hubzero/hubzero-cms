@@ -11,13 +11,6 @@ namespace Hubzero\Console\Command\Install;
 use Hubzero\Database\Connection\PdoConnection;
 use Hubzero\Database\Exception\ConnectionFailedException;
 
-if (!class_exists(PdoConnection::class)) {
-    require_once dirname(__DIR__, 4) . '/Error/Exception/RuntimeException.php';
-    require_once dirname(__DIR__, 4) . '/Database/Exception/ConnectionFailedException.php';
-    require_once dirname(__DIR__, 4) . '/Database/ConnectionInterface.php';
-    require_once dirname(__DIR__, 4) . '/Database/Connection/PdoConnection.php';
-}
-
 /**
  * Admin user creation helper class
  *
@@ -239,7 +232,8 @@ class AdminUser
 
         if (in_array($requested, ['pgsql', 'sqlite', 'firebird', 'informix'], true)) {
             throw new \PDOException(
-                "CLI installer currently supports MySQL-family drivers only (mysql/mariadb/percona). Requested: {$requested}"
+                "CLI installer currently supports MySQL-family drivers only"
+                . " (mysql/mariadb/percona). Requested: {$requested}"
             );
         }
 

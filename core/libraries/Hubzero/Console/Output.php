@@ -462,8 +462,13 @@ class Output
      * @param   string    $finishMessage  Message to display when complete
      * @return  array     Results from each callback invocation
      **/
-    public function withProgressFinish($items, callable $callback, string $message = '', string $type = 'bar', string $finishMessage = 'Done!'): array
-    {
+    public function withProgressFinish(
+        $items,
+        callable $callback,
+        string $message = '',
+        string $type = 'bar',
+        string $finishMessage = 'Done!'
+    ): array {
         // Convert to array to get count if needed
         if ($items instanceof \Traversable) {
             $items = iterator_to_array($items);
@@ -517,7 +522,7 @@ class Output
         $progress->init($message . ' ', 'spinner');
 
         // Create a ticker object for the callback
-        $ticker = new class($progress) {
+        $ticker = new class ($progress) {
             private $progress;
 
             public function __construct($progress)

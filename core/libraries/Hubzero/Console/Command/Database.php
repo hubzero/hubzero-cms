@@ -417,9 +417,12 @@ class Database extends Base implements CommandInterface
 
         $this->output->addLine('');
         $this->output->addLine(
-            sprintf('  %d driver(s) total, %d available',
+            sprintf(
+                '  %d driver(s) total, %d available',
                 count($availability),
-                count(array_filter($availability, function ($d) { return $d['available'] === true; }))
+                count(array_filter($availability, function ($d) {
+                    return $d['available'] === true;
+                }))
             ),
             'info'
         );

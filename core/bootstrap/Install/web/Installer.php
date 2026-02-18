@@ -113,6 +113,7 @@ class Installer
         require_once $libRoot . '/Hubzero/Database/Exception/ConnectionFailedException.php';
         require_once $libRoot . '/Hubzero/Database/ConnectionInterface.php';
         require_once $libRoot . '/Hubzero/Database/Connection/PdoConnection.php';
+        require_once $libRoot . '/Hubzero/Database/SqlParser.php';
         require_once __DIR__ . '/Steps/StepInterface.php';
         require_once __DIR__ . '/Steps/Verify.php';
         require_once __DIR__ . '/Steps/Welcome.php';

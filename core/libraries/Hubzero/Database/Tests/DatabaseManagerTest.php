@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses -- Test file with helper stubs
 namespace Hubzero\Database\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -539,7 +540,10 @@ class DatabaseManagerTest extends TestCase
     #[Test]
     public function backendRegistryUsesCanonicalDriverClassesForMovedBackends(): void
     {
-        $backends = ['mock', 'ase', 'mysql', 'mariadb', 'pgsql', 'sqlite', 'sqlsrv', 'cubrid', 'db2', 'firebird', 'informix', 'oci'];
+        $backends = [
+            'mock', 'ase', 'mysql', 'mariadb', 'pgsql', 'sqlite',
+            'sqlsrv', 'cubrid', 'db2', 'firebird', 'informix', 'oci',
+        ];
 
         foreach ($backends as $backend) {
             $canonical = BackendRegistry::canonicalDriverClassFor($backend);
@@ -554,7 +558,10 @@ class DatabaseManagerTest extends TestCase
     #[Test]
     public function backendRegistryUsesCanonicalSyntaxClassesForMovedBackends(): void
     {
-        $backends = ['ase', 'mysql', 'mariadb', 'pgsql', 'sqlite', 'sqlsrv', 'cubrid', 'db2', 'firebird', 'informix', 'oci', 'percona'];
+        $backends = [
+            'ase', 'mysql', 'mariadb', 'pgsql', 'sqlite', 'sqlsrv',
+            'cubrid', 'db2', 'firebird', 'informix', 'oci', 'percona',
+        ];
 
         foreach ($backends as $backend) {
             $canonical = BackendRegistry::canonicalSyntaxClassFor($backend);
@@ -569,25 +576,21 @@ class DatabaseManagerTest extends TestCase
     #[Test]
     public function canonicalGrammarClassesUseExpectedCanonicalHierarchy(): void
     {
+        $base = \Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class;
+        $mysql = \Hubzero\Database\Drivers\Mysql\MysqlGrammar::class;
         $cases = [
-            ['canonical' => \Hubzero\Database\Drivers\Ase\AseGrammar::class, 'base' => \Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class],
-            ['canonical' => \Hubzero\Database\Drivers\Mysql\MysqlGrammar::class, 'base' => \Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class],
-            [
-                'canonical' => \Hubzero\Database\Drivers\Mariadb\MariadbGrammar::class,
-                'base' => \Hubzero\Database\Drivers\Mysql\MysqlGrammar::class,
-            ],
-            [
-                'canonical' => \Hubzero\Database\Drivers\Percona\PerconaGrammar::class,
-                'base' => \Hubzero\Database\Drivers\Mysql\MysqlGrammar::class,
-            ],
-            ['canonical' => \Hubzero\Database\Drivers\Cubrid\CubridGrammar::class, 'base' => \Hubzero\Database\Drivers\Mysql\MysqlGrammar::class],
-            ['canonical' => \Hubzero\Database\Drivers\Sqlite\SqliteGrammar::class, 'base' => \Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class],
-            ['canonical' => \Hubzero\Database\Drivers\Pgsql\PgsqlGrammar::class, 'base' => \Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class],
-            ['canonical' => \Hubzero\Database\Drivers\Firebird\FirebirdGrammar::class, 'base' => \Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class],
-            ['canonical' => \Hubzero\Database\Drivers\Informix\InformixGrammar::class, 'base' => \Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class],
-            ['canonical' => \Hubzero\Database\Drivers\Oci\OciGrammar::class, 'base' => \Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class],
-            ['canonical' => \Hubzero\Database\Drivers\Sqlsrv\SqlsrvGrammar::class, 'base' => \Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class],
-            ['canonical' => \Hubzero\Database\Drivers\Db2\Db2Grammar::class, 'base' => \Hubzero\Database\Drivers\Base\BaseSchemaGrammar::class],
+            ['canonical' => \Hubzero\Database\Drivers\Ase\AseGrammar::class, 'base' => $base],
+            ['canonical' => $mysql, 'base' => $base],
+            ['canonical' => \Hubzero\Database\Drivers\Mariadb\MariadbGrammar::class, 'base' => $mysql],
+            ['canonical' => \Hubzero\Database\Drivers\Percona\PerconaGrammar::class, 'base' => $mysql],
+            ['canonical' => \Hubzero\Database\Drivers\Cubrid\CubridGrammar::class, 'base' => $mysql],
+            ['canonical' => \Hubzero\Database\Drivers\Sqlite\SqliteGrammar::class, 'base' => $base],
+            ['canonical' => \Hubzero\Database\Drivers\Pgsql\PgsqlGrammar::class, 'base' => $base],
+            ['canonical' => \Hubzero\Database\Drivers\Firebird\FirebirdGrammar::class, 'base' => $base],
+            ['canonical' => \Hubzero\Database\Drivers\Informix\InformixGrammar::class, 'base' => $base],
+            ['canonical' => \Hubzero\Database\Drivers\Oci\OciGrammar::class, 'base' => $base],
+            ['canonical' => \Hubzero\Database\Drivers\Sqlsrv\SqlsrvGrammar::class, 'base' => $base],
+            ['canonical' => \Hubzero\Database\Drivers\Db2\Db2Grammar::class, 'base' => $base],
         ];
 
         foreach ($cases as $case) {
@@ -638,7 +641,10 @@ class DatabaseManagerTest extends TestCase
     #[Test]
     public function backendRegistryResolvesCanonicalGrammarClassesForMovedBackends(): void
     {
-        $backends = ['mock', 'ase', 'mysql', 'mariadb', 'percona', 'cubrid', 'sqlite', 'pgsql', 'firebird', 'informix', 'oci', 'sqlsrv', 'db2'];
+        $backends = [
+            'mock', 'ase', 'mysql', 'mariadb', 'percona', 'cubrid',
+            'sqlite', 'pgsql', 'firebird', 'informix', 'oci', 'sqlsrv', 'db2',
+        ];
 
         foreach ($backends as $backend) {
             $resolved = BackendRegistry::resolveGrammarClassFor($backend);

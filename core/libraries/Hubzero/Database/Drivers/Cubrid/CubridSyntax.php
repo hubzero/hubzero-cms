@@ -1285,5 +1285,4 @@ class CubridSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
     {
         return !empty($this->cubridIgnoreMode) || !empty($this->ignore);
     }
-
 }

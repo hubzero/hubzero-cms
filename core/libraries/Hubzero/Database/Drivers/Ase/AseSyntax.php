@@ -633,7 +633,8 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
         $quotedSearch = $this->quoteIfNeeded($search);
         $quotedReplace = $this->quoteIfNeeded($replace);
 
-        return 'STR_REPLACE(' . $this->connection->quoteName($column) . ', ' . $quotedSearch . ', ' . $quotedReplace . ')';
+        return 'STR_REPLACE(' . $this->connection->quoteName($column)
+            . ', ' . $quotedSearch . ', ' . $quotedReplace . ')';
     }
 
     /**

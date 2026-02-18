@@ -1220,7 +1220,8 @@ abstract class Table extends \stdClass
                     // Check for a database error.
                     if (!$this->_db->execute()) {
                         $e = new Exception(
-                            'Reorder update row ' . $i . ' failed for ' . get_class($this) . ': ' . $this->_db->getErrorMsg()
+                            'Reorder update row ' . $i . ' failed for '
+                            . get_class($this) . ': ' . $this->_db->getErrorMsg()
                         );
                         $this->setError($e);
 

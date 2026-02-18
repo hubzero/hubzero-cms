@@ -203,5 +203,4 @@ class DatabaseManager
 
         return $result;
     }
-
 }

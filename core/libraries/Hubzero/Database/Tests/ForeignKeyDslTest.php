@@ -314,7 +314,10 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
             $result = $builder->execute();
         } catch (\RuntimeException $e) {
             if (!$driver->supportsReferentialActions()) {
-                $this->assertFalse($driver->supportsReferentialActions(), "[$dbName] Driver correctly refused unsupported FK referential actions");
+                $this->assertFalse(
+                    $driver->supportsReferentialActions(),
+                    "[$dbName] Driver correctly refused unsupported FK referential actions"
+                );
                 return;
             }
             throw $e;
@@ -442,7 +445,10 @@ class ForeignKeyDslTest extends AbstractDriverTestCase
             $result = $builder->execute();
         } catch (\RuntimeException $e) {
             if (!$driver->supportsReferentialActions()) {
-                $this->assertFalse($driver->supportsReferentialActions(), "[$dbName] Driver correctly refused unsupported FK referential actions");
+                $this->assertFalse(
+                    $driver->supportsReferentialActions(),
+                    "[$dbName] Driver correctly refused unsupported FK referential actions"
+                );
                 return;
             }
             throw $e;

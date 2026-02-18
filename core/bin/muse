@@ -402,6 +402,11 @@ else // Start Minimal Muse
         // For database-only mode, configure the database
         if ($databaseOnly)
         {
+            $libRoot = dirname(__DIR__) . '/libraries/Hubzero';
+            require_once $libRoot . '/Error/Exception/RuntimeException.php';
+            require_once $libRoot . '/Database/Exception/ConnectionFailedException.php';
+            require_once $libRoot . '/Database/ConnectionInterface.php';
+            require_once $libRoot . '/Database/Connection/PdoConnection.php';
             require_once dirname(__DIR__) . '/libraries/Hubzero/Console/Command/Install/Database.php';
 
             $success = Hubzero\Console\Command\Install\Database::configure($ansi, dirname(dirname(__DIR__)) . '/app');

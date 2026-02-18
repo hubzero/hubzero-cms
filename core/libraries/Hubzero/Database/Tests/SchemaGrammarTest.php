@@ -35,8 +35,10 @@ class SchemaGrammarTest extends AbstractDriverTestCase
      */
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function compileCreateTableFromDefinitionUsesGenericCompilationByDefault(string $dbName, Driver $driver): void
-    {
+    public function compileCreateTableFromDefinitionUsesGenericCompilationByDefault(
+        string $dbName,
+        Driver $driver
+    ): void {
         $grammar = new class ($driver) extends Grammar {
             public function compileCreate(TableDefinition $blueprint): array
             {

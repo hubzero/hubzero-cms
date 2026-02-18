@@ -8,9 +8,6 @@
 
 namespace Hubzero\Content\Migration;
 
-require_once __DIR__ . '/helpers/queryAddColumnStatement.php';
-require_once __DIR__ . '/helpers/queryDropColumnStatement.php';
-
 use Hubzero\Content\Migration\Helpers\QueryAddColumnStatement;
 use Hubzero\Content\Migration\Helpers\QueryDropColumnStatement;
 use Hubzero\Database\Driver;

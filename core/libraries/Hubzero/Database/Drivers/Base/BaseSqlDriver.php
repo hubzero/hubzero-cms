@@ -2215,7 +2215,11 @@ abstract class BaseSqlDriver extends PdoDriver
             }
             return $this->executeAlterBuilder(
                 $table,
-                function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use ($column, $definition, $modifiers): void {
+                function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use (
+                    $column,
+                    $definition,
+                    $modifiers
+                ): void {
                     $builder->modifyColumn($column, $definition, $modifiers);
                 }
             );
@@ -2352,7 +2356,11 @@ abstract class BaseSqlDriver extends PdoDriver
             }
             return $this->executeAlterBuilder(
                 $table,
-                function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use ($column, $definition, $modifiers): void {
+                function (\Hubzero\Database\Schema\AlterTableBuilder $builder) use (
+                    $column,
+                    $definition,
+                    $modifiers
+                ): void {
                     $builder->addColumn($column, $definition, $modifiers);
                 }
             );

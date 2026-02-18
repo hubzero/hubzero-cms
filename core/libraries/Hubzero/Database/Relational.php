@@ -7156,7 +7156,9 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function automaticCreatedBy($data)
     {
-        return (isset($data['created_by']) && $data['created_by'] ? (int)$data['created_by'] : static::resolveCurrentUserId());
+        return (isset($data['created_by']) && $data['created_by']
+            ? (int)$data['created_by']
+            : static::resolveCurrentUserId());
     }
 
     /**

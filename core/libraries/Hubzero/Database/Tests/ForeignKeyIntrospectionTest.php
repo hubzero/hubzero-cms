@@ -146,7 +146,11 @@ class ForeignKeyIntrospectionTest extends AbstractDriverTestCase
                 "[$dbName] FK on_update should be a valid action"
             );
         } else {
-            $this->assertEquals('NO ACTION', $fk->on_delete, "[$dbName] FK on_delete should be NO ACTION (referential actions not supported)");
+            $this->assertEquals(
+                'NO ACTION',
+                $fk->on_delete,
+                "[$dbName] FK on_delete should be NO ACTION (referential actions not supported)"
+            );
         }
     }
 
