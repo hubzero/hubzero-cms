@@ -4,7 +4,7 @@ namespace Plugins\Authfactors\Google;
 
 use Hubzero\Plugin\Plugin;
 use Hubzero\Auth\Factor;
-use Hubzero\Utility\Validate;
+use OTPHP\TOTP;
 
 /**
  * @package    hubzero-cms
@@ -12,10 +12,8 @@ use Hubzero\Utility\Validate;
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once Plugin::path('authfactors', 'google') . DS . 'helpers' . DS . 'GoogleAuthenticator.php';
-
 /**
- * Factor Auth plugin for based identity verification
+ * Factor Auth plugin for TOTP-based identity verification
  */
 class Google extends Plugin
 {
@@ -26,9 +24,8 @@ class Google extends Plugin
      **/
     public function onRenderChallenge()
     {
-        // Setup our response
         $response = new \Hubzero\Base\Obj();
-        // Route based on an action
+
         switch (Request::getWord('action', '')) {
             case 'registered':
                 $this->register();
@@ -36,7 +33,6 @@ class Google extends Plugin
             case 'verify':
                 $this->verify();
                 break;
-
             default:
                 $this->display();
                 break;
@@ -44,7 +40,6 @@ class Google extends Plugin
 
         $response->set('html', $this->view->loadTemplate());
 
-        // Return the response
         return $response;
     }
 
@@ -55,24 +50,21 @@ class Google extends Plugin
      **/
     private function display()
     {
-        // If we have a user id, go to verify page
         if (Factor::currentOrFailByEnrolled()) {
             $this->view = $this->view('verify', 'challenge');
         } else {
-            // Otherwise, go to the enroll page
             $this->view = $this->view('enroll', 'challenge');
         }
     }
 
     /**
-     * Registers a new  user
+     * Registers a new user
      *
      * @return void
      **/
     private function register()
     {
         Factor::registerUserAsEnrolled();
-        // Redirect for verification process to occur
         App::redirect(Request::current());
     }
 
@@ -83,23 +75,18 @@ class Google extends Plugin
      **/
     private function verify()
     {
-        // Get secret and entered token and verify them
-        $ga = new \Sonata\GoogleAuthenticator\GoogleAuthenticator();
-
         $data = json_decode(Factor::currentOrFailByDomain('google')->data);
         $entered_code = Request::getString('token');
-        $correct_code = $ga->getCode($data->secret);
-        $verification = $ga->checkCode($data->secret, $entered_code);
 
-        // If they pass, update the session
+        $totp = TOTP::createFromSecret($data->secret);
+        $verification = $totp->verify($entered_code, null, 1);
+
         if ($verification) {
             App::get('session')->set('authfactors.status', true);
         } else {
-            // Otherwise, set errors
             Notify::error($verification);
         }
 
-        // Refresh page to either try verification again or finish up login
         App::redirect(Request::current());
     }
 }
