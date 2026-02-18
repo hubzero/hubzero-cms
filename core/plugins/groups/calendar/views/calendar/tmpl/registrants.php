@@ -105,11 +105,7 @@ $registrantCount = count($this->registrants);
         <?php if ($isOwnerOrManager) : ?>
             <li class="active">
                 <a href="<?php echo $registrantsUrl; ?>">
-                    <span><?php
-                        echo Lang::txt(
-                            'Registrants (' . $registrantCount . ')'
-                          );
-                            ?></span>
+                    <span><?php echo Lang::txt('Registrants (' . $registrantCount . ')'); ?></span>
                 </a>
             </li>
         <?php endif; ?>

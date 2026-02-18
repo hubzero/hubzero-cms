@@ -103,12 +103,8 @@ $restrictedMsg = Lang::txt(
             <?php if ($isOwnerOrManager) : ?>
                 <li>
                     <a href="<?php echo $registrantsUrl; ?>">
-                        <span><?php
-                            $regCount = $this->registrants;
-                            echo Lang::txt(
-                                'Registrants (' . $regCount . ')'
-                              );
-                                ?></span>
+                        <?php $regCount = $this->registrants; ?>
+                        <span><?php echo Lang::txt('Registrants (' . $regCount . ')'); ?></span>
                     </a>
                 </li>
             <?php endif; ?>
