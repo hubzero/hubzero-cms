@@ -55,13 +55,12 @@ $parentUrl = Route::url($this->model->link('files') . '&action=browse&connection
                             . urlencode($this->current_dir->getPath())
                             . '" />';
                         echo \Components\Projects\Models\File::drawIcon($this->current_dir->getExtension());
-                        ?>
-                        <span><?php
-                            echo Lang::txt(
+                        $dirLabel = Lang::txt(
                                 'PLG_PROJECTS_FILES_CONNECTED_CURRENT_DIRECTORY',
                                 $this->escape($this->current_dir->getDisplayName())
                               );
-                                ?></span>
+                        ?>
+                        <span><?php echo $dirLabel; ?></span>
                     </li>
                     <?php
                     foreach ($this->items as $dir) : ?>
