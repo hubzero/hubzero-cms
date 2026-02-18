@@ -454,7 +454,15 @@ class Schema extends Base implements CommandInterface
 
         if ($table1 && $table2) {
             // Generate from table comparison
-            $this->generateFromTableComparison($generator, $table1, $table2, $migrationDir, $component, $description, $dryRun);
+            $this->generateFromTableComparison(
+                $generator,
+                $table1,
+                $table2,
+                $migrationDir,
+                $component,
+                $description,
+                $dryRun
+            );
             return;
         }
 
@@ -1641,7 +1649,9 @@ class Schema extends Base implements CommandInterface
             foreach ($foreignKeys as $fk) {
                 $localCols = implode(', ', $fk->getColumns());
                 $foreignCols = implode(', ', $fk->getForeignColumns());
-                $this->output->addLine("  {$fk->getName()}: ({$localCols}) -> {$fk->getForeignTable()}({$foreignCols})");
+                $fkName = $fk->getName();
+                $fkTable = $fk->getForeignTable();
+                $this->output->addLine("  {$fkName}: ({$localCols}) -> {$fkTable}({$foreignCols})");
                 if ($fk->getOnDelete()) {
                     $this->output->addLine("    ON DELETE {$fk->getOnDelete()}");
                 }
@@ -2195,7 +2205,12 @@ class Schema extends Base implements CommandInterface
         $this->output->addLine("SQL written to file:", 'success');
         $this->output->addLine("  {$path}");
         $this->output->addSpacer();
-        $this->output->addLine("File contains " . count($upSql) . " UP statement(s) and " . count($downSql) . " DOWN statement(s).", 'info');
+        $upCount = count($upSql);
+        $downCount = count($downSql);
+        $this->output->addLine(
+            "File contains {$upCount} UP statement(s) and {$downCount} DOWN statement(s).",
+            'info'
+        );
 
         if ($safeFlags > 0) {
             $this->output->addLine("Safe mode was enabled: " . $this->describeSafeFlags($safeFlags), 'warning');

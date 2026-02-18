@@ -589,7 +589,10 @@ class Migration
                                     if ($this->allOrNothing && $batchTransactionStarted) {
                                         // Rollback entire batch
                                         $runDb->transactionRollback();
-                                        $this->log("All-or-nothing: rolling back entire batch due to fatal error", 'error');
+                                        $this->log(
+                                            "All-or-nothing: rolling back entire batch due to fatal error",
+                                            'error'
+                                        );
                                     } elseif ($useTransaction) {
                                         $runDb->transactionRollback();
                                     }
@@ -597,7 +600,14 @@ class Migration
                                         {$scope}/{$file}: {$error['message']}", 'error');
                                     // Only record if not in all-or-nothing mode
                                     if (!$this->allOrNothing) {
-                                        $this->recordMigration($file, $scope, $hash, $direction, 'fatal', $executionTime);
+                                        $this->recordMigration(
+                                            $file,
+                                            $scope,
+                                            $hash,
+                                            $direction,
+                                            'fatal',
+                                            $executionTime
+                                        );
                                     }
                                     return false;
                                 } elseif ($error['type'] == 'warning') {
@@ -1149,8 +1159,10 @@ class Migration
                 $pending[] = $file;
             } elseif ($executed[$key]->direction === 'down') {
                 $pending[] = $file;
-            } elseif (isset($executed[$key]->status) &&
-                      in_array($executed[$key]->status, ['fatal', 'failed', 'skipped'])) {
+            } elseif (
+                isset($executed[$key]->status) &&
+                      in_array($executed[$key]->status, ['fatal', 'failed', 'skipped'])
+            ) {
                 $pending[] = $file;
             }
         }
@@ -1161,8 +1173,10 @@ class Migration
         // Get last executed (successful up migration)
         $lastExecuted = null;
         foreach ($history as $entry) {
-            if ($entry->direction === 'up' &&
-                (!isset($entry->status) || $entry->status === 'success' || $entry->status === 'warning')) {
+            if (
+                $entry->direction === 'up' &&
+                (!isset($entry->status) || $entry->status === 'success' || $entry->status === 'warning')
+            ) {
                 $lastExecuted = $entry;
                 break;
             }
@@ -1174,8 +1188,10 @@ class Migration
         // Count successful executions (up migrations that succeeded)
         $executedCount = 0;
         foreach ($executed as $entry) {
-            if ($entry->direction === 'up' &&
-                (!isset($entry->status) || $entry->status === 'success' || $entry->status === 'warning')) {
+            if (
+                $entry->direction === 'up' &&
+                (!isset($entry->status) || $entry->status === 'success' || $entry->status === 'warning')
+            ) {
                 $executedCount++;
             }
         }
