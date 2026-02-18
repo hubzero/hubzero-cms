@@ -65,6 +65,3 @@ class ContributionSorter
         return strcmp($a->get_title(), $b->get_title());
     }
 }
-
-// BC alias for non-namespaced code
-class_alias('Plugins\Search\Members\ContributionSorter', 'ContributionSorter');

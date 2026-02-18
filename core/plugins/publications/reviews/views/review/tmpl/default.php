@@ -8,7 +8,7 @@
 
 defined('_HZEXEC_') or die();
 
-$review = new PublicationsModelReview($this->review);
+$review = new Plugins\Publications\Reviews\Models\Review($this->review);
 
 if ($review->exists()) {
     $title = Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDIT_YOUR_REVIEW');
