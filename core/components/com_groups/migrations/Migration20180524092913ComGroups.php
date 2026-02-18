@@ -12,6 +12,7 @@ use Hubzero\Content\Migration\Base;
 use Components\Groups\Models\Orm\Field;
 use Components\Groups\Models\Orm\Answer;
 use Components\Groups\Models\Orm\Group;
+
 /**
  * Migration script for adding custom fields
  *

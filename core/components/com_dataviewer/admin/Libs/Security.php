@@ -10,12 +10,12 @@ namespace Components\Dataviewer\Admin\Libs;
 
 class Security
 {
-	public static function check_rid()
-	{
-		if (isset($_POST[DB_RID]) && $_POST[DB_RID] == DB_RID) {
-			return true;
-		}
+    public static function checkRid()
+    {
+        if (isset($_POST[DB_RID]) && $_POST[DB_RID] == DB_RID) {
+            return true;
+        }
 
-		exit;
-	}
+        exit;
+    }
 }

@@ -15,18 +15,18 @@ use Hubzero\Component\AbstractComponent;
  */
 class Kb extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
-		require_once __DIR__ . DS . 'controllers' . DS . 'articles.php';
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
+        require_once __DIR__ . DS . 'controllers' . DS . 'articles.php';
 
-		// Instantiate controller
-		$controller = new Controllers\Articles();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new Controllers\Articles();
+        $controller->execute();
+    }
 }

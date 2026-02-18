@@ -15,29 +15,29 @@ use Hubzero\Component\AbstractComponent;
  */
 class Usage extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Authorization check
-		if (!\User::authorise('core.manage', 'com_usage')) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Authorization check
+        if (!\User::authorise('core.manage', 'com_usage')) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-		$controllerName = \Request::getCmd('controller', 'data');
-		if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-		    $controllerName = 'data';
-		}
-		require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+        $controllerName = \Request::getCmd('controller', 'data');
+        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+            $controllerName = 'data';
+        }
+        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+        $controller->redirect();
+    }
 }

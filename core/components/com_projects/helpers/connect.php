@@ -23,8 +23,6 @@ use Lang;
 use User;
 use App;
 
-require_once __DIR__ . DS . 'remote' . DS . 'google.php';
-
 /**
  * Projects Connect helper class
  */

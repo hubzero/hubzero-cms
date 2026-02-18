@@ -1,4 +1,5 @@
 <?php
+
 // phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
 /**
@@ -18,9 +19,6 @@ use Config;
 use Lang;
 use Date;
 use User;
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'calendar.php';
-require_once PATH_CORE . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'icalparser.php';
 
 /**
  * Event calendar model

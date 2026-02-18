@@ -1,4 +1,5 @@
 <?php
+
 // phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
 /**
@@ -17,8 +18,6 @@ use Plugins\Groups\Calendar\Helper as CalendarHelper;
 use DateTimezone;
 use DateTime;
 use Date;
-
-require_once dirname(__DIR__) . DS . 'calendar.php';
 
 /**
  * Calendar archive model

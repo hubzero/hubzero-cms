@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,15 +22,15 @@ use App;
  */
 class Registration
 {
-    const REG_HIDE     = 0;
-    const REG_OPTIONAL = 1;
-    const REG_REQUIRED = 2;
-    const REG_READONLY = 4;
+    public const REG_HIDE     = 0;
+    public const REG_OPTIONAL = 1;
+    public const REG_REQUIRED = 2;
+    public const REG_READONLY = 4;
 
-    const PASS_SCORE_BAD      = 0;
-    const PASS_SCORE_MEDIOCRE = 34;
-    const PASS_SCORE_GOOD     = 50;
-    const PASS_SCORE_STRONG   = 68;
+    public const PASS_SCORE_BAD      = 0;
+    public const PASS_SCORE_MEDIOCRE = 34;
+    public const PASS_SCORE_GOOD     = 50;
+    public const PASS_SCORE_STRONG   = 68;
 
     /**
      * @var  array

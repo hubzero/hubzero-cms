@@ -17,48 +17,48 @@ use Hubzero\Component\AbstractComponent;
  */
 class Newsletter extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'newsletter.php';
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'mailinglist.php';
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'mailing.php';
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'emailSubscription.php';
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'newsletter.php';
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'mailinglist.php';
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'mailing.php';
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'emailSubscription.php';
 
 
-		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
-		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'subscriptionsHelper.php';
+        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
+        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'subscriptionsHelper.php';
 
-		// determine the controller to use:
-		$defaultController = 'newsletters';
+        // determine the controller to use:
+        $defaultController = 'newsletters';
 
-		// controllers from the reply functionality
-		$controllerNameMap = [
-		    'email-subscriptions' => 'emailsubscriptions',
-		    'pages' => 'pages',
-		    'replies' => 'replies'
-		];
+        // controllers from the reply functionality
+        $controllerNameMap = [
+            'email-subscriptions' => 'emailsubscriptions',
+            'pages' => 'pages',
+            'replies' => 'replies'
+        ];
 
-		// if we had a controller request, set it, otherwise set 'newsletters':
-		$controllerName = Request::getCmd('controller', $defaultController);
-		if (in_array($controllerName, array_keys($controllerNameMap))) {
-		    // from reply component
-		    $controllerName = Arr::getValue($controllerNameMap, $controllerName);
-		}
+        // if we had a controller request, set it, otherwise set 'newsletters':
+        $controllerName = Request::getCmd('controller', $defaultController);
+        if (in_array($controllerName, array_keys($controllerNameMap))) {
+            // from reply component
+            $controllerName = Arr::getValue($controllerNameMap, $controllerName);
+        }
 
-		//build controller path and require it
-		if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-		    $controllerName = $defaultController;
-		}
-		require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        //build controller path and require it
+        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+            $controllerName = $defaultController;
+        }
+        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate controller and execute
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Instantiate controller and execute
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

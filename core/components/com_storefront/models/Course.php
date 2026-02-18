@@ -8,9 +8,6 @@
 
 namespace Components\Storefront\Models;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
 /**
  *
  * Storefront course product class

@@ -15,19 +15,19 @@ use Hubzero\Component\AbstractComponent;
  */
 class Whatsnew extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Include files
-		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'period.php';
-		require_once __DIR__ . DS . 'controllers' . DS . 'results.php';
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Include files
+        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'period.php';
+        require_once __DIR__ . DS . 'controllers' . DS . 'results.php';
 
-		// Instantiate controller
-		$controller = new Controllers\Results();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new Controllers\Results();
+        $controller->execute();
+    }
 }

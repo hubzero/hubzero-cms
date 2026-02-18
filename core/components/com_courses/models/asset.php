@@ -457,7 +457,6 @@ class Asset extends Base
 
         // If this is a form...
         if ($forms && $this->get('type') == 'form') {
-
             // Copy the form as well...look up by asset_id
             if ($form = PdfForm::loadByAssetId($originalId)) {
                 // This will either return the form id or the deployment crumb

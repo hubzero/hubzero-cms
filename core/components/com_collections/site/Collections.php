@@ -15,25 +15,25 @@ use Hubzero\Component\AbstractComponent;
  */
 class Collections extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
 
-		$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'collections'));
-		if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-		    $controllerName = 'collections';
-		}
-		require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'collections'));
+        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+            $controllerName = 'collections';
+        }
+        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+        $controller->redirect();
+    }
 }

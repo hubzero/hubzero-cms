@@ -15,34 +15,34 @@ use Hubzero\Component\AbstractComponent;
  */
 class Forum extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'manager.php';
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'manager.php';
 
-		$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'sections'));
-		if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-		    $controllerName = 'sections';
-		}
-		require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'sections'));
+        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+            $controllerName = 'sections';
+        }
+        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		if (!User::authorise('core.access', 'com_forum')) {
-		    $return = base64_encode(Request::getString('REQUEST_URI', '', 'server'));
-		        //$return = base64_encode($_SERVER['REQUEST_URI']);
-		    App::redirect(
-		        Route::url('index.php?option=com_users&view=login&return=' . $return, false),
-		        Lang::txt('COM_FORUM_ALERTLOGIN_REQUIRED'),
-		        'warning'
-		    );
-		}
+        if (!User::authorise('core.access', 'com_forum')) {
+            $return = base64_encode(Request::getString('REQUEST_URI', '', 'server'));
+                //$return = base64_encode($_SERVER['REQUEST_URI']);
+            App::redirect(
+                Route::url('index.php?option=com_users&view=login&return=' . $return, false),
+                Lang::txt('COM_FORUM_ALERTLOGIN_REQUIRED'),
+                'warning'
+            );
+        }
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

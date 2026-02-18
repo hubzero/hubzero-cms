@@ -8,10 +8,6 @@
 
 namespace Components\Storefront\Models;
 
-// No direct access
-defined('_HZEXEC_') or die();
-
-
 use Components\Storefront\Models\Course;
 use Components\Storefront\Models\Warehouse;
 use Exception;

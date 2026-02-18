@@ -15,25 +15,25 @@ use Hubzero\Component\AbstractComponent;
  */
 class Answers extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
-		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php';
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
+        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php';
 
-		$controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'questions'));
-		if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-		    $controllerName = 'questions';
-		}
-		require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'questions'));
+        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+            $controllerName = 'questions';
+        }
+        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Instantiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

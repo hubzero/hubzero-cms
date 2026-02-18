@@ -1,3 +1,14 @@
+<?php
+
+/**
+ * @package    hubzero-cms
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+// No direct access.
+defined('_HZEXEC_') or die();
+?>
 <style>
 #content.com_users .auth:before,
 #content.com_users .auth:after {
@@ -27,18 +38,7 @@
         }
 }
 </style>
-
-
-<?php // phpcs:disable PSR1.Files.SideEffects, PSR12.Files.FileHeader
-
-/**
- * @package    hubzero-cms
- * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
- * @license    http://opensource.org/licenses/MIT MIT
- */
-
-// No direct access.
-defined('_HZEXEC_') or die();
+<?php
 
 // Get the login modules
 // If you want to use a completely different login module change the value of name

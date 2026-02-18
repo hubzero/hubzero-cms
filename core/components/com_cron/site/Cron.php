@@ -15,18 +15,18 @@ use Hubzero\Component\AbstractComponent;
  */
 class Cron extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'job.php';
-		require_once __DIR__ . DS . 'controllers' . DS . 'jobs.php';
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'job.php';
+        require_once __DIR__ . DS . 'controllers' . DS . 'jobs.php';
 
-		// Instantiate controller
-		$controller = new Controllers\Jobs();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new Controllers\Jobs();
+        $controller->execute();
+    }
 }

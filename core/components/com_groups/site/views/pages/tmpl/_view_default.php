@@ -1,7 +1,7 @@
 <?php
 
 // phpcs:disable Generic.Files.LineLength.TooLong
-// phpcs:disable PSR1.Files.SideEffects
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,12 +11,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-if (!function_exists('isSystemUser')) {
-    function isSystemUser($userid)
-    {
-        return ($userid < 1000) ? null : $userid;
-    }
-}
+$isSystemUser = function ($userid) {
+    return ($userid < 1000) ? null : $userid;
+};
 
 // get group params
 $params = Component::params("com_groups");
@@ -33,7 +30,7 @@ shuffle($members);
 //if we dont want to display system users
 //filter values through callback above and then reset array keys
 if ($displaySystemUsers == 'no') {
-    $members = array_map("isSystemUser", $members);
+    $members = array_map($isSystemUser, $members);
     $members = array_values(array_filter($members));
 }
 

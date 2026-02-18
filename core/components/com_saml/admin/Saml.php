@@ -15,29 +15,29 @@ use Hubzero\Component\AbstractComponent;
  */
 class Saml extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		if (!\User::authorise('core.manage', 'com_saml')) {
-		        \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!\User::authorise('core.manage', 'com_saml')) {
+                \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+        }
 
-		$controllerName = \Request::getCmd('controller', 'saml');
+        $controllerName = \Request::getCmd('controller', 'saml');
 
-		if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-		        $controllerName = 'saml';
-		}
+        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+                $controllerName = 'saml';
+        }
 
-		require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
 
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		$controller = new $controllerName();
+        $controller = new $controllerName();
 
-		$controller->execute();
-	}
+        $controller->execute();
+    }
 }

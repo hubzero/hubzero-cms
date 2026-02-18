@@ -16,41 +16,41 @@ use Hubzero\Component\AbstractComponent;
  */
 class Categories extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Access check.
-		if (!\User::authorise('core.manage', Request::getCmd('extension'))) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Access check.
+        if (!\User::authorise('core.manage', Request::getCmd('extension'))) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-		// Load needed files
-		require_once dirname(__DIR__) . '/models/category.php';
-		require_once __DIR__ . '/helpers/categories.php';
+        // Load needed files
+        require_once dirname(__DIR__) . '/models/category.php';
+        require_once __DIR__ . '/helpers/categories.php';
 
-		// Determine task
-		$task = Request::getCmd('task');
-		if (strpos($task, '.') !== false) {
-		    $splitTask = explode('.', $task);
-		    Request::setVar('task', $splitTask[1]);
-		}
+        // Determine task
+        $task = Request::getCmd('task');
+        if (strpos($task, '.') !== false) {
+            $splitTask = explode('.', $task);
+            Request::setVar('task', $splitTask[1]);
+        }
 
-		// Get the controller
-		$defaultController = 'categories';
-		$controllerName = Request::getCmd('controller', $defaultController);
-		if (!file_exists(__DIR__ . '/controllers/' . $controllerName . '.php')) {
-		    $controllerName = $defaultController;
-		}
-		require_once __DIR__ . '/controllers/' . $controllerName . '.php';
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
+        // Get the controller
+        $defaultController = 'categories';
+        $controllerName = Request::getCmd('controller', $defaultController);
+        if (!file_exists(__DIR__ . '/controllers/' . $controllerName . '.php')) {
+            $controllerName = $defaultController;
+        }
+        require_once __DIR__ . '/controllers/' . $controllerName . '.php';
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
-		// Execute
-		$controller = new $controllerName();
-		$controller->execute();
-	}
+        // Execute
+        $controller = new $controllerName();
+        $controller->execute();
+    }
 }

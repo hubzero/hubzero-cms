@@ -1,4 +1,5 @@
 <?php
+
 // phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
 /**
@@ -17,8 +18,6 @@ use DateTime;
 use Route;
 use Lang;
 use Date;
-
-require_once dirname(__DIR__) . DS . 'tables' . DS . 'event.php';
 
 /**
  * Event model

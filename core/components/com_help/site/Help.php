@@ -15,19 +15,19 @@ use Hubzero\Component\AbstractComponent;
  */
 class Help extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'finder.php';
-		require_once __DIR__ . DS . 'controllers' . DS . 'help.php';
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'finder.php';
+        require_once __DIR__ . DS . 'controllers' . DS . 'help.php';
 
-		// Instantiate controller and execute
-		$controller = new Controllers\Help();
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Instantiate controller and execute
+        $controller = new Controllers\Help();
+        $controller->execute();
+        $controller->redirect();
+    }
 }

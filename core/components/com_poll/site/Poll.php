@@ -15,17 +15,17 @@ use Hubzero\Component\AbstractComponent;
  */
 class Poll extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		// Require the base controller
-		require_once __DIR__ . DS . 'controllers' . DS . 'polls.php';
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        // Require the base controller
+        require_once __DIR__ . DS . 'controllers' . DS . 'polls.php';
 
-		$controller = new Controllers\Polls();
-		$controller->execute();
-	}
+        $controller = new Controllers\Polls();
+        $controller->execute();
+    }
 }

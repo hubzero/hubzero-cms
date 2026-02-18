@@ -15,17 +15,17 @@ use Hubzero\Component\AbstractComponent;
  */
 class Mailto extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		require_once __DIR__ . '/helpers/mailto.php';
-		require_once __DIR__ . '/controllers/mailings.php';
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        require_once __DIR__ . '/helpers/mailto.php';
+        require_once __DIR__ . '/controllers/mailings.php';
 
-		$controller = new Controllers\Mailings();
-		$controller->execute();
-	}
+        $controller = new Controllers\Mailings();
+        $controller->execute();
+    }
 }

@@ -1,7 +1,5 @@
 #!/usr/bin/php
-<?php
-
-// phpcs:disable PSR1.Files.SideEffects
+<?php // phpcs:ignoreFile
 
 /**
  * @package    hubzero-cms
@@ -11,47 +9,8 @@
 
 isset($argc) or die();
 
-$opt = getopt("i:o:v::");
-
-$show_help = false;
-
-if ($argc > 1 && (!isset($opt['i']) || !isset($opt['o']))) {
-    print "\n\nPlease enter a valid input file name and an output filename.\n\n";
-    $show_help = true;
-}
-
-if ($argc == 1 || $show_help) {
-    print "Usage: ./ddconvert.php [OPTIONS]...\n\n";
-    print "OPTIONS:\n";
-    print "\t-i \tInput (.php) file name.\n";
-    print "\t-o \tOutput (.json) file name.\n";
-    print "\t-v \tVerbose Output.\n";
-    exit(0);
-}
-
-$ip = trim($opt['i']);
-$op = trim($opt['o']);
-
-if (pathinfo($ip, PATHINFO_EXTENSION) == 'php' && pathinfo($op, PATHINFO_EXTENSION) == 'json') {
-    define('_HZEXEC_', 'true');
-
-    require_once $ip;
-    $func = 'get_' . pathinfo($ip, PATHINFO_FILENAME);
-    $dd_arr = $func();
-
-    file_put_contents($op, json_format(json_encode($dd_arr)));
-
-    if (isset($opt['v'])) {
-        print "$op : \n";
-        print json_format(json_encode($dd_arr)) . "\n";
-        print "\nWriting $op done.\n";
-    }
-}
-
-
 // http://www.php.net/manual/en/function.json-encode.php#80339
-function json_format($json)
-{
+$json_format = function ($json) {
     $tab = "\t";
     $new_json = "";
     $indent_level = 0;
@@ -113,4 +72,41 @@ function json_format($json)
     }
 
     return $new_json;
+};
+
+$opt = getopt("i:o:v::");
+
+$show_help = false;
+
+if ($argc > 1 && (!isset($opt['i']) || !isset($opt['o']))) {
+    print "\n\nPlease enter a valid input file name and an output filename.\n\n";
+    $show_help = true;
+}
+
+if ($argc == 1 || $show_help) {
+    print "Usage: ./ddconvert.php [OPTIONS]...\n\n";
+    print "OPTIONS:\n";
+    print "\t-i \tInput (.php) file name.\n";
+    print "\t-o \tOutput (.json) file name.\n";
+    print "\t-v \tVerbose Output.\n";
+    exit(0);
+}
+
+$ip = trim($opt['i']);
+$op = trim($opt['o']);
+
+if (pathinfo($ip, PATHINFO_EXTENSION) == 'php' && pathinfo($op, PATHINFO_EXTENSION) == 'json') {
+    define('_HZEXEC_', 'true');
+
+    require_once $ip;
+    $func = 'get_' . pathinfo($ip, PATHINFO_FILENAME);
+    $dd_arr = $func();
+
+    file_put_contents($op, $json_format(json_encode($dd_arr)));
+
+    if (isset($opt['v'])) {
+        print "$op : \n";
+        print $json_format(json_encode($dd_arr)) . "\n";
+        print "\nWriting $op done.\n";
+    }
 }

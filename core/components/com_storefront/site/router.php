@@ -13,8 +13,6 @@ namespace Components\Storefront\Site;
 
 use Hubzero\Component\Router\Base;
 
-defined('_HZEXEC_') or die();
-
 /**
  * Routing class for the component
  */

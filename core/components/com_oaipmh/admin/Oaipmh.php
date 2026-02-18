@@ -15,43 +15,43 @@ use Hubzero\Component\AbstractComponent;
  */
 class Oaipmh extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		if (!\User::authorise('core.manage', 'com_oaipmh')) {
-		    \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!\User::authorise('core.manage', 'com_oaipmh')) {
+            \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-		require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-		require_once __DIR__ . DS . 'controllers' . DS . 'config.php';
+        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
+        require_once __DIR__ . DS . 'controllers' . DS . 'config.php';
 
-		$task = \Request::getCmd('task');
+        $task = \Request::getCmd('task');
 
-		\Submenu::addEntry(
-		    \Lang::txt('COM_OAIPMH_ABOUT'),
-		    \Route::url('index.php?option=com_oaipmh'),
-		    (!$task || $task == 'display')
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_OAIPMH_SCHEMAS'),
-		    \Route::url('index.php?option=com_oaipmh&task=schemas'),
-		    ($task == 'schemas')
-		);
-		require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
-		if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
-		    \Submenu::addEntry(
-		        \Lang::txt('COM_OAIPMH_PLUGINS'),
-		        \Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
-		    );
-		}
+        \Submenu::addEntry(
+            \Lang::txt('COM_OAIPMH_ABOUT'),
+            \Route::url('index.php?option=com_oaipmh'),
+            (!$task || $task == 'display')
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_OAIPMH_SCHEMAS'),
+            \Route::url('index.php?option=com_oaipmh&task=schemas'),
+            ($task == 'schemas')
+        );
+        require_once dirname(dirname(__DIR__)) . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php';
+        if (\Components\Plugins\Helpers\Plugins::getActions()->get('core.manage')) {
+            \Submenu::addEntry(
+                \Lang::txt('COM_OAIPMH_PLUGINS'),
+                \Route::url('index.php?option=com_plugins&view=plugins&filter_folder=oaipmh&filter_type=oaipmh')
+            );
+        }
 
-		// Instantiate controller
-		$controller = new Controllers\Config();
-		$controller->execute();
-	}
+        // Instantiate controller
+        $controller = new Controllers\Config();
+        $controller->execute();
+    }
 }

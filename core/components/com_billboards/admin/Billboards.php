@@ -15,44 +15,44 @@ use Hubzero\Component\AbstractComponent;
  */
 class Billboards extends AbstractComponent
 {
-	/**
-	 * Entry point
-	 *
-	 * @return  void
-	 */
-	protected function execute(): void
-	{
-		if (!\User::authorise('core.manage', 'com_billboards')) {
-		    \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-		    return;
-		}
+    /**
+     * Entry point
+     *
+     * @return  void
+     */
+    protected function execute(): void
+    {
+        if (!\User::authorise('core.manage', 'com_billboards')) {
+            \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
+            return;
+        }
 
-		// Include needed models and controller
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'billboard.php';
-		require_once dirname(__DIR__) . DS . 'models' . DS . 'collection.php';
+        // Include needed models and controller
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'billboard.php';
+        require_once dirname(__DIR__) . DS . 'models' . DS . 'collection.php';
 
-		$controllerName = \Request::getCmd('controller', 'billboards');
-		if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
-		    $controllerName = 'billboards';
-		}
+        $controllerName = \Request::getCmd('controller', 'billboards');
+        if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
+            $controllerName = 'billboards';
+        }
 
-		\Submenu::addEntry(
-		    \Lang::txt('COM_BILLBOARDS'),
-		    \Route::url('index.php?option=com_billboards&controller=billboards'),
-		    $controllerName == 'billboards'
-		);
-		\Submenu::addEntry(
-		    \Lang::txt('COM_BILLBOARDS_COLLECTIONS'),
-		    \Route::url('index.php?option=com_billboards&controller=collections'),
-		    $controllerName == 'collections'
-		);
+        \Submenu::addEntry(
+            \Lang::txt('COM_BILLBOARDS'),
+            \Route::url('index.php?option=com_billboards&controller=billboards'),
+            $controllerName == 'billboards'
+        );
+        \Submenu::addEntry(
+            \Lang::txt('COM_BILLBOARDS_COLLECTIONS'),
+            \Route::url('index.php?option=com_billboards&controller=collections'),
+            $controllerName == 'collections'
+        );
 
-		require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
-		$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
+        require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
+        $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
-		// Initiate controller
-		$controller = new $controllerName();
-		$controller->execute();
-		$controller->redirect();
-	}
+        // Initiate controller
+        $controller = new $controllerName();
+        $controller->execute();
+        $controller->redirect();
+    }
 }
