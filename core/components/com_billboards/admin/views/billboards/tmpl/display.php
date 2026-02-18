@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -38,18 +36,33 @@ Toolbar::spacer();
 Toolbar::help('billboards');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
     <table class="adminlist">
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    ><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_NAME'); ?></th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
-                <th scope="col" class="priority-3"><?php echo Lang::txt('COM_BILLBOARDS_COL_ORDERING') . Html::grid('order', $this->rows->toArray()); ?></th>
+                <th scope="col" class="priority-3">
+                    <?php echo Lang::txt('COM_BILLBOARDS_COL_ORDERING')
+                        . Html::grid('order', $this->rows->toArray()); ?>
+                </th>
                 <th scope="col" class="priority-1"><?php echo Lang::txt('COM_BILLBOARDS_COL_PUBLISHED'); ?></th>
             </tr>
         </thead>
@@ -64,7 +77,13 @@ Toolbar::help('billboards');
 foreach ($this->rows as $row) {
     // See if the billboard is being edited by someone else
     if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) {
-        $checked = Html::grid('checkedout', $row, User::getInstance($row->checked_out)->get('name'), $row->checked_out_time);
+        $checkedOutName = User::getInstance($row->checked_out)->get('name');
+        $checked = Html::grid(
+            'checkedout',
+            $row,
+            $checkedOutName,
+            $row->checked_out_time
+        );
     } else {
         $checked = Html::grid('id', $i, $row->id, false, 'cid');
     }
@@ -81,16 +100,39 @@ foreach ($this->rows as $row) {
                 <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id); ?>"><?php echo $row->name; ?></a>
+                    <?php $editUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&cid=' . $row->id
+                    ); ?>
+                    <a href="<?php echo $editUrl; ?>">
+                        <?php echo $row->name; ?>
+                    </a>
                 </td>
                 <td class="priority-2">
                 <?php echo $row->collection->name; ?>
                 </td>
                 <td class="order priority-3">
-                    <input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" />
+                    <input type="text"
+                        name="order[]"
+                        size="5"
+                        value="<?php echo $row->ordering; ?>"
+                        class="text_area"
+                    />
                 </td>
                 <td class="priority-1">
-                    <a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&cid=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_BILLBOARDS_SET_TO', $task); ?>">
+                    <?php $stateUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=' . $task
+                        . '&cid=' . $row->id
+                        . '&' . Session::getFormToken() . '=1'
+                    ); ?>
+                    <?php $stateTitle = Lang::txt('COM_BILLBOARDS_SET_TO', $task); ?>
+                    <a class="state <?php echo $class; ?>"
+                        href="<?php echo $stateUrl; ?>"
+                        title="<?php echo $stateTitle; ?>"
+                    >
                         <span><?php echo $alt; ?></span>
                     </a>
                 </td>

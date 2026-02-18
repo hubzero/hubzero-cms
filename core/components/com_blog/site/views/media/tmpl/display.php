@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -16,10 +14,33 @@ $base = rtrim(Request::base(true), '/');
 $this->css();
 ?>
 <div id="attachments">
-    <form action="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=upload" id="adminForm" method="post" enctype="multipart/form-data">
+    <?php
+    $formAction = $base
+        . '/index.php?option=' . $this->option
+        . '&amp;tmpl=component&amp;controller=' . $this->controller
+        . '&amp;task=upload';
+    ?>
+    <form action="<?php echo $formAction; ?>"
+        id="adminForm"
+        method="post"
+        enctype="multipart/form-data"
+    >
         <fieldset>
             <div id="themanager" class="manager">
-                <iframe src="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;scope=<?php echo urlencode($this->archive->get('scope')); ?>&amp;id=<?php echo $this->archive->get('scope_id'); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+                <?php
+                $iframeSrc = $base
+                    . '/index.php?option=' . $this->option
+                    . '&amp;tmpl=component&amp;controller=' . $this->controller
+                    . '&amp;task=list'
+                    . '&amp;scope=' . urlencode($this->archive->get('scope'))
+                    . '&amp;id=' . $this->archive->get('scope_id');
+                ?>
+                <iframe src="<?php echo $iframeSrc; ?>"
+                    name="imgManager"
+                    id="imgManager"
+                    width="98%"
+                    height="180"
+                ></iframe>
             </div>
         </fieldset>
         <fieldset>

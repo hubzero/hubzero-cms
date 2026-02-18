@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -74,13 +72,25 @@ $rows = $this->archive->entries($this->filters)
             }
             $feed = str_replace('https:://', 'http://', $feed);
             ?>
-            <p><a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo Lang::txt('COM_BLOG_FEED'); ?></a></p>
+            <p>
+                <a class="icon-feed feed btn" href="<?php echo $feed; ?>">
+                    <?php echo Lang::txt('COM_BLOG_FEED'); ?>
+                </a>
+            </p>
         </div>
     <?php endif; ?>
 </header>
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="section-inner hz-layout-with-aside">
+    <?php
+    $browseUrl = Route::url(
+        'index.php?option=' . $this->option . '&task=browse'
+    );
+    ?>
+    <form action="<?php echo $browseUrl; ?>"
+        method="get"
+        class="section-inner hz-layout-with-aside"
+    >
         <div class="subject">
             <?php if ($this->getError()) { ?>
                 <p class="error"><?php echo $this->getError(); ?></p>
@@ -91,7 +101,12 @@ $rows = $this->archive->entries($this->filters)
                 <fieldset class="entry-search">
                     <legend><?php echo Lang::txt('COM_BLOG_SEARCH_LEGEND'); ?></legend>
                     <label for="entry-search-field"><?php echo Lang::txt('COM_BLOG_SEARCH_LABEL'); ?></label>
-                    <input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_BLOG_SEARCH_PLACEHOLDER'); ?>" />
+                    <input type="text"
+                        name="search"
+                        id="entry-search-field"
+                        value="<?php echo $this->escape($this->filters['search']); ?>"
+                        placeholder="<?php echo Lang::txt('COM_BLOG_SEARCH_PLACEHOLDER'); ?>"
+                    />
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                 </fieldset>
             </div><!-- / .container -->
@@ -152,19 +167,34 @@ $rows = $this->archive->entries($this->filters)
                                     </dd>
                                     <?php if ($this->config->get('show_authors')) { ?>
                                         <dd class="author">
-                                            <?php if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+                                            <?php
+                                            $authorAccess = $row->creator->get('access');
+                                            $viewLevels = User::getAuthorisedViewLevels();
+                                            if (in_array($authorAccess, $viewLevels)) {
+                                                ?>
                                                 <a href="<?php echo Route::url($row->creator->link()); ?>">
-                                                    <?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
+                                                    <?php
+                                                    echo $this->escape(
+                                                        stripslashes($row->creator->get('name'))
+                                                    );
+                                                    ?>
                                                 </a>
                                             <?php } else { ?>
-                                                <?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
+                                                <?php
+                                                echo $this->escape(
+                                                    stripslashes($row->creator->get('name'))
+                                                );
+                                                ?>
                                             <?php } ?>
                                         </dd>
                                     <?php } ?>
                                     <?php if ($row->get('allow_comments') == 1) { ?>
                                         <dd class="comments">
                                             <a href="<?php echo Route::url($row->link('comments')); ?>">
-                                                <?php echo Lang::txt('COM_BLOG_NUM_COMMENTS', $row->comments->count()); ?>
+                                                <?php
+                                                $commentCount = $row->comments->count();
+                                                echo Lang::txt('COM_BLOG_NUM_COMMENTS', $commentCount);
+                                                ?>
                                             </a>
                                         </dd>
                                     <?php } else { ?>
@@ -174,29 +204,56 @@ $rows = $this->archive->entries($this->filters)
                                             </span>
                                         </dd>
                                     <?php } ?>
-                                    <?php if (User::get('id') == $row->get('created_by') || User::authorise('core.manage', $this->option)) { ?>
+                                    <?php
+                                    $isOwnerOrAdmin = (
+                                        User::get('id') == $row->get('created_by')
+                                        || User::authorise('core.manage', $this->option)
+                                    );
+                                    if ($isOwnerOrAdmin) {
+                                        ?>
                                         <dd class="state <?php echo strtolower($row->visibility('text')); ?>">
                                             <?php echo $row->visibility('text'); ?>
                                         </dd>
                                     <?php } ?>
-                                    <?php if (User::get('id') == $row->get('created_by') || User::authorise('core.manage', $this->option)) { ?>
+                                    <?php if ($isOwnerOrAdmin) { ?>
                                         <dd class="entry-options">
-                                            <a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+                                            <a class="icon-edit edit"
+                                                href="<?php echo Route::url($row->link('edit')); ?>"
+                                                title="<?php echo Lang::txt('JACTION_EDIT'); ?>"
+                                            >
                                                 <?php echo Lang::txt('JACTION_EDIT'); ?>
                                             </a>
-                                            <a class="icon-trash delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                                            <a class="icon-trash delete"
+                                                data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>"
+                                                href="<?php echo Route::url($row->link('delete')); ?>"
+                                                title="<?php echo Lang::txt('JACTION_DELETE'); ?>"
+                                            >
                                                 <?php echo Lang::txt('JACTION_DELETE'); ?>
                                             </a>
                                         </dd>
                                     <?php } ?>
                                 </dl>
                                 <div class="entry-content">
-                                    <?php if ($this->config->get('cleanintro', 1)) { ?>
+                                    <?php
+                                    $introLength = $this->config->get('introlength', 300);
+                                    if ($this->config->get('cleanintro', 1)) {
+                                        ?>
                                         <p>
-                                            <?php echo \Hubzero\Utility\Str::truncate(strip_tags($row->content), $this->config->get('introlength', 300)); ?>
+                                            <?php
+                                            echo \Hubzero\Utility\Str::truncate(
+                                                strip_tags($row->content),
+                                                $introLength
+                                            );
+                                            ?>
                                         </p>
                                     <?php } else { ?>
-                                        <?php echo \Hubzero\Utility\Str::truncate($row->content, $this->config->get('introlength', 300), array('html' => true)); ?>
+                                        <?php
+                                        echo \Hubzero\Utility\Str::truncate(
+                                            $row->content,
+                                            $introLength,
+                                            array('html' => true)
+                                        );
+                                        ?>
                                     <?php } ?>
                                 </div>
                             </article>
@@ -221,7 +278,14 @@ $rows = $this->archive->entries($this->filters)
         <aside class="aside">
             <?php if ($this->config->get('access-create-entry')) { ?>
                 <p>
-                    <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+                    <?php
+                    $newEntryUrl = Route::url(
+                        'index.php?option=' . $this->option . '&task=new'
+                    );
+                    ?>
+                    <a class="icon-add add btn"
+                        href="<?php echo $newEntryUrl; ?>"
+                    >
                         <?php echo Lang::txt('COM_BLOG_NEW_ENTRY'); ?>
                     </a>
                 </p>
@@ -238,8 +302,17 @@ $rows = $this->archive->entries($this->filters)
                     for ($i = $now, $n = $start; $i >= $n; $i--) {
                         ?>
                         <li>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i); ?>"><?php echo $i; ?></a>
-                        <?php if (($this->filters['year'] && $i == $this->filters['year']) || (!$this->filters['year'] && $i == $now)) { ?>
+                            <?php
+                            $yearUrl = Route::url(
+                                'index.php?option=' . $this->option . '&year=' . $i
+                            );
+                            ?>
+                            <a href="<?php echo $yearUrl; ?>"><?php echo $i; ?></a>
+                        <?php
+                        $showMonths = ($this->filters['year'] && $i == $this->filters['year'])
+                            || (!$this->filters['year'] && $i == $now);
+                        if ($showMonths) {
+                            ?>
                             <ol>
                             <?php
                             $m = array(
@@ -266,9 +339,20 @@ $rows = $this->archive->entries($this->filters)
                             for ($k = 0, $z = $months; $k < $z; $k++) {
                                 ?>
                                 <li>
-                                    <a<?php if ($this->filters['month'] && $this->filters['month'] == ($k + 1)) {
-                                        echo ' class="active"';
-                                      } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . sprintf("%02d", ($k + 1))); ?>"><?php echo Lang::txt($m[$k]); ?></a>
+                                    <?php
+                                    $monthUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&year=' . $i
+                                        . '&month=' . sprintf("%02d", ($k + 1))
+                                    );
+                                    $activeClass = '';
+                                    if ($this->filters['month'] && $this->filters['month'] == ($k + 1)) {
+                                        $activeClass = ' class="active"';
+                                    }
+                                    ?>
+                                    <a<?php echo $activeClass; ?>
+                                        href="<?php echo $monthUrl; ?>"
+                                    ><?php echo Lang::txt($m[$k]); ?></a>
                                 </li>
                                 <?php
                             }

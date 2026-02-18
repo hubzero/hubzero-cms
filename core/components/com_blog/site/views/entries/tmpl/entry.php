@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -23,7 +21,9 @@ Pathway::append(
 );
 Pathway::append(
     $this->row->published('m'),
-    'index.php?option=' . $this->option . '&year=' . $this->row->published('Y') . '&month=' . sprintf("%02d", $this->row->published('m'))
+    'index.php?option=' . $this->option
+    . '&year=' . $this->row->published('Y')
+    . '&month=' . sprintf("%02d", $this->row->published('m'))
 );
 Pathway::append(
     stripslashes($this->row->get('title')),
@@ -48,7 +48,14 @@ $first = $this->archive->entries(array(
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=archive'); ?>">
+            <?php
+            $archiveUrl = Route::url(
+                'index.php?option=' . $this->option . '&task=archive'
+            );
+            ?>
+            <a class="icon-archive archive btn"
+                href="<?php echo $archiveUrl; ?>"
+            >
                 <?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?>
             </a>
         </p>
@@ -118,15 +125,28 @@ $first = $this->archive->entries(array(
                         </span>
                     </dd>
                 <?php } ?>
-                <?php if (User::get('id') == $this->row->get('created_by') || User::authorise('core.manage', $this->option)) { ?>
+                <?php
+                $isEntryOwnerOrAdmin = (
+                    User::get('id') == $this->row->get('created_by')
+                    || User::authorise('core.manage', $this->option)
+                );
+                if ($isEntryOwnerOrAdmin) {
+                    ?>
                     <dd class="state <?php echo strtolower($this->row->visibility('text')); ?>">
                         <?php echo $this->row->visibility('text'); ?>
                     </dd>
                     <dd class="entry-options">
-                        <a class="icon-edit edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+                        <a class="icon-edit edit"
+                            href="<?php echo Route::url($this->row->link('edit')); ?>"
+                            title="<?php echo Lang::txt('JACTION_EDIT'); ?>"
+                        >
                             <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                         </a>
-                        <a class="icon-trash delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                        <a class="icon-trash delete"
+                            data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>"
+                            href="<?php echo Route::url($this->row->link('delete')); ?>"
+                            title="<?php echo Lang::txt('JACTION_DELETE'); ?>"
+                        >
                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                         </a>
                     </dd>
@@ -150,7 +170,11 @@ $first = $this->archive->entries(array(
                             </p>
                             <div class="entry-author-content">
                                 <h4>
-                                    <?php if (in_array($this->row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+                                    <?php
+                                    $creatorAccess = $this->row->creator->get('access');
+                                    $viewLevels = User::getAuthorisedViewLevels();
+                                    if (in_array($creatorAccess, $viewLevels)) {
+                                        ?>
                                         <a href="<?php echo Route::url($this->row->creator->link()); ?>">
                                             <?php echo $name; ?>
                                         </a>
@@ -179,7 +203,14 @@ $first = $this->archive->entries(array(
         <aside class="aside hide6">
             <?php if ($this->config->get('access-create-entry')) { ?>
                 <p>
-                    <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+                    <?php
+                    $newEntryUrl = Route::url(
+                        'index.php?option=' . $this->option . '&task=new'
+                    );
+                    ?>
+                    <a class="icon-add add btn"
+                        href="<?php echo $newEntryUrl; ?>"
+                    >
                         <?php echo Lang::txt('COM_BLOG_NEW_ENTRY'); ?>
                     </a>
                 </p>
@@ -223,9 +254,17 @@ $first = $this->archive->entries(array(
                                         if (intval($key) <= $entry_month) {
                                             ?>
                                         <li>
-                                            <a <?php if ($entry_month == $key) {
-                                                echo 'class="active" ';
-                                               } ?>href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . $key); ?>">
+                                            <?php
+                                            $monthUrl = Route::url(
+                                                'index.php?option=' . $this->option
+                                                . '&year=' . $i
+                                                . '&month=' . $key
+                                            );
+                                            $activeAttr = ($entry_month == $key)
+                                                ? 'class="active" '
+                                                : '';
+                                            ?>
+                                            <a <?php echo $activeAttr; ?>href="<?php echo $monthUrl; ?>">
                                                 <?php echo $month; ?>
                                             </a>
                                         </li>
@@ -326,22 +365,43 @@ $first = $this->archive->entries(array(
                         if ($replyto->get('id')) {
                             $name = Lang::txt('JANONYMOUS');
                             if (!$replyto->get('anonymous')) {
-                                $name = $this->escape(stripslashes($replyto->creator->get('name', $name)));
-                                if (in_array($replyto->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                    $name = '<a href="' . Route::url($replyto->creator->link()) . '">' . $name . '</a>';
+                                $name = $this->escape(
+                                    stripslashes($replyto->creator->get('name', $name))
+                                );
+                                $replyAccess = $replyto->creator->get('access');
+                                if (in_array($replyAccess, User::getAuthorisedViewLevels())) {
+                                    $creatorUrl = Route::url($replyto->creator->link());
+                                    $name = '<a href="' . $creatorUrl . '">' . $name . '</a>';
                                 }
                             }
                             ?>
                         <blockquote cite="c<?php echo $replyto->get('id'); ?>">
                             <p>
                                 <strong><?php echo $name; ?></strong>
-                                <span class="comment-date-at"><?php echo Lang::txt('COM_BLOG_AT'); ?></span>
-                                <span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
-                                <span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span>
-                                <span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
+                                <span class="comment-date-at">
+                                    <?php echo Lang::txt('COM_BLOG_AT'); ?>
+                                </span>
+                                <span class="time">
+                                    <time datetime="<?php echo $replyto->get('created'); ?>">
+                                        <?php echo $replyto->created('time'); ?>
+                                    </time>
+                                </span>
+                                <span class="comment-date-on">
+                                    <?php echo Lang::txt('COM_BLOG_ON'); ?>
+                                </span>
+                                <span class="date">
+                                    <time datetime="<?php echo $replyto->get('created'); ?>">
+                                        <?php echo $replyto->created('date'); ?>
+                                    </time>
+                                </span>
                             </p>
                             <p>
-                                <?php echo \Hubzero\Utility\Str::truncate(stripslashes($replyto->get('content')), 300); ?>
+                                <?php
+                                echo \Hubzero\Utility\Str::truncate(
+                                    stripslashes($replyto->get('content')),
+                                    300
+                                );
+                                ?>
                             </p>
                         </blockquote>
                             <?php
@@ -353,20 +413,42 @@ $first = $this->archive->entries(array(
                         <label for="commentcontent">
                             Your <?php echo ($replyto->get('id')) ? 'reply' : 'comments'; ?>:
                             <?php
-                                echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal no-footer'));
+                            echo $this->editor(
+                                'comment[content]',
+                                '',
+                                40,
+                                15,
+                                'commentcontent',
+                                array('class' => 'minimal no-footer')
+                            );
                             ?>
                         </label>
                     <?php } else { ?>
                     <input type="hidden" name="comment[content]" id="commentcontent" value="" />
 
                     <p class="warning">
-                        <?php echo Lang::txt('COM_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('COM_BLOG_LOG_IN') . '</a>'); ?>
+                        <?php
+                        $returnUrl = base64_encode(
+                            Route::url($this->row->link() . '#post-comment', false, true)
+                        );
+                        $loginUrl = Route::url(
+                            'index.php?option=com_users&view=login&return=' . $returnUrl
+                        );
+                        $loginLink = '<a href="' . $loginUrl . '">'
+                            . Lang::txt('COM_BLOG_LOG_IN') . '</a>';
+                        echo Lang::txt('COM_BLOG_MUST_LOG_IN', $loginLink);
+                        ?>
                     </p>
                     <?php } ?>
 
                     <?php if (!User::isGuest()) { ?>
                         <label id="comment-anonymous-label">
-                            <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+                            <input class="option"
+                                type="checkbox"
+                                name="comment[anonymous]"
+                                id="comment-anonymous"
+                                value="1"
+                            />
                             <?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
                         </label>
 
@@ -411,7 +493,11 @@ $first = $this->archive->entries(array(
                     }
                         $feed = str_replace('https:://', 'http://', $feed);
                     ?>
-                    <a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo Lang::txt('COM_BLOG_FEED'); ?></a>
+                    <a class="icon-feed feed btn"
+                        href="<?php echo $feed; ?>"
+                    >
+                        <?php echo Lang::txt('COM_BLOG_FEED'); ?>
+                    </a>
                 </p>
             </div>
         </aside><!-- / .aside -->

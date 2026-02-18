@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -27,13 +25,25 @@ Toolbar::spacer();
 Toolbar::help('collections');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
     <table class="adminlist">
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    ><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
@@ -50,12 +60,24 @@ Toolbar::help('collections');
         <?php foreach ($this->rows as $row) : ?>
             <tr>
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
+                    <input type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->id; ?>"
+                        class="checkbox-toggle"
+                    />
+                    <label for="cb<?php echo $i; ?>"
+                        class="sr-only visually-hidden"
+                    ><?php echo $row->id; ?></label>
                 </td>
                 <td class="priority-3"><?php echo $row->id; ?></td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                    <?php $editUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&id=' . $row->id
+                    ); ?>
+                    <a href="<?php echo $editUrl; ?>">
                         <?php echo $this->escape(stripslashes($row->name)); ?>
                     </a>
                 </td>

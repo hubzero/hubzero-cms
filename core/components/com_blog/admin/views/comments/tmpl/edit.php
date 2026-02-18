@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -31,22 +29,61 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    class="editform form-validate"
+    id="item-form"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_BLOG_FIELD_ANONYMOUS_HINT'); ?>">
-                    <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) {
-                        echo ' checked="checked"';
-                                                                                                                 } ?> />
+                    <?php
+                    $anonChecked = $this->row->get('anonymous')
+                        ? ' checked="checked"'
+                        : '';
+                    ?>
+                    <input class="option"
+                        type="checkbox"
+                        name="fields[anonymous]"
+                        id="field-anonymous"
+                        value="1"
+                        <?php echo $anonChecked; ?>
+                    />
                     <label for="field-anonymous"><?php echo Lang::txt('COM_BLOG_FIELD_ANONYMOUS'); ?></label>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-content"><?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <?php echo $this->editor('fields[content]', $this->escape($this->row->get('content')), 50, 15, 'field-content', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+                    <label for="field-content">
+                        <?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?>
+                        <span class="required">
+                            <?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+                        </span>
+                    </label><br />
+                    <?php
+                    echo $this->editor(
+                        'fields[content]',
+                        $this->escape($this->row->get('content')),
+                        50,
+                        15,
+                        'field-content',
+                        array(
+                            'class' => 'required minimal no-footer',
+                            'buttons' => false
+                        )
+                    );
+                    ?>
                 </div>
             </fieldset>
         </div>
@@ -68,22 +105,37 @@ $this->js();
                             $editor = User::getInstance($this->row->get('created_by'));
                             echo $this->escape($editor->get('name'));
                             ?>
-                            <input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
+                            <input type="hidden"
+                                name="fields[created_by]"
+                                id="field-created_by"
+                                value="<?php echo $this->escape($this->row->get('created_by')); ?>"
+                            />
                         </td>
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('COM_BLOG_FIELD_CREATED'); ?>:</th>
                         <td>
                             <?php echo Date::of($this->row->get('created'))->toLocal(); ?>
-                            <input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+                            <input type="hidden"
+                                name="fields[created]"
+                                id="field-created"
+                                value="<?php echo $this->escape($this->row->get('created')); ?>"
+                            />
                         </td>
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('COM_BLOG_FIELD_ENTRY'); ?>:</th>
                         <td>
                             <?php echo $this->row->get('entry_id'); ?>
-                            <input type="hidden" name="fields[entry_id]" id="field-entry_id" value="<?php echo $this->escape($this->row->get('entry_id')); ?>" />
-                            <input type="hidden" name="entry_id" value="<?php echo $this->escape($this->row->get('entry_id')); ?>" />
+                            <input type="hidden"
+                                name="fields[entry_id]"
+                                id="field-entry_id"
+                                value="<?php echo $this->escape($this->row->get('entry_id')); ?>"
+                            />
+                            <input type="hidden"
+                                name="entry_id"
+                                value="<?php echo $this->escape($this->row->get('entry_id')); ?>"
+                            />
                         </td>
                     </tr>
                 </tbody>

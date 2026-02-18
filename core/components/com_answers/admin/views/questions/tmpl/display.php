@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,11 @@ defined('_HZEXEC_') or die();
 
 $canDo = Components\Answers\Helpers\Permissions::getActions('question');
 
-Toolbar::title(Lang::txt('COM_ANSWERS_TITLE') . ': ' . Lang::txt('COM_ANSWERS_QUESTIONS'), 'answers');
+Toolbar::title(
+    Lang::txt('COM_ANSWERS_TITLE') . ': '
+        . Lang::txt('COM_ANSWERS_QUESTIONS'),
+    'answers'
+);
 if ($canDo->get('core.admin')) {
     Toolbar::preferences($this->option, '550');
     Toolbar::spacer();
@@ -27,19 +29,41 @@ if ($canDo->get('core.delete')) {
 Toolbar::spacer();
 Toolbar::help('questions');
 
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
-                <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_ANSWERS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+                <label for="filter_search">
+                    <?php echo Lang::txt('JSEARCH_FILTER'); ?>:
+                </label>
+                <input
+                    type="text"
+                    name="search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('COM_ANSWERS_FILTER_SEARCH_PLACEHOLDER'); ?>"
+                />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_ANSWERS_GO'); ?>" />
-                <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+                <button type="button" class="filter-clear">
+                    <?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?>
+                </button>
             </div>
             <div class="col span6 rtl">
-                <label for="filter-state"><?php echo Lang::txt('COM_ANSWERS_FILTER_BY'); ?></label>
+                <label for="filter-state">
+                    <?php echo Lang::txt('COM_ANSWERS_FILTER_BY'); ?>
+                </label>
                 <select name="state" id="filter-state" class="filter filter-submit">
                     <option value="0"<?php if ($this->filters['state'] == 0) {
                         echo ' selected="selected"';
@@ -59,15 +83,42 @@ Toolbar::help('questions');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    >
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_SUBJECT', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_ANSWERS_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-1"><?php echo Lang::txt('COM_ANSWERS_COL_ANSWERS'); ?></th>
+                <?php
+                $sortDir = @$this->filters['sort_Dir'];
+                $sort = @$this->filters['sort'];
+                ?>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_ANSWERS_COL_ID', 'id', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_ANSWERS_COL_SUBJECT', 'subject', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?php echo Html::grid('sort', 'COM_ANSWERS_COL_STATE', 'state', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_ANSWERS_COL_CREATED', 'created', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid('sort', 'COM_ANSWERS_COL_CREATOR', 'created_by', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-1">
+                    <?php echo Lang::txt('COM_ANSWERS_COL_ANSWERS'); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -102,18 +153,53 @@ Toolbar::help('questions');
             }
 
             $comments = $row->responses->count();
+
+            $editUrl = Route::url(
+                'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=edit&id=' . $row->get('id')
+            );
+            $stateUrl = Route::url(
+                'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=' . $task
+                    . '&id=' . $row->get('id')
+                    . '&' . Session::getFormToken() . '=1'
+            );
+            $memberUrl = Route::url(
+                'index.php?option=com_members'
+                    . '&controller=members&task=edit&id='
+                    . $row->get('created_by')
+            );
+            $answersUrl = Route::url(
+                'index.php?option=' . $this->option
+                    . '&controller=answers&qid=' . $row->get('id')
+            );
+            $creatorName = $this->escape($row->creator->get('name'))
+                . ' (' . $row->get('created_by') . ')';
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('id'); ?>"
+                        class="checkbox-toggle"
+                    />
+                    <label
+                        for="cb<?php echo $i; ?>"
+                        class="sr-only visually-hidden"
+                    >
+                        <?php echo $row->get('id'); ?>
+                    </label>
                 </td>
                 <td class="priority-4">
                     <?php echo $row->get('id'); ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo $editUrl; ?>">
                             <span><?php echo $this->escape(strip_tags($row->get('subject'))); ?></span>
                         </a>
                     <?php } else { ?>
@@ -124,7 +210,11 @@ Toolbar::help('questions');
                 </td>
                 <td class="priority-2">
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_SET_STATE', $task); ?>">
+                        <a
+                            class="state <?php echo $cls; ?>"
+                            href="<?php echo $stateUrl; ?>"
+                            title="<?php echo Lang::txt('COM_ANSWERS_SET_STATE', $task); ?>"
+                        >
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -134,11 +224,13 @@ Toolbar::help('questions');
                     <?php } ?>
                 </td>
                 <td class="priority-4">
-                    <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
+                    <time datetime="<?php echo $row->created(); ?>">
+                        <?php echo $row->created('date'); ?>
+                    </time>
                 </td>
                 <td class="priority-3">
-                    <a class="glyph user" href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->get('created_by')); ?>">
-                        <?php echo $this->escape($row->creator->get('name')) . ' (' . $row->get('created_by') . ')'; ?>
+                    <a class="glyph user" href="<?php echo $memberUrl; ?>">
+                        <?php echo $creatorName; ?>
                     </a>
                     <?php if ($row->get('anonymous')) { ?>
                         <br /><span>(<?php echo Lang::txt('COM_ANSWERS_FIELD_ANONYMOUS'); ?>)</span>
@@ -146,11 +238,11 @@ Toolbar::help('questions');
                 </td>
                 <td class="priority-1">
                     <?php if ($comments > 0) { ?>
-                        <a class="glyph comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=answers&qid=' . $row->get('id')); ?>">
+                        <a class="glyph comment" href="<?php echo $answersUrl; ?>">
                             <span><?php echo Lang::txt('COM_ANSWERS_NUM_RESPONSES', $comments); ?></span>
                         </a>
                     <?php } else { ?>
-                        <a class="glyph comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=answers&qid=' . $row->get('id')); ?>">
+                        <a class="glyph comment" href="<?php echo $answersUrl; ?>">
                             <span>0</span>
                         </a>
                     <?php } ?>
@@ -168,8 +260,16 @@ Toolbar::help('questions');
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
     <input type="hidden" name="task" value="" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />
-    <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+    <input
+        type="hidden"
+        name="filter_order"
+        value="<?php echo $this->escape($this->filters['sort']); ?>"
+    />
+    <input
+        type="hidden"
+        name="filter_order_Dir"
+        value="<?php echo $this->escape($this->filters['sort_Dir']); ?>"
+    />
 
     <?php echo Html::input('token'); ?>
 </form>

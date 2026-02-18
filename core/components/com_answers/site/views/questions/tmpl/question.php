@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,11 +16,17 @@ if (Pathway::count() <= 0) {
     );
 }
 Pathway::append(
-    \Hubzero\Utility\Str::truncate(strip_tags($this->question->get('subject')), 50),
+    \Hubzero\Utility\Str::truncate(
+        strip_tags($this->question->get('subject')),
+        50
+    ),
     $this->question->link()
 );
 
-Document::setTitle(Lang::txt('COM_ANSWERS') . ': ' . strip_tags($this->question->get('subject')));
+Document::setTitle(
+    Lang::txt('COM_ANSWERS') . ': '
+        . strip_tags($this->question->get('subject'))
+);
 
 $this->css()
      ->js();
@@ -32,7 +36,10 @@ $this->css()
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-search search btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search'); ?>">
+            <a
+                class="icon-search search btn"
+                href="<?php echo Route::url('index.php?option=' . $this->option . '&task=search'); ?>"
+            >
                 <span><?php echo Lang::txt('COM_ANSWERS_ALL_QUESTIONS'); ?></span>
             </a>
         </p>
@@ -69,7 +76,10 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
         <div class="subject">
             <div class="entry question" id="q<?php echo $this->question->get('id'); ?>">
                 <p class="entry-member-photo">
-                    <img src="<?php echo $this->question->creator->picture($this->question->get('anonymous')); ?>" alt="" />
+                    <img
+                        src="<?php echo $this->question->creator->picture($this->question->get('anonymous')); ?>"
+                        alt=""
+                    />
                 </p><!-- / .question-member-photo -->
                 <div class="entry-content">
                     <?php if (!$this->question->isReported()) { ?>
@@ -88,18 +98,48 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                         <strong><?php
                         $name = Lang::txt('JANONYMOUS');
                         if (!$this->question->get('anonymous')) {
-                            $name = $this->escape(stripslashes($this->question->creator->get('name', Lang::txt('JUNKNOWN'))));
-                            if (in_array($this->question->creator->get('access'), User::getAuthorisedViewLevels()) && !$this->question->creator->get('block') && $this->question->creator->get('approved')) {
-                                $name = '<a href="' . Route::url($this->question->creator->link()) . '">' . $name . '</a>';
+                            $name = $this->escape(
+                                stripslashes(
+                                    $this->question->creator->get(
+                                        'name',
+                                        Lang::txt('JUNKNOWN')
+                                    )
+                                )
+                            );
+                            $viewLevels = User::getAuthorisedViewLevels();
+                            if (
+                                in_array($this->question->creator->get('access'), $viewLevels)
+                                && !$this->question->creator->get('block')
+                                && $this->question->creator->get('approved')
+                            ) {
+                                $name = '<a href="'
+                                    . Route::url($this->question->creator->link())
+                                    . '">' . $name . '</a>';
                             }
                         }
                         echo $name;
                         ?></strong>
-                        <a class="permalink" href="<?php echo Route::url($this->question->link()); ?>" title="<?php echo Lang::txt('COM_ANSWERS_PERMALINK'); ?>">
-                            <span class="entry-date-at"><?php echo Lang::txt('COM_ANSWERS_DATETIME_AT'); ?></span>
-                            <span class="icon-time time"><time datetime="<?php echo $this->question->created(); ?>"><?php echo $this->question->created('time'); ?></time></span>
-                            <span class="entry-date-on"><?php echo Lang::txt('COM_ANSWERS_DATETIME_ON'); ?></span>
-                            <span class="icon-date date"><time datetime="<?php echo $this->question->created(); ?>"><?php echo $this->question->created('date'); ?></time></span>
+                        <a
+                            class="permalink"
+                            href="<?php echo Route::url($this->question->link()); ?>"
+                            title="<?php echo Lang::txt('COM_ANSWERS_PERMALINK'); ?>"
+                        >
+                            <span class="entry-date-at">
+                                <?php echo Lang::txt('COM_ANSWERS_DATETIME_AT'); ?>
+                            </span>
+                            <span class="icon-time time">
+                                <time datetime="<?php echo $this->question->created(); ?>">
+                                    <?php echo $this->question->created('time'); ?>
+                                </time>
+                            </span>
+                            <span class="entry-date-on">
+                                <?php echo Lang::txt('COM_ANSWERS_DATETIME_ON'); ?>
+                            </span>
+                            <span class="icon-date date">
+                                <time datetime="<?php echo $this->question->created(); ?>">
+                                    <?php echo $this->question->created('date'); ?>
+                                </time>
+                            </span>
                         </a>
                     </p><!-- / .question-title -->
 
@@ -121,7 +161,11 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                                     require_once($componentPath . DS . "helpers" . DS . "converter.php");
                                     $val = \Component\Redirect\Helpers\Converter::convert($val);
                                 } else {
-                                    $val = preg_replace('#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is', "<a href='$1' rel='nofollow'>$2</a>", $val);
+                                    $val = preg_replace(
+                                        '#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is',
+                                        "<a href='$1' rel='nofollow'>$2</a>",
+                                        $val
+                                    );
                                 }
                                     echo $val;
                                 ?>
@@ -137,13 +181,26 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                 <p class="entry-status">
                     <?php if (!$this->question->isReported()) { ?>
                             <span>
-                                <a class="icon-abuse abuse" href="<?php echo Route::url($this->question->link('report')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_TITLE_REPORT_ABUSE'); ?>">
+                                <a
+                                    class="icon-abuse abuse"
+                                    href="<?php echo Route::url($this->question->link('report')); ?>"
+                                    title="<?php echo Lang::txt('COM_ANSWERS_TITLE_REPORT_ABUSE'); ?>"
+                                >
                                     <?php echo Lang::txt('COM_ANSWERS_REPORT_ABUSE'); ?>
                                 </a>
                             </span>
-                        <?php if (($this->question->get('created_by') == User::get('id') && User::authorise('core.delete', $this->option)) || User::authorise('core.manage', $this->option)) { //$this->question->isOpen() ?>
+                        <?php
+                        $canDelete = ($this->question->get('created_by') == User::get('id')
+                            && User::authorise('core.delete', $this->option))
+                            || User::authorise('core.manage', $this->option);
+                        if ($canDelete) {
+                            ?>
                             <span>
-                                <a class="icon-delete delete" href="<?php echo Route::url($this->question->link('delete')); ?>" title="<?php echo Lang::txt('COM_ANSWERS_DELETE_QUESTION'); ?>">
+                                <a
+                                    class="icon-delete delete"
+                                    href="<?php echo Route::url($this->question->link('delete')); ?>"
+                                    title="<?php echo Lang::txt('COM_ANSWERS_DELETE_QUESTION'); ?>"
+                                >
                                     <?php echo Lang::txt('COM_ANSWERS_DELETE'); ?>
                                 </a>
                             </span>
@@ -152,66 +209,122 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                 </p><!-- / .question-status -->
             </div><!-- / .question -->
 
-            <?php if ($this->question->isOpen() && $this->question->config('banking') && $this->question->get('reward')) { ?>
+            <?php
+            $showReward = $this->question->isOpen()
+                && $this->question->config('banking')
+                && $this->question->get('reward');
+            if ($showReward) {
+                ?>
                 <div class="subject-wrap">
                     <p><?php echo Lang::txt('COM_ANSWERS_POINT_BREAKDOWN_TBL_SUMMARY'); ?></p>
                     <table id="pointbreakdown">
                         <thead>
                             <tr>
-                                <th scope="col"><?php echo Lang::txt('COM_ANSWERS_POINTS_BREAKDOWN'); ?></th>
-                                <th scope="col"><?php echo Lang::txt('COM_ANSWERS_POINTS'); ?></th>
-                                <th scope="col"><?php echo Lang::txt('COM_ANSWERS_DETAILS'); ?></th>
+                                <th scope="col">
+                                    <?php echo Lang::txt('COM_ANSWERS_POINTS_BREAKDOWN'); ?>
+                                </th>
+                                <th scope="col">
+                                    <?php echo Lang::txt('COM_ANSWERS_POINTS'); ?>
+                                </th>
+                                <th scope="col">
+                                    <?php echo Lang::txt('COM_ANSWERS_DETAILS'); ?>
+                                </th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <td colspan="3">
-                                    * <?php echo Lang::txt('COM_ANSWERS_ACTIVITY_POINTS_EXPLANATION'); ?> <a href="<?php echo $this->question->config('infolink'); ?>"><?php echo Lang::txt('COM_ANSWERS_READ_FURTHER_DETAILS'); ?></a>.
+                                    * <?php echo Lang::txt('COM_ANSWERS_ACTIVITY_POINTS_EXPLANATION'); ?>
+                                    <a href="<?php echo $this->question->config('infolink'); ?>">
+                                        <?php echo Lang::txt('COM_ANSWERS_READ_FURTHER_DETAILS'); ?>
+                                    </a>.
                                 </td>
                             </tr>
                         </tfoot>
                         <tbody>
                             <tr>
-                                <th scope="row"><?php echo Lang::txt('COM_ANSWERS_ACTIVITY'); ?>*</th>
-                                <td><?php echo $this->question->reward('marketvalue'); ?></td>
+                                <th scope="row">
+                                    <?php echo Lang::txt('COM_ANSWERS_ACTIVITY'); ?>*
+                                </th>
+                                <td>
+                                    <?php echo $this->question->reward('marketvalue'); ?>
+                                </td>
                                 <td> </td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php echo Lang::txt('COM_ANSWERS_BONUS'); ?></th>
+                                <th scope="row">
+                                    <?php echo Lang::txt('COM_ANSWERS_BONUS'); ?>
+                                </th>
                                 <td><?php echo $this->question->reward(); ?></td>
                                 <td> </td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php echo Lang::txt('COM_ANSWERS_TOTAL_MARKET_VALUE'); ?></th>
-                                <td><?php echo $this->question->reward('totalmarketvalue') ?></td>
+                                <th scope="row">
+                                    <?php echo Lang::txt('COM_ANSWERS_TOTAL_MARKET_VALUE'); ?>
+                                </th>
+                                <td>
+                                    <?php echo $this->question->reward('totalmarketvalue') ?>
+                                </td>
                                 <td><?php echo Lang::txt('COM_ANSWERS_TOTAL'); ?></td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php echo Lang::txt('COM_ANSWERS_ASKER_WILL_EARN'); ?></th>
-                                <td><?php echo $this->question->reward('asker_earnings'); ?></td>
-                                <td><?php echo Lang::txt('COM_ANSWERS_ONE_THIRD_OF_ACTIVITY_POINTS'); ?></td>
+                                <th scope="row">
+                                    <?php echo Lang::txt('COM_ANSWERS_ASKER_WILL_EARN'); ?>
+                                </th>
+                                <td>
+                                    <?php echo $this->question->reward('asker_earnings'); ?>
+                                </td>
+                                <td>
+                                    <?php echo Lang::txt('COM_ANSWERS_ONE_THIRD_OF_ACTIVITY_POINTS'); ?>
+                                </td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php echo Lang::txt('COM_ANSWERS_ASKER_WILL_PAY'); ?></th>
+                                <th scope="row">
+                                    <?php echo Lang::txt('COM_ANSWERS_ASKER_WILL_PAY'); ?>
+                                </th>
                                 <td><?php echo $this->question->reward(); ?></td>
-                                <td><?php echo Lang::txt('COM_ANSWERS_REWARD_ASSIGNED_BY_ASKER'); ?></td>
+                                <td>
+                                    <?php echo Lang::txt('COM_ANSWERS_REWARD_ASSIGNED_BY_ASKER'); ?>
+                                </td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php echo Lang::txt('COM_ANSWERS_BEST_ANSWER_MAY_EARN'); ?></th>
-                                <td><?php echo $this->question->reward('answer_earnings'); ?></td>
-                                <td><?php echo Lang::txt('COM_ANSWERS_UP_TO_TWO_THIRDS_OF_ACTIVITY_POINTS'); ?></td>
+                                <th scope="row">
+                                    <?php echo Lang::txt('COM_ANSWERS_BEST_ANSWER_MAY_EARN'); ?>
+                                </th>
+                                <td>
+                                    <?php echo $this->question->reward('answer_earnings'); ?>
+                                </td>
+                                <td>
+                                    <?php echo Lang::txt('COM_ANSWERS_UP_TO_TWO_THIRDS_OF_ACTIVITY_POINTS'); ?>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             <?php } ?>
 
-            <?php if ($this->task == 'delete' && $this->question->isOpen() && !$this->question->isReported()) { // delete question ?>
+            <?php
+            $showDelete = $this->task == 'delete'
+                && $this->question->isOpen()
+                && !$this->question->isReported();
+            if ($showDelete) {
+                $deleteAction = Route::url(
+                    'index.php?option=' . $this->option
+                        . '&task=deleteq&id='
+                        . $this->question->get('id')
+                );
+                ?>
                 <section class="below section">
                     <div class="subject-wrap">
-                        <p class="warning"><?php echo Lang::txt('COM_ANSWERS_NOTICE_CONFIRM_DELETE'); ?></p>
+                        <p class="warning">
+                            <?php echo Lang::txt('COM_ANSWERS_NOTICE_CONFIRM_DELETE'); ?>
+                        </p>
 
-                        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=deleteq&id=' . $this->question->get('id')); ?>" method="post" id="deleteForm">
+                        <form
+                            action="<?php echo $deleteAction; ?>"
+                            method="post"
+                            id="deleteForm"
+                        >
                             <input type="hidden" name="qid" value="<?php echo $this->question->get('id'); ?>" />
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -220,8 +333,17 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                             <?php echo Html::input('token'); ?>
 
                             <p class="submit">
-                                <input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('COM_ANSWERS_YES_DELETE'); ?>" />
-                                <a class="btn btn-secondary" href="<?php echo Route::url($this->question->link()); ?>"><?php echo Lang::txt('COM_ANSWERS_NO_DELETE'); ?></a>
+                                <input
+                                    class="btn btn-danger"
+                                    type="submit"
+                                    value="<?php echo Lang::txt('COM_ANSWERS_YES_DELETE'); ?>"
+                                />
+                                <a
+                                    class="btn btn-secondary"
+                                    href="<?php echo Route::url($this->question->link()); ?>"
+                                >
+                                    <?php echo Lang::txt('COM_ANSWERS_NO_DELETE'); ?>
+                                </a>
                             </p>
                         </form>
                     </div><!-- / .subject-wrap -->
@@ -243,11 +365,17 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                     <p class="entry-status <?php echo $status; ?>">
                         <strong><?php echo Lang::txt('COM_ANSWERS_STATUS'); ?>:</strong>
                     <?php if ($status == 'open') { ?>
-                        <span class="open"><?php echo Lang::txt('COM_ANSWERS_STATUS_ACCEPTING_ANSWERS'); ?></span>
+                        <span class="open">
+                            <?php echo Lang::txt('COM_ANSWERS_STATUS_ACCEPTING_ANSWERS'); ?>
+                        </span>
                     <?php } elseif ($status == 'underreview') { ?>
-                        <span class="underreview"><?php echo Lang::txt('COM_ANSWERS_STATUS_UNDER_REVIEW'); ?></span>
+                        <span class="underreview">
+                            <?php echo Lang::txt('COM_ANSWERS_STATUS_UNDER_REVIEW'); ?>
+                        </span>
                     <?php } else { ?>
-                        <span class="closed"><?php echo Lang::txt('COM_ANSWERS_STATUS_CLOSED'); ?></span>
+                        <span class="closed">
+                            <?php echo Lang::txt('COM_ANSWERS_STATUS_CLOSED'); ?>
+                        </span>
                     <?php } ?>
                     </p>
                     <?php
@@ -266,39 +394,80 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                             }
                         }
                         if (preg_match('/^tool:/i', $tag->get('raw_tag'))) {
-                            $resource = 'alias=' . substr($tag->get('raw_tag'), strlen('tool:'));
+                            $resource = 'alias='
+                                . substr($tag->get('raw_tag'), strlen('tool:'));
                         } elseif (preg_match('/^resource(\d+)$/i', $tag->get('tag'))) {
-                            $resource = 'id=' . substr($tag->get('tag'), strlen('resource'));
+                            $resource = 'id='
+                                . substr($tag->get('tag'), strlen('resource'));
                         }
 
                         if ($resource) {
+                            $resourceUrl = Route::url(
+                                'index.php?option=com_resources&' . $resource
+                            );
+                            $resourceLink = '<a href="' . $resourceUrl . '">'
+                                . Lang::txt('COM_ANSWERS_FOLLOWING_RESOURCE')
+                                . '</a>';
                             ?>
-                            <p><?php echo Lang::txt('COM_ANSWERS_QUESTION_ASKED_ON', '<a href="' . Route::url('index.php?option=com_resources&' . $resource) . '">' . Lang::txt('COM_ANSWERS_FOLLOWING_RESOURCE') . '</a>'); ?></p>
+                            <p><?php echo Lang::txt('COM_ANSWERS_QUESTION_ASKED_ON', $resourceLink); ?></p>
                             <?php
                             break;
                         }
 
                         if (preg_match('/^publication(\d+)$/i', $tag->get('tag'))) {
-                            $publication = 'id=' . substr($tag->get('tag'), strlen('publication'));
+                            $publication = 'id='
+                                . substr($tag->get('tag'), strlen('publication'));
                         }
                         if ($publication) {
+                            $pubUrl = Route::url(
+                                'index.php?option=com_publications&' . $publication
+                            );
+                            $pubLink = '<a href="' . $pubUrl . '">'
+                                . Lang::txt('COM_ANSWERS_FOLLOWING_RESOURCE')
+                                . '</a>';
                             ?>
-                            <p><?php echo Lang::txt('COM_ANSWERS_QUESTION_ASKED_ON', '<a href="' . Route::url('index.php?option=com_publications&' . $publication) . '">' . Lang::txt('COM_ANSWERS_FOLLOWING_RESOURCE') . '</a>'); ?></p>
+                            <p><?php echo Lang::txt('COM_ANSWERS_QUESTION_ASKED_ON', $pubLink); ?></p>
                             <?php
                             break;
                         }
                     }
                     ?>
 
-                <?php if ($this->question->reward() && $this->question->isOpen() && $this->question->config('banking')) { ?>
+                <?php
+                $showBonus = $this->question->reward()
+                    && $this->question->isOpen()
+                    && $this->question->config('banking');
+                if ($showBonus) {
+                    $pointsTitle = Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS');
+                    ?>
                     <p class="intro">
-                        <?php echo Lang::txt('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a class="icon-coins" href="<?php echo $this->question->config('infolink'); ?>" title="<?php echo Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo Lang::txt('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo Lang::txt('COM_ANSWERS_NUMBER_POINTS', $this->question->reward()); ?></span>
+                        <?php echo Lang::txt('COM_ANSWERS_BONUS'); ?>:
+                        <span class="pointvalue">
+                            <a
+                                class="icon-coins"
+                                href="<?php echo $this->question->config('infolink'); ?>"
+                                title="<?php echo $pointsTitle; ?>"
+                            >
+                                <?php echo $pointsTitle; ?>
+                            </a>
+                            <?php echo Lang::txt('COM_ANSWERS_NUMBER_POINTS', $this->question->reward()); ?>
+                        </span>
                     </p>
                 <?php } ?>
 
-                <?php if ($this->question->get('maxaward') && $this->question->isOpen() && $this->question->config('banking')) { ?>
+                <?php
+                $showMaxAward = $this->question->get('maxaward')
+                    && $this->question->isOpen()
+                    && $this->question->config('banking');
+                if ($showMaxAward) {
+                    ?>
                     <p class="youcanearn">
-                        <?php echo Lang::txt('COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER', $this->question->get('maxaward')); ?>
+                        <?php
+                        echo Lang::txt(
+                            'COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER',
+                            $this->question->get('maxaward')
+                        );
+                        ?>
                     </p>
                 <?php } ?>
                 </div><!-- / .status_display -->
@@ -316,13 +485,20 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                             <?php echo Lang::txt('COM_ANSWERS_YOUR_ANSWER'); ?>
                         </h3>
                         <?php if (!User::isGuest()) { ?>
-                            <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="commentform">
+                            <form
+                                action="<?php echo Route::url('index.php?option=' . $this->option); ?>"
+                                method="post"
+                                id="commentform"
+                            >
                                 <p class="comment-member-photo">
                                     <span class="comment-anchor"></span>
                                     <?php
                                     $anon = (!User::isGuest() ? 0 : 1);
                                     ?>
-                                    <img src="<?php echo User::picture($anon); ?>" alt="<?php echo Lang::txt('COM_ANSWERS_MEMBER_PICTURE'); ?>" />
+                                    <img
+                                        src="<?php echo User::picture($anon); ?>"
+                                        alt="<?php echo Lang::txt('COM_ANSWERS_MEMBER_PICTURE'); ?>"
+                                    />
                                 </p>
                                 <fieldset>
                                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -332,29 +508,54 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                                     <?php echo Html::input('token'); ?>
 
                                     <input type="hidden" name="response[id]" value="0" />
-                                    <input type="hidden" name="response[question_id]" value="<?php echo $this->question->get('id'); ?>" />
+                                    <input
+                                        type="hidden"
+                                        name="response[question_id]"
+                                        value="<?php echo $this->question->get('id'); ?>"
+                                    />
 
                                     <div class="form-group">
                                         <label for="responseanswer">
                                             <?php echo Lang::txt('COM_ANSWERS_YOUR_RESPONSE'); ?>:
-                                            <?php echo $this->editor('response[answer]', '', 50, 10, 'responseanswer', array('class' => 'form-control minimal')); ?>
+                                            <?php
+                                            echo $this->editor(
+                                                'response[answer]',
+                                                '',
+                                                50,
+                                                10,
+                                                'responseanswer',
+                                                array('class' => 'form-control minimal')
+                                            );
+                                            ?>
                                         </label>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="answer-anonymous" id="answer-anonymous-label">
-                                            <input class="option form-check-input" type="checkbox" name="response[anonymous]" value="1" id="answer-anonymous" />
+                                            <input
+                                                class="option form-check-input"
+                                                type="checkbox"
+                                                name="response[anonymous]"
+                                                value="1"
+                                                id="answer-anonymous"
+                                            />
                                             <?php echo Lang::txt('COM_ANSWERS_POST_ANON'); ?>
                                         </label>
                                     </div>
 
                                     <p class="submit">
-                                        <input type="submit" class="btn" value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>" />
+                                        <input
+                                            type="submit"
+                                            class="btn"
+                                            value="<?php echo Lang::txt('COM_ANSWERS_SUBMIT'); ?>"
+                                        />
                                     </p>
 
                                     <div class="sidenote">
                                         <p>
-                                            <strong><?php echo Lang::txt('COM_ANSWERS_COMMENT_KEEP_RELEVANT'); ?></strong>
+                                            <strong>
+                                                <?php echo Lang::txt('COM_ANSWERS_COMMENT_KEEP_RELEVANT'); ?>
+                                            </strong>
                                         </p>
                                         <p>
                                             <?php echo Lang::txt('COM_ANSWERS_COMMENT_HELP'); ?>
@@ -364,7 +565,25 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                             </form>
                         <?php } else { ?>
                             <p>
-                                <?php echo Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->question->link('answer'), false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>'); ?>
+                                <?php
+                                $returnUrl = base64_encode(
+                                    Route::url(
+                                        $this->question->link('answer'),
+                                        false,
+                                        true
+                                    )
+                                );
+                                $loginUrl = Route::url(
+                                    'index.php?option=com_users&view=login&return='
+                                        . $returnUrl
+                                );
+                                $loginLink = '<a href="' . $loginUrl . '">'
+                                    . Lang::txt('COM_ANSWERS_LOGIN') . '</a>';
+                                echo Lang::txt(
+                                    'COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER',
+                                    $loginLink
+                                );
+                                ?>
                             </p>
                         <?php } ?>
                     </div><!-- / .subject -->
@@ -425,7 +644,10 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                         ->rows();
                     ?>
                     <h3>
-                        <span class="comment-count"><?php echo $responses->count(); ?></span> <?php echo Lang::txt('COM_ANSWERS_RESPONSES'); ?>
+                        <span class="comment-count">
+                            <?php echo $responses->count(); ?>
+                        </span>
+                        <?php echo Lang::txt('COM_ANSWERS_RESPONSES'); ?>
                     </h3>
                     <?php if ($responses->count()) { ?>
                         <?php
@@ -447,29 +669,68 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                         </div>
                     <?php } else { ?>
                         <div class="subject-wrap">
-                            <p><?php echo Lang::txt('COM_ANSWERS_NO_ANSWERS_BE_FIRST'); ?> <a href="<?php echo Route::url($this->question->link('answer')); ?>"><?php echo Lang::txt('COM_ANSWERS_BE_FIRST_ANSWER_THIS'); ?></a>.</p>
+                            <p>
+                                <?php echo Lang::txt('COM_ANSWERS_NO_ANSWERS_BE_FIRST'); ?>
+                                <a href="<?php echo Route::url($this->question->link('answer')); ?>">
+                                    <?php echo Lang::txt('COM_ANSWERS_BE_FIRST_ANSWER_THIS'); ?>
+                                </a>.
+                            </p>
                         <?php if ($this->question->config('banking')) { ?>
                             <p class="help">
-                                <strong><?php echo Lang::txt('COM_ANSWERS_DID_YOU_KNOW_ABOUT_POINTS'); ?></strong><br />
-                                <a href="<?php echo $this->question->config('infolink'); ?>"><?php echo Lang::txt('COM_ANSWERS_LEARN_MORE'); ?></a> <?php echo Lang::txt('COM_ANSWERS_LEARN_HOW_POINTS_AWARDED'); ?>.
+                                <strong>
+                                    <?php echo Lang::txt('COM_ANSWERS_DID_YOU_KNOW_ABOUT_POINTS'); ?>
+                                </strong><br />
+                                <a href="<?php echo $this->question->config('infolink'); ?>">
+                                    <?php echo Lang::txt('COM_ANSWERS_LEARN_MORE'); ?>
+                                </a>
+                                <?php echo Lang::txt('COM_ANSWERS_LEARN_HOW_POINTS_AWARDED'); ?>.
                             </p>
                         <?php } ?>
                         </div>
                     <?php } ?>
                 </div>
                 <div class="aside">
-                    <?php if ($this->question->isOpen() && $this->task != 'answer' && !$this->question->isReported()) { ?>
+                    <?php
+                    $showAnswerBtn = $this->question->isOpen()
+                        && $this->task != 'answer'
+                        && !$this->question->isReported();
+                    if ($showAnswerBtn) {
+                        $route = Route::url(
+                            $this->question->link('answer'),
+                            false,
+                            true
+                        );
+                        $answerUrl = (User::isGuest())
+                            ? Route::url(
+                                'index.php?option=com_users&view=login&return='
+                                    . base64_encode($route)
+                            )
+                            : $route;
+                        ?>
                         <div class="container">
-                            <p><a class="icon-add add btn" href="<?php
-                            $route = Route::url($this->question->link('answer'), false, true);
-                            echo (User::isGuest()) ? Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)) : $route;
-                            ?>"><?php echo Lang::txt('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
+                            <p>
+                                <a
+                                    class="icon-add add btn"
+                                    href="<?php echo $answerUrl; ?>"
+                                >
+                                    <?php echo Lang::txt('COM_ANSWERS_ANSWER_THIS'); ?>
+                                </a>
+                            </p>
                         </div><!-- / .container -->
                     <?php } ?>
 
-                    <?php if (User::get('id') == $this->question->get('created_by') && $this->question->isOpen()) { ?>
+                    <?php
+                    $isOwnerAndOpen = User::get('id') == $this->question->get('created_by')
+                        && $this->question->isOpen();
+                    if ($isOwnerAndOpen) {
+                        $closeTxt = Lang::txt('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE');
+                        if ($this->question->config('banking')) {
+                            $closeTxt .= ' '
+                                . Lang::txt('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE_POINTS');
+                        }
+                        ?>
                         <div class="container">
-                            <p class="info"><?php echo Lang::txt('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE') . ($this->question->config('banking') ? ' ' . Lang::txt('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE_POINTS') : ''); ?></p>
+                            <p class="info"><?php echo $closeTxt; ?></p>
                         </div><!-- / .container -->
                     <?php } ?>
                 </div>

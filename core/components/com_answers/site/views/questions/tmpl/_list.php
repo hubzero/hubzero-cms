@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +8,11 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$threadId = (isset($this->thread) ? $this->thread : 't')
+    . (isset($this->parent) ? $this->parent : '0');
 ?>
-<ol class="comments" id="<?php echo (isset($this->thread) ? $this->thread : 't') . (isset($this->parent) ? $this->parent : '0'); ?>">
+<ol class="comments" id="<?php echo $threadId; ?>">
     <?php
     if (isset($this->comments)) {
         $cls = 'odd';

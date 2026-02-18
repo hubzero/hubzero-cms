@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -38,19 +36,42 @@ Toolbar::help('entries');
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span4">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+                <input type="text"
+                    name="search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>"
+                />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_BLOG_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
             <div class="col span8 align-right">
                 <label for="filter-scope"><?php echo Lang::txt('COM_BLOG_FIELD_SCOPE'); ?>:</label>
-                <?php echo Components\Blog\Admin\Helpers\Html::scopes($this->filters['scope'], 'scope', 'filter-scope', 'class="filter filter-submit"'); ?>
+                <?php
+                echo Components\Blog\Admin\Helpers\Html::scopes(
+                    $this->filters['scope'],
+                    'scope',
+                    'filter-scope',
+                    'class="filter filter-submit"'
+                );
+                ?>
 
                 <label for="filter-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
@@ -71,7 +92,15 @@ Html::behavior('tooltip');
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                    <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+                    <?php
+                    echo Html::select(
+                        'options',
+                        Html::access('assetgroups'),
+                        'value',
+                        'text',
+                        $this->filters['access']
+                    );
+                    ?>
                 </select>
             </div>
         </div>
@@ -81,16 +110,41 @@ Html::behavior('tooltip');
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_BLOG_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_BLOG_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_BLOG_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-1"><?php echo Html::grid('sort', 'COM_BLOG_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2" colspan="2"><?php echo Lang::txt('COM_BLOG_COL_COMMENTS'); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_BLOG_COL_SCOPE', 'scope_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $sortDir = @$this->filters['sort_Dir'];
+                $sort = @$this->filters['sort'];
+                ?>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_BLOG_COL_ID', 'id', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_BLOG_COL_TITLE', 'title', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_BLOG_COL_CREATOR', 'created_by', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-1">
+                    <?php echo Html::grid('sort', 'COM_BLOG_COL_STATE', 'state', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-5">
+                    <?php echo Html::grid('sort', 'COM_BLOG_COL_CREATED', 'created', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-2" colspan="2">
+                    <?php echo Lang::txt('COM_BLOG_COL_COMMENTS'); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_BLOG_COL_SCOPE', 'scope_id', $sortDir, $sort); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -123,7 +177,12 @@ Html::behavior('tooltip');
                 $alt  = Lang::txt('JPUBLISHED');
                 $cls  = 'publish';
                 $task = 'unpublish';
-            } elseif (($now->toUnix() <= $publish_down->toUnix() || !$row->get('publish_down') || $row->get('publish_down') == $nullDate) && $row->get('state') == 1) {
+            } elseif (
+                ($now->toUnix() <= $publish_down->toUnix()
+                    || !$row->get('publish_down')
+                    || $row->get('publish_down') == $nullDate)
+                && $row->get('state') == 1
+            ) {
                 $alt  = Lang::txt('JPUBLISHED');
                 $cls  = 'publish';
                 $task = 'unpublish';
@@ -173,15 +232,31 @@ Html::behavior('tooltip');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id') ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('id') ?>"
+                        class="checkbox-toggle"
+                    />
+                    <label for="cb<?php echo $i; ?>"
+                        class="sr-only visually-hidden"
+                    >
+                        <?php echo $row->get('id'); ?>
+                    </label>
                 </td>
                 <td class="priority-4">
                     <?php echo $row->get('id'); ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id=' . $row->get('id')
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                         </a>
                     <?php } else { ?>
@@ -193,13 +268,32 @@ Html::behavior('tooltip');
                 <td class="priority-4">
                     <?php
                     $name = stripslashes($row->creator->get('name'));
-                    $name = $name ? $name : Lang::txt('COM_BLOG_UNKNOWN') . ' (' . $row->get('created_by') . ')';
+                    $name = $name
+                        ? $name
+                        : Lang::txt('COM_BLOG_UNKNOWN') . ' (' . $row->get('created_by') . ')';
                     echo $this->escape($name); ?>
                 </td>
                 <td class="priority-1">
-                    <span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_BLOG_PUBLISH_INFO');?>::<?php echo $times; ?>">
+                    <?php
+                    $publishTitle = Lang::txt('COM_BLOG_PUBLISH_INFO')
+                        . '::' . $times;
+                    ?>
+                    <span class="editlinktip hasTip"
+                        title="<?php echo $publishTitle; ?>"
+                    >
                         <?php if ($canDo->get('core.edit.state')) { ?>
-                            <a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+                            <?php
+                            $stateUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=' . $task
+                                . '&id=' . $row->get('id')
+                                . '&' . Session::getFormToken() . '=1'
+                            );
+                            ?>
+                            <a class="state <?php echo $cls; ?>"
+                                href="<?php echo $stateUrl; ?>"
+                            >
                                 <span><?php echo $alt; ?></span>
                             </a>
                         <?php } else { ?>
@@ -215,13 +309,32 @@ Html::behavior('tooltip');
                     </time>
                 </td>
                 <td class="priority-2">
-                    <a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=setcomments&state=' . $state . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+                    <?php
+                    $commentsUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=setcomments&state=' . $state
+                        . '&id=' . $row->get('id')
+                        . '&' . Session::getFormToken() . '=1'
+                    );
+                    ?>
+                    <a class="state <?php echo $cls2; ?>"
+                        href="<?php echo $commentsUrl; ?>"
+                    >
                         <span><?php echo $calt; ?></span>
                     </a>
                 </td>
                 <td class="priority-2">
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a class="comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=comments&entry_id=' . $row->get('id')); ?>">
+                        <?php
+                        $commentsListUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=comments&entry_id=' . $row->get('id')
+                        );
+                        ?>
+                        <a class="comment"
+                            href="<?php echo $commentsListUrl; ?>"
+                        >
                             <?php echo Lang::txt('COM_BLOG_COMMENTS', $row->comments()->total()); ?>
                         </a>
                     <?php } else { ?>

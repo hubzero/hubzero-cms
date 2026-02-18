@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -22,7 +20,10 @@ Pathway::append(
     $this->entry->link('edit')
 );
 
-Document::setTitle(Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')));
+$editTitle = $this->entry->isNew()
+    ? Lang::txt('JACTION_NEW')
+    : Lang::txt('JACTION_EDIT');
+Document::setTitle(Lang::txt('COM_BLOG') . ': ' . $editTitle);
 
 /*if ($this->entry->id) {
     $lid = $this->entry->id;
@@ -39,10 +40,16 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 }
 ?>
 <header id="content-header">
-    <h2><?php echo Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')); ?></h2>
+    <h2><?php echo Lang::txt('COM_BLOG') . ': ' . $editTitle; ?></h2>
 
     <div id="content-header-extra">
-        <p><a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?></a></p>
+        <p>
+            <a class="icon-archive archive btn"
+                href="<?php echo Route::url('index.php?option=' . $this->option); ?>"
+            >
+                <?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?>
+            </a>
+        </p>
     </div>
 </header>
 
@@ -52,10 +59,29 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
             <p class="error"><?php echo $this->getError(); ?></p>
         <?php }*/ ?>
 
-        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
+        <?php
+        $saveUrl = Route::url(
+            'index.php?option=' . $this->option . '&task=save'
+        );
+        ?>
+        <form action="<?php echo $saveUrl; ?>"
+            method="post"
+            id="hubForm"
+        >
             <div class="explaination">
                 <h4 id="files-header"><?php echo Lang::txt('COM_BLOG_FIELD_FILES'); ?></h4>
-                <iframe width="100%" height="370" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=media'); ?>"></iframe>
+                <?php
+                $filerUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&tmpl=component&controller=media'
+                );
+                ?>
+                <iframe width="100%"
+                    height="370"
+                    name="filer"
+                    id="filer"
+                    src="<?php echo $filerUrl; ?>"
+                ></iframe>
             </div>
             <fieldset>
                 <legend><?php echo Lang::txt('COM_BLOG_EDIT_DETAILS'); ?></legend>
@@ -64,8 +90,17 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                     <label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) {
                         echo ' class="fieldWithErrors"';
                                             } ?>>
-                        <?php echo Lang::txt('COM_BLOG_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('COM_BLOG_REQUIRED'); ?></span>
-                        <input type="text" class="form-control" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title', ''))); ?>" />
+                        <?php echo Lang::txt('COM_BLOG_FIELD_TITLE'); ?>
+                        <span class="required">
+                            <?php echo Lang::txt('COM_BLOG_REQUIRED'); ?>
+                        </span>
+                        <input type="text"
+                            class="form-control"
+                            name="entry[title]"
+                            id="field-title"
+                            size="35"
+                            value="<?php echo $this->escape(stripslashes($this->entry->get('title', ''))); ?>"
+                        />
                     </label>
                     <?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
                         <p class="error"><?php echo Lang::txt('COM_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
@@ -76,8 +111,20 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                     <label for="entrycontent"<?php if ($this->task == 'save' && !$this->entry->get('content')) {
                         echo ' class="fieldWithErrors"';
                                              } ?>>
-                        <?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('COM_BLOG_REQUIRED'); ?></span>
-                        <?php echo $this->editor('entry[content]', $this->escape($this->entry->content('raw')), 50, 40, 'entrycontent', array('class' => 'form-control')); ?>
+                        <?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?>
+                        <span class="required">
+                            <?php echo Lang::txt('COM_BLOG_REQUIRED'); ?>
+                        </span>
+                        <?php
+                        echo $this->editor(
+                            'entry[content]',
+                            $this->escape($this->entry->content('raw')),
+                            50,
+                            40,
+                            'entrycontent',
+                            array('class' => 'form-control')
+                        );
+                        ?>
                     </label>
                     <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
                         <p class="error"><?php echo Lang::txt('COM_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
@@ -96,9 +143,18 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                     <div class="col span-half">
                         <div class="form-group form-check">
                             <label for="field-allow_comments" class="form-check-label">
-                                <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) {
-                                    echo ' checked="checked"';
-                                                                                                                                                       } ?> />
+                                <?php
+                                $commentsChecked = ($this->entry->get('allow_comments') == 1)
+                                    ? ' checked="checked"'
+                                    : '';
+                                ?>
+                                <input type="checkbox"
+                                    class="option form-check-input"
+                                    name="entry[allow_comments]"
+                                    id="field-allow_comments"
+                                    value="1"
+                                    <?php echo $commentsChecked; ?>
+                                />
                                 <?php echo Lang::txt('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
                             </label>
                         </div>
@@ -108,16 +164,26 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                         <div class="form-group">
                             <label for="field-access">
                                 <?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY'); ?>
-                                <select class="form-control" name="entry[access]" id="field-access">
-                                    <option value="1"<?php if ($this->entry->get('access') == 1) {
+                                <?php $access = $this->entry->get('access'); ?>
+                                <select class="form-control"
+                                    name="entry[access]"
+                                    id="field-access"
+                                >
+                                    <option value="1"<?php if ($access == 1) {
                                         echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
-                                    <option value="2"<?php if ($this->entry->get('access') == 2) {
+                                                     } ?>>
+                                        <?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC'); ?>
+                                    </option>
+                                    <option value="2"<?php if ($access == 2) {
                                         echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
-                                    <option value="5"<?php if ($this->entry->get('access') > 2) {
+                                                     } ?>>
+                                        <?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED'); ?>
+                                    </option>
+                                    <option value="5"<?php if ($access > 2) {
                                         echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
+                                                     } ?>>
+                                        <?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE'); ?>
+                                    </option>
                                 </select>
                             </label>
                         </div>
@@ -129,7 +195,25 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                         <div class="form-group">
                             <label for="field-publish_up">
                                 <?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_UP'); ?>
-                                <input type="text" name="entry[publish_up]" class="form-control datetime-field" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" value="<?php echo ($this->entry->get('publish_up')) ? $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
+                                <?php
+                                $tzOffset = timezone_offset_get(
+                                    new DateTimeZone(Config::get('offset')),
+                                    Date::getRoot()
+                                ) / 60;
+                                $publishUpVal = ($this->entry->get('publish_up'))
+                                    ? $this->escape(
+                                        Date::of($this->entry->get('publish_up'))
+                                            ->toLocal('Y-m-d H:i:s')
+                                    )
+                                    : '';
+                                ?>
+                                <input type="text"
+                                    name="entry[publish_up]"
+                                    class="form-control datetime-field"
+                                    id="field-publish_up"
+                                    data-timezone="<?php echo $tzOffset; ?>"
+                                    value="<?php echo $publishUpVal; ?>"
+                                />
                                 <span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
                             </label>
                         </div>
@@ -139,7 +223,21 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                         <div class="form-group">
                             <label for="field-publish_down">
                                 <?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_DOWN'); ?>
-                                <input type="text" name="entry[publish_down]" class="form-control datetime-field" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" value="<?php echo ($this->entry->get('publish_down')) ? $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
+                                <?php
+                                $publishDownVal = ($this->entry->get('publish_down'))
+                                    ? $this->escape(
+                                        Date::of($this->entry->get('publish_down'))
+                                            ->toLocal('Y-m-d H:i:s')
+                                    )
+                                    : '';
+                                ?>
+                                <input type="text"
+                                    name="entry[publish_down]"
+                                    class="form-control datetime-field"
+                                    id="field-publish_down"
+                                    data-timezone="<?php echo $tzOffset; ?>"
+                                    value="<?php echo $publishDownVal; ?>"
+                                />
                                 <span class="hint"><?php echo Lang::txt('COM_BLOG_FIELD_PUBLISH_HINT'); ?></span>
                             </label>
                         </div>
@@ -165,7 +263,14 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
             <p class="submit">
                 <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('JSAVE'); ?>" />
 
-                <a class="btn btn-secondary" href="<?php echo $this->entry->get('id') ? Route::url($this->entry->link()) : Route::url('index.php?option=' . $this->option); ?>">
+                <?php
+                $cancelUrl = $this->entry->get('id')
+                    ? Route::url($this->entry->link())
+                    : Route::url('index.php?option=' . $this->option);
+                ?>
+                <a class="btn btn-secondary"
+                    href="<?php echo $cancelUrl; ?>"
+                >
                     <?php echo Lang::txt('JCANCEL'); ?>
                 </a>
             </p>

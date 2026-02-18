@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -31,7 +29,13 @@ $this->css()
     <h2><?php echo Lang::txt('COM_BLOG') . ': ' . Lang::txt('JACTION_DELETE'); ?></h2>
 
     <div id="content-header-extra">
-        <p><a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?></a></p>
+        <p>
+            <a class="icon-archive archive btn"
+                href="<?php echo Route::url('index.php?option=' . $this->option); ?>"
+            >
+                <?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?>
+            </a>
+        </p>
     </div><!-- / #content-header-extra -->
 </header>
 
@@ -44,7 +48,16 @@ $this->css()
             <div class="explaination">
             <?php if ($this->config->get('access-create-entry')) { ?>
                 <p>
-                    <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>"><?php echo Lang::txt('COM_BLOG_NEW_ENTRY'); ?></a>
+                    <?php
+                    $newUrl = Route::url(
+                        'index.php?option=' . $this->option . '&task=new'
+                    );
+                    ?>
+                    <a class="icon-add add btn"
+                        href="<?php echo $newUrl; ?>"
+                    >
+                        <?php echo Lang::txt('COM_BLOG_NEW_ENTRY'); ?>
+                    </a>
                 </p>
             <?php } ?>
             </div>
@@ -52,12 +65,20 @@ $this->css()
                 <legend><?php echo Lang::txt('COM_BLOG_DELETE_HEADER'); ?></legend>
 
                 <p class="warning">
-                    <?php echo Lang::txt('COM_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?>
+                    <?php
+                    $escapedTitle = $this->escape(stripslashes($this->entry->get('title')));
+                    echo Lang::txt('COM_BLOG_DELETE_WARNING', $escapedTitle);
+                    ?>
                 </p>
 
                 <div class="form-group form-check">
                     <label for="confirmdel" class="form-check-label">
-                        <input type="checkbox" class="option form-check-input" name="confirmdel" id="confirmdel" value="1" />
+                        <input type="checkbox"
+                            class="option form-check-input"
+                            name="confirmdel"
+                            id="confirmdel"
+                            value="1"
+                        />
                         <?php echo Lang::txt('COM_BLOG_DELETE_CONFIRM'); ?>
                     </label>
                 </div>

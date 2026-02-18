@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -16,7 +14,16 @@ $this->css()
 ?>
 
 <div id="attachments">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="filelist">
+    <?php
+    $formAction = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+    );
+    ?>
+    <form action="<?php echo $formAction; ?>"
+        method="post"
+        id="filelist"
+    >
         <?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
             <p><?php echo Lang::txt('COM_BLOG_NO_FILES_FOUND'); ?></p>
         <?php } else { ?>
@@ -34,7 +41,35 @@ $this->css()
                             </span>
                         </td>
                         <td>
-                            <a class="icon-delete delete delete-folder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&folder=' . basename($folder) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete folder "%s"?', basename($folder)); ?>" data-files="<?php echo $num_files; ?>" data-notempty="<?php echo LAng::txt('There are %s files/folders in the folder. Please delete all files/folder first.', $num_files); ?>" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+                            <?php
+                            $deleteFolderUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=deletefolder'
+                                . '&folder=' . basename($folder)
+                                . '&scope=' . urlencode($this->archive->get('scope'))
+                                . '&id=' . $this->archive->get('scope_id')
+                                . '&tmpl=component&'
+                                . Session::getFormToken() . '=1'
+                            );
+                            $confirmMsg = Lang::txt(
+                                'Are you sure you want to delete folder "%s"?',
+                                basename($folder)
+                            );
+                            $notEmptyMsg = Lang::txt(
+                                'There are %s files/folders in the folder.'
+                                . ' Please delete all files/folder first.',
+                                $num_files
+                            );
+                            ?>
+                            <a class="icon-delete delete delete-folder"
+                                href="<?php echo $deleteFolderUrl; ?>"
+                                target="filer"
+                                data-confirm="<?php echo $confirmMsg; ?>"
+                                data-files="<?php echo $num_files; ?>"
+                                data-notempty="<?php echo $notEmptyMsg; ?>"
+                                title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>"
+                            >
                                 <span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
                             </a>
                         </td>
@@ -48,7 +83,28 @@ $this->css()
                             </span>
                         </td>
                         <td>
-                            <a class="icon-delete delete delete-file" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . basename($doc) . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete file "%s"?', basename($doc)); ?>" title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>">
+                            <?php
+                            $deleteFileUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=deletefile'
+                                . '&file=' . basename($doc)
+                                . '&scope=' . urlencode($this->archive->get('scope'))
+                                . '&id=' . $this->archive->get('scope_id')
+                                . '&tmpl=component&'
+                                . Session::getFormToken() . '=1'
+                            );
+                            $confirmFileMsg = Lang::txt(
+                                'Are you sure you want to delete file "%s"?',
+                                basename($doc)
+                            );
+                            ?>
+                            <a class="icon-delete delete delete-file"
+                                href="<?php echo $deleteFileUrl; ?>"
+                                target="filer"
+                                data-confirm="<?php echo $confirmFileMsg; ?>"
+                                title="<?php echo Lang::txt('COM_BLOG_DELETE'); ?>"
+                            >
                                 <span><?php echo Lang::txt('COM_BLOG_DELETE'); ?></span>
                             </a>
                         </td>
