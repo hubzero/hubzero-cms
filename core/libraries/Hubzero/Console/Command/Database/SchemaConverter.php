@@ -79,12 +79,18 @@ class SchemaConverter
         $to = strtolower($to);
 
         if (!in_array($from, $this->supportedFrom)) {
-            $this->output->error("Error: Unsupported source database type '$from'. Supported: " . implode(', ', $this->supportedFrom));
+            $this->output->error(
+                "Error: Unsupported source database type '$from'. Supported: "
+                . implode(', ', $this->supportedFrom)
+            );
             return;
         }
 
         if (!in_array($to, $this->supportedTo)) {
-            $this->output->error("Error: Unsupported target database type '$to'. Supported: " . implode(', ', $this->supportedTo));
+            $this->output->error(
+                "Error: Unsupported target database type '$to'. Supported: "
+                . implode(', ', $this->supportedTo)
+            );
             return;
         }
 
@@ -198,7 +204,9 @@ class SchemaConverter
 
         // Extract all view definitions
         preg_match_all(
-            '/DROP VIEW IF EXISTS\s+`([^`]+)`;\s*CREATE\s+(?:ALGORITHM=\S+\s+)?(?:DEFINER=\S+\s+)?(?:SQL SECURITY \w+\s+)?VIEW\s+`\1`\s+AS\s+(.+?)(?=;\s*(?:--|DROP VIEW|$))/si',
+            '/DROP VIEW IF EXISTS\s+`([^`]+)`;\s*CREATE\s+(?:ALGORITHM=\S+\s+)?'
+            . '(?:DEFINER=\S+\s+)?(?:SQL SECURITY \w+\s+)?VIEW\s+`\1`\s+AS\s+'
+            . '(.+?)(?=;\s*(?:--|DROP VIEW|$))/si',
             $content,
             $viewMatches,
             PREG_SET_ORDER
