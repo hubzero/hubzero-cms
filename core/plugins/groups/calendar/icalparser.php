@@ -7,6 +7,7 @@
  */
 
 namespace Plugins\Groups\Calendar;
+
 class IcalParser
 {
     /**

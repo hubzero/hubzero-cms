@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -26,11 +26,19 @@ $this->css();
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url($base . '&task=post/' . $this->post->get('id') . '/delete'); ?>" method="post" id="hubForm" class="full">
+    <form action="<?php echo Route::url($base . '&task=post/' . $this->post->get('id') . '/delete'); ?>"
+        method="post"
+        id="hubForm"
+        class="full">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_HEADER'); ?></legend>
 
-            <p class="warning"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE_WARNING', $this->escape(stripslashes($identifier))); ?></p>
+            <p class="warning"><?php
+                echo Lang::txt(
+                    'PLG_MEMBERS_COLLECTIONS_DELETE_WARNING',
+                    $this->escape(stripslashes($identifier))
+                );
+                ?></p>
 
             <div class="form-group form-check">
                 <label for="confirmdel" class="form-check-label">
@@ -52,10 +60,14 @@ $this->css();
         <?php echo Html::input('token'); ?>
 
         <p class="submit">
-            <input type="submit" class="btn btn-danger" value="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>" />
+            <input type="submit"
+                class="btn btn-danger"
+                value="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>"/>
 
             <?php if (!$this->no_html) { ?>
-                <a class="btn btn-secondary" href="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>"><?php echo Lang::txt('Cancel'); ?></a>
+                <a class="btn btn-secondary"
+                    href="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>"
+                    ><?php echo Lang::txt('Cancel'); ?></a>
             <?php } ?>
         </p>
     </form>

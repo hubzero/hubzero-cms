@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,11 +26,21 @@ if ($this->citations) {
         $item  = "\t" . '<li>' . "\n";
         $item .= $cite->formatted(array('format' => $this->citationFormat));
         $item .= "\t\t" . '<p class="details">' . "\n";
-        $item .= "\t\t\t" . '<a href="' . Route::url('index.php?option=com_citations&task=download&id=' . $cite->id . '&citationFormat=bibtex&no_html=1') . '" title="' . Lang::txt('PLG_RESOURCES_CITATIONS_DOWNLOAD_BIBTEX') . '">BibTex</a> <span>|</span> ' . "\n";
-        $item .= "\t\t\t" . '<a href="' . Route::url('index.php?option=com_citations&task=download&id=' . $cite->id . '&citationFormat=endnote&no_html=1') . '" title="' . Lang::txt('PLG_RESOURCES_CITATIONS_DOWNLOAD_ENDNOTE') . '">EndNote</a>' . "\n";
+        $item .= "\t\t\t" . '<a href="' . Route::url('index.php?option=com_citations&task=download&id=' . $cite->id .
+        '&citationFormat=bibtex&no_html=1') . '" title="' . Lang::txt('PLG_RESOURCES_CITATIONS_DOWNLOAD_BIBTEX') .
+        '">BibTex</a> <span>|</span> ' . "\n";
+        $item .= "\t\t\t" . '<a href="' . Route::url('index.php?option=com_citations&task=download&id=' . $cite->id .
+        '&citationFormat=endnote&no_html=1') . '" title="' . Lang::txt('PLG_RESOURCES_CITATIONS_DOWNLOAD_ENDNOTE') .
+        '">EndNote</a>' . "\n";
         if ($cite->eprint) {
             if ($cite->eprint) {
-                $item .= "\t\t\t" . ' <span>|</span> <a href="' . stripslashes($cite->eprint) . '">' . Lang::txt('PLG_RESOURCES_CITATIONS_ELECTRONIC_PAPER') . '</a>' . "\n";
+                $item .= "\t\t\t"
+                    . ' <span>|</span> <a href="'
+                    . stripslashes($cite->eprint)
+                    . '">'
+                    . Lang::txt('PLG_RESOURCES_CITATIONS_ELECTRONIC_PAPER')
+                    . '</a>'
+                    . "\n";
             }
         }
         $item .= "\t\t" . '</p>' . "\n";
@@ -51,9 +59,21 @@ if ($this->citations) {
 ?>
 <h3>
     <?php echo Lang::txt('PLG_RESOURCES_CITATIONS'); ?>
+    <?php
+    $citBase = 'index.php?option=' . $this->option
+        . '&id=' . $this->resource->id . '&active=citations';
+    $nonaffUrl = Route::url($citBase . '#nonaffiliated');
+    $affUrl = Route::url($citBase . '#affiliated');
+    $nonaffLabel = Lang::txt('PLG_RESOURCES_CITATIONS_NONAFF');
+    $affLabel = Lang::txt('PLG_RESOURCES_CITATIONS_AFF');
+    ?>
     <span>
-        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=citations#nonaffiliated'); ?>"><?php echo Lang::txt('PLG_RESOURCES_CITATIONS_NONAFF'); ?> (<?php echo $numnon; ?>)</a> |
-        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=citations#affiliated'); ?>"><?php echo Lang::txt('PLG_RESOURCES_CITATIONS_AFF'); ?> (<?php echo $numaff; ?>)</a>
+        <a href="<?php echo $nonaffUrl; ?>"><?php
+            echo $nonaffLabel;
+        ?> (<?php echo $numnon; ?>)</a> |
+        <a href="<?php echo $affUrl; ?>"><?php
+            echo $affLabel;
+        ?> (<?php echo $numaff; ?>)</a>
     </span>
 </h3>
 <?php if ($this->citations) { ?>
@@ -96,7 +116,10 @@ if ($this->citations) {
         }
         foreach ($schema->fields as $field) {
             if (isset($data[$field->name])) {
-                if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+                if (
+                    $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display
+                    == $tab
+                ) {
                     ?>
                         <h4><?php echo $field->label; ?></h4>
                         <div class="resource-content">

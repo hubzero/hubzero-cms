@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,5 +9,6 @@
 ?>
 
 <p class="citation">
-    <a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_PUBLICATION_CITATIONS_COUNT', count($this->citations)); ?></a>
+    <a href="<?php echo $this->url; ?>
+    "><?php echo Lang::txt('PLG_PUBLICATION_CITATIONS_COUNT', count($this->citations));?></a>
 </p>

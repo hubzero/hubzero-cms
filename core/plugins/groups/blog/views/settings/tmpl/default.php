@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -42,12 +40,14 @@ $this->css()
                 <label for="param-posting">
                     <?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST'); ?>
                     <select name="params[posting]" id="param-posting" class="form-control">
-                        <option value="0"<?php if (!$this->config->get('posting', 0)) {
-                            echo ' selected="selected"';
-                                         }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_ALL'); ?></option>
-                        <option value="1"<?php if ($this->config->get('posting', 0) == 1) {
-                            echo ' selected="selected"';
-                                         }?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_MANAGERS'); ?></option>
+                        <?php $postingSel = !$this->config->get('posting', 0) ? ' selected="selected"' : ''; ?>
+                        <option value="0"<?php echo $postingSel; ?>>
+                            <?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_ALL'); ?>
+                        </option>
+                        <?php $managersSel = ($this->config->get('posting', 0) == 1) ? ' selected="selected"' : ''; ?>
+                        <option value="1"<?php echo $managersSel; ?>>
+                            <?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_POST_MANAGERS'); ?>
+                        </option>
                     </select>
                 </label>
             </div>

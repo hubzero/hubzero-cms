@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -34,7 +34,12 @@ $this->css()
                     $from = Lang::txt('JANONYMOUS');
                     if (!$this->xmessage->anonymous) {
                         $u = $this->xmessage->creator;
-                        $from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>' . "\n";
+                        $from = '<a href="'
+                            . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id'))
+                            . '">'
+                            . $u->get('name')
+                            . '</a>'
+                            . "\n";
                     }
                 } else {
                     $from = Lang::txt('PLG_MEMBERS_MESSAGES_SYSTEM', $this->xmessage->get('component'));

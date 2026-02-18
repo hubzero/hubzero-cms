@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,14 +25,30 @@ foreach ($this->calendars as $calendar) {
     <div class="container">
         <h3>
             <?php echo Lang::txt('Subscribe'); ?>
-            <a class="popup subscribe-help" href="<?php echo Route::url('index.php?option=com_help&component=groups&extension=calendar&page=subscriptions'); ?>">
+            <?php
+            $helpUrl = Route::url(
+                'index.php?option=com_help'
+                . '&component=groups'
+                . '&extension=calendar'
+                . '&page=subscriptions'
+            );
+            ?>
+            <a class="popup subscribe-help"
+                href="<?php echo $helpUrl; ?>">
                 <?php echo Lang::txt('Need Help?'); ?>
             </a>
         </h3>
 
         <div class="subscribe-content">
             <p class="info">
-                <?php echo Lang::txt('If you are prompted to enter a username & password when subscribing to a calendar, enter your HUB credentials.'); ?>
+                <?php
+                $credMsg = Lang::txt(
+                    'If you are prompted to enter a username'
+                    . ' & password when subscribing to a'
+                    . ' calendar, enter your HUB credentials.'
+                );
+                echo $credMsg;
+                ?>
             </p>
 
             <p>
@@ -47,7 +61,12 @@ foreach ($this->calendars as $calendar) {
                 <?php echo Lang::txt('Uncategorized Events'); ?>
             </label>
 
-            <?php $cals = array(0); ?>
+            <?php
+            $cals = array(0);
+            $swatchBase = Request::base(true)
+                . '/core/plugins/groups/calendar'
+                . '/assets/img/swatch-';
+            ?>
             <?php foreach ($this->calendars as $calendar) : ?>
                 <?php
                     $enabled = false;
@@ -57,11 +76,17 @@ foreach ($this->calendars as $calendar) {
                 }
                 ?>
                 <label <?php echo (!$enabled) ? 'class="disabled"' : '' ?>>
-                    <input <?php echo (!$enabled) ? 'disabled="disabled"' : 'checked="checked"'; ?> name="subscribe[]"  type="checkbox" value="<?php echo $calendar->get('id'); ?>" />
+                    <input <?php echo (!$enabled) ? 'disabled="disabled"' : 'checked="checked"'; ?>
+                        name="subscribe[]"
+                        type="checkbox"
+                        value="<?php echo $calendar->get('id'); ?>"/>
                     <?php if ($calendar->get('color')) : ?>
-                        <img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" alt="<?php echo $calendar->get('color'); ?>" />
+                        <?php $color = $calendar->get('color'); ?>
+                        <img src="<?php echo $swatchBase . $color; ?>.png"
+                            alt="<?php echo $color; ?>" />
                     <?php else : ?>
-                        <img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" alt="gray" />
+                        <img src="<?php echo $swatchBase; ?>gray.png"
+                            alt="gray" />
                     <?php endif; ?>
                     <?php echo $calendar->get('title'); ?>
                     <?php
@@ -73,12 +98,30 @@ foreach ($this->calendars as $calendar) {
             <?php endforeach; ?>
 
             <?php
-                $link = $_SERVER['HTTP_HOST'] . DS . 'groups' . DS . $this->group->get('cn') . DS . 'calendar' . DS . 'subscribe' . DS . implode(',', $cals) . '.ics';
+                $link = $_SERVER['HTTP_HOST']
+                    . DS
+                    . 'groups'
+                    . DS
+                    . $this->group->get('cn')
+                    . DS
+                    . 'calendar'
+                    . DS
+                    . 'subscribe'
+                    . DS
+                    . implode(',', $cals)
+                    . '.ics';
                 $httpsLink = 'https://' . $link;
                 $webcalLink = 'webcal://' . $link;
             ?>
             <br />
-            <label id="subscribe-link"><strong><?php echo Lang::txt('Click the subscribe button to the right or add the link below to add as a calendar subscription:'); ?></strong>
+            <?php
+            $subscribeMsg = Lang::txt(
+                'Click the subscribe button to the right'
+                . ' or add the link below to add as a'
+                . ' calendar subscription:'
+            );
+            ?>
+            <label id="subscribe-link"><strong><?php echo $subscribeMsg; ?></strong>
                 <input type="text" value="<?php echo $httpsLink; ?>" />
                 <a class="btn feed download https" href="<?php echo $httpsLink; ?>">Download</a>
                 <a class="btn feed subscribe-webcal webcal" href="<?php echo $webcalLink; ?>">Subscribe</a>

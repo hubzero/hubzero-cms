@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -22,16 +22,31 @@ if ($group) {
 $team = $this->model->table('Owner')->getIds($this->model->get('id'), 'all', 1);
 
 $notteam = array_diff($members, $team);
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&task=save&alias=' . $this->model->get('alias')
+    . '&active=team'
+);
+$totalLabel = ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS'));
 ?>
 <div id="abox-content-wrap">
     <div id="abox-content">
-        <form id="select-form" class="select-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=save&alias=' . $this->model->get('alias') . '&active=team'); ?>">
+        <form id="select-form"
+            class="select-form"
+            method="post"
+            action="<?php echo $formAction; ?>">
             <h3>
-                <?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS')); ?>: <span class="prominent"><?php echo count($notteam); ?></span>
+                <?php echo $totalLabel; ?>:
+                <span class="prominent"><?php echo count($notteam); ?></span>
                 <span class="abox-controls">
-                    <input type="submit" class="btn btn-success active" id="b-save" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_SAVE_SELECTION'); ?>" />
+                    <input type="submit"
+                        class="btn btn-success active"
+                        id="b-save"
+                        value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_SAVE_SELECTION'); ?>"/>
                     <?php if ($this->ajax) { ?>
-                        <a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?></a>
+                        <a class="btn btn-cancel"
+                            id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?></a>
                     <?php } ?>
                 </span>
             </h3>
@@ -65,15 +80,22 @@ $notteam = array_diff($members, $team);
                         ?>
                         <tr class="mline" id="tr_<?php echo $profile->get('id'); ?>">
                             <td>
-                                <input type="checkbox" value="<?php echo $profile->get('id'); ?>" name="newmember[]" class="checkmember" />
+                                <input type="checkbox"
+                                    value="<?php echo $profile->get('id'); ?>"
+                                    name="newmember[]"
+                                    class="checkmember"/>
                             </td>
                             <td class="imagebox">
                                 <span class="user-img-wrap">
-                                    <img src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->escape($profile->get('name')); ?>" />
+                                    <img src="<?php echo $profile->picture(); ?>"
+                                        alt="<?php echo $this->escape($profile->get('name')); ?>"/>
                                 </span>
                             </td>
                             <td>
-                                <?php echo $this->escape($profile->get('name')); ?><span class="block mini short prominent"><?php echo $this->escape($profile->get('username')); ?></span>
+                                <?php echo $this->escape($profile->get('name')); ?>
+                                <span class="block mini short prominent">
+                                    <?php echo $this->escape($profile->get('username')); ?>
+                                </span>
                             </td>
                             <td class="mini">
                                 <?php

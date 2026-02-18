@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,7 +19,18 @@ if ($this->collection_id) {
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name . '&scope=' . $task); ?>" method="post" id="hubForm" class="full">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&cn=' . $this->group->get('cn')
+    . '&active=' . $this->name
+    . '&scope=' . $task
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    id="hubForm"
+    class="full">
     <fieldset>
         <legend><?php echo Lang::txt('Collect'); ?></legend>
 
@@ -40,7 +49,11 @@ if ($this->collection_id) {
                                             continue;
                                         }
                                         ?>
-                                        <option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+                                        <?php
+                                        $boardId = $this->escape($board->id);
+                                        $boardTitle = $this->escape(stripslashes($board->title));
+                                        ?>
+                                        <option value="<?php echo $boardId; ?>"><?php echo $boardTitle; ?></option>
                                         <?php
                                     }
                                 }
@@ -57,7 +70,13 @@ if ($this->collection_id) {
                                                 continue;
                                             }
                                             ?>
-                                                    <option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+                                            <?php
+                                            $grpBoardId = $this->escape($board->id);
+                                            $grpBoardTitle = $this->escape(stripslashes($board->title));
+                                            ?>
+                                        <option
+                                            value="<?php echo $grpBoardId; ?>"
+                                            ><?php echo $grpBoardTitle; ?></option>
                                             <?php
                                         }
                                         ?>
@@ -76,7 +95,11 @@ if ($this->collection_id) {
             <div class="col span5 omega">
                 <label for="field-collection_title">
                     <?php echo Lang::txt('Create collection'); ?>
-                    <input type="text" name="collection_title" id="field-collection_title" class="form-control" value="" />
+                    <input type="text"
+                        name="collection_title"
+                        id="field-collection_title"
+                        class="form-control"
+                        value=""/>
                 </label>
             </div>
         </div>
@@ -84,7 +107,17 @@ if ($this->collection_id) {
         <div class="form-group">
             <label for="field_description">
                 <?php echo Lang::txt('Add a description'); ?>
-                <?php echo $this->editor('description', '', 35, 5, 'field_description', array('class' => 'form-control minimal no-footer')); ?>
+<?php
+$editorAttrs = array('class' => 'form-control minimal no-footer');
+echo $this->editor(
+    'description',
+    '',
+    35,
+    5,
+    'field_description',
+    $editorAttrs
+);
+?>
             </label>
         </div>
     </fieldset>
@@ -104,6 +137,8 @@ if ($this->collection_id) {
     <?php echo Html::input('token'); ?>
 
     <p class="submit">
-        <input class="btn" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />
+        <input class="btn"
+            type="submit"
+            value="<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>"/>
     </p>
 </form>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,7 +32,9 @@ $this->css('assets/css/related.css');
         }
         ?>
         <li class="<?php echo $line->class; ?>">
-            <a href="<?php echo $sef; ?>"><?php echo ($line->section == 'Series') ? Lang::txt('PLG_PUBLICATION_RELATED_PART_OF') . ' ' : ''; ?><?php echo stripslashes($line->title); ?></a>
+            <a href="<?php echo $sef; ?>
+            "><?php echo ($line->section == 'Series') ? Lang::txt('PLG_PUBLICATION_RELATED_PART_OF') . ' ' : '';?>
+            <?php echo stripslashes($line->title);?></a>
         </li>
     <?php } ?>
     </ul>

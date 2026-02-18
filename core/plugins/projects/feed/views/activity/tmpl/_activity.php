@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -21,7 +21,8 @@ $creator = User::getInstance($this->activity->log->get('created_by'));
 
 $new = false;
 if ($this->model->member()) {
-    $new = $this->model->member()->lastvisit && $this->model->member()->lastvisit <= $this->activity->get('created') ? true : false;
+    $new = $this->model->member()->lastvisit && $this->model->member()->lastvisit <= $this->activity->get('created') ?
+    true : false;
 }
 
 $recorded = $this->activity->get('created');
@@ -68,19 +69,42 @@ if (!$this->activity->log->get('anonymous')) {
         <?php } ?>
     </div><!-- / .activity-actor-picture -->
 
+    <?php
+    $actionClass = $this->escape($this->activity->log->get('action'));
+    ?>
     <div
-        class="activity-content <?php echo $this->escape($this->activity->log->get('action')); ?> <?php //echo $this->escape(str_replace('.', '-', $this->activity->log->get('scope'))); ?>">
+        class="activity-content <?php echo $actionClass; ?>"
+    >
         <div class="activity-body">
             <div class="activity-details">
                 <?php if ($showProject) { ?>
+                    <?php
+                    $projectUrl = Route::url($this->model->link());
+                    $projectTitle = \Hubzero\Utility\Str::truncate(
+                        $this->model->get('title'),
+                        65
+                    );
+                    ?>
                     <span class="project-name">
-                        <a
-                            href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\Str::truncate($this->model->get('title'), 65); ?></a>
+                        <a href="<?php echo $projectUrl; ?>"><?php
+                            echo $projectTitle;
+                        ?></a>
                     </span>
                 <?php } ?>
                 <span class="activity-actor"><?php echo $name; ?></span>
+                <?php
+                $createdDatetime = Date::of(
+                    $this->activity->get('created')
+                )->format('Y-m-d\TH:i:s\Z');
+                $createdDisplay = \Components\Projects\Helpers\Html::showTime(
+                    $this->activity->log->get('created'),
+                    true
+                );
+                ?>
                 <span class="activity-time"><time
-                        datetime="<?php echo Date::of($this->activity->get('created'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo \Components\Projects\Helpers\Html::showTime($this->activity->log->get('created'), true); ?></time></span>
+                        datetime="<?php echo $createdDatetime; ?>"><?php
+                            echo $createdDisplay;
+                        ?></time></span>
             </div><!-- / .activity-details -->
 
             <div class="activity-event">
@@ -91,7 +115,12 @@ if (!$this->activity->log->get('anonymous')) {
                     $short = null;
 
                     $isHtml = false;
-                    if (preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content)) {
+                    if (
+                        preg_match(
+                            '/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is',
+                            $content
+                        )
+                    ) {
                         $isHtml = true;
                     }
 
@@ -103,7 +132,10 @@ if (!$this->activity->log->get('anonymous')) {
                     $content = \Components\Projects\Helpers\Html::replaceEmoIcons($content);
                     ?>
                     <?php if ($this->activity->log->get('scope') == 'project.comment') { ?>
-                        <span class="activity-action"><?php echo 'said'; //$this->activity->log->get('action'); ?></span>
+                        <span class="activity-action"><?php
+                            // $this->activity->log->get('action')
+                            echo 'said';
+                        ?></span>
                         <?php
                         if (strlen(strip_tags($content)) > 250) {
                             $short = \Hubzero\Utility\Str::truncate($content, 250, array('html' => true));
@@ -111,8 +143,9 @@ if (!$this->activity->log->get('anonymous')) {
                             <div class="activity-event-preview">
                                 <?php echo $short; ?>
                                 <p>
+                                    <?php $logId = $this->activity->log->get('id'); ?>
                                     <a class="more-content"
-                                        href="#activity-event-full-content<?php echo $this->activity->log->get('id'); ?>">
+                                        href="#activity-event-full-content<?php echo $logId; ?>">
                                         <?php echo Lang::txt('COM_PROJECTS_MORE'); ?>
                                     </a>
                                 </p>
@@ -140,7 +173,12 @@ if (!$this->activity->log->get('anonymous')) {
                         $minWidth = 0;
                         $maxWidth = 0;
 
-                        $to_path = DS . trim($this->model->config()->get('imagepath', '/site/projects'), DS) . DS . strtolower($this->model->get('alias')) . DS . 'preview';
+                        $to_path = DS
+                            . trim($this->model->config()->get('imagepath', '/site/projects'), DS)
+                            . DS
+                            . strtolower($this->model->get('alias'))
+                            . DS
+                            . 'preview';
 
                         foreach ($files as $item) {
                             $parts = explode(':', $item);
@@ -157,7 +195,11 @@ if (!$this->activity->log->get('anonymous')) {
                                     $preview['title'] = basename($file);
 
                                     // Get image properties
-                                    list($width, $height, $type, $attr) = getimagesize(PATH_APP . $to_path . DS . $hashed);
+                                    list(
+                                        $width,
+                                        $height,
+                                        $type,
+                                        $attr) = getimagesize(PATH_APP . $to_path . DS . $hashed);
 
                                     $preview['width'] = $width;
                                     $preview['height'] = $height;
@@ -214,12 +256,24 @@ if (!$this->activity->log->get('anonymous')) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($edit && in_array($class, array('blog', 'quote')) && $this->model->access('manager')) { ?>
+                        <?php
+                        $canEdit = $edit
+                            && in_array($class, array('blog', 'quote'))
+                            && $this->model->access('manager');
+                        ?>
+                        <?php if ($canEdit) { ?>
+                            <?php
+                            $editUrl = Route::url(
+                                $this->model->link('feed')
+                                . '&action=edit&activity='
+                                . $this->activity->log->get('id')
+                            );
+                            ?>
                             <li>
                                 <a class="icon-edit edit tooltips"
-                                    data-form="activity-form<?php echo $this->activity->log->get('id'); ?>"
-                                    data-content="activity-event-content<?php echo $this->activity->log->get('id'); ?>"
-                                    href="<?php echo Route::url($this->model->link('feed') . '&action=edit&activity=' . $this->activity->log->get('id')); ?>"
+                                    data-form="activity-form<?php echo $logId; ?>"
+                                    data-content="activity-event-content<?php echo $logId; ?>"
+                                    href="<?php echo $editUrl; ?>"
                                     title="<?php echo Lang::txt('JACTION_EDIT'); ?>"
                                     data-inactive="<?php echo Lang::txt('JACTION_EDIT'); ?>"
                                     data-active="<?php echo Lang::txt('JCANCEL'); ?>"><!--
@@ -228,10 +282,17 @@ if (!$this->activity->log->get('anonymous')) {
                             </li>
                         <?php } ?>
                         <?php if ($deletable) { ?>
+                            <?php
+                            $deleteUrl = Route::url(
+                                $this->model->link('feed')
+                                . '&action=delete&activity='
+                                . $this->activity->log->get('id')
+                            );
+                            ?>
                             <li>
                                 <a class="icon-delete delete tooltips"
                                     data-confirm="<?php echo Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION'); ?>"
-                                    href="<?php echo Route::url($this->model->link('feed') . '&action=delete&activity=' . $this->activity->log->get('id')); ?>"
+                                    href="<?php echo $deleteUrl; ?>"
                                     title="<?php echo Lang::txt('JACTION_DELETE'); ?>"><!--
                                     --><?php echo Lang::txt('JACTION_DELETE'); ?><!--
                                 --></a>
@@ -240,7 +301,7 @@ if (!$this->activity->log->get('anonymous')) {
                     </ul>
                 </div><!-- / .activity-options -->
 
-                <?php if ($edit && in_array($class, array('blog', 'quote')) && $this->model->access('manager')) { ?>
+                <?php if ($canEdit) { ?>
                     <div class="commentform editcomment hidden"
                         id="activity-form<?php echo $this->activity->log->get('id'); ?>">
                         <form method="post" action="<?php echo Route::url($this->model->link()); ?>">
@@ -253,10 +314,23 @@ if (!$this->activity->log->get('anonymous')) {
                                 <input type="hidden" name="parent_activity"
                                     value="<?php echo $this->activity->log->get('parent'); ?>" />
 
-                                <input type="hidden" name="activity" value="<?php echo $this->activity->log->get('id'); ?>" />
+                                <input type="hidden"
+                                    name="activity"
+                                    value="<?php echo $this->activity->log->get('id'); ?>"/>
                                 <?php echo Html::input('token'); ?>
 
-                                <?php echo $this->editor('comment', $this->activity->log->get('description'), 5, 5, 'comment' . $this->activity->log->get('id'), array('class' => 'minimal no-footer')); ?>
+                                <?php
+                                $editorContent = $this->activity->log->get('description');
+                                $editorId = 'comment' . $this->activity->log->get('id');
+                                echo $this->editor(
+                                    'comment',
+                                    $editorContent,
+                                    5,
+                                    5,
+                                    $editorId,
+                                    array('class' => 'minimal no-footer')
+                                );
+                                ?>
 
                                 <p class="blog-submit">
                                     <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE'); ?>"

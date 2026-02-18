@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -58,21 +58,51 @@ defined('_HZEXEC_') or die();
         // Do not allow to delete previously selected items
         $allowed = $selected ? ' freeze' : $allowed;
 
+        $typeClass = $item->get('type') == 'folder'
+            ? 'type-folder collapsed' : 'type-file';
+        $selectedClass = $selected
+            ? ' selectedfilter preselected' : '';
+        $localPath = $item->get('localPath');
+        $cid = Request::getInt('cid', 0);
+        $itemInfo = $item->get('type') == 'file'
+            ? $item->getSize('formatted') : '';
         ?>
-        <li class="<?php echo $item->get('type') == 'folder' ? 'type-folder collapsed' : 'type-file'; ?><?php echo $parentCss; ?><?php if ($selected) {
-            echo ' selectedfilter preselected';
-                   } ?><?php echo $allowed; ?>" id="<?php echo $liId; ?>" data-path="<?php echo $item->get('localPath'); ?>" data-connection="<?php echo Request::getInt('cid', 0); ?>">
-            <span class="item-info"><?php echo $item->get('type') == 'file' ? $item->getSize('formatted') : ''; ?></span>
-            <span class="item-wrap <?php echo ($item->get('type') == 'folder' ? 'collapsor ' : '') . $levelCss; ?>" id="<?php echo urlencode($item->get('localPath')); ?>">
+        <?php $liClass = $typeClass . $parentCss . $selectedClass . $allowed; ?>
+        <li class="<?php echo $liClass; ?>"
+            id="<?php echo $liId; ?>"
+            data-path="<?php echo $localPath; ?>"
+            data-connection="<?php echo $cid; ?>"
+        >
+            <span class="item-info"><?php echo $itemInfo; ?></span>
+            <span class="item-wrap <?php echo ($item->get('type') == 'folder' ? 'collapsor ' : '') . $levelCss; ?>"
+                id="<?php echo urlencode($item->get('localPath')); ?>">
                 <?php if ($item->get('type') == 'folder') {
                     ?><span class="collapsor-indicator">&nbsp;</span><?php
                 } ?>
-                <img class="file-type file-type-<?php echo $item->get('ext'); ?>" src="<?php echo $item->get('icon'); ?>" alt="" /> <span title="<?php echo $item->get('localPath'); ?>"><?php echo \Components\Projects\Helpers\Html::shortenFileName($item->get('name'), 50); ?></span>
+                <?php
+                $ext = $item->get('ext');
+                $icon = $item->get('icon');
+                $shortName = \Components\Projects\Helpers\Html::shortenFileName(
+                    $item->get('name'),
+                    50
+                );
+                ?>
+                <img class="file-type file-type-<?php echo $ext; ?>"
+                    src="<?php echo $icon; ?>"
+                    alt=""
+                /> <span title="<?php echo $localPath; ?>"><?php echo $shortName; ?></span>
             </span>
         </li>
     <?php } ?>
 <?php else : ?>
-    <li class="noresults <?php echo ($parent = Request::getString('parent', '')) ? 'parent-' . $parent : ''; ?>"><?php echo $this->model->isProvisioned() ? Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND_PROV') : Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND'); ?></li>
+    <?php
+    $parentStr = Request::getString('parent', '');
+    $noresultsCss = $parentStr ? 'parent-' . $parentStr : '';
+    $noFilesMsg = $this->model->isProvisioned()
+        ? Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND_PROV')
+        : Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND');
+    ?>
+    <li class="noresults <?php echo $noresultsCss; ?>"><?php echo $noFilesMsg; ?></li>
 <?php endif; ?>
 
 <?php if (!isset($this->noUl) || !$this->noUl) : ?>

@@ -1,14 +1,16 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-$url = 'index.php?option=' . $this->option . '&' . ($this->publication->alias ? 'alias=' . $this->publication->alias : 'id=' . $this->publication->id) . '&active=usage';
+$url = 'index.php?option='
+    . $this->option
+    . '&'
+    . ($this->publication->alias ? 'alias=' . $this->publication->alias : 'id=' . $this->publication->id)
+    . '&active=usage';
 
 $db = App::get('db');
 $current = new stdClass();
@@ -27,15 +29,28 @@ $totalViews = $this->totalViews;
 $db->setQuery(
     "SELECT *
 	FROM `#__publication_logs`
-	WHERE `publication_id`=" . $db->quote($this->publication->id) . " AND `publication_version_id`=" . $db->quote($this->publication->version->id) . "
+	WHERE `publication_id`=" . $db->quote($this->publication->id) . " AND `publication_version_id`=" .
+    $db->quote($this->publication->version->id) . "
 	ORDER BY `year` ASC, `month` ASC"
 );
 $results = $db->loadObjectList();
 if ($results) {
     foreach ($results as $result) {
-        $views[]     = "[new Date('20" . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . "-01')," . $result->page_views . "]";
+        $views[]     = "[new Date('20"
+            . $result->year
+            . '-'
+            . \Hubzero\Utility\Str::pad($result->month, 2)
+            . "-01'),"
+            . $result->page_views
+            . "]";
         $viewshighest = $result->page_views > $viewshighest ? $result->page_views : $viewshighest;
-        $downloads[] = "[new Date('20" . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . "-01')," . $result->primary_accesses . "]";
+        $downloads[] = "[new Date('20"
+            . $result->year
+            . '-'
+            . \Hubzero\Utility\Str::pad($result->month, 2)
+            . "-01'),"
+            . $result->primary_accesses
+            . "]";
         $downhighest = $result->primary_accesses > $downhighest ? $result->primary_accesses : $downhighest;
     }
 
@@ -67,7 +82,8 @@ $heights = array();
             <div class="col span3 usage-stat">
                 <h4><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_VIEWS'); ?></h4>
                 <p class="total">
-                    <strong class="usage-value" id="publication-views"><?php echo number_format($totalViews); ?></strong>
+                    <strong class="usage-value"
+                        id="publication-views"><?php echo number_format($totalViews); ?></strong>
                 </p>
             </div>
             <div class="col span9 omega usage-stat">
@@ -88,7 +104,15 @@ $heights = array();
                         }
 
                         $sparkline .= "\t" . '<span class="index">';
-                        $sparkline .= '<span class="count count' . $height . '" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->page_views . '">';
+                        $sparkline .= '<span class="count count'
+                            . $height
+                            . '" title="20'
+                            . $result->year
+                            . '-'
+                            . \Hubzero\Utility\Str::pad($result->month, 2)
+                            . ': '
+                            . $result->page_views
+                            . '">';
                         $sparkline .= number_format($result->page_views);
                         $sparkline .= '</span> ';
                         $sparkline .= '</span>' . "\n";
@@ -107,7 +131,8 @@ $heights = array();
             <div class="col span3 usage-stat">
                 <h4><?php echo Lang::txt('PLG_PUBLICATIONS_USAGE_DOWNLOADS'); ?></h4>
                 <p class="total">
-                    <strong class="usage-value" id="publication-downloads"><?php echo number_format($totalDownloads); ?></strong>
+                    <strong class="usage-value"
+                        id="publication-downloads"><?php echo number_format($totalDownloads); ?></strong>
                 </p>
             </div>
             <div class="col span9 omega usage-stat">
@@ -128,7 +153,15 @@ $heights = array();
                         }
 
                         $sparkline .= "\t" . '<span class="index">';
-                        $sparkline .= '<span class="count count' . $height . '" title="20' . $result->year . '-' . \Hubzero\Utility\Str::pad($result->month, 2) . ': ' . $result->primary_accesses . '">';
+                        $sparkline .= '<span class="count count'
+                            . $height
+                            . '" title="20'
+                            . $result->year
+                            . '-'
+                            . \Hubzero\Utility\Str::pad($result->month, 2)
+                            . ': '
+                            . $result->primary_accesses
+                            . '">';
                         $sparkline .= number_format($result->primary_accesses);
                         $sparkline .= '</span> ';
                         $sparkline .= '</span>' . "\n";

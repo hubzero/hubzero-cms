@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -21,9 +21,25 @@ $viewer  = $this->data->viewer;
     <li>
         <span class="item-options">
         <?php if ($viewer == 'edit') { ?>
+            <?php
+                $editItemUrl = Route::url(
+                    $data->editUrl . '&action=edititem&aid='
+                    . $data->id . '&p=' . $data->props
+                );
+                $deleteItemUrl = Route::url(
+                    $data->editUrl . '&action=deleteitem&aid='
+                    . $data->id . '&p=' . $data->props
+                );
+                $editTitle = strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE'));
+                $removeTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE');
+            ?>
             <span>
-                <a href="<?php echo Route::url($data->editUrl . '&action=edititem&aid=' . $data->id . '&p=' . $data->props); ?>" class="showinbox item-edit" title="<?php echo strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE')); ?>">&nbsp;</a>
-                <a href="<?php echo Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+                <a href="<?php echo $editItemUrl; ?>"
+                    class="showinbox item-edit"
+                    title="<?php echo $editTitle; ?>">&nbsp;</a>
+                <a href="<?php echo $deleteItemUrl; ?>"
+                    class="item-remove"
+                    title="<?php echo $removeTitle; ?>">&nbsp;</a>
             </span>
         <?php } ?>
         </span>

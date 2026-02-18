@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -25,7 +25,8 @@ if (count($this->items) > 0) {
                 $page = \Components\Wiki\Models\Page::one($ref->pageid);
                 if ($page && $page->get('id')) {
                     ?>
-        <li class="notes"><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>"><?php echo $page->get('title'); ?></li>
+        <li class="notes"><a href="<?php echo Route::url($this->model->link('stamp') . '&s=' . $item->stamp); ?>
+        "><?php echo $page->get('title');?></li>
                     <?php
                 }
             }

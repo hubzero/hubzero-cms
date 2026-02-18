@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -92,7 +92,9 @@ $this->css()
         <div class="clear"></div>
         <p class="submit">
             <input type="hidden" name="change" value="1" />
-            <input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SUBMIT'); ?>" id="password-change-save" />
+            <input type="submit"
+                value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SUBMIT'); ?>"
+                id="password-change-save"/>
             <input type="hidden" name="no_html" id="pass_no_html" value="0" />
             <input type="hidden" name="redirect" id="pass_redirect" value="1" />
         </p>

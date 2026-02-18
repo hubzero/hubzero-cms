@@ -1,5 +1,5 @@
 <?php
-// phpcs:disable Generic.Files.LineLength.TooLong
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,6 +25,15 @@ foreach ($this->severities as $severity => $tickets) {
     foreach ($tickets as $ticket) {
         $sef = Route::url('index.php?option=com_support&controller=tickets&task=ticket&id=' . $ticket->id);
 
-        $msg .= '#' . $ticket->id . ' (' . $ticket->created . ') :: ' . Request::base() . ltrim($sef, DS) . ' :: ' . stripslashes($ticket->summary) . "\n";
+        $msg .= '#'
+            . $ticket->id
+            . ' ('
+            . $ticket->created
+            . ') :: '
+            . Request::base()
+            . ltrim($sef, DS)
+            . ' :: '
+            . stripslashes($ticket->summary)
+            . "\n";
     }
 }

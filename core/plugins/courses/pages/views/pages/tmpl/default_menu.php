@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,17 +18,35 @@ $base = $this->offering->link() . '&active=pages';
         <?php
         foreach ($this->pages as $page) {
             ?>
+            <?php
+            if ($page->get('section_id')) {
+                $pageClass = 'page-section';
+            } elseif ($page->get('offering_id')) {
+                $pageClass = 'page-offering';
+            } else {
+                $pageClass = 'page-courses';
+            }
+            if ($page->get('url') == $this->page->get('url')) {
+                $pageClass .= ' active';
+            }
+            $pageUrl = Route::url(
+                $base . '&unit=' . $page->get('url')
+            );
+            $pageTitle = $this->escape(
+                stripslashes($page->get('title'))
+            );
+            ?>
         <li>
-            <a class="<?php echo $page->get('section_id') ? 'page-section' : ($page->get('offering_id') ? 'page-offering' : 'page-courses'); ?> page<?php if ($page->get('url') == $this->page->get('url')) {
-                echo ' active';
-                      } ?>" href="<?php echo Route::url($base . '&unit=' . $page->get('url')); ?>"><?php echo $this->escape(stripslashes($page->get('title'))); ?></a>
+            <a class="<?php echo $pageClass; ?> page"
+                href="<?php echo $pageUrl; ?>"><?php echo $pageTitle; ?></a>
         </li>
             <?php
         }
         ?>
     <?php } else { ?>
         <li>
-            <a class="active page" href="<?php echo $base; ?>"><?php echo Lang::txt('PLG_COURSES_PAGES_NONE_FOUND'); ?></a>
+            <a class="active page"
+                href="<?php echo $base; ?>"><?php echo Lang::txt('PLG_COURSES_PAGES_NONE_FOUND'); ?></a>
         </li>
     <?php } ?>
     </ul>

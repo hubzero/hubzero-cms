@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,7 +25,17 @@ $this->view('submenu', 'partials')
         // @TODO  Move this to plg_projects_feed?
         ?>
         <div id="blab" class="miniblog">
-            <form id="blogForm" method="post" class="focused" action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects'); ?>">
+            <?php
+            $blogFormUrl = Route::url(
+                'index.php?option=com_groups&cn='
+                . $this->group->get('cn')
+                . '&active=projects'
+            );
+            ?>
+            <form id="blogForm"
+                method="post"
+                class="focused"
+                action="<?php echo $blogFormUrl; ?>">
                 <fieldset>
                     <input type="hidden" name="option" value="com_groups" />
                     <input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
@@ -37,7 +45,16 @@ $this->view('submenu', 'partials')
                     <input type="hidden" name="managers_only" value="0" />
                     <?php echo Html::input('token'); ?>
 
-                    <?php echo $this->editor('blogentry', '', 5, 3, 'blogentry', array('class' => 'minimal no-footer')); ?>
+                    <?php
+                    echo $this->editor(
+                        'blogentry',
+                        '',
+                        5,
+                        3,
+                        'blogentry',
+                        array('class' => 'minimal no-footer')
+                    );
+                    ?>
 
                     <div class="grid">
                         <div class="col span6">
@@ -56,7 +73,10 @@ $this->view('submenu', 'partials')
                         </div>
                         <div class="col span6 omega">
                             <p id="blog-submitarea">
-                                <input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_PROJECTS_SHARE'); ?>" id="blog-submit" class="btn" />
+                                <input type="submit"
+                                    value="<?php echo Lang::txt('PLG_GROUPS_PROJECTS_SHARE'); ?>"
+                                    id="blog-submit"
+                                    class="btn"/>
                             </p>
                         </div>
                     </div>

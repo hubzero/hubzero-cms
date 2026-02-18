@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +14,9 @@ $database = App::get('db');
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
 
-<form method="get" action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
+<form method="get"
+    action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>"
+    id="collections">
 
     <p class="overview">
         <span class="title count">
@@ -27,11 +27,15 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
         </span>
         <?php if (!User::isGuest()) { ?>
             <?php if ($this->rows && $this->params->get('access-create-item')) { ?>
-                <a class="icon-add add btn tooltips" title="<?php echo Lang::txt('New post :: Add a new post to this collection'); ?>" href="<?php echo Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
+                <a class="icon-add add btn tooltips"
+                    title="<?php echo Lang::txt('New post :: Add a new post to this collection'); ?>"
+                    href="<?php echo Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
                     <?php echo Lang::txt('New post'); ?>
                 </a>
             <?php } else { ?>
-                <a class="icon-follow follow btn tooltips" title="<?php echo Lang::txt('Repost :: Watch this collection'); ?>" href="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
+                <a class="icon-follow follow btn tooltips"
+                    title="<?php echo Lang::txt('Repost :: Watch this collection'); ?>"
+                    href="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>">
                     <?php echo Lang::txt('Follow'); //Repost collection ?>
                 </a>
             <?php } ?>
@@ -53,7 +57,12 @@ if ($this->rows->total() > 0) {
             $type = 'link';
         }
         ?>
-        <div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
+        <div class="post <?php echo $type; ?>"
+            id="b<?php echo $row->get('id'); ?>"
+            data-id="<?php echo $row->get('id'); ?>"
+            data-closeup-url="<?php echo Route::url($base . '&task=post/' . $row->get('id')); ?>"
+            data-width="600"
+            data-height="350">
             <div class="content">
             <?php
                 $this->view('default_' . $type, 'post')
@@ -84,26 +93,55 @@ if ($this->rows->total() > 0) {
                     <?php if (!User::isGuest()) { ?>
                         <div class="actions">
                         <?php if ($item->get('created_by') == User::get('id')) { ?>
-                            <a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
+                            <a class="edit"
+                                data-id="<?php echo $row->get('id'); ?>"
+                                href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
                                 <span><?php echo Lang::txt('Edit'); ?></span>
                             </a>
                         <?php } else { ?>
-                            <a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
-                                <span><?php echo ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like'); ?></span>
+                            <a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>"
+                                data-id="<?php echo $row->get('id'); ?>"
+                                data-text-like="<?php echo Lang::txt('Like'); ?>"
+                                data-text-unlike="<?php echo Lang::txt('Unlike'); ?>"
+                                href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/vote'); ?>">
+                                <?php
+                                $voteLabel = ($item->get('voted'))
+                                    ? Lang::txt('Unlike')
+                                    : Lang::txt('Like');
+                                ?>
+                                <span><?php echo $voteLabel; ?></span>
                             </a>
                         <?php } ?>
-                            <a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
+                            <a class="comment"
+                                data-id="<?php echo $row->get('id'); ?>"
+                                href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
                                 <span><?php echo Lang::txt('Comment'); ?></span>
                             </a>
-                            <a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
+                            <a class="repost"
+                                data-id="<?php echo $row->get('id'); ?>"
+                                href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
                                 <span><?php echo Lang::txt('Collect'); ?></span>
                             </a>
-                        <?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
-                            <a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
+                        <?php
+                        $canDelete = $row->get('original')
+                            && ($item->get('created_by') == User::get('id')
+                                || $this->params->get('access-delete-item'));
+                        ?>
+                        <?php if ($canDelete) { ?>
+                            <a class="delete"
+                                data-id="<?php echo $row->get('id'); ?>"
+                                href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
                                 <span><?php echo Lang::txt('Delete'); ?></span>
                             </a>
-                        <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
-                            <a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
+                            <?php
+                        } elseif (
+                            $row->get('created_by') == User::get('id')
+                            || $this->params->get('access-edit-item')
+                        ) {
+                            ?>
+                            <a class="unpost"
+                                data-id="<?php echo $row->get('id'); ?>"
+                                href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>">
                                 <span><?php echo Lang::txt('Remove'); ?></span>
                             </a>
                         <?php } ?>
@@ -113,39 +151,84 @@ if ($this->rows->total() > 0) {
 
             <?php if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
                 <div class="convo attribution clearfix">
-                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
-                        <img src="<?php echo $item->creator()->picture(0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
+                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . $item->get('created_by')); ?>"
+                        title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>"
+                        class="img-link">
+                        <?php
+                        $creatorPic = $item->creator()->picture(0);
+                        $creatorName = $this->escape(
+                            stripslashes($item->creator()->get('name'))
+                        );
+                        $creatorUrl = Route::url(
+                            'index.php?option=com_members&id='
+                            . $item->get('created_by')
+                        );
+                        ?>
+                        <img src="<?php echo $creatorPic; ?>"
+                            alt="Profile picture of <?php echo $creatorName; ?>" />
                     </a>
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
+                        <a href="<?php echo $creatorUrl; ?>">
                             <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
                         </a>
                         posted
                         <br />
+                        <?php
+                        $itemTime = Date::of($item->get('created'))
+                            ->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                        $itemDate = Date::of($item->get('created'))
+                            ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                        ?>
                         <span class="entry-date">
-                            <span class="entry-date-at">@</span> <span class="date"><?php echo Date::of($item->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></span>
-                            <span class="entry-date-on">on</span> <span class="time"><?php echo Date::of($item->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+                            <span class="entry-date-at">@</span>
+                            <span class="date"><?php echo $itemTime; ?></span>
+                            <span class="entry-date-on">on</span>
+                            <span class="time"><?php echo $itemDate; ?></span>
                         </span>
                     </p>
                 </div><!-- / .attribution -->
             <?php } ?>
-            <?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
+            <?php //if ($item->get('created_by') != $this->member->get('uidNumber')) { ?>
+            <?php if (!$row->original()) { ?>
                 <div class="convo attribution reposted clearfix">
-                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
-                        <img src="<?php echo $this->member->picture(0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
+                    <?php
+                    $repostCreatorName = $this->escape(
+                        stripslashes($row->creator()->get('name'))
+                    );
+                    $repostCreatorUrl = Route::url(
+                        'index.php?option=com_members&id='
+                        . $row->get('created_by')
+                    );
+                    $repostPic = $this->member->picture(0);
+                    $collectionPath = $this->collection->get('is_default')
+                        ? ''
+                        : '/' . $this->collection->get('alias');
+                    $collectionUrl = Route::url($base . $collectionPath);
+                    $rowTime = Date::of($row->get('created'))
+                        ->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                    $rowDate = Date::of($row->get('created'))
+                        ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                    ?>
+                    <a href="<?php echo $repostCreatorUrl; ?>"
+                        title="<?php echo $repostCreatorName; ?>"
+                        class="img-link">
+                        <img src="<?php echo $repostPic; ?>"
+                            alt="Profile picture of <?php echo $repostCreatorName; ?>" />
                     </a>
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
-                            <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+                        <a href="<?php echo $repostCreatorUrl; ?>">
+                            <?php echo $repostCreatorName; ?>
                         </a>
                         onto
-                        <a href="<?php echo Route::url($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))); ?>">
+                        <a href="<?php echo $collectionUrl; ?>">
                             <?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
                         </a>
                         <br />
                         <span class="entry-date">
-                            <span class="entry-date-at">@</span> <span class="date"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></span>
-                            <span class="entry-date-on">on</span> <span class="time"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+                            <span class="entry-date-at">@</span>
+                            <span class="date"><?php echo $rowTime; ?></span>
+                            <span class="entry-date-on">on</span>
+                            <span class="time"><?php echo $rowDate; ?></span>
                         </span>
                     </p>
                 </div><!-- / .attribution -->

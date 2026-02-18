@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,10 @@ $sef = Route::url('index.php?option=' . $this->option . '&id=' . $this->resource
 $message  = Lang::txt('PLG_RESOURCES_REVIEWS_SOMEONE_POSTED_REVIEW') . "\r\n\r\n";
 $message .= '----------------------------' . "\r\n";
 $message .= Lang::txt('Resource:') . ' #' . $this->resource->id . ' - ' . stripslashes($this->resource->title) . "\r\n";
-$message .= Lang::txt('Review posted on:') . ' ' . Date::of($this->review->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\r\n";
+$message .= Lang::txt('Review posted on:')
+    . ' '
+    . Date::of($this->review->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+    . "\r\n";
 $message .= '----------------------------' . "\r\n\r\n";
 $message .= preg_replace('#<br[\s/]?>#', "\r", strip_tags($this->review->comment)) . "\r\n\r\n";
 $message .= Lang::txt('PLG_RESOURCES_REVIEWS_TO_VIEW_COMMENT') . "\r\n";

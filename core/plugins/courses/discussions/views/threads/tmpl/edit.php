@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +23,12 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
     $this->post = new \Components\Forum\Models\Post($this->post);
 }
 ?>
-    <form action="<?php echo Route::url($base); ?>" method="post" id="commentform" class="comment-edit" enctype="multipart/form-data" data-thread="<?php echo $this->post->get('thread'); ?>">
+    <form action="<?php echo Route::url($base); ?>"
+        method="post"
+        id="commentform"
+        class="comment-edit"
+        enctype="multipart/form-data"
+        data-thread="<?php echo $this->post->get('thread'); ?>">
     <?php if (!$no_html) { ?>
         <p class="comment-member-photo">
             <a class="comment-anchor" name="commentform"></a>
@@ -43,15 +48,32 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
             <p class="warning"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
     <?php } else { ?>
             <?php if (!$no_html) { ?>
+                <?php
+                $userUrl = Route::url(
+                    'index.php?option=com_members&id=' . User::get('id')
+                );
+                $userName = $this->escape(User::get('name'));
+                $timeFormatted = Date::of($now)->toLocal(
+                    Lang::txt('TIME_FORMAt_HZ1')
+                );
+                $dateFormatted = Date::of($now)->toLocal(
+                    Lang::txt('DATE_FORMAt_HZ1')
+                );
+                $onText = Lang::txt('PLG_COURSES_DISCUSSIONS_ON');
+                ?>
             <p class="comment-title">
                 <strong>
-                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(User::get('name')); ?></a>
+                    <a href="<?php echo $userUrl; ?>"><?php echo $userName; ?></a>
                 </strong>
                 <span class="permalink">
                     <span class="comment-date-at">@</span>
-                    <span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
-                    <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-                    <span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+                    <span class="time">
+                        <time datetime="<?php echo $now; ?>"><?php echo $timeFormatted; ?></time>
+                    </span>
+                    <span class="comment-date-on"><?php echo $onText; ?></span>
+                    <span class="date">
+                        <time datetime="<?php echo $now; ?>"><?php echo $dateFormatted; ?></time>
+                    </span>
                 </span>
             </p>
             <?php } ?>
@@ -59,7 +81,8 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
             <label for="field_<?php echo $this->post->get('id'); ?>_comment">
                 <span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
                 <?php
-                echo $this->editor('fields[comment]', $this->escape($this->post->get('content')), 35, 5, 'field_' . $this->post->get('id') . '_comment', array('class' => 'minimal no-footer'));
+                echo $this->editor('fields[comment]', $this->escape($this->post->get('content')), 35, 5, 'field_' .
+                $this->post->get('id') . '_comment', array('class' => 'minimal no-footer'));
                 ?>
             </label>
         <?php if (!$this->post->get('parent')) { ?>
@@ -73,19 +96,33 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
         <?php if (!$this->post->get('parent')) { ?>
                 </div>
                 <div class="col span-half omega">
+                    <?php
+                    $catLabel = Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY');
+                    $catSelectText = Lang::txt(
+                        'PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'
+                    );
+                    ?>
                     <label for="field-category_id">
-                        <span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY'); ?></span>
+                        <span class="label-text"><?php echo $catLabel; ?></span>
                         <select name="fields[category_id]" id="field-category_id">
-                            <option value="0"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'); ?></option>
+                            <option value="0"><?php echo $catSelectText; ?></option>
                         <?php
                         foreach ($this->sections as $section) {
                             if ($section->categories) {
+                                $groupLabel = $this->escape(
+                                    stripslashes($section->title)
+                                );
                                 ?>
-                            <optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
-                                <?php foreach ($section->categories as $category) { ?>
-                                <option value="<?php echo $category->id; ?>"<?php if ($category->id == $this->post->get('category_id')) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+                            <optgroup label="<?php echo $groupLabel; ?>">
+                                <?php foreach ($section->categories as $category) {
+                                    $catSelected = ($category->id == $this->post->get('category_id'))
+                                        ? ' selected="selected"'
+                                        : '';
+                                    $catTitle = $this->escape(stripslashes($category->title));
+                                    ?>
+                                <option
+                                    value="<?php echo $category->id; ?>"<?php echo $catSelected; ?>
+                                ><?php echo $catTitle; ?></option>
                                 <?php } ?>
                             </optgroup>
                                 <?php
@@ -97,13 +134,19 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
                 </div>
             </div>
         <?php } else { ?>
-            <input type="hidden" name="fields[category_id]" id="field-category_id" value="<?php echo $this->post->get('category_id'); ?>" />
+            <input type="hidden"
+                name="fields[category_id]"
+                id="field-category_id"
+                value="<?php echo $this->post->get('category_id'); ?>"/>
         <?php } ?>
 
             <label for="field-anonymous" id="comment-anonymous-label">
-                <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"<?php if ($this->post->get('anonymous') == 1) {
-                    echo ' checked="checked"';
-                                                                                                   } ?> value="1" />
+                <input class="option"
+                    type="checkbox"
+                    name="fields[anonymous]"
+                    id="field-anonymous"<?php if ($this->post->get('anonymous') == 1) {
+                        echo ' checked="checked"';
+                                        } ?> value="1" />
                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
             </label>
 
@@ -114,13 +157,28 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
     <?php if (!$no_html) { ?>
         </fieldset>
     <?php } ?>
-        <input type="hidden" name="fields[parent]" id="field-parent" value="<?php echo $this->post->get('parent'); ?>" />
+        <input type="hidden"
+            name="fields[parent]"
+            id="field-parent"
+            value="<?php echo $this->post->get('parent'); ?>"/>
         <input type="hidden" name="fields[state]" id="field-state" value="<?php echo $this->post->get('state'); ?>" />
-        <input type="hidden" name="fields[scope]" id="field-scope" value="<?php echo $this->post->get('scope', 'course'); ?>" />
-        <input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->post->get('scope_id'); ?>" />
+        <input type="hidden"
+            name="fields[scope]"
+            id="field-scope"
+            value="<?php echo $this->post->get('scope', 'course'); ?>"/>
+        <input type="hidden"
+            name="fields[scope_id]"
+            id="field-scope_id"
+            value="<?php echo $this->post->get('scope_id'); ?>"/>
         <input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->post->get('id'); ?>" />
-        <input type="hidden" name="fields[object_id]" id="field-object_id" value="<?php echo $this->post->get('object_id'); ?>" />
-        <input type="hidden" name="fields[thread]" id="field-thread" value="<?php echo $this->post->get('thread'); ?>" />
+        <input type="hidden"
+            name="fields[object_id]"
+            id="field-object_id"
+            value="<?php echo $this->post->get('object_id'); ?>"/>
+        <input type="hidden"
+            name="fields[thread]"
+            id="field-thread"
+            value="<?php echo $this->post->get('thread'); ?>"/>
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -129,7 +187,14 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
         <input type="hidden" name="action" value="savethread" />
 
         <input type="hidden" name="section" value="<?php //echo $this->filters['section']; ?>" />
-        <input type="hidden" name="return" value="<?php //echo base64_encode(Route::url($base . '&active=outline&unit=' . $this->filters['section'] . '&b=' . $this->category->alias)); ?>" />
+        <?php
+        // phpcs:ignore Generic.Files.LineLength.TooLong -- Commented out code
+        // $returnUrl = base64_encode(Route::url(
+        //     $base . '&active=outline&unit='
+        //     . $this->filters['section'] . '&b=' . $this->category->alias
+        // ));
+        ?>
+        <input type="hidden" name="return" value="" />
 
         <?php echo Html::input('token'); ?>
     <?php if (!$no_html) { ?>

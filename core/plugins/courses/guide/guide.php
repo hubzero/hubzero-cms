@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,8 +9,8 @@
 namespace Plugins\Courses\Guide;
 
 use Hubzero\Plugin\Plugin;
-
 use Hubzero\Utility\Date;
+
 /**
  * Courses Plugin class for intro guide
  */

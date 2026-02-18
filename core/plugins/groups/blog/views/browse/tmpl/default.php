@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,7 +29,11 @@ $this->css()
      ->js();
 ?>
 
-<?php if ($this->group->published == 1 && ($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin')) { ?>
+<?php
+$isManager = $this->authorized == 'manager' || $this->authorized == 'admin';
+$canManage = $this->canpost || $isManager;
+?>
+<?php if ($this->group->published == 1 && $canManage) { ?>
     <ul id="page_options">
         <?php if ($this->canpost) { ?>
             <li>
@@ -50,7 +52,11 @@ $this->css()
     </ul>
 <?php } ?>
 
-<?php if (($this->authorized == 'manager' || $this->authorized == 'admin') && !$this->filters['year'] && !$this->filters['search'] && !$rows->count()) { ?>
+<?php
+$noFilters = !$this->filters['year'] && !$this->filters['search'];
+$isEmpty = $noFilters && !$rows->count();
+?>
+<?php if ($isManager && $isEmpty) { ?>
     <div class="introduction">
         <div class="introduction-message">
             <p><?php echo Lang::txt('PLG_GROUPS_BLOG_INTRO_EMPTY'); ?></p>
@@ -73,21 +79,37 @@ $this->css()
                 <?php endif; ?>
 
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH'); ?>" />
+                    <input class="entry-search-submit"
+                        type="submit"
+                        value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH'); ?>"/>
                     <fieldset class="entry-search">
                         <legend><?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_LEGEND'); ?></legend>
                         <label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
+                        <input type="text"
+                            name="search"
+                            id="entry-search-field"
+                            value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>"
+                            placeholder="<?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_PLACEHOLDER'); ?>"/>
                     </fieldset>
                 </div><!-- / .container -->
 
                 <div class="container">
                     <h3>
                         <?php if (isset($this->filters['search']) && $this->filters['search']) { ?>
-                            <?php echo Lang::txt('PLG_GROUPS_BLOG_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
+                            <?php
+                            $searchTxt = Lang::txt(
+                                'PLG_GROUPS_BLOG_SEARCH_FOR',
+                                $this->escape($this->filters['search'])
+                            );
+                            echo $searchTxt;
+                            ?>
                         <?php } elseif (!isset($this->filters['year']) || !$this->filters['year']) { ?>
                             <?php echo Lang::txt('PLG_GROUPS_BLOG_LATEST_ENTRIES'); ?>
-                        <?php } elseif (isset($this->filters['year']) && isset($this->filters['month']) && $this->filters['month'] == 0) { ?>
+                        <?php } elseif (
+                            isset($this->filters['year'])
+                            && isset($this->filters['month'])
+                            && $this->filters['month'] == 0
+) { ?>
                             <?php echo Lang::txt('PLG_GROUPS_BLOG_YEAR_ENTRIES_FOR', $this->filters['year']); ?>
                         <?php } else {
                             $archiveDate  = $this->filters['year'];
@@ -163,7 +185,11 @@ $this->css()
                                         </time>
                                     </dd>
                                     <dd class="author">
-                                        <?php if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+                                        <?php
+                                        $viewLevels = User::getAuthorisedViewLevels();
+                                        $creatorAccess = $row->creator->get('access');
+                                        ?>
+                                        <?php if (in_array($creatorAccess, $viewLevels)) { ?>
                                             <a href="<?php echo Route::url($row->creator->link()); ?>">
                                                 <?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
                                             </a>
@@ -191,31 +217,55 @@ $this->css()
                                             </span>
                                         </dd>
                                     <?php } ?>
-                                    <?php if (User::get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+                                    <?php
+                                    $isAuthor = User::get('id') == $row->get('created_by');
+                                    $canEdit = $isAuthor || $isManager;
+                                    ?>
+                                    <?php if ($canEdit) { ?>
                                         <dd class="state <?php echo strtolower($row->visibility('text')); ?>">
                                             <?php echo $row->visibility('text'); ?>
                                         </dd>
                                     <?php } ?>
                                     <?php if ($this->group->published == 1) { ?>
                                         <dd class="entry-options">
-                                            <?php if (User::get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-                                                <a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
+                                            <?php if ($canEdit) { ?>
+                                                <?php
+                                                $editUrl = Route::url($row->link('edit'));
+                                                $deleteUrl = Route::url($row->link('delete'));
+                                                $confirmTxt = Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE');
+                                                $deleteTxt = Lang::txt('PLG_GROUPS_BLOG_DELETE');
+                                                ?>
+                                                <a class="icon-edit edit"
+                                                    href="<?php echo $editUrl; ?>"
+                                                    title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
                                                     <?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>
                                                 </a>
-                                                <a class="icon-delete delete" data-confirm="<?php echo Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>">
-                                                    <?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>
+                                                <a class="icon-delete delete"
+                                                    data-confirm="<?php echo $confirmTxt; ?>"
+                                                    href="<?php echo $deleteUrl; ?>"
+                                                    title="<?php echo $deleteTxt; ?>">
+                                                    <?php echo $deleteTxt; ?>
                                                 </a>
                                             <?php } ?>
                                         </dd>
                                     <?php } ?>
                                 </dl>
                                 <div class="entry-content">
+                                    <?php
+                                    $introLen = $this->config->get('introlength', 300);
+                                    ?>
                                     <?php if ($this->config->get('cleanintro', 1)) { ?>
                                         <p>
-                                            <?php echo \Hubzero\Utility\Str::truncate(strip_tags($row->content), $this->config->get('introlength', 300)); ?>
+                                            <?php echo \Hubzero\Utility\Str::truncate(
+                                                strip_tags($row->content),
+                                                $introLen
+                                            ); ?>
                                         </p>
                                     <?php } else { ?>
-                                        <?php echo \Hubzero\Utility\Str::truncate($row->content, $this->config->get('introlength', 300)); ?>
+                                        <?php echo \Hubzero\Utility\Str::truncate(
+                                            $row->content,
+                                            $introLen
+                                        ); ?>
                                     <?php } ?>
                                 </div>
                             </article>
@@ -258,7 +308,11 @@ $this->css()
                                     <a href="<?php echo Route::url($base . '&scope=' . $i); ?>">
                                         <?php echo $i; ?>
                                     </a>
-                                    <?php if (($this->filters['year'] && $i == $this->filters['year']) || (!$this->filters['year'] && $i == $now)) { ?>
+                                    <?php
+                                    $isSelectedYear = $this->filters['year'] && $i == $this->filters['year'];
+                                    $isCurrentYear = !$this->filters['year'] && $i == $now;
+                                    ?>
+                                    <?php if ($isSelectedYear || $isCurrentYear) { ?>
                                         <ol>
                                             <?php
                                                 $m = array(
@@ -282,10 +336,19 @@ $this->css()
                                                 }
                                                 ?>
                                             <?php for ($k = 0, $z = $months; $k < $z; $k++) { ?>
+                                                <?php
+                                                $monthNum = $k + 1;
+                                                $activeClass = '';
+                                                if ($this->filters['month'] && $this->filters['month'] == $monthNum) {
+                                                    $activeClass = ' class="active"';
+                                                }
+                                                $monthUrl = Route::url(
+                                                    $base . '&scope=' . $i . '/' . sprintf("%02d", $monthNum, 1)
+                                                );
+                                                ?>
                                                 <li>
-                                                    <a<?php if ($this->filters['month'] && $this->filters['month'] == ($k + 1)) {
-                                                        echo ' class="active"';
-                                                      } ?> href="<?php echo Route::url($base . '&scope=' . $i . '/' . sprintf("%02d", ($k + 1), 1)); ?>">
+                                                    <a<?php echo $activeClass; ?>
+                                                        href="<?php echo $monthUrl; ?>">
                                                         <?php echo Lang::txt($m[$k]); ?>
                                                     </a>
                                                 </li>

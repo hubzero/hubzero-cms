@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -41,7 +41,8 @@ $elName = "authorList";
                     ?>
                     <li>
                         <span class="item-order"><?php echo $i; ?></span>
-                        <span class="item-title"><?php echo $name; ?> <span class="item-subtext"><?php echo $org ? ' - ' . $org : ''; ?></span></span>
+                        <span class="item-title"><?php echo $name; ?>
+                        <span class="item-subtext"><?php echo $org ? ' - ' . $org : '';?></span></span>
                         <span class="item-details"><?php echo $details; ?></span>
                     </li>
                     <?php

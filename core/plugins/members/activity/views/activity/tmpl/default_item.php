@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -29,7 +29,11 @@ $online = false;
 // If the user was the current logged-in user...
 if ($this->row->log->get('created_by') == User::get('id')) {
     // Same user so go ahead and link to profile
-    /*$name = '<a href="' . Route::url($creator->link()) . '">' . $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN')))) . '</a>';
+    /*$name = '<a href="'
+        . Route::url($creator->link())
+        . '">'
+        . $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))))
+        . '</a>';
 
     // If they posted as anonymous, indicate it
     if ($this->row->log->get('anonymous'))
@@ -51,7 +55,12 @@ if ($this->row->log->get('created_by') == User::get('id')) {
         $name = '<a href="' . Route::url($creator->link()) . '">' . $name . '</a>';
     }
 
-    if (isset($this->online) && !$this->row->log->get('anonymous') && in_array($this->row->log->get('created_by'), $this->online)) {
+    if (
+        isset($this->online) && !$this->row->log->get('anonymous') && in_array(
+            $this->row->log->get('created_by'),
+            $this->online
+        )
+    ) {
         $online = true;
     }
 }
@@ -101,14 +110,29 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
         <?php } ?>
     </div><!-- / .activity-actor-picture -->
 
+    <?php
+    $actionClass = $this->escape($this->row->log->get('action'));
+    $scopeClass = $this->escape(
+        str_replace('.', '-', $this->row->log->get('scope'))
+    );
+    ?>
     <div
-        class="activity-content <?php echo $this->escape($this->row->log->get('action')); ?> <?php echo $this->escape(str_replace('.', '-', $this->row->log->get('scope'))); ?>">
+        class="activity-content <?php
+            echo $actionClass;
+        ?> <?php echo $scopeClass; ?>">
         <div class="activity-body">
             <div class="activity-details">
                 <span class="activity-actor"><?php echo $name; ?></span>
                 <span class="activity-action"><?php echo $this->escape($this->row->log->get('action')); ?></span>
-                <span
-                    class="activity-channel"><?php echo $this->escape($this->row->get('scope') . '.' . $this->row->get('scope_id')); ?></span>
+                <?php
+                $channel = $this->escape(
+                    $this->row->get('scope')
+                    . '.' . $this->row->get('scope_id')
+                );
+                ?>
+                <span class="activity-channel"><?php
+                    echo $channel;
+                ?></span>
                 <span class="activity-context"><?php
 
                 $scope = explode('.', $this->row->log->get('scope'));
@@ -144,9 +168,17 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 
                     if ($group) {
                         ?>
+                        <?php
+                        $groupUrl = Route::url(
+                            'index.php?option=com_groups&cn='
+                            . $group->get('cn')
+                            . '&active=activity'
+                        );
+                        ?>
                         <div class="activity-source icon-group">
-                            <a
-                                href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=activity'); ?>"><?php echo $group->get('description'); ?></a>
+                            <a href="<?php echo $groupUrl; ?>"><?php
+                                echo $group->get('description');
+                            ?></a>
                         </div>
                         <?php
                     }
@@ -158,9 +190,16 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
 
                     if ($project) {
                         ?>
+                        <?php
+                        $projectUrl = Route::url(
+                            'index.php?option=com_projects&alias='
+                            . $project->get('alias')
+                        );
+                        ?>
                         <div class="activity-source icon-project">
-                            <a
-                                href="<?php echo Route::url('index.php?option=com_projects&alias=' . $project->get('alias')); ?>"><?php echo $project->get('title'); ?></a>
+                            <a href="<?php echo $projectUrl; ?>"><?php
+                                echo $project->get('title');
+                            ?></a>
                         </div>
                         <?php
                     }
@@ -192,7 +231,10 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                 </div>
                 <?php
 
-                if (in_array($this->row->log->get('action'), array('updated', 'emailed', 'downloaded', 'uploaded', 'denied', 'voted', 'shared'))) {
+                if (
+                    in_array($this->row->log->get('action'), array('updated', 'emailed', 'downloaded', 'uploaded',
+                    'denied', 'voted', 'shared'))
+                ) {
                     $recipient = Hubzero\Activity\Recipient::all();
 
                     $r = $recipient->getTableName();
@@ -219,10 +261,27 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                         ?>
                         <ul class="activity-duplicates">
                             <?php foreach ($duplicates as $dup) { ?>
+                                <?php
+                                $dupCreated = Date::of(
+                                    $dup->log->get('created')
+                                );
+                                $dupDatetime = $dupCreated->format(
+                                    'Y-m-d\TH:i:s\Z'
+                                );
+                                $dupDisplay = $dupCreated->toLocal('M j')
+                                    . ' @ '
+                                    . $dupCreated->toLocal('g:i a');
+                                ?>
                                 <li>
-                                    <span class="activity-action"><?php echo $dup->log->get('action'); ?></span>
+                                    <span class="activity-action"><?php
+                                        echo $dup->log->get('action');
+                                    ?></span>
                                     <span class="activity-time"><time
-                                            datetime="<?php echo Date::of($dup->log->get('created'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($dup->log->get('created'))->toLocal('M j') . ' @ ' . Date::of($dup->log->get('created'))->toLocal('g:i a'); ?></time></span>
+                                        datetime="<?php
+                                            echo $dupDatetime;
+                                        ?>"><?php
+                                            echo $dupDisplay;
+?></time></span>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -235,24 +294,70 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
             <div class="activity-options">
                 <ul class="activity-options-main">
                     <?php if (!$this->row->log->get('parent')) { ?>
+                        <?php
+                        $rowId = $this->row->get('id');
+                        $starred = $this->row->get('starred');
+                        $starAction = ($starred ? 'un' : '')
+                            . 'star';
+                        $starHref = Route::url(
+                            $base . '&action=' . $starAction
+                            . '&activity=' . $rowId
+                        );
+                        $unstarUrl = Route::url(
+                            $base . '&action=unstar&activity='
+                            . $rowId
+                        );
+                        $starUrl = Route::url(
+                            $base . '&action=star&activity='
+                            . $rowId
+                        );
+                        $unstarTxt = Lang::txt(
+                            'PLG_MEMBERS_ACTIVITY_UNSTAR'
+                        );
+                        $starTxt = Lang::txt(
+                            'PLG_MEMBERS_ACTIVITY_STAR'
+                        );
+                        $starTitle = $starred
+                            ? $unstarTxt : $starTxt;
+                        $starLabel = $starred
+                            ? $unstarTxt : $starTxt;
+                        ?>
                         <li>
-                            <a data-id="activity<?php echo $this->row->get('id'); ?>" class="icon-starred tooltips"
-                                href="<?php echo Route::url($base . '&action=' . ($this->row->get('starred') ? 'un' : '') . 'star&activity=' . $this->row->get('id')); ?>"
-                                data-hrf-active="<?php echo Route::url($base . '&action=unstar&activity=' . $this->row->get('id')); ?>"
-                                data-hrf-inactive="<?php echo Route::url($base . '&action=star&activity=' . $this->row->get('id')); ?>"
-                                data-txt-active="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR'); ?>"
-                                data-txt-inactive="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?>"
-                                title="<?php echo ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?>"><!--
-                                --><?php echo ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?><!--
+                            <a data-id="activity<?php echo $rowId; ?>"
+                                class="icon-starred tooltips"
+                                href="<?php echo $starHref; ?>"
+                                data-hrf-active="<?php echo $unstarUrl; ?>"
+                                data-hrf-inactive="<?php echo $starUrl; ?>"
+                                data-txt-active="<?php echo $unstarTxt; ?>"
+                                data-txt-inactive="<?php echo $starTxt; ?>"
+                                title="<?php echo $starTitle; ?>"><!--
+                                --><?php echo $starLabel; ?><!--
                             --></a>
                         </li>
                     <?php } ?>
+                    <?php
+                    $actId = $this->row->get('id');
+                    $deleteUrl = Route::url(
+                        $base . '&action=remove&activity='
+                        . $actId . '&'
+                        . Session::getFormToken() . '=1'
+                    );
+                    $deleteTxt = Lang::txt(
+                        'PLG_MEMBERS_ACTIVITY_DELETE'
+                    );
+                    $confirmTxt = Lang::txt(
+                        'PLG_MEMBERS_ACTIVITY_CONFIRM_DELETE'
+                    );
+                    ?>
                     <li>
-                        <a data-id="activity<?php echo $this->row->get('id'); ?>" class="icon-delete tooltips"
-                            href="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>"
-                            title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE'); ?>"
-                            data-txt-confirm="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_CONFIRM_DELETE'); ?>"><!--
-                            --><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE'); ?><!--
+                        <a data-id="activity<?php echo $actId; ?>"
+                            class="icon-delete tooltips"
+                            href="<?php echo $deleteUrl; ?>"
+                            title="<?php echo $deleteTxt; ?>"
+                            data-txt-confirm="<?php
+                                echo $confirmTxt;
+                            ?>"><!--
+                            --><?php echo $deleteTxt; ?><!--
                         --></a>
                     </li>
                     <?php /*<li>
@@ -264,8 +369,36 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                        --><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_OPTIONS'); ?><!--
                    --></a>
                    <ul class="activity-options-more" id="moreoptions<?php echo $this->row->get('id'); ?>">
-                       <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($base . '&action=unsubscribe&scope=' . $this->row->get('scope')); ?>"><?php echo Lang::txt('Hide all like this'); ?></a></li>
-                       <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($base . '&action=share&activity=' . $this->row->get('id')); ?>"><?php echo Lang::txt('Share'); ?></a></li>
+                       <li><a
+                           data-id="activity<?php
+                               echo $this->row->get('id');
+                           ?>"
+                           href="<?php
+                               echo Route::url(
+                                   $base
+                                   . '&action=unsubscribe'
+                                   . '&scope='
+                                   . $this->row->get('scope')
+                               );
+                           ?>"><?php
+                               echo Lang::txt(
+                                   'Hide all like this'
+                               );
+                           ?></a></li>
+                       <li><a
+                           data-id="activity<?php
+                               echo $this->row->get('id');
+                           ?>"
+                           href="<?php
+                               echo Route::url(
+                                   $base
+                                   . '&action=share'
+                                   . '&activity='
+                                   . $this->row->get('id')
+                               );
+                           ?>"><?php
+                               echo Lang::txt('Share');
+                           ?></a></li>
                    </ul>
                </li>*/ ?>
                 </ul>

@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Publications\Reviews;
 
 use Hubzero\Plugin\Plugin;

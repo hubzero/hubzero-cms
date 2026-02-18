@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,17 +12,30 @@ $this->css();
 <div class="pages-wrap">
     <div class="pages-content">
 
-        <form action="<?php echo Route::url($this->base); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
+        <form action="<?php echo Route::url($this->base); ?>"
+            method="post"
+            id="hubForm"
+            class="full"
+            enctype="multipart/form-data">
             <fieldset>
                 <legend><?php echo Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_EDIT_PAGE'); ?></legend>
 
                 <label for="fields_content">
-                    <?php echo Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-                    <?php echo $this->editor('fields[content]', $this->escape($this->page->get('content')), 35, 50, 'field_content'); ?>
+                    <?php echo Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_FIELD_CONTENT'); ?>
+                    <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                    <?php echo $this->editor(
+                        'fields[content]',
+                        $this->escape($this->page->get('content')),
+                        35,
+                        50,
+                        'field_content'
+                    ); ?>
                 </label>
 
                 <p class="submit">
-                    <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_SAVE'); ?>" />
+                    <input class="btn btn-success"
+                        type="submit"
+                        value="<?php echo Lang::txt('PLG_RESOURCES_WINDOWSTOOLS_SAVE'); ?>"/>
                     <a class="btn btn-secondary" href="<?php echo Route::url($this->base); ?>">
                         <?php echo Lang::txt('JCANCEL'); ?>
                     </a>

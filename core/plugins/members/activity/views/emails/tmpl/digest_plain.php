@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -16,7 +16,11 @@ $sef  = Route::url($this->member->link());
 $link = $base . '/' . trim($sef, '/');
 
 // Build message
-$message  = Lang::txt('PLG_CRON_ACTIVITY_EMAIL_MEMBERS_EXPLANATION', $link, $this->member->get('name') . ' (' . $this->member->get('username') . ')');
+$message  = Lang::txt(
+    'PLG_CRON_ACTIVITY_EMAIL_MEMBERS_EXPLANATION',
+    $link,
+    $this->member->get('name') . ' (' . $this->member->get('username') . ')'
+);
 
 foreach ($this->rows as $row) {
     $output = html_entity_decode(strip_tags($row->log->get('description')), ENT_COMPAT, 'UTF-8');

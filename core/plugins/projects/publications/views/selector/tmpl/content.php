@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -49,7 +49,12 @@ $database = \App::get('db');
 $pa = new \Components\Publications\Tables\Author($database);
 ?>
 <label for="pub-search"><?php echo Lang::txt('Search'); ?></label>
-<input id="pub-search" name="search" placeholder="Start typing here" type="text" data-list=".pub-selector-" autocomplete="off" />
+<input id="pub-search"
+    name="search"
+    placeholder="Start typing here"
+    type="text"
+    data-list=".pub-selector-"
+    autocomplete="off"/>
 <div id="pub-selector-results">
     <ul class="pub-selector" id="pub-selector">
         <?php
@@ -62,11 +67,20 @@ $pa = new \Components\Publications\Tables\Author($database);
                 /*$info = $item->info;
                 if ($item->url)
                 {
-                $info .= ' <a href="' . $item->url . '" rel="nofollow external">' . Lang::txt('Read license terms &rsaquo;') . '</a>';
+                $info
+                    . = ' <a href="'
+                    . $item->url
+                    . '" rel="nofollow external">'
+                    . Lang::txt('Read license terms &rsaquo;')
+                    . '</a>';
                 }
 
                 $icon = $item->icon;
-                $icon = str_replace('/components/com_publications/assets/img/', '/core/components/com_publications/site/assets/img/', $icon);
+                $icon = str_replace(
+                    '/components/com_publications/assets/img/',
+                    '/core/components/com_publications/site/assets/img/',
+                    $icon
+                );
                 */
                 $authors = $pa->getAuthors($item->get('version_id'));
 
@@ -88,10 +102,18 @@ $pa = new \Components\Publications\Tables\Author($database);
             <li class="type-publication allowed <?php if ($selected) {
                 echo ' selectedfilter';
                                                 } ?>" id="<?php echo $liId; ?>">
-                <div class="item-thumb"><img src="<?php echo Route::url($item->link('thumb')); ?>" width="40" height="40" alt=""/></div>
+                <?php $thumbUrl = Route::url($item->link('thumb')); ?>
+                <div class="item-thumb"><img
+                    src="<?php echo $thumbUrl; ?>"
+                    width="40"
+                    height="40"
+                    alt=""/></div>
                 <!-- <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span> -->
                 <span class="item-wrap">
-                    <?php echo $item->get('title'); ?> <span class="item-version">(<?php echo $item->get('version_label'); ?>)</span><br />
+                    <?php echo $item->get('title'); ?>
+                    <span class="item-version">(<?php
+                        echo $item->get('version_label');
+                    ?>)</span><br />
                     <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span>
                 </span>
                 <span class="item-fullinfo">
@@ -99,7 +121,9 @@ $pa = new \Components\Publications\Tables\Author($database);
                     <p class="details">
                         <?php
                         if ($authors) {
-                            echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS_LIST') . ': ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
+                            echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS_LIST')
+                                . ': '
+                                . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
                         }
                         ?>
                     </p>

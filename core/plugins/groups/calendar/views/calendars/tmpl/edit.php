@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,26 +16,56 @@ defined('_HZEXEC_') or die();
 
 <ul id="page_options">
     <li>
-        <a class="icon-prev btn back" title="" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=calendars'); ?>">
+        <?php
+        $backUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&cn=' . $this->group->cn
+            . '&active=calendar&action=calendars'
+        );
+        ?>
+        <a class="icon-prev btn back" title=""
+            href="<?php echo $backUrl; ?>">
             <?php echo Lang::txt('Back to Manage Calendars'); ?>
         </a>
     </li>
 </ul>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=savecalendar'); ?>" id="hubForm" method="post" class="full">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&cn=' . $this->group->cn
+    . '&active=calendar&action=savecalendar'
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    id="hubForm" method="post" class="full">
 
     <fieldset>
         <legend><?php echo Lang::txt('Group Calendar'); ?></legend>
 
         <label for="field-title">
-            <?php echo Lang::txt('Title:'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-            <input type="text" name="calendar[title]" id="field-title" value="<?php echo $this->calendar->get('title'); ?>" />
+            <?php echo Lang::txt('Title:'); ?>
+            <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+            <input type="text"
+                name="calendar[title]"
+                id="field-title"
+                value="<?php echo $this->calendar->get('title'); ?>"/>
         </label>
 
         <label for="field-url">
             <?php echo Lang::txt('URL:'); ?> <span class="optional"><?php echo Lang::txt('Optional'); ?></span>
-            <input type="text" name="calendar[url]" id="field-url" value="<?php echo $this->calendar->get('url'); ?>" />
-            <span class="hint"><?php echo Lang::txt('This is used to fetch remote calendar events from other services such as a Google Calendar.'); ?></span>
+            <input type="text"
+                name="calendar[url]"
+                id="field-url"
+                value="<?php echo $this->calendar->get('url'); ?>" />
+            <?php
+            $urlHint = Lang::txt(
+                'This is used to fetch remote calendar'
+                . ' events from other services such as'
+                . ' a Google Calendar.'
+            );
+            ?>
+            <span class="hint"><?php echo $urlHint; ?></span>
         </label>
 
         <label for="field-color">
@@ -55,7 +83,12 @@ defined('_HZEXEC_') or die();
         <label for="field-published">
             <?php echo Lang::txt('Publish Events to Subscribers?:'); ?>
             <select name="calendar[published]" id="field-published">
-                <option <?php echo ($this->calendar->get('published') == 1) ? 'selected="selected"' : ''; ?>value="1"><?php echo Lang::txt('JYes'); ?></option>
+                <?php
+                $pubSelected = ($this->calendar->get('published') == 1)
+                    ? 'selected="selected"' : '';
+                ?>
+                <option <?php echo $pubSelected; ?>
+                    value="1"><?php echo Lang::txt('JYes'); ?></option>
                 <option value="0"><?php echo Lang::txt('JNo'); ?></option>
             </select>
         </label>

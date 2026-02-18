@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +16,19 @@ $base = $this->offering->link() . '&active=pages';
     <form action="<?php echo Route::url($base); ?>" id="adminForm" method="post" enctype="multipart/form-data">
         <fieldset>
             <div id="themanager" class="manager">
-                <iframe src="<?php echo Route::url($base . '&action=list&tmpl=component&page=' . $this->page->get('id') . '&section_id=' . $this->page->get('section_id')); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+                <?php
+                $iframeUrl = Route::url(
+                    $base . '&action=list&tmpl=component&page='
+                    . $this->page->get('id')
+                    . '&section_id=' . $this->page->get('section_id')
+                );
+                ?>
+                <iframe src="<?php echo $iframeUrl; ?>"
+                    name="imgManager"
+                    id="imgManager"
+                    width="98%"
+                    height="180"
+                ></iframe>
             </div>
         </fieldset>
 
@@ -38,7 +50,9 @@ $base = $this->offering->link() . '&active=pages';
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
             <input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
             <input type="hidden" name="page" value="<?php echo $this->escape($this->page->get('id')); ?>" />
-            <input type="hidden" name="section_id" value="<?php echo $this->escape($this->page->get('section_id')); ?>" />
+            <input type="hidden"
+                name="section_id"
+                value="<?php echo $this->escape($this->page->get('section_id')); ?>"/>
             <input type="hidden" name="active" value="pages" />
             <input type="hidden" name="action" value="upload" />
             <input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />

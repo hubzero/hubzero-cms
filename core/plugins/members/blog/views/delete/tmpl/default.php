@@ -1,8 +1,7 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 
 /**
  * @package   hubzero-cms
@@ -30,16 +29,24 @@ $this->css()
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url($base . '&task=delete&entry=' . $this->entry->get('id')); ?>" method="post" id="hubForm">
+    <form action="<?php echo Route::url($base . '&task=delete&entry=' . $this->entry->get('id')); ?>"
+        method="post"
+        id="hubForm">
         <div class="explaination">
-        <?php if ($this->authorized) { ?>
-            <p><a class="icon-add add btn" href="<?php echo Route::url($base . '&task=new'); ?>"><?php echo Lang::txt('PLG_MEMBERS_BLOG_NEW_ENTRY'); ?></a></p>
+        <?php if ($this->authorized) {
+            $newEntryUrl = Route::url($base . '&task=new');
+            $newEntryTxt = Lang::txt('PLG_MEMBERS_BLOG_NEW_ENTRY');
+            ?>
+            <p><a class="icon-add add btn" href="<?php echo $newEntryUrl; ?>"><?php echo $newEntryTxt; ?></a></p>
         <?php } ?>
         </div>
         <fieldset class="delete-entry">
             <legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE_HEADER'); ?></legend>
 
-            <p class="warning"><?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?></p>
+            <?php
+            $title = $this->escape(stripslashes($this->entry->get('title')));
+            ?>
+            <p class="warning"><?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE_WARNING', $title); ?></p>
 
             <label for="confirmdel">
                 <input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />

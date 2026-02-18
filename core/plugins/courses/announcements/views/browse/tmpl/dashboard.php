@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -65,10 +65,12 @@ $rows = $this->offering->announcements(array(
 
                     <label for="field_content">
                         <span class="label-text"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?>
-                            <span
-                                class="required"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span></span>
+                            <span class="required">
+                                <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?>
+                            </span></span>
                         <?php
-                        echo $this->editor('fields[content]', '', 35, 3, 'field_content', array('class' => 'minimal no-footer'));
+                        echo $this->editor('fields[content]', '', 35, 3, 'field_content', array('class' => 'minimal
+                        no-footer'));
                         ?>
                     </label>
 

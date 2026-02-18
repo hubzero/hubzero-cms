@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,8 @@ $this->js()
                 <?php
                 foreach ($this->results as $line) {
                     // Get the SEF for the publication
-                    $sef = Route::url('index.php?option=' . $this->option . ($line->alias ? '&alias=' . $line->alias : '&id=' . $line->id) . '&rec_ref=' . $this->publication->id);
+                    $sef = Route::url('index.php?option=' . $this->option . ($line->alias ? '&alias=' . $line->alias :
+                    '&id=' . $line->id) . '&rec_ref=' . $this->publication->id);
                     ?>
                     <li>
                         <a href="<?php echo $sef; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>
@@ -35,6 +34,7 @@ $this->js()
         <?php } else { ?>
             <p><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_NO_RESULTS_FOUND'); ?></p>
         <?php } ?>
-        <p id="credits"><a href="<?php echo Request::base(true); ?>/about/hubzero#recommendations"><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_POWERED_BY'); ?></a></p>
+        <p id="credits"><a href="<?php echo Request::base(true); ?>
+        /about/hubzero#recommendations"><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_POWERED_BY');?></a></p>
     </div>
 </div>

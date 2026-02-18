@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,9 +18,15 @@ $atLeastOneOption = false;
 if ($forumCommentEmailNotifications) {
     $atLeastOneOption = true;
 }
+
+$formUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&cn=' . $this->group->get('cn')
+    . '&active=memberoptions'
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions'); ?>" method="post" id="memberoptionform">
+<form action="<?php echo $formUrl; ?>" method="post" id="memberoptionform">
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
     <input type="hidden" name="action" value="savememberoptions" />
@@ -36,9 +40,12 @@ if ($forumCommentEmailNotifications) {
 
     <?php if ($forumCommentEmailNotifications) { ?>
         <div class="input-wrap">
-            <input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if ($this->recvEmailOptionValue == 1) {
-                echo 'checked="checked"';
-                                                                                     } ?> />
+            <input type="checkbox"
+                id="recvpostemail"
+                value="1"
+                name="recvpostemail" <?php if ($this->recvEmailOptionValue == 1) {
+                    echo 'checked="checked"';
+                                     } ?> />
             <label for="recvpostemail"><?php echo Lang::txt('GROUP_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
         </div>
     <?php } ?>

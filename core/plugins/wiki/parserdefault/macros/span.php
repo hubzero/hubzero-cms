@@ -10,7 +10,6 @@ namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
 
-
 /**
  * Wiki macro class that will wrap some content in a <span> tag
  */

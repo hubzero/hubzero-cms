@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -57,7 +57,19 @@ if ($pNotes) {
                         <li <?php if ($entry->pagename == $this->page->get('pagename')) {
                             echo 'class="active"';
                             } ?>>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes&pagename=' . ($entry->path ? $entry->path . '/' : '') . $entry->pagename); ?>" class="note wikilevel_<?php echo $level; ?>"><?php echo \Hubzero\Utility\Str::truncate($entry->title, 35); ?></a>
+                            <?php
+                                $entryUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&alias=' . $this->project->get('alias')
+                                    . '&active=notes&pagename='
+                                    . ($entry->path ? $entry->path . '/' : '')
+                                    . $entry->pagename
+                                );
+                                $entryTitle = \Hubzero\Utility\Str::truncate($entry->title, 35);
+                            ?>
+                            <a href="<?php echo $entryUrl; ?>"
+                                class="note wikilevel_<?php echo $level; ?>"
+                            ><?php echo $entryTitle; ?></a>
                         </li>
                         <?php
                         // Third level of notes
@@ -67,7 +79,19 @@ if ($pNotes) {
                                 <li <?php if ($subpage->pagename == $this->page->get('pagename')) {
                                     echo 'class="active"';
                                     } ?>>
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes&pagename=' . ($subpage->path ? $subpage->path . '/' : '') . $subpage->pagename); ?>" class="note wikilevel_3"><?php echo \Hubzero\Utility\Str::truncate($subpage->title, 35); ?></a>
+                                    <?php
+                                        $subUrl = Route::url(
+                                            'index.php?option=' . $this->option
+                                            . '&alias=' . $this->project->get('alias')
+                                            . '&active=notes&pagename='
+                                            . ($subpage->path ? $subpage->path . '/' : '')
+                                            . $subpage->pagename
+                                        );
+                                        $subTitle = \Hubzero\Utility\Str::truncate($subpage->title, 35);
+                                    ?>
+                                    <a href="<?php echo $subUrl; ?>"
+                                        class="note wikilevel_3"
+                                    ><?php echo $subTitle; ?></a>
                                 </li>
                                 <?php
                             }

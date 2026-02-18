@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -35,7 +35,8 @@ if ($this->versionTracking == '0') {
     $working = $this->dirsize;
 } else {
     $versions = $this->dirsize - $working;
-    $versions = ($versions > $minGitSize && ($usageGit || $this->by == 'admin')) ? \Hubzero\Utility\Number::formatBytes($versions) : 0;
+    $versions = ($versions > $minGitSize && ($usageGit || $this->by == 'admin')) ?
+    \Hubzero\Utility\Number::formatBytes($versions) : 0;
 }
 
 $inuse = ($inuse > 100) ? '> 100' : $inuse;
@@ -56,19 +57,62 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
 
 ?>
 <?php if ($this->by != 'admin') { ?>
+    <?php
+    $filesUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&alias=' . $this->model->get('alias')
+        . '&active=files'
+    );
+    $diskUsageLabel = Lang::txt(
+        'PLG_PROJECTS_FILES_DISK_USAGE'
+    );
+    ?>
     <div id="plg-header">
-        <h3 class="files"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files'); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo Lang::txt('PLG_PROJECTS_FILES_DISK_USAGE'); ?></span></h3>
+        <h3 class="files">
+            <a href="<?php echo $filesUrl; ?>">
+                <?php echo $this->title; ?>
+            </a>
+            &raquo;
+            <span class="subheader">
+                <?php echo $diskUsageLabel; ?>
+            </span>
+        </h3>
     </div>
 <?php } ?>
     <div id="disk-usage" <?php if ($warning) {
         echo 'class="quota-warning"';
                          } ?>>
         <div class="disk-usage-wrapper">
-            <h3><?php echo ($this->by != 'admin') ? Lang::txt('PLG_PROJECTS_FILES_QUOTA') . ': ' . $quota : Lang::txt('PLG_PROJECTS_FILES_DISK_USAGE'); ?></h3>
+            <?php
+            $h3Text = ($this->by != 'admin')
+                ? Lang::txt('PLG_PROJECTS_FILES_QUOTA')
+                    . ': ' . $quota
+                : Lang::txt('PLG_PROJECTS_FILES_DISK_USAGE');
+            ?>
+            <h3><?php echo $h3Text; ?></h3>
             <?php if ($this->by != 'admin') { ?>
-                <span id="indicator-value"><span><?php echo $inuse . '% ' . Lang::txt('PLG_PROJECTS_FILES_USED') . ' (' . $used . ' ' . Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $quota . ')'; ?></span> <?php if ($warning) {
-                    ?><span class="approaching-quota"> - <?php echo ($inuse == '> 100') ? Lang::txt('PLG_PROJECTS_FILES_OVER_QUOTA')  : Lang::txt('PLG_PROJECTS_FILES_APPROACHING_QUOTA'); ?></span><?php
-                                                 } ?></span>
+                <?php
+                $indicatorText = $inuse . '% '
+                    . Lang::txt('PLG_PROJECTS_FILES_USED')
+                    . ' (' . $used . ' '
+                    . Lang::txt('COM_PROJECTS_OUT_OF')
+                    . ' ' . $quota . ')';
+                $quotaAlert = ($inuse == '> 100')
+                    ? Lang::txt('PLG_PROJECTS_FILES_OVER_QUOTA')
+                    : Lang::txt(
+                        'PLG_PROJECTS_FILES_APPROACHING_QUOTA'
+                    );
+                ?>
+                <span id="indicator-value">
+                    <span>
+                        <?php echo $indicatorText; ?>
+                    </span>
+                    <?php if ($warning) { ?>
+                        <span class="approaching-quota">
+                            - <?php echo $quotaAlert; ?>
+                        </span>
+                    <?php } ?>
+                </span>
             <?php } ?>
             <?php if ($this->by != 'admin') { ?>
             <div id="indicator-wrapper">
@@ -77,27 +121,78 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
                                                       <?php } ?>
             </div>
             <div id="usage-labels">
-                    <span class="l-actual">&nbsp;</span><?php echo Lang::txt('PLG_PROJECTS_FILES_FILES') . ' (' . \Hubzero\Utility\Number::formatBytes($working) . ')'; ?>
-                    <?php if ($versions > 0) { ?>
-                    <span class="l-regular">&nbsp;</span><?php echo $this->by == 'admin' ? Lang::txt('Versions') : Lang::txt('Version History*');
-                        echo ' (' . $versions . ')';
+                    <?php
+                    $workingFormatted = \Hubzero\Utility\Number::formatBytes($working);
+                    $filesLabel = Lang::txt('PLG_PROJECTS_FILES_FILES')
+                        . ' (' . $workingFormatted . ')';
+                    ?>
+                    <span class="l-actual">&nbsp;</span>
+                    <?php echo $filesLabel; ?>
+                    <?php if ($versions > 0) {
+                        $versionLabel = $this->by == 'admin'
+                            ? Lang::txt('Versions')
+                            : Lang::txt('Version History*');
+                        $versionLabel .= ' (' . $versions . ')';
+                        ?>
+                    <span class="l-regular">&nbsp;</span>
+                        <?php echo $versionLabel;
                     } ?>
-                    <span class="l-unused">&nbsp;</span><?php echo Lang::txt('PLG_PROJECTS_FILES_UNUSED_SPACE') . ' (' . $unused . ')'; ?>
+                    <?php
+                    $unusedLabel = Lang::txt(
+                        'PLG_PROJECTS_FILES_UNUSED_SPACE'
+                    ) . ' (' . $unused . ')';
+                    ?>
+                    <span class="l-unused">&nbsp;</span>
+                    <?php echo $unusedLabel; ?>
             </div>
             <?php } else { ?>
             <div id="usage-labels" class="usage-admin">
-                <span class="l-h"><?php echo Lang::txt('PLG_PROJECTS_FILES_PROJECT_FILES'); ?>
-                    <span class="l-actual">&nbsp;</span><?php echo Lang::txt('PLG_PROJECTS_FILES_FILES') . ': ' . \Hubzero\Utility\Number::formatBytes($working); ?>
-                    <span class="l-regular">&nbsp;</span><?php echo Lang::txt('PLG_PROJECTS_FILES_HISTORY') . ': ' . $versions; ?>
-                    <span class="l-unused">&nbsp;</span><?php echo Lang::txt('PLG_PROJECTS_FILES_AVAILABLE') . ': ' . $unused; ?>
+                <?php
+                $adminFilesLabel = Lang::txt(
+                    'PLG_PROJECTS_FILES_FILES'
+                ) . ': ' . \Hubzero\Utility\Number::formatBytes(
+                    $working
+                );
+                $adminHistoryLabel = Lang::txt(
+                    'PLG_PROJECTS_FILES_HISTORY'
+                ) . ': ' . $versions;
+                $adminAvailLabel = Lang::txt(
+                    'PLG_PROJECTS_FILES_AVAILABLE'
+                ) . ': ' . $unused;
+                $projectFilesLabel = Lang::txt(
+                    'PLG_PROJECTS_FILES_PROJECT_FILES'
+                );
+                ?>
+                <span class="l-h">
+                    <?php echo $projectFilesLabel; ?>
+                    <span class="l-actual">&nbsp;</span>
+                    <?php echo $adminFilesLabel; ?>
+                    <span class="l-regular">&nbsp;</span>
+                    <?php echo $adminHistoryLabel; ?>
+                    <span class="l-unused">&nbsp;</span>
+                    <?php echo $adminAvailLabel; ?>
                 <span>
                 <?php if (isset($this->pubDiskUsage)) {
                     $unusedPub = $this->pubQuota - $this->pubDiskUsage;
                     $unusedPub = $unusedPub <= 0 ? 'none' : \Hubzero\Utility\Number::formatBytes($unusedPub);
+                    $pubLabel = Lang::txt(
+                        'PLG_PROJECTS_FILES_SPACE_PUBLISHED'
+                    ) . ': ' . \Hubzero\Utility\Number::formatBytes(
+                        $this->pubDiskUsage
+                    );
+                    $pubAvailLabel = Lang::txt(
+                        'PLG_PROJECTS_FILES_AVAILABLE'
+                    ) . ': ' . $unusedPub;
+                    $pubHeadLabel = Lang::txt(
+                        'PLG_PROJECTS_FILES_PUBLICATIONS'
+                    );
                     ?>
-                <span class="l-h"><?php echo Lang::txt('PLG_PROJECTS_FILES_PUBLICATIONS'); ?>
-                    <span class="l-pub">&nbsp;</span><?php echo Lang::txt('PLG_PROJECTS_FILES_SPACE_PUBLISHED') . ': ' . \Hubzero\Utility\Number::formatBytes($this->pubDiskUsage); ?>
-                    <span class="l-unused">&nbsp;</span><?php echo Lang::txt('PLG_PROJECTS_FILES_AVAILABLE') . ': ' . $unusedPub; ?>
+                <span class="l-h">
+                    <?php echo $pubHeadLabel; ?>
+                    <span class="l-pub">&nbsp;</span>
+                    <?php echo $pubLabel; ?>
+                    <span class="l-unused">&nbsp;</span>
+                    <?php echo $pubAvailLabel; ?>
                 <span>
                 <?php } ?>
             </div>
@@ -112,11 +207,53 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
     $this->by != 'admin' && $this->model->access('manager')
         && $this->params->get('diskspace_options') && $versions > 0
 ) { ?>
+    <?php
+    $optimizeUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&alias=' . $this->model->get('alias')
+        . '&active=files&action=optimize'
+    );
+    $optimizeLabel = Lang::txt(
+        'PLG_PROJECTS_FILES_OPTIMIZE'
+    );
+    $optimizeAbout = Lang::txt(
+        'PLG_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE'
+    );
+    $advOptimizeUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&alias=' . $this->model->get('alias')
+        . '&active=files&action=advoptimize'
+    );
+    $advOptimizeLabel = Lang::txt(
+        'PLG_PROJECTS_FILES_OPTIMIZE_ADV'
+    );
+    $advOptimizeAbout = Lang::txt(
+        'PLG_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE_ADV'
+    );
+    ?>
     <div id="disk-manage">
         <h4><?php echo Lang::txt('PLG_PROJECTS_FILES_MANAGE_SPACE'); ?></h4>
-        <p class="mini faded"><?php echo Lang::txt('PLG_PROJECTS_FILES_ABOUT_DISK_MANAGE_OPTIONS'); ?></p>
-        <p class="disk-manage-option"><a class="btn manage disk-usage-optimize" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=optimize'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_OPTIMIZE'); ?></a><span class="diskmanage-about"><?php echo Lang::txt('PLG_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE'); ?></span></p>
+        <p class="mini faded">
+            <?php echo Lang::txt('PLG_PROJECTS_FILES_ABOUT_DISK_MANAGE_OPTIONS'); ?>
+        </p>
+        <p class="disk-manage-option">
+            <a class="btn manage disk-usage-optimize"
+               href="<?php echo $optimizeUrl; ?>">
+                <?php echo $optimizeLabel; ?>
+            </a>
+            <span class="diskmanage-about">
+                <?php echo $optimizeAbout; ?>
+            </span>
+        </p>
 
-        <p class="disk-manage-option"><a class="btn manage disk-usage-optimize" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=files&action=advoptimize'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_OPTIMIZE_ADV'); ?></a><span class="diskmanage-about"><?php echo Lang::txt('PLG_PROJECTS_FILES_ABOUT_FILE_OPTIMIZE_ADV'); ?></span></p>
+        <p class="disk-manage-option">
+            <a class="btn manage disk-usage-optimize"
+               href="<?php echo $advOptimizeUrl; ?>">
+                <?php echo $advOptimizeLabel; ?>
+            </a>
+            <span class="diskmanage-about">
+                <?php echo $advOptimizeAbout; ?>
+            </span>
+        </p>
     </div>
     <?php }

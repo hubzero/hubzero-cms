@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,18 +8,63 @@
 
 Toolbar::addNew();
 Toolbar::deleteList();
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=manage&plugin=sponsors'
+);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&plugin=sponsors'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm">
 
     <table class="adminlist">
         <caption><?php echo Lang::txt('PLG_RESOURCES_SPONSORS'); ?></caption>
         <thead>
             <tr>
                 <th><input type="checkbox" name="toggle" value="" class="checkbox-toggle toggle-all" /></th>
-                <th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'PLG_RESOURCES_SPONSORS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $sortDir = @$this->filters['sort_Dir'];
+                $sortCol = @$this->filters['sort'];
+                ?>
+                <th scope="col"><?php
+                    echo Html::grid(
+                        'sort',
+                        'PLG_RESOURCES_SPONSORS_COL_ID',
+                        'id',
+                        $sortDir,
+                        $sortCol
+                    );
+                    ?></th>
+                <th scope="col"><?php
+                    echo Html::grid(
+                        'sort',
+                        'PLG_RESOURCES_SPONSORS_COL_TITLE',
+                        'title',
+                        $sortDir,
+                        $sortCol
+                    );
+                    ?></th>
+                <th scope="col"><?php
+                    echo Html::grid(
+                        'sort',
+                        'PLG_RESOURCES_SPONSORS_COL_ALIAS',
+                        'alias',
+                        $sortDir,
+                        $sortCol
+                    );
+                    ?></th>
+                <th scope="col"><?php
+                    echo Html::grid(
+                        'sort',
+                        'PLG_RESOURCES_SPONSORS_COL_STATE',
+                        'state',
+                        $sortDir,
+                        $sortCol
+                    );
+                    ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -58,21 +101,49 @@ Toolbar::deleteList();
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                    <input type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->id; ?>"
+                        class="checkbox-toggle"/>
                 </td>
                 <td>
                     <?php echo $row->id; ?>
                 </td>
+                <?php
+                $editUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=manage&plugin=sponsors'
+                    . '&action=edit&id=' . $row->id
+                );
+                ?>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&plugin=sponsors&action=edit&id=' . $row->id); ?>">
+                    <a href="<?php echo $editUrl; ?>">
                         <?php echo $this->escape($row->title); ?>
                     </a>
                 </td>
                 <td>
                     <?php echo $this->escape($row->alias); ?>
                 </td>
+                <?php
+                $stateUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=manage&plugin=sponsors'
+                    . '&action=' . $task
+                    . '&id=' . $row->id
+                    . '&' . Session::getFormToken() . '=1'
+                );
+                $stateTitle = Lang::txt(
+                    'PLG_RESOURCES_SPONSORS_SET_TO',
+                    $task
+                );
+                ?>
                 <td>
-                    <a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&plugin=sponsors&action=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_SPONSORS_SET_TO', $task); ?>">
+                    <a class="state <?php echo $cls; ?>"
+                        href="<?php echo $stateUrl; ?>"
+                        title="<?php echo $stateTitle; ?>">
                         <span><?php echo $alt; ?></span>
                     </a>
                 </td>

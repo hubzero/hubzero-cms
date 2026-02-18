@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -67,7 +67,9 @@ if (count($items) > 0) { ?>
         // Add missing items
         if (count($missing) > 0) {
             foreach ($missing as $miss) { ?>
-                <li class="c-click databases i-missing" id="data::<?php echo $miss['id']; ?>"><?php echo $miss['title']; ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE'); ?></span></li>
+                <li class="c-click databases i-missing" id="data::<?php echo $miss['id']; ?>
+                "><?php echo $miss['title'];?>
+                <span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE');?></span></li>
             <?php	}
         }
 }
@@ -79,5 +81,7 @@ if (count($items) > 0) { ?>
 <?php } ?>
 
 <?php if (!$this->model->isProvisioned()) { ?>
-    <p class="addnew"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO'); ?> <a href="<?php echo Route::url($route . '&active=databases'); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE'); ?></p>
+    <p class="addnew"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO'); ?>
+    <a href="<?php echo Route::url($route . '&active=databases');?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?>
+    </a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE');?></p>
 <?php }

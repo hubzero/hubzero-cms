@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,12 +14,25 @@ $this->css()
 </h3>
 
 <p class="section-options">
-    <?php if (User::isGuest()) { ?>
-        <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#commentform'))); ?>">
+    <?php if (User::isGuest()) {
+        $reviewUrl = Route::url(
+            'index.php?option=' . $this->option . '&id=' . $this->resource->id
+            . '&active=reviews&action=addreview#commentform'
+        );
+        $loginUrl = Route::url(
+            'index.php?option=com_users&view=login&return=' . base64_encode($reviewUrl)
+        );
+        ?>
+        <a class="icon-add add btn" href="<?php echo $loginUrl; ?>">
             <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
         </a>
-    <?php } elseif (!$this->isAuthor) { ?>
-        <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#commentform'); ?>">
+    <?php } elseif (!$this->isAuthor) {
+        $reviewUrl = Route::url(
+            'index.php?option=' . $this->option . '&id=' . $this->resource->id
+            . '&active=reviews&action=addreview#commentform'
+        );
+        ?>
+        <a class="icon-add add btn" href="<?php echo $reviewUrl; ?>">
             <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
         </a>
     <?php } ?>
@@ -84,7 +95,10 @@ if (!User::isGuest()) {
         }
         foreach ($schema->fields as $field) {
             if (isset($data[$field->name])) {
-                if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+                if (
+                    $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display
+                    == $tab
+                ) {
                     ?>
                         <h4><?php echo $field->label; ?></h4>
                         <div class="resource-content">

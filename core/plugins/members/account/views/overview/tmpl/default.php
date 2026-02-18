@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -42,12 +42,26 @@ $this->css()
                     $pparams      = new \Hubzero\Config\Registry($plugin->params);
                     $display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
                     ?>
+                    <?php
+                    $removeTitle = Lang::txt('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT');
+                    $unlinkUrl = Route::url(
+                        $this->member->link()
+                        . '&active=account&action=unlink&hzal_id='
+                        . $hzala['id']
+                    );
+                    $accountTypeLabel = Lang::txt(
+                        'PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'
+                    );
+                    ?>
                     <div class="account active <?php echo $hzala['auth_domain_name']; ?>">
                         <div class="x">
-                            <a title="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php echo Route::url($this->member->link() . '&active=account&action=unlink&hzal_id=' . $hzala['id']); ?>">x</a>
+                            <a title="<?php echo $removeTitle; ?>"
+                                href="<?php echo $unlinkUrl; ?>">x</a>
                         </div>
                         <div class="account-info">
-                            <div class="account-type"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
+                            <div class="account-type">
+                                <?php echo $accountTypeLabel; ?>: <?php echo $display_name; ?>
+                            </div>
                         </div>
                     </div>
                     <?php
@@ -63,16 +77,31 @@ $this->css()
                     $plugin       = Plugin::byType('authentication', $domain->name);
                     $pparams      = new \Hubzero\Config\Registry($plugin->params);
                     $display_name = $pparams->get('display_name', ucfirst($domain->name));
-                    $refl         = new \ReflectionClass('plgauthentication' . $domain->name);
+                    $refl         = new \ReflectionClass(
+                        'plgauthentication' . $domain->name
+                    );
+                    $hasRender = $refl->hasMethod('onRenderOption');
+                    $html = $hasRender
+                        ? $refl->getMethod('onRenderOption')->invoke(null)
+                        : null;
+                    $loginUrl = Route::url(
+                        'index.php?option=com_users&view=login'
+                        . '&authenticator=' . $domain->name
+                    );
+                    $typeLabel = Lang::txt(
+                        'PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'
+                    );
                     ?>
 
-                    <?php if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(null))) : ?>
+                    <?php if ($html) : ?>
                         <?php echo is_array($html) ? implode("\n", $html) : $html; ?>
                     <?php else : ?>
-                        <a href="<?php echo Route::url('index.php?option=com_users&view=login&authenticator=' . $domain->name); ?>">
+                        <a href="<?php echo $loginUrl; ?>">
                             <div class="account inactive <?php echo $domain->name; ?>">
                                 <div class="account-info">
-                                    <div class="account-type"><?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
+                                    <div class="account-type">
+                                        <?php echo $typeLabel; ?>: <?php echo $display_name; ?>
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -102,26 +131,69 @@ $this->css()
                 <?php if (is_array($this->passinfo)) { ?>
                     <p class="<?php echo $this->passinfo['message_style']; ?>">
                         <?php if ($this->passinfo['diff'] < 0) : ?>
-                            <?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_PASSWORD_EXPIRED_EXPLANATION', -$this->passinfo['diff'], $this->passinfo['max']); ?>
+                            <?php
+                            echo Lang::txt(
+                                'PLG_MEMBERS_ACCOUNT_PASSWORD_EXPIRED_EXPLANATION',
+                                -$this->passinfo['diff'],
+                                $this->passinfo['max']
+                            );
+                            ?>
                         <?php else : ?>
-                            <?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_PASSWORD_EXPIRATION_EXPLANATION', $this->passinfo['diff'], $this->passinfo['max']); ?>
+                            <?php
+                            echo Lang::txt(
+                                'PLG_MEMBERS_ACCOUNT_PASSWORD_EXPIRATION_EXPLANATION',
+                                $this->passinfo['diff'],
+                                $this->passinfo['max']
+                            );
+                            ?>
                         <?php endif ?>
                     </p>
                 <?php } // close if is array passinfo ?>
                 <p class="error" id="section-edit-errors"></p>
-                <div id="password-group"<?php echo (count($this->password_rules) > 0) ? ' class="split-left"' : ""; ?>>
+                <?php
+                $groupClass = (count($this->password_rules) > 0)
+                    ? ' class="split-left"'
+                    : '';
+                $currentPassLabel = Lang::txt(
+                    'PLG_MEMBERS_ACCOUNT_CURRENT_PASSWORD'
+                );
+                $newPassLabel = Lang::txt(
+                    'PLG_MEMBERS_ACCOUNT_NEW_PASSWORD'
+                );
+                $confirmPassLabel = Lang::txt(
+                    'PLG_MEMBERS_ACCOUNT_CONFIRM_NEW_PASSWORD'
+                );
+                ?>
+                <div id="password-group"<?php echo $groupClass; ?>>
                     <label>
-                        <?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_CURRENT_PASSWORD'); ?> <input type="password" name="oldpass" id="oldpass" class="input-text" />
+                        <?php echo $currentPassLabel; ?>
+                        <input type="password"
+                            name="oldpass"
+                            id="oldpass"
+                            class="input-text" />
                     </label>
                     <label class="side-by-side pad-right">
-                        <?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_NEW_PASSWORD'); ?> <input type="password" name="newpass" id="newpass1" class="input-text" />
+                        <?php echo $newPassLabel; ?>
+                        <input type="password"
+                            name="newpass"
+                            id="newpass1"
+                            class="input-text" />
                     </label>
                     <label class="side-by-side">
-                        <?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_CONFIRM_NEW_PASSWORD'); ?> <input type="password" name="newpass2" id="newpass2" class="input-text" />
+                        <?php echo $confirmPassLabel; ?>
+                        <input type="password"
+                            name="newpass2"
+                            id="newpass2"
+                            class="input-text" />
                     </label>
 
-                    <input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SAVE'); ?>" id="password-change-save" />
-                    <input type="reset" class="cancel" id="pass-cancel" value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_CANCEL'); ?>" />
+                    <input type="submit"
+                        value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_SAVE'); ?>"
+                        id="password-change-save"/>
+                    <input type="reset"
+                        class="cancel"
+                        id="pass-cancel"
+                        value="<?php echo Lang::txt('PLG_MEMBERS_ACCOUNT_CANCEL'); ?>"/>
                 </div>
 
                 <?php
@@ -183,7 +255,14 @@ $this->css()
             </p>
             <h5><?php echo Lang::txt('PLG_MEMBERS_MANAGE_KEYS'); ?></h5>
             <?php if ($this->key !== false) : ?>
-                <form action="<?php echo Route::url($this->member->link() . '&active=account&task=uploadkey', true, true); ?>" method="post">
+                <?php
+                $uploadKeyUrl = Route::url(
+                    $this->member->link() . '&active=account&task=uploadkey',
+                    true,
+                    true
+                );
+                ?>
+                <form action="<?php echo $uploadKeyUrl; ?>" method="post">
                     <p><?php echo Lang::txt('PLG_MEMGERS_ACCOUNT_KEY_HINT'); ?>:</p>
                     <textarea name="keytext" cols="50" rows="6"><?php echo $this->key; ?></textarea>
                     <div class="clear"></div>

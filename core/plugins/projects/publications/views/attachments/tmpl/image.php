@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -39,17 +39,51 @@ $over  = $data->get('pubThumb') == 1 ? ' title="' . Lang::txt('PLG_PROJECTS_PUBL
 ?>
     <li class="image-container">
         <span class="item-options">
-            <?php if ($data->get('viewer') == 'edit') { ?>
+            <?php if ($data->get('viewer') == 'edit') {
+                $editBase = $pub->link('editversion')
+                    . '&aid=' . $data->get('id')
+                    . '&p=' . $data->get('props');
+                $defaultUrl = Route::url(
+                    $editBase . '&action=saveitem&makedefault=1'
+                );
+                $editUrl = Route::url(
+                    $editBase . '&action=edititem'
+                );
+                $deleteUrl = Route::url(
+                    $editBase . '&action=deleteitem'
+                );
+                $defaultTitle = Lang::txt(
+                    'PLG_PROJECTS_PUBLICATIONS_IMAGE_MAKE_DEFAULT'
+                );
+                $editTitle = Lang::txt(
+                    'PLG_PROJECTS_PUBLICATIONS_RELABEL'
+                );
+                $removeTitle = Lang::txt(
+                    'PLG_PROJECTS_PUBLICATIONS_REMOVE'
+                );
+                ?>
             <span>
                 <?php if (!$data->get('pubThumb')) { ?>
-                <a href="<?php echo Route::url($pub->link('editversion') . '&action=saveitem&aid=' . $data->get('id') . '&p=' . $data->get('props') . '&makedefault=1'); ?>" class="item-default" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMAGE_MAKE_DEFAULT'); ?>">&nbsp;</a>
+                <a href="<?php echo $defaultUrl; ?>"
+                    class="item-default"
+                    title="<?php echo $defaultTitle; ?>"
+                    >&nbsp;</a>
                 <?php } ?>
-                <a href="<?php echo Route::url($pub->link('editversion') . '&action=edititem&aid=' . $data->get('id') . '&p=' . $data->get('props')); ?>" class="showinbox item-edit" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL'); ?>">&nbsp;</a>
-                <a href="<?php echo Route::url($pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p=' . $data->get('props')); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+                <a href="<?php echo $editUrl; ?>"
+                    class="showinbox item-edit"
+                    title="<?php echo $editTitle; ?>"
+                    >&nbsp;</a>
+                <a href="<?php echo $deleteUrl; ?>"
+                    class="item-remove"
+                    title="<?php echo $removeTitle; ?>"
+                    >&nbsp;</a>
             </span>
             <?php } ?>
         </span>
-        <span class="item-image<?php echo $class; ?>" <?php echo $over; ?>><a class="more-content" href="<?php echo $filePath; ?>"><img alt="" src="<?php echo $thumbSrc; ?>" /></a></span>
+        <span class="item-image<?php echo $class; ?>"
+            <?php echo $over; ?>
+            ><a class="more-content" href="<?php echo $filePath; ?>"
+            ><img alt="" src="<?php echo $thumbSrc; ?>" /></a></span>
         <span class="item-title">
             <?php echo $data->get('title'); ?></span>
         <span class="item-details"><?php echo $details; ?></span>

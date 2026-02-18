@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,11 +25,20 @@ $this->reviews = new \Hubzero\Base\ItemList($this->reviews);
 </h3>
 <p class="section-options">
     <?php if (User::isGuest()) { ?>
-            <a href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->publication->link('reviews') . '&action=addreview#reviewform'))); ?>" class="icon-add add btn">
+            <?php
+            $loginReturn = base64_encode(
+                Route::url($this->publication->link('reviews') . '&action=addreview#reviewform')
+            );
+            $loginUrl = Route::url(
+                'index.php?option=com_users&view=login&return=' . $loginReturn
+            );
+            ?>
+            <a href="<?php echo $loginUrl; ?>" class="icon-add add btn">
                 <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_WRITE_A_REVIEW'); ?>
             </a>
     <?php } else { ?>
-            <a href="<?php echo Route::url($this->publication->link('reviews') . '&action=addreview#reviewform'); ?>" class="icon-add add btn">
+            <a href="<?php echo Route::url($this->publication->link('reviews') . '&action=addreview#reviewform'); ?>"
+                class="icon-add add btn">
                 <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_WRITE_A_REVIEW'); ?>
             </a>
     <?php } ?>

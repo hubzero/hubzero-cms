@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -46,9 +44,16 @@ if ($this->category->get('section_id') == 0) {
                     <select name="fields[section_id]" id="field-section_id" class="form-control">
                         <option value="0"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_SECTION_SELECT'); ?></option>
                         <?php foreach ($this->forum->sections(array('state' => 1))->rows() as $section) { ?>
-                            <option value="<?php echo $section->get('id'); ?>"<?php if ($this->category->get('section_id') == $section->get('id')) {
-                                echo ' selected="selected"';
-                                           } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+                            <?php
+                            $sectionId = $section->get('id');
+                            $sectionTitle = $this->escape(stripslashes($section->get('title')));
+                            $isSelected = ($this->category->get('section_id') == $sectionId)
+                                ? ' selected="selected"'
+                                : '';
+                            ?>
+                            <option
+                                value="<?php echo $sectionId; ?>"<?php echo $isSelected; ?>
+                            ><?php echo $sectionTitle; ?></option>
                         <?php } ?>
                     </select>
                 </label>
@@ -57,14 +62,23 @@ if ($this->category->get('section_id') == 0) {
             <div class="form-group">
                 <label for="field-title">
                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE'); ?>
-                    <input type="text" name="fields[title]" id="field-title" class="form-control" value="<?php echo $this->escape(stripslashes($this->category->get('title', ''))); ?>" />
+                    <input type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="form-control"
+                        value="<?php echo $this->escape(stripslashes($this->category->get('title', ''))); ?>"/>
                 </label>
             </div>
 
             <div class="form-group">
                 <label for="field-description">
                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>
-                    <textarea name="fields[description]" id="field-description" class="form-control" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description', ''))); ?></textarea>
+                    <textarea name="fields[description]"
+                        id="field-description"
+                        class="form-control"
+                        cols="35"
+                        rows="5"
+                        ><?php echo $this->escape(stripslashes($this->category->get('description', ''))); ?></textarea>
                 </label>
             </div>
 
@@ -74,9 +88,13 @@ if ($this->category->get('section_id') == 0) {
                         <div class="form-check">
                             <label for="field-closed" id="comment-anonymous-label" class="form-check-label">
                                 <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_LOCKED'); ?><br />
-                                <input class="option form-check-input" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) {
-                                    echo ' checked="checked"';
-                                                                                                                                        } ?> />
+                                <input class="option form-check-input"
+                                    type="checkbox"
+                                    name="fields[closed]"
+                                    id="field-closed"
+                                    value="3"<?php if ($this->category->get('closed')) {
+                                        echo ' checked="checked"';
+                                             } ?> />
                                 <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED'); ?>
                             </label>
                         </div>
@@ -86,16 +104,29 @@ if ($this->category->get('section_id') == 0) {
                     <div class="form-group">
                         <label for="field-access">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_ACCESS_DESCRIPTION'); ?>:
-                            <select name="fields[access]" id="field-access" class="form-control">
-                                <option value="1"<?php if ($this->category->get('access') == 1) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
-                                <option value="2"<?php if ($this->category->get('access') == 2) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
-                                <option value="5"<?php if ($this->category->get('access') == 5) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
+                            <?php
+                            $access = $this->category->get('access');
+                            $sel1 = ($access == 1) ? ' selected="selected"' : '';
+                            $sel2 = ($access == 2) ? ' selected="selected"' : '';
+                            $sel5 = ($access == 5) ? ' selected="selected"' : '';
+                            $optPublic = Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC');
+                            $optRegistered = Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED');
+                            $optPrivate = Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE');
+                            ?>
+                            <select
+                                name="fields[access]"
+                                id="field-access"
+                                class="form-control"
+                            >
+                                <option
+                                    value="1"<?php echo $sel1; ?>
+                                ><?php echo $optPublic; ?></option>
+                                <option
+                                    value="2"<?php echo $sel2; ?>
+                                ><?php echo $optRegistered; ?></option>
+                                <option
+                                    value="5"<?php echo $sel5; ?>
+                                ><?php echo $optPrivate; ?></option>
                             </select>
                         </label>
                     </div>
@@ -115,7 +146,9 @@ if ($this->category->get('section_id') == 0) {
         <input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->category->get('id')); ?>" />
         <input type="hidden" name="fields[state]" value="1" />
         <input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->forum->get('scope')); ?>" />
-        <input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->forum->get('scope_id')); ?>" />
+        <input type="hidden"
+            name="fields[scope_id]"
+            value="<?php echo $this->escape($this->forum->get('scope_id')); ?>"/>
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />

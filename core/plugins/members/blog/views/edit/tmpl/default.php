@@ -1,8 +1,7 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 
 /**
  * @package    hubzero-cms
@@ -13,7 +12,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->entry->tags('string'))));
+$tf = Event::trigger(
+    'hubzero.onGetMultiEntry',
+    array(array('tags', 'tags', 'actags', '', $this->entry->tags('string')))
+);
 
 if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0000-00-00 00:00:00') {
     $this->entry->set('publish_down', '');
@@ -37,7 +39,10 @@ $this->css('jquery.datepicker.css', 'system')
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-    <form action="<?php echo Route::url($this->member->link() . '&active=blog&task=save'); ?>" method="post" id="hubForm" class="full">
+    <form action="<?php echo Route::url($this->member->link() . '&active=blog&task=save'); ?>"
+        method="post"
+        id="hubForm"
+        class="full">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
 
@@ -45,8 +50,16 @@ $this->css('jquery.datepicker.css', 'system')
                 <label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) {
                     echo ' class="fieldWithErrors"';
                                         } ?>>
-                    <?php echo Lang::txt('PLG_MEMBERS_BLOG_TITLE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                    <input type="text" class="form-control" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title', ''))); ?>" />
+                    <?php echo Lang::txt('PLG_MEMBERS_BLOG_TITLE'); ?>
+                    <span class="required">
+                        <?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+                    </span>
+                    <input type="text"
+                        class="form-control"
+                        name="entry[title]"
+                        id="field-title"
+                        size="35"
+                        value="<?php echo $this->escape(stripslashes($this->entry->get('title', ''))); ?>"/>
                 </label>
                 <?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
                     <p class="error"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
@@ -55,8 +68,20 @@ $this->css('jquery.datepicker.css', 'system')
 
             <div class="form-group">
                 <label for="entrycontent">
-                    <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                    <?php echo $this->editor('entry[content]', $this->entry->get('content'), 50, 30, 'entrycontent', array('class' => 'form-control')); ?>
+                    <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?>
+                    <span class="required">
+                        <?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+                    </span>
+                    <?php
+                    echo $this->editor(
+                        'entry[content]',
+                        $this->entry->get('content'),
+                        50,
+                        30,
+                        'entrycontent',
+                        array('class' => 'form-control')
+                    );
+                    ?>
                 </label>
                 <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
                     <p class="error"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
@@ -66,7 +91,18 @@ $this->css('jquery.datepicker.css', 'system')
             <fieldset>
                 <legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES'); ?></legend>
                 <div class="field-wrap">
-                    <iframe width="100%" height="260" name="filer" id="filer" src="<?php echo Request::base(true) . '/index.php?option=com_blog&controller=media&id=' . $this->member->get('id') . '&scope=member&tmpl=component'; ?>"></iframe>
+                    <?php
+                    $iframeSrc = Request::base(true)
+                        . '/index.php?option=com_blog&controller=media&id='
+                        . $this->member->get('id')
+                        . '&scope=member&tmpl=component';
+                    ?>
+                    <iframe
+                        width="100%"
+                        height="260"
+                        name="filer"
+                        id="filer"
+                        src="<?php echo $iframeSrc; ?>"></iframe>
                 </div>
             </fieldset>
 
@@ -76,7 +112,11 @@ $this->css('jquery.datepicker.css', 'system')
                     <?php if (count($tf) > 0) {
                         echo implode("\n", $tf);
                     } else { ?>
-                        <input type="text" class="form-control" name="tags" id="actags" value="<?php echo $this->escape($this->entry->tags('string')); ?>" />
+                        <input type="text"
+                            class="form-control"
+                            name="tags"
+                            id="actags"
+                            value="<?php echo $this->escape($this->entry->tags('string')); ?>"/>
                     <?php } ?>
                     <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_TAGS_HINT'); ?></span>
                 </label>
@@ -86,9 +126,13 @@ $this->css('jquery.datepicker.css', 'system')
                 <div class="col span6">
                     <div class="form-group">
                         <label for="field-allow_comments">
-                            <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) {
-                                echo ' checked="checked"';
-                                                                                                                                                   } ?> />
+                            <input type="checkbox"
+                                class="option form-check-input"
+                                name="entry[allow_comments]"
+                                id="field-allow_comments"
+                                value="1"<?php if ($this->entry->get('allow_comments') == 1) {
+                                    echo ' checked="checked"';
+                                         } ?> />
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
                         </label>
                     </div>
@@ -97,29 +141,64 @@ $this->css('jquery.datepicker.css', 'system')
                     <div class="form-group">
                         <label for="field-state">
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY'); ?>
-                            <select class="form-control" name="entry[access]" id="field-access">
-                                <option value="1"<?php if ($this->entry->get('access') == 1) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
-                                <option value="2"<?php if ($this->entry->get('access') == 2) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
-                                <option value="5"<?php if ($this->entry->get('access') > 2) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
+                            <?php
+                            $access = $this->entry->get('access');
+                            $selPublic = ($access == 1) ? ' selected="selected"' : '';
+                            $selRegistered = ($access == 2) ? ' selected="selected"' : '';
+                            $selPrivate = ($access > 2) ? ' selected="selected"' : '';
+                            ?>
+                            <select
+                                class="form-control"
+                                name="entry[access]"
+                                id="field-access">
+                                <option value="1"<?php echo $selPublic; ?>>
+                                    <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PUBLIC'); ?>
+                                </option>
+                                <option value="2"<?php echo $selRegistered; ?>>
+                                    <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_REGISTERED'); ?>
+                                </option>
+                                <option value="5"<?php echo $selPrivate; ?>>
+                                    <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PRIVATE'); ?>
+                                </option>
                             </select>
                         </label>
                     </div>
                 </div>
             </div>
 
+            <?php
+            $tzOffset = timezone_offset_get(
+                new DateTimeZone(Config::get('offset')),
+                Date::of('now')
+            ) / 60;
+            $publishUpVal = ($this->entry->get('publish_up'))
+                ? $this->escape(
+                    Date::of($this->entry->get('publish_up'))
+                        ->toLocal('Y-m-d H:i:s')
+                )
+                : '';
+            $publishDownVal = ($this->entry->get('publish_down'))
+                ? $this->escape(
+                    Date::of($this->entry->get('publish_down'))
+                        ->toLocal('Y-m-d H:i:s')
+                )
+                : '';
+            ?>
             <div class="grid">
                 <div class="col span6">
                     <div class="form-group">
                         <label for="field-publish_up">
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_PUBLISH_UP'); ?>
-                            <input type="text" class="form-control" name="entry[publish_up]" id="field-publish_up" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_up')) ? $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
-                            <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="entry[publish_up]"
+                                id="field-publish_up"
+                                data-timezone="<?php echo $tzOffset; ?>"
+                                value="<?php echo $publishUpVal; ?>" />
+                            <span class="hint">
+                                <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?>
+                            </span>
                         </label>
                     </div>
                 </div>
@@ -127,8 +206,16 @@ $this->css('jquery.datepicker.css', 'system')
                     <div class="form-group">
                         <label for="field-publish_down">
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_PUBLISH_DOWN'); ?>
-                            <input type="text" class="form-control" name="entry[publish_down]" id="field-publish_down" data-timezone="<?php echo (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_down')) ? $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
-                            <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="entry[publish_down]"
+                                id="field-publish_down"
+                                data-timezone="<?php echo $tzOffset; ?>"
+                                value="<?php echo $publishDownVal; ?>" />
+                            <span class="hint">
+                                <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?>
+                            </span>
                         </label>
                     </div>
                 </div>
@@ -140,7 +227,9 @@ $this->css('jquery.datepicker.css', 'system')
         <input type="hidden" name="entry[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
         <input type="hidden" name="entry[alias]" value="<?php echo $this->escape($this->entry->get('alias')); ?>" />
         <input type="hidden" name="entry[created]" value="<?php echo $this->escape($this->entry->get('created')); ?>" />
-        <input type="hidden" name="entry[created_by]" value="<?php echo $this->escape($this->entry->get('created_by')); ?>" />
+        <input type="hidden"
+            name="entry[created_by]"
+            value="<?php echo $this->escape($this->entry->get('created_by')); ?>"/>
         <input type="hidden" name="entry[scope]" value="member" />
         <input type="hidden" name="entry[scope_id]" value="<?php echo $this->entry->get('scope_id'); ?>" />
         <input type="hidden" name="entry[state]" value="<?php echo $this->entry->get('state', 1); ?>" />

@@ -1,4 +1,4 @@
-<?php // phpcs:disable Generic.Files.LineLength
+<?php
 
 /**
  * @package    hubzero-cms
@@ -19,13 +19,16 @@ $dataurl = str_replace('&amp;', '&', $dataurl);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <style type="text/css">
-        .style1 {background-color:#ffffff;font-size:2.5em;font-weight:bold;padding-left:3px;padding-right:3px;border:2px #000000 solid;}
+        
+            . style1 {background-color:#ffffff;font-size:2
+            . 5em;font-weight:bold;padding-left:3px;padding-right:3px;border:2px #000000 solid;}
         .style2 {background-color:#ffffff;}
     </style>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>User Animation</title>
     <script type="text/javascript" src="https://maps.google.com/maps?file=api&amp;v=2&amp;key='.$key.'"></script>
-    <script type="text/javascript" src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/maps/assets/js/elabel.js"></script>
+    <script type="text/javascript"
+        src="' . rtrim(Request::base(), '/') . '/core/plugins/usage/maps/assets/maps/assets/js/elabel.js"></script>
     <script type="text/javascript">
     function initialize()
     {
@@ -83,7 +86,8 @@ $dataurl = str_replace('&amp;', '&', $dataurl);
                         icon.image = "/components/'.$option.'/maps/images/1.png";
                         icon.iconSize = new GSize(20, 34);
                         icon.iconAnchor = new GPoint(10, 34);
-                        markers[i] = new GMarker(new GLatLng(locations[i].getAttribute("lat"),locations[i].getAttribute("lng")),icon);
+                        markers[i] = new GMarker(new
+                        GLatLng(locations[i].getAttribute("lat"),locations[i].getAttribute("lng")),icon);
                         map.addOverlay(markers[i]);
                     }
                 }

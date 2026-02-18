@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -76,7 +74,12 @@ if ($this->comment->get('resource_id')) {
             <img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous', 0)); ?>" alt="" />
         </p>
         <div class="comment-content">
-        <?php if (!$this->comment->isReported() && $this->comment->get('resource_id') && $this->config->get('voting')) { ?>
+        <?php
+        $showVoting = !$this->comment->isReported()
+            && $this->comment->get('resource_id')
+            && $this->config->get('voting');
+        ?>
+        <?php if ($showVoting) { ?>
             <p class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
                 <?php
                 $this->comment->set('helpful', $this->comment->votes()->whereEquals('vote', 1)->total());
@@ -97,34 +100,73 @@ if ($this->comment->get('resource_id')) {
 
             <p class="comment-title">
                 <strong><?php echo $name; ?></strong>
-                <a class="permalink" href="<?php echo Route::url($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_PERMALINK'); ?>">
-                    <?php if (!$this->comment->created() || $this->comment->created() == '0000-00-00 00:00:00') { ?>
-                        <span class="comment-date-unknown"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_UNKNOWN'); ?></span>
+                <a class="permalink"
+                    href="<?php echo Route::url($this->base . '#c' . $this->comment->get('id')); ?>"
+                    title="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_PERMALINK'); ?>">
+                    <?php
+                    $noDate = !$this->comment->created()
+                        || $this->comment->created() == '0000-00-00 00:00:00';
+                    $createdDatetime = $this->comment->created();
+                    ?>
+                    <?php if ($noDate) { ?>
+                        <span class="comment-date-unknown">
+                            <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_UNKNOWN'); ?>
+                        </span>
                     <?php } else { ?>
                         <span class="comment-date-at">@</span>
-                        <span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
-                        <span class="comment-date-on"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_ON'); ?></span>
-                        <span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
+                        <span class="time">
+                            <time datetime="<?php echo $createdDatetime; ?>">
+                                <?php echo $this->comment->created('time'); ?>
+                            </time>
+                        </span>
+                        <span class="comment-date-on">
+                            <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_ON'); ?>
+                        </span>
+                        <span class="date">
+                            <time datetime="<?php echo $createdDatetime; ?>">
+                                <?php echo $this->comment->created('date'); ?>
+                            </time>
+                        </span>
                     <?php } ?>
                 </a>
             </p>
             <?php if ($this->comment->get('resource_id')) { ?>
             <p>
-                <span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS', $this->comment->get('rating', 0)); ?></span></span>
+                <?php
+                $ratingText = Lang::txt(
+                    'PLG_RESOURCES_REVIEWS_OUT_OF_5_STARS',
+                    $this->comment->get('rating', 0)
+                );
+                ?>
+                <span class="avgrating<?php echo $class; ?>">
+                    <span><?php echo $ratingText; ?></span>
+                </span>
             </p>
             <?php } ?>
 
     <?php if (Request::getWord('action') == 'edit' && Request::getInt('comment') == $this->comment->get('id')) { ?>
-            <form id="cform<?php echo $this->comment->get('id'); ?>" class="comment-edit" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
+            <form id="cform<?php echo $this->comment->get('id'); ?>"
+                class="comment-edit"
+                action="<?php echo Route::url($this->base); ?>"
+                method="post"
+                enctype="multipart/form-data">
                 <fieldset>
                     <legend><span><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_EDIT'); ?></span></legend>
 
                     <input type="hidden" name="comment[id]" value="<?php echo $this->comment->get('id'); ?>" />
-                    <input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type'); ?>" />
-                    <input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
+                    <input type="hidden"
+                        name="comment[item_type]"
+                        value="<?php echo $this->comment->get('item_type'); ?>"/>
+                    <input type="hidden"
+                        name="comment[item_id]"
+                        value="<?php echo $this->comment->get('item_id'); ?>"/>
                     <input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('parent'); ?>" />
-                    <input type="hidden" name="comment[created]" value="<?php echo $this->comment->get('created'); ?>" />
-                    <input type="hidden" name="comment[created_by]" value="<?php echo $this->comment->get('created_by'); ?>" />
+                    <input type="hidden"
+                        name="comment[created]"
+                        value="<?php echo $this->comment->get('created'); ?>"/>
+                    <input type="hidden"
+                        name="comment[created_by]"
+                        value="<?php echo $this->comment->get('created_by'); ?>"/>
 
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="id" value="<?php echo $this->resource->id; ?>" />
@@ -136,14 +178,19 @@ if ($this->comment->get('resource_id')) {
                     <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                         <span class="label-text"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></span>
                         <?php
-                        echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+                        echo $this->editor('comment[content]', $this->comment->get('content'), 35, 4, 'comment_' .
+                        $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
                         ?>
                     </label>
 
                     <label id="comment-anonymous-label" for="comment-anonymous">
-                        <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" <?php if ($this->comment->get('anonymous')) {
-                            echo ' checked="checked"';
-                                                                                                                         } ?> />
+                        <input class="option"
+                            type="checkbox"
+                            name="comment[anonymous]"
+                            id="comment-anonymous"
+                            value="1" <?php if ($this->comment->get('anonymous')) {
+                                echo ' checked="checked"';
+                                      } ?> />
                         <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
                     </label>
 
@@ -159,27 +206,64 @@ if ($this->comment->get('resource_id')) {
 
             <p class="comment-options">
         <?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
-            <?php if (User::get('id') == $this->comment->get('created_by') || User::authorise('core.manage', 'com_resources')) { ?>
-                    <a class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')); ?>"><!--
+            <?php
+            $canManage = User::get('id') == $this->comment->get('created_by')
+                || User::authorise('core.manage', 'com_resources');
+            ?>
+            <?php if ($canManage) { ?>
+                    <?php
+                    $isReview = $this->comment->get('resource_id');
+                    $commentId = $this->comment->get('id');
+                    $deleteAction = '&action=delete'
+                        . ($isReview ? 'review' : 'reply')
+                        . '&comment=' . $commentId;
+                    $deleteUrl = Route::url(
+                        $this->base . $deleteAction
+                    );
+                    $confirmTxt = Lang::txt(
+                        'PLG_RESOURCES_REVIEWS_CONFIRM_DELETE'
+                    );
+                    $editAction = '&action=edit'
+                        . ($isReview ? 'review' : '')
+                        . '&comment=' . $commentId
+                        . ($isReview ? '#commentform' : '');
+                    $editUrl = Route::url(
+                        $this->base . $editAction
+                    );
+                    ?>
+                    <a class="icon-delete delete"
+                        data-txt-confirm="<?php echo $confirmTxt; ?>"
+                        href="<?php echo $deleteUrl; ?>"><!--
                         --><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_DELETE'); ?><!--
                     --></a>
-                    <a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=edit' . ($this->comment->get('resource_id') ? 'review' : '') . '&comment=' . $this->comment->get('id') . ($this->comment->get('resource_id') ? '#commentform' : '')); ?>"><!--
+                    <a class="icon-edit edit"
+                        href="<?php echo $editUrl; ?>"><!--
                         --><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_EDIT'); ?><!--
                     --></a>
             <?php } ?>
             <?php if (!$this->comment->get('reports')) { ?>
                 <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
                     <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-                    <a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                    <a class="icon-reply reply active"
+                        data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>"
+                        data-txt-inactive="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_REPLY'); ?>"
+                        href="<?php echo Route::url($this->comment->link()); ?>"
+                        data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
                     --><?php echo Lang::txt('JCANCEL'); ?><!--
                 --></a>
                     <?php } else { ?>
-                    <a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                    <a class="icon-reply reply"
+                        data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>"
+                        data-txt-inactive="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_REPLY'); ?>"
+                        href="<?php echo Route::url($this->comment->link('reply')); ?>"
+                        data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
                     --><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_REPLY'); ?><!--
                 --></a>
                     <?php } ?>
                 <?php } ?>
-                    <a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_POSTING_REPORTED'); ?>" href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
+                    <a class="icon-abuse abuse"
+                        data-txt-flagged="<?php echo Lang::txt('PLG_RESOURCES_REVIEWS_NOTICE_POSTING_REPORTED'); ?>"
+                        href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
                     --><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_REPORT_ABUSE'); ?><!--
                 --></a>
             <?php } ?>
@@ -192,17 +276,53 @@ if ($this->comment->get('resource_id')) {
                                               } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
                 <?php if (User::isGuest()) { ?>
                 <p class="warning">
-                    <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN') . '</a>'); ?>
+                    <?php
+                    $loginReturn = base64_encode(
+                        Route::url($this->base, false, true)
+                    );
+                    $loginUrl = Route::url(
+                        'index.php?option=com_users&view=login'
+                        . '&return=' . $loginReturn
+                    );
+                    $loginLink = '<a href="' . $loginUrl . '">'
+                        . Lang::txt('PLG_RESOURCES_REVIEWS_LOGIN')
+                        . '</a>';
+                    echo Lang::txt(
+                        'PLG_RESOURCES_REVIEWS_PLEASE_LOGIN_TO_ANSWER',
+                        $loginLink
+                    );
+                    ?>
                 </p>
                 <?php } else { ?>
-                <form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
+                <form id="cform<?php echo $this->comment->get('id'); ?>"
+                    action="<?php echo Route::url($this->base); ?>"
+                    method="post"
+                    enctype="multipart/form-data">
                     <fieldset>
-                        <legend><span><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
+                        <?php
+                        $replyToName = !$this->comment->get('anonymous')
+                            ? $name
+                            : Lang::txt('JANONYMOUS');
+                        $replyLegend = Lang::txt(
+                            'PLG_RESOURCES_REVIEWS_REPLYING_TO',
+                            $replyToName
+                        );
+                        ?>
+                        <legend>
+                            <span><?php echo $replyLegend; ?></span>
+                        </legend>
 
                         <input type="hidden" name="comment[id]" value="0" />
-                        <input type="hidden" name="comment[item_type]" value="<?php echo $this->comment->get('item_type'); ?>" />
-                        <input type="hidden" name="comment[item_id]" value="<?php echo $this->comment->get('item_id'); ?>" />
-                        <input type="hidden" name="comment[parent]" value="<?php echo ($this->comment->get('resource_id')) ? 0 : $this->comment->get('id'); ?>" />
+                        <input type="hidden"
+                            name="comment[item_type]"
+                            value="<?php echo $this->comment->get('item_type'); ?>"/>
+                        <input type="hidden"
+                            name="comment[item_id]"
+                            value="<?php echo $this->comment->get('item_id'); ?>"/>
+                        <input type="hidden"
+                            name="comment[parent]"
+                            value="<?php echo ($this->comment->get('resource_id')) ? 0 : $this->comment->get('id'); ?>"
+                            />
                         <input type="hidden" name="comment[created]" value="" />
                         <input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
 
@@ -213,15 +333,36 @@ if ($this->comment->get('resource_id')) {
 
                         <?php echo Html::input('token'); ?>
 
-                        <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-                            <span class="label-text"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'); ?></span>
+                        <?php
+                        $commentFieldId = 'comment_'
+                            . $this->comment->get('id')
+                            . '_content';
+                        $enterComments = Lang::txt(
+                            'PLG_RESOURCES_REVIEWS_ENTER_COMMENTS'
+                        );
+                        ?>
+                        <label for="<?php echo $commentFieldId; ?>">
+                            <span class="label-text">
+                                <?php echo $enterComments; ?>
+                            </span>
                             <?php
-                            echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
+                            echo $this->editor(
+                                'comment[content]',
+                                '',
+                                35,
+                                4,
+                                $commentFieldId,
+                                array('class' => 'minimal no-footer')
+                            );
                             ?>
                         </label>
 
                         <label id="comment-anonymous-label" for="comment-anonymous">
-                            <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+                            <input class="option"
+                                type="checkbox"
+                                name="comment[anonymous]"
+                                id="comment-anonymous"
+                                value="1"/>
                             <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
                         </label>
 

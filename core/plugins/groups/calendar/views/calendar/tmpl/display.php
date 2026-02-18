@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,24 +17,60 @@ $timezone = $userLocalizer->getTimezone();
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<?php if ($this->group->published == 1 && in_array(User::get('id'), $this->members)) : ?>
+<?php
+$isPublishedMember = $this->group->published == 1
+    && in_array(User::get('id'), $this->members);
+?>
+<?php if ($isPublishedMember) : ?>
+    <?php
+    $addTitle = Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT');
+    $addUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&cn=' . $this->group->cn
+        . '&active=calendar&action=add'
+    );
+    ?>
     <ul id="page_options">
         <li>
-            <a class="icon-add btn add" title="<?php echo Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=add'); ?>">
-                <?php echo Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>
+            <a
+                class="icon-add btn add"
+                title="<?php echo $addTitle; ?>"
+                href="<?php echo $addUrl; ?>"
+            >
+                <?php echo $addTitle; ?>
             </a>
             <?php if ($this->authorized == 'manager') : ?>
-                <a class="icon-date btn date" title="<?php echo Lang::txt('Manage Calendars'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=calendars'); ?>">
-                    <?php echo Lang::txt('Manage Calendars'); ?>
+                <?php
+                $manageTitle = Lang::txt('Manage Calendars');
+                $manageUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&cn=' . $this->group->cn
+                    . '&active=calendar&action=calendars'
+                );
+                ?>
+                <a
+                    class="icon-date btn date"
+                    title="<?php echo $manageTitle; ?>"
+                    href="<?php echo $manageUrl; ?>"
+                >
+                    <?php echo $manageTitle; ?>
                 </a>
             <?php endif; ?>
         </li>
     </ul>
 <?php endif; ?>
 
-<?php $quickCreate = ($this->params->get('allow_quick_create', 1) && in_array(User::get('id'), $this->group->get('members'))) ? true : 0; ?>
+<?php
+$canQuickCreate = $this->params->get('allow_quick_create', 1)
+    && in_array(User::get('id'), $this->group->get('members'));
+$quickCreate = $canQuickCreate ? true : 0;
+$calendarBase = Route::url(
+    'index.php?option=com_groups&cn='
+    . $this->group->get('cn') . '&active=calendar'
+);
+?>
 <div id="calendar"
-    data-base="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar'); ?>"
+    data-base="<?php echo $calendarBase; ?>"
     data-month="<?php echo $this->month; ?>"
     data-year="<?php echo $this->year; ?>"
     data-event-quickcreate="<?php echo $quickCreate; ?>"></div>
@@ -44,8 +78,23 @@ $timezone = $userLocalizer->getTimezone();
 <select name="calendar" id="calendar-picker">
     <option value="0"><?php echo Lang::txt('All Calendars'); ?></option>
     <?php foreach ($this->calendars as $calendar) : ?>
-        <?php $sel = ($calendar->get('id') == $this->calendar) ? 'selected="selected"' : ''; ?>
-        <option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo ($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>" class="calendar-picker-option"><?php echo $calendar->get('title'); ?></option>
+        <?php
+        $sel = ($calendar->get('id') == $this->calendar)
+            ? 'selected="selected"' : '';
+        $color = $calendar->get('color')
+            ? strtolower($calendar->get('color'))
+            : 'gray';
+        $imgBase = Request::base(true);
+        $imgPath = $imgBase
+            . '/core/plugins/groups/calendar/assets/img/swatch-'
+            . $color . '.png';
+        ?>
+        <option
+            <?php echo $sel; ?>
+            data-img="<?php echo $imgPath; ?>"
+            value="<?php echo $calendar->get('id'); ?>"
+            class="calendar-picker-option"
+        ><?php echo $calendar->get('title'); ?></option>
     <?php endforeach; ?>
 </select>
 
@@ -68,28 +117,60 @@ $timezone = $userLocalizer->getTimezone();
                             </a>
                         </h4>
                         <dl class="entry-meta">
+                            <?php
+                            $calendarName = $event->calendar()->get('id')
+                                ? $event->calendar()->get('title')
+                                : 'Uncategorized';
+                            $hasPublishDown = $event->get('publish_down')
+                                && $event->get('publish_down')
+                                    != '0000-00-00 00:00:00';
+                            ?>
                             <dd class="calendar">
-                                in <?php echo ($event->calendar()->get('id')) ? $event->calendar()->get('title') : 'Uncategorized'; ?>
+                                in <?php echo $calendarName; ?>
                             </dd>
-                            <?php if ($event->get('publish_down') && $event->get('publish_down') != '0000-00-00 00:00:00') : ?>
+                            <?php if ($hasPublishDown) : ?>
                                 <dd class="start-and-end">
                                     <?php
-                                        echo Date::of($event->get('publish_up'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+                                        echo Date::of(
+                                            $event->get('publish_up')
+                                        )->toTimezone(
+                                            $timezone,
+                                            'l, F d, Y @ g:i a',
+                                            $ignoreDst
+                                        );
                                     ?>
                                     &mdash;
                                     <?php
-                                        echo Date::of($event->get('publish_down'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+                                        echo Date::of(
+                                            $event->get('publish_down')
+                                        )->toTimezone(
+                                            $timezone,
+                                            'l, F d, Y @ g:i a',
+                                            $ignoreDst
+                                        );
                                     ?>
                                 </dd>
                             <?php else : ?>
                                 <dd class="date">
                                     <?php
-                                        echo Date::of($event->get('publish_up'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+                                        echo Date::of(
+                                            $event->get('publish_up')
+                                        )->toTimezone(
+                                            $timezone,
+                                            'l, F d, Y @ g:i a',
+                                            $ignoreDst
+                                        );
                                     ?>
                                 <dd>
                                 <dd class="time">
                                     <?php
-                                        echo Date::of($event->get('publish_up'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+                                        echo Date::of(
+                                            $event->get('publish_up')
+                                        )->toTimezone(
+                                            $timezone,
+                                            'l, F d, Y @ g:i a',
+                                            $ignoreDst
+                                        );
                                     ?>
                                 <dd>
                             <?php endif; ?>
@@ -98,7 +179,8 @@ $timezone = $userLocalizer->getTimezone();
                             <p>
                                 <?php
                                     $content = strip_tags($event->get('content'));
-                                    echo ($content) ? Hubzero\Utility\Str::truncate($content, 500) : '<em>no content</em>';
+                                    echo ($content) ? Hubzero\Utility\Str::truncate($content, 500) : '<em>no
+                                    content</em>';
                                 ?>
                             </p>
                         </div>

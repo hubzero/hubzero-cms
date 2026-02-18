@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,9 @@ $this->css();
 </h3>
 <div class="container">
     <p class="section-options">
-        <a class="icon-add add btn" href="<?php echo Route::url($this->resource->link() . '&active=questions&action=new'); ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>
+        <a class="icon-add add btn"
+            href="<?php echo Route::url($this->resource->link() . '&active=questions&action=new'); ?>"
+            ><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>
     </p>
     <table class="questions entries">
         <caption>
@@ -62,23 +62,55 @@ $this->css();
                 </th>
                 <td>
                 <?php if (!$row->isReported()) { ?>
-                    <a class="entry-title" href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape(strip_tags($row->subject)); ?></a><br />
+                    <a class="entry-title"
+                        href="<?php echo Route::url($row->link()); ?>"
+                        ><?php echo $this->escape(strip_tags($row->subject)); ?></a><br />
                 <?php } else { ?>
-                    <span class="entry-title"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
+                    <?php
+                    $reviewTxt = Lang::txt(
+                        'PLG_RESOURCES_QUESTIONS_QUESTION_UNDER_REVIEW'
+                    );
+                    ?>
+                    <span class="entry-title"><?php echo $reviewTxt; ?></span><br />
                 <?php } ?>
+                    <?php
+                    $createdDatetime = $row->created();
+                    $createdTime = $row->created('time');
+                    $createdDate = $row->created('date');
+                    $atTxt = Lang::txt('PLG_RESOURCES_QUESTIONS_AT');
+                    $onTxt = Lang::txt('PLG_RESOURCES_QUESTIONS_ON');
+                    $stateTxt = ($row->get('state') == 1)
+                        ? Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_CLOSED')
+                        : Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_OPEN');
+                    $answersUrl = Route::url($row->link() . '#answers');
+                    $responsesTitle = Lang::txt(
+                        'PLG_RESOURCES_QUESTIONS_NUM_RESPONSES',
+                        $row->get('rcount')
+                    );
+                    ?>
                     <span class="entry-details">
                         <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASKED_BY', $name); ?>
-                        <span class="entry-date-at"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_AT'); ?></span>
-                        <span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
-                        <span class="entry-date-on"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ON'); ?></span>
-                        <span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
+                        <span class="entry-date-at"><?php echo $atTxt; ?></span>
+                        <span class="entry-time">
+                            <time datetime="<?php echo $createdDatetime; ?>">
+                                <?php echo $createdTime; ?>
+                            </time>
+                        </span>
+                        <span class="entry-date-on"><?php echo $onTxt; ?></span>
+                        <span class="entry-date">
+                            <time datetime="<?php echo $createdDatetime; ?>">
+                                <?php echo $createdDate; ?>
+                            </time>
+                        </span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-state">
-                            <?php echo ($row->get('state') == 1) ? Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_CLOSED') : Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_OPEN'); ?>
+                            <?php echo $stateTxt; ?>
                         </span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-comments">
-                            <a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_RESPONSES', $row->get('rcount')); ?>">
+                            <a href="<?php echo $answersUrl; ?>"
+                                title="<?php echo $responsesTitle; ?>"
+                                >
                                 <?php echo $row->responses->count(); ?>
                             </a>
                         </span>
@@ -87,19 +119,58 @@ $this->css();
             <?php if ($this->banking) { ?>
                 <td class="reward">
                 <?php if ($row->get('reward') == 1 && $this->banking) { ?>
-                    <span class="entry-reward"><?php echo $row->get('points'); ?> <a href="<?php echo $this->infolink; ?>" title="<?php echo Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points', 0)); ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_POINTS'); ?></a></span>
+                    <?php
+                    $points = $row->get('points');
+                    $rewardTitle = Lang::txt(
+                        'COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING',
+                        $row->get('points', 0)
+                    );
+                    $pointsTxt = Lang::txt('PLG_RESOURCES_QUESTIONS_POINTS');
+                    ?>
+                    <span class="entry-reward">
+                        <?php echo $points; ?>
+                        <a href="<?php echo $this->infolink; ?>"
+                            title="<?php echo $rewardTitle; ?>"
+                            ><?php echo $pointsTxt; ?></a>
+                    </span>
                 <?php } ?>
                 </td>
             <?php } ?>
+                <?php
+                $voteClass = ($row->get('helpful', 0) > 0)
+                    ? 'like' : 'neutral';
+                $helpful = $row->get('helpful', 0);
+                $likesTxt = Lang::txt(
+                    'PLG_RESOURCES_QUESTIONS_VOTE_LIKES',
+                    $helpful
+                );
+                $voteUrl = Route::url(
+                    'index.php?option=com_answers&task=vote&id='
+                    . $row->get('id')
+                    . '&category=question&vote=yes'
+                );
+                $guestTitle = Lang::txt(
+                    'PLG_RESOURCES_QUESTIONS_VOTE_UP_LOGIN'
+                );
+                $userTitle = Lang::txt(
+                    'PLG_RESOURCES_QUESTIONS_VOTE_UP',
+                    $helpful
+                );
+                ?>
                 <td class="voting">
                     <span class="vote-like">
                     <?php if (User::isGuest()) { ?>
-                        <span class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP_LOGIN'); ?>">
-                            <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_LIKES', $row->get('helpful', 0)); ?>
+                        <span class="vote-button <?php echo $voteClass; ?> tooltips"
+                            title="<?php echo $guestTitle; ?>"
+                            >
+                            <?php echo $likesTxt; ?>
                         </span>
                     <?php } else { ?>
-                        <a class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes'); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP', $row->get('helpful', 0)); ?>">
-                            <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_LIKES', $row->get('helpful', 0)); ?>
+                        <a class="vote-button <?php echo $voteClass; ?> tooltips"
+                            href="<?php echo $voteUrl; ?>"
+                            title="<?php echo $userTitle; ?>"
+                            >
+                            <?php echo $likesTxt; ?>
                         </a>
                     <?php } ?>
                     </span>
@@ -147,7 +218,10 @@ $this->css();
         }
         foreach ($schema->fields as $field) {
             if (isset($data[$field->name])) {
-                if ($elements->display($field->type, $data[$field->name]) && isset($filed->display) && $field->display == $tab) {
+                if (
+                    $elements->display($field->type, $data[$field->name]) && isset($filed->display) && $field->display
+                    == $tab
+                ) {
                     ?>
                         <h4><?php echo $field->label; ?></h4>
                         <div class="resource-content">

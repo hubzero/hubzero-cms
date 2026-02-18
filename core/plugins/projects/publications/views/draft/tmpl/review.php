@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -62,13 +62,21 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
 ?>
 
 <!-- Load content selection browser //-->
-<div id="<?php echo $elName; ?>" class="draft-review <?php echo $complete ? 'draft-complete' : 'draft-incomplete'; ?> <?php echo $this->pub->state == 7 ? ' draft-resubmit' : ''; ?>">
+<?php
+$draftClass = $complete ? 'draft-complete' : 'draft-incomplete';
+$resubmitClass = $this->pub->state == 7 ? ' draft-resubmit' : '';
+?>
+<div id="<?php echo $elName; ?>"
+    class="draft-review <?php echo $draftClass; ?> <?php echo $resubmitClass; ?>"
+    >
     <?php if ($complete) { ?>
     <p class="review-prompt"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_COMPLETE'); ?></p>
     <?php } else { ?>
     <p class="review-prompt"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INCOMPLETE'); ?></p>
     <div class="submitarea">
-        <a href="<?php echo Route::url($this->pub->link('editversion') . '&active=publications&action=continue'); ?>" class="btn mini btn-success icon-next"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a>
+        <a href="<?php echo Route::url($this->pub->link('editversion') . '&active=publications&action=continue'); ?>"
+            class="btn mini btn-success icon-next"
+            ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a>
     </div>
     <?php } ?>
 
@@ -79,11 +87,14 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_PREVIEW'); ?></h5>
+                <?php $reviewPreviewTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_PREVIEW'); ?>
+                <h5 class="element-title"><?php echo $reviewPreviewTitle; ?></h5>
                 <div class="element-instructions">
                     <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_PREVIEW'); ?></p>
                     <div class="submitarea">
-                        <a href="<?php echo Route::url($this->pub->link('version')); ?>" class="btn mini btn-primary active icon-next" rel="external"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
+                        <a href="<?php echo Route::url($this->pub->link('version')); ?>"
+                            class="btn mini btn-primary active icon-next"
+                            rel="external"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
                     </div>
                 </div>
             </div>
@@ -97,7 +108,8 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_BUNDLE'); ?></h5>
+                <?php $archiveTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_BUNDLE'); ?>
+                <h5 class="element-title"><?php echo $archiveTitle; ?></h5>
                 <div class="element-instructions">
                     <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_ARCHIVE_PACKAGE'); ?></p>
                     <div class="list-wrapper">
@@ -115,11 +127,16 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_TITLE_DOI'); ?></h5>
+                <?php $doiTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_TITLE_DOI'); ?>
+                <h5 class="element-title"><?php echo $doiTitle; ?></h5>
                 <div class="element-instructions">
                     <?php
                     if ($citation) {
-                        echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI_EXISTS') . '</p><div class="citeit">' . $citation . '</div>';
+                        echo '<p>'
+                            . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI_EXISTS')
+                            . '</p><div class="citeit">'
+                            . $citation
+                            . '</div>';
                     } else {
                         echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI') . '</p>';
                     }
@@ -134,54 +151,103 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_DATE'); ?></h5>
+                <?php $dateTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_DATE'); ?>
+                <h5 class="element-title"><?php echo $dateTitle; ?></h5>
                 <div class="element-instructions">
                     <label>
-                        <span class="review-label"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:</span>
-                        <input type="text" id="publish_date" name="publish_date" value="<?php echo $pubdate; ?>" placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
-                        <span class="hint block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
+                        <?php $publishWhen = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>
+                        <span class="review-label"><?php echo $publishWhen; ?>*:</span>
+                        <input type="text"
+                            id="publish_date"
+                            name="publish_date"
+                            value="<?php echo $pubdate; ?>"
+                            placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>"/>
+                        <?php $embargoHint = Lang::txt('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?>
+                        <span class="hint block"><?php echo $embargoHint; ?></span>
                     </label>
 
                     <?php if ($this->pub->submitter()) {
                         // Do we have a submitter choice?
                         $submitter  = $this->pub->submitter()->name;
-                        $submitter .= $this->pub->submitter()->organization ? ', ' . $this->pub->submitter()->organization : '';
-                        $submitter .= '<input type="hidden" name="submitter" value="' . $this->pub->submitter()->user_id . '" />';
+                        $submitter .= $this->pub->submitter()->organization ? ', '
+                            . $this->pub->submitter()->organization : '';
+                        $submitter .= '<input type="hidden" name="submitter" value="'
+                            . $this->pub->submitter()->user_id
+                            . '" />';
                         if ($this->pub->submitter()->user_id != User::get('id')) {
                             $submitter  = '<select name="submitter">' . "\n";
-                            $submitter .= '<option value="' . User::get('id') . '" selected="selected">' . User::get('name')
+                            $submitter .= '<option value="'
+                                . User::get('id')
+                                . '" selected="selected">'
+                                . User::get('name')
                                 . '</option>' . "\n";
-                            $submitter .= '<option value="' . $this->pub->submitter()->user_id . '">' . $this->pub->submitter()->name . '</option>' . "\n";
+                            $submitter .= '<option value="'
+                                . $this->pub->submitter()->user_id
+                                . '">'
+                                . $this->pub->submitter()->name
+                                . '</option>'
+                                . "\n";
                             $submitter .= '</select>';
                         }
                         ?>
                         <label>
-                            <span class="review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
+                            <?php $submitterLabel = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>
+                            <span class="review-label"><?php echo $submitterLabel; ?>:</span>
+                            <?php echo $submitter; ?>
                         </label>
                     <?php } ?>
 
                     <?php if ($this->pub->config()->get('repository', 1)) { ?>
                         <h6><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT'); ?></h6>
-                        <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT_EXPLANATION'); ?></p>
+                        <?php
+                        $contactExplanation = Lang::txt(
+                            'PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT_EXPLANATION'
+                        );
+                        ?>
+                        <p><?php echo $contactExplanation; ?></p>
                         <ul class="itemlist" id="author-list">
                         <?php foreach ($this->pub->authors() as $author) {
                             $org = $author->organization ? $author->organization : $author->p_organization;
                             $name = $author->name ? $author->name : $author->p_name;
                             $name = trim($name) ? $name : $author->invited_name;
                             $name = trim($name) ? $name : $author->invited_email;
-                            $email = trim($author->p_email == null ? '' : $author->p_email) ? $author->p_email : (trim($author->invited_email == null ? '' : $author->invited_email) ? trim($author->invited_email == null ? '' : $author->invited_email) : null);
+                            $email = trim($author->p_email == null ? '' : $author->p_email) ? $author->p_email :
+                            (trim($author->invited_email == null ? '' : $author->invited_email) ?
+                            trim($author->invited_email == null ? '' : $author->invited_email) : null);
                             ?>
                             <li>
-                                <span class="item-order"><input type="checkbox" name="contact[]" value="<?php echo $this->escape($author->id); ?>" <?php if ($author->repository_contact) {
-                                    echo ' checked="checked"';
-                                                                                                        } ?>/></span>
-                                <span class="item-title"><?php echo $name; ?> <span class="item-subtext"><?php echo $org ? ' - ' . $org : ''; ?></span></span>
+                                <?php $authorId = $this->escape($author->id); ?>
+                                <?php $checked = $author->repository_contact ? ' checked="checked"' : ''; ?>
+                                <span class="item-order">
+                                    <input type="checkbox"
+                                        name="contact[]"
+                                        value="<?php echo $authorId; ?>"
+                                        <?php echo $checked; ?>/>
+                                </span>
+                                <?php $orgText = $org ? ' - ' . $org : ''; ?>
+                                <span class="item-title">
+                                    <?php echo $name; ?>
+                                    <span class="item-subtext"><?php echo $orgText; ?></span>
+                                </span>
                                 <?php if (!empty($email)) { ?>
-                                <span id=<?php echo $this->escape($author->id) . "_email" ?> class="item-title"><?php echo $email; ?></span>
+                                <span id=<?php echo $this->escape($author->id) . "_email" ?>
+                                    class="item-title"><?php echo $email; ?></span>
                                 <?php }?>
                                 <?php if (empty($email)) { ?>
-                                <span style="display:none" id=<?php echo $this->escape($author->id) . "_msg" ?> class="item-msg"><?php echo "The contact is required to have a valid email address. Please " ?>
-                                <a href="<?php echo Route::url($this->pub->link('editversionid') . '&active=publications&action=editauthor&aid=' . $author->id . '&p=' . $props); ?>" class="showinbox item-edit"><?php echo "edit"; ?></a>
+                                <span style="display:none"
+                                    id=<?php echo $this->escape($author->id) . "_msg" ?>
+                                    class="item-msg"
+                                    ><?php echo "The contact is required to have a valid email address. Please " ?>
+                                    <?php
+                                    $editUrl = Route::url(
+                                        $this->pub->link('editversionid')
+                                        . '&active=publications&action=editauthor&aid='
+                                        . $author->id . '&p=' . $props
+                                    );
+                                    ?>
+                                <a href="<?php echo $editUrl; ?>"
+                                    class="showinbox item-edit"
+                                    ><?php echo "edit"; ?></a>
                                     <?php echo "the author."; ?>
                                 </span>
                                 <?php }?>
@@ -195,12 +261,16 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                         <label>
                             <input class="option" name="action" type="radio" value="publish" checked="checked" />
                             <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH'); ?>
-                            <span class="hint block ipadded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH_HINT'); ?></span>
+                            <?php $publishHint = Lang::txt(
+                                'PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH_HINT'
+                            ); ?>
+                            <span class="hint block ipadded"><?php echo $publishHint; ?></span>
                         </label>
                         <label>
                             <input class="option" name="action" type="radio" value="post" />
                             <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST'); ?>
-                            <span class="hint block ipadded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT'); ?></span>
+                            <?php $postHint = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT'); ?>
+                            <span class="hint block ipadded"><?php echo $postHint; ?></span>
                         </label>
                     <?php } else { ?>
                         <input type="hidden" name="action" value="publish" />
@@ -214,7 +284,8 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_COMMENT'); ?></h5>
+                <?php $commentTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_COMMENT'); ?>
+                <h5 class="element-title"><?php echo $commentTitle; ?></h5>
                 <div class="element-instructions">
                     <label><span class="optional"><?php echo Lang::txt('Optional'); ?></span>
                     <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DESC_COMMENT'); ?>
@@ -229,7 +300,8 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_AGREE'); ?></h5>
+                <?php $agreeTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_AGREE'); ?>
+                <h5 class="element-title"><?php echo $agreeTitle; ?></h5>
                 <div class="element-instructions">
                     <label><span class="required"><?php echo Lang::txt('Required'); ?></span>
                         <input class="option" name="agree" type="checkbox" value="1" />
@@ -257,7 +329,8 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
             <div class="element_editing">
                 <div class="pane-wrapper">
                     <span class="checker">&nbsp;</span>
-                    <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_REVIEW'); ?></h5>
+                    <?php $reviewTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_REVIEW'); ?>
+                    <h5 class="element-title"><?php echo $reviewTitle; ?></h5>
                     <div class="element-instructions">
                         <label>
                             <input class="option" name="request_review" type="checkbox" value="1" />
@@ -273,7 +346,15 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
     <div class="submitarea" id="submit-area">
         <span class="submit-question"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_LOOKING_GOOD'); ?></span>
         <span class="button-wrapper icon-apply">
-            <input type="submit" value="<?php echo $this->pub->isWorked() ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT'); ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
+            <?php
+            $submitLabel = $this->pub->isWorked()
+                ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT')
+                : Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT');
+            ?>
+            <input type="submit"
+                value="<?php echo $submitLabel; ?>"
+                id="c-apply"
+                class="submitbutton btn btn-success active icon-apply" />
         </span>
     </div>
     <?php } ?>

@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Courses\Progress;
 
 use Hubzero\Plugin\Plugin;

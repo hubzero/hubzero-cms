@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -39,7 +39,10 @@ $tool_path = $config->get('tool_path');
                         foreach ($ag->assets() as $a) :
                             if ($a->isPublished()) :
                                 $assets[] = $a;
-                                $a->set('longTitle', $unit->get('title') . ' - ' . $ag->get('title') . ' - ' . $a->get('title'));
+                                $a->set(
+                                    'longTitle',
+                                    $unit->get('title') . ' - ' . $ag->get('title') . ' - ' . $a->get('title')
+                                );
                                 //echo "<li>" . $a->get('title') . "</li>";
                             endif;
                         endforeach;
@@ -50,16 +53,32 @@ $tool_path = $config->get('tool_path');
         ?>
         <p>
             <label for="title">Title: </label><span class="required">*required</span>
-            <input type="text" name="title" class="tool-title" placeholder="Tool Title" value="<?php echo $asset->get('title') ?>" />
+            <input type="text"
+                name="title"
+                class="tool-title"
+                placeholder="Tool Title"
+                value="<?php echo $asset->get('title') ?>"/>
         </p>
         <p>
             <label for="tool-alias">Tool:</label>
             <select class="tool-list" id="tool-alias" name="tool-alias">
                 <option value="">Select a Tool...</option>
                 <?php foreach ($tools as $tool) : ?>
-                    <?php preg_match('/\/tools\/([0-9a-z]+)\//', $asset->get('url'), $substr); ?>
-                    <?php $selected = ($substr && isset($substr[1]) && $substr[1] == $tool->alias) ? 'selected="selected"' : ''; ?>
-                    <option value="<?php echo $tool->alias ?>" <?php echo $selected ?>><?php echo $tool->title ?></option>
+                    <?php
+                    preg_match(
+                        '/\/tools\/([0-9a-z]+)\//',
+                        $asset->get('url'),
+                        $substr
+                    );
+                    $selected = ($substr && isset($substr[1])
+                        && $substr[1] == $tool->alias)
+                        ? 'selected="selected"'
+                        : '';
+                    ?>
+                    <option value="<?php echo $tool->alias ?>"
+                        <?php echo $selected ?>>
+                        <?php echo $tool->title ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </p>
@@ -104,21 +123,32 @@ $tool_path = $config->get('tool_path');
             <label for="scope_id">Attach to:</label>
             <select name="scope_id">
                 <?php foreach ($assetgroups as $assetgroup) : ?>
-                    <?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?php echo $assetgroup['title'] ?></option>
+                    <?php
+                    $selected = ($assetgroup['id'] == $this->scope_id)
+                        ? 'selected'
+                        : '';
+                    ?>
+                    <option value="<?php echo $assetgroup['id'] ?>"
+                        <?php echo $selected ?>>
+                        <?php echo $assetgroup['title'] ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </p>
 
         <p>
             <label for="graded">Create a gradebook entry for this item?</label>
-            <input name="graded" type="checkbox" value="1" <?php echo ($asset->get('graded')) ? 'checked="checked"' : ''; ?>/>
+            <input name="graded"
+                type="checkbox"
+                value="1" <?php echo ($asset->get('graded')) ? 'checked="checked"' : ''; ?>/>
             <input type="hidden" name="edit_graded" value="1" />
         </p>
 
         <p>
             <label for="progress_factors">Include this item in the progress calculation?</label>
-            <input name="progress_factors" type="checkbox" value="1" <?php echo ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : ''; ?>/>
+            <input name="progress_factors"
+                type="checkbox"
+                value="1" <?php echo ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : ''; ?>/>
             <input type="hidden" name="edit_progress_factors" value="1" />
         </p>
 

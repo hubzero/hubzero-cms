@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,11 +29,16 @@ if (!$this->comment->get('anonymous')) {
 }
 
     $cls = isset($this->cls) ? $this->cls : 'odd';
-if (!$this->comment->get('anonymous') && $this->course->offering()->member($this->comment->get('created_by'))->get('id')) {
+if (
+    !$this->comment->get('anonymous') &&
+    $this->course->offering()->member($this->comment->get('created_by'))->get('id')
+) {
     if (!$this->course->offering()->member($this->comment->get('created_by'))->get('student')) {
-        $cls .= ' ' . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
+        $cls .= ' '
+            . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
     } elseif (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) {
-        $cls .= ' ' . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
+        $cls .= ' '
+            . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
     }
 }
     $cls .= ' ' . $this->comment->get('treename');
@@ -54,27 +59,74 @@ if ($this->lecture) {
         <div class="comment-content">
             <p class="comment-title">
                 <strong><?php echo $name; ?></strong>
-                <a class="permalink" href="<?php echo Route::url($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_PERMALINK'); ?>">
+                <a class="permalink"
+                    href="<?php echo Route::url($this->base . '#c' . $this->comment->get('id')); ?>"
+                    title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_PERMALINK'); ?>">
+                    <?php
+                    $createdDatetime = $this->comment->created();
+                    $createdTime = $this->comment->created('time');
+                    $createdDate = $this->comment->created('date');
+                    $onTxt = Lang::txt('PLG_COURSES_DISCUSSIONS_ON');
+                    ?>
                     <span class="comment-date-at">@</span>
-                    <span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
-                    <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-                    <span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
+                    <span class="time">
+                        <time datetime="<?php echo $createdDatetime; ?>">
+                            <?php echo $createdTime; ?>
+                        </time>
+                    </span>
+                    <span class="comment-date-on">
+                        <?php echo $onTxt; ?>
+                    </span>
+                    <span class="date">
+                        <time datetime="<?php echo $createdDatetime; ?>">
+                            <?php echo $createdDate; ?>
+                        </time>
+                    </span>
                     <?php if ($this->comment->wasModified()) { ?>
+                        <?php
+                        $modifiedDatetime = $this->comment->modified();
+                        $modifiedTime = $this->comment->modified('time');
+                        $modifiedDate = $this->comment->modified('date');
+                        ?>
                         &mdash; <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDITED'); ?>
                         <span class="comment-date-at">@</span>
-                        <span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span>
-                        <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-                        <span class="date"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('date'); ?></time></span>
+                        <span class="time">
+                            <time datetime="<?php echo $modifiedDatetime; ?>">
+                                <?php echo $modifiedTime; ?>
+                            </time>
+                        </span>
+                        <span class="comment-date-on">
+                            <?php echo $onTxt; ?>
+                        </span>
+                        <span class="date">
+                            <time datetime="<?php echo $modifiedDatetime; ?>">
+                                <?php echo $modifiedDate; ?>
+                            </time>
+                        </span>
                     <?php } ?>
                 </a>
-                <?php if (!$this->comment->get('anonymous') && $this->course->offering()->member($this->comment->get('created_by'))->get('id')) { ?>
-                    <?php if (!$this->course->offering()->member($this->comment->get('created_by'))->get('student')) { ?>
-                    <span class="role <?php echo strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias')); ?>">
-                        <?php echo $this->escape(stripslashes($this->course->offering()->member($this->comment->get('created_by'))->get('role_title'))); ?>
+                <?php
+                $member = $this->course->offering()
+                    ->member($this->comment->get('created_by'));
+                $isNotAnon = !$this->comment->get('anonymous');
+                ?>
+                <?php if ($isNotAnon && $member->get('id')) { ?>
+                    <?php
+                    $roleAlias = strtolower($member->get('role_alias'));
+                    $roleTitle = $this->escape(
+                        stripslashes($member->get('role_title'))
+                    );
+                    ?>
+                    <?php if (!$member->get('student')) { ?>
+                    <span class="role <?php echo $roleAlias; ?>">
+                        <?php echo $roleTitle; ?>
                     </span>
-                    <?php } elseif (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) { ?>
-                        <span class="role <?php echo strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias')); ?>">
-                            <?php echo $this->escape(stripslashes($this->course->offering()->member($this->comment->get('created_by'))->get('role_title'))); ?>
+                    <?php } elseif (
+                        !$this->course->offering()->access('manage')
+                        && $this->course->offering()->access('manage', 'section')
+) { ?>
+                        <span class="role <?php echo $roleAlias; ?>">
+                            <?php echo $roleTitle; ?>
                         </span>
                     <?php } ?>
                 <?php } ?>
@@ -87,12 +139,16 @@ if ($this->lecture) {
             <p class="comment-options">
                 <?php if ($this->config->get('access-edit-thread')) { ?>
                     <?php if ($this->config->get('access-delete-thread')) { ?>
-                        <a class="icon-delete delete" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
+                        <a class="icon-delete delete"
+                            data-id="c<?php echo $this->comment->get('id'); ?>"
+                            href="<?php echo Route::url($this->comment->link('delete')); ?>"><!--
                             --><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE'); ?><!--
                         --></a>
                     <?php } ?>
                     <?php if ($this->config->get('access-edit-thread')) { ?>
-                        <a class="icon-edit edit" data-id="c<?php echo $this->comment->get('id'); ?>" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
+                        <a class="icon-edit edit"
+                            data-id="c<?php echo $this->comment->get('id'); ?>"
+                            href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
                             --><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDIT'); ?><!--
                         --></a>
                     <?php } ?>
@@ -100,16 +156,26 @@ if ($this->lecture) {
                 <?php if (!$this->comment->isReported()) { ?>
                     <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
                         <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-                        <a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('base')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                        <a class="icon-reply reply active"
+                            data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>"
+                            data-txt-inactive="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPLY'); ?>"
+                            href="<?php echo Route::url($this->comment->link('base')); ?>"
+                            rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
                         --><?php echo Lang::txt('JCANCEL'); ?><!--
                     --></a>
                         <?php } else { ?>
-                        <a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                        <a class="icon-reply reply"
+                            data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>"
+                            data-txt-inactive="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPLY'); ?>"
+                            href="<?php echo Route::url($this->comment->link('reply')); ?>"
+                            rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
                         --><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPLY'); ?><!--
                     --></a>
                         <?php } ?>
                     <?php } ?>
-                    <a class="icon-abuse abuse" href="<?php echo Route::url($this->comment->link('abuse')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                    <a class="icon-abuse abuse"
+                        href="<?php echo Route::url($this->comment->link('abuse')); ?>"
+                        rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
                         --><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPORT_ABUSE'); ?><!--
                     --></a>
                 <?php } ?>
@@ -119,45 +185,107 @@ if ($this->lecture) {
                 <div class="comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) {
                     echo ' hide';
                                        } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
-                    <form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->comment->link('base')); ?>" method="post" enctype="multipart/form-data">
+                    <form id="cform<?php echo $this->comment->get('id'); ?>"
+                        action="<?php echo Route::url($this->comment->link('base')); ?>"
+                        method="post"
+                        enctype="multipart/form-data">
                         <fieldset id="commentform<?php echo $this->comment->get('id'); ?>">
-                            <legend><span><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
+                            <?php
+                            $replyTo = !$this->comment->get('anonymous')
+                                ? $name
+                                : Lang::txt('JANONYMOUS');
+                            $legendTxt = Lang::txt(
+                                'PLG_COURSES_DISCUSSIONS_REPLYING_TO',
+                                $replyTo
+                            );
+                            ?>
+                            <legend><span><?php echo $legendTxt; ?></span></legend>
 
                             <input type="hidden" name="fields[id]" value="0" />
                             <input type="hidden" name="fields[state]" value="1" />
-                            <input type="hidden" name="fields[scope]" value="<?php echo $this->post->get('scope'); ?>" />
-                            <input type="hidden" name="fields[category_id]" value="<?php echo $this->post->get('category_id'); ?>" />
-                            <input type="hidden" name="fields[scope_id]" value="<?php echo $this->post->get('scope_id'); ?>" />
-                            <input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->post->get('scope_sub_id'); ?>" />
-                            <input type="hidden" name="fields[object_id]" value="<?php echo $this->post->get('object_id'); ?>" />
-                            <input type="hidden" name="fields[parent]" value="<?php echo $this->comment->get('id'); ?>" />
-                            <input type="hidden" name="fields[thread]" value="<?php echo $this->comment->get('thread'); ?>" />
+                            <input type="hidden"
+                                name="fields[scope]"
+                                value="<?php echo $this->post->get('scope'); ?>"/>
+                            <input type="hidden"
+                                name="fields[category_id]"
+                                value="<?php echo $this->post->get('category_id'); ?>"/>
+                            <input type="hidden"
+                                name="fields[scope_id]"
+                                value="<?php echo $this->post->get('scope_id'); ?>"/>
+                            <input type="hidden"
+                                name="fields[scope_sub_id]"
+                                value="<?php echo $this->post->get('scope_sub_id'); ?>"/>
+                            <input type="hidden"
+                                name="fields[object_id]"
+                                value="<?php echo $this->post->get('object_id'); ?>"/>
+                            <input type="hidden"
+                                name="fields[parent]"
+                                value="<?php echo $this->comment->get('id'); ?>"/>
+                            <input type="hidden"
+                                name="fields[thread]"
+                                value="<?php echo $this->comment->get('thread'); ?>"/>
                             <input type="hidden" name="fields[created]" value="" />
                             <input type="hidden" name="fields[created_by]" value="<?php echo User::get('id'); ?>" />
                             <input type="hidden" name="depth" value="<?php echo ($this->depth + 1); ?>" />
 
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                             <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-                            <input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
+                            <input type="hidden"
+                                name="offering"
+                                value="<?php echo $this->course->offering()->alias(); ?>"/>
                             <input type="hidden" name="active" value="discussions" />
                             <input type="hidden" name="action" value="savethread" />
-                            <input type="hidden" name="return" value="<?php echo base64_encode(Route::url($this->base)); ?>" />
+                            <input type="hidden"
+                                name="return"
+                                value="<?php echo base64_encode(Route::url($this->base)); ?>"/>
 
                             <?php echo Html::input('token'); ?>
 
-                            <label for="comment_<?php echo $this->comment->get('id'); ?>_reply">
-                                <span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
-                                <?php echo $this->editor('fields[comment]', '', 35, 5, 'comment_' . $this->comment->get('id') . '_reply', array('class' => 'minimal no-footer')); ?>
+                            <?php
+                            $commentId = $this->comment->get('id');
+                            $commentsLabel = Lang::txt(
+                                'PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'
+                            );
+                            $editorId = 'comment_' . $commentId . '_reply';
+                            $editorHtml = $this->editor(
+                                'fields[comment]',
+                                '',
+                                35,
+                                5,
+                                $editorId,
+                                array('class' => 'minimal no-footer')
+                            );
+                            $attachLabel = Lang::txt(
+                                'PLG_COURSES_DISCUSSIONS_ATTACH_FILE'
+                            );
+                            ?>
+                            <label for="<?php echo $editorId; ?>">
+                                <span class="label-text">
+                                    <?php echo $commentsLabel; ?>
+                                </span>
+                                <?php echo $editorHtml; ?>
                             </label>
 
-                            <label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">
-                                <span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ATTACH_FILE'); ?>:</span>
-                                <input type="file" name="upload" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
+                            <label
+                                class="upload-label"
+                                for="comment-<?php echo $commentId; ?>-file"
+                            >
+                                <span class="label-text">
+                                    <?php echo $attachLabel; ?>:
+                                </span>
+                                <input type="file"
+                                    name="upload"
+                                    id="comment-<?php echo $this->comment->get('id'); ?>-file"/>
                             </label>
 
-                            <label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
+                            <label class="reply-anonymous-label"
+                                for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
                                 <?php if ($this->config->get('comments_anon', 1)) { ?>
-                                    <input class="option" type="checkbox" name="fields[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+                                    <input class="option"
+                                        type="checkbox"
+                                        name="fields[anonymous]"
+                                        id="comment-<?php echo $this->comment->get('id'); ?>-anonymous"
+                                        value="1"/>
                                     <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
                                 <?php } else { ?>
                                     &nbsp; <input class="option" type="hidden" name="fields[anonymous]" value="0" />
@@ -165,7 +293,8 @@ if ($this->lecture) {
                             </label>
 
                             <p class="submit">
-                                <input type="submit" value="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
+                                <input type="submit"
+                                    value="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>"/>
                             </p>
                         </fieldset>
                     </form>

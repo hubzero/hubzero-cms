@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,9 +20,12 @@ $base = $this->base;
 <div class="edit-forum-options-panel">
     <form method="post" action="<?php echo Route::url($base); ?>" id="forum-options-extended">
         <div>
-            <input type="checkbox" class="edit-forum-options-receive-emails" value="1" name="recvpostemail"<?php if ($this->recvEmailOptionValue >= 1) {
-                echo ' checked="checked"';
-                                                                                                           } ?> />
+            <input type="checkbox"
+                class="edit-forum-options-receive-emails"
+                value="1"
+                name="recvpostemail"<?php if ($this->recvEmailOptionValue >= 1) {
+                    echo ' checked="checked"';
+                                    } ?> />
             <label>
                 <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_TOGGLE'); ?>
             </label>
@@ -33,25 +34,34 @@ $base = $this->base;
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_INTERVAL'); ?>
         </div>
         <div>
-            <input type="radio" name="recvpostemail" class="edit-forum-options-immediate" value="1"<?php if ($this->recvEmailOptionValue == 1) {
-                echo ' checked="checked"';
-                                                                                                   } ?><?php if ($this->recvEmailOptionValue == 0) {
-                                                                                                   echo ' disabled="disabled"';
-                                                                                                   } ?> />
+            <input type="radio"
+                name="recvpostemail"
+                class="edit-forum-options-immediate"
+                value="1"<?php if ($this->recvEmailOptionValue == 1) {
+                    echo ' checked="checked"';
+                         } ?><?php if ($this->recvEmailOptionValue == 0) {
+                         echo '
+                                                                                                   disabled="disabled"';
+                         } ?> />
             <label>
                 <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_IMMEDIATELY'); ?>
             </label>
         </div>
         <div>
-            <input type="radio" name="recvpostemail" class="edit-forum-options-digest" value="2"<?php if ($this->recvEmailOptionValue >= 2) {
-                echo ' checked="checked"';
-                                                                                                } ?><?php if ($this->recvEmailOptionValue == 0) {
-                                                                                                echo ' disabled="disabled"';
-                                                                                                } ?> />
+            <input type="radio"
+                name="recvpostemail"
+                class="edit-forum-options-digest"
+                value="2"<?php if ($this->recvEmailOptionValue >= 2) {
+                    echo ' checked="checked"';
+                         } ?><?php if ($this->recvEmailOptionValue == 0) {
+                         echo '
+                                                                                                disabled="disabled"';
+                         } ?> />
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_AS_A'); ?>
-            <select name="recvpostemail" class="edit-forum-options-frequency"<?php if ($this->recvEmailOptionValue < 2) {
-                echo ' disabled="disabled"';
-                                                                             } ?>>
+            <select name="recvpostemail"
+                class="edit-forum-options-frequency"<?php if ($this->recvEmailOptionValue < 2) {
+                    echo ' disabled="disabled"';
+                                                    } ?>>
                 <option value="2"<?php if ($this->recvEmailOptionValue == 2) {
                     echo ' selected="selected"';
                                  } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DAILY'); ?></option>

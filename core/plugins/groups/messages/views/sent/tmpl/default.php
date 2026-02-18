@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,9 +15,18 @@ defined('_HZEXEC_') or die();
 </h3>
 
 <?php if ($this->authorized == 'manager') { ?>
+    <?php
+    $newMessageUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&cn=' . $this->group->get('cn')
+        . '&active=messages&action=new'
+    );
+    ?>
 <ul id="page_options">
     <li>
-        <a id="new-group-message" class="icon-email message btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages&action=new'); ?>">
+        <a id="new-group-message"
+            class="icon-email message btn"
+            href="<?php echo $newMessageUrl; ?>">
             <span><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SEND'); ?></span>
         </a>
     </li>
@@ -28,9 +35,21 @@ defined('_HZEXEC_') or die();
 
 <div class="section">
     <div class="container">
-        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages'); ?>" method="post">
+        <?php
+        $messagesUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&cn=' . $this->group->get('cn')
+            . '&active=messages'
+        );
+        ?>
+        <form action="<?php echo $messagesUrl; ?>"
+            method="post">
             <table class="groups entries">
-                <caption><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SENT'); ?> <span>(<?php echo count($this->rows); ?>)</span></caption>
+                <?php $sentTxt = Lang::txt('PLG_GROUPS_MESSAGES_SENT'); ?>
+                <caption>
+                    <?php echo $sentTxt; ?>
+                    <span>(<?php echo count($this->rows); ?>)</span>
+                </caption>
                 <thead>
                     <tr>
                         <th scope="col"><?php echo Lang::txt('Subject'); ?></th>
@@ -41,10 +60,38 @@ defined('_HZEXEC_') or die();
                 <tbody>
                     <?php if ($this->rows->count() > 0) { ?>
                         <?php foreach ($this->rows as $row) { ?>
+                            <?php
+                            $viewUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&cn=' . $this->group->get('cn')
+                                . '&active=messages&action=viewmessage&msg='
+                                . $row->id
+                            );
+                            $memberUrl = Route::url(
+                                'index.php?option=com_members&id='
+                                . $row->created_by
+                            );
+                            $subject = $this->escape(
+                                stripslashes($row->subject)
+                            );
+                            $name = $this->escape(
+                                stripslashes($row->name)
+                            );
+                            $dateFormatted = Date::of($row->created)
+                                ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                            ?>
                             <tr>
-                                <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages&action=viewmessage&msg=' . $row->id); ?>"><?php echo $this->escape(stripslashes($row->subject)); ?></a></td>
-                                <td><a href="<?php echo Route::url('index.php?option=com_members&id=' . $row->created_by); ?>"><?php echo $this->escape(stripslashes($row->name)); ?></a></td>
-                                <td><time datetime="<?php echo $row->created; ?>"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></td>
+                                <td>
+                                    <a href="<?php echo $viewUrl; ?>"><?php echo $subject; ?></a>
+                                </td>
+                                <td>
+                                    <a href="<?php echo $memberUrl; ?>"><?php echo $name; ?></a>
+                                </td>
+                                <td>
+                                    <time datetime="<?php echo $row->created; ?>">
+                                        <?php echo $dateFormatted; ?>
+                                    </time>
+                                </td>
                             </tr>
                         <?php } ?>
                     <?php } else { ?>

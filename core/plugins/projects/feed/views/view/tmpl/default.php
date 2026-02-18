@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -26,7 +26,10 @@ $this->css()
         ->display();
 ?>
 
-<div id="latest_activity" class="infofeed" data-frequency="60" data-base="<?php echo Route::url($this->model->link() . '&active=feed'); ?>">
+<div id="latest_activity"
+    class="infofeed"
+    data-frequency="60"
+    data-base="<?php echo Route::url($this->model->link() . '&active=feed'); ?>">
     <?php
     // Display item list
     $this->view('default', 'activity')

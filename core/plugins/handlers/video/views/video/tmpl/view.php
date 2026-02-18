@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +17,13 @@ $source = with(new \Hubzero\Content\Moderator($this->file->getAbsolutePath()))->
 <div class="file-preview video">
     <div class="file-preview-code">
         <video src="<?php echo $source; ?>" controls>
-            <p><?php echo Lang::txt('Your browser doesn\'t support HTML5 video. Here is a <a href="%s">link to the video</a> instead.', $source); ?></p>
+            <p><?php
+                echo Lang::txt(
+                    'Your browser doesn\'t support HTML5 video.'
+                    . ' Here is a <a href="%s">link to the video</a> instead.',
+                    $source
+                );
+                ?></p>
         </video>
     </div>
 </div>

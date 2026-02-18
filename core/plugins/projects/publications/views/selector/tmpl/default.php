@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -14,19 +14,28 @@ defined('_HZEXEC_') or die();
 // Get requirements
 $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
 ?>
-<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/publications/assets/js/jquery.infinitescroll.min.js"></script>
-<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/publications/assets/js/selector.js"></script>
+<?php
+$basePath = rtrim(Request::base(true), '/');
+$pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
+?>
+<script src="<?php echo $pluginJs; ?>/jquery.infinitescroll.min.js"></script>
+<script src="<?php echo $pluginJs; ?>/selector.js"></script>
 <div id="abox-content">
     <h3>
         <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_' . strtoupper($this->block)); ?>
         <span class="abox-controls">
-            <a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_SAVE_SELECTION'); ?></a>
+            <a class="btn btn-success active"
+                id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_SAVE_SELECTION'); ?></a>
             <?php if ($this->ajax) { ?>
                 <a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('JCANCEL'); ?></a>
             <?php } ?>
         </span>
     </h3>
-    <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url($this->publication->link('edit')); ?>">
+    <form id="select-form"
+        class="select-form"
+        method="post"
+        enctype="multipart/form-data"
+        action="<?php echo Route::url($this->publication->link('edit')); ?>">
         <fieldset>
             <input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
             <input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
@@ -72,7 +81,9 @@ $manifest = $this->publication->curation('blocks', $this->blockId, 'manifest');
                 echo '<p class="error">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_SELECTIONS') . '</p>';
             } else {
                 ?>
-                <p class="requirement" id="req"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_REQ_' . strtoupper($this->block)); ?></p>
+                <p class="requirement"
+                    id="req"
+                    ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_REQ_' . strtoupper($this->block)); ?></p>
                 <div id="content-selector" class="content-selector">
                     <?php
                     // Show selection

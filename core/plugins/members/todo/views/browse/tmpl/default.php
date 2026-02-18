@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -40,14 +40,19 @@ $cfilters = array(
         </li>
     </ul>
 <?php } ?>
-<?php if ((User::get('id') == $this->member->get('id') && empty($this->projects)) || !$this->todo->entries('count', $filters)) { ?>
+<?php
+$isOwnerNoProjects = User::get('id') == $this->member->get('id')
+    && empty($this->projects);
+$noTodoEntries = !$this->todo->entries('count', $filters);
+if ($isOwnerNoProjects || $noTodoEntries) { ?>
     <div class="introduction">
         <div class="introduction-message">
             <p><?php echo Lang::txt('PLG_MEMBERS_TODO_INTRO_EMPTY'); ?></p>
         </div>
         <div class="introduction-questions">
             <p><strong><?php echo Lang::txt('PLG_MEMBERS_TODO_INTRO_HOW_TO_START'); ?></strong></p>
-            <p><?php echo Lang::txt('PLG_MEMBERS_TODO_INTRO_HOW_TO_START_EXPLANATION', Route::url('index.php?option=com_projects')); ?></p>
+            <?php $projectsUrl = Route::url('index.php?option=com_projects'); ?>
+            <p><?php echo Lang::txt('PLG_MEMBERS_TODO_INTRO_HOW_TO_START_EXPLANATION', $projectsUrl); ?></p>
         </div>
     </div><!-- / .introduction -->
 <?php } else { ?>

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -33,7 +33,11 @@ echo $this->pub->_curationModel->drawStatusBar();
     <?php echo $blockcontent; ?>
 </div>
 <p class="rightfloat">
-    <a href="<?php echo Route::url($this->pub->link('version')); ?>" class="public-page" rel="external" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
+    <a href="<?php echo Route::url($this->pub->link('version')); ?>"
+        class="public-page"
+        rel="external"
+        title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>"
+        ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
 </p>
 <script>
 jQuery(document).ready(function($) {

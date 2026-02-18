@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,8 +14,21 @@ $logo = $this->group->getLogo();
     <div class="group-content">
         <h3><?php echo $this->escape(stripslashes($this->group->get('description'))); ?></h3>
         <p class="group-img">
-            <img src="<?php echo $logo; ?>" width="50" alt="<?php echo Lang::txt('PLG_PUBLICATIONS_GROUPS_IMAGE', $this->escape(stripslashes($this->group->get('description')))); ?>" />
+            <?php
+            $groupDesc = $this->escape(stripslashes($this->group->get('description')));
+            $imgAlt = Lang::txt('PLG_PUBLICATIONS_GROUPS_IMAGE', $groupDesc);
+            ?>
+            <img src="<?php echo $logo; ?>"
+                width="50"
+                alt="<?php echo $imgAlt; ?>" />
         </p>
-        <p class="group-descripion"><?php echo Lang::txt('PLG_PUBLICATIONS_GROUPS_BELONGS_TO_GROUP', '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+        <?php
+        $groupUrl = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn'));
+        $groupName = $this->escape(stripslashes($this->group->get('description')));
+        $groupLink = '<a href="' . $groupUrl . '">' . $groupName . '</a>';
+        ?>
+        <p class="group-descripion"><?php
+            echo Lang::txt('PLG_PUBLICATIONS_GROUPS_BELONGS_TO_GROUP', $groupLink);
+        ?></p>
     </div>
 </div>

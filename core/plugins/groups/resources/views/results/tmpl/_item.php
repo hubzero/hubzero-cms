@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -36,7 +34,11 @@ switch ($this->row->access) {
 ?>
 
 <li class="<?php echo $cls; ?> resource">
-    <p class="title"><a href="<?php echo $this->row->href; ?>"><?php echo $this->escape(stripslashes($this->row->title)); ?></a></p>
+    <p class="title">
+        <a href="<?php echo $this->row->href; ?>">
+            <?php echo $this->escape(stripslashes($this->row->title)); ?>
+        </a>
+    </p>
 
     <?php if ($params->get('show_ranking')) { ?>
         <?php
@@ -49,7 +51,15 @@ switch ($this->row->access) {
         ?>
         <div class="metadata">
             <dl class="rankinfo">
-                <dt class="ranking"><span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_THIS_HAS'); ?></span> <?php echo number_format($this->row->ranking, 1) . ' ' . Lang::txt('PLG_GROUPS_RESOURCES_RANKING'); ?></dt>
+                <dt class="ranking">
+                    <span class="rank-<?php echo $r; ?>">
+                        <?php echo Lang::txt('PLG_GROUPS_RESOURCES_THIS_HAS'); ?>
+                    </span>
+                    <?php
+                    echo number_format($this->row->ranking, 1)
+                        . ' ' . Lang::txt('PLG_GROUPS_RESOURCES_RANKING');
+                    ?>
+                </dt>
                 <dd>
                     <p><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RANKING_EXPLANATION'); ?></p>
                     <div>
@@ -57,9 +67,19 @@ switch ($this->row->access) {
                         $database = App::get('db');
 
                         if ($this->row->isTool()) {
-                            $stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->row->id, $this->row->category, $this->row->rating);
+                            $stats = new \Components\Resources\Helpers\Usage\Tools(
+                                $database,
+                                $this->row->id,
+                                $this->row->category,
+                                $this->row->rating
+                            );
                         } else {
-                            $stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->row->id, $this->row->category, $this->row->rating);
+                            $stats = new \Components\Resources\Helpers\Usage\Andmore(
+                                $database,
+                                $this->row->id,
+                                $this->row->category,
+                                $this->row->rating
+                            );
                         }
                         echo $stats->display();
                         ?>
@@ -107,7 +127,16 @@ switch ($this->row->access) {
         }
         ?>
         <div class="metadata">
-            <p class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $this->row->rating); ?></span>&nbsp;</span></p>
+            <p class="rating">
+                <span class="avgrating<?php echo $class; ?>">
+                    <span>
+                        <?php echo Lang::txt(
+                            'PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',
+                            $this->row->rating
+                        ); ?>
+                    </span>&nbsp;
+                </span>
+            </p>
         </div>
     <?php } ?>
 

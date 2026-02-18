@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,13 @@
         <span>|</span>
         <?php echo $this->entry->created('date'); ?>
         <span>|</span>
-        <?php echo Lang::txt('PLG_TAGS_COLLECTIONS_POSTED_BY', '<cite><a href="' . Route::url('index.php?option=com_members&id=' . $this->entry->get('created_by')) . '">' . $this->escape(stripslashes($this->entry->creator('name'))) . '</a></cite>'); ?>
+        <?php
+        $authorLink = '<cite><a href="'
+            . Route::url('index.php?option=com_members&id=' . $this->entry->get('created_by'))
+            . '">' . $this->escape(stripslashes($this->entry->creator('name')))
+            . '</a></cite>';
+        echo Lang::txt('PLG_TAGS_COLLECTIONS_POSTED_BY', $authorLink);
+        ?>
     </p>
     <?php if ($content = $this->entry->description('clean', 200)) { ?>
         <p><?php echo $content; ?></p>

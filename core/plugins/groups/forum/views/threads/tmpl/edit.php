@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,13 @@ $this->post->set('section', $this->section->get('alias'));
 $this->post->set('category', $this->category->get('alias'));
 
 if ($this->post->get('id')) {
-    $action = $base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias') . '/' . $this->post->get('thread');
+    $action = $base
+        . '&scope='
+        . $this->section->get('alias')
+        . '/'
+        . $this->category->get('alias')
+        . '/'
+        . $this->post->get('thread');
 } else {
     $action = $base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias');
     $this->post->set('access', 0);
@@ -25,17 +29,30 @@ if ($this->post->get('id')) {
 
 $this->css()
      ->js();
+
+$allDiscussionsUrl = Route::url(
+    $base . '&scope='
+    . $this->section->get('alias') . '/'
+    . $this->category->get('alias')
+);
+$allDiscussionsLabel = Lang::txt('PLG_GROUPS_FORUM_ALL_DISCUSSIONS');
 ?>
 <ul id="page_options">
     <li>
-        <a class="icon-comments comments btn" href="<?php echo Route::url($base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias')); ?>">
-            <?php echo Lang::txt('PLG_GROUPS_FORUM_ALL_DISCUSSIONS'); ?>
+        <a class="icon-comments comments btn"
+            href="<?php echo $allDiscussionsUrl; ?>">
+            <?php echo $allDiscussionsLabel; ?>
         </a>
     </li>
 </ul>
 
+<?php
+$accessPlugin = $this->config->get('access-plugin');
+$showAside = ($accessPlugin == 'anyone'
+    || $accessPlugin == 'registered');
+?>
 <section class="main section">
-    <?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
+    <?php if ($showAside) { ?>
     <div class="subject">
     <?php } ?>
 
@@ -59,9 +76,13 @@ $this->css()
                         <div class="form-group">
                             <div class="form-check">
                                 <label for="field-sticky" class="form-check-label">
-                                    <input class="option form-check-input" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) {
-                                        echo ' checked="checked"';
-                                                                                                                                            } ?> />
+                                    <input class="option form-check-input"
+                                        type="checkbox"
+                                        name="fields[sticky]"
+                                        id="field-sticky"
+                                        value="1"<?php if ($this->post->get('sticky')) {
+                                            echo ' checked="checked"';
+                                                 } ?> />
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
                                 </label>
                             </div>
@@ -71,9 +92,13 @@ $this->css()
                         <div class="form-group">
                             <div class="form-check">
                                 <label for="field-closed" class="form-check-label">
-                                    <input class="option form-check-input" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) {
-                                        echo ' checked="checked"';
-                                                                                                                                            } ?> />
+                                    <input class="option form-check-input"
+                                        type="checkbox"
+                                        name="fields[closed]"
+                                        id="field-closed"
+                                        value="1"<?php if ($this->post->get('closed')) {
+                                            echo ' checked="checked"';
+                                                 } ?> />
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED_THREAD'); ?>
                                 </label>
                             </div>
@@ -81,37 +106,73 @@ $this->css()
                     </div>
                 </div>
             <?php } else { ?>
-                <input type="hidden" name="fields[sticky]" id="field-sticky" value="<?php echo $this->escape($this->post->get('sticky')); ?>" />
-                <input type="hidden" name="fields[closed]" id="field-closed" value="<?php echo $this->escape($this->post->get('closed')); ?>" />
+                <input type="hidden"
+                    name="fields[sticky]"
+                    id="field-sticky"
+                    value="<?php echo $this->escape($this->post->get('sticky')); ?>"/>
+                <input type="hidden"
+                    name="fields[closed]"
+                    id="field-closed"
+                    value="<?php echo $this->escape($this->post->get('closed')); ?>"/>
             <?php } ?>
 
             <?php if (!$this->post->get('parent')) { ?>
-                <?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
+                <?php if (
+                $accessPlugin == 'anyone'
+                    || $accessPlugin == 'registered'
+) { ?>
                     <div class="form-group">
                         <label for="field-access">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS'); ?>
                             <select name="fields[access]" id="field-access" class="form-control">
-                                <option value="1"<?php if ($this->post->get('access') == 1) {
+                                <?php $access = $this->post->get('access'); ?>
+                                <?php $pubLabel = Lang::txt(
+                                    'PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'
+                                ); ?>
+                                <?php $regLabel = Lang::txt(
+                                    'PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'
+                                ); ?>
+                                <?php $privLabel = Lang::txt(
+                                    'PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'
+                                ); ?>
+                                <option value="1"<?php if ($access == 1) {
                                     echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
-                                <option value="2"<?php if ($this->post->get('access') == 2) {
+                                                 } ?>><?php echo $pubLabel; ?></option>
+                                <option value="2"<?php if ($access == 2) {
                                     echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
-                                <option value="5"<?php if ($this->post->get('access') == 5) {
+                                                 } ?>><?php echo $regLabel; ?></option>
+                                <option value="5"<?php if ($access == 5) {
                                     echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
+                                                 } ?>><?php echo $privLabel; ?></option>
                             </select>
                         </label>
                     </div>
                 <?php } else { ?>
-                    <input type="hidden" name="fields[access]" id="field-access" value="<?php echo $this->post->get('access', 0); ?>" />
+                    <input type="hidden"
+                        name="fields[access]"
+                        id="field-access"
+                        value="<?php echo $this->post->get('access', 0); ?>"/>
                 <?php } ?>
 
                 <div class="form-group">
                     <label for="field-category_id">
-                        <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
-                        <select name="fields[category_id]" id="field-category_id" class="form-control">
-                            <option value="0"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
+                        <?php
+                        $catLabel = Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY');
+                        $reqLabel = Lang::txt('PLG_GROUPS_FORUM_REQUIRED');
+                        ?>
+                        <?php echo $catLabel; ?>
+                        <span class="required">
+                            <?php echo $reqLabel; ?>
+                        </span>
+                        <select name="fields[category_id]"
+                            id="field-category_id"
+                            class="form-control">
+                            <?php $selectLabel = Lang::txt(
+                                'PLG_GROUPS_FORUM_FIELD_CATEGORY_SELECT'
+                            ); ?>
+                            <option value="0">
+                                <?php echo $selectLabel; ?>
+                            </option>
                             <?php
                             $filters = array(
                                 'state'  => 1,
@@ -125,12 +186,26 @@ $this->css()
                                     ->whereEquals('state', $filters['state'])
                                     ->whereIn('access', $filters['access'])
                                     ->rows();
-                                if ($categories->count() > 0) { ?>
-                                    <optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
-                                        <?php foreach ($categories as $category) { ?>
-                                            <option value="<?php echo $category->get('id'); ?>"<?php if ($this->category->get('alias') == $category->get('alias')) {
-                                                echo ' selected="selected"';
-                                                           } ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+                                if ($categories->count() > 0) {
+                                    $sectionTitle = $this->escape(
+                                        stripslashes($section->get('title'))
+                                    );
+                                    ?>
+                                    <optgroup label="<?php echo $sectionTitle; ?>">
+                                        <?php foreach ($categories as $category) {
+                                            $catId = $category->get('id');
+                                            $catAlias = $category->get('alias');
+                                            $catTitle = $this->escape(
+                                                stripslashes($category->get('title'))
+                                            );
+                                            $selected = '';
+                                            if ($this->category->get('alias') == $catAlias) {
+                                                $selected = ' selected="selected"';
+                                            }
+                                            ?>
+                                            <option value="<?php echo $catId; ?>"<?php
+                                                echo $selected;
+                                            ?>><?php echo $catTitle; ?></option>
                                         <?php } ?>
                                     </optgroup>
                                 <?php } ?>
@@ -141,24 +216,62 @@ $this->css()
 
                 <div class="form-group">
                     <label for="field-title">
-                        <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
-                        <input type="text" class="form-control" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->post->get('title', ''))); ?>" />
+                        <?php
+                        $titleLabel = Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE');
+                        $reqLabel = Lang::txt('PLG_GROUPS_FORUM_REQUIRED');
+                        ?>
+                        <?php echo $titleLabel; ?>
+                        <span class="required">
+                            <?php echo $reqLabel; ?>
+                        </span>
+                        <input type="text"
+                            class="form-control"
+                            name="fields[title]"
+                            id="field-title"
+                            value="<?php echo $this->escape(stripslashes($this->post->get('title', ''))); ?>"/>
                     </label>
                 </div>
             <?php } else { ?>
-                <input type="hidden" name="fields[category_id]" id="field-category_id" value="<?php echo $this->escape($this->post->get('category_id')); ?>" />
-                <input type="hidden" name="fields[access]" id="field-access" value="<?php echo $this->post->get('access', 0); ?>" />
+                <input type="hidden"
+                    name="fields[category_id]"
+                    id="field-category_id"
+                    value="<?php echo $this->escape($this->post->get('category_id')); ?>"/>
+                <input type="hidden"
+                    name="fields[access]"
+                    id="field-access"
+                    value="<?php echo $this->post->get('access', 0); ?>"/>
             <?php } ?>
 
                 <div class="form-group">
                     <label for="field_comment">
                         <div>
-                            <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
-                            <span class="note" style='float:right'>Use an @ sign to mention group users in the post</span>
-                        </div>                      
+                            <?php
+                            $commentsLabel = Lang::txt(
+                                'PLG_GROUPS_FORUM_FIELD_COMMENTS'
+                            );
+                            $reqLabel = Lang::txt('PLG_GROUPS_FORUM_REQUIRED');
+                            ?>
+                            <?php echo $commentsLabel; ?>
+                            <span class="required">
+                                <?php echo $reqLabel; ?>
+                            </span>
+                            <span class="note"
+                                style='float:right'>Use an @ sign to mention group users in the post</span>
+                        </div>
                         <?php
                             $gid = $this->group->get('gidNumber');
-                            $feedUrl = '/api/members/mentions/group?gid=' . $gid . '&search={encodedQuery}';
+                            $feedUrl = '/api/members/mentions/group?gid='
+                                . $gid . '&search={encodedQuery}';
+
+                            $itemTpl = '<li data-id="{id}">'
+                                . '<img class="photo" src="{picture}" />'
+                                . '<strong class="username">{username}</strong>'
+                                . '<span class="fullname">{name}</span>'
+                                . '</li>';
+                            $outputTpl = '<a href="/members/{id}"'
+                                . ' data-user-id="{id}"'
+                                . ' target="_blank">'
+                                . '@{username}</a>&nbsp;&nbsp;';
 
                             echo $this->editor(
                                 'fields[comment]',
@@ -172,8 +285,8 @@ $this->css()
                                         array(
                                             'minChars' => 0,
                                             'feed' => $feedUrl,
-                                            'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
-                                            'outputTemplate' => '<a href="/members/{id}" data-user-id="{id}" target="_blank">@{username}</a>&nbsp;&nbsp;',
+                                            'itemTemplate' => $itemTpl,
+                                            'outputTemplate' => $outputTpl,
                                         )
                                     )
                                 )
@@ -184,7 +297,14 @@ $this->css()
                 <div class="form-group">
                     <label for="actags">
                         <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TAGS'); ?>:
-                        <?php echo $this->autocompleter('tags', 'tags', $this->escape($this->post->tags('string')), 'actags'); ?>
+                        <?php
+                        $tagsValue = $this->escape($this->post->tags('string'));
+                        echo $this->autocompleter(
+                            'tags',
+                            'tags',
+                            $tagsValue,
+                            'actags'
+                        ); ?>
                     </label>
                 </div>
 
@@ -197,22 +317,50 @@ $this->css()
                         <div class="col span-half">
                             <div class="form-group">
                                 <label for="upload">
-                                    <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>: <?php if ($attachment->get('filename')) {
-                                        echo '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>';
+                                    <?php
+                                    $fileLabel = Lang::txt(
+                                        'PLG_GROUPS_FORUM_FIELD_FILE'
+                                    );
+                                    echo $fileLabel . ':';
+                                    if ($attachment->get('filename')) {
+                                        echo ' <strong>'
+                                            . $this->escape(
+                                                stripslashes($attachment->get('filename'))
+                                            )
+                                            . '</strong>';
                                     } ?>
-                                    <input type="file" class="form-control-file" name="upload" id="upload" />
+                                    <input type="file"
+                                        class="form-control-file"
+                                        name="upload"
+                                        id="upload" />
                                 </label>
                             </div>
                         </div>
                         <div class="col span-half omega">
                             <div class="form-group">
                                 <label for="field-attach-descritpion">
-                                    <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>:
-                                    <input type="text" class="form-control" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($attachment->get('description', ''))); ?>" />
+                                    <?php
+                                    $descLabel = Lang::txt(
+                                        'PLG_GROUPS_FORUM_FIELD_DESCRIPTION'
+                                    );
+                                    $descValue = $this->escape(
+                                        stripslashes(
+                                            $attachment->get('description', '')
+                                        )
+                                    );
+                                    ?>
+                                    <?php echo $descLabel; ?>:
+                                    <input type="text"
+                                        class="form-control"
+                                        name="description"
+                                        id="field-attach-descritpion"
+                                        value="<?php echo $descValue; ?>" />
                                 </label>
                             </div>
                         </div>
-                        <input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($attachment->get('id', ''))); ?>" />
+                        <input type="hidden"
+                            name="attachment"
+                            value="<?php echo $this->escape(stripslashes($attachment->get('id', ''))); ?>"/>
                     </div>
                     <?php if ($attachment->get('id')) { ?>
                         <p class="warning">
@@ -224,7 +372,12 @@ $this->css()
                 <?php if ($this->post->get('id')) { ?>
                     <div class="form-group">
                         <label for="field-notify" id="comment-notify-label">
-                            <input class="option" type="checkbox" name="notify" id="field-notify" value="1" checked="checked" />
+                            <input class="option"
+                                type="checkbox"
+                                name="notify"
+                                id="field-notify"
+                                value="1"
+                                checked="checked"/>
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_NOTIFY'); ?>
                         </label>
                     </div>
@@ -236,9 +389,13 @@ $this->css()
                     <div class="form-group">
                         <div class="form-check">
                             <label for="field-anonymous" id="comment-anonymous-label" class="form-check-label">
-                                <input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) {
-                                    echo ' checked="checked"';
-                                                                                                                                              } ?> />
+                                <input class="option form-check-input"
+                                    type="checkbox"
+                                    name="fields[anonymous]"
+                                    id="field-anonymous"
+                                    value="1"<?php if ($this->post->get('anonymous')) {
+                                        echo ' checked="checked"';
+                                             } ?> />
                                 <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
                             </label>
                         </div>
@@ -246,7 +403,9 @@ $this->css()
                 <?php } ?>
 
                 <p class="submit">
-                    <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+                    <input class="btn btn-success"
+                        type="submit"
+                        value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>"/>
                 </p>
 
                 <div class="sidenote">
@@ -255,22 +414,32 @@ $this->css()
                     </p>
                 </div>
             </fieldset>
-            <input type="hidden" name="fields[parent]" value="<?php echo $this->escape($this->post->get('parent')); ?>" />
+            <input type="hidden"
+                name="fields[parent]"
+                value="<?php echo $this->escape($this->post->get('parent')); ?>"/>
             <input type="hidden" name="fields[state]" value="1" />
             <input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->post->get('id')); ?>" />
-            <input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->forum->get('scope')); ?>" />
-            <input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->forum->get('scope_id')); ?>" />
-            <input type="hidden" name="fields[thread]" value="<?php echo $this->escape($this->post->get('thread')); ?>" />
+            <input type="hidden"
+                name="fields[scope]"
+                value="<?php echo $this->escape($this->forum->get('scope')); ?>"/>
+            <input type="hidden"
+                name="fields[scope_id]"
+                value="<?php echo $this->escape($this->forum->get('scope_id')); ?>"/>
+            <input type="hidden"
+                name="fields[thread]"
+                value="<?php echo $this->escape($this->post->get('thread')); ?>"/>
 
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
             <input type="hidden" name="active" value="forum" />
             <input type="hidden" name="action" value="savethread" />
-            <input type="hidden" name="section" value="<?php echo $this->escape($this->section->get('alias')); ?>" />
+            <input type="hidden"
+                name="section"
+                value="<?php echo $this->escape($this->section->get('alias')); ?>" />
 
             <?php echo Html::input('token'); ?>
         </form>
-    <?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
+    <?php if ($showAside) { ?>
     </div><!-- / .subject -->
     <aside class="aside">
         <p><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT_HINT'); ?></p>

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -41,11 +41,15 @@ $i = 1;
     <ul id="page_options" class="pluginOptions">
             <?php if ($this->new_pubs) { ?>
                 <li>
-                    <a class="icon-add btn" href="/pubs/#/prjs/<?php echo $this->project->get('id'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a>
+                    <a class="icon-add btn"
+                        href="/pubs/#/prjs/<?php echo $this->project->get('id'); ?>"
+                        ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a>
                 </li>
             <?php } else { ?>
                 <li>
-                    <a class="icon-add btn" href="<?php echo Route::url($this->project->link('publications') . '&action=start'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a>
+                    <a class="icon-add btn"
+                        href="<?php echo Route::url($this->project->link('publications') . '&action=start'); ?>"
+                        ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a>
                     </li>
             <?php } ?>
     </ul>
@@ -56,30 +60,111 @@ if (count($this->rows) > 0) {
     ?>
     <form action="<?php echo Route::url($this->project->link('publications')); ?>" method="post" id="plg-form" >
         <div class="container">
+            <?php
+            $showingLabel = ucfirst(Lang::txt('COM_PROJECTS_SHOWING'));
+            $rowCount = count($this->rows);
+            $allLabel = ($this->total <= $rowCount)
+                ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_ALL') . ' '
+                : '';
+            $outOfLabel = ($this->total > $rowCount)
+                ? Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $this->total
+                : '';
+            $pubsLabel = Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S'
+            );
+            ?>
             <div class="list-menu">
-                <p class="msg-total"><?php echo ucfirst(Lang::txt('COM_PROJECTS_SHOWING')); ?> <?php if ($this->total <= count($this->rows)) {
-                    echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ALL');
-                                     }?> <span class="prominent"> <?php echo count($this->rows); ?></span> <?php if ($this->total > count($this->rows)) {
-                                     echo Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $this->total;
-                                     } ?> <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S'); ?></p>
+                <p class="msg-total">
+                    <?php echo $showingLabel; ?>
+                    <?php echo $allLabel; ?>
+                    <span class="prominent">
+                        <?php echo $rowCount; ?>
+                    </span>
+                    <?php echo $outOfLabel; ?>
+                    <?php echo $pubsLabel; ?>
+                </p>
             </div>
+            <?php
+            $pubLink = $this->project->link('publications');
+            $sortByLabel = Lang::txt('COM_PROJECTS_SORT_BY');
+
+            $titleActive = ($this->filters['sortby'] == 'title')
+                ? ' activesort' : '';
+            $titleUrl = Route::url(
+                $pubLink . $sortAppend . '&sortby=title'
+            );
+            $titleSort = $sortByLabel . ' '
+                . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE');
+            $titleLabel = Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_TITLE'
+            );
+
+            $idActive = ($this->filters['sortby'] == 'id')
+                ? ' activesort' : '';
+            $idUrl = Route::url(
+                $pubLink . $sortAppend . '&sortby=id'
+            );
+            $idSort = $sortByLabel . ' '
+                . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ID');
+            $idLabel = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ID');
+
+            $typeActive = ($this->filters['sortby'] == 'type')
+                ? ' activesort' : '';
+            $typeUrl = Route::url(
+                $pubLink . $sortAppend . '&sortby=type'
+            );
+            $typeSort = $sortByLabel . ' '
+                . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TYPE');
+            $typeLabel = Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_CONTENT_TYPE'
+            );
+
+            $statusActive = ($this->filters['sortby'] == 'status')
+                ? ' class="activesort"' : '';
+            $statusUrl = Route::url(
+                $pubLink . $sortAppend . '&sortby=status'
+            );
+            $statusSort = $sortByLabel . ' '
+                . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS');
+            $statusLabel = Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_STATUS'
+            );
+
+            $releasesLabel = Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_RELEASES'
+            );
+            ?>
             <table id="filelist" class="listing">
                 <thead>
                     <tr>
                         <th></th>
-                        <th class="thtype<?php if ($this->filters['sortby'] == 'title') {
-                            echo ' activesort';
-                                         } ?>"><a href="<?php echo Route::url($this->project->link('publications') . $sortAppend . '&sortby=title'); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></a></th>
-                        <th class="thtype<?php if ($this->filters['sortby'] == 'id') {
-                            echo ' activesort';
-                                         } ?>"><a href="<?php echo Route::url($this->project->link('publications') . $sortAppend . '&sortby=id'); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ID'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ID'); ?></a></th>
-                        <th class="thtype<?php if ($this->filters['sortby'] == 'type') {
-                            echo ' activesort';
-                                         } ?>"><a href="<?php echo Route::url($this->project->link('publications') . $sortAppend . '&sortby=type'); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' .  Lang::txt('PLG_PROJECTS_PUBLICATIONS_TYPE'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_TYPE'); ?></a></th>
-                        <th<?php if ($this->filters['sortby'] == 'status') {
-                            echo ' class="activesort"';
-                           } ?> colspan="2"><a href="<?php echo Route::url($this->project->link('publications') . $sortAppend . '&sortby=status'); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></a></th>
-                        <th class="condensed centeralign"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELEASES'); ?></th>
+                        <th class="thtype<?php echo $titleActive; ?>">
+                            <a href="<?php echo $titleUrl; ?>"
+                                class="re_sort"
+                                title="<?php echo $titleSort; ?>"
+                                ><?php echo $titleLabel; ?></a>
+                        </th>
+                        <th class="thtype<?php echo $idActive; ?>">
+                            <a href="<?php echo $idUrl; ?>"
+                                class="re_sort"
+                                title="<?php echo $idSort; ?>"
+                                ><?php echo $idLabel; ?></a>
+                        </th>
+                        <th class="thtype<?php echo $typeActive; ?>">
+                            <a href="<?php echo $typeUrl; ?>"
+                                class="re_sort"
+                                title="<?php echo $typeSort; ?>"
+                                ><?php echo $typeLabel; ?></a>
+                        </th>
+                        <th<?php echo $statusActive; ?> colspan="2">
+                            <a href="<?php echo $statusUrl; ?>"
+                                class="re_sort"
+                                title="<?php echo $statusSort; ?>"
+                                ><?php echo $statusLabel; ?></a>
+                        </th>
+                        <th class="condensed centeralign">
+                            <?php echo $releasesLabel; ?>
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -122,7 +207,13 @@ if (count($this->rows) > 0) {
     </div>
     <?php
 } else {
-    echo '<p class="noresults">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_PUBS_FOUND') . ' <span class="addnew"><a href="' . Route::url($this->project->link('publications') . '&action=start') . '"  >' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION') . '</a></span></p>';
+    echo '<p class="noresults">'
+        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_PUBS_FOUND')
+        . ' <span class="addnew"><a href="'
+        . Route::url($this->project->link('publications') . '&action=start')
+        . '"  >'
+        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')
+        . '</a></span></p>';
 
     // Show intro banner with publication steps
     $this->view('intro')
@@ -133,17 +224,55 @@ if (count($this->rows) > 0) {
 }
 ?>
 
-<?php if (count($this->rows) > 0) { ?>
+<?php
+if (count($this->rows) > 0) {
+    $diskUrl = Route::url(
+        $this->project->link('publications') . '&action=diskspace'
+    );
+    $diskTooltip = Lang::txt(
+        'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_TOOLTIP'
+    );
+    $warningClass = $warning ? 'class="quota-warning"' : '';
+    $usedLabel = $inuse . '% '
+        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_USED');
+    $quotaLabel = Lang::txt(
+        'PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA'
+    ) . ': ' . \Hubzero\Utility\Number::formatBytes($this->quota);
+    $statsUrl = Route::url(
+        $this->project->link('publications') . '&action=stats'
+    );
+    $statsLabel = Lang::txt(
+        'PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE_STATS'
+    );
+    ?>
     <p class="extras">
         <span class="leftfloat">
         <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE'); ?>
-        <a href="<?php echo Route::url($this->project->link('publications') . '&action=diskspace'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_TOOLTIP'); ?>"><span id="indicator-wrapper" <?php if ($warning) {
-            echo 'class="quota-warning"';
-                 } ?>><span id="indicator-area" class="used:<?php echo $inuse; ?>">&nbsp;</span><span id="indicator-value"><span><?php echo $inuse . '% ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_USED'); ?></span></span></span></a>
-             <span class="show-quota"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA') . ': ' . \Hubzero\Utility\Number::formatBytes($this->quota); ?></span>
+        <a href="<?php echo $diskUrl; ?>"
+            title="<?php echo $diskTooltip; ?>"
+            ><span id="indicator-wrapper"
+                <?php echo $warningClass; ?>
+                ><span id="indicator-area"
+                    class="used:<?php echo $inuse; ?>"
+                    >&nbsp;</span>
+                <span id="indicator-value">
+                    <span>
+                        <?php echo $usedLabel; ?>
+                    </span>
+                </span>
+            </span>
+        </a>
+        <span class="show-quota">
+            <?php echo $quotaLabel; ?>
+        </span>
         </span>
     </p>
     <?php if ($showStats) { ?>
-        <p class="viewallstats mini"><a href="<?php echo Route::url($this->project->link('publications') . '&action=stats'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE_STATS'); ?> &raquo;</a></p>
+        <p class="viewallstats mini">
+            <a href="<?php echo $statsUrl; ?>">
+                <?php echo $statsLabel; ?>
+                &raquo;
+            </a>
+        </p>
     <?php } ?>
 <?php }

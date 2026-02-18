@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -44,18 +42,25 @@ $this->css()
                 <label for="param-sorting">
                     <?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SORTING'); ?>
                     <select name="params[sorting]" id="param-sorting" class="form-control">
-                        <option value="activity"<?php if ($this->config->get('sorting', 'activity') == 'activity') {
-                            echo ' selected="selected"';
-                                                }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_ACTIVITY'); ?></option>
-                        <option value="created"<?php if ($this->config->get('sorting', 'activity') == 'created') {
-                            echo ' selected="selected"';
-                                               }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_CREATED'); ?></option>
-                        <option value="replies"<?php if ($this->config->get('sorting', 'activity') == 'replies') {
-                            echo ' selected="selected"';
-                                               }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_REPLIES'); ?></option>
-                        <option value="title"<?php if ($this->config->get('sorting', 'activity') == 'title') {
-                            echo ' selected="selected"';
-                                             }?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TITLE'); ?></option>
+                        <?php
+                        $sorting = $this->config->get('sorting', 'activity');
+                        $actSel = ($sorting == 'activity') ? ' selected="selected"' : '';
+                        $creSel = ($sorting == 'created') ? ' selected="selected"' : '';
+                        $repSel = ($sorting == 'replies') ? ' selected="selected"' : '';
+                        $titSel = ($sorting == 'title') ? ' selected="selected"' : '';
+                        ?>
+                        <option value="activity"<?php echo $actSel; ?>>
+                            <?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_ACTIVITY'); ?>
+                        </option>
+                        <option value="created"<?php echo $creSel; ?>>
+                            <?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_CREATED'); ?>
+                        </option>
+                        <option value="replies"<?php echo $repSel; ?>>
+                            <?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_REPLIES'); ?>
+                        </option>
+                        <option value="title"<?php echo $titSel; ?>>
+                            <?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TITLE'); ?>
+                        </option>
                     </select>
                     <span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SORTING_HINT'); ?></span>
                 </label>
@@ -64,7 +69,11 @@ $this->css()
             <div class="form-group">
                 <label for="param-threading_depth">
                     <?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH'); ?>
-                    <input type="text" class="form-control" name="params[threading_depth]" id="param-threading_depth" value="<?php echo $this->config->get('threading_depth', 3); ?>" />
+                    <input type="text"
+                        class="form-control"
+                        name="params[threading_depth]"
+                        id="param-threading_depth"
+                        value="<?php echo $this->config->get('threading_depth', 3); ?>"/>
                     <span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_DEPTH_HINT'); ?></span>
                 </label>
             </div>
@@ -74,17 +83,25 @@ $this->css()
 
                 <div class="form-check">
                     <label for="param-allow_anonymous-no" class="form-check-label">
-                        <input type="radio" class="form-check-input" name="params[allow_anonymous]" id="param-allow_anonymous-no" value="0" <?php if (!$this->config->get('allow_anonymous')) {
-                            echo ' checked="checked"';
-                                                                                                                                            } ?> />
+                        <input type="radio"
+                            class="form-check-input"
+                            name="params[allow_anonymous]"
+                            id="param-allow_anonymous-no"
+                            value="0" <?php if (!$this->config->get('allow_anonymous')) {
+                                echo ' checked="checked"';
+                                      } ?> />
                         <?php echo Lang::txt('JNO'); ?>
                     </label>
                 </div>
                 <div class="form-check">
                     <label for="param-allow_anonymous-yes" class="form-check-label">
-                        <input type="radio" class="form-check-input" name="params[allow_anonymous]" id="param-allow_anonymous-yes" value="1" <?php if ($this->config->get('allow_anonymous')) {
-                            echo ' checked="checked"';
-                                                                                                                                             } ?> />
+                        <input type="radio"
+                            class="form-check-input"
+                            name="params[allow_anonymous]"
+                            id="param-allow_anonymous-yes"
+                            value="1" <?php if ($this->config->get('allow_anonymous')) {
+                                echo ' checked="checked"';
+                                      } ?> />
                         <?php echo Lang::txt('JYES'); ?>
                     </label>
                 </div>

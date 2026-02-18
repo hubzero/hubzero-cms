@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -42,16 +42,31 @@ if (!$no_html) { ?>
             <div class="grid">
                 <div class="col span12 omega toolbar-options">
                     <?php if ($this->filters['filter'] == 'starred') { ?>
-                        <a class="icon-star tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity' . $qsfilters); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_ALL'); ?>">
+                        <a class="icon-star tooltips"
+                            href="<?php echo Route::url($this->member->link() . '&active=activity' . $qsfilters); ?>"
+                            title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_ALL'); ?>">
                             <?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_ALL'); ?>
                         </a>
-                    <?php } else { ?>
-                        <a class="icon-star-empty tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity&filter=starred' . $qsfilters); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_STARRED'); ?>">
-                            <?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_STARRED'); ?>
+                    <?php } else {
+                        $starredUrl = Route::url(
+                            $this->member->link()
+                            . '&active=activity&filter=starred'
+                            . $qsfilters
+                        );
+                        $starredTitle = Lang::txt(
+                            'PLG_MEMBERS_ACTIVITY_FILTER_STARRED'
+                        );
+                        ?>
+                        <a class="icon-star-empty tooltips"
+                            href="<?php echo $starredUrl; ?>"
+                            title="<?php echo $starredTitle; ?>">
+                            <?php echo $starredTitle; ?>
                         </a>
                     <?php } ?>
                     <?php if ($this->digests) { ?>
-                        <a class="icon-config tooltips" href="<?php echo Route::url($this->member->link() . '&active=activity&action=settings'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS'); ?>">
+                        <a class="icon-config tooltips"
+                            href="<?php echo Route::url($this->member->link() . '&active=activity&action=settings'); ?>"
+                            title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS'); ?>">
                             <?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS'); ?>
                         </a>
                     <?php } ?>
@@ -61,33 +76,84 @@ if (!$no_html) { ?>
                 <div class="col span4">
                     <span class="form-group">
                         <label for="filter-search"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SEARCH'); ?></label>
-                        <input type="text" class="form-control" name="q" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SEARCH_PLACEHOLDER'); ?>" />
+                        <input type="text"
+                            class="form-control"
+                            name="q"
+                            id="filter-search"
+                            value="<?php echo $this->escape($this->filters['search']); ?>"
+                            placeholder="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SEARCH_PLACEHOLDER'); ?>"/>
                     </span>
                 </div>
+                <?php
+                $scopeLabel = Lang::txt(
+                    'PLG_MEMBERS_ACTIVITY_FILTER_SCOPE'
+                );
+                $scopeAll = Lang::txt(
+                    'PLG_MEMBERS_ACTIVITY_FILTER_SCOPE_ALL'
+                );
+                $createdByLabel = Lang::txt(
+                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY'
+                );
+                $createdByAll = Lang::txt(
+                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ALL'
+                );
+                $createdByMe = Lang::txt(
+                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ME'
+                );
+                $createdByNotMe = Lang::txt(
+                    'PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_NOTME'
+                );
+                $meSelected = ($this->filters['created_by'] == 'me')
+                    ? ' selected="selected"' : '';
+                $notmeSelected = ($this->filters['created_by'] == 'notme')
+                    ? ' selected="selected"' : '';
+                ?>
                 <div class="col span3">
                     <span class="form-group">
-                        <label for="filter-scope"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_SCOPE'); ?></label>
-                        <select class="form-control" name="scope" id="filter-scope">
-                            <option value=""><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_SCOPE_ALL'); ?></option>
-                            <?php foreach ($this->categories as $category) { ?>
-                                <option value="<?php echo $this->escape($category); ?>"<?php if ($this->filters['scope'] == $category) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape($category); ?></option>
+                        <label for="filter-scope">
+                            <?php echo $scopeLabel; ?>
+                        </label>
+                        <select class="form-control"
+                            name="scope"
+                            id="filter-scope">
+                            <option value="">
+                                <?php echo $scopeAll; ?>
+                            </option>
+                            <?php foreach ($this->categories as $category) {
+                                $catVal = $this->escape($category);
+                                $catSel = ($this->filters['scope'] == $category)
+                                    ? ' selected="selected"' : '';
+                                ?>
+                                <option
+                                    value="<?php echo $catVal; ?>"
+                                    <?php echo $catSel; ?>>
+                                    <?php echo $catVal; ?>
+                                </option>
                             <?php } ?>
                         </select>
                     </span>
                 </div>
                 <div class="col span3">
                     <span class="form-group">
-                        <label for="filter-created_by"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY'); ?></label>
-                        <select class="form-control" name="created_by" id="filter-created_by">
-                            <option value=""><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ALL'); ?></option>
-                            <option value="me"<?php if ($this->filters['created_by'] == 'me') {
-                                echo ' selected="selected"';
-                                              } ?>><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_ME'); ?></option>
-                            <option value="notme"<?php if ($this->filters['created_by'] == 'notme') {
-                                echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_FILTER_CREATED_BY_NOTME'); ?></option>
+                        <label for="filter-created_by">
+                            <?php echo $createdByLabel; ?>
+                        </label>
+                        <select class="form-control"
+                            name="created_by"
+                            id="filter-created_by">
+                            <option value="">
+                                <?php echo $createdByAll; ?>
+                            </option>
+                            <option
+                                value="me"
+                                <?php echo $meSelected; ?>>
+                                <?php echo $createdByMe; ?>
+                            </option>
+                            <option
+                                value="notme"
+                                <?php echo $notmeSelected; ?>>
+                                <?php echo $createdByNotMe; ?>
+                            </option>
                         </select>
                     </span>
                 </div>

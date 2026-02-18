@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,10 +22,25 @@ if ($this->delimiter) {
         $message .= Lang::txt('PLG_GROUPS_FORUM_EMAIL_REPLY_ABOVE') . "\n";
     }
 
-    $message .= 'Message from ' . $base . ' / ' . Lang::txt('PLG_GROUPS_FORUM_DETAILS_THREAD', $this->thread->get('id')) . "\n";
+    $message .= 'Message from '
+        . $base
+        . ' / '
+        . Lang::txt('PLG_GROUPS_FORUM_DETAILS_THREAD', $this->thread->get('id'))
+        . "\n";
 }
-$message .= ($this->post->get('anonymous')) ? Lang::txt('JANONYMOUS') : $this->post->creator->get('name') . ' (' . $this->post->creator->get('username') . ')';
-$message .= ' wrote (in ' . $this->group->get('description') . ': ' . $this->section->get('title') . ' - ' . $this->category->get('title') . ' - ' . $this->thread->get('title') . '):';
+$message .= ($this->post->get('anonymous')) ? Lang::txt('JANONYMOUS') : $this->post->creator->get('name')
+    . ' ('
+    . $this->post->creator->get('username')
+    . ')';
+$message .= ' wrote (in '
+    . $this->group->get('description')
+    . ': '
+    . $this->section->get('title')
+    . ' - '
+    . $this->category->get('title')
+    . ' - '
+    . $this->thread->get('title')
+    . '):';
 
 $output = html_entity_decode(strip_tags($this->post->content ?? ''), ENT_COMPAT, 'UTF-8');
 $output = preg_replace_callback(
@@ -46,7 +59,14 @@ $attachments = $this->post->attachments()
 if ($attachments->count() > 0) {
     $message .= "\n\n";
     foreach ($attachments as $attachment) {
-        $message .= $base . '/' . trim(Route::url($this->thread->link()), '/') . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename') . "\n";
+        $message .= $base
+            . '/'
+            . trim(Route::url($this->thread->link()), '/')
+            . '/'
+            . $attachment->get('post_id')
+            . '/'
+            . $attachment->get('filename')
+            . "\n";
     }
 }
 

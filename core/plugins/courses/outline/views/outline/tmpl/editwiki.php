@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,13 +28,18 @@ $assets = array();
 
         <p>
             <label for="title">Title: </label><span class="required">*required</span>
-            <input type="text" name="title" class="wiki-title" placeholder="Wiki page title" value="<?php echo $asset->get('title') ?>" />
+            <input type="text"
+                name="title"
+                class="wiki-title"
+                placeholder="Wiki page title"
+                value="<?php echo $asset->get('title') ?>"/>
         </p>
 
         <label for="content">Content: </label>
         <?php
         $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $asset->get('content', ''));
-        echo $this->editor('content', $content, 35, 10, 'content'); //, null, null, array('class' => 'minimal no-footer images'));
+        // @TODO: null, null, array('class' => 'minimal no-footer images')
+        echo $this->editor('content', $content, 35, 10, 'content');
         ?>
 
 <?php // @TODO: implement asset insertion to wiki body! ?>
@@ -54,7 +59,12 @@ foreach ($this->course->offering()->units() as $unit) :
                 foreach ($ag->assets() as $a) :
                     if ($a->isPublished()) :
                         $assets[] = $a;
-                        $a->set('longTitle', $unit->get('title') . ' - ' . $ag->get('title') . ' - ' . $a->get('title'));
+                        $a->set(
+                            'longTitle',
+                            $unit->get('title') . ' - '
+                            . $ag->get('title') . ' - '
+                            . $a->get('title')
+                        );
                         //echo "<li>" . $a->get('title') . "</li>";
                     endif;
                 endforeach;
@@ -70,7 +80,9 @@ endforeach;
 -->
 
         <div class="wiki-files">
-            <p class="hint">Use the <code>Image</code> or <code>File</code> macro to include uploaded files. Example: <code>[[Image(mypicture.png)]]</code></p>
+            <p class="hint">Use the <code>Image</code> or <code>File</code>
+                macro to include uploaded files.
+                Example: <code>[[Image(mypicture.png)]]</code></p>
             <div class="wiki-files-upload-wrapper">
                 <div class="wiki-files-upload">
                     <p>Click or drop file</p>
@@ -81,7 +93,12 @@ endforeach;
                 <div class="wiki-files-available">
                     <?php $path = $asset->path($this->course->get('id')); ?>
                     <?php if ($path && is_dir(PATH_APP . $path)) : ?>
-                        <?php $files = array_diff(scandir(PATH_APP . $asset->path($this->course->get('id'))), array('..', '.', '.DS_Store')); ?>
+                        <?php
+                        $files = array_diff(
+                            scandir(PATH_APP . $asset->path($this->course->get('id'))),
+                            array('..', '.', '.DS_Store')
+                        );
+                        ?>
                         <ul class="wiki-files-list">
                             <?php foreach ($files as $file) : ?>
                                 <li class="wiki-file">
@@ -102,20 +119,25 @@ endforeach;
             <select name="scope_id">
                 <?php foreach ($assetgroups as $assetgroup) : ?>
                     <?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?php echo $assetgroup['title'] ?></option>
+                    <option value="<?php echo $assetgroup['id'] ?>"
+                        <?php echo $selected ?>><?php echo $assetgroup['title'] ?></option>
                 <?php endforeach; ?>
             </select>
         </p>
 
         <p>
             <label for="graded">Create a gradebook entry for this item?</label>
-            <input name="graded" type="checkbox" value="1" <?php echo ($asset->get('graded')) ? 'checked="checked"' : ''; ?>/>
+            <input name="graded"
+                type="checkbox"
+                value="1" <?php echo ($asset->get('graded')) ? 'checked="checked"' : ''; ?>/>
             <input type="hidden" name="edit_graded" value="1" />
         </p>
 
         <p>
             <label for="progress_factors">Include this item in the progress calculation?</label>
-            <input name="progress_factors" type="checkbox" value="1" <?php echo ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : ''; ?>/>
+            <input name="progress_factors"
+                type="checkbox"
+                value="1" <?php echo ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : ''; ?>/>
             <input type="hidden" name="edit_progress_factors" value="1" />
         </p>
 

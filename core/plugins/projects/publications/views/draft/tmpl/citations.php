@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -41,7 +41,9 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
             <label id="<?php echo $elName; ?>-lbl"> <?php if ($required) {
                 ?><span class="required"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span><?php
                        } else {
-                            ?><span class="optional"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?></span><?php
+                            ?><span class="optional"><?php
+                                echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_OPTIONAL');
+?></span><?php
                        } ?>
                 <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CITATIONS')); ?>
             </label>
@@ -60,9 +62,29 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
                                         : $cite->formatted();
                         ?>
                         <li>
+                            <?php
+                            $editUrl = Route::url(
+                                $this->pub->link('editversionid')
+                                . '&active=links&action=newcite&cid='
+                                . $cite->cid . '&p=' . $props
+                            );
+                            $editTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT');
+                            $removeUrl = Route::url(
+                                $this->pub->link('editversionid')
+                                . '&action=deleteitem&cid='
+                                . $cite->cid . '&p=' . $props
+                            );
+                            $removeTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE');
+                            ?>
                             <span class="item-options">
-                                    <a href="<?php echo Route::url($this->pub->link('editversionid') . '&active=links&action=newcite&cid=' . $cite->cid . '&p=' . $props); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-                                    <a href="<?php echo Route::url($this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->cid . '&p=' . $props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+                                    <a href="<?php echo $editUrl; ?>"
+                                        class="item-edit showinbox"
+                                        title="<?php echo $editTitle; ?>"
+                                    >&nbsp;</a>
+                                    <a href="<?php echo $removeUrl; ?>"
+                                        class="item-remove"
+                                        title="<?php echo $removeTitle; ?>"
+                                    >&nbsp;</a>
                             </span>
                             <span class="item-title citation-formatted"><?php echo $citeText; ?></span>
                         </li>
@@ -71,7 +93,10 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
                     </ul>
             <?php  }  ?>
                     <div class="item-new">
-                        <span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATION'); ?></a></span>
+                        <?php $addLabel = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATION'); ?>
+                        <span><a href="<?php echo $selectUrl; ?>"
+                            class="item-add showinbox"
+                        ><?php echo $addLabel; ?></a></span>
                     </div>
                 </div>
         </div>

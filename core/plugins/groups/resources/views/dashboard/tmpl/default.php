@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -122,15 +120,55 @@ if ($this->results) {
             if (intval($r) < 10) {
                 $r = '0' . $r;
             }
+            $rankingFormatted = number_format($line->ranking, 1);
+            $rankingLabel = Lang::txt('PLG_GROUPS_RESOURCES_RANKING');
+            $ratingLabel = Lang::txt(
+                'PLG_GROUPS_RESOURCES_OUT_OF_5_STARS',
+                $line->rating
+            );
+            $dateFormatted = Date::of($line->publish_up)->toLocal(
+                Lang::txt('DATE_FORMAT_HZ1')
+            );
+            $avgRatingLabel = Lang::txt('PLG_GROUPS_RESOURCES_AVG_RATING');
+
+            $ratingUrls = [];
+            $ratingTitles = [];
+            $ratingLabels = [];
+            for ($star = 1; $star <= 5; $star++) {
+                $ratingUrls[$star] = $line->href . $d
+                    . 'task=addreview&amp;myrating=' . $star
+                    . '#reviewform';
+            }
+            $ratingTitles[1] = Lang::txt('PLG_GROUPS_RESOURCES_RATING_POOR');
+            $ratingTitles[2] = Lang::txt('PLG_GROUPS_RESOURCES_RATING_FAIR');
+            $ratingTitles[3] = Lang::txt('PLG_GROUPS_RESOURCES_RATING_GOOD');
+            $ratingTitles[4] = Lang::txt('PLG_GROUPS_RESOURCES_RATING_VERY_GOOD');
+            $ratingTitles[5] = Lang::txt('PLG_GROUPS_RESOURCES_RATING_EXCELLENT');
+            $ratingLabels[1] = Lang::txt('PLG_GROUPS_RESOURCES_RATING_1_STAR');
+            $ratingLabels[2] = Lang::txt('PLG_GROUPS_RESOURCES_RATING_2_STARS');
+            $ratingLabels[3] = Lang::txt('PLG_GROUPS_RESOURCES_RATING_3_STARS');
+            $ratingLabels[4] = Lang::txt('PLG_GROUPS_RESOURCES_RATING_4_STARS');
+            $ratingLabels[5] = Lang::txt('PLG_GROUPS_RESOURCES_RATING_5_STARS');
             ?>
             <tr>
             <?php if ($this->config->get('show_ranking')) { ?>
-                <td class="ranking"><?php echo number_format($line->ranking, 1); ?> <span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RANKING'); ?></span></td>
+                <td class="ranking">
+                    <?php echo $rankingFormatted; ?>
+                    <span class="rank-<?php echo $r; ?>">
+                        <?php echo $rankingLabel; ?>
+                    </span>
+                </td>
             <?php } elseif ($this->config->get('show_rating')) { ?>
-                <td class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating); ?></span>&nbsp;</span></td>
+                <td class="rating">
+                    <span class="avgrating<?php echo $class; ?>">
+                        <span><?php echo $ratingLabel; ?></span>&nbsp;
+                    </span>
+                </td>
             <?php } ?>
                 <td>
-                    <a href="<?php echo $line->href; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $line->title; ?></a>
+                    <a href="<?php echo $line->href; ?>"
+                        class="fixedResourceTip"
+                        title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $line->title; ?></a>
                     <div class="hide" id="rsrce<?php echo $line->id; ?>">
                         <h4><?php echo $line->title; ?></h4>
                         <div>
@@ -148,21 +186,29 @@ if ($this->results) {
                             <?php } ?>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_DATE'); ?></th>
-                                        <td><?php echo Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+                                        <td><?php echo $dateFormatted; ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_AVG_RATING'); ?></th>
-                                        <td><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
+                                        <th><?php echo $avgRatingLabel; ?></th>
+                                        <td>
+                                            <span class="avgrating<?php echo $class; ?>">
+                                                <span><?php echo $ratingLabel; ?></span>&nbsp;
+                                            </span>
+                                            (<?php echo $line->times_rated; ?>)
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATE_THIS'); ?></th>
                                         <td>
                                             <ul class="starsz<?php echo $myclass; ?>">
-                                                <li class="str1"><a href="<?php echo $line->href . $d; ?>task=addreview&amp;myrating=1#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_POOR'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_1_STAR'); ?></a></li>
-                                                <li class="str2"><a href="<?php echo $line->href . $d; ?>task=addreview&amp;myrating=2#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_FAIR'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_2_STARS'); ?></a></li>
-                                                <li class="str3"><a href="<?php echo $line->href . $d; ?>task=addreview&amp;myrating=3#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_GOOD'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_3_STARS'); ?></a></li>
-                                                <li class="str4"><a href="<?php echo $line->href . $d; ?>task=addreview&amp;myrating=4#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_VERY_GOOD'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_4_STARS'); ?></a></li>
-                                                <li class="str5"><a href="<?php echo $line->href . $d; ?>task=addreview&amp;myrating=5#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_EXCELLENT'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_5_STARS'); ?></a></li>
+                                            <?php for ($s = 1; $s <= 5; $s++) { ?>
+                                                <li class="str<?php echo $s; ?>">
+                                                    <a href="<?php echo $ratingUrls[$s]; ?>"
+                                                        title="<?php echo $ratingTitles[$s]; ?>"><?php
+                                                            echo $ratingLabels[$s];
+                                                        ?></a>
+                                                </li>
+                                            <?php } ?>
                                             </ul>
                                         </td>
                                     </tr>

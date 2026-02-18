@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,17 @@ defined('_HZEXEC_') or die();
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>" method="post" id="hubForm<?php echo ($this->no_html) ? '-ajax' : ''; ?>">
+<?php
+$formUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&cn=' . $this->group->get('cn')
+    . '&active=members'
+);
+$formId = 'hubForm' . (($this->no_html) ? '-ajax' : '');
+?>
+<form action="<?php echo $formUrl; ?>"
+    method="post"
+    id="<?php echo $formId; ?>">
     <fieldset>
         <legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE'); ?></legend>
 
@@ -25,14 +33,18 @@ defined('_HZEXEC_') or die();
                 $u = User::getInstance($this->uid);
 
                 $current_roles = array();
-                $roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles($u->get('id'), $this->group->get('gidNumber'));
-            if ($roles) {
-                foreach ($roles as $role) {
-                    $current_roles[] = $role['name'];
+                $roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles(
+                    $u->get('id'),
+                    $this->group->get('gidNumber')
+                );
+                if ($roles) {
+                    foreach ($roles as $role) {
+                        $current_roles[] = $role['name'];
+                    }
                 }
-            }
-            ?>
-            <strong><?php echo Lang::txt('PLG_GROUPS_MEMBERS_MEMBER'); ?>: </strong> <?php echo $this->escape($u->get('name')); ?>
+                ?>
+            <strong><?php echo Lang::txt('PLG_GROUPS_MEMBERS_MEMBER'); ?>: </strong>
+            <?php echo $this->escape($u->get('name')); ?>
         </label>
 
         <label for="roles">

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -37,7 +37,19 @@ foreach ($this->cats as $cat) {
         $blob = ($cat['category']) ? $cat['category'] : '';
 
         // Build the HTML
-        $l = "\t" . '<li' . $a . '><a href="' . Route::url($this->member->link() . '&active=contributions&area=' . urlencode(stripslashes($blob)) . '&sort=' . $this->sort) . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $this->escape($cat['total']) . '</span></a>';
+        $catUrl = Route::url(
+            $this->member->link()
+            . '&active=contributions&area='
+            . urlencode(stripslashes($blob))
+            . '&sort=' . $this->sort
+        );
+        $catTitle = $this->escape(stripslashes($cat['title']));
+        $catTotal = $this->escape($cat['total']);
+        $l = "\t" . '<li' . $a . '>'
+            . '<a href="' . $catUrl . '">'
+            . $catTitle
+            . ' <span class="item-count">'
+            . $catTotal . '</span></a>';
 
         // Are there sub-categories?
         if (isset($cat['_sub']) && is_array($cat['_sub'])) {
@@ -54,7 +66,21 @@ foreach ($this->cats as $cat) {
                     $blob = ($subcat['category']) ? $subcat['category'] : '';
 
                     // Build the HTML
-                    $k[] = "\t\t\t" . '<li' . $a . '><a href="' . Route::url($this->member->link() . '&active=contributions&area=' . urlencode(stripslashes($blob)) . '&sort=' . $this->sort) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $this->escape($subcat['total']) . '</span></a></li>';
+                    $subUrl = Route::url(
+                        $this->member->link()
+                        . '&active=contributions&area='
+                        . urlencode(stripslashes($blob))
+                        . '&sort=' . $this->sort
+                    );
+                    $subTitle = $this->escape(
+                        stripslashes($subcat['title'])
+                    );
+                    $subTotal = $this->escape($subcat['total']);
+                    $k[] = "\t\t\t" . '<li' . $a . '>'
+                        . '<a href="' . $subUrl . '">'
+                        . $subTitle
+                        . ' <span class="item-count">'
+                        . $subTotal . '</span></a></li>';
                 }
             }
             // Do we actually have any links?
@@ -83,7 +109,16 @@ foreach ($this->cats as $cat) {
             <?php if (count($links) > 0) { ?>
                 <ul class="entries-menu filter-options">
                     <li>
-                        <a href="<?php echo Route::url($this->member->link() . '&active=contributions&sort=date'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_CATEGORIES'); ?></a>
+                        <?php
+                        $categoriesUrl = Route::url(
+                            $this->member->link()
+                            . '&active=contributions&sort=date'
+                        );
+                        $categoriesLabel = Lang::txt(
+                            'PLG_MEMBERS_CONTRIBUTIONS_CATEGORIES'
+                        );
+                        ?>
+                        <a href="<?php echo $categoriesUrl; ?>"><?php echo $categoriesLabel; ?></a>
                         <ul>
                             <?php echo implode("\n", $links); ?>
                         </ul>
@@ -91,10 +126,65 @@ foreach ($this->cats as $cat) {
                 </ul>
             <?php } ?>
 
+            <?php
+            $activeArea = urlencode(stripslashes($this->active));
+            $sortBase = $this->member->link()
+                . '&active=contributions&area=' . $activeArea;
+            $pageSuffix = '&limit=' . $this->limit
+                . '&limitstart=' . $this->start;
+
+            $dateClass = ($this->sort == 'date')
+                ? ' class="active"' : '';
+            $dateUrl = Route::url($sortBase . '&sort=date')
+                . $pageSuffix;
+            $dateByTitle = Lang::txt(
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE'
+            );
+            $dateLabel = Lang::txt(
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE'
+            );
+
+            $titleClass = ($this->sort == 'title')
+                ? ' class="active"' : '';
+            $titleUrl = Route::url($sortBase . '&sort=title')
+                . $pageSuffix;
+            $titleByTitle = Lang::txt(
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE'
+            );
+            $titleLabel = Lang::txt(
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE'
+            );
+
+            $usageClass = ($this->sort == 'usage')
+                ? ' class="active"' : '';
+            $usageUrl = Route::url($sortBase . '&sort=usage')
+                . $pageSuffix;
+            $usageByTitle = Lang::txt(
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY'
+            );
+            $usageLabel = Lang::txt(
+                'PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY'
+            );
+            ?>
             <ul class="entries-menu order-options">
-                <li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->member->link() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=date') . '&limit=' . $this->limit . '&limitstart=' . $this->start; ?>"  title="<?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE'); ?></a></li>
-                <li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->member->link() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=title') . '&limit=' . $this->limit . '&limitstart=' . $this->start; ?>" title="<?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE'); ?></a></li>
-                <li><a<?php echo ($this->sort == 'usage') ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->member->link() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=usage') . '&limit=' . $this->limit . '&limitstart=' . $this->start; ?>" title="<?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY'); ?>"><?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY'); ?></a></li>
+                <li>
+                    <a<?php echo $dateClass; ?>
+                        href="<?php echo $dateUrl; ?>"
+                        title="<?php echo $dateByTitle; ?>"
+                        ><?php echo $dateLabel; ?></a>
+                </li>
+                <li>
+                    <a<?php echo $titleClass; ?>
+                        href="<?php echo $titleUrl; ?>"
+                        title="<?php echo $titleByTitle; ?>"
+                        ><?php echo $titleLabel; ?></a>
+                </li>
+                <li>
+                    <a<?php echo $usageClass; ?>
+                        href="<?php echo $usageUrl; ?>"
+                        title="<?php echo $usageByTitle; ?>"
+                        ><?php echo $usageLabel; ?></a>
+                </li>
             </ul>
         </nav>
 
@@ -170,7 +260,8 @@ foreach ($this->results as $category) {
         // Build the category HTML
         $html .= '<h4 class="category-header opened" id="rel-' . $divid . '">';
         if (!$dopaging) {
-            $html .= '<a href="' . Route::url($this->member->link() . '&active=contributions&area=' . urlencode(stripslashes($this->cats[$k]['category']))) . '">';
+            $html .= '<a href="' . Route::url($this->member->link() . '&active=contributions&area=' .
+            urlencode(stripslashes($this->cats[$k]['category']))) . '">';
         }
         $html .= $name . ' <span>(' . $num . $total . ')</span>';
         if (!$dopaging) {
@@ -208,7 +299,13 @@ foreach ($this->results as $category) {
                 $html .= call_user_func(array($obj,'out'), $row);
             } else {
                 $html .= "\t" . '<li>' . "\n";
-                $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . $this->escape(stripslashes($row->title)) . '</a></p>' . "\n";
+                $html .= "\t\t"
+                    . '<p class="title"><a href="'
+                    . $row->href
+                    . '">'
+                    . $this->escape(stripslashes($row->title))
+                    . '</a></p>'
+                    . "\n";
                 if ($row->text) {
                     $html .= "\t\t" . \Hubzero\Utility\Str::truncate(stripslashes($row->text)) . "\n";
                 }
@@ -222,7 +319,9 @@ foreach ($this->results as $category) {
             // Ad a "more" link if necessary
             //if ($totals[$k] > 5) {
             if ($this->cats[$k]['total'] > 5) {
-                $html .= ' | <a href="' . Route::url($this->member->link() . '&active=contributions&area=' . urlencode(strToLower($this->cats[$k]['category']))) . '">' . Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_MORE') . '</a>';
+                $html .= ' | <a href="' . Route::url($this->member->link() . '&active=contributions&area=' .
+                urlencode(strToLower($this->cats[$k]['category']))) . '">' . Lang::txt('PLG_MEMBERS_CONTRIBUTIONS_MORE')
+                . '</a>';
             }
             $html .= '</p>' . "\n\n";
         }

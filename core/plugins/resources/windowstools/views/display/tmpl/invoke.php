@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +10,8 @@
 <html>
     <body>
         <p><a id="runapplink" href="<?php echo $this->url; ?>">Run app</a></p>
-        <p>This page should go back ot the hub application page automatically. If it doesn't, click <a href="<?php echo $this->rurl; ?>">here.</a></p>
+        <p>This page should go back ot the hub application page automatically.
+            If it doesn't, click <a href="<?php echo $this->rurl; ?>">here.</a></p>
         <script>
         document.getElementById('runapplink').click();
         window.setTimeout(function(){

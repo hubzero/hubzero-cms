@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -41,23 +41,38 @@ if (User::get('id') == $this->user->get('id')) {
         <thead>
             <tr>
                 <th class="th_image" colspan="2"></th>
+    <?php
+    $sortBase = 'index.php?option=com_members&id='
+    . $this->user->get('id')
+    . '&active=projects&action=all&sortdir='
+    . $sortbyDir;
+    $titleSortUrl = Route::url($sortBase . '&sortby=title');
+    $statusSortUrl = Route::url($sortBase . '&sortby=status');
+    $roleSortUrl = Route::url($sortBase . '&sortby=role');
+    $titleLabel = Lang::txt('PLG_MEMBERS_PROJECTS_TITLE');
+    $statusLabel = Lang::txt('PLG_MEMBERS_PROJECTS_STATUS');
+    $roleLabel = Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE');
+    ?>
                 <th<?php if ($this->filters['sortby'] == 'title') {
                     echo ' class="activesort"';
                    } ?>>
-                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=title&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_TITLE'); ?></a>
+                    <a href="<?php echo $titleSortUrl; ?>"
+                        class="re_sort"><?php echo $titleLabel; ?></a>
                 </th>
                 <?php if ($this->which == 'owned') { ?>
                     <th<?php if ($this->filters['sortby'] == 'status') {
                         echo ' class="activesort"';
                        } ?>>
-                        <a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=status&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_STATUS'); ?></a>
+                        <a href="<?php echo $statusSortUrl; ?>"
+                            class="re_sort"><?php echo $statusLabel; ?></a>
                     </th>
                 <?php } ?>
                 <?php if ($isUser) { ?>
                     <th<?php if ($this->filters['sortby'] == 'role') {
                         echo ' class="activesort"';
                        } ?>>
-                        <a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&sortby=role&sortdir=' . $sortbyDir); ?>" class="re_sort"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE'); ?></a>
+                        <a href="<?php echo $roleSortUrl; ?>"
+                            class="re_sort"><?php echo $roleLabel; ?></a>
                     </th>
                 <?php } ?>
             </tr>
@@ -81,8 +96,11 @@ if (User::get('id') == $this->user->get('id')) {
                 ?>
                 <tr class="mline">
                     <td class="th_image">
-                        <a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
-                            <img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo htmlentities($this->escape($row->get('title'))); ?>"  class="project-image" />
+                        <a href="<?php echo Route::url($row->link()); ?>"
+                            title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
+                            <img src="<?php echo Route::url($row->link('thumb')); ?>"
+                                alt="<?php echo htmlentities($this->escape($row->get('title'))); ?>"
+                                class="project-image"/>
                         </a>
                         <?php if ($isUser) { ?>
                             <?php if ($row->get('newactivity') && $row->isActive() && !$setup) {
@@ -96,9 +114,16 @@ if (User::get('id') == $this->user->get('id')) {
                         } ?>
                     </td>
                     <td class="th_title">
-                        <a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><?php echo $this->escape($row->get('title')); ?></a>
+                        <a href="<?php echo Route::url($row->link()); ?>"
+                            title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"
+                            ><?php echo $this->escape($row->get('title')); ?></a>
+                <?php
+                $ownerDisplay = $row->groupOwner()
+                ? $row->groupOwner('description')
+                : $row->owner('name');
+                ?>
                         <?php if ($this->which != 'owned') { ?>
-                            <span class="block"><?php echo $row->groupOwner() ? $row->groupOwner('description') : $row->owner('name'); ?></span>
+                            <span class="block"><?php echo $ownerDisplay; ?></span>
                         <?php } ?>
                     </td>
                     <?php if ($this->which == 'owned') { ?>
@@ -108,17 +133,35 @@ if (User::get('id') == $this->user->get('id')) {
                             $html = '';
                             if ($row->access('owner')) {
                                 if ($row->isActive()) {
-                                    $html .= '<span class="active"><a href="' . Route::url($row->link()) . '" title="' . Lang::txt('PLG_MEMBERS_PROJECTS_GO_TO_PROJECT') . '">&raquo; ' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_ACTIVE') . '</a></span>';
+                                    $html .= '<span class="active"><a href="'
+                                        . Route::url($row->link())
+                                        . '" title="'
+                                        . Lang::txt('PLG_MEMBERS_PROJECTS_GO_TO_PROJECT')
+                                        . '">&raquo; '
+                                        . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_ACTIVE')
+                                        . '</a></span>';
                                 } elseif ($row->inSetup()) {
-                                    $html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_MEMBERS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SETUP') . '</a></span> ';
+                                    $html .= '<span class="setup"><a href="'
+                                        . Route::url($row->link('setup'))
+                                        . '" title="'
+                                        . Lang::txt('PLG_MEMBERS_PROJECTS_CONTINUE_SETUP')
+                                        . '">&raquo; '
+                                        . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SETUP')
+                                        . '</a></span> ';
                                 }
                             }
                             if ($row->isInactive()) {
-                                $html .= '<span class="suspended">' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SUSPENDED') . '</span> ';
+                                $html .= '<span class="suspended">'
+                                    . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_SUSPENDED')
+                                    . '</span> ';
                             } elseif ($row->isPending()) {
-                                $html .= '<span class="pending">' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_PENDING') . '</span> ';
+                                $html .= '<span class="pending">'
+                                    . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_PENDING')
+                                    . '</span> ';
                             } elseif ($row->isArchived()) {
-                                $html .= '<span class="archived">' . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_ARCHIVED') . '</span> ';
+                                $html .= '<span class="archived">'
+                                    . Lang::txt('PLG_MEMBERS_PROJECTS_STATUS_ARCHIVED')
+                                    . '</span> ';
                             }
 
                             echo $html;

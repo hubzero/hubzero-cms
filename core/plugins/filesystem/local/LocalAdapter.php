@@ -6,8 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Plugins\Filesystem\Local;
+
 /**
  * HUBzero extension of flysystem local adapter
  */

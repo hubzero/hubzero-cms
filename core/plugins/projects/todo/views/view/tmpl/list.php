@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -23,7 +23,8 @@ $listName = $this->todo->getListName($this->model->get('id'), $this->filters);
 
 $whatsleft = $total - $this->filters['start'] - $this->filters['limit'];
 $team_ids = array('0' => '');
-$which = $this->filters['state'] == 1 ? strtolower(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')) : Lang::txt('PLG_PROJECTS_TODO_OUTSTANDING');
+$which = $this->filters['state'] == 1 ? strtolower(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')) :
+Lang::txt('PLG_PROJECTS_TODO_OUTSTANDING');
 $where = $listName ? ' ' . Lang::txt('PLG_PROJECTS_TODO_TODO_ON_THIS_LIST') : '';
 $where .= $this->filters['mine'] == 1 ? ' ' . Lang::txt('PLG_PROJECTS_TODO_IN_MY_TODOS') : '';
 
@@ -43,7 +44,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
     <?php if (!$this->filters['state'] && $this->model->access('content')) { ?>
     <ul id="page_options" class="pluginOptions">
         <li>
-            <a class="icon-add add btn showinbox"  href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">
+            <a class="icon-add add btn showinbox"
+                href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">
                 <?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?>
             </a>
         </li>
@@ -65,7 +67,12 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
                 <th class="checkbox"><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ORDER'); ?></th>
                 <th class="primarycolumn"><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ITEM'); ?></th>
                 <th><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ASSIGNED'); ?></th>
-                <th><?php echo ($this->filters['state']) ? Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMPLETED') : Lang::txt('PLG_PROJECTS_TODO_COLUMN_DUE'); ?></th>
+                <?php
+                $columnDateLabel = $this->filters['state']
+                    ? Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMPLETED')
+                    : Lang::txt('PLG_PROJECTS_TODO_COLUMN_DUE');
+                ?>
+                <th><?php echo $columnDateLabel; ?></th>
                 <th><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMMENTS'); ?></th>
                 <th></th>
             </tr>
@@ -78,23 +85,82 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
                 $class = $color ? 'pin_' . $color : 'pin_grey';
 
                 $overdue = $row->isOverdue();
-                $oNote = $overdue ? '<span class="block">(' . Lang::txt('PLG_PROJECTS_TODO_OVERDUE') . ')</span>' : '';
+                $oNote = $overdue
+                    ? '<span class="block">('
+                        . Lang::txt('PLG_PROJECTS_TODO_OVERDUE')
+                        . ')</span>'
+                    : '';
+
+                $viewUrl = Route::url($url . '&action=view')
+                    . '/?todoid=' . $row->get('id');
+                $viewTitle = Lang::txt(
+                    'PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'
+                );
+                $truncated = \Hubzero\Utility\Str::truncate(
+                    $row->get('content'),
+                    120
+                );
+                $personName = $row->isComplete()
+                    ? $row->closer('name')
+                    : $row->owner('name');
+                $dateDisplay = $row->isComplete()
+                    ? $row->closed('date')
+                    : $row->due('date') . $oNote;
+                $checkoffUrl = Route::url(
+                    $url . '&action=changestate'
+                ) . '/?todoid=' . $row->get('id')
+                    . '&amp;state=1&'
+                    . Session::getFormToken() . '=1';
+                $checkoffTitle = Lang::txt(
+                    'PLG_PROJECTS_TODO_CHECK_OFF'
+                );
                 ?>
-            <tr class="<?php echo $class; ?>" id="todo-<?php echo $row->get('id'); ?>">
-                <td><span class="ordernum"><?php echo $order; ?></span></td>
-                <td><a href="<?php echo Route::url($url . '&action=view') . '/?todoid=' . $row->get('id'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->get('content'), 120); ?></a></td>
-                <td class="mini faded"><?php echo $row->isComplete() ? $row->closer('name') : $row->owner('name'); ?></td>
-                <td class="mini nowrap"><?php echo $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote; ?></td>
-                <td class="mini"><a href="<?php echo Route::url($url . '&action=view') . '/?todoid=' . $row->get('id'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?></a></td>
-                <td><?php if (!$row->isComplete()) {
-                    ?><a href="<?php echo Route::url($url . '&action=changestate') . '/?todoid=' . $row->get('id') . '&amp;state=1&' .  Session::getFormToken() . '=1'; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_CHECK_OFF'); ?>" class="unchecked confirm-checkoff">&nbsp;</a><?php
-                    } ?></td>
+            <tr class="<?php echo $class; ?>"
+                id="todo-<?php echo $row->get('id'); ?>">
+                <td>
+                    <span class="ordernum"><?php echo $order; ?></span>
+                </td>
+                <td>
+                    <a href="<?php echo $viewUrl; ?>"
+                        title="<?php echo $viewTitle; ?>">
+                        <?php echo $truncated; ?>
+                    </a>
+                </td>
+                <td class="mini faded">
+                    <?php echo $personName; ?>
+                </td>
+                <td class="mini nowrap">
+                    <?php echo $dateDisplay; ?>
+                </td>
+                <td class="mini">
+                    <a href="<?php echo $viewUrl; ?>"
+                        title="<?php echo $viewTitle; ?>">
+                        <?php echo $row->comments('count'); ?>
+                    </a>
+                </td>
+                <td>
+                    <?php if (!$row->isComplete()) { ?>
+                        <a href="<?php echo $checkoffUrl; ?>"
+                            title="<?php echo $checkoffTitle; ?>"
+                            class="unchecked confirm-checkoff">
+                            &nbsp;
+                        </a>
+                    <?php } ?>
+                </td>
             </tr>
                 <?php $order++;
             } ?>
         <?php } else { ?>
             <tr>
-                <td colspan="6"><p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_TODO_NO_TODOS') . $where . '.'; ?></p></td>
+                <?php
+                $noTodosMsg = Lang::txt('PLG_PROJECTS_TODO_NO_TODOS')
+                    . $where . '.';
+                ?>
+                <td colspan="6">
+                    <p class="noresults">
+                        <?php echo $noTodosMsg; ?>
+                    </p>
+                </td>
             </tr>
         <?php } ?>
         </tbody>

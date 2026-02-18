@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,11 @@ if ($thedate == '0000-00-00 00:00:00') {
 $this->model->introtext = stripslashes($this->model->introtext);
 $this->model->fulltxt = stripslashes($this->model->fulltxt);
 $this->model->fulltxt = ($this->model->fulltxt) ? trim($this->model->fulltxt) : trim($this->model->introtext);
-$this->model->fulltxt = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $this->model->fulltxt);
+$this->model->fulltxt = str_replace(
+    '="/site',
+    '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site',
+    $this->model->fulltxt
+);
 
 // Parse for <nb:field> tags
 $type = $this->model->type;
@@ -85,8 +87,14 @@ $maintext = $this->model->description;
                 <div class="col span-half">
         <?php } ?>
                     <h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_CATEGORY'); ?></h4>
+                    <?php
+                    $categoryUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&type=' . $this->model->type->get('alias')
+                    );
+                    ?>
                     <p class="resource-content">
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&type=' . $this->model->type->get('alias')); ?>">
+                        <a href="<?php echo $categoryUrl; ?>">
                             <?php echo $this->escape(stripslashes($this->model->type->get('type'))); ?>
                         </a>
                     </p>
@@ -94,8 +102,15 @@ $maintext = $this->model->description;
                 </div>
                 <div class="col span-half omega">
                     <h4><?php echo Lang::txt('PLG_RESOURCES_ABOUT_PUBLISHED_ON'); ?></h4>
+                    <?php
+                    $formattedDate = Date::of($thedate)->toLocal(
+                        Lang::txt('DATE_FORMAT_HZ1')
+                    );
+                    ?>
                     <p class="resource-content">
-                        <time datetime="<?php echo $thedate; ?>"><?php echo Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                        <time datetime="<?php echo $thedate; ?>">
+                            <?php echo $formattedDate; ?>
+                        </time>
                     </p>
                 </div>
             </div>
@@ -124,7 +139,10 @@ $maintext = $this->model->description;
                     if (isset($data[$field->name])) {
                         if ($field->name == 'citations') {
                             $citations = $data[$field->name];
-                        } elseif ($elements->display($field->type, $data[$field->name]) && ((isset($field->display) && $field->display == $tab) || (!isset($field->display) && 'about' == $tab))) {
+                        } elseif (
+                            $elements->display($field->type, $data[$field->name]) && ((isset($field->display) &&
+                            $field->display == $tab) || (!isset($field->display) && 'about' == $tab))
+                        ) {
                             ?>
                             <h4><?php echo $field->label; ?></h4>
                             <div class="resource-content">
@@ -142,7 +160,8 @@ $maintext = $this->model->description;
                 $revision = 0;
 
                 //auto generated
-                if ($this->model->params->get('show_citation') == 1 || $this->model->params->get('show_citation') == 2) {
+                $showCitation = $this->model->params->get('show_citation');
+                if ($showCitation == 1 || $showCitation == 2) {
                     // Build our citation object
                     $cite = new stdClass();
                     $cite->title    = $this->model->title;
@@ -152,7 +171,8 @@ $maintext = $this->model->description;
                     $cite->url      = '';
                     $cite->type     = '';
                     $authors = array();
-                    $contributors = ($this->model->isTool() ? $this->model->contributors('tool') : $this->model->contributors('!submitter'));
+                    $contributors = ($this->model->isTool() ? $this->model->contributors('tool') :
+                    $this->model->contributors('!submitter'));
                     if ($contributors) {
                         foreach ($contributors as $contributor) {
                             if ($contributor->role == 'submitter') {
@@ -169,7 +189,8 @@ $maintext = $this->model->description;
                         $doi = '';
 
                         if ($this->model->doi && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder'))) {
-                            $doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
+                            $doi = ($this->model->doi_shoulder ? $this->model->doi_shoulder :
+                            $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
                             $cite->doi = $doi;
                         }
 
@@ -183,19 +204,45 @@ $maintext = $this->model->description;
                     $cite = null;
                 }
 
-                $citeinstruct = \Components\Resources\Helpers\Html::citation($this->option, $cite, $this->model->id, $citations, $this->model->type, $revision);
+                $citeinstruct = \Components\Resources\Helpers\Html::citation(
+                    $this->option,
+                    $cite,
+                    $this->model->id,
+                    $citations,
+                    $this->model->type,
+                    $revision
+                );
                 ?>
 
-                <?php if ($this->model->params->get('show_citation') == 3) : ?>
-                <h4 id="citethis"><?php echo (isset($citations) && ($citations != null || $citations != '')) ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h4>
+                <?php
+                $hasCitations = isset($citations)
+                    && ($citations != null || $citations != '');
+                $citationsHeading = $hasCitations
+                    ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS')
+                    : '';
+                $citationsContent = $hasCitations
+                    ? $citeinstruct
+                    : '';
+                $hasCite = isset($cite)
+                    && ($cite != null || $cite != '');
+                $citeHeading = $hasCite
+                    ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS')
+                    : '';
+                $citeContent = $hasCite ? $citeinstruct : '';
+                ?>
+
+                <?php if ($showCitation == 3) : ?>
+                <h4 id="citethis">
+                    <?php echo $citationsHeading; ?>
+                </h4>
 
                 <div class="resource-content">
-                    <?php echo (isset($citations) && ($citations != null || $citations != '')) ? $citeinstruct : ''; ?>
+                    <?php echo $citationsContent; ?>
                 </div>
                 <?php else : ?>
-                    <h4><?php echo (isset($cite) && ($cite != null || $cite != '')) ? Lang::txt('PLG_RESOURCES_ABOUT_CITE_THIS') : ''; ?></h4>
+                    <h4><?php echo $citeHeading; ?></h4>
                     <div class="resource-content">
-                        <?php echo (isset($cite) && ($cite != null || $cite != '')) ? $citeinstruct : ''; ?>
+                        <?php echo $citeContent; ?>
                     </div>
                 <?php endif; ?>
             <?php } ?>
@@ -211,7 +258,8 @@ $maintext = $this->model->description;
                 $exp = Lang::txt('TIME_FORMAT_HZ1') . ', ' . Lang::txt('DATE_FORMAT_HZ1'); //'%I:%M %p, %B %d %Y';
             }
             if (substr($this->model->attribs->get('timeof', ''), 4, 1) == '-') {
-                $seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' && $this->model->attribs->get('timeof', '') != '')
+                $seminarTime = ($this->model->attribs->get('timeof', '') != '0000-00-00 00:00:00' &&
+                $this->model->attribs->get('timeof', '') != '')
                               ? Date::of($this->model->attribs->get('timeof', ''))->toLocal($exp)
                               : '';
             } else {

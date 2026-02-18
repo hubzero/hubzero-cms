@@ -1,4 +1,4 @@
-<?php // phpcs:disable Generic.Files.LineLength
+<?php
 
 /**
  * @package    hubzero-cms
@@ -15,10 +15,15 @@ $this->zoom = 2;
 <!DOCTYPE html>
 <html dir="<?php echo Document::getDirection(); ?>" lang="<?php echo Document::getLanguage(); ?>" class="no-js">
     <head>
-        <script type="text/javascript" src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $this->key; ?>"></script>
-        <script type="text/javascript" src="<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps/assets/js/Clusterer2.js"></script>
-        <script type="text/javascript" src="<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps/assets/js/tools.js"></script>
-        <link rel="stylesheet" href="<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps/assets/css/maps.css" type="text/css" />
+        <script type="text/javascript"
+            src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=<?php echo $this->key; ?>"></script>
+        <script type="text/javascript"
+            src="<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps/assets/js/Clusterer2.js"></script>
+        <script type="text/javascript"
+            src="<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps/assets/js/tools.js"></script>
+        <link rel="stylesheet"
+            href="<?php echo rtrim(Request::base(), '/'); ?>/core/plugins/usage/maps/assets/css/maps.css"
+            type="text/css"/>
     </head>
     <body>
         <div id="div_map"

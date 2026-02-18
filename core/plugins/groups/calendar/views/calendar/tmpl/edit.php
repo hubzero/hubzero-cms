@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -37,11 +35,32 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 <ul id="page_options">
     <li>
         <?php if (Request::getString('action') == 'edit') : ?>
-            <a class="icon-prev btn back" title="" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=details&event_id=' . $this->event->get('id')); ?>">
+            <?php
+            $detailsUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&cn=' . $this->group->cn
+                . '&active=calendar&action=details'
+                . '&event_id=' . $this->event->get('id')
+            );
+            ?>
+            <a class="icon-prev btn back"
+                title=""
+                href="<?php echo $detailsUrl; ?>">
                 <?php echo Lang::txt('Back to Event'); ?>
             </a>
         <?php else : ?>
-            <a class="icon-prev btn back" title="" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&year=' . $this->year . '&month=' . $this->month); ?>">
+            <?php
+            $calendarUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&cn=' . $this->group->cn
+                . '&active=calendar'
+                . '&year=' . $this->year
+                . '&month=' . $this->month
+            );
+            ?>
+            <a class="icon-prev btn back"
+                title=""
+                href="<?php echo $calendarUrl; ?>">
                 <?php echo Lang::txt('Back to Events Calendar'); ?>
             </a>
         <?php endif; ?>
@@ -50,35 +69,73 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
 <div class="grid">
     <div class="col <?php echo ($showImport) ? 'span9' : 'span12'; ?>">
-        <form name="editevent" action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar'); ?>" method="post" id="hubForm" class="full">
+        <?php
+        $formAction = Route::url(
+            'index.php?option=' . $this->option
+            . '&cn=' . $this->group->cn
+            . '&active=calendar'
+        );
+        ?>
+        <form name="editevent"
+            action="<?php echo $formAction; ?>"
+            method="post"
+            id="hubForm"
+            class="full">
             <fieldset>
                 <legend><?php echo $formTitle; ?></legend>
 
                 <label for="event_title">
                     <?php echo Lang::txt('Title:'); ?> <span class="required">Required</span>
-                    <input type="text" name="event[title]" id="event_title" value="<?php echo $this->escape($this->event->get('title')); ?>" />
+                    <input type="text"
+                        name="event[title]"
+                        id="event_title"
+                        value="<?php echo $this->escape($this->event->get('title')); ?>"/>
                 </label>
 
                 <?php if (count($this->calendars) > 0 || $this->authorized == 'manager') : ?>
                     <label for="event-calendar-picker">
                         <?php echo Lang::txt('Calendar:'); ?> <span class="optional">Optional</span>
                         <select name="event[calendar_id]" id="event-calendar-picker">
-                            <option value=""><?php echo Lang::txt('&mdash; Select Calendar for Event &mdash;'); ?></option>
+                            <?php $selectLabel = Lang::txt('&mdash; Select Calendar for Event &mdash;'); ?>
+                            <option value=""><?php echo $selectLabel; ?></option>
                             <?php $colors = array('red','orange','yellow','green','blue','purple','brown'); ?>
                             <?php foreach ($this->calendars as $calendar) : ?>
                                 <?php
                                 if (!in_array($calendar->get('color'), $colors)) {
                                     $calendar->set('color', '');
                                 }
-                                $sel = ($calendar->get('id') == $this->event->get('calendar_id')) ? 'selected="selected"' : '';
+                                $sel = ($calendar->get('id') == $this->event->get('calendar_id')) ?
+                                'selected="selected"' : '';
                                 ?>
-                                <option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo ($calendar->get('color')) ? $calendar->get('color') : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>"><?php echo $calendar->get('title'); ?></option>
+                                <?php
+                                $color = $calendar->get('color')
+                                    ? $calendar->get('color')
+                                    : 'gray';
+                                $swatchImg = Request::base(true)
+                                    . '/core/plugins/groups/calendar'
+                                    . '/assets/img/swatch-'
+                                    . $color . '.png';
+                                ?>
+                                <option <?php echo $sel; ?>
+                                    data-img="<?php echo $swatchImg; ?>"
+                                    value="<?php echo $calendar->get('id'); ?>">
+                                    <?php echo $calendar->get('title'); ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
 
                         <?php if ($this->authorized == 'manager') : ?>
+                            <?php
+                            $addCalUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&cn=' . $this->group->cn
+                                . '&active=calendar'
+                                . '&action=addcalendar'
+                            );
+                            ?>
                             <span class="hint">
-                                <?php echo Lang::txt('Need a new calendar?'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=addcalendar'); ?>">Click here!</a>
+                                <?php echo Lang::txt('Need a new calendar?'); ?>
+                                <a href="<?php echo $addCalUrl; ?>">Click here!</a>
                             </span>
                         <?php endif; ?>
                     </label>
@@ -86,24 +143,42 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                 <label for="event_content">
                     <?php echo Lang::txt('Details:'); ?> <span class="optional">Optional</span>
-                    <textarea name="content" id="event_content" rows="10"><?php echo $this->escape($this->event->get('content')); ?></textarea>
-                    <span class="hint"><?php echo Lang::txt('Limited HTML allowed (a, iframe, strong, em, u)'); ?></span>
+                    <textarea name="content"
+                        id="event_content"
+                        rows="10"><?php echo $this->escape($this->event->get('content')); ?></textarea>
+                    <?php $htmlHint = Lang::txt('Limited HTML allowed (a, iframe, strong, em, u)'); ?>
+                    <span class="hint"><?php echo $htmlHint; ?></span>
                 </label>
 
                 <label for="event_location">
                     <?php echo Lang::txt('Location:'); ?> <span class="optional">Optional</span>
-                    <input type="text" name="event[adresse_info]" id="event_location" value="<?php echo $this->escape($this->event->get('adresse_info')); ?>" />
+                    <input type="text"
+                        name="event[adresse_info]"
+                        id="event_location"
+                        value="<?php echo $this->escape($this->event->get('adresse_info')); ?>"/>
                 </label>
 
                 <label for="event-contact_info">
                     <?php echo Lang::txt('Contact:'); ?> <span class="optional">Optional</span>
-                    <input type="text" name="event[contact_info]" id="event-contact_info" value="<?php echo $this->escape($this->event->get('contact_info')); ?>" />
-                    <span class="hint"><?php echo Lang::txt('Accepts names and email addresses. (ex. John Doe john_doe@domain.com)'); ?></span>
+                    <input type="text"
+                        name="event[contact_info]"
+                        id="event-contact_info"
+                        value="<?php echo $this->escape($this->event->get('contact_info')); ?>"/>
+                    <?php
+                    $contactHint = Lang::txt(
+                        'Accepts names and email addresses.'
+                        . ' (ex. John Doe john_doe@domain.com)'
+                    );
+                    ?>
+                    <span class="hint"><?php echo $contactHint; ?></span>
                 </label>
 
                 <label for="event_website">
                     <?php echo Lang::txt('Website:'); ?> <span class="optional">Optional</span>
-                    <input type="text" name="event[extra_info]" id="event_website" value="<?php echo $this->escape($this->event->get('extra_info')); ?>" />
+                    <input type="text"
+                        name="event[extra_info]"
+                        id="event_website"
+                        value="<?php echo $this->escape($this->event->get('extra_info')); ?>"/>
                 </label>
 
                 <fieldset>
@@ -113,7 +188,9 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         <?php echo Lang::txt('Start:'); ?> <span class="required">Required</span>
                         <?php
                             $start           = Request::getString('start', '', 'get');
-                            $publish_up      = ($this->event->get('publish_up')) ? $this->event->get('publish_up') : $start;
+                            $publish_up      = ($this->event->get('publish_up'))
+                                ? $this->event->get('publish_up')
+                                : $start;
                             $publish_up_date = '';
                             $publish_up_time = '';
                         if ($publish_up && $publish_up != '0000-00-00 00:00:00') {
@@ -122,8 +199,18 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         }
                         ?>
                         <div class="input-group">
-                            <input type="text" name="event[publish_up]" id="event_start_date" value="<?php echo $this->escape($publish_up_date); ?>" placeholder="mm/dd/yyyy" class="no-legacy-placeholder-support" />
-                            <input type="text" name="event[publish_up_time]" id="event_start_time" value="<?php echo $this->escape($publish_up_time); ?>" placeholder="h:mm am/pm" class="no-legacy-placeholder-support" />
+                            <input type="text"
+                                name="event[publish_up]"
+                                id="event_start_date"
+                                value="<?php echo $this->escape($publish_up_date); ?>"
+                                placeholder="mm/dd/yyyy"
+                                class="no-legacy-placeholder-support"/>
+                            <input type="text"
+                                name="event[publish_up_time]"
+                                id="event_start_time"
+                                value="<?php echo $this->escape($publish_up_time); ?>"
+                                placeholder="h:mm am/pm"
+                                class="no-legacy-placeholder-support"/>
                         </div>
                     </label>
 
@@ -131,25 +218,48 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         <?php echo Lang::txt('End:'); ?> <span class="optional">Optional</span>
                         <?php
                             $end               = Request::getString('end', '', 'get');
-                            $publish_down      = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;
+                            $publish_down = ($this->event->get('publish_down')) ? $this->event->get('publish_down') :
+                            $end;
                             $publish_down_date = '';
                             $publish_down_time = '';
                         if ($publish_down && $publish_down != '0000-00-00 00:00:00') {
-                            $publish_down_date = Date::of($publish_down)->toTimezone($this->timezone, 'm/d/Y', $ignoreDst);
-                            $publish_down_time = Date::of($publish_down)->toTimezone($this->timezone, 'g:i a', $ignoreDst);
+                            $publish_down_date = Date::of($publish_down)->toTimezone(
+                                $this->timezone,
+                                'm/d/Y',
+                                $ignoreDst
+                            );
+                            $publish_down_time = Date::of($publish_down)->toTimezone(
+                                $this->timezone,
+                                'g:i a',
+                                $ignoreDst
+                            );
                         }
                         ?>
                         <div class="input-group">
-                            <input type="text" name="event[publish_down]" id="event_end_date" value="<?php echo $this->escape($publish_down_date); ?>" placeholder="mm/dd/yyyy" class="no-legacy-placeholder-support" />
-                            <input type="text" name="event[publish_down_time]" id="event_end_time" value="<?php echo $this->escape($publish_down_time); ?>" placeholder="h:mm am/pm" class="no-legacy-placeholder-support" />
+                            <input type="text"
+                                name="event[publish_down]"
+                                id="event_end_date"
+                                value="<?php echo $this->escape($publish_down_date); ?>"
+                                placeholder="mm/dd/yyyy"
+                                class="no-legacy-placeholder-support"/>
+                            <input type="text"
+                                name="event[publish_down_time]"
+                                id="event_end_time"
+                                value="<?php echo $this->escape($publish_down_time); ?>"
+                                placeholder="h:mm am/pm"
+                                class="no-legacy-placeholder-support"/>
                         </div>
                     </label>
 
                     <label for="event_allday">
                         <input type="hidden" name="event[allday]" value="0" />
-                        <input class="option" type="checkbox" id="event_allday" name="event[allday]" value="1" <?php if ($this->event->get('allday')) {
-                            echo 'checked="checked"';
-                                                                                                               } ?> /> <?php echo Lang::txt('All day event'); ?>
+                        <input class="option"
+                            type="checkbox"
+                            id="event_allday"
+                            name="event[allday]"
+                            value="1" <?php if ($this->event->get('allday')) {
+                                echo 'checked="checked"';
+                                      } ?> /> <?php echo Lang::txt('All day event'); ?>
                         <span class="hint"><?php echo Lang::txt(' - can span multiple days'); ?></span>
                     </label>
                 </fieldset>
@@ -164,7 +274,10 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         ?>
                     </label>
                     <label>
-                        <input type="checkbox" id="ignore_dst" name="params[ignore_dst]" value="1" <?php echo $ignoreDst ? "checked" : ''; ?>/>
+                        <input type="checkbox"
+                            id="ignore_dst"
+                            name="params[ignore_dst]"
+                            value="1" <?php echo $ignoreDst ? "checked" : ''; ?>/>
                         <?php echo Lang::txt('PLG_GROUPS_CALENDAR_IGNORE_DST'); ?>
                     </label>
                 </fieldset>
@@ -198,7 +311,12 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                             <?php echo Lang::txt('Repeat Every:'); ?><br />
                             <select name="reccurance[interval][daily]" class="daily-days event_recurrence_interval">
                                 <?php for ($i = 1, $n = 31; $i < $n; $i++) : ?>
-                                    <?php $sel = ($repeating['freq'] == 'daily' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+                                    <?php
+                                    $sel = ($repeating['freq'] == 'daily'
+                                        && $repeating['interval'] == $i)
+                                        ? 'selected="selected'
+                                        : '';
+                                    ?>
                                     <option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                 <?php endfor; ?>
                             </select>
@@ -211,7 +329,12 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                             <?php echo Lang::txt('Repeat Every:'); ?><br />
                             <select name="reccurance[interval][weekly]" class="weekly-weeks event_recurrence_interval">
                                 <?php for ($i = 1, $n = 31; $i < $n; $i++) : ?>
-                                    <?php $sel = ($repeating['freq'] == 'weekly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+                                    <?php
+                                    $sel = ($repeating['freq'] == 'weekly'
+                                        && $repeating['interval'] == $i)
+                                        ? 'selected="selected'
+                                        : '';
+                                    ?>
                                     <option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                 <?php endfor; ?>
                             </select>
@@ -222,9 +345,15 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                     <div class="reccurance-options options-monthly">
                         <label>
                             <?php echo Lang::txt('Repeat Every:'); ?><br />
-                            <select name="reccurance[interval][monthly]" class="monthly-months event_recurrence_interval">
+                            <select name="reccurance[interval][monthly]"
+                                class="monthly-months event_recurrence_interval">
                                 <?php for ($i = 1, $n = 31; $i < $n; $i++) : ?>
-                                    <?php $sel = ($repeating['freq'] == 'monthly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+                                    <?php
+                                    $sel = ($repeating['freq'] == 'monthly'
+                                        && $repeating['interval'] == $i)
+                                        ? 'selected="selected'
+                                        : '';
+                                    ?>
                                     <option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                 <?php endfor; ?>
                             </select>
@@ -237,7 +366,12 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                             <?php echo Lang::txt('Repeat Every:'); ?><br />
                             <select name="reccurance[interval][yearly]" class="yearly-years event_recurrence_interval">
                                 <?php for ($i = 1, $n = 31; $i < $n; $i++) : ?>
-                                    <?php $sel = ($repeating['freq'] == 'yearly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
+                                    <?php
+                                    $sel = ($repeating['freq'] == 'yearly'
+                                        && $repeating['interval'] == $i)
+                                        ? 'selected="selected'
+                                        : '';
+                                    ?>
                                     <option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                 <?php endfor; ?>
                             </select>
@@ -245,23 +379,46 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         </label>
                     </div>
 
-                    <label for="ends" class="ends"><?php echo Lang::txt('Ends:'); ?> <span class="optional">Optional</span>
+                    <label for="ends"
+                        class="ends"><?php echo Lang::txt('Ends:'); ?> <span class="optional">Optional</span>
                         <label for="never">
-                            <input id="never" class="option" type="radio" name="reccurance[ends][when]" value="never" <?php if ($repeating['end'] == 'never') {
-                                echo 'checked="checked"';
-                                                                                                                      } ?> /> Never
+                            <input id="never"
+                                class="option"
+                                type="radio"
+                                name="reccurance[ends][when]"
+                                value="never" <?php if ($repeating['end'] == 'never') {
+                                    echo 'checked="checked"';
+                                              } ?> /> Never
                         </label>
                         <label for="after">
-                            <input id="after" class="option" type="radio" name="reccurance[ends][when]" value="count"  <?php if ($repeating['end'] == 'count') {
-                                echo 'checked="checked"';
-                                                                                                                       } ?> /> After
-                            <input type="text" name="reccurance[ends][count]" placeholder="x" class="after-input event_recurrence_end_count" value="<?php echo $repeating['count']; ?>" /> occurrences 
+                            <input id="after"
+                                class="option"
+                                type="radio"
+                                name="reccurance[ends][when]"
+                                value="count"  <?php if ($repeating['end'] == 'count') {
+                                    echo 'checked="checked"';
+                                               } ?> /> After
+                            <input type="text"
+                                name="reccurance[ends][count]"
+                                placeholder="x"
+                                class="after-input event_recurrence_end_count"
+                                value="<?php echo $repeating['count']; ?>"/> occurrences 
                         </label>
                         <label for="on">
-                            <input id="on" class="option" type="radio" name="reccurance[ends][when]" value="until"  <?php if ($repeating['end'] == 'until') {
-                                echo 'checked="checked"';
-                                                                                                                    } ?> /> On
-                            <input type="text" name="reccurance[ends][until]" placeholder="mm/dd/yyyy" class="on-input event_recurrence_end_date no-legacy-placeholder-support" value="<?php echo $repeating['until']; ?>" />
+                            <input id="on"
+                                class="option"
+                                type="radio"
+                                name="reccurance[ends][when]"
+                                value="until"  <?php if ($repeating['end'] == 'until') {
+                                    echo 'checked="checked"';
+                                               } ?>
+                                                                                                                    />
+                                                                                                                    On
+                            <input type="text"
+                                name="reccurance[ends][until]"
+                                placeholder="mm/dd/yyyy"
+                                class="on-input event_recurrence_end_date no-legacy-placeholder-support"
+                                value="<?php echo $repeating['until']; ?>"/>
                         </label>
                     </label>
                 </fieldset>
@@ -272,8 +429,18 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                     <legend><?php echo Lang::txt('Registration Settings'); ?></legend>
 
                     <label id="include-registration-toggle">
-                        <?php $ckd = (($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') || $includeRegistration) ? 'checked="checked"' : ''; ?>
-                        <input class="option" type="checkbox" id="include-registration" name="include-registration" value="1" <?php echo $ckd; ?> />
+                        <?php
+                        $hasRegisterBy = $this->event->get('registerby')
+                            && $this->event->get('registerby') != '0000-00-00 00:00:00';
+                        $ckd = ($hasRegisterBy || $includeRegistration)
+                            ? 'checked="checked"'
+                            : '';
+                        ?>
+                        <input class="option"
+                            type="checkbox"
+                            id="include-registration"
+                            name="include-registration"
+                            value="1" <?php echo $ckd; ?>/>
                         <?php echo Lang::txt('Include registration for this event.'); ?>
                     </label>
 
@@ -281,30 +448,59 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         echo ' hide';
                                                          } ?>">
                         <label for="event_registerby">
-                            <?php echo Lang::txt('Deadline:'); ?> <span class="required"><?php echo Lang::txt('Required for Registration Tab to Appear'); ?></span>
+                            <?php echo Lang::txt('Deadline:'); ?>
+                            <?php $reqTxt = Lang::txt('Required for Registration Tab to Appear'); ?>
+                            <span class="required"><?php echo $reqTxt; ?></span>
                             <?php
                                 $register_by = '';
-                            if ($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') {
+                            if (
+                                $this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00
+                            00:00:00'
+                            ) {
                                 $register_by = Date::of($this->event->get('registerby'))->toLocal('m/d/Y @ g:i a');
                             }
                             ?>
-                            <input type="text" name="event[registerby]" id="event_registerby" value="<?php echo $this->escape($register_by); ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
-                            <span class="hint"><?php echo Lang::txt('Deadlines are on Eastern Standard Time (EST).'); ?></span>
+                            <input type="text"
+                                name="event[registerby]"
+                                id="event_registerby"
+                                value="<?php echo $this->escape($register_by); ?>"
+                                placeholder="mm/dd/yyyy @ h:mm am/pm"
+                                class="no-legacy-placeholder-support"/>
+                            <?php $deadlineHint = Lang::txt('Deadlines are on Eastern Standard Time (EST).'); ?>
+                            <span class="hint"><?php echo $deadlineHint; ?></span>
                         </label>
 
                         <label>
                             <?php echo Lang::txt('Event Admin Email:'); ?> <span class="optional">Optional</span>
-                            <input type="text" name="event[email]" value="<?php echo $this->escape($this->event->get('email')); ?>" />
+                            <input type="text"
+                                name="event[email]"
+                                value="<?php echo $this->escape($this->event->get('email')); ?>"/>
+                            <?php
+                            $emailHint = Lang::txt(
+                                'A copy of event registrations will get'
+                                . ' sent to this event\'s admin email address.'
+                            );
+                            ?>
                             <span class="hint">
-                                <?php echo Lang::txt('A copy of event registrations will get sent to this event\'s admin email address.'); ?>
+                                <?php echo $emailHint; ?>
                             </span>
                         </label>
 
                         <label>
                             <?php echo Lang::txt('Password:'); ?> <span class="optional">Optional</span>
-                            <input type="text" name="event[restricted]" value="<?php echo $this->escape($this->event->get('restricted')); ?>" />
+                            <input type="text"
+                                name="event[restricted]"
+                                value="<?php echo $this->escape($this->event->get('restricted')); ?>"/>
+                            <?php
+                            $pwHint = Lang::txt(
+                                'If you want registration to be restricted'
+                                . ' (invite only), enter the password users'
+                                . ' must enter to gain access to the'
+                                . ' registration form.'
+                            );
+                            ?>
                             <span class="hint">
-                                <?php echo Lang::txt('If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.'); ?>
+                                <?php echo $pwHint; ?>
                             </span>
                         </label>
 
@@ -332,20 +528,39 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
     <?php if ($showImport) : ?>
         <div class="col span3 omega">
-            <form name="importevent" action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar'); ?>" method="post" id="hubForm" enctype="multipart/form-data">
+            <?php
+            $importAction = Route::url(
+                'index.php?option=' . $this->option
+                . '&cn=' . $this->group->cn
+                . '&active=calendar'
+            );
+            ?>
+            <form name="importevent"
+                action="<?php echo $importAction; ?>"
+                method="post"
+                id="hubForm"
+                enctype="multipart/form-data">
                 <fieldset>
                     <legend><?php echo Lang::txt('Import Event'); ?></legend>
 
                     <div class="upload">
                         <span class="title"><?php echo Lang::txt('Upload Event'); ?></span>
-                        <span class="description"><?php echo Lang::txt('Drag &amp; Drop an Event File Here to Upload'); ?></span>
+                        <?php $dragTxt = Lang::txt('Drag &amp; Drop an Event File Here to Upload'); ?>
+                        <span class="description"><?php echo $dragTxt; ?></span>
                         <span class="button-container">
                             <span class="btn"><?php echo Lang::txt('or, Select Event'); ?>
+                                <?php
+                                $importUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&cn=' . $this->group->get('cn')
+                                    . '&active=calendar&action=import'
+                                );
+                                ?>
                                 <input
                                     type="file"
                                     name="import"
                                     id="import"
-                                    data-url="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=import'); ?>" />
+                                    data-url="<?php echo $importUrl; ?>" />
                             </span>
                         </span>
                     </div>

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -35,7 +35,11 @@ foreach ($this->versions as $version) {
     }
 }
 
-$endPath = ' &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40) . '</span></span>';
+$endPath = ' &raquo; <span class="subheader">'
+    . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR')
+    . ' <span class="italic">'
+    . \Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40)
+    . '</span></span>';
 
 $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candiff <= 1 ) ? 0 : 1;
 
@@ -69,7 +73,9 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
         <input type="hidden" name="action" value="diff" />
             <ul class="sample">
                 <?php
-                    $extras =  ($allowDiff && !$this->getError()) ? '<input type="submit" id="rundiff" value="' . Lang::txt('PLG_PROJECTS_FILES_DIFF_REVISIONS') . '" class="btn rightfloat" />' : '';
+                    $extras =  ($allowDiff && !$this->getError()) ? '<input type="submit" id="rundiff" value="'
+                        . Lang::txt('PLG_PROJECTS_FILES_DIFF_REVISIONS')
+                        . '" class="btn rightfloat" />' : '';
 
                     // Display list item with file data
                     $this->view('default', 'selected')
@@ -112,7 +118,9 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                         $origin = 'SFTP';
                     }
                     $status = '<span class="commit-type">[' . $origin . ']</span> ';
-                    $name   = $version['remote'] && $this->file->get('remote') ? $this->file->get('remoteTitle') : $version['name'];
+                    $name = $version['remote'] && $this->file->get('remote')
+                        ? $this->file->get('remoteTitle')
+                        : $version['name'];
 
                 // Get url, name and status
                     if ($version['remote']) {
@@ -121,8 +129,13 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                         . '&amp;file=' . urlencode($version['file']);
 
                         if ($this->connected && $last == true) {
-                            $action  = '<a href="' . $url . '" class="open_file" title="'
-                            . Lang::txt('PLG_PROJECTS_FILES_REMOTE_OPEN') . '" target="_blank" rel="noopener noreferrer external">&nbsp;</a>';
+                            $openTitle = Lang::txt('PLG_PROJECTS_FILES_REMOTE_OPEN');
+                            $action = '<a href="' . $url . '"'
+                                . ' class="open_file"'
+                                . ' title="' . $openTitle . '"'
+                                . ' target="_blank"'
+                                . ' rel="noopener noreferrer external"'
+                                . '>&nbsp;</a>';
                         } else {
                             $action  = '';
                         }
@@ -131,7 +144,11 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                         . '/?asset=' . urlencode($version['name'])
                         . '&amp;action=download&amp;hash=' . $version['hash'];
                         $action = (in_array($version['commitStatus'], array('A', 'M', 'R', 'W')))
-                        ? '<a href="' . $url . '" class="download_file" title="' . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD') . '" >&nbsp;</a>'
+                        ? '<a href="'
+                            . $url
+                            . '" class="download_file" title="'
+                            . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD')
+                            . '" >&nbsp;</a>'
                         : '';
                     }
 
@@ -141,7 +158,9 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                     }
 
                     if ($last) {
-                        $status .= ' <span class="crev">' . Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_CURRENT') . '</span>';
+                        $status .= ' <span class="crev">'
+                            . Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_CURRENT')
+                            . '</span>';
                     }
 
                     $charLimit = $last == true ? 400 : 400;
@@ -173,53 +192,107 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                     <?php if ($allowDiff) { ?>
                     <td><?php echo '@' . $v; ?></td>
                     <?php } ?>
-                    <td class="commit-actor"><span class="prominent"><?php echo \Components\Projects\Helpers\Html::formatTime($version['date'], true); ?></span>
-                        <span class="block"><?php echo $version['author'] ? $version['author'] : $version['email']; ?></span>
+                    <?php
+                    $formattedTime = \Components\Projects\Helpers\Html::formatTime(
+                        $version['date'],
+                        true
+                    );
+                    $authorName = $version['author']
+                        ? $version['author']
+                        : $version['email'];
+                    ?>
+                    <td class="commit-actor">
+                        <span class="prominent"><?php echo $formattedTime; ?></span>
+                        <span class="block"><?php echo $authorName; ?></span>
                     </td>
                     <?php if ($allowDiff) { ?>
                     <td class="diffing">
                         <?php if (!$version['remote'] && count($this->versions) > 1) { ?>
-                        <input type="radio" value="<?php echo urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']); ?>" name="old" <?php if ($oldest) {
-                            echo 'checked="checked"';
-                                                   } ?> <?php if ($last) {
-                                                   echo 'disabled="disabled"';
-                                                   } ?> class="diff-old" />
-                        <input type="radio" value="<?php echo urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']); ?>" name="new" <?php if ($last) {
-                            echo 'checked="checked"';
-                                                   } ?> <?php if ($oldest) {
-                                                   echo 'disabled="disabled"';
-                                                   } ?> class="diff-new" />
+                            <?php
+                            $diffVal = urlencode(
+                                $v . '@'
+                                . substr($version['hash'], 0, 10)
+                                . '@' . $version['name']
+                            );
+                            $oldChecked = $oldest ? ' checked="checked"' : '';
+                            $oldDisabled = $last ? ' disabled="disabled"' : '';
+                            $newChecked = $last ? ' checked="checked"' : '';
+                            $newDisabled = $oldest ? ' disabled="disabled"' : '';
+                            ?>
+                        <input
+                            type="radio"
+                            value="<?php echo $diffVal; ?>"
+                            name="old"
+                            <?php echo $oldChecked; ?>
+                            <?php echo $oldDisabled; ?>
+                            class="diff-old"
+                        />
+                        <input
+                            type="radio"
+                            value="<?php echo $diffVal; ?>"
+                            name="new"
+                            <?php echo $newChecked; ?>
+                            <?php echo $newDisabled; ?>
+                            class="diff-new"
+                        />
                         <?php } ?>
                     </td>
                     <?php } ?>
                     <td class="commit-details">
                             <?php if ($version['movedTo']) { ?>
-                                <span class="moved"><span class="<?php echo $version['movedTo'] == 'remote' ? 'send_to_remote' : 'send_to_local'; ?>"><span>&nbsp;</span></span></span>
+                                <?php
+                                $movedClass = $version['movedTo'] == 'remote'
+                                    ? 'send_to_remote'
+                                    : 'send_to_local';
+                                ?>
+                                <span class="moved">
+                                    <span class="<?php echo $movedClass; ?>">
+                                        <span>&nbsp;</span>
+                                    </span>
+                                </span>
                             <?php } ?>
                         <span class="commitstatus"><?php echo $status; ?></span>
                         <span class="block italic faded">
                             <?php echo $version['name']; ?>
                             <?php echo $version['size'] ? ', ' . $version['size'] : '';  ?>
                         </span>
-                        <div class="commitcontent"><?php if ($version['content'] && in_array($version['commitStatus'], array('A', 'M'))) {
-                            $over = strlen($version['content']) >= $charLimit ? 1 : 0;
-                            $content = $over ? \Hubzero\Utility\Str::truncate($version['content'], $charLimit) : $version['content'];
+                        <div class="commitcontent"><?php
+                        $hasContent = $version['content']
+                            && in_array($version['commitStatus'], array('A', 'M'));
+                        if ($hasContent) {
+                            $over = strlen($version['content']) >= $charLimit
+                                ? 1 : 0;
+                            $content = $over
+                                ? \Hubzero\Utility\Str::truncate(
+                                    $version['content'],
+                                    $charLimit
+                                )
+                                : $version['content'];
 
                             echo '<div class="short-txt" id="short-' . $i . '"><pre>' . $content . '</pre>';
                             if ($over) {
-                                echo '<p class="showaslink showmore js">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_MORE') . '</p>';
+                                echo '<p class="showaslink showmore js">'
+                                    . Lang::txt('PLG_PROJECTS_FILES_SHOW_MORE')
+                                    . '</p>';
                             }
                             echo '</div>';
                             if ($over) {
-                                echo '<div class="long-txt hidden" id="long-' . $i . '"><pre>' . $version['content'] . '</pre>';
-                                echo '<p class="showaslink showless">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_LESS') . '</p>';
+                                echo '<div class="long-txt hidden" id="long-'
+                                    . $i
+                                    . '"><pre>'
+                                    . $version['content']
+                                    . '</pre>';
+                                echo '<p class="showaslink showless">'
+                                    . Lang::txt('PLG_PROJECTS_FILES_SHOW_LESS')
+                                    . '</p>';
                                 echo '</div>';
                             }
-                                                   }
-                                                    ?>
+                        }
+                        ?>
                         <?php if ($version['preview'] && $version['commitStatus'] != 'D') { ?>
                             <div id="preview-image">
-                                <img src="<?php echo $version['preview']; ?>" alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
+                                <img src="<?php echo $version['preview']; ?>"
+                                    alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>"/>
                             </div>
                         <?php } ?>
                         </div>

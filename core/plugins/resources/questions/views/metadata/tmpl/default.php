@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,5 +17,6 @@
     }
     ?>
     </a>
-    (<a href="<?php echo Route::url($this->resource->link() . '&active=questions&action=new'); ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>)
+    (<a href="<?php echo Route::url($this->resource->link() . '&active=questions&action=new'); ?>
+    "><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION');?></a>)
 </p>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -37,7 +35,18 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
                 <div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_GROUP_FILES'); ?></div>
                 <?php if ($this->authorized && $this->group->published == 1) { ?>
                     <div class="buttons">
-                        <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=addfolder&tmpl=component&protected=true'); ?>" class="icon-add action-addfolder"><?php echo Lang::txt('Add folder'); ?></a>
+                        <?php
+                        $addFolderUrl = Route::url(
+                            'index.php?option=com_groups&cn='
+                            . $this->group->get('cn')
+                            . '&controller=media&task=addfolder'
+                            . '&tmpl=component&protected=true'
+                        );
+                        ?>
+                        <a href="<?php echo $addFolderUrl; ?>"
+                            class="icon-add action-addfolder">
+                            <?php echo Lang::txt('Add folder'); ?>
+                        </a>
                     </div>
                 <?php } ?>
             </div>
@@ -48,9 +57,22 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
                 <?php echo $this->folderList; ?>
             </div>
             <?php if ($this->authorized && $this->group->published == 1) { ?>
-                <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data" class="upload-browser-uploader">
+                <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>"
+                    method="post"
+                    enctype="multipart/form-data"
+                    class="upload-browser-uploader">
                     <fieldset>
-                        <div id="ajax-uploader" data-instructions="<?php echo Lang::txt('Click or drop file'); ?>" data-action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=ajaxupload&no_html=1&' . Session::getFormToken() . '=1'); ?>">
+                        <?php
+                        $uploadAction = Route::url(
+                            'index.php?option=com_groups&cn='
+                            . $this->group->get('cn')
+                            . '&controller=media&task=ajaxupload&no_html=1&'
+                            . Session::getFormToken() . '=1'
+                        );
+                        ?>
+                        <div id="ajax-uploader"
+                            data-instructions="<?php echo Lang::txt('Click or drop file'); ?>"
+                            data-action="<?php echo $uploadAction; ?>">
                             <noscript>
                                 <p><input type="file" name="upload" id="upload" /></p>
                                 <p><input type="submit" value="<?php echo Lang::txt('UPLOAD'); ?>" /></p>
@@ -59,7 +81,10 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
                         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                         <input type="hidden" name="controller" value="media" />
                         <input type="hidden" name="task" value="upload" />
-                        <input type="hidden" name="listdir" id="listdir" value="<?php echo $this->group->get('gidNumber'); ?>" />
+                        <input type="hidden"
+                            name="listdir"
+                            id="listdir"
+                            value="<?php echo $this->group->get('gidNumber'); ?>"/>
                         <input type="hidden" name="tmpl" value="component" />
                         <?php echo Html::input('token'); ?>
                     </fieldset>
@@ -67,7 +92,16 @@ $ckeditorQuery = '&type=' . $type . '&CKEditor=' . $ckeditor . '&CKEditorFuncNum
             <?php } ?>
         </div>
         <div class="upload-browser-col right">
-            <iframe class="upload-browser-filelist-iframe" src="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=listfiles&tmpl=component&type=' . $ckeditorQuery); ?>"></iframe>
+            <?php
+            $iframeSrc = Route::url(
+                'index.php?option=com_groups&cn='
+                . $this->group->get('cn')
+                . '&controller=media&task=listfiles&tmpl=component&type='
+                . $ckeditorQuery
+            );
+            ?>
+            <iframe class="upload-browser-filelist-iframe"
+                src="<?php echo $iframeSrc; ?>"></iframe>
         </div>
     </div>
 </div>

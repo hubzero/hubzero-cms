@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,9 +18,16 @@ $this->js()
      ->js('jquery.timepicker', 'system');
 ?>
 
+<?php
+$backUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&cn=' . $this->group->cn
+    . '&active=announcements'
+);
+?>
 <ul id="page_options">
     <li>
-        <a class="icon-prev back btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=announcements'); ?>">
+        <a class="icon-prev back btn" href="<?php echo $backUrl; ?>">
             <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_BACK'); ?>
         </a>
     </li>
@@ -32,7 +37,17 @@ $this->js()
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=announcements'); ?>" method="post" id="hubForm" class="full">
+    <?php
+    $formAction = Route::url(
+        'index.php?option=' . $this->option
+        . '&cn=' . $this->group->get('cn')
+        . '&active=announcements'
+    );
+    ?>
+    <form action="<?php echo $formAction; ?>"
+        method="post"
+        id="hubForm"
+        class="full">
         <div class="explaination">
             <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_HINT'); ?>
         </div><!-- /.aside -->
@@ -48,13 +63,29 @@ $this->js()
 
             <div class="form-group">
                 <label for="field_content">
-                    <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ANNOUNCEMENT'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_REQUIRED'); ?></span>
-                    <?php echo $this->editor('fields[content]', $this->escape(stripslashes($this->announcement->get('content', ''))), 35, 5, 'field_content', array('class' => 'form-control minimal no-footer')); ?>
+                    <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_ANNOUNCEMENT'); ?>
+                    <span class="required"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_REQUIRED'); ?></span>
+                    <?php
+                    $editorContent = $this->escape(
+                        stripslashes($this->announcement->get('content', ''))
+                    );
+                    echo $this->editor(
+                        'fields[content]',
+                        $editorContent,
+                        35,
+                        5,
+                        'field_content',
+                        array('class' => 'form-control minimal no-footer')
+                    );
+                    ?>
                 </label>
             </div>
 
             <fieldset>
-                <legend><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_WINDOW'); ?> <span class="optional"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_OPTIONAL'); ?></span></legend>
+                <legend>
+                    <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_WINDOW'); ?>
+                    <span class="optional"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_OPTIONAL'); ?></span>
+                </legend>
 
                 <div class="grid">
                     <div class="col span-half">
@@ -67,8 +98,13 @@ $this->js()
                                     $publish_up = Date::of($publish_up)->toLocal('m/d/Y @ g:i a');
                                 }
                                 ?>
-                                <input class="datepicker form-control" type="text" name="fields[publish_up]" id="field-publish_up" value="<?php echo $this->escape($publish_up); ?>" />
-                                <span class="hint"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
+                                <input class="datepicker form-control"
+                                    type="text"
+                                    name="fields[publish_up]"
+                                    id="field-publish_up"
+                                    value="<?php echo $this->escape($publish_up); ?>"/>
+                                <?php $publishHint = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_HINT'); ?>
+                                <span class="hint"><?php echo $publishHint; ?></span>
                             </label>
                         </div>
                     </div>
@@ -82,8 +118,12 @@ $this->js()
                                     $publish_down = Date::of($publish_down)->toLocal('m/d/Y @ g:i a');
                                 }
                                 ?>
-                                <input class="datepicker form-control" type="text" name="fields[publish_down]" id="field-publish_down" value="<?php echo $this->escape($publish_down); ?>" />
-                                <span class="hint"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
+                                <input class="datepicker form-control"
+                                    type="text"
+                                    name="fields[publish_down]"
+                                    id="field-publish_down"
+                                    value="<?php echo $this->escape($publish_down); ?>"/>
+                                <span class="hint"><?php echo $publishHint; ?></span>
                             </label>
                         </div>
                     </div>
@@ -93,11 +133,16 @@ $this->js()
             <div class="form-group">
                 <div class="form-check">
                     <label class="form-check-label" for="field-email" id="email-label">
-                        <input class="option form-check-input" type="checkbox" name="fields[email]" id="field-email" value="1" <?php if ($this->announcement->get('email') == 1) {
-                            echo 'checked="checked"';
-                                                                                                                               } ?> />
+                        <input class="option form-check-input"
+                            type="checkbox"
+                            name="fields[email]"
+                            id="field-email"
+                            value="1" <?php if ($this->announcement->get('email') == 1) {
+                                echo 'checked="checked"';
+                                      } ?> />
                         <?php if ($this->announcement->get('sent') == 1) : ?>
-                            <span class="important"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_RESEND'); ?></span>
+                            <?php $resendText = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_RESEND'); ?>
+                            <span class="important"><?php echo $resendText; ?></span>
                         <?php else : ?>
                             <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_MEMBERS'); ?>
                         <?php endif; ?>
@@ -108,12 +153,17 @@ $this->js()
             <div class="form-group">
                 <div class="form-check">
                     <label class="form-check-label" for="field-priority" id="priority-label">
-                        <input class="option form-check-input" type="checkbox" name="fields[priority]" id="field-priority"
+                        <input class="option form-check-input"
+                            type="checkbox"
+                            name="fields[priority]"
+                            id="field-priority"
                             value="1"<?php if ($this->announcement->get('priority')) {
                                 echo ' checked="checked"';
                                      } ?> />
                         <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY'); ?>
-                        <span class="tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY_TITLE'); ?>">?</span>
+                        <span class="tooltips"
+                            title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY_TITLE'); ?>"
+                            >?</span>
                     </label>
                 </div>
             </div>
@@ -126,7 +176,8 @@ $this->js()
                                 echo ' checked="checked"';
                                      } ?> />
                         <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY'); ?>
-                        <span class="tooltips" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY_TITLE'); ?>">?</span>
+                        <span class="tooltips"
+                            title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY_TITLE'); ?>">?</span>
                     </label>
                 </div>
             </div>
@@ -134,13 +185,19 @@ $this->js()
         <div class="clear"></div>
 
         <p class="submit">
-            <input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SAVE'); ?>" />
+            <input type="submit"
+                class="btn btn-success"
+                value="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_SAVE'); ?>"/>
         </p>
 
         <input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->announcement->get('id')); ?>" />
         <input type="hidden" name="fields[state]" value="1" />
-        <input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->announcement->get('scope')); ?>" />
-        <input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->announcement->get('scope_id')); ?>" />
+        <input type="hidden"
+            name="fields[scope]"
+            value="<?php echo $this->escape($this->announcement->get('scope')); ?>"/>
+        <input type="hidden"
+            name="fields[scope_id]"
+            value="<?php echo $this->escape($this->announcement->get('scope_id')); ?>"/>
 
         <input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
         <input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />

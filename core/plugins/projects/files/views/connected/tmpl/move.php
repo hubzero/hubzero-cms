@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -45,7 +45,9 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
                             <?php echo $file->getName(); ?>
                             <?php echo $file->isDir()
                                 ? '<input type="hidden" name="folder[]" value="' . urlencode($file->getPath()) . '" />'
-                                : '<input type="hidden" name="asset[]"  value="' . urlencode($file->getPath()) . '" />'; ?>
+                                : '<input type="hidden" name="asset[]"  value="'
+                                    . urlencode($file->getPath())
+                                    . '" />'; ?>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -57,9 +59,17 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
                     <?php if (count($this->list) > 0) : ?>
                         <ul class="dirtree">
                             <li>
-                                <input type="radio" name="newpath" value="" <?php if (!$this->subdir) {
-                                    echo 'disabled="disabled" ';
-                                                                            } ?> checked="checked" /> <span><?php echo Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
+                                <?php $disabled = !$this->subdir
+                                    ? 'disabled="disabled" '
+                                    : ''; ?>
+                                <input type="radio"
+                                    name="newpath"
+                                    value=""
+                                    <?php echo $disabled; ?>
+                                    checked="checked" />
+                                <span>
+                                    <?php echo Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?>
+                                </span>
                             </li>
                             <?php
                             foreach ($this->list as $dir) {
@@ -73,19 +83,47 @@ $subdirlink = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
                         <?php if (count($this->list) > 0) : ?>
                             <div class="or"><?php echo Lang::txt('COM_PROJECTS_OR'); ?></div>
                         <?php endif; ?>
-                        <label><span class="block"><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TO_NEW_DIRECTORY'); ?></span>
-                            <span class="mini prominent"><?php echo $this->subdir ? \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->model->link('files') . '&action=browse&connection=' . $this->connection->id, $parent, false, $this->connection->adapter(), '/') : ''; ?></span>
-                            <input type="text" name="newdir" maxlength="50" value="" />
+                        <label>
+                            <span class="block">
+                                <?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TO_NEW_DIRECTORY'); ?>
+                            </span>
+                            <span class="mini prominent">
+                                <?php
+                                if ($this->subdir) {
+                                    $filesLink = $this->model->link('files')
+                                        . '&action=browse&connection='
+                                        . $this->connection->id;
+                                    echo \Components\Projects\Helpers\Html::buildFileBrowserCrumbs(
+                                        $this->subdir,
+                                        $filesLink,
+                                        $parent,
+                                        false,
+                                        $this->connection->adapter(),
+                                        '/'
+                                    );
+                                }
+                                ?>
+                            </span>
+                            <input type="text"
+                                name="newdir"
+                                maxlength="50"
+                                value="" />
                         </label>
                     <?php endif; ?>
                 </div>
                 <p class="submitarea">
                     <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?>" />
                     <?php if ($this->ajax) : ?>
-                        <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                        <input type="reset"
+                            id="cancel-action"
+                            class="btn btn-cancel"
+                            value="<?php echo Lang::txt('JCANCEL'); ?>"/>
                     <?php else : ?>
                         <span>
-                            <a id="cancel-action"  class="btn btn-cancel"  href="<?php echo Route::url($this->url . '&a=1' . $subdirlink); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+                            <a id="cancel-action"
+                                class="btn btn-cancel"
+                                href="<?php echo Route::url($this->url . '&a=1' . $subdirlink); ?>"
+                                ><?php echo Lang::txt('JCANCEL'); ?></a>
                         </span>
                     <?php endif; ?>
                 </p>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,19 +22,28 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
             <?php //} ?>
         <?php endif; ?>
         <ul id="steps">
-            <li><a href="<?php echo Route::url($base . '&action=import'); ?>" class="active"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
-            <li><a><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>
-            <li><a><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3_NAME'); ?></span></a></li>
+            <li><a href="<?php echo Route::url($base . '&action=import'); ?>
+            " class="active"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1');?>
+            <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1_NAME');?></span></a></li>
+            <li><a><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2'); ?>
+            <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2_NAME');?></span></a></li>
+            <li><a><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3'); ?>
+            <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3_NAME');?></span></a></li>
         </ul><!-- / #steps -->
 
-        <form id="hubForm" class="full" enctype="multipart/form-data" method="post" action="<?php echo Route::url($base . '&action=upload'); ?>">
+        <form id="hubForm"
+            class="full"
+            enctype="multipart/form-data"
+            method="post"
+            action="<?php echo Route::url($base . '&action=upload'); ?>">
             <fieldset>
                 <legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_UPLOAD'); ?>:</legend>
 
                 <div class="grid">
                     <div class="col span6">
                         <label for="citations_file">
-                            <?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_UPLOAD_FILE'); ?>: <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                            <?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_UPLOAD_FILE'); ?>
+                            : <span class="required"><?php echo Lang::txt('JREQUIRED');?></span>
                             <input type="file" name="citations_file" id="citations_file" />
                             <span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_UPLOAD_MAX'); ?></span>
                         </label>
@@ -51,7 +58,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
             </fieldset>
 
             <p class="submit">
-                <input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_UPLOAD'); ?>" />
+                <input type="submit"
+                    class="btn btn-success"
+                    name="submit"
+                    value="<?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_UPLOAD'); ?>"/>
 
                 <a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>

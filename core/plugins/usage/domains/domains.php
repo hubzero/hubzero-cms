@@ -4,7 +4,6 @@ namespace Plugins\Usage\Domains;
 
 use Hubzero\Plugin\Plugin;
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.

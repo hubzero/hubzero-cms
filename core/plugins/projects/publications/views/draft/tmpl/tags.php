@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -47,12 +47,18 @@ $searchCategory = $this->pub->config('search_category', 1);
                 <?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 
                 <?php
-                $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->pub->getTagsForEditing())));
+                $tf = Event::trigger(
+                    'hubzero.onGetMultiEntry',
+                    array(array('tags', 'tags', 'actags', '', $this->pub->getTagsForEditing()))
+                );
 
                 if (count($tf) > 0) {
                     echo $tf[0];
                 } else {
-                    echo '<textarea name="tags" id="tags" rows="6" cols="35">' . $this->pub->getTagsForEditing() . '</textarea>' . "\n";
+                    echo '<textarea name="tags" id="tags" rows="6" cols="35">'
+                        . $this->pub->getTagsForEditing()
+                        . '</textarea>'
+                        . "\n";
                 }
                 ?>
         </div>
@@ -73,9 +79,11 @@ $searchCategory = $this->pub->config('search_category', 1);
                 }
                 ?>
                     <div class="pubtype-block">
-                        <input type="radio" name="pubtype" value="<?php echo $cat->id; ?>" <?php if ($this->pub->category == $cat->id) {
-                            echo 'checked="checked"';
-                                                                  } ?> class="radio" />
+                        <input type="radio"
+                            name="pubtype"
+                            value="<?php echo $cat->id; ?>" <?php if ($this->pub->category == $cat->id) {
+                                echo 'checked="checked"';
+                                   } ?> class="radio" />
                         <?php echo $cat->name; ?>
                         <span><?php echo $cat->description; ?></span>
                     </div>

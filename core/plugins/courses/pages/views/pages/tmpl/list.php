@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -40,7 +40,8 @@ if (!$no_html) { ?>
         function deleteFolder(folder, numFiles)
         {
             if (numFiles > 0) {
-                alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
+                alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in
+                "'+folder+'" first.');
                 return false;
             }
 
@@ -75,16 +76,35 @@ if (!$no_html) { ?>
                             <span><?php echo $this->escape(stripslashes($name)); ?></span>
                         </td>
                         <td>
-                            <a class="delete" href="<?php echo Route::url($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1') . '&section_id=' . $section); ?>" <?php if (!$no_html) {
-                                ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php
-                                                    } ?> title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>">
-                                <?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>
+                            <?php
+                            $deleteUrl = Route::url(
+                                $base . '&action=remove&file='
+                                . urlencode(stripslashes($name))
+                                . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1')
+                                . '&section_id=' . $section
+                            );
+                            $deleteTitle = Lang::txt('PLG_COURSES_PAGES_DELETE');
+                            ?>
+                            <a class="delete"
+                                href="<?php echo $deleteUrl; ?>"
+                                <?php if (!$no_html) { ?>
+                                    target="filer"
+                                    onclick="return deleteFile('<?php echo $this->escape($name); ?>');"
+                                <?php } ?>
+                                title="<?php echo $deleteTitle; ?>">
+                                <?php echo $deleteTitle; ?>
                             </a>
                         </td>
                     </tr>
                     <tr class="row-group end">
                         <td colspan="2">
-                            <span class="file-path"><?php echo Route::url($base . '&unit=download&b=' . $type . ':' . $this->escape(stripslashes($name))); ?></span>
+                            <?php
+                            $filePath = Route::url(
+                                $base . '&unit=download&b='
+                                . $type . ':' . $this->escape(stripslashes($name))
+                            );
+                            ?>
+                            <span class="file-path"><?php echo $filePath; ?></span>
                         </td>
                     </tr>
                         <?php

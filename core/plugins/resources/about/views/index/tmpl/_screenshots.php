@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -99,16 +97,24 @@ for ($i = 0, $n = count($images); $i < $n; $i++) {
     if (is_file(PATH_APP . $upath . $path . DS . $tn)) {
         if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov') {
             $g++;
-            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '') ? $images[$i]['title'] : Lang::txt('DEMO') . ' #' . $g;
+            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '') ? $images[$i]['title'] :
+            Lang::txt('DEMO') . ' #' . $g;
             $els .= $this->slidebar ? '' : '<li>';
             $els .= ' <a class="popup" href="/resources' . $url . DS . $images[$i]['img'] . '" title="' . $title . '">';
             $els .= '<img src="/resources' . $url . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
             $els .= $this->slidebar ? '' : '</li>' . "\n";
         } else {
             $k++;
-            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '')  ? $images[$i]['title'] : Lang::txt('SCREENSHOT') . ' #' . $k;
+            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '') ? $images[$i]['title'] :
+            Lang::txt('SCREENSHOT') . ' #' . $k;
             $els .= $this->slidebar ? '' : '<li>';
-            $els .= ' <a rel="lightbox" href="/resources' . $url . DS . $images[$i]['img'] . '" title="' . $title . '">';
+            $els .= ' <a rel="lightbox" href="/resources'
+                . $url
+                . DS
+                . $images[$i]['img']
+                . '" title="'
+                . $title
+                . '">';
             $els .= '<img src="/resources' . $url . DS . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
             $els .= $this->slidebar ? '' : '</li>' . "\n";
         }

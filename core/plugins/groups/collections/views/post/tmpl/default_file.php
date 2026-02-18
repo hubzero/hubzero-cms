@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -51,7 +49,11 @@ if ($assets->total() > 0) {
             $ratio = $originalWidth / $originalHeight;
 
             $alt = $this->escape(stripslashes($first->get('description', '')));
-            $height = (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight;
+            $height = (!isset($this->actual) || !$this->actual) ? round(
+                $this->params->get('maxWidth', 290) / $ratio,
+                0,
+                PHP_ROUND_HALF_UP
+            ) : $originalHeight;
 
             if ($isLocal) : ?>
                 <div class="holder">
@@ -60,7 +62,10 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $first->link('original'); ?>"
                         data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $first->link('thumb'); ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
+                        <img src="<?php echo $first->link('thumb'); ?>"
+                            alt="<?php echo $alt; ?>"
+                            class="img"
+                            height="<?php echo $height; ?>"/>
                     </a>
                 </div>
             <?php else : ?>
@@ -70,7 +75,10 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $imgPath; ?>"
                         data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $imgPath; ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
+                        <img src="<?php echo $imgPath; ?>"
+                            alt="<?php echo $alt; ?>"
+                            class="img"
+                            height="<?php echo $height; ?>"/>
                     </a>
                 </div>
             <?php endif;
@@ -93,7 +101,11 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $asset->link('original'); ?>"
                         data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $asset->link('thumb'); ?>" alt="<?php echo $this->escape(stripslashes($asset->get('description', ''))); ?>" class="img" width="50" height="50" />
+                        <img src="<?php echo $asset->link('thumb'); ?>"
+                            alt="<?php echo $this->escape(stripslashes($asset->get('description', ''))); ?>"
+                            class="img"
+                            width="50"
+                            height="50"/>
                     </a>
                     <?php
                 }
@@ -109,7 +121,8 @@ if ($assets->total() > 0) {
         <ul class="file-list">
             <?php foreach ($files as $asset) { ?>
                 <li class="type-<?php echo $asset->get('type'); ?>">
-                    <a href="<?php echo ($asset->isLink()) ? $asset->get('filename') : $asset->link(); ?>" <?php echo ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : ''; ?>>
+                    <a href="<?php echo ($asset->isLink()) ? $asset->get('filename') : $asset->link(); ?>
+                    " <?php echo ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : '';?>>
                         <?php echo $asset->get('filename'); ?>
                     </a>
                     <span class="file-meta">

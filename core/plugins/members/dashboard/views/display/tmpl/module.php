@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -33,9 +33,14 @@ $view->module = $this->module;
 $view->params = $params->toArray();
 $view->fields = $fields->getFieldset('basic');
 $settingsHtml = trim($view->loadTemplate());
+
+$moduleClass = 'module '
+    . strtolower($this->module->module) . ' '
+    . $params->get('moduleclass_sfx')
+    . '  draggable sortable';
 ?>
 
-<div class="module <?php echo strtolower($this->module->module) . ' ' . $params->get('moduleclass_sfx'); ?>  draggable sortable"
+<div class="<?php echo $moduleClass; ?>"
      data-row="<?php echo $this->module->positioning->row; ?>"
      data-col="<?php echo $this->module->positioning->col; ?>"
      data-sizex="<?php echo $this->module->positioning->size_x; ?>"

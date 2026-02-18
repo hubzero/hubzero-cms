@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -63,13 +63,21 @@ if ($this->folders) {
 }
 
 ?>
-<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/fileselector.js"></script>
-<script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_projects/site/assets/js/projects.js"></script>
+<?php
+$baseUrl = rtrim(Request::base(true), '/');
+$selectorJs = $baseUrl
+    . '/core/plugins/projects/files/assets/js/fileselector.js';
+$projectsJs = $baseUrl
+    . '/core/components/com_projects/site/assets/js/projects.js';
+?>
+<script src="<?php echo $selectorJs; ?>"></script>
+<script src="<?php echo $projectsJs; ?>"></script>
 <div id="abox-content">
     <h3>
         <?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR'); ?>
         <span class="abox-controls">
-            <a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>
+            <a class="btn btn-success active"
+                id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>
             <?php if ($this->ajax) { ?>
                 <a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('JCANCEL'); ?></a>
             <?php } ?>
@@ -77,7 +85,12 @@ if ($this->folders) {
     </h3>
     <?php echo $this->loadTemplate('selectform'); ?>
     <?php if (isset($this->publication)) : ?>
-    <form id="upload-form" class="upload-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>">
+    <form id="upload-form"
+        class="upload-form"
+        method="post"
+        enctype="multipart/form-data"
+        action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>"
+        >
         <fieldset>
             <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -103,7 +116,10 @@ if ($this->folders) {
         <div id="status-box"></div>
 
         <div id="quick-upload" class="quick-uploader">
-            <p><?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NEED_ADD_FILES'); ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_QUICK_UPLOAD'); ?>:</p>
+            <p>
+                <?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NEED_ADD_FILES'); ?>
+                <?php echo Lang::txt('PLG_PROJECTS_FILES_SELECTOR_QUICK_UPLOAD'); ?>:
+            </p>
 
             <label for="uploader">
                 <input name="upload[]" type="file" id="uploader" multiple="multiple" />
@@ -119,7 +135,10 @@ if ($this->folders) {
                     </select>
                 </label>
             <?php } ?>
-            <input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="upload-file" id="upload-file" />
+            <input type="submit"
+                value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?>"
+                class="upload-file"
+                id="upload-file"/>
         </div>
     </form>
     <?php endif; ?>

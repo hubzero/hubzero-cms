@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -30,7 +30,10 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
 
 ?>
 <div id="pub-editor" class="pane-desc">
-    <form action="<?php echo Route::url($this->pub->link('edit')); ?>" method="post" id="plg-form" enctype="multipart/form-data">
+    <form action="<?php echo Route::url($this->pub->link('edit')); ?>"
+        method="post"
+        id="plg-form"
+        enctype="multipart/form-data">
          <fieldset>
             <input type="hidden" name="id" value="<?php echo $this->pub->_project->get('id'); ?>" id="projectid" />
             <input type="hidden" name="version" id="version" value="<?php echo $this->pub->versionAlias; ?>" />
@@ -47,15 +50,27 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
             <input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->get('id'); ?>" />
             <input type="hidden" name="vid" id="vid" value="<?php echo $this->pub->get('version_id'); ?>" />
             <input type="hidden" name="base" id="base" value="<?php echo $this->pub->base; ?>" />
-            <input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->pub->_project->isProvisioned() ? 1 : 0; ?>" />
+            <input type="hidden"
+                name="provisioned"
+                id="provisioned"
+                value="<?php echo $this->pub->_project->isProvisioned() ? 1 : 0; ?>"/>
          </fieldset>
         <div id="c-pane" class="columns">
              <div class="c-inner draftflow">
                         <h4><?php echo $title; ?></h4>
                         <?php
-                        if ($tagline && $move) { ?>
-                            <h5><?php echo $tagline; ?> <?php if ($this->manifest->about && !$this->pub->_project->isProvisioned()) {
-                                ?><a class="pub-info-pop more-content" href="#info-panel" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'); ?>">&nbsp;</a> <?php
+                        if ($tagline && $move) {
+                            $showAboutLink = $this->manifest->about
+                                && !$this->pub->_project->isProvisioned();
+                            $learnMoreTitle = Lang::txt(
+                                'PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'
+                            );
+                            ?>
+                            <h5><?php echo $tagline; ?> <?php if ($showAboutLink) {
+                                ?><a class="pub-info-pop more-content"
+                                    href="#info-panel"
+                                    title="<?php echo $learnMoreTitle; ?>"
+                                >&nbsp;</a> <?php
                                 } ?></h5>
                         <?php }
                         ?>
@@ -65,21 +80,35 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
                         </div>
 
                         <?php
-                        if ($this->active != 'review') { ?>
-                        <div class="submit-area <?php echo ($this->showControls == 2 || $this->showControls == 4) ? ' extended' : ''; ?>" id="submit-area">
+                        if ($this->active != 'review') {
+                            $extClass = ($this->showControls == 2 || $this->showControls == 4)
+                                ? ' extended' : '';
+                            ?>
+                        <div class="submit-area <?php echo $extClass; ?>"
+                            id="submit-area"
+                        >
                             <?php if (!$isFirst && $this->showControls && $this->showControls != 3) { ?>
                                 <span class="button-wrapper bw-previous icon-prev">
-                                    <input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_PREVIOUS'); ?>" id="c-previous" class="submitbutton btn icon-prev" />
+                                    <input type="button"
+                                        value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_PREVIOUS'); ?>"
+                                        id="c-previous"
+                                        class="submitbutton btn icon-prev"/>
                                 </span>
                             <?php } ?>
                             <?php if ($this->showControls == 4 || $this->showControls == 1) { ?>
                             <span class="button-wrapper icon-apply">
-                                <input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="c-apply" class="submitbutton btn icon-apply" />
+                                <input type="submit"
+                                    value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>"
+                                    id="c-apply"
+                                    class="submitbutton btn icon-apply"/>
                             </span>
                             <?php } ?>
                             <?php if ($this->showControls && $this->showControls != 3) { ?>
                             <span class="button-wrapper icon-next">
-                                <input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="c-next" class="submitbutton btn icon-next" />
+                                <input type="submit"
+                                    value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>"
+                                    id="c-next"
+                                    class="submitbutton btn icon-next"/>
                             </span>
                             <?php } ?>
                         </div>
@@ -91,7 +120,10 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
 
 <div class="hidden">
     <div id="addnotice" class="addnotice">
-        <form id="notice-form" name="noticeForm" action="<?php echo Route::url($this->pub->link('edit')); ?>" method="post">
+        <form id="notice-form"
+            name="noticeForm"
+            action="<?php echo Route::url($this->pub->link('edit')); ?>"
+            method="post">
          <fieldset>
             <input type="hidden" name="pid" value="<?php echo $this->pub->get('id'); ?>" />
             <input type="hidden" name="version" value="<?php echo $this->pub->version->get('version_number'); ?>" />
@@ -101,13 +133,18 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
             <h5><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_TITLE'); ?></h5>
             <div class="form-group">
                 <label>
-                    <span class="block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_LABEL'); ?></span>
+                    <span class="block"><?php
+                    echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_LABEL');
+                    ?></span>
                     <textarea name="review" id="notice-review" rows="5" cols="10"></textarea>
                 </label>
             </div>
             </fieldset>
             <p class="submitarea">
-                <input type="submit" id="notice-submit" class="btn" value="<?php echo Lang::txt('COM_PUBLICATIONS_SAVE'); ?>" />
+                <input type="submit"
+                    id="notice-submit"
+                    class="btn"
+                    value="<?php echo Lang::txt('COM_PUBLICATIONS_SAVE'); ?>"/>
             </p>
         </form>
     </div>
@@ -115,7 +152,10 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
 
 <div class="hidden">
     <div id="skip-notice" class="addnotice">
-        <form id="skip-notice-form" name="skipForm" action="<?php echo Route::url($this->pub->link('edit')); ?>" method="post">
+        <form id="skip-notice-form"
+            name="skipForm"
+            action="<?php echo Route::url($this->pub->link('edit')); ?>"
+            method="post">
          <fieldset>
             <input type="hidden" name="pid" value="<?php echo $this->pub->id; ?>" />
             <input type="hidden" name="version" value="<?php echo $this->pub->version_number; ?>" />
@@ -129,7 +169,10 @@ $isFirst = $this->pub->curation()->getFirstBlock() == $this->step ? true : false
             </label>
             </fieldset>
             <p class="submitarea">
-                <input type="submit" id="skip-notice-submit" class="btn" value="<?php echo Lang::txt('COM_PUBLICATIONS_SAVE'); ?>" />
+                <input type="submit"
+                    id="skip-notice-submit"
+                    class="btn"
+                    value="<?php echo Lang::txt('COM_PUBLICATIONS_SAVE'); ?>"/>
             </p>
         </form>
     </div>

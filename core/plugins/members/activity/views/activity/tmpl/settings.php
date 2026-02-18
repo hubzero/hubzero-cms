@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -19,35 +19,50 @@ $this->css()
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="<?php echo Route::url($this->member->link() . '&active=activity&task=savesettings'); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo Route::url($this->member->link() . '&active=activity&task=savesettings'); ?>"
+    method="post"
+    id="hubForm"
+    class="full">
     <fieldset class="settings">
         <legend><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_DIGESTS'); ?></legend>
 
         <label for="field-settings-frequency-none">
-            <input type="radio" name="settings[frequency]" id="field-settings-frequency-none" value="0" <?php if (!$this->settings->get('frequency')) {
-                echo ' checked="checked"';
-                                                                                                        }?> />
+            <input type="radio"
+                name="settings[frequency]"
+                id="field-settings-frequency-none"
+                value="0" <?php if (!$this->settings->get('frequency')) {
+                    echo ' checked="checked"';
+                          }?> />
             <?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_FREQUENCY_NONE'); ?>
         </label>
 
         <label for="field-settings-frequency-daily">
-            <input type="radio" name="settings[frequency]" id="field-settings-frequency-daily" value="2" <?php if ($this->settings->get('frequency') == 2) {
-                echo ' checked="checked"';
-                                                                                                         }?> />
+            <input type="radio"
+                name="settings[frequency]"
+                id="field-settings-frequency-daily"
+                value="2" <?php if ($this->settings->get('frequency') == 2) {
+                    echo ' checked="checked"';
+                          }?> />
             <?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_FREQUENCY_DAILY'); ?>
         </label>
 
         <label for="field-settings-frequency-weekly">
-            <input type="radio" name="settings[frequency]" id="field-settings-frequency-weekly" value="3" <?php if ($this->settings->get('frequency') == 3) {
-                echo ' checked="checked"';
-                                                                                                          }?> />
+            <input type="radio"
+                name="settings[frequency]"
+                id="field-settings-frequency-weekly"
+                value="3" <?php if ($this->settings->get('frequency') == 3) {
+                    echo ' checked="checked"';
+                          }?> />
             <?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_FREQUENCY_WEEKLY'); ?>
         </label>
 
         <label for="field-settings-frequency-monthly">
-            <input type="radio" name="settings[frequency]" id="field-settings-frequency-monthly" value="4" <?php if ($this->settings->get('frequency') == 4) {
-                echo ' checked="checked"';
-                                                                                                           }?> />
+            <input type="radio"
+                name="settings[frequency]"
+                id="field-settings-frequency-monthly"
+                value="4" <?php if ($this->settings->get('frequency') == 4) {
+                    echo ' checked="checked"';
+                          }?> />
             <?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_SETTINGS_FREQUENCY_MONTHLY'); ?>
         </label>
 

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -32,13 +32,18 @@ $url = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=
             <div id="td-item">
                 <span class="pin">&nbsp;</span>
                 <div class="todo-content">
-                    <textarea name="content" rows="10" cols="25" placeholder="<?php echo Lang::txt('PLG_MEMBERS_TODO_TYPEIT'); ?>"></textarea>
+                    <textarea name="content"
+                        rows="10"
+                        cols="25"
+                        placeholder="<?php echo Lang::txt('PLG_MEMBERS_TODO_TYPEIT'); ?>"></textarea>
                     <div class="todo-edits">
                         <?php if (count($this->projects) > 0) { ?>
                         <label><?php echo ucfirst(Lang::txt('PLG_MEMBERS_TODO_CHOOSE_PROJECT')); ?>:
                             <select name="projectid">
                             <?php foreach ($this->projects as $project) { ?>
-                                <option value="<?php echo $project->get('id'); ?>"><?php echo stripslashes($project->get('title')) . '(' . $project->get('alias') . ')'; ?></option>
+                                <option value="<?php echo $project->get('id'); ?>
+                                "><?php echo stripslashes($project->get('title')) . '(' . $project->get('alias') . ')';
+                                ?></option>
                             <?php } ?>
                             </select>
                         </label>
@@ -48,7 +53,9 @@ $url = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=
                             <input type="text" name="due" id="dued" class="duebox" placeholder="mm/dd/yyyy" value="" />
                         </label>
                         <p class="submitarea">
-                            <input type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_TODO_SAVE'); ?>" class="btn" />
+                            <input type="submit"
+                                value="<?php echo Lang::txt('PLG_MEMBERS_TODO_SAVE'); ?>"
+                                class="btn"/>
                         </p>
                     </div>
                 </div>

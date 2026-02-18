@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -46,8 +46,12 @@ $this->css()
             <select class="option" name="action">
                 <option value=""><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
                 <option value="markasread"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_READ'); ?></option>
-                <option value="markasunread"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_UNREAD'); ?></option>
-                <option value="sendtoarchive"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE'); ?></option>
+                <option value="markasunread"><?php
+                    echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_UNREAD');
+                ?></option>
+                <option value="sendtoarchive"><?php
+                    echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE');
+                ?></option>
                 <option value="sendtotrash"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_TRASH'); ?></option>
             </select>
             <input type="hidden"name="activetab" value="inbox" />
@@ -93,10 +97,12 @@ $this->css()
                     <?php
 
                         //get the message status
-                        $status = ($row->whenseen && $row->whenseen != '0000-00-00 00:00:00') ? '<span class="read">read</span>' : '<span class="unread">unread</span>';
+                        $status = ($row->whenseen && $row->whenseen != '0000-00-00 00:00:00') ? '<span
+                        class="read">read</span>' : '<span class="unread">unread</span>';
 
                         //get the component that created message
-                        $component = (substr($row->component, 0, 4) == 'com_') ? substr($row->component, 4) : $row->component;
+                        $component = (substr($row->component, 0, 4) == 'com_') ? substr($row->component, 4) :
+                        $row->component;
 
                         //get the message subject
                         $subject = $row->subject;
@@ -114,13 +120,24 @@ $this->css()
                     ?>
                     <tr>
                         <td class="check">
-                            <input class="chkbox" type="checkbox" id="msg<?php echo $row->id; ?>" value="<?php echo $row->id; ?>" name="mid[]" />
+                            <input class="chkbox"
+                                type="checkbox"
+                                id="msg<?php echo $row->id; ?>"
+                                value="<?php echo $row->id; ?>"
+                                name="mid[]"/>
                         </td>
                         <td class="status">
                             <?php echo $status; ?>
                         </td>
                         <td>
-                            <a class="<?php echo $subject_cls; ?>" href="<?php echo Route::url($this->member->link() . '&active=messages&msg=' . $row->id); ?>">
+                            <?php
+                            $messageUrl = Route::url(
+                                $this->member->link()
+                                . '&active=messages&msg=' . $row->id
+                            );
+                            ?>
+                            <a class="<?php echo $subject_cls; ?>"
+                                href="<?php echo $messageUrl; ?>">
                                 <?php echo $subject; ?>
                             </a>
                         </td>
@@ -131,7 +148,11 @@ $this->css()
                                 $from = Lang::txt('JANONYMOUS');
                                 if (!$row->anonymous) {
                                     $u = User::getInstance($row->created_by);
-                                    $from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $u->get('name') . '</a>';
+                                    $from = '<a href="'
+                                        . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id'))
+                                        . '">'
+                                        . $u->get('name')
+                                        . '</a>';
                                 }
                                 echo $from;
                             } else {
@@ -140,10 +161,30 @@ $this->css()
                             ?>
                         </td>
                         <td>
-                            <time datetime="<?php echo $row->created; ?>"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                            <?php
+                            $formattedDate = Date::of($row->created)->toLocal(
+                                Lang::txt('DATE_FORMAT_HZ1')
+                            );
+                            ?>
+                            <time datetime="<?php echo $row->created; ?>"><?php
+                                echo $formattedDate;
+                            ?></time>
                         </td>
                         <td>
-                            <a title="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE'); ?>" class="trash tooltips" href="<?php echo Route::url($this->member->link() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=inbox&' . Session::getFormToken() . '=1'); ?>">
+                            <?php
+                            $trashUrl = Route::url(
+                                $this->member->link()
+                                . '&active=messages&mid[]=' . $row->id
+                                . '&action=sendtotrash&activetab=inbox&'
+                                . Session::getFormToken() . '=1'
+                            );
+                            $trashTitle = Lang::txt(
+                                'PLG_MEMBERS_MESSAGES_DELETE_TITLE'
+                            );
+                            ?>
+                            <a title="<?php echo $trashTitle; ?>"
+                                class="trash tooltips"
+                                href="<?php echo $trashUrl; ?>">
                                 <?php echo Lang::txt('PLG_MEMBERS_MESSAGES_TRASH'); ?>
                             </a>
                         </td>

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +15,8 @@ if ($this->threads && is_array($this->threads)) {
     $lastchange = $this->threads[0]->created;
 }
 if (!isset($this->category)) {
-    $this->category = 'category' . substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 5)), 0, 10);
+    $this->category = 'category'
+        . substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789', 5)), 0, 10);
 }
 ?>
 <ul class="discussions" id="<?php echo $this->category; ?>" data-lastchange="<?php echo $lastchange; ?>">
@@ -64,7 +65,8 @@ if (!isset($this->category)) {
             $offering = \Components\Courses\Models\Offering::getInstance(Request::getString('offering', ''));
             if ($offering->exists()) {
                 $database = App::get('db');
-                $database->setQuery("UPDATE `#__forum_posts` SET scope_sub_id=" . $offering->section()->get('id') . " WHERE scope='course' AND scope_sub_id=0 AND id IN(" . implode(",", $subs) . ")");
+                $database->setQuery("UPDATE `#__forum_posts` SET scope_sub_id=" . $offering->section()->get('id') . "
+                WHERE scope='course' AND scope_sub_id=0 AND id IN(" . implode(",", $subs) . ")");
                 if (!$database->query()) {
                     echo '<!-- Failed to update data -->';
                 }

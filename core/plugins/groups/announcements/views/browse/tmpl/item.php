@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -50,7 +48,13 @@ if ($closed == 'closed' && $this->showClose == true) {
         $content = $this->announcement->content;
         if (strlen(strip_tags($content)) > 500 && $this->showClose) {
             $content  = Hubzero\Utility\Str::truncate($this->announcement->get('content'), 500, array('html' => true));
-            $content .= '<p><a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements') . '" title="' . Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MORE_TITLE') . '">' . Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MORE') . '</a></p>';
+            $content .= '<p><a href="'
+                . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements')
+                . '" title="'
+                . Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MORE_TITLE')
+                . '">'
+                . Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MORE')
+                . '</a></p>';
         }
         echo $content;
         ?>
@@ -79,12 +83,40 @@ if ($closed == 'closed' && $this->showClose == true) {
             <?php if ($this->group->published == 1) : ?>
                 <?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
                     <dd class="entry-options">
-                        <?php if (User::get('id') == $this->announcement->get('created_by') || $this->authorized == 'manager') : ?>
-                            <a class="icon-edit edit" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=edit&id=' . $this->announcement->get('id')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
-                                <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
+                        <?php
+                        $isCreatorOrManager = User::get('id') == $this->announcement->get('created_by')
+                            || $this->authorized == 'manager';
+                        $announcementBase = 'index.php?option=com_groups&cn='
+                            . $this->group->get('cn')
+                            . '&active=announcements';
+                        $announcementId = $this->announcement->get('id');
+                        ?>
+                        <?php if ($isCreatorOrManager) : ?>
+                            <?php
+                            $editUrl = Route::url(
+                                $announcementBase . '&action=edit&id=' . $announcementId
+                            );
+                            $deleteUrl = Route::url(
+                                $announcementBase . '&action=delete&id=' . $announcementId
+                            );
+                            $editTitle = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT');
+                            $deleteTitle = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE');
+                            $confirmDelete = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE');
+                            ?>
+                            <a
+                                class="icon-edit edit"
+                                href="<?php echo $editUrl; ?>"
+                                title="<?php echo $editTitle; ?>"
+                            >
+                                <?php echo $editTitle; ?>
                             </a>
-                            <a class="icon-delete delete" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=delete&id=' . $this->announcement->get('id')); ?>" data-confirm="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>">
-                                <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>
+                            <a
+                                class="icon-delete delete"
+                                href="<?php echo $deleteUrl; ?>"
+                                data-confirm="<?php echo $confirmDelete; ?>"
+                                title="<?php echo $deleteTitle; ?>"
+                            >
+                                <?php echo $deleteTitle; ?>
                             </a>
                         <?php endif; ?>
                     </dd>
@@ -92,7 +124,21 @@ if ($closed == 'closed' && $this->showClose == true) {
             <?php endif; ?>
         </dl>
         <?php if ($this->showClose) : ?>
-            <a class="close" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements'); ?>" data-id="<?php echo $this->announcement->get('id'); ?>" data-duration="30" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>">
+            <?php
+            $closeUrl = Route::url(
+                'index.php?option=com_groups&cn='
+                . $this->group->get('cn')
+                . '&active=announcements'
+            );
+            $closeTitle = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE');
+            ?>
+            <a
+                class="close"
+                href="<?php echo $closeUrl; ?>"
+                data-id="<?php echo $this->announcement->get('id'); ?>"
+                data-duration="30"
+                title="<?php echo $closeTitle; ?>"
+            >
                 <span><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE'); ?></span>
             </a>
         <?php endif; ?>

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -23,7 +23,10 @@ $this->css();
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url($this->member->link() . '&active=' . $this->name . '&task=' . $task); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo Route::url($this->member->link() . '&active=' . $this->name . '&task=' . $task); ?>"
+    method="post"
+    id="hubForm"
+    class="full">
     <fieldset>
         <legend><?php echo Lang::txt('Collect'); ?></legend>
 
@@ -43,7 +46,9 @@ $this->css();
                                         continue;
                                     }
                                     ?>
-                                    <option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+                                    <option value="<?php echo $this->escape($board->id); ?>">
+                                        <?php echo $this->escape(stripslashes($board->title)); ?>
+                                    </option>
                                     <?php
                                 }
                             }
@@ -59,7 +64,9 @@ $this->css();
 
                                         foreach ($boards as $board) {
                                             ?>
-                                            <option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+                                            <option value="<?php echo $this->escape($board->id); ?>">
+                                                <?php echo $this->escape(stripslashes($board->title)); ?>
+                                            </option>
                                             <?php
                                         }
                                         ?>
@@ -88,7 +95,16 @@ $this->css();
         <div class="form-group">
             <label for="field_description">
                 <?php echo Lang::txt('Add a description'); ?>
-                <?php echo $this->editor('description', '', 35, 5, 'field_description', array('class' => 'form-control minimal no-footer')); ?>
+                <?php
+                echo $this->editor(
+                    'description',
+                    '',
+                    35,
+                    5,
+                    'field_description',
+                    array('class' => 'form-control minimal no-footer')
+                );
+                ?>
             </label>
         </div>
     </fieldset>
@@ -107,6 +123,8 @@ $this->css();
     <?php echo Html::input('token'); ?>
 
     <p class="submit">
-        <input class="btn" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>" />
+        <input class="btn"
+            type="submit"
+            value="<?php echo Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE'); ?>"/>
     </p>
 </form>

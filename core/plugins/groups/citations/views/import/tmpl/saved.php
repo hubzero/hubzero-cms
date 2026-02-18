@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -57,18 +55,29 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
 
         <ul id="steps">
             <li>
-                <a href="<?php echo Route::url($base . '&action=import'); ?>" class="passed">
-                    <?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1_NAME'); ?></span>
+                <?php
+                $importUrl = Route::url($base . '&action=import');
+                $step1 = Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1');
+                $step1Name = Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1_NAME');
+                $reviewUrl = Route::url($base . '&action=review');
+                $step2 = Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2');
+                $step2Name = Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2_NAME');
+                $savedUrl = Route::url($base . '&action=saved');
+                $step3 = Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3');
+                $step3Name = Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3_NAME');
+                ?>
+            <a href="<?php echo $importUrl; ?>" class="passed">
+                    <?php echo $step1; ?><span><?php echo $step1Name; ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php echo Route::url($base . '&action=review'); ?>" class="passed">
-                    <?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2_NAME'); ?></span>
+                <a href="<?php echo $reviewUrl; ?>" class="passed">
+                    <?php echo $step2; ?><span><?php echo $step2Name; ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php echo Route::url($base . '&action=saved'); ?>" class="active">
-                    <?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3_NAME'); ?></span>
+                <a href="<?php echo $savedUrl; ?>" class="active">
+                    <?php echo $step3; ?><span><?php echo $step3Name; ?></span>
                 </a>
             </li>
         </ul><!-- / #steps -->
@@ -114,7 +123,14 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                 </td>
                             <?php endif; ?>
                             <td class="citation-container">
-                                <?php echo $formatter->formatCitation($cite, $this->filters['search'], false, $this->config); ?>
+                                <?php
+                                echo $formatter->formatCitation(
+                                    $cite,
+                                    $this->filters['search'],
+                                    false,
+                                    $this->config
+                                );
+                                ?>
 
                                 <?php if ($rollover == 'yes' && $cite->abstract != '') : ?>
                                     <div class="citation-notes">
@@ -123,14 +139,27 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                                 <?php endif; ?>
 
                                 <div class="citation-details">
-                                    <?php echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl); ?>
+                                    <?php
+                                    echo $formatter->citationDetails(
+                                        $cite,
+                                        $this->database,
+                                        $this->config,
+                                        $this->openurl
+                                    );
+                                    ?>
 
                                     <?php if ($this->config->get('citation_show_badges', 'no') == 'yes') : ?>
-                                        <?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
+                                        <?php
+                                        $fmtClass = \Components\Citations\Helpers\Format::class;
+                                        echo $fmtClass::citationBadges($cite, $this->database);
+                                        ?>
                                     <?php endif; ?>
 
                                     <?php if ($this->config->get('citation_show_tags', 'no') == 'yes') : ?>
-                                        <?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
+                                        <?php
+                                        $fmtClass = \Components\Citations\Helpers\Format::class;
+                                        echo $fmtClass::citationTags($cite, $this->database);
+                                        ?>
                                     <?php endif; ?>
                                 </div>
                             </td>

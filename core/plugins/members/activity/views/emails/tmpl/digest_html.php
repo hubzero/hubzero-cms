@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -51,8 +51,18 @@ $link = $base . '/' . trim($sef, '/');
     <table class="tbl-message" width="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tbody>
             <tr>
-                <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
-                    <?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_EMAIL_MEMBERS_EXPLANATION', $link, $this->member->get('name') . ' (' . $this->member->get('username') . ')'); ?>
+                <td align="left"
+                    valign="bottom"
+                    style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
+                    <?php
+                    $memberLabel = $this->member->get('name')
+                        . ' (' . $this->member->get('username') . ')';
+                    echo Lang::txt(
+                        'PLG_MEMBERS_ACTIVITY_EMAIL_MEMBERS_EXPLANATION',
+                        $link,
+                        $memberLabel
+                    );
+                    ?>
                 </td>
             </tr>
         </tbody>
@@ -84,7 +94,14 @@ $link = $base . '/' . trim($sef, '/');
         $bground = '#eafbe6';
     }
     ?>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $border; ?>; background: <?php echo $bground; ?>; font-size: 0.9em; line-height: 1.6em; background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+    <?php
+    $tableStyle = 'border-collapse: collapse;'
+        . ' border: 1px solid ' . $border . ';'
+        . ' background: ' . $bground . ';'
+        . ' font-size: 0.9em; line-height: 1.6em;'
+        . ' background-image: -webkit-gradient(linear, 0 0, 100% 100%,';
+    ?>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="<?php echo $tableStyle; ?>
                                         color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
                                         color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
                                         color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
@@ -109,7 +126,8 @@ $link = $base . '/' . trim($sef, '/');
                                     background-size: 30px 30px;">
         <tbody>
             <tr>
-                <td width="15%" style="padding: 8px; font-size: 1.2em; font-weight: bold; text-align: right; vertical-align: middle; padding: 8px 30px;" valign="middle" align="center">
+                <td width="15%" style="padding: 8px; font-size: 1.2em; font-weight: bold; text-align: right;
+                vertical-align: middle; padding: 8px 30px;" valign="middle" align="center">
                     <?php echo $row->log->get('action'); ?>
                 </td>
                 <td style="font-weight: normal; padding: 8px; text-align: left; " align="left">
@@ -120,10 +138,19 @@ $link = $base . '/' . trim($sef, '/');
 
                         if (!$row->log->get('anonymous')) {
                             $creator = User::getInstance($row->log->get('created_by'));
-                            $name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN'))));
+                            $name = $this->escape(stripslashes($creator->get(
+                                'name',
+                                Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN')
+                            )));
 
                             if (in_array($creator->get('access'), User::getAuthorisedViewLevels())) {
-                                $name = '<a href="' . $base . '/' . trim(Route::url($creator->link()), '/') . '">' . $name . '</a>';
+                                $name = '<a href="'
+                                    . $base
+                                    . '/'
+                                    . trim(Route::url($creator->link()), '/')
+                                    . '">'
+                                    . $name
+                                    . '</a>';
                             }
                         }
 
@@ -134,7 +161,8 @@ $link = $base . '/' . trim($sef, '/');
                         <?php echo str_replace('href="/', 'href="' . $base . '/', $row->log->get('description')); ?>
                     </span>
                 </td>
-                <td width="25%" style="padding: 8px; font-size: 1.2em; text-align: right; vertical-align: middle; padding: 8px 30px;" valign="top" align="right">
+                <td width="25%" style="padding: 8px; font-size: 1.2em; text-align: right; vertical-align: middle;
+                padding: 8px 30px;" valign="top" align="right">
                     <span class="activity-time"><time datetime="<?php echo $row->get('created'); ?>"><?php
 
                         $dt = Date::of($row->get('created'));

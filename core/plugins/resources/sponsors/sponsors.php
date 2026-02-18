@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Resources\Sponsors;
 
 use Hubzero\Plugin\Plugin;

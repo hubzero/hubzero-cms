@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,18 +15,25 @@ $this->css()
 ?>
 <ul id="page_options">
     <li>
-        <a class="icon-folder categories btn" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('PLG_GROUPS_FORUM_ALL_CATEGORIES'); ?></a>
+        <a class="icon-folder categories btn"
+            href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('PLG_GROUPS_FORUM_ALL_CATEGORIES'); ?></a>
     </li>
 </ul>
 
 <section class="main section">
     <form action="<?php echo Route::url($base . '&scope=search'); ?>" method="get">
         <div class="container data-entry">
-            <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH'); ?>" />
+            <input class="entry-search-submit"
+                type="submit"
+                value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH'); ?>"/>
             <fieldset class="entry-search">
                 <legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LEGEND'); ?></legend>
                 <label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LABEL'); ?></label>
-                <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER'); ?>" />
+                <input type="text"
+                    name="q"
+                    id="entry-search-field"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER'); ?>"/>
             </fieldset>
         </div><!-- / .container -->
 
@@ -46,7 +51,11 @@ $this->css()
                     if ($this->filters['search'] && $rows->count() > 0) {
                         foreach ($rows as $row) {
                             $title = $this->escape(stripslashes($row->get('title')));
-                            $title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
+                            $title = preg_replace(
+                                '#' . $this->filters['search'] . '#i',
+                                "<span class=\"highlight\">\\0</span>",
+                                $title
+                            );
 
                             $name = Lang::txt('JANONYMOUS');
                             if (!$row->get('anonymous')) {
@@ -70,7 +79,18 @@ $this->css()
                                     <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                 </th>
                                 <td>
-                                    <a class="entry-title" href="<?php echo Route::url($base . '&scope=' . $this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('alias') . '/' . $this->categories[$row->get('category_id')]->get('alias') . '/' . $row->get('thread')); ?>">
+                                    <?php
+                                    $catId = $row->get('category_id');
+                                    $secId = $this->categories[$catId]->get('section_id');
+                                    $entryUrl = Route::url(
+                                        $base . '&scope='
+                                        . $this->sections[$secId]->get('alias')
+                                        . '/' . $this->categories[$catId]->get('alias')
+                                        . '/' . $row->get('thread')
+                                    );
+                                    ?>
+                                    <a class="entry-title"
+                                        href="<?php echo $entryUrl; ?>">
                                         <span><?php echo $title; ?></span>
                                     </a>
                                     <span class="entry-details">
@@ -85,14 +105,39 @@ $this->css()
                                 </td>
                                 <td class="priority-4">
                                     <span><?php echo Lang::txt('PLG_GROUPS_FORUM_SECTION'); ?></span>
+                                    <?php
+                                    $sectionTitle = $this->sections[
+                                        $this->categories[$row->get('category_id')]
+                                            ->get('section_id')
+                                    ]->get('title');
+                                    $sectionName = $this->escape(
+                                        \Hubzero\Utility\Str::truncate(
+                                            $sectionTitle,
+                                            100,
+                                            array('exact' => true)
+                                        )
+                                    );
+                                    ?>
                                     <span class="entry-details section-name">
-                                        <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
+                                        <?php echo $sectionName; ?>
                                     </span>
                                 </td>
                                 <td class="priority-3">
                                     <span><?php echo Lang::txt('PLG_GROUPS_FORUM_CATEGORY'); ?></span>
+                                    <?php
+                                    $categoryTitle = $this->categories[
+                                        $row->get('category_id')
+                                    ]->get('title');
+                                    $categoryName = $this->escape(
+                                        \Hubzero\Utility\Str::truncate(
+                                            $categoryTitle,
+                                            100,
+                                            array('exact' => true)
+                                        )
+                                    );
+                                    ?>
                                     <span class="entry-details category-name">
-                                        <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>
+                                        <?php echo $categoryName; ?>
                                     </span>
                                 </td>
                             </tr>

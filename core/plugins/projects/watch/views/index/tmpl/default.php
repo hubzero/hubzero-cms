@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -18,11 +18,13 @@ $this->css();
 <div class="watch">
     <?php if ($this->watched) { ?>
         <p>
-            <a href="<?php echo Route::url($this->project->link() . '&active=watch&action=manage'); ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_WATCH_MANAGE'); ?></a>
+            <a href="<?php echo Route::url($this->project->link() . '&active=watch&action=manage'); ?>"
+                class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_WATCH_MANAGE'); ?></a>
         </p>
     <?php } else { ?>
         <p>
-            <a href="<?php echo Route::url($this->project->link() . '&active=watch&action=manage'); ?>" class="showinbox"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_WATCH_SUBSCRIBE')); ?></a>
+            <a href="<?php echo Route::url($this->project->link() . '&active=watch&action=manage'); ?>"
+                class="showinbox"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_WATCH_SUBSCRIBE')); ?></a>
         </p>
     <?php } ?>
 </div>

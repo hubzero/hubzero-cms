@@ -10,7 +10,6 @@ namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
 
-
 /**
  * A wiki macro for embedding images
  */

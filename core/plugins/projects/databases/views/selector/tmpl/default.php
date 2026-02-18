@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -36,13 +36,19 @@ if ($attachments) {
     <div id="abox-content">
     <script src="/core/plugins/projects/publications/assets/js/selector.js"></script>
         <h3><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR'); ?>     <span class="abox-controls">
-                <a class="btn btn-success active" id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_SAVE_SELECTION'); ?></a>
+                <a class="btn btn-success active"
+                    id="b-filesave"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_SAVE_SELECTION'); ?></a>
                 <?php if ($this->ajax) { ?>
-                <a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_CANCEL'); ?></a>
+                <a class="btn btn-cancel"
+                    id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_CANCEL'); ?></a>
                 <?php } ?>
             </span>
         </h3>
-        <form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url($this->publication->link('edit')); ?>">
+        <form id="select-form"
+            class="select-form"
+            method="post"
+            enctype="multipart/form-data"
+            action="<?php echo Route::url($this->publication->link('edit')); ?>">
             <fieldset >
                 <input type="hidden" name="id" id="projectid" value="<?php echo $this->model->get('id'); ?>" />
                 <input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
@@ -79,7 +85,11 @@ if ($attachments) {
                 <?php } ?>
             </ul>
             <?php } else { ?>
-            <p class="warning"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?> <span class="block"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO'); ?> <a href="<?php echo Route::url($this->model->link('databases')); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE'); ?></span></p>
+            <p class="warning"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?>
+            <span class="block"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO');?>
+            <a href="<?php echo Route::url($this->model->link('databases'));?>
+            "><?php echo Lang::txt('PLG_PROJECTS_DATABASES');?>
+            </a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE');?></span></p>
             <?php } ?>
         </form>
     </div>

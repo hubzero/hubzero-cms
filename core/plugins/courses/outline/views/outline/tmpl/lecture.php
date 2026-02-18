@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,8 +30,17 @@ $base    = $this->course->offering()->link() . '&active=outline';
 $altBase = $this->course->offering()->link();
 $current = $unit->assetgroups()->key();
 
-if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) || ($sparams->get('preview', 0) == 2 && $unit->get('ordering') > 1))) { ?>
-    <p class="info"><?php echo Lang::txt('Access to this content is restricted to students only. You must be enrolled to view the content.'); ?></p>
+if (
+    !$this->course->offering()->access('view') && (!$sparams->get('preview', 0) || ($sparams->get('preview', 0) == 2 &&
+    $unit->get('ordering') > 1))
+) { ?>
+    <?php
+    $restrictedMsg = Lang::txt(
+        'Access to this content is restricted to students only.'
+        . ' You must be enrolled to view the content.'
+    );
+    ?>
+    <p class="info"><?php echo $restrictedMsg; ?></p>
 <?php } else { ?>
     <?php if ($this->course->offering()->access('manage')) { ?>
         <?php if (!$lecture->isPublished()) { ?>
@@ -45,8 +54,14 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
         </div>
         <?php } ?>
         <?php if ($lecture->isPublished() && !$lecture->isAvailable()) { ?>
+            <?php
+            $scheduledMsg = Lang::txt(
+                'This lecture is <strong>scheduled</strong> to be available at %s.',
+                $lecture->get('publish_up')
+            );
+            ?>
         <div class="asset-status pending">
-            <span><?php echo Lang::txt('This lecture is <strong>scheduled</strong> to be available at %s.', $lecture->get('publish_up')); ?></span>
+            <span><?php echo $scheduledMsg; ?></span>
         </div>
         <?php } ?>
     <?php } ?>
@@ -59,7 +74,10 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
             if ($lecture->assets()->total()) {
                 // Render video
                 foreach ($lecture->assets() as $a) {
-                    if ($a->get('type') == 'video' && ($a->isPublished() || (!$a->isPublished() && $this->course->offering()->access('manage')))) {
+                    if (
+                        $a->get('type') == 'video' && ($a->isPublished() || (!$a->isPublished() &&
+                        $this->course->offering()->access('manage')))
+                    ) {
                         // Prefer published assets
                         if ($used) {
                             if (!$used_asset->isPublished() && $a->isPublished()) {
@@ -83,7 +101,12 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
                     }
                     $prerequisites = $member->prerequisites($this->course->offering()->gradebook());
 
-                    if (!$this->course->offering()->access('manage') && !$prerequisites->hasMet('asset', $used_asset->get('id'))) {
+                    if (
+                        !$this->course->offering()->access('manage') && !$prerequisites->hasMet(
+                            'asset',
+                            $used_asset->get('id')
+                        )
+                    ) {
                         $prereqs      = $prerequisites->get('asset', $used_asset->get('id'));
                         $requirements = array();
                         foreach ($prereqs as $pre) {
@@ -117,8 +140,14 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
                         </div>
                         <?php } ?>
                         <?php if ($used_asset->isPublished() && !$used_asset->isAvailable()) { ?>
+                            <?php
+                            $assetScheduledMsg = Lang::txt(
+                                'This asset is <strong>scheduled</strong> to be available at %s.',
+                                $used_asset->get('publish_up')
+                            );
+                            ?>
                         <div class="asset-status pending">
-                            <span><?php echo Lang::txt('This asset is <strong>scheduled</strong> to be available at %s.', $used_asset->get('publish_up')); ?></span>
+                            <span><?php echo $assetScheduledMsg; ?></span>
                         </div>
                         <?php } ?>
                         <?php
@@ -156,17 +185,30 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
                             $href = Route::url($altBase . '&asset=' . $a->get('id'));
                             /*if ($a->get('type') == 'video')
                             {
-                                $href = Route::url($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias'));
+                                $href = Route::url($base . '&unit=' . $unit->get('alias') . '&b=' .
+                                $lecture->get('alias'));
                             }*/
                             $cls = 'download';
                             if ($a->get('type') == 'exam') {
                                 $cls = 'edit';
-                                $exams[] = '<a class="' . $cls . ' btn" href="' . $href . '" rel="noopener noreferrer" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a>';
+                                $exams[] = '<a class="'
+                                    . $cls
+                                    . ' btn" href="'
+                                    . $href
+                                    . '" rel="noopener noreferrer" target="_blank">'
+                                    . $this->escape(stripslashes($a->get('title')))
+                                    . '</a>';
                             } else {
                                 if ($a->get('type') == 'link') {
                                     $cls = 'link';
                                 }
-                                echo '<li><a class="' . $cls . '" href="' . $href . '" rel="noopener noreferrer external" target="_blank">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+                                echo '<li><a class="'
+                                    . $cls
+                                    . '" href="'
+                                    . $href
+                                    . '" rel="noopener noreferrer external" target="_blank">'
+                                    . $this->escape(stripslashes($a->get('title')))
+                                    . '</a></li>';
                             }
                         }
                     } else {
@@ -191,8 +233,15 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
                     $prev = $lecture->sibling('prev');
                     if ($prev && $prev->isPublished() && $prev->assets()->total() > 0) {
                         $found = true;
+                        $prevUrl = Route::url(
+                            $base . '&unit=' . $unit->get('alias')
+                            . '&b=' . $lecture->sibling('prev')->get('alias')
+                        );
                         ?>
-                            <a class="icon-prev prev btn" href="<?php echo Route::url($base . '&unit=' . $unit->get('alias') . '&b=' . $lecture->sibling('prev')->get('alias')); ?>">
+                            <a
+                                class="icon-prev prev btn"
+                                href="<?php echo $prevUrl; ?>"
+                            >
                             <?php echo Lang::txt('Prev'); ?>
                             </a>
                             <?php
@@ -228,7 +277,8 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
                     <?php echo Lang::txt('Next'); ?>
                 </span>
             <?php } else { ?>
-                <a class="icon-next next opposite btn" href="<?php echo Route::url($base . '&unit=' . $unit->get('alias') . '&b=' . $gAlias); ?>">
+                <a class="icon-next next opposite btn"
+                    href="<?php echo Route::url($base . '&unit=' . $unit->get('alias') . '&b=' . $gAlias); ?>">
                     <?php echo Lang::txt('Next'); ?>
                 </a>
             <?php }

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -15,7 +15,12 @@ include_once \Component::path('com_publications') . DS . 'models' . DS . 'elemen
 
 // Parse data
 $data = array();
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->pub->metadata ? $this->pub->metadata : '', $matches, PREG_SET_ORDER);
+preg_match_all(
+    "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
+    $this->pub->metadata ? $this->pub->metadata : '',
+    $matches,
+    PREG_SET_ORDER
+);
 if (count($matches) > 0) {
     foreach ($matches as $match) {
         $data[$match[1]] = $match[2];
@@ -56,7 +61,12 @@ $class = $value ? ' be-complete' : '';
 
 // Determine if current element is active/ not yet filled/ last in order
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
-$coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->blockId, $this->active, $this->elementId);
+$coming = $this->pub->_curationModel->isComing(
+    $this->master->block,
+    $this->master->blockId,
+    $this->active,
+    $this->elementId
+);
 $coming = $this->collapse ? $coming : 0;
 $last   = ($this->order == $this->total) ? 1 : 0;
 
@@ -80,9 +90,11 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText))) {
 }
 
 $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : $complete;
-$updated = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete) || $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
+$updated = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete) || $curatorStatus->status == 1 ||
+$curatorStatus->status == 0) ? true : false;
 
-$elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
+$elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' .
+$this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement <?php
@@ -107,7 +119,12 @@ if ($coming) {
         <div class="block-subject">
             <span class="checker">&nbsp;</span>
             <h5 class="element-title"><?php echo $this->manifest->label; ?>
-            <span class="element-options"><a href="<?php echo $elementUrl; ?>" class="edit-element" id="<?php echo $elName; ?>-edit"><?php echo Lang::txt('[edit]'); ?></a></span>
+            <span class="element-options">
+                <a href="<?php echo $elementUrl; ?>"
+                    class="edit-element"
+                    id="<?php echo $elName; ?>-edit"
+                ><?php echo Lang::txt('[edit]'); ?></a>
+            </span>
             </h5>
             <?php if (!$coming && $value) {
                 // Parse editor text
@@ -161,17 +178,55 @@ if ($coming) {
                         $classes .= ' no-footer ';
                         $classes .= $editorImages == 1 ? 'images ' : '';
                         $classes .= $editorMacros == 1 ? 'macros ' : '';
-                        $output .= App::get('editor')->display($field, $value, '', '', $cols, $rows, false, 'pub-' . $elName, null, null, array('class' => $classes));
+                        $output .= App::get(
+                            'editor'
+                        )->display(
+                            $field,
+                            $value,
+                            '',
+                            '',
+                            $cols,
+                            $rows,
+                            false,
+                            'pub-' . $elName,
+                            null,
+                            null,
+                            array('class' => $classes)
+                        );
                         break;
 
                     case 'textarea':
                         $value = preg_replace("/\r\n/", "\r", trim($value));
-                        $output .= '<textarea name="' . $field . '" id="pub-' . $elName . '" ' . $size . ' ' . $placeholder . ' cols="' . $cols . '" rows="' . $rows . '">' . $value . '</textarea>';
+                        $output .= '<textarea name="'
+                            . $field
+                            . '" id="pub-'
+                            . $elName
+                            . '" '
+                            . $size
+                            . ' '
+                            . $placeholder
+                            . ' cols="'
+                            . $cols
+                            . '" rows="'
+                            . $rows
+                            . '">'
+                            . $value
+                            . '</textarea>';
                         break;
 
                     case 'text':
                     default:
-                        $output .= '<input type="text" name="' . $field . '" id="pub-' . $elName . '" value="' . $this->escape($value) . '" ' . $size . ' ' . $placeholder . ' />';
+                        $output .= '<input type="text" name="'
+                            . $field
+                            . '" id="pub-'
+                            . $elName
+                            . '" value="'
+                            . $this->escape($value)
+                            . '" '
+                            . $size
+                            . ' '
+                            . $placeholder
+                            . ' />';
                         break;
                 }
                 $output .= '  </span>';
@@ -180,17 +235,27 @@ if ($coming) {
             <?php if ($curatorStatus->status == 3 && !$complete) { ?>
                 <p class="warning"><?php
                     echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM');
-                    echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : '';
+                    echo $curatorStatus->authornotice ? ' '
+                        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON')
+                        . ':"'
+                        . $curatorStatus->authornotice
+                        . '"' : '';
                 ?></p>
             <?php } ?>
             <?php // Navigate to next element
             if ($active && $this->collapse) { ?>
                 <p class="element-move">
                     <span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
-                        <input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
+                        <input type="button"
+                            value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>"
+                            id="<?php echo $elName; ?>-apply"
+                            class="save-element btn icon-next"/>
                     </span>
                     <span class="button-wrapper icon-apply">
-                        <input type="button" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="apply-<?php echo $props; ?>" class="save-element btn icon-apply" />
+                        <input type="button"
+                            value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>"
+                            id="apply-<?php echo $props; ?>"
+                            class="save-element btn icon-apply"/>
                     </span>
                 </p>
             <?php } ?>

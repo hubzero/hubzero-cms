@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +23,8 @@
                 }
             } else {
                 if ($line->group_cn != '' && $line->scope != '') {
-                    $sef = Route::url('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias);
+                    $sef = Route::url('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' .
+                    $line->alias);
                 } else {
                     $sef = Route::url('index.php?option=com_wiki&scope=' . $line->scope . '&pagename=' . $line->alias);
                 }
@@ -42,11 +41,18 @@
             }
             ?>
             <tr>
-                <td class="ranking"><?php echo number_format($line->ranking, 1); ?> <span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RANKING'); ?></span></td>
+                <td class="ranking">
+                    <?php echo number_format($line->ranking, 1); ?>
+                    <span class="rank-<?php echo $r; ?>">
+                        <?php echo Lang::txt('PLG_RESOURCES_RELATED_RANKING'); ?>
+                    </span>
+                </td>
                 <td>
                 <?php if ($line->section != 'Topic') { ?>
                     <?php echo Lang::txt('PLG_RESOURCES_RELATED_PART_OF'); ?>
-                    <a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo stripslashes($line->title); ?></a>
+                    <a href="<?php echo $sef; ?>"
+                        class="fixedResourceTip"
+                        title="DOM:rsrce<?php echo $line->id; ?>"><?php echo stripslashes($line->title); ?></a>
                     <div class="hide" id="rsrce<?php echo $line->id; ?>">
                         <h4><?php echo stripslashes($line->title); ?></h4>
                         <div>
@@ -58,7 +64,10 @@
                                     </tr>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_RESOURCES_RELATED_DATE'); ?></th>
-                                        <td><?php echo Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+                                        <td><?php
+                                            $fmt = Lang::txt('DATE_FORMAT_HZ1');
+                                            echo Date::of($line->publish_up)->toLocal($fmt);
+                                        ?></td>
                                     </tr>
                                 </tbody>
                             </table>

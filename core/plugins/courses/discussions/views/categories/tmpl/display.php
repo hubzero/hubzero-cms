@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -45,13 +45,20 @@ $base = $this->offering->link() . '&active=forum';
                         <?php
                         if ($this->filters['search']) {
                             if ($this->category->get('id')) {
-                                echo Lang::txt('Search for "%s" in "%s"', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
+                                echo Lang::txt(
+                                    'Search for "%s" in "%s"',
+                                    $this->escape($this->filters['search']),
+                                    $this->escape(stripslashes($this->category->get('title')))
+                                );
                             } else {
                                 echo Lang::txt('Search for "%s"', $this->escape($this->filters['search']));
                             }
                         } else {
                             if ($this->category->get('id')) {
-                                echo Lang::txt('Discussions in "%s"', $this->escape(stripslashes($this->category->get('title'))));
+                                echo Lang::txt(
+                                    'Discussions in "%s"',
+                                    $this->escape(stripslashes($this->category->get('title')))
+                                );
                             } else {
                                 echo Lang::txt('Discussions');
                             }
@@ -59,12 +66,20 @@ $base = $this->offering->link() . '&active=forum';
                         ?>
                     </caption>
                     <?php if (!$this->category->get('closed')) { ?>
+                        <?php
+                        $canDelete = $this->config->get('access-delete-thread');
+                        $canEdit = $this->config->get('access-edit-thread');
+                        $footColspan = ($canDelete || $canEdit) ? '5' : '4';
+                        $addUrl = Route::url(
+                            $base . '&unit='
+                            . $this->filters['category'] . '&b=new'
+                        );
+                        ?>
                         <tfoot>
                             <tr>
-                                <td
-                                    colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
+                                <td colspan="<?php echo $footColspan; ?>">
                                     <a class="add btn"
-                                        href="<?php echo Route::url($base . '&unit=' . $this->filters['category'] . '&b=new'); ?>">
+                                        href="<?php echo $addUrl; ?>">
                                         <?php echo Lang::txt('Add Discussion'); ?>
                                     </a>
                                 </td>
@@ -100,16 +115,34 @@ $base = $this->offering->link() . '&active=forum';
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>
                                     <td>
+                                        <?php
+                                        $entryUrl = Route::url(
+                                            $base . '&unit='
+                                            . $this->filters['category']
+                                            . '&b=' . $row->get('id')
+                                        );
+                                        ?>
                                         <a class="entry-title"
-                                            href="<?php echo Route::url($base . '&unit=' . $this->filters['category'] . '&b=' . $row->get('id')); ?>">
+                                            href="<?php echo $entryUrl; ?>">
                                             <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
                                         </a>
+                                        <?php
+                                        $createdDatetime = $row->created();
+                                        $createdDate = $row->created('date');
+                                        $authorSpan = '<span class="entry-author">'
+                                            . $name . '</span>';
+                                        $byUser = Lang::txt(
+                                            'PLG_COURSES_DISCUSSIONS_BY_USER',
+                                            $authorSpan
+                                        );
+                                        ?>
                                         <span class="entry-details">
                                             <span class="entry-date">
-                                                <time
-                                                    datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
+                                                <time datetime="<?php echo $createdDatetime; ?>">
+                                                    <?php echo $createdDate; ?>
+                                                </time>
                                             </span>
-                                            <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
+                                            <?php echo $byUser; ?>
                                         </span>
                                     </td>
                                     <td>
@@ -131,33 +164,69 @@ $base = $this->offering->link() . '&active=forum';
                                             if ($lastpost->get('id')) {
                                                 $lname = Lang::txt('JANONYMOUS');
                                                 if (!$lastpost->get('anonymous')) {
-                                                    $lname = $this->escape(stripslashes($lastpost->creator->get('name')));
-                                                    if (in_array($lastpost->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                                        $lname = '<a href="' . Route::url($lastpost->creator->link()) . '">' . $lname . '</a>';
+                                                    $lname =
+                                                    $this->escape(stripslashes($lastpost->creator->get('name')));
+                                                    if (
+                                                        in_array(
+                                                            $lastpost->creator->get('access'),
+                                                            User::getAuthorisedViewLevels()
+                                                        )
+                                                    ) {
+                                                        $lname = '<a href="'
+                                                            . Route::url($lastpost->creator->link())
+                                                            . '">'
+                                                            . $lname
+                                                            . '</a>';
                                                     }
                                                 }
+                                                $lastDatetime = $lastpost->created();
+                                                $lastDate = $lastpost->created('date');
+                                                $lastAuthorSpan = '<span class="entry-author">'
+                                                    . $lname . '</span>';
+                                                $lastByUser = Lang::txt(
+                                                    'PLG_COURSES_DISCUSSIONS_BY_USER',
+                                                    $lastAuthorSpan
+                                                );
                                                 ?>
                                                 <span class="entry-date">
-                                                    <time
-                                                        datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>
+                                                    <time datetime="<?php echo $lastDatetime; ?>">
+                                                        <?php echo $lastDate; ?>
+                                                    </time>
                                                 </span>
-                                                <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_BY_USER', '<span class="entry-author">' . $lname . '</span>'); ?>
+                                                <?php echo $lastByUser; ?>
                                             <?php } else { ?>
                                                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NONE'); ?>
                                             <?php } ?>
                                         </span>
                                     </td>
-                                    <?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) { ?>
+                                    <?php
+                                    $canDeleteThread = $this->config->get('access-delete-thread');
+                                    $canEditThread = $this->config->get('access-edit-thread');
+                                    if ($canDeleteThread || $canEditThread) {
+                                        $isCreator = $row->get('created_by') == User::get('id');
+                                        $editUrl = Route::url(
+                                            $base . '&scope='
+                                            . $this->filters['category']
+                                            . '&b=' . $row->get('id')
+                                            . '&c=edit'
+                                        );
+                                        $deleteUrl = Route::url(
+                                            $base . '&scope='
+                                            . $this->filters['category']
+                                            . '&b=' . $row->get('id')
+                                            . '&c=delete'
+                                        );
+                                        ?>
                                         <td class="entry-options">
-                                            <?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-thread')) { ?>
+                                            <?php if ($isCreator || $canEditThread) { ?>
                                                 <a class="edit"
-                                                    href="<?php echo Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=edit'); ?>">
+                                                    href="<?php echo $editUrl; ?>">
                                                     <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDIT'); ?>
                                                 </a>
                                             <?php } ?>
-                                            <?php if ($this->config->get('access-delete-thread')) { ?>
+                                            <?php if ($canDeleteThread) { ?>
                                                 <a class="delete"
-                                                    href="<?php echo Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=delete'); ?>">
+                                                    href="<?php echo $deleteUrl; ?>">
                                                     <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE'); ?>
                                                 </a>
                                             <?php } ?>
@@ -166,10 +235,13 @@ $base = $this->offering->link() . '&active=forum';
                                     </tr>
                                     <?php
                             }
-                        } else { ?>
+                        } else {
+                            $hasThreadAccess = $this->config->get('access-delete-thread')
+                                || $this->config->get('access-edit-thread');
+                            $emptyColspan = $hasThreadAccess ? '5' : '4';
+                            ?>
                                 <tr>
-                                    <td
-                                        colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
+                                    <td colspan="<?php echo $emptyColspan; ?>">
                                         <?php echo Lang::txt('There are currently no discussions.'); ?>
                                     </td>
                                 </tr>

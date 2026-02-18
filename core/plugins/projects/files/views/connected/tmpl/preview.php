@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -35,6 +35,7 @@ if ($this->getError()) {
     <?php $base64   = base64_encode($contents); ?>
     <?php $attr     = getimagesizefromstring($contents); ?>
     <div id="preview-image">
-        <img src="data:<?php echo $attr['mime']; ?>;base64,<?php echo $base64; ?>" alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
+        <img src="data:<?php echo $attr['mime']; ?>;base64,<?php echo $base64; ?>"
+            alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>"/>
     </div>
 <?php endif;

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,6 @@ defined('_HZEXEC_') or die();
 <ol class="comments" id="t<?php echo (isset($this->parent)) ? $this->parent : '0'; ?>">
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 if ($this->comments) {
     $cls = 'odd';
     if (isset($this->cls)) {

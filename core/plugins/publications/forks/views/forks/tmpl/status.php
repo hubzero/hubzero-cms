@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,6 +16,22 @@ if (User::isGuest()) {
 }
 ?>
 <div class="btn-group item-fork">
-    <a class="btn icon-fork" id="fork-this" href="<?php echo $url; ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_FORK'); ?></a>
-    <a class="btn" href="<?php echo Route::url($this->publication->link() . '&v=' . $this->publication->versionAlias . '&active=forks'); ?>" title="<?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_FORKED_N_TIMES', $this->forks); ?>"><?php echo $this->forks; ?></a>
+    <a class="btn icon-fork"
+        id="fork-this"
+        href="<?php echo $url; ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_FORKS_FORK'); ?></a>
+    <?php
+    $forksUrl = Route::url(
+        $this->publication->link()
+        . '&v=' . $this->publication->versionAlias
+        . '&active=forks'
+    );
+    $forksTitle = Lang::txt(
+        'PLG_PUBLICATIONS_FORKS_FORKED_N_TIMES',
+        $this->forks
+    );
+    ?>
+    <a class="btn"
+        href="<?php echo $forksUrl; ?>"
+        title="<?php echo $forksTitle; ?>"
+    ><?php echo $this->forks; ?></a>
 </div>

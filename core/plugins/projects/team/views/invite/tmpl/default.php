@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -36,7 +36,9 @@ $p_url = Route::url($route . '&active=team');
         <label for="from"><span class="leftshift"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_FROM')); ?>:</span>
         <input type="text" name="from" value="<?php echo $this->name; ?>" maxlength="100" /></label>
         <label for="to"><span class="leftshift"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TO')); ?>:
-            <span class="hint block mini"><?php echo Lang::txt('PLG_PROJECTS_TEAM_COMMA_SEPARATED_LIST'); ?></span></span>
+            <span class="hint block mini">
+                <?php echo Lang::txt('PLG_PROJECTS_TEAM_COMMA_SEPARATED_LIST'); ?>
+            </span></span>
             <textarea name="to" cols="4" rows="4" class="emailstring" ></textarea>
         </label>
         <label for="message"><span class="leftshift"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_MESSAGE')); ?>:

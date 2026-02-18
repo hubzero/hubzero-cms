@@ -10,7 +10,6 @@ namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
 
-
 /**
  * Wiki macro class for displaying all available macros and their documentation
  */

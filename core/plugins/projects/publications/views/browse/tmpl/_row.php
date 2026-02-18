@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -24,7 +24,10 @@ $pubUrl = '';
 if ($this->get('new_pubs')) {
     $pubUrl = 'pubs/#/pubs/' . $row->get('publication_id') . '/v/' . $row->get('version_id') . '/edit';
 } else {
-    $pubUrl = Route::url($this->project->link('publications')) . '&pid=' . $row->get('id') . '&action=continue&version=dev';
+    $pubUrl = Route::url($this->project->link('publications'))
+        . '&pid='
+        . $row->get('id')
+        . '&action=continue&version=dev';
 }
 
 ?>
@@ -41,35 +44,84 @@ if ($this->get('new_pubs')) {
     <span class="mini faded block"><?php echo $date; ?></span>
 </td>
 <td>
-<?php if ($row->versionProperty('version_label', 'dev') && $row->versionProperty('version_label', 'dev') != $row->get('version_label')) {
-    echo '<a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->get('id') . '&version=dev')
+<?php
+$devLabel = $row->versionProperty('version_label', 'dev');
+if ($devLabel && $devLabel != $row->get('version_label')) {
+    $devUrl = Route::url(
+        $this->project->link('publications')
+        . '&pid=' . $row->get('id') . '&version=dev'
+    );
+    echo '<a href="' . $devUrl
     . '">&raquo; ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
-    . ' <strong>' . $row->versionProperty('version_label', 'dev')  . '</strong></a> '
+    . ' <strong>' . $devLabel  . '</strong></a> '
     . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS');
     if ($this->project->access('content')) {
         if ($this->get('new_pubs')) {
-            echo ' <span><a href="pubs/#/pubs/' . $row->get('publication_id') . '/v/' . $row->get('version_id') . '/edit" class="btn mini icon-next">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
+            echo ' <span><a href="pubs/#/pubs/'
+                . $row->get('publication_id')
+                . '/v/'
+                . $row->get('version_id')
+                . '/edit" class="btn mini icon-next">'
+                . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')
+                . '</a></span>';
         } else {
-            echo ' <span class="block"><a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->get('id') . '&action=continue&version=dev') . '" class="btn mini icon-next">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
+            echo ' <span class="block"><a href="' . Route::url($this->project->link('publications') . '&pid=' .
+            $row->get('id') . '&action=continue&version=dev') . '" class="btn mini icon-next">' .
+            Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE') . '</a></span>';
         }
     }
 } elseif ($row->isDev() && $this->project->access('content')) {
     if ($this->get('new_pubs')) {
-        echo ' <span><a href="pubs/#/pubs/' . $row->get('publication_id') . '/v/' . $row->get('version_id') . '/edit" class="btn mini icon-next">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
+        echo ' <span><a href="pubs/#/pubs/'
+            . $row->get('publication_id')
+            . '/v/'
+            . $row->get('version_id')
+            . '/edit" class="btn mini icon-next">'
+            . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')
+            . '</a></span>';
     } else {
-        echo ' <span><a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->get('id') . '&action=continue&version=dev') . '" class="btn mini icon-next">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE')  . '</a></span>';
+        echo ' <span><a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->get('id') .
+        '&action=continue&version=dev') . '" class="btn mini icon-next">' .
+        Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE') . '</a></span>';
     }
 } elseif ($row->isWorked()) {
-    echo ' <span><a href="' . Route::url($this->project->link('publications') . '&pid=' . $row->get('id') . '&action=continue&version=' . $row->get('version_number')) . '" class="btn mini icon-next btn-action">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES')  . '</a></span>';
+    $workedUrl = Route::url(
+        $this->project->link('publications')
+        . '&pid=' . $row->get('id')
+        . '&action=continue&version=' . $row->get('version_number')
+    );
+    echo ' <span><a href="' . $workedUrl
+    . '" class="btn mini icon-next btn-action">'
+    . Lang::txt('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES')
+    . '</a></span>';
 } ?></td>
 
+<?php
+    $versionsUrl = Route::url(
+        $this->project->link('publications')
+        . '&pid=' . $row->get('id') . '&action=versions'
+    );
+    $versionsTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS');
+    ?>
 <td class="centeralign mini faded"><?php if ($row->versions > 0) {
-    ?><a href="<?php echo Route::url($this->project->link('publications') . '&pid=' . $row->get('id') . '&action=versions'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_VERSIONS'); ?>"><?php
+    ?><a href="<?php echo $versionsUrl; ?>"
+        title="<?php echo $versionsTitle; ?>"><?php
                                    } ?><?php echo $row->get('versions'); ?><?php if ($row->get('versions') > 0) {
     ?></a><?php
                                    } ?></td>
 <td class="autowidth">
-    <a href="<?php echo Route::url($this->project->link('publications') . '&pid=' . $row->get('id')); ?>" class="manageit" title="<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?>">&nbsp;</a>
+    <a href="<?php echo Route::url($this->project->link('publications') . '&pid=' . $row->get('id')); ?>"
+        class="manageit"
+        title="<?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_VERSION')); ?>">&nbsp;</a>
 
-    <a href="<?php echo Route::url('index.php?option=com_publications&id=' . $row->get('id') . '&v=' . $row->get('version_number')); ?>" class="public-page" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>">&nbsp;</a></td>
+    <?php
+        $pubPageUrl = Route::url(
+            'index.php?option=com_publications&id=' . $row->get('id')
+            . '&v=' . $row->get('version_number')
+        );
+        $pubPageTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE');
+        ?>
+    <a href="<?php echo $pubPageUrl; ?>"
+        class="public-page"
+        title="<?php echo $pubPageTitle; ?>">&nbsp;</a></td>
 </tr>

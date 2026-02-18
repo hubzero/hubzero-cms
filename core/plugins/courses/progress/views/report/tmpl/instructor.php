@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,7 +30,11 @@ $base = $this->course->offering()->link() . '&active=progress';
                 </div>
                 <div class="label-input-pair">
                     <label for="homework-weight">Homework Weight:</label>
-                    <input type="text" name="homework-weight" value="{{gradepolicy.homework_weight}}" class="slider" size="4" />
+                    <input type="text"
+                        name="homework-weight"
+                        value="{{gradepolicy.homework_weight}}"
+                        class="slider"
+                        size="4"/>
                 </div>
                 <div class="label-input-pair">
                     <label for="threshold">Passing Threshold:</label>
@@ -41,7 +45,8 @@ $base = $this->course->offering()->link() . '&active=progress';
                     <textarea name="description" cols="50" rows="2">{{gradepolicy.description}}</textarea>
                 </div>
                 <button type="submit">Submit</button>
-                <a class="restore-defaults" href="<?php echo Route::url($base . '&action=restoredefaults') ?>">Restore Defaults</a>
+                <a class="restore-defaults"
+                    href="<?php echo Route::url($base . '&action=restoredefaults') ?>">Restore Defaults</a>
             {{else}}
                 <p class="warning">Sorry, you do not have permission to edit the grade policy for this course</p>
             {{/if}}
@@ -55,7 +60,9 @@ $base = $this->course->offering()->link() . '&active=progress';
         <div class="header-sub">
             <div class="cell header-progress">
                 Unit Progress
-                <div class="details" title="This reflects what students have viewed, not the actual scores that they may have received."></div>
+                <div class="details"
+                    title="This reflects what students have viewed, not the actual scores that they may have received."
+                    ></div>
             </div>
             <div class="cell header-score">
                 <div class="sorter" data-sort-val="score" data-sort-dir="asc"></div>
@@ -112,7 +119,8 @@ $base = $this->course->offering()->link() . '&active=progress';
                 <div class="extended-info">
                     <div class="picture">
                         <img src="<?php /*echo Request::base();*/ ?>{{this.full}}" />
-                        <a class="more-details" href="<?php echo Route::url($base . '&id=') ?>{{this.user_id}}">More details</a>
+                        <a class="more-details"
+                            href="<?php echo Route::url($base . '&id=') ?>{{this.user_id}}">More details</a>
                     </div>
                     <div class="extended-info-extra">
                         <h6>Joined Course</h6>
@@ -154,7 +162,9 @@ $base = $this->course->offering()->link() . '&active=progress';
         <div class="gradebook-column gradebook-students">
             <div class="cell search-box"><input type="text" placeholder="Search students" /></div>
             {{#each members}}
-                    <div class="cell cell-title cell-row{{@index}}" title="{{this.name}}" data-rownum="cell-row{{@index}}">
+                    <div class="cell cell-title cell-row{{@index}}"
+                        title="{{this.name}}"
+                        data-rownum="cell-row{{@index}}">
                         {{shorten name 25}}
                     </div>
                 </tr>
@@ -194,7 +204,10 @@ $base = $this->course->offering()->link() . '&active=progress';
                 </div>
             </div>
             {{#each ../members}}
-                <div class="cell cell-entry cell-row{{@index}}" data-asset-id="{{../id}}" data-student-id="{{this.id}}" data-rownum="cell-row{{@index}}">
+                <div class="cell cell-entry cell-row{{@index}}"
+                    data-asset-id="{{../id}}"
+                    data-student-id="{{this.id}}"
+                    data-rownum="cell-row{{@index}}">
                     <div class="cell-score">{{getGrade ../../grades this.id ../id}}</div>
                     <div class="override{{ifIsOverride ../../grades this.id ../id}}"></div>
                 </div>
@@ -256,9 +269,13 @@ $base = $this->course->offering()->link() . '&active=progress';
             <div title="progress view" class="progress-button button active"></div>
             <div title="gradebook view" class="gradebook-button button"></div>
             <div title="reports view" class="reports-button button"></div>
-            <?php echo (!$this->course->config()->get('section_grade_policy', true) && !$this->course->offering()->access('manage'))
+            <?php
+            $noGradePolicy = !$this->course->config()->get('section_grade_policy', true)
+                && !$this->course->offering()->access('manage');
+            echo $noGradePolicy
                 ? ''
-                : '<div title="edit grade policy" class="progress_button policy button"></div>'; ?>
+                : '<div title="edit grade policy" class="progress_button policy button"></div>';
+            ?>
             <?php echo (!$this->course->access('manage'))
                 ? ''
                 : '<div title="add a new entry" class="gradebook_button addrow button"></div>'; ?>

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -21,6 +21,22 @@ $rUrl = $this->url . '?action=browse&a=1' . $subdirlink;
 // Incoming
 $basic = Request::getInt('basic', 0);
 
+$maxUploadHint = Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD')
+    . ' '
+    . \Hubzero\Utility\Number::formatBytes($this->sizelimit);
+$basePath = rtrim(Request::base(true), '/');
+$jsPath = $basePath
+    . '/core/plugins/projects/files/assets/js/';
+
+$basicUploadQuestion = Lang::txt(
+    'PLG_PROJECTS_FILES_BASIC_UPLOAD_QUESTION'
+);
+$basicUploadUrl = $this->url
+    . '?action=upload&amp;basic=1' . $subdirlink;
+$basicUploadLabel = Lang::txt(
+    'PLG_PROJECTS_FILES_BASIC_UPLOAD'
+);
+
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 
@@ -30,7 +46,10 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
     <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></h3>
 <?php } ?>
 
-<form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" method="post" enctype="multipart/form-data" action="<?php echo $rUrl; ?>">
+<form id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>"
+    method="post"
+    enctype="multipart/form-data"
+    action="<?php echo $rUrl; ?>">
     <?php if (!$this->ajax) { ?>
         <div id="plg-header">
             <h3 class="files">
@@ -44,38 +63,61 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
     <fieldset class="uploader">
         <p id="upload-instruct"><?php echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD') . ' ';
         if ($this->subdir) {
-            echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR') . ' <span class="prominent">' . $this->subdir . '</span> ' . Lang::txt('PLG_PROJECTS_FILES_DIR') . ':';
+            echo Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_SUBDIR')
+                . ' <span class="prominent">'
+                . $this->subdir
+                . '</span> '
+                . Lang::txt('PLG_PROJECTS_FILES_DIR')
+                . ':';
         } else {
-            echo ' ' . Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_HOME') . ' ' . Lang::txt('PLG_PROJECTS_FILES_DIR') . ':';
+            echo ' '
+                . Lang::txt('PLG_PROJECTS_FILES_PICK_FILES_UPLOAD_HOME')
+                . ' '
+                . Lang::txt('PLG_PROJECTS_FILES_DIR')
+                . ':';
         } ?>
         </p>
 
         <div class="field-wrap">
             <div class="asset-uploader">
         <?php if (!$basic) { ?>
-                    <div id="ajax-uploader" data-action="<?php echo $this->url . '?action=save&amp;no_html=1&amp;ajax=1' . $subdirlink; ?>" >
+                    <div id="ajax-uploader"
+                        data-action="<?php echo $this->url . '?action=save&amp;no_html=1&amp;ajax=1' . $subdirlink; ?>">
                         <label class="addnew">
-                            <input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
-                            <p class="hint ipadded"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($this->sizelimit); ?></p>
+                            <input name="upload[]"
+                                type="file"
+                                class="option uploader"
+                                id="uploader"
+                                multiple="multiple"/>
+                            <p class="hint ipadded">
+                                <?php echo $maxUploadHint; ?>
+                            </p>
                         </label>
                         <div id="upload-body">
                             <ul id="u-selected" class="qq-upload-list">
                             </ul>
                         </div>
                     </div>
-                    <script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/jquery.fileuploader.js"></script>
-                    <script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/jquery.queueuploader.js"></script>
-                    <script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/fileupload.jquery.js"></script>
+                    <script src="<?php echo $jsPath; ?>jquery.fileuploader.js"></script>
+                    <script src="<?php echo $jsPath; ?>jquery.queueuploader.js"></script>
+                    <script src="<?php echo $jsPath; ?>fileupload.jquery.js"></script>
                     <?php
-                        /* @TODO: this needs to be handle in a more standard site configuration way */
-                        $acceptedFormatsJS = PATH_APP  . '/acceptedFormats.js';
+                        /* @TODO: handle in a more standard way */
+                        $acceptedFormatsJS = PATH_APP
+                            . '/acceptedFormats.js';
                     if (file_exists($acceptedFormatsJS)) : ?>
-                        <script src="<?php echo rtrim(Request::base(true), '/'); ?>/app/site/acceptedFormats.js">"></script>
+                        <script src="<?php echo $basePath; ?>/app/site/acceptedFormats.js">"></script>
                     <?php endif; ?>
         <?php } else { ?>
                 <label class="addnew">
-                    <input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
-                    <p class="hint ipadded"><?php echo Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($this->sizelimit); ?></p>
+                    <input name="upload[]"
+                        type="file"
+                        class="option uploader"
+                        id="uploader"
+                        multiple="multiple" />
+                    <p class="hint ipadded">
+                        <?php echo $maxUploadHint; ?>
+                    </p>
                 </label>
         <?php } ?>
             </div>
@@ -91,7 +133,10 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
         </div>
         <?php } ?>
 
-        <input type="hidden" name="MAX_FILE_SIZE" id="maxsize" value="<?php echo $this->params->get('maxUpload', '104857600'); ?>" />
+        <input type="hidden"
+            name="MAX_FILE_SIZE"
+            id="maxsize"
+            value="<?php echo $this->params->get('maxUpload', '104857600'); ?>"/>
         <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
         <input type="hidden" name="action" id="formaction" value="save" />
         <input type="hidden" name="failed" id="failed" value="0" />
@@ -108,16 +153,29 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 
         <div id="upload-submit">
         <p class="submitarea">
-            <input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_NOW'); ?>" class="btn btn-success active" id="f-upload"  />
+            <input type="submit"
+                value="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_NOW'); ?>"
+                class="btn btn-success active"
+                id="f-upload"/>
             <?php if ($this->ajax) { ?>
-                <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                <input type="reset"
+                    id="cancel-action"
+                    class="btn btn-cancel"
+                    value="<?php echo Lang::txt('JCANCEL'); ?>"/>
             <?php } else {  ?>
-                <a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+                <a id="cancel-action"
+                    class="btn btn-cancel"
+                    href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
             <?php } ?>
         </p>
         </div>
         <?php if (!$basic) { ?>
-            <p class="hint rightfloat mini faded"><?php echo Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_QUESTION'); ?> <a href="<?php echo $this->url . '?action=upload&amp;basic=1' . $subdirlink; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD'); ?></a>.</p>
+            <p class="hint rightfloat mini faded">
+                <?php echo $basicUploadQuestion; ?>
+                <a href="<?php echo $basicUploadUrl; ?>">
+                    <?php echo $basicUploadLabel; ?>
+                </a>.
+            </p>
         <?php } ?>
     </fieldset>
 </form>

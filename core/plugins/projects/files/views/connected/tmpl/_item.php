@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -13,7 +13,8 @@ use Components\Projects\Helpers\Html;
 $item = $this->item;
 $itemIsFile = $item->isFile();
 $itemName = $item->getName();
-$itemOwner = ($item->getOwner() == User::get('id')) ? Lang::txt('PLG_PROJECTS_FILES_ME') : User::getInstance($item->getOwner())->get('name');
+$itemOwner = ($item->getOwner() == User::get('id')) ? Lang::txt('PLG_PROJECTS_FILES_ME') :
+User::getInstance($item->getOwner())->get('name');
 $itemPath = $item->getPath();
 $itemTypeInputName = $item->isFile() ? 'asset[]' : 'folder[]';
 $itemTypeJs = $item->isDir() ? ' dirr' : '';

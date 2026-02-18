@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -60,7 +60,9 @@ endif; ?>
                 <option value="">add prerequisite...</option>
                 <?php foreach ($this->items as $item) : ?>
                     <?php if (!in_array($item->get('id'), $ids) && $item->get('id') != $this->scope_id) : ?>
-                        <option value="<?php echo $item->get('id'); ?>"><?php echo ($item->get('longTitle', false)) ? $item->get('longTitle') : $item->get('title'); ?></option>
+                        <option value="<?php echo $item->get('id'); ?>
+                        "><?php echo ($item->get('longTitle', false)) ? $item->get('longTitle') : $item->get('title');?>
+                        </option>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>

@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Publications\Wishlist;
 
 use Hubzero\Plugin\Plugin;

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -14,7 +14,10 @@ if ($this->isUser) : ?>
             <p class="notice warning"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_READONLY', $this->title); ?></p>
         <?php else : ?>
             <div class="section-edit-content">
-                <form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registration="<?php echo $this->registration_field; ?>" data-section-profile="<?php echo $this->profile_field; ?>">
+                <form action="<?php echo Route::url('index.php?option=com_members'); ?>"
+                    method="post"
+                    data-section-registration="<?php echo $this->registration_field; ?>"
+                    data-section-profile="<?php echo $this->profile_field; ?>">
                     <span class="section-edit-errors"></span>
 
                     <div class="input-wrap">
@@ -24,7 +27,9 @@ if ($this->isUser) : ?>
                         <?php echo $this->access; ?>
                     </div>
 
-                    <input type="submit" class="section-edit-submit btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_SAVE'); ?>" />
+                    <input type="submit"
+                        class="section-edit-submit btn"
+                        value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_SAVE'); ?>"/>
                     <input type="reset" class="section-edit-cancel btn" value="<?php echo Lang::txt('JCANCEL'); ?>" />
                     <input type="hidden" name="field_to_check[]" value="<?php echo $this->registration_field; ?>" />
                     <input type="hidden" name="option" value="com_members" />

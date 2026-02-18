@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +14,9 @@ $this->css();
 ?>
 <?php if ($this->course->access('edit', 'course')) { ?>
 <div class="manager-options">
-    <a class="icon-add btn btn-secondary" id="add-offering" href="<?php echo Route::url($this->course->link() . '&task=newoffering'); ?>">
+    <a class="icon-add btn btn-secondary"
+        id="add-offering"
+        href="<?php echo Route::url($this->course->link() . '&task=newoffering'); ?>">
         <?php echo Lang::txt('PLG_COURSES_OFFERINGS_NEW_OFFERING'); ?>
     </a>
     <span><strong><?php echo Lang::txt('PLG_COURSES_OFFERINGS_NEW_OFFERING_EXPLANATION'); ?></strong></span>

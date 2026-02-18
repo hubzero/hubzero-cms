@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -13,10 +13,22 @@ defined('_HZEXEC_') or die();
 
 ?>
 <div id="plg-header">
+<?php
+$routeUrl = Route::url($this->route);
+$mySubmissions = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS'));
+$startPub = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'));
+?>
 <?php if ($this->project->isProvisioned()) { ?>
-<h3 class="prov-header"><a href="<?php echo Route::url($this->route); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
+<h3 class="prov-header">
+    <a href="<?php echo $routeUrl; ?>"><?php echo $mySubmissions; ?></a>
+    &raquo; <?php echo $startPub; ?>
+</h3>
 <?php } else { ?>
-<h3 class="publications c-header"><a href="<?php echo Route::url($this->route); ?>"><?php echo $this->title; ?></a> &raquo; <span class="indlist"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></span></h3>
+<h3 class="publications c-header">
+    <a href="<?php echo $routeUrl; ?>"><?php echo $this->title; ?></a>
+    &raquo;
+    <span class="indlist"><?php echo $startPub; ?></span>
+</h3>
 <?php } ?>
 </div>
 <?php if ($this->project->isProvisioned()) { ?>
@@ -31,11 +43,49 @@ defined('_HZEXEC_') or die();
             $action = 'publication';
 
             ?>      
+            <?php
+            $actionUrl = Route::url(
+                $this->route . '&action=' . $action
+                . '&base=' . $current->alias
+            );
+            $contactEmail = $this->pubConfig->get('contact_email');
+            $doiPublisher = $this->pubConfig->get('doi_publisher');
+            $pubTypeText = '';
+            if (!empty($contactEmail) && !empty($doiPublisher)) {
+                $filesType = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES');
+                $dbType = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES');
+                $seriesType = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES');
+                if ($current->type == $filesType) {
+                    $pubTypeText = Lang::txt(
+                        'PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES_DESCRIPTION'
+                    );
+                } elseif ($current->type == $dbType) {
+                    $pubTypeText = Lang::txt(
+                        'PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES_DESCRIPTION',
+                        $contactEmail,
+                        $doiPublisher
+                    );
+                } elseif ($current->type == $seriesType) {
+                    $pubTypeText = Lang::txt(
+                        'PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES_DESCRIPTION',
+                        $contactEmail,
+                        $doiPublisher
+                    );
+                }
+            }
+            ?>
         <div class="s-<?php echo $current->alias; ?>">
             <p>
-                <a href="<?php echo Route::url($this->route . '&action=' . $action . '&base=' . $current->alias); ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a>
-                <?php if (!empty($this->pubConfig->get('contact_email')) && !empty($this->pubConfig->get('doi_publisher'))) { ?>
-                <span class="pubType"><?php echo ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_FILES_DESCRIPTION') : ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_DATABASES_DESCRIPTION', $this->pubConfig->get('contact_email'), $this->pubConfig->get('doi_publisher')) : ($current->type == Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES') ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEWPUB_SERIES_DESCRIPTION', $this->pubConfig->get('contact_email'), $this->pubConfig->get('doi_publisher')) : ''))); ?></span>
+                <a href="<?php echo $actionUrl; ?>">
+                    <?php echo $current->type; ?>
+                    <span class="block">
+                        <?php echo $current->description; ?>
+                    </span>
+                </a>
+                <?php if ($pubTypeText) { ?>
+                <span class="pubType">
+                    <?php echo $pubTypeText; ?>
+                </span>
                 <?php } ?>
             </p>
         </div>
@@ -49,7 +99,23 @@ defined('_HZEXEC_') or die();
         <div id="start-projectnote">
             <h4><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEED_PROJECT'); ?></h4>
             <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_START'); ?></p>
-            <p class="getstarted-links"><a href="/members/myaccount/projects"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'); ?></a> | <a href="/projects/start" class="addnew"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></p>
+            <?php
+            $viewProjectsTxt = Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_VIEW_YOUR_PROJECTS'
+            );
+            $startProjectTxt = Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_START_PROJECT'
+            );
+            ?>
+            <p class="getstarted-links">
+                <a href="/members/myaccount/projects">
+                    <?php echo $viewProjectsTxt; ?>
+                </a>
+                |
+                <a href="/projects/start" class="addnew">
+                    <?php echo $startProjectTxt; ?>
+                </a>
+            </p>
         </div>
     </div><!-- / .aside -->
 </div>

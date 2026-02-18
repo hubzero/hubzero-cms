@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -21,9 +21,20 @@ if (count($this->items) > 0) { ?>
             <li>
                 <span class="pub-thumb"><img src="<?php echo Route::url($pub->link('thumb')); ?>" alt="" /></span>
                 <span class="pub-details">
-                    <a href="<?php echo Route::url($pub->link('version')); ?>" title="<?php echo $this->escape($pub->get('title')); ?>"><?php echo stripslashes($pub->get('title')) . ' v.' . $pub->get('version_label'); ?></a>
+                    <a href="<?php echo Route::url($pub->link('version')); ?>"
+                        title="<?php echo $this->escape($pub->get('title')); ?>"
+                        ><?php echo stripslashes($pub->get('title')) . ' v.' . $pub->get('version_label'); ?></a>
                     <span class="public-list-info">
-                        - <?php echo Lang::txt('COM_PROJECTS_PUBLISHED') . ' ' . $pub->published('date') . ' ' . Lang::txt('COM_PROJECTS_IN') . ' <a href="' . Route::url($pub->link('category')) . '">' . $pub->category()->name . '</a>'; ?>
+                        - <?php echo Lang::txt('COM_PROJECTS_PUBLISHED')
+                            . ' '
+                            . $pub->published('date')
+                            . ' '
+                            . Lang::txt('COM_PROJECTS_IN')
+                            . ' <a href="'
+                            . Route::url($pub->link('category'))
+                            . '">'
+                            . $pub->category()->name
+                            . '</a>'; ?>
                     </span>
                 </span>
             </li>

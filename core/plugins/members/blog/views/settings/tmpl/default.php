@@ -1,8 +1,7 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 
 /**
  * @package    hubzero-cms
@@ -28,7 +27,10 @@ $this->css()
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<form action="<?php echo Route::url($this->member->link() . '&active=blog&task=savesettings'); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo Route::url($this->member->link() . '&active=blog&task=savesettings'); ?>"
+    method="post"
+    id="hubForm"
+    class="full">
     <fieldset class="settings">
         <legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_POSTS'); ?></legend>
         <p><?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_POSTS_EXPLANATION'); ?></p>

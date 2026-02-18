@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,16 +26,28 @@ $this->css()
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url($base . '&action=delete&entry=' . $this->entry->get('id')); ?>" method="post" id="hubForm">
+    <form action="<?php echo Route::url($base . '&action=delete&entry=' . $this->entry->get('id')); ?>"
+        method="post"
+        id="hubForm">
         <div class="explaination">
         <?php if ($this->authorized) { ?>
-            <p><a class="icon-add add btn" href="<?php echo Route::url($base . '&action=new'); ?>"><?php echo Lang::txt('PLG_GROUPS_BLOG_NEW_ENTRY'); ?></a></p>
+            <?php $newEntryUrl = Route::url($base . '&action=new'); ?>
+            <p>
+                <a class="icon-add add btn"
+                    href="<?php echo $newEntryUrl; ?>"><?php echo Lang::txt('PLG_GROUPS_BLOG_NEW_ENTRY'); ?></a>
+            </p>
         <?php } ?>
         </div>
         <fieldset>
             <legend><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_HEADER'); ?></legend>
 
-            <p class="warning"><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_WARNING', $this->escape(stripslashes($this->entry->get('title')))); ?></p>
+            <?php
+            $deleteWarning = Lang::txt(
+                'PLG_GROUPS_BLOG_DELETE_WARNING',
+                $this->escape(stripslashes($this->entry->get('title')))
+            );
+            ?>
+            <p class="warning"><?php echo $deleteWarning; ?></p>
 
             <label for="confirmdel">
                 <input type="checkbox" class="option" name="confirmdel" id="confirmdel" value="1" />

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,8 +29,16 @@ $this->css();
             $handle = '';
 
             if (isset($v->doi) && $v->doi && $this->tconfig->get('doi_shoulder')) {
-                $handle = 'doi:' . (isset($v->doi_shoulder) ? $v->doi_shoulder : $this->tconfig->get('doi_shoulder')) . '/' . strtoupper($v->doi);
-                $handle = '<a href="' . $this->tconfig->get('doi_resolve', 'https://doi.org/') . $handle . '">' . $handle . '</a>';
+                $handle = 'doi:'
+                    . (isset($v->doi_shoulder) ? $v->doi_shoulder : $this->tconfig->get('doi_shoulder'))
+                    . '/'
+                    . strtoupper($v->doi);
+                $handle = '<a href="'
+                    . $this->tconfig->get('doi_resolve', 'https://doi.org/')
+                    . $handle
+                    . '">'
+                    . $handle
+                    . '</a>';
             } elseif (isset($v->doi_label) && $v->doi_label) {
                 $handle = 'doi:10254/' . $this->tconfig->get('doi_prefix') . $this->resource->id . '.' . $v->doi_label;
                 $handle = '<a href="http://hdl.handle.net/' . $handle . '">' . $handle . '</a>';
@@ -42,17 +48,45 @@ $this->css();
             ?>
             <tr class="<?php echo $cls; ?>">
                 <td>
-                    <?php echo ($v->version) ? '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&rev=' . $v->revision) . '">' . $v->version . '</a>' : 'N/A'; ?>
+                    <?php
+                    if ($v->version) {
+                        $versionUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&id=' . $this->resource->id
+                            . '&rev=' . $v->revision
+                        );
+                        echo '<a href="' . $versionUrl . '">'
+                            . $v->version . '</a>';
+                    } else {
+                        echo 'N/A';
+                    }
+                    ?>
                 </td>
                 <td>
-                    <?php echo ($v->released && $v->released != '0000-00-00 00:00:00') ? Date::of($v->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A'; ?>
+                    <?php
+                    $hasRelease = $v->released
+                        && $v->released != '0000-00-00 00:00:00';
+                    echo $hasRelease
+                        ? Date::of($v->released)->toLocal(
+                            Lang::txt('DATE_FORMAT_HZ1')
+                        )
+                        : 'N/A';
+                    ?>
                 </td>
                 <td>
                     <?php echo ($handle) ? $handle : 'N/A'; ?>
                 </td>
                 <td>
-                    <span class="version-state <?php echo ($v->state == '1') ? 'toolpublished' : 'toolunpublished'; ?>">
-                        <?php echo ($v->state == '1') ? Lang::txt('PLG_RESOURCES_VERSIONS_YES') : Lang::txt('PLG_RESOURCES_VERSIONS_NO'); ?>
+                    <?php
+                    $stateClass = ($v->state == '1')
+                        ? 'toolpublished'
+                        : 'toolunpublished';
+                    $stateLabel = ($v->state == '1')
+                        ? Lang::txt('PLG_RESOURCES_VERSIONS_YES')
+                        : Lang::txt('PLG_RESOURCES_VERSIONS_NO');
+                    ?>
+                    <span class="version-state <?php echo $stateClass; ?>">
+                        <?php echo $stateLabel; ?>
                     </span>
                 </td>
             </tr>
@@ -86,7 +120,10 @@ $this->css();
         }
         foreach ($schema->fields as $field) {
             if (isset($data[$field->name])) {
-                if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+                if (
+                    $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display
+                    == $tab
+                ) {
                     ?>
                         <h4><?php echo $field->label; ?></h4>
                         <div class="resource-content">

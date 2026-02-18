@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -23,7 +23,9 @@ $i = 1;
     $self = in_array($this->aid, $this->checked) ? 1 : 0;
     ?>
     <?php if (!$this->getError()) { ?>
-        <form id="hubForm-ajax" method="get" action="<?php echo Route::url($this->model->link('team') . '&action=deleteit'); ?>">
+        <form id="hubForm-ajax"
+            method="get"
+            action="<?php echo Route::url($this->model->link('team') . '&action=deleteit'); ?>">
             <fieldset>
                 <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
                 <input type="hidden" name="action" value="deleteit" />
@@ -44,7 +46,10 @@ $i = 1;
                 } ?>
                 <p class="submitarea">
                     <input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE'); ?>" class="btn" />
-                    <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?>" />
+                    <input type="reset"
+                        id="cancel-action"
+                        class="btn btn-cancel"
+                        value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?>"/>
                 </p>
             </fieldset>
         </form>

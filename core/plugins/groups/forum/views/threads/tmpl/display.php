@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,7 +8,16 @@
 
 defined('_HZEXEC_') or die();
 
-$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('thread');
+$base = 'index.php?option='
+    . $this->option
+    . '&cn='
+    . $this->group->get('cn')
+    . '&active=forum&scope='
+    . $this->filters['section']
+    . '/'
+    . $this->category->get('alias')
+    . '/'
+    . $this->thread->get('thread');
 
 $this->category->set('section_alias', $this->filters['section']);
 
@@ -94,7 +101,10 @@ $this->css()
             <?php
             $pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
             $pageNav->setAdditionalUrlParam('active', 'forum');
-            $pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('id'));
+            $pageNav->setAdditionalUrlParam(
+                'scope',
+                $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('id')
+            );
 
             echo $pageNav;
             ?>
@@ -124,10 +134,18 @@ $this->css()
                     $anon = false;
                     foreach ($participants as $participant) {
                         if (!$participant->get('anonymous')) {
+                            $memberUrl = Route::url(
+                                'index.php?option=com_members&id='
+                                . $participant->get('created_by')
+                            );
+                            $memberName = $this->escape(
+                                stripslashes($participant->get('name'))
+                            );
                             ?>
                             <li>
-                                <a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->get('created_by')); ?>">
-                                    <?php echo $this->escape(stripslashes($participant->get('name'))); ?>
+                                <a class="member"
+                                    href="<?php echo $memberUrl; ?>">
+                                    <?php echo $memberName; ?>
                                 </a>
                             </li>
                             <?php
@@ -172,8 +190,16 @@ $this->css()
                                 $cls = 'img';
                             }
                             ?>
+                            <?php
+                            $attachUrl = Route::url(
+                                $base . '/'
+                                . $attachment->get('post_id')
+                                . '/' . $attachment->get('filename')
+                            );
+                            ?>
                             <li>
-                                <a class="<?php echo $cls; ?> attachment" href="<?php echo Route::url($base . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename')); ?>">
+                                <a class="<?php echo $cls; ?> attachment"
+                                    href="<?php echo $attachUrl; ?>">
                                     <?php echo $this->escape(stripslashes($title)); ?>
                                 </a>
                             </li>
@@ -205,26 +231,68 @@ $this->css()
             <?php if (User::isGuest()) { ?>
                 <p class="warning"><?php echo Lang::txt('PLG_GROUPS_FORUM_LOGIN_COMMENT_NOTICE'); ?></p>
             <?php } else { ?>
+                <?php
+                $userUrl = Route::url(
+                    'index.php?option=com_members&id='
+                    . User::get('id')
+                );
+                $userName = $this->escape(User::get('name'));
+                $localTime = Date::toLocal(
+                    Lang::txt('TIME_FORMAT_HZ1')
+                );
+                $localDate = Date::toLocal(
+                    Lang::txt('DATE_FORMAT_HZ1')
+                );
+                ?>
                 <p class="comment-title">
                     <strong>
-                        <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(User::get('name')); ?></a>
+                        <a href="<?php echo $userUrl; ?>">
+                            <?php echo $userName; ?>
+                        </a>
                     </strong>
                     <span class="permalink">
-                        <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?></span>
-                        <span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-                        <span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_FORUM_ON'); ?></span>
-                        <span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+                        <span class="comment-date-at">
+                            <?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?>
+                        </span>
+                        <span class="time">
+                            <time datetime="<?php echo $now; ?>">
+                                <?php echo $localTime; ?>
+                            </time>
+                        </span>
+                        <span class="comment-date-on">
+                            <?php echo Lang::txt('PLG_GROUPS_FORUM_ON'); ?>
+                        </span>
+                        <span class="date">
+                            <time datetime="<?php echo $now; ?>">
+                                <?php echo $localDate; ?>
+                            </time>
+                        </span>
                     </span>
                 </p>
 
                 <label for="field_comment" id="addNewPostAreaGroup">
                     <div>
-                        <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
-                        <span class="note" style='float:right'>Use an @ sign to mention group users in the post</span>
+                        <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?>
+                        <span class="required">
+                            <?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?>
+                        </span>
+                        <span class="note" style='float:right'>
+                            Use an @ sign to mention group users in the post
+                        </span>
                     </div>
                     <?php
                         $gid = $this->group->get('gidNumber');
                         $feedUrl = '/api/members/mentions/group?gid=' . $gid . '&search={encodedQuery}';
+                        $itemTpl = '<li data-id="{id}">'
+                            . '<img class="photo" src="{picture}" />'
+                            . '<strong class="username">'
+                            . '{username}</strong>'
+                            . '<span class="fullname">'
+                            . '{name}</span></li>';
+                        $outputTpl = '<a href="/members/{id}"'
+                            . ' data-user-id="{id}"'
+                            . ' target="_blank">'
+                            . '@{username}</a>&nbsp;&nbsp;';
                         echo $this->editor(
                             'fields[comment]',
                             '',
@@ -237,8 +305,8 @@ $this->css()
                                     array(
                                         'minChars' => 0,
                                         'feed' =>  $feedUrl,
-                                        'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
-                                        'outputTemplate' => '<a href="/members/{id}" data-user-id="{id}" target="_blank">@{username}</a>&nbsp;&nbsp;',
+                                        'itemTemplate' => $itemTpl,
+                                        'outputTemplate' => $outputTpl,
                                     )
                                 )
                             )
@@ -248,7 +316,12 @@ $this->css()
                 <label>
                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_YOUR_TAGS'); ?>:
                     <?php
-                        echo $this->autocompleter('tags', 'tags', $this->escape($this->thread->tags('string')), 'actags');
+                        echo $this->autocompleter(
+                            'tags',
+                            'tags',
+                            $this->escape($this->thread->tags('string')),
+                            'actags'
+                        );
                     ?>
                 </label>
 
@@ -285,13 +358,19 @@ $this->css()
                     </p>
                 </div>
             </fieldset>
-            <input type="hidden" name="fields[category_id]" value="<?php echo $this->escape($this->thread->get('category_id')); ?>" />
+            <input type="hidden"
+                name="fields[category_id]"
+                value="<?php echo $this->escape($this->thread->get('category_id')); ?>"/>
             <input type="hidden" name="fields[parent]" value="<?php echo $this->escape($this->thread->get('id')); ?>" />
             <input type="hidden" name="fields[thread]" value="<?php echo $this->escape($this->thread->get('id')); ?>" />
             <input type="hidden" name="fields[state]" value="1" />
             <input type="hidden" name="fields[access]" value="<?php echo $this->thread->get('access', 0); ?>" />
-            <input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->forum->get('scope')); ?>" />
-            <input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->forum->get('scope_id')); ?>" />
+            <input type="hidden"
+                name="fields[scope]"
+                value="<?php echo $this->escape($this->forum->get('scope')); ?>"/>
+            <input type="hidden"
+                name="fields[scope_id]"
+                value="<?php echo $this->escape($this->forum->get('scope_id')); ?>"/>
             <input type="hidden" name="fields[id]" value="" />
 
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

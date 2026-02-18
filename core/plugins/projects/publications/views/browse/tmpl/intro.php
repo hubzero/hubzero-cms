@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -13,8 +13,11 @@ defined('_HZEXEC_') or die();
 ?>
 
 <div id="pubintro">
-    <h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_HOW_IT_WORKS'); ?> <?php if ($this->pub->config('documentation')) { ?>
-    <span class="learnmore"><a href="<?php echo $this->pub->config('documentation'); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a></span>
+    <?php $howItWorks = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_HOW_IT_WORKS'); ?>
+    <?php $learnMore = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?>
+    <h3><?php echo $howItWorks; ?> <?php if ($this->pub->config('documentation')) { ?>
+    <span class="learnmore"><a href="<?php echo $this->pub->config('documentation'); ?>"><?php
+        echo $learnMore; ?> &raquo;</a></span>
         <?php } ?></h3>
 
     <div class="grid">
@@ -27,7 +30,8 @@ defined('_HZEXEC_') or die();
             <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_TWO_ABOUT'); ?></p>
         </div>
         <div class="col span4 omega step-three">
-            <h4><span class="num">3</span> <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_THREE'); ?></h4>
+            <?php $stepThree = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_THREE'); ?>
+            <h4><span class="num">3</span> <?php echo $stepThree; ?></h4>
             <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_INTRO_STEP_THREE_ABOUT'); ?></p>
         </div>
     </div>

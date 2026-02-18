@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +15,12 @@ $this->css()
 ?>
 <div id="related-courses" class="after section">
     <h3>
-        <?php echo (count($this->ids) > 1) ? Lang::txt('PLG_COURSES_RELATED_OTHER_BY_INSTRUCTORS') : Lang::txt('PLG_COURSES_RELATED_OTHER_BY_INSTRUCTOR'); ?>
+        <?php
+        $instructorKey = (count($this->ids) > 1)
+            ? 'PLG_COURSES_RELATED_OTHER_BY_INSTRUCTORS'
+            : 'PLG_COURSES_RELATED_OTHER_BY_INSTRUCTOR';
+        echo Lang::txt($instructorKey);
+        ?>
     </h3>
     <?php
     $i = 0;
@@ -40,17 +45,20 @@ $this->css()
                 <div class="course-details">
                     <div class="course-identity">
                         <?php if ($logo = $course->logo('url')) { ?>
-                            <img src="<?php echo Route::url($logo); ?>" alt="<?php echo Lang::txt('PLG_COURSES_RELATED_LOGO'); ?>" />
+                            <img src="<?php echo Route::url($logo); ?>"
+                                alt="<?php echo Lang::txt('PLG_COURSES_RELATED_LOGO'); ?>"/>
                         <?php } else { ?>
                             <span></span>
                         <?php } ?>
                         <?php if ($course->get('rating', 0) > 4) { ?>
                             <div>
-                                <strong><?php echo Lang::txt('PLG_COURSES_RELATED_TOP_RATED'); ?></strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
+                                <strong><?php echo Lang::txt('PLG_COURSES_RELATED_TOP_RATED'); ?></strong>
+                                <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
                             </div>
                         <?php } elseif ($this->course->get('popularity', 0) > 7) { ?>
                             <div>
-                                <strong><?php echo Lang::txt('PLG_COURSES_RELATED_POPULAR'); ?></strong> <span class="popularity">&#xf091;</span>
+                                <strong><?php echo Lang::txt('PLG_COURSES_RELATED_POPULAR'); ?></strong>
+                                <span class="popularity">&#xf091;</span>
                             </div>
                         <?php } ?>
                     </div>
@@ -58,8 +66,14 @@ $this->css()
                         <?php echo $this->escape(stripslashes($course->get('title'))); ?>
                     </h4>
                     <?php if ($course->get('blurb')) { ?>
+                        <?php
+                        $blurb = \Hubzero\Utility\Str::truncate(
+                            $this->escape(stripslashes($course->get('blurb'))),
+                            130
+                        );
+                        ?>
                         <p class="course-description">
-                            <?php echo \Hubzero\Utility\Str::truncate($this->escape(stripslashes($course->get('blurb'))), 130); ?>
+                            <?php echo $blurb; ?>
                         </p>
                     <?php } ?>
                 </div>

@@ -1,8 +1,7 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 
 /**
  * @package   hubzero-cms
@@ -50,7 +49,12 @@ $this->css()
     </ul>
 <?php endif; ?>
 
-<?php if (User::get('id') == $this->member->get('id') && !$this->filters['year'] && !$this->filters['search'] && !$rows->count()) { ?>
+<?php
+$isOwner = (User::get('id') == $this->member->get('id'));
+$noFilters = !$this->filters['year'] && !$this->filters['search'];
+$noEntries = !$rows->count();
+?>
+<?php if ($isOwner && $noFilters && $noEntries) { ?>
     <div class="introduction">
         <div class="introduction-message">
             <p><?php echo Lang::txt('PLG_MEMBERS_BLOG_INTRO_EMPTY'); ?></p>
@@ -73,18 +77,41 @@ $this->css()
                 <?php endif; ?>
 
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH'); ?>" />
+                    <input class="entry-search-submit"
+                        type="submit"
+                        value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH'); ?>"/>
                     <fieldset class="entry-search">
-                        <legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_LEGEND'); ?></legend>
-                        <label for="entry-search-field"><?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="<?php echo ($this->filters['search'] ? $this->escape(stripslashes($this->filters['search'])) : ''); ?>" placeholder="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_PLACEHOLDER'); ?>" />
+                        <legend>
+                            <?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_LEGEND'); ?>
+                        </legend>
+                        <label for="entry-search-field">
+                            <?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_LABEL'); ?>
+                        </label>
+                        <?php
+                        $searchVal = $this->filters['search']
+                            ? $this->escape(stripslashes($this->filters['search']))
+                            : '';
+                        $searchPlaceholder = Lang::txt(
+                            'PLG_MEMBERS_BLOG_SEARCH_PLACEHOLDER'
+                        );
+                        ?>
+                        <input type="text"
+                            name="search"
+                            id="entry-search-field"
+                            value="<?php echo $searchVal; ?>"
+                            placeholder="<?php echo $searchPlaceholder; ?>" />
                     </fieldset>
                 </div><!-- / .container -->
 
                 <div class="container">
                     <h3>
                         <?php if (isset($this->search) && $this->search) { ?>
-                            <?php echo Lang::txt('PLG_MEMBERS_BLOG_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
+                            <?php
+                            echo Lang::txt(
+                                'PLG_MEMBERS_BLOG_SEARCH_FOR',
+                                $this->escape($this->filters['search'])
+                            );
+                            ?>
                         <?php } elseif (!isset($this->filters['year']) || !$this->filters['year']) { ?>
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_LATEST_ENTRIES'); ?>
                         <?php } else {
@@ -152,7 +179,14 @@ $this->css()
                                         </time>
                                     </dd>
                                     <dd class="author">
-                                        <?php if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+                                        <?php
+                                        $viewLevels = User::getAuthorisedViewLevels();
+                                        $canView = in_array(
+                                            $row->creator->get('access'),
+                                            $viewLevels
+                                        );
+                                        ?>
+                                        <?php if ($canView) { ?>
                                             <a href="<?php echo Route::url($row->creator->link()); ?>">
                                                 <?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
                                             </a>
@@ -191,22 +225,48 @@ $this->css()
                                     <?php } ?>
                                     <dd class="entry-options">
                                         <?php if (User::get('id') == $row->get('created_by')) { ?>
-                                            <a class="edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>">
+                                            <a class="edit"
+                                                href="<?php echo Route::url($row->link('edit')); ?>"
+                                                title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>">
                                                 <?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>
                                             </a>
-                                            <a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>">
+                                            <?php
+                                            $confirmTxt = Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE');
+                                            $deleteUrl = Route::url($row->link('delete'));
+                                            $deleteTxt = Lang::txt('PLG_MEMBERS_BLOG_DELETE');
+                                            ?>
+                                            <a class="delete"
+                                                data-confirm="<?php echo $confirmTxt; ?>"
+                                                href="<?php echo $deleteUrl; ?>"
+                                                title="<?php echo $deleteTxt; ?>">
                                                 <?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>
                                             </a>
                                         <?php } ?>
                                     </dd>
                                 </dl>
                                 <div class="entry-content">
+                                    <?php
+                                    $introLength = $this->config->get(
+                                        'introlength',
+                                        300
+                                    );
+                                    ?>
                                     <?php if ($this->config->get('cleanintro', 1)) { ?>
                                         <p>
-                                            <?php echo \Hubzero\Utility\Str::truncate(strip_tags($row->content), $this->config->get('introlength', 300)); ?>
+                                            <?php
+                                            echo \Hubzero\Utility\Str::truncate(
+                                                strip_tags($row->content),
+                                                $introLength
+                                            );
+                                            ?>
                                         </p>
                                     <?php } else { ?>
-                                        <?php echo \Hubzero\Utility\Str::truncate($row->content, $this->config->get('introlength', 300)); ?>
+                                        <?php
+                                        echo \Hubzero\Utility\Str::truncate(
+                                            $row->content,
+                                            $introLength
+                                        );
+                                        ?>
                                     <?php } ?>
                                 </div>
                             </article>
@@ -264,14 +324,30 @@ $this->css()
                                     <a href="<?php echo Route::url($base . '&task=' . $i); ?>">
                                         <?php echo $i; ?>
                                     </a>
-                                    <?php if (($this->filters['year'] && $i == $this->filters['year']) || (!$this->filters['year'] && $i == $now)) : ?>
+                                    <?php
+                                    $isFilteredYear = $this->filters['year']
+                                        && $i == $this->filters['year'];
+                                    $isCurrentYear = !$this->filters['year']
+                                        && $i == $now;
+                                    ?>
+                                    <?php if ($isFilteredYear || $isCurrentYear) : ?>
                                         <ul>
                                             <?php $months = ($i == $now) ? date("m") : 12; ?>
                                             <?php for ($k = 0, $z = $months; $k < $z; $k++) : ?>
+                                                <?php
+                                                $isActive = $this->filters['month']
+                                                    && $this->filters['month'] == ($k + 1);
+                                                $activeClass = $isActive
+                                                    ? ' class="active"'
+                                                    : '';
+                                                $monthUrl = Route::url(
+                                                    $base . '&task=' . $i
+                                                    . '/' . sprintf("%02d", ($k + 1), 1)
+                                                );
+                                                ?>
                                                 <li>
-                                                    <a<?php if ($this->filters['month'] && $this->filters['month'] == ($k + 1)) {
-                                                        echo ' class="active"';
-                                                      } ?> href="<?php echo Route::url($base . '&task=' . $i . '/' . sprintf("%02d", ($k + 1), 1)); ?>">
+                                                    <a<?php echo $activeClass; ?>
+                                                        href="<?php echo $monthUrl; ?>">
                                                         <?php echo Lang::txt($m[$k]); ?>
                                                     </a>
                                                 </li>

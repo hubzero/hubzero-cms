@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -36,10 +36,12 @@ $team = $this->model->team($filters = array('status' => 1));
             <?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_OWNER_CHOOSE_INDIVIDUAL'); ?>:
             <select name="owned_by_user" class="block">
         <?php foreach ($team as $member) {  ?>
-            <option value="<?php echo $member->userid; ?>" <?php if ($member->userid == $this->model->get('owned_by_user')) {
+            <option value="<?php echo $member->userid; ?>
+            " <?php if ($member->userid == $this->model->get('owned_by_user')) {
                 echo 'selected="selected"';
-                           } ?>><?php echo $member->fullname; ?> <?php if ($member->userid == $this->model->get('owned_by_user')) {
-                           echo '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')';
+              } ?>><?php echo $member->fullname; ?>
+                           <?php if ($member->userid == $this->model->get('owned_by_user')) {
+                                echo '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')';
                            } ?></option>
         <?php } ?>
             </select>
@@ -58,16 +60,23 @@ $team = $this->model->team($filters = array('status' => 1));
                     continue;
                 }
                 $used[] = $g->gidNumber; ?>
-            <option value="<?php echo $g->gidNumber; ?>" <?php if ($g->gidNumber == $this->model->get('owned_by_group')) {
+            <option value="<?php echo $g->gidNumber; ?>
+            " <?php if ($g->gidNumber == $this->model->get('owned_by_group')) {
                 echo 'selected="selected"';
-                           } ?>><?php echo \Hubzero\Utility\Str::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
+              } ?>><?php echo \Hubzero\Utility\Str::truncate($g->description, 30)
+                               . ' ('
+                               . $g->cn
+                               . ')'; ?></option>
             <?php } ?>
             </select>
         </label>
         <?php } ?>
         <p class="submitarea">
             <input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SAVE_OWNER'); ?>" class="btn" />
-            <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?>" />
+            <input type="reset"
+                id="cancel-action"
+                class="btn btn-cancel"
+                value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?>"/>
         </p>
     </fieldset>
 </form>

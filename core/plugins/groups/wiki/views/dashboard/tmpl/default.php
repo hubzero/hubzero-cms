@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -32,11 +30,20 @@ if ($this->rows) { ?>
             }
 
             $cls = ($cls == 'even') ? 'odd' : 'even';
+
+            $pageUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&pagename=' . $row->pagename
+                . '&scope=' . $row->scope
+            );
+            $authorUrl = Route::url(
+                'index.php?option=com_members&id=' . $row->created_by
+            );
             ?>
             <tr class="<?php echo $cls; ?>">
                 <th scope="row"><span class="<?php echo $c; ?>"><?php echo $t; ?></span></th>
-                <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope); ?>"><?php echo stripslashes($row->title); ?></a></td>
-                <td class="author"><a href="<?php echo Route::url('index.php?option=com_members&id=' . $row->created_by); ?>"><?php echo $name; ?></a></td>
+                <td><a href="<?php echo $pageUrl; ?>"><?php echo stripslashes($row->title); ?></a></td>
+                <td class="author"><a href="<?php echo $authorUrl; ?>"><?php echo $name; ?></a></td>
                 <td class="date"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
             </tr>
             <?php

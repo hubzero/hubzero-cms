@@ -6,8 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Plugins\Search\Publications;
+
 // No direct access
 defined('_HZEXEC_') or die();
 

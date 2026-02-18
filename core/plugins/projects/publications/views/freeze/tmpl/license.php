@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -29,7 +29,11 @@ $text = $this->pub->license_text ? $this->pub->license_text : $defaultText;
     <?php if ($this->license) {
         $info = $this->license->info;
         if ($this->license->url) {
-            $info .= ' <a href="' . $this->license->url . '" class="popup">' . Lang::txt('Read license terms') . ' &rsaquo;</a>';
+            $info .= ' <a href="'
+                . $this->license->url
+                . '" class="popup">'
+                . Lang::txt('Read license terms')
+                . ' &rsaquo;</a>';
         }
         ?>
         <div class="chosenitem">

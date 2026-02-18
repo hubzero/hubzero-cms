@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,14 @@ $this->css();
 <?php if ($this->group->published == 1 && User::authorise('core.create', 'com_projects')) { ?>
     <ul id="page_options" class="pluginOptions">
         <li>
-            <a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start&gid=' . $this->group->get('gidNumber')); ?>">
+            <?php
+            $startUrl = Route::url(
+                'index.php?option=com_projects&task=start&gid='
+                . $this->group->get('gidNumber')
+            );
+            ?>
+            <a class="icon-add add btn showinbox"
+                href="<?php echo $startUrl; ?>">
                 <?php echo Lang::txt('PLG_GROUPS_PROJECTS_ADD'); ?>
             </a>
         </li>
@@ -45,12 +50,35 @@ $view = $this->view('submenu', 'partials')
         <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
             <ul class="entries-menu filter-options">
                 <li>
-                    <a<?php echo (!$this->filters['filterby'] || $this->filters['filterby'] == 'active') ? ' class="active"' : ''; ?> data-status="all" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
+                    <?php
+                    $activeClass = (!$this->filters['filterby']
+                        || $this->filters['filterby'] == 'active')
+                        ? ' class="active"' : '';
+                    $allUrl = Route::url(
+                        'index.php?option=com_groups&cn='
+                        . $this->group->get('cn')
+                        . '&active=projects&action=all'
+                    );
+                    ?>
+                    <a<?php echo $activeClass; ?>
+                        data-status="all"
+                        href="<?php echo $allUrl; ?>">
                         <?php echo Lang::txt('PLG_GROUPS_PROJECTS_FILTER_STATUS_ACTIVE'); ?>
                     </a>
                 </li>
                 <li>
-                    <a<?php echo ($this->filters['filterby'] == 'archived') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all&filterby=archived'); ?>">
+                    <?php
+                    $archivedClass = ($this->filters['filterby'] == 'archived')
+                        ? ' class="active"' : '';
+                    $archivedUrl = Route::url(
+                        'index.php?option=com_groups&cn='
+                        . $this->group->get('cn')
+                        . '&active=projects&action=all&filterby=archived'
+                    );
+                    ?>
+                    <a<?php echo $archivedClass; ?>
+                        data-status="manager"
+                        href="<?php echo $archivedUrl; ?>">
                         <?php echo Lang::txt('PLG_GROUPS_PROJECTS_FILTER_STATUS_ARCHIVED'); ?>
                     </a>
                 </li>

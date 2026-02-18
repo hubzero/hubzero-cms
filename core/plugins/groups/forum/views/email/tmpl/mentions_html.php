@@ -1,5 +1,4 @@
 <?php
-// phpcs:disable Generic.Files.LineLength.TooLong
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -24,7 +23,12 @@ $groupAlias = $this->groupAlias;
 </table>
 <!-- End Spacer -->
 
-<table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+<table id="course-discussions"
+    width="650"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="border-collapse: collapse;">
     <tr>
         <td style="font-size: 16px; padding: 10px 0;">
             From group <?php echo $groupTitle; ?> (<?php echo $groupAlias; ?>)<br>

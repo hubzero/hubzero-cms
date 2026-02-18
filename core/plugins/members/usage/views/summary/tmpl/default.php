@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -82,7 +82,15 @@ $this->css('usage', 'com_usage');
                 $cls = ($cls == 'even') ? 'odd' : 'even';
                 echo $cls; ?>">
                     <th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_CLUSTERS'); ?>:</th>
-                    <td><?php echo Lang::txt('PLG_MEMBERS_USAGE_USERS_IN_COURSES_SERVED', number_format($this->cluster_users), number_format($this->cluster_classes), number_format($this->cluster_schools)); ?>
+                    <td>
+                        <?php
+                        echo Lang::txt(
+                            'PLG_MEMBERS_USAGE_USERS_IN_COURSES_SERVED',
+                            number_format($this->cluster_users),
+                            number_format($this->cluster_classes),
+                            number_format($this->cluster_schools)
+                        );
+                        ?>
                     </td>
                 </tr>
             <?php } ?>
@@ -135,20 +143,55 @@ $this->css('usage', 'com_usage');
                     $cls = ($cls == 'even') ? 'odd' : 'even';
                     echo $cls; ?>">
                         <td><?php echo ($count + 1); ?></td>
-                        <td class="textual-data"><a
-                                href="<?php echo Route::url('index.php?option=com_resources&id=' . $row->id); ?>"><?php echo $row->title; ?></a>
+                        <?php
+                        $resourceUrl = Route::url(
+                            'index.php?option=com_resources&id=' . $row->id
+                        );
+                        $usageUrl12 = Route::url(
+                            'index.php?option=com_usage&task=tools&id='
+                            . $row->id . '&period=12'
+                        );
+                        $usageUrl14 = Route::url(
+                            'index.php?option=com_usage&task=tools&id='
+                            . $row->id . '&period=14'
+                        );
+                        $fmtUser12 = is_numeric($user_count_12)
+                            ? number_format($user_count_12)
+                            : $user_count_12;
+                        $fmtSim12 = is_numeric($sim_count_12)
+                            ? number_format($sim_count_12)
+                            : $sim_count_12;
+                        $fmtUser14 = is_numeric($user_count_14)
+                            ? number_format($user_count_14)
+                            : $user_count_14;
+                        $fmtSim14 = is_numeric($sim_count_14)
+                            ? number_format($sim_count_14)
+                            : $sim_count_14;
+                        ?>
+                        <td class="textual-data">
+                            <a href="<?php echo $resourceUrl; ?>">
+                                <?php echo $row->title; ?>
+                            </a>
                         </td>
-                        <td><a
-                                href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12'); ?>"><?php echo (is_numeric($user_count_12)) ? number_format($user_count_12) : $user_count_12; ?></a>
+                        <td>
+                            <a href="<?php echo $usageUrl12; ?>">
+                                <?php echo $fmtUser12; ?>
+                            </a>
                         </td>
-                        <td><a
-                                href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12'); ?>"><?php echo (is_numeric($sim_count_12)) ? number_format($sim_count_12) : $sim_count_12; ?></a>
+                        <td>
+                            <a href="<?php echo $usageUrl12; ?>">
+                                <?php echo $fmtSim12; ?>
+                            </a>
                         </td>
-                        <td><a
-                                href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14'); ?>"><?php echo (is_numeric($user_count_14)) ? number_format($user_count_14) : $user_count_14; ?></a>
+                        <td>
+                            <a href="<?php echo $usageUrl14; ?>">
+                                <?php echo $fmtUser14; ?>
+                            </a>
                         </td>
-                        <td><a
-                                href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14'); ?>"><?php echo (is_numeric($sim_count_14)) ? number_format($sim_count_14) : $sim_count_14; ?></a>
+                        <td>
+                            <a href="<?php echo $usageUrl14; ?>">
+                                <?php echo $fmtSim14; ?>
+                            </a>
                         </td>
                         <td><?php echo PlgMembersUsage::getCitationcount($row->id, 0); ?></td>
                         <td><?php echo Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
@@ -261,9 +304,19 @@ $this->css('usage', 'com_usage');
                     $cls = ($cls == 'even') ? 'odd' : 'even';
                     echo $cls; ?>">
                         <td><?php echo ($count + 1); ?></td>
-                        <td class="textual-data"><a
-                                href="<?php echo Route::url('index.php?option=com_resources&id=' . $row->id); ?>"><?php echo $row->title; ?></a>
-                            <span class="small"><?php echo $row->type; ?></span></td>
+                        <?php
+                        $resUrl = Route::url(
+                            'index.php?option=com_resources&id=' . $row->id
+                        );
+                        ?>
+                        <td class="textual-data">
+                            <a href="<?php echo $resUrl; ?>">
+                                <?php echo $row->title; ?>
+                            </a>
+                            <span class="small">
+                                <?php echo $row->type; ?>
+                            </span>
+                        </td>
                         <td><?php echo $usercount12; ?></td>
                         <td><?php echo $usercount14; ?></td>
                         <td><?php echo $cites ?></td>
@@ -291,14 +344,36 @@ $this->css('usage', 'com_usage');
 
                             $cls = ($cls == 'even') ? 'odd' : 'even';
                             echo $cls; ?>">
-                                <td class="highlight"><?php echo ($count + 1); ?></td>
-                                <td class="highlight textual-data"><span class="child-connector">|-</span> <a
-                                        href="<?php echo Route::url('index.php?option=com_resources&id=' . $rw->id); ?>"><?php echo $rw->title; ?></a>
-                                    <span class="small"><?php echo $rw->type; ?></span></td>
-                                <td class="highlight"><?php echo $usercount12; ?></td>
-                                <td class="highlight"><?php echo $usercount14; ?></td>
-                                <td class="highlight"><?php echo $cites ?></td>
-                                <td class="highlight"><?php echo Date::of($rw->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
+                                <?php
+                                $childUrl = Route::url(
+                                    'index.php?option=com_resources&id=' . $rw->id
+                                );
+                                $childDate = Date::of($rw->publish_up)
+                                    ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                ?>
+                                <td class="highlight">
+                                    <?php echo ($count + 1); ?>
+                                </td>
+                                <td class="highlight textual-data">
+                                    <span class="child-connector">|-</span>
+                                    <a href="<?php echo $childUrl; ?>">
+                                        <?php echo $rw->title; ?>
+                                    </a>
+                                    <span class="small">
+                                        <?php echo $rw->type; ?>
+                                    </span>
+                                </td>
+                                <td class="highlight">
+                                    <?php echo $usercount12; ?>
+                                </td>
+                                <td class="highlight">
+                                    <?php echo $usercount14; ?>
+                                </td>
+                                <td class="highlight">
+                                    <?php echo $cites ?>
+                                </td>
+                                <td class="highlight">
+                                    <?php echo $childDate; ?>
                                 </td>
                             </tr>
                             <?php

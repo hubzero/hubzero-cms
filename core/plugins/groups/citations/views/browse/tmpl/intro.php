@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -78,7 +76,8 @@ if (isset($this->messages)) {
     <div class="questions">
     <p><strong>What is a group citation?</strong></p>
     <p>Within a group, a citation is a listing of a product resulting in work done by a group or a group member.
-    As a group manager, you can choose to display citations curated by a group manager-only or citations that were produced by members of your group.</p>
+    As a group manager, you can choose to display citations curated by a group manager-only or citations that were
+    produced by members of your group.</p>
     </div>
     </div>
 

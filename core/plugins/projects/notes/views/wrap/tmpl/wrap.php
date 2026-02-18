@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -19,12 +19,17 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->get('al
 // Com_wiki adds /projects - strip it out
 $this->content = str_replace('projects/projects/', 'projects/', $this->content);
 
-$this->content = str_replace('projects/pr-' . $this->project->get('alias'), 'projects/' . $this->project->get('alias'), $this->content);
+$this->content = str_replace(
+    'projects/pr-' . $this->project->get('alias'),
+    'projects/' . $this->project->get('alias'),
+    $this->content
+);
 
 // Get the page
 $page = $this->page;
 
-$showSidePanel = ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') && $page->get('id') ? true : false;
+$showSidePanel = ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') && $page->get('id') ? true :
+false;
 
 // Get all project notes
 $notes = $this->note->getNotes();
@@ -44,18 +49,28 @@ $bcrumb = '';
 {
     foreach ($parentNotes as $parent)
     {
-        $bcrumb .= ' &raquo; <span class="subheader"><a href="'.Route::url($url . '&scope=' . $parent->scope . '&pagename=' . $parent->pagename) . '">' . $parent->title . '</a></span>';
+        $bcrumb .= ' &raquo; <span class="subheader"><a href="'
+            . Route::url($url . '&scope=' . $parent->scope . '&pagename=' . $parent->pagename)
+            . '">'
+            . $parent->title
+            . '</a></span>';
     }
 }*/
 if ($this->task == 'new') {
     $bcrumb .= ' &raquo; <span class="subheader">' . Lang::txt('COM_PROJECTS_NOTES_TASK_NEW') . '</span>';
 } elseif ($page->get('id')) {
-    $bcrumb .= ' &raquo; <span class="subheader"><a href="' . Route::url($page->link()) . '">' . $page->get('title') . '</a></span>';
+    $bcrumb .= ' &raquo; <span class="subheader"><a href="'
+        . Route::url($page->link())
+        . '">'
+        . $page->get('title')
+        . '</a></span>';
 }
 
 $tasks = array( 'edit', 'history', 'comments', 'delete', 'compare', 'addcomment', 'renamepage' );
 if ($this->task != 'view' && in_array($this->task, $tasks)) {
-    $bcrumb .= ' &raquo; <span class="subheader">' . Lang::txt('COM_PROJECTS_NOTES_TASK_' . strtoupper($this->task)) . '</span> ';
+    $bcrumb .= ' &raquo; <span class="subheader">'
+        . Lang::txt('COM_PROJECTS_NOTES_TASK_' . strtoupper($this->task))
+        . '</span> ';
 }
 
 // Is note public?
@@ -76,7 +91,9 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 <?php if ($showSidePanel && $this->project->access('content')) { ?>
     <ul id="page_options" class="pluginOptions">
         <li>
-            <a class="icon-add add btn"  href="<?php echo Route::url($url . '&action=new'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>">
+            <a class="icon-add add btn"
+                href="<?php echo Route::url($url . '&action=new'); ?>"
+                title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>">
                 <?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
             </a>
             <?php if (count($parentNotes) < 2) { ?>
@@ -84,7 +101,10 @@ $listed = $publicStamp ? $publicStamp->listed : false;
                 $base = $page->link();
                 $chr  = strstr($base, '?') ? '&' : '?';
                 ?>
-                <a href="<?php echo Route::url($base . $chr . 'action=new'); ?>" class="icon-add add btn" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
+                <a href="<?php echo Route::url($base . $chr . 'action=new'); ?>"
+                    class="icon-add add btn"
+                    title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"
+                    ><?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
             <?php } ?>
         </li>
     </ul>
@@ -96,7 +116,11 @@ $listed = $publicStamp ? $publicStamp->listed : false;
             <?php echo $this->content; ?>
             <div id="scope" class="hidden"><?php echo $this->scope; ?></div>
         </div>
-        <?php if ($this->params->get('enable_publinks') && $this->page->get('id') && $this->project->access('content')) {
+        <?php
+        $showPubLinks = $this->params->get('enable_publinks')
+            && $this->page->get('id')
+            && $this->project->access('content');
+        if ($showPubLinks) {
             $this->view('sharelink')
                  ->set('option', $this->option)
                  ->set('page', $this->page)

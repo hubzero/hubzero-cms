@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,12 +14,33 @@ defined('_HZEXEC_') or die();
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 <?php if ($this->group->published == 1) { ?>
+    <?php
+    $backUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&cn=' . $this->group->cn
+        . '&active=calendar&year=' . $this->year
+        . '&month=' . $this->month
+    );
+    $addCalUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&cn=' . $this->group->cn
+        . '&active=calendar&action=addcalendar'
+    );
+    ?>
     <ul id="page_options">
         <li>
-            <a class="icon-prev btn back" title="" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&year=' . $this->year . '&month=' . $this->month); ?>">
+            <a
+                class="icon-prev btn back"
+                title=""
+                href="<?php echo $backUrl; ?>"
+            >
                 <?php echo Lang::txt('Back to Events Calendar'); ?>
             </a>
-            <a class="icon-add btn add" title="" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=addcalendar'); ?>">
+            <a
+                class="icon-add btn add"
+                title=""
+                href="<?php echo $addCalUrl; ?>"
+            >
                 <?php echo Lang::txt('Add Calendar'); ?>
             </a>
 
@@ -50,10 +69,21 @@ defined('_HZEXEC_') or die();
                             $calendar->set('color', '');
                         }
                         ?>
+                        <?php
+                        $imgBase = Request::base(true)
+                            . '/core/plugins/groups/calendar/assets/img/swatch-';
+                        ?>
                         <?php if ($calendar->get('color')) : ?>
-                            <img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo $calendar->get('color'); ?>.png" alt="<?php echo $calendar->get('color'); ?>" />
+                            <?php $colorSrc = $imgBase . $calendar->get('color') . '.png'; ?>
+                            <img
+                                src="<?php echo $colorSrc; ?>"
+                                alt="<?php echo $calendar->get('color'); ?>"
+                            />
                         <?php else : ?>
-                            <img src="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-gray.png" alt="gray" />
+                            <img
+                                src="<?php echo $imgBase; ?>gray.png"
+                                alt="gray"
+                            />
                         <?php endif; ?>
                     </td>
                     <td>
@@ -65,8 +95,26 @@ defined('_HZEXEC_') or die();
                         }
                         ?>
                     </td>
+                    <?php
+                    $calId = $calendar->get('id');
+                    $calBase = 'index.php?option=' . $this->option
+                        . '&cn=' . $this->group->cn
+                        . '&active=calendar';
+                    $editUrl = Route::url(
+                        $calBase . '&action=editcalendar&calendar_id=' . $calId
+                    );
+                    $refreshUrl = Route::url(
+                        $calBase . '&action=refreshcalendar&calendar_id=' . $calId
+                    );
+                    $deleteUrl = Route::url(
+                        $calBase . '&action=deletecalendar&calendar_id=' . $calId
+                    );
+                    ?>
                     <td>
-                        <a class="edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=editcalendar&calendar_id=' . $calendar->get('id')); ?>">
+                        <a
+                            class="edit"
+                            href="<?php echo $editUrl; ?>"
+                        >
                             Edit
                         </a> &nbsp;|
                         <a class="delete" href="javascript:void(0);">
@@ -74,7 +122,10 @@ defined('_HZEXEC_') or die();
                         </a>
                         <?php if ($calendar->get('url')) : ?>
                              &nbsp;|
-                            <a class="refresh" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=refreshcalendar&calendar_id=' . $calendar->get('id')); ?>">
+                            <a
+                                class="refresh"
+                                href="<?php echo $refreshUrl; ?>"
+                            >
                                 Refresh
                             </a>
                         <?php endif; ?>
@@ -82,7 +133,10 @@ defined('_HZEXEC_') or die();
                 </tr>
                 <tr class="delete-confirm">
                     <td colspan="4">
-                        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=deletecalendar&calendar_id=' . $calendar->get('id')); ?>" method="post">
+                        <form
+                            action="<?php echo $deleteUrl; ?>"
+                            method="post"
+                        >
                             <h3>Delete Calendar</h3>
                             <p>What do you want to do with the events associated with this calendar?</p>
                             <select name="events">
@@ -105,7 +159,10 @@ defined('_HZEXEC_') or die();
                             <span class="calendar-url">
                                 <span>Last Fetched:</span>
                                 <?php
-                                if (!$calendar->get('last_fetched') || $calendar->get('last_fetched') == '0000-00-00 00:00:00') {
+                                if (
+                                    !$calendar->get('last_fetched') || $calendar->get('last_fetched') == '0000-00-00
+                                00:00:00'
+                                ) {
                                     echo 'Never';
                                 } else {
                                     echo Date::of($calendar->get('last_fetched'))->toLocal('m/d/Y @ g:ia');

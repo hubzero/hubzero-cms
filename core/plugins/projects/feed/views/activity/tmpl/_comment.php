@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -61,10 +61,23 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
         <div class="activity-body">
 
             <div class="activity-details">
+                <?php
+                $actorName = $comment->admin == 1
+                    ? Lang::txt('COM_PROJECTS_ADMIN')
+                    : $comment->author;
+                $commentDatetime = Date::of($comment->created)
+                    ->format('Y-m-d\TH:i:s\Z');
+                $commentTime = \Components\Projects\Helpers\Html::showTime(
+                    $comment->created,
+                    true
+                );
+                ?>
                 <span
-                    class="activity-actor"><?php echo $comment->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author; ?></span>
+                    class="activity-actor"><?php echo $actorName; ?></span>
                 <span class="activity-time"><time
-                        datetime="<?php echo Date::of($comment->created)->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo \Components\Projects\Helpers\Html::showTime($comment->created, true); ?></time></span>
+                        datetime="<?php echo $commentDatetime; ?>"><?php
+                            echo $commentTime;
+                        ?></time></span>
             </div><!-- / .activity-details -->
 
             <div class="activity-event">
@@ -72,14 +85,24 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                     <?php
                     echo '<div class="body">' . $shortComment;
                     if ($shorten) {
-                        echo ' <a href="#fullbodyc' . $comment->id . '" class="more-content">' . Lang::txt('COM_PROJECTS_MORE') . '</a>';
+                        echo ' <a href="#fullbodyc'
+                            . $comment->id
+                            . '" class="more-content">'
+                            . Lang::txt('COM_PROJECTS_MORE')
+                            . '</a>';
                     }
                     echo '</div>';
                     if ($shorten) {
                         $fragment = ltrim(\Hubzero\Utility\Uri::getInstance()->toString(['fragment']), '#');
                         $cls = ($fragment == 'fullbodyc' . $comment->id ? '' : ' hidden');
 
-                        echo '<div class="fullbody' . $cls . '" id="fullbodyc' . $comment->id . '">' . $longComment . '</div>';
+                        echo '<div class="fullbody'
+                            . $cls
+                            . '" id="fullbodyc'
+                            . $comment->id
+                            . '">'
+                            . $longComment
+                            . '</div>';
                     }
                     ?>
                 </div>
@@ -90,9 +113,17 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                     <ul>
                         <?php if ($this->edit && $this->model->access('manager')) { ?>
                             <li id="pu_<?php echo $comment->id; ?>_edit">
-                                <a class="icon-edit edit tooltips" data-form="comment-form<?php echo $comment->id; ?>"
+                                <?php
+                                $editUrl = Route::url(
+                                    $this->model->link('feed')
+                                    . '&action=editcomment&cid='
+                                    . $comment->id
+                                );
+                                ?>
+                                <a class="icon-edit edit tooltips"
+                                    data-form="comment-form<?php echo $comment->id; ?>"
                                     data-content="activity-event-content<?php echo $comment->id; ?>"
-                                    href="<?php echo Route::url($this->model->link('feed') . '&action=editcomment&cid=' . $comment->id); ?>"
+                                    href="<?php echo $editUrl; ?>"
                                     title="<?php echo Lang::txt('JACTION_EDIT'); ?>"><!--
                                         --><?php echo Lang::txt('JACTION_EDIT'); ?><!--
                                     --></a>
@@ -100,10 +131,20 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                         <?php } ?>
                         <?php if ($deletable) { ?>
                             <li id="pu_<?php echo $comment->id; ?>_delete">
+                                <?php
+                                $deleteUrl = Route::url(
+                                    $this->model->link('feed')
+                                    . '&action=deletecomment&cid='
+                                    . $comment->id
+                                );
+                                $deleteConfirm = Lang::txt(
+                                    'PLG_PROJECTS_BLOG_DELETE_CONFIRMATION'
+                                );
+                                ?>
                                 <a class="icon-delete delete tooltips"
-                                    data-confirm="<?php echo Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION'); ?>"
+                                    data-confirm="<?php echo $deleteConfirm; ?>"
                                     title="<?php echo Lang::txt('JACTION_DELETE'); ?>"
-                                    href="<?php echo Route::url($this->model->link('feed') . '&action=deletecomment&cid=' . $comment->id); ?>"><!--
+                                    href="<?php echo $deleteUrl; ?>"><!--
                                         --><?php echo Lang::txt('JACTION_DELETE'); ?><!--
                                     --></a>
                             </li>
@@ -124,7 +165,16 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                             <input type="hidden" name="cid" value="<?php echo $comment->id; ?>" />
                             <?php echo Html::input('token'); ?>
 
-                            <?php echo $this->editor('comment', $comment->comment, 5, 5, 'comment' . $comment->id, array('class' => 'minimal no-footer')); ?>
+                            <?php
+                            echo $this->editor(
+                                'comment',
+                                $comment->comment,
+                                5,
+                                5,
+                                'comment' . $comment->id,
+                                array('class' => 'minimal no-footer')
+                            );
+                            ?>
 
                             <p class="blog-submit">
                                 <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE'); ?>"

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -17,7 +17,19 @@ $this->css()
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 
-$endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action=history&amp;asset=' . urlencode($this->file->get('name')) . '&amp;subdir=' . $this->subdir . '">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . \Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40) . '</span></a></span> &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_HISTORY_DIFF') . '</span>';
+$endPath = ' &raquo; <span class="subheader"><a href="'
+    . $this->url
+    . '/?action=history&amp;asset='
+    . urlencode($this->file->get('name'))
+    . '&amp;subdir='
+    . $this->subdir
+    . '">'
+    . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR')
+    . ' <span class="italic">'
+    . \Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40)
+    . '</span></a></span> &raquo; <span class="subheader">'
+    . Lang::txt('PLG_PROJECTS_FILES_SHOW_HISTORY_DIFF')
+    . '</span>';
 
 ?>
 
@@ -74,13 +86,29 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
         <?php if (!$this->getError()) { ?>
         <div class="diff-legend">
             <span class="prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF'); ?>:</span>
-            <label><input type="radio" value="side-by-side" name="mode"  <?php if ($this->params['mode'] == 'side-by-side') {
-                echo 'checked="checked"';
-                                                                         } ?>  /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE'); ?>
+            <?php
+            $sideBySideChecked = ($this->params['mode'] == 'side-by-side')
+                ? ' checked="checked"' : '';
+            $inlineChecked = ($this->params['mode'] == 'inline')
+                ? ' checked="checked"' : '';
+            $sideBySideLabel = Lang::txt(
+                'PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE'
+            );
+            $inlineLabel = Lang::txt(
+                'PLG_PROJECTS_FILES_DIFF_INLINE'
+            );
+            ?>
+            <label>
+                <input type="radio"
+                    value="side-by-side"
+                    name="mode"<?php echo $sideBySideChecked; ?> />
+                <?php echo $sideBySideLabel; ?>
             </label>
-            <label><input type="radio" value="inline" name="mode" <?php if ($this->params['mode'] == 'inline') {
-                echo 'checked="checked"';
-                                                                  } ?> /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE'); ?>
+            <label>
+                <input type="radio"
+                    value="inline"
+                    name="mode"<?php echo $inlineChecked; ?> />
+                <?php echo $inlineLabel; ?>
             </label>
             <input type="submit" value="Update" id="diff-update" class="btn" />
             <dl>
@@ -107,8 +135,17 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
             <table id="table-diff" class="diff diffSideBySide">
              <thead>
                 <tr>
-                    <th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $old['rev'] . ' (' . $old['hash'] . ')'; ?></th>
-                    <th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $new['rev'] . ' (' . $new['hash'] . ')'; ?></th>
+                    <?php
+                    $revLabel = Lang::txt('PLG_PROJECTS_FILES_REV');
+                    $oldRevLabel = $revLabel
+                        . ' @' . $old['rev']
+                        . ' (' . $old['hash'] . ')';
+                    $newRevLabel = $revLabel
+                        . ' @' . $new['rev']
+                        . ' (' . $new['hash'] . ')';
+                    ?>
+                    <th colspan="2"><?php echo $oldRevLabel; ?></th>
+                    <th colspan="2"><?php echo $newRevLabel; ?></th>
                 </tr>
              </thead>
 
@@ -147,7 +184,16 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
                 ?>
                 <div class="diffGit">
                     <h5>
-                    <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $old['rev'] . ' (' . $old['hash'] . ') and @' . $new['rev'] . ' (' . $new['hash'] . ') '; ?></h5>
+                    <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_COMPARING')
+                        . '  @'
+                        . $old['rev']
+                        . ' ('
+                        . $old['hash']
+                        . ') and @'
+                        . $new['rev']
+                        . ' ('
+                        . $new['hash']
+                        . ') '; ?></h5>
                     <?php if ($this->diff) {
                         echo '<pre>' . $this->diff . '</pre>';
                     } else {  ?>

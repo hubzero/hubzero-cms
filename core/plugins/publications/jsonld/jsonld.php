@@ -1,10 +1,10 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
  * @license    http://opensource.org/licenses/MIT MIT
  */
-
 
 /**
  * Publications Plugin class for adding JSON-LD metadata to the document
@@ -286,7 +286,8 @@ class Jsonld extends Plugin
                  {
                         "@type":"DataDownload",
                         "encodingFormat":"XML",
-                        "contentUrl" :"http://gis.ncdc.noaa.gov/all-records/catalog/search/resource/details.page?id=gov.noaa.ncdc:C00510"
+                        "contentUrl" :"http://gis.ncdc.noaa.gov/all-records/catalog/search/resource/
+                            details.page?id=gov.noaa.ncdc:C00510"
                  }
             ],
             "temporalCoverage":"1950-01-01/2013-12-18",

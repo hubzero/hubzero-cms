@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -57,7 +57,9 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
             <input type="hidden" name="p" value="<?php echo $this->props; ?>" />
             <input type="hidden" name="action" value="saveitem" />
             <input type="hidden" name="active" value="publications" />
-            <input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
+            <input type="hidden"
+                name="option"
+                value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>"/>
             <input type="hidden" name="backUrl" value="<?php echo $this->backUrl; ?>" />
             <?php if ($this->project->isProvisioned()) { ?>
                 <input type="hidden" name="task" value="submit" />
@@ -66,36 +68,81 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
         <div class="content-wrap">
             <div class="content-edit">
 
+<?php
+$fieldLabel = $this->row->type == 'link'
+    ? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'))
+    : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LABEL'));
+?>
                 <label for="title">
-                    <span class="leftshift faded"><?php echo $this->row->type == 'link' ? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE')) : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LABEL')); ?>:</span>
-                    <input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : $defaultTitle; ?>" placeholder="<?php echo $placeholder; ?>" />
+                    <span class="leftshift faded">
+                        <?php echo $fieldLabel; ?>:
+                    </span>
+                    <input type="text"
+                        name="title"
+                        maxlength="250"
+                        class="long"
+                        value="<?php echo $this->row && $this->row->title ? $this->row->title : $defaultTitle; ?>"
+                        placeholder="<?php echo $placeholder; ?>"/>
                 </label>
+<?php
+$urlLabel = ucfirst(
+    Lang::txt('PLG_PROJECTS_PUBLICATIONS_URL')
+);
+?>
                 <?php if ($this->row->type == 'link') { ?>
                     <p class="c-wrapper">
-                        <span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_URL')); ?>:</span>
-                        <span class="content-filepath"><?php echo $this->row->path; ?></span>
+                        <span class="leftshift faded">
+                            <?php echo $urlLabel; ?>:
+                        </span>
+                        <span class="content-filepath">
+                            <?php echo $this->row->path; ?>
+                        </span>
                     </p>
                 <?php } ?>
+<?php
+$filePathLabel = ucfirst(
+    Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')
+);
+$fileBasename = basename($this->row->path);
+?>
                 <?php if ($this->row->type == 'file') { ?>
                     <?php if ($gone || !$allowRename) { ?>
                         <p class="c-wrapper">
-                            <span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>:</span>
-                            <span class="content-filepath"><?php echo $this->row->path; ?></span>
+                            <span class="leftshift faded">
+                                <?php echo $filePathLabel; ?>:
+                            </span>
+                            <span class="content-filepath">
+                                <?php echo $this->row->path; ?>
+                            </span>
                         </p>
                     <?php } else { ?>
                         <p class="c-wrapper">
-                            <span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>*:</span>
-                            <span><?php echo $dirpath; ?> <input type="text" name="filename" maxlength="100" value="<?php echo basename($this->row->path); ?>" /></span>
+                            <span class="leftshift faded">
+                                <?php echo $filePathLabel; ?>*:
+                            </span>
+                            <span>
+                                <?php echo $dirpath; ?>
+                                <input type="text"
+                                    name="filename"
+                                    maxlength="100"
+                                    value="<?php echo $fileBasename; ?>" />
+                            </span>
                         </p>
                     <?php } ?>
                 <?php } ?>
 
                 <p class="submitarea">
-                    <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
+                    <input type="submit"
+                        class="btn"
+                        value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>"/>
                     <?php if ($this->ajax) { ?>
-                        <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                        <input type="reset"
+                            id="cancel-action"
+                            class="btn btn-cancel"
+                            value="<?php echo Lang::txt('JCANCEL'); ?>"/>
                     <?php } else { ?>
-                        <a href="<?php echo $this->backUrl; ?>" class="btn btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
+                        <a href="<?php echo $this->backUrl; ?>"
+                            class="btn btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
                     <?php } ?>
                 </p>
             </div>

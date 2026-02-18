@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -30,7 +30,11 @@ $shorten = ($aboutTxt && strlen($aboutTxt) > 200) ? 1 : 0;
 
 if ($shorten) {
     $about  = \Hubzero\Utility\Str::truncate($aboutTxt, 200);
-    $about .= ' <a href="#more-' . $elName . '" class="more-content">' . Lang::txt('COM_PUBLICATIONS_READ_MORE') . '</a>';
+    $about .= ' <a href="#more-'
+        . $elName
+        . '" class="more-content">'
+        . Lang::txt('COM_PUBLICATIONS_READ_MORE')
+        . '</a>';
     $about .= ' <div class="hidden">';
     $about .= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
     $about .= ' </div>';
@@ -68,7 +72,15 @@ if ($this->name == 'curator') {
     <div class="element_overview">
         <?php if ($this->name == 'curator') { ?>
         <div class="block-aside"><div class="block-info"><?php echo $about; ?></div></div>
-            <?php echo $this->pub->_curationModel->drawChecker($props, $curatorStatus, Route::url($this->pub->link('edit')), $this->manifest->label); ?>
+            <?php
+                $editUrl = Route::url($this->pub->link('edit'));
+                echo $this->pub->_curationModel->drawChecker(
+                    $props,
+                    $curatorStatus,
+                    $editUrl,
+                    $this->manifest->label
+                );
+            ?>
         <div class="block-subject">
         <?php } ?>
             <h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
@@ -86,7 +98,10 @@ if ($this->name == 'curator') {
             <?php } else { ?>
                 <p class="noresults">No user input</p>
                 <?php if (!$this->pub->isPublished() && ($this->status->getError() || ($required && !$complete))) { ?>
-                    <p class="witherror"><?php echo $this->status->getError() ? $this->status->getError() : Lang::txt('Missing required input'); ?></p>
+                    <p class="witherror"><?php
+                        $error = $this->status->getError();
+                        echo $error ? $error : Lang::txt('Missing required input');
+                    ?></p>
                 <?php } ?>
             <?php } ?>
         <?php if ($this->name == 'curator') { ?>

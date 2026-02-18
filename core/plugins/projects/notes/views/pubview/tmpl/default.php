@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -20,12 +20,18 @@ $html = $this->revision->get('pagehtml');
 $html = str_replace('projects/projects/', 'projects/', $html);
 
 // Fix up images
-$html = str_replace($this->page->get('scope') . DS . $this->page->get('pagename'), 'wiki/' . $this->page->get('id'), $html);
+$html = str_replace(
+    $this->page->get('scope') . DS . $this->page->get('pagename'),
+    'wiki/' . $this->page->get('id'),
+    $html
+);
 
 ?>
 
 <div class="wiki-wrap">
-    <p class="wiki-back"><?php echo Lang::txt('PLG_PROJECTS_NOTES_PUBLIC_VIEW'); ?> <span class="goback"><a href="<?php echo $this->model->link(); ?>"><?php echo Lang::txt('PLG_PROJECTS_NOTES_BACK_TO_PROJECT'); ?></a></span></p>
+    <p class="wiki-back"><?php echo Lang::txt('PLG_PROJECTS_NOTES_PUBLIC_VIEW'); ?>
+    <span class="goback"><a href="<?php echo $this->model->link();?>
+    "><?php echo Lang::txt('PLG_PROJECTS_NOTES_BACK_TO_PROJECT');?></a></span></p>
     <div class="wiki-content">
         <h1 class="page-title"><?php echo $this->page->get('title'); ?></h1>
         <div class="wikipage"><?php echo $html; ?></div>

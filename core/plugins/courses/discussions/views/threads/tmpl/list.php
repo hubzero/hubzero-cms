@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,9 +11,17 @@
 defined('_HZEXEC_') or die();
 
 if ($this->depth == 0 && $this->config->get('access-edit-thread')) {
-    $stick = $this->base . '&unit=' . $this->unit . '&b=' . $this->lecture . '&thread=' . $this->post->get('thread') . '&action=sticky&sticky=';
+    $stick = $this->base
+        . '&unit='
+        . $this->unit
+        . '&b='
+        . $this->lecture
+        . '&thread='
+        . $this->post->get('thread')
+        . '&action=sticky&sticky=';
     ?>
-    <div class="sticky-thread-controls<?php echo ($this->post->get('sticky')) ? ' stuck' : ''; ?>" data-thread="<?php echo $this->post->get('thread'); ?>">
+    <div class="sticky-thread-controls<?php echo ($this->post->get('sticky')) ? ' stuck' : ''; ?>"
+        data-thread="<?php echo $this->post->get('thread'); ?>">
         <p>
             <a class="sticky-toggle"
                 href="<?php echo Route::url($stick . ($this->post->get('sticky') ? 0 : 1)); ?>"

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,18 +15,40 @@ if ($this->group) :
 <div id="group-owner" class="container">
     <h4>Owned by</h4>
     <div class="group-content">
+    <?php
+    $groupDesc = $this->escape(stripslashes($this->group->get('description')));
+    $groupUrl = Route::url(
+        'index.php?option=com_groups&cn=' . $this->group->get('cn')
+    );
+    $groupImgAlt = Lang::txt('PLG_RESOURCES_GROUPS_IMAGE', $groupDesc);
+    $groupLink = '<a href="' . $groupUrl . '">' . $groupDesc . '</a>';
+    $belongsText = Lang::txt(
+        'PLG_RESOURCES_GROUPS_BELONGS_TO_GROUP',
+        $groupLink
+    );
+    ?>
     <?php if ($logo) { ?>
         <p class="group-img">
-            <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>">
-                <img src="<?php echo $logo; ?>" width="50" alt="<?php echo Lang::txt('PLG_RESOURCES_GROUPS_IMAGE', $this->escape(stripslashes($this->group->get('description')))); ?>" />
+            <a href="<?php echo $groupUrl; ?>">
+                <img
+                    src="<?php echo $logo; ?>"
+                    width="50"
+                    alt="<?php echo $groupImgAlt; ?>"
+                />
             </a>
         </p>
-        <p class="group-description group-withlogo"><?php echo Lang::txt('PLG_RESOURCES_GROUPS_BELONGS_TO_GROUP', '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+        <p class="group-description group-withlogo">
+            <?php echo $belongsText; ?>
+        </p>
     <?php } else { ?>
-        <p class="group-description"><?php echo Lang::txt('PLG_RESOURCES_GROUPS_BELONGS_TO_GROUP', '<a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) . '">' . $this->escape(stripslashes($this->group->get('description'))) . '</a>'); ?></p>
+        <p class="group-description">
+            <?php echo $belongsText; ?>
+        </p>
     <?php } ?>
     </div>
-    <a class="owner" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo $this->escape(stripslashes($this->group->get('description'))); ?></a>
+    <a class="owner"
+        href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"
+        ><?php echo $this->escape(stripslashes($this->group->get('description'))); ?></a>
 </div>
 <?php endif; ?>
 
@@ -38,11 +58,22 @@ if ($this->group) :
         <h4>Shared with</h4>
     <?php foreach ($this->aclgroups as $group) :
         $logo = $group->getLogo();
+        $aclDesc = $this->escape(stripslashes($group->get('description')));
+        $aclAlt = Lang::txt('PLG_RESOURCES_GROUPS_IMAGE', $aclDesc);
+        $aclUrl = Route::url(
+            'index.php?option=com_groups&cn=' . $group->get('cn')
+        );
         ?>
-    <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('cn')); ?>" class="shared-with-group">
+    <a href="<?php echo $aclUrl; ?>"
+        class="shared-with-group">
         <div class="inner">
             <?php if ($logo) : ?>
-            <div class="img"><img src="<?php echo $logo; ?>" alt="<?php echo Lang::txt('PLG_RESOURCES_GROUPS_IMAGE', $this->escape(stripslashes($group->get('description')))); ?>" /></div>
+            <div class="img">
+                <img
+                    src="<?php echo $logo; ?>"
+                    alt="<?php echo $aclAlt; ?>"
+                />
+            </div>
             <?php endif; ?>
             <p class="group-description"><?php echo $this->escape(stripslashes($group->get('description'))); ?></p>
         </div>

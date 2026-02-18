@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -21,7 +21,12 @@ $this->css()
 $allow_comments = Component::params('com_collections')->get('allow_comments');
 ?>
 
-<div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&task=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
+<div class="post full <?php echo $item->type(); ?>"
+    id="b<?php echo $this->post->get('id'); ?>"
+    data-id="<?php echo $this->post->get('id'); ?>"
+    data-closeup-url="<?php echo Route::url($base . '&task=post/' . $this->post->get('id')); ?>"
+    data-width="600"
+    data-height="350">
     <div class="content">
         <div class="creator attribution cf">
             <?php if ($item->get('type') == 'file' || $item->get('type') == 'collection') { ?>
@@ -30,12 +35,16 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                 $name = $this->escape(stripslashes($item->creator()->get('name')));
 
                 if (in_array($item->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-                    <a href="<?php echo Route::url($item->creator()->link()); ?>" title="<?php echo $name; ?>" class="img-link">
-                        <img src="<?php echo $item->creator()->picture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+                    <a href="<?php echo Route::url($item->creator()->link()); ?>"
+                        title="<?php echo $name; ?>"
+                        class="img-link">
+                        <img src="<?php echo $item->creator()->picture(); ?>"
+                            alt="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name); ?>"/>
                     </a>
                 <?php } else { ?>
                     <span class="img-link">
-                        <img src="<?php echo $item->creator()->picture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+                        <img src="<?php echo $item->creator()->picture(); ?>"
+                            alt="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name); ?>"/>
                     </span>
                 <?php } ?>
                 <p>
@@ -43,11 +52,24 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                         <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
                     </a> created this post
                     <br />
+                    <?php
+                    $itemDatetime = $item->created();
+                    $itemTime = $item->created('time');
+                    $itemDate = $item->created('date');
+                    ?>
                     <span class="entry-date">
                         <span class="entry-date-at">@</span>
-                        <span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span>
+                        <span class="time">
+                            <time datetime="<?php echo $itemDatetime; ?>">
+                                <?php echo $itemTime; ?>
+                            </time>
+                        </span>
                         <span class="entry-date-on">on</span>
-                        <span class="date"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('date'); ?></time></span>
+                        <span class="date">
+                            <time datetime="<?php echo $itemDatetime; ?>">
+                                <?php echo $itemDate; ?>
+                            </time>
+                        </span>
                     </span>
                 </p>
             <?php } else { ?>
@@ -91,9 +113,22 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                 </span>
             </p>
         </div><!-- / .meta -->
+        <?php
+        $postCreatorName = $this->escape(
+            stripslashes($this->post->creator()->get('name'))
+        );
+        $postCreatorLink = Route::url(
+            $this->post->creator()->link()
+        );
+        $postCreatorPic = $this->post->creator()->picture();
+        $postCreatorAlt = 'Profile picture of ' . $postCreatorName;
+        ?>
         <div class="convo attribution clearfix">
-            <a href="<?php echo Route::url($this->post->creator()->link()); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
-                <img src="<?php echo $this->post->creator()->picture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" />
+            <a href="<?php echo $postCreatorLink; ?>"
+                title="<?php echo $postCreatorName; ?>"
+                class="img-link">
+                <img src="<?php echo $postCreatorPic; ?>"
+                    alt="<?php echo $postCreatorAlt; ?>" />
             </a>
             <p>
                 <?php
@@ -103,16 +138,33 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                     $who = '<a href="' . Route::url($this->post->creator()->link()) . '">' . $name . '</a>';
                 }
 
-                $where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
+                $where = '<a href="'
+                    . Route::url($base . '&task=' . $this->collection->get('alias'))
+                    . '">'
+                    . $this->escape(stripslashes($this->collection->get('title')))
+                    . '</a>';
 
                 echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ONTO', $who, $where);
                 ?>
                 <br />
+                <?php
+                $postDatetime = $this->post->created();
+                $postTime = $this->post->created('time');
+                $postDate = $this->post->created('date');
+                ?>
                 <span class="entry-date">
                     <span class="entry-date-at">@</span>
-                    <span class="time"><time datetime="<?php echo $this->post->created(); ?>"><?php echo $this->post->created('time'); ?></time></span>
+                    <span class="time">
+                        <time datetime="<?php echo $postDatetime; ?>">
+                            <?php echo $postTime; ?>
+                        </time>
+                    </span>
                     <span class="entry-date-on">on</span>
-                    <span class="date"><time datetime="<?php echo $this->post->created(); ?>"><?php echo $this->post->created('date'); ?></time></span>
+                    <span class="date">
+                        <time datetime="<?php echo $postDatetime; ?>">
+                            <?php echo $postDate; ?>
+                        </time>
+                    </span>
                 </span>
             </p>
         </div><!-- / .attribution -->
@@ -129,15 +181,36 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                 ?>
                 <div class="comment convo clearfix" id="c<?php echo $comment->get('id'); ?>">
                     <a href="<?php echo Route::url($cuser->link()); ?>" class="img-link">
-                        <img src="<?php echo $cuser->picture($comment->anonymous); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
+                        <img src="<?php echo $cuser->picture($comment->anonymous); ?>"
+                            class="profile user_image"
+                            alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>"/>
                     </a>
+                    <?php
+                    $cuserLink = Route::url($cuser->link());
+                    $cuserName = $this->escape(
+                        stripslashes($cuser->get('name'))
+                    );
+                    $cmtDatetime = $comment->get('created');
+                    $cmtTime = $comment->created('time');
+                    $cmtDate = $comment->created('date');
+                    ?>
                     <p>
-                        <a href="<?php echo Route::url($cuser->link()); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> said <br />
+                        <a href="<?php echo $cuserLink; ?>">
+                            <?php echo $cuserName; ?>
+                        </a> said <br />
                         <span class="entry-date">
                             <span class="entry-date-at">@</span>
-                            <span class="time"><time datetime="<?php echo $comment->get('created'); ?>"><?php echo $comment->created('time'); ?></time></span>
+                            <span class="time">
+                                <time datetime="<?php echo $cmtDatetime; ?>">
+                                    <?php echo $cmtTime; ?>
+                                </time>
+                            </span>
                             <span class="entry-date-on">on</span>
-                            <span class="date"><time datetime="<?php echo $comment->get('created'); ?>"><?php echo $comment->created('date'); ?></time></span>
+                            <span class="date">
+                                <time datetime="<?php echo $cmtDatetime; ?>">
+                                    <?php echo $cmtDate; ?>
+                                </time>
+                            </span>
                         </span>
                     </p>
                     <blockquote>
@@ -153,22 +226,56 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 
     if (!User::isGuest() && $allow_comments) {
         $now = Date::of('now');
+        $userProfileUrl = Route::url(
+            'index.php?option=com_members&id=' . User::get('id')
+        );
+        $userName = $this->escape(
+            stripslashes(User::get('name'))
+        );
+        $userPic = User::picture(0);
+        $userAlt = 'Profile picture of ' . $userName;
+        $nowTime = Date::of($now)->toLocal(
+            Lang::txt('TIME_FORMAT_HZ1')
+        );
+        $nowDate = Date::of($now)->toLocal(
+            Lang::txt('DATE_FORMAT_HZ1')
+        );
+        $commentFormAction = Route::url(
+            $base . '&task=post/'
+            . $this->post->get('id') . '/savecomment'
+        );
         ?>
         <div class="commnts">
             <div class="comment convo clearfix">
-                <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>" class="img-link">
-                    <img src="<?php echo User::picture(0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes(User::get('name'))); ?>" />
+                <a href="<?php echo $userProfileUrl; ?>"
+                    class="img-link">
+                    <img src="<?php echo $userPic; ?>"
+                        class="profile user_image"
+                        alt="<?php echo $userAlt; ?>"/>
                 </a>
                 <p>
-                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(stripslashes(User::get('name'))); ?></a> will say <br />
+                    <a href="<?php echo $userProfileUrl; ?>">
+                        <?php echo $userName; ?>
+                    </a> will say <br />
                     <span class="entry-date">
                         <span class="entry-date-at">@</span>
-                        <span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+                        <span class="time">
+                            <time datetime="<?php echo $now; ?>">
+                                <?php echo $nowTime; ?>
+                            </time>
+                        </span>
                         <span class="entry-date-on">on</span>
-                        <span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+                        <span class="date">
+                            <time datetime="<?php echo $now; ?>">
+                                <?php echo $nowDate; ?>
+                            </time>
+                        </span>
                     </span>
                 </p>
-                <form action="<?php echo Route::url($base . '&task=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" id="comment-form" enctype="multipart/form-data">
+                <form action="<?php echo $commentFormAction; ?>"
+                    method="post"
+                    id="comment-form"
+                    enctype="multipart/form-data">
                     <fieldset>
                         <input type="hidden" name="comment[id]" value="0" />
                         <input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />
@@ -177,7 +284,9 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 
                         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                         <input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
-                        <input type="hidden" name="scope" value="post/<?php echo $this->post->get('id'); ?>/savecomment" />
+                        <input type="hidden"
+                            name="scope"
+                            value="post/<?php echo $this->post->get('id'); ?>/savecomment"/>
                         <input type="hidden" name="action" value="savecomment" />
                         <input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 

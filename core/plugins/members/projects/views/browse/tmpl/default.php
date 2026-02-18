@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -18,24 +18,39 @@ $this->css();
 <?php if (User::authorise('core.create', 'com_projects')) { ?>
     <ul id="page_options" class="pluginOptions">
         <li>
-            <a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start'); ?>">
+            <a class="icon-add add btn showinbox"
+                href="<?php echo Route::url('index.php?option=com_projects&task=start'); ?>">
                 <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_ADD'); ?>
             </a>
         </li>
     </ul>
 <?php } ?>
 
-<?php if (User::get('id') == $this->user->get('id')) { ?>
+<?php if (User::get('id') == $this->user->get('id')) {
+    $memberId = $this->user->get('id');
+    $allUrl = Route::url(
+        'index.php?option=com_members&id=' . $memberId
+        . '&active=projects&action=all'
+    );
+    $updatesUrl = Route::url(
+        'index.php?option=com_members&id=' . $memberId
+        . '&active=projects&action=updates'
+    );
+    $listLabel = Lang::txt('PLG_MEMBERS_PROJECTS_LIST')
+        . ' (' . $this->total . ')';
+    ?>
     <ul class="sub-menu">
         <li class="active">
-            <a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
-                <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->total . ')'; ?>
+            <a href="<?php echo $allUrl; ?>">
+                <?php echo $listLabel; ?>
             </a>
         </li>
         <li>
-            <a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=updates'); ?>">
-                <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) {
-                    echo '<span class="s-new">' . $this->newcount . '</span>';
+            <a href="<?php echo $updatesUrl; ?>">
+                <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?>
+                <?php if ($this->newcount) {
+                    echo '<span class="s-new">'
+                        . $this->newcount . '</span>';
                 } ?>
             </a>
         </li>
@@ -44,16 +59,47 @@ $this->css();
 
 <div id="s-projects">
     <div class="container">
-        <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
+        <?php
+        $filterBy = $this->filters['filterby'];
+        $isActive = (!$filterBy || $filterBy == 'active')
+            ? ' class="active"' : '';
+        $isArchived = ($filterBy == 'archived')
+            ? ' class="active"' : '';
+        $filterAllUrl = Route::url(
+            'index.php?option=com_members&id=' . $memberId
+            . '&active=projects&action=all'
+        );
+        $filterArchivedUrl = Route::url(
+            'index.php?option=com_members&id=' . $memberId
+            . '&active=projects&action=all&filterby=archived'
+        );
+        $filterLabel = Lang::txt(
+            'JGLOBAL_FILTER_AND_SORT_RESULTS'
+        );
+        ?>
+        <nav class="entries-filters"
+            aria-label="<?php echo $filterLabel; ?>">
             <ul class="entries-menu filter-options">
                 <li>
-                    <a<?php echo (!$this->filters['filterby'] || $this->filters['filterby'] == 'active') ? ' class="active"' : ''; ?> data-status="all" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all'); ?>">
-                        <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_FILTER_STATUS_ACTIVE'); ?>
+                    <a<?php echo $isActive; ?>
+                        data-status="all"
+                        href="<?php echo $filterAllUrl; ?>">
+                        <?php
+                        echo Lang::txt(
+                            'PLG_MEMBERS_PROJECTS_FILTER_STATUS_ACTIVE'
+                        );
+                        ?>
                     </a>
                 </li>
                 <li>
-                    <a<?php echo ($this->filters['filterby'] == 'archived') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url('index.php?option=com_members&id=' . $this->user->get('id') . '&active=projects&action=all&filterby=archived'); ?>">
-                        <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_FILTER_STATUS_ARCHIVED'); ?>
+                    <a<?php echo $isArchived; ?>
+                        data-status="manager"
+                        href="<?php echo $filterArchivedUrl; ?>">
+                        <?php
+                        echo Lang::txt(
+                            'PLG_MEMBERS_PROJECTS_FILTER_STATUS_ARCHIVED'
+                        );
+                        ?>
                     </a>
                 </li>
             </ul>
@@ -63,30 +109,59 @@ $this->css();
 
         if (count($this->invites)) {
             ?>
+            <?php
+            $inviteCaption = Lang::txt('PLG_MEMBERS_PROJECTS_INVITED')
+                . ' <span>(' . count($this->invites) . ')</span>';
+            ?>
             <table class="entries">
-                <caption><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_INVITED') . ' <span>(' . count($this->invites) . ')</span>'; ?></caption>
+                <caption><?php echo $inviteCaption; ?></caption>
                 <tbody>
                     <?php
 
                     foreach ($this->invites as $invite) {
-                        $row = new Components\Projects\Models\Project($invite->projectid);
+                        $row = new Components\Projects\Models\Project(
+                            $invite->projectid
+                        );
+                        $rowUrl = Route::url($row->link());
+                        $thumbUrl = Route::url($row->link('thumb'));
+                        $rowTitle = $this->escape($row->get('title'));
+                        $rowAlias = $row->get('alias');
+                        $titleAttr = $rowTitle
+                            . ' (' . $rowAlias . ')';
+                        $acceptUrl = Route::url(
+                            'index.php?option=com_projects'
+                            . '&alias=' . $invite->alias
+                            . '&confirm=' . $invite->invited_code
+                            . '&email=' . $invite->invited_email
+                        );
+                        $acceptLabel = Lang::txt(
+                            'PLG_MEMBERS_PROJECTS_ACCEPT'
+                        );
                         ?>
                         <tr class="mline">
                             <td class="th_image">
-                                <a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
-                                    <img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo htmlentities($this->escape($row->get('title'))); ?>" class="project-image" />
+                                <a href="<?php echo $rowUrl; ?>"
+                                    title="<?php echo $titleAttr; ?>">
+                                    <img src="<?php echo $thumbUrl; ?>"
+                                        alt="<?php echo htmlentities($rowTitle); ?>"
+                                        class="project-image"/>
                                 </a>
                             </td>
                             <td class="th_privacy">
                                 <?php if (!$row->isPublic()) {
-                                    echo '<span class="privacy-icon">&nbsp;</span>';
+                                    echo '<span class="privacy-icon">'
+                                        . '&nbsp;</span>';
                                 } ?>
                             </td>
                             <td class="th_title">
-                                <a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>"><?php echo $this->escape($row->get('title')); ?></a>
+                                <a href="<?php echo $rowUrl; ?>"
+                                    title="<?php echo $titleAttr; ?>"
+                                    ><?php echo $rowTitle; ?></a>
                             </td>
                             <td>
-                                <a class="btn btn-success" href="<?php echo Route::url('index.php?option=com_projects&alias=' . $invite->alias . '&confirm=' . $invite->invited_code . '&email=' . $invite->invited_email); ?>"><?php echo Lang::txt('PLG_MEMBERS_PROJECTS_ACCEPT'); ?></a>
+                                <a class="btn btn-success"
+                                    href="<?php echo $acceptUrl; ?>"
+                                    ><?php echo $acceptLabel; ?></a>
                             </td>
                         </tr>
                         <?php

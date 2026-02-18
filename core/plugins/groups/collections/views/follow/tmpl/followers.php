@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 <ul id="page_options">
     <li>
-        <a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=collections&page=index'); ?>">
+        <a class="icon-info btn popup"
+            href="<?php echo Route::url('index.php?option=com_help&component=collections&page=index'); ?>">
             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_GETTING_STARTED'); ?></span>
         </a>
     </li>
@@ -54,23 +53,53 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     <?php echo Lang::txt('People following this group'); ?>
                 </caption>
                 <tbody>
-                    <?php foreach ($this->rows as $row) { ?>
+                    <?php foreach ($this->rows as $row) {
+                        $followerImg = $row->follower()->image();
+                        $followerTitle = $this->escape(
+                            stripslashes($row->follower()->title())
+                        );
+                        $followerLink = Route::url(
+                            $row->follower()->link()
+                        );
+                        $followersCount = Lang::txt(
+                            '<strong>%s</strong> followers',
+                            $row->count('followers')
+                        );
+                        $followingCount = Lang::txt(
+                            '<strong>%s</strong> following',
+                            $row->count('following')
+                        );
+                        $createdDate = $row->get('created');
+                        $createdLocal = Date::of($createdDate)
+                            ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                        ?>
                         <tr class="<?php echo $row->get('follower_type'); ?>">
                             <th class="entry-img">
-                                <img src="<?php echo $row->follower()->image(); ?>" width="40" height="40" alt="Profile picture of <?php echo $this->escape(stripslashes($row->follower()->title())); ?>" />
+                                <img
+                                    src="<?php echo $followerImg; ?>"
+                                    width="40"
+                                    height="40"
+                                    alt="Profile picture of <?php echo $followerTitle; ?>" />
                             </th>
                             <td>
-                                <a class="entry-title" href="<?php echo Route::url($row->follower()->link()); ?>">
-                                    <?php echo $this->escape(stripslashes($row->follower()->title())); ?>
+                                <a class="entry-title"
+                                    href="<?php echo $followerLink; ?>">
+                                    <?php echo $followerTitle; ?>
                                 </a>
                                 <br />
                                 <span class="entry-details">
-                                    <span class="follower count"><?php echo Lang::txt('<strong>%s</strong> followers', $row->count('followers')); ?></span>
-                                    <span class="following count"><?php echo Lang::txt('<strong>%s</strong> following', $row->count('following')); ?></span>
+                                    <span class="follower count">
+                                        <?php echo $followersCount; ?>
+                                    </span>
+                                    <span class="following count">
+                                        <?php echo $followingCount; ?>
+                                    </span>
                                 </span>
                             </td>
                             <td>
-                                <time datetime="<?php echo $row->get('created'); ?>"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                                <time datetime="<?php echo $createdDate; ?>">
+                                    <?php echo $createdLocal; ?>
+                                </time>
                             </td>
                         </tr>
                     <?php } ?>
@@ -91,14 +120,34 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
         </div><!-- / .container -->
     <?php } else { ?>
         <div id="collection-introduction">
-            <?php if ($this->params->get('access-manage-collection')) { ?>
+            <?php if ($this->params->get('access-manage-collection')) {
+                $noFollowersMsg = Lang::txt(
+                    'This group currently does not have anyone'
+                    . ' following it or any of its collections.'
+                );
+                $followersDesc = Lang::txt(
+                    '"Followers" are members that have decided'
+                    . ' to receive all public posts this group'
+                    . ' makes or all posts in one of this'
+                    . ' group\'s collections.'
+                );
+                $followersPrivacy = Lang::txt(
+                    'Followers cannot see of your private'
+                    . ' collections or posts made to private'
+                    . ' collections.'
+                );
+                ?>
                 <div class="instructions">
-                    <p><?php echo Lang::txt('This group currently does not have anyone following it or any of its collections.'); ?></p>
+                    <p><?php echo $noFollowersMsg; ?></p>
                 </div><!-- / .instructions -->
                 <div class="questions">
-                    <p><strong><?php echo Lang::txt('What are followers?'); ?></strong></p>
-                    <p><?php echo Lang::txt('"Followers" are members that have decided to receive all public posts this group makes or all posts in one of this group\'s collections.'); ?><p>
-                    <p><?php echo Lang::txt('Followers cannot see of your private collections or posts made to private collections.'); ?><p>
+                    <p>
+                        <strong>
+                            <?php echo Lang::txt('What are followers?'); ?>
+                        </strong>
+                    </p>
+                    <p><?php echo $followersDesc; ?><p>
+                    <p><?php echo $followersPrivacy; ?><p>
                 </div>
             <?php } else { ?>
                 <div class="instructions">

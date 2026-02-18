@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,7 +34,17 @@ $this->css('jquery.datepicker.css', 'system')
             <label for="field_content">
                 <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span
                     class="required"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
-                <?php echo $this->editor('fields[content]', $this->escape($this->model->content('raw')), 35, 5, 'field_content', array('class' => 'minimal no-footer')); ?>
+                <?php
+                $editorContent = $this->escape($this->model->content('raw'));
+                echo $this->editor(
+                    'fields[content]',
+                    $editorContent,
+                    35,
+                    5,
+                    'field_content',
+                    array('class' => 'minimal no-footer')
+                );
+                ?>
             </label>
 
             <fieldset>
@@ -44,26 +54,50 @@ $this->css('jquery.datepicker.css', 'system')
                     <div class="col span-half">
                         <label for="field-publish_up" id="priority-publish_up">
                             <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_START'); ?>
-                            <input class="datepicker" type="text" name="fields[publish_up]" id="field-publish_up"
-                                value="<?php echo ($this->model->get('publish_up') && $this->model->get('publish_up') != '0000-00-00 00:00:00') ? $this->escape(Date::of($this->model->get('publish_up'))->toSql()) : ''; ?>" />
-                            <span class="hint"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
+                            <?php
+                            $pubUp = $this->model->get('publish_up');
+                            $pubUpVal = ($pubUp && $pubUp != '0000-00-00 00:00:00')
+                                ? $this->escape(Date::of($pubUp)->toSql())
+                                : '';
+                            ?>
+                            <input class="datepicker" type="text"
+                                name="fields[publish_up]"
+                                id="field-publish_up"
+                                value="<?php echo $pubUpVal; ?>" />
+                            <span class="hint">
+                                <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?>
+                            </span>
                         </label>
                     </div>
                     <div class="col span-half omega">
                         <label for="field-publish_down" id="priority-publish_down">
                             <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_END'); ?>
-                            <input class="datepicker" type="text" name="fields[publish_down]" id="field-publish_down"
-                                value="<?php echo ($this->model->get('publish_down') && $this->model->get('publish_down') != '0000-00-00 00:00:00') ? $this->escape(Date::of($this->model->get('publish_down'))->toSql()) : ''; ?>" />
-                            <span class="hint"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?></span>
+                            <?php
+                            $pubDown = $this->model->get('publish_down');
+                            $pubDownVal = ($pubDown && $pubDown != '0000-00-00 00:00:00')
+                                ? $this->escape(Date::of($pubDown)->toSql())
+                                : '';
+                            ?>
+                            <input class="datepicker" type="text"
+                                name="fields[publish_down]"
+                                id="field-publish_down"
+                                value="<?php echo $pubDownVal; ?>" />
+                            <span class="hint">
+                                <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_PUBLISH_HINT'); ?>
+                            </span>
                         </label>
                     </div>
                 </div>
             </fieldset>
 
             <label for="field-priority" id="priority-label">
-                <input class="option" type="checkbox" name="fields[priority]" id="field-priority" value="1" <?php if ($this->model->get('priority')) {
-                    echo ' checked="checked"';
-                                                                                                            } ?> />
+                <input class="option"
+                    type="checkbox"
+                    name="fields[priority]"
+                    id="field-priority"
+                    value="1" <?php if ($this->model->get('priority')) {
+                        echo ' checked="checked"';
+                              } ?> />
                 <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_PRIORITY'); ?>
             </label>
         </fieldset>

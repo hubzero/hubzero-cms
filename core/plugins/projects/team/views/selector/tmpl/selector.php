@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -24,7 +24,8 @@ if (count($this->team) > 0) {
             $name = $owner->a_name ? $owner->a_name : $owner->fullname;
             $name = trim($name) ? $name : $owner->invited_email;
 
-            $username = $owner->username ? $owner->username : Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_AUTHOR_UNCONFIRMED');
+            $username = $owner->username ? $owner->username :
+            Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_AUTHOR_UNCONFIRMED');
 
             // Already an author?
             $selected = !empty($this->selected) && in_array($owner->id, $this->selected) ? 1 : 0;
@@ -35,7 +36,11 @@ if (count($this->team) > 0) {
                 echo ' selectedfilter preselected';
                            } ?>">
                 <span class="item-info"><?php echo $org; ?></span>
-                <img width="30" height="30" src="<?php echo $thumb; ?>" class="a-ima" alt="<?php echo htmlentities($name); ?>" />
+                <img width="30"
+                    height="30"
+                    src="<?php echo $thumb; ?>"
+                    class="a-ima"
+                    alt="<?php echo htmlentities($name); ?>"/>
                 <span class="a-name"><?php echo $name; ?>
                     <span class="a-username">(<?php echo $username; ?>)</span>
                 </span>

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -54,7 +54,9 @@ $i = 1;
                 </div>
                 <p class="submitarea">
                     <input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_ROLE'); ?>" />
-                    <input type="reset" id="cancel-action" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?>" />
+                    <input type="reset"
+                        id="cancel-action"
+                        value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?>"/>
                 </p>
             </fieldset>
         </form>

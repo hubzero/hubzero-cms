@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -22,7 +22,11 @@ if ($this->file->get('remote') && $this->file->get('name') != $this->file->get('
     $append = \Components\Projects\Helpers\Html::getAppendedNumber($this->file->get('name'));
 
     if ($append > 0) :
-        $name = \Components\Projects\Helpers\Html::fixFileName($this->file->get('remoteTitle'), ' (' . $append . ')', $this->file->get('ext'));
+        $name = \Components\Projects\Helpers\Html::fixFileName(
+            $this->file->get('remoteTitle'),
+            ' (' . $append . ')',
+            $this->file->get('ext')
+        );
     endif;
 endif;
 
@@ -33,7 +37,9 @@ if (in_array($this->file->get('ext'), $native)) :
 endif;
 ?>
     <h4>
-        <img class="file-type file-type-<?php echo $this->file->get('ext'); ?>" src="<?php echo $this->file->getIcon(); ?>" alt="<?php echo $this->escape($this->file->get('ext')); ?>" />
+        <img class="file-type file-type-<?php echo $this->file->get('ext'); ?>"
+            src="<?php echo $this->file->getIcon(); ?>"
+            alt="<?php echo $this->escape($this->file->get('ext')); ?>"/>
         <?php echo $this->escape($name); ?>
     </h4>
 
@@ -68,7 +74,8 @@ endif;
 
     <?php if ($this->file->getPreview($this->model, $this->file->get('hash'), 'fullPath')) : ?>
         <div id="preview-image">
-            <img src="<?php echo $this->file->getPreview($this->model, $this->file->get('hash'), 'url'); ?>" alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
+            <img src="<?php echo $this->file->getPreview($this->model, $this->file->get('hash'), 'url'); ?>"
+                alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>"/>
         </div>
     <?php elseif ($this->file->get('content')) : ?>
         <pre><?php echo $this->file->get('content'); ?></pre>

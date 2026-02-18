@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -79,14 +79,25 @@ $base = $this->offering->link() . '&active=announcements';
                             <?php if ($manager) { ?>
                                 <dd class="entry-options">
                                     <?php if (User::get('id') == $row->get('created_by')) { ?>
+                                        <?php
+                                        $editUrl = Route::url(
+                                            $base . '&action=edit&entry=' . $row->get('id')
+                                        );
+                                        $deleteUrl = Route::url(
+                                            $base . '&action=delete&entry=' . $row->get('id')
+                                        );
+                                        $confirmTxt = Lang::txt(
+                                            'PLG_COURSES_ANNOUNCEMENTS_CONFIRM_DELETE'
+                                        );
+                                        ?>
                                         <a class="icon-edit edit"
-                                            href="<?php echo Route::url($base . '&action=edit&entry=' . $row->get('id')); ?>"
+                                            href="<?php echo $editUrl; ?>"
                                             title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>">
                                             <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
                                         </a>
                                         <a class="icon-delete delete"
-                                            href="<?php echo Route::url($base . '&action=delete&entry=' . $row->get('id')); ?>"
-                                            data-confirm="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>"
+                                            href="<?php echo $deleteUrl; ?>"
+                                            data-confirm="<?php echo $confirmTxt; ?>"
                                             title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>">
                                             <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>
                                         </a>

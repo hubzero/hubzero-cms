@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Publications\Citations;
 
 use Hubzero\Plugin\Plugin;

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +20,9 @@ $passing = (isset($passing[$this->member->get('id')])) ? $passing[$this->member-
 $this->course->offering()->gradebook()->hasEarnedBadge($this->member->get('id'));
 $student = $this->member;
 
-$gradePolicy = new \Components\Courses\Models\GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
+$gradePolicyId = $this->course->offering()->section()->get('grade_policy_id');
+$sectionId = $this->course->offering()->section()->get('id');
+$gradePolicy = new \Components\Courses\Models\GradePolicies($gradePolicyId, $sectionId);
 
 $details = array();
 $details['quizzes_total'] = 0;
@@ -91,14 +93,23 @@ foreach ($assets as $asset) {
         }
 
         // Get the date the grade was entered
-        if (isset($grades[$this->member->get('id')]['assets'][$asset->id]) && !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['date'])) {
-            $date = Date::of($grades[$this->member->get('id')]['assets'][$asset->id]['date'])->format('r');
+        $memberId = $this->member->get('id');
+        $assetGrade = isset($grades[$memberId]['assets'][$asset->id])
+            ? $grades[$memberId]['assets'][$asset->id]
+            : null;
+        if ($assetGrade && !is_null($assetGrade['date'])) {
+            $date = Date::of($assetGrade['date'])->format('r');
         } else {
             $date = "N/A";
         }
 
         if (isset($asset->unit_id) && $asset->unit_id) {
-            $details['forms'][$unit->get('id')][] = array('title' => $title, 'score' => $score, 'date' => $date, 'url' => $url);
+            $details['forms'][$unit->get('id')][] = array(
+                'title' => $title,
+                'score' => $score,
+                'date' => $date,
+                'url' => $url,
+            );
         } else {
             $details['aux'][] = array('title' => $asset->title, 'score' => $score, 'date' => $date);
         }
@@ -107,12 +118,20 @@ foreach ($assets as $asset) {
     }
 
     if ($isValidForm) {
-        $dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
+        $dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb(
+            $crumb,
+            $this->course->offering()->section()->get('id')
+        );
 
         switch ($dep->getState()) {
             // Form isn't available yet
             case 'pending':
-                $details['forms'][$unit->get('id')][] = array('title' => $title, 'score' => 'Not yet open', 'date' => 'N/A', 'url' => $url);
+                $details['forms'][$unit->get('id')][] = array(
+                    'title' => $title,
+                    'score' => 'Not yet open',
+                    'date' => 'N/A',
+                    'url' => $url,
+                );
                 break;
 
             // Form availability has expired
@@ -138,7 +157,12 @@ foreach ($assets as $asset) {
                 // They have completed this form, therefore set increment_count_taken equal to true
                 $increment_count_taken = true;
 
-                $details['forms'][$unit->get('id')][] = array('title' => $title, 'score' => $score, 'date' => $date, 'url' => $url);
+                $details['forms'][$unit->get('id')][] = array(
+                    'title' => $title,
+                    'score' => $score,
+                    'date' => $date,
+                    'url' => $url,
+                );
                 break;
 
             // Form is still active
@@ -169,7 +193,8 @@ foreach ($assets as $asset) {
                     // For sanities sake - they have NOT completed the form yet!
                     $increment_count_taken = false;
 
-                    // If there's an override in the gradebook, go ahead and use that, whether or not they've even taken the form yet
+                    // If there's an override in the gradebook, go ahead and use that,
+                    // whether or not they've even taken the form yet
                     if (
                         $grades[$this->member->get('id')]['assets'][$asset->id]['override']
                         && !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['score'])
@@ -179,7 +204,12 @@ foreach ($assets as $asset) {
                     }
                 }
 
-                $details['forms'][$unit->get('id')][] = array('title' => $title, 'score' => $score, 'date' => $date, 'url' => $url);
+                $details['forms'][$unit->get('id')][] = array(
+                    'title' => $title,
+                    'score' => $score,
+                    'date' => $date,
+                    'url' => $url,
+                );
                 break;
         }
     }
@@ -224,7 +254,9 @@ $units = $this->course->offering()->units();
 $num_units = $units->total();
 $index = 1;
 $current_i = 0;
-$finished = $this->course->offering()->gradebook()->isEligibleForRecognition($this->member->get('id')) ? ' finished' : '';
+$eligible = $this->course->offering()->gradebook()
+    ->isEligibleForRecognition($this->member->get('id'));
+$finished = $eligible ? ' finished' : '';
 
 // Build the progress timeline bar
 $progress_timeline = "<div class=\"progress-timeline length_{$num_units}\">";
@@ -236,14 +268,22 @@ if (count($units) > 0) {
         $complete = isset($progress[$this->member->get('id')][$unit->get('id')]['percentage_complete'])
             ? $progress[$this->member->get('id')][$unit->get('id')]['percentage_complete']
             : 0;
-        $past = ((!is_null($unit->get('publish_up')) && $unit->get('publish_up') != '0000-00-00 00:00:00' && $unit->started()) || $complete > 0) ? ' past' : '';
+        $publishUp = $unit->get('publish_up');
+        $hasPublishUp = !is_null($publishUp)
+            && $publishUp != '0000-00-00 00:00:00';
+        $past = (($hasPublishUp && $unit->started())
+            || $complete > 0) ? ' past' : '';
         $margin = 100 - $complete;
         $done = ($complete == 100) ? ' complete' : '';
         $current = '';
 
-        if ((!is_null($unit->get('publish_up')) && $unit->get('publish_up') != '0000-00-00 00:00:00' && $unit->isAvailable()) || $complete > 0) {
+        if (
+            ($hasPublishUp && $unit->isAvailable())
+            || $complete > 0
+        ) {
             $current = ' current';
-            // Set the index for the currently available unit (this will result in the latter of the available units if multiple are available)
+            // Set the index for the currently available unit
+            // (this will result in the latter of the available units if multiple are available)
             $current_i = $index;
         }
 
@@ -258,7 +298,11 @@ if (count($units) > 0) {
         $progress_timeline .= '<div class="person"></div>';
         $progress_timeline .= '<div class="unit-inner' . $first . $last . $past . '">';
         $progress_timeline .= '<div class="unit-fill">';
-        $progress_timeline .= '<div class="unit-fill-inner' . $done . ' unit-fill-inner' . $unit->get('id') . '"></div>';
+        $progress_timeline .= '<div class="unit-fill-inner'
+            . $done
+            . ' unit-fill-inner'
+            . $unit->get('id')
+            . '"></div>';
         $progress_timeline .= '</div>';
         $progress_timeline .= "Unit {$index}";
         $progress_timeline .= '</div></div>';
@@ -282,7 +326,14 @@ $progress_timeline .= '</div>';
     <?php endif; ?>
 
     <h3>
-        <?php echo (Request::getInt('id', false)) ? User::getInstance($this->member->get('user_id'))->get('name') . ':' : '' ?>
+        <?php
+        $userName = User::getInstance(
+            $this->member->get('user_id')
+        )->get('name');
+        echo (Request::getInt('id', false))
+            ? $userName . ':'
+            : '';
+        ?>
         <?php echo $h3 ?>
     </h3>
     <h4><?php echo Lang::txt('Unit %d of %d', $current_i, $num_units) ?></h4>
@@ -297,34 +348,44 @@ $progress_timeline .= '</div>';
             <?php if ($student->badge()->get('action') == 'accept') : ?>
                 <h3>Congratulations! You've got the badge!</h3>
                 <p>
-                    Thanks for working hard and claiming your badge. We hope you have the chance to earn another one soon!
+                    Thanks for working hard and claiming your badge
+                        . We hope you have the chance to earn another one soon!
                 </p>
+                <?php $badgesUrl = $this->course->offering()->section()->badge()->getBadgesUrl(); ?>
                 <p>
                     <a class="claim-item"
-                        href="<?php echo $this->course->offering()->section()->badge()->getBadgesUrl() ?>">View your badges!</a>
+                        href="<?php echo $badgesUrl ?>">
+                        View your badges!</a>
                 </p>
             <?php elseif ($student->badge()->get('action') == 'deny') : ?>
                 <h3>Congratulations! You earned the badge!</h3>
                 <p>
-                    You chose to deny the badge. That's not a problem. If you change your mind, you can always go back and claim
+                    You chose to deny the badge
+                        . That's not a problem. If you change your mind, you can always go back and claim
                     it!
                 </p>
+                <?php $deniedUrl = $this->course->offering()->section()->badge()->getDeniedUrl(); ?>
                 <p>
                     <a class="claim-item"
-                        href="<?php echo $this->course->offering()->section()->badge()->getDeniedUrl() ?>">View denied
-                        badges</a>
+                        href="<?php echo $deniedUrl ?>">
+                        View denied badges</a>
                 </p>
             <?php else : ?>
                 <h3>Congratulations! You've earned the badge...and you deserve it!</h3>
+                <?php $courseTitle = $this->course->get('title'); ?>
                 <p>
-                    You've completed all of the requirements of <?php echo $this->course->get('title') ?>, qualifying you to
-                    receive
+                    You've completed all of the requirements of
+                    <?php echo $courseTitle ?>, qualifying you to receive
                     a special badge.
                 </p>
-                <?php if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
+                <?php
+                $claimUrl = $this->course->offering()->section()->badge()->getClaimUrl();
+                ?>
+                <?php if ($claimUrl) : ?>
                     <p>
                         <a class="claim-item"
-                            href="<?php echo $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
+                            href="<?php echo $claimUrl ?>">
+                            Claim your badge!</a>
                     </p>
                 <?php else : ?>
                     <p>
@@ -442,7 +503,11 @@ $progress_timeline .= '</div>';
                                     <?php
                                     if (is_numeric($form['score']) && $form['score'] < 60) {
                                         $class = 'stop';
-                                    } elseif (is_numeric($form['score']) && $form['score'] >= 60 && $form['score'] < 70) {
+                                    } elseif (
+                                        is_numeric($form['score'])
+                                        && $form['score'] >= 60
+                                        && $form['score'] < 70
+                                    ) {
                                         $class = 'yield';
                                     } elseif (is_numeric($form['score']) && $form['score'] >= 70) {
                                         $class = 'go';
@@ -528,7 +593,8 @@ $progress_timeline .= '</div>';
             <p>
                 Upon successful completion of this course, you will be awarded a special
                 <?php echo $this->course->get('title') ?> badge.
-                This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges
+                This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open
+                Badges
                 Backpack.
                 To learn more about Purdue's Passport initiative, please visit the
                 <a href="https://www.openpassport.org/Login" rel="nofollow external">Open Passport website</a>.

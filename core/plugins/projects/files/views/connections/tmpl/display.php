@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -23,9 +23,15 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
 
 <ul id="page_options" class="layout">
     <li>
-        <a class="layout-control layout-large-icon first<?php echo ($layout == 'large-icon') ? ' active' : ''; ?>" data-class="large-icon" href="#"></a>
-        <a class="layout-control layout-small-icon<?php echo ($layout == 'small-icon') ? ' active' : ''; ?>" data-class="small-icon" href="#"></a>
-        <a class="layout-control layout-list last<?php echo ($layout == 'list') ? ' active' : ''; ?>" data-class="list" href="#"></a>
+        <a class="layout-control layout-large-icon first<?php echo ($layout == 'large-icon') ? ' active' : ''; ?>"
+            data-class="large-icon"
+            href="#"></a>
+        <a class="layout-control layout-small-icon<?php echo ($layout == 'small-icon') ? ' active' : ''; ?>"
+            data-class="small-icon"
+            href="#"></a>
+        <a class="layout-control layout-list last<?php echo ($layout == 'list') ? ' active' : ''; ?>"
+            data-class="list"
+            href="#"></a>
     </li>
 </ul>
 
@@ -40,8 +46,15 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
     <?php foreach ($this->connections as $connection) : ?>
         <?php $imgRel = '/plugins/filesystem/' . $connection->provider->alias . '/assets/img/icon.png'; ?>
         <?php $img = (is_file(PATH_APP . DS . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel; ?>
+        <?php
+        $browseUrl = Route::url(
+            $this->model->link('files')
+            . '&action=browse&connection=' . $connection->id
+        );
+        ?>
         <div class="connection-wrap <?php echo $layout; ?>">
-            <a class="connection" href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $connection->id); ?>">
+            <a class="connection"
+                href="<?php echo $browseUrl; ?>">
                 <?php if (!$connection->isShared()) : ?>
                     <?php $hasPrivate = true; ?>
                     <div class="private-connection"></div>
@@ -49,27 +62,70 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
                 <img src="<?php echo $img; ?>" alt="" />
                 <div class="name"><?php echo $connection->name; ?></div>
             </a>
+            <?php
+            $filesLink = $this->model->link('files');
+            $refreshUrl = Route::url(
+                $filesLink . '&action=refreshaccess&connection='
+                . $connection->id
+            );
+            $refreshPathUrl = Route::url(
+                $filesLink . '&action=refreshpath&connection='
+                . $connection->id
+            );
+            $editUrl = Route::url(
+                $filesLink . '&action=editconnection&connection='
+                . $connection->id
+            );
+            $deleteUrl = Route::url(
+                $filesLink . '&action=deleteconnection&connection='
+                . $connection->id
+            );
+            $refreshTitle = Lang::txt(
+                'Refresh Connection Credentials'
+            );
+            $refreshPathTitle = Lang::txt(
+                'Refresh Connection Path'
+            );
+            $editTitle = Lang::txt('Edit Connection');
+            $deleteTitle = Lang::txt('Delete Connection');
+            $deleteConfirm = Lang::txt(
+                'Are you sure you want to delete this connection?'
+            );
+            ?>
             <div class="connection-actions">
-                <a class="connection-refresh icon-refresh" title="<?php echo Lang::txt('Refresh Connection Credentials'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=refreshaccess&connection=' . $connection->id); ?>">
-                <a class="connection-refreshpath icon-folder" title="<?php echo Lang::txt('Refresh Connection Path'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=refreshpath&connection=' . $connection->id); ?>">
-                <a class="connection-edit icon-edit" title="<?php echo Lang::txt('Edit Connection'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id); ?>">
+                <a class="connection-refresh icon-refresh"
+                    title="<?php echo $refreshTitle; ?>"
+                    href="<?php echo $refreshUrl; ?>">
+                <a class="connection-refreshpath icon-folder"
+                    title="<?php echo $refreshPathTitle; ?>"
+                    href="<?php echo $refreshPathUrl; ?>">
+                <a class="connection-edit icon-edit"
+                    title="<?php echo $editTitle; ?>"
+                    href="<?php echo $editUrl; ?>">
                     <?php echo Lang::txt('Edit'); ?>
                 </a>
-                <a class="connection-delete icon-delete" title="<?php echo Lang::txt('Delete Connection'); ?>" data-confirm="<?php echo Lang::txt('Are you sure you want to delete this connection?'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=deleteconnection&connection=' . $connection->id); ?>">
+                <a class="connection-delete icon-delete"
+                    title="<?php echo $deleteTitle; ?>"
+                    data-confirm="<?php echo $deleteConfirm; ?>"
+                    href="<?php echo $deleteUrl; ?>">
                     <?php echo Lang::txt('Delete'); ?>
                 </a>
             </div>
         </div>
     <?php endforeach; ?>
 
-    <form class="connection-wrap new-connection <?php echo $layout; ?>" action="<?php echo Route::url($this->model->link('files') . '&action=newconnection'); ?>" method="post">
+    <form class="connection-wrap new-connection <?php echo $layout; ?>"
+        action="<?php echo Route::url($this->model->link('files') . '&action=newconnection'); ?>"
+        method="post">
         <fieldset class="connection">
             <div class="new"></div>
             <div class="name">
                 <select name="provider_id" class="connection-type">
                     <option value=""><?php echo Lang::txt('New Connection'); ?></option>
                     <?php foreach (\Components\Projects\Models\Orm\Provider::all() as $provider) : ?>
-                        <option value="<?php echo $provider->id; ?>"><?php echo $this->escape($provider->name); ?></option>
+                        <option value="<?php echo $provider->id; ?>">
+                            <?php echo $this->escape($provider->name); ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
             </div>

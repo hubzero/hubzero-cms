@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -53,9 +53,14 @@ $roles = [
             echo 'active';
                                } ?>">
             <label for="membership_sync">
-                <input class="option" data-action="syncall" name="sync_group" id="membership_sync" type="radio" value="1" <?php if ($this->model->get('sync_group') != 0) {
-                    echo ' checked="checked"';
-                                                                                                                          } ?> />
+                <input class="option"
+                    data-action="syncall"
+                    name="sync_group"
+                    id="membership_sync"
+                    type="radio"
+                    value="1" <?php if ($this->model->get('sync_group') != 0) {
+                        echo ' checked="checked"';
+                              } ?> />
                 <span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SYNC'); ?></span>
             </label>
 
@@ -72,7 +77,12 @@ $roles = [
 
             <div class="group-action group-action-syncall">
                 <?php if (count($notteam)) { ?>
-                    <p><input type="submit" class="btn option" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_SYNC'); ?>" /></p>
+                    <?php $syncLabel = Lang::txt('PLG_PROJECTS_TEAM_GROUP_SYNC'); ?>
+                    <p>
+                        <input type="submit"
+                            class="btn option"
+                            value="<?php echo $syncLabel; ?>" />
+                    </p>
                 <?php } else { ?>
                     <p class="icon-success"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_MEMBERS_TEAM'); ?></p>
                 <?php } ?>
@@ -83,15 +93,35 @@ $roles = [
             echo 'active';
                                } ?>">
             <label for="membership_custom">
-                <input class="option" data-action="selective" name="sync_group" id="membership_custom" type="radio" value="0" <?php if ($this->model->get('sync_group') == 0) {
-                    echo ' checked="checked"';
-                                                                                                                              } ?> />
+                <input class="option"
+                    data-action="selective"
+                    name="sync_group"
+                    id="membership_custom"
+                    type="radio"
+                    value="0" <?php if ($this->model->get('sync_group') == 0) {
+                        echo ' checked="checked"';
+                              } ?> />
                 <span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SELECT'); ?></span>
             </label>
 
             <div class="group-action group-action-selective">
                 <?php if (count($notteam) >= 0) { ?>
-                    <p><a class="btn icon-group" id="choosemember" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&action=choose'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_SELECT'); ?></a></p>
+                    <?php
+                    $chooseUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&task=' . $this->task
+                        . '&alias=' . $this->model->get('alias')
+                        . '&active=team&action=choose'
+                    );
+                    $selectLabel = Lang::txt('PLG_PROJECTS_TEAM_GROUP_SELECT');
+                    ?>
+                    <p>
+                        <a class="btn icon-group"
+                            id="choosemember"
+                            href="<?php echo $chooseUrl; ?>">
+                            <?php echo $selectLabel; ?>
+                        </a>
+                    </p>
                 <?php } else { ?>
                     <p class="icon-info"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_MEMBERS_TEAM'); ?></p>
                 <?php } ?>
@@ -102,7 +132,11 @@ $roles = [
 
 <fieldset>
     <?php if (!$this->setup) : ?>
-        <legend><?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD_NEW_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AS') . ':'; ?></legend>
+        <?php
+        $addMembersLegend = Lang::txt('PLG_PROJECTS_TEAM_ADD_NEW_MEMBERS')
+            . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AS') . ':';
+        ?>
+        <legend><?php echo $addMembersLegend; ?></legend>
     <?php else : ?>
         <legend><?php echo Lang::txt('PLG_PROJECTS_TEAM_PER_USER'); ?>:</legend>
     <?php endif; ?>
@@ -151,17 +185,35 @@ $roles = [
                     <input type="text" name="newgroup" id="newgroup" value="" size="35" maxlength="200" />
             <?php } ?>
         </label>
-        <input type="submit" id="team-save" value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD'); ?>" class="btn yesbtn" />
+        <input type="submit"
+            id="team-save"
+            value="<?php echo Lang::txt('PLG_PROJECTS_TEAM_ADD'); ?>"
+            class="btn yesbtn"/>
     </div>
 </fieldset>
 
 <div id="team-spacer">
     <div class="list-editing">
         <p>
-            <span><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS')); ?>: <span class="prominent"><?php echo $this->total; ?></span></span>
+            <?php $totalLabel = ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS')); ?>
+            <span>
+                <?php echo $totalLabel; ?>:
+                <span class="prominent"><?php echo $this->total; ?></span>
+            </span>
             <span id="team-manage" class="manage-options hidden">
                 <span class="faded"><?php echo Lang::txt('PLG_PROJECTS_TEAM_EDIT_ROLE'); ?></span>
-                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=team&action=delete'); ?>" class="manage" id="t-delete" ><?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE'); ?></a>
+                <?php
+                $deleteUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&alias=' . $this->model->get('alias')
+                    . '&active=team&action=delete'
+                );
+                ?>
+                <a href="<?php echo $deleteUrl; ?>"
+                    class="manage"
+                    id="t-delete">
+                    <?php echo Lang::txt('PLG_PROJECTS_TEAM_DELETE'); ?>
+                </a>
             </span>
         </p>
     </div>
@@ -175,21 +227,46 @@ $roles = [
             <th class="th_user i_user <?php if ($this->filters['sortby'] == 'name') {
                 echo 'activesort';
                                       } ?>">
-                <a class="re_sort" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=name&sortdir=' . $sortbyDir); ?>">
+                <?php
+                $sortNameUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&task=' . $this->task
+                    . '&alias=' . $this->model->get('alias')
+                    . '&active=team&sortby=name&sortdir=' . $sortbyDir
+                );
+                ?>
+                <a class="re_sort" href="<?php echo $sortNameUrl; ?>">
                     <?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?>
                 </a>
             </th>
             <th<?php if ($this->filters['sortby'] == 'role') {
                 echo ' class="activesort"';
                } ?>>
-                <a class="re_sort" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=role&sortdir=' . $sortbyDir) . '#teamlist'; ?>">
+                <?php
+                $sortRoleUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&task=' . $this->task
+                    . '&alias=' . $this->model->get('alias')
+                    . '&active=team&sortby=role&sortdir=' . $sortbyDir
+                ) . '#teamlist';
+                ?>
+                <a class="re_sort" href="<?php echo $sortRoleUrl; ?>">
                     <?php echo Lang::txt('PLG_PROJECTS_TEAM_ROLE'); ?>
                 </a>
             </th>
             <th<?php if ($this->filters['sortby'] == 'status') {
                 echo ' class="activesort"';
                } ?>>
-                <a class="re_sort" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=status&sortdir=' . $sortbyDir . '#teamlist'); ?>">
+                <?php
+                $sortStatusUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&task=' . $this->task
+                    . '&alias=' . $this->model->get('alias')
+                    . '&active=team&sortby=status&sortdir='
+                    . $sortbyDir . '#teamlist'
+                );
+                ?>
+                <a class="re_sort" href="<?php echo $sortStatusUrl; ?>">
                     <?php echo Lang::txt('PLG_PROJECTS_TEAM_JOINED'); ?>
                 </a>
             </th>
@@ -198,8 +275,18 @@ $roles = [
             <th class="i_group <?php if ($this->filters['sortby'] == 'group') {
                 echo 'activesort';
                                } ?>">
+                <?php
+                $sortGroupUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&task=' . $this->task
+                    . '&alias=' . $this->model->get('alias')
+                    . '&active=team&sortby=group&sortdir='
+                    . $sortbyDir . '#teamlist'
+                );
+                ?>
                 <?php if ($this->count_groups > 0) {
-                    ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=group&sortdir=' . $sortbyDir . '#teamlist'); ?>" class="re_sort" ><?php
+                    ?><a href="<?php echo $sortGroupUrl; ?>"
+                        class="re_sort"><?php
                 } ?>
                     <?php echo Lang::txt('PLG_PROJECTS_TEAM_ADDED_AS_PART_OF_GROUP'); ?>
                 <?php if ($this->count_groups > 0) {
@@ -231,7 +318,10 @@ $roles = [
             }
 
             $disabled = false;
-            if ($owner->native && (($group && $this->model->get('sync_group') && in_array($owner->userid, $members)) || ($this->managers_count == 1 && $owner->role == 1))) {
+            if (
+                $owner->native && (($group && $this->model->get('sync_group') && in_array($owner->userid, $members)) ||
+                ($this->managers_count == 1 && $owner->role == 1))
+            ) {
                 $disabled = true;
             }
 
@@ -244,23 +334,33 @@ $roles = [
             ?>
             <tr class="mline <?php $cls; ?>" id="tr_<?php echo $owner->id; ?>">
                 <td>
-                    <input type="checkbox" value="<?php echo $owner->id; ?>" name="owner[]" class="checkmember <?php if ($owner->groupid) {
-                        echo 'group:' . $owner->groupid;
-                                                  } ?>" data-group="<?php echo $owner->groupid; ?>" <?php if ($disabled) {
-                                                  echo 'disabled="disabled"';
-                                                  } ?> />
+                    <input type="checkbox"
+                        value="<?php echo $owner->id; ?>"
+                        name="owner[]"
+                        class="checkmember <?php if ($owner->groupid) {
+                            echo 'group:' . $owner->groupid;
+                                           } ?>" data-group="<?php echo $owner->groupid; ?>" <?php if ($disabled) {
+                                           echo 'disabled="disabled"';
+                                           } ?> />
                 </td>
                 <td class="imagebox">
                     <span class="user-img-wrap">
-                        <img src="<?php echo $profile->picture(); ?>" alt="<?php echo $this->escape($owner->fullname); ?>" />
+                        <img src="<?php echo $profile->picture(); ?>"
+                            alt="<?php echo $this->escape($owner->fullname); ?>"/>
                     </span>
                 </td>
                 <td>
-                    <?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span>
+                    <?php echo $owner->fullname; ?>
+                    <span class="block mini short prominent">
+                        <?php echo $username; ?>
+                    </span>
                 </td>
                 <td class="mini nobsp">
                     <?php if (!$creator) { ?>
-                        <span data-owner="<?php echo $owner->id; ?>" data-role="<?php echo $owner->role; ?>" class="frole owner:<?php echo $owner->id; ?> role:<?php echo $owner->role; ?>" id="r<?php echo $owner->id; ?>">
+                        <span data-owner="<?php echo $owner->id; ?>"
+                            data-role="<?php echo $owner->role; ?>"
+                            class="frole owner:<?php echo $owner->id; ?> role:<?php echo $owner->role; ?>"
+                            id="r<?php echo $owner->id; ?>">
                     <?php } ?>
                     <?php echo $role; ?>
                     <?php if (!$creator) { ?>
@@ -282,13 +382,23 @@ $roles = [
                     <?php if ($owner->status == 3) : ?>
                         <a id="<?php echo 'form-' . $owner->id;?>"
                             href="<?php echo Route::url('index.php?option=com_projects&alias=' .
-                                $this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>"
+                                $this->model->get('alias')
+                                    . '&task=team&action=approvemembership&owner='
+                                    . $owner->userid
+                                    . '&'
+                                    . Session::getFormToken()
+                                    . '=1');?>"
                             class="btn btn-success">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
                         </a>
                         <a id="<?php echo 'form-' . $owner->id;?>"
                             href="<?php echo Route::url('index.php?option=com_projects&alias=' .
-                                $this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid . '&' . Session::getFormToken() . '=1');?>"
+                                $this->model->get('alias')
+                                    . '&task=team&action=denymembership&owner='
+                                    . $owner->userid
+                                    . '&'
+                                    . Session::getFormToken()
+                                    . '=1');?>"
                             class="btn btn-danger modal">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
                         </a>
@@ -306,15 +416,39 @@ $roles = [
 </table>
 <div class="nav_pager">
     <p>
+        <?php
+        $prevUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&alias=' . $this->model->get('alias')
+            . '&task=' . $this->task
+            . '&active=team&sortby=' . $this->filters['sortby']
+            . '&start=' . $prev_start
+            . '&sortdir=' . $this->filters['sortdir']
+        );
+        $nextUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&alias=' . $this->model->get('alias')
+            . '&task=' . $this->task
+            . '&active=team&sortby=' . $this->filters['sortby']
+            . '&start=' . $next_start
+            . '&sortdir=' . $this->filters['sortdir']
+        );
+        $prevLabel = Lang::txt('PLG_PROJECTS_TEAM_PREVIOUS');
+        $nextLabel = Lang::txt('PLG_PROJECTS_TEAM_NEXT');
+        ?>
         <?php if ($this->filters['start'] == 0) { ?>
-            <span>&laquo; <?php echo Lang::txt('PLG_PROJECTS_TEAM_PREVIOUS'); ?></span>
+            <span>&laquo; <?php echo $prevLabel; ?></span>
         <?php } else { ?>
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=' . $this->task . '&active=team&sortby=' . $this->filters['sortby'] . '&start=' . $prev_start . '&sortdir=' . $this->filters['sortdir']); ?>">&laquo; <?php echo Lang::txt('PLG_PROJECTS_TEAM_PREVIOUS'); ?></a>
+            <a href="<?php echo $prevUrl; ?>">
+                &laquo; <?php echo $prevLabel; ?>
+            </a>
         <?php } ?><span>&nbsp; | &nbsp;</span>
         <?php if ($whatsleft <= 0 or $this->filters['limit'] == 0) { ?>
-            <span><?php echo Lang::txt('PLG_PROJECTS_TEAM_NEXT'); ?> &raquo;</span>
+            <span><?php echo $nextLabel; ?> &raquo;</span>
         <?php } else { ?>
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=' . $this->task . '&active=team&sortby=' . $this->filters['sortby'] . '&start=' . $next_start . '&sortdir=' . $this->filters['sortdir']); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM_NEXT'); ?> &raquo;</a>
+            <a href="<?php echo $nextUrl; ?>">
+                <?php echo $nextLabel; ?> &raquo;
+            </a>
         <?php } ?>
     </p>
 </div>

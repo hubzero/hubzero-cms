@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,7 +9,6 @@
 namespace Plugins\Resources\About;
 
 use Hubzero\Plugin\Plugin;
-
 use Components\Tags\Models\Tag;
 use Components\Tags\Models\Objct;
 

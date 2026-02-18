@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,7 +47,10 @@ if ($this->model->isTool()) {
         $someDocsHidden = false;
 
         foreach ($children as $child) {
-            if ($child->access == 0 || ($child->access == 1 && !User::isGuest()) || ($child->access == 3 && in_array($this->model->group_owner, $usersgroups))) {
+            if (
+                $child->access == 0 || ($child->access == 1 && !User::isGuest()) || ($child->access == 3 &&
+                in_array($this->model->group_owner, $usersgroups))
+            ) {
                 $i++;
 
                 $ftype = Filesystem::extension($child->path);
@@ -96,7 +97,18 @@ if ($this->model->isTool()) {
                         default:
                             $linkAction = 0;
 
-                            $mediatypes = array('elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter');
+                            $mediatypes = array(
+                                'elink',
+                                'quicktime',
+                                'presentation',
+                                'presentation_audio',
+                                'breeze',
+                                'quiz',
+                                'player',
+                                'video_stream',
+                                'video',
+                                'hubpresenter'
+                            );
                             $downtypes = array('thesis','handout','manual','software_download');
 
                             if (in_array($lt->alias, $downtypes)) {
@@ -158,7 +170,12 @@ if ($this->model->isTool()) {
                     $title = ($child->logical_type) ? $child->logicaltype->type : stripslashes($child->title);
                 }
 
-                $url = \Components\Resources\Helpers\Html::processPath($this->option, $child, $this->model->id, $linkAction);
+                $url = \Components\Resources\Helpers\Html::processPath(
+                    $this->option,
+                    $child,
+                    $this->model->id,
+                    $linkAction
+                );
 
                 //$child->title = str_replace('"', '&quot;', $child->title);
                 //$child->title = str_replace('&amp;', '&', $child->title);
@@ -215,7 +232,21 @@ if ($this->model->isTool()) {
                 }
 
                 $classAttribute = ($class) ? ' class="' . $class . '"' : '';
-                $displayedItem = '<li' . $liclass . '>' . \Components\Resources\Helpers\Html::getFileAttribs($child->path, $base, 0) . '<a' . $classAttribute . ' href="' . $url . '" title="' . $this->escape(stripslashes($child->title)) . '"' . $action . '>' . $title . '</a></li>';
+                $displayedItem = '<li'
+                    . $liclass
+                    . '>'
+                    . \Components\Resources\Helpers\Html::getFileAttribs($child->path, $base, 0)
+                    . '<a'
+                    . $classAttribute
+                    . ' href="'
+                    . $url
+                    . '" title="'
+                    . $this->escape(stripslashes($child->title))
+                    . '"'
+                    . $action
+                    . '>'
+                    . $title
+                    . '</a></li>';
 
                 $displayedDocs[] = $displayedItem;
             } else {
@@ -227,8 +258,17 @@ if ($this->model->isTool()) {
         <?php
         if ($someDocsHidden && User::isGuest()) {
             $url = Request::getString('REQUEST_URI', '', 'server');
+            $loginUrl = Route::url(
+                'index.php?option=com_users&view=login&return='
+                . base64_encode($url)
+            );
             ?>
-            <p class="warning"><?php echo Lang::txt('PLG_RESOURCES_SUPPORTINGDOCS_LOGIN_TO_SEE_MORE', Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))); ?></p>
+            <p class="warning"><?php
+                echo Lang::txt(
+                    'PLG_RESOURCES_SUPPORTINGDOCS_LOGIN_TO_SEE_MORE',
+                    $loginUrl
+                               );
+                                ?></p>
             <?php
         }
         ?>
@@ -255,7 +295,11 @@ if ($this->model->isTool()) {
                 preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->model->fulltxt, $matches, PREG_SET_ORDER);
             if (count($matches) > 0) {
                 foreach ($matches as $match) {
-                    $data[$match[1]] = str_replace('="/site', '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site', $match[2]);
+                    $data[$match[1]] = str_replace(
+                        '="/site',
+                        '="' . substr(PATH_APP, strlen(PATH_ROOT)) . '/site',
+                        $match[2]
+                    );
                 }
             }
                 include_once Component::path('com_resources') . DS . 'models' . DS . 'elements.php';
@@ -269,7 +313,10 @@ if ($this->model->isTool()) {
                 }
                 foreach ($schema->fields as $field) {
                     if (isset($data[$field->name])) {
-                        if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+                        if (
+                            $elements->display($field->type, $data[$field->name]) && isset($field->display) &&
+                            $field->display == $tab
+                        ) {
                             ?>
                                 <h4><?php echo $field->label; ?></h4>
                                 <div class="resource-content">

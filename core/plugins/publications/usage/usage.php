@@ -1,7 +1,4 @@
 <?php
-namespace Plugins\Publications\Usage;
-
-use Hubzero\Plugin\Plugin;
 
 /**
  * @package    hubzero-cms
@@ -9,7 +6,9 @@ use Hubzero\Plugin\Plugin;
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-require_once __DIR__ . '/helpers/publicationUsageHelper.php';
+namespace Plugins\Publications\Usage;
+
+use Hubzero\Plugin\Plugin;
 
 /**
  * Publications Plugin class for usage

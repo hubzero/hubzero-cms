@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -83,7 +83,11 @@ endforeach;
                     <div class="unit-edit-wrap">
                         <form action="<?php echo Request::base(true); ?>/api/courses/unit/save" class="unit-edit-form">
                             <label for="title">Title:</label>
-                            <input class="unit-edit-text" name="title" type="text" value="<?php echo $unit->get('title'); ?>" placeholder="title" />
+                            <input class="unit-edit-text"
+                                name="title"
+                                type="text"
+                                value="<?php echo $unit->get('title'); ?>"
+                                placeholder="title"/>
                             <input class="unit-edit-save" type="submit" value="Save" />
                             <input class="unit-edit-reset" type="reset" value="Cancel" />
                             <input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
@@ -110,8 +114,10 @@ endforeach;
 
             <ul class="asset-group-type-list">
 
-            <?php foreach ($unit->assetgroups() as $agt) : ?>
-                <li class="asset-group-type-item <?php echo ($agt->get('state') == '1') ? 'published' : 'unpublished' ?>">
+            <?php foreach ($unit->assetgroups() as $agt) :
+                $agtStateClass = ($agt->get('state') == '1') ? 'published' : 'unpublished';
+                ?>
+                <li class="asset-group-type-item <?php echo $agtStateClass; ?>">
                     <div class="asset-group-type-item-container">
                         <div class="asset-group-title-container">
                             <div class="asset-group-title title">
@@ -125,15 +131,22 @@ endforeach;
                                 </div>
                                 <div class="label-input-pair">
                                     <label for="state">Published:</label>
+                                    <?php
+                                    $selUnpub = ($agt->get('state') == '0') ? ' selected="selected"' : '';
+                                    $selPub = ($agt->get('state') == '1') ? ' selected="selected"' : '';
+                                    ?>
                                     <select name="state">
-                                        <option value="0"<?php echo ($agt->get('state') == '0') ? ' selected="selected"' : '' ?>>No</option>
-                                        <option value="1"<?php echo ($agt->get('state') == '1') ? ' selected="selected"' : '' ?>>Yes</option>
+                                        <option value="0"<?php echo $selUnpub; ?>>No</option>
+                                        <option value="1"<?php echo $selPub; ?>>Yes</option>
                                     </select>
                                 </div>
                                 <div class="label-input-pair">
                                     <label for="description">Short Description:</label>
-                                    <input type="text" name="description" value="<?php echo $agt->get('description') ?>">
-                                    <span><?php echo Lang::txt('PLG_COURSES_OUTLINE_FIELD_SHORT_DESCRIPTION_HINT'); ?></span>
+                                    <input type="text"
+                                        name="description"
+                                        value="<?php echo $agt->get('description') ?>">
+                                    <?php $descHint = Lang::txt('PLG_COURSES_OUTLINE_FIELD_SHORT_DESCRIPTION_HINT'); ?>
+                                    <span><?php echo $descHint; ?></span>
                                 </div>
                                 <input class="asset-group-title-save" type="submit" value="Save" />
                                 <input class="asset-group-title-cancel" type="reset" value="Cancel" />
@@ -167,11 +180,21 @@ endforeach;
                 }
                 ?>
 
+                                <?php
+                                $agtTitle = $agt->get('title');
+                                $singularTitle = (substr($agtTitle, -3) == 'ies')
+                                    ? strtolower(preg_replace('/ies$/', 'y', $agtTitle))
+                                    : strtolower(rtrim($agtTitle, 's'));
+                                ?>
                                 <li class="add-new asset-group-item">
-                                    Add a new <?php echo (substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's')); ?>
+                                    Add a new <?php echo $singularTitle; ?>
                                     <form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
-                                        <input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
-                                        <input type="hidden" name="offering" value="<?php echo $offering->alias(); ?>" />
+                                        <input type="hidden"
+                                            name="course_id"
+                                            value="<?php echo $course->get('id'); ?>"/>
+                                        <input type="hidden"
+                                            name="offering"
+                                            value="<?php echo $offering->alias(); ?>"/>
                                         <input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
                                         <input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
                                     </form>
@@ -194,7 +217,13 @@ endforeach;
                     if ($a->get('type') == 'video') {
                         $href = Route::url($base . '&active=outline&a=' . $unit->get('alias'));
                     }
-                    echo '<li class="asset-group-item"><a class="asset ' . $a->get('type') . '" href="' . $href . '">' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+                    echo '<li class="asset-group-item"><a class="asset '
+                        . $a->get('type')
+                        . '" href="'
+                        . $href
+                        . '">'
+                        . $this->escape(stripslashes($a->get('title')))
+                        . '</a></li>';
                 }
                 ?>
                 </ul>
@@ -220,5 +249,9 @@ endforeach;
 <div class="session-expired">
     <h3>Session Expired</h3>
     <p>Sorry. Your session has expired. You must login again to proceed.</p>
-    <p><a href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])); ?>" class="btn btn-warning">Login</a>
+    <?php
+    $loginReturn = base64_encode($_SERVER['REQUEST_URI']);
+    $loginUrl = Route::url('index.php?option=com_users&view=login&return=' . $loginReturn);
+    ?>
+    <p><a href="<?php echo $loginUrl; ?>" class="btn btn-warning">Login</a>
 </div>

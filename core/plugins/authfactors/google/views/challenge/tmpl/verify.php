@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
 
 $this->css('enroll');
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +22,10 @@ $base = $this->offering->alias() . '&active=forum';
                     <legend><?php echo Lang::txt('Search for posts'); ?></legend>
 
                     <label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
-                    <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+                    <input type="text"
+                        name="q"
+                        id="entry-search-field"
+                        value="<?php echo $this->escape($this->filters['search']); ?>"/>
 
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -46,7 +49,11 @@ $base = $this->offering->alias() . '&active=forum';
                         if ($this->filters['search'] && $rows->count() > 0) {
                             foreach ($rows as $row) {
                                 $title = $this->escape(stripslashes($row->get('title')));
-                                $title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
+                                $title = preg_replace(
+                                    '#' . $this->filters['search'] . '#i',
+                                    "<span class=\"highlight\">\\0</span>",
+                                    $title
+                                );
 
                                 $name = Lang::txt('JANONYMOUS');
                                 if (!$row->get('anonymous')) {
@@ -70,12 +77,25 @@ $base = $this->offering->alias() . '&active=forum';
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>
                                     <td>
-                                        <a class="entry-title" href="<?php echo Route::url($base . '&unit=' . $this->categories[$row->get('category_id')]->get('alias') . '&b=' . $row->get('thread') . '#c' . $row->get('id')); ?>">
+                                        <?php
+                                        $catAlias = $this->categories[$row->get('category_id')]->get('alias');
+                                        $entryUrl = Route::url(
+                                            $base . '&unit=' . $catAlias
+                                            . '&b=' . $row->get('thread')
+                                            . '#c' . $row->get('id')
+                                        );
+                                        ?>
+                                        <a
+                                            class="entry-title"
+                                            href="<?php echo $entryUrl; ?>"
+                                        >
                                             <span><?php echo $title; ?></span>
                                         </a>
                                         <span class="entry-details">
                                             <span class="entry-date">
-                                                <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
+                                                <time datetime="<?php echo $row->created(); ?>">
+                                                    <?php echo $row->created('date'); ?>
+                                                </time>
                                             </span>
                                             <?php echo Lang::txt('by'); ?>
                                             <span class="entry-author">
@@ -84,15 +104,34 @@ $base = $this->offering->alias() . '&active=forum';
                                         </span>
                                     </td>
                                     <td class="priority-4">
+                                        <?php
+                                        $category = $this->categories[$row->get('category_id')];
+                                        $sectionId = $category->get('section_id');
+                                        $sectionTitle = $this->sections[$sectionId]->get('title');
+                                        $sectionName = $this->escape(
+                                            \Hubzero\Utility\Str::truncate(
+                                                $sectionTitle,
+                                                100,
+                                                array('exact' => true)
+                                            )
+                                        );
+                                        $categoryName = $this->escape(
+                                            \Hubzero\Utility\Str::truncate(
+                                                $category->get('title'),
+                                                100,
+                                                array('exact' => true)
+                                            )
+                                        );
+                                        ?>
                                         <span><?php echo Lang::txt('Section'); ?></span>
                                         <span class="entry-details section-name">
-                                            <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
+                                            <?php echo $sectionName; ?>
                                         </span>
                                     </td>
                                     <td>
                                         <span><?php echo Lang::txt('Category'); ?></span>
                                         <span class="entry-details category-name">
-                                            <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>
+                                            <?php echo $categoryName; ?>
                                         </span>
                                     </td>
                                 </tr>

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -51,7 +51,8 @@ if (count($this->activities) > 0) { ?>
     if ($this->total > $start) {
         ?>
         <p><a
-                href="<?php echo Route::url($this->model->link('feed') . '&limit=' . $limit); ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a>
+                href="<?php echo Route::url($this->model->link('feed') . '&limit=' . $limit); ?>
+                "><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES');?></a>
         </p>
         <?php
     } else {

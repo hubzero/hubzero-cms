@@ -6,9 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
-
 namespace Plugins\Wiki\Parserdefault;
+
 /**
  * Base class for wiki macros
  * Should be extended

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -56,7 +56,8 @@ $this->view('default_menu')
         <?php if ($authorized) { ?>
             <ul class="manager-options">
                 <li>
-                    <a class="icon-delete delete" data-confirm="<?php echo Lang::txt('PLG_COURSES_PAGES_CONFIRM_DELETE'); ?>"
+                    <a class="icon-delete delete"
+                        data-confirm="<?php echo Lang::txt('PLG_COURSES_PAGES_CONFIRM_DELETE'); ?>"
                         href="<?php echo Route::url($base . '&unit=' . $this->page->get('url') . '&b=delete'); ?>"
                         title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>">
                         <?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>

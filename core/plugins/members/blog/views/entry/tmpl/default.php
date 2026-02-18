@@ -1,8 +1,7 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 
 /**
  * @package   hubzero-cms
@@ -105,10 +104,15 @@ $this->css()
                     <?php echo $this->row->visibility('text'); ?>
                 </dd>
                 <dd class="entry-options">
-                    <a class="edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>">
+                    <a class="edit"
+                        href="<?php echo Route::url($this->row->link('edit')); ?>"
+                        title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>">
                         <span><?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?></span>
                     </a>
-                    <a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>">
+                    <a class="delete"
+                        data-confirm="<?php echo Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE'); ?>"
+                        href="<?php echo Route::url($this->row->link('delete')); ?>"
+                        title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>">
                         <span><?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?></span>
                     </a>
                 </dd>
@@ -236,38 +240,78 @@ $this->css()
                     <blockquote cite="c<?php echo $replyto->get('id'); ?>">
                         <p>
                             <strong><?php echo $name; ?></strong>
-                            <span class="comment-date-at"><?php echo Lang::txt('PLG_MEMBERS_BLOG_AT'); ?></span>
-                            <span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
-                            <span class="comment-date-on"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ON'); ?></span>
-                            <span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
+                            <?php $replyCreated = $replyto->get('created'); ?>
+                            <span class="comment-date-at">
+                                <?php echo Lang::txt('PLG_MEMBERS_BLOG_AT'); ?>
+                            </span>
+                            <span class="time">
+                                <time datetime="<?php echo $replyCreated; ?>">
+                                    <?php echo $replyto->created('time'); ?>
+                                </time>
+                            </span>
+                            <span class="comment-date-on">
+                                <?php echo Lang::txt('PLG_MEMBERS_BLOG_ON'); ?>
+                            </span>
+                            <span class="date">
+                                <time datetime="<?php echo $replyCreated; ?>">
+                                    <?php echo $replyto->created('date'); ?>
+                                </time>
+                            </span>
                         </p>
-                        <p><?php echo \Hubzero\Utility\Str::truncate(stripslashes($replyto->get('content')), 300); ?></p>
+                        <p>
+                            <?php
+                            echo \Hubzero\Utility\Str::truncate(
+                                stripslashes($replyto->get('content')),
+                                300
+                            );
+                            ?>
+                        </p>
                     </blockquote>
                         <?php
                     }
                     ?>
                     <label>
-                        <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                        <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS'); ?>:
+                        <span class="required">
+                            <?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+                        </span>
                         <?php
 
                         if (!User::isGuest()) {
-                            echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal no-footer'));
+                            echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' =>
+                            'minimal no-footer'));
                         } else {
                             ?>
                         <p class="warning">
-                            <?php echo Lang::txt('PLG_MEMBERS_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_MEMBERS_BLOG_LOG_IN') . '</a>'); ?>
+                            <?php
+                            $returnUrl = base64_encode(
+                                Route::url($this->row->link() . '#post-comment', false, true)
+                            );
+                            $loginUrl = Route::url(
+                                'index.php?option=com_users&view=login&return=' . $returnUrl
+                            );
+                            $loginLink = '<a href="' . $loginUrl . '">'
+                                . Lang::txt('PLG_MEMBERS_BLOG_LOG_IN') . '</a>';
+                            echo Lang::txt('PLG_MEMBERS_BLOG_MUST_LOG_IN', $loginLink);
+                            ?>
                         </p>
                         <?php } ?>
                     </label>
 
                 <?php if (!User::isGuest()) { ?>
                     <label id="comment-anonymous-label">
-                        <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+                        <input class="option"
+                            type="checkbox"
+                            name="comment[anonymous]"
+                            id="comment-anonymous"
+                            value="1"/>
                         <?php echo Lang::txt('PLG_MEMBERS_BLOG_POST_ANONYMOUS'); ?>
                     </label>
 
                     <p class="submit">
-                        <input type="submit" name="submit" value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SUBMIT'); ?>" />
+                        <input type="submit"
+                            name="submit"
+                            value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SUBMIT'); ?>"/>
                     </p>
                 <?php } ?>
                     <input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />

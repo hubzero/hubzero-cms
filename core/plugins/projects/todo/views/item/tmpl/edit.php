@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -34,13 +34,25 @@ if (!$this->row->get('id') && $this->list && in_array(trim($this->list), $used))
 }
 $class = $color ? 'pin_' . $color : 'pin_grey';
 
-?>
+$todoHeading = $this->row->get('id')
+    ? Lang::txt('PLG_PROJECTS_TODO_EDIT_TODO')
+    : Lang::txt('PLG_PROJECTS_TODO_ADD_TODO');
 
+?>
 <div id="abox-content">
-<h3><?php echo $this->row->get('id') ? Lang::txt('PLG_PROJECTS_TODO_EDIT_TODO') : Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?></h3>
+<h3><?php echo $todoHeading; ?></h3>
 
 <div class="pinboard">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=todo'); ?>" method="post" id="plg-form" >
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&alias=' . $this->model->get('alias')
+    . '&active=todo'
+);
+?>
+    <form action="<?php echo $formAction; ?>"
+        method="post"
+        id="plg-form" >
         <fieldset>
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="id" id="pid" value="<?php echo $this->model->get('id'); ?>" />
@@ -54,14 +66,33 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
             <div id="td-item" class="<?php echo $class; ?>">
                 <span class="pin">&nbsp;</span>
                 <div class="todo-content">
-                    <textarea name="content" rows="10" cols="25" placeholder="<?php echo Lang::txt('PLG_PROJECTS_TODO_TYPE_TODO'); ?>"><?php echo $this->row->get('details') ? stripslashes($this->row->get('details', '')) :  stripslashes($this->row->get('content', '')); ?></textarea>
+<?php
+$todoPlaceholder = Lang::txt(
+    'PLG_PROJECTS_TODO_TYPE_TODO'
+);
+$todoContent = $this->row->get('details')
+    ? stripslashes($this->row->get('details', ''))
+    : stripslashes($this->row->get('content', ''));
+?>
+                    <textarea name="content"
+                        rows="10"
+                        cols="25"
+                        placeholder="<?php echo $todoPlaceholder; ?>"
+                    ><?php echo $todoContent; ?></textarea>
                     <div class="todo-edits">
                         <?php if (count($lists) > 0) { ?>
                         <label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_TODO_CHOOSE_LIST')); ?>:
                             <select name="list">
-                                <option value="none" <?php if ($color == '') {
-                                    echo 'selected="selected"';
-                                                     } ?>><?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TO_NO_LIST'); ?></option>
+                            <?php
+                            $noneSelected = ($color == '')
+                            ? 'selected="selected"' : '';
+                            $noListLabel = Lang::txt(
+                                'PLG_PROJECTS_TODO_ADD_TO_NO_LIST'
+                            );
+                            ?>
+                                <option value="none"
+                                    <?php echo $noneSelected; ?>
+                                ><?php echo $noListLabel; ?></option>
                             <?php foreach ($lists as $list) { ?>
                                 <option value="<?php echo $list->color; ?>" <?php if ($list->color == $color) {
                                     echo 'selected="selected"';
@@ -76,18 +107,33 @@ $class = $color ? 'pin_' . $color : 'pin_grey';
                             <?php foreach ($this->team as $member) { ?>
                                 <?php if ($member->userid && $member->userid != 0) {
                                     $team_ids[] = $member->userid; ?>
-                                <option value="<?php echo $member->userid; ?>" class="nameopt" <?php if ($member->userid == $this->row->get('assigned_to')) {
-                                    echo 'selected="selected"';
-                                               } ?>><?php echo $member->name; ?></option>
+                                <option value="<?php echo $member->userid; ?>"
+                                    class="nameopt" <?php if ($member->userid == $this->row->get('assigned_to')) {
+                                        echo 'selected="selected"';
+                                                    } ?>><?php echo $member->name; ?></option>
                                 <?php } ?>
                             <?php } ?>
                             </select>
                         </label>
-                        <label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_DUE')); ?>
-                            <input type="text" name="due" id="dued" class="duebox" placeholder="mm/dd/yyyy" value="<?php echo $this->row->due() ? Date::of(strtotime($this->row->due('date')))->toLocal('m/d/Y') : ''; ?>" />
+<?php
+$dueLabel = ucfirst(Lang::txt('PLG_PROJECTS_TODO_DUE'));
+$dueValue = $this->row->due()
+    ? Date::of(strtotime($this->row->due('date')))
+        ->toLocal('m/d/Y')
+    : '';
+?>
+                        <label><?php echo $dueLabel; ?>
+                            <input type="text"
+                                name="due"
+                                id="dued"
+                                class="duebox"
+                                placeholder="mm/dd/yyyy"
+                                value="<?php echo $dueValue; ?>" />
                         </label>
                         <p class="submitarea">
-                            <input type="submit" value="<?php echo Lang::txt('PLG_PROJECTS_TODO_SAVE'); ?>" class="btn" />
+                            <input type="submit"
+                                value="<?php echo Lang::txt('PLG_PROJECTS_TODO_SAVE'); ?>"
+                                class="btn"/>
                         </p>
                     </div>
                 </div>

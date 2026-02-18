@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,12 @@ $first = $this->archive->entries(array(
     ->limit(1)
     ->row();
 ?>
-<?php if ($this->group->published == 1 && ($this->canpost || $this->authorized == 'manager' || $this->authorized == 'admin')) { ?>
+<?php
+$canManage = $this->authorized == 'manager' || $this->authorized == 'admin';
+$showOptions = $this->group->published == 1
+    && ($this->canpost || $canManage);
+?>
+<?php if ($showOptions) { ?>
     <ul id="page_options">
     <?php if ($this->canpost) { ?>
         <li>
@@ -99,16 +102,25 @@ $first = $this->archive->entries(array(
                     </span>
                 </dd>
             <?php } ?>
-            <?php if (User::get('id') == $this->row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+            <?php
+            $isAuthor = User::get('id') == $this->row->get('created_by');
+            $canEdit = $isAuthor || $canManage;
+            ?>
+            <?php if ($canEdit) { ?>
                 <dd class="state">
                     <?php echo $this->row->visibility('text'); ?>
                 </dd>
                 <?php if ($this->group->published == 1) { ?>
                     <dd class="entry-options">
-                        <a class="icon-edit edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
+                        <a class="icon-edit edit"
+                            href="<?php echo Route::url($this->row->link('edit')); ?>"
+                            title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
                             <span><?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?></span>
                         </a>
-                        <a class="icon-delete delete" data-confirm="<?php echo Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>">
+                        <a class="icon-delete delete"
+                            data-confirm="<?php echo Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>"
+                            href="<?php echo Route::url($this->row->link('delete')); ?>"
+                            title="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>">
                             <span><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?></span>
                         </a>
                     </dd>
@@ -132,7 +144,11 @@ $first = $this->archive->entries(array(
                     </p>
                     <div class="entry-author-content">
                         <h4>
-                            <?php if (in_array($this->row->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
+                            <?php
+                            $creatorAccess = $this->row->creator->get('access');
+                            $canViewCreator = in_array($creatorAccess, User::getAuthorisedViewLevels());
+                            ?>
+                            <?php if ($canViewCreator) { ?>
                                 <a href="<?php echo Route::url($this->row->creator->link()); ?>">
                                     <?php echo $name; ?>
                                 </a>
@@ -246,41 +262,95 @@ $first = $this->archive->entries(array(
                         if ($replyto->get('id')) {
                             $name = Lang::txt('JANONYMOUS');
                             if (!$replyto->get('anonymous')) {
-                                $name = $this->escape(stripslashes($replyto->creator->get('name', $name)));
-                                if (in_array($replyto->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                    $name = '<a href="' . Route::url($replyto->creator->link()) . '">' . $name . '</a>';
+                                $replyCreatorName = $replyto->creator->get('name', $name);
+                                $name = $this->escape(stripslashes($replyCreatorName));
+                                $replyAccess = $replyto->creator->get('access');
+                                $viewLevels = User::getAuthorisedViewLevels();
+                                if (in_array($replyAccess, $viewLevels)) {
+                                    $creatorUrl = Route::url($replyto->creator->link());
+                                    $name = '<a href="' . $creatorUrl . '">' . $name . '</a>';
                                 }
                             }
+                            $replyCreated = $replyto->get('created');
+                            $replyTime = $replyto->created('time');
+                            $replyDate = $replyto->created('date');
+                            $replyContent = \Hubzero\Utility\Str::truncate(
+                                stripslashes($replyto->get('content')),
+                                300
+                            );
                             ?>
                         <blockquote cite="c<?php echo $replyto->get('id'); ?>">
                             <p>
                                 <strong><?php echo $name; ?></strong>
-                                <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_BLOG_AT'); ?></span>
-                                <span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
-                                <span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?></span>
-                                <span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
+                                <span class="comment-date-at">
+                                    <?php echo Lang::txt('PLG_GROUPS_BLOG_AT'); ?>
+                                </span>
+                                <span class="time">
+                                    <time datetime="<?php echo $replyCreated; ?>">
+                                        <?php echo $replyTime; ?>
+                                    </time>
+                                </span>
+                                <span class="comment-date-on">
+                                    <?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?>
+                                </span>
+                                <span class="date">
+                                    <time datetime="<?php echo $replyCreated; ?>">
+                                        <?php echo $replyDate; ?>
+                                    </time>
+                                </span>
                             </p>
-                            <p><?php echo \Hubzero\Utility\Str::truncate(stripslashes($replyto->get('content')), 300); ?></p>
+                            <p><?php echo $replyContent; ?></p>
                         </blockquote>
                         <?php } ?>
 
                         <?php if (!User::isGuest()) { ?>
+                            <?php
+                            $commentType = ($replyto->get('id')) ? 'reply' : 'comments';
+                            $requiredTxt = Lang::txt('PLG_GROUPS_BLOG_REQUIRED');
+                            $editorHtml = $this->editor(
+                                'comment[content]',
+                                '',
+                                40,
+                                15,
+                                'comment_content',
+                                array('class' => 'minimal no-footer')
+                            );
+                            ?>
                             <label for="comment_content">
-                                Your <?php echo ($replyto->get('id')) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo Lang::txt('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
-                                <?php echo $this->editor('comment[content]', '', 40, 15, 'comment_content', array('class' => 'minimal no-footer')); ?>
+                                Your <?php echo $commentType; ?>:
+                                <span class="required">
+                                    <?php echo $requiredTxt; ?>
+                                </span>
+                                <?php echo $editorHtml; ?>
                             </label>
 
                             <label id="comment-anonymous-label">
-                                <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+                                <input class="option"
+                                    type="checkbox"
+                                    name="comment[anonymous]"
+                                    id="comment-anonymous"
+                                    value="1"/>
                                 <?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
                             </label>
 
                             <p class="submit">
-                                <input type="submit" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SUBMIT'); ?>" />
+                                <input type="submit"
+                                    name="submit"
+                                    value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SUBMIT'); ?>"/>
                             </p>
                         <?php } else { ?>
+                            <?php
+                            $returnUrl = base64_encode(
+                                Route::url($this->row->link() . '#post-comment', false, true)
+                            );
+                            $loginUrl = Route::url(
+                                'index.php?option=com_users&view=login&return=' . $returnUrl
+                            );
+                            $loginTxt = Lang::txt('PLG_GROUPS_BLOG_LOG_IN');
+                            $loginLink = '<a href="' . $loginUrl . '">' . $loginTxt . '</a>';
+                            ?>
                             <p class="warning">
-                                <?php echo Lang::txt('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_GROUPS_BLOG_LOG_IN') . '</a>'); ?>
+                                <?php echo Lang::txt('PLG_GROUPS_BLOG_MUST_LOG_IN', $loginLink); ?>
                             </p>
                         <?php } ?>
 

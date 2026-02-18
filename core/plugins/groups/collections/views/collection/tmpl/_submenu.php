@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                 echo ' class="active"';
                } ?>>
                 <a class="collections count" href="<?php echo Route::url($base . '&scope=all'); ?>">
-                    <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_STATS_COLLECTIONS', $this->collections); ?></span>
+                    <span><?php
+                        echo Lang::txt('PLG_GROUPS_COLLECTIONS_STATS_COLLECTIONS', $this->collections);
+                    ?></span>
                 </a>
             </li>
             <li<?php if ($this->active == 'posts') {
@@ -41,7 +41,13 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     echo ' class="active"';
                    } ?>>
                     <a class="following count" href="<?php echo Route::url($base . '&scope=following'); ?>">
-                        <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_STATS_FOLLOWING', '<strong>' . $this->following . '</strong>'); ?></span>
+                        <?php
+                        $followingTxt = Lang::txt(
+                            'PLG_GROUPS_COLLECTIONS_STATS_FOLLOWING',
+                            '<strong>' . $this->following . '</strong>'
+                        );
+                        ?>
+                        <span><?php echo $followingTxt; ?></span>
                     </a>
                 </li>
             <?php } ?>

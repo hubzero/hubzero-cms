@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,7 +9,6 @@
 namespace Plugins\Filesystem\Github;
 
 use Hubzero\Plugin\Plugin;
-
 use Potherca\Flysystem\Github\Api;
 use Potherca\Flysystem\Github\GithubAdapter;
 use Potherca\Flysystem\Github\Settings;

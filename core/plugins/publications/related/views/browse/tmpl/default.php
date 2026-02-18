@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,9 +24,11 @@ $authorlist = '';
             foreach ($this->related as $line) {
                 if ($line->section == 'Topic') {
                     if ($line->group != '' && $line->scope != '') {
-                        $sef = Route::url('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias);
+                        $sef = Route::url('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' .
+                        $line->alias);
                     } else {
-                        $sef = Route::url('index.php?option=com_wiki&scope=' . $line->scope . '&pagename=' . $line->alias);
+                        $sef = Route::url('index.php?option=com_wiki&scope=' . $line->scope . '&pagename=' .
+                        $line->alias);
                     }
                 } else {
                     $class = \Components\Publications\Helpers\Html::getRatingClass($line->rating);
@@ -46,7 +46,8 @@ $authorlist = '';
                     $myclass = \Components\Publications\Helpers\Html::getRatingClass($myrating);
 
                     // Get the SEF for the publication
-                    $sef = Route::url('index.php?option=' . $this->option . ($line->alias ? '&alias=' . $line->alias : '&id=' . $line->id));
+                    $sef = Route::url('index.php?option=' . $this->option . ($line->alias ? '&alias=' . $line->alias :
+                    '&id=' . $line->id));
                 }
 
                 // Format the ranking
@@ -64,7 +65,10 @@ $authorlist = '';
                             <?php if ($line->section == 'Series') {
                                 echo Lang::txt('PLG_PUBLICATION_RELATED_PART_OF');
                             } ?>
-                                <a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $this > escape(stripslashes($line->title)); ?></a>
+                                <a href="<?php echo $sef; ?>"
+                                    class="fixedResourceTip"
+                                    title="DOM:rsrce<?php echo $line->id; ?>"
+                                    ><?php echo $this > escape(stripslashes($line->title)); ?></a>
                                 <div class="hide" id="rsrce<?php echo $line->id; ?>">
                                     <h4><?php echo stripslashes($line->title); ?></h4>
                                     <div>
@@ -74,19 +78,30 @@ $authorlist = '';
                                                     <th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_TYPE'); ?></th>
                                                     <td><?php echo $line->section; ?></td>
                                                 </tr>
+                                            <?php
+                                            $contribLabel = Lang::txt('PLG_PUBLICATION_RELATED_CONTRIBUTORS');
+                                            $dateLabel = Lang::txt('PLG_PUBLICATION_RELATED_DATE');
+                                            $pubDate = Date::of($line->published_up)->toLocal('d M, Y');
+                                            $ratingLabel = Lang::txt('PLG_PUBLICATION_RELATED_AVG_RATING');
+                                            $starsText = Lang::txt('OUT_OF_5_STARS', $line->rating);
+                                            ?>
                                             <?php if ($authorlist) { ?>
                                                 <tr>
-                                                    <th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_CONTRIBUTORS'); ?></th>
+                                                    <th><?php echo $contribLabel; ?></th>
                                                     <td><?php echo $authorlist; ?></td>
                                                 </tr>
                                             <?php } ?>
                                                 <tr>
-                                                    <th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_DATE'); ?></th>
-                                                    <td><?php echo Date::of($line->published_up)->toLocal('d M, Y'); ?></td>
+                                                    <th><?php echo $dateLabel; ?></th>
+                                                    <td><?php echo $pubDate; ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_AVG_RATING'); ?></th>
-                                                    <td><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('OUT_OF_5_STARS', $line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
+                                                    <th><?php echo $ratingLabel; ?></th>
+                                                    <td>
+                                                        <span class="avgrating<?php echo $class; ?>">
+                                                            <span><?php echo $starsText; ?></span>&nbsp;</span>
+                                                        (<?php echo $line->times_rated; ?>)
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>

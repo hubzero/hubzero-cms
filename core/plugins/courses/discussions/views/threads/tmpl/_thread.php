@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -57,7 +57,11 @@ if (!$this->thread->thread) {
         $comment = '<p class="warning">' . Lang::txt('PLG_COURSES_DISCUSSIONS_CONTENT_REPORTED') . '</p>';
     } else {
         if ($this->search) {
-            $this->thread->title = preg_replace('#' . $this->search . '#i', "<span class=\"highlight\">\\0</span>", $this->thread->title);
+            $this->thread->title = preg_replace(
+                '#' . $this->search . '#i',
+                "<span class=\"highlight\">\\0</span>",
+                $this->thread->title
+            );
         }
         $comment = $this->thread->title . ' &hellip;';
     }
@@ -65,24 +69,51 @@ if (!$this->thread->thread) {
         $this->thread->instructor_replied = 0;
     if (count($this->instructors)) {
         $database = App::get('db');
-        $database->setQuery("SELECT COUNT(*) FROM `#__forum_posts` AS c WHERE c.thread=" . $this->thread->thread . " AND c.state=1 AND c.created_by IN (" . implode(',', $this->instructors) . ")");
+        $database->setQuery("SELECT COUNT(*) FROM `#__forum_posts` AS c WHERE c.thread=" . $this->thread->thread . " AND
+        c.state=1 AND c.created_by IN (" . implode(',', $this->instructors) . ")");
         $this->thread->instructor_replied = $database->loadResult();
     }
     ?>
     <div class="comment-content">
-        <p class="sticky-thread" title="<?php echo ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_STICKY') : Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_NOT_STICKY'); ?>">
-            <?php echo ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_STICKY') :  Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_STICKY'); ?>
+        <?php
+        $stickyTitle = ($this->thread->sticky)
+            ? Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_STICKY')
+            : Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_NOT_STICKY');
+        $stickyLabel = ($this->thread->sticky)
+            ? Lang::txt('PLG_COURSES_DISCUSSIONS_STICKY')
+            : Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_STICKY');
+        ?>
+        <p class="sticky-thread" title="<?php echo $stickyTitle; ?>">
+            <?php echo $stickyLabel; ?>
         </p>
         <?php if ($this->thread->instructor_replied) { ?>
-            <p class="instructor-commented" title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR_COMMENTED'); ?>">
+            <p class="instructor-commented"
+                title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR_COMMENTED'); ?>">
                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR'); ?>
             </p>
         <?php } ?>
+        <?php
+        $threadDate = Date::of($this->thread->created)->toLocal(
+            Lang::txt('DATE_FORMAt_HZ1')
+        );
+        ?>
         <p class="comment-title">
-            <span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo Date::of($this->thread->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+            <span class="date">
+                <time datetime="<?php echo $this->thread->created; ?>">
+                    <?php echo $threadDate; ?>
+                </time>
+            </span>
         </p>
+        <?php
+        $threadUrl = Route::url(
+            $this->base . '&thread=' . $this->thread->id
+            . ($this->search ? '&action=search&search=' . $this->search : '')
+        );
+        ?>
         <p class="comment-body">
-            <a href="<?php echo Route::url($this->base  . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')); ?>"><?php echo $comment; ?></a>
+            <a href="<?php echo $threadUrl; ?>">
+                <?php echo $comment; ?>
+            </a>
         </p>
         <p class="comment-author">
             <strong><?php echo $name; ?></strong>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,14 +16,28 @@ $groupProjectPlugins = Event::trigger('groups.onGroupProjects', array($this->gro
     <li <?php if ($this->tab == 'all') {
         echo 'class="active"';
         } ?> >
-        <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=all'); ?>">
+        <?php
+        $allUrl = Route::url(
+            'index.php?option=com_groups&cn='
+            . $this->group->get('cn')
+            . '&active=projects&action=all'
+        );
+        ?>
+        <a href="<?php echo $allUrl; ?>">
             <?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
         </a>
     </li>
     <li <?php if ($this->tab == 'updates') {
         echo 'class="active"';
         } ?> >
-        <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=projects&action=updates'); ?>">
+        <?php
+        $updatesUrl = Route::url(
+            'index.php?option=com_groups&cn='
+            . $this->group->get('cn')
+            . '&active=projects&action=updates'
+        );
+        ?>
+        <a href="<?php echo $updatesUrl; ?>">
             <?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) {
                 echo '<span class="s-new">' . $this->newcount . '</span>';
             } ?>

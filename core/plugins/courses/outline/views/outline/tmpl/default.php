@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -56,7 +56,10 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 <?php } else { ?>
     <?php if ($course->access('manage')) { ?>
         <div class="manager-options">
-            <span><strong>Manage the content of the outline here.</strong></span> <a class="btn edit icon-edit" href="<?php echo Route::url($base . '&active=outline&action=build'); ?>">Edit outline</a>
+            <?php $editOutlineUrl = Route::url($base . '&active=outline&action=build'); ?>
+            <span><strong>Manage the content of the outline here.</strong></span>
+            <a class="btn edit icon-edit"
+                href="<?php echo $editOutlineUrl; ?>">Edit outline</a>
         </div>
     <?php } ?>
 
@@ -69,7 +72,12 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                 <a href="<?php echo $offeringEnrollUrl; ?>">
                     <div class="advertise-action btn">Enroll for <?php echo $price; ?>!</div>
                 </a>
-                <a class="advertise-popup" href="<?php echo Route::url('index.php?option=com_help&component=courses&page=basics#why_enroll'); ?>">
+                <?php
+                    $helpUrl = Route::url(
+                        'index.php?option=com_help&component=courses&page=basics#why_enroll'
+                    );
+                ?>
+                <a class="advertise-popup" href="<?php echo $helpUrl; ?>">
                     <div class="advertise-help btn">Why enroll?</div>
                 </a>
             </div>
@@ -86,7 +94,10 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                 echo implode("\n", $results);
 
                 $this->member  = $section->member(User::get('id'));
-                $progress      = ($this->member->get('id')) ? $offering->gradebook()->progress($this->member->get('id')) : array();
+                $memberId = $this->member->get('id');
+                $progress = ($memberId)
+                    ? $offering->gradebook()->progress($memberId)
+                    : array();
             if (is_null($this->member->get('section_id'))) {
                 $this->member->set('section_id', $section->get('id'));
             }
@@ -136,10 +147,16 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                     ?>
         <div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1) . $cls; ?>">
             <div class="unit-wrap">
-                <div class="unit-content<?php echo ($unit->isAvailable()) ? ' open' : ''; ?>" data-id="<?php echo $unit->get('id'); ?>">
+                <div class="unit-content<?php echo ($unit->isAvailable()) ? ' open' : ''; ?>"
+                    data-id="<?php echo $unit->get('id'); ?>">
                     <h3 class="unit-content-available">
                         <span class="unit-fill">
-                            <span class="unit-fill-inner<?php echo $done; ?> unit-fill-inner<?php echo $unit->get('id'); ?>"></span>
+                            <?php
+                            $unitId = $unit->get('id');
+                            $fillCls = 'unit-fill-inner' . $done
+                                . ' unit-fill-inner' . $unitId;
+                            ?>
+                            <span class="<?php echo $fillCls; ?>"></span>
                         </span>
                         <?php echo $this->escape(stripslashes($unit->get('title'))); ?>
                     </h3>
@@ -164,13 +181,21 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                     <?php } elseif (!$isManager && !$unit->started()) { ?>
                             <div class="grid">
                                 <p class="info">
-                                    Content for this unit will be available starting <?php echo Date::of($unit->get('publish_up'))->toLocal("F j, Y, g:i a T"); ?>.
+                                    <?php
+                                    $startDate = Date::of($unit->get('publish_up'))
+                                        ->toLocal("F j, Y, g:i a T");
+                                    ?>
+                                    Content for this unit will be available starting <?php echo $startDate; ?>.
                                 </p>
                             </div>
                     <?php } elseif (!$isManager && $unit->ended()) { ?>
                             <div class="grid">
                                 <p class="info">
-                                    Content for this unit expired on <?php echo Date::of($unit->get('publish_down'))->toLocal("F j, Y, g:i a T"); ?>.
+                                    <?php
+                                    $endDate = Date::of($unit->get('publish_down'))
+                                        ->toLocal("F j, Y, g:i a T");
+                                    ?>
+                                    Content for this unit expired on <?php echo $endDate; ?>.
                                 </p>
                             </div>
                     <?php } elseif (!$isManager && !$prerequisites->hasMet('unit', $unit->get('id'))) { ?>
@@ -186,7 +211,10 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                         <?php $k = 0; ?>
 
                         <?php foreach ($unit->assetgroups(null, $filters) as $agt) { ?>
-                            <?php if ((($agt->isAvailable() && $agt->isPublished()) || $isManager) && count($agt->children()) > 0) { ?>
+                            <?php
+                            $agtVisible = (($agt->isAvailable() && $agt->isPublished()) || $isManager);
+                            ?>
+                            <?php if ($agtVisible && count($agt->children()) > 0) { ?>
                                     <?php
                                     $cls = '';
                                     if (!$agt->started()) {
@@ -251,7 +279,10 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                     $k = 0;
                                                     $hasPrimaryVideo = false;
                                                     foreach ($ag->assets() as $a) {
-                                                        if ((($a->isAvailable() || $a->get('type') == 'form') && $a->isPublished()) || $isManager) {
+                                                        $isAvailableAsset = (($a->isAvailable()
+                                                            || $a->get('type') == 'form')
+                                                            && $a->isPublished()) || $isManager;
+                                                        if ($isAvailableAsset) {
                                                             if ($a->isDeleted()) {
                                                                 continue;
                                                             }
@@ -275,35 +306,82 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                             $target = '';
                                                             if ($a->get('type') == 'video' && !$hasPrimaryVideo) {
                                                                 $hasPrimaryVideo = true;
-                                                                $href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
-                                                            } elseif ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('subtype') == 'tool') {
-                                                                $target = ' rel="noopener noreferrer nofollow" target="_blank"';
+                                                                $href = Route::url(
+                                                                    $base
+                                                                    . '&active=outline&unit='
+                                                                    . $unit->get('alias')
+                                                                    . '&b=' . $ag->get('alias')
+                                                                );
+                                                            } elseif (
+                                                                $a->get('type') == 'file'
+                                                                || $a->get('type') == 'url'
+                                                                || $a->get('subtype') == 'tool'
+                                                            ) {
+                                                                $target = ' rel="noopener noreferrer'
+                                                                    . ' nofollow" target="_blank"';
                                                             }
 
-                                                            $link = '<a class="' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a>';
+                                                            $link = '<a class="'
+                                                                . $cls
+                                                                . '" href="'
+                                                                . $href
+                                                                . '"'
+                                                                . $target
+                                                                . '>'
+                                                                . $this->escape(stripslashes($a->get('title')))
+                                                                . '</a>';
 
                                                             // Finally, make sure prereqs have been met
-                                                            if (!$prerequisites->hasMet('asset', $a->get('id')) && !$isManager) {
-                                                                $info  = "This item has prerequisites that have not yet been met. Begin by completing: ";
+                                                            $prereqsMet = $prerequisites->hasMet(
+                                                                'asset',
+                                                                $a->get('id')
+                                                            );
+                                                            if (!$prereqsMet && !$isManager) {
+                                                                $info  = "This item has prerequisites"
+                                                                    . " that have not yet been met."
+                                                                    . " Begin by completing: ";
                                                                 $items = array();
-                                                                foreach ($prerequisites->get('asset', $a->get('id')) as $prereq) {
-                                                                    $reqAsset = new \Components\Courses\Models\Asset($prereq['scope_id']);
+                                                                $assetPrereqs = $prerequisites->get(
+                                                                    'asset',
+                                                                    $a->get('id')
+                                                                );
+                                                                foreach ($assetPrereqs as $prereq) {
+                                                                    $reqAsset = new \Components\Courses\Models\Asset(
+                                                                        $prereq['scope_id']
+                                                                    );
                                                                     $items[] = $reqAsset->get('title');
                                                                 }
                                                                 $info .= implode(", ", $items);
-                                                                $link = '<span title="' . $info . '" class="unavailable hasTip">' . $this->escape(stripslashes($a->get('title'))) . '</span>';
+                                                                $link = '<span title="'
+                                                                    . $info
+                                                                    . '" class="unavailable hasTip">'
+                                                                    . $this->escape(stripslashes($a->get('title')))
+                                                                    . '</span>';
                                                             } elseif ($a->get('type') == 'form' && !$isManager) {
                                                                 $crumb = $a->get('url');
 
-                                                                if ($crumb && strlen($crumb) == \Components\Courses\Models\PdfFormDeployment::CRUMB_LEN) {
-                                                                    $dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb($crumb, $section->get('id'));
+                                                                $pdf = '\Components\Courses\Models\PdfFormDeployment';
+                                                                $crumbLen = $pdf::CRUMB_LEN;
+                                                                if ($crumb && strlen($crumb) == $crumbLen) {
+                                                                    $dep = $pdf::fromCrumb(
+                                                                        $crumb,
+                                                                        $section->get('id')
+                                                                    );
 
                                                                     if ($dep && $dep->getState() == 'pending') {
                                                                         continue;
                                                                     }
                                                                 }
-                                                            } elseif ($a->get('type') == 'text' && $a->get('subtype') == 'note') {
-                                                                $link = '<span class="info">' . $this->escape(stripslashes(($a->get('content')) ? $a->get('content') : $a->get('title'))) . '</span>';
+                                                            } elseif (
+                                                                $a->get('type') == 'text'
+                                                                && $a->get('subtype') == 'note'
+                                                            ) {
+                                                                $noteText = ($a->get('content'))
+                                                                    ? $a->get('content')
+                                                                    : $a->get('title');
+                                                                $link = '<span class="info">'
+                                                                    . $this->escape(stripslashes($noteText))
+                                                                    . '</span>';
                                                             }
 
                                                             $children = '';
@@ -314,10 +392,22 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                                     if (!empty($files)) {
                                                                         $children = '<ul>';
                                                                         foreach ($files as $child) {
-                                                                            $fullFilePath = $handler::getToolDirectory() . $a->get('path') . '/' . $child;
-                                                                            $childHref = $href . '?file=' . urlencode($fullFilePath);
-                                                                            $childLink = '<a class="' . $cls . '" href="' . $childHref . '"' . $target . '>' .
-                                                                                $this->escape(stripslashes($child)) . '</a>';
+                                                                            $fullFilePath = $handler::getToolDirectory()
+                                                                                . $a->get('path')
+                                                                                . '/'
+                                                                                . $child;
+                                                                            $childHref = $href
+                                                                                . '?file='
+                                                                                . urlencode($fullFilePath);
+                                                                            $childLink = '<a class="'
+                                                                                . $cls
+                                                                                . '" href="'
+                                                                                . $childHref
+                                                                                . '"'
+                                                                                . $target
+                                                                                . '>'
+                                                                                . $this->escape(stripslashes($child))
+                                                                                . '</a>';
                                                                             $children .= '<li>' . $childLink . '</li>';
                                                                         }
                                                                         $children .= '</ul>';
@@ -328,10 +418,27 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
 
                                                             //if ($a->get('type') == 'video')
                                                             if ($k == 0) {
-                                                                if ($a->get('type') == 'text' && $a->get('subtype') == 'note') {
-                                                                    $play = '<div class="asset-primary"><p class="info">' . $this->escape(stripslashes(($a->get('content')) ? $a->get('content') : $a->get('title'))) . '</p></div>';
+                                                                if (
+                                                                    $a->get('type') == 'text'
+                                                                    && $a->get('subtype') == 'note'
+                                                                ) {
+                                                                    $playText = ($a->get('content'))
+                                                                        ? $a->get('content')
+                                                                        : $a->get('title');
+                                                                    $play = '<div class="asset-primary">'
+                                                                        . '<p class="info">'
+                                                                        . $this->escape(stripslashes($playText))
+                                                                        . '</p></div>';
                                                                 } else {
-                                                                    $play = '<a class="asset-primary ' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($ag->get('title'))) . '</a>';
+                                                                    $play = '<a class="asset-primary '
+                                                                        . $cls
+                                                                        . '" href="'
+                                                                        . $href
+                                                                        . '"'
+                                                                        . $target
+                                                                        . '>'
+                                                                        . $this->escape(stripslashes($ag->get('title')))
+                                                                        . '</a>';
                                                                 }
                                                             }
                                                             $k++;
@@ -342,11 +449,17 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                     <li class="collapsed">
                                                         <?php
                                                         if (count($found) == 0) {
-                                                            echo '<span class="asset-primary ended">' . $ag->get('title') . '</span>';
+                                                            echo '<span class="asset-primary ended">'
+                                                                . $ag->get('title')
+                                                                . '</span>';
                                                         } elseif (count($found) == 1) {
                                                             echo $play;
                                                         } else {
-                                                            echo '<span class="asset-primary' . $acls . '">' . $this->escape(stripslashes($ag->get('title'))) . '<span class="asset-more"></span></span>';
+                                                            echo '<span class="asset-primary'
+                                                                . $acls
+                                                                . '">'
+                                                                . $this->escape(stripslashes($ag->get('title')))
+                                                                . '<span class="asset-more"></span></span>';
                                                         }
                                                         ?>
                                                         <?php
@@ -390,11 +503,29 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                                         $href = Route::url($base . '&asset=' . $a->get('id'));
                                                         $target = '';
                                                         if ($a->get('type') == 'video') {
-                                                            $href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
-                                                        } elseif ($a->get('type') == 'file' || $a->get('type') == 'url' || $a->get('type') == 'tool') {
-                                                            $target = ' rel="noopener noreferrer nofollow" target="_blank"';
+                                                            $href = Route::url(
+                                                                $base
+                                                                . '&active=outline&unit='
+                                                                . $unit->get('alias')
+                                                                . '&b=' . $ag->get('alias')
+                                                            );
+                                                        } elseif (
+                                                            $a->get('type') == 'file'
+                                                            || $a->get('type') == 'url'
+                                                            || $a->get('type') == 'tool'
+                                                        ) {
+                                                            $target = ' rel="noopener noreferrer'
+                                                                . ' nofollow" target="_blank"';
                                                         }
-                                                        echo '<li><a class="asset-primary ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+                                                        echo '<li><a class="asset-primary '
+                                                            . $a->get('subtype')
+                                                            . '" href="'
+                                                            . $href
+                                                            . '"'
+                                                            . $target
+                                                            . '>'
+                                                            . $this->escape(stripslashes($a->get('title')))
+                                                            . '</a></li>';
                                                     }
                                                 }
                                                 ?>
@@ -426,11 +557,28 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                                         $href = Route::url($base . '&asset=' . $a->get('id'));
                                         $target = '';
                                         if ($a->get('type') == 'video') {
-                                            $href = Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $ag->get('alias'));
-                                        } elseif ($a->get('type') == 'file' || $a->get('type') == 'url') {
-                                            $target = ' rel="noopener noreferrer nofollow" target="_blank"';
+                                            $href = Route::url(
+                                                $base
+                                                . '&active=outline&unit='
+                                                . $unit->get('alias')
+                                                . '&b=' . $ag->get('alias')
+                                            );
+                                        } elseif (
+                                            $a->get('type') == 'file'
+                                            || $a->get('type') == 'url'
+                                        ) {
+                                            $target = ' rel="noopener noreferrer'
+                                                . ' nofollow" target="_blank"';
                                         }
-                                        echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
+                                        echo '<li><a class="asset '
+                                            . $a->get('subtype')
+                                            . '" href="'
+                                            . $href
+                                            . '"'
+                                            . $target
+                                            . '>'
+                                            . $this->escape(stripslashes($a->get('title')))
+                                            . '</a></li>';
                                         $k++;
                                     }
                                 }
@@ -441,7 +589,8 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                         <?php if (!$k) { ?>
                             <div class="grid">
                                 <p class="info">
-                                    No content found or existing content has expired and is no longer available for this unit.
+                                    No content found or existing content has expired and is no longer available for this
+                                    unit.
                                 </p>
                             </div>
                         <?php } ?>
@@ -460,7 +609,12 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
         <?php } ?>
 
     <?php elseif ($offering->access('manage')) : ?>
-        <p class="info">Your outline is currently empty. Go to the <a href="<?php echo Route::url($base . '&active=outline&action=build'); ?>">Outline Builder</a> to begin creating your course outline.</p>
+        <?php $builderUrl = Route::url($base . '&active=outline&action=build'); ?>
+        <p class="info">
+            Your outline is currently empty. Go to the
+            <a href="<?php echo $builderUrl; ?>">Outline Builder</a>
+            to begin creating your course outline.
+        </p>
     <?php else : ?>
         <p class="info">There is currently no outline available for this course.</p>
     <?php endif; ?>

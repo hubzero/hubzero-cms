@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -22,22 +22,59 @@ $base = $this->member->link() . '&active=citations';
             <p class="<?php echo $message['type']; ?>"><?php echo $message['message']; ?></p>
         <?php } ?>
 
+        <?php
+        $importUrl = Route::url($base . '&task=import');
+        $step1 = Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1');
+        $step1Name = Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME');
+        $step2 = Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2');
+        $step2Name = Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2_NAME');
+        $step3 = Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3');
+        $step3Name = Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3_NAME');
+        ?>
         <ul id="steps">
-            <li><a href="<?php echo Route::url($base . '&task=import'); ?>" class="active"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
-            <li><a><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>
-            <li><a><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3_NAME'); ?></span></a></li>
+            <li>
+                <a href="<?php echo $importUrl; ?>" class="active">
+                    <?php echo $step1; ?>
+                    <span><?php echo $step1Name; ?></span>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <?php echo $step2; ?>
+                    <span><?php echo $step2Name; ?></span>
+                </a>
+            </li>
+            <li>
+                <a>
+                    <?php echo $step3; ?>
+                    <span><?php echo $step3Name; ?></span>
+                </a>
+            </li>
         </ul><!-- / #steps -->
 
-        <form id="hubForm" class="full" enctype="multipart/form-data" method="post" action="<?php echo Route::url($base . '&task=upload'); ?>">
+        <form id="hubForm"
+            class="full"
+            enctype="multipart/form-data"
+            method="post"
+            action="<?php echo Route::url($base . '&task=upload'); ?>">
             <fieldset>
                 <legend><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD'); ?>:</legend>
 
                 <div class="grid">
                     <div class="col span6">
                         <label for="citations_file">
-                            <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_FILE'); ?>: <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-                            <input type="file" name="citations_file" id="citations_file" />
-                            <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_MAX'); ?></span>
+                            <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_FILE'); ?>:
+                            <span class="required">
+                                <?php echo Lang::txt('JREQUIRED'); ?>
+                            </span>
+                            <input
+                                type="file"
+                                name="citations_file"
+                                id="citations_file"
+                            />
+                            <span class="hint">
+                                <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD_MAX'); ?>
+                            </span>
                         </label>
                     </div>
                     <div class="col span6 omega">
@@ -50,7 +87,10 @@ $base = $this->member->link() . '&active=citations';
             </fieldset>
 
             <p class="submit">
-                <input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD'); ?>" />
+                <input type="submit"
+                    class="btn btn-success"
+                    name="submit"
+                    value="<?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_UPLOAD'); ?>"/>
 
                 <a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>

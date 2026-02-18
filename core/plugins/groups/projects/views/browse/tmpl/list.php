@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -45,7 +43,8 @@ switch ($this->which) {
             $i = 0;
             foreach ($this->rows as $row) {
                 $role = $row->access('member')
-                    ? ($row->access('manager') ? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_MANAGER') : Lang::txt('PLG_GROUPS_PROJECTS_STATUS_COLLABORATOR'))
+                    ? ($row->access('manager') ? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_MANAGER') :
+                    Lang::txt('PLG_GROUPS_PROJECTS_STATUS_COLLABORATOR'))
                     : Lang::txt('PLG_GROUPS_PROJECTS_STATUS_NOTMEMBER');
 
                 $role = $row->access('readonly') && !$row->isArchived()
@@ -59,11 +58,23 @@ switch ($this->which) {
                 <tr class="mline">
                     <td class="th_image">
                         <?php if ($row->access('member') || $row->access('readonly')) { ?>
-                            <a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
-                                <img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>" class="project-image" />
+                            <?php
+                            $rowUrl = Route::url($row->link());
+                            $rowThumb = Route::url($row->link('thumb'));
+                            $rowTitle = $this->escape($row->get('title'));
+                            $rowAlias = $row->get('alias');
+                            $titleWithAlias = $rowTitle . ' (' . $rowAlias . ')';
+                            ?>
+                            <a href="<?php echo $rowUrl; ?>"
+                                title="<?php echo $titleWithAlias; ?>">
+                                <img src="<?php echo $rowThumb; ?>"
+                                    alt="<?php echo $rowTitle; ?>"
+                                    class="project-image"/>
                             </a>
                         <?php } else { ?>
-                            <img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>" class="project-image" />
+                            <img src="<?php echo $rowThumb; ?>"
+                                alt="<?php echo $rowTitle; ?>"
+                                class="project-image"/>
                         <?php } ?>
                         <?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?>
                             <span class="s-new"><?php echo $row->get('newactivity'); ?></span>
@@ -76,14 +87,20 @@ switch ($this->which) {
                     </td>
                     <td class="th_title">
                         <?php if ($row->access('member') || $row->access('readonly')) { ?>
-                            <a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $row->get('alias') . ')'; ?>">
-                                <?php echo $this->escape($row->get('title')); ?>
+                            <a href="<?php echo $rowUrl; ?>"
+                                title="<?php echo $titleWithAlias; ?>">
+                                <?php echo $rowTitle; ?>
                             </a>
                         <?php } else { ?>
-                            <?php echo $this->escape($row->get('title')); ?>
+                            <?php echo $rowTitle; ?>
                         <?php } ?>
+                <?php
+                $ownerDisplay = $row->groupOwner()
+                ? $row->groupOwner('description')
+                : $row->owner('name');
+                ?>
                         <?php if ($this->which != 'owned') { ?>
-                            <span class="block"><?php echo $row->groupOwner() ? $row->groupOwner('description') : $row->owner('name'); ?></span>
+                            <span class="block"><?php echo $ownerDisplay; ?></span>
                         <?php } ?>
                     </td>
                     <td class="th_status">
@@ -91,17 +108,35 @@ switch ($this->which) {
                         $html = '';
                         if ($row->access('owner')) {
                             if ($row->isActive()) {
-                                $html .= '<span class="active"><a href="' . Route::url($row->link()) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_GO_TO_PROJECT') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ACTIVE') . '</a></span>';
+                                $html .= '<span class="active"><a href="'
+                                    . Route::url($row->link())
+                                    . '" title="'
+                                    . Lang::txt('PLG_GROUPS_PROJECTS_GO_TO_PROJECT')
+                                    . '">&raquo; '
+                                    . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ACTIVE')
+                                    . '</a></span>';
                             } elseif ($row->inSetup()) {
-                                $html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') . '</a></span> ';
+                                $html .= '<span class="setup"><a href="'
+                                    . Route::url($row->link('setup'))
+                                    . '" title="'
+                                    . Lang::txt('PLG_GROUPS_PROJECTS_CONTINUE_SETUP')
+                                    . '">&raquo; '
+                                    . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP')
+                                    . '</a></span> ';
                             }
                         }
                         if ($row->isInactive()) {
-                            $html .= '<span class="suspended">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SUSPENDED') . '</span> ';
+                            $html .= '<span class="suspended">'
+                                . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SUSPENDED')
+                                . '</span> ';
                         } elseif ($row->isPending()) {
-                            $html .= '<span class="pending">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_PENDING') . '</span> ';
+                            $html .= '<span class="pending">'
+                                . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_PENDING')
+                                . '</span> ';
                         } elseif ($row->isArchived()) {
-                            $html .= '<span class="archived">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ARCHIVED') . '</span> ';
+                            $html .= '<span class="archived">'
+                                . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ARCHIVED')
+                                . '</span> ';
                         }
 
                         echo $html;
@@ -110,8 +145,17 @@ switch ($this->which) {
                     <td class="th_role">
                         <?php echo $role; ?>
                     </td>
+                <?php
+                $membership = $row->get('sync_group')
+                ? '<span class="synced">'
+                . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SYNCED')
+                . '</span>'
+                : '<span class="selected">'
+                . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SELECTED')
+                . '</span>';
+                ?>
                     <td class="th_membership">
-                        <?php echo ($row->get('sync_group')) ? '<span class="synced">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SYNCED') . '</span>' : '<span class="selected">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SELECTED') . '</span>'; ?>
+                        <?php echo $membership; ?>
                     </td>
                 </tr>
                 <?php

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -42,12 +42,21 @@ if (count($this->addresses) < 1) {
         }
 
         //do we gave a city state and zip
-        $formattedAddresses .= $address->addressCity . ' ' . $address->addressRegion . ', ' . $address->addressPostal . '<br />';
+        $formattedAddresses .= $address->addressCity
+            . ' '
+            . $address->addressRegion
+            . ', '
+            . $address->addressPostal
+            . '<br />';
 
         //do we have a country && its not USA
         if (
-            isset($address->addressCountry) && $address->addressCountry != '' && $address->addressCountry != 'US'
-            && $address->addressCountry != 'USA' && $address->addressCountry != 'United States' && $address->addressCountry != 'United States of America'
+            isset($address->addressCountry)
+            && $address->addressCountry != ''
+            && $address->addressCountry != 'US'
+            && $address->addressCountry != 'USA'
+            && $address->addressCountry != 'United States'
+            && $address->addressCountry != 'United States of America'
         ) {
             $formattedAddresses .= $address->addressCountry . '<br />';
         }
@@ -55,8 +64,16 @@ if (count($this->addresses) < 1) {
         //do we want to display edit links
         if ($this->displayEditLinks) {
             $formattedAddresses .= '<span class="address-links">';
-            $formattedAddresses .= '<a class="edit edit-address" href="' . Route::url($this->profile->link() . '&active=profile&action=editaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_EDIT') . '</a>';
-            $formattedAddresses .= ' | <a class="delete delete-address" href="' . Route::url($this->profile->link() . '&active=profile&action=deleteaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_DELETE') . '</a>';
+            $formattedAddresses .= '<a class="edit edit-address" href="'
+                . Route::url($this->profile->link() . '&active=profile&action=editaddress&addressid=' . $address->id)
+                . '">'
+                . Lang::txt('JACTION_EDIT')
+                . '</a>';
+            $formattedAddresses .= ' | <a class="delete delete-address" href="'
+                . Route::url($this->profile->link() . '&active=profile&action=deleteaddress&addressid=' . $address->id)
+                . '">'
+                . Lang::txt('JACTION_DELETE')
+                . '</a>';
             $formattedAddresses .= '</span>';
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -49,7 +49,8 @@ $this->css()
                     <?php
 
                         //get the component that created message
-                        $component = (substr($row->component, 0, 4) == 'com_') ? substr($row->component, 4) : $row->component;
+                        $component = (substr($row->component, 0, 4) == 'com_') ? substr($row->component, 4) :
+                        $row->component;
 
                         //url to view message
                         $url = Route::url($this->member->link() . '&active=messages&msg=' . $row->id);
@@ -65,7 +66,10 @@ $this->css()
                     }
 
                         //get the message
-                        $preview = ($row->message) ? '<h3>' . Lang::txt('PLG_MEMBERS_MESSAGES_PREVIEW') . '</h3>' . nl2br(stripslashes($row->message)) : '';
+                        $preview = ($row->message) ? '<h3>'
+                            . Lang::txt('PLG_MEMBERS_MESSAGES_PREVIEW')
+                            . '</h3>'
+                            . nl2br(stripslashes($row->message)) : '';
 
                         //subject link
                         $subject_cls = 'message-link';
@@ -75,7 +79,11 @@ $this->css()
                         // Check for identity masking flag
                     if (strpos($row->type, '_anonymous') === false) {
                         // Display who the message is to
-                        $to = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $row->uid) . '">' . $row->name . '</a>';
+                        $to = '<a href="'
+                            . Route::url('index.php?option=' . $this->option . '&id=' . $row->uid)
+                            . '">'
+                            . $row->name
+                            . '</a>';
                     } else {
                         // Mask the destination
                         $to = 'Anonymous';

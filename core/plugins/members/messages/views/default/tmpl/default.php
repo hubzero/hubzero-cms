@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -16,27 +16,32 @@ $sections = array(
     array(
         'name' => 'inbox',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_INBOX'),
-        'link' => Route::url($this->member->link() . '&active=messages&task=inbox&limit=' . $this->filters['limit'] . '&limitstart=0')
+        'link' => Route::url($this->member->link() . '&active=messages&task=inbox&limit=' . $this->filters['limit'] .
+        '&limitstart=0')
     ),
     array(
         'name' => 'sent',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_SENT'),
-        'link' => Route::url($this->member->link() . '&active=messages&task=sent&limit=' . $this->filters['limit'] . '&limitstart=0')
+        'link' => Route::url($this->member->link() . '&active=messages&task=sent&limit=' . $this->filters['limit'] .
+        '&limitstart=0')
     ),
     array(
         'name' => 'archive',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_ARCHIVE'),
-        'link' => Route::url($this->member->link() . '&active=messages&task=archive&limit=' . $this->filters['limit'] . '&limitstart=0')
+        'link' => Route::url($this->member->link() . '&active=messages&task=archive&limit=' . $this->filters['limit'] .
+        '&limitstart=0')
     ),
     array(
         'name' => 'trash',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_TRASH'),
-        'link' => Route::url($this->member->link() . '&active=messages&task=trash&limit=' . $this->filters['limit'] . '&limitstart=0')
+        'link' => Route::url($this->member->link() . '&active=messages&task=trash&limit=' . $this->filters['limit'] .
+        '&limitstart=0')
     ),
     array(
         'name' => 'new',
         'title' => Lang::txt('PLG_MEMBERS_MESSAGES_COMPOSE'),
-        'link' => Route::url($this->member->link() . '&active=messages&task=new&limit=' . $this->filters['limit'] . '&limitstart=0')
+        'link' => Route::url($this->member->link() . '&active=messages&task=new&limit=' . $this->filters['limit'] .
+        '&limitstart=0')
     )
 );
 
@@ -61,13 +66,15 @@ $no_html = Request::getInt("no_html", 0);
     <ul id="message-toolbar">
         <?php foreach ($sections as $s) : ?>
             <?php $sel = ($this->task == $s['name']) ? 'active' : ''; ?>
-            <li><a class="<?php echo $s['name'] . ' ' . $sel; ?>" title="<?php echo $s['title']; ?>" href="<?php echo $s['link']; ?>"><?php echo $s['title']; ?></a></li>
+            <li><a class="<?php echo $s['name'] . ' ' . $sel; ?>" title="<?php echo $s['title']; ?>
+            " href="<?php echo $s['link'];?>"><?php echo $s['title']; ?></a></li>
         <?php endforeach; ?>
     </ul>
     <ul id="message-options">
         <?php foreach ($options as $o) : ?>
             <?php $sel = ($this->task == $o['name']) ? 'active' : ''; ?>
-            <li><a class="<?php echo $o['name'] . ' ' . $sel; ?>" title="<?php echo $o['title']; ?>" href="<?php echo $o['link']; ?>"><?php echo $o['title']; ?></a></li>
+            <li><a class="<?php echo $o['name'] . ' ' . $sel; ?>" title="<?php echo $o['title']; ?>
+            " href="<?php echo $o['link'];?>"><?php echo $o['title']; ?></a></li>
         <?php endforeach; ?>
     </ul>
     <br class="clear" />

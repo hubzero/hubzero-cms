@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -29,10 +29,23 @@ $i = 1;
                                               } ?><?php if ($this->pub->state == 5 || $this->pub->state == 0) {
                                               echo ' nobar';
                                               } ?>">
-        <a href="<?php echo Route::url($this->pub->link('edit') . '&action=versions'); ?>" class="versions" id="v-picker"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
-        <a href="<?php echo Route::url($this->pub->link('editversion')); ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $versionLabel . ' (' . $status . ')'; ?></a>
-        <?php if (($this->pub->state == 3 || $this->pub->state == 7) && $this->pub->curation('complete') && $this->pub->project()->access('content')) { ?>
-        - <a href="<?php echo Route::url($this->pub->link('editversion') . '&action=review'); ?>" class="readytosubmit"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAFT_READY_TO_SUBMIT'); ?></a>
+        <a href="<?php echo Route::url($this->pub->link('edit') . '&action=versions'); ?>"
+            class="versions"
+            id="v-picker"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
+        <?php
+        $editVersionUrl = Route::url($this->pub->link('editversion'));
+        $versionText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION')
+            . ' ' . $versionLabel . ' (' . $status . ')';
+        $canSubmit = ($this->pub->state == 3 || $this->pub->state == 7)
+            && $this->pub->curation('complete')
+            && $this->pub->project()->access('content');
+        ?>
+        <a href="<?php echo $editVersionUrl; ?>"><?php echo $versionText; ?></a>
+        <?php if ($canSubmit) { ?>
+            <?php $reviewUrl = Route::url($this->pub->link('editversion') . '&action=review'); ?>
+        - <a href="<?php echo $reviewUrl; ?>"
+            class="readytosubmit"
+        ><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAFT_READY_TO_SUBMIT'); ?></a>
         <?php } ?>
     </p>
 <?php } ?>
@@ -78,7 +91,18 @@ if ($this->pub->state == 5 || $this->pub->state == 0 || !$this->pub->project()->
         <li<?php if ($blockId == $activenum) {
             echo ' class="active"';
            } ?>>
-            <a href="<?php echo Route::url($this->pub->link('editversion') . '&section=' . $blockname . '&step=' . $blockId . '&move=continue'); ?>" <?php echo $class ? 'class="' . $class . '"' : ''; ?>><?php echo $block->manifest->label; ?></a>
+            <?php
+            $stepUrl = Route::url(
+                $this->pub->link('editversion')
+                . '&section=' . $blockname
+                . '&step=' . $blockId
+                . '&move=continue'
+            );
+            $classAttr = $class ? 'class="' . $class . '"' : '';
+            ?>
+            <a href="<?php echo $stepUrl; ?>"
+                <?php echo $classAttr; ?>
+            ><?php echo $block->manifest->label; ?></a>
         </li>
         <?php } ?>
     </ul>

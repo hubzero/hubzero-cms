@@ -6,8 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
 namespace Plugins\Groups\Calendar;
+
 // No direct access
 defined('_HZEXEC_') or die();
 

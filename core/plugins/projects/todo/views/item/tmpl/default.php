@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -24,7 +24,8 @@ $overdue = $this->row->isOverdue();
 $oNote = $overdue ? ' (' . Lang::txt('PLG_PROJECTS_TODO_OVERDUE') . ')' : '';
 
 // Can it be deleted?
-$deletable = ($this->model->access('content') && ($this->model->access('manager') or $this->row->get('created_by') == $this->uid)) ? 1 : 0;
+$deletable = ($this->model->access('content') && ($this->model->access('manager') or $this->row->get('created_by') ==
+$this->uid)) ? 1 : 0;
 
 // Due?
 $due = $this->row->due() ? $this->row->due('date') : Lang::txt('PLG_PROJECTS_TODO_NEVER');
@@ -43,10 +44,24 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
 <div id="plg-header">
     <h3 class="todo"><a href="<?php echo Route::url($url); ?>"><?php echo $this->title; ?></a>
     <?php if ($listName) {
-        ?> &raquo; <a href="<?php echo Route::url($url) . '/?list=' . $color; ?>"><span class="indlist <?php echo 'pin_' . $color; ?>"><?php echo $listName; ?></span></a> <?php
+        $listUrl = Route::url($url) . '/?list=' . $color;
+        $pinClass = 'pin_' . $color;
+        ?> &raquo; <a href="<?php echo $listUrl; ?>">
+            <span class="indlist <?php echo $pinClass; ?>">
+                <?php echo $listName; ?>
+            </span>
+        </a> <?php
     } ?>
     <?php if ($this->row->isComplete()) {
-        ?> &raquo; <span class="indlist completedtd"><a href="<?php echo Route::url($url) . '/?state=1'; ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')); ?></a></span> <?php
+        $completedUrl = Route::url($url) . '/?state=1';
+        $completedTxt = ucfirst(
+            Lang::txt('PLG_PROJECTS_TODO_COMPLETED')
+        );
+        ?> &raquo; <span class="indlist completedtd">
+            <a href="<?php echo $completedUrl; ?>">
+                <?php echo $completedTxt; ?>
+            </a>
+        </span> <?php
     } ?>
     &raquo; <span class="itemname"><?php echo \Hubzero\Utility\Str::truncate($this->row->get('content'), 60); ?></span>
     </h3>
@@ -68,41 +83,127 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
                     <div id="td-item" class="<?php echo $class; ?>">
                         <span class="pin">&nbsp;</span>
                         <div class="todo-content">
-                            <?php echo $this->row->get('details') ? stripslashes($this->row->get('details')) :  stripslashes($this->row->get('content')); ?>
+                            <?php
+                            echo $this->row->get('details')
+                                ? stripslashes($this->row->get('details'))
+                                : stripslashes($this->row->get('content'));
+                            ?>
                         </div>
                     </div>
                 </div>
                 <div class="col span4 omega td-details">
-                    <p><?php echo Lang::txt('PLG_PROJECTS_TODO_CREATED') . ' ' . $this->row->created('date') . ' ' . Lang::txt('PLG_PROJECTS_TODO_BY') . ' ' . $this->row->creator('name'); ?></p>
+                    <?php
+                    $createdLine = Lang::txt('PLG_PROJECTS_TODO_CREATED')
+                        . ' ' . $this->row->created('date')
+                        . ' ' . Lang::txt('PLG_PROJECTS_TODO_BY')
+                        . ' ' . $this->row->creator('name');
+                    ?>
+                    <p><?php echo $createdLine; ?></p>
                 <?php if (!$this->row->isComplete()) { ?>
-                    <p><?php echo Lang::txt('PLG_PROJECTS_TODO_ASSIGNED_TO') . ' <strong>' . $assignee . '</strong>'; ?></p>
+                    <p><?php
+                        echo Lang::txt('PLG_PROJECTS_TODO_ASSIGNED_TO')
+                            . ' <strong>' . $assignee . '</strong>';
+                    ?></p>
                     <p><?php echo Lang::txt('PLG_PROJECTS_TODO_DUE') . ': <strong>' . $due . '</strong>'; ?></p>
                 <?php } elseif ($this->row->isComplete()) { ?>
-                        <p><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' ' . Lang::txt('PLG_PROJECTS_TODO_BY') . ' ' . \Components\Projects\Helpers\Html::shortenName($this->row->closer('name')); ?></p>
-                        <p><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_TOOK') . ' ' . $diff . ' ' . Lang::txt('PLG_PROJECTS_TODO_TODO_TO_COMPLETE'); ?></p>
+                        <?php
+                        $closerName = \Components\Projects\Helpers\Html::shortenName(
+                            $this->row->closer('name')
+                        );
+                        $checkedLine = Lang::txt('PLG_PROJECTS_TODO_TODO_CHECKED_OFF')
+                            . ' ' . $this->row->closed('date')
+                            . ' ' . Lang::txt('PLG_PROJECTS_TODO_BY')
+                            . ' ' . $closerName;
+                        $tookLine = Lang::txt('PLG_PROJECTS_TODO_TODO_TOOK')
+                            . ' ' . $diff
+                            . ' ' . Lang::txt('PLG_PROJECTS_TODO_TODO_TO_COMPLETE');
+                        ?>
+                        <p><?php echo $checkedLine; ?></p>
+                        <p><?php echo $tookLine; ?></p>
                 <?php } ?>
                 </div>
             </div>
         </section>
     <p class="td-options">
         <?php if (!$this->row->isComplete() && $this->model->access('content')) { ?>
-        <span class="edit"><a href="<?php echo Route::url($url . '&action=edit') . '/?todoid=' . $this->row->get('id'); ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_TODO_EDIT'); ?></a></span>
-        <span class="checked"><a href="<?php echo Route::url($url . '&action=changestate') . '/?todoid=' . $this->row->get('id') . '&amp;state=1&amp;' . Session::getFormToken() . '=1'; ?>" class="confirm-checkoff"><?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF'); ?></a></span>
+            <?php
+            $editUrl = Route::url($url . '&action=edit')
+            . '/?todoid=' . $this->row->get('id');
+            $editTxt = Lang::txt('PLG_PROJECTS_TODO_EDIT');
+            $checkUrl = Route::url($url . '&action=changestate')
+            . '/?todoid=' . $this->row->get('id')
+            . '&amp;state=1&amp;'
+            . Session::getFormToken() . '=1';
+            $checkTxt = Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF');
+            ?>
+        <span class="edit">
+            <a href="<?php echo $editUrl; ?>" class="showinbox">
+                <?php echo $editTxt; ?>
+            </a>
+        </span>
+        <span class="checked">
+            <a href="<?php echo $checkUrl; ?>"
+                class="confirm-checkoff">
+                <?php echo $checkTxt; ?>
+            </a>
+        </span>
         <?php } ?>
         <?php if ($deletable) { ?>
-        <span class="trash"><a href="<?php echo Route::url($url . '&action=delete') . '/?todoid=' . $this->row->get('id'); ?>" class="confirm-it" id="deltd"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE'); ?></a></span>
+            <?php
+            $deleteUrl = Route::url($url . '&action=delete')
+            . '/?todoid=' . $this->row->get('id');
+            $deleteTxt = Lang::txt('PLG_PROJECTS_TODO_DELETE');
+            ?>
+        <span class="trash">
+            <a href="<?php echo $deleteUrl; ?>"
+                class="confirm-it"
+                id="deltd">
+                <?php echo $deleteTxt; ?>
+            </a>
+        </span>
         <?php } ?>
     </p>
     <div class="comment-wrap">
-        <h4 class="comment-blurb"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMMENTS')) . ' (' . $this->row->comments('count') . ')'; ?>:</h4>
+        <?php
+        $commentsTitle = ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMMENTS'))
+            . ' (' . $this->row->comments('count') . ')';
+        ?>
+        <h4 class="comment-blurb"><?php echo $commentsTitle; ?>:</h4>
         <?php if ($this->row->comments() && $this->row->comments() instanceof \Hubzero\Base\ItemList) { ?>
             <ul id="td-comments">
             <?php foreach ($this->row->comments() as $comment) { ?>
                 <li>
                     <p><?php echo $comment->content('parsed'); ?></p>
-                    <p class="todo-assigned"><?php echo $comment->creator('name'); ?> <span class="date"> &middot; <?php echo \Components\Projects\Helpers\Html::timeAgo($comment->get('created')) . ' ' . Lang::txt('PLG_PROJECTS_TODO_AGO'); ?> </span> <?php if ($comment->get('created_by') == $this->uid) {
-                        ?><a href="<?php echo Route::url($url . '&action=deletecomment') . '/?todoid=' . $this->row->get('id') . '&amp;cid=' . $comment->get('id'); ?>" id="delc-<?php echo $comment->get('id'); ?>" class="confirm-it">[<?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE'); ?>]</a><?php
-                                             } ?></p>
+                    <?php
+                    $timeAgo = \Components\Projects\Helpers\Html::timeAgo(
+                        $comment->get('created')
+                    );
+                    $agoTxt = Lang::txt('PLG_PROJECTS_TODO_AGO');
+                    $commentDate = '<span class="date"> &middot; '
+                        . $timeAgo . ' ' . $agoTxt
+                        . ' </span>';
+                    ?>
+                    <p class="todo-assigned">
+                        <?php echo $comment->creator('name'); ?>
+                        <?php echo $commentDate; ?>
+                        <?php if ($comment->get('created_by') == $this->uid) {
+                            $delCommentUrl = Route::url(
+                                $url . '&action=deletecomment'
+                            )
+                                . '/?todoid=' . $this->row->get('id')
+                                . '&amp;cid=' . $comment->get('id');
+                            $cid = $comment->get('id');
+                            $delTxt = Lang::txt(
+                                'PLG_PROJECTS_TODO_DELETE'
+                            );
+                            ?>
+                            <a href="<?php echo $delCommentUrl; ?>"
+                                id="delc-<?php echo $cid; ?>"
+                                class="confirm-it">
+                                [<?php echo $delTxt; ?>]
+                            </a>
+                        <?php } ?>
+                    </p>
                 </li>
             <?php } ?>
             </ul>
@@ -113,7 +214,12 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
         <form action="<?php echo Route::url($url); ?>" method="post" >
             <div class="addcomment td-comment">
                 <label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_NEW_COMMENT')); ?>:
-                    <textarea name="comment" rows="4" cols="50" class="commentarea" id="td-comment" placeholder="<?php echo Lang::txt('PLG_PROJECTS_TODO_WRITE_COMMENT'); ?>"></textarea>
+                    <textarea name="comment"
+                        rows="4"
+                        cols="50"
+                        class="commentarea"
+                        id="td-comment"
+                        placeholder="<?php echo Lang::txt('PLG_PROJECTS_TODO_WRITE_COMMENT'); ?>"></textarea>
                 </label>
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
@@ -121,9 +227,21 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
                     <input type="hidden" name="task" value="view" />
                     <input type="hidden" name="active" value="todo" />
                     <input type="hidden" name="itemid" value="<?php echo $this->row->get('id'); ?>" />
-                    <input type="hidden" name="parent_activity" value="<?php echo $this->row->get('activityid'); ?>" />
+                    <input type="hidden"
+                        name="parent_activity"
+                        value="<?php echo $this->row->get('activityid'); ?>" />
                     <?php echo Html::input('token'); ?>
-                    <p class="blog-submit"><input type="submit" class="btn" id="c-submit" value="<?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_COMMENT'); ?>" /></p>
+                    <p class="blog-submit">
+                        <?php
+                        $submitVal = Lang::txt(
+                            'PLG_PROJECTS_TODO_ADD_COMMENT'
+                        );
+                        ?>
+                        <input type="submit"
+                            class="btn"
+                            id="c-submit"
+                            value="<?php echo $submitVal; ?>" />
+                    </p>
             </div>
         </form>
         <?php } ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,7 +32,9 @@ if ($this->announcement->priority == 1) {
                 </td>
                 <td width="80%" align="left" valign="bottom" class="tagline mobilehide">
                     <span class="home">
-                        <a href="<?php echo Request::base(); ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo Request::base(); ?></a>
+                        <a href="<?php echo Request::base(); ?>"
+                            style="color: #666; font-weight: bold; text-decoration: none; border: none;"
+                            ><?php echo Request::base(); ?></a>
                     </span>
                     <br />
                     <span class="description"><?php echo Config::get('MetaDesc'); ?></span>
@@ -57,7 +57,19 @@ if ($this->announcement->priority == 1) {
     </table>
     <!-- End Spacer -->
 
-    <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor; ?>; background: <?php echo $bgcolor; ?>; font-size: 0.9em; line-height: 1.6em; background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+<?php
+$tableStyle = 'border-collapse: collapse;'
+    . ' border: 1px solid ' . $bdcolor . ';'
+    . ' background: ' . $bgcolor . ';'
+    . ' font-size: 0.9em; line-height: 1.6em;'
+    . ' background-image: -webkit-gradient(linear, 0 0, 100% 100%,';
+?>
+    <table id="ticket-info"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="<?php echo $tableStyle; ?>
                                         color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
                                         color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
                                         color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
@@ -82,7 +94,13 @@ if ($this->announcement->priority == 1) {
                                     background-size: 30px 30px;">
         <thead class="mobilehide">
             <tr>
-                <th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left" align="left">
+<?php
+$thStyle = 'font-weight: normal;'
+    . ' border-bottom: 1px solid ' . $bdcolor . ';'
+    . ' padding: 8px; text-align: left';
+?>
+                <th style="<?php echo $thStyle; ?>"
+                    align="left">
                     <strong><?php echo $group->get('description'); ?></strong>,
                     <a href="<?php echo $groupLink; ?>"><?php echo $groupLink; ?></a>
                 </th>
@@ -95,7 +113,8 @@ if ($this->announcement->priority == 1) {
                         <tbody>
                             <tr>
                                 <td style="text-align: left; padding: 20px;" align="left">
-                                    <a href="<?php echo $groupLink . '/announcements'; ?>"><?php echo $groupLink . '/announcements'; ?></a>
+<?php $announcementsLink = $groupLink . '/announcements'; ?>
+                                    <a href="<?php echo $announcementsLink; ?>"><?php echo $announcementsLink; ?></a>
                                 </td>
                             </tr>
                             <tr>
@@ -125,7 +144,15 @@ if ($this->announcement->priority == 1) {
         <tbody>
             <tr>
                 <td align="left" valign="bottom">
-                    <span><?php echo Config::get('sitename'); ?> sent this email because you belong to the <a href="<?php echo $groupLink; ?>"><?php echo $group->get('description'); ?></a> group.
+<?php
+$siteName = Config::get('sitename');
+$groupDesc = $group->get('description');
+$footerText = $siteName
+    . ' sent this email because you belong to the '
+    . '<a href="' . $groupLink . '">'
+    . $groupDesc . '</a> group.';
+?>
+                    <span><?php echo $footerText; ?>
                 </td>
             </tr>
         </tbody>

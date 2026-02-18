@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -46,24 +46,41 @@ $base = $this->offering->link();
             <div class="col span3">
                 <table class="breakdown">
                     <tbody>
+                        <?php
+                        $enrolledCount = $this->offering->members(
+                            array('count' => true, 'student' => 1)
+                        );
+                        $enrolledText = Lang::txt(
+                            'PLG_COURSES_DASHBOARD_ENROLLED',
+                            '<strong>' . $enrolledCount . '</strong>'
+                        );
+                        $passingText = Lang::txt(
+                            'PLG_COURSES_DASHBOARD_PASSING',
+                            '<strong>' . $this->offering->gradebook()->countPassing() . '</strong>'
+                        );
+                        $failingText = Lang::txt(
+                            'PLG_COURSES_DASHBOARD_FAILING',
+                            '<strong>' . $this->offering->gradebook()->countFailing() . '</strong>'
+                        );
+                        ?>
                         <tr>
                             <td>
                                 <span>
-                                    <?php echo Lang::txt('PLG_COURSES_DASHBOARD_ENROLLED', '<strong>' . $this->offering->members(array('count' => true, 'student' => 1)) . '</strong>'); ?>
+                                    <?php echo $enrolledText; ?>
                                 </span>
                             </td>
                         </tr>
                         <tr>
                             <td class="gradebook-passing">
                                 <span>
-                                    <?php echo Lang::txt('PLG_COURSES_DASHBOARD_PASSING', '<strong>' . $this->offering->gradebook()->countPassing() . '</strong>'); ?>
+                                    <?php echo $passingText; ?>
                                 </span>
                             </td>
                         </tr>
                         <tr>
                             <td class="gradebook-failing">
                                 <span>
-                                    <?php echo Lang::txt('PLG_COURSES_DASHBOARD_FAILING', '<strong>' . $this->offering->gradebook()->countFailing() . '</strong>'); ?>
+                                    <?php echo $failingText; ?>
                                 </span>
                             </td>
                         </tr>
@@ -86,14 +103,21 @@ $base = $this->offering->link();
                                 case 'asset_group':
                                     $obj = new \Components\Courses\Models\AssetGroup($row->scope_id);
                                     $unit = \Components\Courses\Models\Unit::getInstance($obj->get('unit_id'));
-                                    $url = $base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $obj->get('alias');
+                                    $url = $base
+                                        . '&active=outline&unit='
+                                        . $unit->get('alias')
+                                        . '&b='
+                                        . $obj->get('alias');
                                     break;
                                 case 'asset':
                                     $obj = new \Components\Courses\Models\Asset($row->scope_id);
                                     $url = $base . '&active=outline&unit=&b=&c=';
                                     break;
                             }
-                            if (!$obj->exists() || !$obj->isPublished() || ($row->scope == 'asset_group' && !$obj->get('parent'))) {
+                            if (
+                                !$obj->exists() || !$obj->isPublished() || ($row->scope == 'asset_group' &&
+                                !$obj->get('parent'))
+                            ) {
                                 // skip containers
                                 continue;
                             }
@@ -102,9 +126,15 @@ $base = $this->offering->link();
                                 <a href="<?php echo Route::url($url); ?>">
                                     <?php echo $this->escape(stripslashes($obj->get('title'))); ?>
                                 </a>
+                                <?php
+                                $formattedDate = Date::of($row->publish_up)->toLocal(
+                                    Lang::txt('DATE_FORMAT_HZ1')
+                                );
+                                ?>
                                 <span class="details">
-                                    <time
-                                        datetime="<?php echo $row->publish_up; ?>"><?php echo Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                                    <time datetime="<?php echo $row->publish_up; ?>">
+                                        <?php echo $formattedDate; ?>
+                                    </time>
                                 </span>
                             </li>
                             <?php

@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -23,8 +23,15 @@ $this->css();
         <div class="point-balance-container">
             <h4><?php echo Lang::txt('PLG_MEMBERS_POINTS_BALANCE'); ?></h4>
             <div class="point-balance">
-                <strong><?php echo number_format($this->sum); ?> <span><?php echo strtolower(Lang::txt('PLG_MEMBERS_POINTS')); ?></span></strong>
-                <span class="spend">( <?php echo number_format($this->funds) . ' ' . strtolower(Lang::txt('PLG_MEMBERS_POINTS_AVAILABLE')); ?> )</span>
+                <?php
+                $pointsLabel = strtolower(Lang::txt('PLG_MEMBERS_POINTS'));
+                $availableLabel = number_format($this->funds)
+                    . ' '
+                    . strtolower(Lang::txt('PLG_MEMBERS_POINTS_AVAILABLE'));
+                ?>
+                <strong><?php echo number_format($this->sum); ?>
+                    <span><?php echo $pointsLabel; ?></span></strong>
+                <span class="spend">( <?php echo $availableLabel; ?> )</span>
             </div>
         </div>
     </div>
@@ -41,11 +48,19 @@ $this->css();
         <caption><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_CAPTION'); ?></caption>
         <thead>
             <tr>
-                <th scope="col" class="textual-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_DATE'); ?></th>
-                <th scope="col" class="textual-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_DESCRIPTION'); ?></th>
-                <th scope="col" class="textual-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_TYPE'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_AMOUNT'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_BALANCE'); ?></th>
+                <th scope="col"
+                    class="textual-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_DATE'); ?></th>
+                <th scope="col"
+                    class="textual-data"
+                    ><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_DESCRIPTION'); ?></th>
+                <th scope="col"
+                    class="textual-data"><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_TYPE'); ?></th>
+                <th scope="col"
+                    class="numerical-data"
+                    ><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_AMOUNT'); ?></th>
+                <th scope="col"
+                    class="numerical-data"
+                    ><?php echo Lang::txt('PLG_MEMBERS_POINTS_TRANSACTIONS_TBL_TH_BALANCE'); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -56,11 +71,23 @@ $this->css();
                         <td><?php echo $this->escape($item->description); ?></td>
                         <td><?php echo $this->escape($item->type); ?></td>
                     <?php if ($item->type == 'withdraw') : ?>
-                        <td class="numerical-data"><span class="withdraw">-<?php echo $this->escape($item->amount); ?></span></td>
+                        <td class="numerical-data">
+                            <span class="withdraw">-<?php
+                                echo $this->escape($item->amount);
+                            ?></span>
+                        </td>
                     <?php elseif ($item->type == 'hold') : ?>
-                        <td class="numerical-data"><span class="hold">(<?php echo $this->escape($item->amount); ?>)</span></td>
+                        <td class="numerical-data">
+                            <span class="hold">(<?php
+                                echo $this->escape($item->amount);
+                            ?>)</span>
+                        </td>
                     <?php else : ?>
-                        <td class="numerical-data"><span class="deposit">+<?php echo $this->escape($item->amount); ?></span></td>
+                        <td class="numerical-data">
+                            <span class="deposit">+<?php
+                                echo $this->escape($item->amount);
+                            ?></span>
+                        </td>
                     <?php endif; ?>
                         <td class="numerical-data"><?php echo $this->escape($item->balance); ?></td>
                     </tr>

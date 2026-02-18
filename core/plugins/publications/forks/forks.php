@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Publications\Forks;
 
 use Hubzero\Plugin\Plugin;

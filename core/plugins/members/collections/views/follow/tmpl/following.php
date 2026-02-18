@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -19,7 +19,8 @@ $this->css()
 
 <ul id="page_options">
     <li>
-        <a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=collections&page=index'); ?>">
+        <a class="icon-info btn popup"
+            href="<?php echo Route::url('index.php?option=com_help&component=collections&page=index'); ?>">
             <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GETTING_STARTED'); ?></span>
         </a>
     </li>
@@ -45,36 +46,86 @@ $this->css()
         <div class="container">
             <table class="following entries">
                 <tbody>
-                    <?php foreach ($this->rows as $row) { ?>
-                        <tr class="<?php echo $row->get('following_type'); ?>">
+                    <?php foreach ($this->rows as $row) {
+                        $followingObj = $row->following();
+                        $followingImg = $followingObj->image();
+                        $followingTitle = $this->escape(
+                            stripslashes($followingObj->title() ?: '')
+                        );
+                        $profilePicAlt = Lang::txt(
+                            'PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE',
+                            $followingTitle
+                        );
+                        $followingLink = Route::url($followingObj->link());
+                        $followerCount = Lang::txt(
+                            'PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWERS',
+                            $row->count('followers')
+                        );
+                        $followingCount = Lang::txt(
+                            'PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWING',
+                            $row->count('following')
+                        );
+                        $followType = $row->get('following_type');
+                        $followId = $row->get('following_id');
+                        ?>
+                        <tr class="<?php echo $followType; ?>">
                             <th>
-                                <?php if ($row->following()->image()) { ?>
-                                    <img src="<?php echo $row->following()->image(); ?>" width="40" height="40" alt="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($row->following()->title() ?: ''))); ?>" />
+                                <?php if ($followingImg) { ?>
+                                    <img
+                                        src="<?php echo $followingImg; ?>"
+                                        width="40"
+                                        height="40"
+                                        alt="<?php echo $profilePicAlt; ?>"
+                                    />
                                 <?php } else { ?>
                                     <span class="entry-id">
-                                        <?php echo $row->get('following_id'); ?>
+                                        <?php echo $followId; ?>
                                     </span>
                                 <?php } ?>
                             </th>
                             <td>
-                                <a class="entry-title" href="<?php echo Route::url($row->following()->link()); ?>">
-                                    <?php echo $this->escape(stripslashes($row->following()->title() ?: '')); ?>
+                                <a class="entry-title"
+                                    href="<?php echo $followingLink; ?>">
+                                    <?php echo $followingTitle; ?>
                                 </a>
-                                <?php if ($row->get('following_type') == 'collection') { ?>
-                                    <?php echo Lang::txt('by %s', $this->escape(stripslashes($row->following()->creator('name') ?: ''))); ?>
-                                <?php } ?>
+                                <?php if ($followType == 'collection') {
+                                    $creatorName = $this->escape(
+                                        stripslashes(
+                                            $followingObj->creator('name') ?: ''
+                                        )
+                                    );
+                                    echo Lang::txt('by %s', $creatorName);
+                                } ?>
                                 <br />
                                 <span class="entry-details">
-                                    <span class="follower count"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWERS', $row->count('followers')); ?></span>
-                                    <?php if ($row->get('following_type') != 'collection') { ?>
-                                        <span class="following count"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWING', $row->count('following')); ?></span>
+                                    <span class="follower count">
+                                        <?php echo $followerCount; ?>
+                                    </span>
+                                    <?php if ($followType != 'collection') { ?>
+                                        <span class="following count">
+                                            <?php echo $followingCount; ?>
+                                        </span>
                                     <?php } ?>
                                 </span>
                             </td>
                             <td>
-                                <?php if ($this->params->get('access-manage-collection')) { ?>
-                                    <a class="icon-unfollow unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?>" href="<?php echo Route::url($row->following()->link('unfollow')); ?>">
-                                        <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?></span>
+                                <?php if ($this->params->get('access-manage-collection')) {
+                                    $unfollowUrl = Route::url(
+                                        $followingObj->link('unfollow')
+                                    );
+                                    $followTxt = Lang::txt(
+                                        'PLG_MEMBERS_COLLECTIONS_FOLLOW'
+                                    );
+                                    $unfollowTxt = Lang::txt(
+                                        'PLG_MEMBERS_COLLECTIONS_UNFOLLOW'
+                                    );
+                                    ?>
+                                    <a class="icon-unfollow unfollow btn"
+                                        data-id="<?php echo $followId; ?>"
+                                        data-text-follow="<?php echo $followTxt; ?>"
+                                        data-text-unfollow="<?php echo $unfollowTxt; ?>"
+                                        href="<?php echo $unfollowUrl; ?>">
+                                        <span><?php echo $unfollowTxt; ?></span>
                                     </a>
                                 <?php } ?>
                             </td>
@@ -101,7 +152,16 @@ $this->css()
             <?php if ($this->params->get('access-manage-collection')) { ?>
                 <div class="instructions">
                     <ol>
-                        <li><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP1', Route::url('index.php?option=com_collections')); ?></li>
+                        <?php
+                        $collectionsUrl = Route::url(
+                            'index.php?option=com_collections'
+                        );
+                        $step1 = Lang::txt(
+                            'PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP1',
+                            $collectionsUrl
+                        );
+                        ?>
+                        <li><?php echo $step1; ?></li>
                         <li><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP2'); ?></li>
                         <li><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP3'); ?></li>
                     </ol>

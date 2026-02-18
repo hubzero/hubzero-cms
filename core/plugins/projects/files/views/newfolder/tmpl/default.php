@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -29,7 +29,11 @@ if ($this->getError()) {
             <input type="hidden" name="repo" value="<?php echo $this->repo->get('name'); ?>" />
             <input type="hidden" name="action" value="savedir" />
             <label>
-                <img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/img/folder.gif" alt="" />
+                <?php
+                $folderImg = rtrim(Request::base(true), '/')
+                    . '/core/plugins/projects/files/assets/img/folder.gif';
+                ?>
+                <img src="<?php echo $folderImg; ?>" alt="" />
                 <input type="text" name="newdir" maxlength="100" value="untitled" />
             </label>
             <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_SAVE'); ?>" />

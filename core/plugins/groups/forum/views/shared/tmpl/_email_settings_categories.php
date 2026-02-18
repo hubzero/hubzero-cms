@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -42,7 +40,9 @@ $currentUserId = User::get('id');
 
         <?php echo Html::input('token'); ?>
         <input type="hidden" id="user-id" value="<?php echo $currentUserId; ?>">
-        <input type="hidden" id="preexisting-subscriptions" value="<?php echo implode(',', $preexistingSubscriptionIds); ?>">
+        <input type="hidden"
+            id="preexisting-subscriptions"
+            value="<?php echo implode(',', $preexistingSubscriptionIds); ?>">
 
         <input class="option" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
     </fieldset>

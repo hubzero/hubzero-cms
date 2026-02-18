@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -38,10 +38,18 @@ $this->css();
                                 //$active = $s;
                                 $sel = 'active';
                             }
+                            $roleTitle = $this->escape(stripslashes($s->title));
+                            $roleHref = Route::url(
+                                $base . '&task=' . $s->alias
+                                . '&sort=' . $this->filters['sort']
+                            );
                             ?>
                             <li>
-                                <a class="<?php echo $s->alias . ' ' . $sel; ?>" title="<?php echo $this->escape(stripslashes($s->title)); ?>" href="<?php echo Route::url($base . '&task=' . $s->alias . '&sort=' . $this->filters['sort']); ?>">
-                                    <?php echo $this->escape(stripslashes($s->title)); ?> (<?php echo $this->escape($s->total); ?>)
+                                <a class="<?php echo $s->alias . ' ' . $sel; ?>"
+                                    title="<?php echo $roleTitle; ?>"
+                                    href="<?php echo $roleHref; ?>">
+                                    <?php echo $roleTitle; ?>
+                                    (<?php echo $this->escape($s->total); ?>)
                                 </a>
                             </li>
                         <?php } ?>
@@ -49,13 +57,36 @@ $this->css();
                 <?php } ?>
 
                 <ul class="entries-menu order-options">
+                    <?php
+                    $taskParam = urlencode($this->filters['task']);
+                    $titleSortUrl = Route::url(
+                        $base . '&task=' . $taskParam . '&sort=title'
+                    );
+                    $enrolledSortUrl = Route::url(
+                        $base . '&task=' . $taskParam . '&sort=enrolled'
+                    );
+                    $titleSortClass = ($this->filters['sort'] == 'title')
+                        ? ' class="active"' : '';
+                    $enrolledSortClass = ($this->filters['sort'] == 'enrolled')
+                        ? ' class="active"' : '';
+                    $titleSortTitle = Lang::txt(
+                        'PLG_MEMBERS_COURSES_SORT_BY_TITLE'
+                    );
+                    $enrolledSortTitle = Lang::txt(
+                        'PLG_MEMBERS_COURSES_SORT_BY_ENROLLED'
+                    );
+                    ?>
                     <li>
-                        <a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&task=' . urlencode($this->filters['task']) . '&sort=title'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_BY_TITLE'); ?>">
+                        <a<?php echo $titleSortClass; ?>
+                            href="<?php echo $titleSortUrl; ?>"
+                            title="<?php echo $titleSortTitle; ?>">
                             <?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_TITLE'); ?>
                         </a>
                     </li>
                     <li>
-                        <a<?php echo ($this->filters['sort'] == 'enrolled') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&task=' . urlencode($this->filters['task']) . '&sort=enrolled'); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_BY_ENROLLED'); ?>">
+                        <a<?php echo $enrolledSortClass; ?>
+                            href="<?php echo $enrolledSortUrl; ?>"
+                            title="<?php echo $enrolledSortTitle; ?>">
                             <?php echo Lang::txt('PLG_MEMBERS_COURSES_SORT_ENROLLED'); ?>
                         </a>
                     </li>
@@ -66,10 +97,16 @@ $this->css();
                 <caption>
                     <?php
 
-                    $s = ($this->total > 0) ? $this->filters['start'] + 1 : 0; //($this->filters['start'] > 0) ? $this->filters['start']+1 : $this->filters['start'];
-                    $e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
+                    $s = ($this->total > 0)
+                        ? $this->filters['start'] + 1
+                        : 0;
+                    $e = ($this->total > ($this->filters['start'] + $this->filters['limit']))
+                        ? ($this->filters['start'] + $this->filters['limit'])
+                        : $this->total;
 
-                    echo $this->escape(stripslashes($this->active->title)); //Lang::txt('PLG_MEMBERS_COURSES_' . strtoupper($this->filters['task']));
+                    echo $this->escape(
+                        stripslashes($this->active->title)
+                    );
                     ?>
                     <span>(<?php echo Lang::txt('PLG_MEMBERS_COURSES_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
                 </caption>
@@ -103,26 +140,58 @@ $this->css();
                         $dateText = Lang::txt('PLG_MEMBERS_COURSES_EMPOWERED');
                         break;
                 }
+
+                $courseUrl = Route::url(
+                    'index.php?option=com_courses&gid='
+                    . $row->alias . $sfx
+                );
+                $enrolledTime = Date::of($row->enrolled)->toLocal(
+                    Lang::txt('TIME_FORMAT_HZ1')
+                );
+                $enrolledDate = Date::of($row->enrolled)->toLocal(
+                    Lang::txt('DATE_FORMAT_HZ1')
+                );
+                $sectionLabel = Lang::txt(
+                    'PLG_MEMBERS_COURSES_SECTION'
+                );
+                $escapedSection = $this->escape(
+                    stripslashes($row->section_title)
+                );
                 ?>
                     <tr class="course<?php echo ($cls) ? ' ' . $cls : ''; ?>">
                         <th>
                             <span class="entry-id"><?php echo $row->id; ?></span>
                         </th>
                         <td>
-                            <a class="entry-title" href="<?php echo Route::url('index.php?option=com_courses&gid=' . $row->alias . $sfx); ?>">
+                            <a class="entry-title"
+                                href="<?php echo $courseUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->title)); ?>
                             </a><br />
                             <span class="entry-details">
                             <?php echo $dateText; ?>
                                 <!--
-                                <span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
-                                <span class="entry-time"><time datetime="<?php echo $row->enrolled; ?>"><?php echo Date::of($row->enrolled)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+                                <span class="entry-date-at">
+                                    <?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?>
+                                </span>
+                                <span class="entry-time">
+                                    <time datetime="<?php echo $row->enrolled; ?>">
+                                        <?php echo $enrolledTime; ?>
+                                    </time>
+                                </span>
                                 -->
-                                <span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
-                                <span class="entry-date"><time datetime="<?php echo $row->enrolled; ?>"><?php echo Date::of($row->enrolled)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+                                <span class="entry-date-on">
+                                    <?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?>
+                                </span>
+                                <span class="entry-date">
+                                    <time datetime="<?php echo $row->enrolled; ?>">
+                                        <?php echo $enrolledDate; ?>
+                                    </time>
+                                </span>
                             <?php if ($row->section_title) { ?>
                                     <span class="entry-section">
-                                         &mdash; <strong><?php echo Lang::txt('PLG_MEMBERS_COURSES_SECTION'); ?></strong> <?php echo $this->escape(stripslashes($row->section_title)); ?>
+                                         &mdash;
+                                         <strong><?php echo $sectionLabel; ?></strong>
+                                         <?php echo $escapedSection; ?>
                                     </span>
                             <?php } ?>
                             </span>
@@ -136,13 +205,35 @@ $this->css();
                         </td>
                         <td>
                         <?php if ($row->starts) { ?>
+                                <?php
+                                $startsTime = Date::of($row->starts)->toLocal(
+                                    Lang::txt('TIME_FORMAT_HZ1')
+                                );
+                                $startsDate = Date::of($row->starts)->toLocal(
+                                    Lang::txt('DATE_FORMAT_HZ1')
+                                );
+                                $atLabel = Lang::txt('PLG_MEMBERS_COURSES_AT');
+                                $onLabel = Lang::txt('PLG_MEMBERS_COURSES_ON');
+                                ?>
                                 <?php echo Lang::txt('PLG_MEMBERS_COURSES_STARTS'); ?><br />
                                 <span class="entry-details">
                                     <?php if ($row->starts && $row->starts != '0000-00-00 00:00:00') { ?>
-                                        <span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
-                                        <span class="entry-time"><time datetime="<?php echo $row->starts; ?>"><?php echo Date::of($row->starts)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-                                        <span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
-                                        <span class="entry-date"><time datetime="<?php echo $row->starts; ?>"><?php echo Date::of($row->starts)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+                                        <span class="entry-date-at">
+                                            <?php echo $atLabel; ?>
+                                        </span>
+                                        <span class="entry-time">
+                                            <time datetime="<?php echo $row->starts; ?>">
+                                                <?php echo $startsTime; ?>
+                                            </time>
+                                        </span>
+                                        <span class="entry-date-on">
+                                            <?php echo $onLabel; ?>
+                                        </span>
+                                        <span class="entry-date">
+                                            <time datetime="<?php echo $row->starts; ?>">
+                                                <?php echo $startsDate; ?>
+                                            </time>
+                                        </span>
                                     <?php } else { ?>
                                         <?php echo Lang::txt('PLG_MEMBERS_COURSES_NA'); ?>
                                     <?php } ?>
@@ -151,13 +242,35 @@ $this->css();
                         </td>
                         <td>
                         <?php if ($row->ends) { ?>
+                                <?php
+                                $endsTime = Date::of($row->ends)->toLocal(
+                                    Lang::txt('TIME_FORMAT_HZ1')
+                                );
+                                $endsDate = Date::of($row->ends)->toLocal(
+                                    Lang::txt('DATE_FORMAT_HZ1')
+                                );
+                                $atLabel = Lang::txt('PLG_MEMBERS_COURSES_AT');
+                                $onLabel = Lang::txt('PLG_MEMBERS_COURSES_ON');
+                                ?>
                                 <?php echo Lang::txt('PLG_MEMBERS_COURSES_ENDS'); ?><br />
                                 <span class="entry-details">
                                     <?php if ($row->ends && $row->ends != '0000-00-00 00:00:00') { ?>
-                                        <span class="entry-date-at"><?php echo Lang::txt('PLG_MEMBERS_COURSES_AT'); ?></span>
-                                        <span class="entry-time"><time datetime="<?php echo $row->ends; ?>"><?php echo Date::of($row->ends)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-                                        <span class="entry-date-on"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ON'); ?></span>
-                                        <span class="entry-date"><time datetime="<?php echo $row->ends; ?>"><?php echo Date::of($row->ends)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+                                        <span class="entry-date-at">
+                                            <?php echo $atLabel; ?>
+                                        </span>
+                                        <span class="entry-time">
+                                            <time datetime="<?php echo $row->ends; ?>">
+                                                <?php echo $endsTime; ?>
+                                            </time>
+                                        </span>
+                                        <span class="entry-date-on">
+                                            <?php echo $onLabel; ?>
+                                        </span>
+                                        <span class="entry-date">
+                                            <time datetime="<?php echo $row->ends; ?>">
+                                                <?php echo $endsDate; ?>
+                                            </time>
+                                        </span>
                                     <?php } else { ?>
                                         <?php echo Lang::txt('PLG_MEMBERS_COURSES_NA'); ?>
                                     <?php } ?>
@@ -166,7 +279,19 @@ $this->css();
                         </td>
                         <td>
                         <?php if ($this->filters['task'] == 'manager' || $this->filters['task'] == 'instructor') { ?>
-                                <a class="icon-copy btn btn-copy" href="<?php echo Route::url('index.php?option=com_courses&gid=' . $row->alias . '&task=copy&return=' . $rtrn); ?>"><?php echo Lang::txt('PLG_MEMBERS_COURSES_ACTION_COPY'); ?></a>
+                                <?php
+                                $copyUrl = Route::url(
+                                    'index.php?option=com_courses&gid='
+                                    . $row->alias . '&task=copy&return=' . $rtrn
+                                );
+                                $copyLabel = Lang::txt(
+                                    'PLG_MEMBERS_COURSES_ACTION_COPY'
+                                );
+                                ?>
+                                <a class="icon-copy btn btn-copy"
+                                    href="<?php echo $copyUrl; ?>">
+                                    <?php echo $copyLabel; ?>
+                                </a>
                         <?php } ?>
                         </td>
                     </tr>
@@ -205,7 +330,14 @@ $this->css();
     <div id="courses-introduction">
         <div class="instructions">
             <ol>
-                <li><?php echo Lang::txt('PLG_MEMBERS_COURSES_FIND_COURSE', Route::url('index.php?option=com_courses')); ?></li>
+                <?php
+                $coursesUrl = Route::url('index.php?option=com_courses');
+                $findCourse = Lang::txt(
+                    'PLG_MEMBERS_COURSES_FIND_COURSE',
+                    $coursesUrl
+                );
+                ?>
+                <li><?php echo $findCourse; ?></li>
                 <li><?php echo Lang::txt('PLG_MEMBERS_COURSES_ENROLL'); ?></li>
                 <li><?php echo Lang::txt('PLG_MEMBERS_COURSES_GET_LEARNING'); ?></li>
             </ol>

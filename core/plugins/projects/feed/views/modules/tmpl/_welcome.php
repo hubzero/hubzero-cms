@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -26,10 +26,24 @@ $i = 0;
 <?php if ($actual_s > 1) { ?>
     <div class="welcome">
         <p class="closethis"><a href="<?php echo Route::url('index.php?option=' . $this->option
-        . '&alias=' . $this->model->get('alias') . '&active=feed') . '?c=1'; ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_CLOSE_THIS'); ?></a></p>
 
-        <h3><?php echo $this->model->access('owner') ? Lang::txt('COM_PROJECTS_WELCOME_TO_PROJECT_CREATOR') : Lang::txt('COM_PROJECTS_WELCOME_TO') . ' ' . stripslashes($this->model->get('title')) . ' ' . Lang::txt('COM_PROJECTS_PROJECT') . '!'; ?> </h3>
-        <p><?php echo $this->model->access('owner') ? Lang::txt('COM_PROJECTS_WELCOME_SUGGESTIONS_CREATOR') : Lang::txt('COM_PROJECTS_WELCOME_SUGGESTIONS'); ?></p>
+            . '&alias='
+            . $this->model->get('alias')
+            . '&active=feed') . '?c=1'; ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_CLOSE_THIS'); ?></a></p>
+
+        <?php
+        if ($this->model->access('owner')) {
+            $heading = Lang::txt('COM_PROJECTS_WELCOME_TO_PROJECT_CREATOR');
+            $subtext = Lang::txt('COM_PROJECTS_WELCOME_SUGGESTIONS_CREATOR');
+        } else {
+            $heading = Lang::txt('COM_PROJECTS_WELCOME_TO')
+                . ' ' . stripslashes($this->model->get('title'))
+                . ' ' . Lang::txt('COM_PROJECTS_PROJECT') . '!';
+            $subtext = Lang::txt('COM_PROJECTS_WELCOME_SUGGESTIONS');
+        }
+        ?>
+        <h3><?php echo $heading; ?> </h3>
+        <p><?php echo $subtext; ?></p>
         <div id="suggestions" class="suggestions">
             <?php foreach ($this->suggestions as $suggestion) {
                 $i++;

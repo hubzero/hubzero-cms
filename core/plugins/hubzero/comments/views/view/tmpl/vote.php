@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -55,28 +54,56 @@ if (!User::isGuest()) {
 
 $no_html = Request::getInt('no_html', 0);
 
+$hasVoted    = $this->item->get('vote');
+$isCreator   = User::get('id') == $this->item->get('created_by');
+$cannotVote  = $hasVoted || $isCreator;
+$positiveCount = $this->item->get('positive', 0);
+$negativeCount = $this->item->get('negative', 0);
+$likeCls     = ($positiveCount > 0 ? 'like' : 'neutral') . $cls;
+$dislikeCls  = ($negativeCount > 0 ? 'dislike' : 'neutral') . $cls;
+$likeLabel   = Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_LIKE');
+$dislikeLabel = Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE');
+$voteUpUrl   = Route::url(
+    $this->url . 'action=commentvote&voteup='
+    . $this->item->get('id')
+);
+$voteDownUrl = Route::url(
+    $this->url . 'action=commentvote&votedown='
+    . $this->item->get('id')
+);
+
 if (!$no_html) { ?>
 <p class="comment-voting voting">
 <?php } ?>
     <span class="vote-like<?php echo $lcls; ?>">
-        <?php if ($this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { // || !$this->params->get('access-vote-comment')) { ?>
-            <span class="vote-button <?php echo ($this->item->get('positive', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" title="<?php echo $like_title; ?>">
-                <?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_LIKE'); ?></span>
+        <?php if ($cannotVote) { ?>
+            <span class="vote-button <?php echo $likeCls; ?>"
+                title="<?php echo $like_title; ?>">
+                <?php echo $positiveCount; ?>
+                <span> <?php echo $likeLabel; ?></span>
             </span>
         <?php } else { ?>
-            <a class="vote-button <?php echo ($this->item->get('positive', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" href="<?php echo Route::url($this->url . 'action=commentvote&voteup=' . $this->item->get('id')); ?>" title="<?php echo $like_title; ?>">
-                <?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_LIKE'); ?></span>
+            <a class="vote-button <?php echo $likeCls; ?>"
+                href="<?php echo $voteUpUrl; ?>"
+                title="<?php echo $like_title; ?>">
+                <?php echo $positiveCount; ?>
+                <span> <?php echo $likeLabel; ?></span>
             </a>
         <?php } ?>
     </span>
     <span class="vote-dislike<?php echo $dcls; ?>">
-        <?php if ($this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
-            <span class="vote-button <?php echo ($this->item->get('negative', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" title="<?php echo $dislike_title; ?>">
-                <?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE'); ?></span>
+        <?php if ($cannotVote) { ?>
+            <span class="vote-button <?php echo $dislikeCls; ?>"
+                title="<?php echo $dislike_title; ?>">
+                <?php echo $negativeCount; ?>
+                <span> <?php echo $dislikeLabel; ?></span>
             </span>
         <?php } else { ?>
-            <a class="vote-button <?php echo ($this->item->get('negative', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" href="<?php echo Route::url($this->url . 'action=commentvote&votedown=' . $this->item->get('id')); ?>" title="<?php echo $dislike_title; ?>">
-                <?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE'); ?></span>
+            <a class="vote-button <?php echo $dislikeCls; ?>"
+                href="<?php echo $voteDownUrl; ?>"
+                title="<?php echo $dislike_title; ?>">
+                <?php echo $negativeCount; ?>
+                <span> <?php echo $dislikeLabel; ?></span>
             </a>
         <?php } ?>
     </span>

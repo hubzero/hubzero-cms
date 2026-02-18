@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -57,17 +57,20 @@ $base = $this->member->link() . '&active=citations';
         <ul id="steps">
             <li>
                 <a href="<?php echo Route::url($base . '&task=import'); ?>" class="passed">
-                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME'); ?></span>
+                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1'); ?>
+                    <span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP1_NAME');?></span>
                 </a>
             </li>
             <li>
                 <a href="<?php echo Route::url($base . '&task=review'); ?>" class="passed">
-                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2_NAME'); ?></span>
+                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2'); ?>
+                    <span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP2_NAME');?></span>
                 </a>
             </li>
             <li>
                 <a href="<?php echo Route::url($base . '&task=saved'); ?>" class="active">
-                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3_NAME'); ?></span>
+                    <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3'); ?>
+                    <span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_STEP3_NAME');?></span>
                 </a>
             </li>
         </ul><!-- / #steps -->

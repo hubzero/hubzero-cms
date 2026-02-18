@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -19,7 +19,8 @@ defined('_HZEXEC_') or die();
     <form action="index.php" method="post">
         <fieldset class="adminform">
             <div class="input-wrap">
-                <label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_TITLE'); ?> <span class="required"><?php echo Lang::txt('required'); ?></span></label><br />
+                <label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_TITLE'); ?>
+                <span class="required"><?php echo Lang::txt('required');?></span></label><br />
                 <select name="module">
                     <option value=""><?php echo Lang::txt('- Select Module to Push -'); ?></option>
                     <?php foreach ($this->modules as $module) : ?>
@@ -69,7 +70,8 @@ defined('_HZEXEC_') or die();
                 </div>
             </div>
             <p class="submit">
-                <button class="button dopush" type="submit"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_BUTTON'); ?></button>
+                <button class="button dopush"
+                    type="submit"><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_BUTTON'); ?></button>
             </p>
 
         </fieldset>

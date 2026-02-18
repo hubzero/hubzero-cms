@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -18,20 +18,31 @@ $this->css();
 
 <ul id="page_options" class="pluginOptions">
     <li>
-        <a class="icon-add add btn showinbox"  href="<?php echo Route::url('index.php?option=com_projects&task=start'); ?>">
+        <a class="icon-add add btn showinbox"
+            href="<?php echo Route::url('index.php?option=com_projects&task=start'); ?>">
             <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_ADD'); ?>
         </a>
     </li>
 </ul>
 
 <ul class="sub-menu">
+    <?php
+    $allUrl = Route::url(
+        'index.php?option=com_members&id=' . $this->uid
+        . '&active=projects&action=all'
+    );
+    $updatesUrl = Route::url(
+        'index.php?option=com_members&id=' . $this->uid
+        . '&active=projects&action=updates'
+    );
+    ?>
     <li>
-        <a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->uid . '&active=projects&action=all'); ?>">
+        <a href="<?php echo $allUrl; ?>">
             <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
         </a>
     </li>
     <li class="active">
-        <a href="<?php echo Route::url('index.php?option=com_members&id=' . $this->uid . '&active=projects&action=updates'); ?>">
+        <a href="<?php echo $updatesUrl; ?>">
             <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) {
                 echo '<span class="s-new">' . $this->newcount . '</span>';
             } ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,15 +22,28 @@ if (!$identifier) {
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/delete'); ?>" method="post" id="hubForm" class="full">
+    <form action="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/delete'); ?>"
+        method="post"
+        id="hubForm"
+        class="full">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_HEADER'); ?></legend>
 
-            <p class="warning"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_WARNING', $this->escape(stripslashes($identifier))); ?></p>
+            <?php
+            $deleteWarning = Lang::txt(
+                'PLG_GROUPS_COLLECTIONS_DELETE_WARNING',
+                $this->escape(stripslashes($identifier))
+            );
+            ?>
+            <p class="warning"><?php echo $deleteWarning; ?></p>
 
             <div class="form-group form-check">
                 <label for="confirmdel" class="form-check-label">
-                    <input type="checkbox" class="option form-check-input" name="confirmdel" if="confirmdel" value="1" />
+                    <input type="checkbox"
+                        class="option form-check-input"
+                        name="confirmdel"
+                        if="confirmdel"
+                        value="1"/>
                     <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_CONFIRM'); ?>
                 </label>
             </div>
@@ -52,7 +63,8 @@ if (!$identifier) {
         <p class="submit">
             <input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />
         <?php if (!$this->no_html) { ?>
-            <a href="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias')); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+            <?php $cancelUrl = Route::url($base . '&scope=' . $this->collection->get('alias')); ?>
+            <a href="<?php echo $cancelUrl; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
         <?php } ?>
         </p>
     </form>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -8,7 +9,6 @@
 namespace Plugins\Filesystem\Awss3;
 
 use Hubzero\Plugin\Plugin;
-
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Aws\S3\S3Client;

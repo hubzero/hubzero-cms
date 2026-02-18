@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -104,7 +104,8 @@ $this->css('
 ?>
 <div class="reviews-summary">
     <p class="avgrating <?php echo $cls; ?>">
-        <strong><span><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $avg); ?></span> (<?php echo $total; ?>)</strong>
+        <strong><span><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $avg); ?>
+        </span> (<?php echo $total;?>)</strong>
     </p>
     <table class="reviews-distribution">
         <caption><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_DISTRIBUTION'); ?></caption>

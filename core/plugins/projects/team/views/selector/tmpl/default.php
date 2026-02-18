@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -18,19 +18,25 @@ if (count($this->authors) > 0) {
     }
 }
 
-$newauthorUrl = Route::url($this->publication->link('editversionid') . '&active=team&action=newauthor&p=' . $this->props);
+$newauthorUrl = Route::url($this->publication->link('editversionid') . '&active=team&action=newauthor&p=' .
+$this->props);
 
 ?>
 <div id="abox-content-wrap">
 <div id="abox-content">
 <script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/team/assets/js/selector.js"></script>
 <h3><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR'); ?>  <span class="abox-controls">
-        <a class="btn btn-success active" id="b-save"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_SAVE_SELECTION'); ?></a>
+        <a class="btn btn-success active"
+            id="b-save"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_SAVE_SELECTION'); ?></a>
         <?php if ($this->ajax) { ?>
         <a class="btn btn-cancel" id="cancel-action"><?php echo Lang::txt('PLG_PROJECTS_TEAM_CANCEL'); ?></a>
         <?php } ?>
     </span></h3>
-<form id="select-form" class="select-form" method="post" enctype="multipart/form-data" action="<?php echo Route::url(Route::url($this->publication->link('edit'))); ?>">
+<form id="select-form"
+    class="select-form"
+    method="post"
+    enctype="multipart/form-data"
+    action="<?php echo Route::url(Route::url($this->publication->link('edit'))); ?>">
     <fieldset >
         <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
         <input type="hidden" name="version" value="<?php echo $this->publication->get('version_number'); ?>" />
@@ -67,6 +73,9 @@ $newauthorUrl = Route::url($this->publication->link('editversionid') . '&active=
             ?>
     </div>
     </form>
-    <p class="newauthor-question"><span><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_AUTHOR_NOT_PART_OF_TEAM'); ?> <a href="<?php echo $newauthorUrl; ?>" class="add" id="newauthor-question"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ADD_AUTHOR'); ?></a></span></p>
+    <p class="newauthor-question"><span><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_AUTHOR_NOT_PART_OF_TEAM'); ?>
+    <a href="<?php echo $newauthorUrl;?>
+    " class="add" id="newauthor-question"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ADD_AUTHOR');?>
+    </a></span></p>
 </div>
 </div>

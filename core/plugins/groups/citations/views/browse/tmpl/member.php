@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,7 +33,10 @@ if (count($this->citations) > 0) :
                 <?php foreach ($this->citations as $cite) : ?>
                     <tr class="citation-row">
                         <td class="batch">
-                            <input type="checkbox" class="download-marker" name="download_marker[]" value="<?php echo $cite->id; ?>" />
+                            <input type="checkbox"
+                                class="download-marker"
+                                name="download_marker[]"
+                                value="<?php echo $cite->id; ?>"/>
                         </td>
                         <?php if ($this->label != "none") : ?>
                             <td class="citation-label <?php echo $this->citations_label_class; ?>">
@@ -97,12 +98,21 @@ if (count($this->citations) > 0) :
                                     <?php
                                     $final = "";
                                     foreach ($cite->sponsors as $s) {
-                                        $final .= '<a rel="external" href="' . $sp->get('link') . '">' . $sp->get('sponsor') . '</a>, ';
+                                        $final .= '<a rel="external" href="'
+                                            . $sp->get('link')
+                                            . '">'
+                                            . $sp->get('sponsor')
+                                            . '</a>, ';
                                     }
                                     ?>
-                                    <?php if ($final != '' && $this->config->get("citation_sponsors", "yes") == 'yes') : ?>
+                                <?php
+                                $showSponsors = $final != ''
+                                && $this->config->get("citation_sponsors", "yes") == 'yes';
+                                ?>
+                                    <?php if ($showSponsors) : ?>
                                         <?php $final = substr($final, 0, -2); ?>
-                                        <p class="sponsor"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY'); ?> <?php echo $final; ?></p>
+                                        <?php $abstractBy = Lang::txt('PLG_GROUPS_CITATIONS_ABSTRACT_BY'); ?>
+                                        <p class="sponsor"><?php echo $abstractBy; ?> <?php echo $final; ?></p>
                                     <?php endif; ?>
                                     <p><?php echo nl2br($cite->abstract); ?></p>
                                 </div>
@@ -114,15 +124,33 @@ if (count($this->citations) > 0) :
                             <?php
                                 $singleCitationView = $this->config->get('citation_single_view', 0);
                             if (!$singleCitationView) {
-                                echo $formatter->citationDetails($cite, $this->database, $this->config, $this->openurl, true);
+                                echo $formatter->citationDetails(
+                                    $cite,
+                                    $this->database,
+                                    $this->config,
+                                    $this->openurl,
+                                    true
+                                );
                             }
                             ?>
-                            <?php if ($this->config->get("citation_show_badges", "no") == "yes") : ?>
-                                <?php echo \Components\Citations\Helpers\Format::citationBadges($cite, $this->database); ?>
+                    <?php $showBadges = $this->config->get("citation_show_badges", "no") == "yes"; ?>
+                            <?php if ($showBadges) : ?>
+                                <?php
+                                echo \Components\Citations\Helpers\Format::citationBadges(
+                                    $cite,
+                                    $this->database
+                                );
+                                ?>
                             <?php endif; ?>
 
-                            <?php if ($this->config->get("citation_show_tags", "no") == "yes") : ?>
-                                <?php echo \Components\Citations\Helpers\Format::citationTags($cite, $this->database); ?>
+                    <?php $showTags = $this->config->get("citation_show_tags", "no") == "yes"; ?>
+                            <?php if ($showTags) : ?>
+                                <?php
+                                echo \Components\Citations\Helpers\Format::citationTags(
+                                    $cite,
+                                    $this->database
+                                );
+                                ?>
                             <?php endif; ?>
                         </td>
                     </tr>

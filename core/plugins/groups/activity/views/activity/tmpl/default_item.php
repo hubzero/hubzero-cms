@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -47,21 +45,25 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
     data-context="<?php echo $this->row->log->get('scope'); ?>"
     data-action="<?php echo $this->row->log->get('action'); ?>"
     id="activity<?php echo $this->row->get('id'); ?>"
-    class="activity <?php echo $this->row->get('scope'); ?> <?php echo $status . ($this->row->get('starred') ? ' starred' : ''); ?>">
+    class="activity <?php echo $this->row->get('scope'); ?> <?php
+        echo $status . ($this->row->get('starred') ? ' starred' : '');
+    ?>">
 
     <div class="activity-actor-picture<?php if ($online) {
         echo ' tooltips" title="' . Lang::txt('PLG_GROUPS_ACTIVITY_ONLINE');
                                       } ?>">
         <?php if ($creator->get('public')) { ?>
             <a class="user-img-wrap" href="<?php echo Route::url($creator->link()); ?>" title="<?php echo $name; ?>">
-                <img src="<?php echo $creator->picture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
+                <img src="<?php echo $creator->picture(); ?>"
+                    alt="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_PROFILE_PICTURE', $name); ?>"/>
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_ONLINE'); ?></span>
                 <?php } ?>
             </a>
         <?php } else { ?>
             <span class="user-img-wrap">
-                <img src="<?php echo $creator->picture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
+                <img src="<?php echo $creator->picture(); ?>"
+                    alt="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_PROFILE_PICTURE', $name); ?>"/>
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_ONLINE'); ?></span>
                 <?php } ?>
@@ -69,17 +71,32 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
         <?php } ?>
     </div><!-- / .activity-actor-picture -->
 
-    <div class="activity-content <?php echo $this->escape($this->row->log->get('action')); ?> <?php echo $this->escape(str_replace('.', '-', $this->row->log->get('scope'))); ?>">
+    <?php
+    $actionClass = $this->escape($this->row->log->get('action'));
+    $scopeClass = $this->escape(
+        str_replace('.', '-', $this->row->log->get('scope'))
+    );
+    ?>
+    <div class="activity-content <?php echo $actionClass; ?> <?php echo $scopeClass; ?>">
         <div class="activity-body">
             <div class="activity-details">
                 <span class="activity-actor"><?php echo $name; ?></span>
                 <span class="activity-action"><?php echo $this->escape($this->row->log->get('action')); ?></span>
-                <span class="activity-channel"><?php echo ($this->row->get('scope') == 'group_managers') ? Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_MANAGERS') : Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_ALL'); ?></span>
+                <?php
+                $channelTxt = ($this->row->get('scope') == 'group_managers')
+                    ? Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_MANAGERS')
+                    : Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_RECIPIENTS_ALL');
+                ?>
+                <span class="activity-channel"><?php echo $channelTxt; ?></span>
                 <span class="activity-context"><?php
                     $scope = explode('.', $this->row->log->get('scope'));
                     echo $this->escape($scope[0]);
                 ?></span>
-                <span class="activity-time"><time datetime="<?php echo Date::of($this->row->get('created'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php
+                <?php
+                $createdDatetime = Date::of($this->row->get('created'))
+                    ->format('Y-m-d\TH:i:s\Z');
+                ?>
+                <span class="activity-time"><time datetime="<?php echo $createdDatetime; ?>"><?php
                     $dt = Date::of($this->row->get('created'));
                     $ct = Date::of('now');
 
@@ -103,11 +120,15 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                     // @TODO: Find a better way to associate comments to their parent scope (group, projects)
                     require_once Component::path('com_projects') . '/models/project.php';
 
-                    $project = new Components\Projects\Models\Project($this->row->log->details->get('projectid', $this->row->log->get('scope_id')));
+                    $project = new Components\Projects\Models\Project($this->row->log->details->get(
+                        'projectid',
+                        $this->row->log->get('scope_id')
+                    ));
 
                     if ($project) {
                         $projectDetailUrl = $this->row->log->details->get('url');
-                        $projectDetailUrl = !empty($projectDetailUrl) ? $projectDetailUrl : Route::url('index.php?option=com_projects&alias=' . $project->get('alias'));
+                        $projectDetailUrl = !empty($projectDetailUrl) ? $projectDetailUrl :
+                        Route::url('index.php?option=com_projects&alias=' . $project->get('alias'));
                         ?>
                         <div class="activity-source icon-project">
                             <a href="<?php echo $projectDetailUrl; ?>"><?php echo $project->get('title'); ?></a>
@@ -140,7 +161,8 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                     <?php
                 }
                 ?>
-                <div class="activity-event-content<?php echo ($short) ? ' hide' : ''; ?>" id="activity-event-content<?php echo $this->row->get('id'); ?>">
+                <div class="activity-event-content<?php echo ($short) ? ' hide' : ''; ?>"
+                    id="activity-event-content<?php echo $this->row->get('id'); ?>">
                     <?php echo $content; ?>
                 </div>
 
@@ -159,25 +181,48 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                                 $attachment->set('description', $attachment->get('filename'));
                             }
 
-                            $link = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=File:/uploads/' . ($attachment->get('subdir') ? $attachment->get('subdir') . '/' : '') . $attachment->get('filename');
+                            $link = 'index.php?option=com_groups&cn='
+                                . $this->group->get('cn')
+                                . '&active=File:/uploads/'
+                                . ($attachment->get('subdir') ? $attachment->get('subdir') . '/' : '')
+                                . $attachment->get('filename');
 
                             if ($attachment->isImage()) {
+                                $attachSize = Hubzero\Utility\Number::formatBytes(
+                                    $attachment->size()
+                                );
+                                $clickTxt = Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD');
                                 ?>
-                                <a class="attachment img" rel="lightbox" href="<?php echo Route::url($link); ?>">
-                                    <img src="<?php echo Route::url($link); ?>" alt="<?php echo $this->escape($attachment->get('description')); ?>" width="<?php echo ($attachment->width() > 400) ? 400 : $attachment->width(); ?>" />
+                                <a class="attachment img"
+                                    rel="lightbox"
+                                    href="<?php echo Route::url($link); ?>">
+                                    <img
+                                        src="<?php echo Route::url($link); ?>"
+                                        alt="<?php echo $this->escape($attachment->get('description')); ?>"
+                                        width="<?php echo ($attachment->width() > 400) ? 400 : $attachment->width(); ?>"
+                                        />
                                     <p class="attachment-meta">
-                                        <span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-                                        <span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
+                                        <span class="attachment-size"><?php echo $attachSize; ?></span>
+                                        <span class="attachment-action"><?php echo $clickTxt; ?></span>
                                     </p>
                                 </a>
                                 <?php
                             } else {
+                                $attachSize = Hubzero\Utility\Number::formatBytes(
+                                    $attachment->size()
+                                );
+                                $clickTxt = Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD');
+                                $fileExt = Filesystem::extension(
+                                    $attachment->get('filename')
+                                );
                                 ?>
-                                <a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($link); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
+                                <a class="attachment <?php echo $fileExt; ?>"
+                                    href="<?php echo Route::url($link); ?>"
+                                    title="<?php echo $this->escape($attachment->get('description')); ?>">
                                     <p class="attachment-description"><?php echo $attachment->get('description'); ?></p>
                                     <p class="attachment-meta">
-                                        <span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-                                        <span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
+                                        <span class="attachment-size"><?php echo $attachSize; ?></span>
+                                        <span class="attachment-action"><?php echo $clickTxt; ?></span>
                                     </p>
                                 </a>
                                 <?php
@@ -191,7 +236,11 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
             <div class="activity-options">
                 <?php if ($this->group->published == 1) { ?>
                 <ul class="activity-options-main">
-                    <?php if ($this->row->log->get('scope') == 'activity.comment' && !$this->row->log->get('parent')) { ?>
+                    <?php
+                    $isComment = $this->row->log->get('scope') == 'activity.comment';
+                    $isTopLevel = !$this->row->log->get('parent');
+                    ?>
+                    <?php if ($isComment && $isTopLevel) { ?>
                         <li>
                             <?php if (Request::getInt('reply', 0) == $this->row->get('id')) { ?>
                                 <a
@@ -204,12 +253,17 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                                     --><?php echo Lang::txt('JCANCEL'); ?><!--
                                 --></a>
                             <?php } else { ?>
+                                <?php
+                                $replyUrl = Route::url(
+                                    $base . '&action=reply&activity=' . $this->row->get('id')
+                                );
+                                ?>
                                 <a
                                     class="icon-reply reply tooltips"
                                     data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>"
                                     data-txt-inactive="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLY'); ?>"
                                     title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLY'); ?>"
-                                    href="<?php echo Route::url($base . '&action=reply&activity=' . $this->row->get('id')); ?>"
+                                    href="<?php echo $replyUrl; ?>"
                                     rel="comment-form<?php echo $this->row->get('id'); ?>"><!--
                                     --><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLY'); ?><!--
                                 --></a>
@@ -217,37 +271,84 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                         </li>
                     <?php } ?>
                     <?php if (!$this->row->log->get('parent')) { ?>
+                        <?php
+                        $rowId = $this->row->get('id');
+                        $isStarred = $this->row->get('starred');
+                        $starAction = ($isStarred ? 'un' : '') . 'star';
+                        $starUrl = Route::url(
+                            $base . '&action=' . $starAction . '&activity=' . $rowId
+                        );
+                        $unstarUrl = Route::url(
+                            $base . '&action=unstar&activity=' . $rowId
+                        );
+                        $starOnlyUrl = Route::url(
+                            $base . '&action=star&activity=' . $rowId
+                        );
+                        $starTitle = $isStarred
+                            ? Lang::txt('Unstar this')
+                            : Lang::txt('Star this');
+                        ?>
                         <li>
                             <a
-                                data-id="activity<?php echo $this->row->get('id'); ?>"
+                                data-id="activity<?php echo $rowId; ?>"
                                 class="icon-starred tooltips"
-                                href="<?php echo Route::url($base . '&action=' . ($this->row->get('starred') ? 'un' : '') . 'star&activity=' . $this->row->get('id')); ?>"
-                                data-hrf-active="<?php echo Route::url($base . '&action=unstar&activity=' . $this->row->get('id')); ?>"
-                                data-hrf-inactive="<?php echo Route::url($base . '&action=star&activity=' . $this->row->get('id')); ?>"
+                                href="<?php echo $starUrl; ?>"
+                                data-hrf-active="<?php echo $unstarUrl; ?>"
+                                data-hrf-inactive="<?php echo $starOnlyUrl; ?>"
                                 data-txt-active="<?php echo Lang::txt('Unstar this'); ?>"
                                 data-txt-inactive="<?php echo Lang::txt('Star this'); ?>"
-                                title="<?php echo ($this->row->get('starred')) ? Lang::txt('Unstar this') : Lang::txt('Star this'); ?>"><!--
-                                --><?php echo ($this->row->get('starred')) ? Lang::txt('Unstar this') : Lang::txt('Star this'); ?><!--
+                                title="<?php echo $starTitle; ?>"><!--
+                                --><?php echo $starTitle; ?><!--
                             --></a>
                         </li>
                     <?php } ?>
                     <li>
+                        <?php
+                        $deleteUrl = Route::url(
+                            $base . '&action=remove&activity='
+                            . $this->row->get('id') . '&'
+                            . Session::getFormToken() . '=1'
+                        );
+                        ?>
                         <a
                             data-id="activity<?php echo $this->row->get('id'); ?>"
                             class="icon-delete tooltips"
-                            href="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>"
+                            href="<?php echo $deleteUrl; ?>"
                             title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?>"
                             data-txt-confirm="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE'); ?>"><!--
                             --><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_DELETE'); ?><!--
                         --></a>
                     </li>
-                    <?php /*<li>
-                        <a data-id="activity<?php echo $this->row->get('id'); ?>" class="icon-options tooltips" href="#moreoptions<?php echo $this->row->get('id'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_OPTIONS'); ?>"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_OPTIONS'); ?></a>
-                        <ul class="activity-options-more" id="moreoptions<?php echo $this->row->get('id'); ?>">
-                            <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($base . '&action=unsubscribe&scope=' . $this->row->get('scope')); ?>">Hide all like this</a></li>
-                            <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($base . '&action=share&activity=' . $this->row->get('id')); ?>">Share</a></li>
+                    <?php /*
+                    <li>
+                        <a data-id="activity<?php echo $this->row->get('id'); ?>"
+                            class="icon-options tooltips"
+                            href="#moreoptions<?php echo $this->row->get('id'); ?>"
+                            title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_OPTIONS'); ?>"
+                            ><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_OPTIONS'); ?></a>
+                        <ul class="activity-options-more"
+                            id="moreoptions<?php echo $this->row->get('id'); ?>">
+                            <li>
+                                <a data-id="activity<?php echo $this->row->get('id'); ?>"
+                                    href="<?php echo Route::url(
+                                        $base . '&action=unsubscribe&scope='
+                                        . $this->row->get('scope')
+                                    ); ?>">
+                                    Hide all like this
+                                </a>
+                            </li>
+                            <li>
+                                <a data-id="activity<?php echo $this->row->get('id'); ?>"
+                                    href="<?php echo Route::url(
+                                        $base . '&action=share&activity='
+                                        . $this->row->get('id')
+                                    ); ?>">
+                                    Share
+                                </a>
+                            </li>
                         </ul>
-                    </li>*/ ?>
+                    </li>
+                    */ ?>
                 </ul>
                 <?php } ?>
             </div><!-- / .activity-options -->
@@ -258,15 +359,33 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
             <div class="comment-add<?php if (Request::getInt('reply', 0) != $this->row->get('id')) {
                 echo ' hide';
                                    } ?>" id="comment-form<?php echo $this->row->get('id'); ?>">
-                <form id="cform<?php echo $this->row->get('id'); ?>" action="<?php echo Route::url($base); ?>" method="post" enctype="multipart/form-data">
+                <form id="cform<?php echo $this->row->get('id'); ?>"
+                    action="<?php echo Route::url($base); ?>"
+                    method="post"
+                    enctype="multipart/form-data">
                     <fieldset>
-                        <legend><span><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLYING_TO', (!$this->row->log->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
+                        <?php
+                        $replyTo = !$this->row->log->get('anonymous')
+                            ? $name
+                            : Lang::txt('JANONYMOUS');
+                        $legendTxt = Lang::txt(
+                            'PLG_GROUPS_ACTIVITY_REPLYING_TO',
+                            $replyTo
+                        );
+                        ?>
+                        <legend><span><?php echo $legendTxt; ?></span></legend>
 
                         <input type="hidden" name="activity[id]" value="0" />
                         <input type="hidden" name="activity[action]" value="created" />
-                        <input type="hidden" name="activity[scope]" value="<?php echo $this->row->log->get('scope'); ?>" />
-                        <input type="hidden" name="activity[scope_id]" value="<?php echo $this->row->log->get('scope_id'); ?>" />
-                        <input type="hidden" name="activity[parent]" value="<?php echo $this->row->log->get('id'); ?>" />
+                        <input type="hidden"
+                            name="activity[scope]"
+                            value="<?php echo $this->row->log->get('scope'); ?>"/>
+                        <input type="hidden"
+                            name="activity[scope_id]"
+                            value="<?php echo $this->row->log->get('scope_id'); ?>"/>
+                        <input type="hidden"
+                            name="activity[parent]"
+                            value="<?php echo $this->row->log->get('id'); ?>"/>
                         <input type="hidden" name="activity[created]" value="" />
                         <input type="hidden" name="activity[created_by]" value="<?php echo User::get('id'); ?>" />
 
@@ -278,21 +397,42 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                         <?php echo Html::input('token'); ?>
 
                         <div class="form-group">
+                            <?php
+                            $commentsTxt = Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_COMMENTS');
+                            $editorId = 'field_' . $this->row->get('id') . '_comment';
+                            $editorHtml = $this->editor(
+                                'activity[description]',
+                                '',
+                                35,
+                                4,
+                                $editorId,
+                                array('class' => 'form-control minimal no-footer')
+                            );
+                            ?>
                             <label for="comment-<?php echo $this->row->get('id'); ?>-content">
-                                <span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_COMMENTS'); ?></span>
-                                <?php echo $this->editor('activity[description]', '', 35, 4, 'field_' . $this->row->get('id') . '_comment', array('class' => 'form-control minimal no-footer')); ?>
+                                <span class="label-text"><?php echo $commentsTxt; ?></span>
+                                <?php echo $editorHtml; ?>
                             </label>
                         </div>
 
                         <div class="form-group">
-                            <label class="upload-label" for="activity-<?php echo $this->row->get('id'); ?>-file">
-                                <span class="label-text"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_FILE'); ?></span>
-                                <input type="file" class="inputfile form-control-file" name="activity_file" id="activity-<?php echo $this->row->get('id'); ?>-file" data-multiple-caption="<?php echo Lang::txt('{count} files selected'); ?>" multiple="multiple" />
+                            <?php $fileFieldId = 'activity-' . $this->row->get('id') . '-file'; ?>
+                            <label class="upload-label" for="<?php echo $fileFieldId; ?>">
+                                <?php $fileTxt = Lang::txt('PLG_GROUPS_ACTIVITY_FIELD_FILE'); ?>
+                                <span class="label-text"><?php echo $fileTxt; ?></span>
+                                <input type="file"
+                                    class="inputfile form-control-file"
+                                    name="activity_file"
+                                    id="activity-<?php echo $this->row->get('id'); ?>-file"
+                                    data-multiple-caption="<?php echo Lang::txt('{count} files selected'); ?>"
+                                    multiple="multiple"/>
                             </label>
                         </div>
 
                         <p class="submit">
-                            <input type="submit" class="btn btn-secondary" value="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_SUBMIT'); ?>" />
+                            <input type="submit"
+                                class="btn btn-secondary"
+                                value="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_SUBMIT'); ?>"/>
                         </p>
                     </fieldset>
                 </form>

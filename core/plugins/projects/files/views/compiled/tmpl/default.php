@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -35,8 +35,24 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
             $extras = null;
             if ($this->file->get('ext') == 'tex' && is_file(PATH_APP . $this->outputDir . DS . $this->embed)) {
                 $extras  = '<span class="rightfloat">';
-                $extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;download=1&amp;asset=' . $this->file->get('name') . '" class="i-download">' . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD') . ' PDF</a> ';
-                $extras .= '<a href="' . $this->url . '/?action=compile' . $subdirlink . '&amp;commit=1&amp;asset=' . $this->file->get('name') . '" class="i-commit">' . Lang::txt('PLG_PROJECTS_FILES_COMMIT_INTO_REPO') . '</a>';
+                $extras .= '<a href="'
+                    . $this->url
+                    . '/?action=compile'
+                    . $subdirlink
+                    . '&amp;download=1&amp;asset='
+                    . $this->file->get('name')
+                    . '" class="i-download">'
+                    . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD')
+                    . ' PDF</a> ';
+                $extras .= '<a href="'
+                    . $this->url
+                    . '/?action=compile'
+                    . $subdirlink
+                    . '&amp;commit=1&amp;asset='
+                    . $this->file->get('name')
+                    . '" class="i-commit">'
+                    . Lang::txt('PLG_PROJECTS_FILES_COMMIT_INTO_REPO')
+                    . '</a>';
                 $extras .= '</span>';
             }
 
@@ -58,15 +74,38 @@ $subdirlink = $this->subdir ? '&amp;subdir=' . urlencode($this->subdir) : '';
         ?>
         <pre><?php echo htmlentities($this->data); ?></pre>
     <?php } elseif ($this->embed && file_exists(PATH_APP . $this->outputDir . DS . $this->embed)) {
-            $source = Route::url('index.php?option=' . $this->option . '&controller=media&alias=' . $this->model->get('alias') . '&media=Compiled:' . $this->embed);
+            $source = Route::url('index.php?option=' . $this->option . '&controller=media&alias=' .
+            $this->model->get('alias') . '&media=Compiled:' . $this->embed);
         ?>
-        <div id="compiled-doc" embed-src="<?php echo $source; ?>" embed-width="<?php echo $this->oWidth; ?>" embed-height="<?php echo $this->oHeight; ?>">
-            <object width="<?php echo $this->oWidth; ?>" height="<?php echo $this->oHeight; ?>" type="<?php echo $this->cType; ?>" data="<?php echo $source; ?>" id="pdf_content">
+        <div id="compiled-doc"
+            embed-src="<?php echo $source; ?>"
+            embed-width="<?php echo $this->oWidth; ?>"
+            embed-height="<?php echo $this->oHeight; ?>">
+            <object width="<?php echo $this->oWidth; ?>"
+                height="<?php echo $this->oHeight; ?>"
+                type="<?php echo $this->cType; ?>"
+                data="<?php echo $source; ?>"
+                id="pdf_content">
                 <embed src="<?php echo $source; ?>" type="application/pdf" />
                 <p>
-                    <?php echo Lang::txt('PLG_PROJECTS_FILES_PREVIEW_NOT_LOAD'); ?> <a href="<?php echo $this->url . '/?' . 'action=compile' . $subdirlink . '&amp;download=1&amp;file=' . $this->file->get('name'); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_FILE'); ?></a>
-                    <?php if ($this->image) { ?>
-                        <img alt="" src="<?php echo Route::url('index.php?option=' . $this->option . '&task=media&alias=' . $this->model->get('alias') . '&media=Compiled:' . $this->image); ?>" />
+                    <?php
+                    $downloadUrl = $this->url . '/?'
+                        . 'action=compile' . $subdirlink
+                        . '&amp;download=1&amp;file='
+                        . $this->file->get('name');
+                    $downloadTxt = Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_FILE');
+                    ?>
+                    <?php echo Lang::txt('PLG_PROJECTS_FILES_PREVIEW_NOT_LOAD'); ?>
+                    <a href="<?php echo $downloadUrl; ?>"><?php echo $downloadTxt; ?></a>
+                    <?php if ($this->image) {
+                        $imgSrc = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&task=media&alias='
+                            . $this->model->get('alias')
+                            . '&media=Compiled:' . $this->image
+                        );
+                        ?>
+                        <img alt="" src="<?php echo $imgSrc; ?>" />
                     <?php } ?>
                 </p>
             </object>

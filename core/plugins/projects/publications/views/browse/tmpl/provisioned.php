@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -17,10 +17,29 @@ $pubconfig = Component::params('com_publications');
     <div class="col span4">
         <h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHERE_TO_START'); ?></h3>
         <div class="contrib-start">
-            <p><span class="project-icon"></span><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTRIB_FROM_PROJECTS'); ?></p>
+            <?php
+            $contribLabel = Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_CONTRIB_FROM_PROJECTS'
+            );
+            $startLabel = Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_START_PROJECT'
+            );
+            $myProjLabel = Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_MY_PROJECTS'
+            );
+            ?>
+            <p>
+                <span class="project-icon"></span><?php echo $contribLabel; ?>
+            </p>
             <p class="submitarea">
-                <span><a href="/projects/start" class="btn btn-success"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PROJECT'); ?></a></span>
-                <span><a href="/members/myaccount/projects" class="btn"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_PROJECTS'); ?></a></span>
+                <span>
+                    <a href="/projects/start"
+                        class="btn btn-success"><?php echo $startLabel; ?></a>
+                </span>
+                <span>
+                    <a href="/members/myaccount/projects"
+                        class="btn"><?php echo $myProjLabel; ?></a>
+                </span>
             </p>
         </div>
 <?php if ($pubconfig->get('contribute', 0)) { ?>
@@ -32,7 +51,20 @@ $pubconfig = Component::params('com_publications');
                     ?>
                     <p class="submitarea">
                         <span>
-                            <a class="btn btn-primary<?php echo ($current->description) ? ' tooltips" title="' . $this->escape($current->description) . '"' : ''; ?>" href="<?php echo Route::url('index.php?option=com_publications&task=submit&action=publication&base=' . $current->alias); ?>">
+                            <?php
+                            $tooltipAttr = ($current->description)
+                                ? ' tooltips" title="'
+                                    . $this->escape($current->description)
+                                    . '"'
+                                : '';
+                            $submitUrl = Route::url(
+                                'index.php?option=com_publications'
+                                . '&task=submit&action=publication&base='
+                                . $current->alias
+                            );
+                            ?>
+                            <a class="btn btn-primary<?php echo $tooltipAttr; ?>"
+                                href="<?php echo $submitUrl; ?>">
                                 <?php echo $this->escape($current->type); ?>
                             </a>
                         </span>
@@ -43,7 +75,14 @@ $pubconfig = Component::params('com_publications');
                 ?>
                 <p class="submitarea">
                     <span>
-                        <a class="btn btn-primary" href="<?php echo Route::url('index.php?option=com_publications&task=submit&action=publication&base=files'); ?>">
+                        <?php
+                        $filesUrl = Route::url(
+                            'index.php?option=com_publications'
+                            . '&task=submit&action=publication&base=files'
+                        );
+                        ?>
+                        <a class="btn btn-primary"
+                            href="<?php echo $filesUrl; ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISH_FILES'); ?>
                         </a>
                     </span>
@@ -76,7 +115,9 @@ $pubconfig = Component::params('com_publications');
             $mypubs = $this->pub->entries('list', $filters);
             $total  = $this->pub->entries('count', $filters);
             ?>
-            <form action="<?php echo Route::url('index.php?option=com_publications&task=submit'); ?>" method="post" id="browseForm" >
+            <form action="<?php echo Route::url('index.php?option=com_publications&task=submit'); ?>"
+                method="post"
+                id="browseForm">
             <h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_PUBLICATIONS'); ?></h3>
             <?php if (!empty($mypubs)) { ?>
             <ul class="mypubs">

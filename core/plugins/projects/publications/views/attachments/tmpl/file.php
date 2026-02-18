@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -25,13 +25,34 @@ if ($data->get('viewer') != 'freeze') {
             <?php if ($data->get('viewer') == 'edit') { ?>
             <span>
                 <?php if ($data->exists()) { ?>
-                <a href="<?php echo $data->get('downloadUrl'); ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a>
+                <a href="<?php echo $data->get('downloadUrl'); ?>"
+                    class="item-download"
+                    title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a>
                 <?php } ?>
-                <a href="<?php echo Route::url($pub->link('editversion') . '&action=edititem&aid=' . $data->get('id') . '&p=' . $data->get('props')); ?>" class="showinbox item-edit" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL'); ?>">&nbsp;</a>
-                <a href="<?php echo Route::url($pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p=' . $data->get('props')); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+                <?php
+                    $editUrl = Route::url(
+                        $pub->link('editversion') . '&action=edititem&aid='
+                        . $data->get('id') . '&p=' . $data->get('props')
+                    );
+                    $deleteUrl = Route::url(
+                        $pub->link('editversion') . '&action=deleteitem&aid='
+                        . $data->get('id') . '&p=' . $data->get('props')
+                    );
+                    $relabelTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL');
+                    $removeTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE');
+                ?>
+                <a href="<?php echo $editUrl; ?>"
+                    class="showinbox item-edit"
+                    title="<?php echo $relabelTitle; ?>">&nbsp;</a>
+                <a href="<?php echo $deleteUrl; ?>"
+                    class="item-remove"
+                    title="<?php echo $removeTitle; ?>">&nbsp;</a>
             </span>
             <?php } elseif ($data->exists()) { ?>
-                <span><a href="<?php echo $data->get('downloadUrl'); ?>" class="item-download" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a></span>
+                <?php $downloadTitle = Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>
+                <span><a href="<?php echo $data->get('downloadUrl'); ?>"
+                    class="item-download"
+                    title="<?php echo $downloadTitle; ?>">&nbsp;</a></span>
             <?php } ?>
         </span>
         <span class="item-title" id="<?php echo 'file-' . $data->get('id'); ?>">

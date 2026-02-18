@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -22,7 +22,10 @@ if (count($this->authors) > 0) {
 <script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/team/assets/js/selector.js"></script>
 <div id="abox-content">
     <h3><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ADD_NEW'); ?></h3>
-    <form id="add-author" class="add-author" method="post" action="<?php echo Route::url(Route::url($this->publication->link('edit'))); ?>">
+    <form id="add-author"
+        class="add-author"
+        method="post"
+        action="<?php echo Route::url(Route::url($this->publication->link('edit'))); ?>">
         <fieldset>
             <input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
             <input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
@@ -45,7 +48,14 @@ if (count($this->authors) > 0) {
             <?php // if ($this->model->isProvisioned()) { ?>
                 <div class="block">
                     <label>
-                        <span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_LOOK_UP_BY_ID')); ?>:</span>
+                        <?php
+                        $lookUpLabel = ucfirst(Lang::txt(
+                            'PLG_PROJECTS_TEAM_SELECTOR_LOOK_UP_BY_ID'
+                        ));
+                        ?>
+                        <span class="formlabel">
+                            <?php echo $lookUpLabel; ?>:
+                        </span>
                         <?php
                         if (count($this->mc) > 0) {
                             echo $this->mc[0];
@@ -78,7 +88,8 @@ if (count($this->authors) > 0) {
                                                     var parts = name.split(" ");
 
                                                     // Complete name
-                                                    if (parts.length > 1 && !$('#firstName').val() && !$('#lastName').val())
+                                                    if (parts.length > 1 && !$('#firstName').val() &&
+                                                    !$('#lastName').val())
                                                     {
                                                         $('#lastName').val(parts[parts.length - 1]);
                                                         parts.pop();
@@ -101,13 +112,27 @@ if (count($this->authors) > 0) {
             <div class="block">
                 <div class="block-liner">
                     <label for="firstName">
-                        <span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_FIRST_NAME')); ?>*:</span>
+                        <?php
+                        $firstNameLabel = ucfirst(Lang::txt(
+                            'PLG_PROJECTS_TEAM_SELECTOR_FIRST_NAME'
+                        ));
+                        ?>
+                        <span class="formlabel">
+                            <?php echo $firstNameLabel; ?>*:
+                        </span>
                         <input type="text" name="firstName" id="firstName" class="long" value="" maxlength="255" />
                     </label>
                 </div>
                 <div class="block-liner">
                     <label for="lastName">
-                        <span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_LAST_NAME')); ?>*:</span>
+                        <?php
+                        $lastNameLabel = ucfirst(Lang::txt(
+                            'PLG_PROJECTS_TEAM_SELECTOR_LAST_NAME'
+                        ));
+                        ?>
+                        <span class="formlabel">
+                            <?php echo $lastNameLabel; ?>*:
+                        </span>
                         <input type="text" name="lastName" id="lastName" class="long" value="" maxlength="255" />
                     </label>
                 </div>
@@ -115,8 +140,20 @@ if (count($this->authors) > 0) {
             <div class="block">
                 <div class="block-liner">
                     <label for="organization">
-                        <span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION')); ?>*:</span>
-                        <input type="text" class="long" name="organization" id="organization" value="" maxlength="255" />
+                        <?php
+                        $orgLabel = ucfirst(Lang::txt(
+                            'PLG_PROJECTS_TEAM_SELECTOR_ORGANIZATION'
+                        ));
+                        ?>
+                        <span class="formlabel">
+                            <?php echo $orgLabel; ?>*:
+                        </span>
+                        <input type="text"
+                            class="long"
+                            name="organization"
+                            id="organization"
+                            value=""
+                            maxlength="255"/>
                         <?php
                             // Add in class for JS selector to conditionally retrieve data from RoR Api
                         if (\Component::params('com_members')->get('rorApi')) {
@@ -131,18 +168,37 @@ if (count($this->authors) > 0) {
                 <div class="block-liner">
                     <label for="orcid">
                         <span class="formlabel"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORCID'); ?></span>
-                        <input type="text" class="long" name="orcid" id="orcid" placeholder="####-####-####-####" value="" maxlength="255" />
-                        <p id="orcid-message" class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORCID_DESC'); ?></p>
+                        <input type="text"
+                            class="long"
+                            name="orcid"
+                            id="orcid"
+                            placeholder="####-####-####-####"
+                            value=""
+                            maxlength="255"/>
+                        <p id="orcid-message"
+                            class="hint"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ORCID_DESC'); ?></p>
                         <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
                     </label>
                 </div>
             </div>
             <?php if (!$this->model->isProvisioned()) { ?>
                 <div class="block">
-                    <p class="invite-question"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_INVITE_TO_TEAM')); ?></p>
+                    <?php
+                    $inviteLabel = ucfirst(Lang::txt(
+                        'PLG_PROJECTS_TEAM_SELECTOR_INVITE_TO_TEAM'
+                    ));
+                    $emailLabel = ucfirst(Lang::txt(
+                        'PLG_PROJECTS_TEAM_SELECTOR_EMAIL'
+                    ));
+                    ?>
+                    <p class="invite-question">
+                        <?php echo $inviteLabel; ?>
+                    </p>
                     <div class="block-liner">
                     <label for="email">
-                        <span class="formlabel"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_EMAIL')); ?>:</span>
+                        <span class="formlabel">
+                            <?php echo $emailLabel; ?>:
+                        </span>
                         <input type="text" class="long" name="email" value="" maxlength="255" />
                     </label>
                     </div>
@@ -151,7 +207,8 @@ if (count($this->authors) > 0) {
 
             <div class="submitarea">
                 <div id="status-box"></div>
-                <a class="btn btn-success active" id="b-add"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_SAVE_NEW'); ?></a>
+                <a class="btn btn-success active"
+                    id="b-add"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_SAVE_NEW'); ?></a>
             </div>
         </div>
     </form>

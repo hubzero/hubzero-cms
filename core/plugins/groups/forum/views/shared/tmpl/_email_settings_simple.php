@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,9 +19,13 @@ $base = $this->base;
         <?php echo Html::input('token'); ?>
 
         <label class="option" for="recvpostemail">
-            <input type="checkbox" class="option" id="recvpostemail" value="1" name="recvpostemail"<?php if ($this->recvEmailOptionValue == 1) {
-                echo ' checked="checked"';
-                                                                                                   } ?> />
+            <input type="checkbox"
+                class="option"
+                id="recvpostemail"
+                value="1"
+                name="recvpostemail"<?php if ($this->recvEmailOptionValue == 1) {
+                    echo ' checked="checked"';
+                                    } ?> />
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS'); ?>
         </label>
         <input class="option" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />

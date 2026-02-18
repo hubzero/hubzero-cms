@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,12 @@ $item = $this->post->item();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->name;
 ?>
-<div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
+<div class="post full <?php echo $item->type(); ?>"
+    id="b<?php echo $this->post->get('id'); ?>"
+    data-id="<?php echo $this->post->get('id'); ?>"
+    data-closeup-url="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id')); ?>"
+    data-width="600"
+    data-height="350">
     <div class="content">
         <div class="creator attribution clearfix">
             <?php if ($item->get('type') == 'file' || $item->get('type') == 'collection') { ?>
@@ -23,12 +26,16 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                 $name = $this->escape(stripslashes($item->creator()->get('name')));
 
                 if (in_array($item->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-                    <a href="<?php echo Route::url($item->creator()->link()); ?>" title="<?php echo $name; ?>" class="img-link">
-                        <img src="<?php echo $item->creator()->picture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+                    <a href="<?php echo Route::url($item->creator()->link()); ?>"
+                        title="<?php echo $name; ?>"
+                        class="img-link">
+                        <img src="<?php echo $item->creator()->picture(); ?>"
+                            alt="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>"/>
                     </a>
                 <?php } else { ?>
                     <span class="img-link">
-                        <img src="<?php echo $item->creator()->picture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+                        <img src="<?php echo $item->creator()->picture(); ?>"
+                            alt="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>"/>
                     </span>
                 <?php } ?>
                 <p>
@@ -37,9 +44,18 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     </a> created this post <br />
                     <span class="entry-date">
                         <span class="entry-date-at">@</span>
-                        <span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span>
+                        <?php $itemCreated = $item->created(); ?>
+                        <span class="time">
+                            <time datetime="<?php echo $itemCreated; ?>">
+                                <?php echo $item->created('time'); ?>
+                            </time>
+                        </span>
                         <span class="entry-date-on">on</span>
-                        <span class="date"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('date'); ?></time></span>
+                        <span class="date">
+                            <time datetime="<?php echo $itemCreated; ?>">
+                                <?php echo $item->created('date'); ?>
+                            </time>
+                        </span>
                     </span>
                 </p>
             <?php } else { ?>
@@ -77,26 +93,48 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
     <?php /*if (!User::isGuest()) { ?>
             <div class="actions">
         <?php if ($item->get('created_by') == User::get('id')) { ?>
-                <a class="edit" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/edit'); ?>">
+                <a class="edit"
+                    data-id="<?php echo $this->post->get('id'); ?>"
+                    href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/edit'); ?>">
                     <span><?php echo Lang::txt('Edit'); ?></span>
                 </a>
         <?php } else { ?>
-                <a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $this->post->get('id'); ?>" data-text-like="<?php echo Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/vote'); ?>">
+                <a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>"
+                    data-id="<?php echo $this->post->get('id'); ?>"
+                    data-text-like="<?php echo Lang::txt('Like'); ?>"
+                    data-text-unlike="<?php echo Lang::txt('Unlike'); ?>"
+                    href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/vote'); ?>">
                     <span><?php echo ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like'); ?></span>
                 </a>
         <?php } ?>
-                <a class="comment" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/comment'); ?>">
+                <a class="comment"
+                    data-id="<?php echo $this->post->get('id'); ?>"
+                    href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/comment'); ?>">
                     <span><?php echo Lang::txt('Comment'); ?></span>
                 </a>
-                <a class="repost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/collect'); ?>">
+                <a class="repost"
+                    data-id="<?php echo $this->post->get('id'); ?>"
+                    href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/collect'); ?>">
                     <span><?php echo Lang::txt('Collect'); ?></span>
                 </a>
-        <?php if ($this->post->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
-                <a class="delete" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/delete'); ?>">
+        <?php
+        $isOriginal = $this->post->get('original');
+        $isCreator = $item->get('created_by') == User::get('id');
+        $canDelete = $this->params->get('access-delete-item');
+        if ($isOriginal && ($isCreator || $canDelete)) {
+        ?>
+                <a class="delete"
+                    data-id="<?php echo $this->post->get('id'); ?>"
+                    href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/delete'); ?>">
                     <span><?php echo Lang::txt('Delete'); ?></span>
                 </a>
-        <?php } else if ($this->post->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
-                <a class="unpost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/remove'); ?>">
+        <?php
+        $canEdit = $this->params->get('access-edit-item');
+        } else if ($isCreator || $canEdit) {
+        ?>
+                <a class="unpost"
+                    data-id="<?php echo $this->post->get('id'); ?>"
+                    href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/remove'); ?>">
                     <span><?php echo Lang::txt('Remove'); ?></span>
                 </a>
         <?php } ?>
@@ -105,8 +143,12 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
         </div><!-- / .meta -->
 <?php //if ($this->post->created_by != $this->post->created_by) { ?>
         <div class="convo attribution clearfix">
-            <a href="<?php echo Route::url($this->post->creator()->link()); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
-                <img src="<?php echo $this->post->creator()->picture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" />
+            <a href="<?php echo Route::url($this->post->creator()->link()); ?>"
+                title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>"
+                class="img-link">
+                <?php $postCreatorName = $this->escape(stripslashes($this->post->creator()->get('name'))); ?>
+                <img src="<?php echo $this->post->creator()->picture(); ?>"
+                    alt="Profile picture of <?php echo $postCreatorName; ?>" />
             </a>
             <p>
                 <?php
@@ -115,16 +157,29 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     $who = '<a href="' . Route::url($this->post->creator()->link()) . '">' . $name . '</a>';
                 }
 
-                $where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
+                $where = '<a href="'
+                    . Route::url($base . '&task=' . $this->collection->get('alias'))
+                    . '">'
+                    . $this->escape(stripslashes($this->collection->get('title')))
+                    . '</a>';
 
                 echo Lang::txt('PLG_GROUPS_COLLECTIONS_ONTO', $who, $where);
                 ?>
                 <br />
                 <span class="entry-date">
                     <span class="entry-date-at">@</span>
-                    <span class="time"><time datetime="<?php echo $this->post->created(); ?>"><?php echo $this->post->created('time'); ?></time></span>
+                    <?php $postCreated = $this->post->created(); ?>
+                    <span class="time">
+                        <time datetime="<?php echo $postCreated; ?>">
+                            <?php echo $this->post->created('time'); ?>
+                        </time>
+                    </span>
                     <span class="entry-date-on">on</span>
-                    <span class="date"><time datetime="<?php echo $this->post->created(); ?>"><?php echo $this->post->created('date'); ?></time></span>
+                    <span class="date">
+                        <time datetime="<?php echo $postCreated; ?>">
+                            <?php echo $this->post->created('date'); ?>
+                        </time>
+                    </span>
                 </span>
             </p>
         </div><!-- / .attribution -->
@@ -136,15 +191,30 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
             <div class="commnts">
                 <div class="comment convo clearfix" id="c<?php echo $comment->get('id'); ?>">
                     <a href="<?php echo Route::url($cuser->link()); ?>" class="img-link">
-                        <img src="<?php echo $cuser->picture($comment->get('anonymous')); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>" />
+                        <img src="<?php echo $cuser->picture($comment->get('anonymous')); ?>"
+                            class="profile user_image"
+                            alt="Profile picture of <?php echo $this->escape(stripslashes($cuser->get('name'))); ?>"/>
                     </a>
                     <p>
-                        <a href="<?php echo Route::url($cuser->link()); ?>"><?php echo $this->escape(stripslashes($cuser->get('name'))); ?></a> said <br />
+                        <?php $cuserUrl = Route::url($cuser->link()); ?>
+                        <?php $cuserName = $this->escape(stripslashes($cuser->get('name'))); ?>
+                        <a href="<?php echo $cuserUrl; ?>">
+                            <?php echo $cuserName; ?>
+                        </a> said <br />
                         <span class="entry-date">
                             <span class="entry-date-at">@</span>
-                            <span class="time"><time datetime="<?php echo $comment->get('created'); ?>"><?php echo $comment->created('time'); ?></time></span>
+                            <?php $commentCreated = $comment->get('created'); ?>
+                            <span class="time">
+                                <time datetime="<?php echo $commentCreated; ?>">
+                                    <?php echo $comment->created('time'); ?>
+                                </time>
+                            </span>
                             <span class="entry-date-on">on</span>
-                            <span class="date"><time datetime="<?php echo $comment->get('created'); ?>"><?php echo $comment->created('date'); ?></time></span>
+                            <span class="date">
+                                <time datetime="<?php echo $commentCreated; ?>">
+                                    <?php echo $comment->created('date'); ?>
+                                </time>
+                            </span>
                         </span>
                     </p>
                     <blockquote>
@@ -161,19 +231,40 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
         ?>
         <div class="commnts">
             <div class="comment convo clearfix">
-                <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>" class="img-link">
-                    <img src="<?php echo User::picture(0); ?>" class="profile user_image" alt="Profile picture of <?php echo $this->escape(stripslashes(User::get('name'))); ?>" />
+                <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"
+                    class="img-link">
+                    <img src="<?php echo User::picture(0); ?>"
+                        class="profile user_image"
+                        alt="Profile picture of <?php echo $this->escape(stripslashes(User::get('name'))); ?>"/>
                 </a>
                 <p>
-                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(stripslashes(User::get('name'))); ?></a> will say <br />
+                    <?php $userUrl = Route::url('index.php?option=com_members&id=' . User::get('id')); ?>
+                    <?php $userName = $this->escape(stripslashes(User::get('name'))); ?>
+                    <a href="<?php echo $userUrl; ?>">
+                        <?php echo $userName; ?>
+                    </a> will say <br />
                     <span class="entry-date">
                         <span class="entry-date-at">@</span>
-                        <span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+                        <?php $timeFormatted = Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?>
+                        <?php $dateFormatted = Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
+                        <span class="time">
+                            <time datetime="<?php echo $now; ?>">
+                                <?php echo $timeFormatted; ?>
+                            </time>
+                        </span>
                         <span class="entry-date-on">on</span>
-                        <span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+                        <span class="date">
+                            <time datetime="<?php echo $now; ?>">
+                                <?php echo $dateFormatted; ?>
+                            </time>
+                        </span>
                     </span>
                 </p>
-                <form action="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/savecomment'); ?>" method="post" id="comment-form" enctype="multipart/form-data">
+                <?php $formAction = Route::url($base . '&scope=post/' . $this->post->get('id') . '/savecomment'); ?>
+                <form action="<?php echo $formAction; ?>"
+                    method="post"
+                    id="comment-form"
+                    enctype="multipart/form-data">
                     <fieldset>
                         <input type="hidden" name="comment[id]" value="0" />
                         <input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />
@@ -182,7 +273,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
                         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                         <input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
-                        <input type="hidden" name="scope" value="post/<?php echo $this->post->get('id'); ?>/savecomment" />
+                        <input type="hidden"
+                            name="scope"
+                            value="post/<?php echo $this->post->get('id'); ?>/savecomment"/>
                         <input type="hidden" name="action" value="savecomment" />
                         <input type="hidden" name="no_html" value="<?php echo $this->no_html; ?>" />
 

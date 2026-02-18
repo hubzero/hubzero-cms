@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,8 +8,14 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+$formUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&cn=' . $this->group->get('cn')
+    . '&active=members'
+);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>" method="post" id="hubForm">
+<form action="<?php echo $formUrl; ?>" method="post" id="hubForm">
     <div class="explaination">
         <p class="info"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_EXPLANATION'); ?></p>
     </div>

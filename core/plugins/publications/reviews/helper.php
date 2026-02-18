@@ -6,9 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-
-
 namespace Plugins\Publications\Reviews;
+
 /**
  * Helper class for reviews
  */

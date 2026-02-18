@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +11,8 @@
 defined('_HZEXEC_') or die();
 ?>
 
-<li class="asset-group-item <?php echo ($this->ag->isPublished()) ? 'published' : 'unpublished' ?>" id="assetgroupitem_<?php echo $this->ag->get('id') ?>">
+<li class="asset-group-item <?php echo ($this->ag->isPublished()) ? 'published' : 'unpublished' ?>"
+    id="assetgroupitem_<?php echo $this->ag->get('id') ?>">
     <div class="asset-group-controls">
         <div class="sortable-handle"></div>
         <div class="asset-group-edit"></div>
@@ -20,7 +21,8 @@ defined('_HZEXEC_') or die();
         <p>Drag files here to upload</p>
         <p>or</p>
         <div class="aux-attachments">
-            <form action="<?php echo Request::base(true); ?>/api/courses/asset/new" class="aux-attachments-form attach-link">
+            <form action="<?php echo Request::base(true); ?>/api/courses/asset/new"
+                class="aux-attachments-form attach-link">
                 <label for="content" class="aux-attachments-content-label">Attach a link:</label>
                 <textarea class="input-content" name="content" placeholder="" rows="5"></textarea>
                 <input class="input-type" type="hidden" name="type" value="link" />
@@ -29,7 +31,10 @@ defined('_HZEXEC_') or die();
                 <input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
                 <input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
                 <input type="hidden" name="scope_id" value="<?php echo $this->ag->get('id'); ?>" />
-                <a href="<?php echo Request::base(true); ?>/help/courses/builder" rel="noopener noreferrer" target="_blank" class="help-info">help</a>
+                <a href="<?php echo Request::base(true); ?>/help/courses/builder"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    class="help-info">help</a>
             </form>
             <a href="#" title="Attach a link" class="attach-link"></a>
             <a href="#" title="Embed a Kaltura or YouTube Video" class="attach-object"></a>

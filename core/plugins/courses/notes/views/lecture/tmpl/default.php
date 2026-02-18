@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,12 +12,17 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 $this->js();
+
+$notesUrl = Request::base(true)
+    . '/' . $this->offering->link()
+    . '&active=notes&scope=lecture&scope_id=' . $this->lecture->get('id')
+    . '&no_html=1&note=';
 ?>
 <script type="text/javascript">
 jQuery(document).ready(function(jQuery) {
     var $ = jQuery,
         _DEBUG = false,
-        url = "<?php echo Request::base(true) . '/' . $this->offering->link() . '&active=notes&scope=lecture&scope_id=' . $this->lecture->get('id') . '&no_html=1&note='; ?>";
+        url = "<?php echo $notesUrl; ?>";
 
     var options = {
         notes: <?php
@@ -92,10 +97,12 @@ jQuery(document).ready(function(jQuery) {
             var id = $('#note-' + note.id).attr('data-id');
 
             if (_DEBUG) {
-                window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access + '&txt=' + note.text);
+                window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' +
+                note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access + '&txt=' + note.text);
             }
 
-            $.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access + '&txt=' + note.text, {}, function(data) {
+            $.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w='
+            + note.width + '&h=' + note.height + '&access=' + note.access + '&txt=' + note.text, {}, function(data) {
                 if (data.id != note.id) {
                     $('#note-' + note.id).attr('data-id', data.id);
                 }
@@ -113,10 +120,12 @@ jQuery(document).ready(function(jQuery) {
             }
 
             if (_DEBUG) {
-                window.console && console.log('calling: ' + url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
+                window.console && console.log('calling: ' + url + tme + '&action=save&x=' + note.pos_x + '&y=' +
+                note.pos_y + '&w=' + note.width + '&h=' + note.height);
             }
 
-            $.getJSON(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+            $.getJSON(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' +
+            note.height, {}, function(data) {
                 if (_DEBUG) {
                     window.console && console.log(data);
                 }
@@ -150,10 +159,12 @@ jQuery(document).ready(function(jQuery) {
             var id = $('#note-' + note.id).attr('data-id');
 
             if (_DEBUG) {
-                window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
+                window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' +
+                note.pos_y + '&w=' + note.width + '&h=' + note.height);
             }
 
-            $.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+            $.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w='
+            + note.width + '&h=' + note.height, {}, function(data) {
                 if (data.id != note.id) {
                     $('#note-' + note.id).attr('data-id', data.id);
                 }
@@ -169,7 +180,8 @@ jQuery(document).ready(function(jQuery) {
 
             var id = $('#note-' + note.id).attr('data-id');
 
-            $.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+            $.getJSON(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w='
+            + note.width + '&h=' + note.height, {}, function(data) {
                 if (data.id != note.id) {
                     $('#note-' + note.id).attr('data-id', data.id);
                 }

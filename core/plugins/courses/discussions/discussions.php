@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Courses\Discussions;
 
 use Hubzero\Plugin\Plugin;

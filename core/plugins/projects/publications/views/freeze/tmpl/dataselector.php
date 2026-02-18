@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -46,7 +46,11 @@ $shorten = ($aboutTxt && strlen($aboutTxt) > 200) ? 1 : 0;
 
 if ($shorten) {
     $about  = \Hubzero\Utility\Str::truncate($aboutTxt, 200);
-    $about .= ' <a href="#more-' . $elName . '" class="more-content">' . Lang::txt('COM_PUBLICATIONS_READ_MORE') . '</a>';
+    $about .= ' <a href="#more-'
+        . $elName
+        . '" class="more-content">'
+        . Lang::txt('COM_PUBLICATIONS_READ_MORE')
+        . '</a>';
     $about .= ' <div class="hidden">';
     $about .= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
     $about .= ' </div>';
@@ -107,16 +111,34 @@ if ($this->name == 'curator') {
         <?php if ($this->name == 'curator') { ?>
         <div class="block-aside"><div class="block-info"><?php echo $about; ?></div>
         </div>
-            <?php echo $this->pub->_curationModel->drawChecker($props, $curatorStatus, Route::url($this->pub->link('edit')), $this->manifest->label); ?>
+            <?php
+            $checkerUrl = Route::url($this->pub->link('edit'));
+            echo $this->pub->_curationModel->drawChecker(
+                $props,
+                $curatorStatus,
+                $checkerUrl,
+                $this->manifest->label
+            );
+            ?>
         <div class="block-subject">
         <?php } ?>
             <h5 class="element-title"><?php echo $this->manifest->label; ?>
                 <?php if (is_array($this->attachments) && count($this->attachments)) {
                     echo ' (' . count($this->attachments) . ')';
                 }?>
-                <?php if (is_array($this->attachments) && count($this->attachments) > 1 && $multiZip && $this->type == 'file') {
-                    ?><span class="download-all"><a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo Lang::txt('Download all'); ?></a></span><?php
-                } ?></h5>
+                <?php
+                $showDownloadAll = is_array($this->attachments)
+                    && count($this->attachments) > 1
+                    && $multiZip
+                    && $this->type == 'file';
+                if ($showDownloadAll) {
+                    $downloadLabel = Lang::txt('Download all');
+                    ?>
+                    <span class="download-all"><a
+                        href="<?php echo $bundleUrl; ?>"
+                        title="<?php echo $bundleName; ?>"
+                    ><?php echo $downloadLabel; ?></a></span>
+                <?php } ?></h5>
                 <?php if ($this->name == 'curator') {
                     echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName);
                 } ?>
@@ -147,7 +169,12 @@ if ($this->name == 'curator') {
             </ul>
         </div>
         <?php } else {  ?>
-            <p class="noresults"><?php echo $this->name == 'curator' ? Lang::txt('No user input') : Lang::txt('No items attached'); ?></p>
+            <?php
+            $noResultsText = $this->name == 'curator'
+                ? Lang::txt('No user input')
+                : Lang::txt('No items attached');
+            ?>
+            <p class="noresults"><?php echo $noResultsText; ?></p>
         <?php } ?>
 
             <?php if ($this->pub->state != 1 && ($error || ($required && !$complete))) { ?>

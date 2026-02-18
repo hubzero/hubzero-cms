@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,13 +18,25 @@ if ($this->course->access('edit', 'course') && $field == 'description') {
     <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
         <label for="field_description">
             <?php
-                echo $this->editor('course[description]', $this->escape($this->course->description('raw')), 35, 50, 'field_description');
+                echo $this->editor(
+                    'course[description]',
+                    $this->escape($this->course->description('raw')),
+                    35,
+                    50,
+                    'field_description'
+                );
             ?>
         </label>
 
         <p class="submit">
             <input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_COURSES_SAVE'); ?>" />
-            <a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias')); ?>">
+            <?php
+            $cancelUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=course&gid=' . $this->course->get('alias')
+            );
+            ?>
+            <a class="btn btn-secondary" href="<?php echo $cancelUrl; ?>">
                 <?php echo Lang::txt('JCANCEL'); ?>
             </a>
         </p>
@@ -44,7 +56,8 @@ if ($this->course->access('edit', 'course') && $field == 'description') {
     if ($this->course->access('edit', 'course')) {
         ?>
         <div class="manager-options">
-            <a class="icon-edit btn btn-secondary" href="<?php echo Route::url($this->course->link() . '&task=edit&field=description'); ?>">
+            <a class="icon-edit btn btn-secondary"
+                href="<?php echo Route::url($this->course->link() . '&task=edit&field=description'); ?>">
                 <?php echo Lang::txt('COM_COURSES_EDIT_COURSE'); ?>
             </a>
             <span><strong><?php echo Lang::txt('COM_COURSES_LONG_DESCRIPTION'); ?></strong></span>

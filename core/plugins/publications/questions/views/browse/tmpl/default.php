@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +14,9 @@ $this->css();
 
 <div class="container">
     <p class="section-options">
-        <a class="icon-add add btn" href="<?php echo Route::url($this->publication->link('questions') . '&action=new#ask'); ?>"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>
+        <a class="icon-add add btn"
+            href="<?php echo Route::url($this->publication->link('questions') . '&action=new#ask'); ?>"
+            ><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>
     </p>
     <table class="questions entries">
         <caption>
@@ -36,7 +36,11 @@ $this->css();
             if (!$row->get('anonymous')) {
                 $user = User::getInstance($row->get('created_by'));
                 if (is_object($user)) {
-                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $user->get('id')) . '">' . $this->escape(stripslashes($user->get('name'))) . '</a>';
+                    $name = '<a href="'
+                        . Route::url('index.php?option=com_members&id=' . $user->get('id'))
+                        . '">'
+                        . $this->escape(stripslashes($user->get('name')))
+                        . '</a>';
                 } else {
                     $name = Lang::txt('PLG_PUBLICATION_QUESTIONS_UNKNOWN');
                 }
@@ -52,21 +56,54 @@ $this->css();
                 </th>
                 <td>
                     <?php if (!$row->isReported()) { ?>
-                        <a class="entry-title" href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape(strip_tags($row->get('subject'))); ?></a><br />
+                        <a class="entry-title"
+                            href="<?php echo Route::url($row->link()); ?>"
+                            ><?php echo $this->escape(strip_tags($row->get('subject'))); ?></a><br />
                     <?php } else { ?>
-                        <span class="entry-title"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
+                        <?php
+                        $reviewTxt = Lang::txt(
+                            'PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW'
+                        );
+                        ?>
+                        <span class="entry-title"><?php echo $reviewTxt; ?></span><br />
                     <?php } ?>
+                    <?php
+                    $askedBy = Lang::txt(
+                        'PLG_PUBLICATION_QUESTIONS_ASKED_BY',
+                        $name
+                    );
+                    $createdDatetime = $row->created();
+                    $createdTime = $row->created('time');
+                    $createdDate = $row->created('date');
+                    $answersUrl = Route::url($row->link() . '#answers');
+                    $responsesTitle = Lang::txt(
+                        'There are %s responses to this question.',
+                        $row->get('rcount')
+                    );
+                    ?>
                     <span class="entry-details">
-                        <?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name); ?> <span class="entry-date-at">@</span>
-                        <span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> <span class="entry-date-on">on</span>
-                        <span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
+                        <?php echo $askedBy; ?>
+                        <span class="entry-date-at">@</span>
+                        <span class="entry-time">
+                            <time datetime="<?php echo $createdDatetime; ?>">
+                                <?php echo $createdTime; ?>
+                            </time>
+                        </span>
+                        <span class="entry-date-on">on</span>
+                        <span class="entry-date">
+                            <time datetime="<?php echo $createdDatetime; ?>">
+                                <?php echo $createdDate; ?>
+                            </time>
+                        </span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-state">
                             <?php echo ($row->get('state') == 1) ? Lang::txt('Closed') : Lang::txt('Open'); ?>
                         </span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-comments">
-                            <a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('There are %s responses to this question.', $row->get('rcount')); ?>">
+                            <a href="<?php echo $answersUrl; ?>"
+                                title="<?php echo $responsesTitle; ?>"
+                                >
                                 <?php echo $row->responses->count(); ?>
                             </a>
                         </span>
@@ -75,19 +112,48 @@ $this->css();
                 <?php if ($this->banking) { ?>
                     <td class="reward">
                         <?php if ($row->get('reward') == 1 && $this->banking) { ?>
-                            <span class="entry-reward"><?php echo $row->get('points'); ?> <a href="<?php echo $this->infolink; ?>" title="<?php echo Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points', 0)); ?>">Points</a></span>
+                            <?php
+                            $points = $row->get('points');
+                            $rewardTitle = Lang::txt(
+                                'COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING',
+                                $row->get('points', 0)
+                            );
+                            ?>
+                            <span class="entry-reward">
+                                <?php echo $points; ?>
+                                <a href="<?php echo $this->infolink; ?>"
+                                    title="<?php echo $rewardTitle; ?>"
+                                    >Points</a>
+                            </span>
                         <?php } ?>
                     </td>
                 <?php } ?>
+                <?php
+                $voteClass = ($row->get('helpful', 0) > 0)
+                    ? 'like' : 'neutral';
+                $helpful = $row->get('helpful', 0);
+                $voteUrl = Route::url(
+                    'index.php?option=com_answers&task=vote&id='
+                    . $row->get('id')
+                    . '&category=question&vote=yes'
+                );
+                $voteTitle = 'Vote this up :: '
+                    . $helpful . ' people liked this';
+                ?>
                 <td class="voting">
                     <span class="vote-like">
                         <?php if (User::isGuest()) { ?>
-                            <span class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote this up :: Please login to vote.">
-                                <?php echo $row->get('helpful', 0); ?><span> Like</span>
+                            <span class="vote-button <?php echo $voteClass; ?> tooltips"
+                                title="Vote this up :: Please login to vote."
+                                >
+                                <?php echo $helpful; ?><span> Like</span>
                             </span>
                         <?php } else { ?>
-                            <a class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" href="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes'); ?>" title="Vote this up :: <?php echo $row->get('helpful', 0); ?> people liked this">
-                                <?php echo $row->get('helpful', 0); ?><span> Like</span>
+                            <a class="vote-button <?php echo $voteClass; ?> tooltips"
+                                href="<?php echo $voteUrl; ?>"
+                                title="<?php echo $voteTitle; ?>"
+                                >
+                                <?php echo $helpful; ?><span> Like</span>
                             </a>
                         <?php } ?>
                     </span>

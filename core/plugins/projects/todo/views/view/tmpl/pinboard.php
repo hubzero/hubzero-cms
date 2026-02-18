@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -23,7 +23,8 @@ $listName = $this->todo->getListName($this->model->get('id'), $this->filters);
 
 $whatsleft = $total - $this->filters['start'] - $this->filters['limit'];
 $team_ids = array('0' => '');
-$which = $this->filters['state'] == 1 ? strtolower(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')) : Lang::txt('PLG_PROJECTS_TODO_OUTSTANDING');
+$which = $this->filters['state'] == 1 ? strtolower(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')) :
+Lang::txt('PLG_PROJECTS_TODO_OUTSTANDING');
 $where = $listName ? ' ' . Lang::txt('PLG_PROJECTS_TODO_TODO_ON_THIS_LIST') : '';
 $where .= $this->filters['mine'] == 1 ? ' ' . Lang::txt('PLG_PROJECTS_TODO_IN_MY_TODOS') : '';
 
@@ -45,7 +46,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
     <?php if (!$this->filters['state'] && $this->model->access('content')) { ?>
         <ul id="page_options" class="pluginOptions">
             <li>
-                <a class="icon-add add btn showinbox"  href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">
+                <a class="icon-add add btn showinbox"
+                    href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">
                     <?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?>
                 </a>
             </li>
@@ -78,7 +80,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
             <?php } elseif (!$this->filters['state'] && $this->model->access('content')) { ?>
                 <li class="todo-add">
                     <span>
-                        <a class="item-add showinbox" href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">
+                        <a class="item-add showinbox"
+                            href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?>
                         </a>
                     </span>

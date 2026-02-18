@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,8 +26,14 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                 $qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
                 ?>
                 <ul class="entries-menu order-options">
-                    <li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_TITLE'); ?></a></li>
-                    <li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo Route::url($base . '&sortby=popularity' . $qs); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_ENROLLED'); ?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_ENROLLED'); ?></a></li>
+                    <li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?>
+                    href="<?php echo Route::url($base . '&sortby=title' . $qs);?>
+                    " title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_TITLE');?>
+                    "><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_TITLE');?></a></li>
+                    <li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?>
+                    href="<?php echo Route::url($base . '&sortby=popularity' . $qs);?>
+                    " title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_ENROLLED');?>
+                    "><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_ENROLLED');?></a></li>
                 </ul>
             </nav>
 
@@ -37,7 +41,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                 <caption>
                     <?php
                     $s = ($this->total > 0) ? $this->filters['start'] + 1 : 0;
-                    $e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
+                    $e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start']
+                    + $this->filters['limit']) : $this->total;
 
                     echo $this->escape(Lang::txt('PLG_GROUPS_COURSES'));
                     ?>
@@ -62,7 +67,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                             foreach ($instructors as $i) {
                                 $instructor = User::getInstance($i->get('user_id'));
 
-                                $names[] = '<a href="' . Route::url('index.php?option=com_members&id=' . $i->get('user_id')) . '">' . $this->escape(stripslashes($instructor->get('name'))) . '</a>';
+                                $names[] = '<a href="'
+                                    . Route::url('index.php?option=com_members&id=' . $i->get('user_id'))
+                                    . '">'
+                                    . $this->escape(stripslashes($instructor->get('name')))
+                                    . '</a>';
                             }
                             ?>
                             <span class="entry-details">

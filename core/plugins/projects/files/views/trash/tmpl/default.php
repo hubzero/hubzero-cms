@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -15,7 +15,9 @@ defined('_HZEXEC_') or die();
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETED_FILES'); ?></h3>
 
-<form id="hubForm-ajax" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')); ?>">
+<form id="hubForm-ajax"
+    method="post"
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')); ?>">
     <fieldset >
 <?php if (empty($this->files)) { ?>
     <p class="warning"><?php echo Lang::txt('PLG_PROJECTS_FILES_TRASH_EMPTY'); ?></p>
@@ -47,7 +49,15 @@ defined('_HZEXEC_') or die();
                         <?php echo \Components\Projects\Helpers\Html::formatTime($file['date'], true, true); ?>
                         <span class="block"><?php echo $file['author']; ?></span>
                     </td>
-                    <td><a href="<?php echo Route::url($this->url . '&action=restore&asset=' . urlencode($filename) . '&hash=' . $file['hash']);  ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_RESTORE'); ?></a></td>
+                    <?php
+                    $restoreUrl = Route::url(
+                        $this->url . '&action=restore&asset='
+                        . urlencode($filename) . '&hash=' . $file['hash']
+                    );
+                    ?>
+                    <td>
+                        <a href="<?php echo $restoreUrl; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_RESTORE'); ?></a>
+                    </td>
                 </tr>
             <?php } ?>
             </tbody>
@@ -55,9 +65,15 @@ defined('_HZEXEC_') or die();
     </div>
         <p class="submitarea">
             <?php if ($this->ajax) { ?>
-                <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CLOSE'); ?>" />
+                <input type="reset"
+                    id="cancel-action"
+                    class="btn btn-cancel"
+                    value="<?php echo Lang::txt('PLG_PROJECTS_FILES_CLOSE'); ?>"/>
             <?php } else {  ?>
-            <a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_GO_BACK'); ?></a>
+            <a id="cancel-action"
+                class="btn btn-cancel"
+                href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"
+                ><?php echo Lang::txt('PLG_PROJECTS_FILES_GO_BACK'); ?></a>
             <?php } ?>
         </p>
 

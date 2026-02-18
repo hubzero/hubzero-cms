@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -24,10 +24,22 @@ if ($this->model->access('content')) { ?>
             <input type="hidden" name="parent_activity" value="<?php echo $this->activity->log->get('id'); ?>" />
             <?php echo Html::input('token'); ?>
 
+            <?php
+            $activityId = $this->activity->log->get('id');
+            $editorId = 'ca_' . $activityId;
+            $editorAttrs = array('class' => 'commentarea minimal no-footer');
+            $submitId = 'cs_' . $activityId;
+            $submitVal = Lang::txt('COM_PROJECTS_COMMENT');
+            ?>
             <label class="comment-show">
-                <?php echo $this->editor('comment', '', 5, 3, 'ca_' . $this->activity->log->get('id'), array('class' => 'commentarea minimal no-footer')); ?>
+                <?php echo $this->editor('comment', '', 5, 3, $editorId, $editorAttrs); ?>
             </label>
-            <p class="blog-submit"><input type="submit" class="btn c-submit" id="cs_<?php echo $this->activity->log->get('id'); ?>" value="<?php echo Lang::txt('COM_PROJECTS_COMMENT'); ?>" /></p>
+            <p class="blog-submit">
+                <input type="submit"
+                    class="btn c-submit"
+                    id="<?php echo $submitId; ?>"
+                    value="<?php echo $submitVal; ?>" />
+            </p>
         </fieldset>
     </form>
 </div>

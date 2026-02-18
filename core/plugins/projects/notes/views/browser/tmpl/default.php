@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -73,7 +73,9 @@ $route = $this->model->isProvisioned()
                 foreach ($parent as $entry) {
                     if ($level == 1) {
                         ?>
-                        <li class="c-click notes toplevel" id="note::<?php echo $entry->id; ?>"><?php echo \Hubzero\Utility\Str::truncate($entry->title, 35); ?>
+                        <li class="c-click notes toplevel"
+                            id="note::<?php echo $entry->id; ?>"
+                            ><?php echo \Hubzero\Utility\Str::truncate($entry->title, 35); ?>
                         <?php
                     }
 
@@ -83,7 +85,9 @@ $route = $this->model->isProvisioned()
                             echo '<ol>';
                         }
                         ?>
-                        <li class="c-click notes wikilevel_2" id="note::<?php echo $entry->id; ?>"><?php echo \Hubzero\Utility\Str::truncate($entry->title, 35); ?></li>
+                        <li class="c-click notes wikilevel_2"
+                            id="note::<?php echo $entry->id; ?>"
+                            ><?php echo \Hubzero\Utility\Str::truncate($entry->title, 35); ?></li>
                         <?php
                         if ($p2 == count($parent)) {
                             echo '</ol>';
@@ -96,7 +100,9 @@ $route = $this->model->isProvisioned()
                     if (isset($thirdlevel[$entry->pagename]) && count($thirdlevel[$entry->pagename]) > 0) {
                         foreach ($thirdlevel[$entry->pagename] as $subpage) {
                             ?>
-                            <li class="c-click notes wikilevel_3" id="note::<?php echo $subpage->id; ?>"><?php echo \Hubzero\Utility\Str::truncate($subpage->title, 35); ?></li>
+                            <li class="c-click notes wikilevel_3"
+                                id="note::<?php echo $subpage->id; ?>"
+                                ><?php echo \Hubzero\Utility\Str::truncate($subpage->title, 35); ?></li>
                             <?php
                             $shown[] = $subpage->id;
                         }
@@ -144,5 +150,8 @@ $route = $this->model->isProvisioned()
 <?php } ?>
 
 <?php if (!$this->model->isProvisioned()) { ?>
-    <p class="addnew">Go to <a href="<?php echo Route::url($route . '&active=notes'); ?>">Notes</a> to create a new note</p>
+    <p class="addnew">
+        Go to <a href="<?php echo Route::url($route . '&active=notes'); ?>">Notes</a>
+        to create a new note
+    </p>
 <?php }

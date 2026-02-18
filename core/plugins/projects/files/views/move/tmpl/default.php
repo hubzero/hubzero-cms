@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -65,10 +65,11 @@ if ($this->getError()) {
             <?php if (count($dirs) > 0) {
                 echo '<ul class="dirtree">';
                 ?>
+                <?php $disabled = !$this->subdir ? 'disabled="disabled" ' : ''; ?>
                 <li>
-                    <input type="radio" name="newpath" value="" <?php if (!$this->subdir) {
-                        echo 'disabled="disabled" ';
-                                                                } ?> checked="checked" /> <span><?php echo Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
+                    <input type="radio" name="newpath" value=""
+                        <?php echo $disabled; ?>checked="checked" />
+                    <span><?php echo Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
                 </li>
                 <?php
                 for ($i = 0; $i < count($dirs); $i++) {
@@ -84,11 +85,13 @@ if ($this->getError()) {
                     $leftMargin = ($level * 15) . 'px';
                     ?>
                 <li style="margin-left:<?php echo $leftMargin; ?>">
-                    <input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php if ($this->subdir == $dir) {
-                        echo 'disabled="disabled" ';
-                                                              } ?> /> <span><span class="folder <?php if ($this->subdir == $dir) {
-                                                              echo 'prominent ';
-                                                              } ?>"><?php echo $dirname; ?></span></span>
+                    <input type="radio"
+                        name="newpath"
+                        value="<?php echo urlencode($dir); ?>" <?php if ($this->subdir == $dir) {
+                            echo 'disabled="disabled" ';
+                               } ?> /> <span><span class="folder <?php if ($this->subdir == $dir) {
+                               echo 'prominent ';
+                               } ?>"><?php echo $dirname; ?></span></span>
                 </li>
                 <?php }
                 echo '</ul>';
@@ -106,10 +109,15 @@ if ($this->getError()) {
         <p class="submitarea">
             <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?>" />
             <?php if ($this->ajax) { ?>
-                <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                <input type="reset"
+                    id="cancel-action"
+                    class="btn btn-cancel"
+                    value="<?php echo Lang::txt('JCANCEL'); ?>"/>
             <?php } else {  ?>
                 <span>
-                    <a id="cancel-action"  class="btn btn-cancel"  href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+                    <a id="cancel-action"
+                        class="btn btn-cancel"
+                        href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
                 </span>
             <?php } ?>
         </p>

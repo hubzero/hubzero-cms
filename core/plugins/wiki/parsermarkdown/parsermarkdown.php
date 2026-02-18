@@ -1,4 +1,5 @@
 <?php
+
 namespace Plugins\Wiki\Parsermarkdown;
 
 use Hubzero\Plugin\Plugin;

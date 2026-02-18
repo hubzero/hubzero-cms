@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength
+// @phpcs:disable PSR1.Files.SideEffects
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -74,8 +74,14 @@ $this->thread->set('category', $this->category->get('alias'));
         }
         ?>
 
+        <?php
+        $paginationUrl = Route::url(
+            $base . '&unit=' . $this->category->get('alias')
+            . '&b=' . $this->post->get('id')
+        );
+        ?>
         <form
-            action="<?php echo Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $this->post->get('id')); ?>"
+            action="<?php echo $paginationUrl; ?>"
             method="get">
             <?php
             // Initiate paging
@@ -115,11 +121,20 @@ $this->thread->set('category', $this->category->get('alias'));
                     foreach ($participants as $participant) {
                         if (!$participant->get('anonymous')) {
                             ?>
+                            <?php
+                            $memberUrl = Route::url(
+                                'index.php?option=com_members&id='
+                                . $participant->get('created_by')
+                            );
+                            $memberName = $this->escape(
+                                stripslashes($participant->get('name'))
+                            );
+                            ?>
                             <li>
-                                <a class="member"
-                                    href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->get('created_by')); ?>">
-                                    <?php echo $this->escape(stripslashes($participant->get('name'))); ?>
-                                </a>
+                                <a
+                                    class="member"
+                                    href="<?php echo $memberUrl; ?>"
+                                ><?php echo $memberName; ?></a>
                             </li>
                             <?php
                         } elseif (!$anon) {
@@ -163,11 +178,19 @@ $this->thread->set('category', $this->category->get('alias'));
                                 $cls = 'img';
                             }
                             ?>
+                            <?php
+                            $attachUrl = Route::url(
+                                $base . '&unit=' . $this->category->get('alias')
+                                . '&b=' . $attachment->get('parent')
+                                . '&c=' . $attachment->get('post_id')
+                                . '/' . $attachment->get('filename')
+                            );
+                            ?>
                             <li>
-                                <a class="<?php echo $cls; ?> attachment"
-                                    href="<?php echo Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $attachment->get('parent') . '&c=' . $attachment->get('post_id') . '/' . $attachment->get('filename')); ?>">
-                                    <?php echo $this->escape($title); ?>
-                                </a>
+                                <a
+                                    class="<?php echo $cls; ?> attachment"
+                                    href="<?php echo $attachUrl; ?>"
+                                ><?php echo $this->escape($title); ?></a>
                             </li>
                             <?php
                         } //end status check
@@ -184,9 +207,17 @@ $this->thread->set('category', $this->category->get('alias'));
         <h3 class="post-comment-title">
             <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ADD_COMMENT'); ?>
         </h3>
+        <?php
+        $commentFormUrl = Route::url(
+            $base . '&unit=' . $this->category->get('alias')
+            . '&b=' . $this->post->get('id')
+        );
+        ?>
         <form
-            action="<?php echo Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $this->post->get('id')); ?>"
-            method="post" id="commentform" enctype="multipart/form-data">
+            action="<?php echo $commentFormUrl; ?>"
+            method="post"
+            id="commentform"
+            enctype="multipart/form-data">
             <p class="comment-member-photo">
                 <?php
                 $anon = 1;
@@ -202,27 +233,39 @@ $this->thread->set('category', $this->category->get('alias'));
                 <?php if (User::isGuest()) { ?>
                     <p class="warning"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
                 <?php } else { ?>
+                    <?php
+                    $userUrl = Route::url(
+                        'index.php?option=com_members&id=' . User::get('id')
+                    );
+                    $userName = $this->escape(User::get('name'));
+                    $now = Date::of('now');
+                    $timeFormatted = $now->toLocal(Lang::txt('TIME_FORMAt_HZ1'));
+                    $dateFormatted = $now->toLocal(Lang::txt('DATE_FORMAt_HZ1'));
+                    $atText = Lang::txt('PLG_COURSES_DISCUSSIONS_AT');
+                    $onText = Lang::txt('PLG_COURSES_DISCUSSIONS_ON');
+                    ?>
                     <p class="comment-title">
                         <strong>
-                            <a
-                                href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(User::get('name')); ?></a>
+                            <a href="<?php echo $userUrl; ?>"><?php echo $userName; ?></a>
                         </strong>
                         <span class="permalink">
-                            <span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_AT'); ?>
-                                << /span>
-                                    <span class="time"><time
-                                            datetime="<?php echo $now; ?>"><?php echo Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
-                                    <span
-                                        class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-                                    <span class="date"><time
-                                            datetime="<?php echo $now; ?>"><?php echo Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+                            <span class="comment-date-at"><?php echo $atText; ?>
+                                </span>
+                                    <span class="time">
+                                        <time datetime="<?php echo $now; ?>"><?php echo $timeFormatted; ?></time>
+                                    </span>
+                                    <span class="comment-date-on"><?php echo $onText; ?></span>
+                                    <span class="date">
+                                        <time datetime="<?php echo $now; ?>"><?php echo $dateFormatted; ?></time>
+                                    </span>
                             </span>
                     </p>
 
                     <label for="field_comment">
                         <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?>
                         <?php
-                        echo $this->editor('fields[comment]', '', 35, 15, 'field_comment', array('class' => 'minimal no-footer'));
+                        echo $this->editor('fields[comment]', '', 35, 15, 'field_comment', array('class' => 'minimal
+                        no-footer'));
                         ?>
                     </label>
 

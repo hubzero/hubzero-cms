@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -13,7 +13,11 @@ defined('_HZEXEC_') or die();
 
 // Directory path breadcrumbs
 $bc    = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent, false);
-$bcEnd = $this->item->isDir() ? '<span class="folder">' . $this->item->getName() . '</span>' : '<span class="file">' . $this->item->getName() . '</span>';
+$bcEnd = $this->item->isDir() ? '<span class="folder">'
+    . $this->item->getName()
+    . '</span>' : '<span class="file">'
+    . $this->item->getName()
+    . '</span>';
 $lang  = $this->item->isDir() ? 'folder' : 'file';
 
 $dubCore = [
@@ -54,11 +58,24 @@ $dubCore = [
                         <li>
                             <div class="entry key-value-pair" data-idx="<?php echo $i; ?>">
                                 <div class="entry-label">
-                                    <input class="dublin" type="text" name="key[<?php echo $i; ?>]" maxlength="250" value="<?php echo $element; ?>" readonly />
+                                    <input class="dublin"
+                                        type="text"
+                                        name="key[<?php echo $i; ?>]"
+                                        maxlength="250"
+                                        value="<?php echo $element; ?>"
+                                        readonly/>
                                 </div>
                                 <div class="separator">:</div>
                                 <div class="entry-value">
-                                    <input type="text" name="value[<?php echo $i; ?>]" value="<?php echo (isset($this->metadata[$element])) ? $this->metadata[$element] : ''; ?>" />
+                                    <?php
+                                    $fieldValue = isset($this->metadata[$element])
+                                        ? $this->metadata[$element]
+                                        : '';
+                                    ?>
+                                    <input type="text"
+                                        name="value[<?php echo $i; ?>]"
+                                        value="<?php echo $fieldValue; ?>"
+                                    />
                                 </div>
                             </div>
                         </li>
@@ -72,11 +89,16 @@ $dubCore = [
                             <li>
                                 <div class="entry key-value-pair" data-idx="<?php echo $i; ?>">
                                     <div class="entry-label">
-                                        <input type="text" name="key[<?php echo $i; ?>]" maxlength="250" value="<?php echo $metadata; ?>" />
+                                        <input type="text"
+                                            name="key[<?php echo $i; ?>]"
+                                            maxlength="250"
+                                            value="<?php echo $metadata; ?>"/>
                                     </div>
                                     <div class="separator">:</div>
                                     <div class="entry-value">
-                                        <input type="text" name="value[<?php echo $i; ?>]" value="<?php echo $value; ?>" />
+                                        <input type="text"
+                                            name="value[<?php echo $i; ?>]"
+                                            value="<?php echo $value; ?>"/>
                                     </div>
                                 </div>
                             </li>
@@ -102,7 +124,10 @@ $dubCore = [
 
                 <div class="buttons">
                     <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_SAVE'); ?>" />
-                    <input type="reset" class="btn btn-cancel" id="cancel-action" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                    <input type="reset"
+                        class="btn btn-cancel"
+                        id="cancel-action"
+                        value="<?php echo Lang::txt('JCANCEL'); ?>"/>
                 </div>
             </fieldset>
         </form>

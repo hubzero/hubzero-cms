@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +14,14 @@ $this->css();
 $title = ($this->admin) ? Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
 
 if (count($this->rows) > 0 && $this->items > $this->filters['limit']) {
-    $title .= ' <span>(<a href="' . Route::url('index.php?option=com_wishlist&task=wishlist&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid) . '">' . Lang::txt('PLG_GROUPS_WISHLIST_VIEW_ALL') . ' ' . $this->items . '</a>)</span>';
+    $listUrl = Route::url(
+        'index.php?option=com_wishlist&task=wishlist'
+        . '&category=' . $this->wishlist->category
+        . '&rid=' . $this->wishlist->referenceid
+    );
+    $title .= ' <span>(<a href="' . $listUrl . '">'
+        . Lang::txt('PLG_GROUPS_WISHLIST_VIEW_ALL')
+        . ' ' . $this->items . '</a>)</span>';
 } else {
     $title .= ' <span>(' . $this->items . ')</span>';
 }
@@ -26,15 +31,30 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
 
 <?php if ($this->admin != 0) { ?>
     <?php if ($this->group->published == 1) { ?>
+        <?php
+        $addUrl = Route::url(
+            'index.php?option=com_wishlist&task=add'
+            . '&category=' . $this->wishlist->category
+            . '&rid=' . $this->wishlist->referenceid
+        );
+        ?>
         <p id="page_options">
-            <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_wishlist&task=add&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid); ?>">
+            <a class="icon-add add btn" href="<?php echo $addUrl; ?>">
                 <?php echo Lang::txt('COM_WISHLIST_ADD_NEW_WISH'); ?>
             </a>
         </p>
     <?php } ?>
 <?php } else { ?>
     <?php if (User::isGuest()) { ?>
-        <p class="warning"><?php echo Lang::txt('PLG_GROUPS_WISHLIST_MUST_LOGIN', Route::url('index.php?option=com_users&view=login&return=' . $url, false)); ?></p>
+        <?php
+        $loginUrl = Route::url(
+            'index.php?option=com_users&view=login&return=' . $url,
+            false
+        );
+        ?>
+        <p class="warning">
+            <?php echo Lang::txt('PLG_GROUPS_WISHLIST_MUST_LOGIN', $loginUrl); ?>
+        </p>
     <?php } else { ?>
         <p class="warning"><?php echo Lang::txt('PLG_GROUPS_WISHLIST_MUST_BE_MEMBER'); ?></p>
     <?php } ?>
@@ -52,15 +72,19 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
 
                 $item->bonus = $this->config->get('banking') ? $item->bonus : 0;
 
+                $isUnrankedAdmin = isset($item->ranked)
+                    && !$item->ranked
+                    && ($this->admin == 2 || $this->admin == 3);
+
                 if ($item->status == 7) {
                     $status = 'outstanding';
-                } elseif (isset($item->ranked) && !$item->ranked && $item->status != 1 && $item->status != 3 && $item->status != 4 && ($this->admin == 2 or $this->admin == 3)) {
+                } elseif ($isUnrankedAdmin && $item->status != 1 && $item->status != 3 && $item->status != 4) {
                     $status = 'unranked';
                 } else {
                     $status = 'outstanding';
                 }
 
-                $state  = (isset($item->ranked) && !$item->ranked && $item->status != 1 && ($this->admin == 2 or $this->admin == 3)) ? 'new' : '';
+                $state = ($isUnrankedAdmin && $item->status != 1) ? 'new' : '';
                 $state .= ($item->private) ? ' private' : '';
                 switch ($item->status) {
                     case 3:
@@ -84,8 +108,33 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
 
                 $name = Lang::txt('JANONYMOUS');
                 if (!$item->anonymous) {
-                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $item->proposed_by) . '">' . $this->escape($item->proposer->get('name')) . '</a>';
+                    $name = '<a href="'
+                        . Route::url('index.php?option=com_members&id=' . $item->proposed_by)
+                        . '">'
+                        . $this->escape($item->proposer->get('name'))
+                        . '</a>';
                 }
+
+                $wishBase = 'index.php?option=com_wishlist&task=wish'
+                    . '&category=' . $this->wishlist->category
+                    . '&rid=' . $this->wishlist->referenceid
+                    . '&wishid=' . $item->id;
+                $wishFilters = '&filterby=' . $this->filters['filterby']
+                    . '&sortby=' . $this->filters['sortby']
+                    . '&tags=' . $this->filters['tag'];
+                $wishUrl = Route::url($wishBase . $wishFilters);
+                $commentsUrl = Route::url(
+                    $wishBase . '&com=1' . $wishFilters . '#comments'
+                );
+                $bonusUrl = Route::url(
+                    $wishBase . '&action=addbonus' . $wishFilters . '#action'
+                );
+                $proposedTime = Date::of($item->proposed)
+                    ->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
+                $proposedDate = Date::of($item->proposed)
+                    ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                $commentsTitle = $item->numreplies
+                    . ' ' . Lang::txt('COM_WISHLIST_COMMENTS');
                 ?>
                     <tr class="<?php echo $state; ?>">
                         <th class="priority-5 <?php echo $status; ?>">
@@ -93,37 +142,75 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                         </th>
                         <td>
                         <?php if ($item->status != 7) { ?>
-                            <a class="entry-title" href="<?php echo Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']); ?>"><?php echo $item->subject; ?></a><br />
+                            <a class="entry-title"
+                                href="<?php echo $wishUrl; ?>"
+                            ><?php echo $item->subject; ?></a><br />
                             <span class="entry-details">
                                 <?php echo Lang::txt('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?>
                                 <span class="entry-time-at"><?php echo Lang::txt('COM_WISHLIST_DATETIME_AT'); ?></span>
-                                <span class="entry-time"><time datetime="<?php echo $item->proposed; ?>"><?php echo Date::of($item->proposed)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+                                <span class="entry-time">
+                                    <time datetime="<?php echo $item->proposed; ?>"><?php echo $proposedTime; ?></time>
+                                </span>
                                 <span class="entry-time-on"><?php echo Lang::txt('COM_WISHLIST_DATETIME_ON'); ?></span>
-                                <span class="entry-date"><time datetime="<?php echo $item->proposed; ?>"><?php echo Date::of($item->proposed)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+                                <span class="entry-date">
+                                    <time datetime="<?php echo $item->proposed; ?>"><?php echo $proposedDate; ?></time>
+                                </span>
                                 <span class="entry-details-divider">&bull;</span>
                                 <span class="entry-comments">
-                                    <a href="<?php echo Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&com=1&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#comments'); ?>" title="<?php echo $item->numreplies; ?> <?php echo Lang::txt('COM_WISHLIST_COMMENTS'); ?>">
+                                    <a href="<?php echo $commentsUrl; ?>"
+                                        title="<?php echo $commentsTitle; ?>"
+                                    >
                                         <?php echo $item->numreplies; ?>
                                     </a>
                                 </span>
                             </span>
                         <?php } else { ?>
-                            <span class="warning adjust"><?php echo Lang::txt('COM_WISHLIST_NOTICE_POSTING_REPORTED'); ?></span>
+                            <span class="warning adjust">
+                                <?php echo Lang::txt('COM_WISHLIST_NOTICE_POSTING_REPORTED'); ?>
+                            </span>
                         <?php } ?>
                         </td>
                     <?php if ($this->config->get('banking')) { ?>
                         <td class="priority-5 reward">
                             <span class="entry-reward">
-                            <?php if (isset($item->bonus) && $item->bonus > 0 && ($item->status == 0 or $item->status == 6)) { ?>
-                                <a class="bonus tooltips" href="<?php echo Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action'); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' ::' . $item->bonusgivenby . ' ' . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->bonus . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS'); ?>">
-                                    <?php echo $item->bonus; ?> <span><?php echo Lang::txt('COM_WISHLIST_POINTS'); ?></span>
+                            <?php
+                            $hasBonus = isset($item->bonus)
+                                && $item->bonus > 0
+                                && ($item->status == 0 || $item->status == 6);
+                            ?>
+                            <?php if ($hasBonus) { ?>
+                                <?php
+                                $bonusTitle = Lang::txt('COM_WISHLIST_WISH_ADD_BONUS')
+                                    . ' ::' . $item->bonusgivenby
+                                    . ' ' . Lang::txt('COM_WISHLIST_MULTIPLE_USERS')
+                                    . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL')
+                                    . ' ' . $item->bonus
+                                    . ' ' . Lang::txt('COM_WISHLIST_POINTS')
+                                    . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS');
+                                ?>
+                                <a class="bonus tooltips"
+                                    href="<?php echo $bonusUrl; ?>"
+                                    title="<?php echo $bonusTitle; ?>"
+                                >
+                                    <?php echo $item->bonus; ?>
+                                    <span><?php echo Lang::txt('COM_WISHLIST_POINTS'); ?></span>
                                 </a>
                             <?php } elseif ($item->status == 0 || $item->status == 6) { ?>
-                                <a class="nobonus tooltips" href="<?php echo Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action'); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED'); ?>">
-                                    <?php echo $item->bonus; ?> <span><?php echo Lang::txt('COM_WISHLIST_POINTS'); ?></span>
+                                <?php
+                                $noBonusTitle = Lang::txt('COM_WISHLIST_WISH_ADD_BONUS')
+                                    . ' :: '
+                                    . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED');
+                                ?>
+                                <a class="nobonus tooltips"
+                                    href="<?php echo $bonusUrl; ?>"
+                                    title="<?php echo $noBonusTitle; ?>"
+                                >
+                                    <?php echo $item->bonus; ?>
+                                    <span><?php echo Lang::txt('COM_WISHLIST_POINTS'); ?></span>
                                 </a>
                             <?php } else { ?>
-                                <span class="inactive" title="<?php echo Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">
+                                <span class="inactive"
+                                    title="<?php echo Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">
                                     &nbsp;
                                 </span>
                             <?php } ?>
@@ -159,37 +246,56 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                 $html = '';
                             switch ($item->status) {
                                 case 0:
-                                    if (isset($item->ranked) && !$item->ranked && ($this->admin == 2 or $this->admin == 3)) {
-                                        $html .= '<a class="rankit" href="index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
+                                    if ($isUnrankedAdmin) {
+                                        $rankUrl = $wishBase . $wishFilters;
+                                        $html .= '<a class="rankit" href="' . $rankUrl . '">'
+                                            . Lang::txt('COM_WISHLIST_WISH_RANK_THIS')
+                                            . '</a>' . "\n";
                                     } elseif (isset($item->ranked) && $item->ranked) {
-                                        //$html .= Lang::txt('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
-                                        $this->css('
-												.priority-level-' . $item->id . ' {
-													width: ' . (($item->ranking / 50) * 100) . '%;
-												}
-											');
+                                        $pct = (($item->ranking / 50) * 100);
+                                        $this->css(
+                                            '.priority-level-' . $item->id . ' {'
+                                            . ' width: ' . $pct . '%; }'
+                                        );
 
-                                        $html .= '<span class="priority-level-base">
-												<span class="priority-level" priority-level-' . $item->id . '" title="' . (($item->ranking / 50) * 100) . '%">
-													<span>' . Lang::txt('COM_WISHLIST_WISH_PRIORITY') . ': ' . $item->ranking . '</span>
-												</span>
-											</span>';
+                                        $html .= '<span class="priority-level-base">'
+                                            . '<span class="priority-level'
+                                            . ' priority-level-' . $item->id . '"'
+                                            . ' title="' . $pct . '%">'
+                                            . '<span>'
+                                            . Lang::txt('COM_WISHLIST_WISH_PRIORITY')
+                                            . ': ' . $item->ranking
+                                            . '</span>'
+                                            . '</span>'
+                                            . '</span>';
                                     }
                                     if ($item->accepted == 1) {
-                                        $html .= '<span class="accepted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED') . '</span>';
+                                        $html .= '<span class="accepted">'
+                                            . Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED')
+                                            . '</span>';
                                     }
                                     break;
                                 case 1:
-                                    $html .= '<span class="granted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED') . '</span>';
+                                    $html .= '<span class="granted">'
+                                        . Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED')
+                                        . '</span>';
                                     /*if ($item->granted && $item->granted != '0000-00-00 00:00:00') {
-                                        $html .= ' <span class="mini">'.strtolower(Lang::txt('ON')).' '.Date::of($item->granted)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</span>';
+                                        $html .= ' <span class="mini">'
+                                            . strtolower(Lang::txt('ON'))
+                                            . ' '
+                                            . Date::of($item->granted)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                                            . '</span>';
                                     }*/
                                     break;
                                 case 3:
-                                    $html .= '<span class="rejected">' . Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED') . '</span>';
+                                    $html .= '<span class="rejected">'
+                                        . Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED')
+                                        . '</span>';
                                     break;
                                 case 4:
-                                    $html .= '<span class="withdrawn">' . Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN') . '</span>';
+                                    $html .= '<span class="withdrawn">'
+                                        . Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN')
+                                        . '</span>';
                                     break;
                             }
                                 echo $html;

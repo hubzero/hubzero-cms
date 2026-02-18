@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -37,7 +35,9 @@
             ?>
             <li class="<?php echo $class; ?>">
                 <a href="<?php echo $sef; ?>">
-                    <?php echo ($line->section == 'Series') ? '<span>' . Lang::txt('PLG_RESOURCES_RELATED_PART_OF') . '</span> ' : ''; ?>
+                    <?php echo ($line->section == 'Series') ? '<span>'
+                        . Lang::txt('PLG_RESOURCES_RELATED_PART_OF')
+                        . '</span> ' : ''; ?>
                     <?php echo $this->escape(stripslashes($line->title)); ?>
                 </a>
             </li>

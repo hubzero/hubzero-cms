@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -30,11 +30,35 @@ $this->css()
             </div>
 
             <?php
-            Lang::load('plg_filesystem_' . $this->connection->provider->get('alias'), PATH_APP . DS . 'plugins' . DS . 'filesystem' . DS . $this->connection->provider->get('alias'));
-            $xml = PATH_APP . DS . 'plugins' . DS . 'filesystem' . DS . $this->connection->provider->get('alias') . DS . $this->connection->provider->get('alias') . '.xml';
+            Lang::load(
+                'plg_filesystem_' . $this->connection->provider->get('alias'),
+                PATH_APP . DS . 'plugins' . DS . 'filesystem' . DS . $this->connection->provider->get('alias')
+            );
+            $xml = PATH_APP
+                . DS
+                . 'plugins'
+                . DS
+                . 'filesystem'
+                . DS
+                . $this->connection->provider->get('alias')
+                . DS
+                . $this->connection->provider->get('alias')
+                . '.xml';
             if (!file_exists($xml)) {
-                Lang::load('plg_filesystem_' . $this->connection->provider->get('alias'), PATH_CORE . DS . 'plugins' . DS . 'filesystem' . DS . $this->connection->provider->get('alias'));
-                $xml = PATH_CORE . DS . 'plugins' . DS . 'filesystem' . DS . $this->connection->provider->get('alias') . DS . $this->connection->provider->get('alias') . '.xml';
+                Lang::load(
+                    'plg_filesystem_' . $this->connection->provider->get('alias'),
+                    PATH_CORE . DS . 'plugins' . DS . 'filesystem' . DS . $this->connection->provider->get('alias')
+                );
+                $xml = PATH_CORE
+                    . DS
+                    . 'plugins'
+                    . DS
+                    . 'filesystem'
+                    . DS
+                    . $this->connection->provider->get('alias')
+                    . DS
+                    . $this->connection->provider->get('alias')
+                    . '.xml';
             }
 
             $form = new \Hubzero\Form\Form('connection', array('control' => 'connect'));
@@ -76,7 +100,11 @@ $this->css()
 
             <div class="input-wrap">
                 <label for="param-share" class="option">
-                    <input type="checkbox" class="option" name="shareconnection" id="param-share" value="1" <?php echo $this->connection->isShared() ? ' checked="checked"' : ''; ?> />
+                    <input type="checkbox"
+                        class="option"
+                        name="shareconnection"
+                        id="param-share"
+                        value="1" <?php echo $this->connection->isShared() ? ' checked="checked"' : ''; ?>/>
                     <?php echo Lang::txt('Share connection with everyone in the project?'); ?>
                 </label>
             </div>

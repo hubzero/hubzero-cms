@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -19,17 +19,26 @@ $pubParams = $this->publication->params;
         // Select license if
         //   (1) license type matches item id, or
         //   (2) there is no license type yet and this item is the default license
-        $selected = ($this->publication->get('license_type') && $this->publication->get('license_type') == $item->id) || (!$this->publication->get('license_type') && $item->main) ? true : false;
+        $selected = ($this->publication->get('license_type') && $this->publication->get('license_type') == $item->id) ||
+        (!$this->publication->get('license_type') && $item->main) ? true : false;
 
         $liId = 'choice-' . $item->id;
 
         $info = $item->info;
         if ($item->url) {
-            $info .= ' <a href="' . $item->url . '" rel="nofollow external">' . Lang::txt('Read license terms &rsaquo;') . '</a>';
+            $info .= ' <a href="'
+                . $item->url
+                . '" rel="nofollow external">'
+                . Lang::txt('Read license terms &rsaquo;')
+                . '</a>';
         }
 
         $icon = $item->icon;
-        $icon = str_replace('/components/com_publications/assets/img/', '/core/components/com_publications/site/assets/img/', $icon);
+        $icon = str_replace(
+            '/components/com_publications/assets/img/',
+            '/core/components/com_publications/site/assets/img/',
+            $icon
+        );
 
         ?>
         <li class="type-license allowed <?php if ($selected) {
@@ -49,5 +58,16 @@ $pubParams = $this->publication->params;
 </ul>
 
 <?php if ($this->publication->config()->get('suggest_licence')) { ?>
-    <p class="hint"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_DONT_SEE_YOURS') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_YOU_CAN'); ?> <a href="<?php echo $this->url . '?action=suggest_license&amp;version=' . $this->publication->get('version_number'); ?>" class="showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGEST'); ?></a></p>
+    <?php
+    $hintText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_DONT_SEE_YOURS')
+        . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_YOU_CAN');
+    $suggestUrl = $this->url . '?action=suggest_license&amp;version='
+        . $this->publication->get('version_number');
+    ?>
+    <p class="hint">
+        <?php echo $hintText; ?>
+        <a href="<?php echo $suggestUrl; ?>" class="showinbox">
+            <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_SUGGEST'); ?>
+        </a>
+    </p>
 <?php }

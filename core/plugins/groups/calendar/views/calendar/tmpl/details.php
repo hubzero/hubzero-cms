@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,6 +13,42 @@ $year  = date("Y", strtotime($this->event->get('publish_up')));
 $month = date("m", strtotime($this->event->get('publish_up')));
 $params = new \Hubzero\Config\Registry($this->event->get('params'));
 $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
+
+$calBase = 'index.php?option=' . $this->option
+    . '&cn=' . $this->group->get('cn')
+    . '&active=calendar';
+$eventId = $this->event->get('id');
+
+$backUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&cn=' . $this->group->cn
+    . '&active=calendar&year=' . $year
+    . '&month=' . $month
+);
+$deleteUrl = Route::url(
+    $calBase . '&action=delete&event_id=' . $eventId
+);
+$editUrl = Route::url(
+    $calBase . '&action=edit&event_id=' . $eventId
+);
+$detailsUrl = Route::url(
+    $calBase . '&action=details&event_id=' . $eventId
+);
+$registerUrl = Route::url(
+    $calBase . '&action=register&event_id=' . $eventId
+);
+$registrantsUrl = Route::url(
+    $calBase . '&action=registrants&event_id=' . $eventId
+);
+$exportUrl = Route::url(
+    $calBase . '&action=export&event_id=' . $eventId
+);
+
+$isPublished = $this->group->published == 1;
+$isCreator = $this->user->get('id')
+    == $this->event->get('created_by');
+$isManager = $this->authorized == 'manager';
+$canManage = $isPublished && ($isCreator || $isManager);
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -23,7 +57,9 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 
 <ul id="page_options">
     <li>
-        <a class="icon-prev btn back" title="" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&year=' . $year . '&month=' . $month); ?>">
+        <a class="icon-prev btn back"
+            title=""
+            href="<?php echo $backUrl; ?>">
             <?php echo Lang::txt('Back to Events Calendar'); ?>
         </a>
     </li>
@@ -36,12 +72,14 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
             <span>&ndash;&nbsp;<?php echo $this->calendar->get('title'); ?></span>
         <?php endif; ?>
     </span>
-    <?php if ($this->group->published == 1 && ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager')) : ?>
+    <?php if ($canManage) : ?>
         <?php if (!isset($this->calendar) || !$this->calendar->get('readonly')) : ?>
-            <a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=delete&event_id=' . $this->event->get('id')); ?>">
+            <a class="delete"
+                href="<?php echo $deleteUrl; ?>">
                 Delete
             </a>
-            <a class="edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=edit&event_id=' . $this->event->get('id')); ?>">
+            <a class="edit"
+                href="<?php echo $editUrl; ?>">
                 Edit
             </a>
         <?php endif; ?>
@@ -51,20 +89,20 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
 <div class="event-sub-menu">
     <ul>
         <li class="active">
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $this->event->get('id')); ?>">
+            <a href="<?php echo $detailsUrl; ?>">
                 <span><?php echo Lang::txt('Details'); ?></span>
             </a>
         </li>
 
         <?php if ($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
             <li>
-                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=register&event_id=' . $this->event->get('id')); ?>">
+                <a href="<?php echo $registerUrl; ?>">
                     <span><?php echo Lang::txt('Register'); ?></span>
                 </a>
             </li>
-            <?php if ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
+            <?php if ($isCreator || $isManager) : ?>
                 <li>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=registrants&event_id=' . $this->event->get('id')); ?>">
+                    <a href="<?php echo $registrantsUrl; ?>">
                         <span><?php echo Lang::txt('Registrants (' . $this->registrants . ')'); ?></span>
                     </a>
                 </li>
@@ -116,9 +154,24 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
             <tr>
                 <th class="date"></th>
                 <td colspan="3">
-                    <?php echo $this->event->get('time_zone') ? Date::of($publish_up)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', $ignoreDst) : Date::of($publish_up)->toLocal('l, F d, Y @ h:i a T'); ?>
+                    <?php
+                    $dateFmt = 'l, F d, Y @ h:i a T';
+                    $tz = $this->event->get('time_zone');
+                    if ($tz) {
+                        $startFormatted = Date::of($publish_up)
+                            ->toTimezone($tz, $dateFmt, $ignoreDst);
+                        $endFormatted = Date::of($publish_down)
+                            ->toTimezone($tz, $dateFmt, $ignoreDst);
+                    } else {
+                        $startFormatted = Date::of($publish_up)
+                            ->toLocal($dateFmt);
+                        $endFormatted = Date::of($publish_down)
+                            ->toLocal($dateFmt);
+                    }
+                    ?>
+                    <?php echo $startFormatted; ?>
                     &mdash;
-                    <?php echo $this->event->get('time_zone') ? Date::of($publish_down)->toTimezone($this->event->get('time_zone'), 'l, F d, Y @ h:i a T', $ignoreDst) : Date::of($publish_down)->toLocal('l, F d, Y @ h:i a T'); ?>
+                    <?php echo $endFormatted; ?>
                 </td>
             </tr>
         <?php else : ?>
@@ -151,7 +204,11 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
         <?php if ($this->event->get('contact_info') != '') : ?>
             <tr>
                 <th class="author"></th>
-                <td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText($this->event->get('contact_info')); ?></td>
+                <td colspan="3">
+                    <?php echo plgGroupsCalendarHelper::autoLinkText(
+                        $this->event->get('contact_info')
+                    ); ?>
+                </td>
             </tr>
         <?php endif; ?>
 
@@ -169,7 +226,11 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
         <?php if ($this->event->get('content') != '') : ?>
             <tr>
                 <th class="details"></th>
-                <td colspan="3"><?php echo plgGroupsCalendarHelper::autoLinkText(nl2br($this->event->get('content'))); ?></td>
+                <td colspan="3">
+                    <?php echo plgGroupsCalendarHelper::autoLinkText(
+                        nl2br($this->event->get('content'))
+                    ); ?>
+                </td>
             </tr>
         <?php endif; ?>
 
@@ -179,7 +240,10 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
         <tr>
             <th class="download"></th>
             <td colspan="4">
-                <a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=export&event_id=' . $this->event->get('id')); ?>"><?php echo Lang::txt('Export to My Calendar (ics)'); ?></a>
+                <a class="btn"
+                    href="<?php echo $exportUrl; ?>">
+                    <?php echo Lang::txt('Export to My Calendar (ics)'); ?>
+                </a>
             </td>
         </tr>
     </tbody>

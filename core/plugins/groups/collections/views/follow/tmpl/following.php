@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,11 +18,17 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <ul id="page_options">
     <li>
         <?php if ($this->model->isFollowing()) { ?>
-        <a class="icon-unfollow unfollow btn" data-text-follow="<?php echo Lang::txt('Follow All'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>" href="<?php echo Route::url($base . '&scope=unfollow'); ?>">
+        <a class="icon-unfollow unfollow btn"
+            data-text-follow="<?php echo Lang::txt('Follow All'); ?>"
+            data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>"
+            href="<?php echo Route::url($base . '&scope=unfollow'); ?>">
             <span><?php echo Lang::txt('Unfollow All'); ?></span>
         </a>
         <?php } else { ?>
-        <a class="icon-follow follow btn" data-text-follow="<?php echo Lang::txt('Follow All'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>" href="<?php echo Route::url($base . '&scope=follow'); ?>">
+        <a class="icon-follow follow btn"
+            data-text-follow="<?php echo Lang::txt('Follow All'); ?>"
+            data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>"
+            href="<?php echo Route::url($base . '&scope=follow'); ?>">
             <span><?php echo Lang::txt('Follow All'); ?></span>
         </a>
         <?php } ?>
@@ -55,7 +59,17 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     <tr class="<?php echo $row->get('following_type'); ?>">
                         <th>
                         <?php if ($row->following()->image()) { ?>
-                            <img src="<?php echo $row->following()->image(); ?>" width="40" height="40" alt="Profile picture of <?php echo $this->escape(stripslashes($row->following()->title())); ?>" />
+                            <?php
+                            $imgSrc = $row->following()->image();
+                            $imgAlt = 'Profile picture of '
+                                . $this->escape(
+                                    stripslashes($row->following()->title())
+                                );
+                            ?>
+                            <img src="<?php echo $imgSrc; ?>"
+                                width="40"
+                                height="40"
+                                alt="<?php echo $imgAlt; ?>" />
                         <?php } else { ?>
                             <span class="entry-id">
                                 <?php echo $row->get('following_id'); ?>
@@ -67,19 +81,38 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                                 <?php echo $this->escape(stripslashes($row->following()->title())); ?>
                             </a>
                             <?php if ($row->get('following_type') == 'collection') { ?>
-                                <?php echo Lang::txt('by %s', $this->escape(stripslashes($row->following()->creator('name')))); ?>
+                                <?php
+                                $creatorName = $this->escape(
+                                    stripslashes($row->following()->creator('name'))
+                                );
+                                echo Lang::txt('by %s', $creatorName);
+                                ?>
                             <?php } ?>
                             <br />
                             <span class="entry-details">
-                                <span class="follower count"><?php echo Lang::txt('<strong>%s</strong> followers', $row->count('followers')); ?></span>
+                                <?php
+                                $followersTxt = Lang::txt(
+                                    '<strong>%s</strong> followers',
+                                    $row->count('followers')
+                                );
+                                $followingTxt = Lang::txt(
+                                    '<strong>%s</strong> following',
+                                    $row->count('following')
+                                );
+                                ?>
+                                <span class="follower count"><?php echo $followersTxt; ?></span>
                             <?php if ($row->get('following_type') != 'collection') { ?>
-                                <span class="following count"><?php echo Lang::txt('<strong>%s</strong> following', $row->count('following')); ?></span>
+                                <span class="following count"><?php echo $followingTxt; ?></span>
                             <?php } ?>
                             </span>
                         </td>
                         <td>
                             <?php if ($this->params->get('access-manage-collection')) { ?>
-                            <a class="unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo Lang::txt('Follow'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow'); ?>" href="<?php echo Route::url($row->following()->link('unfollow')); ?>">
+                            <a class="unfollow btn"
+                                data-id="<?php echo $row->get('following_id'); ?>"
+                                data-text-follow="<?php echo Lang::txt('Follow'); ?>"
+                                data-text-unfollow="<?php echo Lang::txt('Unfollow'); ?>"
+                                href="<?php echo Route::url($row->following()->link('unfollow')); ?>">
                                 <span><?php echo Lang::txt('Unfollow'); ?></span>
                             </a>
                             <?php } ?>
@@ -113,8 +146,21 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                 </div><!-- / .instructions -->
                 <div class="questions">
                     <p><strong><?php echo Lang::txt('What is following?'); ?></strong></p>
-                    <p><?php echo Lang::txt('"Following" someone means you\'ll see that person\'s posts on this page in real time. If he/she creates a new collection, you\'ll automatically follow the new collection as well.'); ?><p>
-                    <p><?php echo Lang::txt('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.'); ?><p>
+                    <?php
+                    $followingExplain = Lang::txt(
+                        '"Following" someone means you\'ll see that person\'s'
+                        . ' posts on this page in real time. If he/she creates'
+                        . ' a new collection, you\'ll automatically follow the'
+                        . ' new collection as well.'
+                    );
+                    $followCollections = Lang::txt(
+                        'You can follow individual collections if you\'re only'
+                        . ' interested in seeing posts being added to specific'
+                        . ' collections.'
+                    );
+                    ?>
+                    <p><?php echo $followingExplain; ?><p>
+                    <p><?php echo $followCollections; ?><p>
                     <p><?php echo Lang::txt('You can unfollow other people or collections at any time.'); ?></p>
                 </div>
             <?php } else { ?>

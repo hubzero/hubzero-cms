@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,8 @@
 ?>
 <li class="course-entry">
     <p class="title">
-        <a href="<?php echo Route::url($this->course->link()); ?>"><?php echo $this->escape(stripslashes($this->course->get('title'))); ?></a>
+        <a href="<?php echo Route::url($this->course->link()); ?>
+        "><?php echo $this->escape(stripslashes($this->course->get('title')));?></a>
     </p>
     <p class="details">
         <strong class="type">Courses</strong><span>|</span>'

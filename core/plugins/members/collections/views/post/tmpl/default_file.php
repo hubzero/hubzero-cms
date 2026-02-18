@@ -1,6 +1,6 @@
 <?php
 
-// @phpcs:disable PSR1.Files.SideEffects, Generic.Files.LineLength.TooLong
+// @phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package   hubzero-cms
@@ -63,7 +63,10 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $first->link('original'); ?>"
                         data-downloadtext="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $first->link('thumb'); ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
+                        <img src="<?php echo $first->link('thumb'); ?>"
+                            alt="<?php echo $alt; ?>"
+                            class="img"
+                            height="<?php echo $height; ?>"/>
                     </a>
                 </div>
             <?php else : ?>
@@ -73,7 +76,10 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $imgPath; ?>"
                         data-downloadtext="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $imgPath; ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
+                        <img src="<?php echo $imgPath; ?>"
+                            alt="<?php echo $alt; ?>"
+                            class="img"
+                            height="<?php echo $height; ?>"/>
                     </a>
                 </div>
             <?php endif;
@@ -97,7 +103,11 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $asset->link('original'); ?>"
                         data-downloadtext="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $asset->link('thumb'); ?>" alt="<?php echo $this->escape(stripslashes($asset->get('description', ''))); ?>" class="img" width="50" height="50" />
+                        <img src="<?php echo $asset->link('thumb'); ?>"
+                            alt="<?php echo $this->escape(stripslashes($asset->get('description', ''))); ?>"
+                            class="img"
+                            width="50"
+                            height="50"/>
                     </a>
                     <?php
                 }
@@ -116,7 +126,8 @@ if ($assets->total() > 0) {
             foreach ($files as $asset) {
                 ?>
                 <li class="type-<?php echo $asset->get('type'); ?>">
-                    <a href="<?php echo ($asset->isLink()) ? $asset->get('filename') : $asset->link('original'); ?>" <?php echo ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : ''; ?>>
+                    <a href="<?php echo ($asset->isLink()) ? $asset->get('filename') : $asset->link('original'); ?>
+                    " <?php echo ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : '';?>>
                         <?php echo $asset->get('filename'); ?>
                     </a>
                     <span class="file-meta">
