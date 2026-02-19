@@ -598,6 +598,12 @@ class Media extends Base
 	{
 		Request::checkToken(['get', 'post']);
 
+		if (!$this->authorized)
+		{
+			$this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+			return;
+		}
+
 		//get config
 		$config = \Component::params('com_media');
 
