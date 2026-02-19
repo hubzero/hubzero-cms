@@ -226,8 +226,12 @@ class ResourceMapGenerator
 				}
 
 				$imageData = getimagesize(rtrim($this->resourceSite, '/') . '/' . ltrim($aggregation['path'], '/'));
-				$xmlwriter->writeElement('exif:width', $imageData[0]);
-				$xmlwriter->writeElement('exif:height', $imageData[1]);
+				if (is_array($imageData))
+				{
+					$xmlwriter->writeElement('exif:width', $imageData[0]);
+					$xmlwriter->writeElement('exif:height', $imageData[1]);
+				}
+
 				break;
 			default:
 		}
