@@ -59,6 +59,7 @@ $this->css('introduction.css', 'system')
 			<div class="col span-half">
 				<form action="<?php echo Route::url('index.php?option='.$this->option.'&task=browse'); ?>" method="get" class="search">
 					<fieldset>
+						<legend class="sr-only"><?php echo Lang::txt('COM_CITATIONS_FIND_CITATION'); ?></legend>
 						<p class="hz-v-align">
 							<label for="csearch"><?php echo Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD'); ?></label>
 							<span class="hz-input-combo">
@@ -204,7 +205,7 @@ for ($i=0, $n=count($data_arr['text']); $i < $n; $i++)
 	$tr .= "\t\t\t".'<th class="textual-data">'.$text.'</th>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'."\n";
 	$tr .= "\t\t\t\t".'<div class="graph">'."\n";
-	$tr .= "\t\t\t\t\t".'<strong class="bar bar' . $i . ' '.$tdclass.'" title="'.$percent.'%"><span>'.$percent.'%</span></strong>'."\n";
+	$tr .= "\t\t\t\t\t".'<strong class="bar bar' . $i . ' '.$tdclass.'"><span>'.$percent.'%</span></strong>'."\n";
 	$tr .= "\t\t\t\t".'</div>'."\n";
 	$tr .= "\t\t\t".'</td>'."\n";
 	$tr .= "\t\t\t".'<td class="numerical-data">'.$hits.'</td>'."\n";
