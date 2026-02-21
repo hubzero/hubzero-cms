@@ -71,13 +71,21 @@ if (!function_exists('paginator_item_active'))
 			// Build the select list.
 			$selected = $this->viewall ? 0 : $this->limit;
 
-			$attr = 'class="inputbox" size="1" onchange="this.form.submit()"';
 			if (App::isAdmin())
+			{
+				$attr = 'class="inputbox" size="1" onchange="this.form.submit()"';
+			}
+			else
 			{
 				$attr = 'class="inputbox" size="1"';
 			}
 
 			echo \Hubzero\Html\Builder\Select::genericlist($limits, $this->pages->prefix . 'limit', $attr, 'value', 'text', $selected);
+
+			if (!App::isAdmin())
+			{
+				echo ' <button type="submit" class="pagination-go">Go</button>';
+			}
 			?>
 		</li>
 		<li class="pagination-start start">
