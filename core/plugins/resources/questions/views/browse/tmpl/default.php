@@ -39,6 +39,16 @@ $this->css();
 				?>)
 			</span>
 		</caption>
+		<thead class="sr-only">
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Question</th>
+			<?php if ($this->banking) { ?>
+				<th scope="col">Reward</th>
+			<?php } ?>
+				<th scope="col">Votes</th>
+			</tr>
+		</thead>
 		<tbody>
 	<?php if ($this->rows) { ?>
 		<?php
