@@ -392,7 +392,7 @@ class WikiParser
 		if (trim($this->_data['input']) && !trim($this->_data['output']))
 		{
 			$this->_data['output']  = '<p class="warning">Parsing error resulted in empty content. Displaying raw markup below.</p>';
-			$this->_data['output'] .= '<pre>' . htmlentities($this->_data['input'], ENT_COMPAT, 'UTF-8') . '</pre>';
+			$this->_data['output'] .= '<pre role="code">' . htmlentities($this->_data['input'], ENT_COMPAT, 'UTF-8') . '</pre>';
 		}
 
 		return $this->_data['output'];
@@ -1184,12 +1184,12 @@ class WikiParser
 				default:
 					//$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
 					//$txt = trim($txt, "\n\r\t");
-					return '<pre>' . $this->encodeHtml($txt) . '</pre>';
+					return '<pre role="code">' . $this->encodeHtml($txt) . '</pre>';
 				break;
 			}
 		}
 
-		return '<pre>' . $this->encodeHtml($txt) . '</pre>';
+		return '<pre role="code">' . $this->encodeHtml($txt) . '</pre>';
 	}
 
 	/**
@@ -2793,7 +2793,7 @@ class WikiParser
 						if ($this->mLastSection != 'pre')
 						{
 							$paragraphStack = false;
-							$output .= $this->_closeParagraph() . '<pre>';
+							$output .= $this->_closeParagraph() . '<pre role="code">';
 							$this->mLastSection = 'pre';
 						}
 						$t = substr($t, 1);
