@@ -928,7 +928,9 @@
 	}
 	#level-1 ul a:hover:after,
 	#level-2 ul a:hover:after,
-	#level-1 ul a.hi:after, 
+	#level-1 ul a:focus:after,
+	#level-2 ul a:focus:after,
+	#level-1 ul a.hi:after,
 	#level-2 ul a.hi:after {
 		color: #fff;
 	}
@@ -942,9 +944,24 @@
 		color: #fff;
 	}
 	#level-1 ul a:hover,
-	#level-2 ul a:hover {
+	#level-2 ul a:hover,
+	#level-1 ul a:focus,
+	#level-2 ul a:focus {
 		background: #3875D7;
 		color: #fff;
+		outline: 2px solid #3875D7;
+		outline-offset: -2px;
+	}
+	/* When keyboard focus is inside a column, suppress hover highlight on other items */
+	#level-1:focus-within ul a:hover:not(:focus),
+	#level-2:focus-within ul a:hover:not(:focus) {
+		background: transparent;
+		color: #ccc;
+		outline: none;
+	}
+	#level-1:focus-within ul a:hover:not(:focus):after,
+	#level-2:focus-within ul a:hover:not(:focus):after {
+		color: #ccc;
 	}
 	#level-3 h3 {
 		text-align: right;
