@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -29,9 +27,19 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    class="editform form-validate"
+    id="item-form"
+    data-invalid-msg="<?php echo $invalidMsg; ?>">
     <?php if ($this->getError()) { ?>
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php } ?>
@@ -43,69 +51,148 @@ $this->js();
                 <div class="grid">
                     <div class="col span6">
                         <div class="input-wrap">
-                            <label for="field-object_type"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                            <select name="fields[object_type]" id="field-object_type" class="required">
-                                <!-- <option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') {
-                                    echo ' selected="selected"';
-                                                         } ?>><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE_SITE'); ?></option> -->
-                                <option value="member"<?php if ($this->row->get('object_type') == 'member') {
-                                    echo ' selected="selected"';
-                                                      } ?>><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE_MEMBER'); ?></option>
-                                <option value="group"<?php if ($this->row->get('object_type') == 'group') {
-                                    echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE_GROUP'); ?></option>
+                            <?php
+                            $ownerTypeLabel = Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE');
+                            $requiredTxt = Lang::txt('JOPTION_REQUIRED');
+                            ?>
+                            <label for="field-object_type">
+                                <?php echo $ownerTypeLabel; ?>:
+                                <span class="required"><?php echo $requiredTxt; ?></span>
+                            </label><br />
+                            <select name="fields[object_type]"
+                                id="field-object_type"
+                                class="required">
+                                <?php
+                                $memberSel = ($this->row->get('object_type') == 'member')
+                                    ? ' selected="selected"' : '';
+                                $groupSel = ($this->row->get('object_type') == 'group')
+                                    ? ' selected="selected"' : '';
+                                $memberTxt = Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE_MEMBER');
+                                $groupTxt = Lang::txt('COM_COLLECTIONS_FIELD_OWNER_TYPE_GROUP');
+                                ?>
+                                <option value="member"<?php echo $memberSel; ?>>
+                                    <?php echo $memberTxt; ?>
+                                </option>
+                                <option value="group"<?php echo $groupSel; ?>>
+                                    <?php echo $groupTxt; ?>
+                                </option>
                             </select>
                         </div>
                     </div>
                     <div class="col span6">
-                        <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID_HINT'); ?>">
-                            <label for="field-object_id"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                            <input type="text" name="fields[object_id]" id="field-object_id" class="required" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('object_id'))); ?>" />
-                            <span class="hint"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID_HINT'); ?></span>
+                        <?php $ownerIdHint = Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID_HINT'); ?>
+                        <div class="input-wrap"
+                            data-hint="<?php echo $ownerIdHint; ?>">
+                            <?php
+                            $ownerIdLabel = Lang::txt('COM_COLLECTIONS_FIELD_OWNER_ID');
+                            $objectIdVal = $this->escape(
+                                stripslashes($this->row->get('object_id'))
+                            );
+                            ?>
+                            <label for="field-object_id">
+                                <?php echo $ownerIdLabel; ?>:
+                                <span class="required"><?php echo $requiredTxt; ?></span>
+                            </label>
+                            <input type="text"
+                                name="fields[object_id]"
+                                id="field-object_id"
+                                class="required"
+                                maxlength="250"
+                                value="<?php echo $objectIdVal; ?>" />
+                            <span class="hint"><?php echo $ownerIdHint; ?></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[title]" id="field-title" class="required" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+                    <?php
+                    $titleLabel = Lang::txt('COM_COLLECTIONS_FIELD_TITLE');
+                    $titleVal = $this->escape(stripslashes($this->row->get('title')));
+                    ?>
+                    <label for="field-title">
+                        <?php echo $titleLabel; ?>:
+                        <span class="required"><?php echo $requiredTxt; ?></span>
+                    </label>
+                    <input type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="required"
+                        maxlength="250"
+                        value="<?php echo $titleVal; ?>" />
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COLLECTIONS_FIELD_ALIAS_HINT'); ?>">
-                    <label for="field-alias"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ALIAS'); ?>:</label>
-                    <input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
-                    <span class="hint"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ALIAS_HINT'); ?></span>
+                <?php $aliasHint = Lang::txt('COM_COLLECTIONS_FIELD_ALIAS_HINT'); ?>
+                <div class="input-wrap"
+                    data-hint="<?php echo $aliasHint; ?>">
+                    <?php $aliasLabel = Lang::txt('COM_COLLECTIONS_FIELD_ALIAS'); ?>
+                    <?php $aliasVal = $this->escape(stripslashes($this->row->get('alias'))); ?>
+                    <label for="field-alias"><?php echo $aliasLabel; ?>:</label>
+                    <input type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        size="30"
+                        maxlength="250"
+                        value="<?php echo $aliasVal; ?>" />
+                    <span class="hint"><?php echo $aliasHint; ?></span>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-description"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label>
-                    <?php echo $this->editor('fields[description]', $this->escape($this->row->get('description')), 35, 10, 'field-description', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+                    <?php $descLabel = Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?>
+                    <label for="field-description"><?php echo $descLabel; ?></label>
+                    <?php
+                    echo $this->editor(
+                        'fields[description]',
+                        $this->escape($this->row->get('description')),
+                        35,
+                        10,
+                        'field-description',
+                        array('class' => 'required minimal no-footer', 'buttons' => false)
+                    );
+                    ?>
                 </div>
 
                 <div class="grid">
                     <div class="col span6">
                         <div class="input-wrap">
-                            <label for="field-layout"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_LAYOUT'); ?></label>
+                            <?php $layoutLabel = Lang::txt('COM_COLLECTIONS_FIELD_LAYOUT'); ?>
+                            <label for="field-layout"><?php echo $layoutLabel; ?></label>
                             <select name="fields[layout]" id="field-layout">
-                                <option value="grid"<?php if ($this->row->get('layout') == 'grid') {
-                                    echo ' selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_COLLECTIONS_FIELD_LAYOUT_GRID'); ?></option>
-                                <option value="list"<?php if ($this->row->get('layout') == 'list') {
-                                    echo ' selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_COLLECTIONS_FIELD_LAYOUT_LIST'); ?></option>
+                                <?php
+                                $gridSel = ($this->row->get('layout') == 'grid')
+                                    ? ' selected="selected"' : '';
+                                $listSel = ($this->row->get('layout') == 'list')
+                                    ? ' selected="selected"' : '';
+                                $gridTxt = Lang::txt('COM_COLLECTIONS_FIELD_LAYOUT_GRID');
+                                $listTxt = Lang::txt('COM_COLLECTIONS_FIELD_LAYOUT_LIST');
+                                ?>
+                                <option value="grid"<?php echo $gridSel; ?>>
+                                    <?php echo $gridTxt; ?>
+                                </option>
+                                <option value="list"<?php echo $listSel; ?>>
+                                    <?php echo $listTxt; ?>
+                                </option>
                             </select>
                         </div>
                     </div>
                     <div class="col span6">
                         <div class="input-wrap">
-                            <label for="field-sort"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_SORT'); ?></label>
+                            <?php $sortLabel = Lang::txt('COM_COLLECTIONS_FIELD_SORT'); ?>
+                            <label for="field-sort"><?php echo $sortLabel; ?></label>
                             <select name="fields[sort]" id="field-sort">
-                                <option value="created"<?php if ($this->row->get('sort') == 'created') {
-                                    echo ' selected="selected"';
-                                                       } ?>><?php echo Lang::txt('COM_COLLECTIONS_FIELD_SORT_CREATED'); ?></option>
-                                <option value="ordering"<?php if ($this->row->get('sort') == 'ordering') {
-                                    echo ' selected="selected"';
-                                                        } ?>><?php echo Lang::txt('COM_COLLECTIONS_FIELD_SORT_ORDERING'); ?></option>
+                                <?php
+                                $createdSel = ($this->row->get('sort') == 'created')
+                                    ? ' selected="selected"' : '';
+                                $orderingSel = ($this->row->get('sort') == 'ordering')
+                                    ? ' selected="selected"' : '';
+                                $createdTxt = Lang::txt('COM_COLLECTIONS_FIELD_SORT_CREATED');
+                                $orderingTxt = Lang::txt('COM_COLLECTIONS_FIELD_SORT_ORDERING');
+                                ?>
+                                <option value="created"<?php echo $createdSel; ?>>
+                                    <?php echo $createdTxt; ?>
+                                </option>
+                                <option value="ordering"<?php echo $orderingSel; ?>>
+                                    <?php echo $orderingTxt; ?>
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -116,37 +203,54 @@ $this->js();
             <table class="meta">
                 <tbody>
                     <tr>
-                        <th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_CREATOR'); ?>:</th>
+                        <?php $creatorLabel = Lang::txt('COM_COLLECTIONS_FIELD_CREATOR'); ?>
+                        <th class="key"><?php echo $creatorLabel; ?>:</th>
                         <td>
                             <?php
                             $editor = User::getInstance($this->row->get('created_by'));
                             echo $this->escape(stripslashes($editor->get('name')));
+                            $createdByVal = $this->escape($this->row->get('created_by'));
                             ?>
-                            <input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
+                            <input type="hidden"
+                                name="fields[created_by]"
+                                id="field-created_by"
+                                value="<?php echo $createdByVal; ?>" />
                         </td>
                     </tr>
                     <tr>
-                        <th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_CREATED'); ?>:</th>
+                        <?php $createdLabel = Lang::txt('COM_COLLECTIONS_FIELD_CREATED'); ?>
+                        <th class="key"><?php echo $createdLabel; ?>:</th>
                         <td>
                             <?php echo Date::of($this->row->get('created'))->toLocal(); ?>
-                            <input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+                            <?php $createdVal = $this->escape($this->row->get('created')); ?>
+                            <input type="hidden"
+                                name="fields[created]"
+                                id="field-created"
+                                value="<?php echo $createdVal; ?>" />
                         </td>
                     </tr>
                     <tr>
-                        <th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_LIKES'); ?>:</th>
+                        <?php $likesLabel = Lang::txt('COM_COLLECTIONS_FIELD_LIKES'); ?>
+                        <th class="key"><?php echo $likesLabel; ?>:</th>
                         <td>
                             <?php echo $this->row->get('positive', 0); ?>
-                            <input type="hidden" name="fields[positive]" id="field-positive" value="<?php echo $this->escape($this->row->get('positive', 0)); ?>" />
+                            <?php $positiveVal = $this->escape($this->row->get('positive', 0)); ?>
+                            <input type="hidden"
+                                name="fields[positive]"
+                                id="field-positive"
+                                value="<?php echo $positiveVal; ?>" />
                         </td>
                     </tr>
                     <tr>
-                        <th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_POSTS'); ?>:</th>
+                        <?php $postsLabel = Lang::txt('COM_COLLECTIONS_FIELD_POSTS'); ?>
+                        <th class="key"><?php echo $postsLabel; ?>:</th>
                         <td>
                             <?php echo $this->row->posts()->total(); ?>
                         </td>
                     </tr>
                     <tr>
-                        <th class="key"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_FOLLOWERS'); ?>:</th>
+                        <?php $followersLabel = Lang::txt('COM_COLLECTIONS_FIELD_FOLLOWERS'); ?>
+                        <th class="key"><?php echo $followersLabel; ?>:</th>
                         <td>
                             <?php //echo $this->row->count('followers'); ?>
                         </td>
@@ -155,35 +259,39 @@ $this->js();
             </table>
 
             <fieldset class="adminform">
-                <legend><span><?php echo Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
+                <?php $pubLabel = Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?>
+                <legend><span><?php echo $pubLabel; ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-state"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_STATE'); ?>:</label>
+                    <?php $stateLabel = Lang::txt('COM_COLLECTIONS_FIELD_STATE'); ?>
+                    <label for="field-state"><?php echo $stateLabel; ?>:</label>
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?php if ($this->row->get('state') == 0) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php if ($this->row->get('state') == 1) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="2"<?php if ($this->row->get('state') == 2) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <?php
+                        $s0 = ($this->row->get('state') == 0) ? ' selected="selected"' : '';
+                        $s1 = ($this->row->get('state') == 1) ? ' selected="selected"' : '';
+                        $s2 = ($this->row->get('state') == 2) ? ' selected="selected"' : '';
+                        ?>
+                        <option value="0"<?php echo $s0; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+                        <option value="1"<?php echo $s1; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                        <option value="2"<?php echo $s2; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
                     </select>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-access"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_ACCESS'); ?>:</label>
+                    <?php $accessLabel = Lang::txt('COM_COLLECTIONS_FIELD_ACCESS'); ?>
+                    <label for="field-access"><?php echo $accessLabel; ?>:</label>
                     <select name="fields[access]" id="field-access">
-                        <option value="0"<?php if ($this->row->get('access') == 0) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_PUBLIC'); ?></option>
-                        <option value="1"<?php if ($this->row->get('access') == 1) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED'); ?></option>
-                        <option value="4"<?php if ($this->row->get('access') == 4) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_PRIVATE'); ?></option>
+                        <?php
+                        $a0 = ($this->row->get('access') == 0) ? ' selected="selected"' : '';
+                        $a1 = ($this->row->get('access') == 1) ? ' selected="selected"' : '';
+                        $a4 = ($this->row->get('access') == 4) ? ' selected="selected"' : '';
+                        $pubTxt = Lang::txt('COM_COLLECTIONS_ACCESS_PUBLIC');
+                        $regTxt = Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED');
+                        $privTxt = Lang::txt('COM_COLLECTIONS_ACCESS_PRIVATE');
+                        ?>
+                        <option value="0"<?php echo $a0; ?>><?php echo $pubTxt; ?></option>
+                        <option value="1"<?php echo $a1; ?>><?php echo $regTxt; ?></option>
+                        <option value="4"<?php echo $a4; ?>><?php echo $privTxt; ?></option>
                     </select>
                 </div>
             </fieldset>

@@ -6,20 +6,27 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
 if ($this->collection_id) {
     $task = Request::getString('board', 0) . '/collect';
 }
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=collect&post=' . $this->post_id
+);
 ?>
 
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=collect&post=' . $this->post_id); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    id="hubForm"
+    class="full">
     <fieldset>
         <legend><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></legend>
 
@@ -28,7 +35,9 @@ if ($this->collection_id) {
                 <label for="field-collection_id">
                     <?php echo Lang::txt('COM_COLLECTIONS_COLLECTION'); ?>
                     <select name="collection_id" id="field-collection_id">
-                        <option value="0"><?php echo Lang::txt('COM_COLLECTIONS_SELECT_COLLECTION'); ?></option>
+                        <option value="0">
+                            <?php echo Lang::txt('COM_COLLECTIONS_SELECT_COLLECTION'); ?>
+                        </option>
                         <optgroup label="<?php echo Lang::txt('COM_COLLECTIONS_MY_COLLECTIONS'); ?>">
                     <?php
                     if ($this->myboards) {
@@ -36,8 +45,14 @@ if ($this->collection_id) {
                             if ($board->id == $this->collection_id) {
                                 continue;
                             }
+                            $boardId = $this->escape($board->id);
+                            $boardTitle = $this->escape(
+                                stripslashes($board->title)
+                            );
                             ?>
-                            <option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+                            <option value="<?php echo $boardId; ?>">
+                                <?php echo $boardTitle; ?>
+                            </option>
                             <?php
                         }
                     }
@@ -46,12 +61,21 @@ if ($this->collection_id) {
                 <?php
                 if ($this->groupboards) {
                     foreach ($this->groupboards as $optgroup => $boards) {
+                        $groupLabel = $this->escape(
+                            stripslashes($optgroup)
+                        );
                         ?>
-                        <optgroup label="<?php echo $this->escape(stripslashes($optgroup)); ?>">
+                        <optgroup label="<?php echo $groupLabel; ?>">
                         <?php
                         foreach ($boards as $board) {
+                            $boardId = $this->escape($board->id);
+                            $boardTitle = $this->escape(
+                                stripslashes($board->title)
+                            );
                             ?>
-                            <option value="<?php echo $this->escape($board->id); ?>"><?php echo $this->escape(stripslashes($board->title)); ?></option>
+                            <option value="<?php echo $boardId; ?>">
+                                <?php echo $boardTitle; ?>
+                            </option>
                             <?php
                         }
                         ?>
@@ -71,14 +95,26 @@ if ($this->collection_id) {
             <div class="col span5 omega">
                 <label for="field-collection_title">
                     <?php echo Lang::txt('COM_COLLECTIONS_CREATE_COLLECTION'); ?>
-                    <input type="text" name="collection_title" id="field-collection_title" value="" />
+                    <input type="text"
+                        name="collection_title"
+                        id="field-collection_title"
+                        value="" />
                 </label>
             </div><!-- / .col -->
         </div><!-- / .grid -->
 
         <label for="field_description">
             <?php echo Lang::txt('COM_COLLECTIONS_ADD_DESCRIPTION'); ?>
-            <?php echo $this->editor('description', '', 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
+            <?php
+            echo $this->editor(
+                'description',
+                '',
+                35,
+                5,
+                'field_description',
+                array('class' => 'minimal no-footer')
+            );
+            ?>
         </label>
     </fieldset>
 
@@ -96,6 +132,7 @@ if ($this->collection_id) {
     <?php echo Html::input('token'); ?>
 
     <p class="submit">
-        <input type="submit" value="<?php echo Lang::txt(strtoupper($this->option) . '_SAVE'); ?>" />
+        <?php $saveTxt = Lang::txt(strtoupper($this->option) . '_SAVE'); ?>
+        <input type="submit" value="<?php echo $saveTxt; ?>" />
     </p>
 </form>

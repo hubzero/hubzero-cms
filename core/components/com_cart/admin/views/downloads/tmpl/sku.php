@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,24 +25,53 @@ $this->js();
 ?>
 
 <?php
-// phpcs:disable Generic.Files.LineLength
 $this->view('_submenu')
     ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span5">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+                <?php $searchVal = $this->escape($this->filters['search']); ?>
+                <?php $searchPlc = Lang::txt('JSEARCH_FILTER'); ?>
+                <input type="text"
+                    name="search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $searchVal; ?>"
+                    placeholder="<?php echo $searchPlc; ?>" />
             </div>
             <div class="col span7 align-right">
                 <label for="filter-report-from"><?php echo Lang::txt('From'); ?>:</label>
-                <input type="text" name="report-from" id="filter-report-from" class="filter" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
+                <?php $fromVal = $this->escape($this->filters['report-from']); ?>
+                <?php $fromPlc = Lang::txt('From'); ?>
+                <input type="text"
+                    name="report-from"
+                    id="filter-report-from"
+                    class="filter"
+                    value="<?php echo $fromVal; ?>"
+                    placeholder="<?php echo $fromPlc; ?>" />
                 &mdash;
                 <label for="filter-report-to"><?php echo Lang::txt('To'); ?>:</label>
-                <input type="text" name="report-to" id="filter-report-to" class="filter" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
+                <?php $toVal = $this->escape($this->filters['report-to']); ?>
+                <?php $toPlc = Lang::txt('To'); ?>
+                <input type="text"
+                    name="report-to"
+                    id="filter-report-to"
+                    class="filter"
+                    value="<?php echo $toVal; ?>"
+                    placeholder="<?php echo $toPlc; ?>" />
                 <input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
             </div>
         </div>
@@ -52,9 +79,15 @@ $this->view('_submenu')
     <table class="adminlist">
         <thead>
             <tr>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $sortDir = @$this->filters['sort_Dir'];
+                $sort = @$this->filters['sort'];
+                ?>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_PRODUCT', 'product', $sortDir, $sort); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_CART_SKU'); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'downloaded', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php
+                    echo Html::grid('sort', 'COM_CART_DOWNLOADED', 'downloaded', $sortDir, $sort);
+                ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -80,7 +113,12 @@ $this->view('_submenu')
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php
-                    $product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $row->pId) . '">' . $this->escape(stripslashes($row->pName)) . '</a>';
+                    $pUrl = Route::url(
+                        'index.php?option=com_storefront&controller=products&task=edit&id='
+                        . $row->pId
+                    );
+                    $pName = $this->escape(stripslashes($row->pName));
+                    $product = '<a href="' . $pUrl . '">' . $pName . '</a>';
                     if (!stripslashes($row->pName)) {
                         $product = '<span class="missing">Product n/a</span>';
                     }
@@ -92,14 +130,24 @@ $this->view('_submenu')
                     if (!stripslashes($row->sSku)) {
                         $sku = '<span class="missing">SKU n/a</span>';
                     } else {
-                        $sku = '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
+                        $sUrl = Route::url(
+                            'index.php?option=com_storefront&controller=skus&task=edit&id='
+                            . $row->sId
+                        );
+                        $sName = $this->escape(stripslashes($row->sSku));
+                        $sku = '<a href="' . $sUrl . '">' . $sName . '</a>';
                     }
                     ?>
                     <span><?php echo $sku; ?></span>
                 </td>
                 <td>
                     <?php
-                    $downloaded = '<a href="' . Route::url('index.php?option=com_cart&controller=downloads&task=display&skuRequested=' . $row->sId) . '">' . $this->escape(stripslashes($row->downloaded)) . '</a>';
+                    $dlUrl = Route::url(
+                        'index.php?option=com_cart&controller=downloads&task=display&skuRequested='
+                        . $row->sId
+                    );
+                    $dlCount = $this->escape(stripslashes($row->downloaded));
+                    $downloaded = '<a href="' . $dlUrl . '">' . $dlCount . '</a>';
                     ?>
                     <span><?php echo $downloaded; ?></span>
                 </td>

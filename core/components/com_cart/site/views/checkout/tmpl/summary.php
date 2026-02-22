@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,6 @@ $this->css();
 </header>
 
 <?php
-// phpcs:disable Generic.Files.LineLength
 
 if (!empty($this->notifications)) {
     $view = new \Hubzero\Component\View(array('name' => 'shared', 'layout' => 'notifications'));
@@ -79,8 +76,12 @@ if (!empty($this->notifications)) {
             echo '<div class="col span6 omega orderSummary">';
 
             if (!empty($this->transactionInfo)) {
-                $orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
-                $discount = $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount;
+                $orderTotal = $this->transactionInfo->tiSubtotal
+                    + $this->transactionInfo->tiShipping
+                    - $this->transactionInfo->tiDiscounts
+                    - $this->transactionInfo->tiShippingDiscount;
+                $discount = $this->transactionInfo->tiDiscounts
+                    + $this->transactionInfo->tiShippingDiscount;
 
                 echo '<h2>Order summary:</h2>';
 
@@ -150,7 +151,10 @@ if (!empty($this->notifications)) {
         ?>
 
         <?php
-        $orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
+        $orderTotal = $this->transactionInfo->tiSubtotal
+            + $this->transactionInfo->tiShipping
+            - $this->transactionInfo->tiDiscounts
+            - $this->transactionInfo->tiShippingDiscount;
 
         if ($orderTotal > 0) {
             $buttonLabel = 'Proceed to payment';

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,12 +17,14 @@ $this->css()
     <h2><?php echo Lang::txt('COM_CART_ORDERS') ?></h2>
 </header>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" id="ordersform" method="get">
+<?php $formUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formUrl; ?>" id="ordersform" method="get">
     <section class="main section">
         <div class="section-inner">
             <?php
             if (!$this->transactions) {
-                echo '<p class="no-results">You have not placed any orders yet. Is it time to <a href="/storefront">start shopping?</a>';
+                echo '<p class="no-results">You have not placed any orders yet.'
+                    . ' Is it time to <a href="/storefront">start shopping?</a>';
             } else {
                 echo '<ol class="entries">';
                 foreach ($this->transactions as $transaction) {

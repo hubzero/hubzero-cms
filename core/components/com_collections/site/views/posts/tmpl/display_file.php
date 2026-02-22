@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -58,24 +56,39 @@ if ($assets->total() > 0) {
                     ? stripslashes($first->get('description'))
                     : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($first->get('filename'), DS));
 
-            if ($isLocal) : ?>
+            if ($isLocal) :
+                $firstDesc = ($first->get('description'))
+                    ? $this->escape(stripslashes($first->get('description')))
+                    : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($first->get('filename'), DS));
+                $downloadTxt = Lang::txt('COM_COLLECTIONS_DOWNLOAD');
+                ?>
                 <div class="holder">
                     <a class="img-link"
                         href="<?php echo $first->link('medium'); ?>"
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $first->link('original'); ?>"
-                        data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $first->link('thumb'); ?>" alt="<?php echo ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($first->get('filename'), DS)); ?>" class="img" height="<?php echo $height; ?>" />
+                        data-downloadtext="<?php echo $downloadTxt; ?>">
+                        <img src="<?php echo $first->link('thumb'); ?>"
+                            alt="<?php echo $firstDesc; ?>"
+                            class="img"
+                            height="<?php echo $height; ?>" />
                     </a>
                 </div>
-            <?php else : ?>
+            <?php else :
+                $downloadTxt = Lang::txt('COM_COLLECTIONS_DOWNLOAD');
+                ?>
                 <div class="holder">
-                    <a rel="nofollow" download="download" class="img-link"
+                    <a rel="nofollow"
+                        download="download"
+                        class="img-link"
                         href="<?php echo $imgPath; ?>"
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $imgPath; ?>"
-                        data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $imgPath; ?>" alt="<?php echo $this->escape($alt); ?>" class="img" height="<?php echo $height; ?>" />
+                        data-downloadtext="<?php echo $downloadTxt; ?>">
+                        <img src="<?php echo $imgPath; ?>"
+                            alt="<?php echo $this->escape($alt); ?>"
+                            class="img"
+                            height="<?php echo $height; ?>" />
                     </a>
                 </div>
             <?php endif;
@@ -91,15 +104,25 @@ if ($assets->total() > 0) {
             ?>
             <div class="gallery">
                 <?php
+                $downloadTxt = Lang::txt('COM_COLLECTIONS_DOWNLOAD');
                 foreach ($images as $asset) {
-                    $alt = ($asset->get('description')) ? stripslashes($asset->get('description')) : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($asset->get('filename'), DS));
+                    $alt = ($asset->get('description'))
+                        ? stripslashes($asset->get('description'))
+                        : Lang::txt(
+                            'COM_COLLECTIONS_IMAGE_ALT',
+                            ltrim($asset->get('filename'), DS)
+                        );
                     ?>
                     <a class="img-link"
                         href="<?php echo $asset->link('medium'); ?>"
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $asset->link('original'); ?>"
-                        data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $asset->link('thumb'); ?>" alt="<?php echo $this->escape($alt); ?>" class="img" width="50" height="50" />
+                        data-downloadtext="<?php echo $downloadTxt; ?>">
+                        <img src="<?php echo $asset->link('thumb'); ?>"
+                            alt="<?php echo $this->escape($alt); ?>"
+                            class="img"
+                            width="50"
+                            height="50" />
                     </a>
                     <?php
                 }
@@ -114,8 +137,16 @@ if ($assets->total() > 0) {
         ?>
         <ul class="file-list">
             <?php foreach ($files as $asset) { ?>
+                <?php
+                $fileHref = ($asset->isLink())
+                    ? $asset->get('filename')
+                    : $asset->link('original');
+                $fileRel = ($asset->isLink())
+                    ? ' rel="external nofollow noreferrer"'
+                    : '';
+                ?>
                 <li class="type-<?php echo $asset->get('type'); ?>">
-                    <a href="<?php echo ($asset->isLink()) ? $asset->get('filename') : $asset->link('original'); ?>" <?php echo ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : ''; ?>>
+                    <a href="<?php echo $fileHref; ?>"<?php echo $fileRel; ?>>
                         <?php echo $asset->get('filename'); ?>
                     </a>
                     <span class="file-meta">

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package   hubzero-cms
  * @copyright Copyright (c) 2005-2020 The Regents of the University of California.
@@ -42,13 +40,36 @@ $extension = $this->filters['extension'];
 
                     <div class="grid">
                         <div class="col span6">
-                            <select name="batch[category_id]" class="inputbox" id="batch-category-id">
-                                <option value=""><?php echo Lang::txt('JSELECT') ?></option>
-                                <?php echo Html::select('options', Html::category('categories', $extension, array('filter.published' => $published)));?>
+                            <?php
+                            $catOptions = Html::category(
+                                'categories',
+                                $extension,
+                                array('filter.published' => $published)
+                            );
+                            ?>
+                            <select name="batch[category_id]"
+                                class="inputbox"
+                                id="batch-category-id"
+                            >
+                                <option value="">
+                                    <?php echo Lang::txt('JSELECT'); ?>
+                                </option>
+                                <?php echo Html::select(
+                                    'options',
+                                    $catOptions
+                                ); ?>
                             </select>
                         </div>
                         <div class="col span6">
-                            <?php echo Html::select('radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
+                            <?php echo Html::select(
+                                'radiolist',
+                                $options,
+                                'batch[move_copy]',
+                                '',
+                                'value',
+                                'text',
+                                'm'
+                            ); ?>
                         </div>
                     </div>
                 </div>

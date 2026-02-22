@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -67,31 +65,92 @@ $f = array(
 );
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$actionUrl = Route::url('index.php?option=' . $this->option);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form
+    action="<?php echo $actionUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('CITATION_TYPES'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-type"><?php echo Lang::txt('CITATION_TYPES_ALIAS'); ?></label><br />
-                    <input type="text" name="type[type]" id="field-type" value="<?php echo $this->escape(stripslashes($this->type->type)); ?>" />
+                    <?php
+                    $typeVal = $this->escape(
+                        stripslashes($this->type->type)
+                    );
+                    ?>
+                    <label for="field-type">
+                        <?php echo Lang::txt('CITATION_TYPES_ALIAS'); ?>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="type[type]"
+                        id="field-type"
+                        value="<?php echo $typeVal; ?>"
+                    />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-type_title"><?php echo Lang::txt('CITATION_TYPES_TITLE'); ?></label><br />
-                    <input type="text" name="type[type_title]" id="field-type_title" value="<?php echo $this->escape(stripslashes($this->type->type_title)); ?>" />
+                    <?php
+                    $typeTitleVal = $this->escape(
+                        stripslashes($this->type->type_title)
+                    );
+                    ?>
+                    <label for="field-type_title">
+                        <?php echo Lang::txt('CITATION_TYPES_TITLE'); ?>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="type[type_title]"
+                        id="field-type_title"
+                        value="<?php echo $typeTitleVal; ?>"
+                    />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-type_desc"><?php echo Lang::txt('CITATION_TYPES_DESC'); ?></label><br />
-                    <textarea name="type[type_desc]" id="field-type_desc" rows="5" cols="58"><?php echo $this->escape(stripslashes($this->type->type_desc)); ?></textarea>
+                    <?php
+                    $typeDescVal = $this->escape(
+                        stripslashes($this->type->type_desc)
+                    );
+                    ?>
+                    <label for="field-type_desc">
+                        <?php echo Lang::txt('CITATION_TYPES_DESC'); ?>
+                    </label><br />
+                    <textarea
+                        name="type[type_desc]"
+                        id="field-type_desc"
+                        rows="5"
+                        cols="58"
+                    ><?php echo $typeDescVal; ?></textarea>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-fields"><?php echo Lang::txt('CITATION_TYPES_FIELDS'); ?></label><br />
-                    <textarea name="type[fields]" id="field-fields" rows="20" cols="58"><?php echo $this->escape(stripslashes($this->type->fields)); ?></textarea>
-                    <span class="hint"><?php echo Lang::txt('CITATION_TYPES_FIELDS_HINT'); ?></span>
+                    <?php
+                    $fieldsVal = $this->escape(
+                        stripslashes($this->type->fields)
+                    );
+                    ?>
+                    <label for="field-fields">
+                        <?php echo Lang::txt('CITATION_TYPES_FIELDS'); ?>
+                    </label><br />
+                    <textarea
+                        name="type[fields]"
+                        id="field-fields"
+                        rows="20"
+                        cols="58"
+                    ><?php echo $fieldsVal; ?></textarea>
+                    <span class="hint">
+                        <?php echo Lang::txt('CITATION_TYPES_FIELDS_HINT'); ?>
+                    </span>
                 </div>
             </fieldset>
         </div>

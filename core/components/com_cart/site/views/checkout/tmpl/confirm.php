@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,6 @@ $this->css('jquery.ui.css', 'system');
 </header>
 
 <?php
-// phpcs:disable Generic.Files.LineLength
 if ($this->paymentStatus == 'ok') {
     ?>
 
@@ -77,8 +74,12 @@ if ($this->paymentStatus == 'ok') {
             echo '<div class="col span6 omega orderSummary">';
 
             if (!empty($this->transactionInfo)) {
-                $orderTotal = $this->transactionInfo->tiSubtotal + $this->transactionInfo->tiShipping - $this->transactionInfo->tiDiscounts - $this->transactionInfo->tiShippingDiscount;
-                $discount = $this->transactionInfo->tiDiscounts + $this->transactionInfo->tiShippingDiscount;
+                $orderTotal = $this->transactionInfo->tiSubtotal
+                    + $this->transactionInfo->tiShipping
+                    - $this->transactionInfo->tiDiscounts
+                    - $this->transactionInfo->tiShippingDiscount;
+                $discount = $this->transactionInfo->tiDiscounts
+                    + $this->transactionInfo->tiShippingDiscount;
 
                 echo '<h2>Order summary:</h2>';
 

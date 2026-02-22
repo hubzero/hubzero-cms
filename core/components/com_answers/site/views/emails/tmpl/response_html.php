@@ -44,8 +44,8 @@ $tagsThStyle = $thStyle . ' vertical-align: top;';
 $divStyle = 'line-height: 1.6em; margin: 1em 0;'
     . ' padding: 0; text-align: left;';
 
-// phpcs:disable Generic.Files.LineLength
-$tableStyle = 'border-collapse: collapse; border: 1px solid #c8e3c2; background: #eafbe6; font-size: 0.9em; line-height: 1.6em; background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+$tableStyle = 'border-collapse: collapse; border: 1px solid #c8e3c2; background: #eafbe6;'
+    . ' font-size: 0.9em; line-height: 1.6em; background-image: -webkit-gradient(linear, 0 0, 100% 100%,
                                         color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
                                         color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
                                         color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
@@ -68,7 +68,6 @@ $tableStyle = 'border-collapse: collapse; border: 1px solid #c8e3c2; background:
                                     -webkit-background-size: 30px 30px;
                                     -moz-background-size: 30px 30px;
                                     background-size: 30px 30px;';
-// phpcs:enable Generic.Files.LineLength
 
 $questionMsg = 'A response has been posted to Question #'
     . $this->question->get('id') . ' by '

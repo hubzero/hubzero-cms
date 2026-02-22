@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,9 +27,12 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
         <div class="filter-select">
             <select name="filter_client_id" class="inputbox" class="filter filter-submit">
                 <?php foreach (\Components\Cache\Helpers\Helper::getClientOptions() as $option) : ?>
-                    <option value="<?php echo $option->value; ?>"<?php if ($option->value == $this->state->get('clientId')) {
-                        echo ' selected="selected"';
-                                   } ?>><?php echo $this->escape(ucfirst($option->text)); ?></option>
+                    <?php
+                    $selected = ($option->value == $this->state->get('clientId')) ? ' selected="selected"' : '';
+                    $optText = $this->escape(ucfirst($option->text));
+                    ?>
+                    <option value="<?php echo $option->value; ?>"
+                        <?php echo $selected; ?>><?php echo $optText; ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -44,8 +45,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                     <?php echo Lang::txt('COM_CACHE_NUM'); ?>
                 </th>
                 <th scope="col">
-                    <input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="toggle" id="checkall-toggle"
+                        value="" class="checkbox-toggle toggle-all" />
+                    <?php $checkAllTxt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $checkAllTxt; ?></label>
                 </th>
                 <th scope="col" class="title nowrap">
                     <?php echo Html::grid('sort', 'COM_CACHE_GROUP', 'group', $listDirn, $listOrder); ?>
@@ -74,8 +77,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                         <?php echo $this->pagination->getRowOffset($i); ?>
                     </td>
                     <td>
-                        <input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]" value="<?php echo $item->group; ?>" class="checkbox-toggle" />
-                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $item->group; ?></label>
+                        <input type="checkbox" id="cb<?php echo $i; ?>" name="cid[]"
+                            value="<?php echo $item->group; ?>" class="checkbox-toggle" />
+                        <label for="cb<?php echo $i; ?>"
+                            class="sr-only visually-hidden"><?php echo $item->group; ?></label>
                     </td>
                     <td>
                         <strong><?php echo $item->group; ?></strong>

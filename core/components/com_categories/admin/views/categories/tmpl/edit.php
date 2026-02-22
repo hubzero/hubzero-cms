@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,9 +31,26 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+$ext = Request::getCmd('extension', 'com_content');
+$formAction = Route::url(
+    'index.php?option=com_categories'
+    . '&extension=' . $ext
+    . '&layout=edit'
+    . '&id=' . (int) $this->item->id
+);
+$invalidMsg = $this->escape(
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=com_categories&extension=' . Request::getCmd('extension', 'com_content') . '&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -102,23 +117,41 @@ $this->js();
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_CREATOR'); ?></th>
+                        <?php
+                        $creatorId = $this->item->get('created_user_id');
+                        $creatorName = User::getInstance($creatorId)->get('name');
+                        ?>
                         <td>
-                            <?php echo User::getInstance($this->item->get('created_user_id'))->get('name'); ?>
-                            <input type="hidden" name="fields[created_user_id]" value="<?php echo $this->item->created_user_id; ?>" />
+                            <?php echo $creatorName; ?>
+                            <input type="hidden"
+                                name="fields[created_user_id]"
+                                value="<?php echo $creatorId; ?>"
+                            />
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_CREATED'); ?></th>
+                        <th scope="row">
+                            <?php echo Lang::txt('COM_CATEGORIES_FIELD_CREATED'); ?>
+                        </th>
                         <td>
                             <?php echo Date::of($this->item->get('created_time'))->toLocal(); ?>
                         </td>
                     </tr>
                     <?php if ($this->item->get('modified_time', false)) : ?>
+                        <?php
+                        $modifierId = $this->item->get('modified_user_id');
+                        $modifierName = User::getInstance($modifierId)->get('name');
+                        ?>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_MODIFIER'); ?></th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_CATEGORIES_FIELD_MODIFIER'); ?>
+                            </th>
                             <td>
-                                <?php echo User::getInstance($this->item->get('modified_user_id'))->get('name'); ?>
-                                <input type="hidden" name="fields[modified_user_id]" value="<?php echo $this->item->modified_user_id; ?>" />
+                                <?php echo $modifierName; ?>
+                                <input type="hidden"
+                                    name="fields[modified_user_id]"
+                                    value="<?php echo $modifierId; ?>"
+                                />
                             </td>
                         </tr>
                         <tr>
@@ -140,7 +173,11 @@ $this->js();
 
                 <?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
                 <?php foreach ($fieldSets as $name => $fieldSet) : ?>
-                    <?php $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_CATEGORIES_' . $name . '_FIELDSET_LABEL'; ?>
+                    <?php
+                    $label = !empty($fieldSet->label)
+                        ? $fieldSet->label
+                        : 'COM_CATEGORIES_' . $name . '_FIELDSET_LABEL';
+                    ?>
                     <?php if ($name != 'editorConfig' && $name != 'basic-limited') : ?>
                         <?php echo Html::sliders('panel', Lang::txt($label), $name . '-options'); ?>
                         <?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>

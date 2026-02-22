@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,16 @@ $this->css()
     ->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form">
     <div class="grid">
     <div class="col span5">
         <fieldset class="adminform">
@@ -41,7 +48,12 @@ $this->css()
                     </tr>
                     <tr>
                         <th>Ordered by:</th>
-                        <td><span><?php echo ($this->user->get('id')) ? $this->user->get('name') . ' (' . $this->user->get('username') . ')' : Lang::txt('COM_CART_UNKNOWN'); ?></span></td>
+                        <td><span><?php
+                            $userName = $this->user->get('id')
+                                ? $this->user->get('name') . ' (' . $this->user->get('username') . ')'
+                                : Lang::txt('COM_CART_UNKNOWN');
+                            echo $userName;
+                        ?></span></td>
                     </tr>
                     <tr>
                         <th>Order subtotal:</th>
@@ -97,7 +109,9 @@ $this->css()
                     <?php
                         echo $this->tInfo->tiShippingToFirst . ' ' . $this->tInfo->tiShippingToLast . '<br>';
                         echo $this->tInfo->tiShippingAddress . '<br>';
-                        echo $this->tInfo->tiShippingCity . ', ' . $this->tInfo->tiShippingState . ' ' . $this->tInfo->tiShippingZip . '<br>';
+                        echo $this->tInfo->tiShippingCity . ', '
+                            . $this->tInfo->tiShippingState . ' '
+                            . $this->tInfo->tiShippingZip . '<br>';
                     ?>
                 </p>
 
@@ -153,16 +167,38 @@ $this->css()
                         <td>
                         <?php
                         if ($itemInfo->available) {
-                            $product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
-                            $product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
+                            $pUrl = Route::url(
+                                'index.php?option=com_storefront&controller=products&task=edit&id='
+                                . $itemInfo->pId
+                            );
+                            $pName = $this->escape(stripslashes($itemInfo->pName));
+                            $product = '<a href="' . $pUrl
+                                . '" target="_blank" rel="noopener">'
+                                . $pName . '</a>';
+                            $sUrl = Route::url(
+                                'index.php?option=com_storefront&controller=skus&task=edit&id='
+                                . $itemInfo->sId
+                            );
+                            $sName = $this->escape(stripslashes($itemInfo->sSku));
+                            $product .= ', <a href="' . $sUrl
+                                . '" target="_blank" rel="noopener">'
+                                . $sName . '</a>';
                         } else {
-                            $product = $this->escape(stripslashes(isset($itemInfo->pName) ? $itemInfo->pName : 'N/A')) .  ', ' . $this->escape(stripslashes(isset($itemInfo->sSku) ? $itemInfo->sSku : 'N/A'));
+                            $pName = isset($itemInfo->pName) ? $itemInfo->pName : 'N/A';
+                            $sName = isset($itemInfo->sSku) ? $itemInfo->sSku : 'N/A';
+                            $product = $this->escape(stripslashes($pName))
+                                . ', ' . $this->escape(stripslashes($sName));
                             $product .= ' <br><em>&nbsp;&mdash;&nbsp;Item is no longer available</em>';
                         }
                         ?>
                             <span><?php echo $product; ?></span>
                         </td>
-                        <td><span><?php echo isset($itemOrdered['transactionInfo']->tiPrice) ? $itemOrdered['transactionInfo']->tiPrice : 'N/A'; ?></span></td>
+                        <td><span><?php
+                            $tiPrice = isset($itemOrdered['transactionInfo']->tiPrice)
+                                ? $itemOrdered['transactionInfo']->tiPrice
+                                : 'N/A';
+                            echo $tiPrice;
+                        ?></span></td>
                         <td><span><?php echo $itemOrdered['transactionInfo']->qty; ?></span></td>
                     </tr>
                 <?php
@@ -181,7 +217,10 @@ $this->css()
             if (!empty($meta->checkoutNotes)) {
                 $notes[] = array(
                     //'label' => '<strong>' . $item['info']->pName . ', ' . $item['info']->sSku . '</strong>',
-                    'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
+                    'label' => '<strong>'
+                        . $this->tInfo->tiItems[$sId]['info']->pName
+                        . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku
+                        . '</strong>',
                     'notes' => $meta->checkoutNotes);
             }
         }
@@ -228,7 +267,11 @@ $this->css()
         // let's show the logs
         foreach ($this->log as $log) {
             echo '<article>';
-            $header = '<header>' . $log->description . ' on ' . date("F j, Y, g:i a", strtotime($log->created)) . ' by ' . $log->user . ' [' . $log->created_by . ']</header>';
+            $logDate = date("F j, Y, g:i a", strtotime($log->created));
+            $header = '<header>' . $log->description
+                . ' on ' . $logDate
+                . ' by ' . $log->user
+                . ' [' . $log->created_by . ']</header>';
             echo $header;
 
             foreach ($log->details as $change) {

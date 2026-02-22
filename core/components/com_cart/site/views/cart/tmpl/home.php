@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,13 +18,16 @@ $this->css()
 
     <div id="content-header-extra">
         <p>
-            <a class="btn" href="<?php echo Route::url('index.php?option=com_cart') . 'orders'; ?>"><?php echo Lang::txt('COM_CART_ORDERS'); ?></a>
+            <?php
+            $ordersUrl = Route::url('index.php?option=com_cart') . 'orders';
+            $ordersLabel = Lang::txt('COM_CART_ORDERS');
+            ?>
+            <a class="btn" href="<?php echo $ordersUrl; ?>"><?php echo $ordersLabel; ?></a>
         </p>
     </div>
 </header>
 
 <?php
-// phpcs:disable Generic.Files.LineLength
 if (!empty($this->notifications)) {
     $view = new \Hubzero\Component\View(array('name' => 'shared', 'layout' => 'notifications'));
     $view->notifications = $this->notifications;
@@ -53,7 +54,11 @@ if (!empty($errors))
     <div class="section-inner">
         <div class="grid break3">
             <div id="cartItems" class="col span8">
-                <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="shoppingCart" id="shoppingCart" method="post">
+                <?php $cartUrl = Route::url('index.php?option=' . $this->option); ?>
+                <form action="<?php echo $cartUrl; ?>"
+                    name="shoppingCart"
+                    id="shoppingCart"
+                    method="post">
                     <?php
                     if (!empty($this->couponPerks['items'])) {
                         $itemsPerks = $this->couponPerks['items'];
@@ -89,7 +94,8 @@ if (!empty($errors))
                             if (!empty($this->membershipInfo[$sId])) {
                                 $str = '';
                                 if (!empty($this->membershipInfo[$sId]->existingExpires)) {
-                                    $str .= 'This will extend your current subscription (ending ' . date('M j, Y', $this->membershipInfo[$sId]->existingExpires) . ') ';
+                                    $expiresDate = date('M j, Y', $this->membershipInfo[$sId]->existingExpires);
+                                    $str .= 'This will extend your current subscription (ending ' . $expiresDate . ') ';
                                 } else {
                                     $str .= 'This item will be valid ';
                                 }
@@ -102,7 +108,11 @@ if (!empty($errors))
 
                             echo '<td>';
                             if ($info->sAllowMultiple) {
-                                echo 'qty: <input type="number" maxlength="2" pattern="[0-9]*" min="0" class="numericOnly" name="skus[' . $info->sId . ']" value="';
+                                echo 'qty: <input type="number" maxlength="2"'
+                                    . ' pattern="[0-9]*" min="0"'
+                                    . ' class="numericOnly"'
+                                    . ' name="skus[' . $info->sId . ']"'
+                                    . ' value="';
                                 echo $item['cartInfo']->qty;
                                 echo '">';
                             } else {
@@ -118,7 +128,9 @@ if (!empty($errors))
                             }
 
                             echo '</p>';
-                            echo '<input type="submit" class="deleteItem link" name="delete_' . $info->sId . '" value="delete">';
+                            echo '<input type="submit" class="deleteItem link"'
+                                . ' name="delete_' . $info->sId
+                                . '" value="delete">';
                             echo '</td>';
 
                             echo '</tr>';
@@ -145,7 +157,8 @@ if (!empty($errors))
                         echo '</table>';
 
                         echo '<div class="options cf">';
-                        echo '<a href="' . Route::url('index.php?option=com_storefront') . '" class="btn">Continue shopping</a>';
+                        $shopUrl = Route::url('index.php?option=com_storefront');
+                        echo '<a href="' . $shopUrl . '" class="btn">Continue shopping</a>';
                         echo '<input type="submit" class="btn" name="updateCart" id="updateCart" value="Update cart">';
                         echo '</div>';
                     } else {
@@ -164,11 +177,13 @@ if (!empty($errors))
                     echo '<h3>Cart summary:</h3>';
 
                     echo '<p>Items: <span>' . $this->cartInfo->totalItems . '</span></p>';
-                    echo '<p>Items subtotal: <span>' . '$' . number_format($this->cartInfo->totalCart, 2) . '</span></p>';
+                    $subtotal = '$' . number_format($this->cartInfo->totalCart, 2);
+                    echo '<p>Items subtotal: <span>' . $subtotal . '</span></p>';
 
                     $discountsTotal = 0;
                     if (!empty($this->couponPerks['info']->itemsDiscountsTotal)) {
-                        echo '<p>Items discounts: <span>' .  '-$' . number_format($this->couponPerks['info']->itemsDiscountsTotal, 2) . '</span></p>';
+                        $itemsDiscount = '-$' . number_format($this->couponPerks['info']->itemsDiscountsTotal, 2);
+                        echo '<p>Items discounts: <span>' . $itemsDiscount . '</span></p>';
                         $discountsTotal += $this->couponPerks['info']->itemsDiscountsTotal;
                     }
 
@@ -196,11 +211,13 @@ if (!empty($errors))
                     }
 
                     if ($discountsTotal) {
-                        echo '<p class="totalValue">Cart subtotal: <span>' . '$' . number_format($this->cartInfo->totalCart - $discountsTotal, 2) . '</span></p>';
+                        $cartSubtotal = '$' . number_format($this->cartInfo->totalCart - $discountsTotal, 2);
+                        echo '<p class="totalValue">Cart subtotal: <span>' . $cartSubtotal . '</span></p>';
                     }
 
                     if ($this->cartInfo->totalItems) {
-                        echo '<p><a href="' . Route::url('index.php?option=' . $this->option . '&controller=checkout') . '" class="btn">Checkout</a></p>';
+                        $checkoutUrl = Route::url('index.php?option=' . $this->option . '&controller=checkout');
+                        echo '<p><a href="' . $checkoutUrl . '" class="btn">Checkout</a></p>';
                     }
 
                     echo '</div>';

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,22 +23,36 @@ Toolbar::help('downloads');
 ?>
 
 <?php
-// phpcs:disable Generic.Files.LineLength
 $this->view('_submenu')
     ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm">
     <table class="adminlist">
         <thead>
+            <?php
+            $sortDir = @$this->filters['sort_Dir'];
+            $sort = @$this->filters['sort'];
+            ?>
             <tr>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_SKU_ID', 'sId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_SKU_ID', 'sId', $sortDir, $sort); ?></th>
                 <th scope="col">Product</th>
                 <th scope="col">QTY</th>
                 <th scope="col">Price</th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_ID', 'tId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_PALCED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_ID', 'tId', $sortDir, $sort); ?></th>
+                <th scope="col"><?php
+                    echo Html::grid('sort', 'COM_CART_ORDER_PALCED', 'tLastUpdated', $sortDir, $sort);
+                ?></th>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', $sortDir, $sort); ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -66,20 +78,35 @@ $this->view('_submenu')
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php
-                    $sId = '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '">' . $this->escape(stripslashes($row->sId)) . '</a>';
+                    $skuUrl = Route::url(
+                        'index.php?option=com_storefront&controller=skus&task=edit&id='
+                        . $itemInfo->sId
+                    );
+                    $sId = '<a href="' . $skuUrl . '">'
+                        . $this->escape(stripslashes($row->sId)) . '</a>';
                     ?>
                     <span><?php echo $sId; ?></span>
                 </td>
                 <td>
                     <?php
-                    $product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
+                    $pUrl = Route::url(
+                        'index.php?option=com_storefront&controller=products&task=edit&id='
+                        . $itemInfo->pId
+                    );
+                    $pName = $this->escape(stripslashes($itemInfo->pName));
+                    $product = '<a href="' . $pUrl . '">' . $pName . '</a>';
                     if (!stripslashes($itemInfo->pName)) {
                         $product = '<span class="missing">Product n/a</span>';
                     }
                     if (!stripslashes($itemInfo->sSku)) {
                         $product .= ', <span class="missing">SKU n/a</span>';
                     } else {
-                        $product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
+                        $sUrl = Route::url(
+                            'index.php?option=com_storefront&controller=skus&task=edit&id='
+                            . $row->sId
+                        );
+                        $sName = $this->escape(stripslashes($itemInfo->sSku));
+                        $product .= ', <a href="' . $sUrl . '">' . $sName . '</a>';
                     }
                     ?>
                     <span><?php echo $product; ?></span>
@@ -92,7 +119,12 @@ $this->view('_submenu')
                 </td>
                 <td>
                     <?php
-                    $tId = '<a href="' . Route::url('index.php?option=com_cart&controller=orders&task=view&id=' . $row->tId) . '">' . $this->escape(stripslashes($row->tId)) . '</a>';
+                    $orderUrl = Route::url(
+                        'index.php?option=com_cart&controller=orders&task=view&id='
+                        . $row->tId
+                    );
+                    $tId = '<a href="' . $orderUrl . '">'
+                        . $this->escape(stripslashes($row->tId)) . '</a>';
                     ?>
                     <span><?php echo $tId; ?></span>
                 </td>

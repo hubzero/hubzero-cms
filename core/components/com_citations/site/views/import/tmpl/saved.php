@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -46,7 +44,8 @@ if ($label == 'none') {
                 </a>
             </li>
             <li>
-                <a class="btn icon-upload" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=import'); ?>">
+                <?php $importUrl = Route::url('index.php?option=' . $this->option . '&task=import'); ?>
+                <a class="btn icon-upload" href="<?php echo $importUrl; ?>">
                     <?php echo Lang::txt('COM_CITATIONS_IMPORT_IMPORT_MORE'); ?>
                 </a>
             </li>
@@ -62,20 +61,29 @@ if ($label == 'none') {
         }
         ?>
 
+        <?php
+        $baseUrl = Request::base(true);
+        $step1 = Lang::txt('COM_CITATIONS_IMPORT_STEP1');
+        $step1Name = Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME');
+        $step2 = Lang::txt('COM_CITATIONS_IMPORT_STEP2');
+        $step2Name = Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME');
+        $step3 = Lang::txt('COM_CITATIONS_IMPORT_STEP3');
+        $step3Name = Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME');
+        ?>
         <ul id="steps">
             <li>
-                <a href="<?php echo Request::base(true); ?>/citations/import" class="passed">
-                    <?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME'); ?></span>
+                <a href="<?php echo $baseUrl; ?>/citations/import" class="passed">
+                    <?php echo $step1; ?><span><?php echo $step1Name; ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php echo Request::base(true); ?>/citations/import_review" class="passed">
-                    <?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME'); ?></span>
+                <a href="<?php echo $baseUrl; ?>/citations/import_review" class="passed">
+                    <?php echo $step2; ?><span><?php echo $step2Name; ?></span>
                 </a>
             </li>
             <li>
-                <a href="<?php echo Request::base(true); ?>/citations/import_saved" class="active">
-                    <?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME'); ?></span>
+                <a href="<?php echo $baseUrl; ?>/citations/import_saved" class="active">
+                    <?php echo $step3; ?><span><?php echo $step3Name; ?></span>
                 </a>
             </li>
         </ul><!-- / #steps -->

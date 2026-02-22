@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,8 +14,6 @@ defined('_HZEXEC_') or die('Restricted access');
 <!--h2>Items</h2-->
 
 <?php
-// phpcs:disable Generic.Files.LineLength
-
 if (!empty($this->transactionItems)) {
     echo '<table id="cartContents">';
     echo '<tr><th>Items</th><th>Price</th><th>Quantity</th></tr>';
@@ -40,7 +36,9 @@ if (!empty($this->transactionItems)) {
         if (!empty($this->membershipInfo[$sId])) {
             $str = '';
             if (!empty($this->membershipInfo[$sId]->existingExpires)) {
-                $str .= 'This will extend your current subscription (ending ' . date('M j, Y', $this->membershipInfo[$sId]->existingExpires) . ') ';
+                $expires = $this->membershipInfo[$sId]->existingExpires;
+                $str .= 'This will extend your current subscription (ending '
+                    . date('M j, Y', $expires) . ') ';
             } else {
                 $str .= 'This item will be valid ';
             }

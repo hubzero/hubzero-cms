@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,6 @@ $this->css()
 </header>
 
 <?php
-// phpcs:disable Generic.Files.LineLength
 
 if (!empty($this->notifications)) {
     $view = new \Hubzero\Component\View(array('name' => 'shared', 'layout' => 'notifications'));

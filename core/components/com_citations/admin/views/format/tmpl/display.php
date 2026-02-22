@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,7 +25,18 @@ $this->js();
 $cf = new \Components\Citations\Helpers\Format();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$actionUrl = Route::url('index.php?option=' . $this->option);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form
+    action="<?php echo $actionUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -37,8 +46,16 @@ $cf = new \Components\Citations\Helpers\Format();
                     <label for="format-selector"><?php echo Lang::txt('CITATION_FORMAT_STYLE'); ?>:</label><br />
                     <select name="citationFormat[id]" id="format-selector">
                         <?php foreach ($this->formats as $format) : ?>
-                            <?php ($this->currentFormat->id == $format->id ? $selected = 'selected' : $selected = ''); ?> 
-                        <option value="<?php echo $format->id; ?>" <?php echo $selected; ?> data-format="<?php echo str_replace('"', '\"', $format->format); ?>" > 
+                            <?php
+                            $selected = ($this->currentFormat->id == $format->id)
+                                ? 'selected' : '';
+                            $dataFormat = str_replace('"', '\"', $format->format);
+                            ?>
+                        <option
+                            value="<?php echo $format->id; ?>"
+                            <?php echo $selected; ?>
+                            data-format="<?php echo $dataFormat; ?>"
+                        >
                             <?php echo $format->style; ?>
                         </option>
                         <?php endforeach; ?>
@@ -48,7 +65,16 @@ $cf = new \Components\Citations\Helpers\Format();
 
                 <div class="input-wrap">
                     <label for="format-string"><?php echo Lang::txt('CITATION_FORMAT_STRING'); ?>:</label><br />
-                    <textarea name="citationFormat[format]" rows="10" id="format-string"><?php echo trim(preg_replace('/\r|\n/', '', $this->currentFormat->format)); ?></textarea>
+                    <?php
+                    $formatStr = trim(
+                        preg_replace('/\r|\n/', '', $this->currentFormat->format)
+                    );
+                    ?>
+                    <textarea
+                        name="citationFormat[format]"
+                        rows="10"
+                        id="format-string"
+                    ><?php echo $formatStr; ?></textarea>
                 </div>
             </fieldset>
         </div>

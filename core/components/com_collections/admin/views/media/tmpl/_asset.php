@@ -6,26 +6,49 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
+
+$filenameVal = $this->escape(
+    stripslashes($this->asset->get('filename'))
+);
+$deleteUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=delete&asset=' . $this->asset->get('id')
+    . '&no_html=' . $this->no_html
+    . '&' . Session::getFormToken() . '=1'
+);
+$deleteTxt = Lang::txt('JACTION_DELETE');
 ?>
 <p class="item-asset">
     <span class="asset-handle"></span>
     <span class="asset-file">
         <?php if ($this->asset->get('type') == 'link') { ?>
-            <input type="text" name="assets[<?php echo $this->i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($this->asset->get('filename'))); ?>" placeholder="http://" />
+            <input type="text"
+                name="assets[<?php echo $this->i; ?>][filename]"
+                size="35"
+                value="<?php echo $filenameVal; ?>"
+                placeholder="http://" />
         <?php } else { ?>
-            <?php echo $this->escape(stripslashes($this->asset->get('filename'))); ?>
-            <input type="hidden" name="assets[<?php echo $this->i; ?>][filename]" value="<?php echo $this->escape(stripslashes($this->asset->get('filename'))); ?>" />
+            <?php echo $filenameVal; ?>
+            <input type="hidden"
+                name="assets[<?php echo $this->i; ?>][filename]"
+                value="<?php echo $filenameVal; ?>" />
         <?php } ?>
     </span>
     <span class="asset-description">
-        <input type="hidden" name="assets[<?php echo $this->i; ?>][type]" value="<?php echo $this->asset->get('type'); ?>" />
-        <input type="hidden" name="assets[<?php echo $this->i; ?>][id]" value="<?php echo $this->asset->get('id'); ?>" />
-        <a class="icon-delete delete" data-id="<?php echo $this->asset->get('id'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $this->asset->get('id') . '&no_html=' . $this->no_html . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
-            <?php echo Lang::txt('JACTION_DELETE'); ?>
+        <input type="hidden"
+            name="assets[<?php echo $this->i; ?>][type]"
+            value="<?php echo $this->asset->get('type'); ?>" />
+        <input type="hidden"
+            name="assets[<?php echo $this->i; ?>][id]"
+            value="<?php echo $this->asset->get('id'); ?>" />
+        <a class="icon-delete delete"
+            data-id="<?php echo $this->asset->get('id'); ?>"
+            href="<?php echo $deleteUrl; ?>"
+            title="<?php echo $deleteTxt; ?>">
+            <?php echo $deleteTxt; ?>
         </a>
     </span>
 </p>

@@ -6,25 +6,43 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&gid=' . $this->group->cn
+    . '&active=blog&task=delete&entry=' . $this->entry->id
+);
 ?>
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&gid=' . $this->group->cn . '&active=blog&task=delete&entry=' . $this->entry->id); ?>" method="post" id="hubForm">
+    <form action="<?php echo $formAction; ?>"
+        method="post"
+        id="hubForm">
         <div class="explaination">
 <?php if ($this->authorized) { ?>
-            <p><a class="add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&gid=' . $this->group->cn . '&active=blog&task=new'); ?>"><?php echo Lang::txt('New entry'); ?></a></p>
+            <?php
+            $newEntryUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&gid=' . $this->group->cn
+                . '&active=blog&task=new'
+            );
+            ?>
+            <p>
+                <a class="add btn" href="<?php echo $newEntryUrl; ?>">
+                    <?php echo Lang::txt('New entry'); ?>
+                </a>
+            </p>
 <?php } ?>
         </div>
         <fieldset>
             <legend><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_HEADER'); ?></legend>
 
-            <p class="warning"><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_WARNING', $this->entry->title); ?></p>
+            <p class="warning">
+                <?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE_WARNING', $this->entry->title); ?>
+            </p>
 
             <label>
                 <input type="checkbox" class="option" name="confirmdel" value="1" />
@@ -44,6 +62,19 @@ defined('_HZEXEC_') or die();
 
         <p class="submit">
             <input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>" />
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&gid=' . $this->group->cn . '&active=blog&scope=' . Date::of($this->entry->publish_up)->toLocal('Y') . '/' . Date::of($this->entry->publish_up)->toLocal('m') . '/' . $this->entry->alias); ?>"><?php echo Lang::txt('Cancel'); ?></a>
+            <?php
+            $publishYear = Date::of($this->entry->publish_up)->toLocal('Y');
+            $publishMonth = Date::of($this->entry->publish_up)->toLocal('m');
+            $cancelUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&gid=' . $this->group->cn
+                . '&active=blog&scope=' . $publishYear
+                . '/' . $publishMonth
+                . '/' . $this->entry->alias
+            );
+            ?>
+            <a href="<?php echo $cancelUrl; ?>">
+                <?php echo Lang::txt('Cancel'); ?>
+            </a>
         </p>
     </form>

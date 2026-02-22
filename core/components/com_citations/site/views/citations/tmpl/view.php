@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -108,7 +106,12 @@ $area = Request::getString('area', 'about');
         <h2>
             <?php echo $citation->title; ?>
             <?php if (User::get('id') == $citation->uid) : ?>
-                <a class="edit" href="<?php echo Route::url('index.php?option=com_citations&task=edit&id=' . $citation->id); ?>">Edit</a>
+                <?php
+                $editUrl = Route::url(
+                    'index.php?option=com_citations&task=edit&id=' . $citation->id
+                );
+                ?>
+                <a class="edit" href="<?php echo $editUrl; ?>">Edit</a>
             <?php endif; ?>
         </h2>
 
@@ -124,7 +127,12 @@ $area = Request::getString('area', 'about');
                         if (is_numeric($matches[1])) {
                             $user = User::getInstance($matches[1]);
                             if (is_object($user)) {
-                                $a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . str_replace($matches[0], '', $author) . '</a>';
+                                $memberUrl = Route::url(
+                                    'index.php?option=com_members&id=' . $matches[1]
+                                );
+                                $authorName = str_replace($matches[0], '', $author);
+                                $a[] = '<a rel="external" href="' . $memberUrl . '">'
+                                . $authorName . '</a>';
                             } else {
                                 $a[] = $author;
                             }
@@ -159,28 +167,48 @@ $area = Request::getString('area', 'about');
             <?php
                 echo $citation->formatted();
             ?>
+            <?php
+            $bibtexUrl = Route::url(
+                'index.php?option=com_citations&task=download'
+                . '&citationFormat=bibtex&id=' . $citation->id . '&no_html=1'
+            );
+            $endnoteUrl = Route::url(
+                'index.php?option=com_citations&task=download'
+                . '&citationFormat=endnote&id=' . $citation->id . '&no_html=1'
+            );
+            ?>
             <div class="download">
-                <a class="" href="<?php echo Route::url('index.php?option=com_citations&task=download&citationFormat=bibtex&id=' . $citation->id . '&no_html=1'); ?>" title="Download in BibTex Format"><?php echo Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX'); ?></a> |
-                <a class="" href="<?php echo Route::url('index.php?option=com_citations&task=download&citationFormat=endnote&id=' . $citation->id . '&no_html=1'); ?>" title="Download in Endnote Format"><?php echo Lang::txt('COM_CITATIONS_DOWNLOAD_ENDNOTE'); ?></a>
+                <a href="<?php echo $bibtexUrl; ?>" title="Download in BibTex Format">
+                    <?php echo Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX'); ?>
+                </a> |
+                <a href="<?php echo $endnoteUrl; ?>" title="Download in Endnote Format">
+                    <?php echo Lang::txt('COM_CITATIONS_DOWNLOAD_ENDNOTE'); ?>
+                </a>
             </div>
         </div>
 
     </div>
 
     <div class="content-header-extra">
+        <?php
+        $findUrl = Route::url(
+            'index.php?option=com_citations&task=view&id='
+            . $citation->id . '&area=find#find'
+        );
+        ?>
         <?php if ($citationURL != '') : ?>
             <a class="primary" rel="external" href="<?php echo $citationURL; ?>">
                 <?php echo Lang::txt('COM_CITATIONS_VIEW_ARTICLE'); ?>
             </a>
             <ul class="secondary">
                 <li>
-                    <a class="locate" rel="" href="<?php echo Route::url('index.php?option=com_citations&task=view&id=' . $citation->id . '&area=find#find'); ?>">
+                    <a class="locate" rel="" href="<?php echo $findUrl; ?>">
                         <?php echo Lang::txt('COM_CITATIONS_FINDTHISTEXT'); ?>
                     </a>
                 </li>
             </ul>
         <?php else : ?>
-            <a class="primary" rel="" href="<?php echo Route::url('index.php?option=com_citations&task=view&id=' . $citation->id . '&area=find#find'); ?>">
+            <a class="primary" rel="" href="<?php echo $findUrl; ?>">
                 <?php echo Lang::txt('COM_CITATIONS_FINDTHISTEXT'); ?>
             </a>
         <?php endif; ?>
@@ -221,8 +249,14 @@ $area = Request::getString('area', 'about');
 
                 $cls = ($k == $area) ? 'active' : '';
             ?>
+            <?php
+            $tabUrl = Route::url(
+                'index.php?option=com_citations&task=view&id='
+                . $citation->id . '&area=' . $k
+            );
+            ?>
             <li class="<?php echo $cls; ?>">
-                <a class="tab" href="<?php echo Route::url('index.php?option=com_citations&task=view&id=' . $citation->id . '&area=' . $k); ?>">
+                <a class="tab" href="<?php echo $tabUrl; ?>">
                     <span><?php echo $v; ?></span>
                 </a>
             </li>
@@ -237,7 +271,14 @@ $area = Request::getString('area', 'about');
                 <tr>
                     <th><?php echo Lang::txt('COM_CITATIONS_TYPE'); ?></th>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_citations&task=browse&type=' . $type->id); ?>"><?php echo $type->type_title; ?></a>
+                        <?php
+                        $typeUrl = Route::url(
+                            'index.php?option=com_citations&task=browse&type=' . $type->id
+                        );
+                        ?>
+                        <a href="<?php echo $typeUrl; ?>">
+                            <?php echo $type->type_title; ?>
+                        </a>
                     </td>
                 </tr>
 
@@ -482,7 +523,13 @@ $area = Request::getString('area', 'about');
                     <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_BADGES'); ?></th>
                         <td>
-                            <?php echo \Components\Citations\Helpers\Format::citationBadges($citation, App::get('db')); ?>
+                            <?php
+                            $citBadges = \Components\Citations\Helpers\Format::citationBadges(
+                                $citation,
+                                App::get('db')
+                            );
+                            echo $citBadges;
+                            ?>
                         </td>
                     </tr>
                 <?php endif; ?>
@@ -492,7 +539,12 @@ $area = Request::getString('area', 'about');
                         <tr>
                             <th><?php echo Lang::txt('COM_CITATIONS_SUBMITTED_BY'); ?></th>
                             <td>
-                                <a href="<?php echo Route::url('index.php?option=com_members&id=' . $profile->get('id')); ?>">
+                                <?php
+                                $profileUrl = Route::url(
+                                    'index.php?option=com_members&id=' . $profile->get('id')
+                                );
+                                ?>
+                                <a href="<?php echo $profileUrl; ?>">
                                     <?php echo $profile->get('name'); ?>
                                 </a>
                             </td>
@@ -568,7 +620,12 @@ $area = Request::getString('area', 'about');
                             <ul class="secondary openurl">
                                 <?php if ($this->openUrl) : ?>
                                     <li>
-                                        <?php echo \Components\Citations\Helpers\Format::citationOpenUrl($this->openUrl, $citation); ?>
+                                        <?php
+                                        echo \Components\Citations\Helpers\Format::citationOpenUrl(
+                                            $this->openUrl,
+                                            $citation
+                                        );
+                                        ?>
                                     </li>
                                 <?php endif; ?>
                             </ul>
@@ -587,8 +644,21 @@ $area = Request::getString('area', 'about');
                             $query .= $citation->title;
                         }
                         ?>
-                        <a rel="nofollow external" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?php echo $query; ?>">
-                            <img src="<?php echo Request::base(true); ?>/core/components/com_citations/site/assets/img/googlescholar.gif" alt="Google Scholar Search Results" width="100" />
+                        <?php
+                        $scholarUrl = 'http://scholar.google.com/scholar?q=' . $query;
+                        $imgSrc = Request::base(true)
+                            . '/core/components/com_citations/site/assets/img/googlescholar.gif';
+                        ?>
+                        <a
+                            rel="nofollow external"
+                            title="Google Scholar Search Results"
+                            href="<?php echo $scholarUrl; ?>"
+                        >
+                            <img
+                                src="<?php echo $imgSrc; ?>"
+                                alt="Google Scholar Search Results"
+                                width="100"
+                            />
                         </a>
                     </td>
                 </tr>
@@ -598,7 +668,11 @@ $area = Request::getString('area', 'about');
                     <td>
                         <ul>
                             <li>
-                                <a rel="external" href="http://www.deepdyve.com/search?query=<?php echo str_replace(' ', '+', $citation->title); ?>">
+                                <?php
+                                $deepDyveQuery = str_replace(' ', '+', $citation->title);
+                                $deepDyveUrl = 'http://www.deepdyve.com/search?query=' . $deepDyveQuery;
+                                ?>
+                                <a rel="external" href="<?php echo $deepDyveUrl; ?>">
                                     <?php echo Lang::txt('COM_CITATIONS_DEEP_DYVE'); ?>
                                 </a><?php echo Lang::txt('COM_CITATIONS_DEEP_DYVE_RENT'); ?>
                             </li>

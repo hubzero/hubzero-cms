@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,7 +19,8 @@ Toolbar::spacer();
 Toolbar::help('sponsors');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
@@ -42,10 +41,24 @@ Toolbar::help('sponsors');
                         <td class="priority-4"><?php echo $this->escape($sponsor['image']); ?></td>
                         <td>
                             <?php if ($canDo->get('core.edit')) { ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $sponsor['id']); ?>"><?php echo Lang::txt('JACTION_EDIT'); ?></a> |
+                                <?php
+                                $editUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&task=edit&id=' . $sponsor['id']
+                                );
+                                ?>
+                                <a href="<?php echo $editUrl; ?>"><?php echo Lang::txt('JACTION_EDIT'); ?></a> |
                             <?php } ?>
                             <?php if ($canDo->get('core.delete')) { ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $sponsor['id']); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+                                <?php
+                                $removeUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&task=remove&id=' . $sponsor['id']
+                                );
+                                ?>
+                                <a href="<?php echo $removeUrl; ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
                             <?php } ?>
                         </td>
                     </tr>

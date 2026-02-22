@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,8 +18,6 @@ $this->css();
 </header>
 
 <?php
-// phpcs:disable Generic.Files.LineLength
-
 if (!empty($this->notifications)) {
     $view = new \Hubzero\Component\View(array('name' => 'shared', 'layout' => 'notifications'));
     $view->notifications = $this->notifications;
@@ -55,7 +51,10 @@ if (!empty($this->notifications)) {
 
                                 <label>
                                     <?php
-                                    echo '<strong>' . $field['pName'] . ', ' . $field['sSku'] . ':</strong> ' . $field['sCheckoutNotes'];
+                                    echo '<strong>'
+                                        . $field['pName'] . ', '
+                                        . $field['sSku'] . ':</strong> '
+                                        . $field['sCheckoutNotes'];
                                     if ($field['sCheckoutNotesRequired']) {
                                         echo ' <em>Required</em>';
                                     }

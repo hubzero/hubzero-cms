@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,8 +22,6 @@ $product .= ', ' . $this->productInfo->oName;
 </header>
 
 <?php
-// phpcs:disable Generic.Files.LineLength
-
 if (!empty($this->notifications)) {
     $view = new \Hubzero\Component\View(array('name' => 'shared', 'layout' => 'notifications'));
     $view->notifications = $this->notifications;
@@ -46,7 +42,9 @@ if (!empty($this->notifications)) {
         ?>
         <div class="grid">
             <div class="col span12">
-                <p>In order to continue downloading <strong><?php echo $product; ?></strong> you must agree to the user agreement:</p>
+                <p>In order to continue downloading
+                    <strong><?php echo $product; ?></strong>
+                    you must agree to the user agreement:</p>
 
                 <form name="eula" class="full" method="post" id="hubForm">
                     <fieldset>
@@ -56,9 +54,17 @@ if (!empty($this->notifications)) {
 
                         <fieldset>
                             <legend>Please confirm that you accept the user agreement</legend>
-                            <label for="acceptEula"><input type="checkbox" class="option" name="acceptEula" id="acceptEula" /> I Accept</label>
+                            <label for="acceptEula">
+                                <input type="checkbox"
+                                    class="option"
+                                    name="acceptEula"
+                                    id="acceptEula" />
+                                I Accept
+                            </label>
 
-                            <p>If you don't accept the user agreement, <a href="<?php echo Route::url('index.php?option=com_cart'); ?>">cancel and return to cart</a></p>
+                            <?php $cartUrl = Route::url('index.php?option=com_cart'); ?>
+                            <p>If you don't accept the user agreement,
+                                <a href="<?php echo $cartUrl; ?>">cancel and return to cart</a></p>
                         </fieldset>
 
                         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

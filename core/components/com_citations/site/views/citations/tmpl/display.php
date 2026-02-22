@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,14 +19,20 @@ $this->css('introduction.css', 'system')
     <div id="content-header-extra">
         <ul>
             <?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
-                <li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=add'); ?>">
-                    <?php echo Lang::txt('COM_CITATIONS_SUBMIT_CITATION'); ?>
-                </a></li>
+                <?php $addUrl = Route::url('index.php?option=' . $this->option . '&task=add'); ?>
+                <li>
+                    <a class="btn icon-add" href="<?php echo $addUrl; ?>">
+                        <?php echo Lang::txt('COM_CITATIONS_SUBMIT_CITATION'); ?>
+                    </a>
+                </li>
             <?php endif; ?>
             <?php if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) : ?>
-                <li><a class="btn icon-upload" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=import'); ?>">
-                    <?php echo Lang::txt('COM_CITATIONS_IMPORT_CITATION'); ?>
-                </a></li>
+                <?php $importUrl = Route::url('index.php?option=' . $this->option . '&task=import'); ?>
+                <li>
+                    <a class="btn icon-upload" href="<?php echo $importUrl; ?>">
+                        <?php echo Lang::txt('COM_CITATIONS_IMPORT_CITATION'); ?>
+                    </a>
+                </li>
             <?php endif; ?>
         </ul>
     </div>
@@ -42,11 +46,21 @@ $this->css('introduction.css', 'system')
         </div>
         <div class="col span-half omega">
             <h3><?php echo Lang::txt('COM_CITATIONS_SUBMIT_CITATIONS'); ?></h3>
-            <?php if (
-            $this->allow_import == 1 || $this->allow_bulk_import == 1 ||
-                     ($this->allow_import == 2 && $this->isAdmin) || ($this->allow_bulk_import == 2 && $this->isAdmin)
-) : ?>
-            <p><?php echo Lang::txt('COM_CITATIONS_SUBMIT_CITATIONS_DESC', Route::url('index.php?option=' . $this->option . '&task=add')); ?></p>
+            <?php
+            $canImport = $this->allow_import == 1
+                || $this->allow_bulk_import == 1
+                || ($this->allow_import == 2 && $this->isAdmin)
+                || ($this->allow_bulk_import == 2 && $this->isAdmin);
+            if ($canImport) :
+                $submitUrl = Route::url(
+                    'index.php?option=' . $this->option . '&task=add'
+                );
+                $submitDesc = Lang::txt(
+                    'COM_CITATIONS_SUBMIT_CITATIONS_DESC',
+                    $submitUrl
+                );
+                ?>
+            <p><?php echo $submitDesc; ?></p>
             <?php else : ?>
                 <p><?php echo Lang::txt('COM_CITATIONS_SUBMIT_CITATIONS_DESC_NOTALLOWED', '/support'); ?></p>
             <?php endif; ?>
@@ -62,10 +76,13 @@ $this->css('introduction.css', 'system')
         </div><!-- / .col span3 -->
         <div class="col span9 omega">
             <div class="col span-half">
-                <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
+                <?php $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+                <form action="<?php echo $browseUrl; ?>" method="get" class="search">
                     <fieldset>
                         <p class="hz-v-align">
-                            <label for="csearch"><?php echo Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD'); ?></label>
+                            <label for="csearch">
+                                <?php echo Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD'); ?>
+                            </label>
                             <span class="hz-input-combo">
                                 <input type="text" name="search" id="csearch" value="" />
                                 <input type="submit" value="<?php echo Lang::txt('COM_CITATIONS_SEARCH'); ?>" />
@@ -76,7 +93,11 @@ $this->css('introduction.css', 'system')
             </div><!-- / .col span-half -->
             <div class="col span-half omega">
                 <div class="browse">
-                    <p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_CITATIONS_BROWSE'); ?></a></p>
+                    <p>
+                        <a href="<?php echo $browseUrl; ?>">
+                            <?php echo Lang::txt('COM_CITATIONS_BROWSE'); ?>
+                        </a>
+                    </p>
                 </div><!-- / .browse -->
             </div><!-- / .col span-half -->
         </div><!-- / .col span9 -->
@@ -100,7 +121,9 @@ foreach ($yearlystats as $year => $amt) {
     $tr .= "\t\t\t" . '<th class="textual-data">' . $year . '</th>' . "\n";
     $tr .= "\t\t\t" . '<td class="numerical-data">' . $amt['affiliate'] . '</td>' . "\n";
     $tr .= "\t\t\t" . '<td class="numerical-data">' . $amt['non-affiliate'] . '</td>' . "\n";
-    $tr .= "\t\t\t" . '<td class="numerical-data highlight">' . (intval($amt['affiliate']) + intval($amt['non-affiliate'])) . '</td>' . "\n";
+    $yearTotal = intval($amt['affiliate']) + intval($amt['non-affiliate']);
+    $tr .= "\t\t\t" . '<td class="numerical-data highlight">'
+        . $yearTotal . '</td>' . "\n";
     $tr .= "\t\t" . '</tr>' . "\n";
 
     $rows[] = $tr;
@@ -113,8 +136,13 @@ $html .= "\t" . '<caption>' . Lang::txt('COM_CITATIONS_TABLE_METRICS_YEAR') . '<
 $html .= "\t" . '<thead>' . "\n";
 $html .= "\t\t" . '<tr>' . "\n";
 $html .= "\t\t\t" . '<th scope="col" class="textual-data">' . Lang::txt('COM_CITATIONS_YEAR') . '</th>' . "\n";
-$html .= "\t\t\t" . '<th scope="col" class="numerical-data"><sup><a href="#fn-1">1</a></sup> ' . Lang::txt('COM_CITATIONS_AFFILIATED') . '</th>' . "\n";
-$html .= "\t\t\t" . '<th scope="col" class="numerical-data"><sup><a href="#fn-1">1</a></sup> ' . Lang::txt('COM_CITATIONS_NONAFFILIATED') . '</th>' . "\n";
+$affLabel = Lang::txt('COM_CITATIONS_AFFILIATED');
+$nonAffLabel = Lang::txt('COM_CITATIONS_NONAFFILIATED');
+$fn1 = '<sup><a href="#fn-1">1</a></sup> ';
+$html .= "\t\t\t" . '<th scope="col" class="numerical-data">'
+    . $fn1 . $affLabel . '</th>' . "\n";
+$html .= "\t\t\t" . '<th scope="col" class="numerical-data">'
+    . $fn1 . $nonAffLabel . '</th>' . "\n";
 $html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('COM_CITATIONS_TOTAL') . '</th>' . "\n";
 $html .= "\t\t" . '</tr>' . "\n";
 $html .= "\t" . '</thead>' . "\n";
@@ -195,7 +223,9 @@ for ($i = 0, $n = count($data_arr['text']); $i < $n; $i++) {
     $tr .= "\t\t\t" . '<th class="textual-data">' . $text . '</th>' . "\n";
     $tr .= "\t\t\t" . '<td class="numerical-data">' . "\n";
     $tr .= "\t\t\t\t" . '<div class="graph">' . "\n";
-    $tr .= "\t\t\t\t\t" . '<strong class="bar bar' . $i . ' ' . $tdclass . '" title="' . $percent . '%"><span>' . $percent . '%</span></strong>' . "\n";
+    $tr .= "\t\t\t\t\t" . '<strong class="bar bar' . $i . ' '
+        . $tdclass . '" title="' . $percent . '%"><span>'
+        . $percent . '%</span></strong>' . "\n";
     $tr .= "\t\t\t\t" . '</div>' . "\n";
     $tr .= "\t\t\t" . '</td>' . "\n";
     $tr .= "\t\t\t" . '<td class="numerical-data">' . $hits . '</td>' . "\n";

@@ -6,20 +6,31 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
 $tmpl = Request::getCmd('tmpl');
 
 $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+$sortDir = @$this->filters['sort_Dir'];
+$sort = @$this->filters['sort'];
+$searchVal = $this->escape($this->filters['search']);
+$searchPlaceholder = Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="postsForm">
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="postsForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COLLECTIONS_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+        <input type="text"
+            name="search"
+            id="filter_search"
+            class="filter"
+            value="<?php echo $searchVal; ?>"
+            placeholder="<?php echo $searchPlaceholder; ?>" />
 
         <input type="submit" value="<?php echo Lang::txt('COM_COLLECTIONS_GO'); ?>" />
         <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -33,21 +44,39 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
             <?php if ($this->filters['collection_id']) { ?>
                 <tr>
                     <th colspan="6">
-                        <?php $collection = \Components\Collections\Models\Collection::oneOrFail($this->filters['collection_id']); ?>
+                        <?php
+                        $collection = \Components\Collections\Models\Collection::oneOrFail(
+                            $this->filters['collection_id']
+                        );
+                        ?>
                         (<?php echo $this->escape(stripslashes($collection->get('alias'))); ?>)
                         <?php echo $this->escape(stripslashes($collection->get('title'))); ?>
                     </th>
                 </tr>
             <?php } ?>
             <tr>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_POSTED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_POSTEDBY', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-5">
+                    <?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_ID', 'id', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_DESCRIPTION', 'description', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-5">
+                    <?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_POSTED', 'created', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_POSTEDBY', 'created_by', $sortDir, $sort); ?>
+                </th>
                 <?php if (!$this->filters['collection_id']) { ?>
-                    <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_COLLECTION_ID', 'collection_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                    <th scope="col" class="priority-2">
+                        <?php
+                        echo Html::grid('sort', 'COM_COLLECTIONS_COL_COLLECTION_ID', 'collection_id', $sortDir, $sort);
+                        ?>
+                    </th>
                 <?php } ?>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_ORIGINAL', 'original', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_COLLECTIONS_COL_ORIGINAL', 'original', $sortDir, $sort); ?>
+                </th>
                 <th scope="col"><?php echo Lang::txt('COM_COLLECTIONS_COL_ACTION'); ?></th>
             </tr>
         </thead>
@@ -90,7 +119,14 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id=' . $row->get('id')
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <span><?php echo $content; ?></span>
                         </a>
                     <?php } else { ?>
@@ -100,11 +136,19 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
                     <?php } ?>
                 </td>
                 <td class="priority-5">
-                    <time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+                    <time datetime="<?php echo $row->get('created'); ?>">
+                        <?php echo $row->get('created'); ?>
+                    </time>
                 </td>
                 <td class="priority-3">
                     <span class="glyph member">
-                        <?php echo $this->escape($row->creator->get('name', Lang::txt('COM_COLLECTIONS_UNKNOWN'))); ?>
+                        <?php
+                        $creatorName = $row->creator->get(
+                            'name',
+                            Lang::txt('COM_COLLECTIONS_UNKNOWN')
+                        );
+                        echo $this->escape($creatorName);
+                        ?>
                     </span>
                 </td>
                 <?php if (!$this->filters['collection_id']) { ?>
@@ -119,7 +163,16 @@ $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
                 </td>
                 <?php if ($canDo->get('core.delete')) { ?>
                     <td>
-                        <a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1' . ($tmpl ? '&tmpl=' . $tmpl : '')); ?>">
+                        <?php
+                        $deleteUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=remove&id=' . $row->get('id')
+                            . '&' . Session::getFormToken() . '=1'
+                            . ($tmpl ? '&tmpl=' . $tmpl : '')
+                        );
+                        ?>
+                        <a class="delete" href="<?php echo $deleteUrl; ?>">
                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                         </a>
                     </td>

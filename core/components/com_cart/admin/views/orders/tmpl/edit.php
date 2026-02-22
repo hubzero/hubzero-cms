@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +23,16 @@ $this->css()
     ->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form">
     <div class="grid">
     <div class="col span5">
         <fieldset class="adminform">
@@ -43,7 +50,12 @@ $this->css()
                     </tr>
                     <tr>
                         <th>Ordered by:</th>
-                        <td><span><?php echo $this->user->get('id') ? $this->user->get('name') . ' (' . $this->user->get('username') . ')' : Lang::txt('COM_CART_UNKNOWN'); ?></span></td>
+                        <td><span><?php
+                            $userName = $this->user->get('id')
+                                ? $this->user->get('name') . ' (' . $this->user->get('username') . ')'
+                                : Lang::txt('COM_CART_UNKNOWN');
+                            echo $userName;
+                        ?></span></td>
                     </tr>
                     <tr>
                         <th>Order subtotal:</th>
@@ -95,7 +107,9 @@ $this->css()
                     <?php
                         echo $this->tInfo->tiShippingToFirst . ' ' . $this->tInfo->tiShippingToLast . '<br>';
                         echo $this->tInfo->tiShippingAddress . '<br>';
-                        echo $this->tInfo->tiShippingCity . ', ' . $this->tInfo->tiShippingState . ' ' . $this->tInfo->tiShippingZip . '<br>';
+                        echo $this->tInfo->tiShippingCity . ', '
+                            . $this->tInfo->tiShippingState . ' '
+                            . $this->tInfo->tiShippingZip . '<br>';
                     ?>
                 </p>
 
@@ -117,7 +131,10 @@ $this->css()
                     ?>
                     <p>
                         <strong>Payment details:</strong><br>
-                        <input type="text" name="tiPaymentDetails" value="<?php echo $this->escape($this->tInfo->tiPaymentDetails); ?>" />
+                        <?php $payDetails = $this->escape($this->tInfo->tiPaymentDetails); ?>
+                        <input type="text"
+                            name="tiPaymentDetails"
+                            value="<?php echo $payDetails; ?>" />
                     </p>
                     <?php
                 }
@@ -150,17 +167,44 @@ $this->css()
                         <td>
                             <?php
                             if ($itemInfo->available) {
-                                $product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
-                                $product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
+                                $pUrl = Route::url(
+                                    'index.php?option=com_storefront&controller=products&task=edit&id='
+                                    . $itemInfo->pId
+                                );
+                                $pName = $this->escape(stripslashes($itemInfo->pName));
+                                $product = '<a href="' . $pUrl
+                                    . '" target="_blank" rel="noopener">'
+                                    . $pName . '</a>';
+                                $sUrl = Route::url(
+                                    'index.php?option=com_storefront&controller=skus&task=edit&id='
+                                    . $itemInfo->sId
+                                );
+                                $sName = $this->escape(stripslashes($itemInfo->sSku));
+                                $product .= ', <a href="' . $sUrl
+                                    . '" target="_blank" rel="noopener">'
+                                    . $sName . '</a>';
                             } else {
-                                $product = $this->escape(stripslashes($itemInfo->pName)) .  ', ' . $this->escape(stripslashes($itemInfo->sSku));
+                                $product = $this->escape(stripslashes($itemInfo->pName))
+                                    . ', ' . $this->escape(stripslashes($itemInfo->sSku));
                                 $product .= ' <br><em>&nbsp;&mdash;&nbsp;Item is no longer available</em>';
                             }
                             ?>
                             <span><?php echo $product; ?></span>
                         </td>
-                        <td><input type="text" name="tiPrice[<?php echo $itemInfo->sId; ?>]" size="10" maxlength="100" value="<?php echo $itemOrdered['transactionInfo']->tiPrice; ?>" /></td>
-                        <td><input type="text" name="tiQty[<?php echo $itemInfo->sId; ?>]" size="10" maxlength="100" value="<?php echo $itemOrdered['transactionInfo']->qty; ?>" /></td>
+                        <td>
+                            <input type="text"
+                                name="tiPrice[<?php echo $itemInfo->sId; ?>]"
+                                size="10"
+                                maxlength="100"
+                                value="<?php echo $itemOrdered['transactionInfo']->tiPrice; ?>" />
+                        </td>
+                        <td>
+                            <input type="text"
+                                name="tiQty[<?php echo $itemInfo->sId; ?>]"
+                                size="10"
+                                maxlength="100"
+                                value="<?php echo $itemOrdered['transactionInfo']->qty; ?>" />
+                        </td>
                     </tr>
                     <?php
                 }
@@ -179,7 +223,10 @@ $this->css()
                 $notes[] = array(
                     'object' => 'transactionItem',
                     'objectId' => $item['info']->sId,
-                    'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
+                    'label' => '<strong>'
+                        . $this->tInfo->tiItems[$sId]['info']->pName
+                        . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku
+                        . '</strong>',
                     'notes' => $meta->checkoutNotes
                 );
             }
@@ -207,7 +254,9 @@ $this->css()
                 echo '<p>';
                 echo $note['label'];
                 if ($note['object'] == 'transactionItem') {
-                    echo '<textarea rows="6" name="checkoutNotes[' . $note['objectId'] . ']">' . $note['notes'] . '</textarea>';
+                    echo '<textarea rows="6" name="checkoutNotes['
+                        . $note['objectId'] . ']">'
+                        . $note['notes'] . '</textarea>';
                 } elseif ($note['object'] == 'transaction') {
                     echo '<textarea rows="6" name="tiNotes">' . $note['notes'] . '</textarea>';
                 }

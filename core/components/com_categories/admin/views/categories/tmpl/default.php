@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -54,14 +52,37 @@ Html::behavior('multiselect');
 Html::behavior('tooltip');
 
 $this->js();
+
+$formAction = Route::url(
+    'index.php?option=com_categories&view=categories'
+);
 ?>
-<form action="<?php echo Route::url('index.php?option=com_categories&view=categories');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
 
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="filter-search span4">
-                <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CATEGORIES_ITEMS_SEARCH_FILTER'); ?>" />
+                <?php $filterLabel = Lang::txt('JSEARCH_FILTER_LABEL'); ?>
+                <label class="filter-search-lbl" for="filter_search">
+                    <?php echo $filterLabel; ?>
+                </label>
+                <?php
+                $searchVal = $this->escape($this->filters['search']);
+                $searchPlaceholder = Lang::txt(
+                    'COM_CATEGORIES_ITEMS_SEARCH_FILTER'
+                );
+                ?>
+                <input type="text"
+                    name="filter_search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $searchVal; ?>"
+                    placeholder="<?php echo $searchPlaceholder; ?>"
+                />
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
@@ -74,21 +95,68 @@ $this->js();
                 </select>
 
                 <label for="filter_published"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></label>
-                <select name="filter_published" id="filter_published" class="inputbox" class="filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                    <?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['published'], true);?>
+                <?php
+                $pubOptions = Html::grid('publishedOptions');
+                $pubFilter = $this->filters['published'];
+                ?>
+                <select name="filter_published"
+                    id="filter_published"
+                    class="inputbox filter filter-submit"
+                >
+                    <option value="">
+                        <?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?>
+                    </option>
+                    <?php echo Html::select(
+                        'options',
+                        $pubOptions,
+                        'value',
+                        'text',
+                        $pubFilter,
+                        true
+                    ); ?>
                 </select>
 
                 <label for="filter_access"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></label>
-                <select name="filter_access" id="filter_access" class="inputbox" class="filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                    <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']);?>
+                <?php $accessFilter = $this->filters['access']; ?>
+                <select name="filter_access"
+                    id="filter_access"
+                    class="inputbox filter filter-submit"
+                >
+                    <option value="">
+                        <?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?>
+                    </option>
+                    <?php echo Html::select(
+                        'options',
+                        Html::access('assetgroups'),
+                        'value',
+                        'text',
+                        $accessFilter
+                    ); ?>
                 </select>
 
                 <label for="filter_language"><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></label>
-                <select name="filter_language" id="filter_language" class="inputbox" class="filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-                    <?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']);?>
+                <?php
+                $langOptions = Html::contentlanguage(
+                    'existing',
+                    true,
+                    true
+                );
+                $langFilter = $this->filters['language'];
+                ?>
+                <select name="filter_language"
+                    id="filter_language"
+                    class="inputbox filter filter-submit"
+                >
+                    <option value="">
+                        <?php echo Lang::txt('JOPTION_SELECT_LANGUAGE'); ?>
+                    </option>
+                    <?php echo Html::select(
+                        'options',
+                        $langOptions,
+                        'value',
+                        'text',
+                        $langFilter
+                    ); ?>
                 </select>
             </div>
         </div>
@@ -98,8 +166,17 @@ $this->js();
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    >
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
                 <th>
                     <?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>
@@ -135,11 +212,21 @@ $this->js();
             <?php
             $originalOrders = array();
             foreach ($this->items as $i => $item) :
-                $orderkey   = array_search($item->id, $this->ordering[$item->parent_id]);
-                $canEdit    = User::authorise('core.edit', $extension . '.category.' . $item->id);
-                $canCheckin = User::authorise('core.admin', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-                $canEditOwn = User::authorise('core.edit.own', $extension . '.category.' . $item->id) && $item->created_user_id == $userId;
-                $canChange  = User::authorise('core.edit.state', $extension . '.category.' . $item->id) && $canCheckin;
+                $orderkey  = array_search(
+                    $item->id,
+                    $this->ordering[$item->parent_id]
+                );
+                $catAsset   = $extension . '.category.' . $item->id;
+                $canEdit    = User::authorise('core.edit', $catAsset);
+                $canCheckin = User::authorise('core.admin', 'com_checkin')
+                    || $item->checked_out == $userId
+                    || $item->checked_out == 0;
+                $canEditOwn = User::authorise('core.edit.own', $catAsset)
+                    && $item->created_user_id == $userId;
+                $canChange  = User::authorise(
+                    'core.edit.state',
+                    $catAsset
+                ) && $canCheckin;
                 ?>
                 <tr class="row<?php echo $i % 2; ?>">
                     <td class="center">
@@ -152,10 +239,25 @@ $this->js();
                         }
                         ?>
                         <?php if ($item->checked_out) : ?>
-                            <?php echo Html::grid('checkedout', $i, $item->editor->name, $item->checked_out_time, 'categories.', $canCheckin); ?>
+                            <?php echo Html::grid(
+                                'checkedout',
+                                $i,
+                                $item->editor->name,
+                                $item->checked_out_time,
+                                'categories.',
+                                $canCheckin
+                            ); ?>
                         <?php endif; ?>
                         <?php if ($canEdit || $canEditOwn) : ?>
-                            <a href="<?php echo Route::url('index.php?option=com_categories&task=category.edit&id=' . $item->id . '&extension=' . $extension);?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=com_categories'
+                                . '&task=category.edit'
+                                . '&id=' . $item->id
+                                . '&extension=' . $extension
+                            );
+                            ?>
+                            <a href="<?php echo $editUrl; ?>">
                                 <?php echo $this->escape($item->title); ?>
                             </a>
                         <?php else : ?>
@@ -167,10 +269,20 @@ $this->js();
                                 echo str_repeat('<span class="gi">|&mdash;</span>', $item->level - 1);
                             }
                             ?>
+                            <?php
+                            $escapedAlias = $this->escape($item->alias);
+                            ?>
                             <?php if (empty($item->note)) : ?>
-                                <?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?>
+                                <?php echo Lang::txt(
+                                    'JGLOBAL_LIST_ALIAS',
+                                    $escapedAlias
+                                ); ?>
                             <?php else : ?>
-                                <?php echo Lang::txt('JGLOBAL_LIST_ALIAS_NOTE', $this->escape($item->alias), $this->escape($item->note));?>
+                                <?php echo Lang::txt(
+                                    'JGLOBAL_LIST_ALIAS_NOTE',
+                                    $escapedAlias,
+                                    $this->escape($item->note)
+                                ); ?>
                             <?php endif; ?>
                         </p>
                     </td>
@@ -180,11 +292,45 @@ $this->js();
                     <td class="priority-2 order">
                         <?php if ($canChange) : ?>
                             <?php if ($saveOrder) : ?>
-                                <span><?php echo $this->pagination->orderUpIcon($i, isset($this->ordering[$item->parent_id][$orderkey - 1]), 'categories.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, isset($this->ordering[$item->parent_id][$orderkey + 1]), 'categories.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                <?php
+                                $hasPrev = isset(
+                                    $this->ordering[$item->parent_id][$orderkey - 1]
+                                );
+                                $hasNext = isset(
+                                    $this->ordering[$item->parent_id][$orderkey + 1]
+                                );
+                                $upIcon = $this->pagination->orderUpIcon(
+                                    $i,
+                                    $hasPrev,
+                                    'categories.orderup',
+                                    'JLIB_HTML_MOVE_UP',
+                                    $ordering
+                                );
+                                $downIcon = $this->pagination->orderDownIcon(
+                                    $i,
+                                    $this->pagination->total,
+                                    $hasNext,
+                                    'categories.orderdown',
+                                    'JLIB_HTML_MOVE_DOWN',
+                                    $ordering
+                                );
+                                ?>
+                                <span><?php echo $upIcon; ?></span>
+                                <span><?php echo $downIcon; ?></span>
                             <?php endif; ?>
-                            <?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
-                            <input type="text" name="order[<?php echo $item->parent_id;?>][<?php echo $item->id;?>]" size="5" value="<?php echo $orderkey + 1;?>" <?php echo $disabled ?> class="text-area-order" />
+                            <?php
+                            $disabled = $saveOrder ? '' : 'disabled="disabled"';
+                            $orderName = 'order[' . $item->parent_id . ']'
+                                . '[' . $item->id . ']';
+                            $orderVal = $orderkey + 1;
+                            ?>
+                            <input type="text"
+                                name="<?php echo $orderName; ?>"
+                                size="5"
+                                value="<?php echo $orderVal; ?>"
+                                <?php echo $disabled; ?>
+                                class="text-area-order"
+                            />
                             <?php $originalOrders[] = $orderkey + 1; ?>
                         <?php else : ?>
                             <?php echo $orderkey + 1;?>
@@ -197,7 +343,11 @@ $this->js();
                         <?php if ($item->language == '*') :?>
                             <?php echo Lang::txt('JALL', 'language'); ?>
                         <?php else :?>
-                            <?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
+                            <?php
+                            echo $item->language_title
+                                ? $this->escape($item->language_title)
+                                : Lang::txt('JUNDEFINED');
+                            ?>
                         <?php endif;?>
                     </td>
                     <td class="priority-4 center">
@@ -210,7 +360,12 @@ $this->js();
         </tbody>
     </table>
     <?php //Load the batch processing form. ?>
-    <?php if (User::authorise('core.create', $extension) & User::authorise('core.edit', $extension) && User::authorise('core.edit.state', $extension)) : ?>
+    <?php
+    $canCreate = User::authorise('core.create', $extension);
+    $canEditExt = User::authorise('core.edit', $extension);
+    $canEditState = User::authorise('core.edit.state', $extension);
+    ?>
+    <?php if ($canCreate & $canEditExt && $canEditState) : ?>
         <?php echo $this->loadTemplate('batch'); ?>
     <?php endif;?>
 
