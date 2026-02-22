@@ -441,7 +441,8 @@ class Set extends Obj implements Iterator
         @list($term_plugin, $term_section) = $this->terms->get_section();
         $flat_results = $this->processed_results;
         foreach ($flat_results as $res) {
-            $fc_child_flag = 'plgSearch' . $res->get_plugin() . '::FIRST_CLASS_CHILDREN';
+            $pluginName = ucfirst($res->get_plugin());
+            $fc_child_flag = 'Plugins\\Search\\' . $pluginName . '\\' . $pluginName . '::FIRST_CLASS_CHILDREN';
             if (!defined($fc_child_flag) || constant($fc_child_flag)) {
                 foreach ($res->get_children() as $child) {
                     $flat_results[] = $child;

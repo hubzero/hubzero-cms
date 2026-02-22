@@ -316,7 +316,7 @@ class Editor extends Obj
             }
 
             Plugin::import('editors-xtd', $plugin->name, false);
-            $className = 'plgButton' . $plugin->name;
+            $className = 'Plugins\\EditorsXtd\\' . ucfirst($plugin->name) . '\\' . ucfirst($plugin->name);
 
             if (class_exists($className)) {
                 $plugin = new $className($this, (array) $plugin);
@@ -369,7 +369,7 @@ class Editor extends Obj
         $plugin->params = $params;
 
         // Build editor plugin classname
-        $name = 'plgEditor' . $this->name;
+        $name = 'Plugins\\Editors\\' . ucfirst($this->name) . '\\' . ucfirst($this->name);
 
         if ($this->editor = new $name($this, (array) $plugin)) {
             // Load plugin parameters

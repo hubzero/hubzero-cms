@@ -1475,7 +1475,7 @@ class Profile extends Obj
 
             case 'raw':
             default:
-                $content = stripslashes($this->get('bio'));
+                $content = stripslashes($this->get('bio') ?? '');
                 $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
                 break;
         }

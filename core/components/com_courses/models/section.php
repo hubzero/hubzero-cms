@@ -429,7 +429,7 @@ class Section extends Base
                 $results = array();
             }
 
-            $this->_dates = new \Iterator($results);
+            $this->_dates = new Iterator($results);
         }
 
         return $this->_dates;
@@ -667,7 +667,7 @@ class Section extends Base
                 $results = array();
             }
 
-            $this->_codes = new \Iterator($results);
+            $this->_codes = new Iterator($results);
         }
 
         return $this->_codes;

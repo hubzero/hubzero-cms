@@ -171,7 +171,8 @@ foreach ($cats as $cat) {
                     if ($this->results) {
                         $html .= '<ol class="results">' . "\n";
                         foreach ($this->results as $row) {
-                            $obj = 'plgTags' . ucfirst($row->section == null ? '' : $row->section);
+                            $section = ucfirst($row->section == null ? '' : $row->section);
+                            $obj = 'Plugins\\Tags\\' . $section . '\\' . $section;
 
                             if (method_exists($obj, 'out')) {
                                 $html .= call_user_func(array($obj, 'out'), $row);

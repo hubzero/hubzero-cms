@@ -268,7 +268,7 @@ class Course extends Base
             }
 
             // Set the results
-            $this->_offerings = new \Iterator($results);
+            $this->_offerings = new Iterator($results);
         }
 
         // Return results

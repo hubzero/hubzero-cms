@@ -247,7 +247,7 @@ class Unit extends Base
             } else {
                 $res = array();
             }
-            $this->assetgroups = new \Iterator($res);
+            $this->assetgroups = new Iterator($res);
         }
 
         if ($idx !== null) {
@@ -286,7 +286,7 @@ class Unit extends Base
         if ($siblings instanceof \Iterator) {
             $this->_siblings = $siblings;
         } else {
-            $this->_siblings = new \Iterator($siblings);
+            $this->_siblings = new Iterator($siblings);
         }
     }
 
@@ -401,7 +401,7 @@ class Unit extends Base
                 $results = array();
             }
 
-            $this->_assets = new \Iterator($results);
+            $this->_assets = new Iterator($results);
         }
 
         return $this->_assets;

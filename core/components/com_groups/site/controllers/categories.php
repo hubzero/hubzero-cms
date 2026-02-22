@@ -41,7 +41,7 @@ class Categories extends Base
 
         //check to make sure we have  cname
         if (!$this->cn) {
-            $this->_errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
+            $this->errorHandler(400, Lang::txt('COM_GROUPS_ERROR_NO_ID'));
         }
 
         // Load the group page
@@ -49,14 +49,14 @@ class Categories extends Base
 
         // Ensure we found the group info
         if (!$this->group || !$this->group->get('gidNumber')) {
-            $this->_errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
+            $this->errorHandler(404, Lang::txt('COM_GROUPS_ERROR_NOT_FOUND'));
         }
 
         // Check authorization
         $isNotManager = $this->_authorize() != 'manager';
         $isNotAuthorizedForPages = !$this->_authorizedForTask('group.pages');
         if ($this->group->published == 2 || ($isNotManager && $isNotAuthorizedForPages)) {
-            $this->_errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
+            $this->errorHandler(403, Lang::txt('COM_GROUPS_ERROR_NOT_AUTH'));
         }
 
         //continue with parent execute method

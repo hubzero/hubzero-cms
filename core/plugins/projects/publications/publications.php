@@ -1486,7 +1486,7 @@ class Publications extends Plugin
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
         $version = Request::getString('version', 'default');
 
-        require_once Component::path('com_publications') . DS . 'tables' . DS . 'logs.php';
+        require_once Component::path('com_publications') . DS . 'tables' . DS . 'Log.php';
 
         $view = new \Hubzero\Plugin\View(
             array(

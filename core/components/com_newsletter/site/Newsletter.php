@@ -24,15 +24,6 @@ class Newsletter extends AbstractComponent
      */
     protected function execute(): void
     {
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'newsletter.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'mailinglist.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'mailing.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'emailSubscription.php';
-
-
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'subscriptionsHelper.php';
-
         // determine the controller to use:
         $defaultController = 'newsletters';
 

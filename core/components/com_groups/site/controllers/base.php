@@ -226,8 +226,7 @@ class Base extends SiteController
      * @param   string   $errorMessage  Error message
      * @return  void
      */
-    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    public function _errorHandler($errorCode, $errorMessage)
+    public function errorHandler($errorCode, $errorMessage)
     {
         $no_html = Request::getInt('no_html', 0);
 

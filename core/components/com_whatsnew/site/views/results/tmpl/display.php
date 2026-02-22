@@ -148,7 +148,8 @@ foreach ($this->cats as $cat) {
                         $f();
                     }
                     // Check if a method exist (using JPlugin style)
-                    $obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+                    $catName = ucfirst($this->cats[$k]['category']);
+                    $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'documents')) {
                         $html .= call_user_func(array($obj, 'documents'));
                     }
@@ -172,7 +173,8 @@ foreach ($this->cats as $cat) {
                         $html .= $func($this->period);
                     }
                     // Check if a method exist (using JPlugin style)
-                    $obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+                    $catName = ucfirst($this->cats[$k]['category']);
+                    $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'before')) {
                         $html .= call_user_func(array($obj,'before'), $this->period);
                     }
@@ -185,7 +187,8 @@ foreach ($this->cats as $cat) {
                         // Does this category have a unique output display?
                         $func = 'plgWhatsnew' . ucfirst($row->section == null ? '' : $row->section) . 'Out';
                         // Check if a method exist (using JPlugin style)
-                        $obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+                        $catName = ucfirst($this->cats[$k]['category']);
+                    $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
 
                         if (function_exists($func)) {
                             $html .= $func($row, $this->period);
@@ -246,7 +249,8 @@ foreach ($this->cats as $cat) {
                         $html .= $func($this->period);
                     }
                     // Check if a method exist (using JPlugin style)
-                    $obj = 'plgWhatsnew' . ucfirst($this->cats[$k]['category']);
+                    $catName = ucfirst($this->cats[$k]['category']);
+                    $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
                     if (method_exists($obj, 'after')) {
                         $html .= call_user_func(array($obj,'after'), $this->period);
                     }

@@ -9,6 +9,7 @@
 namespace Plugins\Wiki\Parserdefault\Macros;
 
 use Plugins\Wiki\Parserdefault\WikiMacro;
+use Plugins\Wiki\Parserdefault\WikiParser;
 
 /**
  * Wiki macro class for linking footnotes

@@ -342,7 +342,7 @@ class Offering extends Base
                 $results = array();
             }
 
-            $this->_sections = new \Iterator($results);
+            $this->_sections = new Iterator($results);
         }
 
         return $this->_sections;
@@ -418,7 +418,7 @@ class Offering extends Base
                 $results = array();
             }
 
-            $this->_units = new \Iterator($results);
+            $this->_units = new Iterator($results);
         }
 
         return $this->_units;
@@ -619,7 +619,7 @@ class Offering extends Base
                 $results = array();
             }
 
-            $this->_assets = new \Iterator($results);
+            $this->_assets = new Iterator($results);
         }
 
         return $this->_assets;
@@ -926,7 +926,7 @@ class Offering extends Base
                 }
             }
 
-            $this->_announcements = new \Iterator($results);
+            $this->_announcements = new Iterator($results);
         }
 
         return $this->_announcements;

@@ -22,14 +22,8 @@ class Publications extends AbstractComponent
      */
     protected function execute(): void
     {
-        // Include publication model
-        $componentPath = Component::path('com_publications');
+        $componentPath = \Component::path('com_publications');
         $sitePath = "$componentPath/site";
-
-        require_once "$componentPath/models/publication.php";
-        require_once "$componentPath/tables/logs.php";
-        require_once "$componentPath/helpers/usage.php";
-        require_once "$componentPath/helpers/resourceMapGenerator.php";
 
         $view = Request::getCmd('view', 'publications');
         $controllerName = Request::getCmd('controller', $view);

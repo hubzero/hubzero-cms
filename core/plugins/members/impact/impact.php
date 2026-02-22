@@ -67,7 +67,7 @@ class Impact extends Plugin
 
         $path = \Component::path('com_publications');
 
-        include_once $path . DS . 'tables' . DS . 'logs.php';
+        include_once $path . DS . 'tables' . DS . 'Log.php';
         include_once $path . DS . 'tables' . DS . 'publication.php';
         include_once $path . DS . 'tables' . DS . 'author.php';
         include_once $path . DS . 'tables' . DS . 'category.php';

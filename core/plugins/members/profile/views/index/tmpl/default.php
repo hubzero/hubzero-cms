@@ -107,6 +107,7 @@ foreach ($profiles as $profile) {
  * @param  string  $v
  * @return string
  */
+if (!function_exists('renderIfJson')):
 function renderIfJson($v)
 {
     if (strstr($v == null ? '' : $v, '{')) {
@@ -132,6 +133,7 @@ function renderIfJson($v)
     }
     return $v;
 }
+endif;
 
 // Legacy access values for profile fields
 $legacy = array(

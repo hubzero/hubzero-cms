@@ -106,7 +106,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         $fsize = \Hubzero\Utility\Number::formatBytes(filesize($row->filespace() . DS . $row->get('page_id') . DS . $row->get('filename')));
                     }
 
-                    $name = $this->escape(stripslashes($row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))));
+                    $name = $this->escape(stripslashes($row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? ''));
                     if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) {
                         $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
                     }
@@ -117,13 +117,13 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         </td>
                         <td>
                             <a href="<?php echo Route::url($this->page->link('base') . '&pagename=' . ($row->get('path') ? $row->get('path') . '/' : '') . $row->get('pagename') . '/File:' . $row->get('filename')); ?>">
-                                <?php echo $this->escape(stripslashes($row->get('filename'))); ?>
+                                <?php echo $this->escape(stripslashes($row->get('filename') ?? '')); ?>
                             </a>
                         </td>
                         <td>
                             <?php if ($row->isImage()) { ?>
                                 <a rel="lightbox" href="<?php echo Route::url($this->page->link('base') . '&pagename=' . ($row->get('path') ? $row->get('path') . '/' : '') . $row->get('pagename') . '/File:' . $row->get('filename')); ?>">
-                                    <img src="<?php echo Route::url($this->page->link('base') . '&pagename=' . ($row->get('path') ? $row->get('path') . '/' : '') . $row->get('pagename') . '/File:' . $row->get('filename')); ?>" width="50" alt="<?php echo $this->escape(stripslashes($row->get('filename'))); ?>" />
+                                    <img src="<?php echo Route::url($this->page->link('base') . '&pagename=' . ($row->get('path') ? $row->get('path') . '/' : '') . $row->get('pagename') . '/File:' . $row->get('filename')); ?>" width="50" alt="<?php echo $this->escape(stripslashes($row->get('filename') ?? '')); ?>" />
                                 </a>
                             <?php } ?>
                         </td>
@@ -134,7 +134,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                             <?php echo $name; ?>
                         </td>
                         <td>
-                            <span><?php echo $this->escape(stripslashes($row->get('description', ''))); ?></span>
+                            <span><?php echo $this->escape(stripslashes($row->get('description', '') ?? '')); ?></span>
                         </td>
                     </tr>
                     <?php

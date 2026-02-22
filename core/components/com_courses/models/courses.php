@@ -136,7 +136,7 @@ class Courses extends Obj
                 $results = array();
             }
 
-            $this->_courses = new \Iterator($results);
+            $this->_courses = new Iterator($results);
         }
 
         return $this->_courses;
@@ -159,7 +159,7 @@ class Courses extends Obj
             $results = array();
         }
 
-        $courses = new \Iterator($results);
+        $courses = new Iterator($results);
 
         return $courses;
     }

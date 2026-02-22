@@ -217,11 +217,17 @@ class ClassLoader
                 break;
         }
 
-        // Build all file path variants (CamelCase + lowercase)
+        // Build all file path variants (CamelCase + lowercase + lowercase-dirs)
         $fileVariants = [];
         foreach ($relativePaths as $relativePath) {
             $fileVariants[] = $relativePath;
             $fileVariants[] = strtolower($relativePath);
+            // Lowercase directory parts but preserve filename case
+            $lastSlash = strrpos($relativePath, '/');
+            if ($lastSlash !== false) {
+                $fileVariants[] = strtolower(substr($relativePath, 0, $lastSlash))
+                    . substr($relativePath, $lastSlash);
+            }
         }
 
         // Determine which base directory owns this extension

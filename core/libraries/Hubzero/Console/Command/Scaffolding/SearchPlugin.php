@@ -58,7 +58,7 @@ class SearchPlugin extends Scaffolding
         // @TODO detect previous file, warn about override
 
         // Make plugin file
-        $classname   = 'plgSearch' . ucfirst($extension);
+        $classname   = ucfirst($extension);
         $destination = $installDir . DS . $extension . DS .  $extension . '.php';
 
         // Make directory

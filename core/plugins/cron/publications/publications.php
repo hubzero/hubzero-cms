@@ -77,8 +77,8 @@ class Publications extends Plugin
         Lang::load('com_publications', Component::path('com_publications') . '/site');
 
         // Is logging enabled?
-        if (is_file(Component::path('com_publications') . '/tables/logs.php')) {
-            require_once Component::path('com_publications') . '/tables/logs.php';
+        if (is_file(Component::path('com_publications') . '/tables/Log.php')) {
+            require_once Component::path('com_publications') . '/tables/Log.php';
         } else {
             $this->setError('Publication logs not present on this hub, cannot email stats to authors');
             return false;

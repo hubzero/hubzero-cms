@@ -175,7 +175,7 @@ class Parser extends Obj
         $plugin->params->merge($config);
 
         // Build parser plugin classname
-        $name = 'plgWiki' . $this->name;
+        $name = 'Plugins\\Wiki\\' . ucfirst($this->name) . '\\' . ucfirst($this->name);
 
         if ($this->parser = new $name($this, (array)$plugin)) {
             // Load plugin parameters

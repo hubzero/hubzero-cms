@@ -160,13 +160,13 @@ class Questions extends Plugin
                 $seen_answers[$row['qid'] . '-' . $row['rid']] = 1;
             }
         }
-        usort($questions, array('plgSearchQuestions', 'sort_by_weight'));
+        usort($questions, array(static::class, 'sort_by_weight'));
         $maxWeight = 0;
         foreach ($questions as $question) {
             $maxWeight = max($maxWeight, $question->get_weight());
         }
         foreach ($questions as $question) {
-            $question->sort_children(array('plgSearchQuestions', 'sort_by_date'));
+            $question->sort_children(array(static::class, 'sort_by_date'));
             $question->scale_weight($maxWeight, 'normalizing within plugin');
             $results->add($question);
         }

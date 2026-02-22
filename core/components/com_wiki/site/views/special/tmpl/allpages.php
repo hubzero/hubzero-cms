@@ -116,7 +116,7 @@ $namespaces = \Components\Wiki\Models\Page::all()
                                 ?>
                                 <li>
                                     <a href="<?php echo Route::url($row->link()); ?>">
-                                        <?php echo $this->escape(stripslashes($row->title)); ?>
+                                        <?php echo $this->escape(stripslashes($row->title ?? '')); ?>
                                     </a>
                                 </li>
                                 <?php
@@ -147,7 +147,7 @@ $namespaces = \Components\Wiki\Models\Page::all()
             ?>
                 <li>
                     <a href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:' . ucfirst($page)); ?>">
-                        <?php echo 'Special:' . ucfirst($this->escape(stripslashes($page))); ?>
+                        <?php echo 'Special:' . ucfirst($this->escape(stripslashes($page ?? ''))); ?>
                     </a>
                 </li>
             <?php

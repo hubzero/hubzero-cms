@@ -2841,7 +2841,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
 
             case 'raw':
             default:
-                $content = stripslashes($this->get($field, ''));
+                $content = stripslashes($this->get($field, '') ?? '');
                 return preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
             break;
         }

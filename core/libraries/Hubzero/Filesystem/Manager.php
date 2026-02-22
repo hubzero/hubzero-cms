@@ -112,7 +112,7 @@ class Manager
             Plugin::import('filesystem');
 
             // Get the adapter
-            $plugin  = 'plgFilesystem' . ucfirst($name);
+            $plugin  = 'Plugins\\Filesystem\\' . ucfirst($name) . '\\' . ucfirst($name);
             $adapter = $plugin::init($params);
 
             self::$adapters[$key] = new Flysystem($adapter);

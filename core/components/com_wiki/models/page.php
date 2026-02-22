@@ -116,7 +116,7 @@ class Page extends Relational
                 $error = Lang::txt('COM_WIKI_ERROR_INVALID_TITLE');
             }
 
-            if (strlen($data['pagename']) > 250) {
+            if (strlen($data['pagename'] ?? '') > 250) {
                 $error = Lang::txt('Pagename too long');
             }
 
@@ -134,7 +134,7 @@ class Page extends Relational
     public function getNamespace($pagename = '')
     {
         if (empty($pagename)) {
-            $pagename = $this->get('pagename', '');
+            $pagename = $this->get('pagename', '') ?? '';
         }
         if (strstr($pagename, ':')) {
             return strtolower(strstr($pagename, ':', true));

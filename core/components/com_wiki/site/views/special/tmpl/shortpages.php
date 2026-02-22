@@ -60,7 +60,7 @@ $rows = $this->book->pages($filters)
             <?php
             if ($rows) {
                 foreach ($rows as $row) {
-                    $name = $this->escape(stripslashes($row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))));
+                    $name = $this->escape(stripslashes($row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? ''));
                     if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) {
                         $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
                     }
@@ -71,7 +71,7 @@ $rows = $this->book->pages($filters)
                         </td>
                         <td>
                             <a href="<?php echo Route::url($row->link()); ?>">
-                                <?php echo $this->escape(stripslashes($row->title)); ?>
+                                <?php echo $this->escape(stripslashes($row->title ?? '')); ?>
                             </a>
                         </td>
                         <td>
