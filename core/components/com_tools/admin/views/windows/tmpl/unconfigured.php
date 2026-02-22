@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,12 +17,12 @@ Html::behavior('tooltip');
 
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
     $this->view('_submenu')
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
 
     <p class="warning"><?php echo Lang::txt('COM_TOOLS_WINDOWS_CONFIGURATION_REQUIRED'); ?></p>
 

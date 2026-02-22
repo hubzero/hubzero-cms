@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -55,7 +53,6 @@ $this->css();
         <tbody>
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 if ($this->rows) {
     $db = \Components\Tools\Helpers\Utils::getMWDBO();
 

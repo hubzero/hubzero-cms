@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,9 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('COM_SUPPORT_QUERIES'), 'support');
+$toolbarTitle = Lang::txt('COM_SUPPORT_TICKET') . ': '
+    . Lang::txt('COM_SUPPORT_QUERIES');
+Toolbar::title($toolbarTitle, 'support');
 if (User::authorise('core.admin', $this->option)) {
     Toolbar::custom('reset', 'refresh.png', 'refresh_f2.png', 'COM_SUPPORT_RESET', false);
     Toolbar::spacer();
@@ -23,18 +23,56 @@ if (User::authorise('core.admin', $this->option)) {
 Toolbar::help('queries');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <p class="info"><?php echo Lang::txt('COM_SUPPORT_QUERY_INFO'); ?></p>
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SUPPORT_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SUPPORT_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SUPPORT_COL_TYPE', 'iscore', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_SUPPORT_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_SUPPORT_COL_TITLE',
+                        'title',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_SUPPORT_COL_TYPE',
+                        'iscore',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -71,14 +109,29 @@ Toolbar::help('queries');
             ?>
             <tr>
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->id; ?>"
+                        class="checkbox-toggle"
+                    />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $row->id; ?>
+                    </label>
                 </td>
                 <td>
                     <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&id=' . $row->id
+                    );
+                    ?>
+                    <a href="<?php echo $editUrl; ?>">
                         <?php echo $this->escape(stripslashes($row->title)); ?>
                     </a>
                 </td>
@@ -98,8 +151,10 @@ Toolbar::help('queries');
     <input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
-    <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+    <input type="hidden" name="filter_order"
+        value="<?php echo $this->escape($this->filters['sort']); ?>" />
+    <input type="hidden" name="filter_order_Dir"
+        value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
     <?php echo Html::input('token'); ?>
 </form>

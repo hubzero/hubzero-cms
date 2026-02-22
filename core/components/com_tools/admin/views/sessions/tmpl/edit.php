@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,10 @@ Toolbar::cancel('cancelclass');
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php endif; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php
+$actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -32,11 +33,24 @@ Toolbar::cancel('cancelclass');
 
                 <div class="input-wrap">
                     <label for="field-alias"><?php echo Lang::txt('COM_TOOLS_SESSION_CLASS_ALIAS'); ?>:</label>
-                    <input <?php echo ($this->row->alias == 'default') ? 'readonly' : ''; ?> type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->alias == null ? '' : $this->row->alias)); ?>" />
+                    <?php $aliasVal = $this->escape(stripslashes($this->row->alias ?? '')); ?>
+                    <input
+                        <?php echo ($this->row->alias == 'default') ? 'readonly' : ''; ?>
+                        type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        value="<?php echo $aliasVal; ?>"
+                    />
                 </div>
                 <div class="input-wrap">
                     <label for="field-jobs"><?php echo Lang::txt('COM_TOOLS_SESSION_CLASS_JOBS'); ?>:</label>
-                    <input type="text" name="fields[jobs]" id="field-jobs" value="<?php echo $this->escape(stripslashes($this->row->jobs == null ? '' : $this->row->jobs)); ?>" />
+                    <?php $jobsVal = $this->escape(stripslashes($this->row->jobs ?? '')); ?>
+                    <input
+                        type="text"
+                        name="fields[jobs]"
+                        id="field-jobs"
+                        value="<?php echo $jobsVal; ?>"
+                    />
                 </div>
             </fieldset>
             <fieldset class="adminform">

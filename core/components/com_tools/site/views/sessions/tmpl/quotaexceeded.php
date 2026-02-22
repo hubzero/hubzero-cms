@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,11 +15,13 @@ $this->css('tools.css');
     <h2><?php echo Lang::txt('COM_TOOLS_QUOTAEXCEEDED'); ?></h2>
 </header><!-- / #content-header -->
 
-<section class="main section<?php if (!$this->config->get('access-manage-session') && $this->active == 'all') {
-    echo ' hide';
-                            } else {
-                                echo '';
-                            }?>" id="mysessions-section">
+<?php
+$sectionClass = 'main section';
+if (!$this->config->get('access-manage-session') && $this->active == 'all') {
+    $sectionClass .= ' hide';
+}
+?>
+<section class="<?php echo $sectionClass; ?>" id="mysessions-section">
     <p class="warning"><?php echo Lang::txt('COM_TOOLS_ERROR_QUOTAEXCEEDED'); ?></p>
     <table class="sessions">
         <thead>
@@ -40,13 +40,57 @@ $this->css('tools.css');
                 $cls = ($cls == 'odd') ? 'even' : 'odd';
                 ?>
             <tr class="<?php echo $cls; ?>">
-                <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=session&app=' . $session->appname . '&sess=' . $session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_RESUME_TITLE'); ?>"><?php echo $session->sessname; ?></a></td>
+                <?php
+                $resumeUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=session&app=' . $session->appname
+                    . '&sess=' . $session->sessnum
+                );
+                $resumeTitle = Lang::txt('COM_TOOLS_RESUME_TITLE');
+                ?>
+                <td>
+                    <a href="<?php echo $resumeUrl; ?>"
+                        title="<?php echo $resumeTitle; ?>"
+                    ><?php echo $session->sessname; ?></a>
+                </td>
                 <td><?php echo $session->start; ?></td>
                 <td><?php echo $session->accesstime; ?></td>
-                <?php if (User::get('username') == $session->username) { ?>
-                <td><a class="closetool" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stop&app=' . $session->appname . '&sess=' . $session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_TITLE'); ?>"><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></a></td>
-                <?php } else { ?>
-                <td><a class="disconnect" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unshare&app=' . $session->appname . '&sess=' . $session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_DISCONNECT_TITLE'); ?>"><?php echo Lang::txt('COM_TOOLS_DISCONNECT'); ?></a> <span class="owner"><?php echo Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username; ?></span></td>
+                <?php if (User::get('username') == $session->username) {
+                    $stopUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=stop&app=' . $session->appname
+                        . '&sess=' . $session->sessnum
+                    );
+                    $termTitle = Lang::txt('COM_TOOLS_TERMINATE_TITLE');
+                    $termLabel = Lang::txt('COM_TOOLS_TERMINATE');
+                    ?>
+                <td>
+                    <a class="closetool"
+                        href="<?php echo $stopUrl; ?>"
+                        title="<?php echo $termTitle; ?>"
+                    ><?php echo $termLabel; ?></a>
+                </td>
+                <?php } else {
+                    $unshareUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=unshare&app=' . $session->appname
+                        . '&sess=' . $session->sessnum
+                    );
+                    $disconnTitle = Lang::txt('COM_TOOLS_DISCONNECT_TITLE');
+                    $disconnLabel = Lang::txt('COM_TOOLS_DISCONNECT');
+                    $ownerLabel = Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER')
+                        . ': ' . $session->username;
+                    ?>
+                <td>
+                    <a class="disconnect"
+                        href="<?php echo $unshareUrl; ?>"
+                        title="<?php echo $disconnTitle; ?>"
+                    ><?php echo $disconnLabel; ?></a>
+                    <span class="owner"><?php echo $ownerLabel; ?></span>
+                </td>
                 <?php } ?>
             </tr>
                 <?php

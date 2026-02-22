@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -34,16 +32,43 @@ Html::behavior('keepalive');
 $this->js();
 
 $editor = Hubzero\Html\Editor::getInstance();
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+);
+$filenameLegend = Lang::txt(
+    'COM_TEMPLATES_TEMPLATE_FILENAME',
+    $this->file->get('name'),
+    $this->file->template()->element
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <fieldset class="adminform">
-        <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_FILENAME', $this->file->get('name'), $this->file->template()->element); ?></legend>
+        <legend><?php echo $filenameLegend; ?></legend>
 
         <div class="input-wrap">
-            <label for="field-source"><?php echo Lang::txt('COM_TEMPLATES_FIELD_SOURCE_LABEL'); ?></label>
+            <label for="field-source">
+                <?php echo Lang::txt('COM_TEMPLATES_FIELD_SOURCE_LABEL'); ?>
+            </label>
             <div class="editor-border">
-                <textarea name="fields[source]" id="field-source" rows="40" cols="80"><?php echo $this->escape($this->file->source()); ?></textarea>
+                <textarea
+                    name="fields[source]"
+                    id="field-source"
+                    rows="40"
+                    cols="80"
+                ><?php echo $this->escape($this->file->source()); ?></textarea>
             </div>
         </div>
 
@@ -53,6 +78,18 @@ $editor = Hubzero\Html\Editor::getInstance();
         <?php echo Html::input('token'); ?>
     </fieldset>
 
-    <input type="hidden" name="fields[extension_id]" id="field-extension_id" value="<?php echo $this->escape($this->file->get('extension_id')); ?>" />
-    <input type="hidden" name="fields[filename]" id="field-filename" value="<?php echo $this->escape($this->file->get('name')); ?>" />
+    <?php $extensionId = $this->escape($this->file->get('extension_id')); ?>
+    <input
+        type="hidden"
+        name="fields[extension_id]"
+        id="field-extension_id"
+        value="<?php echo $extensionId; ?>"
+    />
+    <?php $filename = $this->escape($this->file->get('name')); ?>
+    <input
+        type="hidden"
+        name="fields[filename]"
+        id="field-filename"
+        value="<?php echo $filename; ?>"
+    />
 </form>

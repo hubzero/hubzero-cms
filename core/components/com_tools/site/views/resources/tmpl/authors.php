@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,6 +16,18 @@ defined('_HZEXEC_') or die();
 <fieldset>
     <legend><?php echo Lang::txt('COM_TOOLS_AUTHORS_AUTHORS'); ?></legend>
     <div class="field-wrap">
-        <iframe name="authors" id="authors" src="index.php?option=<?php echo $this->option; ?>&amp;controller=authors&amp;rid=<?php echo $this->row->id; ?>&amp;tmpl=component&amp;version=<?php echo $this->version; ?>" width="100%" height="400" frameborder="0"></iframe>
+        <?php
+        $authorsSrc = 'index.php?option=' . $this->option
+            . '&amp;controller=authors&amp;rid=' . $this->row->id
+            . '&amp;tmpl=component&amp;version=' . $this->version;
+        ?>
+        <iframe
+            name="authors"
+            id="authors"
+            src="<?php echo $authorsSrc; ?>"
+            width="100%"
+            height="400"
+            frameborder="0"
+        ></iframe>
     </div>
 </fieldset><div class="clear"></div>

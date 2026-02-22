@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -24,21 +22,61 @@ Toolbar::help('templates');
 Html::behavior('tooltip');
 Html::behavior('modal');
 Html::behavior('multiselect');
+
+$formAction = Route::url(
+    'index.php?option=com_templates&controller=templates'
+);
+$searchVal = $this->escape($this->filters['search']);
+$searchTitle = Lang::txt('COM_TEMPLATES_TEMPLATES_FILTER_SEARCH_DESC');
+$clientOptions = Html::select(
+    'options',
+    \Components\Templates\Helpers\Utilities::getClientOptions(),
+    'value',
+    'text',
+    $this->filters['client_id']
+);
+$filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=com_templates&controller=templates'); ?>" method="post" name="adminForm" id="adminForm">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
     <fieldset id="filter-bar">
         <div class="filter-search fltlft">
-            <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-            <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" title="<?php echo Lang::txt('COM_TEMPLATES_TEMPLATES_FILTER_SEARCH_DESC'); ?>" />
-            <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-            <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+            <label class="filter-search-lbl" for="filter_search">
+                <?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?>
+            </label>
+            <input
+                type="text"
+                name="filter_search"
+                id="filter_search"
+                class="filter"
+                value="<?php echo $searchVal; ?>"
+                title="<?php echo $searchTitle; ?>"
+            />
+            <button type="submit">
+                <?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?>
+            </button>
+            <button type="button" class="filter-clear">
+                <?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?>
+            </button>
         </div>
         <div class="filter-select fltrt">
-            <label for="filter_client_id"><?php echo Lang::txt('JGLOBAL_FILTER_CLIENT'); ?></label>
-            <select name="filter_client_id" id="filter_client_id" class="inputbox filter filter-submit">
-                <option value="*"><?php echo Lang::txt('JGLOBAL_FILTER_CLIENT'); ?></option>
-                <?php echo Html::select('options', \Components\Templates\Helpers\Utilities::getClientOptions(), 'value', 'text', $this->filters['client_id']);?>
+            <label for="filter_client_id">
+                <?php echo $filterClient; ?>
+            </label>
+            <select
+                name="filter_client_id"
+                id="filter_client_id"
+                class="inputbox filter filter-submit"
+            >
+                <option value="*">
+                    <?php echo $filterClient; ?>
+                </option>
+                <?php echo $clientOptions; ?>
             </select>
         </div>
     </fieldset>
@@ -49,11 +87,15 @@ Html::behavior('multiselect');
                 <th class="priority-3">
                     &#160;
                 </th>
+                <?php
+                $sortDir = $this->filters['sort_Dir'];
+                $sort = $this->filters['sort'];
+                ?>
                 <th scope="col">
-                    <?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_TEMPLATE', 'a.element', $this->filters['sort_Dir'], $this->filters['sort']); ?>
+                    <?php echo Html::grid('sort', 'COM_TEMPLATES_HEADING_TEMPLATE', 'a.element', $sortDir, $sort); ?>
                 </th>
                 <th scope="col">
-                    <?php echo Html::grid('sort', 'JCLIENT', 'a.client_id', $this->filters['sort_Dir'], $this->filters['sort']); ?>
+                    <?php echo Html::grid('sort', 'JCLIENT', 'a.client_id', $sortDir, $sort); ?>
                 </th>
                 <th scope="col" class="priority-4">
                     <?php echo Lang::txt('HVERSION'); ?>
@@ -80,22 +122,48 @@ Html::behavior('multiselect');
                 ?>
                 <tr class="row<?php echo $i % 2; ?>">
                     <td class="priority-3">
-                        <?php echo \Components\Templates\Helpers\Utilities::thumb($item->element, $item->protected); ?>
+                        <?php
+                        echo \Components\Templates\Helpers\Utilities::thumb(
+                            $item->element,
+                            $item->protected
+                        );
+                        ?>
                     </td>
                     <td class="template-name">
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=files&id=' . (int) $item->extension_id); ?>">
+                        <?php
+                        $filesUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=files&id=' . (int) $item->extension_id
+                        );
+                        ?>
+                        <a href="<?php echo $filesUrl; ?>">
                             <?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DETAILS', ucfirst($item->name)); ?>
                         </a>
                         <p>
-                            <?php if ($this->preview && $item->client_id == '0') : ?>
-                                <a href="<?php echo Request::root() . 'index.php?tp=1&template=' . $item->element; ?>" rel="noopener" target="_blank">
+                            <?php if ($this->preview && $item->client_id == '0') :
+                                $previewUrl = Request::root()
+                                    . 'index.php?tp=1&template='
+                                    . $item->element;
+                                ?>
+                                <a
+                                    href="<?php echo $previewUrl; ?>"
+                                    rel="noopener"
+                                    target="_blank"
+                                >
                                     <?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_PREVIEW'); ?>
                                 </a>
                             <?php elseif ($item->client_id == '1') : ?>
                                 <?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_ADMIN'); ?>
-                            <?php else : ?>
-                                <span class="hasTip" title="<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW'); ?>::<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_DESC'); ?>">
-                                    <?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW'); ?>
+                            <?php else :
+                                $noPreview = Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW');
+                                $noPreviewDesc = Lang::txt('COM_TEMPLATES_TEMPLATE_NO_PREVIEW_DESC');
+                                ?>
+                                <span
+                                    class="hasTip"
+                                    title="<?php echo $noPreview; ?>::<?php echo $noPreviewDesc; ?>"
+                                >
+                                    <?php echo $noPreview; ?>
                                 </span>
                             <?php endif; ?>
                         </p>

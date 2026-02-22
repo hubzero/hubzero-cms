@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +14,8 @@ Html::behavior('framework', true);
 $this->css('component.css')
     ->js('media.js');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
     <fieldset>
         <label for="upload">
             <input type="file" class="option" name="upload" id="upload" />
@@ -50,10 +49,38 @@ $this->css('component.css')
                 ?>
                 <tr>
                     <td width="100%">
-                        <?php echo Route::url('index.php?option=com_resources&id=' . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file=' . $docs[$docName]); ?>
+                        <?php
+                        $resId = $this->row->alias
+                            ? $this->row->alias
+                            : $this->resource;
+                        echo Route::url(
+                            'index.php?option=com_resources&id='
+                            . $resId . '&task=download&file='
+                            . $docs[$docName]
+                        );
+                        ?>
                     </td>
                     <td>
-                        <a class="icon-delete delete delete-file" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo $docs[$docName]; ?>&amp;resource=<?php echo $this->resource; ?>&amp;tmpl=component&amp;subdir=<?php echo $this->subdir; ?>&amp;<?php echo Session::getFormToken(); ?>=1" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                        <?php
+                        $deleteHref = 'index.php?option=' . $this->option
+                            . '&amp;controller=' . $this->controller
+                            . '&amp;task=delete&amp;file=' . $docs[$docName]
+                            . '&amp;resource=' . $this->resource
+                            . '&amp;tmpl=component&amp;subdir=' . $this->subdir
+                            . '&amp;' . Session::getFormToken() . '=1';
+                        $confirmMsg = Lang::txt(
+                            'Are you sure you want to delete the file "%s"?',
+                            $docs[$docName]
+                        );
+                        $deleteTitle = Lang::txt('JACTION_DELETE');
+                        ?>
+                        <a
+                            class="icon-delete delete delete-file"
+                            href="<?php echo $deleteHref; ?>"
+                            target="filer"
+                            data-confirm="<?php echo $confirmMsg; ?>"
+                            title="<?php echo $deleteTitle; ?>"
+                        >
                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                         </a>
                     </td>

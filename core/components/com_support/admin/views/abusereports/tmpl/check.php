@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,9 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_ABUSE_CHECK'), 'support.png');
+$toolbarTitle = Lang::txt('COM_SUPPORT_TICKETS') . ': '
+    . Lang::txt('COM_SUPPORT_ABUSE_CHECK');
+Toolbar::title($toolbarTitle, 'support.png');
 Toolbar::custom('check', 'purge', '', 'COM_SUPPORT_CHECK', false);
 
 Html::behavior('framework');
@@ -28,15 +28,29 @@ $this->css('
 ');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=check'); ?>" method="post" name="adminForm" id="item-form">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller . '&task=check'
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-sample"><?php echo Lang::txt('COM_SUPPORT_ABUSE_SAMPLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <textarea name="sample" id="field-sample" cols="35" rows="20"><?php echo $this->escape($this->sample); ?></textarea>
+                    <label for="field-sample">
+                        <?php echo Lang::txt('COM_SUPPORT_ABUSE_SAMPLE'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
+                    <textarea
+                        name="sample"
+                        id="field-sample"
+                        cols="35"
+                        rows="20"
+                    ><?php echo $this->escape($this->sample); ?></textarea>
                 </div>
             </fieldset>
         </div>
@@ -55,8 +69,21 @@ $this->css('
                                 ?>
                                 <tr>
                                     <th><?php echo $result['service']; ?></th>
-                                    <td><?php echo $result['is_spam'] ? '<span class="spam">spam</span>' : '<span class="ham">ham</span>'; ?></td>
-                                    <td><?php echo $result['message'] ? '<span class="detector-message">' . $result['message'] . '</span>' : ''; ?></td>
+                                    <td>
+                                        <?php
+                                        echo $result['is_spam']
+                                            ? '<span class="spam">spam</span>'
+                                            : '<span class="ham">ham</span>';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo $result['message']
+                                            ? '<span class="detector-message">'
+                                                . $result['message'] . '</span>'
+                                            : '';
+                                        ?>
+                                    </td>
                                 </tr>
                                 <?php
                             }

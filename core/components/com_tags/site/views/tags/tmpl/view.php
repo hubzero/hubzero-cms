@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,8 @@ $this->tagstring = str_replace(array('%20', ' ', '+'), ',', $this->tagstring);
 
 $name  = Lang::txt('COM_TAGS_ALL_CATEGORIES');
 $total = $this->total;
-$here  = 'index.php?option=' . $this->option . '&tag=' . $this->tagstring . ($this->filters['sort'] ? '&sort=' . $this->filters['sort'] : '');
+$here  = 'index.php?option=' . $this->option . '&tag=' . $this->tagstring
+    . ($this->filters['sort'] ? '&sort=' . $this->filters['sort'] : '');
 
 // Add the "all" category
 $all = array(
@@ -57,11 +56,17 @@ foreach ($cats as $cat) {
         $name  = $cat['title'];
         $total = $cat['total'];
 
-        Pathway::append($cat['title'], $here . '&area=' . stripslashes($blob));
+        Pathway::append(
+            $cat['title'],
+            $here . '&area=' . stripslashes($blob)
+        );
     }
 
     // Build the HTML
-    $l = "\t" . '<li><a' . $a . ' href="' . $sef . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
+    $catTitle = $this->escape(stripslashes($cat['title']));
+    $l = "\t" . '<li><a' . $a . ' href="' . $sef . '">'
+        . $catTitle . ' <span class="item-count">'
+        . $cat['total'] . '</span></a>';
 
     // Are there sub-categories?
     if (isset($cat['children']) && is_array($cat['children'])) {
@@ -78,17 +83,35 @@ foreach ($cats as $cat) {
 
                 // Is this the active category?
                 $a = '';
-                if ($subcat['name'] == $this->active && isset($this->parent) && $this->parent == $parent) {
+                if (
+                    $subcat['name'] == $this->active
+                    && isset($this->parent)
+                    && $this->parent == $parent
+                ) {
                     $a = ' class="active"';
 
                     $name  = $subcat['title'];
                     $total = $subcat['total'];
 
-                    Pathway::append($subcat['title'], $here . '&area=' . stripslashes($blob));
+                    Pathway::append(
+                        $subcat['title'],
+                        $here . '&area=' . stripslashes($blob)
+                    );
                 }
 
                 // Build the HTML
-                $k[] = "\t\t\t" . '<li><a' . $a . ' href="' . Route::url($here . '&parent=' . $parent . '&area=' . stripslashes($blob)) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
+                $subcatUrl = Route::url(
+                    $here . '&parent=' . $parent
+                    . '&area=' . stripslashes($blob)
+                );
+                $subcatTitle = $this->escape(
+                    stripslashes($subcat['title'])
+                );
+                $k[] = "\t\t\t" . '<li><a' . $a
+                    . ' href="' . $subcatUrl . '">'
+                    . $subcatTitle
+                    . ' <span class="item-count">'
+                    . $subcat['total'] . '</span></a></li>';
             }
         }
         // Do we actually have any links?
@@ -117,7 +140,8 @@ foreach ($cats as $cat) {
 </header><!-- / #content-header -->
 
 <section class="main section">
-    <form class="section-inner hz-layout-with-aside" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get">
+    <?php $formUrl = Route::url('index.php?option=' . $this->option); ?>
+    <form class="section-inner hz-layout-with-aside" action="<?php echo $formUrl; ?>" method="get">
         <div class="subject">
             <div class="container data-entry">
                 <input type="hidden" name="task" value="view" />
@@ -144,13 +168,37 @@ foreach ($cats as $cat) {
             <div class="container">
                 <nav class="entries-filters">
                     <ul class="entries-menu order-options">
+                        <?php
+                        $sortBase = 'index.php?option=' . $this->option
+                            . '&tag=' . $this->tagstring
+                            . '&area=' . $this->active;
+                        $sortSuffix = '&limit=' . $this->filters['limit']
+                            . '&start=' . $this->filters['start'];
+                        $titleUrl = Route::url(
+                            $sortBase . '&sort=title' . $sortSuffix
+                        );
+                        $dateUrl = Route::url(
+                            $sortBase . '&sort=date' . $sortSuffix
+                        );
+                        $titleCls = ($this->filters['sort'] == 'title')
+                            ? ' class="active"' : '';
+                        $dateCls = ($this->filters['sort'] == 'date'
+                            || $this->filters['sort'] == '')
+                            ? ' class="active"' : '';
+                        $titleSortTxt = Lang::txt('COM_TAGS_OPT_SORT_BY_TITLE');
+                        $dateSortTxt = Lang::txt('COM_TAGS_OPT_SORT_BY_DATE');
+                        ?>
                         <li>
-                            <a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&sort=title&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_OPT_SORT_BY_TITLE'); ?>">
+                            <a<?php echo $titleCls; ?>
+                                href="<?php echo $titleUrl; ?>"
+                                title="<?php echo $titleSortTxt; ?>">
                                 <?php echo Lang::txt('COM_TAGS_OPT_TITLE'); ?>
                             </a>
                         </li>
                         <li>
-                            <a<?php echo ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&sort=date&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_OPT_SORT_BY_DATE'); ?>">
+                            <a<?php echo $dateCls; ?>
+                                href="<?php echo $dateUrl; ?>"
+                                title="<?php echo $dateSortTxt; ?>">
                                 <?php echo Lang::txt('COM_TAGS_OPT_DATE'); ?>
                             </a>
                         </li>
@@ -159,47 +207,66 @@ foreach ($cats as $cat) {
 
                 <div class="container-block">
                     <?php
-                        $ttl = ($total > ($this->filters['limit'] + $this->filters['start'])) ? ($this->filters['limit'] + $this->filters['start']) : $total;
+                        $max = $this->filters['limit'] + $this->filters['start'];
+                        $ttl = ($total > $max) ? $max : $total;
                     if ($total && !$ttl) {
                         $ttl = $total;
                     }
 
                         $base = rtrim(Request::base(), '/');
 
-                        $html  = '<h3>' . $this->escape(stripslashes($name)) . ' <span>(' . Lang::txt('COM_TAGS_RESULTS_THROUGH_OF', ($this->filters['start'] + 1), $ttl, $total) . ')</span></h3>' . "\n";
+                        $resultsTxt = Lang::txt(
+                            'COM_TAGS_RESULTS_THROUGH_OF',
+                            ($this->filters['start'] + 1),
+                            $ttl,
+                            $total
+                        );
+                        $html  = '<h3>'
+                            . $this->escape(stripslashes($name))
+                            . ' <span>(' . $resultsTxt . ')</span></h3>'
+                            . "\n";
 
-                    if ($this->results) {
-                        $html .= '<ol class="results">' . "\n";
-                        foreach ($this->results as $row) {
-                            $section = ucfirst($row->section == null ? '' : $row->section);
-                            $obj = 'Plugins\\Tags\\' . $section . '\\' . $section;
+                        if ($this->results) {
+                            $html .= '<ol class="results">' . "\n";
+                            foreach ($this->results as $row) {
+                                $section = ucfirst($row->section == null ? '' : $row->section);
+                                $obj = 'Plugins\\Tags\\' . $section . '\\' . $section;
 
-                            if (method_exists($obj, 'out')) {
-                                $html .= call_user_func(array($obj, 'out'), $row);
-                            } else {
-                                // @todo accommodate scope (aka) group citations
-                                if (strstr($row->href, 'index.php')) {
-                                    $row->href = Route::url($row->href);
-                                }
+                                if (method_exists($obj, 'out')) {
+                                    $html .= call_user_func(array($obj, 'out'), $row);
+                                } else {
+                                    // @todo accommodate scope (aka) group citations
+                                    if (strstr($row->href, 'index.php')) {
+                                        $row->href = Route::url($row->href);
+                                    }
 
-                                $html .= "\t" . '<li>' . "\n";
-                                $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . \Hubzero\Utility\Sanitize::clean($row->title) . '</a></p>' . "\n";
-                                if ($row->section) {
-                                    $html .= "\t\t" . '<p class="details"><strong class="type">' . ucfirst($row->section) . "</strong></p>\n";
+                                    $html .= "\t" . '<li>' . "\n";
+                                    $cleanTitle = \Hubzero\Utility\Sanitize::clean($row->title);
+                                    $html .= "\t\t" . '<p class="title"><a href="'
+                                    . $row->href . '">' . $cleanTitle
+                                    . '</a></p>' . "\n";
+                                    if ($row->section) {
+                                        $html .= "\t\t"
+                                        . '<p class="details"><strong class="type">'
+                                        . ucfirst($row->section) . "</strong></p>\n";
+                                    }
+                                    if ($row->ftext) {
+                                        $truncated = \Hubzero\Utility\Str::truncate(
+                                            strip_tags($row->ftext),
+                                            200
+                                        );
+                                        $html .= "\t\t" . '<p>' . $truncated . "</p>\n";
+                                    }
+                                    $html .= "\t\t" . '<p class="href">' . $base . $row->href . '</p>' . "\n";
+                                    $html .= "\t" . '</li>' . "\n";
                                 }
-                                if ($row->ftext) {
-                                    $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags($row->ftext), 200) . "</p>\n";
-                                }
-                                $html .= "\t\t" . '<p class="href">' . $base . $row->href . '</p>' . "\n";
-                                $html .= "\t" . '</li>' . "\n";
                             }
+                            $html .= '</ol>' . "\n";
+                        } else {
+                            $html = '<p class="warning">' . Lang::txt('COM_TAGS_NO_RESULTS') . '</p>';
                         }
-                        $html .= '</ol>' . "\n";
-                    } else {
-                        $html = '<p class="warning">' . Lang::txt('COM_TAGS_NO_RESULTS') . '</p>';
-                    }
                         echo $html;
-                    ?>
+                        ?>
                 </div><!-- / .container-block -->
                 <?php
                     $pageNav = $this->pagination(
@@ -231,9 +298,15 @@ foreach ($cats as $cat) {
                     // No - nothing to output
                     $html = '';
                 }
-                $html .= "\t" . '<input type="hidden" name="parent" value="' . $this->escape($this->parent) . '" />' . "\n";
-                $html .= "\t" . '<input type="hidden" name="area" value="' . $this->escape($this->active) . '" />' . "\n";
-                $html .= "\t" . '<input type="hidden" name="sort" value="' . $this->escape($this->filters['sort']) . '" />' . "\n";
+                $parentVal = $this->escape($this->parent);
+                $areaVal = $this->escape($this->active);
+                $sortVal = $this->escape($this->filters['sort']);
+                $html .= "\t" . '<input type="hidden" name="parent"'
+                    . ' value="' . $parentVal . '" />' . "\n";
+                $html .= "\t" . '<input type="hidden" name="area"'
+                    . ' value="' . $areaVal . '" />' . "\n";
+                $html .= "\t" . '<input type="hidden" name="sort"'
+                    . ' value="' . $sortVal . '" />' . "\n";
 
                 echo $html;
                 ?>

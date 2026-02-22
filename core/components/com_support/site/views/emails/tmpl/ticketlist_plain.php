@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -53,7 +51,11 @@ if (isset($this->tickets) && count($this->tickets) > 0) {
         $cells[] = '"#' . addslashes($ticket->id) . '"';
         $cells[] = '"' . addslashes($ticket->summary) . '"';
         $cells[] = '"' . addslashes($ticket->created) . '"';
-        $cells[] = '"' . ($ticket->name ? addslashes($ticket->name) : '--') . ($ticket->login ? ' (' . addslashes($ticket->login) . ')' : ' (--)') . '"';
+        $creatorName = $ticket->name ? addslashes($ticket->name) : '--';
+        $creatorLogin = $ticket->login
+            ? ' (' . addslashes($ticket->login) . ')'
+            : ' (--)';
+        $cells[] = '"' . $creatorName . $creatorLogin . '"';
         $cells[] = '"' . ($ticket->owner ? addslashes($ticket->owner_name . ' (' . $ticket->owner . ')') : '--') . '"';
         $cells[] = '"' . addslashes($ticket->severity) . '"';
         $cells[] = '"' . rtrim(Request::base(), '/') . '/' . trim($sef, '/') . '"';

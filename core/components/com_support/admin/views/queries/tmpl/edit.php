@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,9 @@ $tmpl = Request::getString('tmpl', '');
 
 if (!$tmpl) {
     $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-    Toolbar::title(Lang::txt('COM_SUPPORT_TICKET') . ': ' . Lang::txt('COM_SUPPORT_QUERIES') . ': ' . $text, 'support');
+    $toolbarTitle = Lang::txt('COM_SUPPORT_TICKET') . ': '
+        . Lang::txt('COM_SUPPORT_QUERIES') . ': ' . $text;
+    Toolbar::title($toolbarTitle, 'support');
     Toolbar::save();
     Toolbar::cancel();
 }
@@ -35,36 +35,70 @@ if (!$tmpl) {
 <?php
 if (!$tmpl) :
     ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+    <?php
+    $formAction = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+    );
+    ?>
+    <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
             <fieldset class="adminform">
                 <legend><?php echo Lang::txt('JDETAILS'); ?></legend>
 
                 <table class="admintable">
                     <tbody>
                         <tr>
-                            <td class="key"><label for="field-iscore"><?php echo Lang::txt('COM_SUPPORT_FIELD_TYPE'); ?></label></td>
+                            <td class="key">
+                                <label for="field-iscore">
+                                    <?php echo Lang::txt('COM_SUPPORT_FIELD_TYPE'); ?>
+                                </label>
+                            </td>
                             <td colspan="2">
                                 <select name="fields[iscore]" id="field-iscore">
                                     <optgroup label="<?php echo Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON'); ?>">
                                         <option value="2"<?php if ($this->row->iscore == 2) {
                                             echo ' selected="selected"';
-                                                         } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON_ACL'); ?></option>
+                                                         } ?>><?php
+                                            echo Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON_ACL');
+?></option>
                                         <option value="4"<?php if ($this->row->iscore == 4) {
                                             echo ' selected="selected"';
-                                                         } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON_NO_ACL'); ?></option>
+                                                         } ?>><?php
+                                            echo Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON_NO_ACL');
+?></option>
                                     </optgroup>
                                     <option value="1"<?php if ($this->row->iscore == 1) {
                                         echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_TYPE_MINE'); ?></option>
+                                                     } ?>><?php
+                                        echo Lang::txt('COM_SUPPORT_QUERY_TYPE_MINE');
+?></option>
                                     <option value="0"<?php if ($this->row->iscore == 0) {
                                         echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_TYPE_CUSTOM'); ?></option>
+                                                     } ?>><?php
+                                        echo Lang::txt('COM_SUPPORT_QUERY_TYPE_CUSTOM');
+?></option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td class="key"><label for="field-title"><?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?></label></td>
-                            <td colspan="2"><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title == null ? '' : $this->row->title)); ?>" /></td>
+                            <td class="key">
+                                <label for="field-title">
+                                    <?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?>
+                                </label>
+                            </td>
+                            <td colspan="2">
+                                <?php
+                                $titleVal = $this->escape(
+                                    stripslashes($this->row->title == null ? '' : $this->row->title)
+                                );
+                                ?>
+                                <input
+                                    type="text"
+                                    name="fields[title]"
+                                    id="field-title"
+                                    value="<?php echo $titleVal; ?>"
+                                />
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="3">
@@ -86,49 +120,43 @@ if (!$tmpl) :
                             </td>
                         </tr>
                         <tr>
-                            <td class="key"><label for="field-sort"><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_BY'); ?></label></td>
+                            <td class="key">
+                                <label for="field-sort">
+                                    <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_BY'); ?>
+                                </label>
+                            </td>
                             <td>
+                                <?php
+                                $so = $this->row->sort;
+                                $ss = ' selected="selected"';
+                                ?>
                                 <select name="fields[sort]" id="field-sort">
-                                    <option value="open"<?php if ($this->row->sort == 'open') {
-                                        echo ' selected="selected"';
-                                                        } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
-                                    <option value="status"<?php if ($this->row->sort == 'status') {
-                                        echo ' selected="selected"';
-                                                          } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
-                                    <option value="login"<?php if ($this->row->sort == 'login') {
-                                        echo ' selected="selected"';
-                                                         } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
-                                    <option value="owner"<?php if ($this->row->sort == 'owner') {
-                                        echo ' selected="selected"';
-                                                         } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
-                                    <option value="group"<?php if ($this->row->sort == 'group') {
-                                        echo ' selected="selected"';
-                                                         } ?>><?php echo Lang::txt('Group'); ?></option>
-                                    <option value="id"<?php if ($this->row->sort == 'id') {
-                                        echo ' selected="selected"';
-                                                      } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
-                                    <option value="report"<?php if ($this->row->sort == 'report') {
-                                        echo ' selected="selected"';
-                                                          } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
-                                    <?php /*<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
-                                    <option value="severity"<?php if ($this->row->sort == 'severity') {
-                                        echo ' selected="selected"';
-                                                            } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
-                                    <option value="tag"<?php if ($this->row->sort == 'tag') {
-                                        echo ' selected="selected"';
-                                                       } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
-                                    <option value="type"<?php if ($this->row->sort == 'type') {
-                                        echo ' selected="selected"';
-                                                        } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
-                                    <option value="created"<?php if ($this->row->sort == 'created') {
-                                        echo ' selected="selected"';
-                                                           } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
-                                    <option value="closed"<?php if ($this->row->sort == 'closed') {
-                                        echo ' selected="selected"';
-                                                          } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
-                                    <option value="category"<?php if ($this->row->sort == 'category') {
-                                        echo ' selected="selected"';
-                                                            } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
+                                    <option value="open"<?php echo $so == 'open' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
+                                    <option value="status"<?php echo $so == 'status' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
+                                    <option value="login"<?php echo $so == 'login' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
+                                    <option value="owner"<?php echo $so == 'owner' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
+                                    <option value="group"<?php echo $so == 'group' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('Group'); ?></option>
+                                    <option value="id"<?php echo $so == 'id' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
+                                    <option value="report"<?php echo $so == 'report' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
+                                    <option value="severity"<?php echo $so == 'severity' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
+                                    <option value="tag"<?php echo $so == 'tag' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
+                                    <option value="type"<?php echo $so == 'type' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
+                                    <option value="created"<?php echo $so == 'created' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
+                                    <option value="closed"<?php echo $so == 'closed' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
+                                    <option value="category"<?php echo $so == 'category' ? $ss : ''; ?>>
+                                        <?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
                                 </select>
                             </td>
                             <td>
@@ -147,12 +175,26 @@ if (!$tmpl) :
             </fieldset>
 
         <input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
-        <input type="hidden" name="fields[conditions]" id="field-conditions" value="<?php echo $this->escape(stripslashes($this->row->conditions == null ? '' : $this->row->conditions)); ?>" />
+        <?php
+        $condVal = $this->escape(
+            stripslashes($this->row->conditions == null ? '' : $this->row->conditions)
+        );
+        ?>
+        <input
+            type="hidden"
+            name="fields[conditions]"
+            id="field-conditions"
+            value="<?php echo $condVal; ?>"
+        />
         <input type="hidden" name="fields[user_id]" value="<?php echo User::get('id'); ?>" />
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-        <input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>" />
+        <input
+            type="hidden"
+            name="no_html"
+            value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>"
+        />
         <input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
         <input type="hidden" name="task" value="save" />
 
@@ -164,12 +206,30 @@ else :
         $this->row->title .= ' ' . Lang::txt('COM_SUPPORT_COPY');
     endif;
     ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="component-form">
+    <?php
+    $formAction2 = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+    );
+    $missingTitleMsg = Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE');
+    $actionUrl = Route::url('index.php?option=' . $this->option);
+    ?>
+    <form
+        action="<?php echo $formAction2; ?>"
+        method="post"
+        name="adminForm"
+        id="component-form"
+    >
         <fieldset>
             <div class="configuration">
                 <div class="configuration-options">
-                    <button type="button" id="btn-apply" data-invalid="<?php echo Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE'); ?>" data-action="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('JAPPLY');?></button>
-                    <button type="button" id="btn-cancel"><?php echo Lang::txt('JCANCEL');?></button>
+                    <button
+                        type="button"
+                        id="btn-apply"
+                        data-invalid="<?php echo $missingTitleMsg; ?>"
+                        data-action="<?php echo $actionUrl; ?>"
+                    ><?php echo Lang::txt('JAPPLY'); ?></button>
+                    <button type="button" id="btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></button>
                 </div>
 
                 <?php echo Lang::txt('COM_SUPPORT_QUERY_BUILDER'); ?>
@@ -178,7 +238,17 @@ else :
 
         <fieldset class="fields title">
             <label for="field-title"><?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?></label>
-            <input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title == null ? '' : $this->row->title)); ?>" />
+            <?php
+            $titleVal2 = $this->escape(
+                stripslashes($this->row->title == null ? '' : $this->row->title)
+            );
+            ?>
+            <input
+                type="text"
+                name="fields[title]"
+                id="field-title"
+                value="<?php echo $titleVal2; ?>"
+            />
         </fieldset>
 
         <fieldset class="query">
@@ -209,9 +279,12 @@ else :
 
                     if ($folders) :
                         foreach ($folders as $folder) :
-                            ?><option value="<?php echo $folder->id; ?>"<?php if ($this->row->folder_id == $folder->id) {
-    echo ' selected="selected"';
-                            } ?>><?php echo $this->escape(stripslashes($folder->title)); ?></option><?php
+                            ?><option
+                                value="<?php echo $folder->id; ?>"
+                                <?php if ($this->row->folder_id == $folder->id) {
+                                    echo ' selected="selected"';
+                                } ?>
+                            ><?php echo $this->escape(stripslashes($folder->title)); ?></option><?php
                         endforeach;
                     endif;
                     ?>
@@ -240,7 +313,11 @@ else :
                     <option value="report"<?php if ($this->row->sort == 'report') {
                         echo ' selected="selected"';
                                           } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
-                    <?php /*<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
+                    <?php /*
+                    <option value="resolved"<?php if ($this->row->sort == 'resolved') {
+                        echo ' selected="selected"';
+                    } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>
+                    */ ?>
                     <option value="severity"<?php if ($this->row->sort == 'severity') {
                         echo ' selected="selected"';
                                             } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
@@ -271,13 +348,31 @@ else :
             </p>
         </fieldset>
 
-        <input type="hidden" name="fields[id]" value="<?php echo ($this->row->iscore == 0) ? $this->row->id : 0; ?>" />
-        <input type="hidden" name="fields[conditions]" id="field-conditions" value="<?php echo $this->escape(stripslashes($this->row->conditions == null ? '' : $this->row->conditions)); ?>" />
+        <input
+            type="hidden"
+            name="fields[id]"
+            value="<?php echo ($this->row->iscore == 0) ? $this->row->id : 0; ?>"
+        />
+        <?php
+        $condVal2 = $this->escape(
+            stripslashes($this->row->conditions == null ? '' : $this->row->conditions)
+        );
+        ?>
+        <input
+            type="hidden"
+            name="fields[conditions]"
+            id="field-conditions"
+            value="<?php echo $condVal2; ?>"
+        />
         <input type="hidden" name="fields[user_id]" value="<?php echo User::get('id'); ?>" />
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-        <input type="hidden" name="no_html" value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>" />
+        <input
+            type="hidden"
+            name="no_html"
+            value="<?php echo ($tmpl) ? 1 : Request::getInt('no_html', 0); ?>"
+        />
         <input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
         <input type="hidden" name="task" value="save" />
 

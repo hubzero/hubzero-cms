@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,13 @@ $this->css('status.css')
 </header><!-- / #content-header -->
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status'); ?>" >
+    <?php
+    $actionUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller . '&task=status'
+    );
+    ?>
+    <form action="<?php echo $actionUrl; ?>">
             <div class="options row no-gutters">
             
                 <div class="option col-lg-3 col-md-6">

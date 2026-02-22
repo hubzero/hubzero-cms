@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,24 +10,54 @@
 defined('_HZEXEC_') or die();
 
 $task = Request::getCmd('task');
+
+$baseUrl = 'index.php?option=' . $this->option
+    . '&controller=' . $this->controller;
+$hostUrl = Route::url($baseUrl);
+$systemUrl = Route::url($baseUrl . '&task=system');
+$userUrl = Route::url($baseUrl . '&task=user');
+$dirUrl = Route::url($baseUrl . '&task=dircache');
+$versionUrl = Route::url($baseUrl . '&task=version');
+
+$hostLabel = Lang::txt('COM_SYSTEM_APC_MENU_HOST');
+$sysLabel = Lang::txt('COM_SYSTEM_APC_MENU_SYSTEM');
+$userLabel = Lang::txt('COM_SYSTEM_APC_MENU_USER');
+$dirLabel = Lang::txt('COM_SYSTEM_APC_MENU_DIR');
+$verLabel = Lang::txt('COM_SYSTEM_APC_MENU_VERSION');
+
+$hostActive = (!$task || $task == 'host') ? ' class="active"' : '';
+$sysActive = ($task == 'system') ? ' class="active"' : '';
+$userActive = ($task == 'user') ? ' class="active"' : '';
+$dirActive = ($task == 'dircache') ? ' class="active"' : '';
+$verActive = ($task == 'version') ? ' class="active"' : '';
 ?>
 
 <div role="navigation" class="sub sub-navigation">
     <ul id="subsubmenu">
-        <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"<?php if (!$task || $task == 'host') {
-            echo ' class="active"';
-                     } ?>><?php echo Lang::txt('COM_SYSTEM_APC_MENU_HOST'); ?></a></li>
-        <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=system'); ?>"<?php if ($task == 'system') {
-            echo ' class="active"';
-                     } ?>><?php echo Lang::txt('COM_SYSTEM_APC_MENU_SYSTEM'); ?></a></li>
-        <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=user'); ?>"<?php if ($task == 'user') {
-            echo ' class="active"';
-                     } ?>><?php echo Lang::txt('COM_SYSTEM_APC_MENU_USER'); ?></a></li>
-        <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=dircache'); ?>"<?php if ($task == 'dircache') {
-            echo ' class="active"';
-                     } ?>><?php echo Lang::txt('COM_SYSTEM_APC_MENU_DIR'); ?></a></li>
-        <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=version'); ?>"<?php if ($task == 'version') {
-            echo ' class="active"';
-                     } ?>><?php echo Lang::txt('COM_SYSTEM_APC_MENU_VERSION'); ?></a></li>
+        <li>
+            <a href="<?php echo $hostUrl; ?>"<?php echo $hostActive; ?>>
+                <?php echo $hostLabel; ?>
+            </a>
+        </li>
+        <li>
+            <a href="<?php echo $systemUrl; ?>"<?php echo $sysActive; ?>>
+                <?php echo $sysLabel; ?>
+            </a>
+        </li>
+        <li>
+            <a href="<?php echo $userUrl; ?>"<?php echo $userActive; ?>>
+                <?php echo $userLabel; ?>
+            </a>
+        </li>
+        <li>
+            <a href="<?php echo $dirUrl; ?>"<?php echo $dirActive; ?>>
+                <?php echo $dirLabel; ?>
+            </a>
+        </li>
+        <li>
+            <a href="<?php echo $versionUrl; ?>"<?php echo $verActive; ?>>
+                <?php echo $verLabel; ?>
+            </a>
+        </li>
     </ul>
 </div>

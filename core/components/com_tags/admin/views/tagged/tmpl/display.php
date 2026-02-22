@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,16 @@ Toolbar::spacer();
 Toolbar::help('tagged');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$editUrl = function ($id) {
+    return Route::url(
+        'index.php?option=' . $this->option . '&controller='
+        . $this->controller . '&task=edit&id=' . $id
+    );
+};
+?>
+<form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter-tbl"><?php echo Lang::txt('COM_TAGS_FILTER'); ?>:</label>
         <select name="tbl" id="filter-tbl" class="filter filter-submit">
@@ -45,23 +52,41 @@ Toolbar::help('tagged');
         <?php if ($this->filters['tagid']) { ?>
             <caption><?php
             $tag = \Components\Tags\Models\Tag::oneOrFail($this->filters['tagid']);
-            echo Lang::txt('COM_TAGS_TAG') . ': ' . $this->escape($tag->get('raw_tag')) . ' (' . $this->escape($tag->get('tag')) . ')';
+            $rawTag = $this->escape($tag->get('raw_tag'));
+            $tagNorm = $this->escape($tag->get('tag'));
+            echo Lang::txt('COM_TAGS_TAG') . ': ' . $rawTag . ' (' . $tagNorm . ')';
             ?></caption>
         <?php } ?>
         <thead>
             <tr>
+                <?php
+                $sortDir = @$this->filters['sort_Dir'];
+                $sortCol = @$this->filters['sort'];
+                ?>
                 <th scope="col">
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
                     <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_TAGS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-5">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_ID', 'id', $sortDir, $sortCol); ?>
+                </th>
                 <?php if (!$this->filters['tagid']) { ?>
-                    <th scope="col"><?php echo Html::grid('sort', 'COM_TAGS_COL_TAGID', 'tagid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                    <th scope="col">
+                        <?php echo Html::grid('sort', 'COM_TAGS_COL_TAGID', 'tagid', $sortDir, $sortCol); ?>
+                    </th>
                 <?php } ?>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TAGS_COL_TBL', 'tbl', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TAGS_COL_OBJECTID', 'objectid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TAGS_COL_CREATED', 'taggedon', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TAGS_COL_CREATED_BY', 'taggerid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_TBL', 'tbl', $sortDir, $sortCol); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_OBJECTID', 'objectid', $sortDir, $sortCol); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_CREATED', 'taggedon', $sortDir, $sortCol); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_TAGS_COL_CREATED_BY', 'taggerid', $sortDir, $sortCol); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -81,13 +106,18 @@ Toolbar::help('tagged');
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
+                            value="<?php echo $row->get('id'); ?>"
+                            class="checkbox-toggle" />
+                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                            <?php echo $row->get('id'); ?>
+                        </label>
                     <?php } ?>
                 </td>
+                <?php $rowEditUrl = $editUrl($row->get('id')); ?>
                 <td class="priority-5">
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo $rowEditUrl; ?>">
                             <?php echo $this->escape($row->get('id')); ?>
                         </a>
                     <?php } else { ?>
@@ -99,7 +129,7 @@ Toolbar::help('tagged');
                 <?php if (!$this->filters['tagid']) { ?>
                     <td>
                         <?php if ($canDo->get('core.edit')) { ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                            <a href="<?php echo $rowEditUrl; ?>">
                                 <?php echo $this->escape($row->get('tagid')); ?>
                             </a>
                         <?php } else { ?>

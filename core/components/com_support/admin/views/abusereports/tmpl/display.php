@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,14 +9,22 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
+$toolbarTitle = Lang::txt('COM_SUPPORT_TICKETS') . ': '
+    . Lang::txt('COM_SUPPORT_ABUSE_REPORTS');
+Toolbar::title($toolbarTitle, 'support.png');
 
 Html::behavior('framework');
 
 $this->view('_submenu')->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter-state"><?php echo Lang::txt('COM_SUPPORT_SHOW'); ?>:</label>
         <select name="state" id="filter-state" class="filter filter-submit">
@@ -73,7 +79,19 @@ $this->view('_submenu')->display();
             <tr class="<?php echo "row$k"; ?>">
                 <td><?php echo $row->id;  ?></td>
                 <td><?php echo $status;  ?></td>
-                <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $row->id . '&cat=' . $row->category); ?>"><?php echo $row->category . ' #' . $row->referenceid; ?></a></td>
+                <?php
+                $viewUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=view&id=' . $row->id
+                    . '&cat=' . $row->category
+                );
+                ?>
+                <td>
+                    <a href="<?php echo $viewUrl; ?>">
+                        <?php echo $row->category . ' #' . $row->referenceid; ?>
+                    </a>
+                </td>
                 <td><?php echo $this->escape($row->subject); ?></td>
                 <td><?php echo $this->escape($user->get('username')); ?></td>
                 <td><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>

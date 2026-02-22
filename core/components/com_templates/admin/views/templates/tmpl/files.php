@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -24,16 +22,32 @@ Html::behavior('tooltip');
 Html::behavior('modal');
 
 $this->css();
+
+$templatesFormAction = Route::url(
+    'index.php?option=com_templates&controller=templates'
+);
+$editBaseUrl = 'index.php?option=com_templates'
+    . '&controller=source&task=edit&id=';
 ?>
 <div id="item-form">
     <div class="grid">
         <div class="col span6">
-            <form action="<?php echo Route::url('index.php?option=com_templates&controller=templates'); ?>" method="post" name="adminForm" id="adminForm">
+            <form
+                action="<?php echo $templatesFormAction; ?>"
+                method="post"
+                name="adminForm"
+                id="adminForm"
+            >
                 <fieldset class="adminform" id="template-manager-description">
                     <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION');?></legend>
 
                     <div class="input-wrap">
-                        <?php echo \Components\Templates\Helpers\Utilities::thumb($this->template->element, $this->template->client_id); ?>
+                        <?php
+                        echo \Components\Templates\Helpers\Utilities::thumb(
+                            $this->template->element,
+                            $this->template->client_id
+                        );
+                        ?>
 
                         <h2><?php echo ucfirst($this->template->element); ?></h2>
                         <p><?php echo Lang::txt($this->template->xml->get('description')); ?></p>
@@ -47,9 +61,12 @@ $this->css();
                             <li>
                                 <?php $id = $file->id; ?>
                                 <?php if ($canDo->get('core.edit')) : ?>
-                                    <a href="<?php echo Route::url('index.php?option=com_templates&controller=source&task=edit&id=' . $id); ?>">
+                                    <a href="<?php echo Route::url($editBaseUrl . $id); ?>">
                                 <?php endif; ?>
-                                    <?php echo Lang::txt('Edit %s', $file->get('name')); //Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_' . strtoupper($key)); ?>
+                                    <?php
+                                    // Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_' . strtoupper($key))
+                                    echo Lang::txt('Edit %s', $file->get('name'));
+                                    ?>
                                 <?php if ($canDo->get('core.edit')) : ?>
                                     </a>
                                 <?php endif; ?>
@@ -61,11 +78,27 @@ $this->css();
             </form>
             <div class="clr"></div>
 
-            <form action="<?php echo Route::url('index.php?option=com_templates&controller=templates&task=copy&id=' . $this->template->get('id')); ?>" method="post" name="copyForm">
+            <?php
+            $copyFormAction = Route::url(
+                'index.php?option=com_templates&controller=templates'
+                . '&task=copy&id=' . $this->template->get('id')
+            );
+            $newNameDesc = Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_DESC');
+            $newNameLabel = Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_LABEL');
+            ?>
+            <form
+                action="<?php echo $copyFormAction; ?>"
+                method="post"
+                name="copyForm"
+            >
                 <fieldset class="adminform" id="template-manager-css">
                     <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY');?></legend>
                     <div class="input-wrap">
-                        <label id="new_name" class="hasTip" title="<?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_DESC'); ?>"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_NEW_NAME_LABEL')?></label>
+                        <label
+                            id="new_name"
+                            class="hasTip"
+                            title="<?php echo $newNameDesc; ?>"
+                        ><?php echo $newNameLabel; ?></label>
                         <input class="inputbox" type="text" id="new_name" name="new_name"  />
                         <button type="submit"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY'); ?></button>
                     </div>
@@ -87,7 +120,7 @@ $this->css();
                         <?php foreach ($this->files['clo'] as $file) : ?>
                         <li>
                             <?php if ($canDo->get('core.edit')) : ?>
-                            <a href="<?php echo Route::url('index.php?option=com_templates&controller=source&task=edit&id=' . $file->get('id')); ?>">
+                            <a href="<?php echo Route::url($editBaseUrl . $file->get('id')); ?>">
                             <?php endif; ?>
                                 <?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_CSS', $file->get('name')); ?>
                             <?php if ($canDo->get('core.edit')) : ?>
@@ -108,7 +141,7 @@ $this->css();
                         <?php foreach ($this->files['html'] as $file) : ?>
                         <li>
                             <?php if ($canDo->get('core.edit')) : ?>
-                                <a href="<?php echo Route::url('index.php?option=com_templates&controller=source&task=edit&id=' . $file->get('id')); ?>">
+                                <a href="<?php echo Route::url($editBaseUrl . $file->get('id')); ?>">
                             <?php endif; ?>
                             <?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_EDIT_HTML', $file->get('name')); ?>
                             <?php if ($canDo->get('core.edit')) : ?>

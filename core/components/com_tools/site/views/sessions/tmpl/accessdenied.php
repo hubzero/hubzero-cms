@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,8 +21,16 @@ $this->css('tools.css');
         <p><?php echo Lang::txt('COM_TOOLS_ACCESSDENIED_MESSAGE'); ?></p>
         <h3><?php echo Lang::txt('COM_TOOLS_ACCESSDENIED_HOW_TO_FIX'); ?></h3>
         <ul>
-            <li><?php echo Lang::txt('COM_TOOLS_ACCESSDENIED_OPT_CONTACT_SUPPORT', Route::url('index.php?option=com_support&controller=tickets&task=new')); ?></li>
-            <li><?php echo Lang::txt('COM_TOOLS_ACCESSDENIED_OPT_BROWSE', Route::url('index.php?option=' . $this->option)); ?></li>
+            <?php
+            $supportUrl = Route::url(
+                'index.php?option=com_support&controller=tickets&task=new'
+            );
+            $browseUrl = Route::url(
+                'index.php?option=' . $this->option
+            );
+            ?>
+            <li><?php echo Lang::txt('COM_TOOLS_ACCESSDENIED_OPT_CONTACT_SUPPORT', $supportUrl); ?></li>
+            <li><?php echo Lang::txt('COM_TOOLS_ACCESSDENIED_OPT_BROWSE', $browseUrl); ?></li>
         </ul>
     </div><!-- / #error-box -->
 </div><!-- / #error-wrap -->

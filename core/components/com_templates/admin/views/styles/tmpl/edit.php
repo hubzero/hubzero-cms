@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -40,22 +38,62 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=edit&id=' . (int) $this->item->id
+);
+$invalidMsg = $this->escape(
+    Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+);
+$titleLabel = Lang::txt('COM_TEMPLATES_FIELD_TITLE_LABEL');
+$requiredTxt = Lang::txt('JOPTION_REQUIRED');
+$titleValue = $this->escape(
+    stripslashes($this->item->get('title'))
+);
+$homeDesc = Lang::txt('COM_TEMPLATES_FIELD_HOME_SITE_DESC');
+$homeLabel = Lang::txt('COM_TEMPLATES_FIELD_HOME_LABEL');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS');?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_TEMPLATES_FIELD_TITLE_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" class="required" maxlength="250" value="<?php echo $this->escape(stripslashes($this->item->get('title'))); ?>" />
+                    <label for="field-title">
+                        <?php echo $titleLabel; ?>:
+                        <span class="required">
+                            <?php echo $requiredTxt; ?>
+                        </span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="required"
+                        maxlength="250"
+                        value="<?php echo $titleValue; ?>"
+                    />
                 </div>
 
                 <?php if ($this->item->client_id == 0) : ?>
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TEMPLATES_FIELD_HOME_SITE_DESC'); ?>">
-                        <label for="field-home"><?php echo Lang::txt('COM_TEMPLATES_FIELD_HOME_LABEL'); ?>:</label><br />
+                    <div
+                        class="input-wrap"
+                        data-hint="<?php echo $homeDesc; ?>"
+                    >
+                        <label for="field-home">
+                            <?php echo $homeLabel; ?>:
+                        </label><br />
                         <select name="fields[home]" id="field-home">
                             <option value="0"<?php if ($this->item->home == 0) {
                                 echo ' selected="selected"';
@@ -67,21 +105,40 @@ $this->js();
                         <span class="hint"><?php echo Lang::txt('COM_TEMPLATES_FIELD_HOME_SITE_DESC'); ?></span>
                     </div>
                 <?php else : ?>
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TEMPLATES_FIELD_HOME_SITE_DESC'); ?>">
-                        <label id="fields_home-lbl" for="fields_home"><?php echo Lang::txt('COM_TEMPLATES_FIELD_HOME_LABEL'); ?>:</label>
+                    <div
+                        class="input-wrap"
+                        data-hint="<?php echo $homeDesc; ?>"
+                    >
+                        <label id="fields_home-lbl" for="fields_home">
+                            <?php echo $homeLabel; ?>:
+                        </label>
                         <fieldset id="fields_home" class="radio inputbox">
                             <ul>
                                 <li>
-                                    <input type="radio" id="fields_home0" name="fields[home]" value="0" <?php if ($this->item->home == 0) {
-                                        echo ' checked="checked"';
-                                                                                                        } ?> />
-                                    <label for="fields_home0"><?php echo Lang::txt('JNO'); ?></label>
+                                    <?php $checked0 = ($this->item->home == 0) ? ' checked="checked"' : ''; ?>
+                                    <input
+                                        type="radio"
+                                        id="fields_home0"
+                                        name="fields[home]"
+                                        value="0"
+                                        <?php echo $checked0; ?>
+                                    />
+                                    <label for="fields_home0">
+                                        <?php echo Lang::txt('JNO'); ?>
+                                    </label>
                                 </li>
                                 <li>
-                                    <input type="radio" id="fields_home1" name="fields[home]" value="1" <?php if ($this->item->home == 1) {
-                                        echo ' checked="checked"';
-                                                                                                        } ?> />
-                                    <label for="fields_home1"><?php echo Lang::txt('JYES'); ?></label>
+                                    <?php $checked1 = ($this->item->home == 1) ? ' checked="checked"' : ''; ?>
+                                    <input
+                                        type="radio"
+                                        id="fields_home1"
+                                        name="fields[home]"
+                                        value="1"
+                                        <?php echo $checked1; ?>
+                                    />
+                                    <label for="fields_home1">
+                                        <?php echo Lang::txt('JYES'); ?>
+                                    </label>
                                 </li>
                             </ul>
                         </fieldset>
@@ -95,7 +152,12 @@ $this->js();
                 <?php endif; ?>
             <?php endif;?>
 
-            <input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->item->id); ?>" />
+            <input
+                type="hidden"
+                name="fields[id]"
+                id="field-id"
+                value="<?php echo $this->escape($this->item->id); ?>"
+            />
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
             <input type="hidden" name="task" value="" />
@@ -112,9 +174,16 @@ $this->js();
                         </tr>
                     <?php endif; ?>
                     <?php if ($this->item->parent->xml) : ?>
-                        <?php if ($text = trim($this->item->parent->xml->get('description', ''))) : ?>
+                        <?php
+                        $text = trim(
+                            $this->item->parent->xml->get('description', '')
+                        );
+                        ?>
+                        <?php if ($text) : ?>
                             <tr>
-                                <th scope="row"><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION'); ?></th>
+                                <th scope="row">
+                                    <?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION'); ?>
+                                </th>
                                 <td><?php echo Lang::txt($text); ?></td>
                             </tr>
                         <?php endif; ?>
@@ -126,17 +195,35 @@ $this->js();
                         </tr>
                     <?php endif; ?>
                     <tr>
-                        <th scope="row"><?php echo Lang::txt('COM_TEMPLATES_FIELD_TEMPLATE_LABEL'); ?></th>
+                        <th scope="row">
+                            <?php echo Lang::txt('COM_TEMPLATES_FIELD_TEMPLATE_LABEL'); ?>
+                        </th>
                         <td>
                             <?php echo $this->item->template; ?>
-                            <input type="hidden" name="fields[template]" id="field-template" value="<?php echo $this->escape($this->item->template); ?>" />
+                            <input
+                                type="hidden"
+                                name="fields[template]"
+                                id="field-template"
+                                value="<?php echo $this->escape($this->item->template); ?>"
+                            />
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php echo Lang::txt('COM_TEMPLATES_FIELD_CLIENT_LABEL'); ?></th>
+                        <th scope="row">
+                            <?php echo Lang::txt('COM_TEMPLATES_FIELD_CLIENT_LABEL'); ?>
+                        </th>
                         <td>
-                            <?php echo $this->item->client_id == 0 ? Lang::txt('JSITE') : Lang::txt('JADMINISTRATOR'); ?>
-                            <input type="hidden" name="fields[client_id]" id="field-client_id" value="<?php echo $this->escape($this->item->client_id); ?>" />
+                            <?php
+                            echo $this->item->client_id == 0
+                                ? Lang::txt('JSITE')
+                                : Lang::txt('JADMINISTRATOR');
+                            ?>
+                            <input
+                                type="hidden"
+                                name="fields[client_id]"
+                                id="field-client_id"
+                                value="<?php echo $this->escape($this->item->client_id); ?>"
+                            />
                         </td>
                     </tr>
                 </tbody>

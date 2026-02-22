@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,10 +17,13 @@ $this->stages = array(
     Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE')
 );
 $key = $this->stage - 1;
+$stageEditTip = ($this->version == 'dev')
+    ? Lang::txt('COM_TOOLS_CONTRIBTOOL_TIP_NEXT_TOOL_RELEASE')
+    : Lang::txt('COM_TOOLS_CONTRIBTOOL_TIP_CURRENT_VERSION');
 ?>
 <div class="clear"></div>
 <ol id="steps">
-    <li><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_EDIT_PAGE_FOR') . ' ' . ($this->version == 'dev' ? Lang::txt('COM_TOOLS_CONTRIBTOOL_TIP_NEXT_TOOL_RELEASE') : Lang::txt('COM_TOOLS_CONTRIBTOOL_TIP_CURRENT_VERSION')); ?>:</li>
+    <li><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_EDIT_PAGE_FOR') . ' ' . $stageEditTip; ?>:</li>
     <?php
     for ($i = 0, $n = count($this->stages); $i < $n; $i++) {
         $html  = "\t\t" . ' <li';
@@ -32,9 +33,25 @@ $key = $this->stage - 1;
         $html .= '>';
 
         if ($this->version == 'dev' && $i != $key && ($i + 1) != count($this->stages)) {
-            $html .= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=' . $this->controller . '&step=' . ($i + 1) . '&app=' . $this->row->alias) . '">' . $this->stages[$i] . '</a>';
-        } elseif ($this->version == 'current' && $i != $key && ($i + 1) != count($this->stages) && ($i == 0 or $i == 3 or $i == 2)) {
-            $html .= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=' . $this->controller . '&step=' . ($i + 1) . '&app=' . $this->row->alias . '&editversion=current') . '">' . $this->stages[$i] . '</a>';
+            $devStepUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&task=' . $this->controller
+                . '&step=' . ($i + 1)
+                . '&app=' . $this->row->alias
+            );
+            $html .= '<a href="' . $devStepUrl . '">' . $this->stages[$i] . '</a>';
+        } elseif (
+            $this->version == 'current' && $i != $key
+            && ($i + 1) != count($this->stages) && ($i == 0 or $i == 3 or $i == 2)
+        ) {
+            $curStepUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&task=' . $this->controller
+                . '&step=' . ($i + 1)
+                . '&app=' . $this->row->alias
+                . '&editversion=current'
+            );
+            $html .= '<a href="' . $curStepUrl . '">' . $this->stages[$i] . '</a>';
         } else {
             $html .= $this->stages[$i];
         }
@@ -48,7 +65,6 @@ $key = $this->stage - 1;
 
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 $html = '<p class="';
 if ($this->version == 'dev') {
     if ($this->vnum) {
@@ -58,10 +74,36 @@ if ($this->version == 'dev') {
     }
     $html .= ' - ' . Lang::txt('COM_TOOLS_CONTRIBTOOL_NOT_PUBLISHED_YET');
 } elseif ($this->version == 'current') {
-    $html .= 'currentversion">' . ucfirst(Lang::txt('COM_TOOLS_VERSION')) . ' ' . $this->vnum . ' - ' . Lang::txt('COM_TOOLS_CONTRIBTOOL_PUBLISHED_NOW');
+    $html .= 'currentversion">'
+        . ucfirst(Lang::txt('COM_TOOLS_VERSION')) . ' ' . $this->vnum
+        . ' - ' . Lang::txt('COM_TOOLS_CONTRIBTOOL_PUBLISHED_NOW');
 }
-$html .= ($this->version == 'dev' && $this->status['published']) ? ' <span><a href="' . Route::url('index.php?option=' . $this->option . '&task=' . $this->controller . '&step=' . $this->stage . '&app=' . $this->row->alias . '&editversion=current') . '">' . Lang::txt('COM_TOOLS_CONTRIBTOOL_CHANGE_CURRENT_VERSION') . '</a></span>' : '';
-$html .= ($this->version == 'current' && $this->status['published']) ? ' <span><a href="' . Route::url('index.php?option=' . $this->option . '&task=' . $this->controller . '&step=' . $this->stage . '&app=' . $this->row->alias) . '">' . Lang::txt('COM_TOOLS_CONTRIBTOOL_CHANGE_UPCOMING_VERSION') . '</a></span>' : '';
+
+if ($this->version == 'dev' && $this->status['published']) {
+    $changeCurUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&task=' . $this->controller
+        . '&step=' . $this->stage
+        . '&app=' . $this->row->alias
+        . '&editversion=current'
+    );
+    $html .= ' <span><a href="' . $changeCurUrl . '">'
+        . Lang::txt('COM_TOOLS_CONTRIBTOOL_CHANGE_CURRENT_VERSION')
+        . '</a></span>';
+}
+
+if ($this->version == 'current' && $this->status['published']) {
+    $changeUpUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&task=' . $this->controller
+        . '&step=' . $this->stage
+        . '&app=' . $this->row->alias
+    );
+    $html .= ' <span><a href="' . $changeUpUrl . '">'
+        . Lang::txt('COM_TOOLS_CONTRIBTOOL_CHANGE_UPCOMING_VERSION')
+        . '</a></span>';
+}
+
 $html .= '</p>';
 
 echo $html;

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -52,7 +50,6 @@ Toolbar::deleteList();
         <tbody>
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 if ($this->rows) {
     $i = 0;
     foreach ($this->rows as $row) {

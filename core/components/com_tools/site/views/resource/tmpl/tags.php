@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -40,7 +38,10 @@ $showwarning = ($this->version == 'current' or !$this->status['published']) ? 0 
         <label>
             <?php echo Lang::txt('COM_TOOLS_TAGS_ASSIGNED'); ?>:
             <?php
-            $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)));
+            $tf = Event::trigger(
+                'hubzero.onGetMultiEntry',
+                array(array('tags', 'tags', 'actags', '', $this->tags))
+            );
 
             if (count($tf) > 0) {
                 echo $tf[0];

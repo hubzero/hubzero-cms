@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,7 +32,11 @@ $this->css();
                     <p><?php echo Lang::txt('COM_SUPPORT_REPORT_NUMBER_REFERENCE', $this->report->id); ?></p>
                 <?php } ?>
                 <?php if ($this->returnlink) { ?>
-                    <p><a class="btn" href="<?php echo $this->returnlink; ?>"><?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_CONTINUE'); ?></a></p>
+                    <p>
+                        <a class="btn" href="<?php echo $this->returnlink; ?>">
+                            <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_CONTINUE'); ?>
+                        </a>
+                    </p>
                 <?php } ?>
                 </div>
             </div>

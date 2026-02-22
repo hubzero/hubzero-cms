@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,6 +19,11 @@ $this->css('tools.css');
 <?php } ?>
         <p><?php echo Lang::txt('COM_TOOLS_BADPARAMS_MESSAGE'); ?></p>
         <pre><?php echo $this->escape($this->badparams); ?></pre>
-        <p><?php echo Lang::txt('COM_TOOLS_BADPARAMS_OPT_CONTACT_SUPPORT', Route::url('index.php?option=com_support&controller=tickets&task=new')); ?></p>
+        <?php
+        $supportUrl = Route::url(
+            'index.php?option=com_support&controller=tickets&task=new'
+        );
+        ?>
+        <p><?php echo Lang::txt('COM_TOOLS_BADPARAMS_OPT_CONTACT_SUPPORT', $supportUrl); ?></p>
     </div><!-- / #error-box -->
 </div><!-- / #error-wrap -->

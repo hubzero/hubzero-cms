@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,9 @@ $canDo = \Components\Support\Helpers\Permissions::getActions('category');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_CATEGORIES') . ': ' . $text, 'support');
+$toolbarTitle = Lang::txt('COM_SUPPORT_TICKETS') . ': '
+    . Lang::txt('COM_SUPPORT_CATEGORIES') . ': ' . $text;
+Toolbar::title($toolbarTitle, 'support');
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
     Toolbar::save();
@@ -31,20 +31,51 @@ Html::behavior('keepalive');
 $this->js('edit.js');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape($this->row->get('title')); ?>" />
+                    <label for="field-title">
+                        <?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label>
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="required"
+                        value="<?php echo $this->escape($this->row->get('title')); ?>"
+                    />
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS_HINT'); ?>">
-                    <label for="field-alias"><?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS'); ?>:</label>
-                    <input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->row->get('alias')); ?>" />
+                <?php $aliasHint = Lang::txt('COM_SUPPORT_FIELD_ALIAS_HINT'); ?>
+                <div class="input-wrap" data-hint="<?php echo $aliasHint; ?>">
+                    <label for="field-alias">
+                        <?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS'); ?>:
+                    </label>
+                    <input
+                        type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        value="<?php echo $this->escape($this->row->get('alias')); ?>"
+                    />
                     <span class="hint"><?php echo Lang::txt('COM_SUPPORT_FIELD_ALIAS_HINT'); ?></span>
                 </div>
             </fieldset>
@@ -56,14 +87,18 @@ $this->js('edit.js');
                         <th scope="row"><?php echo Lang::txt('COM_SUPPORT_FIELD_ID'); ?>:</th>
                         <td>
                             <?php echo $this->row->get('id'); ?>
-                            <input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->escape($this->row->get('id')); ?>" />
+                            <input type="hidden" name="fields[id]" id="field-id"
+                                value="<?php echo $this->escape($this->row->get('id')); ?>" />
                         </td>
                     </tr>
                 <?php if ($this->row->get('created_by')) { ?>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SUPPORT_FIELD_CREATED'); ?>:</th>
                         <td>
-                            <time datetime="<?php echo $this->row->get('created'); ?>"><?php echo Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s'); ?></time>
+                            <?php $createdDate = Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s'); ?>
+                            <time datetime="<?php echo $this->row->get('created'); ?>">
+                                <?php echo $createdDate; ?>
+                            </time>
                         </td>
                     </tr>
                     <tr>
@@ -75,11 +110,18 @@ $this->js('edit.js');
                             ?>
                         </td>
                     </tr>
-                    <?php if ($this->row->get('modified_by') && $this->row->get('modified_by') != '0000-00-00 00:00:00') { ?>
+                    <?php
+                    $isModified = $this->row->get('modified_by')
+                        && $this->row->get('modified_by') != '0000-00-00 00:00:00';
+                    if ($isModified) {
+                        ?>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_SUPPORT_FIELD_MODIFIED'); ?>:</th>
                             <td>
-                                <time datetime="<?php echo $this->row->get('modified'); ?>"><?php echo Date::of($this->row->get('modified'))->toLocal('Y-m-d H:i:s'); ?></time>
+                                <?php $modifiedDate = Date::of($this->row->get('modified'))->toLocal('Y-m-d H:i:s'); ?>
+                                <time datetime="<?php echo $this->row->get('modified'); ?>">
+                                    <?php echo $modifiedDate; ?>
+                                </time>
                             </td>
                         </tr>
                         <tr>

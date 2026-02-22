@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,7 +19,8 @@ $this->css('introduction.css', 'system')
 <section id="introduction" class="section">
     <div class="grid">
         <div class="col span8">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=view'); ?>" method="get" class="container data-entry">
+            <?php $viewUrl = Route::url('index.php?option=' . $this->option . '&task=view'); ?>
+            <form action="<?php echo $viewUrl; ?>" method="get" class="container data-entry">
                 <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TAGS_SEARCH'); ?>" />
                 <fieldset class="entry-search">
                     <label for="actags"><?php echo Lang::txt('COM_TAGS_SEARCH_LABEL'); ?></label>
@@ -29,10 +28,21 @@ $this->css('introduction.css', 'system')
                 </fieldset>
             </form><!-- / .container -->
             <p><?php echo Lang::txt('COM_TAGS_ARE'); ?></p>
-            <p><a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>"><?php echo Lang::txt('COM_TAGS_HOW_DO_TAGS_WORK'); ?></a></p>
+            <?php
+            $helpUrl = Route::url(
+                'index.php?option=com_help&component='
+                . substr($this->option, 4) . '&page=index'
+            );
+            ?>
+            <p>
+                <a class="popup" href="<?php echo $helpUrl; ?>">
+                    <?php echo Lang::txt('COM_TAGS_HOW_DO_TAGS_WORK'); ?>
+                </a>
+            </p>
         </div>
         <div class="col span3 offset1 omega">
-            <a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
+            <?php $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+            <a class="btn icon-browse" href="<?php echo $browseUrl; ?>">
                 <?php echo Lang::txt('COM_TAGS_BROWSE_LIST'); ?>
             </a>
         </div>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,9 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
+$toolbarTitle = Lang::txt('COM_SUPPORT_TICKETS') . ': '
+    . Lang::txt('COM_SUPPORT_ABUSE_REPORTS');
+Toolbar::title($toolbarTitle, 'support.png');
 Toolbar::save();
 //Toolbar::cancel();
 
@@ -36,7 +36,10 @@ Html::behavior('modal', 'a.modals');
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -46,11 +49,31 @@ Html::behavior('modal', 'a.modals');
                     <tbody>
                         <tr>
                             <td>
-                                <h4><?php echo '<a class="modals" href="' . $link . '">' . $this->escape($this->title) . '</a>: '; ?></h4>
-                                <p><?php echo (is_object($this->reported)) ? stripslashes($this->reported->text) : ''; ?></p>
-                                <?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject != '') {
-                                    echo '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>';
-                                } ?>
+                                <h4>
+                                    <a class="modals" href="<?php echo $link; ?>">
+                                        <?php echo $this->escape($this->title); ?>
+                                    </a>:
+                                </h4>
+                                <p>
+                                    <?php
+                                    echo (is_object($this->reported))
+                                        ? stripslashes($this->reported->text)
+                                        : '';
+                                    ?>
+                                </p>
+                                <?php
+                                if (
+                                    is_object($this->reported)
+                                    && isset($this->reported->subject)
+                                    && $this->reported->subject != ''
+                                ) {
+                                    echo '<p>'
+                                        . $this->escape(
+                                            stripslashes($this->reported->subject)
+                                        )
+                                        . '</p>';
+                                }
+                                ?>
                             </td>
                         </tr>
                     </tbody>
@@ -65,11 +88,25 @@ Html::behavior('modal', 'a.modals');
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SUPPORT_REPORT_REPORTED_BY'); ?></th>
-                        <td><?php echo (is_object($reporter) && $reporter->get('username')) ? $reporter->get('username') : Lang::txt('COM_SUPPORT_UNKNOWN'); ?></td>
+                        <td>
+                            <?php
+                            $reporterName = (is_object($reporter) && $reporter->get('username'))
+                                ? $reporter->get('username')
+                                : Lang::txt('COM_SUPPORT_UNKNOWN');
+                            echo $reporterName;
+                            ?>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SUPPORT_COL_REASON'); ?></th>
-                        <td><?php echo $this->escape(stripslashes($this->report->report ? $this->report->report : $this->report->subject)); ?></td>
+                        <td>
+                            <?php
+                            $reason = $this->report->report
+                                ? $this->report->report
+                                : $this->report->subject;
+                            echo $this->escape(stripslashes($reason));
+                            ?>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -79,26 +116,45 @@ Html::behavior('modal', 'a.modals');
                 <legend><span><?php echo Lang::txt('COM_SUPPORT_REPORT_TAKE_ACTION'); ?></span></legend>
 
                 <?php if ($this->report->state == 0) { ?>
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM_HINT'); ?>">
+                    <?php
+                    $releaseHint = Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM_HINT');
+                    $spamHint = Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM_HINT');
+                    $deleteHint = Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM_HINT');
+                    ?>
+                    <div class="input-wrap" data-hint="<?php echo $releaseHint; ?>">
                         <input type="radio" name="task" id="field-task-release" value="release" />
-                        <label for="field-task-release"><?php echo Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM'); ?></label>
+                        <label for="field-task-release">
+                            <?php echo Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM'); ?>
+                        </label>
                     </div>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM_HINT'); ?>">
+                    <div class="input-wrap" data-hint="<?php echo $spamHint; ?>">
                         <input type="radio" name="task" id="field-task-spam" value="spam" />
-                        <label for="field-task-spam"><?php echo Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM'); ?></label>
+                        <label for="field-task-spam">
+                            <?php echo Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM'); ?>
+                        </label>
                     </div>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM_HINT'); ?>">
+                    <div class="input-wrap" data-hint="<?php echo $deleteHint; ?>">
                         <input type="radio" name="task" id="field-task-remove" value="remove" />
-                        <label for="field-task-remove"><?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM'); ?></label>
-                        <span class="hint"><?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM_HINT'); ?></span><br />
+                        <label for="field-task-remove">
+                            <?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM'); ?>
+                        </label>
+                        <span class="hint"><?php echo $deleteHint; ?></span><br />
                         <textarea name="note" id="note" rows="5" cols="25"></textarea>
                     </div>
 
                     <div class="input-wrap">
-                        <input type="radio" name="task" value="cancel" id="field-task-cancel" checked="checked" />
-                        <label for="field-task-cancel"><?php echo Lang::txt('COM_SUPPORT_REPORT_DECIDE_LATER'); ?></label>
+                        <input
+                            type="radio"
+                            name="task"
+                            value="cancel"
+                            id="field-task-cancel"
+                            checked="checked"
+                        />
+                        <label for="field-task-cancel">
+                            <?php echo Lang::txt('COM_SUPPORT_REPORT_DECIDE_LATER'); ?>
+                        </label>
                     </div>
                 <?php } else { ?>
                     <p class="warning"><?php echo Lang::txt('COM_SUPPORT_REPORT_ACTION_TAKEN'); ?></p>

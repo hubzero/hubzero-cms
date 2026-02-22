@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 
 /**
  * @package    hubzero-cms
@@ -50,7 +49,6 @@ $this->css('tools.css')
 <div id="session">
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 if (!$this->app->sess) {
     echo '<p class="error">' . implode('<br />', $this->output) . '</p>';
 } else {

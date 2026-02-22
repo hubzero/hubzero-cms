@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 
 /**
  * @package    hubzero-cms
@@ -41,7 +40,6 @@ $this->js('locations.js');
         <tbody>
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 $i = 0;
 $k = 0;
 foreach ($this->rows as $row) {

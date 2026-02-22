@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,13 @@ Html::behavior('formvalidation');
 $this->js('edit.js');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
@@ -37,8 +41,16 @@ $this->js('edit.js');
             </tr>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
                 <th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_ID'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_SUPPORT_COL_OBJECT'); ?></th>
@@ -68,7 +80,10 @@ $this->js('edit.js');
                         <option value="user"><?php echo Lang::txt('COM_SUPPORT_ACL_USER'); ?></option>
                         <option value="group"><?php echo Lang::txt('COM_SUPPORT_ACL_GROUP'); ?></option>
                     </select>
-                    <input type="checkbox" name="toggleOpt" id="toggleOpt" value="" /> <abbr title="<?php echo Lang::txt('COM_SUPPORT_CHECK_ALL'); ?>"><?php echo Lang::txt('COM_SUPPORT_COL_ALL'); ?></abbr>
+                    <input type="checkbox" name="toggleOpt" id="toggleOpt" value="" />
+                    <abbr title="<?php echo Lang::txt('COM_SUPPORT_CHECK_ALL'); ?>">
+                        <?php echo Lang::txt('COM_SUPPORT_COL_ALL'); ?>
+                    </abbr>
                 </td>
                 <td>
                     <input type="hidden" name="map[tickets][id]" value="0" />
@@ -116,12 +131,17 @@ $db = App::get('db');
 $k = 0;
 $i = 0;
 foreach ($this->rows as $row) {
-    $sql = "SELECT m.*, r.model AS aro_model, r.foreign_key AS aro_foreign_key, r.alias AS aro_alias, c.model AS aco_model, c.foreign_key AS aco_foreign_key
-		FROM `#__support_acl_aros_acos` AS m
-		LEFT JOIN `#__support_acl_aros` AS r ON m.aro_id=r.id
-		LEFT JOIN `#__support_acl_acos` AS c ON m.aco_id=c.id
-		WHERE r.foreign_key=" . $db->quote($row->foreign_key) . " AND r.model=" . $db->quote($row->model) . "
-		ORDER BY aro_foreign_key, aro_model";
+    $sql = "SELECT m.*, r.model AS aro_model,"
+        . " r.foreign_key AS aro_foreign_key,"
+        . " r.alias AS aro_alias,"
+        . " c.model AS aco_model,"
+        . " c.foreign_key AS aco_foreign_key"
+        . " FROM `#__support_acl_aros_acos` AS m"
+        . " LEFT JOIN `#__support_acl_aros` AS r ON m.aro_id=r.id"
+        . " LEFT JOIN `#__support_acl_acos` AS c ON m.aco_id=c.id"
+        . " WHERE r.foreign_key=" . $db->quote($row->foreign_key)
+        . " AND r.model=" . $db->quote($row->model)
+        . " ORDER BY aro_foreign_key, aro_model";
     $db->setQuery($sql);
     $lines = $db->loadObjectList();
 

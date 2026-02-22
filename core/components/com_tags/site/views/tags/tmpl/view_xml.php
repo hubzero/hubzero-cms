@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +24,10 @@ if (count($this->tags) == 1) {
     echo "\t\t" . '<raw>' . htmlspecialchars(stripslashes($tagobj->raw_tag)) . '</raw>' . "\n";
     echo "\t\t" . '<normalized>' . htmlspecialchars($tagobj->tag) . '</normalized>' . "\n";
     if ($tagobj->description != '') {
-        echo "\t\t" . '<description><![CDATA[' . htmlspecialchars(trim(\Hubzero\Utility\Sanitize::stripAll($tagobj->description))) . ']]></description>' . "\n";
+        $desc = htmlspecialchars(
+            trim(\Hubzero\Utility\Sanitize::stripAll($tagobj->description))
+        );
+        echo "\t\t" . '<description><![CDATA[' . $desc . ']]></description>' . "\n";
     }
     echo "\t" . '</tag>' . "\n";
 }
@@ -92,16 +93,31 @@ foreach ($this->results as $category) {
             }
 
             $html .= "\t\t\t\t" . '<item>' . "\n";
-            $html .= "\t\t\t\t\t" . '<title>' . htmlspecialchars(\Hubzero\Utility\Sanitize::stripAll($row->title)) . '</title>' . "\n";
+            $cleanTitle = htmlspecialchars(
+                \Hubzero\Utility\Sanitize::stripAll($row->title)
+            );
+            $html .= "\t\t\t\t\t" . '<title>' . $cleanTitle . '</title>' . "\n";
             if (isset($row->text) && $row->text != '') {
                 $row->text = strip_tags($row->text);
-                $html .= "\t\t\t\t\t" . '<description><![CDATA[' . htmlspecialchars(\Hubzero\Utility\Sanitize::stripAll($row->text)) . ']]></description>' . "\n";
+                $cleanText = htmlspecialchars(
+                    \Hubzero\Utility\Sanitize::stripAll($row->text)
+                );
+                $html .= "\t\t\t\t\t" . '<description><![CDATA['
+                    . $cleanText . ']]></description>' . "\n";
             } elseif (isset($row->itext) && $row->itext != '') {
                 $row->itext = strip_tags($row->itext);
-                $html .= "\t\t\t\t\t" . '<description><![CDATA[' . htmlspecialchars(\Hubzero\Utility\Sanitize::stripAll($row->itext)) . ']]></description>' . "\n";
+                $cleanText = htmlspecialchars(
+                    \Hubzero\Utility\Sanitize::stripAll($row->itext)
+                );
+                $html .= "\t\t\t\t\t" . '<description><![CDATA['
+                    . $cleanText . ']]></description>' . "\n";
             } elseif (isset($row->ftext) && $row->ftext != '') {
                 $row->ftext = strip_tags($row->ftext);
-                $html .= "\t\t\t\t\t" . '<description><![CDATA[' . htmlspecialchars(\Hubzero\Utility\Sanitize::stripAll($row->ftext)) . ']]></description>' . "\n";
+                $cleanText = htmlspecialchars(
+                    \Hubzero\Utility\Sanitize::stripAll($row->ftext)
+                );
+                $html .= "\t\t\t\t\t" . '<description><![CDATA['
+                    . $cleanText . ']]></description>' . "\n";
             }
             $html .= "\t\t\t\t\t" . '<link>' . Request::base() . $row->href . '</link>' . "\n";
             $html .= "\t\t\t\t" . '</item>' . "\n";

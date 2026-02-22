@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,8 +12,25 @@ defined('_HZEXEC_') or die();
 <?php if ($this->no_html) { ?>
     <div id="report-response">
         <div>
-            <p><?php echo Lang::txt('COM_FEEDBACK_YOUR_TICKET'); ?> # <span><a href="<?php echo Route::url('index.php?option=com_support&task=ticket&id=' . $this->ticket); ?>" title="View ticket"><?php echo $this->ticket; ?></a></span></p>
-            <p><button class="btn btn-reset" title="<?php echo Lang::txt('COM_FEEDBACK_NEW_REPORT'); ?>"><?php echo Lang::txt('COM_FEEDBACK_NEW_REPORT'); ?></button></p>
+            <?php
+            $ticketUrl = Route::url(
+                'index.php?option=com_support&task=ticket&id=' . $this->ticket
+            );
+            $newReportLabel = Lang::txt('COM_FEEDBACK_NEW_REPORT');
+            ?>
+            <p>
+                <?php echo Lang::txt('COM_FEEDBACK_YOUR_TICKET'); ?> #
+                <span>
+                    <a href="<?php echo $ticketUrl; ?>" title="View ticket">
+                        <?php echo $this->ticket; ?>
+                    </a>
+                </span>
+            </p>
+            <p>
+                <button class="btn btn-reset" title="<?php echo $newReportLabel; ?>">
+                    <?php echo $newReportLabel; ?>
+                </button>
+            </p>
         </div>
         <p>
             <?php echo Lang::txt('COM_FEEDBACK_TROUBLE_THANKS'); ?><br /><br />

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,22 +13,28 @@ $this->css('component.css');
 
 $base = rtrim(Request::base(true), '/');
 
-$this->versionlabel = ($this->version == 'current') ? Lang::txt('COM_TOOLS_CURRENTLY_PUBLISHED') : Lang::txt('COM_TOOLS_DEVELOPMENT');
+$this->versionlabel = ($this->version == 'current')
+    ? Lang::txt('COM_TOOLS_CURRENTLY_PUBLISHED')
+    : Lang::txt('COM_TOOLS_DEVELOPMENT');
 if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="hubForm" id="screenshots-form" method="post" enctype="multipart/form-data">
+<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>"
+    name="hubForm" id="screenshots-form" method="post" enctype="multipart/form-data">
     <h3>
         <?php echo Lang::txt('COM_TOOLS_EXISTING_SS'); ?>
-        <?php if ($this->published) { ?>
-            (<?php echo $this->version == 'dev' ? Lang::txt('COM_TOOLS_DEVELOPMENT') . ' ' . strtolower(Lang::txt('COM_TOOLS_VERSION')) : Lang::txt('COM_TOOLS_CURRENTLY_PUBLISHED') . ' ' . strtolower(Lang::txt('COM_TOOLS_VERSION'));  ?>)
+        <?php if ($this->published) {
+            $versionLbl = ($this->version == 'dev')
+                ? Lang::txt('COM_TOOLS_DEVELOPMENT') . ' ' . strtolower(Lang::txt('COM_TOOLS_VERSION'))
+                : Lang::txt('COM_TOOLS_CURRENTLY_PUBLISHED') . ' ' . strtolower(Lang::txt('COM_TOOLS_VERSION'));
+            ?>
+            (<?php echo $versionLbl; ?>)
         <?php } ?>
     </h3>
 
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 $d = @dir($this->upath);
 
 $images = array();
@@ -43,7 +47,10 @@ $html = '';
 if ($d) {
     while (false !== ($entry = $d->read())) {
         $img_file = $entry;
-        if (is_file($this->upath . DS . $img_file) && substr($entry, 0, 1) != '.' && strtolower($entry) !== 'index.html') {
+        if (
+            is_file($this->upath . DS . $img_file) && substr($entry, 0, 1) != '.'
+            && strtolower($entry) !== 'index.html'
+        ) {
             if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file)) {
                 $images[] = $img_file;
             }
@@ -113,31 +120,65 @@ for ($i = 0, $n = count($images); $i < $n; $i++) {
     if (is_file($this->upath . DS . $tn)) {
         if (strtolower(end($images[$i]['type'])) == 'swf') {
             $g++;
-            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '') ? $images[$i]['title'] : Lang::txt('COM_TOOLS_DEMO') . ' #' . $g;
+            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '')
+                ? $images[$i]['title']
+                : Lang::txt('COM_TOOLS_DEMO') . ' #' . $g;
             $els .= '<li>';
-                $els .= '<a class="popup" rel="external" href="' . $this->wpath . DS . $images[$i]['img'] . '" title="' . $title . '">';
-                    $els .= '<img src="' . $this->wpath . DS . $tn . '" alt="' . $title . '" id="ss_' . $i . '" />';
-                $els .= '</a>';
+            $swfHref = $this->wpath . DS . $images[$i]['img'];
+            $swfSrc  = $this->wpath . DS . $tn;
+            $els .= '<a class="popup" rel="external" href="' . $swfHref
+                . '" title="' . $title . '">';
+            $els .= '<img src="' . $swfSrc . '" alt="' . $title
+                . '" id="ss_' . $i . '" />';
+            $els .= '</a>';
             $els .= '</li>' . "\n";
         } else {
             $k++;
-            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '') ? $images[$i]['title'] : Lang::txt('COM_TOOLS_SCREENSHOT') . ' #' . $k;
+            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '')
+                ? $images[$i]['title']
+                : Lang::txt('COM_TOOLS_SCREENSHOT') . ' #' . $k;
+            $imgFile  = $images[$i]['img'];
+            $editBase = $base . '/index.php?option=' . $this->option
+                . '&amp;controller=' . $this->controller
+                . '&amp;task=edit&amp;pid=' . $this->rid
+                . '&amp;filename=' . $imgFile
+                . '&amp;version=' . $this->version
+                . '&amp;tmpl=component';
+            $delBase  = $base . '/index.php?option=' . $this->option
+                . '&amp;controller=' . $this->controller
+                . '&amp;task=delete&amp;pid=' . $this->rid
+                . '&amp;filename=' . $imgFile
+                . '&amp;version=' . $this->version
+                . '&amp;tmpl=component';
             $els .= '<li>';
-                $els .= '<span class="dev_ss">';
-                    $els .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;pid=' . $this->rid . '&amp;filename=' . $images[$i]['img'] . '&amp;version=' . $this->version . '&amp;tmpl=component" class="icon-edit edit popup" rel="external">' . Lang::txt('COM_TOOLS_EDIT') . '</a>';
-                    $els .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=delete&amp;pid=' . $this->rid . '&amp;filename=' . $images[$i]['img'] . '&amp;version=' . $this->version . '&amp;tmpl=component" class="icon-delete delete">' . Lang::txt('COM_TOOLS_DELETE') . '</a>';
-                $els .= '</span>';
-                $els .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;pid=' . $this->rid . '&amp;filename=' . $images[$i]['img'] . '&amp;version=' . $this->version . '&amp;tmpl=component" class="popup" title="' . $title . '">';
-                    $els .= '<img src="' . $this->wpath . '/' . $tn . '" alt="' . $title . '" id="ss_' . $i . '" />';
-                $els .= '</a>';
+            $els .= '<span class="dev_ss">';
+            $els .= '<a href="' . $editBase . '" class="icon-edit edit popup" rel="external">'
+                . Lang::txt('COM_TOOLS_EDIT') . '</a>';
+            $els .= '<a href="' . $delBase . '" class="icon-delete delete">'
+                . Lang::txt('COM_TOOLS_DELETE') . '</a>';
+            $els .= '</span>';
+            $els .= '<a href="' . $editBase . '" class="popup" title="' . $title . '">';
+            $els .= '<img src="' . $this->wpath . '/' . $tn . '" alt="' . $title
+                . '" id="ss_' . $i . '" />';
+            $els .= '</a>';
             $els .= '</li>' . "\n";
         }
         // add re-ordering option
         if ($i != ($n - 1)) {
+            $reorderHref = $base . '/index.php?option=' . $this->option
+                . '&amp;controller=' . $this->controller
+                . '&amp;task=order&amp;pid=' . $this->rid
+                . '&amp;fl=' . $images[$i + 1]['img']
+                . '&amp;fr=' . $images[$i]['img']
+                . '&amp;ol=' . ($i + 1)
+                . '&amp;or=' . $i
+                . '&amp;version=' . $this->version
+                . '&amp;tmpl=component';
             $els .= '<li>';
-                $els .= '<a class="icon-reorder reorder" href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=order&amp;pid=' . $this->rid . '&amp;fl=' . $images[$i + 1]['img'] . '&amp;fr=' . $images[$i]['img'] . '&amp;ol=' . ($i + 1) . '&amp;or=' . $i . '&amp;version=' . $this->version . '&amp;tmpl=component" title="' . Lang::txt('COM_TOOLS_REORDER') . '">';
-                    $els .= Lang::txt('COM_TOOLS_REORDER');
-                $els .= '</a>';
+            $els .= '<a class="icon-reorder reorder" href="' . $reorderHref
+                . '" title="' . Lang::txt('COM_TOOLS_REORDER') . '">';
+            $els .= Lang::txt('COM_TOOLS_REORDER');
+            $els .= '</a>';
             $els .= '</li>' . "\n";
         }
     }
@@ -180,7 +221,8 @@ echo $html;
     </fieldset>
 </form>
 <?php if ($this->published && $this->version == 'dev') { ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="copySSForm" method="post" enctype="multipart/form-data">
+    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>"
+        name="copySSForm" method="post" enctype="multipart/form-data">
         <fieldset>
             <legend><?php echo Lang::txt('COM_TOOLS_COPY_SCREENSHOTS'); ?></legend>
 

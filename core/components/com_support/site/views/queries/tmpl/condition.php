@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,13 +12,15 @@ defined('_HZEXEC_') or die();
 <fieldset class="condition-set">
     <p class="operator">
         <button class="remove" alt="Remove">&times;</button>
-        <?php echo Lang::txt(
-            'COM_SUPPORT_QUERY_MATCH',
-            '<select>
-			<option value="AND"' . (strtolower($this->condition->operator) == 'and' ? ' selected="selected"' : '' ) . '>' . Lang::txt('COM_SUPPORT_QUERY_ALL') . '</option>
-			<option value="OR"' . (strtolower($this->condition->operator) == 'or' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_SUPPORT_QUERY_ANY') . '</option>
-		</select>'
-        ); ?>
+        <?php
+        $andSelected = (strtolower($this->condition->operator) == 'and') ? ' selected="selected"' : '';
+        $orSelected  = (strtolower($this->condition->operator) == 'or') ? ' selected="selected"' : '';
+        $selectHtml  = '<select>'
+            . '<option value="AND"' . $andSelected . '>' . Lang::txt('COM_SUPPORT_QUERY_ALL') . '</option>'
+            . '<option value="OR"' . $orSelected . '>' . Lang::txt('COM_SUPPORT_QUERY_ANY') . '</option>'
+            . '</select>';
+        echo Lang::txt('COM_SUPPORT_QUERY_MATCH', $selectHtml);
+        ?>
     </p>
     <div>
         <div class="querystmts">
@@ -36,26 +36,44 @@ if ($this->condition->expressions) {
                                 } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
                 <option value="status"<?php if ($expression->fldval == 'status') {
                     echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
+                                      } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS');
+?></option>
                 <option value="login"<?php if ($expression->fldval == 'login') {
                     echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
+                                     } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER');
+?></option>
                 <option value="owner"<?php if ($expression->fldval == 'owner') {
                     echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
+                                     } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER');
+?></option>
                 <option value="group"<?php if ($expression->fldval == 'group') {
                     echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_GROUP'); ?></option>
+                                     } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_GROUP');
+?></option>
                 <option value="id"<?php if ($expression->fldval == 'id') {
                     echo ' selected="selected"';
                                   } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
                 <option value="report"<?php if ($expression->fldval == 'report') {
                     echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
-                <?php /*<option value="resolved"<?php if ($expression->fldval == 'resolved') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
+                                      } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT');
+?></option>
+                <?php /*
+                <option value="resolved"<?php if ($expression->fldval == 'resolved') {
+                    echo ' selected="selected"';
+                                        } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION');
+                ?></option>
+                */ ?>
                 <option value="severity"<?php if ($expression->fldval == 'severity') {
                     echo ' selected="selected"';
-                                        } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
+                                        } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY');
+?></option>
                 <option value="tag"<?php if ($expression->fldval == 'tag') {
                     echo ' selected="selected"';
                                    } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
@@ -64,13 +82,19 @@ if ($this->condition->expressions) {
                                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
                 <option value="created"<?php if ($expression->fldval == 'created') {
                     echo ' selected="selected"';
-                                       } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
+                                       } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED');
+?></option>
                 <option value="closed"<?php if ($expression->fldval == 'closed') {
                     echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
+                                      } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED');
+?></option>
                 <option value="category"<?php if ($expression->fldval == 'category') {
                     echo ' selected="selected"';
-                                        } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
+                                        } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY');
+?></option>
             </select>
             <select class="op">
         <?php
@@ -105,7 +129,11 @@ if ($this->condition->expressions) {
                 $expression->val = User::get('username');
             }
             ?>
-            <input type="text" class="val" value="<?php echo $this->escape(stripslashes($expression->val)); ?>" />
+            <input
+                type="text"
+                class="val"
+                value="<?php echo $this->escape(stripslashes($expression->val)); ?>"
+            />
             <?php
         }
         ?>

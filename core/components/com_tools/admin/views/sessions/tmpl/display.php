@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,7 +19,6 @@ Html::behavior('tooltip');
 
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
     $this->view('_submenu')
          ->display();
 ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,37 +26,78 @@ $this->css()
 </header>
 
 <section class="main section">
-    <form class="section-inner hz-layout-with-aside" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
+    <?php $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+    <form class="section-inner hz-layout-with-aside" action="<?php echo $browseUrl; ?>" method="get">
         <div class="subject">
 
             <div class="container data-entry">
+                <?php $searchVal = $this->escape($this->filters['search']); ?>
+                <?php $placeholder = Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER'); ?>
                 <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TAGS_SEARCH'); ?>" />
                 <fieldset class="entry-search">
                     <label for="entry-search-text"><?php echo Lang::txt('COM_TAGS_SEARCH_TAGS'); ?></label>
-                    <input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER'); ?>" />
+                    <input
+                        type="text"
+                        name="search"
+                        id="entry-search-text"
+                        value="<?php echo $searchVal; ?>"
+                        placeholder="<?php echo $placeholder; ?>"
+                    />
                 </fieldset>
             </div><!-- / .container -->
 
             <div class="container">
-                <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
+                <?php $filterLabel = Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>
+                <nav class="entries-filters" aria-label="<?php echo $filterLabel; ?>">
                     <ul class="entries-menu sort-options">
                         <li>
                             <?php
-                                $filters = '&search=' . urlencode($this->filters['search']) . '&limit=' . Request::getInt('limit', 25) . '&limitstart=' . Request::getInt('limitstart', 0);
+                                $filters = '&search='
+                                    . urlencode($this->filters['search'])
+                                    . '&limit=' . Request::getInt('limit', 25)
+                                    . '&limitstart=' . Request::getInt('limitstart', 0);
 
                                 $cls = ($this->filters['sort'] == 'total') ? 'active ' : '';
-                                $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=total&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
-                            ?>
-                            <a class="<?php echo $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'); ?>" href="<?php echo $url; ?>" title="<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE'); ?>">
+                                $sortDir = $cls
+                                    ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc')
+                                    : 'asc';
+                                $url = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&task=browse&sort=total&sortdir='
+                                    . $sortDir . $filters
+                                );
+                                $icon = $cls
+                                    ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down')
+                                    : 'icon-arrow-down';
+                                $popTitle = Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE');
+                                ?>
+                            <a class="<?php echo $cls . $icon; ?>"
+                                href="<?php echo $url; ?>"
+                                title="<?php echo $popTitle; ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
                             </a>
                         </li>
                         <li>
                             <?php
-                                $cls = ($this->filters['sort'] == '' || $this->filters['sort'] == 'raw_tag') ? 'active ' : '';
-                                $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=raw_tag&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
-                            ?>
-                            <a class="<?php echo $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'); ?>" href="<?php echo $url; ?>" title="<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE'); ?>">
+                                $sort = $this->filters['sort'];
+                                $cls = ($sort == '' || $sort == 'raw_tag')
+                                    ? 'active ' : '';
+                                $sortDir = $cls
+                                    ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc')
+                                    : 'asc';
+                                $url = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&task=browse&sort=raw_tag&sortdir='
+                                    . $sortDir . $filters
+                                );
+                                $icon = $cls
+                                    ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down')
+                                    : 'icon-arrow-down';
+                                $alphaTitle = Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE');
+                                ?>
+                            <a class="<?php echo $cls . $icon; ?>"
+                                href="<?php echo $url; ?>"
+                                title="<?php echo $alphaTitle; ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA'); ?>
                             </a>
                         </li>
@@ -72,10 +111,15 @@ $this->css()
                             $this->filters['limit'] = $this->total;
                         }
                         $s = ($this->total > 0) ? $this->filters['start'] + 1 : $this->filters['start'];
-                        $e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
+                        $max = $this->filters['start'] + $this->filters['limit'];
+                        $e = ($this->total > $max) ? $max : $this->total;
 
                         if ($this->filters['search'] != '') {
-                            echo Lang::txt('COM_TAGS_BROWSE_SEARCH_FOR_IN', $this->escape($this->filters['search']), Lang::txt('COM_TAGS'));
+                            echo Lang::txt(
+                                'COM_TAGS_BROWSE_SEARCH_FOR_IN',
+                                $this->escape($this->filters['search']),
+                                Lang::txt('COM_TAGS')
+                            );
                         } else {
                             echo Lang::txt('COM_TAGS');
                         }
@@ -90,7 +134,11 @@ $this->css()
                             <th class="priority-3" scope="col">
                                 <?php echo Lang::txt('COM_TAGS_COL_ALIAS'); ?>
                             </th>
-                            <?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+                            <?php
+                            $canEdit = $this->config->get('access-edit-tag');
+                            $canDelete = $this->config->get('access-delete-tag');
+                            ?>
+                            <?php if ($canEdit || $canDelete) { ?>
                                 <th scope="col" colspan="2">
                                     <?php echo Lang::txt('COM_TAGS_COL_ACTION'); ?>
                                 </th>
@@ -106,28 +154,72 @@ $this->css()
                             ?>
                             <tr class="<?php echo $cls; ?>">
                                 <td>
-                                    <a class="tag <?php echo $row->get('admin') ? ' admin' : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
+                                    <?php
+                                    $tagUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&tag=' . $row->get('tag')
+                                    );
+                                    $adminClass = $row->get('admin') ? ' admin' : '';
+                                    ?>
+                                    <a class="tag <?php echo $adminClass; ?>"
+                                        href="<?php echo $tagUrl; ?>">
                                         <?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
                                     </a>
                                 </td>
                                 <td class="priority-3">
                                     <?php
-                                    $subs = $row->get('substitutes') ? $this->escape($row->substitutes) : '';
+                                    $subs = $row->get('substitutes')
+                                        ? $this->escape($row->substitutes) : '';
+                                    $none = '<span>' . Lang::txt('COM_TAGS_NONE') . '</span>';
 
-                                    echo $subs ? \Hubzero\Utility\Str::truncate($subs, 75) : '<span>' . Lang::txt('COM_TAGS_NONE') . '</span>';
+                                    echo $subs
+                                        ? \Hubzero\Utility\Str::truncate($subs, 75)
+                                        : $none;
                                     ?>
                                 </td>
-                                <?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+                                <?php if ($canEdit || $canDelete) { ?>
                                     <td>
-                                        <?php if ($this->config->get('access-delete-tag')) { ?>
-                                            <a class="icon-delete delete delete-tag" data-confirm="<?php echo Lang::txt('COM_TAGS_CONFIRM_DELETE'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+                                        <?php if ($canDelete) {
+                                            $deleteUrl = Route::url(
+                                                'index.php?option=' . $this->option
+                                                . '&task=delete&id[]=' . $row->get('id')
+                                                . '&search=' . urlencode($this->filters['search'])
+                                                . '&sort=' . $this->filters['sort']
+                                                . '&sortdir=' . $this->filters['sort_Dir']
+                                                . '&limit=' . $this->filters['limit']
+                                                . '&limitstart=' . $this->filters['start']
+                                            );
+                                            $confirmTxt = Lang::txt('COM_TAGS_CONFIRM_DELETE');
+                                            ?>
+                                            <a class="icon-delete delete delete-tag"
+                                                data-confirm="<?php echo $confirmTxt; ?>"
+                                                href="<?php echo $deleteUrl; ?>">
                                                 <?php echo Lang::txt('JACTION_DELETE'); ?>
                                             </a>
                                         <?php } ?>
                                     </td>
                                     <td>
-                                        <?php if ($this->config->get('access-edit-tag')) { ?>
-                                            <a class="icon-edit edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_EDIT_TAG', $this->escape(stripslashes($row->get('raw_tag')))); ?>">
+                                        <?php if ($canEdit) {
+                                            $editUrl = Route::url(
+                                                'index.php?option=' . $this->option
+                                                . '&task=edit&id=' . $row->get('id')
+                                                . '&search=' . urlencode($this->filters['search'])
+                                                . '&sort=' . $this->filters['sort']
+                                                . '&sortdir=' . $this->filters['sort_Dir']
+                                                . '&limit=' . $this->filters['limit']
+                                                . '&limitstart=' . $this->filters['start']
+                                            );
+                                            $rawTag = $this->escape(
+                                                stripslashes($row->get('raw_tag'))
+                                            );
+                                            $editTitle = Lang::txt(
+                                                'COM_TAGS_EDIT_TAG',
+                                                $rawTag
+                                            );
+                                            ?>
+                                            <a class="icon-edit edit"
+                                                href="<?php echo $editUrl; ?>"
+                                                title="<?php echo $editTitle; ?>">
                                                 <?php echo Lang::txt('JACTION_EDIT'); ?>
                                             </a>
                                         <?php } ?>
@@ -139,7 +231,8 @@ $this->css()
                     } else {
                         ?>
                         <tr class="odd">
-                            <td colspan="<?php echo $this->config->get('access-edit-tag') || $this->config->get('access-delete-tag') ? 4 : 2; ?>">
+                            <?php $colspan = ($canEdit || $canDelete) ? 4 : 2; ?>
+                            <td colspan="<?php echo $colspan; ?>">
                                 <?php echo Lang::txt('COM_TAGS_NO_RESULTS'); ?>
                             </td>
                         </tr>

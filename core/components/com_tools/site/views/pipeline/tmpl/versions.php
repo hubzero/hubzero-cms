@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,19 +17,43 @@ $this->css('pipeline.css')
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="icon-status status btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-            <li><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+            <?php
+            $statusUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=status&app=' . $this->status['toolname']
+            );
+            $newUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=create'
+            );
+            ?>
+            <li><a class="icon-status status btn" href="<?php echo $statusUrl; ?>">
+                <?php echo Lang::txt('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+            <li><a class="icon-add add btn" href="<?php echo $newUrl; ?>">
+                <?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
 <section class="main section">
     <?php
-    ($this->status['published'] != 1 && !$this->status['version']) ?  $hint = '1.0' : $hint = ''; // if tool is under dev and no version was specified before
-    $statuspath = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']);
+    ($this->status['published'] != 1 && !$this->status['version'])
+        ? $hint = '1.0' : $hint = '';
+    // if tool is under dev and no version was specified before
+    $statuspath = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+        . '&task=status&app=' . $this->status['toolname']
+    );
 
-    $newstate = ($this->action == 'edit') ? $this->status['state'] : \Components\Tools\Helpers\Html::getStatusNum('Approved');
-    $submitlabel = ($this->action == 'edit') ? Lang::txt('COM_TOOLS_SAVE') : Lang::txt('COM_TOOLS_USE_THIS_VERSION');
+    $newstate = ($this->action == 'edit')
+        ? $this->status['state']
+        : \Components\Tools\Helpers\Html::getStatusNum('Approved');
+    $submitlabel = ($this->action == 'edit')
+        ? Lang::txt('COM_TOOLS_SAVE')
+        : Lang::txt('COM_TOOLS_USE_THIS_VERSION');
     if ($this->action == 'confirm') {
         \Components\Tools\Helpers\Html::writeApproval(Lang::txt('COM_TOOLS_CONFIRM_VERSION'));
     }
@@ -39,6 +61,7 @@ $this->css('pipeline.css')
     $rconfig = Component::params('com_resources');
     $tconfig = Component::params('com_tools');
     $hubDOIpath = $rconfig->get('doi');
+    $publishedNum = \Components\Tools\Helpers\Html::getStatusNum('Published');
     ?>
     <div class="grid">
         <div class="col span-half">
@@ -46,23 +69,45 @@ $this->css('pipeline.css')
                 <p class="error"><?php echo $this->error; ?></p>
             <?php } ?>
 
-            <?php if ($this->action != 'dev' && $this->status['state'] != \Components\Tools\Helpers\Html::getStatusNum('Published')) { ?>
+            <?php if ($this->action != 'dev' && $this->status['state'] != $publishedNum) { ?>
                 <?php if ($this->action == 'confirm' or $this->action == 'edit') { ?>
-                    <h4><?php echo Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM'); ?> <?php echo ($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT') : Lang::txt('COM_TOOLS_THIS'); ?> <?php echo Lang::txt('COM_TOOLS_TOOL_RELEASE'); ?>:</h4>
-                <?php } elseif ($this->action == 'new' && $this->status['toolname']) { // new version is required ?>
+                    <h4><?php echo Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM'); ?>
+                        <?php echo ($this->action == 'edit')
+                            ? Lang::txt('COM_TOOLS_NEXT')
+                            : Lang::txt('COM_TOOLS_THIS'); ?>
+                        <?php echo Lang::txt('COM_TOOLS_TOOL_RELEASE'); ?>:</h4>
+                <?php } elseif ($this->action == 'new' && $this->status['toolname']) {
+                    // new version is required ?>
                     <h4><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_ENTER_UNIQUE_VERSION'); ?>:</h4>
                 <?php } ?>
-                    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=saveversion&app=' . $this->status['toolname']); ?>" method="post" id="versionForm">
+                    <?php
+                    $saveVersionUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=saveversion&app=' . $this->status['toolname']
+                    );
+                    ?>
+                    <form action="<?php echo $saveVersionUrl; ?>" method="post" id="versionForm">
                         <fieldset class="versionfield">
-                            <label for="newversion"><?php echo ucfirst(Lang::txt('COM_TOOLS_VERSION')); ?>: </label>
-                            <input type="text" name="newversion" id="newversion" value="<?php echo $this->status['version']; ?>" size="20" maxlength="15" />
-                            <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-                            <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+                            <label for="newversion">
+                                <?php echo ucfirst(Lang::txt('COM_TOOLS_VERSION')); ?>:
+                            </label>
+                            <input type="text" name="newversion" id="newversion"
+                                value="<?php echo $this->status['version']; ?>"
+                                size="20" maxlength="15" />
+                            <input type="hidden" name="option"
+                                value="<?php echo $this->option; ?>" />
+                            <input type="hidden" name="controller"
+                                value="<?php echo $this->controller; ?>" />
                             <input type="hidden" name="task" value="saveversion" />
-                            <input type="hidden" name="newstate" value="<?php echo $this->escape($newstate); ?>" />
-                            <input type="hidden" name="action" value="<?php echo $this->escape($this->action); ?>" />
-                            <input type="hidden" name="id" value="<?php echo $this->escape($this->status['toolid']); ?>" />
-                            <input type="hidden" name="toolname" value="<?php echo $this->escape($this->status['toolname']); ?>" />
+                            <input type="hidden" name="newstate"
+                                value="<?php echo $this->escape($newstate); ?>" />
+                            <input type="hidden" name="action"
+                                value="<?php echo $this->escape($this->action); ?>" />
+                            <input type="hidden" name="id"
+                                value="<?php echo $this->escape($this->status['toolid']); ?>" />
+                            <input type="hidden" name="toolname"
+                                value="<?php echo $this->escape($this->status['toolname']); ?>" />
                             <?php echo Html::input('token'); ?>
                             <input type="submit" value="<?php echo $submitlabel ?>" />
                         </fieldset>
@@ -87,57 +132,93 @@ $this->css('pipeline.css')
                     $i = 0;
                 foreach ($this->versions as $t) {
                     // get tool access text
-                    $toolaccess = \Components\Tools\Helpers\Html::getToolAccess($t->toolaccess, $this->status['membergroups']);
+                    $toolaccess = \Components\Tools\Helpers\Html::getToolAccess(
+                        $t->toolaccess,
+                        $this->status['membergroups']
+                    );
                     // get source code access text
                     $codeaccess = \Components\Tools\Helpers\Html::getCodeAccess($t->codeaccess);
                     // get wiki access text
                     $wikiaccess = \Components\Tools\Helpers\Html::getWikiAccess($t->wikiaccess);
 
-                    //$handle = (isset($t->doi) && $t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '';
+                    //$handle = (isset($t->doi) && $t->doi)
+                    //  ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '';
                     $handle = '';
 
                     if (isset($t->doi) && $t->doi && $tconfig->get('doi_shoulder')) {
-                        $handle = 'doi:' . (isset($t->doi_shoulder) ? $t->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($t->doi);
-                        $handle = '<a href="' . $tconfig->get('doi_resolve', 'https://doi.org/') . $handle . '">' . $handle . '</a>';
+                        $doiShoulder = isset($t->doi_shoulder)
+                            ? $t->doi_shoulder : $tconfig->get('doi_shoulder');
+                        $handle = 'doi:' . $doiShoulder . '/' . strtoupper($t->doi);
+                        $doiResolve = $tconfig->get('doi_resolve', 'https://doi.org/');
+                        $handle = '<a href="' . $doiResolve . $handle . '">' . $handle . '</a>';
                     } elseif (isset($t->doi_label) && $t->doi_label) {
-                        $handle = 'doi:10254/' . $tconfig->get('doi_prefix') . $this->resource->id . '.' . $t->doi_label;
-                        $handle = '<a href="http://hdl.handle.net/' . $handle . '">' . $handle . '</a>';
+                        $handle = 'doi:10254/' . $tconfig->get('doi_prefix')
+                            . $this->resource->id . '.' . $t->doi_label;
+                        $handle = '<a href="http://hdl.handle.net/' . $handle . '">'
+                            . $handle . '</a>';
                     }
 
-                            $t->version = ($t->state == 3 && $t->version == $this->status['currentversion']) ? Lang::txt('COM_TOOLS_NO_LABEL') : $t->version;
+                    $t->version = ($t->state == 3
+                        && $t->version == $this->status['currentversion'])
+                        ? Lang::txt('COM_TOOLS_NO_LABEL') : $t->version;
+                    $editCurrentUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&app=' . $this->status['toolname']
+                        . '&editversion=current'
+                    );
+                    $editDevUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&app=' . $this->status['toolname']
+                        . '&editversion=dev'
+                    );
+                    $dateReleased = $t->released
+                        ? Date::of($t->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                        : 'N/A';
                     ?>
                     <tr id="displays_<?php echo $i; ?>">
                         <td>
                             <span class="showcontrols">
-                                <a href="#confdiv_<?php echo $i; ?>" class="expand" id="exp_<?php echo $i; ?>">&nbsp;&nbsp;</a>
+                                <a href="#confdiv_<?php echo $i; ?>" class="expand"
+                                    id="exp_<?php echo $i; ?>">&nbsp;&nbsp;</a>
                             </span>
                         <?php echo ($t->version) ? $t->version : Lang::txt('COM_TOOLS_NA'); ?>
                         </td>
                         <td>
                         <?php if ($t->state != 3) { ?>
-                                <?php echo $t->released ? Date::of($t->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A'; ?>
+                                <?php echo $dateReleased; ?>
                         <?php } else { ?>
-                                <span class="yes"><?php echo Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT'); ?></span>
+                                <span class="yes">
+                                    <?php echo Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT'); ?></span>
                         <?php } ?>
                         </td>
                         <td>
-                        <?php if ($t->state != 3 or ($t->state == 3 && $t->revision != $this->status['currentrevision'])) {
+                        <?php if (
+                        $t->state != 3
+                            or ($t->state == 3
+                                && $t->revision != $this->status['currentrevision'])
+) {
                             echo $t->revision;
                         } else {
                             echo '-';
                         } ?>
                         </td>
                         <td>
-                            <span class="<?php echo $t->state == '1' ? 'toolpublished' : 'toolunpublished'; ?>"></span>
+                            <span class="<?php
+                                echo $t->state == '1' ? 'toolpublished' : 'toolunpublished';
+                            ?>"></span>
                         </td>
                         <td>
                         <?php if ($t->state == 1 && $this->admin) { ?>
                                 <span class="actionlink">
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=current'); ?>"><?php echo Lang::txt('COM_TOOLS_EDIT'); ?></a>
+                                    <a href="<?php echo $editCurrentUrl; ?>">
+                                        <?php echo Lang::txt('COM_TOOLS_EDIT'); ?></a>
                                 </span>
                         <?php } elseif ($t->state == 3) { ?>
                                 <span class="actionlink">
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=dev'); ?>"><?php echo Lang::txt('COM_TOOLS_EDIT');?></a>
+                                    <a href="<?php echo $editDevUrl; ?>">
+                                        <?php echo Lang::txt('COM_TOOLS_EDIT');?></a>
                                 </span>
                         <?php } ?>
                         </td>
@@ -146,13 +227,27 @@ $this->css('pipeline.css')
                         <td id="conftdone_<?php echo $i; ?>"></td>
                         <td colspan="4" id="conftdtwo_<?php echo $i; ?>">
                             <div id="confdiv_<?php echo $i; ?>" class="vmanage">
-                                <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TITLE')); ?>: </span><span class="desc"><?php echo $t->title; ?></span></p>
-                                <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_DESCRIPTION')); ?>: </span><span class="desc"><?php echo $t->description; ?></span></p>
-                                <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_AUTHORS')); ?>: </span><span class="desc"><?php echo \Components\Tools\Helpers\Html::getDevTeam($t->authors); ?></span></p>
-                                <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')); ?>: </span><span class="desc"><?php echo $toolaccess; ?></span></p>
-                                <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')); ?>: </span><span class="desc"><?php echo $codeaccess; ?></span></p>
+                                <p><span class="heading">
+                                    <?php echo ucfirst(Lang::txt('COM_TOOLS_TITLE')); ?>: </span>
+                                    <span class="desc"><?php echo $t->title; ?></span></p>
+                                <p><span class="heading">
+                                    <?php echo ucfirst(Lang::txt('COM_TOOLS_DESCRIPTION')); ?>: </span>
+                                    <span class="desc"><?php echo $t->description; ?></span></p>
+                                <p><span class="heading">
+                                    <?php echo ucfirst(Lang::txt('COM_TOOLS_AUTHORS')); ?>: </span>
+                                    <span class="desc">
+                                        <?php echo \Components\Tools\Helpers\Html::getDevTeam(
+                                            $t->authors
+                                        ); ?></span></p>
+                                <p><span class="heading">
+                                    <?php echo ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')); ?>: </span>
+                                    <span class="desc"><?php echo $toolaccess; ?></span></p>
+                                <p><span class="heading">
+                                    <?php echo ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')); ?>: </span>
+                                    <span class="desc"><?php echo $codeaccess; ?></span></p>
                             <?php if ($handle != '') {
-                                echo ' <p><span class="heading">' . Lang::txt('COM_TOOLS_DOI') . ': </span><span class="desc">' . $handle . '</span></p>';
+                                echo ' <p><span class="heading">' . Lang::txt('COM_TOOLS_DOI')
+                                    . ': </span><span class="desc">' . $handle . '</span></p>';
                             } ?>
                             </div>
                         </td>
@@ -165,7 +260,11 @@ $this->css('pipeline.css')
         </table>
             <?php
         } else { // no versions found
-            echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NO_VERSIONS') . ' ' . $this->status['toolname'] . '. ' . ucfirst(Lang::txt('COM_TOOLS_GO_BACK_TO')) . ' <a href="' . $statuspath . '">' . strtolower(Lang::txt('COM_TOOLS_TOOL_STATUS')) . '</a>.';
+            echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NO_VERSIONS') . ' '
+                . $this->status['toolname'] . '. '
+                . ucfirst(Lang::txt('COM_TOOLS_GO_BACK_TO'))
+                . ' <a href="' . $statuspath . '">'
+                . strtolower(Lang::txt('COM_TOOLS_TOOL_STATUS')) . '</a>.';
         }
         ?>
         </div>
@@ -179,4 +278,3 @@ $this->css('pipeline.css')
         </div>
     </div><!-- / .grid -->
 </section>
-

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,13 +25,25 @@ $this->css()
         <ul id="useroptions">
         <?php if ($this->acl->check('read', 'tickets')) { ?>
             <li>
-                <a class="icon-stats stats btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats'); ?>">
+                <?php
+                $statsUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller . '&task=stats'
+                );
+                ?>
+                <a class="icon-stats stats btn" href="<?php echo $statsUrl; ?>">
                     <?php echo Lang::txt('COM_SUPPORT_STATS'); ?>
                 </a>
             </li>
         <?php } ?>
             <li class="last">
-                <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>">
+                <?php
+                $newUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller . '&task=new'
+                );
+                ?>
+                <a class="icon-add add btn" href="<?php echo $newUrl; ?>">
                     <?php echo Lang::txt('COM_SUPPORT_NEW_TICKET'); ?>
                 </a>
             </li>
@@ -44,26 +54,54 @@ $this->css()
 <section class="panel tickets">
     <div class="panel-row">
 
-        <div class="pane pane-queries" id="queries" data-update="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=saveordering&' . Session::getFormToken() . '=1'); ?>">
+        <?php
+        $updateUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&controller=queries&task=saveordering&' . Session::getFormToken() . '=1'
+        );
+        ?>
+        <div class="pane pane-queries" id="queries" data-update="<?php echo $updateUrl; ?>">
             <div class="pane-inner">
 
                 <?php if ($this->acl->check('read', 'tickets')) { ?>
+                    <?php
+                    $showCurrent = intval($this->filters['show']);
+                    $searchStr   = $this->filters['search'];
+                    $watchOpenUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=display&show=-1&limitstart=0'
+                        . ($showCurrent != -1 ? '&search=' : '')
+                    );
+                    $watchClosedUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=display&show=-2&limitstart=0'
+                        . ($showCurrent != -2 ? '&search=' : '')
+                    );
+                    ?>
                     <ul id="watch-list">
                         <li id="folder_watching" class="open">
-                            <span class="icon-watch folder"><?php echo Lang::txt('COM_SUPPORT_WATCH_LIST'); ?></span>
+                            <span class="icon-watch folder">
+                                <?php echo Lang::txt('COM_SUPPORT_WATCH_LIST'); ?>
+                            </span>
                             <ul id="queries_watching" class="wqueries">
-                                <li<?php if (intval($this->filters['show']) == -1) {
+                                <li<?php if ($showCurrent == -1) {
                                     echo ' class="active"';
                                    }?>>
-                                    <a class="aquery" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
-                                        <?php echo $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_OPEN')); ?> <span><?php echo $this->watch['open']; ?></span>
+                                    <a class="aquery" href="<?php echo $watchOpenUrl; ?>">
+                                        <?php echo $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_OPEN')); ?>
+                                        <span><?php echo $this->watch['open']; ?></span>
                                     </a>
                                 </li>
-                                <li<?php if (intval($this->filters['show']) == -2) {
+                                <li<?php if ($showCurrent == -2) {
                                     echo ' class="active"';
                                    }?>>
-                                    <a class="aquery" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-2&limitstart=0' . (intval($this->filters['show']) != -2 ? '&search=' : '')); ?>">
-                                        <?php echo $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_CLOSED')); ?> <span><?php echo $this->watch['closed']; ?></span>
+                                    <a class="aquery" href="<?php echo $watchClosedUrl; ?>">
+                                        <?php
+                                        echo $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_CLOSED'));
+                                        ?>
+                                        <span><?php echo $this->watch['closed']; ?></span>
                                     </a>
                                 </li>
                             </ul>
@@ -75,31 +113,110 @@ $this->css()
                     <?php if (count($this->folders) > 0) { ?>
                         <?php foreach ($this->folders as $folder) { ?>
                             <li id="folder_<?php echo $this->escape($folder->id); ?>" class="open">
-                                <span class="icon-folder folder" id="<?php echo $this->escape($folder->id); ?>-title" data-id="<?php echo $this->escape($folder->id); ?>"><?php echo $this->escape($folder->title); ?></span>
+                                <?php
+                                $folderId    = $this->escape($folder->id);
+                                $folderTitle = $this->escape($folder->title);
+                                $tok         = Session::getFormToken();
+                                ?>
+                                <span
+                                    class="icon-folder folder"
+                                    id="<?php echo $folderId; ?>-title"
+                                    data-id="<?php echo $folderId; ?>"
+                                ><?php echo $folderTitle; ?></span>
                                 <?php if ($this->acl->check('read', 'tickets')) { ?>
+                                    <?php
+                                    $delFolderUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&controller=queries&task=removefolder'
+                                        . '&id=' . $folder->id . '&' . $tok . '=1'
+                                    );
+                                    $editFolderUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&controller=queries&task=editfolder'
+                                        . '&id=' . $folder->id . '&tmpl=component&' . $tok . '=1'
+                                    );
+                                    $saveFolderUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&controller=queries&task=savefolder'
+                                        . '&' . $tok . '=1&fields[id]=' . $folder->id
+                                    );
+                                    $delConfirm  = Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE');
+                                    $folderLabel = Lang::txt('COM_SUPPORT_FOLDER_NAME');
+                                    ?>
                                     <span class="folder-options">
-                                        <a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id . '&' . Session::getFormToken() . '=1'); ?>" data-confirm="<?php echo Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                                        <a
+                                            class="delete"
+                                            href="<?php echo $delFolderUrl; ?>"
+                                            data-confirm="<?php echo $delConfirm; ?>"
+                                            title="<?php echo Lang::txt('JACTION_DELETE'); ?>"
+                                        >
                                             <?php echo Lang::txt('JACTION_DELETE'); ?>
                                         </a>
-                                        <a class="edit editfolder" data-id="<?php echo $this->escape($folder->id); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=editfolder&id=' . $folder->id . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" data-href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id); ?>" data-name="<?php echo Lang::txt('COM_SUPPORT_FOLDER_NAME'); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+                                        <a
+                                            class="edit editfolder"
+                                            data-id="<?php echo $folderId; ?>"
+                                            href="<?php echo $editFolderUrl; ?>"
+                                            data-href="<?php echo $saveFolderUrl; ?>"
+                                            data-name="<?php echo $folderLabel; ?>"
+                                            title="<?php echo Lang::txt('JACTION_EDIT'); ?>"
+                                        >
                                             <?php echo Lang::txt('JACTION_EDIT'); ?>
                                         </a>
                                     </span>
                                 <?php } ?>
-                                <ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
+                                <ul
+                                    id="queries_<?php echo $this->escape($folder->id); ?>"
+                                    class="queries"
+                                >
                                     <?php foreach ($folder->queries as $query) { ?>
-                                        <li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) {
-                                            echo ' class="active"';
-                                                      }?>>
-                                            <a class="aquery" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')); ?>">
-                                                <?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->get('count'); ?></span>
+                                        <?php
+                                        $qId         = $this->escape($query->id);
+                                        $isActiveQ   = (intval($this->filters['show']) == $query->id);
+                                        $qUrl = Route::url(
+                                            'index.php?option=' . $this->option
+                                            . '&controller=' . $this->controller
+                                            . '&task=display&show=' . $query->id
+                                            . (!$isActiveQ ? '&search=&limitstart=0' : '')
+                                        );
+                                        ?>
+                                        <li
+                                            id="query_<?php echo $qId; ?>"
+                                            <?php if ($isActiveQ) {
+                                                echo ' class="active"';
+                                            }?>
+                                        >
+                                            <a class="aquery" href="<?php echo $qUrl; ?>">
+                                                <?php echo $this->escape(stripslashes($query->title)); ?>
+                                                <span><?php echo $query->get('count'); ?></span>
                                             </a>
                                             <?php if ($this->acl->check('read', 'tickets')) { ?>
+                                                <?php
+                                                $delQueryUrl = Route::url(
+                                                    'index.php?option=' . $this->option
+                                                    . '&controller=queries&task=remove'
+                                                    . '&id=' . $query->id . '&' . $tok . '=1'
+                                                );
+                                                $editQueryUrl = Route::url(
+                                                    'index.php?option=' . $this->option
+                                                    . '&controller=queries&task=edit'
+                                                    . '&id=' . $query->id . '&tmpl=component&' . $tok . '=1'
+                                                );
+                                                ?>
                                                 <span class="query-options">
-                                                    <a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id . '&' . Session::getFormToken() . '=1'); ?>" data-confirm="<?php echo Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                                                    <a
+                                                        class="delete"
+                                                        href="<?php echo $delQueryUrl; ?>"
+                                                        data-confirm="<?php echo $delConfirm; ?>"
+                                                        title="<?php echo Lang::txt('JACTION_DELETE'); ?>"
+                                                    >
                                                         <?php echo Lang::txt('JACTION_DELETE'); ?>
                                                     </a>
-                                                    <a class="modal edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+                                                    <a
+                                                        class="modal edit"
+                                                        href="<?php echo $editQueryUrl; ?>"
+                                                        title="<?php echo Lang::txt('JACTION_EDIT'); ?>"
+                                                        rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                                                    >
                                                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                                                     </a>
                                                 </span>
@@ -112,15 +229,45 @@ $this->css()
                     <?php } ?>
                 </ul>
                 <?php if ($this->acl->check('read', 'tickets')) { ?>
+                    <?php
+                    $addQueryUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=queries&task=add&' . $tok . '=1'
+                    );
+                    $addFolderUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=queries&task=addfolder&' . $tok . '=1'
+                    );
+                    $saveFolderNewUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=queries&task=savefolder&' . $tok . '=1'
+                    );
+                    $addQueryTitle  = Lang::txt('COM_SUPPORT_ADD_QUERY');
+                    $addFolderTitle = Lang::txt('COM_SUPPORT_ADD_FOLDER');
+                    $folderLabel    = Lang::txt('COM_SUPPORT_FOLDER_NAME');
+                    ?>
                     <ul class="controls">
                         <li>
-                            <a class="icon-list modal" id="new-query" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=add&' . Session::getFormToken() . '=1'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}" title="<?php echo Lang::txt('COM_SUPPORT_ADD_QUERY'); ?>">
-                                <?php echo Lang::txt('COM_SUPPORT_ADD_QUERY'); ?>
+                            <a
+                                class="icon-list modal"
+                                id="new-query"
+                                href="<?php echo $addQueryUrl; ?>"
+                                rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                                title="<?php echo $addQueryTitle; ?>"
+                            >
+                                <?php echo $addQueryTitle; ?>
                             </a>
                         </li>
                         <li>
-                            <a class="icon-folder" id="new-folder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=addfolder&' . Session::getFormToken() . '=1'); ?>" data-href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1'); ?>" data-name="<?php echo Lang::txt('COM_SUPPORT_FOLDER_NAME'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_ADD_FOLDER'); ?>">
-                                <?php echo Lang::txt('COM_SUPPORT_ADD_FOLDER'); ?>
+                            <a
+                                class="icon-folder"
+                                id="new-folder"
+                                href="<?php echo $addFolderUrl; ?>"
+                                data-href="<?php echo $saveFolderNewUrl; ?>"
+                                data-name="<?php echo $folderLabel; ?>"
+                                title="<?php echo $addFolderTitle; ?>"
+                            >
+                                <?php echo $addFolderTitle; ?>
                             </a>
                         </li>
                     </ul>
@@ -130,52 +277,113 @@ $this->css()
         </div><!-- / .pane -->
         <div class="pane pane-list">
             <div class="pane-inner" id="tickets">
-                <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display'); ?>" method="post" id="ticketForm">
+                <?php
+                $formAction = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller . '&task=display'
+                );
+                $direction  = (strtolower($this->filters['sortdir']) == 'desc') ? 'asc' : 'desc';
+                $sortBase   = 'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=display&show=' . $this->filters['show']
+                    . '&search=' . $this->filters['search']
+                    . '&sortdir=' . $direction
+                    . '&limit=' . $this->filters['limit'] . '&limitstart=0';
+                $sortUrl = array(
+                    'created'  => Route::url($sortBase . '&sort=created'),
+                    'status'   => Route::url($sortBase . '&sort=status'),
+                    'severity' => Route::url($sortBase . '&sort=severity'),
+                    'summary'  => Route::url($sortBase . '&sort=summary'),
+                    'group'    => Route::url($sortBase . '&sort=group'),
+                    'owner'    => Route::url($sortBase . '&sort=owner'),
+                );
+                $clickToSort = Lang::txt('COM_SUPPORT_CLICK_TO_SORT');
+                $curSort     = $this->filters['sort'];
+                $sortDir     = strtolower($this->filters['sortdir']);
+                ?>
+                <form action="<?php echo $formAction; ?>" method="post" id="ticketForm">
                     <div class="list-options">
-                        <?php $direction = (strtolower($this->filters['sortdir']) == 'desc') ? 'asc' : 'desc'; ?>
                         <ul class="sort-options">
                             <li>
-                                <span class="sort-header"><?php echo Lang::txt('COM_SUPPORT_SORT_RESULTS'); ?></span>
+                                <span class="sort-header">
+                                    <?php echo Lang::txt('COM_SUPPORT_SORT_RESULTS'); ?>
+                                </span>
                                 <ul>
                                     <li>
-                                        <a class="sort-age<?php if ($this->filters['sort'] == 'created') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                          } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=created&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <?php
+                                        $ageClass = 'sort-age'
+                                            . ($curSort == 'created' ? ' active ' . $sortDir : '');
+                                        ?>
+                                        <a
+                                            class="<?php echo $ageClass; ?>"
+                                            href="<?php echo $sortUrl['created']; ?>"
+                                            title="<?php echo $clickToSort; ?>"
+                                        >
                                             <?php echo Lang::txt('COM_SUPPORT_COL_AGE'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-status<?php if ($this->filters['sort'] == 'status') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                             } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=status&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <?php
+                                        $statusClass = 'sort-status'
+                                            . ($curSort == 'status' ? ' active ' . $sortDir : '');
+                                        ?>
+                                        <a
+                                            class="<?php echo $statusClass; ?>"
+                                            href="<?php echo $sortUrl['status']; ?>"
+                                            title="<?php echo $clickToSort; ?>"
+                                        >
                                             <?php echo Lang::txt('COM_SUPPORT_COL_STATUS'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-severity<?php if ($this->filters['sort'] == 'severity') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                               } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=severity&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <?php
+                                        $sevClass = 'sort-severity'
+                                            . ($curSort == 'severity' ? ' active ' . $sortDir : '');
+                                        ?>
+                                        <a
+                                            class="<?php echo $sevClass; ?>"
+                                            href="<?php echo $sortUrl['severity']; ?>"
+                                            title="<?php echo $clickToSort; ?>"
+                                        >
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SEVERITY'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-summary<?php if ($this->filters['sort'] == 'summary') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                              } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=summary&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <?php
+                                        $sumClass = 'sort-summary'
+                                            . ($curSort == 'summary' ? ' active ' . $sortDir : '');
+                                        ?>
+                                        <a
+                                            class="<?php echo $sumClass; ?>"
+                                            href="<?php echo $sortUrl['summary']; ?>"
+                                            title="<?php echo $clickToSort; ?>"
+                                        >
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SUMMARY'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-group<?php if ($this->filters['sort'] == 'group') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                            } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=group&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <?php
+                                        $grpClass = 'sort-group'
+                                            . ($curSort == 'group' ? ' active ' . $sortDir : '');
+                                        ?>
+                                        <a
+                                            class="<?php echo $grpClass; ?>"
+                                            href="<?php echo $sortUrl['group']; ?>"
+                                            title="<?php echo $clickToSort; ?>"
+                                        >
                                             <?php echo Lang::txt('COM_SUPPORT_COL_GROUP'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-owner<?php if ($this->filters['sort'] == 'owner') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                            } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=owner&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <?php
+                                        $ownClass = 'sort-owner'
+                                            . ($curSort == 'owner' ? ' active ' . $sortDir : '');
+                                        ?>
+                                        <a
+                                            class="<?php echo $ownClass; ?>"
+                                            href="<?php echo $sortUrl['owner']; ?>"
+                                            title="<?php echo $clickToSort; ?>"
+                                        >
                                             <?php echo Lang::txt('COM_SUPPORT_COL_OWNER'); ?>
                                         </a>
                                     </li>
@@ -184,13 +392,35 @@ $this->css()
                         </ul>
                         <fieldset id="filter-bar">
                             <label for="filter_search"><?php echo Lang::txt('COM_SUPPORT_FIND'); ?>:</label>
-                            <input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_SUPPORT_SEARCH_THIS_QUERY'); ?>" />
+                            <input
+                                type="text"
+                                name="search"
+                                id="filter_search"
+                                value="<?php echo $this->escape($this->filters['search']); ?>"
+                                placeholder="<?php echo Lang::txt('COM_SUPPORT_SEARCH_THIS_QUERY'); ?>"
+                            />
 
-                            <input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-                            <input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sortdir']); ?>" />
-                            <input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
+                            <input
+                                type="hidden"
+                                name="sort"
+                                value="<?php echo $this->escape($this->filters['sort']); ?>"
+                            />
+                            <input
+                                type="hidden"
+                                name="sortdir"
+                                value="<?php echo $this->escape($this->filters['sortdir']); ?>"
+                            />
+                            <input
+                                type="hidden"
+                                name="show"
+                                value="<?php echo $this->escape($this->filters['show']); ?>"
+                            />
 
-                            <input type="submit" class="submit" value="<?php echo Lang::txt('COM_SUPPORT_GO'); ?>" />
+                            <input
+                                type="submit"
+                                class="submit"
+                                value="<?php echo Lang::txt('COM_SUPPORT_GO'); ?>"
+                            />
                         </fieldset>
                     </div>
                     <table id="tktlist">
@@ -229,24 +459,56 @@ $this->css()
 
                             if (!in_array($row->status->get('id'), $statuses)) {
                                 $statuses[] = $row->status->get('id');
-                                $this->css('#tktlist tbody tr td.status-' . $row->status->get('id') . ' { border-left-color: #' . $row->status->get('color') . '; }');
+                                $statusColor = $row->status->get('color');
+                                $statusId    = $row->status->get('id');
+                                $this->css(
+                                    '#tktlist tbody tr td.status-' . $statusId
+                                    . ' { border-left-color: #' . $statusColor . '; }'
+                                );
                             }
+                            $rowStatusId    = $row->status->get('id');
+                            $rowStatusText  = $row->status->get('text');
+                            $rowStatusClass = $row->status->get('class');
+                            $rowIsOpen      = $row->isOpen();
+                            $rowOpenClass   = ($rowIsOpen ? 'open' : 'closed') . ' ' . $rowStatusClass;
+                            $tipTitle       = Lang::txt('COM_SUPPORT_DETAILS');
+                            $tipStatusLabel = Lang::txt('COM_SUPPORT_COL_STATUS') . ': ' . $rowStatusText;
                             ?>
                             <tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
-                                <td class="status-<?php echo $row->status->get('id'); ?>">
-                                    <span class="hasTip" title="<?php echo Lang::txt('COM_SUPPORT_DETAILS'); ?> :: <?php echo Lang::txt('COM_SUPPORT_COL_STATUS') . ': ' . $row->status->get('text'); ?>">
+                                <td class="status-<?php echo $rowStatusId; ?>">
+                                    <span
+                                        class="hasTip"
+                                        title="<?php echo $tipTitle; ?> :: <?php echo $tipStatusLabel; ?>"
+                                    >
                                         <span class="ticket-id">
                                             <?php echo $row->get('id'); ?>
                                         </span>
-                                        <span class="<?php echo ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status->get('class'); ?> status">
+                                        <span class="<?php echo $rowOpenClass; ?> status">
                                             <?php
-                                            echo $row->status->get('text');
-                                            echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : '';
+                                            echo $rowStatusText;
+                                            if (!$rowIsOpen) {
+                                                echo ' (' . $this->escape($row->get('resolved')) . ')';
+                                            }
                                             ?>
                                         </span>
-                                        <?php if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00') { ?>
-                                            <span class="ticket-target_date tooltips" title="<?php echo Lang::txt('COM_SUPPORT_TARGET_DATE', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))); ?>">
-                                                <time datetime="<?php echo Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                                        <?php
+                                        $targetDate = $row->get('target_date');
+                                        $hasTarget  = ($targetDate && $targetDate != '0000-00-00 00:00:00');
+                                        if ($hasTarget) {
+                                            $targetDateObj    = Date::of($targetDate);
+                                            $targetDateLocal  = $targetDateObj->toLocal(
+                                                Lang::txt('DATE_FORMAT_HZ1')
+                                            );
+                                            $targetDateFormat = $targetDateObj->format('Y-m-d\TH:i:s\Z');
+                                            $targetTip = Lang::txt('COM_SUPPORT_TARGET_DATE', $targetDateLocal);
+                                            ?>
+                                            <span
+                                                class="ticket-target_date tooltips"
+                                                title="<?php echo $targetTip; ?>"
+                                            >
+                                                <time datetime="<?php echo $targetDateFormat; ?>">
+                                                    <?php echo $targetDateLocal; ?>
+                                                </time>
                                             </span>
                                         <?php } ?>
                                     </span>
@@ -256,21 +518,65 @@ $this->css()
                                         <span class="ticket-author">
                                             <?php
                                             echo $this->escape($row->get('name'));
-                                            echo ($row->submitter->get('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter->get('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : '');
+                                            if ($row->submitter->get('id')) {
+                                                $subUrl   = Route::url(
+                                                    'index.php?option=com_members&id='
+                                                    . $row->submitter->get('id')
+                                                );
+                                                $subLogin = $this->escape($row->get('login'));
+                                                echo ' (<a href="' . $subUrl . '">'
+                                                    . $subLogin . '</a>)';
+                                            } elseif ($row->get('login')) {
+                                                echo ' (' . $this->escape($row->get('login')) . ')';
+                                            }
                                             ?>
                                         </span>
+                                        <?php
+                                        $createdDate = Date::of($row->get('created'));
+                                        $createdFmt  = $createdDate->format('Y-m-d\TH:i:s\Z');
+                                        ?>
                                         <span class="ticket-datetime">
-                                            @ <time datetime="<?php echo Date::of($row->get('created'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($row->get('created'))->toLocal(); ?></time>
+                                            @ <time datetime="<?php echo $createdFmt; ?>">
+                                                <?php echo $createdDate->toLocal(); ?>
+                                            </time>
                                         </span>
                                         <?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
+                                            <?php
+                                            $lastDate = Date::of($lastcomment);
+                                            $lastFmt  = $lastDate->format('Y-m-d\TH:i:s\Z');
+                                            ?>
                                             <span class="ticket-activity">
-                                                <time datetime="<?php echo Date::of($lastcomment)->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($lastcomment)->relative(); ?></time>
+                                                <time datetime="<?php echo $lastFmt; ?>">
+                                                    <?php echo $lastDate->relative(); ?>
+                                                </time>
                                             </span>
                                         <?php } ?>
                                     </p>
                                     <p>
-                                        <a class="ticket-content" title="<?php echo $this->escape(str_replace(array('<br />', '&amp;'), array('', '&'), $row->content)); ?>" href="<?php echo Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-                                            <?php echo $row->content ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200) : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND'); ?>
+                                        <?php
+                                        $rowContent = $this->escape(
+                                            str_replace(
+                                                array('<br />', '&amp;'),
+                                                array('', '&'),
+                                                $row->content
+                                            )
+                                        );
+                                        $rowLink = Route::url(
+                                            $row->link() . '&show=' . $this->filters['show']
+                                            . '&search=' . $this->filters['search']
+                                            . '&limit=' . $this->filters['limit']
+                                            . '&limitstart=' . $this->filters['start']
+                                        );
+                                        $rowSummary = $row->content
+                                            ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200)
+                                            : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND');
+                                        ?>
+                                        <a
+                                            class="ticket-content"
+                                            title="<?php echo $rowContent; ?>"
+                                            href="<?php echo $rowLink; ?>"
+                                        >
+                                            <?php echo $rowSummary; ?>
                                         </a>
                                     </p>
                                     <?php if ($tags || $row->isOwned() || $row->get('group_id')) { ?>
@@ -284,7 +590,11 @@ $this->css()
                                             <span class="ticket-group">
                                                 <?php
                                                 $gname = Lang::txt('COM_SUPPORT_UNKNOWN');
-                                                if ($group = \Hubzero\User\Group::getInstance($row->get('group_id'))) {
+                                                if (
+                                                    $group = \Hubzero\User\Group::getInstance(
+                                                        $row->get('group_id')
+                                                    )
+                                                ) {
                                                     $gname = $group->get('cn');
                                                 }
                                                 echo $this->escape($gname);
@@ -292,19 +602,63 @@ $this->css()
                                             </span>
                                         <?php } ?>
                                         <?php if ($row->isOwned()) { ?>
-                                            <span class="ticket-owner hasTip" title="<?php echo Lang::txt('COM_SUPPORT_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $row->assignee->picture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($row->assignee->get('username', ''))); ?><br /><?php echo $this->escape(stripslashes($row->assignee->get('organization', Lang::txt('COM_SUPPORT_UNKNOWN')))); ?>">
-                                                <?php echo $this->escape(stripslashes($row->assignee->get('name', ''))); ?>
+                                            <?php
+                                            $assigneePhoto = $row->assignee->picture();
+                                            $assigneeUser  = $this->escape(
+                                                stripslashes($row->assignee->get('username', ''))
+                                            );
+                                            $assigneeOrg   = $this->escape(
+                                                stripslashes(
+                                                    $row->assignee->get(
+                                                        'organization',
+                                                        Lang::txt('COM_SUPPORT_UNKNOWN')
+                                                    )
+                                                )
+                                            );
+                                            $ownerTip = Lang::txt('COM_SUPPORT_ASSIGNED_TO')
+                                                . '::'
+                                                . '<img border=&quot;1&quot; src=&quot;' . $assigneePhoto
+                                                . '&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot;'
+                                                . ' width=&quot;40&quot; height=&quot;40&quot;'
+                                                . ' style=&quot;float: left; margin-right: 0.5em;&quot; />'
+                                                . $assigneeUser . '<br />' . $assigneeOrg;
+                                            ?>
+                                            <span
+                                                class="ticket-owner hasTip"
+                                                title="<?php echo $ownerTip; ?>"
+                                            >
+                                                <?php
+                                                echo $this->escape(
+                                                    stripslashes($row->assignee->get('name', ''))
+                                                );
+                                                ?>
                                             </span>
                                         <?php } ?>
                                         </p>
                                     <?php } ?>
                                 </td>
                                 <td class="tkt-severity">
-                                    <span class="ticket-severity <?php echo $this->escape($row->get('severity', 'normal')); ?> hasTip" title="<?php echo Lang::txt('COM_SUPPORT_PRIORITY'); ?>:&nbsp;<?php echo $this->escape($row->get('severity', 'normal')); ?>">
-                                        <span><?php echo $this->escape($row->get('severity', 'normal')); ?></span>
+                                    <?php
+                                    $sev      = $this->escape($row->get('severity', 'normal'));
+                                    $sevTip   = Lang::txt('COM_SUPPORT_PRIORITY') . ':&nbsp;' . $sev;
+                                    ?>
+                                    <span
+                                        class="ticket-severity <?php echo $sev; ?> hasTip"
+                                        title="<?php echo $sevTip; ?>"
+                                    >
+                                        <span><?php echo $sev; ?></span>
                                     </span>
                                     <?php if ($this->acl->check('delete', 'tickets')) { ?>
-                                        <a class="delete" href="<?php echo Route::url($row->link('delete')); ?>" data-confirm="<?php echo Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                                        <?php
+                                        $deleteUrl  = Route::url($row->link('delete'));
+                                        $delConfirm = Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE');
+                                        ?>
+                                        <a
+                                            class="delete"
+                                            href="<?php echo $deleteUrl; ?>"
+                                            data-confirm="<?php echo $delConfirm; ?>"
+                                            title="<?php echo Lang::txt('JACTION_DELETE'); ?>"
+                                        >
                                             <?php echo Lang::txt('JACTION_DELETE'); ?>
                                         </a>
                                     <?php } ?>

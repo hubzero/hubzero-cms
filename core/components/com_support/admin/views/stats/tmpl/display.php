@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_STATS'), 'support');
+$toolbarTitle = Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_STATS');
+Toolbar::title($toolbarTitle, 'support');
 
 Toolbar::spacer();
 Toolbar::help('stats');
@@ -78,7 +77,19 @@ foreach ($severities as $severity) {
 $base = str_replace('/administrator', '', Request::base(true));
 $base = rtrim($base, '/');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get" name="adminForm" id="item-form" enctype="multipart/form-data">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="get"
+    name="adminForm"
+    id="item-form"
+    enctype="multipart/form-data"
+>
     <div id="ticket-stats">
         <fieldset id="filter-bar" class="support-stats-filter">
             <label for="ticket-group">
@@ -91,10 +102,16 @@ $base = rtrim($base, '/');
                 <?php
                 if ($this->groups) {
                     foreach ($this->groups as $group) {
+                        $groupLabel = $group->description
+                            ? stripslashes($this->escape($group->description))
+                            : $this->escape($group->cn);
                         ?>
-                        <option value="<?php echo $group->cn; ?>"<?php if ($this->filters['group'] == $group->cn) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo ($group->description) ? stripslashes($this->escape($group->description)) : $this->escape($group->cn); ?></option>
+                        <option
+                            value="<?php echo $group->cn; ?>"
+                            <?php if ($this->filters['group'] == $group->cn) {
+                                echo ' selected="selected"';
+                            } ?>
+                        ><?php echo $groupLabel; ?></option>
                         <?php
                     }
                 }
@@ -105,10 +122,22 @@ $base = rtrim($base, '/');
 
         <fieldset class="adminform">
             <legend>
-                <span><?php echo Date::of($this->first . '-01-01')->format('M Y'); ?> - <?php echo Date::of($this->filters['year'] . '-' . $this->filters['month'] . '-01')->format('M Y'); ?></span>
+                <span>
+                    <?php echo Date::of($this->first . '-01-01')->format('M Y'); ?>
+                    -
+                    <?php
+                    echo Date::of(
+                        $this->filters['year'] . '-' . $this->filters['month'] . '-01'
+                    )->format('M Y');
+                    ?>
+                </span>
             </legend>
 
-            <div id="container" class="chart stats-tickets-chart" data-datasets="<?php echo $this->option; ?>-data-openedclosed"></div>
+            <div
+                id="container"
+                class="chart stats-tickets-chart"
+                data-datasets="<?php echo $this->option; ?>-data-openedclosed"
+            ></div>
             <script type="application/json" id="<?php echo $this->option; ?>-data-openedclosed">
                 <?php
                 $top = 0;
@@ -119,7 +148,9 @@ $base = rtrim($base, '/');
                     foreach ($this->closedmonths as $year => $data) {
                         foreach ($data as $k => $v) {
                             $top = ($v > $top) ? $v : $top;
-                            $c[] = '[' . Date::of($year . '-' . Hubzero\Utility\Str::pad(($k - 1), 2) . '-01')->toUnix() . ',' . $v . ']';
+                            $monthPad = Hubzero\Utility\Str::pad(($k - 1), 2);
+                            $c[] = '[' . Date::of($year . '-' . $monthPad . '-01')->toUnix()
+                                . ',' . $v . ']';
                         }
                     }
                     $closeddata = implode(',', $c);
@@ -131,7 +162,9 @@ $base = rtrim($base, '/');
                     foreach ($this->openedmonths as $year => $data) {
                         foreach ($data as $k => $v) {
                             $top = ($v > $top) ? $v : $top;
-                            $o[] = '[' . Date::of($year . '-' . Hubzero\Utility\Str::pad(($k - 1), 2) . '-01')->toUnix() . ',' . $v . ']';
+                            $monthPad2 = Hubzero\Utility\Str::pad(($k - 1), 2);
+                            $o[] = '[' . Date::of($year . '-' . $monthPad2 . '-01')->toUnix()
+                                . ',' . $v . ']';
                         }
                     }
                     $openeddata = implode(',', $o);
@@ -160,10 +193,18 @@ $base = rtrim($base, '/');
                 <table class="support-stats-overview">
                     <thead>
                         <tr>
-                            <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_OPENED_ALL'); ?></th>
-                            <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_CLOSED_ALL'); ?></th>
-                            <th scope="col" class="block"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_AVERAGE'); ?></th>
-                            <th scope="col" class="major"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_UNASSIGNED'); ?></th>
+                            <th scope="col">
+                                <?php echo Lang::txt('COM_SUPPORT_STATS_COL_OPENED_ALL'); ?>
+                            </th>
+                            <th scope="col">
+                                <?php echo Lang::txt('COM_SUPPORT_STATS_COL_CLOSED_ALL'); ?>
+                            </th>
+                            <th scope="col" class="block">
+                                <?php echo Lang::txt('COM_SUPPORT_STATS_COL_AVERAGE'); ?>
+                            </th>
+                            <th scope="col" class="major">
+                                <?php echo Lang::txt('COM_SUPPORT_STATS_COL_UNASSIGNED'); ?>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -172,11 +213,16 @@ $base = rtrim($base, '/');
                             <td><?php echo $this->opened['closed']; ?></td>
                             <td class="block">
                                 <?php
-                                $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife($this->closedTickets);
+                                $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife(
+                                    $this->closedTickets
+                                );
                                 ?>
-                                <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_DAYS'); ?></span>
-                                <?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_HOURS'); ?></span>
-                                <?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_MINUTES'); ?></span>
+                                <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?>
+                                <span><?php echo Lang::txt('COM_SUPPORT_STATS_DAYS'); ?></span>
+                                <?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?>
+                                <span><?php echo Lang::txt('COM_SUPPORT_STATS_HOURS'); ?></span>
+                                <?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?>
+                                <span><?php echo Lang::txt('COM_SUPPORT_STATS_MINUTES'); ?></span>
                             </td>
                             <td class="major"><?php echo $this->opened['unassigned']; ?></td>
                         </tr>
@@ -188,14 +234,26 @@ $base = rtrim($base, '/');
         <div class="grid">
         <div class="col span6">
             <fieldset class="adminform breakdown pies">
-                <legend><span><?php echo Lang::txt('COM_SUPPORT_STATS_FIELDSET_BY_SEVERITY'); ?></span></legend>
-                <div id="severities-container" class="stats-pie-chart" data-datasets="<?php echo $this->option; ?>-data-severity">
+                <legend>
+                    <span><?php echo Lang::txt('COM_SUPPORT_STATS_FIELDSET_BY_SEVERITY'); ?></span>
+                </legend>
+                <div
+                    id="severities-container"
+                    class="stats-pie-chart"
+                    data-datasets="<?php echo $this->option; ?>-data-severity"
+                >
                     <table class="support-stats-resolutions">
                         <thead>
                             <tr>
-                                <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_SEVERITY'); ?></th>
-                                <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_NUMBER'); ?></th>
-                                <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_PERCENT'); ?></th>
+                                <th scope="col">
+                                    <?php echo Lang::txt('COM_SUPPORT_STATS_COL_SEVERITY'); ?>
+                                </th>
+                                <th scope="col">
+                                    <?php echo Lang::txt('COM_SUPPORT_STATS_COL_NUMBER'); ?>
+                                </th>
+                                <th scope="col">
+                                    <?php echo Lang::txt('COM_SUPPORT_STATS_COL_PERCENT'); ?>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -223,14 +281,17 @@ $base = rtrim($base, '/');
                                 '#3a3a3a'
                             );
 
-                            $severities = \Components\Support\Helpers\Utilities::getSeverities($this->config->get('severities'));
+                            $severities = \Components\Support\Helpers\Utilities::getSeverities(
+                                $this->config->get('severities')
+                            );
 
                             $cls = 'odd';
                             $data = array();
                             $i = 0;
                             foreach ($severities as $severity) {
                                 $r  = '{"label": "' . $this->escape($severity) . '", "data": ';
-                                $r .= (isset($sev[$severity])) ? round(($sev[$severity] / $total) * 100, 2) : 0;
+                                $r .= (isset($sev[$severity]))
+                                    ? round(($sev[$severity] / $total) * 100, 2) : 0;
                                 $r .= ', "color": "' . $colors[$i] . '"}';
 
                                 $data[] = $r;
@@ -239,8 +300,15 @@ $base = rtrim($base, '/');
                                 ?>
                                 <tr class="<?php echo $cls; ?>">
                                     <th scope="row"><?php echo $this->escape($severity); ?></th>
-                                    <td><?php echo (isset($sev[$severity])) ? $sev[$severity] : '0'; ?></td>
-                                    <td><?php echo (isset($sev[$severity])) ? round($sev[$severity] / $total * 100, 2) : '0'; ?></td>
+                                    <td>
+                                        <?php echo (isset($sev[$severity])) ? $sev[$severity] : '0'; ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo (isset($sev[$severity]))
+                                            ? round($sev[$severity] / $total * 100, 2) : '0';
+                                        ?>
+                                    </td>
                                 </tr>
                                 <?php
                                 $i++;
@@ -249,7 +317,10 @@ $base = rtrim($base, '/');
                         </tbody>
                     </table>
                 </div><!-- / #severities-container -->
-                <script type="application/json" id="<?php echo $this->option; ?>-data-severity">
+                <script
+                    type="application/json"
+                    id="<?php echo $this->option; ?>-data-severity"
+                >
                     {
                         "datasets": [<?php echo implode(',' . "\n", $data); ?>]
                     }
@@ -259,42 +330,74 @@ $base = rtrim($base, '/');
 
         <div class="col span6">
             <fieldset class="adminform breakdown pies">
-                <legend><span><?php echo Lang::txt('COM_SUPPORT_STATS_FIELDSET_BY_RESOLUTION'); ?></span></legend>
-                <div id="resolutions-container" class="stats-pie-chart" data-datasets="<?php echo $this->option; ?>-data-resolution">
+                <legend>
+                    <span><?php echo Lang::txt('COM_SUPPORT_STATS_FIELDSET_BY_RESOLUTION'); ?></span>
+                </legend>
+                <div
+                    id="resolutions-container"
+                    class="stats-pie-chart"
+                    data-datasets="<?php echo $this->option; ?>-data-resolution"
+                >
                     <table class="support-stats-resolutions">
                         <thead>
                             <tr>
-                                <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_RESOLUTION'); ?></th>
-                                <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_NUMBER'); ?></th>
-                                <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_PERCENT'); ?></th>
+                                <th scope="col">
+                                    <?php echo Lang::txt('COM_SUPPORT_STATS_COL_RESOLUTION'); ?>
+                                </th>
+                                <th scope="col">
+                                    <?php echo Lang::txt('COM_SUPPORT_STATS_COL_NUMBER'); ?>
+                                </th>
+                                <th scope="col">
+                                    <?php echo Lang::txt('COM_SUPPORT_STATS_COL_PERCENT'); ?>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="odd">
-                                <th scope="row"><?php echo Lang::txt('COM_SUPPORT_STATS_NO_RESOLUTION'); ?></th>
+                                <th scope="row">
+                                    <?php echo Lang::txt('COM_SUPPORT_STATS_NO_RESOLUTION'); ?>
+                                </th>
                                 <td><?php echo (isset($res[0])) ? $res[0] : '0'; ?></td>
                                 <td><?php echo (isset($res[0])) ? $res[0] / $total : '0'; ?></td>
                             </tr>
                             <?php
-                            $resolutions = \Components\Support\Models\Status::all()->whereEquals('open', 0)->rows();
+                            $resolutions = \Components\Support\Models\Status::all()
+                                ->whereEquals('open', 0)
+                                ->rows();
 
                             $cls = 'odd';
+                            $noResLabel = Lang::txt('COM_SUPPORT_STATS_NO_RESOLUTION');
+                            $noResVal = isset($res[0]) ? $res[0] / $total : '0';
                             $data = array(
-                                '{"label": "' . Lang::txt('COM_SUPPORT_STATS_NO_RESOLUTION') . '", "data": ' . (isset($res[0]) ? $res[0] / $total : '0') . ', "color": "' . $colors[0] . '"}'
+                                '{"label": "' . $noResLabel . '", "data": ' . $noResVal
+                                . ', "color": "' . $colors[0] . '"}'
                             );
                             $i = 1;
                             foreach ($resolutions as $resolution) {
                                 $r  = '{"label": "' . $this->escape($resolution->title) . '", "data": ';
-                                $r .= (isset($res[$resolution->id])) ? round(($res[$resolution->id] / $total) * 100, 2) : 0;
+                                $r .= (isset($res[$resolution->id]))
+                                    ? round(($res[$resolution->id] / $total) * 100, 2) : 0;
                                 $r .= ', "color": "' . $colors[$i] . '"}';
                                 $data[] = $r;
 
                                 $cls = ($cls == 'even') ? 'odd' : 'even';
                                 ?>
                                 <tr class="<?php echo $cls; ?>">
-                                    <th scope="row"><?php echo $this->escape($resolution->title); ?></th>
-                                    <td><?php echo (isset($res[$resolution->id])) ? $res[$resolution->id] : '0'; ?></td>
-                                    <td><?php echo (isset($res[$resolution->id])) ? round($res[$resolution->id] / $total * 100, 2) : '0'; ?></td>
+                                    <th scope="row">
+                                        <?php echo $this->escape($resolution->title); ?>
+                                    </th>
+                                    <td>
+                                        <?php
+                                        echo (isset($res[$resolution->id]))
+                                            ? $res[$resolution->id] : '0';
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        echo (isset($res[$resolution->id]))
+                                            ? round($res[$resolution->id] / $total * 100, 2) : '0';
+                                        ?>
+                                    </td>
                                 </tr>
                                 <?php
                                 $i++;
@@ -303,7 +406,10 @@ $base = rtrim($base, '/');
                         </tbody>
                     </table>
                 </div><!-- / #resolutions-container -->
-                <script type="application/json" id="<?php echo $this->option; ?>-data-resolution">
+                <script
+                    type="application/json"
+                    id="<?php echo $this->option; ?>-data-resolution"
+                >
                     {
                         "datasets": [<?php echo implode(',' . "\n", $data); ?>]
                     }
@@ -346,7 +452,9 @@ $base = rtrim($base, '/');
                         $c = array();
                         foreach ($user->closed as $year => $data) {
                             foreach ($data as $k => $v) {
-                                $c[] = '[' . Date::of($year . '-' . Hubzero\Utility\Str::pad(($k - 1), 2) . '-01')->toUnix() . ',' . $v . ']';
+                                $monthPad3 = Hubzero\Utility\Str::pad(($k - 1), 2);
+                                $c[] = '[' . Date::of($year . '-' . $monthPad3 . '-01')->toUnix()
+                                    . ',' . $v . ']';
                             }
                         }
                         $closeddata = implode(',', $c);
@@ -356,6 +464,10 @@ $base = rtrim($base, '/');
                     if (!$profile) {
                         $anon = 1;
                     }
+                    $photoAlt = Lang::txt(
+                        'COM_SUPPORT_STATS_PHOTO_FOR',
+                        $this->escape(stripslashes($user->name))
+                    );
                     ?>
                     <fieldset class="adminform">
                         <div class="breakdown">
@@ -364,16 +476,33 @@ $base = rtrim($base, '/');
                                     <strong>#<?php echo $j; ?></strong>
                                 </p>
                                 <p class="entry-member-photo">
-                                    <img src="<?php echo $profile->picture($anon); ?>" alt="<?php echo Lang::txt('COM_SUPPORT_STATS_PHOTO_FOR', $this->escape(stripslashes($user->name))); ?>" />
+                                    <img
+                                        src="<?php echo $profile->picture($anon); ?>"
+                                        alt="<?php echo $photoAlt; ?>"
+                                    />
                                 </p>
                                 <p class="entry-title">
                                     <?php echo $this->escape(stripslashes($user->name)); ?><br />
-                                    <span><?php echo Lang::txt('COM_SUPPORT_STATS_NUM_ASSIGNED', number_format($user->assigned)); ?></span>
+                                    <span>
+                                        <?php
+                                        echo Lang::txt(
+                                            'COM_SUPPORT_STATS_NUM_ASSIGNED',
+                                            number_format($user->assigned)
+                                        );
+                                        ?>
+                                    </span>
                                 </p>
                             </div>
                             <div class="entry-content">
-                                <div id="user-<?php echo $this->escape($user->username); ?>" class="stats-user-chart" data-datasets="<?php echo $this->option; ?>-data-user<?php echo $user->id; ?>">
-                                    <script type="application/json" id="<?php echo $this->option; ?>-data-user<?php echo $user->id; ?>">
+                                <div
+                                    id="user-<?php echo $this->escape($user->username); ?>"
+                                    class="stats-user-chart"
+                                    data-datasets="<?php echo $this->option; ?>-data-user<?php echo $user->id; ?>"
+                                >
+                                    <script
+                                        type="application/json"
+                                        id="<?php echo $this->option; ?>-data-user<?php echo $user->id; ?>"
+                                    >
                                         {
                                             "top": <?php echo $top; ?>,
                                             "datasets": [{
@@ -387,8 +516,12 @@ $base = rtrim($base, '/');
                                 <table class="support-stats-overview">
                                     <thead>
                                         <tr>
-                                            <th scope="col"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_CLOSED'); ?></th>
-                                            <th scope="col" class="block"><?php echo Lang::txt('COM_SUPPORT_STATS_COL_AVERAGE'); ?></th>
+                                            <th scope="col">
+                                                <?php echo Lang::txt('COM_SUPPORT_STATS_COL_CLOSED'); ?>
+                                            </th>
+                                            <th scope="col" class="block">
+                                                <?php echo Lang::txt('COM_SUPPORT_STATS_COL_AVERAGE'); ?>
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -396,11 +529,22 @@ $base = rtrim($base, '/');
                                             <td><?php echo number_format($user->total); ?></td>
                                             <td class="block">
                                                 <?php
-                                                $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife($user->tickets);
+                                                $lifetime = \Components\Support\Helpers\Utilities::calculateAverageLife(
+                                                    $user->tickets
+                                                );
                                                 ?>
-                                                <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_DAYS'); ?></span>
-                                                <?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_HOURS'); ?></span>
-                                                <?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?> <span><?php echo Lang::txt('COM_SUPPORT_STATS_MINUTES'); ?></span>
+                                                <?php echo (isset($lifetime[0])) ? $lifetime[0] : 0; ?>
+                                                <span>
+                                                    <?php echo Lang::txt('COM_SUPPORT_STATS_DAYS'); ?>
+                                                </span>
+                                                <?php echo (isset($lifetime[1])) ? $lifetime[1] : 0; ?>
+                                                <span>
+                                                    <?php echo Lang::txt('COM_SUPPORT_STATS_HOURS'); ?>
+                                                </span>
+                                                <?php echo (isset($lifetime[2])) ? $lifetime[2] : 0; ?>
+                                                <span>
+                                                    <?php echo Lang::txt('COM_SUPPORT_STATS_MINUTES'); ?>
+                                                </span>
                                             </td>
                                         </tr>
                                     </tbody>

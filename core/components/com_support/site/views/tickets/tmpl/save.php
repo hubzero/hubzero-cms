@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,7 +26,20 @@ $tmpl = Request::getCmd('tmpl');
             <div class="col span-half">
                 <div id="ticket-number">
                     <h2>
-                        <span><?php echo Lang::txt('COM_SUPPORT_TICKET_NUMBER', ' '); ?></span><strong><a <?php echo ($tmpl) ? 'target="_parent"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ticket&id=' . $this->ticket); ?>"><?php echo $this->ticket; ?></a></strong>
+                        <?php
+                        $ticketUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=ticket&id=' . $this->ticket
+                        );
+                        $targetAttr = ($tmpl) ? 'target="_parent"' : '';
+                        ?>
+                        <span><?php echo Lang::txt('COM_SUPPORT_TICKET_NUMBER', ' '); ?></span>
+                        <strong>
+                            <a <?php echo $targetAttr; ?> href="<?php echo $ticketUrl; ?>">
+                                <?php echo $this->ticket; ?>
+                            </a>
+                        </strong>
                     </h2>
                 </div>
             </div>
@@ -43,7 +54,15 @@ $tmpl = Request::getCmd('tmpl');
                     </div>
                 </div>
                 <p class="ticket-btn">
-                    <a class="btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'); ?>"><?php echo Lang::txt('COM_SUPPORT_NEW_REPORT'); ?></a>
+                    <?php
+                    $newUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller . '&task=new'
+                    );
+                    ?>
+                    <a class="btn" href="<?php echo $newUrl; ?>">
+                        <?php echo Lang::txt('COM_SUPPORT_NEW_REPORT'); ?>
+                    </a>
                 </p>
             </div><!-- / .col span-half omega -->
         </div><!-- / .grid -->

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,9 +26,15 @@ if (!$no_html) {
         <?php if ($this->getError()) { ?>
             <p class="error"><?php echo $this->getError(); ?></p>
         <?php } ?>
-        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse'); ?>" method="post" id="hubForm<?php if ($no_html) {
-            echo '-ajax';
-                      } ?>">
+        <?php
+        $formAction = Route::url(
+            'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
+            . '&task=reportabuse'
+        );
+        $formId = 'hubForm' . ($no_html ? '-ajax' : '');
+        ?>
+        <form action="<?php echo $formAction; ?>" method="post" id="<?php echo $formId; ?>">
             <?php if (!$no_html) { ?>
             <div class="explaination">
                 <p><?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_EXPLANATION'); ?></p>
@@ -59,8 +63,17 @@ if (!$no_html) {
                             echo ($this->report->anon != 0) ? Lang::txt('JANONYMOUS') : $name;
                             echo ($this->report->href) ? '</a>' : '';
                         ?></p>
-                        <?php echo ($this->report->subject) ? '<p><strong>' . stripslashes($this->report->subject) . '</strong></p>' : ''; ?>
-                        <blockquote cite="<?php echo ($this->report->anon != 0) ? Lang::txt('COM_SUPPORT_ANONYMOUS') : $name; ?>">
+                        <?php
+                        if ($this->report->subject) {
+                            echo '<p><strong>'
+                                . stripslashes($this->report->subject)
+                                . '</strong></p>';
+                        }
+                        $citeName = ($this->report->anon != 0)
+                            ? Lang::txt('COM_SUPPORT_ANONYMOUS')
+                            : $name;
+                        ?>
+                        <blockquote cite="<?php echo $citeName; ?>">
                             <p><?php echo Sanitize::html($this->report->text); ?></p>
                         </blockquote>
                     </div>
@@ -71,21 +84,52 @@ if (!$no_html) {
                     <legend><?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_REASON'); ?></legend>
 
                     <div class="form-group form-check">
+                        <?php
+                        $offensiveLabel = Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE');
+                        $stupidLabel = Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID');
+                        $spamLabel = Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM');
+                        $otherLabel = Lang::txt('COM_SUPPORT_REPORT_ABUSE_OTHER');
+                        ?>
                         <label class="option form-check-label" for="subject1">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject1" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE'); ?>" checked="checked" />
-                            <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE'); ?>
+                            <input
+                                type="radio"
+                                class="option form-check-input"
+                                name="subject"
+                                id="subject1"
+                                value="<?php echo $offensiveLabel; ?>"
+                                checked="checked"
+                            />
+                            <?php echo $offensiveLabel; ?>
                         </label>
                         <label class="option form-check-label" for="subject2">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject2" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID'); ?>" />
-                            <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID'); ?>
+                            <input
+                                type="radio"
+                                class="option form-check-input"
+                                name="subject"
+                                id="subject2"
+                                value="<?php echo $stupidLabel; ?>"
+                            />
+                            <?php echo $stupidLabel; ?>
                         </label>
                         <label class="option form-check-label" for="subject3">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject3" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM'); ?>" />
-                            <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM'); ?>
+                            <input
+                                type="radio"
+                                class="option form-check-input"
+                                name="subject"
+                                id="subject3"
+                                value="<?php echo $spamLabel; ?>"
+                            />
+                            <?php echo $spamLabel; ?>
                         </label>
                         <label class="option form-check-label" for="subject4">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject4" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OTHER'); ?>" />
-                            <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OTHER'); ?>
+                            <input
+                                type="radio"
+                                class="option form-check-input"
+                                name="subject"
+                                id="subject4"
+                                value="<?php echo $otherLabel; ?>"
+                            />
+                            <?php echo $otherLabel; ?>
                         </label>
                     </div>
                 </fieldset>

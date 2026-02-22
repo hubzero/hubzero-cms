@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,9 +20,15 @@ $title = (count($this->shot) > 0 && isset($this->shot[0]->title)) ? $this->shot[
 <?php } ?>
     <div class="ss_pop">
         <div>
-            <img src="<?php echo $this->wpath . '/' . $this->file; ?>" width="<?php echo $w; ?>" height="<?php echo $h; ?>" alt="" />
+            <img
+                src="<?php echo $this->wpath . '/' . $this->file; ?>"
+                width="<?php echo $w; ?>"
+                height="<?php echo $h; ?>"
+                alt=""
+            />
         </div>
-        <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="hubForm" id="ss-pop-form" method="post" enctype="multipart/form-data">
+        <?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+        <form action="<?php echo $formAction; ?>" name="hubForm" id="ss-pop-form" method="post" enctype="multipart/form-data">
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
             <input type="hidden" name="tmpl" value="component" />
@@ -37,7 +41,15 @@ $title = (count($this->shot) > 0 && isset($this->shot[0]->title)) ? $this->shot[
             <fieldset class="uploading">
                 <label class="ss_title" for="ss_title">
                     <?php echo Lang::txt('COM_TOOLS_SS_TITLE'); ?>:
-                    <input type="text" name="title" id="ss_title"  size="127" maxlength="127" value="<?php echo $this->escape($title); ?>" class="input_restricted" />
+                    <input
+                        type="text"
+                        name="title"
+                        id="ss_title"
+                        size="127"
+                        maxlength="127"
+                        value="<?php echo $this->escape($title); ?>"
+                        class="input_restricted"
+                    />
                 </label>
                 <input type="submit" id="ss_pop_save" value="<?php echo strtolower(Lang::txt('COM_TOOLS_SAVE')); ?>" />
             </fieldset>
