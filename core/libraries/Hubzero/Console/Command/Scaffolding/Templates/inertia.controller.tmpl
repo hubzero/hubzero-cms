@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @package    %=option=%
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\%=component_name+ucf=%\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+
+/**
+ * %=controller+ucf=% controller (Inertia scaffold).
+ */
+class %=controller+ucf=% extends SiteController
+{
+    /**
+     * Default task with Inertia page payload.
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $props = array(
+            'title' => '%=component_name+ucf=% %=view+ucf=%',
+            'rows' => array(
+                array('id' => 1, 'name' => 'First row'),
+                array('id' => 2, 'name' => 'Second row'),
+            ),
+        );
+
+        $page = $this->inertiaRender('%=component_name+ucf=%/%=view+ucf=%', $props);
+        if (is_array($page)) {
+            $this->view
+                ->set('inertiaPage', $page)
+                ->set('component', '%=component_name+ucf=%/%=view+ucf=%')
+                ->set('props', $props)
+                ->set('assetScript', '/core/components/%=option=%/site/assets/js/inertia-%=view=%.js')
+                ->display();
+        }
+    }
+}
+

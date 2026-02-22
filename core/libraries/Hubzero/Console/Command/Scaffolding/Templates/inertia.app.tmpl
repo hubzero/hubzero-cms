@@ -1,0 +1,40 @@
+document.addEventListener('DOMContentLoaded', function () {
+    var root = document.getElementById('app');
+    if (!root) {
+        return;
+    }
+
+    var raw = root.getAttribute('data-page') || '{}';
+    var page = {};
+    try {
+        page = JSON.parse(raw);
+    } catch (e) {
+        root.innerHTML = '<p>Invalid Inertia payload.</p>';
+        return;
+    }
+
+    var props = page.props || {};
+    var title = props.title || '%=component_name+ucf=% %=view+ucf=%';
+    var rows = Array.isArray(props.rows) ? props.rows : [];
+
+    var html = '<div class="inertia-demo">'
+        + '<h3>' + escapeHtml(title) + '</h3>'
+        + '<ul>';
+
+    rows.forEach(function (row) {
+        html += '<li>' + escapeHtml(String(row.name || '')) + '</li>';
+    });
+
+    html += '</ul></div>';
+    root.innerHTML = html;
+});
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+

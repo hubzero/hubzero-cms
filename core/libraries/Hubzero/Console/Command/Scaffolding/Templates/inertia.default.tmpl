@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @package    %=option=%
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+defined('_HZEXEC_') or die();
+
+Html::behavior('inertia');
+
+$component = $component ?? '%=component_name+ucf=%/%=view+ucf=%';
+$props = $props ?? array();
+$assetScript = isset($assetScript) ? (string) $assetScript : '';
+?>
+<header id="content-header">
+    <h2>%=component_name+ucf=%: %=view+ucf=%</h2>
+</header>
+
+<section class="main section" id="%=component_name=%-%=view=%-root">
+    <?php echo \Hubzero\Inertia\Inertia::renderRootNode($component, $props, 'app'); ?>
+</section>
+
+<?php if ($assetScript !== '') : ?>
+<script src="<?php echo htmlspecialchars($assetScript, ENT_QUOTES, 'UTF-8'); ?>" defer></script>
+<?php endif; ?>

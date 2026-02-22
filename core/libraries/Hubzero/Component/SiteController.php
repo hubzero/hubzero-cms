@@ -14,6 +14,7 @@ use Hubzero\Document\Assets;
 use ReflectionClass;
 use ReflectionMethod;
 use Lang;
+use Hubzero\Inertia\Inertia;
 
 /**
  * Base controller for components to extend.
@@ -533,4 +534,575 @@ class SiteController extends Obj implements ControllerInterface
 	{
 		// Do nothing - override in subclass
 	}
+
+    /**
+     * Inertia helper: detect Inertia request.
+     *
+     * @return  bool
+     */
+    protected function isInertiaRequest(): bool
+    {
+        return Inertia::isInertiaRequest();
+    }
+
+    /**
+     * Inertia helper: render component payload/response.
+     *
+     * @param   string  $component
+     * @param   array   $props
+     * @return  array|null
+     */
+    protected function inertiaRender(string $component, array $props = []): ?array
+    {
+        return Inertia::render($component, $props);
+    }
+
+    /**
+     * Inertia helper: render a canonical root mount node for HTML response templates.
+     *
+     * @param   string  $component
+     * @param   array   $props
+     * @param   string  $mountId
+     * @return  string
+     */
+    protected function inertiaRootNode(string $component, array $props = array(), string $mountId = 'app'): string
+    {
+        return Inertia::renderRootNode($component, $props, $mountId);
+    }
+
+    /**
+     * Inertia helper: share global props for request.
+     *
+     * @param   string|array  $key
+     * @param   mixed         $value
+     * @return  void
+     */
+    protected function inertiaShare($key, $value = null): void
+    {
+        Inertia::share($key, $value);
+    }
+
+    /**
+     * Inertia helper: redirect with Inertia-aware semantics.
+     *
+     * @param   string  $url
+     * @param   int     $status
+     * @return  void
+     */
+    protected function inertiaRedirect(string $url, int $status = 302): void
+    {
+        Inertia::redirect($url, $status);
+    }
+
+    /**
+     * Inertia helper: send location response.
+     *
+     * @param   string  $url
+     * @return  void
+     */
+    protected function inertiaLocation(string $url): void
+    {
+        Inertia::location($url);
+    }
+    /**
+     * Inertia helper: attach debug context metadata.
+     *
+     * @param   string|array  $key
+     * @param   mixed         $value
+     * @return  void
+     */
+    protected function inertiaDebugContext($key, $value = null): void
+    {
+        Inertia::debugContext($key, $value);
+    }
+
+    /**
+     * Inertia helper: check whether debug mode is enabled.
+     *
+     * @return  bool
+     */
+    protected function isInertiaDebugEnabled(): bool
+    {
+        return Inertia::isDebugEnabled();
+    }
+
+    /**
+     * Inertia helper: retrieve current debug snapshot.
+     *
+     * @return  array
+     */
+    protected function inertiaDebugSnapshot(): array
+    {
+        return Inertia::debugSnapshot();
+    }
+
+    /**
+     * Inertia helper: access parsed request details.
+     *
+     * @return  array
+     */
+    protected function inertiaRequestDetails(): array
+    {
+        return Inertia::requestDetails();
+    }
+
+    /**
+     * Inertia helper: render reusable debug panel markup.
+     *
+     * @param   array  $snapshot
+     * @param   array  $options
+     * @return  string
+     */
+    protected function inertiaDebugPanel(array $snapshot = array(), array $options = array()): string
+    {
+        return Inertia::renderDebugPanel($snapshot, $options);
+    }
+
+    /**
+     * Inertia helper: emit debug header immediately.
+     *
+     * @return  void
+     */
+    protected function inertiaEmitDebugHeader(): void
+    {
+        Inertia::emitDebugHeader();
+    }
+
+    /**
+     * Inertia helper: start a profile timer.
+     *
+     * @param   string  $label
+     * @return  void
+     */
+    protected function inertiaProfileStart(string $label): void
+    {
+        Inertia::profileStart($label);
+    }
+
+    /**
+     * Inertia helper: stop a profile timer.
+     *
+     * @param   string  $label
+     * @return  void
+     */
+    protected function inertiaProfileStop(string $label): void
+    {
+        Inertia::profileStop($label);
+    }
+
+    /**
+     * Inertia helper: retrieve profile timing snapshot.
+     *
+     * @return  array
+     */
+    protected function inertiaProfileSnapshot(): array
+    {
+        return Inertia::profileSnapshot();
+    }
+
+    /**
+     * Inertia helper: emit profile header.
+     *
+     * @return  void
+     */
+    protected function inertiaEmitProfileHeader(): void
+    {
+        Inertia::emitProfileHeader();
+    }
+
+    /**
+     * Inertia helper: preserve debug mode in outbound request params.
+     *
+     * @param   array   $params
+     * @param   string  $name
+     * @param   string  $value
+     * @return  array
+     */
+    protected function inertiaDebugParams(array $params, string $name = 'inertia_debug', string $value = '1'): array
+    {
+        return Inertia::preserveDebugParam($params, $name, $value);
+    }
+
+    /**
+     * Inertia helper: render hidden debug field for forms.
+     *
+     * @param   string  $name
+     * @param   string  $value
+     * @return  string
+     */
+    protected function inertiaDebugInput(string $name = 'inertia_debug', string $value = '1'): string
+    {
+        return Inertia::renderDebugHiddenInput($name, $value);
+    }
+
+    /**
+     * HTMX helper: detect HTMX request.
+     *
+     * @return  bool
+     */
+    protected function isHtmxRequest(): bool
+    {
+        return Htmx::isHtmxRequest();
+    }
+
+    /**
+     * HTMX helper: detect boosted navigation request.
+     *
+     * @return  bool
+     */
+    protected function isHtmxBoosted(): bool
+    {
+        return Htmx::isHtmxBoosted();
+    }
+
+    /**
+     * HTMX helper: detect history restore request.
+     *
+     * @return  bool
+     */
+    protected function isHtmxHistoryRestoreRequest(): bool
+    {
+        return Htmx::isHtmxHistoryRestoreRequest();
+    }
+
+    /**
+     * HTMX helper: add HX-Trigger response header.
+     *
+     * @param   string       $event
+     * @param   array|mixed  $payload
+     * @return  void
+     */
+    protected function htmxTrigger(string $event, $payload = array()): void
+    {
+        Htmx::trigger($event, $payload);
+    }
+
+    /**
+     * HTMX helper: add HX-Trigger-After-Settle response header.
+     *
+     * @param   string       $event
+     * @param   array|mixed  $payload
+     * @return  void
+     */
+    protected function htmxTriggerAfterSettle(string $event, $payload = array()): void
+    {
+        Htmx::triggerAfterSettle($event, $payload);
+    }
+
+    /**
+     * HTMX helper: add HX-Trigger-After-Swap response header.
+     *
+     * @param   string       $event
+     * @param   array|mixed  $payload
+     * @return  void
+     */
+    protected function htmxTriggerAfterSwap(string $event, $payload = array()): void
+    {
+        Htmx::triggerAfterSwap($event, $payload);
+    }
+
+    /**
+     * HTMX helper: redirect with HX-Redirect fallback.
+     *
+     * @param   string  $url
+     * @return  void
+     */
+    protected function htmxRedirect(string $url): void
+    {
+        Htmx::redirect($url);
+    }
+
+    /**
+     * HTMX helper: set HX-Location response header.
+     *
+     * @param   string  $url
+     * @param   array   $options
+     * @return  void
+     */
+    protected function htmxLocation(string $url, array $options = array()): void
+    {
+        Htmx::location($url, $options);
+    }
+
+    /**
+     * HTMX helper: set HX-Reswap response header.
+     *
+     * @param   string  $strategy
+     * @return  void
+     */
+    protected function htmxReswap(string $strategy): void
+    {
+        Htmx::reswap($strategy);
+    }
+
+    /**
+     * HTMX helper: set HX-Retarget response header.
+     *
+     * @param   string  $selector
+     * @return  void
+     */
+    protected function htmxRetarget(string $selector): void
+    {
+        Htmx::retarget($selector);
+    }
+
+    /**
+     * HTMX helper: set HX-Push-Url response header.
+     *
+     * @param   string|bool  $url
+     * @return  void
+     */
+    protected function htmxPushUrl($url): void
+    {
+        Htmx::pushUrl($url);
+    }
+
+    /**
+     * HTMX helper: set HX-Replace-Url response header.
+     *
+     * @param   string|bool  $url
+     * @return  void
+     */
+    protected function htmxReplaceUrl($url): void
+    {
+        Htmx::replaceUrl($url);
+    }
+
+    /**
+     * HTMX helper: force full refresh response.
+     *
+     * @return  void
+     */
+    protected function htmxRefresh(): void
+    {
+        Htmx::refresh();
+    }
+
+    /**
+     * HTMX helper: set HX-Reselect response header.
+     *
+     * @param   string  $selector
+     * @return  void
+     */
+    protected function htmxReselect(string $selector): void
+    {
+        Htmx::reselect($selector);
+    }
+
+    /**
+     * HTMX helper: ensure response includes Vary: HX-Request.
+     *
+     * @return  void
+     */
+    protected function htmxVaryOnRequest(): void
+    {
+        Htmx::varyOnRequest();
+    }
+
+    /**
+     * HTMX helper: access parsed request details.
+     *
+     * @return  array
+     */
+    protected function htmxRequestDetails(): array
+    {
+        return Htmx::requestDetails();
+    }
+
+    /**
+     * HTMX helper: safe same-origin path from HX-Current-URL.
+     *
+     * @return  string|null
+     */
+    protected function htmxCurrentUrlAbsPath(): ?string
+    {
+        return Htmx::currentUrlAbsPath();
+    }
+
+    /**
+     * HTMX helper: emit fragment response and terminate request.
+     *
+     * @param   string  $html
+     * @return  void
+     */
+    protected function htmxFragment(string $html, int $status = 200): void
+    {
+        Htmx::fragment($html, $status);
+    }
+
+    /**
+     * HTMX helper: emit 204 No Content response.
+     *
+     * @return  void
+     */
+    protected function htmxNoContent(): void
+    {
+        Htmx::noContent();
+    }
+
+    /**
+     * HTMX helper: emit 286 Stop Polling response.
+     *
+     * @return  void
+     */
+    protected function htmxStopPolling(): void
+    {
+        Htmx::stopPolling();
+    }
+
+    /**
+     * HTMX helper: emit 422 validation response with fragment body.
+     *
+     * @param   string  $html
+     * @param   array   $errors
+     * @return  void
+     */
+    protected function htmxValidation(string $html, array $errors = array()): void
+    {
+        Htmx::validation($html, $errors);
+    }
+
+    /**
+     * HTMX helper: share state for HTMX + Alpine usage.
+     *
+     * @param   string|array  $key
+     * @param   mixed         $value
+     * @return  void
+     */
+    protected function htmxState($key, $value = null): void
+    {
+        Htmx::state($key, $value);
+    }
+
+    /**
+     * HTMX helper: attach debug context metadata.
+     *
+     * @param   string|array  $key
+     * @param   mixed         $value
+     * @return  void
+     */
+    protected function htmxDebugContext($key, $value = null): void
+    {
+        Htmx::debugContext($key, $value);
+    }
+
+    /**
+     * HTMX helper: check whether debug mode is enabled.
+     *
+     * @return  bool
+     */
+    protected function isHtmxDebugEnabled(): bool
+    {
+        return Htmx::isDebugEnabled();
+    }
+
+    /**
+     * HTMX helper: retrieve current debug snapshot.
+     *
+     * @return  array
+     */
+    protected function htmxDebugSnapshot(): array
+    {
+        return Htmx::debugSnapshot();
+    }
+
+    /**
+     * HTMX helper: emit debug header immediately.
+     *
+     * @return  void
+     */
+    protected function htmxEmitDebugHeader(): void
+    {
+        Htmx::emitDebugHeader();
+    }
+
+    /**
+     * HTMX helper: start a profile timer.
+     *
+     * @param   string  $label
+     * @return  void
+     */
+    protected function htmxProfileStart(string $label): void
+    {
+        Htmx::profileStart($label);
+    }
+
+    /**
+     * HTMX helper: stop a profile timer.
+     *
+     * @param   string  $label
+     * @return  void
+     */
+    protected function htmxProfileStop(string $label): void
+    {
+        Htmx::profileStop($label);
+    }
+
+    /**
+     * HTMX helper: retrieve profile timing snapshot.
+     *
+     * @return  array
+     */
+    protected function htmxProfileSnapshot(): array
+    {
+        return Htmx::profileSnapshot();
+    }
+
+    /**
+     * HTMX helper: emit profile header.
+     *
+     * @return  void
+     */
+    protected function htmxEmitProfileHeader(): void
+    {
+        Htmx::emitProfileHeader();
+    }
+
+    /**
+     * HTMX helper: preserve debug mode in outbound request params.
+     *
+     * @param   array   $params
+     * @param   string  $name
+     * @param   string  $value
+     * @return  array
+     */
+    protected function htmxDebugParams(array $params, string $name = 'htmx_debug', string $value = '1'): array
+    {
+        return Htmx::preserveDebugParam($params, $name, $value);
+    }
+
+    /**
+     * HTMX helper: render hidden debug field for forms.
+     *
+     * @param   string  $name
+     * @param   string  $value
+     * @return  string
+     */
+    protected function htmxDebugInput(string $name = 'htmx_debug', string $value = '1'): string
+    {
+        return Htmx::renderDebugHiddenInput($name, $value);
+    }
+
+    /**
+     * HTMX helper: render reusable debug panel markup.
+     *
+     * @param   array  $snapshot
+     * @param   array  $options
+     * @return  string
+     */
+    protected function htmxDebugPanel(array $snapshot = array(), array $options = array()): string
+    {
+        return Htmx::renderDebugPanel($snapshot, $options);
+    }
+
+    /**
+     * HTMX helper: render shared JSON state node.
+     *
+     * @param   string  $id
+     * @return  string
+     */
+    protected function htmxStateNode(string $id = 'hx-state'): string
+    {
+        return Htmx::renderStateNode($id);
+    }
 }

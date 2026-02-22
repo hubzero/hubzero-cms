@@ -1043,4 +1043,14 @@ class ApiController implements ControllerInterface
 
 		return new $model;
 	}
+
+	/**
+	 * API controllers intentionally do not participate in the Inertia protocol.
+	 *
+	 * @return  bool
+	 */
+	protected function isInertiaRequest()
+	{
+		return false;
+	}
 }
