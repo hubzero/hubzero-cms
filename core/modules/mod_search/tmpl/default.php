@@ -18,7 +18,7 @@ $formSuffix = (self::$instances > 1) ? $this->module->id : '';
     class="<?php echo $moduleclass_sfx; ?>searchform"
 >
     <fieldset>
-        <legend><?php echo $text; ?></legend>
+        <legend><?php echo ($text ?: $label); ?></legend>
 
         <?php
             $sfx = self::$instances > 1 ? $this->module->id : '';
@@ -60,5 +60,7 @@ $formSuffix = (self::$instances > 1) ? $this->module->id : '';
 
             echo $output;
         ?>
+        <button type="button" class="search-close" tabindex="-1"
+            aria-label="<?php echo Lang::txt('JCLOSE'); ?>">&times;</button>
     </fieldset>
 </form>
