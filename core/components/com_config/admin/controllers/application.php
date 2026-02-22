@@ -217,7 +217,7 @@ class Application extends AdminController
             $updated = Date::of('now')->toSql();
 
             // Reset the Hub secret:
-            $query = new \Hubzero\Database\Query();
+            $query = \App::get('db')->getQuery();
             $result = $query->update($tableName)
                 ->set(['value' => $secret,
                        'updated' => $updated])
