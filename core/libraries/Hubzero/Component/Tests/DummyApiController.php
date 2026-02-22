@@ -16,4 +16,9 @@ class DummyApiController extends ApiController
     {
         return $this->isInertiaRequest();
     }
+
+    public function inspectHtmxState(): bool
+    {
+        return $this->isHtmxRequest();
+    }
 }

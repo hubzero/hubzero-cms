@@ -1053,4 +1053,14 @@ class ApiController implements ControllerInterface
 	{
 		return false;
 	}
+
+	/**
+	 * API controllers intentionally do not participate in the HTMX protocol.
+	 *
+	 * @return  bool
+	 */
+	protected function isHtmxRequest()
+	{
+		return false;
+	}
 }

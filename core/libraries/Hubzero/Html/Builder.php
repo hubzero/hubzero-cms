@@ -59,9 +59,26 @@ class Builder
 				}
 			}
 
-			$callable = array($cls, $func);
+			$callable = null;
+			$candidates = array($func);
 
-			if (!is_callable($callable))
+			if (is_string($func) && strpos($func, '.') !== false)
+			{
+				$candidates[] = str_replace('.', '', $func);
+				$candidates[] = str_replace('.', '_', $func);
+			}
+
+			foreach ($candidates as $candidate)
+			{
+				$candidateCallable = array($cls, $candidate);
+				if (is_callable($candidateCallable))
+				{
+					$callable = $candidateCallable;
+					break;
+				}
+			}
+
+			if (!$callable)
 			{
 				throw new InvalidArgumentException(sprintf('%s %s not found.', $cls, $func), 500);
 			}

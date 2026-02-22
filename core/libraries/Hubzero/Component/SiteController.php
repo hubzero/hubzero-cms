@@ -15,6 +15,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use Lang;
 use Hubzero\Inertia\Inertia;
+use Hubzero\Htmx\Htmx;
 
 /**
  * Base controller for components to extend.

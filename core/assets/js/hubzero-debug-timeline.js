@@ -2,6 +2,51 @@
 (function (global) {
   'use strict';
 
+  function inferAction(payload, protocol) {
+    var request = payload && payload.request ? payload.request : {};
+    var kind = (typeof protocol === 'string' && protocol !== '') ? protocol.toLowerCase() : '';
+
+    if (kind === 'inertia') {
+      if (request.partial_data || request.partial_except) {
+        return 'partial reload';
+      }
+      if (request.request) {
+        return 'inertia visit';
+      }
+      return 'full page';
+    }
+
+    if (kind === 'htmx') {
+      if (request.history_restore) {
+        return 'history restore';
+      }
+      if (request.boosted) {
+        return 'boosted navigation';
+      }
+      if (request.request) {
+        return 'htmx request';
+      }
+      return 'full page';
+    }
+
+    if (request.request) {
+      return 'request';
+    }
+
+    return 'full page';
+  }
+
+  function buildEvent(payload, protocol) {
+    var safePayload = payload || {};
+    return {
+      ts: new Date().toISOString(),
+      action: inferAction(safePayload, protocol),
+      request: safePayload.request || {},
+      profile: safePayload.profile || {},
+      snapshot: safePayload
+    };
+  }
+
   function createTimeline(storageKey, limit) {
     var key = (typeof storageKey === 'string' && storageKey !== '') ? storageKey : 'hubzero.debug.timeline';
     var max = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : 50;
@@ -82,11 +127,12 @@
       list: list,
       autoscroll: autoscroll,
       renderJson: renderJson,
+      inferAction: inferAction,
+      buildEvent: buildEvent,
       storageKey: key,
       limit: max
     };
   }
 
   global.__hzDebugTimeline = createTimeline;
-  global.__hzInertiaDebugTimeline = global.__hzInertiaDebugTimeline || createTimeline;
 })(window);

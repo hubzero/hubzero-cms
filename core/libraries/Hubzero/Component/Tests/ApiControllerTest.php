@@ -23,5 +23,6 @@ class ApiControllerTest extends TestCase
         ));
 
         $this->assertFalse($controller->inspectInertiaState());
+        $this->assertFalse($controller->inspectHtmxState());
     }
 }

@@ -1,0 +1,79 @@
+:is(.hz-htmx-debug-panel, .hz-inertia-debug-panel) {
+  --hz-debug-border: #6e8ba8;
+  --hz-debug-bg: #f3f8ff;
+  --hz-debug-text: #244567;
+  --hz-debug-muted: #355a7a;
+  --hz-debug-input-border: #90a6be;
+  --hz-debug-input-bg: #ffffff;
+  --hz-debug-input-text: #17314d;
+  --hz-debug-pre-bg: #fdfefe;
+  --hz-debug-pre-border: #6e8ba8;
+  --hz-debug-btn-border: #c5d3e3;
+  --hz-debug-btn-bg: #eef4fb;
+  --hz-debug-btn-text: #1f3d5b;
+  --hz-debug-btn-bg-hover: #e2edf8;
+
+  border: 1px dashed var(--hz-debug-border);
+  border-radius: 10px;
+  background: var(--hz-debug-bg);
+}
+
+:is(.hz-htmx-debug-bar, .hz-inertia-debug-bar) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem;
+  font-weight: 700;
+  color: var(--hz-debug-text);
+}
+
+:is(.hz-htmx-debug-actions, .hz-inertia-debug-actions) {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+:is(.hz-htmx-debug-actions, .hz-inertia-debug-actions) label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--hz-debug-muted);
+}
+
+:is(.hz-htmx-debug-actions, .hz-inertia-debug-actions) select {
+  min-width: 7.25rem;
+  border: 1px solid var(--hz-debug-input-border);
+  border-radius: 6px;
+  background: var(--hz-debug-input-bg);
+  color: var(--hz-debug-input-text);
+  font-size: 0.82rem;
+  padding: 0.22rem 0.35rem;
+}
+
+:is(.hz-htmx-debug-panel, .hz-inertia-debug-panel) pre {
+  margin: 0;
+  border-top: 1px dashed var(--hz-debug-pre-border);
+  padding: 0.65rem;
+  font-size: 0.77rem;
+  line-height: 1.4;
+  max-height: 240px;
+  overflow: auto;
+  background: var(--hz-debug-pre-bg);
+}
+
+:is(.hz-htmx-debug-actions, .hz-inertia-debug-actions) button {
+  border-radius: 8px;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--hz-debug-btn-border);
+  background: var(--hz-debug-btn-bg);
+  color: var(--hz-debug-btn-text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+:is(.hz-htmx-debug-actions, .hz-inertia-debug-actions) button:hover {
+  background: var(--hz-debug-btn-bg-hover);
+}
