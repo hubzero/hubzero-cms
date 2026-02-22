@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,8 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Wiki\Helpers\Permissions::getActions('comment');
 
-Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS'), 'wiki');
+$toolbarTitle = Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_COMMENTS');
+Toolbar::title($toolbarTitle, 'wiki');
 
 if ($canDo->get('core.delete')) {
     Toolbar::deleteList('COM_WIKI_CONFIRM_DELETE', 'delete');
@@ -30,10 +29,13 @@ Toolbar::help('comments');
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+        <input type="text" name="search" id="filter_search" class="filter"
+            value="<?php echo $this->escape($this->filters['search']); ?>"
+            placeholder="<?php echo Lang::txt('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
         <input type="submit" value="<?php echo Lang::txt('COM_WIKI_GO'); ?>" />
         <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -43,20 +45,34 @@ Html::behavior('tooltip');
         <thead>
             <tr>
                 <th colspan="7">
-                    (<?php echo $this->escape(stripslashes($this->page->get('pagename', null))); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->page->title == null ? '' : $this->page->title)); ?>
+                    (<?php echo $this->escape(stripslashes($this->page->get('pagename', null))); ?>) &nbsp;
+                    <?php echo $this->escape(stripslashes($this->page->title == null ? '' : $this->page->title)); ?>
                 </th>
             </tr>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle"
+                        value="" class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WIKI_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_WIKI_COL_COMMENT', 'content', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_WIKI_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WIKI_COL_ANONYMOUS', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_WIKI_COL_STATE', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_WIKI_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $dir = @$this->filters['sort_Dir'];
+                $col = @$this->filters['sort'];
+                $sortId      = Html::grid('sort', 'COM_WIKI_COL_ID', 'id', $dir, $col);
+                $sortComment = Html::grid('sort', 'COM_WIKI_COL_COMMENT', 'content', $dir, $col);
+                $sortCreator = Html::grid('sort', 'COM_WIKI_COL_CREATOR', 'created_by', $dir, $col);
+                $sortAnon    = Html::grid('sort', 'COM_WIKI_COL_ANONYMOUS', 'state', $dir, $col);
+                $sortState   = Html::grid('sort', 'COM_WIKI_COL_STATE', 'status', $dir, $col);
+                $sortCreated = Html::grid('sort', 'COM_WIKI_COL_CREATED', 'created', $dir, $col);
+                ?>
+                <th scope="col" class="priority-5"><?php echo $sortId; ?></th>
+                <th scope="col"><?php echo $sortComment; ?></th>
+                <th scope="col" class="priority-3"><?php echo $sortCreator; ?></th>
+                <th scope="col" class="priority-5"><?php echo $sortAnon; ?></th>
+                <th scope="col" class="priority-2"><?php echo $sortState; ?></th>
+                <th scope="col" class="priority-4"><?php echo $sortCreated; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -112,8 +128,11 @@ Html::behavior('tooltip');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $row->get('id'); ?>
+                    </label>
                 </td>
                 <td class="priority-5">
                     <?php echo $row->get('id'); ?>
@@ -121,12 +140,25 @@ Html::behavior('tooltip');
                 <td>
                     <?php echo $row->get('treename'); ?>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&page_id=' . $this->filters['page_id'] . '&' . Session::getFormToken() . '=1'); ?>">
-                            <?php echo \Hubzero\Utility\Str::truncate($this->escape(stripslashes($row->get('ctext'))), 90); ?>
+                        <?php
+                        $editComUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id=' . $row->get('id')
+                            . '&page_id=' . $this->filters['page_id']
+                            . '&' . Session::getFormToken() . '=1'
+                        );
+                        $ctextTrunc = \Hubzero\Utility\Str::truncate(
+                            $this->escape(stripslashes($row->get('ctext'))),
+                            90
+                        );
+                        ?>
+                        <a href="<?php echo $editComUrl; ?>">
+                            <?php echo $ctextTrunc; ?>
                         </a>
                     <?php } else { ?>
                         <span>
-                            <?php echo \Hubzero\Utility\Str::truncate($this->escape(stripslashes($row->get('ctext'))), 90); ?>
+                            <?php echo $ctextTrunc; ?>
                         </span>
                     <?php } ?>
                 </td>
@@ -134,12 +166,32 @@ Html::behavior('tooltip');
                     <?php echo $this->escape(stripslashes($row->creator->get('name'))); ?>
                 </td>
                 <td class="priority-5">
-                    <a class="state <?php echo $cls2; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=anonymous&state=' . $state2 . '&id=' . $row->get('id') . '&pageid=' . $this->filters['page_id'] . '&' . Session::getFormToken() . '=1'); ?>">
+                    <?php
+                    $anonUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=anonymous&state=' . $state2
+                        . '&id=' . $row->get('id')
+                        . '&pageid=' . $this->filters['page_id']
+                        . '&' . Session::getFormToken() . '=1'
+                    );
+                    ?>
+                    <a class="state <?php echo $cls2; ?>" href="<?php echo $anonUrl; ?>">
                         <span><?php echo $calt2; ?></span>
                     </a>
                 </td>
                 <td class="priority-2">
-                    <a class="state <?php echo $cls1; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $state1 . '&id=' . $row->get('id') . '&pageid=' . $this->filters['page_id'] . '&' . Session::getFormToken() . '=1'); ?>">
+                    <?php
+                    $stateUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=' . $state1
+                        . '&id=' . $row->get('id')
+                        . '&pageid=' . $this->filters['page_id']
+                        . '&' . Session::getFormToken() . '=1'
+                    );
+                    ?>
+                    <a class="state <?php echo $cls1; ?>" href="<?php echo $stateUrl; ?>">
                         <span><?php echo $calt1; ?></span>
                     </a>
                 </td>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,14 +32,51 @@ if ($canDo->get('core.delete')) {
 }
 Toolbar::spacer();
 Toolbar::help('lists');
+
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$sortTitle = Html::grid(
+    'sort',
+    'COM_WISHLIST_TITLE',
+    'title',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortState = Html::grid(
+    'sort',
+    'COM_WISHLIST_STATE',
+    'state',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortAccess = Html::grid(
+    'sort',
+    'COM_WISHLIST_ACCESS',
+    'public',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortCategory = Html::grid(
+    'sort',
+    'COM_WISHLIST_CATEGORY',
+    'category',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('COM_WISHLIST_SEARCH'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
+                <?php $searchVal = $this->escape($this->filters['search']); ?>
+                <?php $searchPh = Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>
+                <input type="text"
+                    name="search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $searchVal; ?>"
+                    placeholder="<?php echo $searchPh; ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -49,10 +84,19 @@ Toolbar::help('lists');
             <div class="col span6">
                 <label for="filter-category"><?php echo Lang::txt('COM_WISHLIST_CATEGORY'); ?>:</label>
                 <select name="category" id="filter-category" class="filter filter-submit">
-                    <option value=""<?php echo ($this->filters['category'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_SELECT_CATEGORY'); ?></option>
-                    <option value="general"<?php echo ($this->filters['category'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_GENERAL'); ?></option>
-                    <option value="group"<?php echo ($this->filters['category'] == 'group') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_GROUP'); ?></option>
-                    <option value="resource"<?php echo ($this->filters['category'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_CATEGORY_RESOURCE'); ?></option>
+                    <?php $fcat = $this->filters['category']; ?>
+                    <option value=""<?php echo ($fcat == '') ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_WISHLIST_SELECT_CATEGORY'); ?>
+                    </option>
+                    <option value="general"<?php echo ($fcat == 'general') ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_WISHLIST_CATEGORY_GENERAL'); ?>
+                    </option>
+                    <option value="group"<?php echo ($fcat == 'group') ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_WISHLIST_CATEGORY_GROUP'); ?>
+                    </option>
+                    <option value="resource"<?php echo ($fcat == 'resource') ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_WISHLIST_CATEGORY_RESOURCE'); ?>
+                    </option>
                 </select>
             </div>
         </div>
@@ -62,14 +106,28 @@ Toolbar::help('lists');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_WISHLIST_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_WISHLIST_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_WISHLIST_ACCESS', 'public', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4" colspan="2"><?php echo Html::grid('sort', 'COM_WISHLIST_CATEGORY', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <!-- <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_WISHLIST_WISHES', 'wishes', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
+                <th scope="col"><?php echo $sortTitle; ?></th>
+                <th scope="col"><?php echo $sortState; ?></th>
+                <th scope="col" class="priority-3"><?php echo $sortAccess; ?></th>
+                <th scope="col" class="priority-4" colspan="2"><?php echo $sortCategory; ?></th>
+                <!-- <th scope="col" class="priority-2"><?php
+                echo Html::grid(
+                    'sort',
+                    'COM_WISHLIST_WISHES',
+                    'wishes',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?></th> -->
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_WISHLIST_WISHES'); ?></th>
             </tr>
         </thead>
@@ -113,15 +171,48 @@ Toolbar::help('lists');
                 $task_access  = 'accesspublic';
                 $groupname    = 'Public';
             }
+
+            $token = Session::getFormToken();
+            $editUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=edit&id=' . $row->id
+            );
+            $taskUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=' . $task
+                . '&id=' . $row->id
+                . '&' . $token . '=1'
+            );
+            $accessUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=' . $task_access
+                . '&id=' . $row->id
+                . '&' . $token . '=1'
+            );
+            $wishesUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=wishes&wishlist=' . $row->id
+            );
+            $setTaskTxt = Lang::txt('COM_WISHLIST_SET_TASK', $task);
+            $changeAccessTxt = Lang::txt('COM_WISHLIST_CHANGE_ACCESS');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
+                    <input type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->id; ?>"
+                        class="checkbox-toggle" />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $row->id; ?>
+                    </label>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <a href="<?php echo $editUrl; ?>">
                             <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
                         </a>
                     <?php } else { ?>
@@ -132,7 +223,9 @@ Toolbar::help('lists');
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SET_TASK', $task); ?>">
+                        <a class="state <?php echo $class; ?>"
+                            href="<?php echo $taskUrl; ?>"
+                            title="<?php echo $setTaskTxt; ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -143,7 +236,9 @@ Toolbar::help('lists');
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" class="<?php echo $color_access; ?>" title="<?php echo Lang::txt('COM_WISHLIST_CHANGE_ACCESS'); ?>">
+                        <a href="<?php echo $accessUrl; ?>"
+                            class="<?php echo $color_access; ?>"
+                            title="<?php echo $changeAccessTxt; ?>">
                             <?php echo $groupname; ?>
                         </a>
                     <?php } else { ?>
@@ -163,8 +258,10 @@ Toolbar::help('lists');
                     </span>
                 </td>
                 <td class="priority-2">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=wishes&wishlist=' . $row->id); ?>">
-                        <span><?php echo $row->wishes()->total() . ' ' . Lang::txt('COM_WISHLIST_LIST_WISHES'); ?></span>
+                    <a href="<?php echo $wishesUrl; ?>">
+                        <span>
+                            <?php echo $row->wishes()->total() . ' ' . Lang::txt('COM_WISHLIST_LIST_WISHES'); ?>
+                        </span>
                     </a>
                 </td>
             </tr>
@@ -181,7 +278,9 @@ Toolbar::help('lists');
     <input type="hidden" name="task" value="<?php echo $this->task; ?>" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+    <input type="hidden"
+        name="filter_order_Dir"
+        value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
     <?php echo Html::input('token'); ?>
 </form>

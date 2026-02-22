@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,9 @@ if (!$this->sub) {
     <?php if (count($this->parents)) { ?>
         <p class="wiki-crumbs">
             <?php foreach ($this->parents as $parent) { ?>
-                <a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $parent->title; ?></a> /
+                <a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>">
+                    <?php echo $parent->title; ?>
+                </a> /
             <?php } ?>
         </p>
     <?php } ?>
@@ -80,7 +80,8 @@ if (!$this->sub) {
 
                 <div class="form-group form-check">
                     <label for="confirm-delete" class="form-check-label">
-                        <input class="option form-check-input" type="checkbox" name="confirm" id="confirm-delete" value="1" />
+                        <input class="option form-check-input" type="checkbox"
+                            name="confirm" id="confirm-delete" value="1" />
                         <?php echo Lang::txt('COM_WIKI_FIELD_CONFIRM_DELETE'); ?>
                     </label>
                 </div>
@@ -89,11 +90,17 @@ if (!$this->sub) {
                     <?php echo Lang::txt('COM_WIKI_FIELD_CONFIRM_DELETE_HINT'); ?>
                 </p>
 
-                <input type="hidden" name="pagename" value="<?php echo $this->escape(($this->page->get('path') ? $this->page->get('path') . '/' : '') . $this->page->get('pagename')); ?>" />
+                <?php
+                $pagenameVal = ($this->page->get('path') ? $this->page->get('path') . '/' : '')
+                    . $this->page->get('pagename');
+                ?>
+                <input type="hidden" name="pagename"
+                    value="<?php echo $this->escape($pagenameVal); ?>" />
                 <input type="hidden" name="page_id" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 
                 <?php foreach ($this->page->adapter()->routing('delete') as $name => $val) { ?>
-                    <input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+                    <input type="hidden" name="<?php echo $this->escape($name); ?>"
+                        value="<?php echo $this->escape($val); ?>" />
                 <?php } ?>
 
                 <?php echo Html::input('token'); ?>

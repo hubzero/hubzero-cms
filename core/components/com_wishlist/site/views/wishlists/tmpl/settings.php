@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,7 +27,8 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
         <div id="content-header-extra">
             <ul id="useroptions">
                 <li class="last">
-                    <a class="icon-wish nav_wishlist btn" href="<?php echo Route::url($this->wishlist->link()); ?>">
+                    <a class="icon-wish nav_wishlist btn"
+                        href="<?php echo Route::url($this->wishlist->link()); ?>">
                         <?php echo Lang::txt('COM_WISHLIST_WISHES_ALL'); ?>
                     </a>
                 </li>
@@ -38,7 +37,9 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
     </header><!-- / #content-header -->
 
     <section class="main section">
-        <form id="hubForm" method="post"  action="<?php echo Route::url($this->wishlist->link('savesettings')); ?>">
+        <form id="hubForm"
+            method="post"
+            action="<?php echo Route::url($this->wishlist->link('savesettings')); ?>">
             <div class="explaination">
                 <p><?php echo Lang::txt('COM_WISHLIST_SETTINGS_INFO'); ?></p>
             </div>
@@ -50,46 +51,66 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                         <?php echo Lang::txt('COM_WISHLIST_TITLE'); ?>:
                 <?php if ($this->wishlist->get('category') == 'resource') { ?>
                         <span class="highighted"><?php echo $this->wishlist->get('title'); ?></span>
-                        <input name="fields[title]" id="field-title" type="hidden" value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
+                        <input name="fields[title]"
+                            id="field-title"
+                            type="hidden"
+                            value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
                     </label>
                     <p class="hint"><?php echo Lang::txt('COM_WISHLIST_TITLE_NOTE'); ?></p>
                 <?php } else { ?>
-                        <input name="fields[title]" id="field-title" class="form-control" type="text" value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
+                        <input name="fields[title]"
+                            id="field-title"
+                            class="form-control"
+                            type="text"
+                            value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
                     </label>
                 <?php } ?>
                 </div>
 
                 <div class="form-group">
                     <label for="field-description">
-                        <?php echo Lang::txt('COM_WISHLIST_DESC'); ?> (<?php echo Lang::txt('COM_WISHLIST_OPTIONAL'); ?>):
-                        <textarea name="fields[description]" id="field-description" class="form-control" rows="10" cols="50"><?php echo $this->escape($this->wishlist->get('description')); ?></textarea>
+                        <?php echo Lang::txt('COM_WISHLIST_DESC'); ?>
+                        (<?php echo Lang::txt('COM_WISHLIST_OPTIONAL'); ?>):
+                        <textarea name="fields[description]"
+                            id="field-description"
+                            class="form-control"
+                            rows="10"
+                            cols="50"><?php echo $this->escape($this->wishlist->get('description')); ?></textarea>
                     </label>
                 </div>
 
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_WISHLIST_THIS_LIST_IS'); ?>:</legend>
 
+                    <?php
+                    $isResource = ($this->wishlist->get('category') == 'resource');
+                    $isGeneral1 = ($this->wishlist->get('category') == 'general'
+                        && $this->wishlist->get('referenceid') == 1);
+                    $disabledAttr = ($isResource or $isGeneral1) ? ' disabled="disabled"' : '';
+                    ?>
                     <div class="form-group form-check">
                         <label for="field-public-yes" class="form-check-label">
-                            <input class="option form-check-input" type="radio" name="fields[public]" id="field-public-yes" value="1" <?php
-                            if ($this->wishlist->get('public') == 1) {
-                                echo ' checked="checked"';
-                            }
-                            if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) {
-                                echo ' disabled="disabled"';
-                            } ?> /> <?php echo Lang::txt('COM_WISHLIST_PUBLIC'); ?>
+                            <input class="option form-check-input"
+                                type="radio"
+                                name="fields[public]"
+                                id="field-public-yes"
+                                value="1"
+                                <?php echo ($this->wishlist->get('public') == 1) ? ' checked="checked"' : ''; ?>
+                                <?php echo $disabledAttr; ?> />
+                            <?php echo Lang::txt('COM_WISHLIST_PUBLIC'); ?>
                         </label>
                     </div>
 
                     <div class="form-group form-check">
                         <label for="field-public-no" class="form-check-label">
-                            <input class="option form-check-input" type="radio" name="fields[public]" id="field-public-no" value="0" <?php
-                            if ($this->wishlist->get('public') == 0) {
-                                echo ' checked="checked"';
-                            }
-                            if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) {
-                                echo ' disabled="disabled"';
-                            } ?> /> <?php echo Lang::txt('COM_WISHLIST_PRIVATE'); ?>
+                            <input class="option form-check-input"
+                                type="radio"
+                                name="fields[public]"
+                                id="field-public-no"
+                                value="0"
+                                <?php echo ($this->wishlist->get('public') == 0) ? ' checked="checked"' : ''; ?>
+                                <?php echo $disabledAttr; ?> />
+                            <?php echo Lang::txt('COM_WISHLIST_PRIVATE'); ?>
                         </label>
                     </div>
                 </fieldset>
@@ -125,14 +146,25 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                             $members  = $instance->get('members');
 
                             $allmembers = array_merge($allmembers, $members);
+
+                            $nativeGroups = $this->wishlist->owners('groups', 1);
+                            $canRemove    = ($n > 1 && !in_array($groups[$i], $nativeGroups));
+                            $removeLink   = '';
+                            if ($canRemove) {
+                                $removeUrl  = Route::url(
+                                    $this->wishlist->link('savesettings')
+                                    . '&action=delete&group=' . $groups[$i]
+                                );
+                                $removeTxt  = Lang::txt('COM_WISHLIST_OPTION_REMOVE');
+                                $removeLink = '<a href="' . $removeUrl . '" class="delete">'
+                                    . $removeTxt . '</a>';
+                            }
                             ?>
                             <tr>
                                 <th scope="row"><?php echo $k; ?>.</th>
                                 <td><?php echo $this->escape($instance->get('cn')); ?></td>
                                 <td><?php echo count($members); ?></td>
-                                <td>
-                                    <?php echo ($n > 1 && !in_array($groups[$i], $this->wishlist->owners('groups', 1))) ? '<a href="' . Route::url($this->wishlist->link('savesettings') . '&action=delete&group=' . $groups[$i]) . '" class="delete">' . Lang::txt('COM_WISHLIST_OPTION_REMOVE') . '</a>' : ''; ?>
-                                </td>
+                                <td><?php echo $removeLink; ?></td>
                             </tr>
                             <?php
                             $k++;
@@ -149,7 +181,10 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                 <label for="field_newgroups">
                     <?php echo Lang::txt('COM_WISHLIST_SETTINGS_ADD_GROUPS'); ?>:
                     <?php
-                    $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('groups', 'newgroups', 'field_newgroups', '', '')));
+                    $mc = Event::trigger(
+                        'hubzero.onGetMultiEntry',
+                        array(array('groups', 'newgroups', 'field_newgroups', '', ''))
+                    );
                     if (count($mc) > 0) {
                         echo $mc[0];
                     } else { ?>
@@ -189,14 +224,24 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                         for ($i = 0, $n = count($individuals); $i < $n; $i++) {
                             if (!in_array($individuals[$i], $allmembers)) {
                                 $kuser = User::getInstance($individuals[$i]);
+
+                                $canRemove  = ($n > 1 && !in_array($individuals[$i], $native['individuals']));
+                                $removeLink = '';
+                                if ($canRemove) {
+                                    $removeUrl  = Route::url(
+                                        $this->wishlist->link('savesettings')
+                                        . '&action=delete&user=' . $individuals[$i]
+                                    );
+                                    $removeTxt  = Lang::txt('COM_WISHLIST_OPTION_REMOVE');
+                                    $removeLink = '<a href="' . $removeUrl . '" class="delete">'
+                                        . $removeTxt . '</a>';
+                                }
                                 ?>
                             <tr>
                                 <td><?php echo $k; ?>.</td>
                                 <td><?php echo $this->escape($kuser->get('name')); ?></td>
                                 <td><?php echo $this->escape($kuser->get('username')); ?></td>
-                                <td>
-                                    <?php echo ($n > 1 && !in_array($individuals[$i], $native['individuals']))  ? '<a href="' . Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]) . '" class="delete">' . Lang::txt('COM_WISHLIST_OPTION_REMOVE') . '</a>' : ''; ?>
-                                </td>
+                                <td><?php echo $removeLink; ?></td>
                             </tr>
                                 <?php
                                 $k++;
@@ -215,11 +260,18 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                     <label for="field_newowners">
                         <?php echo Lang::txt('COM_WISHLIST_ADD_IND'); ?>:
                         <?php
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'newowners', 'field_newowners', '', '')));
+                        $mc = Event::trigger(
+                            'hubzero.onGetMultiEntry',
+                            array(array('members', 'newowners', 'field_newowners', '', ''))
+                        );
                         if (count($mc) > 0) {
                             echo $mc[0];
                         } else { ?>
-                        <input type="text" name="newowners" id="field_newowners" class="form-control" value="" />
+                        <input type="text"
+                            name="newowners"
+                            id="field_newowners"
+                            class="form-control"
+                            value="" />
                         <?php } ?>
                         <span class="hint"><?php echo Lang::txt('COM_WISHLIST_ENTER_LOGINS'); ?></span>
                     </label>
@@ -253,13 +305,20 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                             for ($i = 0, $n = count($advisory); $i < $n; $i++) {
                                 if (!in_array($advisory[$i], $allmembers)) {
                                     $quser = User::getInstance($advisory[$i]);
+                                    $removeUrl = Route::url(
+                                        $this->wishlist->link('savesettings')
+                                        . '&action=delete&user=' . $advisory[$i]
+                                    );
+                                    $removeTxt = Lang::txt('COM_WISHLIST_OPTION_REMOVE');
                                     ?>
                                 <tr>
                                     <td><?php echo $k; ?>.</td>
                                     <td><?php echo $this->escape($quser->get('name')); ?></td>
                                     <td><?php echo $this->escape($quser->get('username')); ?></td>
                                     <td>
-                                        <a href="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $advisory[$i]); ?>" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></a>
+                                        <a href="<?php echo $removeUrl; ?>" class="delete">
+                                            <?php echo $removeTxt; ?>
+                                        </a>
                                     </td>
                                 </tr>
                                     <?php
@@ -279,24 +338,40 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                         <label for="field_newadvisory">
                             <?php echo Lang::txt('COM_WISHLIST_ADD_ADVISORY_MEMBERS'); ?>:
                             <?php
-                            $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'newadvisory', 'field_newadvisory', '', '')));
+                            $mc = Event::trigger(
+                                'hubzero.onGetMultiEntry',
+                                array(array('members', 'newadvisory', 'field_newadvisory', '', ''))
+                            );
                             if (count($mc) > 0) {
                                 echo $mc[0];
                             } else { ?>
-                            <input type="text" name="newadvisory" id="field_newadvisory" class="form-control" value="" />
+                            <input type="text"
+                                name="newadvisory"
+                                id="field_newadvisory"
+                                class="form-control"
+                                value="" />
                             <?php } ?>
                             <span><?php echo Lang::txt('COM_WISHLIST_ENTER_LOGINS'); ?></span>
                         </label>
                     </div>
-                <?php if ($this->wishlist->get('category') == 'resource' or ($this->wishlist->get('category') == 'general' && $this->wishlist->get('referenceid') == 1)) { ?>
-                    <input type="hidden" name="fields[public]" value="<?php echo $this->wishlist->get('public'); ?>" />
+                <?php
+                $isResource2 = ($this->wishlist->get('category') == 'resource');
+                $isGeneral12 = ($this->wishlist->get('category') == 'general'
+                    && $this->wishlist->get('referenceid') == 1);
+                if ($isResource2 or $isGeneral12) { ?>
+                    <input type="hidden"
+                        name="fields[public]"
+                        value="<?php echo $this->wishlist->get('public'); ?>" />
                 <?php } ?>
                 </fieldset>
                 <div class="clear"></div>
             <?php } // -- end if allow advisory ?>
 
             <p class="submit">
-                <input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
+                <input class="btn btn-success"
+                    type="submit"
+                    name="submit"
+                    value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
 
                 <a class="btn btn-secondary" href="<?php echo Route::url($this->wishlist->link()); ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>

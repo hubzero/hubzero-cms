@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -71,15 +69,20 @@ if (User::isGuest()) {
                 <?php echo Lang::txt('COM_WIKI_CHOOSE_TEMPLATE'); ?>
             </p>
             <ul>
-                <?php foreach ($templates as $template) { ?>
-                    <li>
-                        <a href="<?php
-                            $url = Route::url($this->page->link('new') . '&tplate=' . stripslashes($template->get('pagename')));
-                        if (User::isGuest()) {
-                            $return = base64_encode(Route::url($this->page->link('new') . '&tplate=' . stripslashes($template->get('pagename')), false, true));
-                            $url = Route::url('index.php?option=com_users&view=login&return=' . $return, false);
-                        }
-                            echo $url; ?>">
+                <?php foreach ($templates as $template) {
+                    $tplate = stripslashes($template->get('pagename'));
+                    $tplUrl = Route::url($this->page->link('new') . '&tplate=' . $tplate);
+                    if (User::isGuest()) {
+                        $tplReturn = base64_encode(
+                            Route::url($this->page->link('new') . '&tplate=' . $tplate, false, true)
+                        );
+                        $tplUrl = Route::url(
+                            'index.php?option=com_users&view=login&return=' . $tplReturn,
+                            false
+                        );
+                    }
+                    ?><li>
+                        <a href="<?php echo $tplUrl; ?>">
                             <?php echo $this->escape(stripslashes($template->title)); ?>
                         </a>
                     </li>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -41,11 +39,20 @@ foreach ($this->cats as $cat) {
         if ($cat['category'] == $this->active) {
             $a = ' class="active"';
 
-            Pathway::append($cat['title'], 'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob)));
+            Pathway::append(
+                $cat['title'],
+                'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))
+            );
         }
 
         // Build the HTML
-        $l = "\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($cat['title']) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
+        $catUrl = Route::url(
+            'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))
+        );
+        $l = "\t" . '<li' . $a . '><a href="' . $catUrl . '">'
+            . $this->escape($cat['title'])
+            . ' <span class="item-count">' . $cat['total'] . '</span></a>';
+
         // Are there sub-categories?
         if (isset($cat['_sub']) && is_array($cat['_sub'])) {
             // An array for storing the HTML we make
@@ -74,7 +81,12 @@ foreach ($this->cats as $cat) {
                     }
 
                     // Build the HTML
-                    $k[] = "\t\t\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($subcat['title']) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
+                    $subUrl = Route::url(
+                        'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))
+                    );
+                    $k[] = "\t\t\t" . '<li' . $a . '><a href="' . $subUrl . '">'
+                        . $this->escape($subcat['title'])
+                        . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
                 }
             }
             // Do we actually have any links?
@@ -95,7 +107,8 @@ foreach ($this->cats as $cat) {
 </header><!-- / #content-header -->
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get" class="section-inner hz-layout-with-aside">
+    <?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+    <form action="<?php echo $formAction; ?>" method="get" class="section-inner hz-layout-with-aside">
         <div class="subject">
             <div class="container">
             <?php
@@ -138,7 +151,9 @@ foreach ($this->cats as $cat) {
                         }
                     }
 
-                    $num = ($total > 1) ? Lang::txt('COM_WHATSNEW_RESULTS', $total) : Lang::txt('COM_WHATSNEW_RESULT', $total);
+                    $num = ($total > 1)
+                        ? Lang::txt('COM_WHATSNEW_RESULTS', $total)
+                        : Lang::txt('COM_WHATSNEW_RESULT', $total);
                     $this->total = $num;
 
                     // A function for category specific items that may be needed
@@ -156,7 +171,10 @@ foreach ($this->cats as $cat) {
 
                     $act = ($this->active) ? $this->active : $this->cats[$k]['category'];
 
-                    $feed = Route::url('index.php?option=' . $this->option . '&task=feed.rss&period=' . urlencode(strToLower($act) . ':' . stripslashes($this->period)));
+                    $feedPeriod = urlencode(strToLower($act) . ':' . stripslashes($this->period));
+                    $feed = Route::url(
+                        'index.php?option=' . $this->option . '&task=feed.rss&period=' . $feedPeriod
+                    );
                     if (substr($feed, 0, 4) != 'http') {
                         $feed = rtrim(Request::getSchemeAndHttpHost(), '/') . '/' . ltrim($feed, '/');
                     }
@@ -164,7 +182,10 @@ foreach ($this->cats as $cat) {
 
                     // Build the category HTML
                     $html .= '<div class="container-block" id="' . $divid . '">' . "\n";
-                    $html .= '<h3 id="rel-' . $divid . '">' . $this->escape($name) . ' <a class="icon-feed feed" href="' . $feed . '">' . Lang::txt('COM_WHATSNEW_FEED') . '</a></h3>' . "\n";
+                    $feedLink = '<a class="icon-feed feed" href="' . $feed . '">'
+                        . Lang::txt('COM_WHATSNEW_FEED') . '</a>';
+                    $html .= '<h3 id="rel-' . $divid . '">'
+                        . $this->escape($name) . ' ' . $feedLink . '</h3>' . "\n";
 
                     // Does this category have custom output?
                     // Check if a function exist (using old style plugins)
@@ -200,11 +221,18 @@ foreach ($this->cats as $cat) {
                             }
 
                             $html .= "\t" . '<li>' . "\n";
-                            $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+                            $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">'
+                                . stripslashes($row->title) . '</a></p>' . "\n";
                             if ($row->text) {
-                                $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text))), 200) . '</p>' . "\n";
+                                $truncated = \Hubzero\Utility\Str::truncate(
+                                    strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text))),
+                                    200
+                                );
+                                $html .= "\t\t" . '<p>' . $truncated . '</p>' . "\n";
                             }
-                            $html .= "\t\t" . '<p class="href">' . rtrim(Request::getSchemeAndHttpHost(), '/') . '/' . ltrim($row->href, '/') . '</p>' . "\n";
+                            $base = rtrim(Request::getSchemeAndHttpHost(), '/');
+                            $html .= "\t\t" . '<p class="href">'
+                                . $base . '/' . ltrim($row->href, '/') . '</p>' . "\n";
                             $html .= "\t" . '</li>' . "\n";
                         }
                     }
@@ -237,7 +265,14 @@ foreach ($this->cats as $cat) {
                             }
                         }
                         if ($ttl > 5) {
-                            $html .= ' | <a href="' . Route::url('index.php?option=' . $this->option . '&period=' . urlencode(strToLower($this->cats[$k]['category']) . ':' . stripslashes($this->period))) . '">' . Lang::txt('COM_WHATSNEW_SEE_MORE_RESULTS') . '</a>';
+                            $morePeriod = urlencode(
+                                strToLower($this->cats[$k]['category']) . ':' . stripslashes($this->period)
+                            );
+                            $moreUrl = Route::url(
+                                'index.php?option=' . $this->option . '&period=' . $morePeriod
+                            );
+                            $html .= ' | <a href="' . $moreUrl . '">'
+                                . Lang::txt('COM_WHATSNEW_SEE_MORE_RESULTS') . '</a>';
                         }
                         $html .= '</p>' . "\n\n";
                     }
@@ -271,7 +306,17 @@ foreach ($this->cats as $cat) {
                 <legend><?php echo Lang::txt('COM_WHATSNEW_FILTER'); ?></legend>
                 <label for="period">
                     <?php echo Lang::txt('COM_WHATSNEW_TIME_PERIOD'); ?>
-                    <?php echo Html::select('genericlist', $this->periodlist, 'period', '', 'value', 'text', $this->period); ?>
+                    <?php
+                    echo Html::select(
+                        'genericlist',
+                        $this->periodlist,
+                        'period',
+                        '',
+                        'value',
+                        'text',
+                        $this->period
+                    );
+                    ?>
                 </label>
                 <p class="submit"><input type="submit" value="<?php echo Lang::txt('COM_WHATSNEW_GO'); ?>" /></p>
             </fieldset>

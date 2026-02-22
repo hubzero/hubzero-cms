@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,10 +25,13 @@ if ($this->wish->get('anonymous')) {
 
 // Build message
 $message  = '----------------------------' . "\n";
-$message .= Lang::txt('COM_WISHLIST_WISH') . ' #' . $this->wish->get('id') . ', ' . $this->wishlist->get('title') . ' ' . Lang::txt('COM_WISHLIST_WISHLIST') . "\n";
-$message .= Lang::txt('COM_WISHLIST_WISH_DETAILS_SUMMARY') . ': ' . stripslashes($this->wish->get('subject')) . "\n";
+$message .= Lang::txt('COM_WISHLIST_WISH') . ' #' . $this->wish->get('id')
+    . ', ' . $this->wishlist->get('title') . ' ' . Lang::txt('COM_WISHLIST_WISHLIST') . "\n";
+$message .= Lang::txt('COM_WISHLIST_WISH_DETAILS_SUMMARY')
+    . ': ' . stripslashes($this->wish->get('subject')) . "\n";
 $message .= Lang::txt('COM_WISHLIST_PROPOSED_ON') . ' ' . $this->wish->proposed() . "\n";
-$message .= Lang::txt('COM_WISHLIST_BY') . ' ' . $name . ' ' . ($this->wish->get('anonymous') ? '' : '(' . $login . ' )') . "\n";
+$message .= Lang::txt('COM_WISHLIST_BY') . ' ' . $name
+    . ' ' . ($this->wish->get('anonymous') ? '' : '(' . $login . ' )') . "\n";
 $message .= '----------------------------' . "\n\n";
 
 // Get author name
@@ -49,7 +50,8 @@ $message .= strip_tags($this->comment->content) . "\r\n";
 $message .= $this->comment->get('attachment');
 
 $message .= "\n\n";
-$message .= Lang::txt('COM_WISHLIST_GO_TO') . ' ' . $link . ' ' . Lang::txt('COM_WISHLIST_TO_VIEW_THIS_WISH') . '.';
+$message .= Lang::txt('COM_WISHLIST_GO_TO') . ' ' . $link
+    . ' ' . Lang::txt('COM_WISHLIST_TO_VIEW_THIS_WISH') . '.';
 
 $message = preg_replace('/\n{3,}/', "\n\n", $message);
 

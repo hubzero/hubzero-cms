@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,7 +29,8 @@ if ($space = Request::getString('namespace', '')) {
 $pages    = \Components\Wiki\Models\Page::blank()->getTableName();
 $versions = \Components\Wiki\Models\Version::blank()->getTableName();
 
-$weight = '(match(' . $pages . '.title) against (' . $database->Quote($term) . ') + match(' . $versions . '.pagetext) against (' . $database->Quote($term) . '))';
+$weight = '(match(' . $pages . '.title) against (' . $database->Quote($term) . ')'
+    . ' + match(' . $versions . '.pagetext) against (' . $database->Quote($term) . '))';
 
 $rows = $this->book->pages($filters)
     ->select($pages . '.*')
@@ -50,7 +49,9 @@ $rows = $this->book->pages($filters)
         <fieldset class="entry-search">
             <legend><?php echo Lang::txt('COM_WIKI_SEARCH_LEGEND'); ?></legend>
             <label for="entry-search-field"><?php echo Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER'); ?></label>
-            <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($term); ?>" placeholder="<?php echo Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER'); ?>" />
+            <input type="text" name="q" id="entry-search-field"
+                value="<?php echo $this->escape($term); ?>"
+                placeholder="<?php echo Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER'); ?>" />
         </fieldset>
     </div><!-- / .container -->
 
@@ -84,7 +85,9 @@ $rows = $this->book->pages($filters)
                                 <?php echo Route::url($row->link()); ?>
                             </td>
                             <td>
-                                <time datetime="<?php echo $row->get('modified'); ?>"><?php echo $row->get('modified'); ?></time>
+                                <time datetime="<?php echo $row->get('modified'); ?>">
+                                    <?php echo $row->get('modified'); ?>
+                                </time>
                             </td>
                         </tr>
                         <?php

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -58,7 +56,9 @@ $rows = $this->book->pages($filters)
                             <?php echo $row->get('version_id'); ?>
                         </td>
                         <td>
-                            <time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+                            <time datetime="<?php echo $row->get('created'); ?>">
+                                <?php echo $row->get('created'); ?>
+                            </time>
                         </td>
                         <td>
                             <?php echo $row->get('id'); ?>

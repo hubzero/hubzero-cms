@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,10 +26,16 @@ if (!$this->no_html) {
             foreach ($this->cats as $cat) {
                 $name = key($cat);
                 if ($cat[$name] != '') {
+                    $tabUrl = Route::url(
+                        'index.php?option=' . $this->option . '&task=' . $name
+                    );
+                    $activeClass = (strtolower($name) == $this->task) ? ' class="active"' : '';
                     ?>
-                <li id="sm-<?php echo $i; ?>"<?php if (strtolower($name) == $this->task) {
-                    echo ' class="active"';
-                           } ?>><a class="tab" rel="<?php echo $name; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $name); ?>"><span><?php echo $cat[$name]; ?></span></a></li>
+                <li id="sm-<?php echo $i; ?>"<?php echo $activeClass; ?>>
+                    <a class="tab" rel="<?php echo $name; ?>" href="<?php echo $tabUrl; ?>">
+                        <span><?php echo $cat[$name]; ?></span>
+                    </a>
+                </li>
                     <?php
                     $i++;
                     $cs[] = $name;

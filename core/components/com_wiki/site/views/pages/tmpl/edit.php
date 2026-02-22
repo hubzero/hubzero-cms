@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -119,16 +117,36 @@ $authors = implode(', ', $authors);
                     <?php /*if (!$this->sub) { ?>
         <div class="explaination">
             <?php if ($this->page->exists() && $this->page->access('edit')) { ?>
-                <p><?php echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))); ?></p>
+                <p><?php
+                    echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename')));
+                ?></p>
             <?php } ?>
-            <div id="file-manager" data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
-                <iframe name="filer" id="filer" src="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+            <div id="file-manager"
+                data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>"
+                data-action="<?php
+                    echo rtrim(Request::base(true), '/');
+                ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php
+                    echo $lid;
+                ?>"
+                data-list="<?php
+                    echo rtrim(Request::base(true), '/');
+                ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php
+                    echo $lid;
+                ?>">
+                <iframe name="filer" id="filer"
+                    src="<?php
+                        echo rtrim(Request::base(true), '/');
+                    ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media
+                    &amp;scope=<?php echo $this->page->get('scope'); ?>
+                    &amp;pagename=<?php echo $this->page->get('pagename'); ?>
+                    &amp;listdir=<?php echo $lid; ?>"></iframe>
             </div>
             <div id="file-uploader-list"></div>
         </div>
     <?php } else {*/ ?>
                     <?php if ($this->page->exists() && $this->page->access('edit')) { ?>
-                        <p><?php echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))); ?></p>
+                        <?php $renameUrl = Route::url($this->page->link('rename')); ?>
+                        <p><?php echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', $renameUrl); ?></p>
                     <?php } ?>
                     <?php //} ?>
                     <fieldset>
@@ -148,9 +166,14 @@ $authors = implode(', ', $authors);
                                                         continue;
                                                     }
                                                     ?>
-                                                    <option value="<?php echo $item->get('id'); ?>"<?php if ($this->page->get('parent') == $item->get('id')) {
-                                                        echo ' selected="selected"';
-                                                                   } ?>><?php echo $this->escape(stripslashes($item->get('pagename'))); ?></option>
+                                                    <?php
+                                                    $selParent = ($this->page->get('parent') == $item->get('id'))
+                                                        ? ' selected="selected"' : '';
+                                                    ?>
+                                                    <option value="<?php echo $item->get('id'); ?>"<?php
+                                                        echo $selParent; ?>><?php
+                                                        echo $this->escape(stripslashes($item->get('pagename')));
+?></option>
                                                     <?php
                                                 }
                                             }
@@ -164,7 +187,9 @@ $authors = implode(', ', $authors);
                                     <label for="templates">
                                         <?php echo Lang::txt('COM_WIKI_FIELD_TEMPLATE'); ?>:
                                         <select name="tplate" id="templates" class="form-control">
-                                            <option value="tc"><?php echo Lang::txt('COM_WIKI_FIELD_TEMPLATE_SELECT'); ?></option>
+                                            <option value="tc">
+                                                <?php echo Lang::txt('COM_WIKI_FIELD_TEMPLATE_SELECT'); ?>
+                                            </option>
                                             <?php
                                             $hi = array();
 
@@ -183,13 +208,24 @@ $authors = implode(', ', $authors);
                                                 ) {
                                                     echo ' selected="selected"';
                                                     if (!$this->page->exists()) {
-                                                        $this->revision->set('pagetext', stripslashes($template->version->get('pagetext')));
+                                                        $tplPagetext = stripslashes(
+                                                            $template->version->get('pagetext')
+                                                        );
+                                                        $this->revision->set('pagetext', $tplPagetext);
                                                     }
                                                 }
-                                                echo '>' . $this->escape(stripslashes($template->get('title'))) . '</option>' . "\n";
+                                                echo '>' . $this->escape(stripslashes($template->get('title')))
+                                                    . '</option>' . "\n";
 
-                                                $j  = '<input type="hidden" name="t' . $template->get('id') . '" id="t' . $template->get('id') . '" value="' . $this->escape(stripslashes($template->version->get('pagetext'))) . '" />' . "\n";
-                                                $j .= '<input type="hidden" name="t' . $template->get('id') . '_tags" id="t' . $template->get('id') . '_tags" value="' . $this->escape(stripslashes($tmpltags)) . '" />' . "\n";
+                                                $tid = $template->get('id');
+                                                $tptxt = $this->escape(
+                                                    stripslashes($template->version->get('pagetext'))
+                                                );
+                                                $j  = '<input type="hidden" name="t' . $tid . '" id="t' . $tid
+                                                    . '" value="' . $tptxt . '" />' . "\n";
+                                                $j .= '<input type="hidden" name="t' . $tid . '_tags" id="t' . $tid
+                                                    . '_tags" value="' . $this->escape(stripslashes($tmpltags))
+                                                    . '" />' . "\n";
 
                                                 $hi[] = $j;
                                             }
@@ -205,7 +241,8 @@ $authors = implode(', ', $authors);
                             <label for="title">
                                 <?php echo Lang::txt('COM_WIKI_FIELD_TITLE'); ?>:
                                 <span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
-                                <input type="text" name="page[title]" id="title" class="form-control" value="<?php echo $this->escape($this->page->get('title')); ?>" size="38" />
+                                <input type="text" name="page[title]" id="title" class="form-control"
+                                    value="<?php echo $this->escape($this->page->get('title')); ?>" size="38" />
                             </label>
                         </div>
 
@@ -214,7 +251,14 @@ $authors = implode(', ', $authors);
                                 <?php echo Lang::txt('COM_WIKI_FIELD_PAGETEXT'); ?>:
                                 <span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
                                 <?php
-                                echo \Components\Wiki\Helpers\Editor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), 'form-control', '35', '40');
+                                echo \Components\Wiki\Helpers\Editor::getInstance()->display(
+                                    'revision[pagetext]',
+                                    'pagetext',
+                                    $this->revision->get('pagetext'),
+                                    'form-control',
+                                    '35',
+                                    '40'
+                                );
                                 ?>
                             </label>
                         </div>
@@ -223,15 +267,37 @@ $authors = implode(', ', $authors);
                         <div class="field-wrap">
                             <div class="grid">
                                 <div class="col span-half">
-                                    <div id="file-manager" data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
-                                        <iframe name="filer" id="filer" src="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+                                    <?php
+                                    $baseUrl = rtrim(Request::base(true), '/');
+                                    $uploadAction = $baseUrl
+                                        . '/index.php?option=com_wiki&amp;no_html=1'
+                                        . '&amp;controller=media&amp;task=upload&amp;listdir=' . $lid;
+                                    $listAction = $baseUrl
+                                        . '/index.php?option=com_wiki&amp;no_html=1'
+                                        . '&amp;controller=media&amp;task=list&amp;listdir=' . $lid;
+                                    $filerSrc = $baseUrl
+                                        . '/index.php?option=com_wiki&amp;tmpl=component'
+                                        . '&amp;controller=media&amp;scope=' . $this->page->get('scope')
+                                        . '&amp;pagename=' . $this->page->get('pagename')
+                                        . '&amp;listdir=' . $lid;
+                                    $dropInstr = Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE');
+                                    ?>
+                                    <div id="file-manager"
+                                        data-instructions="<?php echo $dropInstr; ?>"
+                                        data-action="<?php echo $uploadAction; ?>"
+                                        data-list="<?php echo $listAction; ?>">
+                                        <iframe name="filer" id="filer"
+                                            src="<?php echo $filerSrc; ?>"></iframe>
                                     </div>
                                     <div id="file-uploader-list"></div>
                                 </div>
                                 <div class="col span-half omega">
-                                    <?php if ($macros) { ?>
-                                        <p><?php echo Lang::txt('COM_WIKI_IMAGE_MACRO_HINT', Route::url($macros->link() . '#image')); ?></p>
-                                        <p><?php echo Lang::txt('COM_WIKI_FILE_MACRO_HINT', Route::url($macros->link() . '#file')); ?></p>
+                                    <?php if ($macros) {
+                                        $imgMacroUrl = Route::url($macros->link() . '#image');
+                                        $fileMacroUrl = Route::url($macros->link() . '#file');
+                                        ?>
+                                        <p><?php echo Lang::txt('COM_WIKI_IMAGE_MACRO_HINT', $imgMacroUrl); ?></p>
+                                        <p><?php echo Lang::txt('COM_WIKI_FILE_MACRO_HINT', $fileMacroUrl); ?></p>
                                     <?php } ?>
                                 </div>
                             </div><!-- / .grid -->
@@ -239,7 +305,11 @@ $authors = implode(', ', $authors);
                         <?php //} ?>
                     </fieldset><div class="clear"></div>
 
-                    <?php if (!$this->page->exists() || $this->page->get('created_by') == User::get('id') || $this->page->access('manage')) {?>
+                    <?php
+                    $canEdit = !$this->page->exists()
+                        || $this->page->get('created_by') == User::get('id')
+                        || $this->page->access('manage');
+                    if ($canEdit) {?>
                         <fieldset>
                             <legend><?php echo Lang::txt('COM_WIKI_FIELDSET_ACCESS'); ?></legend>
 
@@ -250,27 +320,34 @@ $authors = implode(', ', $authors);
                                     $cls .= ' hide';
                                 }
 
-                                if (!$this->page->exists() || $this->page->get('created_by') == User::get('id') || $this->page->access('manage')) { ?>
+                                if ($canEdit) { ?>
                                     <div class="form-group">
                                         <label for="params_mode">
-                                            <?php echo Lang::txt('COM_WIKI_FIELD_MODE'); ?>: <span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
+                                            <?php echo Lang::txt('COM_WIKI_FIELD_MODE'); ?>:
+                                            <span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
                                             <select name="params[mode]" id="params_mode" class="form-control">
-                                                <option value="knol"<?php if ($mode == 'knol') {
-                                                    echo ' selected="selected"';
-                                                                    } ?>><?php echo Lang::txt('COM_WIKI_FIELD_MODE_KNOL'); ?></option>
-                                                <option value="wiki"<?php if ($mode == 'wiki') {
-                                                    echo ' selected="selected"';
-                                                                    } ?>><?php echo Lang::txt('COM_WIKI_FIELD_MODE_WIKI'); ?></option>
+                                                <?php
+                                                $selKnol = ($mode == 'knol') ? ' selected="selected"' : '';
+                                                $selWiki = ($mode == 'wiki') ? ' selected="selected"' : '';
+                                                $selStatic = ($mode == 'static') ? ' selected="selected"' : '';
+                                                ?>
+                                                <option value="knol"<?php echo $selKnol; ?>>
+                                                    <?php echo Lang::txt('COM_WIKI_FIELD_MODE_KNOL'); ?>
+                                                </option>
+                                                <option value="wiki"<?php echo $selWiki; ?>>
+                                                    <?php echo Lang::txt('COM_WIKI_FIELD_MODE_WIKI'); ?>
+                                                </option>
                                                 <?php if ($this->page->access('admin')) { ?>
-                                                    <option value="static"<?php if ($mode == 'static') {
-                                                        echo ' selected="selected"';
-                                                                          } ?>><?php echo Lang::txt('COM_WIKI_FIELD_MODE_STATIC'); ?></option>
+                                                    <option value="static"<?php echo $selStatic; ?>>
+                                                        <?php echo Lang::txt('COM_WIKI_FIELD_MODE_STATIC'); ?>
+                                                    </option>
                                                 <?php } ?>
                                             </select>
                                         </label>
                                     </div>
                                 <?php } else { ?>
-                                    <input type="hidden" name="params[mode]" id="params_mode" value="<?php echo $mode; ?>" />
+                                    <input type="hidden" name="params[mode]" id="params_mode"
+                                        value="<?php echo $mode; ?>" />
                                 <?php } ?>
 
                                 <div class="form-group">
@@ -290,51 +367,65 @@ $authors = implode(', ', $authors);
                                         if (count($mc) > 0) {
                                             echo $mc[0];
                                         } else { ?>
-                                            <input type="text" name="authors" id="params_authors" class="form-control" value="<?php echo $this->escape($authors); ?>" />
+                                            <input type="text" name="authors" id="params_authors"
+                                                class="form-control"
+                                                value="<?php echo $this->escape($authors); ?>" />
                                         <?php } ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_hide_authors">
-                                        <input class="option form-check-input" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php if ($this->page->param('hide_authors') == 1) {
-                                            echo ' checked="checked"';
-                                                                                                                                                   } ?> value="1" />
+                                        <?php $chkHideAuthors = ($this->page->param('hide_authors') == 1)
+                                            ? ' checked="checked"' : ''; ?>
+                                        <input class="option form-check-input" type="checkbox"
+                                            name="params[hide_authors]" id="params_hide_authors"
+                                            <?php echo $chkHideAuthors; ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_allow_changes">
-                                        <input class="option form-check-input" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?php if ($this->page->param('allow_changes') == 1) {
-                                            echo ' checked="checked"';
-                                                                                                                                                     } ?> value="1" />
+                                        <?php $chkAllowChanges = ($this->page->param('allow_changes') == 1)
+                                            ? ' checked="checked"' : ''; ?>
+                                        <input class="option form-check-input" type="checkbox"
+                                            name="params[allow_changes]" id="params_allow_changes"
+                                            <?php echo $chkAllowChanges; ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_allow_comments">
-                                        <input class="option form-check-input" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?php if ($this->page->param('allow_comments') == 1) {
-                                            echo ' checked="checked"';
-                                                                                                                                                       } ?> value="1" />
+                                        <?php $chkAllowComments = ($this->page->param('allow_comments') == 1)
+                                            ? ' checked="checked"' : ''; ?>
+                                        <input class="option form-check-input" type="checkbox"
+                                            name="params[allow_comments]" id="params_allow_comments"
+                                            <?php echo $chkAllowComments; ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
                                     </label>
                                 </div>
                             <?php } else { ?>
-                                <input type="hidden" name="params[mode]" value="<?php echo $this->escape($this->page->param('mode', 'wiki')); ?>" />
-                                <input type="hidden" name="params[hide_authors]" value="<?php echo $this->escape($this->page->param('hide_authors', 1)); ?>" />
-                                <input type="hidden" name="params[allow_changes]" value="<?php echo $this->escape($this->page->param('allow_changes', 1)); ?>" />
-                                <input type="hidden" name="params[allow_comments]" value="<?php echo $this->escape($this->page->param('allow_comments', 1)); ?>" />
-                                <input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($authors); ?>" />
+                                <input type="hidden" name="params[mode]"
+                                    value="<?php echo $this->escape($this->page->param('mode', 'wiki')); ?>" />
+                                <input type="hidden" name="params[hide_authors]"
+                                    value="<?php echo $this->escape($this->page->param('hide_authors', 1)); ?>" />
+                                <input type="hidden" name="params[allow_changes]"
+                                    value="<?php echo $this->escape($this->page->param('allow_changes', 1)); ?>" />
+                                <input type="hidden" name="params[allow_comments]"
+                                    value="<?php echo $this->escape($this->page->param('allow_comments', 1)); ?>" />
+                                <input type="hidden" name="authors" id="params_authors"
+                                    value="<?php echo $this->escape($authors); ?>" />
                             <?php } ?>
 
                             <?php if ($this->page->access('manage')) { ?>
                                 <div class="form-group form-check">
                                     <label for="protected" class="form-check-label">
-                                        <input class="option form-check-input" type="checkbox" name="page[protected]" id="protected"<?php if ($this->page->isLocked()) {
-                                            echo ' checked="checked"';
-                                                                                                                                    } ?> value="1" />
+                                        <?php $chkProtected = $this->page->isLocked() ? ' checked="checked"' : ''; ?>
+                                        <input class="option form-check-input" type="checkbox"
+                                            name="page[protected]" id="protected"
+                                            <?php echo $chkProtected; ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_STATE'); ?>
                                     </label>
                                 </div>
@@ -342,12 +433,18 @@ $authors = implode(', ', $authors);
                         </fieldset>
                         <div class="clear"></div>
                     <?php } else { ?>
-                        <input type="hidden" name="page[protected]" value="<?php echo $this->escape($this->page->get('protected', 0)); ?>" />
-                        <input type="hidden" name="params[mode]" value="<?php echo $this->escape($this->page->param('mode', 'wiki')); ?>" />
-                        <input type="hidden" name="params[hide_authors]" value="<?php echo $this->escape($this->page->param('hide_authors', 1)); ?>" />
-                        <input type="hidden" name="params[allow_changes]" value="<?php echo $this->escape($this->page->param('allow_changes', 1)); ?>" />
-                        <input type="hidden" name="params[allow_comments]" value="<?php echo $this->escape($this->page->param('allow_comments', 1)); ?>" />
-                        <input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($authors); ?>" />
+                        <input type="hidden" name="page[protected]"
+                            value="<?php echo $this->escape($this->page->get('protected', 0)); ?>" />
+                        <input type="hidden" name="params[mode]"
+                            value="<?php echo $this->escape($this->page->param('mode', 'wiki')); ?>" />
+                        <input type="hidden" name="params[hide_authors]"
+                            value="<?php echo $this->escape($this->page->param('hide_authors', 1)); ?>" />
+                        <input type="hidden" name="params[allow_changes]"
+                            value="<?php echo $this->escape($this->page->param('allow_changes', 1)); ?>" />
+                        <input type="hidden" name="params[allow_comments]"
+                            value="<?php echo $this->escape($this->page->param('allow_comments', 1)); ?>" />
+                        <input type="hidden" name="authors" id="params_authors"
+                            value="<?php echo $this->escape($authors); ?>" />
                     <?php } ?>
 
                     <?php if ($this->page->access('edit')) { ?>
@@ -360,11 +457,15 @@ $authors = implode(', ', $authors);
                             <label for="actags">
                                 <?php echo Lang::txt('COM_WIKI_FIELD_TAGS'); ?>:
                                 <?php
-                                $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->escape($tags))));
+                                $tf = Event::trigger(
+                                    'hubzero.onGetMultiEntry',
+                                    array(array('tags', 'tags', 'actags', '', $this->escape($tags)))
+                                );
                                 if (count($tf) > 0) {
                                     echo $tf[0];
                                 } else {
-                                    echo '<input type="text" name="tags" class="form-control" value="' . $this->escape($tags) . '" size="38" />';
+                                    echo '<input type="text" name="tags" class="form-control"'
+                                        . ' value="' . $this->escape($tags) . '" size="38" />';
                                 }
                                 ?>
                                 <span class="hint"><?php echo Lang::txt('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
@@ -377,7 +478,10 @@ $authors = implode(', ', $authors);
                         <div class="form-group">
                             <label for="field-summary">
                                 <?php echo Lang::txt('COM_WIKI_FIELD_EDIT_SUMMARY'); ?>:
-                                <input type="text" name="revision[summary]" id="field-summary" class="form-control" value="<?php echo $this->escape($this->revision->get('summary')); ?>" size="38" />
+                                <input type="text" name="revision[summary]" id="field-summary"
+                                    class="form-control"
+                                    value="<?php echo $this->escape($this->revision->get('summary')); ?>"
+                                    size="38" />
                                 <span class="hint"><?php echo Lang::txt('COM_WIKI_FIELD_EDIT_SUMMARY_HINT'); ?></span>
                             </label>
                         </div>
@@ -387,29 +491,42 @@ $authors = implode(', ', $authors);
                     <div class="clear"></div>
 
                     <input type="hidden" name="lid" value="<?php echo $lid; ?>" />
-                    <input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
+                    <input type="hidden" name="pagename"
+                        value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
 
                     <input type="hidden" name="page[id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
-                    <input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access', 1)); ?>" />
-                    <input type="hidden" name="page[state]" value="<?php echo $this->escape($this->page->get('state', 1)); ?>" />
-                    <input type="hidden" name="page[scope]" value="<?php echo $this->escape($this->page->get('scope', 'site')); ?>" />
-                    <input type="hidden" name="page[scope_id]" value="<?php echo $this->escape($this->page->get('scope_id', 0)); ?>" />
+                    <input type="hidden" name="page[access]"
+                        value="<?php echo $this->escape($this->page->get('access', 1)); ?>" />
+                    <input type="hidden" name="page[state]"
+                        value="<?php echo $this->escape($this->page->get('state', 1)); ?>" />
+                    <input type="hidden" name="page[scope]"
+                        value="<?php echo $this->escape($this->page->get('scope', 'site')); ?>" />
+                    <input type="hidden" name="page[scope_id]"
+                        value="<?php echo $this->escape($this->page->get('scope_id', 0)); ?>" />
 
-                    <input type="hidden" name="revision[id]" value="<?php echo $this->escape($this->revision->get('id')); ?>" />
-                    <input type="hidden" name="revision[page_id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
-                    <input type="hidden" name="revision[version]" value="<?php echo $this->escape($this->revision->get('version')); ?>" />
-                    <input type="hidden" name="revision[created_by]" value="<?php echo $this->escape($this->revision->get('created_by')); ?>" />
-                    <input type="hidden" name="revision[created]" value="<?php echo $this->escape($this->revision->get('created')); ?>" />
+                    <input type="hidden" name="revision[id]"
+                        value="<?php echo $this->escape($this->revision->get('id')); ?>" />
+                    <input type="hidden" name="revision[page_id]"
+                        value="<?php echo $this->escape($this->page->get('id')); ?>" />
+                    <input type="hidden" name="revision[version]"
+                        value="<?php echo $this->escape($this->revision->get('version')); ?>" />
+                    <input type="hidden" name="revision[created_by]"
+                        value="<?php echo $this->escape($this->revision->get('created_by')); ?>" />
+                    <input type="hidden" name="revision[created]"
+                        value="<?php echo $this->escape($this->revision->get('created')); ?>" />
 
                     <?php foreach ($this->page->adapter()->routing('save') as $name => $val) { ?>
-                        <input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+                        <input type="hidden" name="<?php echo $this->escape($name); ?>"
+                            value="<?php echo $this->escape($val); ?>" />
                     <?php } ?>
 
                     <?php echo Html::input('token'); ?>
 
                     <p class="submit">
-                        <input type="submit" class="btn" name="preview" value="<?php echo Lang::txt('COM_WIKI_PREVIEW'); ?>" /> &nbsp;
-                        <input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" />
+                        <input type="submit" class="btn" name="preview"
+                            value="<?php echo Lang::txt('COM_WIKI_PREVIEW'); ?>" /> &nbsp;
+                        <input type="submit" class="btn btn-success" name="submit"
+                            value="<?php echo Lang::txt('COM_WIKI_SUBMIT'); ?>" />
                     </p>
                 </form>
             </div>

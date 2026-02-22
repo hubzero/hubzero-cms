@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -81,7 +79,9 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                     <th scope="col">
                         <a<?php if ($sort == 'created_by') {
                             echo ' class="active"';
-                          } ?> href="<?php echo Route::url($this->page->link() . '&sort=created_by&dir=' . $altdir); ?>">
+                          } ?> href="<?php
+                              echo Route::url($this->page->link() . '&sort=created_by&dir=' . $altdir);
+?>">
                             <?php if ($sort == 'created_by') {
                                 echo ($dir == 'ASC') ? '&uarr;' : '&darr;';
                             } ?> <?php echo Lang::txt('COM_WIKI_COL_CREATOR'); ?>
@@ -102,14 +102,17 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
             <?php
             if ($rows) {
                 foreach ($rows as $row) {
-                    $name = $this->escape(stripslashes($row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? ''));
+                    $creatorName = $row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? '';
+                    $name = $this->escape(stripslashes($creatorName));
                     if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) {
                         $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
                     }
                     ?>
                     <tr>
                         <td>
-                            <time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+                            <time datetime="<?php echo $row->get('created'); ?>">
+                                <?php echo $row->get('created'); ?>
+                            </time>
                         </td>
                         <td>
                             <a href="<?php echo Route::url($row->link()); ?>">
@@ -120,7 +123,9 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                             <?php echo $name; ?>
                         </td>
                         <td>
-                            <span><?php echo $this->escape(stripslashes($row->version->get('summary', '') ?? '')); ?></span>
+                            <span><?php
+                                echo $this->escape(stripslashes($row->version->get('summary', '') ?? ''));
+                            ?></span>
                         </td>
                     </tr>
                     <?php

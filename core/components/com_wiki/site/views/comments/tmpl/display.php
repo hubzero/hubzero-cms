@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,9 @@ if (!$this->sub) {
     <?php if (count($this->parents)) { ?>
         <p class="wiki-crumbs">
             <?php foreach ($this->parents as $parent) { ?>
-                <a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $parent->title; ?></a> /
+                <a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>">
+                    <?php echo $parent->title; ?>
+                </a> /
             <?php } ?>
         </p>
     <?php } ?>
@@ -98,7 +98,9 @@ if (!$this->sub) {
                 <ul class="dropdown-menu">
                     <?php if ($this->version) { ?>
                         <li>
-                            <a href="<?php echo Route::url($this->page->link('comments')); ?>"><?php echo Lang::txt('COM_WIKI_ALL'); ?></a>
+                            <a href="<?php echo Route::url($this->page->link('comments')); ?>">
+                                <?php echo Lang::txt('COM_WIKI_ALL'); ?>
+                            </a>
                         </li>
                     <?php } ?>
                     <?php
@@ -108,7 +110,14 @@ if (!$this->sub) {
                         }
                         ?>
                         <li>
-                            <a href="<?php echo Route::url($this->page->link('comments') . '&version=' . $ver->get('version')); ?>"><?php echo Lang::txt('COM_WIKI_VERSION_NUM', $ver->get('version')); ?></a>
+                            <?php
+                            $verUrl = Route::url(
+                                $this->page->link('comments') . '&version=' . $ver->get('version')
+                            );
+                            ?>
+                            <a href="<?php echo $verUrl; ?>">
+                                <?php echo Lang::txt('COM_WIKI_VERSION_NUM', $ver->get('version')); ?>
+                            </a>
                         </li>
                     <?php } ?>
                 </ul>
@@ -149,7 +158,8 @@ if (!$this->sub) {
         ?>
 
         <?php if (isset($this->mycomment) && $this->mycomment instanceof \Components\Wiki\Models\Comment) { ?>
-            <form action="<?php echo Route::url($this->page->link('comments')); ?>" method="post" id="commentform" class="section-inner">
+            <form action="<?php echo Route::url($this->page->link('comments')); ?>"
+                method="post" id="commentform" class="section-inner">
                 <h3 id="commentform-title">
                     <?php echo Lang::txt('COM_WIKI_ADD_COMMENT'); ?>
                 </h3>
@@ -157,56 +167,91 @@ if (!$this->sub) {
                     <?php
                     $anon = (!User::isGuest()) ? 0 : 1;
                     ?>
-                    <img src="<?php echo User::picture($anon); ?>" alt="<?php echo Lang::txt('COM_WIKI_MEMBER_PICTURE'); ?>" />
+                    <img src="<?php echo User::picture($anon); ?>"
+                        alt="<?php echo Lang::txt('COM_WIKI_MEMBER_PICTURE'); ?>" />
                 </p>
                 <fieldset>
                     <?php if ($this->page->config('comment_ratings') && !$this->mycomment->get('parent')) { ?>
                         <fieldset>
                             <legend><?php echo Lang::txt('COM_WIKI_FIELD_RATING'); ?>:</legend>
-                            <label for="review_rating_1"><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->get('rating') == 1) {
-                                echo ' checked="checked"';
-                                                                                                                                                 } ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_ONE'); ?></label>
-                            <label for="review_rating_2"><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($this->mycomment->get('rating') == 2) {
-                                echo ' checked="checked"';
-                                                                                                                                                 } ?> /> &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
-                            <label for="review_rating_3"><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($this->mycomment->get('rating') == 3) {
-                                echo ' checked="checked"';
-                                                                                                                                                 } ?> /> &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;</label>
-                            <label for="review_rating_4"><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($this->mycomment->get('rating') == 4) {
-                                echo ' checked="checked"';
-                                                                                                                                                 } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;</label>
-                            <label for="review_rating_5"><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->get('rating') == 5) {
-                                echo ' checked="checked"';
-                                                                                                                                                 } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_FIVE'); ?></label>
+                            <?php
+                            $rating = $this->mycomment->get('rating');
+                            $chk1 = ($rating == 1) ? ' checked="checked"' : '';
+                            $chk2 = ($rating == 2) ? ' checked="checked"' : '';
+                            $chk3 = ($rating == 3) ? ' checked="checked"' : '';
+                            $chk4 = ($rating == 4) ? ' checked="checked"' : '';
+                            $chk5 = ($rating == 5) ? ' checked="checked"' : '';
+                            ?>
+                            <label for="review_rating_1"><input class="option"
+                                id="review_rating_1" name="comment[rating]"
+                                type="radio" value="1"<?php echo $chk1; ?> />
+                                &#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
+                                <?php echo Lang::txt('COM_WIKI_FIELD_RATING_ONE'); ?></label>
+                            <label for="review_rating_2"><input class="option"
+                                id="review_rating_2" name="comment[rating]"
+                                type="radio" value="2"<?php echo $chk2; ?> />
+                                &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
+                            <label for="review_rating_3"><input class="option"
+                                id="review_rating_3" name="comment[rating]"
+                                type="radio" value="3"<?php echo $chk3; ?> />
+                                &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;</label>
+                            <label for="review_rating_4"><input class="option"
+                                id="review_rating_4" name="comment[rating]"
+                                type="radio" value="4"<?php echo $chk4; ?> />
+                                &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;</label>
+                            <label for="review_rating_5"><input class="option"
+                                id="review_rating_5" name="comment[rating]"
+                                type="radio" value="5"<?php echo $chk5; ?> />
+                                &#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
+                                <?php echo Lang::txt('COM_WIKI_FIELD_RATING_FIVE'); ?></label>
                         </fieldset>
                     <?php } ?>
 
                     <div class="form-group">
                         <label for="ctext">
                             <?php echo Lang::txt('COM_WIKI_FIELD_COMMENTS'); ?>:
-                            <?php echo \Components\Wiki\Helpers\Editor::getInstance()->display('comment[ctext]', 'ctext', $this->mycomment->get('ctext'), 'form-control minimal no-footer', '35', '15'); ?>
+                            <?php
+                            echo \Components\Wiki\Helpers\Editor::getInstance()->display(
+                                'comment[ctext]',
+                                'ctext',
+                                $this->mycomment->get('ctext'),
+                                'form-control minimal no-footer',
+                                '35',
+                                '15'
+                            );
+                            ?>
                         </label>
                     </div>
 
-                    <input type="hidden" name="comment[created]" value="<?php echo $this->escape($this->mycomment->get('created')); ?>" />
-                    <input type="hidden" name="comment[id]" value="<?php echo $this->escape($this->mycomment->get('id')); ?>" />
-                    <input type="hidden" name="comment[created_by]" value="<?php echo $this->escape($this->mycomment->get('created_by')); ?>" />
-                    <input type="hidden" name="comment[state]" value="<?php echo $this->escape($this->mycomment->get('state', 1)); ?>" />
-                    <input type="hidden" name="comment[version]" value="<?php echo $this->escape($this->mycomment->get('version')); ?>" />
-                    <input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->mycomment->get('parent')); ?>" />
-                    <input type="hidden" name="comment[page_id]" value="<?php echo $this->escape($this->mycomment->get('page_id', $this->page->get('id'))); ?>" />
+                    <input type="hidden" name="comment[created]"
+                        value="<?php echo $this->escape($this->mycomment->get('created')); ?>" />
+                    <input type="hidden" name="comment[id]"
+                        value="<?php echo $this->escape($this->mycomment->get('id')); ?>" />
+                    <input type="hidden" name="comment[created_by]"
+                        value="<?php echo $this->escape($this->mycomment->get('created_by')); ?>" />
+                    <input type="hidden" name="comment[state]"
+                        value="<?php echo $this->escape($this->mycomment->get('state', 1)); ?>" />
+                    <input type="hidden" name="comment[version]"
+                        value="<?php echo $this->escape($this->mycomment->get('version')); ?>" />
+                    <input type="hidden" name="comment[parent]"
+                        value="<?php echo $this->escape($this->mycomment->get('parent')); ?>" />
+                    <?php $pageId = $this->escape($this->mycomment->get('page_id', $this->page->get('id'))); ?>
+                    <input type="hidden" name="comment[page_id]"
+                        value="<?php echo $pageId; ?>" />
 
                     <input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
 
                     <?php foreach ($this->page->adapter()->routing('savecomment') as $name => $val) { ?>
-                        <input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+                        <input type="hidden" name="<?php echo $this->escape($name); ?>"
+                            value="<?php echo $this->escape($val); ?>" />
                     <?php } ?>
 
                     <div class="form-group form-check">
                         <label id="comment-anonymous-label" class="form-check-label" for="comment-anonymous">
-                            <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) {
-                                echo ' checked="checked"';
-                                                                                                                                             } ?> />
+                            <?php $chkAnon = ($this->mycomment->get('anonymous') != 0) ? ' checked="checked"' : ''; ?>
+                            <input class="option form-check-input" type="checkbox"
+                                name="comment[anonymous]" id="comment-anonymous"
+                                value="1"<?php echo $chkAnon; ?> />
                             <?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?>
                         </label>
                     </div>

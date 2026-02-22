@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -70,10 +68,18 @@ $drauthor = $this->dr->creator()->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
             <div class="col span-half">
                 <dl class="diff-versions">
                     <dt><?php echo Lang::txt('COM_WIKI_VERSION') . ' ' . $this->or->get('version'); ?><dt>
-                    <dd><?php echo Lang::txt('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->or->get('created') . '">' . $this->or->get('created') . '</time>', $this->escape($orauthor)); ?><dd>
+                    <?php
+                    $orTime = '<time datetime="' . $this->or->get('created') . '">'
+                        . $this->or->get('created') . '</time>';
+                    ?>
+                    <dd><?php echo Lang::txt('COM_WIKI_HISTORY_CREATED_BY', $orTime, $this->escape($orauthor)); ?><dd>
 
                     <dt><?php echo Lang::txt('COM_WIKI_VERSION') . ' ' . $this->dr->get('version'); ?><dt>
-                    <dd><?php echo Lang::txt('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->dr->get('created') . '">' . $this->dr->get('created') . '</time>', $this->escape($drauthor)); ?><dd>
+                    <?php
+                    $drTime = '<time datetime="' . $this->dr->get('created') . '">'
+                        . $this->dr->get('created') . '</time>';
+                    ?>
+                    <dd><?php echo Lang::txt('COM_WIKI_HISTORY_CREATED_BY', $drTime, $this->escape($drauthor)); ?><dd>
                 </dl>
             </div><!-- / .aside -->
             <div class="col span-half omega">

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -40,9 +38,22 @@ if (!$no_html) {
                                 <span><?php echo $this->escape(stripslashes($name)); ?></span>
                             </td>
                             <td>
-                                <a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deletefile&amp;file=<?php echo $name; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;<?php echo (!$no_html) ? 'tmpl=component' : 'no_html=1'; ?>" <?php if (!$no_html) {
-                                    ?>target="filer" data-confirm="<?php echo Lang::txt('Delete file %s?', $name); ?>"<?php
-                                                                    } ?> title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                                <?php
+                                $tmplParam = (!$no_html) ? 'tmpl=component' : 'no_html=1';
+                                $deleteHref = $base . '/index.php?option=' . $this->option
+                                    . '&amp;controller=media&amp;task=deletefile'
+                                    . '&amp;file=' . $name
+                                    . '&amp;listdir=' . $this->listdir
+                                    . '&amp;' . $tmplParam;
+                                $deleteTitle = Lang::txt('JACTION_DELETE');
+                                $deleteConfirm = Lang::txt('Delete file %s?', $name);
+                                ?>
+                                <a class="icon-delete delete"
+                                    href="<?php echo $deleteHref; ?>"
+                                    <?php if (!$no_html) { ?>
+                                    target="filer" data-confirm="<?php echo $deleteConfirm; ?>"<?php
+                                    } ?>
+                                    title="<?php echo $deleteTitle; ?>">
                                     <?php echo Lang::txt('JACTION_DELETE'); ?>
                                 </a>
                             </td>

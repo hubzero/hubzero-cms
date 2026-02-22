@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -38,14 +36,20 @@ $amaFormatRetrieved = 'M d, Y';
 
 $now = Date::toSql();
 
-$permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
+$permalink = rtrim(Request::base(), '/') . '/'
+    . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
 ?>
 <div class="admon-note">
 <p>
-    <strong>IMPORTANT NOTE</strong>: Most educators and professionals do not consider it appropriate to use tertiary sources such as encyclopedias as a sole source for any information—citing an encyclopedia as an important reference in footnotes or bibliographies may result in censure or a failing grade. Wiki articles should be used for background information, as a reference for correct terminology and search terms, and as a starting point for further research.
+    <strong>IMPORTANT NOTE</strong>: Most educators and professionals do not consider it appropriate to use
+    tertiary sources such as encyclopedias as a sole source for any information—citing an encyclopedia as an
+    important reference in footnotes or bibliographies may result in censure or a failing grade. Wiki articles
+    should be used for background information, as a reference for correct terminology and search terms, and as
+    a starting point for further research.
 </p>
 <p>
-    As with any community-built reference, there is a possibility for error in content&ndash;please check your facts against multiple sources and read our disclaimers for more information.
+    As with any community-built reference, there is a possibility for error in content&ndash;please check
+    your facts against multiple sources and read our disclaimers for more information.
 </p>
 </div>
 <div class="wiki-box highlight-box">
@@ -77,58 +81,100 @@ $permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() 
         </li>
     </ul>
     <p>
-        Please remember to check your manual of style, standards guide or instructor's guidelines for the exact syntax to suit your needs.
+        Please remember to check your manual of style, standards guide or instructor's guidelines for the
+        exact syntax to suit your needs.
     </p>
 </div>
 
+<?php
+$citeTitle = $this->escape(stripslashes($page->get('title', '') ?? ''));
+$citeSite = $this->escape(Config::get('sitename'));
+$citeRevCreated = $revision->get('created');
+$citeApaDate = Date::of($citeRevCreated)->format($apaFormat);
+$citeMhraDate = Date::of($citeRevCreated)->format($mhraFormat);
+$citeAmaDate = Date::of($citeRevCreated)->format($amaFormat);
+$citeBluebookDate = Date::of($citeRevCreated)->format($bluebookFormat);
+$citeApaRetr = Date::of($now)->format($apaFormatRetrieved);
+$citeMlaRetr = Date::of($now)->format($mlaFormatRetrieved);
+$citeMhraRetr = Date::of($now)->format($mhraFormatRetrieved);
+$citeCbeDate = Date::of($now)->format($cbeFormat);
+$citeAmaRetr = Date::of($now)->format($amaFormatRetrieved);
+?>
 <div class="wiki-box">
-    <h3>Citation styles for "<?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?>"</h3>
+    <h3>Citation styles for "<?php echo $citeTitle; ?>"</h3>
 
     <h4>APA style</h4>
     <p>
-        <?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?>. (<?php echo Date::of($revision->get('created'))->format($apaFormat); ?>). In <i><?php echo $this->escape(Config::get('sitename')); ?></i>. Retrieved <?php echo Date::of($now)->format($apaFormatRetrieved); ?>, from <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>
+        <?php echo $citeTitle; ?>. (<?php echo $citeApaDate; ?>).
+        In <i><?php echo $citeSite; ?></i>.
+        Retrieved <?php echo $citeApaRetr; ?>,
+        from <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>
     </p>
 
     <h4>MLA style</h4>
     <p>
-        <?php echo $this->escape(Config::get('sitename')); ?> contributors. "<?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?>." <i><?php echo $this->escape(Config::get('sitename')); ?></i>. <?php echo $this->escape(Config::get('sitename')); ?>, <?php echo Date::of($revision->get('created'))->format($apaFormat); ?>. Web. <?php echo Date::of($now)->format($mlaFormatRetrieved); ?>
+        <?php echo $citeSite; ?> contributors.
+        "<?php echo $citeTitle; ?>."
+        <i><?php echo $citeSite; ?></i>.
+        <?php echo $citeSite; ?>, <?php echo $citeApaDate; ?>. Web. <?php echo $citeMlaRetr; ?>
     </p>
 
     <h4>MHRA style</h4>
     <p>
-        <?php echo $this->escape(Config::get('sitename')); ?> contributors, '<?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?>,' <i><?php echo $this->escape(Config::get('sitename')); ?></i>, <?php echo Date::of($revision->get('created'))->format($mhraFormat); ?>, &lt;<a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>&gt; [accessed <?php echo Date::of($now)->format($mhraFormatRetrieved); ?>]
+        <?php echo $citeSite; ?> contributors,
+        '<?php echo $citeTitle; ?>,'
+        <i><?php echo $citeSite; ?></i>, <?php echo $citeMhraDate; ?>,
+        &lt;<a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>&gt;
+        [accessed <?php echo $citeMhraRetr; ?>]
     </p>
 
     <h4>Chicago style</h4>
     <p>
-        <?php echo $this->escape(Config::get('sitename')); ?> contributors, "<?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?>," <i><?php echo $this->escape(Config::get('sitename')); ?></i>, <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a> (accessed <?php echo Date::of($now)->format($mhraFormatRetrieved); ?>).
+        <?php echo $citeSite; ?> contributors,
+        "<?php echo $citeTitle; ?>,"
+        <i><?php echo $citeSite; ?></i>,
+        <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>
+        (accessed <?php echo $citeMhraRetr; ?>).
     </p>
 
     <h4>CBE/CSE style</h4>
     <p>
-        <?php echo $this->escape(Config::get('sitename')); ?> contributors. <?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?> [Internet]. <?php echo $this->escape(Config::get('sitename')); ?>; <?php echo Date::of($revision->get('created'))->format($bluebookFormat); ?> [cited <?php echo Date::of($now)->format($cbeFormat); ?>]. Available from: <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>.
+        <?php echo $citeSite; ?> contributors.
+        <?php echo $citeTitle; ?> [Internet].
+        <?php echo $citeSite; ?>; <?php echo $citeBluebookDate; ?>
+        [cited <?php echo $citeCbeDate; ?>].
+        Available from: <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>.
     </p>
 
     <h4>Bluebook style</h4>
     <p>
-        <?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?>, <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a> (last visited <?php echo Date::of($now)->format($bluebookFormat); ?>).
+        <?php echo $citeTitle; ?>,
+        <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>
+        (last visited <?php echo $citeBluebookDate; ?>).
     </p>
 
     <h4>Bluebook: Harvard JOLT style</h4>
     <p>
-        <?php echo $this->escape(Config::get('sitename')); ?>, <i><?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?></i>, <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a> (optional description here) (as of <?php echo Date::of($now)->format($bluebookFormat); ?>).
+        <?php echo $citeSite; ?>,
+        <i><?php echo $citeTitle; ?></i>,
+        <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>
+        (optional description here) (as of <?php echo $citeBluebookDate; ?>).
     </p>
 
     <h4>AMA style</h4>
     <p>
-        <?php echo $this->escape(Config::get('sitename')); ?> contributors. <?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?>. <?php echo $this->escape(Config::get('sitename')); ?>. <?php echo Date::of($revision->get('created'))->format($amaFormat); ?>. Available at <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>. Accessed <?php echo Date::of($now)->format($amaFormatRetrieved); ?>.
+        <?php echo $citeSite; ?> contributors.
+        <?php echo $citeTitle; ?>.
+        <?php echo $citeSite; ?>. <?php echo $citeAmaDate; ?>.
+        Available at <a href="<?php echo $permalink; ?>"><?php echo $permalink; ?></a>.
+        Accessed <?php echo $citeAmaRetr; ?>.
     </p>
 
     <h4>BibTeX entry</h4>
 <pre>
 @misc{ wiki:xxx,
-    author = "<?php echo $this->escape(Config::get('sitename')); ?>",
-    title = "<?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?> --- <?php echo $this->escape(Config::get('sitename')); ?>",
+    author = "<?php echo $citeSite; ?>",
+    title = "<?php echo $citeTitle; ?> --- <?php echo $citeSite; ?>",
     year = "<?php echo Date::of($revision->get('created'))->format($yFormat); ?>",
     url = "<?php echo $permalink; ?>",
     note = "[Online; accessed 1-October-2012]"

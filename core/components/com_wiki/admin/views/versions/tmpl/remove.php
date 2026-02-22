@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,15 +9,20 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_REVISION') . ': ' . Lang::txt('COM_WIKI_DELETE'), 'wiki.png');
+$toolbarTitle = Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_REVISION') . ': ' . Lang::txt('COM_WIKI_DELETE');
+Toolbar::title($toolbarTitle, 'wiki.png');
 Toolbar::cancel();
 
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" class="editform" id="item-form">
     <table class="adminform">
         <tbody>
             <tr>
-                <td><input type="radio" name="confirm" id="confirm" value="1" /> <label for="confirm"><?php echo Lang::txt('COM_WIKI_CONFIRM_DELETE'); ?></label></td>
+                <td>
+                    <input type="radio" name="confirm" id="confirm" value="1" />
+                    <label for="confirm"><?php echo Lang::txt('COM_WIKI_CONFIRM_DELETE'); ?></label>
+                </td>
                 <td><input type="submit" name="Submit" value="<?php echo Lang::txt('COM_WIKI_NEXT'); ?>" /></td>
             </tr>
         </tbody>

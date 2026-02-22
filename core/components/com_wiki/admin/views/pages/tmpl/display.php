@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,12 +29,15 @@ Toolbar::spacer();
 Toolbar::help('pages');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span5">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('COM_WIKI_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_WIKI_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -62,9 +63,13 @@ Toolbar::help('pages');
                             continue;
                         }
                         ?>
-                        <option value="<?php echo $nspace->get('namespace'); ?>"<?php if ($this->filters['namespace'] == $nspace->get('namespace')) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo $nspace->get('namespace'); ?></option>
+                        <?php
+                        $nsSel = ($this->filters['namespace'] == $nspace->get('namespace'))
+                            ? ' selected="selected"' : '';
+                        ?>
+                        <option value="<?php echo $nspace->get('namespace'); ?>"<?php echo $nsSel; ?>>
+                            <?php echo $nspace->get('namespace'); ?>
+                        </option>
                     <?php } ?>
                 </select>
             </div>
@@ -75,15 +80,27 @@ Toolbar::help('pages');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle"
+                        value="" class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WIKI_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_WIKI_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $dir = @$this->filters['sort_Dir'];
+                $col = @$this->filters['sort'];
+                $sortId    = Html::grid('sort', 'COM_WIKI_COL_ID', 'id', $dir, $col);
+                $sortTitle = Html::grid('sort', 'COM_WIKI_COL_TITLE', 'title', $dir, $col);
+                $sortState = Html::grid('sort', 'COM_WIKI_COL_STATE', 'state', $dir, $col);
+                $sortLock  = Html::grid('sort', 'COM_WIKI_COL_LOCKED', 'protected', $dir, $col);
+                $sortScope = Html::grid('sort', 'COM_WIKI_COL_SCOPE', 'scope', $dir, $col);
+                ?>
+                <th scope="col" class="priority-5"><?php echo $sortId; ?></th>
+                <th scope="col"><?php echo $sortTitle; ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_WIKI_COL_MODE'); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_WIKI_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WIKI_COL_LOCKED', 'protected', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_WIKI_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo $sortState; ?></th>
+                <th scope="col" class="priority-5"><?php echo $sortLock; ?></th>
+                <th scope="col" class="priority-4"><?php echo $sortScope; ?></th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_WIKI_COL_REVISIONS'); ?></th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_WIKI_COL_COMMENTS'); ?></th>
             </tr>
@@ -125,15 +142,25 @@ Toolbar::help('pages');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $row->get('id'); ?>
+                    </label>
                 </td>
                 <td class="priority-5">
                     <?php echo $row->get('id'); ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id=' . $row->get('id')
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->get('title', Lang::txt('COM_WIKI_NONE')))); ?>
                         </a>
                     <?php } else { ?>
@@ -143,14 +170,27 @@ Toolbar::help('pages');
                     <?php } ?>
                     <br />
                     <span class="smallsub">/wiki/</span> &nbsp;
-                    <span class="smallsub"><?php echo ($row->get('path') ? $row->get('path') . '/' : '') . $this->escape(stripslashes($row->get('pagename', ''))); ?></span>
+                    <?php
+                    $pageNamePath = ($row->get('path') ? $row->get('path') . '/' : '')
+                        . $this->escape(stripslashes($row->get('pagename', '')));
+                    ?>
+                    <span class="smallsub"><?php echo $pageNamePath; ?></span>
                 </td>
                 <td class="priority-4">
                     <?php echo $this->escape($row->param('mode')); ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=state&id=' . $row->get('id') . '&state=' . $task . '&' . Session::getFormToken() . '=1'); ?>">
+                        <?php
+                        $stateUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=state&id=' . $row->get('id')
+                            . '&state=' . $task
+                            . '&' . Session::getFormToken() . '=1'
+                        );
+                        ?>
+                        <a class="state <?php echo $cls; ?>" href="<?php echo $stateUrl; ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -176,13 +216,25 @@ Toolbar::help('pages');
                     </span>
                 </td>
                 <td class="priority-2">
-                    <a class="revisions" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=versions&pageid=' . $row->get('id')); ?>">
+                    <?php
+                    $revisionsUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=versions&pageid=' . $row->get('id')
+                    );
+                    ?>
+                    <a class="revisions" href="<?php echo $revisionsUrl; ?>">
                         <span><?php echo Lang::txt('COM_WIKI_NUM_REVISIONS', $row->versions->count()); ?></span>
                     </a>
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a class="comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=comments&page_id=' . $row->get('id')); ?>">
+                        <?php
+                        $commentsUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=comments&page_id=' . $row->get('id')
+                        );
+                        ?>
+                        <a class="comment" href="<?php echo $commentsUrl; ?>">
                             <?php echo Lang::txt('COM_WIKI_NUM_COMMENTS', $row->comments->count()); ?>
                         </a>
                     <?php } else { ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,18 +47,21 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
     <!-- End Spacer -->
 
     <!-- Start Message -->
-    <table width="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tbody>
             <tr>
-                <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
+                <td align="left"
+                    valign="bottom"
+                    style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
                     <?php
                     switch ($this->action) {
                         case 'assigned':
-                            echo 'The following wish has been assigned to ' . $this->escape(stripslashes($this->wish->assignee->get('name'))) . '.';
+                            echo 'The following wish has been assigned to '
+                                . $this->escape(stripslashes($this->wish->assignee->get('name'))) . '.';
                             break;
 
                         case 'created':
-                            echo 'A new wish has been submitted.'; //' by ' . $this->escape(stripslashes($this->wish->proposer->get('name')));
+                            echo 'A new wish has been submitted.';
                             break;
 
                         case 'moved':
@@ -88,47 +89,97 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
     </table>
     <!-- End Spacer -->
 
-    <table id="question-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
+    <table id="question-info"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="border-collapse: collapse; line-height: 1.6em;">
         <tbody>
             <tr>
-                <td class="mobilehide" style="font-size: 2.5em; font-weight: bold; text-align: center; padding: 0 30px 8px 0; vertical-align: top;" align="center" valing="top">
-                    <p style="display: block; border: 1px solid #c8e3c2; background: #eafbe6; margin:0; padding: 1em;"><?php /* &#x1f4a1; */ ?>&#x2736;</p>
+                <td class="mobilehide"
+                    style="font-size: 2.5em; font-weight: bold; text-align: center;
+                        padding: 0 30px 8px 0; vertical-align: top;"
+                    align="center"
+                    valing="top">
+                    <p style="display: block; border: 1px solid #c8e3c2; background: #eafbe6;
+                        margin:0; padding: 1em;"><?php /* &#x1f4a1; */ ?>&#x2736;</p>
                 </td>
                 <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
-                    <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
+                    <table width="100%"
+                        style="border-collapse: collapse; font-size: 0.9em;"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0">
                         <tbody>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Wish:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"># <?php echo $this->wish->get('id'); ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold;
+                                    white-space: nowrap;" align="right">Wish:</th>
+                                <td style="text-align: left; padding: 0 0.5em;"
+                                    width="100%"
+                                    align="left"># <?php echo $this->wish->get('id'); ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">@ <?php echo $this->wish->proposed('time'); ?> on <?php echo $this->wish->proposed('date'); ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold;
+                                    white-space: nowrap;" align="right">Created:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
+                                    @ <?php echo $this->wish->proposed('time'); ?>
+                                    on <?php echo $this->wish->proposed('date'); ?>
+                                </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->wish->get('anonymous') ? Lang::txt('JANONYMOUS') : $this->escape(stripslashes($this->wish->proposer->get('name', Lang::txt('COM_WISHLIST_UNKNOWN')))); ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold;
+                                    white-space: nowrap;" align="right">Creator:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
+                                    <?php
+                                    if ($this->wish->get('anonymous')) {
+                                        echo Lang::txt('JANONYMOUS');
+                                    } else {
+                                        echo $this->escape(
+                                            stripslashes(
+                                                $this->wish->proposer->get('name', Lang::txt('COM_WISHLIST_UNKNOWN'))
+                                            )
+                                        );
+                                    }
+                                    ?>
+                                </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->wish->status('text'); ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold;
+                                    white-space: nowrap;" align="right">Status:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
+                                    <?php echo $this->wish->status('text'); ?>
+                                </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Tags:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->wish->tags('string')); ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold;
+                                    white-space: nowrap; vertical-align: top;" align="right">Tags:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
+                                    <?php echo $this->escape($this->wish->tags('string')); ?>
+                                </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold;
+                                    white-space: nowrap;" align="right">Link:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
+                                    <a href="<?php echo $link; ?>"><?php echo $link; ?></a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <table width="100%" style="margin: 18px 0 0 0; border-top: 2px solid #e9e9e9; border-collapse: collapse; font-size: 1em;">
+                    <table width="100%"
+                        style="margin: 18px 0 0 0; border-top: 2px solid #e9e9e9; border-collapse: collapse;
+                            font-size: 1em;">
                         <tbody>
                             <tr>
-                                <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-                                    <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->wish->get('subject'); ?></div>
+                                <td style="text-align: left; padding: 0 0.5em;"
+                                    cellpadding="0"
+                                    cellspacing="0"
+                                    border="0">
+                                    <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">
+                                        <?php echo $this->wish->get('subject'); ?>
+                                    </div>
                                 </td>
                             </tr>
                         <?php
@@ -137,8 +188,14 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
                             case 'created':
                                 ?>
                                 <tr>
-                                    <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-                                        <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $this->wish->content; ?></div>
+                                    <td style="text-align: left; padding: 0 0.5em;"
+                                        cellpadding="0"
+                                        cellspacing="0"
+                                        border="0">
+                                        <div style="line-height: 1.6em; margin: 1em 0;
+                                            padding: 0; text-align: left;">
+                                            <?php echo $this->wish->content; ?>
+                                        </div>
                                     </td>
                                 </tr>
                                 <?php
@@ -146,8 +203,19 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
                             case 'moved':
                                 ?>
                                 <tr>
-                                    <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-                                        <?php echo Lang::txt('Wish <span style="color: #4e7ac7;">moved</span> from %s to %s', '<b style="color: #333;">' . $this->escape($this->oldlist->get('title')) . '</b>', '<b style="color: #333;">' . $this->escape($this->wishlist->get('title')) . '</b>'); ?>
+                                    <td style="text-align: left; padding: 0 0.5em;"
+                                        cellpadding="0"
+                                        cellspacing="0"
+                                        border="0">
+                                        <?php
+                                        echo Lang::txt(
+                                            'Wish <span style="color: #4e7ac7;">moved</span> from %s to %s',
+                                            '<b style="color: #333;">'
+                                                . $this->escape($this->oldlist->get('title')) . '</b>',
+                                            '<b style="color: #333;">'
+                                                . $this->escape($this->wishlist->get('title')) . '</b>'
+                                        );
+                                        ?>
                                     </td>
                                 </tr>
                                 <?php
@@ -155,8 +223,16 @@ $link = $base . '/' . ltrim(Route::url($this->wish->link()), '/');
                             case 'updated':
                                 ?>
                                 <tr>
-                                    <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-                                        <?php echo Lang::txt('Wish <span style="color: #4e7ac7;">status</span> changed to %s', '<b style="color: #333;">' . $this->status . '</b>'); ?>
+                                    <td style="text-align: left; padding: 0 0.5em;"
+                                        cellpadding="0"
+                                        cellspacing="0"
+                                        border="0">
+                                        <?php
+                                        echo Lang::txt(
+                                            'Wish <span style="color: #4e7ac7;">status</span> changed to %s',
+                                            '<b style="color: #333;">' . $this->status . '</b>'
+                                        );
+                                        ?>
                                     </td>
                                 </tr>
                                 <?php

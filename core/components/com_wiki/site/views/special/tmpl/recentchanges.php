@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -74,7 +72,8 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
             <?php
             if ($rows) {
                 foreach ($rows as $row) {
-                    $name = $this->escape(stripslashes($row->version->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? ''));
+                    $vCreatorName = $row->version->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? '';
+                    $name = $this->escape(stripslashes($vCreatorName));
                     if (in_array($row->version->creator->get('access'), User::getAuthorisedViewLevels())) {
                         $name = '<a href="' . Route::url($row->version->creator->link()) . '">' . $name . '</a>';
                     }
@@ -83,15 +82,29 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         <td>
                             (
                             <?php if ($row->version->get('version') > 1) { ?>
-                                <a href="<?php echo Route::url($row->link() . '&' . ($this->sub ? 'action' : 'task') . '=compare&oldid=' . ($row->version->get('version') - 1) . '&diff=' . $row->version->get('version')); ?>"><?php echo Lang::txt('COM_WIKI_DIFF'); ?></a> |
+                                <?php
+                                $taskKey = ($this->sub ? 'action' : 'task');
+                                $oldId = $row->version->get('version') - 1;
+                                $diffId = $row->version->get('version');
+                                $compareUrl = Route::url(
+                                    $row->link() . '&' . $taskKey . '=compare'
+                                    . '&oldid=' . $oldId . '&diff=' . $diffId
+                                );
+                                ?>
+                                <a href="<?php echo $compareUrl; ?>"><?php
+                                    echo Lang::txt('COM_WIKI_DIFF');
+                                ?></a> |
                             <?php } else { ?>
                                 <?php echo Lang::txt('COM_WIKI_DIFF'); ?> |
                             <?php } ?>
-                                <a href="<?php echo Route::url($row->link() . '&' . ($this->sub ? 'action' : 'task') . '=history'); ?>"><?php echo Lang::txt('COM_WIKI_HIST'); ?></a>
+                                <?php $histUrl = Route::url($row->link() . '&' . $taskKey . '=history'); ?>
+                                <a href="<?php echo $histUrl; ?>"><?php echo Lang::txt('COM_WIKI_HIST'); ?></a>
                             )
                         </td>
                         <td>
-                            <time datetime="<?php echo $row->get('modified'); ?>"><?php echo $row->get('modified'); ?></time>
+                            <time datetime="<?php echo $row->get('modified'); ?>">
+                                <?php echo $row->get('modified'); ?>
+                            </time>
                         </td>
                         <td>
                             <a href="<?php echo Route::url($row->link()); ?>">
@@ -102,7 +115,9 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                             <?php echo $name; ?>
                         </td>
                         <td>
-                            <span><?php echo $this->escape(stripslashes($row->version->get('summary', '') ?? '')); ?></span>
+                            <span><?php
+                                echo $this->escape(stripslashes($row->version->get('summary', '') ?? ''));
+                            ?></span>
                         </td>
                     </tr>
                     <?php

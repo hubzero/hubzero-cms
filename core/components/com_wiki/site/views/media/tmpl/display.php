@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,10 +11,18 @@ defined('_HZEXEC_') or die();
 
 ?>
     <div id="attachments">
-        <form action="<?php echo Request::base(true); ?>/index.php" id="adminForm" method="post" enctype="multipart/form-data">
+        <?php
+        $baseUrl = Request::base(true);
+        $iframeSrc = $baseUrl . '/index.php?option=' . $this->option
+            . '&amp;tmpl=component&amp;controller=media&amp;task=list'
+            . '&amp;listdir=' . $this->listdir;
+        ?>
+        <form action="<?php echo $baseUrl; ?>/index.php" id="adminForm"
+            method="post" enctype="multipart/form-data">
             <fieldset>
                 <div id="themanager" class="manager">
-                    <iframe src="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=media&amp;task=list&amp;listdir=<?php echo $this->listdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+                    <iframe src="<?php echo $iframeSrc; ?>"
+                        name="imgManager" id="imgManager" width="98%" height="180"></iframe>
                 </div>
             </fieldset>
 

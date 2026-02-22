@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,14 +13,17 @@ defined('_HZEXEC_') or die();
         <div class="container">
             <h3><?php echo Lang::txt('COM_WIKI_SEARCH'); ?></h3>
 
-            <form action="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Search'); ?>" method="get">
+            <?php $searchAction = Route::url($this->page->link('base') . '&pagename=Special:Search'); ?>
+            <form action="<?php echo $searchAction; ?>" method="get">
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_WIKI_SEARCH_LEGEND'); ?></legend>
                     <label for="page-search-q">
                         <span><?php echo Lang::txt('COM_WIKI_SEARCH'); ?></span>
-                        <input type="text" name="q" id="page-search-q" value="" placeholder="<?php echo Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER'); ?>" />
+                        <input type="text" name="q" id="page-search-q" value=""
+                            placeholder="<?php echo Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER'); ?>" />
                     </label>
-                    <input type="submit" class="btn page-search-submit" value="<?php echo Lang::txt('COM_WIKI_GO'); ?>" />
+                    <input type="submit" class="btn page-search-submit"
+                        value="<?php echo Lang::txt('COM_WIKI_GO'); ?>" />
                 </fieldset>
             </form>
         </div>
@@ -58,12 +59,26 @@ defined('_HZEXEC_') or die();
             <h3><?php echo Lang::txt('COM_WIKI_TOOLS'); ?></h3>
             <ul>
                 <li class="page-links">
-                    <a href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Links&page=' . $this->page->get('pagename') . '&version=' . $this->page->get('version_id')); ?>">
+                    <?php
+                    $linksUrl = Route::url(
+                        $this->page->link('base')
+                        . '&pagename=Special:Links&page=' . $this->page->get('pagename')
+                        . '&version=' . $this->page->get('version_id')
+                    );
+                    ?>
+                    <a href="<?php echo $linksUrl; ?>">
                         <?php echo Lang::txt('COM_WIKI_SPECIAL_LINKS'); ?>
                     </a>
                 </li>
                 <li class="page-cite">
-                    <a href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Cite&page=' . $this->page->get('pagename') . '&version=' . $this->page->get('version_id')); ?>">
+                    <?php
+                    $citeUrl = Route::url(
+                        $this->page->link('base')
+                        . '&pagename=Special:Cite&page=' . $this->page->get('pagename')
+                        . '&version=' . $this->page->get('version_id')
+                    );
+                    ?>
+                    <a href="<?php echo $citeUrl; ?>">
                         <?php echo Lang::txt('COM_WIKI_SPECIAL_CITE'); ?>
                     </a>
                 </li>
@@ -74,7 +89,8 @@ defined('_HZEXEC_') or die();
                 </li>
                 <?php if (!User::isGuest() && $this->page->access('create')) { ?>
                     <li class="page-new" data-title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>">
-                        <a href="<?php echo Route::url($this->page->link('base') . '&' . ($this->page->get('scope') != 'site' ? 'action' : 'task') . '=new'); ?>">
+                        <?php $newPageParam = ($this->page->get('scope') != 'site' ? 'action' : 'task'); ?>
+                        <a href="<?php echo Route::url($this->page->link('base') . '&' . $newPageParam . '=new'); ?>">
                             <?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>
                         </a>
                     </li>
@@ -87,7 +103,8 @@ defined('_HZEXEC_') or die();
                 <h3><?php echo Lang::txt('COM_WIKI_TOOLS'); ?></h3>
                 <ul>
                     <li class="page-new" data-title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>">
-                        <a href="<?php echo Route::url($this->page->link('base') . '&' . ($this->page->get('scope') != 'site' ? 'action' : 'task') . '=new'); ?>">
+                        <?php $newPageParam = ($this->page->get('scope') != 'site' ? 'action' : 'task'); ?>
+                        <a href="<?php echo Route::url($this->page->link('base') . '&' . $newPageParam . '=new'); ?>">
                             <?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>
                         </a>
                     </li>

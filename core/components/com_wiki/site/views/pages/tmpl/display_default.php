@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,7 +19,9 @@ $this->js();
     <?php if (count($this->parents)) { ?>
         <p class="wiki-crumbs">
             <?php foreach ($this->parents as $parent) { ?>
-                <a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $parent->title; ?></a> /
+                <a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>">
+                    <?php echo $parent->title; ?>
+                </a> /
             <?php } ?>
         </p>
     <?php } ?>
@@ -82,7 +82,15 @@ $this->js();
             <?php echo $this->revision->get('pagehtml'); ?>
 
             <p class="timestamp">
-                <?php echo Lang::txt('COM_WIKI_PAGE_CREATED') . ' <time datetime="' . $this->page->created() . '">' . $this->page->created('date') . '</time>, ' . Lang::txt('COM_WIKI_PAGE_LAST_MODIFIED') . ' <time datetime="' . $this->revision->created() . '">' . $this->revision->created('date') . '</time>'; ?>
+                <?php
+                $revCreatedTime = '<time datetime="' . $this->revision->created() . '">'
+                    . $this->revision->created('date') . '</time>';
+                echo Lang::txt('COM_WIKI_PAGE_CREATED')
+                    . ' <time datetime="' . $this->page->created() . '">'
+                    . $this->page->created('date') . '</time>, '
+                    . Lang::txt('COM_WIKI_PAGE_LAST_MODIFIED')
+                    . ' ' . $revCreatedTime;
+                ?>
             </p>
             <?php if ($this->page->tags('cloud')) { ?>
                 <div class="article-tags">

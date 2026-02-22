@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -47,37 +45,80 @@ if ($this->ownerassignees) {
     }
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_WISHLIST_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-wishlist"><?php echo Lang::txt('COM_WISHLIST_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                    <label for="field-wishlist">
+                        <?php echo Lang::txt('COM_WISHLIST_CATEGORY'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
                     <select name="fields[wishlist]" id="field-wishlist" class="required">
                         <option value="0"><?php echo Lang::txt('COM_WISHLIST_NONE'); ?></option>
                         <?php if ($this->lists) { ?>
                             <?php foreach ($this->lists as $list) { ?>
-                                <option value="<?php echo $list->id; ?>"<?php echo ($this->row->get('wishlist') == $list->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($list->get('title'))); ?></option>
+                                <?php
+                                $sel = ($this->row->get('wishlist') == $list->id)
+                                    ? ' selected="selected"' : '';
+                                ?>
+                                <option value="<?php echo $list->id; ?>"<?php echo $sel; ?>>
+                                    <?php echo $this->escape(stripslashes($list->get('title'))); ?>
+                                </option>
                             <?php } ?>
                         <?php } ?>
                     </select>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-subject"><?php echo Lang::txt('COM_WISHLIST_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[subject]" id="field-subject" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->get('subject', ''))); ?>" />
+                    <label for="field-subject">
+                        <?php echo Lang::txt('COM_WISHLIST_TITLE'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
+                    <?php $subjectVal = $this->escape(stripslashes($this->row->get('subject', ''))); ?>
+                    <input type="text"
+                        name="fields[subject]"
+                        id="field-subject"
+                        maxlength="150"
+                        value="<?php echo $subjectVal; ?>" />
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-about"><?php echo Lang::txt('COM_WISHLIST_DESCRIPTION'); ?>:</label><br />
-                    <?php echo $this->editor('fields[about]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->get('about', '')))), 50, 30, 'field-about', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+                    <?php
+                    $aboutVal = $this->escape(
+                        preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->get('about', '')))
+                    );
+                    echo $this->editor(
+                        'fields[about]',
+                        $aboutVal,
+                        50,
+                        30,
+                        'field-about',
+                        array('class' => 'minimal no-footer', 'buttons' => false)
+                    );
+                    ?>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-tags"><?php echo Lang::txt('COM_WISHLIST_TAGS'); ?>:</label><br />
-                    <input type="text" name="fields[tags]" id="field-tags" maxlength="150" value="<?php echo $this->escape(stripslashes($this->row->tags('string'))); ?>" />
+                    <?php $tagsVal = $this->escape(stripslashes($this->row->tags('string'))); ?>
+                    <input type="text"
+                        name="fields[tags]"
+                        id="field-tags"
+                        maxlength="150"
+                        value="<?php echo $tagsVal; ?>" />
                 </div>
             </fieldset>
 
@@ -86,8 +127,14 @@ if ($this->ownerassignees) {
 
                 <?php if ($this->row->plan->get('id')) { ?>
                     <div class="input-wrap">
-                        <input type="checkbox" class="option" name="plan[create_revision]" id="plan-create_revision" value="1" />
-                        <label for="plan-create_revision"><?php echo Lang::txt('COM_WISHLIST_PLAN_NEW_REVISION'); ?></label>
+                        <input type="checkbox"
+                            class="option"
+                            name="plan[create_revision]"
+                            id="plan-create_revision"
+                            value="1" />
+                        <label for="plan-create_revision">
+                            <?php echo Lang::txt('COM_WISHLIST_PLAN_NEW_REVISION'); ?>
+                        </label>
                     </div>
                 <?php } ?>
 
@@ -95,15 +142,36 @@ if ($this->ownerassignees) {
                     <legend><?php echo Lang::txt('COM_WISHLIST_DUE'); ?>:</legend>
 
                     <div class="input-wrap">
-                        <input class="option" type="radio" name="fields[due]" id="field-due-never" value="0" <?php echo (!$this->row->get('due') || $this->row->get('due') == '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
+                        <?php
+                        $due = $this->row->get('due');
+                        $noDue = (!$due || $due == '0000-00-00 00:00:00');
+                        $hasDue = ($due && $due != '0000-00-00 00:00:00');
+                        ?>
+                        <input class="option"
+                            type="radio"
+                            name="fields[due]"
+                            id="field-due-never"
+                            value="0"
+                            <?php echo $noDue ? 'checked="checked"' : ''; ?> />
                         <label for="field-due-never"><?php echo Lang::txt('COM_WISHLIST_DUE_NEVER'); ?></label>
                         <br />
                         <strong><?php echo Lang::txt('COM_WISHLIST_OR'); ?></strong>
                         <br />
-                        <input class="option" type="radio" name="fields[due]" id="field-due-on" value="0" <?php echo ($this->row->get('due') && $this->row->get('due') != '0000-00-00 00:00:00') ? 'checked="checked"' : ''; ?> />
+                        <input class="option"
+                            type="radio"
+                            name="fields[due]"
+                            id="field-due-on"
+                            value="0"
+                            <?php echo $hasDue ? 'checked="checked"' : ''; ?> />
                         <label for="field-due-on"><?php echo Lang::txt('COM_WISHLIST_DUE_ON'); ?></label>
 
-                        <input class="option" type="text" name="fields[due]" id="field-due" size="10" maxlength="19" value="<?php echo $this->escape($this->row->get('due')); ?>" />
+                        <input class="option"
+                            type="text"
+                            name="fields[due]"
+                            id="field-due"
+                            size="10"
+                            maxlength="19"
+                            value="<?php echo $this->escape($this->row->get('due')); ?>" />
                     </div>
                 </fieldset>
 
@@ -113,7 +181,13 @@ if ($this->ownerassignees) {
                         <option value="0"><?php echo Lang::txt('COM_WISHLIST_UNASSIGNED'); ?></option>
                         <?php if ($this->assignees) { ?>
                             <?php foreach ($this->assignees as $assignee) { ?>
-                                <option value="<?php echo $assignee->id; ?>"<?php echo ($this->row->get('assigned') == $assignee->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($assignee->name)); ?></option>
+                                <?php
+                                $asel = ($this->row->get('assigned') == $assignee->id)
+                                    ? ' selected="selected"' : '';
+                                ?>
+                                <option value="<?php echo $assignee->id; ?>"<?php echo $asel; ?>>
+                                    <?php echo $this->escape(stripslashes($assignee->name)); ?>
+                                </option>
                             <?php } ?>
                         <?php } ?>
                     </select>
@@ -121,7 +195,23 @@ if ($this->ownerassignees) {
 
                 <div class="input-wrap">
                     <label for="plan-pagetext"><?php echo Lang::txt('COM_WISHLIST_PAGETEXT'); ?>:</label>
-                    <?php echo $this->editor('plan[pagetext]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->plan->pagetext))), 50, 30, 'plan-pagetext', array('class' => 'minimal no-footer', 'buttons' => false)); ?>
+                    <?php
+                    $plantextVal = $this->escape(
+                        preg_replace(
+                            '/^(<!-- \{FORMAT:.*\} -->)/i',
+                            '',
+                            stripslashes($this->row->plan->pagetext)
+                        )
+                    );
+                    echo $this->editor(
+                        'plan[pagetext]',
+                        $plantextVal,
+                        50,
+                        30,
+                        'plan-pagetext',
+                        array('class' => 'minimal no-footer', 'buttons' => false)
+                    );
+                    ?>
                 </div>
 
                 <input type="hidden" name="plan[id]" id="plan-id" value="<?php echo $this->row->plan->id; ?>" />
@@ -140,14 +230,22 @@ if ($this->ownerassignees) {
                         <th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_ID'); ?>:</th>
                         <td>
                             <?php echo $this->row->get('id'); ?>
-                            <input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->get('id'); ?>" />
+                            <input type="hidden"
+                                name="fields[id]"
+                                id="field-id"
+                                value="<?php echo $this->row->get('id'); ?>" />
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_CREATED'); ?>:</th>
                         <td>
-                            <time datetime="<?php echo $this->row->get('proposed'); ?>"><?php echo Date::of($this->row->get('proposed'))->toLocal(); ?></time>
-                            <input type="hidden" name="fields[proposed]" id="field-proposed" value="<?php echo $this->row->get('proposed'); ?>" />
+                            <time datetime="<?php echo $this->row->get('proposed'); ?>">
+                                <?php echo Date::of($this->row->get('proposed'))->toLocal(); ?>
+                            </time>
+                            <input type="hidden"
+                                name="fields[proposed]"
+                                id="field-proposed"
+                                value="<?php echo $this->row->get('proposed'); ?>" />
                         </td>
                     </tr>
                     <tr>
@@ -157,14 +255,20 @@ if ($this->ownerassignees) {
                             $editor = User::getInstance($this->row->get('proposed_by'));
                             echo $this->escape($editor->get('name', Lang::txt('COM_WISHLIST_UNKNOWN')));
                             ?>
-                            <input type="hidden" name="fields[proposed_by]" id="field-proposed_by" value="<?php echo $this->row->get('proposed_by'); ?>" />
+                            <input type="hidden"
+                                name="fields[proposed_by]"
+                                id="field-proposed_by"
+                                value="<?php echo $this->row->get('proposed_by'); ?>" />
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_WISHLIST_FIELD_RANKING'); ?>:</th>
                         <td>
                             <?php echo $this->row->get('ranking'); ?>
-                            <input type="hidden" name="fields[ranking]" id="field-ranking" value="<?php echo $this->row->get('ranking'); ?>" />
+                            <input type="hidden"
+                                name="fields[ranking]"
+                                id="field-ranking"
+                                value="<?php echo $this->row->get('ranking'); ?>" />
                         </td>
                     </tr>
                 </tbody>
@@ -174,29 +278,55 @@ if ($this->ownerassignees) {
                 <legend><span><?php echo Lang::txt('COM_WISHLIST_PARAMETERS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" <?php echo $this->row->get('anonymous') ? 'checked="checked"' : ''; ?> />
+                    <input type="checkbox"
+                        name="fields[anonymous]"
+                        id="field-anonymous"
+                        value="1"
+                        <?php echo $this->row->get('anonymous') ? 'checked="checked"' : ''; ?> />
                     <label for="field-anonymous"><?php echo Lang::txt('JANONYMOUS'); ?></label>
                 </div>
                 <div class="input-wrap">
-                    <input type="checkbox" name="fields[private]" id="field-private" value="1" <?php echo $this->row->get('private') ? 'checked="checked"' : ''; ?> />
+                    <input type="checkbox"
+                        name="fields[private]"
+                        id="field-private"
+                        value="1"
+                        <?php echo $this->row->get('private') ? 'checked="checked"' : ''; ?> />
                     <label for="field-private"><?php echo Lang::txt('COM_WISHLIST_PRIVATE'); ?></label>
                 </div>
                 <div class="input-wrap">
-                    <input type="checkbox" name="fields[accepted]" id="field-accepted" value="1" <?php echo $this->row->get('accepted') ? 'checked="checked"' : ''; ?> />
+                    <input type="checkbox"
+                        name="fields[accepted]"
+                        id="field-accepted"
+                        value="1"
+                        <?php echo $this->row->get('accepted') ? 'checked="checked"' : ''; ?> />
                     <label for="field-accepted"><?php echo Lang::txt('COM_WISHLIST_ACCEPTED'); ?></label>
                 </div>
                 <div class="input-wrap">
                     <label for="field-points"><?php echo Lang::txt('COM_WISHLIST_POINTS'); ?></label>
-                    <input type="text" name="fields[points]" id="field-points" value="<?php echo $this->escape($this->row->get('points')); ?>" />
+                    <input type="text"
+                        name="fields[points]"
+                        id="field-points"
+                        value="<?php echo $this->escape($this->row->get('points')); ?>" />
                 </div>
                 <div class="input-wrap">
                     <label for="field-status"><?php echo Lang::txt('COM_WISHLIST_STATUS'); ?></label>
                     <select name="fields[status]" id="field-status">
-                        <option value="0"<?php echo ($this->row->get('status') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATUS_PENDING'); ?></option>
-                        <option value="1"<?php echo ($this->row->get('status') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATUS_GRANTED'); ?></option>
-                        <option value="2"<?php echo ($this->row->get('status') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATUS_DELETED'); ?></option>
-                        <option value="3"<?php echo ($this->row->get('status') == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATUS_REJECTED'); ?></option>
-                        <option value="4"<?php echo ($this->row->get('status') == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATUS_WITHDRAWN'); ?></option>
+                        <?php $st = $this->row->get('status'); ?>
+                        <option value="0"<?php echo ($st == 0) ? ' selected="selected"' : ''; ?>>
+                            <?php echo Lang::txt('COM_WISHLIST_STATUS_PENDING'); ?>
+                        </option>
+                        <option value="1"<?php echo ($st == 1) ? ' selected="selected"' : ''; ?>>
+                            <?php echo Lang::txt('COM_WISHLIST_STATUS_GRANTED'); ?>
+                        </option>
+                        <option value="2"<?php echo ($st == 2) ? ' selected="selected"' : ''; ?>>
+                            <?php echo Lang::txt('COM_WISHLIST_STATUS_DELETED'); ?>
+                        </option>
+                        <option value="3"<?php echo ($st == 3) ? ' selected="selected"' : ''; ?>>
+                            <?php echo Lang::txt('COM_WISHLIST_STATUS_REJECTED'); ?>
+                        </option>
+                        <option value="4"<?php echo ($st == 4) ? ' selected="selected"' : ''; ?>>
+                            <?php echo Lang::txt('COM_WISHLIST_STATUS_WITHDRAWN'); ?>
+                        </option>
                     </select>
                 </div>
             </fieldset>

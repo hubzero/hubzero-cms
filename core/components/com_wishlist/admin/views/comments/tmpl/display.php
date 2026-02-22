@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,12 +28,63 @@ if ($canDo->get('core.delete')) {
 }
 Toolbar::spacer();
 Toolbar::help('comments');
+
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$sortId = Html::grid(
+    'sort',
+    'COM_WISHLIST_COMMENT_ID',
+    'id',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortComment = Html::grid(
+    'sort',
+    'COM_WISHLIST_COMMENT',
+    'comment',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortAddedBy = Html::grid(
+    'sort',
+    'COM_WISHLIST_ADDED_BY',
+    'added_by',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortAdded = Html::grid(
+    'sort',
+    'COM_WISHLIST_ADDED',
+    'added',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortState = Html::grid(
+    'sort',
+    'COM_WISHLIST_STATE',
+    'status',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortAnon = Html::grid(
+    'sort',
+    'JANONYMOUS',
+    'anonymous',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('COM_WISHLIST_SEARCH'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
+        <?php $searchVal = $this->escape($this->filters['search']); ?>
+        <?php $searchPh = Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>
+        <input type="text"
+            name="search"
+            id="filter_search"
+            class="filter"
+            value="<?php echo $searchVal; ?>"
+            placeholder="<?php echo $searchPh; ?>" />
 
         <input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_GO'); ?>" />
     </fieldset>
@@ -45,7 +94,13 @@ Toolbar::help('comments');
         <?php if ($this->filters['wish'] > 0) { ?>
             <tr>
                 <th colspan="7">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=wishes&wishlist=' . $this->wishlist->id); ?>">
+                    <?php
+                    $wishlistUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=wishes&wishlist=' . $this->wishlist->id
+                    );
+                    ?>
+                    <a href="<?php echo $wishlistUrl; ?>">
                         (<?php echo $this->escape(stripslashes($this->wishlist->category)); ?>) &nbsp;
                         <?php echo $this->escape(stripslashes($this->wishlist->title)); ?> &nbsp;&rsaquo;&nbsp;
                     </a>
@@ -55,15 +110,21 @@ Toolbar::help('comments');
         <?php } ?>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WISHLIST_COMMENT_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_WISHLIST_COMMENT', 'comment', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_WISHLIST_ADDED_BY', 'added_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_WISHLIST_ADDED', 'added', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_WISHLIST_STATE', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'JANONYMOUS', 'anonymous', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-5"><?php echo $sortId; ?></th>
+                <th scope="col"><?php echo $sortComment; ?></th>
+                <th scope="col" class="priority-4"><?php echo $sortAddedBy; ?></th>
+                <th scope="col" class="priority-3"><?php echo $sortAdded; ?></th>
+                <th scope="col"><?php echo $sortState; ?></th>
+                <th scope="col" class="priority-2"><?php echo $sortAnon; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -122,11 +183,45 @@ Toolbar::help('comments');
             if (strlen($row->content) >= 50) {
                 $comment .= '...';
             }
+
+            $token = Session::getFormToken();
+            $editUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=edit&id=' . $row->id
+                . '&wish=' . $row->wish
+            );
+            $taskUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=' . $task
+                . '&id=' . $row->id
+                . '&wish=' . $this->filters['wish']
+                . '&' . $token . '=1'
+            );
+            $ataskUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=' . $atask
+                . '&id=' . $row->id
+                . '&wish=' . $row->wish
+                . '&' . $token . '=1'
+            );
+            $setTaskTxt = Lang::txt('COM_WISHLIST_SET_TASK', $task);
+            $creatorName = $this->escape(
+                stripslashes($row->creator->get('name', Lang::txt('COM_WISHLIST_UNKNOWN')))
+            );
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
+                    <input type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->id; ?>"
+                        class="checkbox-toggle" />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $row->id; ?>
+                    </label>
                 </td>
                 <td class="priority-5">
                     <?php echo $row->id; ?>
@@ -134,7 +229,7 @@ Toolbar::help('comments');
                 <td>
                     <?php echo $row->prfx; ?>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&wish=' . $row->wish); ?>">
+                        <a href="<?php echo $editUrl; ?>">
                             <span><?php echo $this->escape($comment); ?></span>
                         </a>
                     <?php } else { ?>
@@ -144,14 +239,16 @@ Toolbar::help('comments');
                     <?php } ?>
                 </td>
                 <td class="priority-4">
-                    <?php echo $this->escape(stripslashes($row->creator->get('name', Lang::txt('COM_WISHLIST_UNKNOWN')))); ?>
+                    <?php echo $creatorName; ?>
                 </td>
                 <td class="priority-3">
                     <time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&wish=' . $this->filters['wish'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SET_TASK', $task);?>">
+                        <a class="state <?php echo $class; ?>"
+                            href="<?php echo $taskUrl; ?>"
+                            title="<?php echo $setTaskTxt; ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -162,7 +259,9 @@ Toolbar::help('comments');
                 </td>
                 <td class="priority-2">
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="<?php echo $aclass; ?> state" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $atask . '&id=' . $row->id . '&wish=' . $row->wish . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo $aalt; ?>">
+                        <a class="<?php echo $aclass; ?> state"
+                            href="<?php echo $ataskUrl; ?>"
+                            title="<?php echo $aalt; ?>">
                             <span><?php echo $aalt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -185,7 +284,9 @@ Toolbar::help('comments');
     <input type="hidden" name="wish" value="<?php echo $this->filters['wish']; ?>" />
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+    <input type="hidden"
+        name="filter_order_Dir"
+        value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
     <?php echo Html::input('token'); ?>
 </form>

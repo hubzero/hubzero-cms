@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -48,7 +46,8 @@ else :
     $revision = $page->version();
 endif;
 
-$permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
+$permalink = rtrim(Request::base(), '/') . '/'
+    . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
 
 // Find what links to the current page
 $l = \Components\Wiki\Models\Link::blank()->getTableName();
@@ -68,7 +67,10 @@ $rows = \Components\Wiki\Models\Page::all()
     ->rows();
 ?>
 <form method="get" action="<?php echo Route::url($this->page->link()); ?>">
-    <p><?php echo Lang::txt('The following pages link to %s', '<a href="' . Route::url($page->link()) . '">' . $this->escape($page->get('title')) . '</a>'); ?></p>
+    <?php
+    $pageLink = '<a href="' . Route::url($page->link()) . '">' . $this->escape($page->get('title')) . '</a>';
+    ?>
+    <p><?php echo Lang::txt('The following pages link to %s', $pageLink); ?></p>
     <div class="container">
         <table class="file entries">
             <thead>
@@ -100,7 +102,9 @@ $rows = \Components\Wiki\Models\Page::all()
                     ?>
                     <tr>
                         <td>
-                            <time datetime="<?php echo $this->escape($row->get('timestamp')); ?>"><?php echo $this->escape(Date::of($row->get('timestamp'))->toLocal()); ?></time>
+                            <time datetime="<?php echo $this->escape($row->get('timestamp')); ?>">
+                                <?php echo $this->escape(Date::of($row->get('timestamp'))->toLocal()); ?>
+                            </time>
                         </td>
                         <td>
                             <a href="<?php echo Route::url($row->link()); ?>">

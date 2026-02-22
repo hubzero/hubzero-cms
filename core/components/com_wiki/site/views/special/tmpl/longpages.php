@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -36,7 +34,10 @@ $rows = $this->book->pages($filters)
 ?>
 <form method="get" action="<?php echo Route::url($this->page->link('base') . '&pagename=Special:LongPages'); ?>">
     <p>
-        <?php echo Lang::txt('COM_WIKI_SPECIAL_LONG_PAGES_ABOUT', Route::url($this->page->link('base') . '&pagename=Special:ShortPages')); ?>
+        <?php
+        $shortPagesUrl = Route::url($this->page->link('base') . '&pagename=Special:ShortPages');
+        echo Lang::txt('COM_WIKI_SPECIAL_LONG_PAGES_ABOUT', $shortPagesUrl);
+        ?>
     </p>
     <div class="container">
         <table class="file entries">
@@ -60,14 +61,17 @@ $rows = $this->book->pages($filters)
             <?php
             if ($rows->count()) {
                 foreach ($rows as $row) {
-                    $name = $this->escape(stripslashes($row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? ''));
+                    $creatorName = $row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? '';
+                    $name = $this->escape(stripslashes($creatorName));
                     if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) {
                         $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
                     }
                     ?>
                     <tr>
                         <td>
-                            <time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+                            <time datetime="<?php echo $row->get('created'); ?>">
+                                <?php echo $row->get('created'); ?>
+                            </time>
                         </td>
                         <td>
                             <a href="<?php echo Route::url($row->link()); ?>">
