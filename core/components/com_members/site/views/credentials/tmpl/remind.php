@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,8 @@ defined('_HZEXEC_') or die();
 </header>
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=com_members&controller=credentials&task=reminding'); ?>" method="post" name="hubForm" id="hubForm">
+    <?php $formAction = Route::url('index.php?option=com_members&controller=credentials&task=reminding'); ?>
+    <form action="<?php echo $formAction; ?>" method="post" name="hubForm" id="hubForm">
         <div class="explaination">
             <p class="info">
                 If you already know your username, and only need your password reset,
@@ -41,7 +40,8 @@ defined('_HZEXEC_') or die();
                 <h4>What if I have also lost my password?</h4>
                 <p>
                     Fill out this form to retrieve your username(s). Then go to the 
-                    <a href="<?php echo Route::url('index.php?option=com_members&task=reset'); ?>">password reset page</a>.
+                    <?php $href = Route::url('index.php?option=com_members&task=reset'); ?>
+                    <a href="<?php echo $href; ?>">password reset page</a>.
                 </p>
 
                 <h4>What if I have multiple accounts?</h4>

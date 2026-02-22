@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,8 @@ Toolbar::cancel();
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
@@ -40,9 +39,24 @@ Toolbar::cancel();
             ?>
             <tr>
                 <th scope="row">(<?php echo ($i + 1); ?>)</th>
-                <td><input type="text" name="points[<?php echo $i; ?>]" value="<?php echo @$this->params[$i]->points; ?>" size="10" maxlength="10" /></td>
-                <td><input type="text" name="alias[<?php echo $i; ?>]" value="<?php echo $this->escape(@$this->params[$i]->alias); ?>" size="20" maxlength="50" /></td>
-                <td><input type="text" name="description[<?php echo $i; ?>]" value="<?php echo $this->escape(@$this->params[$i]->description); ?>" size="100" maxlength="255" /></td>
+                <td><input
+                    type="text"
+                    name="points[<?php echo $i; ?>]"
+                    value="<?php echo @$this->params[$i]->points; ?>"
+                    size="10"
+                    maxlength="10"/></td>
+                <td><input
+                    type="text"
+                    name="alias[<?php echo $i; ?>]"
+                    value="<?php echo $this->escape(@$this->params[$i]->alias); ?>"
+                    size="20"
+                    maxlength="50"/></td>
+                <td><input
+                    type="text"
+                    name="description[<?php echo $i; ?>]"
+                    value="<?php echo $this->escape(@$this->params[$i]->description); ?>"
+                    size="100"
+                    maxlength="255"/></td>
             </tr>
             <?php
             $i++;

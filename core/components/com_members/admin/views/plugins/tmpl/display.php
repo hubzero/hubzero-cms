@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,11 +27,20 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 $canOrder  = User::authorise('core.edit.state', 'com_plugins');
 $saveOrder = $listOrder == 'ordering';
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="filter-search fltlft">
-            <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-            <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?>" />
+            <label
+                class="filter-search-lbl"
+                for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+            <input
+                type="text"
+                name="filter_search"
+                id="filter_search"
+                class="filter"
+                value="<?php echo $this->escape($this->filters['search']); ?>"
+                placeholder="<?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?>"/>
             <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
             <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
         </div>
@@ -41,12 +48,28 @@ $saveOrder = $listOrder == 'ordering';
         <div class="filter-select fltrt">
             <select name="filter_state" class="inputbox filter filter-submit">
                 <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php echo Html::select('options', \Components\Plugins\Helpers\Plugins::stateOptions(), 'value', 'text', $this->filters['state'], true);?>
+                <?php echo Html::select(
+                    'options',
+                    \Components\Plugins\Helpers\Plugins::stateOptions(),
+                    'value',
+                    'text',
+                    $this->filters['state'],
+                    true
+                );?>
             </select>
 
             <select name="filter_access" class="inputbox filter filter-submit">
                 <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+                <?php
+                $val = Html::select(
+                    'options',
+                    Html::access('assetgroups'),
+                    'value',
+                    'text',
+                    $this->filters['access']
+                );
+                ?>
+                <?php echo $val; ?>
             </select>
         </div>
     </fieldset>
@@ -55,7 +78,12 @@ $saveOrder = $listOrder == 'ordering';
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        value=""
+                        title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>"
+                        class="checkbox-toggle toggle-all"/>
                 </th>
                 <th scope="col" class="title">
                     <?php echo Html::grid('sort', 'Plug-in Name', 'name', $listDirn, $listOrder); ?>
@@ -99,7 +127,8 @@ $saveOrder = $listOrder == 'ordering';
 
                 $ordering   = ($listOrder == 'ordering');
                 $canEdit    = User::authorise('core.edit', 'com_plugins');
-                $canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out == User::get('id') || $item->checked_out == 0;
+                $canCheckin = User::authorise('core
+                    . manage', 'com_checkin') || $item->checked_out == User::get('id') || $item->checked_out == 0;
                 $canChange  = User::authorise('core.edit.state', 'com_plugins') && $canCheckin;
                 ?>
                 <tr class="row<?php echo $i % 2; ?>">
@@ -108,10 +137,24 @@ $saveOrder = $listOrder == 'ordering';
                     </td>
                     <td>
                         <?php if ($item->checked_out) : ?>
-                            <?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, '', $canCheckin); ?>
+                            <?php echo Html::grid(
+                                'checkedout',
+                                $i,
+                                $item->editor,
+                                $item->checked_out_time,
+                                '',
+                                $canCheckin
+                            ); ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
-                            <a href="<?php echo Route::url('index.php?option=com_plugins&task=edit&id=' . (int) $item->extension_id . '&' . Session::getFormToken() . '=1'); ?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=com_plugins&task=edit&id='
+                                . (int) $item->extension_id
+                                . '&' . Session::getFormToken() . '=1'
+                            );
+                            ?>
+                            <a href="<?php echo $editUrl; ?>">
                                 <?php echo Lang::txt($item->name); ?>
                             </a>
                         <?php else : ?>
@@ -125,22 +168,59 @@ $saveOrder = $listOrder == 'ordering';
                         <?php if ($canChange) : ?>
                             <?php if ($saveOrder) :?>
                                 <?php if ($listDirn == 'asc') : ?>
-                                    <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1] == $item->folder), 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                    <span><?php echo $this->items->pagination->orderDownIcon($i, $this->items->pagination->total, (@$folders[$i + 1] == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                    <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1] ==
+                                        $item->folder), 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+                                    <?php
+                                    $val = $this->items->pagination->orderDownIcon(
+                                        $i,
+                                        $this->items->pagination->total,
+                                        (@$folders[$i + 1] == $item->folder),
+                                        'orderdown',
+                                        'JLIB_HTML_MOVE_DOWN',
+                                        $ordering
+                                    );
+                                    ?>
+                                    <span><?php echo $val; ?></span>
                                 <?php elseif ($listDirn == 'desc') : ?>
-                                    <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1] == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                    <span><?php echo $this->items->pagination->orderDownIcon($i, $this->items->pagination->total, (@$folders[$i + 1] == $item->folder), 'orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                    <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1] ==
+                                        $item->folder), 'orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+                                    <?php
+                                    $val = $this->items->pagination->orderDownIcon(
+                                        $i,
+                                        $this->items->pagination->total,
+                                        (@$folders[$i + 1] == $item->folder),
+                                        'orderup',
+                                        'JLIB_HTML_MOVE_DOWN',
+                                        $ordering
+                                    );
+                                    ?>
+                                    <span><?php echo $val; ?></span>
                                 <?php endif; ?>
                             <?php endif; ?>
                             <?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
-                            <input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled ?> class="text-area-order" />
+                            <input
+                                type="text"
+                                name="order[]"
+                                size="5"
+                                value="<?php echo $item->ordering; ?>"
+                                <?php echo $disabled ?> class="text-area-order"/>
                         <?php else : ?>
                             <?php echo $item->ordering; ?>
                         <?php endif; ?>
                     </td>
                     <td class="priority-3 nowrap center">
                         <?php if (in_array($item->element, $this->manage)) { ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&plugin=' . $item->element); ?>">
+                            <?php
+                            $href = Route::url(
+                                'index.php?option='
+                                . $this->option
+                                . '&controller='
+                                . $this->controller
+                                . '&task=manage&plugin='
+                                . $item->element
+                            );
+                            ?>
+                            <a href="<?php echo $href; ?>">
                                 <span><?php echo Lang::txt('Manage'); ?></span>
                             </a>
                         <?php } ?>

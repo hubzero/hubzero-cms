@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,8 +24,19 @@ defined('_HZEXEC_') or die();
                 <dt><?php echo Lang::txt($name);?></dt>
                 <dd><ul>
                         <?php foreach ($list as $item) : ?>
-                        <li><a class="choose_type" href="#" title="<?php echo Lang::txt($item->description); ?>"
-                                onclick="javascript:setmenutype('<?php echo base64_encode(json_encode(array('id' => $this->recordId, 'title' => $item->title, 'request' => $item->request))); ?>')">
+                            <?php
+                            $itemData = array(
+                            'id' => $this->recordId,
+                            'title' => $item->title,
+                            'request' => $item->request
+                            );
+                            $encoded = base64_encode(json_encode($itemData));
+                            $descTitle = Lang::txt($item->description);
+                            ?>
+                        <li>
+                            <a class="choose_type" href="#"
+                                title="<?php echo $descTitle; ?>"
+                                onclick="javascript:setmenutype('<?php echo $encoded; ?>')">
                                 <?php echo Lang::txt($item->title);?>
                             </a>
                         </li>
@@ -43,20 +52,41 @@ defined('_HZEXEC_') or die();
             <dd>
                 <ul>
                     <li>
-                        <a class="choose_type" href="#" title="<?php echo Lang::txt('COM_MENUS_TYPE_EXTERNAL_URL_DESC'); ?>"
-                            onclick="javascript:setmenutype('<?php echo base64_encode(json_encode(array('id' => $this->recordId, 'title' => 'url'))); ?>')">
+                        <?php
+                        $urlData = base64_encode(json_encode(
+                            array('id' => $this->recordId, 'title' => 'url')
+                        ));
+                        $urlDesc = Lang::txt('COM_MENUS_TYPE_EXTERNAL_URL_DESC');
+                        ?>
+                        <a class="choose_type" href="#"
+                            title="<?php echo $urlDesc; ?>"
+                            onclick="javascript:setmenutype('<?php echo $urlData; ?>')">
                             <?php echo Lang::txt('COM_MENUS_TYPE_EXTERNAL_URL'); ?>
                         </a>
                     </li>
                     <li>
-                        <a class="choose_type" href="#" title="<?php echo Lang::txt('COM_MENUS_TYPE_ALIAS_DESC'); ?>"
-                            onclick="javascript:setmenutype('<?php echo base64_encode(json_encode(array('id' => $this->recordId, 'title' => 'alias'))); ?>')">
+                        <?php
+                        $aliasData = base64_encode(json_encode(
+                            array('id' => $this->recordId, 'title' => 'alias')
+                        ));
+                        $aliasDesc = Lang::txt('COM_MENUS_TYPE_ALIAS_DESC');
+                        ?>
+                        <a class="choose_type" href="#"
+                            title="<?php echo $aliasDesc; ?>"
+                            onclick="javascript:setmenutype('<?php echo $aliasData; ?>')">
                             <?php echo Lang::txt('COM_MENUS_TYPE_ALIAS'); ?>
                         </a>
                     </li>
                     <li>
-                        <a class="choose_type" href="#"  title="<?php echo Lang::txt('COM_MENUS_TYPE_SEPARATOR_DESC'); ?>"
-                            onclick="javascript:setmenutype('<?php echo base64_encode(json_encode(array('id' => $this->recordId, 'title' => 'separator'))); ?>')">
+                        <?php
+                        $sepData = base64_encode(json_encode(
+                            array('id' => $this->recordId, 'title' => 'separator')
+                        ));
+                        $sepDesc = Lang::txt('COM_MENUS_TYPE_SEPARATOR_DESC');
+                        ?>
+                        <a class="choose_type" href="#"
+                            title="<?php echo $sepDesc; ?>"
+                            onclick="javascript:setmenutype('<?php echo $sepData; ?>')">
                             <?php echo Lang::txt('COM_MENUS_TYPE_SEPARATOR'); ?>
                         </a>
                     </li>

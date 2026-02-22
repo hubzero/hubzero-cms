@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -25,14 +23,42 @@ if ($tmpl == 'component' && strlen($name) > 10) :
 endif;
 
 // Last modified time
-$this->currentFolder['modified'] = filemtime(COM_MEDIA_BASE . $this->currentFolder['path']);
+$this->currentFolder['modified'] = filemtime(
+    COM_MEDIA_BASE . $this->currentFolder['path']
+);
 $modified = Date::of($this->currentFolder['modified']);
+
+$token = Session::getFormToken();
+$folderPath = ltrim($this->currentFolder['path'], '/');
+$dataFolder = $this->escape('/' . $folderPath);
+$folderIcon = Html::asset(
+    'image',
+    'assets/filetypes/folder.svg',
+    '',
+    null,
+    true,
+    true
+);
+$escapedName = $this->escape($this->currentFolder['name']);
+
+$folderUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=medialist' . $t
+    . '&' . $token . '=1&folder=/' . $folderPath
+);
+
+$tdWidth = ($tmpl == 'component'
+    && !User::authorise('core.delete', 'com_media'))
+    ? '70' : '60';
 ?>
     <tr class="media-item media-item-list">
-        <td width="<?php echo ($tmpl == 'component' && !User::authorise('core.delete', 'com_media')) ? '70' : '60'; ?>%">
-            <a class="folder-item" data-folder="<?php echo $this->escape('/' . ltrim($this->currentFolder['path'], '/')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist' . $t . '&' . Session::getFormToken() . '=1&folder=/' . ltrim($this->currentFolder['path'], '/')); ?>">
+        <td width="<?php echo $tdWidth; ?>%">
+            <a class="folder-item"
+                data-folder="<?php echo $dataFolder; ?>"
+                href="<?php echo $folderUrl; ?>">
                 <span class="media-icon">
-                    <img src="<?php echo Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true); ?>" alt="<?php echo $this->escape($this->currentFolder['name']); ?>" />
+                    <img src="<?php echo $folderIcon; ?>"
+                        alt="<?php echo $escapedName; ?>" />
                 </span>
                 <span class="media-name">
                     <?php echo $this->escape($name); ?>
@@ -47,7 +73,10 @@ $modified = Date::of($this->currentFolder['modified']);
             <span class="media-type"><?php echo Lang::txt('Folder'); ?></span>
         </td>
         <td>
-            <time class="media-modified" datetime="<?php echo $modified->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo $modified->toSql(); ?></time>
+            <time class="media-modified"
+                datetime="<?php echo $modified->format('Y-m-d\TH:i:s\Z'); ?>">
+                <?php echo $modified->toSql(); ?>
+            </time>
         </td>
     <?php endif; ?>
     <?php if ($tmpl != 'component' || User::authorise('core.delete', 'com_media')) : ?>
@@ -58,7 +87,18 @@ $modified = Date::of($this->currentFolder['modified']);
                     <ul>
                         <?php if ($tmpl != 'component') : ?>
                             <li>
-                                <a class="icon-info media-opt-info" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=info' . $t . '&' . Session::getFormToken() . '=1&folder=' . urlencode($this->currentFolder['path'])); ?>"><?php echo Lang::txt('Info'); ?></a>
+                                <?php
+                                $infoUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=medialist&task=info' . $t
+                                    . '&' . $token . '=1'
+                                    . '&folder=' . urlencode($this->currentFolder['path'])
+                                );
+                                ?>
+                                <a class="icon-info media-opt-info"
+                                    href="<?php echo $infoUrl; ?>">
+                                    <?php echo Lang::txt('Info'); ?>
+                                </a>
                             </li>
                         <?php endif; ?>
                         <?php if (User::authorise('core.delete', 'com_media')) : ?>
@@ -66,7 +106,19 @@ $modified = Date::of($this->currentFolder['modified']);
                                 <span class="separator"></span>
                             </li>
                             <li>
-                                <a class="icon-trash media-opt-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete' . $t . '&' . Session::getFormToken() . '=1&rm=' . urlencode($this->currentFolder['path'])); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+                                <?php
+                                $deleteUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&task=delete' . $t
+                                    . '&' . $token . '=1'
+                                    . '&rm=' . urlencode($this->currentFolder['path'])
+                                );
+                                $deleteLabel = Lang::txt('JACTION_DELETE');
+                                ?>
+                                <a class="icon-trash media-opt-delete"
+                                    href="<?php echo $deleteUrl; ?>">
+                                    <?php echo $deleteLabel; ?>
+                                </a>
                             </li>
                         <?php endif; ?>
                     </ul>

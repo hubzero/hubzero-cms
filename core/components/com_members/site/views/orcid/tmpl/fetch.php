@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,7 +32,14 @@ foreach ($this->records as $record) {
                 $orcid_html .= $orcid;
             $orcid_html .= "</div>";
             $orcid_html .= "<div class=\"col span4 omega\">";
-            $orcid_html .= "<a class=\"btn\" onclick=\"HUB.Members.Profile.associateOrcid('', '" . $orcid . "')\"> " . Lang::txt('Associate this ORCID') . "</a>";
+            $orcid_html .= "<a class=\"btn\" onclick=\"HUB
+                . Members
+                . Profile
+                . associateOrcid('', '"
+                . $orcid
+                . "')\"> "
+                . Lang::txt('Associate this ORCID')
+                . "</a>";
             $orcid_html .= "</div>";
         $orcid_html .= "</div>";
     $orcid_html .= "</li>";

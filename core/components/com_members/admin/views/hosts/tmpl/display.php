@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -44,7 +42,16 @@ $canDo = (User::authorise('core.admin', $this->option) || User::authorise('core.
                         <tr>
                             <td class="paramlist_key"><?php echo $row->get('host'); ?></td>
                             <?php if ($canDo) { ?>
-                                <td class="paramlist_value"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=remove&host=' . $row->get('host') . '&id=' . $this->id . '&' . Session::getFormToken() . '=1'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a></td>
+                                <?php
+                                $removeUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&tmpl=component&task=remove&host=' . $row->get('host')
+                                    . '&id=' . $this->id . '&' . Session::getFormToken() . '=1'
+                                );
+                                ?>
+                                <td class="paramlist_value">
+                                    <a href="<?php echo $removeUrl; ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+                                </td>
                             <?php } ?>
                         </tr>
                         <?php

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -38,9 +36,25 @@ Html::behavior('framework', true);
                 <tr class="row<?php echo $i % 2;?>">
             <?php endif; ?>
                 <td>
-                    <?php $link = Route::url('index.php?option=com_modules&client_id=0&task=edit&id=' . $module->id . '&tmpl=component&view=module&layout=modal'); ?>
-                    <a class="modal" href="<?php echo $link;?>" rel="{handler: 'iframe', size: {x: 900, y: 550}}" title="<?php echo Lang::txt('COM_MENUS_EDIT_MODULE_SETTINGS');?>">
-                        <?php echo Lang::txt('COM_MENUS_MODULE_ACCESS_POSITION', $this->escape($module->title), $this->escape($module->access_title), $this->escape($module->position)); ?>
+                    <?php
+                    $link = Route::url(
+                        'index.php?option=com_modules&client_id=0'
+                        . '&task=edit&id=' . $module->id
+                        . '&tmpl=component&view=module&layout=modal'
+                    );
+                    $editTitle = Lang::txt('COM_MENUS_EDIT_MODULE_SETTINGS');
+                    $modAccess = Lang::txt(
+                        'COM_MENUS_MODULE_ACCESS_POSITION',
+                        $this->escape($module->title),
+                        $this->escape($module->access_title),
+                        $this->escape($module->position)
+                    );
+                    ?>
+                    <a class="modal"
+                        href="<?php echo $link; ?>"
+                        rel="{handler: 'iframe', size: {x: 900, y: 550}}"
+                        title="<?php echo $editTitle; ?>">
+                        <?php echo $modAccess; ?>
                     </a>
                 </td>
                 <td class="center">

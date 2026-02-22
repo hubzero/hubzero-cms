@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -37,30 +35,58 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_TITLE_DESC'); ?>">
-                    <label for="field-title"><?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_TITLE_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->get('title')); ?>" />
+                <?php $titleHint = Lang::txt('COM_MEMBERS_GROUP_FIELD_TITLE_DESC'); ?>
+                <div class="input-wrap" data-hint="<?php echo $titleHint; ?>">
+                    <label for="field-title">
+                        <?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_TITLE_LABEL'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        value="<?php echo $this->escape($this->row->get('title')); ?>"/>
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_DESC'); ?>">
-                    <label for="field-parent_id"><?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                <?php $parentHint = Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_DESC'); ?>
+                <div class="input-wrap" data-hint="<?php echo $parentHint; ?>">
+                    <label for="field-parent_id">
+                        <?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_LABEL'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
                     <select name="fields[parent_id]" id="field-parent_id" class="required">
                         <?php foreach ($this->options as $option) :
-                            if (User::authorise('core.admin') || (!Hubzero\Access\Access::checkGroup($option->get('id'), 'core.admin'))) {
+                            if (
+                                User::authorise('core.admin')
+                                || (!Hubzero\Access\Access::checkGroup($option->get('id'), 'core.admin'))
+                            ) {
                                 $level = Hubzero\Access\Group::all()
                                     ->where('lft', '<', $option->get('lft'))
                                     ->where('rgt', '>', $option->get('rgt'))
                                     ->total();
                                 ?>
-                                <option value="<?php echo $option->get('id'); ?>"<?php if ($option->get('id') == $this->row->get('parent_id')) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo str_repeat('- ', $level) . $option->get('title'); ?></option>
+                                <?php
+                                $isSelected = ($option->get('id') == $this->row->get('parent_id'));
+                                $selected = $isSelected ? ' selected="selected"' : '';
+                                $optText = str_repeat('- ', $level) . $option->get('title');
+                                ?>
+                                <option
+                                    value="<?php echo $option->get('id'); ?>"
+                                    <?php echo $selected; ?>
+                                ><?php echo $optText; ?></option>
                                 <?php
                             }
                         endforeach; ?>

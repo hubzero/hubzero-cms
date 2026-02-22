@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,14 @@ defined('_HZEXEC_') or die();
 
 $this->baseURL = rtrim($this->baseURL, '/');
 
-$link = $this->baseURL . Route::urlForClient('site', 'index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email=' . urlencode($this->xprofile->get('email')));
+$link = $this->baseURL
+    . Route::urlForClient('site', 'index
+    . php?option='
+    . $this->option
+    . '&task=confirm&confirm='
+    . -$this->xprofile->get('activation')
+    . '&email='
+    . urlencode($this->xprofile->get('email')));
 
 //$link = $this->baseURL . $link;
 $link = str_replace('/administrator', '', $link);

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,28 +28,58 @@ if ($canDo->get('core.delete')) {
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
-            <a<?php if ($this->controller == 'passwordrules') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=passwordrules'); ?>"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES'); ?></a>
+            <?php $cls = ($this->controller == 'passwordrules') ? ' class="active"' : ''; ?>
+            <?php $url = Route::url('index.php?option=' . $this->option . '&controller=passwordrules'); ?>
+            <a<?php echo $cls; ?> href="<?php echo $url; ?>"><?php
+                echo Lang::txt('COM_MEMBERS_PASSWORD_RULES');
+            ?></a>
         </li>
         <li>
-            <a<?php if ($this->controller == 'passwordblacklist') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=passwordblacklist'); ?>"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST'); ?></a>
+            <?php $cls = ($this->controller == 'passwordblacklist') ? ' class="active"' : ''; ?>
+            <?php $url = Route::url('index.php?option=' . $this->option . '&controller=passwordblacklist'); ?>
+            <a<?php echo $cls; ?> href="<?php echo $url; ?>"><?php
+                echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST');
+            ?></a>
         </li>
     </ul>
 </nav>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"/>
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_MEMBERS_PASSWORD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_MEMBERS_PASSWORD_WORD', 'word', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_PASSWORD_ID',
+                    'id',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col"><?php echo $val; ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_PASSWORD_WORD',
+                    'word',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col"><?php echo $val; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -73,8 +101,15 @@ if ($canDo->get('core.delete')) {
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                        <input
+                            type="checkbox"
+                            name="id[]"
+                            id="cb<?php echo $i; ?>"
+                            value="<?php echo $row->get('id'); ?>"
+                            class="checkbox-toggle"/>
+                        <label
+                            for="cb<?php echo $i; ?>"
+                            class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
                     <?php endif; ?>
                 </td>
                 <td>
@@ -82,7 +117,8 @@ if ($canDo->get('core.delete')) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' .
+                            $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
                             <?php echo $this->escape($row->get('word')); ?>
                         </a>
                     <?php else : ?>

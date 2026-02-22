@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +23,13 @@ if ($canDo->get('core.delete')) {
     Toolbar::deleteList('COM_MENUS_MENU_CONFIRM_DELETE');
 }
 
-Toolbar::custom('rebuild', 'refresh.png', 'refresh_f2.png', 'JTOOLBAR_REBUILD', false);
+Toolbar::custom(
+    'rebuild',
+    'refresh.png',
+    'refresh_f2.png',
+    'JTOOLBAR_REBUILD',
+    false
+);
 if ($canDo->get('core.admin')) {
     Toolbar::divider();
     Toolbar::preferences($this->option);
@@ -47,14 +51,22 @@ $userId = User::get('id');
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>"
+    method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th rowspan="2">
-                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+                    <?php $checkAllTitle = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <input type="checkbox" name="checkall-toggle" value=""
+                        title="<?php echo $checkAllTitle; ?>"
+                        class="checkbox-toggle toggle-all" />
                 </th>
                 <th rowspan="2">
                     <?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>
@@ -93,54 +105,128 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
             $canCreate = User::authorise('core.create', $this->option);
             $canEdit   = User::authorise('core.edit', $this->option);
             $canChange = User::authorise('core.edit.state', $this->option);
+            $menutype = $item->get('menutype');
             ?>
             <tr class="row<?php echo $i % 2; ?>">
                 <td class="center">
                     <?php echo Html::grid('id', $i, $item->get('id')); ?>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=items&menutype=' . $item->get('menutype')) ?> ">
+                    <?php
+                    $itemsUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=items&menutype=' . $menutype
+                    );
+                    ?>
+                    <a href="<?php echo $itemsUrl; ?> ">
                         <?php echo $this->escape($item->get('title')); ?>
                     </a>
-                    <p class="smallsub">(<span><?php echo Lang::txt('COM_MENUS_MENU_MENUTYPE_LABEL') ?></span>
+                    <?php $typeLabel = Lang::txt('COM_MENUS_MENU_MENUTYPE_LABEL'); ?>
+                    <p class="smallsub">(<span><?php echo $typeLabel; ?></span>
                         <?php if ($canEdit) : ?>
-                            <?php echo '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $item->get('id')) . ' title=' . $this->escape($item->get('description')) . '">' . $this->escape($item->get('menutype')) . '</a>'; ?>)
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=edit&id=' . $item->get('id')
+                            );
+                            $desc = $this->escape($item->get('description'));
+                            $menutypeEsc = $this->escape($menutype);
+                            echo '<a href="' . $editUrl
+                                . ' title=' . $desc . '">'
+                                . $menutypeEsc . '</a>';
+                            ?>)
                         <?php else : ?>
-                            <?php echo $this->escape($item->get('menutype')); ?>)
+                            <?php echo $this->escape($menutype); ?>)
                         <?php endif; ?>
                     </p>
                 </td>
                 <td class="priority-4 center btns">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=items&menutype=' . $item->get('menutype') . '&filter_published=1'); ?>">
+                    <?php
+                    $pubUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=items&menutype=' . $menutype
+                        . '&filter_published=1'
+                    );
+                    ?>
+                    <a href="<?php echo $pubUrl; ?>">
                         <?php echo $item->countPublishedItems(); ?>
                     </a>
                 </td>
                 <td class="priority-4 center btns">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=items&menutype=' . $item->get('menutype') . '&filter_published=0'); ?>">
+                    <?php
+                    $unpubUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=items&menutype=' . $menutype
+                        . '&filter_published=0'
+                    );
+                    ?>
+                    <a href="<?php echo $unpubUrl; ?>">
                         <?php echo $item->countUnpublishedItems(); ?>
                     </a>
                 </td>
                 <td class="priority-4 center btns">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=items&menutype=' . $item->get('menutype') . '&filter_published=-2'); ?>">
+                    <?php
+                    $trashUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=items&menutype=' . $menutype
+                        . '&filter_published=-2'
+                    );
+                    ?>
+                    <a href="<?php echo $trashUrl; ?>">
                         <?php echo $item->countTrashedItems(); ?>
                     </a>
                 </td>
                 <td class="left">
-                    <?php if (isset($this->modules[$item->get('menutype')])) : ?>
+                    <?php if (isset($this->modules[$menutype])) : ?>
                     <ul>
-                        <?php foreach ($this->modules[$item->get('menutype')] as &$module) : ?>
+                        <?php foreach ($this->modules[$menutype] as &$module) : ?>
                         <li>
                             <?php if ($canEdit) : ?>
-                                <a class="button" href="<?php echo Route::url('index.php?option=com_modules&task=edit&id=' . $module->id . '&return=' . $return); //.'&tmpl=component&layout=modal');?>" rel="{handler: 'iframe', size: {x: 1024, y: 450}, onClose: function() {window.location.reload()}}"  title="<?php echo Lang::txt('COM_MENUS_EDIT_MODULE_SETTINGS');?>">
-                                <?php echo Lang::txt('COM_MENUS_MODULE_ACCESS_POSITION', $this->escape($module->title), $this->escape($module->access_title), $this->escape($module->position)); ?></a>
+                                <?php
+                                $modUrl = Route::url(
+                                    'index.php?option=com_modules&task=edit'
+                                    . '&id=' . $module->id
+                                    . '&return=' . $return
+                                );
+                                $editTitle = Lang::txt('COM_MENUS_EDIT_MODULE_SETTINGS');
+                                $modAccess = Lang::txt(
+                                    'COM_MENUS_MODULE_ACCESS_POSITION',
+                                    $this->escape($module->title),
+                                    $this->escape($module->access_title),
+                                    $this->escape($module->position)
+                                );
+                                $modRel = '{handler: \'iframe\', size: {x: 1024, y: 450},'
+                                    . ' onClose: function() {window.location.reload()}}';
+                                ?>
+                                <a class="button"
+                                    href="<?php echo $modUrl; ?>"
+                                    rel="<?php echo $modRel; ?>"
+                                    title="<?php echo $editTitle; ?>">
+                                    <?php echo $modAccess; ?>
+                                </a>
                             <?php else :?>
-                                <?php echo Lang::txt('COM_MENUS_MODULE_ACCESS_POSITION', $this->escape($module->title), $this->escape($module->access_title), $this->escape($module->position)); ?>
+                                <?php
+                                echo Lang::txt(
+                                    'COM_MENUS_MODULE_ACCESS_POSITION',
+                                    $this->escape($module->title),
+                                    $this->escape($module->access_title),
+                                    $this->escape($module->position)
+                                );
+                                ?>
                             <?php endif; ?>
                         </li>
                         <?php endforeach; ?>
                     </ul>
                     <?php elseif ($this->modMenuId) : ?>
-                        <a href="<?php echo Route::url('index.php?option=com_modules&task=add&eid=' . $this->modMenuId . '&params[menutype]=' . $item->get('menutype')); ?>">
+                        <?php
+                        $addModUrl = Route::url(
+                            'index.php?option=com_modules&task=add'
+                            . '&eid=' . $this->modMenuId
+                            . '&params[menutype]=' . $menutype
+                        );
+                        ?>
+                        <a href="<?php echo $addModUrl; ?>">
                             <?php echo Lang::txt('COM_MENUS_ADD_MENU_MODULE'); ?>
                         </a>
                     <?php endif; ?>

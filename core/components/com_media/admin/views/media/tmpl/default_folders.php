@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -49,7 +47,18 @@ endif;
         endif;
         ?>
         <li id="<?php echo $this->escape($folder['name']); ?>"<?php echo $cls; ?>>
-            <a class="folder" data-folder="<?php echo $this->escape('/' . $folder['path']); ?>" href="<?php echo Route::url('index.php?option=com_media&controller=medialist&tmpl=component&tmpl=' . Request::getCmd('tmpl') . '&' . Session::getFormToken() . '=1&folder=/' . urlencode($folder['path'])); ?>">
+            <?php
+            $folderHref = Route::url(
+                'index.php?option=com_media&controller=medialist'
+                . '&tmpl=component&tmpl=' . Request::getCmd('tmpl')
+                . '&' . Session::getFormToken() . '=1'
+                . '&folder=/' . urlencode($folder['path'])
+            );
+            $dataFolder = $this->escape('/' . $folder['path']);
+            ?>
+            <a class="folder"
+                data-folder="<?php echo $dataFolder; ?>"
+                href="<?php echo $folderHref; ?>">
                 <span class="folder-icon">
                     <img src="<?php echo $icon; ?>" alt="<?php echo $this->escape($folder['name']); ?>" />
                 </span>

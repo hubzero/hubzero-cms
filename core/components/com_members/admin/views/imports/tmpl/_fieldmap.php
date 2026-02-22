@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,9 +31,17 @@ if ($this->import->get('id')) { ?>
                         </label>
                     </td>
                     <td>
-                        <input type="hidden" name="mapping[<?php echo $mapping['name']; ?>][name]" value="<?php echo $this->escape($mapping['name']); ?>" />
-                        <input type="hidden" name="mapping[<?php echo $mapping['name']; ?>][label]" value="<?php echo $this->escape($mapping['label']); ?>" />
-                        <select name="mapping[<?php echo $mapping['name']; ?>][field]" id="mapping-<?php echo $mapping['name']; ?>">
+                        <input
+                            type="hidden"
+                            name="mapping[<?php echo $mapping['name']; ?>][name]"
+                            value="<?php echo $this->escape($mapping['name']); ?>"/>
+                        <input
+                            type="hidden"
+                            name="mapping[<?php echo $mapping['name']; ?>][label]"
+                            value="<?php echo $this->escape($mapping['label']); ?>"/>
+                        <select
+                            name="mapping[<?php echo $mapping['name']; ?>][field]"
+                            id="mapping-<?php echo $mapping['name']; ?>">
                             <option value=""><?php echo Lang::txt('COM_MEMBERS_UNKNOWN'); ?></option>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_ACCOUNT'); ?>">
                                 <option value="id" <?php if ($mapping['field'] == 'id') {
@@ -117,7 +123,8 @@ if ($this->import->get('id')) { ?>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_PROFILE'); ?>">
                                 <?php
-                                include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS . 'field.php';
+                                include_once Component::path('com_members') . DS . 'models' . DS . 'profile' . DS .
+                                'field.php';
 
                                 $fields = \Components\Members\Models\Profile\Field::all()
                                     ->ordered()
@@ -125,9 +132,9 @@ if ($this->import->get('id')) { ?>
 
                                 foreach ($fields as $field) {
                                     ?>
-                                    <option value="<?php echo $field->get('name'); ?>" <?php if ($mapping['field'] == $field->get('name')) {
-                                        echo 'selected="selected"';
-                                                   } ?>><?php echo $field->get('name'); ?></option>
+                                    <?php $val = $field->get('name'); ?>
+                                    <?php $sel = ($mapping['field'] == $val) ? 'selected="selected"' : ''; ?>
+                                    <option value="<?php echo $val; ?>" <?php echo $sel; ?>><?php echo $val; ?></option>
                                     <?php
                                 }
                                 ?>

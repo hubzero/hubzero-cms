@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -47,12 +45,21 @@ if ($canDo->get('core.admin')) {
 }
 Toolbar::help('notes');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
-                <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_NOTE_TITLE'); ?>" />
+                <label
+                    class="filter-search-lbl"
+                    for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+                <input
+                    type="text"
+                    name="filter_search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_NOTE_TITLE'); ?>"/>
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
@@ -60,12 +67,31 @@ Toolbar::help('notes');
             <div class="col span6">
                 <select name="filter_category_id" id="filter_category_id" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-                    <?php echo Html::select('options', Html::category('options', 'com_members'), 'value', 'text', $this->filters['category_id']); ?>
+                    <?php
+                    $val = Html::select(
+                        'options',
+                        Html::category('options', 'com_members'),
+                        'value',
+                        'text',
+                        $this->filters['category_id']
+                    );
+                    ?>
+                    <?php echo $val; ?>
                 </select>
 
                 <select name="filter_published" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                    <?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['state'], true); ?>
+                    <?php
+                    $val = Html::select(
+                        'options',
+                        Html::grid('publishedOptions'),
+                        'value',
+                        'text',
+                        $this->filters['state'],
+                        true
+                    );
+                    ?>
+                    <?php echo $val; ?>
                 </select>
             </div>
         </div>
@@ -75,25 +101,37 @@ Toolbar::help('notes');
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="toggle" value="" class="checklist-toggle" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+                    <input
+                        type="checkbox"
+                        name="toggle"
+                        value=""
+                        class="checklist-toggle"
+                        title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>"
+                        class="checkbox-toggle toggle-all"/>
                 </th>
                 <th class="left">
-                    <?php echo Html::grid('sort', 'COM_MEMBERS_USER_HEADING', 'u.name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?php echo Html::grid('sort', 'COM_MEMBERS_USER_HEADING', 'u
+                        . name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
                 </th>
                 <th class="left">
-                    <?php echo Html::grid('sort', 'COM_MEMBERS_SUBJECT_HEADING', 'a.subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?php echo Html::grid('sort', 'COM_MEMBERS_SUBJECT_HEADING', 'a
+                        . subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
                 </th>
                 <th class="priority-5">
-                    <?php echo Html::grid('sort', 'COM_MEMBERS_CATEGORY_HEADING', 'c.title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?php echo Html::grid('sort', 'COM_MEMBERS_CATEGORY_HEADING', 'c
+                        . title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
                 </th>
                 <th class="priority-3">
-                    <?php echo Html::grid('sort', 'JSTATUS', 'a.state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?php echo Html::grid('sort', 'JSTATUS', 'a
+                        . state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
                 </th>
                 <th>
-                    <?php echo Html::grid('sort', 'COM_MEMBERS_REVIEW_HEADING', 'a.review_time', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?php echo Html::grid('sort', 'COM_MEMBERS_REVIEW_HEADING', 'a
+                        . review_time', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
                 </th>
                 <th class="nowrap priority-6">
-                    <?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a.id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?php echo Html::grid('sort', 'JGRID_HEADING_ID', 'a
+                        . id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
                 </th>
             </tr>
         </thead>
@@ -118,7 +156,8 @@ Toolbar::help('notes');
                         <?php echo Html::grid('checkedout', $i, $row->editor, $row->get('checked_out_time')); ?>
                     <?php endif; ?>
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id'));?>">
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' .
+                            $this->controller . '&task=edit&id=' . $row->get('id'));?>">
                             <?php echo $this->escape($row->member->get('name')); ?></a>
                     <?php else : ?>
                         <?php echo $this->escape($row->member->get('name')); ?>
@@ -138,7 +177,8 @@ Toolbar::help('notes');
                     <?php echo $this->escape($row->category->get('title')); ?>
                 </td>
                 <td class="center priority-4">
-                    <?php echo Html::grid('published', $row->get('state'), $i, 'notes.', $canChange, 'cb', $row->get('publish_up'), $row->get('publish_down')); ?>
+                    <?php echo Html::grid('published', $row->get('state'), $i, 'notes
+                        . ', $canChange, 'cb', $row->get('publish_up'), $row->get('publish_down')); ?>
                 </td>
                 <td class="center">
                     <?php if ($row->get('review_time') && $row->get('review_time') != '0000-00-00 00:00:00') : ?>

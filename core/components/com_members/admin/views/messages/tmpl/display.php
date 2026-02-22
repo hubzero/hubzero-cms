@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +23,8 @@ if ($canDo->get('core.delete')) {
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="field-component"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
         <select name="component" id="field-component" class="filter filter-submit">
@@ -46,13 +45,56 @@ if ($canDo->get('core.delete')) {
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"/>
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_COMPONENT', 'component', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_ACTION', 'action', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_COL_ID',
+                    'id',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col" class="priority-4"><?php echo $val; ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_COL_COMPONENT',
+                    'component',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col" class="priority-2"><?php echo $val; ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_COL_ACTION',
+                    'action',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col"><?php echo $val; ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_COL_TITLE',
+                    'title',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col" class="priority-3"><?php echo $val; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -78,7 +120,12 @@ foreach ($this->rows as $row) {
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                        <input
+                            type="checkbox"
+                            name="id[]"
+                            id="cb<?php echo $i; ?>"
+                            value="<?php echo $row->id; ?>"
+                            class="checkbox-toggle"/>
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     <?php } ?>
                 </td>
@@ -92,7 +139,17 @@ foreach ($this->rows as $row) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <?php
+                        $href = Route::url(
+                            'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&task=edit&id='
+                            . $row->id
+                        );
+                        ?>
+                        <a href="<?php echo $href; ?>">
                             <?php echo $this->escape($row->action); ?>
                         </a>
                     <?php } else { ?>

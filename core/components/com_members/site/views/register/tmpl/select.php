@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,11 +17,21 @@ defined('_HZEXEC_') or die();
 <section class="main section">
     <form action="index.php" method="post" id="hubForm">
         <div class="explaination">
-            <p>Registering at <?php echo $this->sitename; ?> is easy: just sign in using an account you may already have at one of the listed sites/organizations or create a new <?php echo $this->sitename; ?> account.</p>
+            <?php $val = $this->sitename; ?>
+            <?php $val = $this->sitename; ?>
+            <p>
+                Registering at <?php echo $val; ?> is easy: just sign in using an account you may already have at one
+                of the listed sites/organizations or create a new <?php echo $val; ?> account.
+            </p>
 
             <h4>Why is registration required for parts of the <?php echo $this->sitename; ?>?</h4>
 
-            <p>Our sponsors ask us who uses the <?php echo $this->sitename;?> and what they use it for. Registration helps us answer these questions. Usage statistics also focus our attention on improvements, making the <?php echo $this->sitename; ?> experience better for <em>you</em>.</p>
+            <?php $val = $this->sitename; ?>
+            <p>
+                Our sponsors ask us who uses the <?php echo $this->sitename;?> and what they use it for. Registration
+                helps us answer these questions. Usage statistics also focus our attention on improvements, making the
+                <?php echo $val; ?> experience better for <em>you</em>.
+            </p>
         </div>
         <fieldset>
             <h3>Register with <?php echo $this->sitename; ?></h3>

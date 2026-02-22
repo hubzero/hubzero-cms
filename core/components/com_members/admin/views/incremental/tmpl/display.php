@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,8 @@ Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION') . ': ' . Lang::txt('Increme
 Toolbar::save();
 
 $dbh = App::get('db');
-$dbh->setQuery('SELECT popover_text, award_per, test_group FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
+$dbh->setQuery('SELECT popover_text, award_per, test_group FROM `#__incremental_registration_options` ORDER BY added
+DESC LIMIT 1');
 list($popoverText, $awardPer, $testGroup) = $dbh->loadRow();
 $dbh->setQuery('SELECT hours FROM `#__incremental_registration_popover_recurrence` ORDER BY idx');
 $recur = $dbh->loadColumn();
@@ -166,7 +165,8 @@ $groupDefs = $groups->getAllGroups();
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <fieldset class="adminform">
         <legend><span>Incremental Registration Options</span></legend>
 
@@ -177,12 +177,20 @@ $groupDefs = $groups->getAllGroups();
 
         <div class="input-wrap">
             <label for="field-award-per">Award per field completed</label>
-            <input type="text" name="award-per" id="field-award-per" value="<?php echo str_replace('"', '&quot;', $awardPer); ?>" />
+            <input
+                type="text"
+                name="award-per"
+                id="field-award-per"
+                value="<?php echo str_replace('"', '&quot;', $awardPer); ?>"/>
         </div>
 
         <div class="input-wrap">
             <label for="field-test-group">Test group (name or id number)</label>
-            <input type="text" name="test-group" id="field-test-group" value="<?php echo str_replace('"', '&quot;', $testGroup); ?>" />
+            <input
+                type="text"
+                name="test-group"
+                id="field-test-group"
+                value="<?php echo str_replace('"', '&quot;', $testGroup); ?>"/>
         </div>
 
         <fieldset>
@@ -203,7 +211,10 @@ $groupDefs = $groups->getAllGroups();
                     ?>
                 <li class="reg-group">
                     <p>
-                        Beginning <input name="group-hours-<?php echo $idx; ?>" value="<?php echo $group['hours']; ?>" size="3" />
+                        Beginning <input
+                            name="group-hours-<?php echo $idx; ?>"
+                            value="<?php echo $group['hours']; ?>"
+                            size="3"/>
                         <select name="group-time-unit-<?php echo $idx; ?>">
                             <option value="hour" <?php if ($unit == 'hour') {
                                 echo 'selected="selected" ';
@@ -221,18 +232,28 @@ $groupDefs = $groups->getAllGroups();
                                 <select name="group-cols-<?php echo $idx; ?>[]">
                                     <option value="">Select profile field...</option>
                                 <?php foreach ($possibleCols as $colName => $colLabel) : ?>
-                                    <option value="<?php echo str_replace('"', '&quot;', $colName); ?>"<?php if ($colName == $col) {
-                                        echo ' selected="selected"';
-                                                   } ?>><?php echo htmlentities($colLabel); ?></option>
+                                    <?php $sel = ($colName == $col) ? ' selected="selected"' : ''; ?>
+                                    <?php $val = str_replace('"', '&quot;', $colName); ?>
+                                    <?php $lbl = htmlentities($colLabel); ?>
+                                    <option
+                                        value="<?php echo $val; ?>"<?php echo $sel; ?>><?php echo $lbl; ?></option>
                                 <?php endforeach; ?>
                                 </select>
-                                <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove field</button>
+                                <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">
+                                    Remove field</button>
                             </li>
                         <?php endforeach; ?>
                         </ul>
-                        <button class="add-field" onclick="addField(this, <?php echo $idx; ?>); return false;">Add field</button>
+                        <button
+                            class="add-field"
+                            onclick="addField(this, <?php echo $idx; ?>); return false;">Add field</button>
                     </p>
-                    <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); renumberGroups(); return false;">Remove group</button>
+                    <?php
+                    $removeJs = "this.parentNode.parentNode.removeChild(this.parentNode);"
+                        . " renumberGroups(); return false;";
+                    ?>
+                    <button onclick="<?php echo $removeJs; ?>">
+                        Remove group</button>
                 </li>
                 <?php endforeach; ?>
             </ol>
@@ -270,7 +291,8 @@ $groupDefs = $groups->getAllGroups();
                             echo 'selected="selected" ';
                                              } ?>>weeks</option>
                     </select>
-                    <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove recurrence</button>
+                    <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">
+                        Remove recurrence</button>
                 </li>
                     <?php
                 endforeach;
@@ -310,7 +332,10 @@ $groupDefs = $groups->getAllGroups();
             </p>
             <p>
                 After reaching the end of this list: <br />
-                <input type="radio" name="repeat-type" checked="checked" /> repeat prompting indefinitely using the last delay listed between attempts<br />
+                <input
+                    type="radio"
+                    name="repeat-type"
+                    checked="checked"/> repeat prompting indefinitely using the last delay listed between attempts<br />
                 <input type="radio" name="repeat-type" /> stop prompting
             </p>
         </fieldset>

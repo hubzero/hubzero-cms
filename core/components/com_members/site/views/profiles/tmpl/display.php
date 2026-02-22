@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,10 @@ $this->css('introduction.css', 'system')
     <?php if (User::isGuest()) { ?>
         <div id="content-header-extra">
             <p>
-                <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=com_members&controller=register'); ?>"><?php echo Lang::txt('COM_MEMBERS_REGISTER_NOW'); ?></a>
+                <?php $href = Route::url('index.php?option=com_members&controller=register'); ?>
+                <a
+                    class="icon-add add btn"
+                    href="<?php echo $href; ?>"><?php echo Lang::txt('COM_MEMBERS_REGISTER_NOW'); ?></a>
             </p>
         </div><!-- / #content-header-extra -->
     <?php } ?>
@@ -43,16 +44,20 @@ $this->css('introduction.css', 'system')
         <div class="col span3 omega">
             <ul>
                 <li>
-                    <a href="<?php echo Route::url('index.php?option=com_members&view=credentials&layout=remind'); ?>"><?php echo Lang::txt('COM_MEMBERS_FORGOT_USERNAME'); ?></a>
+                    <?php $href = Route::url('index.php?option=com_members&view=credentials&layout=remind'); ?>
+                    <a href="<?php echo $href; ?>"><?php echo Lang::txt('COM_MEMBERS_FORGOT_USERNAME'); ?></a>
                 </li>
                 <li>
-                    <a href="<?php echo Route::url('index.php?option=com_members&view=credentials&layout=reset'); ?>"><?php echo Lang::txt('COM_MEMBERS_FORGOT_PASSWORD'); ?></a>
+                    <?php $href = Route::url('index.php?option=com_members&view=credentials&layout=reset'); ?>
+                    <a href="<?php echo $href; ?>"><?php echo Lang::txt('COM_MEMBERS_FORGOT_PASSWORD'); ?></a>
                 </li>
                 <li>
-                    <a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=members'); ?>"><?php echo Lang::txt('COM_MEMBERS_NEED_HELP'); ?></a>
+                    <?php $href = Route::url('index.php?option=com_help&component=members'); ?>
+                    <a class="popup" href="<?php echo $href; ?>"><?php echo Lang::txt('COM_MEMBERS_NEED_HELP'); ?></a>
                 </li>
                 <li>
-                    <a href="<?php echo Route::url('index.php?option=com_groups'); ?>"><?php echo Lang::txt('COM_GROUPS'); ?></a>
+                    <?php $href = Route::url('index.php?option=com_groups'); ?>
+                    <a href="<?php echo $href; ?>"><?php echo Lang::txt('COM_GROUPS'); ?></a>
                 </li>
             </ul>
         </div>
@@ -68,10 +73,12 @@ $this->css('introduction.css', 'system')
         <div class="col span9 omega">
             <div class="grid">
                 <div class="col span6">
-                    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
+                    <?php $formAction = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+                    <form action="<?php echo $formAction; ?>" method="get" class="search">
                         <fieldset>
                             <p>
-                                <label for="gsearch"><?php echo Lang::txt('COM_MEMBERS_FIND_MEMBERS_SEARCH_LABEL'); ?></label>
+                                <?php $text = Lang::txt('COM_MEMBERS_FIND_MEMBERS_SEARCH_LABEL'); ?>
+                                <label for="gsearch"><?php echo $text; ?></label>
                                 <input type="text" name="search" id="gsearch" value="" />
                                 <input type="submit" value="<?php echo Lang::txt('Search'); ?>" />
                             </p>
@@ -83,7 +90,9 @@ $this->css('introduction.css', 'system')
                 </div><!-- / .col span6 -->
                 <div class="col span6 omega">
                     <div class="browse">
-                        <p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_MEMBERS_FIND_MEMBERS_BY_BROWSING'); ?></a></p>
+                        <?php $val = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+                        <?php $val1 = Lang::txt('COM_MEMBERS_FIND_MEMBERS_BY_BROWSING'); ?>
+                        <p><a href="<?php echo $val; ?>"><?php echo $val1; ?></a></p>
                         <p><?php echo Lang::txt('COM_MEMBERS_FIND_MEMBERS_LISTING'); ?></p>
                     </div><!-- / .browse -->
                 </div><!-- / .col span6 -->
@@ -129,7 +138,16 @@ $this->css('introduction.css', 'system')
                                 <div class="contributor">
                                     <p class="contributor-photo">
                                         <a href="<?php echo Route::url($contributor->link()); ?>">
-                                            <img src="<?php echo $contributor->picture(); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR_PICTURE', $this->escape(stripslashes($contributor->get('name')))); ?>" />
+                                            <?php $val = $contributor->picture(); ?>
+                                            <?php
+                                            $contribAlt = Lang::txt(
+                                                'COM_MEMBERS_TOP_CONTRIBUTOR_PICTURE',
+                                                $this->escape(stripslashes($contributor->get('name')))
+                                            );
+                                            ?>
+                                            <img
+                                                src="<?php echo $val; ?>"
+                                                alt="<?php echo $contribAlt; ?>" />
                                         </a>
                                     </p>
                                     <div class="contributor-content">
@@ -165,7 +183,13 @@ $this->css('introduction.css', 'system')
                     else
                     {
                         ?>
-                        <p><?php echo Lang::txt('COM_MEMBERS_TOP_CONTRIBUTOR_NO_RESULTS', Route::url('index.php?option=com_resources&task=new')); ?></p>
+                        <?php
+                        $val = Lang::txt(
+                            'COM_MEMBERS_TOP_CONTRIBUTOR_NO_RESULTS',
+                            Route::url('index.php?option=com_resources&task=new')
+                        );
+                        ?>
+                        <p><?php echo $val; ?></p>
                         <?php
                     }
                     ?>

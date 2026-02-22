@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,8 @@ defined('_HZEXEC_') or die();
 
 ?>
 <div id="member-picture">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media'); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+    <?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=media'); ?>
+    <form action="<?php echo $formAction; ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
         <fieldset>
             <legend><?php echo Lang::txt('UPLOAD'); ?> <?php echo Lang::txt('WILL_REPLACE_EXISTING_IMAGE'); ?></legend>
 
@@ -43,7 +42,10 @@ defined('_HZEXEC_') or die();
                 list($width, $height, $type, $attr) = getimagesize($this->file_path . DS . $this->file);
                 ?>
                 <tr>
-                    <td rowspan="6"><img src="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>" alt="<?php echo Lang::txt('MEMBER_PICTURE'); ?>" id="conimage" /></td>
+                    <td rowspan="6"><img
+                        src="<?php echo $this->webpath . DS . $this->path . DS . $this->file; ?>"
+                        alt="<?php echo Lang::txt('MEMBER_PICTURE'); ?>"
+                        id="conimage"/></td>
                     <td><?php echo Lang::txt('FILE'); ?>:</td>
                     <td><?php echo $this->file; ?></td>
                 </tr>
@@ -61,12 +63,21 @@ defined('_HZEXEC_') or die();
                 </tr>
                 <tr>
                     <td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-                    <td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;task=deleteimg&amp;file=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;no_html=1">[ <?php echo Lang::txt('JACTION_DELETE'); ?> ]</a></td>
+                    <?php $deleteTxt = Lang::txt('JACTION_DELETE'); ?>
+                    <?php
+                    $deleteHref = 'index.php?option=' . $this->option
+                        . '&amp;controller=media&amp;task=deleteimg&amp;file='
+                        . $this->file . '&amp;id=' . $this->id
+                        . '&amp;no_html=1';
+                    ?>
+                    <td><a href="<?php echo $deleteHref; ?>">[ <?php echo $deleteTxt; ?> ]</a></td>
                 </tr>
             <?php } else { ?>
                 <tr>
                     <td colspan="4">
-                        <img src="<?php echo $this->default_picture; ?>" alt="<?php echo Lang::txt('NO_MEMBER_PICTURE'); ?>" />
+                        <img
+                            src="<?php echo $this->default_picture; ?>"
+                            alt="<?php echo Lang::txt('NO_MEMBER_PICTURE'); ?>"/>
                         <input type="hidden" name="currentfile" value="" />
                     </td>
                 </tr>

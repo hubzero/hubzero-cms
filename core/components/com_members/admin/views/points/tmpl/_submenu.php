@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,17 +13,40 @@ $task = Request::getCmd('task', '');
 ?>
 <nav role="navigation" class="sub sub-navigation">
     <ul>
-        <li><a<?php if (!$task) {
-            echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>">Summary</a></li>
-        <li><a<?php if ($task == 'edit') {
-            echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit'); ?>">Look up User Balance</a></li>
-        <li><a<?php if ($task == 'config') {
-            echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=config'); ?>">Configuration</a></li>
-        <li><a<?php if ($task == 'batch') {
-            echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=batch'); ?>">Batch Transaction</a></li>
+        <li>
+            <?php $cls = (!$task) ? ' class="active"' : ''; ?>
+            <?php $url = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+            ); ?>
+            <a<?php echo $cls; ?> href="<?php echo $url; ?>">Summary</a>
+        </li>
+        <li>
+            <?php $cls = ($task == 'edit') ? ' class="active"' : ''; ?>
+            <?php $href = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=edit'
+            ); ?>
+            <a<?php echo $cls; ?> href="<?php echo $href; ?>">Look up User Balance</a>
+        </li>
+        <li>
+            <?php $cls = ($task == 'config') ? ' class="active"' : ''; ?>
+            <?php $href = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=config'
+            ); ?>
+            <a<?php echo $cls; ?> href="<?php echo $href; ?>">Configuration</a>
+        </li>
+        <li>
+            <?php $cls = ($task == 'batch') ? ' class="active"' : ''; ?>
+            <?php $href = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=batch'
+            ); ?>
+            <a<?php echo $cls; ?> href="<?php echo $href; ?>">Batch Transaction</a>
+        </li>
     </ul>
 </nav><!-- / .sub-navigation -->

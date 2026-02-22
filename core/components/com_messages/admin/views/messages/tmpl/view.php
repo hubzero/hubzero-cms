@@ -1,5 +1,5 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,8 +13,16 @@ Html::behavior('framework');
 
 Toolbar::title(Lang::txt('COM_MESSAGES_VIEW_PRIVATE_MESSAGE'), 'inbox.png');
 $sender = User::getInstance($this->item->user_id_from);
-if ($sender->authorise('core.admin') || $sender->authorise('core.manage', 'com_messages') && $sender->authorise('core.login.admin')) {
-    Toolbar::custom('message.reply', 'restore.png', 'restore_f2.png', 'COM_MESSAGES_TOOLBAR_REPLY', false);
+$canManage = $sender->authorise('core.manage', 'com_messages')
+    && $sender->authorise('core.login.admin');
+if ($sender->authorise('core.admin') || $canManage) {
+    Toolbar::custom(
+        'message.reply',
+        'restore.png',
+        'restore_f2.png',
+        'COM_MESSAGES_TOOLBAR_REPLY',
+        false
+    );
 }
 Toolbar::cancel('message.cancel');
 Toolbar::help('JHELP_COMPONENTS_MESSAGING_READ');

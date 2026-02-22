@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,20 +17,43 @@ $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 ?>
 <h2 class="modal-title"><?php echo Lang::txt('Users'); ?></h2>
-<form action="<?php echo Route::url('index.php?option=com_members&controllers=members&task=modal&tmpl=component&groups=' . Request::getString('groups', '') . '&excluded=' . Request::getString('excluded', ''));?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=com_members&controllers=members&task=modal&tmpl=component&groups='
+    . Request::getString('groups', '')
+    . '&excluded=' . Request::getString('excluded', '')
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar" class="filter clearfix">
         <div class="grid">
             <div class="col span8">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" size="40" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_NAME'); ?>" />
+                <input
+                    type="text"
+                    name="filter_search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    size="40"
+                    placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_NAME'); ?>"/>
 
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" flass="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-                <button type="button" onclick="if (window.parent) window.parent.<?php echo $this->escape($function); ?>('', '<?php echo Lang::txt('JLIB_FORM_SELECT_USER') ?>');"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
+                <?php $escapedFunc = $this->escape($function); ?>
+                <?php $selectUserTxt = Lang::txt('JLIB_FORM_SELECT_USER'); ?>
+                <?php
+                $noUserClick = "if (window.parent) window.parent."
+                    . $escapedFunc . "('', '" . $selectUserTxt . "');";
+                ?>
+                <button type="button" onclick="<?php echo $noUserClick; ?>">
+                    <?php echo Lang::txt('JOPTION_NO_USER')?>
+                </button>
             </div>
             <div class="col span4">
                 <label for="filter_group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USER_GROUP'); ?></label>
-                <?php echo Html::access('usergroup', 'filter_group_id', $this->filters['group_id'], 'class="filter filter-submit"'); ?>
+                <?php echo Html::access('usergroup', 'filter_group_id', $this->filters['group_id'], 'class="filter
+                    filter-submit"'); ?>
             </div>
         </div>
     </fieldset>
@@ -47,7 +68,9 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                     <?php echo Html::grid('sort', 'JGLOBAL_USERNAME', 'a.username', $listDirn, $listOrder); ?>
                 </th>
                 <th>
-                    <?php echo Html::grid('sort', 'COM_MEMBERS_HEADING_GROUPS', 'group_names', $listDirn, $listOrder); ?>
+                    <?php
+                        echo Html::grid('sort', 'COM_MEMBERS_HEADING_GROUPS', 'group_names', $listDirn, $listOrder);
+                    ?>
                 </th>
             </tr>
         </thead>
@@ -64,7 +87,16 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
         foreach ($this->rows as $row) : ?>
             <tr class="row<?php echo $i % 2; ?>">
                 <td>
-                    <a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function); ?>('<?php echo $row->get('id'); ?>', '<?php echo $this->escape(addslashes($row->get('name'))); ?>');">
+                    <?php $escapedName = $this->escape(addslashes($row->get('name'))); ?>
+                    <?php $escapedFunc = $this->escape($function); ?>
+                    <?php $rowId = $row->get('id'); ?>
+                    <?php
+                    $rowClick = "if (window.parent) window.parent."
+                        . $escapedFunc . "('" . $rowId . "', '" . $escapedName . "');";
+                    ?>
+                    <a
+                        class="pointer"
+                        onclick="<?php echo $rowClick; ?>">
                         <?php echo $row->get('name'); ?>
                     </a>
                 </td>

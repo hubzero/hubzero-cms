@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -45,15 +43,35 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
             <legend><span><?php echo Lang::txt('Account Details'); ?></span></legend>
 
             <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME_HINT'); ?>">
-                <label id="field_username-lbl" for="field_username" class="required"><?php echo Lang::txt('COM_MEMBERS_FIELD_USERNAME'); ?> <span class="required star"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                <input type="text" name="fields[username]" id="field_username" class="required" value="<?php echo $this->escape($this->profile->get('username')); ?>" class="required<?php if ($this->profile->get('id')) {
-                    echo ' readonly" readonly="readonly';
-                                                                                                       } ?>" />
+                <?php $val = Lang::txt('COM_MEMBERS_FIELD_USERNAME'); ?>
+                <?php $val = Lang::txt('JOPTION_REQUIRED'); ?>
+                <label
+                    id="field_username-lbl"
+                    for="field_username"
+                    class="required"><?php echo $val; ?> <span class="required star"><?php echo $val; ?></span></label>
+                <?php $val = $this->escape($this->profile->get('username')); ?>
+                <?php $readOnly = $this->profile->get('id') ? ' readonly" readonly="readonly' : ''; ?>
+                <input
+                    type="text"
+                    name="fields[username]"
+                    id="field_username"
+                    class="required<?php echo $readOnly; ?>"
+                    value="<?php echo $val; ?>" />
             </div>
 
             <div class="input-wrap">
-                <label id="field_email-lbl" for="field_email" class="required"><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL'); ?> <span class="required star"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                <input type="email" name="fields[email]" class="validate-email required" id="field_email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
+                <?php $val = Lang::txt('COM_MEMBERS_FIELD_EMAIL'); ?>
+                <?php $val = Lang::txt('JOPTION_REQUIRED'); ?>
+                <label
+                    id="field_email-lbl"
+                    for="field_email"
+                    class="required"><?php echo $val; ?> <span class="required star"><?php echo $val; ?></span></label>
+                <input
+                    type="email"
+                    name="fields[email]"
+                    class="validate-email required"
+                    id="field_email"
+                    value="<?php echo $this->escape($this->profile->get('email')); ?>"/>
             </div>
 
             <fieldset>
@@ -61,17 +79,30 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
 
                 <div class="input-wrap">
                     <label for="field-givenName"><?php echo Lang::txt('COM_MEMBERS_FIELD_FIRST_NAME'); ?>:</label><br />
-                    <input type="text" name="fields[givenName]" id="field-givenName" value="<?php echo $this->escape($givenName); ?>" />
+                    <input
+                        type="text"
+                        name="fields[givenName]"
+                        id="field-givenName"
+                        value="<?php echo $this->escape($givenName); ?>"/>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-middleName"><?php echo Lang::txt('COM_MEMBERS_FIELD_MIDDLE_NAME'); ?>:</label><br />
-                    <input type="text" name="fields[middleName]" id="field-middleName" value="<?php echo $this->escape($middleName); ?>" />
+                    <?php $text = Lang::txt('COM_MEMBERS_FIELD_MIDDLE_NAME'); ?>
+                    <label for="field-middleName"><?php echo $text; ?>:</label><br />
+                    <input
+                        type="text"
+                        name="fields[middleName]"
+                        id="field-middleName"
+                        value="<?php echo $this->escape($middleName); ?>"/>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-surname"><?php echo Lang::txt('COM_MEMBERS_FIELD_LAST_NAME'); ?>:</label><br />
-                    <input type="text" name="fields[surname]" id="field-surname" value="<?php echo $this->escape($surname); ?>" />
+                    <input
+                        type="text"
+                        name="fields[surname]"
+                        id="field-surname"
+                        value="<?php echo $this->escape($surname); ?>"/>
                 </div>
             </fieldset>
 
@@ -80,7 +111,16 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                     <div class="input-wrap">
                         <label for="field-access"><?php echo Lang::txt('COM_MEMBERS_FIELD_ACCESS_LEVEL'); ?>:</label>
                         <select name="fields[access]" id="field-access">
-                            <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->profile->get('access')); ?>
+                            <?php
+                            $val = Html::select(
+                                'options',
+                                Html::access('assetgroups'),
+                                'value',
+                                'text',
+                                $this->profile->get('access')
+                            );
+                            ?>
+                            <?php echo $val; ?>
                         </select>
                     </div>
                 </div>
@@ -94,10 +134,13 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                                 '0'  => Lang::txt('JNO')
                             );
                             ?>
-                        <label for="field-sendEmail"><?php echo Lang::txt('COM_MEMBERS_FIELD_MAIL_PREFERENCE'); ?></label>
+                        <?php $text = Lang::txt('COM_MEMBERS_FIELD_MAIL_PREFERENCE'); ?>
+                        <label for="field-sendEmail"><?php echo $text; ?></label>
                         <select name="fields[sendEmail]" id="field-sendEmail">
                             <?php foreach ($options as $key => $value) : ?>
-                                <?php $sel = ($key == $this->profile->get('sendEmail')) ? ' selected="selected"' : ''; ?>
+                                <?php
+                                    $sel = ($key == $this->profile->get('sendEmail')) ? ' selected="selected"' : '';
+                                ?>
                                 <option<?php echo $sel; ?> value="<?php echo $key; ?>"><?php echo $value; ?></option>
                             <?php endforeach; ?>
                         </select>
@@ -106,18 +149,32 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
             </div>
 
             <div class="input-wrap">
-                <label for="field-homeDirectory" class="required"><?php echo Lang::txt('COM_MEMBERS_FIELD_HOMEDIRECTORY'); ?></label>
-                <input type="text" name="fields[homeDirectory]" id="field-homeDirectory" value="<?php echo $this->escape($this->profile->get('homeDirectory')); ?>" />
+                <label
+                    for="field-homeDirectory"
+                    class="required"><?php echo Lang::txt('COM_MEMBERS_FIELD_HOMEDIRECTORY'); ?></label>
+                <input
+                    type="text"
+                    name="fields[homeDirectory]"
+                    id="field-homeDirectory"
+                    value="<?php echo $this->escape($this->profile->get('homeDirectory')); ?>"/>
             </div>
 
             <div class="input-wrap">
                 <label for="field-loginShell"><?php echo Lang::txt('COM_MEMBERS_FIELD_LOGINSHELL'); ?></label>
-                <input type="text" name="fields[loginShell]" id="field-loginShell" value="<?php echo $this->escape($this->profile->get('loginShell')); ?>" />
+                <input
+                    type="text"
+                    name="fields[loginShell]"
+                    id="field-loginShell"
+                    value="<?php echo $this->escape($this->profile->get('loginShell')); ?>"/>
             </div>
 
             <div class="input-wrap">
                 <label for="field-ftpShell"><?php echo Lang::txt('COM_MEMBERS_FIELD_FTPSHELL'); ?></label>
-                <input type="text" name="fields[ftpShell]" id="field-ftpShell" value="<?php echo $this->escape($this->profile->get('ftpShell')); ?>" />
+                <input
+                    type="text"
+                    name="fields[ftpShell]"
+                    id="field-ftpShell"
+                    value="<?php echo $this->escape($this->profile->get('ftpShell')); ?>"/>
             </div>
         </fieldset>
 
@@ -154,11 +211,21 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                 </tr>
                 <tr>
                     <th><?php echo Lang::txt('COM_MEMBERS_FIELD_LASTVISITDATE'); ?></th>
-                    <td><?php echo !$this->profile->get('lastvisitDate') || $this->profile->get('lastvisitDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('lastvisitDate'); ?></td>
+                    <td><?php
+                        $lastVisit = $this->profile->get('lastvisitDate');
+                        echo (!$lastVisit || $lastVisit == '0000-00-00 00:00:00')
+                            ? Lang::txt('COM_MEMBERS_NEVER')
+                            : $lastVisit;
+                    ?></td>
                 </tr>
                 <tr>
                     <th><?php echo Lang::txt('COM_MEMBERS_FIELD_MODIFIED'); ?></th>
-                    <td><?php echo !$this->profile->get('modifiedDate') || $this->profile->get('modifiedDate') == '0000-00-00 00:00:00' ? Lang::txt('COM_MEMBERS_NEVER') : $this->profile->get('modifiedDate'); ?></td>
+                    <td><?php
+                        $modified = $this->profile->get('modifiedDate');
+                        echo (!$modified || $modified == '0000-00-00 00:00:00')
+                            ? Lang::txt('COM_MEMBERS_NEVER')
+                            : $modified;
+                    ?></td>
                 </tr>
                 <?php if ($incomplete) : ?>
                     <tr>
@@ -177,15 +244,29 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
             <legend><span><?php echo Lang::txt('COM_MEMBERS_STATUS'); ?></span></legend>
 
             <div class="input-wrap">
-                <label id="field_usageAgreement-lbl" for="field-usageAgreement"><?php echo Lang::txt('COM_MEMBERS_FIELD_USAGE_AGREEMENT'); ?></label>
+                <label
+                    id="field_usageAgreement-lbl"
+                    for="field-usageAgreement"><?php echo Lang::txt('COM_MEMBERS_FIELD_USAGE_AGREEMENT'); ?></label>
                 <fieldset id="field-usageAgreement" class="radio">
+                    <?php $chk0 = ($this->profile->get('usageAgreement') == 0) ? ' checked="checked"' : ''; ?>
+                    <?php $chk1 = ($this->profile->get('usageAgreement') == 1) ? ' checked="checked"' : ''; ?>
                     <ul>
-                        <li><input type="radio" id="field-usageAgreement0" name="fields[usageAgreement]" value="0"<?php if ($this->profile->get('usageAgreement') == 0) {
-                            echo ' checked="checked"';
-                                                                                                                  } ?> /><label for="field-usageAgreement0"><?php echo Lang::txt('JNo'); ?></label></li>
-                        <li><input type="radio" id="field-usageAgreement1" name="fields[usageAgreement]" value="1"<?php if ($this->profile->get('usageAgreement') == 1) {
-                            echo ' checked="checked"';
-                                                                                                                  } ?> /><label for="field-usageAgreement1"><?php echo Lang::txt('JYes'); ?></label></li>
+                        <li>
+                            <input
+                                type="radio"
+                                id="field-usageAgreement0"
+                                name="fields[usageAgreement]"
+                                value="0"<?php echo $chk0; ?> />
+                            <label for="field-usageAgreement0"><?php echo Lang::txt('JNo'); ?></label>
+                        </li>
+                        <li>
+                            <input
+                                type="radio"
+                                id="field-usageAgreement1"
+                                name="fields[usageAgreement]"
+                                value="1"<?php echo $chk1; ?> />
+                            <label for="field-usageAgreement1"><?php echo Lang::txt('JYes'); ?></label>
+                        </li>
                     </ul>
                 </fieldset>
             </div>
@@ -193,18 +274,32 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
             <div class="input-wrap">
                 <label id="field-block-lbl" for="field-block"><?php echo Lang::txt('Block this User'); ?></label>
                 <fieldset id="field-block" class="radio">
+                    <?php $chk0 = ($this->profile->get('block') == 0) ? ' checked="checked"' : ''; ?>
+                    <?php $chk1 = ($this->profile->get('block') == 1) ? ' checked="checked"' : ''; ?>
                     <ul>
-                        <li><input type="radio" id="field-block0" name="fields[block]" value="0"<?php if ($this->profile->get('block') == 0) {
-                            echo ' checked="checked"';
-                                                                                                } ?> /><label for="field-block0"><?php echo Lang::txt('JNo'); ?></label></li>
-                        <li><input type="radio" id="field-block1" name="fields[block]" value="1"<?php if ($this->profile->get('block') == 1) {
-                            echo ' checked="checked"';
-                                                                                                } ?> /><label for="field-block1"><?php echo Lang::txt('JYes'); ?></label></li>
+                        <li>
+                            <input
+                                type="radio"
+                                id="field-block0"
+                                name="fields[block]"
+                                value="0"<?php echo $chk0; ?> />
+                            <label for="field-block0"><?php echo Lang::txt('JNo'); ?></label>
+                        </li>
+                        <li>
+                            <input
+                                type="radio"
+                                id="field-block1"
+                                name="fields[block]"
+                                value="1"<?php echo $chk1; ?> />
+                            <label for="field-block1"><?php echo Lang::txt('JYes'); ?></label>
+                        </li>
                     </ul>
                 </fieldset>
             </div>
 
-            <div class="input-wrap" data-hint="<?php echo Lang::txt('Approved User::User approval status. Users not approved are as such because registration requires admin approval.'); ?>">
+            <?php $approvalHint = Lang::txt('Approved User::User approval status.'
+                . ' Users not approved are as such because registration requires admin approval.'); ?>
+            <div class="input-wrap" data-hint="<?php echo $approvalHint; ?>">
                 <label id="field_approved-lbl" for="field_approved"><?php echo Lang::txt('Approved User'); ?></label>
                 <select id="field_approved" name="fields[approved]">
                     <option value="0"<?php if ($this->profile->get('approved') == 0) {
@@ -217,32 +312,51 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                         echo ' selected="selected"';
                                      } ?>><?php echo Lang::txt('Automatically approved'); ?></option>
                 </select>
-                <span class="hint"><?php echo Lang::txt('Approved User::User approval status. Users not approved are as such because registration requires admin approval.'); ?></span>
+                <span class="hint"><?php echo $approvalHint; ?></span>
             </div>
 
             <div class="input-wrap">
                 <?php if ($this->profile->get('email')) : ?>
                     <?php
                     if ($this->profile->get('activation') == 1) {
-                        $confirmed = '<label for="activation"><input type="checkbox" name="activation" id="activation" value="1" checked="checked" /> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED') . '</label>';
+                        $confirmed = '<label for="activation"><input
+                            type="checkbox"
+                            name="activation"
+                            id="activation"
+                            value="1"
+                            checked="checked"/> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED') . '</label>';
                     } elseif ($this->profile->get('activation') == 2) {
-                        $confirmed = Lang::txt('COM_MEMBERS_FIELD_EMAIL_GRANDFATHERED') . '<input type="hidden" name="activation" id="activation" value="2" />';
+                        $confirmed = Lang::txt('COM_MEMBERS_FIELD_EMAIL_GRANDFATHERED')
+                            . '<input type="hidden" name="activation" id="activation" value="2" />';
                     } elseif ($this->profile->get('activation') == 3) {
-                        $confirmed = Lang::txt('COM_MEMBERS_FIELD_EMAIL_DOMAIN_SUPPLIED') . '<input type="hidden" name="activation" id="activation" value="3" />';
+                        $confirmed = Lang::txt('COM_MEMBERS_FIELD_EMAIL_DOMAIN_SUPPLIED')
+                            . '<input type="hidden" name="activation" id="activation" value="3" />';
 
                         if ($lnks = Hubzero\Auth\Link::find_by_user_id($this->profile->get('id'))) {
                             $confirmed .= '<fieldset class="radio authenticators">';
                             $confirmed .= '<ul>';
                             foreach ($lnks as $lnk) {
-                                $confirmed .= '<li>' . Lang::txt('COM_MEMBERS_AUTHENTICATOR') . ': <span class="authenticator">' . $lnk['auth_domain_name'] . '</span></li>';
+                                $confirmed .= '<li>'
+                                    . Lang::txt('COM_MEMBERS_AUTHENTICATOR')
+                                    . ': <span class="authenticator">'
+                                    . $lnk['auth_domain_name']
+                                    . '</span></li>';
                             }
                             $confirmed .= '</ul>';
                             $confirmed .= '</fieldset>';
                         }
                     } elseif ($this->profile->get('activation') < 0) {
                         if ($this->profile->get('email')) {
-                            $confirmed  = '<span class="unconfirmed">' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_AWAITING_CONFIRMATION') . '<br />[code: ' . -$this->profile->get('activation') . ']</span>';
-                            $confirmed .= '<label for="activation"><input type="checkbox" name="activation" id="activation" value="1" /> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
+                            $confirmed  = '<span class="unconfirmed">'
+                                . Lang::txt('COM_MEMBERS_FIELD_EMAIL_AWAITING_CONFIRMATION')
+                                . '<br />[code: '
+                                . -$this->profile->get('activation')
+                                . ']</span>';
+                            $confirmed .= '<label for="activation"><input
+                                type="checkbox"
+                                name="activation"
+                                id="activation"
+                                value="1"/> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
                             $return = base64_encode(Route::url(
                                 'index.php?option=' . $this->option
                                     . '&controller=' . $this->controller
@@ -260,12 +374,21 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
                                 . Session::getFormToken() . '=1'
                                 . '&return=' . $return
                             );
-                            $confirmed .= '<div class="input-wrap"><a href="' . $confirmLink . '" class="button">' . Lang::txt('COM_MEMBERS_RESEND_CONFIRM') . '</a></div>';
+                            $confirmed .= '<div class="input-wrap"><a href="'
+                                . $confirmLink
+                                . '" class="button">'
+                                . Lang::txt('COM_MEMBERS_RESEND_CONFIRM')
+                                . '</a></div>';
                         } else {
                             $confirmed  = Lang::txt('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE');
                         }
                     } else {
-                        $confirmed  = '[' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_UNKNOWN_STATUS') . '] <label for="activation"><input type="checkbox" name="activation" id="activation" value="1" /> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
+                        $confirmed = '['
+                            . Lang::txt('COM_MEMBERS_FIELD_EMAIL_UNKNOWN_STATUS')
+                            . '] <label for="activation"><input type="checkbox"'
+                            . ' name="activation" id="activation" value="1" /> '
+                            . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM')
+                            . '</label>';
                     }
                     echo $confirmed;
                     ?>
@@ -278,16 +401,32 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
 
             <?php if ($this->profile->get('id') && Plugin::isEnabled('system', 'spamjail')) : ?>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_SPAM_COUNT_HINT'); ?>">
-                    <label id="field_approved-lbl" for="field-reputation"><?php echo Lang::txt('COM_MEMBERS_SPAM_COUNT'); ?></label>
+                    <label
+                        id="field_approved-lbl"
+                        for="field-reputation"><?php echo Lang::txt('COM_MEMBERS_SPAM_COUNT'); ?></label>
                     <div class="input-modal">
                         <span class="input-cell">
-                            <input type="text" name="spam_count" id="field-reputation" value="<?php echo $this->escape($this->profile->reputation->get('spam_count', 0)); ?>" />
+                            <input
+                                type="text"
+                                name="spam_count"
+                                id="field-reputation"
+                                value="<?php echo $this->escape($this->profile->reputation->get('spam_count', 0)); ?>"/>
                         </span>
                         <span class="input-cell">
-                            <a class="button" href="#field-reputation" onclick="document.getElementById('field-reputation').value='0';Hubzero.submitbutton('apply');"><?php echo Lang::txt('COM_MEMBERS_RESET'); ?></a>
+                            <?php $val = Lang::txt('COM_MEMBERS_RESET'); ?>
+                            <?php $onclick = "document.getElementById('field-reputation')"
+                                . ".value='0';Hubzero.submitbutton('apply');"; ?>
+                            <a
+                                class="button"
+                                href="#field-reputation"
+                                onclick="<?php echo $onclick; ?>"><?php echo $val; ?></a>
                         </span>
                     </div>
-                    <?php if ($this->profile->reputation->get('spam_count', 0) > Plugin::params('system', 'spamjail')->get('user_count', 10)) : ?>
+                    <?php
+                    $spamCount = $this->profile->reputation->get('spam_count', 0);
+                    $spamLimit = Plugin::params('system', 'spamjail')->get('user_count', 10);
+                    ?>
+                    <?php if ($spamCount > $spamLimit) : ?>
                         <p class="warning"><?php echo Lang::txt('COM_MEMBERS_SPAM_COUNT_EXCEEDED'); ?></p>
                     <?php endif; ?>
                 </div>
@@ -299,7 +438,8 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
         $data = new Hubzero\Config\Registry();
         $data->set('params', $this->profile->params->toArray());
         $form = new Hubzero\Form\Form('fields', array('control' => 'fields'));
-        $form->load(Hubzero\Form\Form::getXML(Component::path('com_members') . DS . 'models' . DS . 'forms' . DS . 'user.xml', true));
+        $form->load(Hubzero\Form\Form::getXML(Component::path('com_members') . DS . 'models' . DS . 'forms' . DS .
+        'user.xml', true));
         $form->bind($data);
 
         $fieldsets = $form->getFieldsets();

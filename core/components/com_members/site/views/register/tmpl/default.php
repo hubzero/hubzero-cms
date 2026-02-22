@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -39,7 +37,8 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
             if (!empty($this->xregistration->_missing)) {
                 ?>
                 <div class="help">
-                    <?php echo $this->sitename; ?> requires additional registration information before your account can be used.<br />
+                    <?php echo $this->sitename; ?> requires additional registration
+                    information before your account can be used.<br />
                     All fields marked <span class="required">required</span> must be filled in.
                 </div>
                 <?php
@@ -55,7 +54,14 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                 ?>
                 <div class="help">
                     <h4>How do I change my password?</h4>
-                    <p>Passwords can be changed with <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&task=changepassword'); ?>" title="Change password form">this form</a>.</p>
+                    <?php
+                    $chgPassUrl = Route::url(
+                        'index.php?option=com_members&id='
+                        . User::get('id') . '&task=changepassword'
+                    );
+                    ?>
+                    <p>Passwords can be changed with
+                        <a href="<?php echo $chgPassUrl; ?>" title="Change password form">this form</a>.</p>
                 </div>
                 <?php
             }
@@ -112,8 +118,16 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                     $html = $refl->getMethod('onRenderOption')->invoke(null);
                     $provider_html .= is_array($html) ? implode("\n", $html) : $html;
                 } else {
-                    $provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']) . '">';
-                    $provider_html .= '<div class="signin">' . Lang::txt('COM_MEMBERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
+                    $provider_html .= '<a class="'
+                        . $a['name']
+                        . ' account" href="'
+                        . Route::url('index
+                        . php?option=com_users&view=login&authenticator='
+                        . $a['name'])
+                        . '">';
+                    $provider_html .= '<div class="signin">'
+                        . Lang::txt('COM_MEMBERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display'])
+                        . '</div>';
                     $provider_html .= '</a>';
                 }
             }
@@ -121,8 +135,10 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
             if (!empty($provider_html)) {
                 ?>
                 <div class="explaination">
-                    <p class="info">You can choose to log in via one of these services, and we'll help you fill in the info below!</p>
-                    <p>Already have an account? <a href="<?php echo Route::url('index.php?option=com_login'); ?>">Log in here.</a></p>
+                    <p class="info">You can choose to log in via one of these services,
+                        and we'll help you fill in the info below!</p>
+                    <?php $href = Route::url('index.php?option=com_login'); ?>
+                    <p>Already have an account? <a href="<?php echo $href; ?>">Log in here.</a></p>
                 </div>
                 <fieldset>
                     <legend>Connect With</legend>
@@ -143,10 +159,21 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 
         if (($this->task == 'create' || $this->task == 'proxycreate') && $emailusers) { ?>
             <div class="error">
-                <p>The email address "<?php echo $this->escape($this->registration['email']); ?>" is already registered. If you have lost or forgotten this <?php echo $this->sitename; ?> login information, we can help you recover it:</p>
-                <p class="submit"><a href="<?php echo Route::url('index.php?option=com_members&task=remind'); ?>" class="btn btn-danger">Email Existing Account Information</a>
-                <p>If you are aware you already have another account registered to this email address, and are requesting another account because you need more resources, <?php echo $this->sitename; ?> would be happy to work with you to raise your resource limits instead:</p>
-                <p class="submit"><a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>" class="btn btn-danger">Submit Request to Raise Existing Limits</a></p>
+                <p>The email address "<?php echo $this->escape($this->registration['email']); ?>"
+                    is already registered. If you have lost or forgotten this
+                    <?php echo $this->sitename; ?> login information, we can help you recover it:</p>
+                <?php $href = Route::url('index.php?option=com_members&task=remind'); ?>
+                <p class="submit"><a
+                    href="<?php echo $href; ?>"
+                    class="btn btn-danger">Email Existing Account Information</a>
+                <p>If you are aware you already have another account registered to this
+                    email address, and are requesting another account because you need more
+                    resources, <?php echo $this->sitename; ?> would be happy to work with you
+                    to raise your resource limits instead:</p>
+                <?php $href = Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>
+                <p class="submit"><a
+                    href="<?php echo $href; ?>"
+                    class="btn btn-danger">Submit Request to Raise Existing Limits</a></p>
             </div>
         <?php } ?>
 
@@ -156,7 +183,8 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 
                 <?php if ($this->showMissing && !empty($this->xregistration->_missing)) : ?>
                     <?php if ($this->task == 'update') : ?>
-                        <br />We are missing some vital information regarding your account! Please confirm the information below so we can better serve you. Thank you!
+                        <br />We are missing some vital information regarding your account!
+                        Please confirm the information below so we can better serve you. Thank you!
                     <?php else : ?>
                         <br />Missing required information:
                     <?php endif; ?>
@@ -169,7 +197,10 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
             </div>
         <?php endif; ?>
 
-        <?php if ($this->registrationUsername != Field::STATE_HIDDEN || $this->registrationPassword != Field::STATE_HIDDEN) { // Login information ?>
+        <?php if (
+        $this->registrationUsername != Field::STATE_HIDDEN
+            || $this->registrationPassword != Field::STATE_HIDDEN
+) { // Login info ?>
             <div class="explaination">
                 <p><?php echo Lang::txt('COM_MEMBERS_REGISTER_CANNOT_CHANGE_USERNAME'); ?></p>
 
@@ -186,46 +217,102 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                             <label for="userlogin">
                                 <?php Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?><br />
                                 <?php echo $this->escape($this->registration['login']); ?>
-                                <input name="login" id="userlogin" class="form-control" type="hidden" value="<?php echo $this->escape($this->registration['login']); ?>" />
+                                <input
+                                    name="login"
+                                    id="userlogin"
+                                    class="form-control"
+                                    type="hidden"
+                                    value="<?php echo $this->escape($this->registration['login']); ?>"/>
                             </label>
                         </div>
                     <?php } elseif ($this->registrationUsername != Field::STATE_HIDDEN) { ?>
                         <div class="form-group">
-                            <label for="userlogin" <?php echo !empty($this->xregistration->_invalid['login']) ? 'class="fieldWithErrors"' : ''; ?>>
-                                <?php echo Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?> <?php echo $this->registrationUsername == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
-                                <input name="login" id="userlogin" class="form-control" type="text" maxlength="32" value="<?php echo $this->escape($this->registration['login']); ?>" />
-                                <p class="hint" id="usernameHint"><?php echo Lang::txt('COM_MEMBERS_REGISTER_USERNAME_HINT'); ?></p>
-                                <?php echo !empty($this->xregistration->_invalid['login']) ? '<span class="error">' . $this->xregistration->_invalid['login'] . '</span>' : ''; ?>
+                            <?php $loginErr = !empty($this->xregistration->_invalid['login']) ?
+                                'class="fieldWithErrors"' : ''; ?>
+                            <label for="userlogin" <?php echo $loginErr; ?>>
+                                <?php echo Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?>
+                                <?php
+                                $reqTxt = Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED');
+                                echo $this->registrationUsername == Field::STATE_REQUIRED
+                                    ? '<span class="required">' . $reqTxt . '</span>'
+                                    : '';
+                                ?>
+                                <input
+                                    name="login"
+                                    id="userlogin"
+                                    class="form-control"
+                                    type="text"
+                                    maxlength="32"
+                                    value="<?php echo $this->escape($this->registration['login']); ?>"/>
+                                <p
+                                    class="hint"
+                                    id="usernameHint"><?php echo Lang::txt('COM_MEMBERS_REGISTER_USERNAME_HINT'); ?></p>
+                                <?php echo !empty($this->xregistration->_invalid['login']) ? '<span class="error">'
+                                    . $this->xregistration->_invalid['login']
+                                    . '</span>' : ''; ?>
                             </label>
                         </div>
                     <?php } ?>
 
                 <?php if ($this->registrationPassword != Field::STATE_HIDDEN) { ?>
                         <div class="grid">
-                            <div class="col span<?php echo $this->registrationConfirmPassword != Field::STATE_HIDDEN ? '6' : '12'; ?>">
+                            <?php
+                            $passSpan = $this->registrationConfirmPassword != Field::STATE_HIDDEN ? '6' : '12';
+                            $passInvalid = !empty($this->xregistration->_invalid['password'])
+                                && !is_array($this->xregistration->_invalid['password']);
+                            $passClass = $passInvalid ? ' class="fieldWithErrors"' : '';
+                            ?>
+                            <div class="col span<?php echo $passSpan; ?>">
                                 <div class="form-group">
-                                    <label for="password"<?php echo !empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password'])
-                                                ? ' class="fieldWithErrors"'
-                                                : ''; ?>>
-                                        <?php echo Lang::txt('COM_MEMBERS_REGISTER_PASSWORD'); ?> <?php if ($this->registrationPassword == Field::STATE_REQUIRED) {
-                                            echo '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>';
+                                    <label for="password"<?php echo $passClass; ?>>
+                                        <?php echo Lang::txt('COM_MEMBERS_REGISTER_PASSWORD'); ?>
+                                        <?php if ($this->registrationPassword == Field::STATE_REQUIRED) {
+                                            echo '<span class="required">'
+                                                . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED')
+                                                . '</span>';
                                         } ?>
-                                        <input name="password" id="password" class="form-control" type="password" value="<?php echo $this->escape($this->registration['password']); ?>" autocomplete="off" />
-                                        <?php echo !empty($this->xregistration->_invalid['password']) && !is_array($this->xregistration->_invalid['password'])
-                                                    ? '<span class="error">' . $this->xregistration->_invalid['password'] . '</span>'
-                                                    : ''; ?>
+                                        <input
+                                            name="password"
+                                            id="password"
+                                            class="form-control"
+                                            type="password"
+                                            value="<?php echo $this->escape($this->registration['password']); ?>"
+                                            autocomplete="off"/>
+                                        <?php if ($passInvalid) {
+                                            echo '<span class="error">'
+                                                . $this->xregistration->_invalid['password']
+                                                . '</span>';
+                                        } ?>
                                     </label>
                                 </div>
                             </div>
                             <?php if ($this->registrationConfirmPassword != Field::STATE_HIDDEN) { ?>
+                                <?php $confPassErr = !empty($this->xregistration->_invalid['confirmPassword']) ? '
+                                    class="fieldWithErrors"' : ''; ?>
                                 <div class="col span6 omega">
                                     <div class="form-group">
-                                        <label for="password2"<?php echo !empty($this->xregistration->_invalid['confirmPassword']) ? ' class="fieldWithErrors"' : ''; ?>>
-                                            <?php echo Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_PASSWORD'); ?> <?php if ($this->registrationConfirmPassword == Field::STATE_REQUIRED) {
-                                                echo '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>';
+                                        <label for="password2"<?php echo $confPassErr; ?>>
+                                            <?php echo Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_PASSWORD'); ?>
+                                            <?php if ($this->registrationConfirmPassword == Field::STATE_REQUIRED) {
+                                                echo '<span class="required">'
+                                                    . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED')
+                                                    . '</span>';
                                             } ?>
-                                            <input name="password2" class="form-control" id="password2" type="password" value="<?php echo $this->escape($this->registration['confirmPassword']); ?>" autocomplete="off" />
-                                            <?php echo !empty($this->xregistration->_invalid['confirmPassword']) ? '<span class="error">' . $this->xregistration->_invalid['confirmPassword'] . '</span>' : ''; ?>
+                                            <?php $confPassVal = $this->escape($this->registration['confirmPassword']);
+                                            ?>
+                                            <input
+                                                name="password2"
+                                                class="form-control"
+                                                id="password2"
+                                                type="password"
+                                                value="<?php echo $confPassVal; ?>"
+                                                autocomplete="off"
+                                            />
+                                            <?php if (!empty($this->xregistration->_invalid['confirmPassword'])) {
+                                                echo '<span class="error">'
+                                                    . $this->xregistration->_invalid['confirmPassword']
+                                                    . '</span>';
+                                            } ?>
                                         </label>
                                     </div>
                                 </div>
@@ -238,14 +325,25 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                                     foreach ($this->password_rules as $rule) {
                                         if (!empty($rule)) {
                                             $err = '';
-                                            if (!empty($this->xregistration->_invalid['password']) && is_array($this->xregistration->_invalid['password'])) {
+                                            if (
+                                                !empty($this->xregistration->_invalid['password'])
+                                                && is_array($this->xregistration->_invalid['password'])
+                                            ) {
                                                 $err = in_array($rule, $this->xregistration->_invalid['password']);
                                             }
 
-                                            echo '<li' . ($err ? ' class="error"' : ' class="empty"') . '>' . $rule . '</li>' . "\n";
+                                            echo '<li'
+                                                . ($err ? ' class="error"' : ' class="empty"')
+                                                . '>'
+                                                . $rule
+                                                . '</li>'
+                                                . "\n";
                                         }
                                     }
-                                    if (!empty($this->xregistration->_invalid['password']) && is_array($this->xregistration->_invalid['password'])) {
+                                    if (
+                                        !empty($this->xregistration->_invalid['password'])
+                                        && is_array($this->xregistration->_invalid['password'])
+                                    ) {
                                         foreach ($this->xregistration->_invalid['password'] as $msg) {
                                             if (!in_array($msg, $this->password_rules)) {
                                                 echo '<li class="error">' . $msg . '</li>' . "\n";
@@ -261,7 +359,10 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
             <div class="clear"></div>
         <?php } ?>
 
-        <?php if ($this->registrationFullname != Field::STATE_HIDDEN || $this->registrationEmail != Field::STATE_HIDDEN) { ?>
+        <?php if (
+        $this->registrationFullname != Field::STATE_HIDDEN
+            || $this->registrationEmail != Field::STATE_HIDDEN
+) { ?>
             <div class="explaination">
                 <?php if ($this->task == 'create') { ?>
                     <p><?php echo Lang::txt('COM_MEMBERS_REGISTER_ACTIVATION_EMAIL_HINT'); ?></p>
@@ -274,8 +375,12 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 
                 <?php if ($this->registrationFullname != Field::STATE_HIDDEN) { ?>
                     <?php
-                    $required = ($this->registrationFullname == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '';
-                    $message = (!empty($this->xregistration->_invalid['name'])) ? '<p class="error">' . $this->xregistration->_invalid['name'] . '</p>' : '';
+                    $required = ($this->registrationFullname == Field::STATE_REQUIRED) ? '<span class="required">'
+                        . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED')
+                        . '</span>' : '';
+                    $message = (!empty($this->xregistration->_invalid['name'])) ? '<p class="error">'
+                        . $this->xregistration->_invalid['name']
+                        . '</p>' : '';
                     $fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
                     $givenName  = '';
@@ -296,7 +401,17 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                             <div class="form-group">
                                 <label for="first-name"<?php echo $fieldclass; ?>>
                                     <?php echo Lang::txt('COM_MEMBERS_REGISTER_FIRST_NAME'); ?> <?php echo $required; ?>
-                                    <input type="text" class="form-control" name="name[first]" id="first-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($givenName)); ?>" />
+                                    <?php
+                                    $firstVal = $this->escape(
+                                        \Hubzero\Utility\Sanitize::cleanProperName($givenName)
+                                    );
+                                    ?>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="name[first]"
+                                        id="first-name"
+                                        value="<?php echo $firstVal; ?>" />
                                 </label>
                             </div>
                         </div>
@@ -304,7 +419,17 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                             <div class="form-group">
                                 <label for="middle-name">
                                     <?php echo Lang::txt('COM_MEMBERS_REGISTER_MIDDLE_NAME'); ?>
-                                    <input type="text" class="form-control" name="name[middle]" id="middle-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($middleName)); ?>" />
+                                    <?php
+                                    $midVal = $this->escape(
+                                        \Hubzero\Utility\Sanitize::cleanProperName($middleName)
+                                    );
+                                    ?>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="name[middle]"
+                                        id="middle-name"
+                                        value="<?php echo $midVal; ?>" />
                                 </label>
                             </div>
                         </div>
@@ -312,7 +437,13 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                             <div class="form-group">
                                 <label for="last-name"<?php echo $fieldclass; ?>>
                                     <?php echo Lang::txt('COM_MEMBERS_REGISTER_LAST_NAME'); ?> <?php echo $required; ?>
-                                    <input type="text" class="form-control" name="name[last]" id="last-name" value="<?php echo $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($surname)); ?>" />
+                                    <?php $val = $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($surname)); ?>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        name="name[last]"
+                                        id="last-name"
+                                        value="<?php echo $val; ?>"/>
                                 </label>
                             </div>
                         </div>
@@ -320,15 +451,37 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                     <?php echo ($message) ? $message . "\n" : ''; ?>
                 <?php } ?>
 
-                <?php if ($this->registrationEmail != Field::STATE_HIDDEN || $this->registrationConfirmEmail != Field::STATE_HIDDEN) { ?>
+                <?php if (
+                $this->registrationEmail != Field::STATE_HIDDEN
+                    || $this->registrationConfirmEmail != Field::STATE_HIDDEN
+) { ?>
                     <div class="grid">
                         <?php if ($this->registrationEmail != Field::STATE_HIDDEN) { ?>
                             <div class="col span6">
                                 <div class="form-group">
-                                    <label for="email"<?php echo !empty($this->xregistration->_invalid['email']) ? ' class="fieldWithErrors"' : ''; ?>>
-                                        <?php echo Lang::txt('COM_MEMBERS_REGISTER_VALID_EMAIL'); ?> <?php echo $this->registrationEmail == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
-                                        <input class="form-control" name="email" id="email" type="email" value="<?php echo $this->escape($this->registration['email']); ?>" />
-                                        <?php echo !empty($this->xregistration->_invalid['email']) ? '<span class="error">' . $this->xregistration->_invalid['email'] . '</span>' : ''; ?>
+                                    <label for="email"<?php echo !empty($this->xregistration->_invalid['email']) ? '
+                                        class="fieldWithErrors"' : ''; ?>>
+                                        <?php $val = Lang::txt('COM_MEMBERS_REGISTER_VALID_EMAIL'); ?>
+                                        <?php
+                                        $reqTxt = Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED');
+                                        $reqSpan = ($this->registrationEmail == Field::STATE_REQUIRED)
+                                            ? '<span class="required">' . $reqTxt . '</span>'
+                                            : '';
+                                        ?>
+                                        <?php echo $val; ?> <?php echo $reqSpan; ?>
+                                        <input
+                                            class="form-control"
+                                            name="email"
+                                            id="email"
+                                            type="email"
+                                            value="<?php echo $this->escape($this->registration['email']); ?>"/>
+                                        <?php
+                                        $val = !empty($this->xregistration->_invalid['email']) ? '<span class="error">'
+                                            . $this->xregistration->_invalid['email']
+                                            . '</span>' : ''
+                                        ;
+                                        ?>
+                                        <?php echo $val; ?>
                                     </label>
                                 </div>
                             </div>
@@ -341,10 +494,28 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                                 }
                                 ?>
                                 <div class="form-group">
-                                    <label for="email2"<?php echo !empty($this->xregistration->_invalid['confirmEmail']) ? ' class="fieldWithErrors"' : ''; ?>>
-                                        <?php echo Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_EMAIL'); ?> <?php echo ($this->registrationConfirmEmail == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
-                                        <input class="form-control" name="email2" id="email2" type="email" value="<?php echo $this->escape($this->registration['confirmEmail']); ?>" />
-                                        <?php echo !empty($this->xregistration->_invalid['confirmEmail']) ? '<span class="error">' . $this->xregistration->_invalid['confirmEmail'] . '</span>' : ''; ?>
+                                    <label for="email2"<?php echo !empty($this->xregistration->_invalid['confirmEmail'])
+                                        ? ' class="fieldWithErrors"' : ''; ?>>
+                                        <?php $val = Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_EMAIL'); ?>
+                                        <?php
+                                        $reqTxt = Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED');
+                                        $reqSpan = ($this->registrationConfirmEmail == Field::STATE_REQUIRED)
+                                            ? '<span class="required">' . $reqTxt . '</span>'
+                                            : '';
+                                        ?>
+                                        <?php echo $val; ?> <?php echo $reqSpan; ?>
+                                        <input
+                                            class="form-control"
+                                            name="email2"
+                                            id="email2"
+                                            type="email"
+                                            value="<?php echo $this->escape($this->registration['confirmEmail']); ?>"/>
+                                        <?php
+                                        $confirmErr = $this->xregistration->_invalid['confirmEmail'] ?? '';
+                                        echo !empty($confirmErr)
+                                            ? '<span class="error">' . $confirmErr . '</span>'
+                                            : '';
+                                        ?>
                                     </label>
                                 </div>
                             </div>
@@ -353,16 +524,30 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 
                     <?php if ($this->registrationEmail != Field::STATE_HIDDEN) { ?>
                         <?php if ($this->task == 'proxycreate') { ?>
-                            <p class="warning">Important! The user <strong>MUST</strong> click on the email confirmation link that you will send them in order for them to start using the account you have created for them.</p>
+                            <p class="warning">
+                                Important! The user <strong>MUST</strong> click on the email confirmation link that you
+                                will send them in order for them to start using the account you have created for them.
+                            </p>
                         <?php } elseif ($this->task == 'create') { ?>
                             <?php
                             $usersConfig    = Component::params('com_members');
                             $useractivation = $usersConfig->get('useractivation', 1);
                             if ($useractivation != 0) { ?>
-                                <p class="warning"><?php echo Lang::txt('COM_MEMBERS_REGISTER_YOU_MUST_CONFIRM_EMAIL', \Hubzero\Utility\Str::obfuscate(Config::get('mailfrom'))); ?></p>
+                                <?php
+                                $val = Lang::txt(
+                                    'COM_MEMBERS_REGISTER_YOU_MUST_CONFIRM_EMAIL',
+                                    \Hubzero\Utility\Str::obfuscate(Config::get('mailfrom'))
+                                );
+                                ?>
+                                <p class="warning"><?php echo $val; ?></p>
                             <?php } ?>
                         <?php } else { ?>
-                            <p class="warning">Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from <?php echo \Hubzero\Utility\Str::obfuscate(Config::get('mailfrom')); ?> in order to re-activate your account.</p>
+                            <?php $val = \Hubzero\Utility\Str::obfuscate(Config::get('mailfrom')); ?>
+                            <p class="warning">
+                                Important! If you change your e-mail address you <strong>must</strong> confirm receipt
+                                of the confirmation e-mail from <?php echo $val; ?> in order to re-activate your
+                                account.
+                            </p>
                         <?php } ?>
                     <?php } ?>
                 <?php } ?>
@@ -394,9 +579,14 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                 <?php foreach ($this->fields as $field) : ?>
                     <?php
 
-                    // Add in class for JS selector to conditionally retrieve data from RoR Api based on members option 'rorApi'
+                    // Add in class for JS selector to conditionally retrieve data from RoR Api based on members option
+                    // 'rorApi'
                     $rorApiBoolean = \Component::params('com_members')->get('rorApi');
-                    if (strtolower($field->get('name')) == "profile[organization]" && strtolower($field->get('type')) == "text" && $rorApiBoolean) {
+                    if (
+                        strtolower($field->get('name')) == "profile[organization]"
+                        && strtolower($field->get('type')) == "text"
+                        && $rorApiBoolean
+                    ) {
                         echo "<span class='hidden rorApiAvailable'></span>";
                     }
 
@@ -444,7 +634,10 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                             $events = $option->get('dependents');
 
                             if ($field->get('type') == 'dropdown') {
-                                $scripts[] = '		if ($(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                                $scripts[] = '		if ($(this)
+                                    . val() == "'
+                                    . ($option->value ? $option->value : $option->label)
+                                    . '") {';
                                 $show = array();
                                 foreach ($events as $s) {
                                     $show[] = '#input-' . $s;
@@ -455,13 +648,22 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                                 $scripts[] = '			$("' . implode(', ', $show) . '").hide();';
                                 $scripts[] = '		}';
 
-                                $toggle[] = '	if ($("#profile_' . $field->get('name') . '").val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                                $toggle[] = '	if ($("#profile_'
+                                    . $field->get('name')
+                                    . '")
+                                    . val() == "'
+                                    . ($option->value ? $option->value : $option->label)
+                                    . '") {';
                                 $toggle[] = '		$("' . implode(', ', $show) . '").show();';
                                 $toggle[] = '	} else {';
                                 $toggle[] = '		$("' . implode(', ', $show) . '").hide();';
                                 $toggle[] = '	}';
                             } else {
-                                $scripts[] = '		if ($(this).is(":checked") && $(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                                $scripts[] = '		if ($(this)
+                                    . is(":checked") && $(this)
+                                    . val() == "'
+                                    . ($option->value ? $option->value : $option->label)
+                                    . '") {';
                                 $show = array();
                                 foreach ($events as $s) {
                                     $show[] = '#input-' . $s;
@@ -472,7 +674,17 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                                 $scripts[] = '			$("' . implode(', ', $show) . '").hide();';
                                 $scripts[] = '		}';
 
-                                $toggle[] = '	if ($("#profile_' . $field->get('name') . $i . '").is(":checked") && $("#profile_' . $field->get('name') . $i . '").val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                                $toggle[] = '	if ($("#profile_'
+                                    . $field->get('name')
+                                    . $i
+                                    . '")
+                                    . is(":checked") && $("#profile_'
+                                    . $field->get('name')
+                                    . $i
+                                    . '")
+                                    . val() == "'
+                                    . ($option->value ? $option->value : $option->label)
+                                    . '") {';
                                 $toggle[] = '		$("' . implode(', ', $show) . '").show();';
                                 $toggle[] = '	} else {';
                                 $toggle[] = '		$("' . implode(', ', $show) . '").hide();';
@@ -502,9 +714,13 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                         $formfield->setValue($this->registration['_profile'][$field->get('name')]);
                     }
 
-                    $errors = (!empty($this->xregistration->_invalid[$field->get('name')])) ? '<span class="error">' . $this->xregistration->_invalid[$field->get('name')] . '</span>' : '';
+                    $errors = (!empty($this->xregistration->_invalid[$field->get('name')])) ? '<span class="error">'
+                        . $this->xregistration->_invalid[$field->get('name')]
+                        . '</span>' : '';
                     ?>
-                    <div class="form-group<?php echo $errors ? ' fieldWithErrors' : ''; ?>" id="input-<?php echo $field->get('name'); ?>">
+                    <div
+                        class="form-group<?php echo $errors ? ' fieldWithErrors' : ''; ?>"
+                        id="input-<?php echo $field->get('name'); ?>">
                         <?php
                         echo $formfield->label;
                         echo $formfield->input;
@@ -522,7 +738,9 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 
         <?php if ($this->registrationOptIn != Field::STATE_HIDDEN) { ?>
             <?php
-            $message = (!empty($this->xregistration->_invalid['sendEmail'])) ? '<span class="error">' . $this->xregistration->_invalid['sendEmail'] . '</span>' : '';
+            $message = (!empty($this->xregistration->_invalid['sendEmail'])) ? '<span class="error">'
+                . $this->xregistration->_invalid['sendEmail']
+                . '</span>' : '';
             $fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
             //define mail preference options
@@ -543,8 +761,25 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
 
                 <div class="form-group">
                     <label for="sendEmail"<?php echo $fieldclass; ?>>
-                        <input class="option form-check-input" type="checkbox" name="sendEmail" id="sendEmail" value="1" <?php echo ($this->registration['sendEmail'] == '1' || $this->registration['sendEmail'] == '-1') ? 'checked="checked"' : ''; ?> />
-                        <?php echo Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES'); ?> <?php echo ($this->registrationOptIn == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
+                        <?php
+                        $sendChecked = ($this->registration['sendEmail'] == '1'
+                            || $this->registration['sendEmail'] == '-1')
+                            ? 'checked="checked"' : '';
+                        ?>
+                        <input
+                            class="option form-check-input"
+                            type="checkbox"
+                            name="sendEmail"
+                            id="sendEmail"
+                            value="1"
+                            <?php echo $sendChecked; ?> />
+                        <?php $val = Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES'); ?>
+                        <?php
+                        $reqSpan = ($this->registrationOptIn == Field::STATE_REQUIRED)
+                            ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'
+                            : '';
+                        ?>
+                        <?php echo $val; ?> <?php echo $reqSpan; ?>
                     </label>
                     <?php echo $message; ?>
                 </div>
@@ -558,11 +793,22 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
             if (count($captchas) > 0) { ?>
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_MEMBERS_REGISTER_HUMAN_CHECK'); ?></legend>
-                    <?php echo (isset($this->xregistration->_invalid['captcha']) && !empty($this->xregistration->_invalid['captcha'])) ? '<span class="error">' . $this->xregistration->_invalid['captcha'] . '</span>' : ''; ?>
+                    <?php
+                    $captchaErr = (isset($this->xregistration->_invalid['captcha'])
+                        && !empty($this->xregistration->_invalid['captcha']))
+                        ? '<span class="error">' . $this->xregistration->_invalid['captcha'] . '</span>'
+                        : '';
+                    echo $captchaErr;
+                    ?>
             <?php } ?>
 
             <label id="botcheck-label" for="botcheck">
-                <?php echo Lang::txt('COM_MEMBERS_REGISTER_BOT_CHECK_LABEL'); ?> <?php echo $this->registrationCAPTCHA == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
+                <?php
+                    echo Lang::txt('COM_MEMBERS_REGISTER_BOT_CHECK_LABEL');
+                ?> <?php echo $this->registrationCAPTCHA == Field::STATE_REQUIRED ? '<span class="required">'
+                        . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED')
+                        . '</span>' : '';
+?>
                 <input type="text" class="form-control" name="botcheck" id="botcheck" value="" />
             </label>
 
@@ -577,15 +823,24 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
                 <legend><?php echo Lang::txt('COM_MEMBERS_REGISTER_TERMS_AND_CONDITIONS'); ?></legend>
 
                 <div class="form-group">
-                    <label for="usageAgreement"<?php echo (!empty($this->xregistration->_invalid['usageAgreement'])) ? ' class="fieldWithErrors"' : ''; ?>>
-                        <input type="checkbox" class="option form-check-input" id="usageAgreement" value="1" name="usageAgreement"<?php if ($this->registration['usageAgreement']) {
-                            echo ' checked="checked"';
-                                                                                                                                  } ?>/>
+                    <label for="usageAgreement"<?php echo (!empty($this->xregistration->_invalid['usageAgreement'])) ?
+                        ' class="fieldWithErrors"' : ''; ?>>
+                        <?php $touChecked = $this->registration['usageAgreement'] ? ' checked="checked"' : ''; ?>
+                        <input
+                            type="checkbox"
+                            class="option form-check-input"
+                            id="usageAgreement"
+                            value="1"
+                            name="usageAgreement"<?php echo $touChecked; ?>/>
                         <?php echo Lang::txt('COM_MEMBERS_REGISTER_TOS', Request::base(true)); ?>
-                        <?php echo ($this->registrationTOU == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
+                        <?php echo ($this->registrationTOU == Field::STATE_REQUIRED) ? '<span class="required">'
+                            . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED')
+                            . '</span>' : ''; ?>
                     </label>
 
-                    <?php echo (!empty($this->xregistration->_invalid['usageAgreement'])) ? '<span class="error">' . $this->xregistration->_invalid['usageAgreement'] . '</span>' : ''; ?>
+                    <?php echo (!empty($this->xregistration->_invalid['usageAgreement'])) ? '<span class="error">'
+                        . $this->xregistration->_invalid['usageAgreement']
+                        . '</span>' : ''; ?>
                 </div>
             </fieldset>
             <div class="clear"></div>
@@ -595,7 +850,11 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
         <?php } ?>
 
         <p class="submit">
-            <input type="submit" class="btn btn-success" name="<?php echo $this->task; ?>" value="<?php echo Lang::txt('COM_MEMBERS_REGISTER_BUTTON_' . strtoupper($this->task)); ?>" />
+            <input
+                type="submit"
+                class="btn btn-success"
+                name="<?php echo $this->task; ?>"
+                value="<?php echo Lang::txt('COM_MEMBERS_REGISTER_BUTTON_' . strtoupper($this->task)); ?>"/>
         </p>
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -604,6 +863,7 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
         <input type="hidden" name="act" value="submit" />
         <?php echo Html::input('token'); ?>
         <input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(Request::base(true), '/'); ?>" />
-        <input type="hidden" name="return" value="<?php echo urlencode($form_redirect); // urlencode is XSS protection added to this field, see ticket 1411 ?>" />
+        <?php // urlencode is XSS protection added to this field, see ticket 1411 ?>
+        <input type="hidden" name="return" value="<?php echo urlencode($form_redirect); ?>" />
     </form>
 </section><!-- / .main section -->

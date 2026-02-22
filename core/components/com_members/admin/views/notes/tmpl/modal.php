@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,8 @@
 Html::behavior('tooltip');
 ?>
 <div class="unotes">
-    <h2 class="modal-title"><?php echo Lang::txt('COM_MEMBERS_NOTES_FOR_USER', $this->user->get('name'), $this->user->get('id')); ?></h2>
+    <?php $val = Lang::txt('COM_MEMBERS_NOTES_FOR_USER', $this->user->get('name'), $this->user->get('id')); ?>
+    <h2 class="modal-title"><?php echo $val; ?></h2>
     <table class="adminlist">
         <tbody>
             <tr>
@@ -24,9 +23,23 @@ Html::behavior('tooltip');
         <li>
             <div class=" utitle">
                 <?php if ($row->get('subject')) : ?>
-                    <h4><?php echo Lang::txt('COM_MEMBERS_NOTE_N_SUBJECT', (int) $row->get('id'), $this->escape($row->get('subject'))); ?></h4>
+                    <?php
+                    $noteTxt = Lang::txt(
+                        'COM_MEMBERS_NOTE_N_SUBJECT',
+                        (int) $row->get('id'),
+                        $this->escape($row->get('subject'))
+                    );
+                    ?>
+                    <h4><?php echo $noteTxt; ?></h4>
                 <?php else : ?>
-                    <h4><?php echo Lang::txt('COM_MEMBERS_NOTE_N_SUBJECT', (int) $row->get('id'), Lang::txt('COM_MEMBERS_EMPTY_SUBJECT')); ?></h4>
+                    <?php
+                    $noteTxt = Lang::txt(
+                        'COM_MEMBERS_NOTE_N_SUBJECT',
+                        (int) $row->get('id'),
+                        Lang::txt('COM_MEMBERS_EMPTY_SUBJECT')
+                    );
+                    ?>
+                    <h4><?php echo $noteTxt; ?></h4>
                 <?php endif; ?>
             </div>
 

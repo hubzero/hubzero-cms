@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,8 @@ $this->css();
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <?php if ($this->rows) { ?>
         <table class="adminlist">
             <caption>Top Earners</caption>
@@ -52,7 +51,17 @@ $this->css();
                     <td><?php echo $row->earnings; ?></td>
                     <td><?php echo $row->balance; ?></td>
                     <td>
-                        <a class="icon-16-preview" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&uid=' . $row->uid); ?>">
+                        <?php
+                        $href = Route::url(
+                            'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&task=edit&uid='
+                            . $row->uid
+                        );
+                        ?>
+                        <a class="icon-16-preview" href="<?php echo $href; ?>">
                             <span>view</span>
                         </a>
                     </td>
@@ -69,7 +78,8 @@ $this->css();
 
     <?php if (count($this->stats) > 0) { ?>
         <table class="adminlist">
-            <caption>Economy Activity Stats as of <?php echo Date::of(Date::toSql())->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></caption>
+            <?php $asOf = Date::of(Date::toSql())->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
+            <caption>Economy Activity Stats as of <?php echo $asOf; ?></caption>
             <thead>
                 <tr>
                     <th scope="col" rowspan="2">Activity</th>
@@ -109,7 +119,16 @@ $this->css();
                 ?>
             </tbody>
         </table>
-        <!--<p>Distribute <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=royalty&auto=0'); ?>">Royalties</a> for current month.</p>//-->
+        <?php
+        $href = Route::url(
+            'index.php?option='
+            . $this->option
+            . '&controller='
+            . $this->controller
+            . '&task=royalty&auto=0'
+        );
+        ?>
+        <!--<p>Distribute <a href="<?php echo $href; ?>">Royalties</a> for current month.</p>//-->
     <?php } else { ?>
         <p>No summary information found.</p>
     <?php } ?>

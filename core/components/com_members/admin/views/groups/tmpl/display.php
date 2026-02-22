@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,17 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
     <?php } ?>
 
     <?php if ($canDo) { ?>
-        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id); ?>" method="post">
+        <?php
+        $href = Route::url(
+            'index.php?option='
+            . $this->option
+            . '&controller'
+            . $this->controller
+            . '&id='
+            . $this->id
+        );
+        ?>
+        <form action="<?php echo $href; ?>" method="post">
             <table>
                 <tbody>
                     <tr>
@@ -36,16 +44,28 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                                 <?php
                                 if ($this->rows) {
                                     foreach ($this->rows as $row) {
-                                        echo '<option value="' . $row->gidNumber . '">' . $row->description . ' (' . $row->cn . ')</option>' . "\n";
+                                        echo '<option value="'
+                                            . $row->gidNumber
+                                            . '">'
+                                            . $row->description
+                                            . ' ('
+                                            . $row->cn
+                                            . ')</option>'
+                                            . "\n";
                                     }
                                 }
                                 ?>
                             </select>
                             <select name="tbl">
-                                <option value="invitees"><?php echo Lang::txt('COM_MEMBERS_GROUPS_INVITEES'); ?></option>
-                                <option value="applicants"><?php echo Lang::txt('COM_MEMBERS_GROUPS_APPLICANTS'); ?></option>
-                                <option value="members" selected="selected"><?php echo Lang::txt('COM_MEMBERS_GROUPS_MEMBERS'); ?></option>
-                                <option value="managers"><?php echo Lang::txt('COM_MEMBERS_GROUPS_MANAGERS'); ?></option>
+                                <?php $text = Lang::txt('COM_MEMBERS_GROUPS_INVITEES'); ?>
+                                <option value="invitees"><?php echo $text; ?></option>
+                                <?php $text = Lang::txt('COM_MEMBERS_GROUPS_APPLICANTS'); ?>
+                                <option value="applicants"><?php echo $text; ?></option>
+                                <option
+                                    value="members"
+                                    selected="selected"><?php echo Lang::txt('COM_MEMBERS_GROUPS_MEMBERS'); ?></option>
+                                <?php $text = Lang::txt('COM_MEMBERS_GROUPS_MANAGERS'); ?>
+                                <option value="managers"><?php echo $text; ?></option>
                             </select>
 
                             <input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GROUPS_ADD'); ?>" />
@@ -57,7 +77,17 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
         <br />
     <?php } ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id); ?>" method="post">
+    <?php
+    $href = Route::url(
+        'index.php?option='
+        . $this->option
+        . '&controller'
+        . $this->controller
+        . '&id='
+        . $this->id
+    );
+    ?>
+    <form action="<?php echo $href; ?>" method="post">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
         <input type="hidden" name="tmpl" value="component" />
@@ -97,22 +127,45 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                         <tr>
                             <td>
                                 <?php if ($canDo && User::authorise('core.edit', 'com_groups')) { ?>
-                                    <a href="<?php echo Route::url('index.php?option=com_groups&controller=manage&task=edit&id=' . $group->cn); ?>" target="_parent">
-                                        <?php echo $this->escape($group->description) . ' (' . $this->escape($group->cn) . ')'; ?>
+                                    <?php
+                                    $href = Route::url(
+                                        'index.php?option=com_groups&controller=manage&task=edit&id='
+                                        . $group->cn
+                                    );
+                                    ?>
+                                    <a href="<?php echo $href; ?>" target="_parent">
+                                        <?php echo $this->escape($group->description)
+                                            . ' ('
+                                            . $this->escape($group->cn)
+                                            . ')'; ?>
                                     </a>
                                 <?php } else { ?>
-                                    <?php echo $this->escape($group->description) . ' (' . $this->escape($group->cn) . ')'; ?>
+                                    <?php echo $this->escape($group->description)
+                                        . ' ('
+                                        . $this->escape($group->cn)
+                                        . ')'; ?>
                                 <?php } ?>
                                 <?php
-                                $db->setQuery("SELECT * FROM `#__xgroups_memberoption` WHERE userid=" . $db->quote($this->id) . " AND gidNumber=" . $db->quote($group->gidNumber));
+                                $db->setQuery("SELECT * FROM `#__xgroups_memberoption` WHERE userid= "
+                                    . $db->quote($this->id)
+                                    . " AND gidNumber="
+                                    . $db->quote($group->gidNumber));
                                 $options = $db->loadObjectList();
                                 if ($options) {
                                     foreach ($options as $option) {
                                         ?>
                                         <div class="input-wrap">
-                                            <label for="memberoption-<?php echo $this->escape($option->id); ?>"><?php echo $this->escape($option->optionname); ?></label>
-                                            <input name="memberoption[<?php echo $this->escape($option->id); ?>]" id="memberoption-<?php echo $this->escape($option->id); ?>" size="3" value="<?php echo $this->escape($option->optionvalue); ?>" />
-                                            <input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_UPDATE'); ?>" />
+                                            <?php $val = $this->escape($option->optionname); ?>
+                                            <?php $val = $this->escape($option->id); ?>
+                                            <label for="memberoption-<?php echo $val; ?>"><?php echo $val; ?></label>
+                                            <input
+                                                name="memberoption[<?php echo $this->escape($option->id); ?>]"
+                                                id="memberoption-<?php echo $this->escape($option->id); ?>"
+                                                size="3"
+                                                value="<?php echo $this->escape($option->optionvalue); ?>"/>
+                                            <input
+                                                type="submit"
+                                                value="<?php echo Lang::txt('COM_MEMBERS_UPDATE'); ?>"/>
                                         </div>
                                         <?php
                                     }
@@ -139,7 +192,16 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                             </td>
                             <td>
                                 <?php if ($canDo) { ?>
-                                    <a class="state trash icon-trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&tmpl=component&id=' . $this->id . '&gid=' . $group->cn . '&' . Session::getFormToken() . '=1'); ?>">
+                                    <?php
+                                    $removeUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&controller=' . $this->controller
+                                        . '&task=remove&tmpl=component&id=' . $this->id
+                                        . '&gid=' . $group->cn
+                                        . '&' . Session::getFormToken() . '=1'
+                                    );
+                                    ?>
+                                    <a class="state trash icon-trash" href="<?php echo $removeUrl; ?>">
                                         <span><?php echo Lang::txt('COM_MEMBERS_GROUPS_REMOVE'); ?></span>
                                     </a>
                                 <?php } ?>

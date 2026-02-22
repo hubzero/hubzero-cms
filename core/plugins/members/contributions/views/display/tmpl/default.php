@@ -294,7 +294,7 @@ foreach ($this->results as $category) {
             $func = 'plgMembers' . ($row->section ? ucfirst($row->section) : '') . 'Out';
             // Check if a method exist (using old Plugin style)
             $catName = ucfirst($this->cats[$k]['category']);
-        $obj = 'Plugins\\Members\\' . $catName . '\\' . $catName;
+            $obj = 'Plugins\\Members\\' . $catName . '\\' . $catName;
 
             if (function_exists($func)) {
                 $html .= $func($row);

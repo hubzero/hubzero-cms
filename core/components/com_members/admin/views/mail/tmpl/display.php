@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +24,14 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" method="post" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $formAction; ?>"
+    name="adminForm"
+    method="post"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <p class="warning"><?php echo Lang::txt('COM_MEMBERS_MAIL_DO_NOT_USE_FOR_COMMERCIAL_USE'); ?></p>
     <div class="grid">
         <div class="col span5">

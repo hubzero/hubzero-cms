@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -52,7 +50,8 @@ hr {
 ');
 ?>
 <div id="media">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+    <?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+    <form action="<?php echo $formAction; ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
         <fieldset>
             <p>
                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -62,7 +61,8 @@ hr {
                 <input type="hidden" name="task" value="upload" />
                 <?php echo Html::input('token'); ?>
 
-                <label for="image"><?php echo Lang::txt('COM_MEMBERS_MEDIA_UPLOAD'); ?> <?php echo Lang::txt('COM_MEMBERS_MEDIA_WILL_REPLACE_EXISTING_IMAGE'); ?></label>
+                <?php $val = Lang::txt('COM_MEMBERS_MEDIA_WILL_REPLACE_EXISTING_IMAGE'); ?>
+                <label for="image"><?php echo Lang::txt('COM_MEMBERS_MEDIA_UPLOAD'); ?> <?php echo $val; ?></label>
                 <input type="file" name="upload" id="upload" size="17" />&nbsp;&nbsp;&nbsp;
                 <input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_MEDIA_UPLOAD'); ?>" />
             </p>
@@ -75,15 +75,33 @@ hr {
             <hr />
 
             <div class="img-preview">
-                <a class="icon-trash delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $this->profile->get('id') . '&file=profile.png&' . Session::getFormToken() . '=1&tmpl=' . Request::getCmd('tmpl')); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+                <?php
+                $removeUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                    . '&task=remove&id=' . $this->profile->get('id') . '&file=profile.png&'
+                    . Session::getFormToken() . '=1&tmpl=' . Request::getCmd('tmpl')
+                );
+                ?>
+                <?php $text = Lang::txt('JACTION_DELETE'); ?>
+                <a class="icon-trash delete" href="<?php echo $removeUrl; ?>"><?php echo $text; ?></a>
 
                 <p class="input-wrap align-center">
                     <span class="img-dimensions">50 x 50</span><br />
-                    <span class="img-wrap"><img src="<?php echo $this->profile->picture(0, true); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>" width="50" height="50" id="memberthumb" /></span>
+                    <span class="img-wrap"><img
+                        src="<?php echo $this->profile->picture(0, true); ?>"
+                        alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>"
+                        width="50"
+                        height="50"
+                        id="memberthumb"/></span>
                 </p>
                 <p class="input-wrap align-center">
                     <span class="img-dimensions">200 x 200</span><br />
-                    <span class="img-wrap"><img src="<?php echo $this->profile->picture(0, false); ?>" alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>" width="200" height="200" id="conimage" /></span>
+                    <span class="img-wrap"><img
+                        src="<?php echo $this->profile->picture(0, false); ?>"
+                        alt="<?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?>"
+                        width="200"
+                        height="200"
+                        id="conimage"/></span>
                 </p>
             </div>
         </fieldset>

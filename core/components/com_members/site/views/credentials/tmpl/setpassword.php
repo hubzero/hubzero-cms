@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,7 +19,8 @@ $this->js('setpassword')
 
 <section class="main section">
     <p class="error error-message"></p>
-    <form action="<?php echo Route::url('index.php?option=com_members&controller=credentials&task=settingpassword'); ?>" method="post" name="hubForm" id="hubForm">
+    <?php $formAction = Route::url('index.php?option=com_members&controller=credentials&task=settingpassword'); ?>
+    <form action="<?php echo $formAction; ?>" method="post" name="hubForm" id="hubForm">
         <fieldset>
             <legend><?php echo Lang::txt('COM_MEMBERS_CREDENTIALS_NEW_PASSWORD'); ?></legend>
 

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,7 +33,9 @@ $this->css()
         </thead>
         <tfoot>
             <tr class="summary">
-                <th colspan="6" class="numerical-data"><?php echo Lang::txt('COM_MEMBERS_ACTIVITY_TABLE1_TOTAL'); ?></th>
+                <th
+                    colspan="6"
+                    class="numerical-data"><?php echo Lang::txt('COM_MEMBERS_ACTIVITY_TABLE1_TOTAL'); ?></th>
                 <td><?php echo count($this->users); ?></td>
             </tr>
         </tfoot>
@@ -50,8 +50,22 @@ $this->css()
 
                     $html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
 
-                    $html .= "\t\t\t" . '<td class="textual-data">' . $this->escape(stripslashes($users[$userkey]['name'])) . '</td>' . "\n";
-                    $html .= "\t\t\t" . '<td class="textual-data"><a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $users[$userkey]['uidNumber']) . '">' . $this->escape($userkey) . '</td>' . "\n";
+                    $html .= "\t\t\t"
+                        . '<td class="textual-data">'
+                        . $this->escape(stripslashes($users[$userkey]['name']))
+                        . '</td>'
+                        . "\n";
+                    $html .= "\t\t\t"
+                        . '<td class="textual-data"><a href="'
+                        . Route::url('index
+                        . php?option='
+                        . $this->option
+                        . '&id='
+                        . $users[$userkey]['uidNumber'])
+                        . '">'
+                        . $this->escape($userkey)
+                        . '</td>'
+                        . "\n";
                     $html .= "\t\t\t" . '<td class="textual-data">';
                     switch ($users[$userkey]['orgtype']) {
                         case 'universitystudent':
@@ -97,11 +111,27 @@ $this->css()
                             break;
                     }
                     $html .= '</td>' . "\n";
-                    $html .= "\t\t\t" . '<td class="textual-data">' . $this->escape(stripslashes($users[$userkey]['org'])) . '</td>' . "\n";
-                    $html .= "\t\t\t" . '<td class="textual-data">' . $this->escape($users[$userkey]['countryresident']) . '</td>' . "\n";
+                    $html .= "\t\t\t"
+                        . '<td class="textual-data">'
+                        . $this->escape(stripslashes($users[$userkey]['org']))
+                        . '</td>'
+                        . "\n";
+                    $html .= "\t\t\t"
+                        . '<td class="textual-data">'
+                        . $this->escape($users[$userkey]['countryresident'])
+                        . '</td>'
+                        . "\n";
 
-                    $html .= "\t\t\t" . '<td class="textual-data">' . $this->escape($users[$userkey][0]['ip']) . '</td>' . "\n";
-                    $html .= "\t\t\t" . '<td class="textual-data">' . \Components\Members\Helpers\Html::valformat($users[$userkey][0]['idle'], 3) . '</td>' . "\n";
+                    $html .= "\t\t\t"
+                        . '<td class="textual-data">'
+                        . $this->escape($users[$userkey][0]['ip'])
+                        . '</td>'
+                        . "\n";
+                    $html .= "\t\t\t"
+                        . '<td class="textual-data">'
+                        . \Components\Members\Helpers\Html::valformat($users[$userkey][0]['idle'], 3)
+                        . '</td>'
+                        . "\n";
                     $html .= "\t\t" . '</tr>' . "\n";
                 }
             } else {
@@ -125,7 +155,9 @@ $this->css()
         </thead>
         <tfoot>
             <tr class="summary">
-                <th colspan="2" class="numerical-data"><?php echo Lang::txt('COM_MEMBERS_ACTIVITY_TABLE2_TOTAL'); ?></th>
+                <th
+                    colspan="2"
+                    class="numerical-data"><?php echo Lang::txt('COM_MEMBERS_ACTIVITY_TABLE2_TOTAL'); ?></th>
                 <td><?php echo count($this->guests); ?></td>
             </tr>
         </tfoot>
@@ -141,9 +173,17 @@ $this->css()
                 $guest['ip'] = ($guest['ip']) ? $guest['ip'] : Lang::txt('COM_MEMBERS_ACTIVITY_UNKNOWN');
 
                 $html .= "\t\t" . '<tr class="' . $cls . '">' . "\n";
-                $html .= "\t\t\t" . '<td class="textual-data">' . Lang::txt('COM_MEMBERS_ACTIVITY_GUEST') . '</td>' . "\n";
+                $html .= "\t\t\t"
+                    . '<td class="textual-data">'
+                    . Lang::txt('COM_MEMBERS_ACTIVITY_GUEST')
+                    . '</td>'
+                    . "\n";
                 $html .= "\t\t\t" . '<td class="textual-data">' . $this->escape($guest['ip']) . '</td>' . "\n";
-                $html .= "\t\t\t" . '<td class="textual-data">' . \Components\Members\Helpers\Html::valformat($guest['idle'], 3) . '</td>' . "\n";
+                $html .= "\t\t\t"
+                    . '<td class="textual-data">'
+                    . \Components\Members\Helpers\Html::valformat($guest['idle'], 3)
+                    . '</td>'
+                    . "\n";
                 $html .= "\t\t" . '</tr>' . "\n";
             }
         } else {

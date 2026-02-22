@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,10 +17,18 @@ $this->css();
 
 <section class="main section">
 
-    <form action="<?php echo Route::url($this->profile->link() . '&task=raiselimit'); ?>" method="post" name="hubForm" id="hubForm">
+    <form
+        action="<?php echo Route::url($this->profile->link() . '&task=raiselimit'); ?>"
+        method="post"
+        name="hubForm"
+        id="hubForm">
         <div class="explaination">
             <p class="info">
-                When you have time, please leave some <a href="<?php echo Route::url('index.php?option=com_feedback'); ?>">feedback</a>. We would like to know a little more about how you are using the site so that we can make improvements for everyone.
+                <?php $val = Route::url('index.php?option=com_feedback'); ?>
+                When you have time, please leave some
+                <a href="<?php echo $val; ?>">feedback</a>.
+                We would like to know a little more about how you are
+                using the site so that we can make improvements for everyone.
             </p>
         </div>
         <fieldset>
@@ -54,25 +60,42 @@ $this->css();
                     <tr>
                         <th>User Login:</th>
                         <td colspan="2">
-                            <a href="<?php echo Route::url($this->profile->link()); ?>"><?php echo $this->escape($this->profile->get('username')); ?></a>
-                            <input name="login" id="login" type="hidden" value="<?php echo $this->escape($this->profile->get('username'));?>" />
+                            <?php $val = $this->escape($this->profile->get('username')); ?>
+                            <a href="<?php echo Route::url($this->profile->link()); ?>"><?php echo $val; ?></a>
+                            <input
+                                name="login"
+                                id="login"
+                                type="hidden"
+                                value="<?php echo $this->escape($this->profile->get('username'));?>"/>
                         </td>
                     </tr>
                     <?php } ?>
                     <tr>
                         <th>Maximum Concurrent Sessions:</th>
                         <td><?php echo $this->jobs_allowed; ?></td>
-                        <td><span class="submit"><input type="submit" name="raiselimit[sessions]" id="raiselimitsessions" value="<?php echo $submit_button; ?>" /></span></td>
+                        <td><span class="submit"><input
+                            type="submit"
+                            name="raiselimit[sessions]"
+                            id="raiselimitsessions"
+                            value="<?php echo $submit_button; ?>"/></span></td>
                     </tr>
                     <tr>
                         <th>Online Disk Storage Limit:</th>
                         <td><?php echo $this->quota; ?></td>
-                        <td><span class="submit"><input type="submit" name="raiselimit[storage]" id="raiselimitstorage" value="<?php echo $submit_button; ?>" /></span></td>
+                        <td><span class="submit"><input
+                            type="submit"
+                            name="raiselimit[storage]"
+                            id="raiselimitstorage"
+                            value="<?php echo $submit_button; ?>"/></span></td>
                     </tr>
                     <tr>
                         <th>Maximum Online Meetings:</th>
                         <td><?php echo $this->max_meetings; ?></td>
-                        <td><span class="submit"><input type="submit" name="raiselimit[meetings]" id="raiselimitmeetings" value="<?php echo $submit_button; ?>" /></span></td>
+                        <td><span class="submit"><input
+                            type="submit"
+                            name="raiselimit[meetings]"
+                            id="raiselimitmeetings"
+                            value="<?php echo $submit_button; ?>"/></span></td>
                     </tr>
                 </tbody>
             </table>

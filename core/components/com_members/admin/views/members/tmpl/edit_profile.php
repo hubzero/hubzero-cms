@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -61,10 +59,17 @@ $fields = $form->getFieldset('basic');
                 <div class="grid">
                     <div class="col span9">
                         <?php
-                        echo '<div class="input-wrap" id="input-' . $field->fieldname . '" ' . ($field->description ? ' data-hint="' . $this->escape($field->description) . '"' : '') . '>';
+                        echo '<div
+                            class="input-wrap"
+                            id="input-' . $field->fieldname . '" ' . ($field->description ? '
+                            data-hint="' . $this->escape($field->description) . '"' : '') . '>';
                         if ($field->hidden) {
                             echo '<label for="profile_' . $field->fieldname . '">' . $field->fieldname . '</label>';
-                            echo '<input type="text" name="' . $field->name . '" id="profile_' . $field->fieldname . '" value="' . $this->escape($field->value) . '" />';
+                            echo '<input
+                                type="text"
+                                name="' . $field->name . '"
+                                id="profile_' . $field->fieldname . '"
+                                value="' . $this->escape($field->value) . '"/>';
                         } else {
                             echo $field->label;
                             echo $field->input;
@@ -74,7 +79,11 @@ $fields = $form->getFieldset('basic');
 
                             // Add in class for JS selector to conditionally retrieve data from RoR Api
                             $rorApiBoolean = \Component::params('com_members')->get('rorApi');
-                            if (strtolower($field->fieldname) == "organization" && strtolower($field->type) == "text" && $rorApiBoolean) {
+                            if (
+                                strtolower($field->fieldname) == "organization"
+                                && strtolower($field->type) == "text"
+                                && $rorApiBoolean
+                            ) {
                                 echo "<span class='hidden rorApiAvailable'></span>";
                             }
                         }
@@ -86,9 +95,21 @@ $fields = $form->getFieldset('basic');
                     </div>
                     <div class="col span3 omega">
                         <div class="input-wrap">
-                            <label for="field-access-<?php echo $field->fieldname; ?>"><?php echo Lang::txt('Access'); ?>:</label>
-                            <select name="profileaccess[<?php echo $field->fieldname; ?>]" id="field-access-<?php echo $field->fieldname; ?>">
-                                <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $access[$field->fieldname]); ?>
+                            <?php $text = Lang::txt('Access'); ?>
+                            <label for="field-access-<?php echo $field->fieldname; ?>"><?php echo $text; ?>:</label>
+                            <select
+                                name="profileaccess[<?php echo $field->fieldname; ?>]"
+                                id="field-access-<?php echo $field->fieldname; ?>">
+                                <?php
+                                $val = Html::select(
+                                    'options',
+                                    Html::access('assetgroups'),
+                                    'value',
+                                    'text',
+                                    $access[$field->fieldname]
+                                );
+                                ?>
+                                <?php echo $val; ?>
                             </select>
                         </div>
                     </div>
@@ -101,7 +122,18 @@ $fields = $form->getFieldset('basic');
             <legend><span><?php echo Lang::txt('COM_MEMBERS_MEDIA_PICTURE'); ?></span></legend>
 
             <?php if ($this->profile->get('id')) : ?>
-                <iframe height="420" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&id=' . $this->profile->get('id') . '&t=' . time()); ?>"></iframe>
+                <?php
+                $iframeSrc = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=media&tmpl=component&id='
+                    . $this->profile->get('id') . '&t=' . time()
+                );
+                ?>
+                <iframe
+                    height="420"
+                    name="filer"
+                    id="filer"
+                    src="<?php echo $iframeSrc; ?>"></iframe>
             <?php else : ?>
                 <p class="warning"><?php echo Lang::txt('COM_MEMBERS_PICTURE_ADDED_LATER'); ?></p>
             <?php endif; ?>
@@ -127,8 +159,29 @@ $fields = $form->getFieldset('basic');
                             foreach ($extrafields as $extrafield) {
                                 ?>
                                 <div class="input-wrap">
-                                    <label for="<?php echo $extrafield->get('link_id') . '_' . $extrafield->get('domain_key') . '_' . $extrafield->get('id'); ?>"><?php echo $this->escape($extrafield->get('domain_key')); ?></label>
-                                    <input type="text" name="<?php echo $extrafield->get('link_id') . '_' . $extrafield->get('domain_key') . '_' . $extrafield->get('id'); ?>" value="<?php echo $this->escape($extrafield->get('domain_value')); ?>" readonly="readonly" />
+                                    <?php
+                                    $val = $extrafield->get('link_id')
+                                        . '_'
+                                        . $extrafield->get('domain_key')
+                                        . '_'
+                                        . $extrafield->get('id')
+                                    ;
+                                    ?>
+                                    <?php $domainKey = $this->escape($extrafield->get('domain_key')); ?>
+                                    <label for="<?php echo $val; ?>"><?php echo $domainKey; ?></label>
+                                    <?php
+                                    $val = $extrafield->get('link_id')
+                                        . '_'
+                                        . $extrafield->get('domain_key')
+                                        . '_'
+                                        . $extrafield->get('id')
+                                    ;
+                                    ?>
+                                    <input
+                                        type="text"
+                                        name="<?php echo $val; ?>"
+                                        value="<?php echo $this->escape($extrafield->get('domain_value')); ?>"
+                                        readonly="readonly"/>
                                 </div>
                                 <?php
                             }

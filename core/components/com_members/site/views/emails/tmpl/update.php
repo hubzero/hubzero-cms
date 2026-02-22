@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,17 @@ defined('_HZEXEC_') or die();
 ?>
 Thank you for updating your account on <?php echo $this->sitename; ?>!
 
-Since you have changed your e-mail address you must click the following link to confirm your new email address and reactivate your account:
-<?php echo $this->baseURL . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email=' . urlencode($this->xprofile->get('email'))); ?>
+Since you have changed your e-mail address you must click the following
+link to confirm your new email address and reactivate your account:
+<?php echo $this->baseURL
+    . Route::url('index
+    . php?option='
+    . $this->option
+    . '&controller='
+    . $this->controller
+    . '&task=confirm&confirm='
+    . -$this->xprofile->get('activation')
+    . '&email='
+    . urlencode($this->xprofile->get('email'))); ?>
 
 Do not reply to this email.  Replying to this email will not confirm or activate your account.

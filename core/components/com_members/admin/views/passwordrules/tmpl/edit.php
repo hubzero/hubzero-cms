@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,7 +27,14 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -45,24 +50,46 @@ $this->js();
                     <?php echo $this->rules_list; ?>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-description"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES_DESCRIPTION'); ?>:</label>
-                    <input type="text" name="fields[description]" id="field-description" value="<?php echo $this->escape(stripslashes($this->row->get('description'))); ?>" />
+                    <?php $text = Lang::txt('COM_MEMBERS_PASSWORD_RULES_DESCRIPTION'); ?>
+                    <label for="field-description"><?php echo $text; ?>:</label>
+                    <input
+                        type="text"
+                        name="fields[description]"
+                        id="field-description"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('description'))); ?>"/>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-failuremsg"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES_FAILURE_MESSAGE'); ?>:</label>
-                    <input type="text" name="fields[failuremsg]" id="field-failuremsg" value="<?php echo $this->escape(stripslashes($this->row->get('failuremsg'))); ?>" />
+                    <?php $text = Lang::txt('COM_MEMBERS_PASSWORD_RULES_FAILURE_MESSAGE'); ?>
+                    <label for="field-failuremsg"><?php echo $text; ?>:</label>
+                    <input
+                        type="text"
+                        name="fields[failuremsg]"
+                        id="field-failuremsg"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('failuremsg'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-value"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES_VALUE'); ?>:</label>
-                    <input type="text" name="fields[value]" id="field-value" value="<?php echo $this->escape(stripslashes($this->row->get('value'))); ?>" />
+                    <input
+                        type="text"
+                        name="fields[value]"
+                        id="field-value"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('value'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-group"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES_GROUP'); ?>:</label>
-                    <input type="text" name="fields[grp]" id="field-group" value="<?php echo $this->escape(stripslashes($this->row->get('grp'))); ?>" />
+                    <input
+                        type="text"
+                        name="fields[grp]"
+                        id="field-group"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('grp'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-class"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES_CLASS'); ?>:</label>
-                    <input type="text" name="fields[class]" id="field-class" value="<?php echo $this->escape(stripslashes($this->row->get('class'))); ?>" />
+                    <input
+                        type="text"
+                        name="fields[class]"
+                        id="field-class"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('class'))); ?>"/>
                 </div>
             </fieldset>
         </div>

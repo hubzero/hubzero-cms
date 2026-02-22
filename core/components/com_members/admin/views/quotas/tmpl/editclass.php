@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,7 +31,14 @@ $this->js();
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php endif; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -41,23 +46,44 @@ $this->js();
 
                 <div class="input-wrap">
                     <label for="field-alias"><?php echo Lang::txt('COM_MEMBERS_QUOTA_ALIAS'); ?>:</label>
-                    <input <?php echo ($this->row->get('alias') == 'default') ? 'readonly' : ''; ?> type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+                    <input
+                        <?php echo ($this->row->get('alias') == 'default') ? 'readonly' : ''; ?>
+                        type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-soft_blocks"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_BLOCKS'); ?>:</label>
-                    <input type="text" name="fields[soft_blocks]" id="field-soft_blocks" value="<?php echo $this->escape(stripslashes($this->row->get('soft_blocks'))); ?>" />
+                    <input
+                        type="text"
+                        name="fields[soft_blocks]"
+                        id="field-soft_blocks"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('soft_blocks'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-hard_blocks"><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_BLOCKS'); ?>:</label>
-                    <input type="text" name="fields[hard_blocks]" id="field-hard_blocks" value="<?php echo $this->escape(stripslashes($this->row->get('hard_blocks'))); ?>" />
+                    <input
+                        type="text"
+                        name="fields[hard_blocks]"
+                        id="field-hard_blocks"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('hard_blocks'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-soft_files"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_FILES'); ?>:</label>
-                    <input type="text" name="fields[soft_files]" id="field-soft_files" value="<?php echo $this->escape(stripslashes($this->row->get('soft_files'))); ?>" />
+                    <input
+                        type="text"
+                        name="fields[soft_files]"
+                        id="field-soft_files"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('soft_files'))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-hard_files"><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_FILES'); ?>:</label>
-                    <input type="text" name="fields[hard_files]" id="field-hard_files" value="<?php echo $this->escape(stripslashes($this->row->get('hard_files'))); ?>" />
+                    <input
+                        type="text"
+                        name="fields[hard_files]"
+                        id="field-hard_files"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('hard_files'))); ?>"/>
                 </div>
             </fieldset>
             <fieldset class="adminform">

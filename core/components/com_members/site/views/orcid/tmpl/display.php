@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -63,7 +61,13 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
 <section class="main section">
     <form name="orcid-search-form">
         <?php if ($srv != 'public' && !$tkn) { ?>
-            <p class="warning"><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_UNAVAILABLE', Route::url('index.php?option=com_support')); ?></p>
+            <?php
+            $val = Lang::txt(
+                'COM_MEMBERS_PROFILE_ORCID_UNAVAILABLE',
+                Route::url('index.php?option=com_support')
+            );
+            ?>
+            <p class="warning"><?php echo $val; ?></p>
         <?php } else { ?>
             <h3><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_ASSOCIATE_ORCID'); ?></h3>
             <fieldset>
@@ -72,14 +76,26 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
                 <div class="grid nobreak">
                     <div class="col span4">
                         <label for="first-name">
-                            <?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIRST_NAME'); ?><span class="required"><?php echo Lang::txt('COM_MEMBERS_SEARCH_ORCID_REQUIRED'); ?></span>
-                            <input type="text" id="first-name" name="first-name" value="<?php echo $this->escape($fname); ?>" />
+                            <?php $val = Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIRST_NAME'); ?>
+                            <?php $val1 = Lang::txt('COM_MEMBERS_SEARCH_ORCID_REQUIRED'); ?>
+                            <?php echo $val; ?><span class="required"><?php echo $val1; ?></span>
+                            <input
+                                type="text"
+                                id="first-name"
+                                name="first-name"
+                                value="<?php echo $this->escape($fname); ?>"/>
                         </label>
                     </div>
                     <div class="col span4">
                         <label for="last-name">
-                            <?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_LAST_NAME'); ?><span class="required"><?php echo Lang::txt('COM_MEMBERS_SEARCH_ORCID_REQUIRED'); ?></span>
-                            <input type="text" id="last-name" name="last-name" value="<?php echo $this->escape($lname); ?>" />
+                            <?php $val = Lang::txt('COM_MEMBERS_PROFILE_ORCID_LAST_NAME'); ?>
+                            <?php $val1 = Lang::txt('COM_MEMBERS_SEARCH_ORCID_REQUIRED'); ?>
+                            <?php echo $val; ?><span class="required"><?php echo $val1; ?></span>
+                            <input
+                                type="text"
+                                id="last-name"
+                                name="last-name"
+                                value="<?php echo $this->escape($lname); ?>"/>
                         </label>
                     </div>
                     <div id="alert-message hide" class="col span8">
@@ -87,7 +103,11 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
                     </div>
                 </div>
 
-                <input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(Request::base(true), '/'); ?>" />
+                <input
+                    type="hidden"
+                    name="base_uri"
+                    id="base_uri"
+                    value="<?php echo rtrim(Request::base(true), '/'); ?>"/>
             </fieldset>
 
             <div class="orcid-section orcid-search">
@@ -98,7 +118,16 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
                     </div>
                     <div class="col span4 omega">
                         <p>
-                            <a id="get-orcid-results" class="btn" onclick="<?php echo 'HUB.Orcid.fetchOrcidRecords(\'' . $this->escape($fname) . '\', \'' . $this->escape($lname) . '\');'; ?>"><?php echo Lang::txt('Search ORCID'); ?></a>
+                            <?php $val = Lang::txt('Search ORCID'); ?>
+                            <?php
+                            $orcidClick = 'HUB.Orcid.fetchOrcidRecords(\''
+                                . $this->escape($fname) . '\', \''
+                                . $this->escape($lname) . '\');';
+                            ?>
+                            <a
+                                id="get-orcid-results"
+                                class="btn"
+                                onclick="<?php echo $orcidClick; ?>"><?php echo $val; ?></a>
                         </p>
                     </div>
                 </div>
@@ -120,12 +149,29 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
                             <p><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_CLICK_CREATE_BUTTON'); ?></p>
                         </div>
                         <div class="col span4 omega">
-                            <p><a id="create-orcid" class="btn" href="https://<?php if ($this->config->get('orcid_service', 'members') == 'sandbox') {
-                                echo 'sandbox.';
-                                                                              }?>orcid.org/oauth/authorize?client_id=<?php echo $clientID ?>
-                            <?php echo htmlspecialchars('&'); ?>response_type=code<?php echo htmlspecialchars('&'); ?>scope=/authenticate<?php echo htmlspecialchars('&'); ?>redirect_uri=<?php echo urlencode($redirectURI) ?><?php echo htmlspecialchars('&'); ?>family_names=<?php echo $this->escape($lname);?>
-                            <?php echo htmlspecialchars('&'); ?>given_names=<?php echo $this->escape($fname);?><?php echo htmlspecialchars('&'); ?>email=<?php echo $this->escape($email);?> " rel="nofollow external">
-                            <?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT'); ?></a></p>
+                            <?php
+                            $amp = htmlspecialchars('&');
+                            $orcidHost = ($this->config->get('orcid_service', 'members') == 'sandbox')
+                                ? 'sandbox.orcid.org'
+                                : 'orcid.org';
+                            $orcidUrl = 'https://' . $orcidHost
+                                . '/oauth/authorize?client_id=' . $clientID
+                                . $amp . 'response_type=code'
+                                . $amp . 'scope=/authenticate'
+                                . $amp . 'redirect_uri=' . urlencode($redirectURI)
+                                . $amp . 'family_names=' . $this->escape($lname)
+                                . $amp . 'given_names=' . $this->escape($fname)
+                                . $amp . 'email=' . $this->escape($email);
+                            $connectTxt = Lang::txt(
+                                'COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT'
+                            );
+                            ?>
+                            <p><a
+                                id="create-orcid"
+                                class="btn"
+                                href="<?php echo $orcidUrl; ?>"
+                                rel="nofollow external">
+                            <?php echo $connectTxt; ?></a></p>
                         </div>
                     </div>
                 </div>

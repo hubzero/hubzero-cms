@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,11 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_NOTES') . ': ' . $text, 'user');
 
 // If not checked out, can save the item.
-if (!$checkedOut && ($canDo->get('core.edit') || (count(User::getAuthorisedCategories('com_members', 'core.create'))))) {
+if (
+    !$checkedOut
+    && ($canDo->get('core.edit')
+    || (count(User::getAuthorisedCategories('com_members', 'core.create'))))
+) {
     Toolbar::apply();
     Toolbar::save();
 }
@@ -43,33 +45,74 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-subject"><?php echo Lang::txt('COM_MEMBERS_FIELD_SUBJECT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[subject]" id="field-subject" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('subject', ''))); ?>" />
+                    <label for="field-subject">
+                        <?php echo Lang::txt('COM_MEMBERS_FIELD_SUBJECT'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label>
+                    <input
+                        type="text"
+                        name="fields[subject]"
+                        id="field-subject"
+                        class="required"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('subject', ''))); ?>"/>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-body"><?php echo Lang::txt('COM_MEMBERS_FIELD_BODY'); ?>:</label>
-                    <?php echo $this->editor('fields[body]', $this->escape($this->row->get('body')), 50, 15, 'field-body', array('class' => 'minimal no-footer')); ?>
+                    <?php
+                    $val = $this->editor(
+                        'fields[body]',
+                        $this->escape($this->row->get('body')),
+                        50,
+                        15,
+                        'field-body',
+                        array('class' => 'minimal no-footer')
+                    );
+                    ?>
+                    <?php echo $val; ?>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-category_id"><?php echo Lang::txt('COM_MEMBERS_FIELD_CATEGORY'); ?>:</label>
                     <select name="fields[catid]" id="field-category_id">
                         <option value="0"><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
-                        <?php echo Html::select('options', Html::category('options', 'com_members'), 'value', 'text', $this->row->get('category_id')); ?>
+                        <?php
+                        $val = Html::select(
+                            'options',
+                            Html::category('options', 'com_members'),
+                            'value',
+                            'text',
+                            $this->row->get('category_id')
+                        );
+                        ?>
+                        <?php echo $val; ?>
                     </select>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-category_id"><?php echo Lang::txt('COM_MEMBERS_FIELD_USER'); ?>:</label>
-                    <?php echo \Components\Members\Helpers\Admin::getUserInput('fields[user_id]', 'fielduser_id', $this->row->get('user_id')); ?>
+                    <?php
+                    $val = \Components\Members\Helpers\Admin::getUserInput(
+                        'fields[user_id]',
+                        'fielduser_id',
+                        $this->row->get('user_id')
+                    );
+                    ?>
+                    <?php echo $val; ?>
                 </div>
 
                 <div class="input-wrap">
@@ -88,8 +131,20 @@ $this->js();
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_FIELD_REVIEW_TIME_DESC'); ?>">
-                    <label for="field-review_time"><?php echo Lang::txt('COM_MEMBERS_FIELD_REVIEW_TIME_LABEL'); ?>:</label>
-                    <?php echo Html::input('calendar', 'fields[review_time]', ($this->row->get('review_time') && $this->row->get('review_time') != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->get('review_time'))->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-review_time')); ?>
+                    <?php $text = Lang::txt('COM_MEMBERS_FIELD_REVIEW_TIME_LABEL'); ?>
+                    <label for="field-review_time"><?php echo $text; ?>:</label>
+                    <?php
+                    $reviewTime = $this->row->get('review_time');
+                    $reviewVal = ($reviewTime && $reviewTime != '0000-00-00 00:00:00')
+                        ? $this->escape(Date::of($reviewTime)->toLocal('Y-m-d H:i:s'))
+                        : '';
+                    echo Html::input(
+                        'calendar',
+                        'fields[review_time]',
+                        $reviewVal,
+                        array('id' => 'field-review_time')
+                    );
+                    ?>
                 </div>
             </fieldset>
         </div>

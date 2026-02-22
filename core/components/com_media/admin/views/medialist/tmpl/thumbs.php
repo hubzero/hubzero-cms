@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -19,7 +17,13 @@ endif;
 $tmpl = Request::getCmd('tmpl', '');
 ?>
 <div class="media-files media-thumbs<?php echo $cls; ?>" id="media-thumbs">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&folder=' . $this->folder); ?>" method="post" id="media-form-thumbs" name="media-form-thumbs">
+    <?php
+    $formAction = Route::url(
+        'index.php?option=' . $this->option . '&folder=' . $this->folder
+    );
+    ?>
+    <form action="<?php echo $formAction; ?>"
+        method="post" id="media-form-thumbs" name="media-form-thumbs">
         <div class="manager">
             <?php
             $folders = array();

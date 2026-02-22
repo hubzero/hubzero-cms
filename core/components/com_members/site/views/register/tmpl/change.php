@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,11 +23,25 @@ $this->css('register')
 <?php if ($this->success) { ?>
     <p class="passed"><?php echo Lang::txt('Your account has been updated successfully.'); ?></p>
 <?php } else { ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=change'); ?>" method="post" id="hubForm">
+    <?php
+    $href = Route::url(
+        'index.php?option='
+        . $this->option
+        . '&controller='
+        . $this->controller
+        . '&task=change'
+    );
+    ?>
+    <form action="<?php echo $href; ?>" method="post" id="hubForm">
     <?php if (($this->email_confirmed != 1) && ($this->email_confirmed != 3)) { ?>
         <div class="explaination">
             <h4>Never received or cannot find the confirmation email?</h4>
-            <p>You can have a new confirmation email sent to "<?php echo $this->escape($this->email); ?>" by <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resend&return=' . $this->return); ?>">clicking here</a>.</p>
+            <?php $val = $this->escape($this->email); ?>
+            <p>
+                You can have a new confirmation email sent to "<?php echo $val; ?>" by <a href="<?php echo
+                Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller .
+                '&task=resend&return=' . $this->return); ?>">clicking here</a>.
+            </p>
         </div>
     <?php } ?>
         <fieldset>
@@ -38,7 +50,12 @@ $this->css('register')
                 echo ' class="fieldWithErrors"';
                   } ?>>
                 <?php echo Lang::txt('Valid E-mail:'); ?>
-                <input name="email" id="email" type="text" size="51" value="<?php echo $this->escape($this->email); ?>" />
+                <input
+                    name="email"
+                    id="email"
+                    type="text"
+                    size="51"
+                    value="<?php echo $this->escape($this->email); ?>"/>
             </label>
         </fieldset>
         <div class="clear"></div>

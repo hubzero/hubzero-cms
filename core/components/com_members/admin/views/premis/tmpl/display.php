@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,7 +28,8 @@ if ($canDo->get('core.edit')) {
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="hubForm" id="item-form" method="post" enctype="multipart/form-data">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" name="hubForm" id="item-form" method="post" enctype="multipart/form-data">
     <fieldset>
         <p><input type="file" class="option" name="upload" /></p>
         <input type="submit" class="option" value="Import" />

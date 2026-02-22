@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -50,7 +48,13 @@ foreach ($profiles as $profile) {
 </header><!-- / #content-header-extra -->
 
 <section class="main section">
-    <form id="hubForm" class="edit-profile" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" enctype="multipart/form-data">
+    <?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+    <form
+        id="hubForm"
+        class="edit-profile"
+        method="post"
+        action="<?php echo $formAction; ?>"
+        enctype="multipart/form-data">
 
         <fieldset>
             <legend><?php echo Lang::txt('Contact Information'); ?></legend>
@@ -60,26 +64,39 @@ foreach ($profiles as $profile) {
 
             <label>
                 <?php echo Lang::txt('Visibility (who has access to my profile)'); ?>
-                <?php echo \Components\Members\Helpers\Html::selectAccess('access', $this->profile->get('access'), 'input-select'); ?>
+                <?php echo \Components\Members\Helpers\Html::selectAccess(
+                    'access',
+                    $this->profile->get('access'),
+                    'input-select'
+                ); ?>
             </label>
 
             <div class="grid">
                 <div class="col span4">
                     <label>
                         <?php echo Lang::txt('FIRST_NAME'); ?>:
-                        <input type="text" name="name[first]" value="<?php echo $this->escape($this->profile->get('givenName')); ?>" />
+                        <input
+                            type="text"
+                            name="name[first]"
+                            value="<?php echo $this->escape($this->profile->get('givenName')); ?>"/>
                     </label>
                 </div>
                 <div class="col span4">
                     <label>
                         <?php echo Lang::txt('MIDDLE_NAME'); ?>:
-                        <input type="text" name="name[middle]" value="<?php echo $this->escape($this->profile->get('middleName')); ?>" />
+                        <input
+                            type="text"
+                            name="name[middle]"
+                            value="<?php echo $this->escape($this->profile->get('middleName')); ?>"/>
                     </label>
                 </div>
                 <div class="col span4 omega">
                     <label>
                         <?php echo Lang::txt('LAST_NAME'); ?>:
-                        <input type="text" name="name[last]" value="<?php echo $this->escape($this->profile->get('surname')); ?>" />
+                        <input
+                            type="text"
+                            name="name[last]"
+                            value="<?php echo $this->escape($this->profile->get('surname')); ?>"/>
                     </label>
                 </div>
             </div>
@@ -88,17 +105,26 @@ foreach ($profiles as $profile) {
                 <div class="col span6">
                     <label>
                         <?php echo Lang::txt('Valid E-mail'); ?>:
-                        <input name="email" id="email" type="text" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
+                        <input
+                            name="email"
+                            id="email"
+                            type="text"
+                            value="<?php echo $this->escape($this->profile->get('email')); ?>"/>
                     </label>
                 </div>
                 <div class="col span6 omega">
                     <label>
                         <?php echo Lang::txt('Confirm E-mail'); ?>:
-                        <input name="email2" id="email2" type="text" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
+                        <input
+                            name="email2"
+                            id="email2"
+                            type="text"
+                            value="<?php echo $this->escape($this->profile->get('email')); ?>"/>
                     </label>
                 </div>
             </div>
-            <p class="warning">Important! If you change your E-Mail address you <strong>must</strong> confirm receipt of the confirmation e-mail in order to re-activate your account.</p>
+            <p class="warning">Important! If you change your E-Mail address you <strong>must</strong>
+                confirm receipt of the confirmation e-mail in order to re-activate your account.</p>
         </fieldset>
 
         <fieldset>
@@ -134,7 +160,11 @@ foreach ($profiles as $profile) {
                         <div class="col span4 omega">
                             <?php
                             echo '<label>' . Lang::txt('COM_MEMBERS_FIELD_ACCESS')  . '</label>';
-                            echo \Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $field->get('access'), 'input-select');
+                            echo \Components\Members\Helpers\Html::selectAccess(
+                                'access[' . $field->get('name') . ']',
+                                $field->get('access'),
+                                'input-select'
+                            );
                             ?>
                         </div>
                     </div>
@@ -166,13 +196,28 @@ foreach ($profiles as $profile) {
 
         <fieldset id="memberpicture">
             <legend><?php echo Lang::txt('MEMBER_PICTURE'); ?></legend>
-            <iframe width="100%" height="350" border="0" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&file=' . stripslashes($this->profile->get('picture')) . '&amp;id=' . $this->profile->get('id')); ?>"></iframe>
+            <?php
+            $iframeSrc = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=media&tmpl=component&file='
+                . stripslashes($this->profile->get('picture'))
+                . '&amp;id=' . $this->profile->get('id')
+            );
+            ?>
+            <iframe
+                width="100%"
+                height="350"
+                border="0"
+                name="filer"
+                id="filer"
+                src="<?php echo $iframeSrc; ?>"></iframe>
         </fieldset><div class="clear"></div>
 
         <?php echo Html::input('token'); ?>
         <p class="submit">
             <input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('SAVE'); ?>" />
-            <a class="btn secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=cancel&id=' . $this->profile->get('id')); ?>"><?php echo Lang::txt('CANCEL'); ?></a>
+            <a class="btn secondary" href="<?php echo Route::url('index.php?option=' . $this->option .
+                '&task=cancel&id=' . $this->profile->get('id')); ?>"><?php echo Lang::txt('CANCEL'); ?></a>
         </p>
     </form>
 </section>

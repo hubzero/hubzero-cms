@@ -1,5 +1,5 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
+
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,7 +33,17 @@ if ($this->filters['state'] == -2 && $canDo->get('core.delete')) {
 
 //Toolbar::addNew('module.add');
 Toolbar::divider();
-Toolbar::appendButton('Popup', 'options', 'COM_MESSAGES_TOOLBAR_MY_SETTINGS', Route::url('index.php?option=com_messages&controller=configs&tmpl=component'), 850, 400);
+$configUrl = Route::url(
+    'index.php?option=com_messages&controller=configs&tmpl=component'
+);
+Toolbar::appendButton(
+    'Popup',
+    'options',
+    'COM_MESSAGES_TOOLBAR_MY_SETTINGS',
+    $configUrl,
+    850,
+    400
+);
 
 if ($canDo->get('core.admin')) {
     Toolbar::preferences('com_messages');
@@ -48,21 +58,46 @@ Html::behavior('multiselect');
 
 $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
+
+$formAction = Route::url('index.php?option=com_messages&view=messages');
+$filterLabel = Lang::txt('JSEARCH_FILTER_LABEL');
+$searchPlaceholder = Lang::txt('COM_MESSAGES_SEARCH_IN_SUBJECT');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=com_messages&view=messages'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>"
+    method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6 filter-search">
-                <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MESSAGES_SEARCH_IN_SUBJECT'); ?>" />
-                <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-                <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+                <label class="filter-search-lbl" for="filter_search">
+                    <?php echo $filterLabel; ?>
+                </label>
+                <input type="text" name="filter_search" id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo $searchPlaceholder; ?>" />
+                <button type="submit">
+                    <?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?>
+                </button>
+                <button type="button" class="filter-clear">
+                    <?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?>
+                </button>
             </div>
             <div class="col span6 filter-select">
                 <select name="filter_state" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                    <?php echo Html::select('options', \Components\Messages\Helpers\Utilities::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
+                    <option value="">
+                        <?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?>
+                    </option>
+                    <?php
+                    $stateOptions = \Components\Messages\Helpers\Utilities::getStateOptions();
+                    echo Html::select(
+                        'options',
+                        $stateOptions,
+                        'value',
+                        'text',
+                        $this->filters['state']
+                    );
+                    ?>
                 </select>
             </div>
         </div>
@@ -72,16 +107,43 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+                    <?php $checkAllTitle = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <input type="checkbox" name="checkall-toggle" value=""
+                        title="<?php echo $checkAllTitle; ?>"
+                        class="checkbox-toggle toggle-all" />
                 </th>
                 <th class="title">
-                    <?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_SUBJECT', 'a.subject', $listDirn, $listOrder); ?>
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_MESSAGES_HEADING_SUBJECT',
+                        'a.subject',
+                        $listDirn,
+                        $listOrder
+                    );
+                    ?>
                 </th>
                 <th>
-                    <?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_READ', 'a.state', $listDirn, $listOrder); ?>
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_MESSAGES_HEADING_READ',
+                        'a.state',
+                        $listDirn,
+                        $listOrder
+                    );
+                    ?>
                 </th>
                 <th>
-                    <?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_FROM', 'a.user_id_from', $listDirn, $listOrder); ?>
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_MESSAGES_HEADING_FROM',
+                        'a.user_id_from',
+                        $listDirn,
+                        $listOrder
+                    );
+                    ?>
                 </th>
                 <th class="nowrap">
                     <?php echo Html::grid('sort', 'JDATE', 'a.date_time', $listDirn, $listOrder); ?>
@@ -104,18 +166,33 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                         <?php echo Html::grid('id', $i, $item->message_id); ?>
                     </td>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_messages&task=view&message_id=' . (int) $item->message_id); ?>">
+                        <?php
+                        $viewUrl = Route::url(
+                            'index.php?option=com_messages&task=view'
+                            . '&message_id=' . (int) $item->message_id
+                        );
+                        ?>
+                        <a href="<?php echo $viewUrl; ?>">
                             <?php echo $this->escape($item->subject); ?>
                         </a>
                     </td>
                     <td class="center">
-                        <?php echo \Components\Messages\Helpers\Utilities::state($item->state, $i, $canChange); ?>
+                        <?php
+                        echo \Components\Messages\Helpers\Utilities::state(
+                            $item->state,
+                            $i,
+                            $canChange
+                        );
+                        ?>
                     </td>
                     <td>
                         <?php echo $item->user_from; ?>
                     </td>
                     <td>
-                        <time><?php echo Date::of($item->date_time)->toLocal(Lang::txt('DATE_FORMAT_LC2')); ?></time>
+                        <?php $dateFormat = Lang::txt('DATE_FORMAT_LC2'); ?>
+                        <time>
+                            <?php echo Date::of($item->date_time)->toLocal($dateFormat); ?>
+                        </time>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -123,7 +200,8 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
     </table>
 
     <input type="hidden" name="option" value="<?php echo $this->option ?>" />
-    <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+    <input type="hidden" name="controller"
+        value="<?php echo $this->controller; ?>" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />

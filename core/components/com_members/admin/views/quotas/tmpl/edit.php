@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,7 +29,14 @@ $this->js();
 $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <?php if ($this->getError()) : ?>
         <p class="error"><?php echo $this->getError(); ?></p>
     <?php endif; ?>
@@ -67,7 +72,11 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
                         <span><?php echo Lang::txt('COM_MEMBERS_QUOTA_USER_HINT'); ?></span>
                     </div>
                 <?php else : ?>
-                    <input type="hidden" name="fields[user_id]" id="field-user_id" value="<?php echo $this->row->get('user_id'); ?>" />
+                    <input
+                        type="hidden"
+                        name="fields[user_id]"
+                        id="field-user_id"
+                        value="<?php echo $this->row->get('user_id'); ?>"/>
                 <?php endif; ?>
                 <div class="input-wrap">
                     <label for="class_id"><?php echo Lang::txt('COM_MEMBERS_QUOTA_CLASS'); ?>:</label>
@@ -75,19 +84,35 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
                 </div>
                 <div class="input-wrap">
                     <label for="field-soft_blocks"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_BLOCKS'); ?>:</label>
-                    <input <?php echo ($this->row->get('class_id', '')) ? 'readonly' : ''; ?> type="text" name="fields[soft_blocks]" id="field-soft_blocks" value="<?php echo $this->escape(stripslashes($this->row->get('soft_blocks', ''))); ?>" />
+                    <input
+                        <?php echo ($this->row->get('class_id', '')) ? 'readonly' : ''; ?> type="text"
+                        name="fields[soft_blocks]"
+                        id="field-soft_blocks"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('soft_blocks', ''))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-hard_blocks"><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_BLOCKS'); ?>:</label>
-                    <input <?php echo ($this->row->get('class_id')) ? 'readonly' : ''; ?> type="text" name="fields[hard_blocks]" id="field-hard_blocks" value="<?php echo $this->escape(stripslashes($this->row->get('hard_blocks', ''))); ?>" />
+                    <input
+                        <?php echo ($this->row->get('class_id')) ? 'readonly' : ''; ?> type="text"
+                        name="fields[hard_blocks]"
+                        id="field-hard_blocks"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('hard_blocks', ''))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-soft_files"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SOFT_FILES'); ?>:</label>
-                    <input <?php echo ($this->row->get('class_id')) ? 'readonly' : ''; ?> type="text" name="fields[soft_files]" id="field-soft_files" value="<?php echo $this->escape(stripslashes($this->row->get('soft_files', ''))); ?>" />
+                    <input
+                        <?php echo ($this->row->get('class_id')) ? 'readonly' : ''; ?> type="text"
+                        name="fields[soft_files]"
+                        id="field-soft_files"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('soft_files', ''))); ?>"/>
                 </div>
                 <div class="input-wrap">
                     <label for="field-hard_files"><?php echo Lang::txt('COM_MEMBERS_QUOTA_HARD_FILES'); ?>:</label>
-                    <input <?php echo ($this->row->get('class_id')) ? 'readonly' : ''; ?> type="text" name="fields[hard_files]" id="field-hard_files" value="<?php echo $this->escape(stripslashes($this->row->get('hard_files', ''))); ?>" />
+                    <input
+                        <?php echo ($this->row->get('class_id')) ? 'readonly' : ''; ?> type="text"
+                        name="fields[hard_files]"
+                        id="field-hard_files"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('hard_files', ''))); ?>"/>
                 </div>
             </fieldset>
         </div>
@@ -108,7 +133,11 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_SPACE'); ?></th>
-                        <td><?php echo Lang::txt('COM_MEMBERS_QUOTA_SPACE_DISPLAY', (isset($this->du['info']['space']) ? $this->du['info']['space'] / 1024 : 0), $this->du['percent']); ?></td>
+                        <?php
+                        $space = isset($this->du['info']['space']) ? $this->du['info']['space'] / 1024 : 0;
+                        ?>
+                        <?php $text = Lang::txt('COM_MEMBERS_QUOTA_SPACE_DISPLAY', $space, $this->du['percent']); ?>
+                        <td><?php echo $text; ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_MEMBERS_QUOTA_FILES'); ?></th>

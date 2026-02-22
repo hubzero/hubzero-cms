@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -73,7 +71,16 @@ Html::behavior('modal');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid[]=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=edit&cid[]=' . (int) $this->item->id
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    method="post" name="adminForm"
+    id="item-form" class="form-validate">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -191,7 +198,10 @@ $this->js();
                 <div class="clr"></div>
 
                 <?php if (!empty($this->modules)) : ?>
-                    <?php echo Html::sliders('panel', Lang::txt('COM_MENUS_ITEM_MODULE_ASSIGNMENT'), 'module-options'); ?>
+                    <?php
+                    $moduleLabel = Lang::txt('COM_MENUS_ITEM_MODULE_ASSIGNMENT');
+                    echo Html::sliders('panel', $moduleLabel, 'module-options');
+                    ?>
                     <fieldset>
                         <?php echo $this->loadTemplate('modules'); ?>
                     </fieldset>

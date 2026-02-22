@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,7 +27,14 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -41,8 +46,16 @@ $this->js();
                 <input type="hidden" name="task" value="save" />
 
                 <div class="input-wrap">
-                    <label for="field-word"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_WORD'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[word]" id="field-word" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('word'))); ?>" />
+                    <label for="field-word">
+                        <?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST_WORD'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label>
+                    <input
+                        type="text"
+                        name="fields[word]"
+                        id="field-word"
+                        class="required"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('word'))); ?>"/>
                 </div>
             </fieldset>
         </div>

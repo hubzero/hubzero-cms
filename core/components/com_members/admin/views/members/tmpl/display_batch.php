@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,10 +24,15 @@ $options = array(
         <div class="col span6">
             <div class="combo" id="batch-choose-action">
                 <div class="input-wrap">
-                    <label id="batch-choose-action-lbl" for="batch-choose-action"><?php echo Lang::txt('COM_MEMBERS_BATCH_GROUP') ?></label>
+                    <label
+                        id="batch-choose-action-lbl"
+                        for="batch-choose-action"><?php echo Lang::txt('COM_MEMBERS_BATCH_GROUP') ?></label>
                     <select name="batch[group_id]" class="inputbox" id="batch-group-id">
                         <option value=""><?php echo Lang::txt('JSELECT') ?></option>
-                        <?php echo Html::select('options', \Components\Members\Helpers\Admin::getAccessGroups()); //Html::user('groups', User::get('isRoot'))); ?>
+                        <?php
+                            echo Html::select('options', \Components\Members\Helpers\Admin::getAccessGroups());
+                            //Html::user('groups', User::get('isRoot')));
+                        ?>
                     </select>
                 </div>
 

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -38,23 +36,36 @@ Html::behavior('multiselect');
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
-            <a<?php if ($this->controller == 'accessgroups') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=accessgroups'); ?>"><?php echo Lang::txt('COM_MEMBERS_ACCESSGROUPS'); ?></a>
+            <?php $cls = ($this->controller == 'accessgroups') ? ' class="active"' : ''; ?>
+            <?php $url = Route::url('index.php?option=' . $this->option . '&controller=accessgroups'); ?>
+            <a<?php echo $cls; ?> href="<?php echo $url; ?>"><?php
+                echo Lang::txt('COM_MEMBERS_ACCESSGROUPS');
+            ?></a>
         </li>
         <li>
-            <a<?php if ($this->controller == 'accesslevels') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=accesslevels'); ?>"><?php echo Lang::txt('COM_MEMBERS_ACCESSLEVELS'); ?></a>
+            <?php $cls = ($this->controller == 'accesslevels') ? ' class="active"' : ''; ?>
+            <?php $url = Route::url('index.php?option=' . $this->option . '&controller=accesslevels'); ?>
+            <a<?php echo $cls; ?> href="<?php echo $url; ?>"><?php
+                echo Lang::txt('COM_MEMBERS_ACCESSLEVELS');
+            ?></a>
         </li>
     </ul>
 </nav>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="filter-search fltlft">
-            <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_GROUPS_LABEL'); ?></label>
-            <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_GROUPS'); ?>" />
+            <label
+                class="filter-search-lbl"
+                for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_GROUPS_LABEL'); ?></label>
+            <input
+                type="text"
+                name="filter_search"
+                id="filter_search"
+                class="filter"
+                value="<?php echo $this->escape($this->filters['search']); ?>"
+                placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_GROUPS'); ?>"/>
             <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
             <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
         </div>
@@ -64,7 +75,12 @@ Html::behavior('multiselect');
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        value=""
+                        title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>"
+                        class="checkbox-toggle toggle-all"/>
                 </th>
                 <th class="priority-4">
                     <?php echo Lang::txt('JGRID_HEADING_ID'); ?>
@@ -111,14 +127,26 @@ Html::behavior('multiselect');
                 <td>
                     <?php echo str_repeat('<span class="gi">|&mdash;</span>', $level) ?>
                     <?php if ($canEdit) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller='
+                            . $this->controller . '&task=edit&id=' . $row->get('id')
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <?php echo $this->escape($row->get('title')); ?>
                         </a>
                     <?php else : ?>
                         <?php echo $this->escape($row->get('title')); ?>
                     <?php endif; ?>
                     <?php if (Config::get('debug')) : ?>
-                        <a class="button fltrt" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debug&id=' . (int) $row->get('id')); ?>">
+                        <?php
+                        $debugUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller='
+                            . $this->controller . '&task=debug&id=' . (int) $row->get('id')
+                        );
+                        ?>
+                        <a class="button fltrt" href="<?php echo $debugUrl; ?>">
                             <?php echo Lang::txt('COM_MEMBERS_DEBUG_GROUP');?>
                         </a>
                     <?php endif; ?>

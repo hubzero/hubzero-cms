@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,8 @@ if ($canDo->get('core.edit')) {
 Toolbar::cancel();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <?php if ($this->getErrors()) { ?>
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php } ?>
@@ -33,16 +32,37 @@ Toolbar::cancel();
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-component"><?php echo Lang::txt('COM_MEMBERS_FIELD_COMPONENT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[component]" id="field-component" value="<?php echo $this->escape(stripslashes($this->row->component)); ?>" />
+                    <label for="field-component">
+                        <?php echo Lang::txt('COM_MEMBERS_FIELD_COMPONENT'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label>
+                    <input
+                        type="text"
+                        name="fields[component]"
+                        id="field-component"
+                        value="<?php echo $this->escape(stripslashes($this->row->component)); ?>"/>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-action"><?php echo Lang::txt('COM_MEMBERS_FIELD_ACTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[action]" id="field-action" value="<?php echo $this->escape(stripslashes($this->row->action)); ?>" />
+                    <label for="field-action">
+                        <?php echo Lang::txt('COM_MEMBERS_FIELD_ACTION'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label>
+                    <input
+                        type="text"
+                        name="fields[action]"
+                        id="field-action"
+                        value="<?php echo $this->escape(stripslashes($this->row->action)); ?>"/>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-component"><?php echo Lang::txt('COM_MEMBERS_FIELD_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+                    <label for="field-component">
+                        <?php echo Lang::txt('COM_MEMBERS_FIELD_DESCRIPTION'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label>
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        value="<?php echo $this->escape(stripslashes($this->row->title)); ?>"/>
                 </div>
             </fieldset>
         </div>

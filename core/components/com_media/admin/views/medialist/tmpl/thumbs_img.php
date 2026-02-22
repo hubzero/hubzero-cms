@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
@@ -23,23 +21,50 @@ $name .= '.' . $ext;
 
 // Querystring option
 $t = '';
-if ($tmpl = Request::getCmd('tmpl')) :
+$tmpl = Request::getCmd('tmpl');
+if ($tmpl) :
     $t .= '&tmpl=' . $tmpl;
 endif;
 
 // Download link
-$href = Route::url('index.php?option=' . $this->option . '&task=download&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentImg['path']));
+$token = Session::getFormToken();
+$href = Route::url(
+    'index.php?option=' . $this->option
+    . '&task=download&' . $token . '=1'
+    . '&file=' . urlencode($this->currentImg['path'])
+);
+
+// Image alt text
+$fileSize = \Components\Media\Admin\Helpers\MediaHelper::parseSize(
+    $this->currentImg['size']
+);
+$imgAlt = Lang::txt(
+    'COM_MEDIA_IMAGE_TITLE',
+    $this->currentImg['name'],
+    $fileSize
+);
 
 // Before display event
 $params = new Hubzero\Config\Registry();
-Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+Event::trigger(
+    'onContentBeforeDisplay',
+    array('com_media.file', &$this->_tmp_img, &$params)
+);
+
+$imgUrl = COM_MEDIA_BASEURL . $this->currentImg['path'];
+$imgExt = Filesystem::extension($this->currentImg['name']);
+$escapedName = $this->escape($this->currentImg['name']);
 ?>
         <div class="media-item media-item-thumb">
             <div class="media-preview">
                 <div class="media-preview-inner">
-                    <a href="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" class="media-thumb doc-item img-preview <?php echo Filesystem::extension($this->currentImg['name']); ?>" title="<?php echo $this->escape($this->currentImg['name']); ?>">
+                    <a href="<?php echo $imgUrl; ?>"
+                        class="media-thumb doc-item img-preview <?php echo $imgExt; ?>"
+                        title="<?php echo $escapedName; ?>">
                         <span class="media-preview-shim"></span><!--
-                        --><img src="<?php echo COM_MEDIA_BASEURL . $this->currentImg['path']; ?>" alt="<?php echo Lang::txt('COM_MEDIA_IMAGE_TITLE', $this->currentImg['name'], \Components\Media\Admin\Helpers\MediaHelper::parseSize($this->currentImg['size'])); ?>" width="160" />
+                        --><img src="<?php echo $imgUrl; ?>"
+                            alt="<?php echo $imgAlt; ?>"
+                            width="160" />
                     </a>
                     <span class="media-options-btn"></span>
                 </div>
@@ -53,16 +78,45 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
                         <ul>
                             <?php if ($tmpl != 'component') : ?>
                                 <li>
-                                    <a class="icon-info media-opt-info" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=info' . $t . '&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('COM_MEDIA_FILE_INFO'); ?></a>
+                                    <?php
+                                    $infoUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&controller=medialist&task=info' . $t
+                                        . '&' . $token . '=1'
+                                        . '&file=' . urlencode($this->currentImg['path'])
+                                    );
+                                    $infoLabel = Lang::txt('COM_MEDIA_FILE_INFO');
+                                    ?>
+                                    <a class="icon-info media-opt-info"
+                                        href="<?php echo $infoUrl; ?>">
+                                        <?php echo $infoLabel; ?>
+                                    </a>
                                 </li>
                                 <li>
                                     <span class="separator"></span>
                                 </li>
                                 <li>
-                                    <a download class="icon-download media-opt-download" href="<?php echo $href; ?>"><?php echo Lang::txt('COM_MEDIA_DOWNLOAD'); ?></a>
+                                    <?php $dlLabel = Lang::txt('COM_MEDIA_DOWNLOAD'); ?>
+                                    <a download
+                                        class="icon-download media-opt-download"
+                                        href="<?php echo $href; ?>">
+                                        <?php echo $dlLabel; ?>
+                                    </a>
                                 </li>
                                 <li>
-                                    <a class="icon-link media-opt-path" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=path' . $t . '&' . Session::getFormToken() . '=1&file=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('COM_MEDIA_FILE_LINK'); ?></a>
+                                    <?php
+                                    $pathUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&controller=medialist&task=path' . $t
+                                        . '&' . $token . '=1'
+                                        . '&file=' . urlencode($this->currentImg['path'])
+                                    );
+                                    $linkLabel = Lang::txt('COM_MEDIA_FILE_LINK');
+                                    ?>
+                                    <a class="icon-link media-opt-path"
+                                        href="<?php echo $pathUrl; ?>">
+                                        <?php echo $linkLabel; ?>
+                                    </a>
                                 </li>
                             <?php endif; ?>
                             <?php if (User::authorise('core.delete', 'com_media')) : ?>
@@ -70,7 +124,19 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
                                     <span class="separator"></span>
                                 </li>
                                 <li>
-                                    <a class="icon-trash media-opt-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete' . $t . '&' . Session::getFormToken() . '=1&rm=' . urlencode($this->currentImg['path'])); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+                                    <?php
+                                    $deleteUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&task=delete' . $t
+                                        . '&' . $token . '=1'
+                                        . '&rm=' . urlencode($this->currentImg['path'])
+                                    );
+                                    $deleteLabel = Lang::txt('JACTION_DELETE');
+                                    ?>
+                                    <a class="icon-trash media-opt-delete"
+                                        href="<?php echo $deleteUrl; ?>">
+                                        <?php echo $deleteLabel; ?>
+                                    </a>
                                 </li>
                             <?php endif; ?>
                         </ul>
@@ -79,4 +145,7 @@ Event::trigger('onContentBeforeDisplay', array('com_media.file', &$this->_tmp_im
             </div>
         </div>
 <?php
-Event::trigger('onContentAfterDisplay', array('com_media.file', &$this->_tmp_img, &$params));
+Event::trigger(
+    'onContentAfterDisplay',
+    array('com_media.file', &$this->_tmp_img, &$params)
+);

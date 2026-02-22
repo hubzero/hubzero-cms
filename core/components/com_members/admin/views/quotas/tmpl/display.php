@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -37,7 +35,8 @@ $this->css('quotas.css')
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span5">
@@ -52,7 +51,13 @@ $this->css('quotas.css')
                 </select>
 
                 <label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
+                <input
+                    type="text"
+                    name="search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>"/>
 
                 <input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
             </div>
@@ -62,9 +67,11 @@ $this->css('quotas.css')
                         echo ' selected="selected"';
                                     } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS'); ?></option>
                     <?php foreach ($this->classes as $class) : ?>
-                        <option value="<?php echo $class->get('alias'); ?>"<?php if ($this->filters['class_alias'] == $class->get('alias')) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo $this->escape($class->get('alias')); ?></option>
+                        <?php $val = $class->get('alias'); ?>
+                        <?php $sel = ($this->filters['class_alias'] == $val) ? ' selected="selected"' : ''; ?>
+                        <?php $lbl = $this->escape($class->get('alias')); ?>
+                        <option
+                            value="<?php echo $val; ?>"<?php echo $sel; ?>><?php echo $lbl; ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -74,14 +81,63 @@ $this->css('quotas.css')
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"/>
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <!-- <th class="priority-6"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-                <th class="priority-5"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th class="priority-4"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th class="priority-3"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_QUOTA_ID',
+                    'id',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <!-- <th class="priority-6"><?php echo $val; ?></th> -->
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_QUOTA_USER_ID',
+                    'user_id',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th class="priority-5"><?php echo $val; ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_QUOTA_USERNAME',
+                    'username',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th class="priority-4"><?php echo $val; ?></th>
+                <th><?php echo Html::grid(
+                    'sort',
+                    'COM_MEMBERS_QUOTA_NAME',
+                    'name',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_QUOTA_CLASS',
+                    'class_alias',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th class="priority-3"><?php echo $val; ?></th>
                 <th><?php echo Lang::txt('COM_MEMBERS_QUOTA_DISK_USAGE'); ?></th>
             </tr>
         </thead>
@@ -101,18 +157,33 @@ $this->css('quotas.css')
         $i = 0;
         foreach ($this->rows as $row) {
             ?>
-            <tr class="<?php echo "row$k quota-row"; ?>" data-quota="<?php echo Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage&id=' . $row->get('id'), false); ?>">
+            <?php
+            $quotaUrl = Route::url(
+                'index.php?option=com_members&controller=quotas&task=getQuotaUsage&id=' . $row->get('id'),
+                false
+            );
+            ?>
+            <tr class="<?php echo "row$k quota-row"; ?>" data-quota="<?php echo $quotaUrl; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('user_id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('user_id'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('user_id'); ?>"
+                        class="checkbox-toggle"/>
+                    <label
+                        for="cb<?php echo $i; ?>"
+                        class="sr-only visually-hidden"><?php echo $row->get('user_id'); ?></label>
                 </td>
                 <td class="priority-5">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('user_id')); ?>">
+                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' .
+                        $this->controller . '&task=edit&id=' . $row->get('user_id')); ?>">
                         <?php echo $this->escape($row->get('user_id')); ?>
                     </a>
                 </td>
                 <td class="priority-4">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' .
+                        $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
                         <?php echo $this->escape($row->get('username')); ?>
                     </a>
                 </td>

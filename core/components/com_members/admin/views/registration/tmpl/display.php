@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,7 +29,14 @@ $this->js();
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <fieldset>
         <table class="adminlist">
             <thead>
@@ -62,18 +67,22 @@ foreach ($this->params as $field => $values) {
                     <td>
                         <?php if ($create != '-') : ?>
                             <select name="settings[<?php echo $field; ?>][create]">
-                                <option value="O"<?php if ($create == 'O') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_OPTIONAL'); ?></option>
-                                <option value="R"<?php if ($create == 'R') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_REQUIRED'); ?></option>
-                                <option value="H"<?php if ($create == 'H') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_HIDE'); ?></option>
-                                <option value="U"<?php if ($create == 'U') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_READ_ONLY'); ?></option>
+                                <?php $sel = ($create == 'O') ? ' selected="selected"' : ''; ?>
+                                <option value="O"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_OPTIONAL');
+                                ?></option>
+                                <?php $sel = ($create == 'R') ? ' selected="selected"' : ''; ?>
+                                <option value="R"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_REQUIRED');
+                                ?></option>
+                                <?php $sel = ($create == 'H') ? ' selected="selected"' : ''; ?>
+                                <option value="H"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_HIDE');
+                                ?></option>
+                                <?php $sel = ($create == 'U') ? ' selected="selected"' : ''; ?>
+                                <option value="U"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_READ_ONLY');
+                                ?></option>
                             </select>
                         <?php else : ?>
                             <?php echo Lang::txt('COM_MEMBERS_NOT_APPLICABLE'); ?>
@@ -83,18 +92,22 @@ foreach ($this->params as $field => $values) {
                     <td>
                         <?php if ($proxy != '-') : ?>
                             <select name="settings[<?php echo $field; ?>][proxy]">
-                                <option value="O"<?php if ($proxy == 'O') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_OPTIONAL'); ?></option>
-                                <option value="R"<?php if ($proxy == 'R') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_REQUIRED'); ?></option>
-                                <option value="H"<?php if ($proxy == 'H') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_HIDE'); ?></option>
-                                <option value="U"<?php if ($proxy == 'U') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_READ_ONLY'); ?></option>
+                                <?php $sel = ($proxy == 'O') ? ' selected="selected"' : ''; ?>
+                                <option value="O"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_OPTIONAL');
+                                ?></option>
+                                <?php $sel = ($proxy == 'R') ? ' selected="selected"' : ''; ?>
+                                <option value="R"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_REQUIRED');
+                                ?></option>
+                                <?php $sel = ($proxy == 'H') ? ' selected="selected"' : ''; ?>
+                                <option value="H"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_HIDE');
+                                ?></option>
+                                <?php $sel = ($proxy == 'U') ? ' selected="selected"' : ''; ?>
+                                <option value="U"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_READ_ONLY');
+                                ?></option>
                             </select>
                         <?php else : ?>
                             <?php echo Lang::txt('COM_MEMBERS_NOT_APPLICABLE'); ?>
@@ -104,18 +117,22 @@ foreach ($this->params as $field => $values) {
                     <td>
                         <?php if ($update != '-') : ?>
                             <select name="settings[<?php echo $field; ?>][update]">
-                                <option value="O"<?php if ($update == 'O') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_OPTIONAL'); ?></option>
-                                <option value="R"<?php if ($update == 'R') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_REQUIRED'); ?></option>
-                                <option value="H"<?php if ($update == 'H') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_HIDE'); ?></option>
-                                <option value="U"<?php if ($update == 'U') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_READ_ONLY'); ?></option>
+                                <?php $sel = ($update == 'O') ? ' selected="selected"' : ''; ?>
+                                <option value="O"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_OPTIONAL');
+                                ?></option>
+                                <?php $sel = ($update == 'R') ? ' selected="selected"' : ''; ?>
+                                <option value="R"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_REQUIRED');
+                                ?></option>
+                                <?php $sel = ($update == 'H') ? ' selected="selected"' : ''; ?>
+                                <option value="H"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_HIDE');
+                                ?></option>
+                                <?php $sel = ($update == 'U') ? ' selected="selected"' : ''; ?>
+                                <option value="U"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_READ_ONLY');
+                                ?></option>
                             </select>
                         <?php else : ?>
                             <?php echo Lang::txt('COM_MEMBERS_NOT_APPLICABLE'); ?>
@@ -125,18 +142,22 @@ foreach ($this->params as $field => $values) {
                     <td>
                         <?php if ($edit != '-') : ?>
                             <select name="settings[<?php echo $field; ?>][edit]">
-                                <option value="O"<?php if ($edit == 'O') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_OPTIONAL'); ?></option>
-                                <option value="R"<?php if ($edit == 'R') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_REQUIRED'); ?></option>
-                                <option value="H"<?php if ($edit == 'H') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_HIDE'); ?></option>
-                                <option value="U"<?php if ($edit == 'U') {
-                                    echo ' selected="selected"';
-                                                 }?>><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_READ_ONLY'); ?></option>
+                                <?php $sel = ($edit == 'O') ? ' selected="selected"' : ''; ?>
+                                <option value="O"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_OPTIONAL');
+                                ?></option>
+                                <?php $sel = ($edit == 'R') ? ' selected="selected"' : ''; ?>
+                                <option value="R"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_REQUIRED');
+                                ?></option>
+                                <?php $sel = ($edit == 'H') ? ' selected="selected"' : ''; ?>
+                                <option value="H"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_HIDE');
+                                ?></option>
+                                <?php $sel = ($edit == 'U') ? ' selected="selected"' : ''; ?>
+                                <option value="U"<?php echo $sel; ?>><?php
+                                    echo Lang::txt('COM_MEMBERS_REGISTRATION_READ_ONLY');
+                                ?></option>
                             </select>
                         <?php else : ?>
                             <?php echo Lang::txt('COM_MEMBERS_NOT_APPLICABLE'); ?>

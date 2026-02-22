@@ -6,14 +6,20 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access.
 defined('_HZEXEC_') or die();
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&file=' . urlencode($this->file)); ?>" id="component-form" method="post" name="adminForm" autocomplete="off">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=medialist&file=' . urlencode($this->file)
+);
+?>
+<form action="<?php echo $formAction; ?>"
+    id="component-form" method="post"
+    name="adminForm" autocomplete="off">
     <fieldset>
         <h2 class="modal-title">
             <?php echo Lang::txt('COM_MEDIA_FILE_LINK'); ?>

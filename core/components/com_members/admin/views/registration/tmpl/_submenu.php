@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,19 +14,25 @@ $controller = Request::getCmd('controller', 'registration');
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
-            <a<?php if ($controller == 'registration') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=com_members&controller=registration'); ?>"><?php echo Lang::txt('COM_MEMBERS_REGISTRATION_CONFIG'); ?></a>
+            <?php $cls = ($controller == 'registration') ? ' class="active"' : ''; ?>
+            <?php $url = Route::url('index.php?option=com_members&controller=registration'); ?>
+            <a<?php echo $cls; ?> href="<?php echo $url; ?>"><?php
+                echo Lang::txt('COM_MEMBERS_REGISTRATION_CONFIG');
+            ?></a>
         </li>
         <li>
-            <a<?php if ($controller == 'incremental') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=com_members&controller=incremental'); ?>"><?php echo Lang::txt('COM_MEMBERS_INCREMENTAL'); ?></a>
+            <?php $cls = ($controller == 'incremental') ? ' class="active"' : ''; ?>
+            <?php $url = Route::url('index.php?option=com_members&controller=incremental'); ?>
+            <a<?php echo $cls; ?> href="<?php echo $url; ?>"><?php
+                echo Lang::txt('COM_MEMBERS_INCREMENTAL');
+            ?></a>
         </li>
         <li>
-            <a<?php if ($controller == 'premis') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=com_members&controller=premis'); ?>"><?php echo Lang::txt('COM_MEMBERS_PREMIS'); ?></a>
+            <?php $cls = ($controller == 'premis') ? ' class="active"' : ''; ?>
+            <?php $url = Route::url('index.php?option=com_members&controller=premis'); ?>
+            <a<?php echo $cls; ?> href="<?php echo $url; ?>"><?php
+                echo Lang::txt('COM_MEMBERS_PREMIS');
+            ?></a>
         </li>
     </ul>
 </nav><!-- / .sub-navigation -->

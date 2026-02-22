@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +24,8 @@ Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS_IMPORT'), 'user');
 
     <div class="grid">
         <div class="col span8">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
+            <?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+            <form action="<?php echo $formAction; ?>" method="post" name="adminForm">
                 <fieldset class="adminform">
                     <legend><span><?php echo Lang::txt('COM_MEMBERS_QUOTA_IMPORT_LEGEND'); ?></span></legend>
 
@@ -40,11 +39,15 @@ Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS_IMPORT'), 'user');
                         <textarea name="conf_text" id="conf_text" cols="30" rows="10"></textarea>
                     </div>
                     <div class="input-wrap">
-                        <label for="overwrite_existing"><?php echo Lang::txt('COM_MEMBERS_QUOTA_OVERWRITE_EXISTING'); ?></label>
+                        <?php $text = Lang::txt('COM_MEMBERS_QUOTA_OVERWRITE_EXISTING'); ?>
+                        <label for="overwrite_existing"><?php echo $text; ?></label>
                         <input type="checkbox" name="overwrite_existing" id="overwrite_existing" value="1" />
                     </div>
                     <p class="submit-button">
-                        <input class="btn btn-primary" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>" />
+                        <input
+                            class="btn btn-primary"
+                            type="submit"
+                            value="<?php echo Lang::txt('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>"/>
                     </p>
                 </fieldset>
                 <?php echo Html::input('token'); ?>
@@ -60,7 +63,9 @@ Toolbar::title(Lang::txt('COM_MEMBERS_QUOTAS_IMPORT'), 'user');
                                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                                 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
                                 <input type="hidden" name="task" value="importMissing" />
-                                <input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>" />
+                                <input
+                                    type="submit"
+                                    value="<?php echo Lang::txt('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>"/>
                             </form>
                         </td>
                     </tr>

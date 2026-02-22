@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,8 +14,16 @@ $canDo = \Components\Members\Helpers\Admin::getActions('component');
 // Menu
 Toolbar::title(Lang::txt('COM_MEMBERS') . ': ' . Lang::txt('COM_MEMBERS_PASSWORD_RULES'), 'user');
 if ($canDo->get('core.manage')) {
-    //Toolbar::confirm('COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS_CONFIRM', 'refresh', 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', 'restore_default_content');
-    Toolbar::custom('restore_default_content', 'refresh', 'refresh', 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', false, false);
+    // Toolbar::confirm('COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS_CONFIRM', 'refresh',
+    // 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', 'restore_default_content');
+    Toolbar::custom(
+        'restore_default_content',
+        'refresh',
+        'refresh',
+        'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS',
+        false,
+        false
+    );
     Toolbar::spacer();
 }
 if ($canDo->get('core.create')) {
@@ -35,34 +41,91 @@ if ($canDo->get('core.delete')) {
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
-            <a<?php if ($this->controller == 'passwordrules') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=passwordrules'); ?>"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_RULES'); ?></a>
+            <?php $cls = ($this->controller == 'passwordrules') ? ' class="active"' : ''; ?>
+            <?php $url = Route::url('index.php?option=' . $this->option . '&controller=passwordrules'); ?>
+            <a<?php echo $cls; ?> href="<?php echo $url; ?>"><?php
+                echo Lang::txt('COM_MEMBERS_PASSWORD_RULES');
+            ?></a>
         </li>
         <li>
-            <a<?php if ($this->controller == 'passwordblacklist') {
-                echo ' class="active"';
-              } ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=passwordblacklist'); ?>"><?php echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST'); ?></a>
+            <?php $cls = ($this->controller == 'passwordblacklist') ? ' class="active"' : ''; ?>
+            <?php $url = Route::url('index.php?option=' . $this->option . '&controller=passwordblacklist'); ?>
+            <a<?php echo $cls; ?> href="<?php echo $url; ?>"><?php
+                echo Lang::txt('COM_MEMBERS_PASSWORD_BLACKLIST');
+            ?></a>
         </li>
     </ul>
 </nav>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"/>
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_MEMBERS_PASSWORD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_MEMBERS_PASSWORD_RULE', 'rule', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_MEMBERS_PASSWORD_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_PASSWORD_ID',
+                    'id',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col" class="priority-4"><?php echo $val; ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_PASSWORD_RULE',
+                    'rule',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col" class="priority-3"><?php echo $val; ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_PASSWORD_DESCRIPTION',
+                    'description',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col"><?php echo $val; ?></th>
                 <th scope="col">
-                    <?php echo Html::grid('sort', 'COM_MEMBERS_PASSWORD_ORDERING', 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?php
+                    $val = Html::grid(
+                        'sort',
+                        'COM_MEMBERS_PASSWORD_ORDERING',
+                        'ordering',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?>
+                    <?php echo $val; ?>
                     <?php echo Html::grid('order', $this->rows); ?>
                 </th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_MEMBERS_PASSWORD_ENABLED', 'enabled', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $val = Html::grid(
+                    'sort',
+                    'COM_MEMBERS_PASSWORD_ENABLED',
+                    'enabled',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col" class="priority-2"><?php echo $val; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -85,8 +148,15 @@ if ($canDo->get('core.delete')) {
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                        <input
+                            type="checkbox"
+                            name="id[]"
+                            id="cb<?php echo $i; ?>"
+                            value="<?php echo $row->get('id'); ?>"
+                            class="checkbox-toggle"/>
+                        <label
+                            for="cb<?php echo $i; ?>"
+                            class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
                     <?php endif; ?>
                 </td>
                 <td class="priority-4">
@@ -97,7 +167,8 @@ if ($canDo->get('core.delete')) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' .
+                            $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
                             <?php echo $this->escape($row->description); ?>
                         </a>
                     <?php else : ?>
@@ -112,7 +183,8 @@ if ($canDo->get('core.delete')) {
                         } else {
                             echo '&#160;';
                         }
-                        //echo $pageNav->orderUpIcon($i, $row->ordering, 'orderup', 'JLIB_HTML_MOVE_UP', $row->ordering);
+                        // echo $pageNav->orderUpIcon($i, $row->ordering, 'orderup', 'JLIB_HTML_MOVE_UP',
+                        // $row->ordering);
                         ?></span>
                         <span><?php
                         if ($i < ($n - 1)) {
@@ -120,17 +192,32 @@ if ($canDo->get('core.delete')) {
                         } else {
                             echo '&#160;';
                         }
-                        //echo $pageNav->orderDownIcon($i, $n, $row->ordering, 'orderdown', 'JLIB_HTML_MOVE_DOWN', $row->ordering);
+                        // echo $pageNav->orderDownIcon($i, $n, $row->ordering, 'orderdown', 'JLIB_HTML_MOVE_DOWN',
+                        // $row->ordering);
                         ?></span>
                         <?php $disabled = $row->get('ordering') ?  '' : 'disabled="disabled"'; ?>
-                        <input type="text" name="order[]" size="5" value="<?php echo $row->get('ordering'); ?>" <?php echo $disabled; ?> class="text_area align-center" />
+                        <input
+                            type="text"
+                            name="order[]"
+                            size="5"
+                            value="<?php echo $row->get('ordering'); ?>"
+                            <?php echo $disabled; ?> class="text_area align-center"/>
                     <?php else : ?>
                         <?php echo $row->get('ordering'); ?>
                     <?php endif; ?>
                 </td>
                 <td class="priority-2">
                     <?php if ($canDo->get('core.edit')) : ?>
-                        <a class="state <?php echo $row->get('enabled') ? 'yes' : 'no'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle_enabled&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+                        <?php $val = $row->get('enabled') ? 'yes' : 'no'; ?>
+                        <?php
+                        $toggleUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=toggle_enabled&id=' . $row->get('id')
+                            . '&' . Session::getFormToken() . '=1'
+                        );
+                        ?>
+                        <a class="state <?php echo $val; ?>" href="<?php echo $toggleUrl; ?>">
                             <span><?php echo Lang::txt(($row->get('enabled') ? 'JYES' : 'JNO')); ?></span>
                         </a>
                     <?php else : ?>
