@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,10 +23,33 @@ $this->js();
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php endif; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="admin-form" data-confirm-stop="<?php echo Lang::txt('COM_NEWSLETTER_MAILING_STOP_CHECK'); ?>">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$confirmStop = Lang::txt('COM_NEWSLETTER_MAILING_STOP_CHECK');
+$searchPlaceholder = Lang::txt(
+    'COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'
+);
+?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="admin-form"
+    data-confirm-stop="<?php echo $confirmStop; ?>"
+>
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+        <input
+            type="text"
+            name="search"
+            id="filter_search"
+            class="filter"
+            value="<?php echo $this->escape($this->filters['search']); ?>"
+            placeholder="<?php echo $searchPlaceholder; ?>"
+        />
 
         <input type="submit" value="<?php echo Lang::txt('COM_NEWSLETTER_GO'); ?>" />
         <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -38,12 +59,38 @@ $this->js();
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    ><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILING_DATE', 'date', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?></th>
+                <th scope="col"><?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_NEWSLETTER',
+                        'subject',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col" class="priority-3"><?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_MAILING_DATE',
+                        'date',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <?php $pctComplete = Lang::txt('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?>
+                <th scope="col" class="priority-2"><?php echo $pctComplete; ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_NEWSLETTER_MAILING_REOCCUR'); ?></th>
             </tr>
         </thead>
@@ -62,8 +109,17 @@ $this->js();
                 <?php foreach ($this->mailings as $mailing) { ?>
                     <tr>
                         <td>
-                            <input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $mailing->id; ?>" class="checkbox-toggle" />
-                            <label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $mailing->id; ?></label>
+                            <input
+                                type="checkbox"
+                                name="id[]"
+                                id="cb<?php echo $k; ?>"
+                                value="<?php echo $mailing->id; ?>"
+                                class="checkbox-toggle"
+                            />
+                            <label
+                                for="cb<?php echo $k; ?>"
+                                class="sr-only visually-hidden"
+                            ><?php echo $mailing->id; ?></label>
                         </td>
                         <td>
                             <?php echo $mailing->newsletter->get('name', Lang::txt('COM_NEWSLETTER_UNKNOWN')); ?>
@@ -79,7 +135,16 @@ $this->js();
                                 echo '0%';
                             }
                             ?>
-                            (<?php echo Lang::txt('COM_NEWSLETTER_NUM_OF_EMAILS_SENT', number_format($mailing->emails_sent), number_format($mailing->emails_total)); ?>)
+                            <?php
+                            $sentCount = number_format($mailing->emails_sent);
+                            $totalCount = number_format($mailing->emails_total);
+                            $emailsSentTxt = Lang::txt(
+                                'COM_NEWSLETTER_NUM_OF_EMAILS_SENT',
+                                $sentCount,
+                                $totalCount
+                            );
+                            ?>
+                            (<?php echo $emailsSentTxt; ?>)
                         </td>
                         <td class="priority-4">
                             <?php

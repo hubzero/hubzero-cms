@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,26 +19,55 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
             <legend><span><?php echo Lang::txt('COM_MODULES_MENU_ASSIGNMENT'); ?></span></legend>
 
             <div class="input-wrap">
-                <label id="jform_menus-lbl" for="jform_assignment"><?php echo Lang::txt('COM_MODULES_MODULE_ASSIGN'); ?></label>
+                <?php $assignLabel = Lang::txt('COM_MODULES_MODULE_ASSIGN'); ?>
+                <label id="jform_menus-lbl" for="jform_assignment"><?php echo $assignLabel; ?></label>
             <!-- <fieldset id="jform_menus" class="radio"> -->
                 <select name="menu[assignment]" id="jform_assignment">
-                    <?php echo Html::select('options', \Components\Modules\Helpers\Modules::getAssignmentOptions($this->item->client_id), 'value', 'text', $assignment, true);?>
+                    <?php
+                    $assignOpts = \Components\Modules\Helpers\Modules::getAssignmentOptions(
+                        $this->item->client_id
+                    );
+                    echo Html::select(
+                        'options',
+                        $assignOpts,
+                        'value',
+                        'text',
+                        $assignment,
+                        true
+                    );
+                    ?>
                 </select>
             <!-- </fieldset> -->
             </div>
 
             <div class="input-wrap">
-                <label id="jform_menuselect-lbl" for="jform_menuselect"><?php echo Lang::txt('JGLOBAL_MENU_SELECTION'); ?></label>
+                <?php $menuSelectLabel = Lang::txt('JGLOBAL_MENU_SELECTION'); ?>
+                <label id="jform_menuselect-lbl" for="jform_menuselect"><?php echo $menuSelectLabel; ?></label>
 
-                <button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.chkbox').each(function(i, el) { el.checked = !el.checked; });">
+                <?php $invertJs = "\$('.chkbox').each(function(i, el) { el.checked = !el.checked; });"; ?>
+                <button
+                    type="button"
+                    class="jform-assignments-button jform-rightbtn"
+                    onclick="<?php echo $invertJs; ?>"
+                >
                     <?php echo Lang::txt('JGLOBAL_SELECTION_INVERT'); ?>
                 </button>
 
-                <button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.chkbox').each(function(i, el) { el.checked = false; });">
+                <?php $noneJs = "\$('.chkbox').each(function(i, el) { el.checked = false; });"; ?>
+                <button
+                    type="button"
+                    class="jform-assignments-button jform-rightbtn"
+                    onclick="<?php echo $noneJs; ?>"
+                >
                     <?php echo Lang::txt('JGLOBAL_SELECTION_NONE'); ?>
                 </button>
 
-                <button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.chkbox').each(function(i, el) { el.checked = true; });">
+                <?php $allJs = "\$('.chkbox').each(function(i, el) { el.checked = true; });"; ?>
+                <button
+                    type="button"
+                    class="jform-assignments-button jform-rightbtn"
+                    onclick="<?php echo $allJs; ?>"
+                >
                     <?php echo Lang::txt('JGLOBAL_SELECTION_ALL'); ?>
                 </button>
             </div>
@@ -56,15 +83,30 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
 
                 $chkbox_class = 'chk-menulink-' . $type->id; ?>
 
-                <button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.<?php echo $chkbox_class; ?>').each(function(i, el) { el.checked = !el.checked; });">
+                <?php $clsInvert = "\$('.{$chkbox_class}').each(function(i, el) { el.checked = !el.checked; });"; ?>
+                <button
+                    type="button"
+                    class="jform-assignments-button jform-rightbtn"
+                    onclick="<?php echo $clsInvert; ?>"
+                >
                     <?php echo Lang::txt('JGLOBAL_SELECTION_INVERT'); ?>
                 </button>
 
-                <button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.<?php echo $chkbox_class; ?>').each(function(i, el) { el.checked = false; });">
+                <?php $clsNone = "\$('.{$chkbox_class}').each(function(i, el) { el.checked = false; });"; ?>
+                <button
+                    type="button"
+                    class="jform-assignments-button jform-rightbtn"
+                    onclick="<?php echo $clsNone; ?>"
+                >
                     <?php echo Lang::txt('JGLOBAL_SELECTION_NONE'); ?>
                 </button>
 
-                <button type="button" class="jform-assignments-button jform-rightbtn" onclick="$('.<?php echo $chkbox_class; ?>').each(function(i, el) { el.checked = true; });">
+                <?php $clsAll = "\$('.{$chkbox_class}').each(function(i, el) { el.checked = true; });"; ?>
+                <button
+                    type="button"
+                    class="jform-assignments-button jform-rightbtn"
+                    onclick="<?php echo $clsAll; ?>"
+                >
                     <?php echo Lang::txt('JGLOBAL_SELECTION_ALL'); ?>
                 </button>
 
@@ -89,7 +131,15 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
                         endif;
                         ?>
                     <li class="menu-link">
-                        <input type="checkbox" class="chkbox <?php echo $chkbox_class; ?>" name="menu[assigned][]" value="<?php echo (int) $link->value;?>" id="link<?php echo (int) $link->value;?>"<?php echo $checked;?>/>
+                        <?php $linkVal = (int) $link->value; ?>
+                        <input
+                            type="checkbox"
+                            class="chkbox <?php echo $chkbox_class; ?>"
+                            name="menu[assigned][]"
+                            value="<?php echo $linkVal; ?>"
+                            id="link<?php echo $linkVal; ?>"
+                            <?php echo $checked; ?>
+                        />
                         <label for="link<?php echo (int) $link->value;?>">
                             <?php echo $link->text; ?>
                         </label>

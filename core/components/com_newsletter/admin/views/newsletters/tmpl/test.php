@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,10 +33,17 @@ Toolbar::cancel();
                         <tr>
                             <th>
                                 <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEST_EMAILS'); ?>:<br />
-                                <span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEST_EMAILS_HINT'); ?></span>
+                                <?php $hintTxt = Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEST_EMAILS_HINT'); ?>
+                                <span class="hint"><?php echo $hintTxt; ?></span>
                             </th>
                             <td>
-                                <input type="text" name="emails" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEST_EMAILS_PLACEHOLDER'); ?>" autocomplete="off" />
+                                <?php $placeholder = Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEST_EMAILS_PLACEHOLDER'); ?>
+                                <input
+                                    type="text"
+                                    name="emails"
+                                    placeholder="<?php echo $placeholder; ?>"
+                                    autocomplete="off"
+                                />
                             </td>
                         </tr>
                     </tbody>

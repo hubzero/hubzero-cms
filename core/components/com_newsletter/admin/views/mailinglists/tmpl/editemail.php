@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,8 @@ Toolbar::save('saveemail');
 Toolbar::cancel('cancelemail');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span6">
             <fieldset class="adminform">
@@ -32,7 +31,13 @@ Toolbar::cancel('cancelemail');
                         </tr>
                         <tr>
                             <td class="key"><?php echo Lang::txt('Email'); ?>:</td>
-                            <td><input type="text" name="fields[email]" value="<?php echo $this->escape($this->email->email); ?>" /></td>
+                            <td>
+                                <input
+                                    type="text"
+                                    name="fields[email]"
+                                    value="<?php echo $this->escape($this->email->email); ?>"
+                                />
+                            </td>
                         </tr>
                     </tbody>
                 </table>

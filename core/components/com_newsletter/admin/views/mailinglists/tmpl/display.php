@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,10 +29,26 @@ if ($canDo->get('core.admin')) {
     Toolbar::preferences($this->option, '550');
 }
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$searchPlaceholder = Lang::txt(
+    'COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+        <input
+            type="text"
+            name="search"
+            id="filter_search"
+            class="filter"
+            value="<?php echo $this->escape($this->filters['search']); ?>"
+            placeholder="<?php echo $searchPlaceholder; ?>"
+        />
 
         <input type="submit" value="<?php echo Lang::txt('COM_NEWSLETTER_GO'); ?>" />
         <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -44,13 +58,24 @@ if ($canDo->get('core.admin')) {
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    ><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
                 <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NAME'); ?></th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY'); ?></th>
-                <th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ACTIVE_SUBSCRIBERS'); ?></th>
-                <th scope="col" class="priority-2"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_TOTAL_SUBSCRIBERS'); ?></th>
+                <?php $activeSubs = Lang::txt('COM_NEWSLETTER_MAILINGLIST_ACTIVE_SUBSCRIBERS'); ?>
+                <?php $totalSubs = Lang::txt('COM_NEWSLETTER_MAILINGLIST_TOTAL_SUBSCRIBERS'); ?>
+                <th scope="col" class="priority-2"><?php echo $activeSubs; ?></th>
+                <th scope="col" class="priority-2"><?php echo $totalSubs; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -67,17 +92,38 @@ if ($canDo->get('core.admin')) {
                 <?php foreach ($this->lists as $list) { ?>
                     <tr>
                         <td>
-                            <input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $list->id; ?>" class="checkbox-toggle" />
-                            <label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $list->id; ?></label>
+                            <input
+                                type="checkbox"
+                                name="id[]"
+                                id="cb<?php echo $k; ?>"
+                                value="<?php echo $list->id; ?>"
+                                class="checkbox-toggle"
+                            />
+                            <label
+                                for="cb<?php echo $k; ?>"
+                                class="sr-only visually-hidden"
+                            ><?php echo $list->id; ?></label>
                         </td>
                         <td>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $list->id); ?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=edit&id=' . $list->id
+                            );
+                            ?>
+                            <a href="<?php echo $editUrl; ?>">
                                 <?php echo $this->escape($list->name); ?>
                             </a>
                         </td>
                         <td class="priority-3">
                             <span class="access <?php echo ($list->private) ? 'private' : 'public'; ?>">
-                                <?php echo ($list->private) ? Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PRIVATE') : Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PUBLIC'); ?>
+                                <?php
+                                $privacyTxt = ($list->private)
+                                    ? Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PRIVATE')
+                                    : Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PUBLIC');
+                                echo $privacyTxt;
+                                ?>
                             </span>
                         </td>
                         <td class="priority-2">
@@ -94,7 +140,10 @@ if ($canDo->get('core.admin')) {
             <?php } elseif (!$this->filters['search']) { ?>
                 <tr>
                     <td colspan="5">
-                        <?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_LISTS', "javascript:submitbutton('add');"); ?>
+                        <?php
+                        $addLink = "javascript:submitbutton('add');";
+                        echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_LISTS', $addLink);
+                        ?>
                     </td>
                 </tr>
             <?php } ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,7 +29,8 @@ if ($this->getError()) {
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <fieldset class="adminform">
         <legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_STATISTICS'); ?></legend>
 
@@ -81,8 +80,14 @@ if ($this->getError()) {
                 <table class="adminlist">
                     <thead>
                         <tr>
-                            <th colspan="2"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS'); ?></th>
-                            <th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS_OPENS_COUNT'); ?></th>
+                            <?php $topLocations = Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS'); ?>
+                            <?php
+                            $opensCount = Lang::txt(
+                                'COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS_OPENS_COUNT'
+                            );
+                            ?>
+                            <th colspan="2"><?php echo $topLocations; ?></th>
+                            <th><?php echo $opensCount; ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,7 +95,15 @@ if ($this->getError()) {
                             <tr>
                                 <td>
                                     <?php if ($country != 'undetermined') : ?>
-                                        <img src="<?php echo Request::base(); ?>/core/assets/images/flags/<?php echo strtolower($country); ?>.gif" alt="<?php echo $country; ?>" />
+                                        <?php
+                                        $flagSrc = Request::base()
+                                            . '/core/assets/images/flags/'
+                                            . strtolower($country) . '.gif';
+                                        ?>
+                                        <img
+                                            src="<?php echo $flagSrc; ?>"
+                                            alt="<?php echo $country; ?>"
+                                        />
                                     <?php endif; ?>
                                 </td>
                                 <td><?php echo strtoupper($country); ?></td>
@@ -126,8 +139,10 @@ if ($this->getError()) {
         <table class="adminlist">
             <thead>
                 <tr>
-                    <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_URL'); ?></th>
-                    <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_COUNT'); ?></th>
+                    <?php $clickUrl = Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_URL'); ?>
+                    <?php $clickCount = Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_COUNT'); ?>
+                    <th scope="col"><?php echo $clickUrl; ?></th>
+                    <th scope="col"><?php echo $clickCount; ?></th>
                 </tr>
             </thead>
             <tbody>

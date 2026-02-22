@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,7 +29,8 @@ if ($this->getError()) {
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <div class="col span12">
         <?php if ($this->newsletter->id != null) : ?>
             <fieldset class="adminform" id="distribution">
@@ -42,7 +41,12 @@ if ($this->getError()) {
                             <th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER'); ?>:</th>
                             <td>
                                 <?php echo $this->newsletter->name; ?>
-                                <input type="hidden" name="newsletter-name" id="newsletter-name" value="<?php echo $this->escape($this->newsletter->name); ?>" />
+                                <input
+                                    type="hidden"
+                                    name="newsletter-name"
+                                    id="newsletter-name"
+                                    value="<?php echo $this->escape($this->newsletter->name); ?>"
+                                />
                             </td>
                         </tr>
                         <tr>
@@ -60,7 +64,11 @@ if ($this->getError()) {
                                         if ($sent > $now) {
                                             $status = 'Scheduled';
                                             $color  = 'DodgerBlue';
-                                        } elseif ($mailing->recipients()->whereEquals('status', 'queued')->total() == 0) {
+                                        } elseif (
+                                            $mailing->recipients()
+                                            ->whereEquals('status', 'queued')
+                                            ->total() == 0
+                                        ) {
                                             // is mailing fully sent?
                                             $status = 'Sent';
                                             $color  = 'ForestGreen';
@@ -83,23 +91,50 @@ if ($this->getError()) {
                             <th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE'); ?>:</th>
                             <td>
                                 <div id="scheduler">
-                                    <input type="radio" name="scheduler" value="1" checked="checked" /> <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_NOW'); ?> <br />
-                                    <input type="radio" name="scheduler" value="0" /> <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER'); ?> <br />
+                                    <?php $schedNow = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_NOW'); ?>
+                                    <?php $schedLater = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER'); ?>
+                                    <input
+                                        type="radio"
+                                        name="scheduler"
+                                        value="1"
+                                        checked="checked"
+                                    /> <?php echo $schedNow; ?> <br />
+                                    <input type="radio" name="scheduler" value="0" /> <?php echo $schedLater; ?> <br />
 
                                     <div id="scheduler-alt">
-                                        <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_DATE'); ?>
-                                        <input type="text" name="scheduler_date" id="scheduler_date" class="width-auto" />
+                                        <?php
+                                        $dateTxt = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_DATE');
+                                        $timeTxt = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_TIME');
+                                        $optNull = Lang::txt(
+                                            'COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'
+                                        );
+                                        echo $dateTxt;
+                                        ?>
+                                        <input
+                                            type="text"
+                                            name="scheduler_date"
+                                            id="scheduler_date"
+                                            class="width-auto"
+                                        />
 
-                                        <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_TIME'); ?>
-                                        <select name="scheduler_date_hour" id="scheduler_date_hour" class="width-auto">
-                                            <option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
+                                        <?php echo $timeTxt; ?>
+                                        <select
+                                            name="scheduler_date_hour"
+                                            id="scheduler_date_hour"
+                                            class="width-auto"
+                                        >
+                                            <option value=""><?php echo $optNull; ?></option>
                                             <?php for ($i = 1, $n = 13; $i < $n; $i++) : ?>
                                                 <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
                                             <?php endfor; ?>
                                         </select>
 
-                                        <select name="scheduler_date_minute" id="scheduler_date_minute" class="width-auto">
-                                            <option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
+                                        <select
+                                            name="scheduler_date_minute"
+                                            id="scheduler_date_minute"
+                                            class="width-auto"
+                                        >
+                                            <option value=""><?php echo $optNull; ?></option>
                                             <?php for ($i = 0, $n = 60; $i < $n; $i += 5) : ?>
                                                 <?php
                                                 if ($i == '0') {
@@ -113,10 +148,18 @@ if ($this->getError()) {
                                             <?php endfor; ?>
                                         </select>
 
-                                        <select name="scheduler_date_meridian" id="scheduler_date_meridian" class="width-auto">
-                                            <option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_NULL'); ?></option>
-                                            <option value="am"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_AM'); ?></option>
-                                            <option value="pm"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_PM'); ?></option>
+                                        <?php
+                                        $optAm = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_AM');
+                                        $optPm = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_OPTION_PM');
+                                        ?>
+                                        <select
+                                            name="scheduler_date_meridian"
+                                            id="scheduler_date_meridian"
+                                            class="width-auto"
+                                        >
+                                            <option value=""><?php echo $optNull; ?></option>
+                                            <option value="am"><?php echo $optAm; ?></option>
+                                            <option value="pm"><?php echo $optPm; ?></option>
                                         </select>
                                         <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_SCHEDULE_LATER_EST'); ?>
                                     </div>
@@ -126,16 +169,25 @@ if ($this->getError()) {
                         <tr>
                             <th><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST'); ?></th>
                             <td>
+                                <?php
+                                $mlOptNull = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_OPTION_NULL');
+                                $mlOptDefault = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_OPTION_DEFAULT');
+                                ?>
                                 <select name="mailinglist" id="mailinglist">
-                                    <option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_OPTION_NULL'); ?></option>
-                                    <option value="-1"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_OPTION_DEFAULT'); ?></option>
+                                    <option value=""><?php echo $mlOptNull; ?></option>
+                                    <option value="-1"><?php echo $mlOptDefault; ?></option>
                                     <?php foreach ($this->mailinglists as $list) : ?>
-                                        <option value="<?php echo $list->id; ?>"><?php echo $this->escape($list->name); ?></option>
+                                        <option value="<?php echo $list->id; ?>">
+                                            <?php echo $this->escape($list->name); ?>
+                                        </option>
                                     <?php endforeach; ?>
                                 </select>
                                 <br /><br />
                                 <p id="mailinglist-count">
-                                    <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_RECIEVE'); ?><span id="mailinglist-count-count"></span>
+                                    <?php
+                                    $receiveTxt = Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MAILINGLIST_RECIEVE');
+                                    echo $receiveTxt;
+                                    ?><span id="mailinglist-count-count"></span>
                                     <span id="mailinglist-emails"></span>
                                 </p>
                             </td>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,31 +21,57 @@ $template  = $this->filters['template'];
 $type      = $this->filters['type'];
 ?>
 <h2 class="modal-title"><?php echo Lang::txt('COM_MODULES'); ?></h2>
-<form action="<?php echo Route::url('index.php?option=com_modules&task=positions&tmpl=component&function=' . $function . '&client_id=' . $clientId);?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=com_modules&task=positions&tmpl=component'
+    . '&function=' . $function . '&client_id=' . $clientId
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar" class="filters clearfix">
         <div class="grid">
             <div class="col span5">
                 <label for="filter_search">
                     <?php echo Lang::txt('JSearch_Filter_Label'); ?>
                 </label>
-                <input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" size="30" placeholder="<?php echo Lang::txt('COM_MODULES_FILTER_SEARCH_DESC'); ?>" />
+                <?php
+                $searchVal = $this->escape($this->filters['search']);
+                $searchPlaceholder = Lang::txt('COM_MODULES_FILTER_SEARCH_DESC');
+                ?>
+                <input
+                    type="text"
+                    name="filter_search"
+                    id="filter_search"
+                    value="<?php echo $searchVal; ?>"
+                    size="30"
+                    placeholder="<?php echo $searchPlaceholder; ?>"
+                />
 
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
             </div>
             <div class="col span7">
                 <select name="filter_state" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
-                    <?php echo Html::select('options', \Components\Modules\Helpers\Modules::templateStates(), 'value', 'text', $state, true);?>
+                    <?php
+                    $stateOpts = \Components\Modules\Helpers\Modules::templateStates();
+                    echo Html::select('options', $stateOpts, 'value', 'text', $state, true);
+                    ?>
                 </select>
 
                 <select name="filter_type" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_TYPE'); ?></option>
-                    <?php echo Html::select('options', \Components\Modules\Helpers\Modules::types(), 'value', 'text', $type, true);?>
+                    <?php
+                    $typeOpts = \Components\Modules\Helpers\Modules::types();
+                    echo Html::select('options', $typeOpts, 'value', 'text', $type, true);
+                    ?>
                 </select>
 
                 <select name="filter_template" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_TEMPLATE'); ?></option>
-                    <?php echo Html::select('options', \Components\Modules\Helpers\Modules::templates($clientId), 'value', 'text', $template, true);?>
+                    <?php
+                    $tplOpts = \Components\Modules\Helpers\Modules::templates($clientId);
+                    echo Html::select('options', $tplOpts, 'value', 'text', $template, true);
+                    ?>
                 </select>
             </div>
         </div>
@@ -60,7 +84,13 @@ $type      = $this->filters['type'];
                     <?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'value', $direction, $ordering); ?>
                 </th>
                 <th scope="col">
-                    <?php echo Html::grid('sort', 'COM_MODULES_HEADING_TEMPLATES', 'templates', $direction, $ordering); ?>
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_MODULES_HEADING_TEMPLATES',
+                        'templates',
+                        $direction,
+                        $ordering
+                    ); ?>
                 </th>
             </tr>
         </thead>
@@ -82,14 +112,27 @@ $type      = $this->filters['type'];
         <?php $i = 1; foreach ($this->items as $value => $templates) : ?>
             <tr class="row<?php echo $i = 1 - $i; ?>">
                 <td>
-                    <a class="pointer" onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $value; ?>');"><?php echo $this->escape($value); ?></a>
+                    <?php $onclick = "if (window.parent) window.parent.{$function}('{$value}');"; ?>
+                    <a class="pointer" onclick="<?php echo $onclick; ?>">
+                        <?php echo $this->escape($value); ?>
+                    </a>
                 </td>
                 <td>
                     <?php if (!empty($templates)) : ?>
-                        <a class="pointer" onclick="if (window.parent) window.parent.<?php echo $function;?>('<?php echo $value; ?>');">
+                        <a class="pointer" onclick="<?php echo $onclick; ?>">
                             <ul>
                             <?php foreach ($templates as $template => $label) :?>
-                                <li><?php echo $lang->hasKey($label) ? Lang::txt('COM_MODULES_MODULE_TEMPLATE_POSITION', Lang::txt($template), Lang::txt($label)) : Lang::txt($template);?></li>
+                                <li><?php
+                                if ($lang->hasKey($label)) {
+                                    echo Lang::txt(
+                                        'COM_MODULES_MODULE_TEMPLATE_POSITION',
+                                        Lang::txt($template),
+                                        Lang::txt($label)
+                                    );
+                                } else {
+                                    echo Lang::txt($template);
+                                }
+                                ?></li>
                             <?php endforeach;?>
                             </ul>
                         </a>

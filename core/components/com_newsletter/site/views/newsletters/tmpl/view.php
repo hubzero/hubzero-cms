@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,14 +19,16 @@ $this->css()
     <div id="content-header-extra">
         <ul>
             <?php if (isset($this->id) && $this->id != 0) : ?>
+                <?php $pdfUrl = Route::url('index.php?option=com_newsletter&id=' . $this->id . '&task=output'); ?>
                 <li>
-                    <a href="<?php echo Route::url('index.php?option=com_newsletter&id=' . $this->id . '&task=output'); ?>" class="btn icon-file">
+                    <a href="<?php echo $pdfUrl; ?>" class="btn icon-file">
                         <?php echo Lang::txt('COM_NEWSLETTER_VIEW_SAVEASPDF'); ?>
                     </a>
                 </li>
             <?php endif; ?>
+            <?php $subscribeUrl = Route::url('index.php?option=com_newsletter&task=subscribe'); ?>
             <li>
-                <a href="<?php echo Route::url('index.php?option=com_newsletter&task=subscribe'); ?>" class="btn icon-feed">
+                <a href="<?php echo $subscribeUrl; ?>" class="btn icon-feed">
                     <?php echo Lang::txt('COM_NEWSLETTER_VIEW_SUBSCRIBE_TO_MAILINGLISTS'); ?>
                 </a>
             </li>
@@ -49,7 +49,14 @@ $this->css()
 
             <?php if ($this->newsletter != '') : ?>
                 <div class="container">
-                    <iframe id="newsletter-iframe" width="100%" height="0" title="<?php echo $this->escape($this->title); ?>" src="<?php echo Route::url('index.php?option=com_newsletter&id=' . $this->id . '&no_html=1'); ?>"></iframe>
+                    <?php $iframeSrc = Route::url('index.php?option=com_newsletter&id=' . $this->id . '&no_html=1'); ?>
+                    <iframe
+                        id="newsletter-iframe"
+                        width="100%"
+                        height="0"
+                        title="<?php echo $this->escape($this->title); ?>"
+                        src="<?php echo $iframeSrc; ?>"
+                    ></iframe>
                 </div>
             <?php else : ?>
                 <p class="info">
@@ -63,10 +70,10 @@ $this->css()
             <ul>
                 <?php foreach ($this->newsletters as $newsletter) : ?>
                     <?php if ($newsletter->published) : ?>
+                        <?php $nlUrl = Route::url('index.php?option=com_newsletter&id=' . $newsletter->id); ?>
+                        <?php $activeClass = ($this->id == $newsletter->id) ? 'active' : ''; ?>
                         <li>
-                            <a class="<?php if ($this->id == $newsletter->id) {
-                                echo "active";
-                                      } ?>" href="<?php echo Route::url('index.php?option=com_newsletter&id=' . $newsletter->id); ?>">
+                            <a class="<?php echo $activeClass; ?>" href="<?php echo $nlUrl; ?>">
                                 <?php echo $newsletter->name; ?>
                             </a>
                         </li>
@@ -78,7 +85,8 @@ $this->css()
             <h3><?php echo Lang::txt('COM_NEWSLETTER_VIEW_NEWSLETTER_HELP'); ?></h3>
             <ul>
                 <li>
-                    <a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=newsletter&page=index'); ?>">
+                    <?php $helpUrl = Route::url('index.php?option=com_help&component=newsletter&page=index'); ?>
+                    <a class="popup" href="<?php echo $helpUrl; ?>">
                         <?php echo Lang::txt('COM_NEWSLETTER_VIEW_NEWSLETTER_HELP'); ?>
                     </a>
                 </li>

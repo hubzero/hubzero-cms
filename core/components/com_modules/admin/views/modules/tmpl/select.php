@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,7 +32,11 @@ Html::behavior('tooltip');
             $desc = $this->escape($item->desc);
             ?>
             <td>
-                <span class="editlinktip hasTip" title="<?php echo $name . ' :: ' . $desc; ?>"><a href="<?php echo Route::url($link); ?>" target="_top"><?php echo $name; ?></a></span>
+                <?php $tipTitle = $name . ' :: ' . $desc; ?>
+                <?php $linkUrl = Route::url($link); ?>
+                <span class="editlinktip hasTip" title="<?php echo $tipTitle; ?>">
+                    <a href="<?php echo $linkUrl; ?>" target="_top"><?php echo $name; ?></a>
+                </span>
             </td>
             <td>
                 <?php echo $this->escape($item->module); ?>

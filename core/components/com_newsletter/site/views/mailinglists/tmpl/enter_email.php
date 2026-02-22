@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -38,7 +36,8 @@ $this->css()
     }
     ?>
     <div class="subscribe">
-        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=subscribe'); ?>" method="post" id="hubForm">
+        <?php $formAction = Route::url('index.php?option=' . $this->option . '&task=subscribe'); ?>
+        <form action="<?php echo $formAction; ?>" method="post" id="hubForm">
             <fieldset>
                 <legend><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_GUEST_PROMPT'); ?></legend>
 
@@ -46,8 +45,11 @@ $this->css()
                 <input type="email" name="e" id="email" placeholder="you@example.com" />
             </fieldset>
             <p class="submit">
-                <input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONTINUE_GUEST'); ?>">
-                <a class="btn" href="<?php echo $this->redirect; ?>"><?php echo Lang::txt('COM_NEWSLETTER_LOGIN'); ?></a>
+                <?php $continueVal = Lang::txt('COM_NEWSLETTER_MAILINGLISTS_CONTINUE_GUEST'); ?>
+                <input type="submit" class="btn btn-success" value="<?php echo $continueVal; ?>">
+                <a class="btn" href="<?php echo $this->redirect; ?>">
+                    <?php echo Lang::txt('COM_NEWSLETTER_LOGIN'); ?>
+                </a>
             </p>
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

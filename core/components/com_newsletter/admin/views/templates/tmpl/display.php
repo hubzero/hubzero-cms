@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -38,13 +36,22 @@ if ($this->getError()) {
     echo '<p class="error">' . $this->getError() . '</p>';
 }
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
                 <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE'); ?></th>
             </tr>
@@ -58,16 +65,32 @@ if ($this->getError()) {
                     ?>
                     <tr>
                         <td>
-                            <input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $template->id; ?>" class="checkbox-toggle" />
-                            <label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $template->id; ?></label>
+                            <input
+                                type="checkbox"
+                                name="id[]"
+                                id="cb<?php echo $k;?>"
+                                value="<?php echo $template->id; ?>"
+                                class="checkbox-toggle"
+                            />
+                            <label for="cb<?php echo $k; ?>" class="sr-only visually-hidden">
+                                <?php echo $template->id; ?>
+                            </label>
                         </td>
+                        <?php $notEditableTxt = Lang::txt('COM_NEWSLETTER_TEMPLATE_NOT_EDITABLE_OR_DELETABLE'); ?>
                         <td>
                             <?php if (!$template->editable) : ?>
                                 <?php echo $template->name; ?>
                                 <br/>
-                                <span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_NOT_EDITABLE_OR_DELETABLE'); ?></span>
+                                <span class="hint"><?php echo $notEditableTxt; ?></span>
                             <?php else : ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $template->id); ?>">
+                                <?php
+                                $editUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&task=edit&id=' . $template->id
+                                );
+                                ?>
+                                <a href="<?php echo $editUrl; ?>">
                                     <?php echo $template->name; ?>
                                 </a>
                             <?php endif; ?>
@@ -78,7 +101,9 @@ if ($this->getError()) {
                 <tr>
                     <td colspan="2">
                         <?php echo Lang::txt('COM_NEWSLETTER_NO_TEMPLATES'); ?>
-                        <a onclick="javascript:submitbutton('add')" href="#"><?php echo Lang::txt('COM_NEWSLETTER_NO_TEMPLATES_CREATE'); ?></a>
+                        <a onclick="javascript:submitbutton('add')" href="#">
+                            <?php echo Lang::txt('COM_NEWSLETTER_NO_TEMPLATES_CREATE'); ?>
+                        </a>
                     </td>
                 </tr>
             <?php endif; ?>

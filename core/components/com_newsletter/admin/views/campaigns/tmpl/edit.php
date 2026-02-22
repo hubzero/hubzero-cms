@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2023 The Regents of the University of California.
@@ -29,7 +27,8 @@ Toolbar::cancel();
 Toolbar::spacer();
 Toolbar::help('campaign');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <fieldset class="adminform">
         <legend><span><?php echo $text; ?> <?php echo Lang::txt('COM_NEWSLETTER_CAMPAIGN'); ?></span></legend>
 
@@ -43,7 +42,12 @@ Toolbar::help('campaign');
 
         <div class="input-wrap">
             <label for="campaign-title"><?php echo Lang::txt('COM_NEWSLETTER_CAMPAIGN_NAME'); ?></label><br />
-            <input type="text" name="campaign[title]" id="campaign-title" value="<?php echo $this->escape($this->campaign->title); ?>" /></td>
+            <input
+                type="text"
+                name="campaign[title]"
+                id="campaign-title"
+                value="<?php echo $this->escape($this->campaign->title); ?>"
+            /></td>
         </div>
 
         <!-- Campaign expiration date: adapted from com_events/admin/views/events/tmpl/edit.php -->
@@ -54,19 +58,37 @@ Toolbar::help('campaign');
             $exDate  = Date::of($this->campaign->expire_date);
         } ?>
         <div class="input-wrap">
-            <label for="campaign-expire_date"><?php echo Lang::txt('COM_NEWSLETTER_CAMPAIGN_EXPIRE_DATE'); ?></label><br />
-            <?php echo Html::input('calendar', 'campaign[expire_date_display]', Date::of($exDate)->toLocal(), array('id' => 'campaign-expire_date')); ?>
+            <?php $expireDateLabel = Lang::txt('COM_NEWSLETTER_CAMPAIGN_EXPIRE_DATE'); ?>
+            <label for="campaign-expire_date"><?php echo $expireDateLabel; ?></label><br />
+            <?php
+            echo Html::input(
+                'calendar',
+                'campaign[expire_date_display]',
+                Date::of($exDate)->toLocal(),
+                array('id' => 'campaign-expire_date')
+            );
+            ?>
         </div>
 
         <div class="input-wrap">
             <label for="campaign-description"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_DESC'); ?></label><br />
-            <textarea name="campaign[description]" id="campaign-description" rows="5"><?php echo $this->escape($this->campaign->description); ?></textarea>
+            <textarea
+                name="campaign[description]"
+                id="campaign-description"
+                rows="5"
+            ><?php echo $this->escape($this->campaign->description); ?></textarea>
         </div>
 
         <!-- Display Reset Secret only if editing the campaign -->
         <?php if ($hasSecret) { ?>
             <div class="input-wrap">
-                <input type="checkbox" name="params[reset_secret]" id="cb-reset-secret" value="1" class="checkbox-toggle" />
+                <input
+                type="checkbox"
+                name="params[reset_secret]"
+                id="cb-reset-secret"
+                value="1"
+                class="checkbox-toggle"
+            />
                 <label for="cb-reset-secret">Reset Campaign Secret</label>
             </div>
         <?php } ?>

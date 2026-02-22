@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -57,12 +55,28 @@ if (!$this->dependency) {
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$searchPlaceholder = Lang::txt(
+    'COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span4">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+                <input
+                    type="text"
+                    name="search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo $searchPlaceholder; ?>"
+                />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_NEWSLETTER_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -86,15 +100,62 @@ if (!$this->dependency) {
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    ><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_FORMAT', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_TEMPLATE', 'template_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_PUBLIC', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_SENT', 'sent', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_TRACKING', 'tracking', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php $sortDir = @$this->filters['sort_Dir']; ?>
+                <?php $sort = @$this->filters['sort']; ?>
+                <th scope="col"><?php echo Html::grid(
+                    'sort',
+                    'COM_NEWSLETTER_NEWSLETTER_NAME',
+                    'name',
+                    $sortDir,
+                    $sort
+                ); ?></th>
+                <th scope="col" class="priority-3"><?php echo Html::grid(
+                    'sort',
+                    'COM_NEWSLETTER_NEWSLETTER_FORMAT',
+                    'type',
+                    $sortDir,
+                    $sort
+                ); ?></th>
+                <th scope="col" class="priority-4"><?php echo Html::grid(
+                    'sort',
+                    'COM_NEWSLETTER_NEWSLETTER_TEMPLATE',
+                    'template_id',
+                    $sortDir,
+                    $sort
+                ); ?></th>
+                <th scope="col" class="priority-2"><?php echo Html::grid(
+                    'sort',
+                    'COM_NEWSLETTER_NEWSLETTER_PUBLIC',
+                    'published',
+                    $sortDir,
+                    $sort
+                ); ?></th>
+                <th scope="col"><?php echo Html::grid(
+                    'sort',
+                    'COM_NEWSLETTER_NEWSLETTER_SENT',
+                    'sent',
+                    $sortDir,
+                    $sort
+                ); ?></th>
+                <th scope="col" class="priority-3"><?php echo Html::grid(
+                    'sort',
+                    'COM_NEWSLETTER_NEWSLETTER_TRACKING',
+                    'tracking',
+                    $sortDir,
+                    $sort
+                ); ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -112,16 +173,37 @@ if (!$this->dependency) {
                 <?php foreach ($this->rows as $newsletter) { ?>
                     <tr>
                         <td>
-                            <input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $newsletter->id; ?>" class="checkbox-toggle" />
-                            <label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $newsletter->id; ?></label>
+                            <input
+                                type="checkbox"
+                                name="id[]"
+                                id="cb<?php echo $k; ?>"
+                                value="<?php echo $newsletter->id; ?>"
+                                class="checkbox-toggle"
+                            />
+                            <label
+                                for="cb<?php echo $k; ?>"
+                                class="sr-only visually-hidden"
+                            ><?php echo $newsletter->id; ?></label>
                         </td>
                         <td>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $newsletter->id); ?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=edit&id=' . $newsletter->id
+                            );
+                            ?>
+                            <a href="<?php echo $editUrl; ?>">
                                 <?php echo $this->escape($newsletter->name); ?>
                             </a>
                         </td>
                         <td class="priority-3">
-                            <?php echo ($newsletter->type == 'html') ? Lang::txt('COM_NEWSLETTER_FORMAT_HTML') : Lang::txt('COM_NEWSLETTER_FORMAT_PLAIN'); ?>
+                            <?php
+                            $formatTxt = ($newsletter->type == 'html')
+                                ? Lang::txt('COM_NEWSLETTER_FORMAT_HTML')
+                                : Lang::txt('COM_NEWSLETTER_FORMAT_PLAIN');
+                            echo $formatTxt;
+                            ?>
                         </td>
                         <td class="priority-4">
                             <?php
@@ -132,16 +214,31 @@ if (!$this->dependency) {
                                 $activeTemplate = $newsletter->template->name;
                             }
 
-                                echo ($activeTemplate) ? $activeTemplate : Lang::txt('COM_NEWSLETTER_NO_TEMPLATE_FOUND');
+                                $noTplTxt = Lang::txt('COM_NEWSLETTER_NO_TEMPLATE_FOUND');
+                                echo ($activeTemplate) ? $activeTemplate : $noTplTxt;
                             ?>
                         </td>
                         <td class="priority-2">
-                            <?php if ($newsletter->published) : ?>
-                                <a class="state yes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $newsletter->id . '&' . Session::getFormToken() . '=1'); ?>">
+                            <?php
+                            $token = Session::getFormToken();
+                            $pubBase = 'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller;
+                            if ($newsletter->published) :
+                                $unpubUrl = Route::url(
+                                    $pubBase . '&task=unpublish&id='
+                                    . $newsletter->id . '&' . $token . '=1'
+                                );
+                                ?>
+                                <a class="state yes" href="<?php echo $unpubUrl; ?>">
                                     <span><?php echo Lang::txt('JYES'); ?></span>
                                 </a>
-                            <?php else : ?>
-                                <a class="state no" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $newsletter->id . '&' . Session::getFormToken() . '=1'); ?>">
+                            <?php else :
+                                $pubUrl = Route::url(
+                                    $pubBase . '&task=publish&id='
+                                    . $newsletter->id . '&' . $token . '=1'
+                                );
+                                ?>
+                                <a class="state no" href="<?php echo $pubUrl; ?>">
                                     <span><?php echo Lang::txt('JYES'); ?></span>
                                 </a>
                             <?php endif; ?>
@@ -167,7 +264,8 @@ if (!$this->dependency) {
                 <tr>
                     <td colspan="7">
                         <?php echo Lang::txt('COM_NEWSLETTER_NO_NEWSLETTER'); ?>
-                        <button id="add-newsletter"><?php echo Lang::txt('COM_NEWSLETTER_CREATE_NEWSLETTER'); ?></button>
+                        <?php $createTxt = Lang::txt('COM_NEWSLETTER_CREATE_NEWSLETTER'); ?>
+                        <button id="add-newsletter"><?php echo $createTxt; ?></button>
                     </td>
                 </tr>
             <?php } ?>

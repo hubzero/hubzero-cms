@@ -9,7 +9,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength.TooLong
 ?>
 
 <form action="<?php echo $this->form_action;?>" id="oauth_form" method="post">
@@ -20,11 +19,29 @@ defined('_HZEXEC_') or die();
         <legend>Sign in to HUBzero</legend>
         <div class="row user">
             <label for="username" tabindex="-1">Username</label>
-            <input aria-required="true" autocapitalize="off" autocorrect="off" autofocus="autofocus" class="text" id="username" name="username" required="required" type="text" />
+            <input
+                aria-required="true"
+                autocapitalize="off"
+                autocorrect="off"
+                autofocus="autofocus"
+                class="text"
+                id="username"
+                name="username"
+                required="required"
+                type="text"
+            />
         </div>
         <div class="row password">
             <label for="password" tabindex="-1">Password</label>
-            <input aria-required="true" class="password text" id="password" name="password" required="required" type="password" value="" />
+            <input
+                aria-required="true"
+                class="password text"
+                id="password"
+                name="password"
+                required="required"
+                type="password"
+                value=""
+            />
         </div>
     </fieldset>
 

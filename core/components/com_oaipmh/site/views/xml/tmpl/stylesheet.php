@@ -6,11 +6,53 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 defined('_HZEXEC_') or die();
 
 $mprefix = Request::getString('metadataPrefix', 'oai_dc');
+
+$baseQuery = 'index.php?option=' . $this->option;
+$identifyUrl = Route::url(
+    $baseQuery . '&verb=Identify&metadataPrefix=' . $mprefix
+);
+$listRecordsUrl = Route::url(
+    $baseQuery . '&verb=ListRecords&metadataPrefix=' . $mprefix
+);
+$listSetsUrl = Route::url(
+    $baseQuery . '&verb=ListSets&metadataPrefix=' . $mprefix
+);
+$listFormatsUrl = Route::url(
+    $baseQuery . '&verb=ListMetadataFormats&metadataPrefix=' . $mprefix
+);
+$listIdsUrl = Route::url(
+    $baseQuery . '&verb=ListIdentifiers&metadataPrefix=' . $mprefix
+);
+$listRecordsPrefixUrl = Route::url(
+    $baseQuery
+    . '&verb=ListRecords&metadataPrefix={oai:metadataPrefix}'
+);
+$getRecordPrefixUrl = Route::url(
+    $baseQuery
+    . '&verb=GetRecord&metadataPrefix={.}&identifier={$identifier}'
+);
+$getRecordUrl = Route::url(
+    $baseQuery . '&verb=GetRecord&metadataPrefix='
+    . '&metadataPrefix=' . $mprefix
+    . '&identifier={oai:identifier}'
+);
+$listIdSetUrl = Route::url(
+    $baseQuery . '&verb=ListIdentifiers&metadataPrefix='
+    . $mprefix . '&set={.}'
+);
+$listRecSetUrl = Route::url(
+    $baseQuery . '&verb=ListRecords&metadataPrefix='
+    . $mprefix . '&set={.}'
+);
+$resumeUrl = Route::url(
+    $baseQuery
+    . '&verb={/oai:OAI-PMH/oai:request/@verb}'
+    . '&metadataPrefix=' . $mprefix
+    . '&resumptionToken={.}'
+);
 
 echo '<?xml version="1.0" encoding="utf-8"?>';
 
@@ -234,7 +276,19 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
     <xsl:call-template name='xmlstyle' />
 </xsl:template>
 
-<xsl:variable name='identifier' select="substring-before(concat(substring-after(/oai:OAI-PMH/oai:request,'identifier='),'&amp;'),'&amp;')" />
+<xsl:variable
+    name='identifier'
+    select="substring-before(
+        concat(
+            substring-after(
+                /oai:OAI-PMH/oai:request,
+                'identifier='
+            ),
+            '&amp;'
+        ),
+        '&amp;'
+    )"
+/>
 
 <xsl:template match="/">
     <html>
@@ -247,7 +301,9 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 
             <xsl:call-template name="quicklinks"/>
 
-            <p class="intro">You are viewing an HTML version of the XML OAI response. To see the underlying XML use your web browsers view source option.</p>
+            <p class="intro">You are viewing an HTML version of the XML OAI
+            response. To see the underlying XML use your web browsers
+            view source option.</p>
 
             <xsl:apply-templates select="/oai:OAI-PMH" />
         </body>
@@ -256,11 +312,11 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 
 <xsl:template name="quicklinks">
     <ul class="quicklinks">
-        <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=Identify&metadataPrefix=' . $mprefix); ?>">Identify</a></li> 
-        <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=ListRecords&metadataPrefix=' . $mprefix); ?>">ListRecords</a></li>
-        <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=ListSets&metadataPrefix=' . $mprefix); ?>">ListSets</a></li>
-        <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=ListMetadataFormats&metadataPrefix=' . $mprefix); ?>">ListMetadataFormats</a></li>
-        <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=ListIdentifiers&metadataPrefix=' . $mprefix); ?>">ListIdentifiers</a></li>
+        <li><a href="<?php echo $identifyUrl; ?>">Identify</a></li>
+        <li><a href="<?php echo $listRecordsUrl; ?>">ListRecords</a></li>
+        <li><a href="<?php echo $listSetsUrl; ?>">ListSets</a></li>
+        <li><a href="<?php echo $listFormatsUrl; ?>">ListMetadataFormats</a></li>
+        <li><a href="<?php echo $listIdsUrl; ?>">ListIdentifiers</a></li>
     </ul>
 </xsl:template>
 
@@ -417,7 +473,10 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
     <xsl:apply-templates select="ep:comment"/>
 </xsl:template>
 
-<xsl:template match="ep:content|ep:dataPolicy|ep:metadataPolicy|ep:submissionPolicy" xmlns:ep="http://www.openarchives.org/OAI/1.1/eprints">
+<xsl:template
+    match="ep:content|ep:dataPolicy|ep:metadataPolicy|ep:submissionPolicy"
+    xmlns:ep="http://www.openarchives.org/OAI/1.1/eprints"
+>
     <xsl:if test="ep:text">
         <p><xsl:value-of select="ep:text" /></p>
     </xsl:if>
@@ -464,10 +523,22 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
     <h3>Icon</h3>
     <xsl:choose>
         <xsl:when test="link!=''">
-            <a href="{br:link}"><img src="{br:url}" alt="{br:title}" width="{br:width}" height="{br:height}" border="0" /></a>
+            <a href="{br:link}"><img
+                src="{br:url}"
+                alt="{br:title}"
+                width="{br:width}"
+                height="{br:height}"
+                border="0"
+            /></a>
         </xsl:when>
         <xsl:otherwise>
-            <img src="{br:url}" alt="{br:title}" width="{br:width}" height="{br:height}" border="0" />
+            <img
+                src="{br:url}"
+                alt="{br:title}"
+                width="{br:width}"
+                height="{br:height}"
+                border="0"
+            />
         </xsl:otherwise>
     </xsl:choose>
 </xsl:template>
@@ -574,7 +645,12 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 <xsl:template match="oai:ListMetadataFormats">
     <xsl:choose>
         <xsl:when test="$identifier">
-            <p>This is a list of metadata formats available for the record "<xsl:value-of select='$identifier' />". Use these links to view the metadata: <xsl:apply-templates select="oai:metadataFormat/oai:metadataPrefix" /></p>
+            <p>This is a list of metadata formats available
+            for the record "<xsl:value-of select='$identifier' />".
+            Use these links to view the metadata:
+            <xsl:apply-templates
+                select="oai:metadataFormat/oai:metadataPrefix"
+            /></p>
         </xsl:when>
         <xsl:otherwise>
             <p>This is a list of metadata formats available from this archive.</p>
@@ -590,7 +666,11 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
             <tbody>
                 <tr>
                     <td class="key">metadataPrefix</td>
-                    <td class="value"><a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=ListRecords&metadataPrefix={oai:metadataPrefix}'); ?>"><xsl:value-of select="oai:metadataPrefix"/></a></td>
+                    <td class="value">
+                        <a class="link" href="<?php echo $listRecordsPrefixUrl; ?>">
+                            <xsl:value-of select="oai:metadataPrefix"/>
+                        </a>
+                    </td>
                 </tr>
                 <tr>
                     <td class="key">metadataNamespace</td>
@@ -606,16 +686,27 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 </xsl:template>
 
 <xsl:template match="oai:metadataPrefix">
-            <xsl:text> </xsl:text><a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=GetRecord&metadataPrefix={.}&identifier={$identifier}'); ?>"><xsl:value-of select='.' /></a>
+            <xsl:text> </xsl:text>
+            <a class="link" href="<?php echo $getRecordPrefixUrl; ?>">
+                <xsl:value-of select='.' />
+            </a>
 </xsl:template>
 
 <!-- record object -->
 
-<xsl:template match="oai:record" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:oai_qdc="http://worldcat.org/xmlschemas/qdc-1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<xsl:template
+    match="oai:record"
+    xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+    xmlns:oai_qdc="http://worldcat.org/xmlschemas/qdc-1.0/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+>
     <div class="oaiContainer">
         <xsl:choose>
             <xsl:when test="oai:metadata">
-                <h2 class="oaiRecordTitle"><xsl:value-of select="oai:metadata/oai_dc:dc/dc:title"/><xsl:value-of select="oai:metadata/oai_qdc:qualifieddc/dc:title"/></h2>
+                <h2 class="oaiRecordTitle">
+                    <xsl:value-of select="oai:metadata/oai_dc:dc/dc:title"/>
+                    <xsl:value-of select="oai:metadata/oai_qdc:qualifieddc/dc:title"/>
+                </h2>
                 <div class="oaiRecord">
                     <xsl:apply-templates select="oai:metadata" />
                     <xsl:apply-templates select="oai:about" />
@@ -636,10 +727,22 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
             <tr>
                 <th class="key">OAI Identifier</th>
                 <td class="value">
-                    <a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=GetRecord&metadataPrefix=&metadataPrefix=' . $mprefix . '&identifier={oai:identifier}'); ?>"><xsl:value-of select="oai:identifier"/></a>
+                    <a class="link" href="<?php echo $getRecordUrl; ?>">
+                        <xsl:value-of select="oai:identifier"/>
+                    </a>
                     <!--<span class="options">
-                        <xsl:text> </xsl:text><a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=GetRecord&metadataPrefix=&metadataPrefix=' . $mprefix . '&identifier={oai:identifier}'); ?>">oai_dc</a>
-                        <xsl:text> </xsl:text><a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=ListMetadataFormats&identifier={oai:identifier}'); ?>">formats</a>
+                        <xsl:text> </xsl:text>
+                        <a class="link" href="<?php echo $getRecordUrl; ?>">
+                            oai_dc
+                        </a>
+                        <xsl:text> </xsl:text>
+                        <a class="link" href="<?php
+                            echo Route::url(
+                                $baseQuery
+                                . '&verb=ListMetadataFormats'
+                                . '&identifier={oai:identifier}'
+                            );
+                            ?>">formats</a>
                     </span>-->
                 </td>
             </tr>
@@ -675,8 +778,10 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
         <td class="value">
             <!--<xsl:value-of select="."/>-->
             <span class="options">
-                <xsl:text> </xsl:text><a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=ListIdentifiers&metadataPrefix=' . $mprefix . '&set={.}'); ?>">Identifiers</a>
-                <xsl:text> </xsl:text><a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb=ListRecords&metadataPrefix=' . $mprefix . '&set={.}'); ?>">Records</a>
+                <xsl:text> </xsl:text>
+                <a class="link" href="<?php echo $listIdSetUrl; ?>">Identifiers</a>
+                <xsl:text> </xsl:text>
+                <a class="link" href="<?php echo $listRecSetUrl; ?>">Records</a>
             </span>
         </td>
     </tr>
@@ -693,7 +798,7 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
                 <td class="value">
                     <xsl:value-of select="."/>
                     <xsl:text> </xsl:text>
-                    <a class="link" href="<?php echo Route::url('index.php?option=' . $this->option . '&verb={/oai:OAI-PMH/oai:request/@verb}&metadataPrefix=' . $mprefix . '&resumptionToken={.}'); ?>">Resume</a>
+                    <a class="link" href="<?php echo $resumeUrl; ?>">Resume</a>
                 </td>
             </tr>
         </tbody>
@@ -709,7 +814,11 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 </xsl:template>
 
 <!-- oai_dc record -->
-<xsl:template match="oai_dc:dc" xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/" xmlns:dc="http://purl.org/dc/elements/1.1/" >
+<xsl:template
+    match="oai_dc:dc"
+    xmlns:oai_dc="http://www.openarchives.org/OAI/2.0/oai_dc/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+>
     <div class="dcdata">
         <xsl:if test="count(dc:creator) &gt; 0">
             <div class="authors">
@@ -718,7 +827,10 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
         </xsl:if>
         <table>
             <tbody>
-                <xsl:apply-templates select="*[not(self::dc:creator or self::dc:subject or self::dc:title or self::dc:relation)]" />
+                <xsl:apply-templates select="*[not(
+                    self::dc:creator or self::dc:subject
+                    or self::dc:title or self::dc:relation
+                )]" />
                 <xsl:if test="count(dc:relation) &gt; 0">
                     <tr>
                         <th class="key">Related</th>
@@ -733,7 +845,12 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 </xsl:template>
 
 <!-- oai_qdc record -->
-<xsl:template match="oai_qdc:qualifieddc" xmlns:oai_qdc="http://worldcat.org/xmlschemas/qdc-1.0/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<xsl:template
+    match="oai_qdc:qualifieddc"
+    xmlns:oai_qdc="http://worldcat.org/xmlschemas/qdc-1.0/"
+    xmlns:dcterms="http://purl.org/dc/terms/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+>
     <div class="dcdata">
         <xsl:if test="count(dc:creator) &gt; 0">
             <div class="authors">
@@ -742,7 +859,15 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
         </xsl:if>
         <table>
             <tbody>
-                <xsl:apply-templates select="*[not(self::dc:creator or self::dc:subject or self::dc:title or self::dc:relation or self::dcterms:hasPart or self::dcterms:isPartOf or self::dcterms:hasVersion or self::dcterms:references or self::dcterms:isReferencedBy)]" />
+                <xsl:apply-templates select="*[not(
+                    self::dc:creator or self::dc:subject
+                    or self::dc:title or self::dc:relation
+                    or self::dcterms:hasPart
+                    or self::dcterms:isPartOf
+                    or self::dcterms:hasVersion
+                    or self::dcterms:references
+                    or self::dcterms:isReferencedBy
+                )]" />
                 <xsl:if test="count(dc:relation) &gt; 0">
                     <tr>
                         <th class="key">Related</th>
@@ -810,10 +935,20 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
                 <xsl:when test='starts-with(.,"http" )'>
                     <xsl:choose>
                         <xsl:when test='string-length(.) &gt; 150'>
-                            <a class="link"><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute>URL (hidden due to length)</a>
+                            <a class="link">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="."/>
+                                </xsl:attribute>
+                                URL (hidden due to length)
+                            </a>
                         </xsl:when>
                         <xsl:otherwise>
-                            <a class="link"><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute><xsl:value-of select="."/></a>
+                            <a class="link">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="."/>
+                                </xsl:attribute>
+                                <xsl:value-of select="."/>
+                            </a>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:when>
@@ -841,7 +976,14 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 </xsl:template>
 
 <xsl:template match="dc:relation" xmlns:dc="http://purl.org/dc/elements/1.1/">
-    <li><a class="link"><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute><xsl:value-of select="."/></a></li>
+    <li>
+        <a class="link">
+            <xsl:attribute name="href">
+                <xsl:value-of select="."/>
+            </xsl:attribute>
+            <xsl:value-of select="."/>
+        </a>
+    </li>
 </xsl:template>
 
 <xsl:template match="dcterms:hasVersion" xmlns:dcterms="http://purl.org/dc/terms/">
@@ -909,7 +1051,14 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 <xsl:template match="dc:identifier" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <tr>
         <th class="key">Resource Identifier</th>
-        <td class="value"><a><xsl:attribute name="href"><xsl:value-of select="."/></xsl:attribute><xsl:value-of select="."/></a></td>
+        <td class="value">
+            <a>
+                <xsl:attribute name="href">
+                    <xsl:value-of select="."/>
+                </xsl:attribute>
+                <xsl:value-of select="."/>
+            </a>
+        </td>
     </tr>
 </xsl:template>
 
@@ -944,14 +1093,29 @@ echo '<?xml version="1.0" encoding="utf-8"?>';
 <!-- XML Pretty Maker -->
 <xsl:template match="node()" mode='xmlMarkup'>
     <div class="xmlBlock">
-        &lt;<span class="xmlTagName"><xsl:value-of select='name(.)' /></span><xsl:apply-templates select="@*" mode='xmlMarkup'/>&gt;<xsl:apply-templates select="node()" mode='xmlMarkup' />&lt;/<span class="xmlTagName"><xsl:value-of select='name(.)' /></span>&gt;
+        &lt;<span class="xmlTagName">
+            <xsl:value-of select='name(.)' />
+        </span>
+        <xsl:apply-templates select="@*" mode='xmlMarkup'/>
+        &gt;
+        <xsl:apply-templates select="node()" mode='xmlMarkup' />
+        &lt;/<span class="xmlTagName">
+            <xsl:value-of select='name(.)' />
+        </span>&gt;
     </div>
 </xsl:template>
 
-<xsl:template match="text()" mode='xmlMarkup'><span class="xmlText"><xsl:value-of select='.' /></span></xsl:template>
+<xsl:template match="text()" mode='xmlMarkup'>
+    <span class="xmlText"><xsl:value-of select='.' /></span>
+</xsl:template>
 
 <xsl:template match="@*" mode='xmlMarkup'>
-    <xsl:text> </xsl:text><span class="xmlAttrName"><xsl:value-of select='name()' /></span>="<span class="xmlAttrValue"><xsl:value-of select='.' /></span>"
+    <xsl:text> </xsl:text>
+    <span class="xmlAttrName">
+        <xsl:value-of select='name()' />
+    </span>="<span class="xmlAttrValue">
+        <xsl:value-of select='.' />
+    </span>"
 </xsl:template>
 
 <xsl:template name="xmlstyle">

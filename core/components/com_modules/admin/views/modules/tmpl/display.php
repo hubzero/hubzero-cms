@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,17 @@ Toolbar::title(Lang::txt('COM_MODULES_MANAGER_MODULES'), 'module.png');
 
 if ($canDo->get('core.create')) {
     //Toolbar::addNew('module.add');
-    Toolbar::appendButton('Popup', 'new', 'JTOOLBAR_NEW', Route::url('index.php?option=com_modules&task=select&tmpl=component'), 850, 400);
+    $selectUrl = Route::url(
+        'index.php?option=com_modules&task=select&tmpl=component'
+    );
+    Toolbar::appendButton(
+        'Popup',
+        'new',
+        'JTOOLBAR_NEW',
+        $selectUrl,
+        850,
+        400
+    );
 }
 
 if ($canDo->get('core.edit')) {
@@ -65,8 +73,20 @@ $saveOrder = $listOrder == 'ordering';
 <form action="<?php echo Route::url('index.php?option=com_modules'); ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="filter-search fltlft">
-            <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-            <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MODULES_MODULES_FILTER_SEARCH_DESC'); ?>" />
+            <?php $filterLabel = Lang::txt('JSEARCH_FILTER_LABEL'); ?>
+            <label class="filter-search-lbl" for="filter_search"><?php echo $filterLabel; ?></label>
+            <?php
+            $filterVal = $this->escape($this->filters['search']);
+            $filterPlaceholder = Lang::txt('COM_MODULES_MODULES_FILTER_SEARCH_DESC');
+            ?>
+            <input
+                type="text"
+                name="filter_search"
+                id="filter_search"
+                class="filter"
+                value="<?php echo $filterVal; ?>"
+                placeholder="<?php echo $filterPlaceholder; ?>"
+            />
 
             <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
             <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -74,37 +94,98 @@ $saveOrder = $listOrder == 'ordering';
         <div class="filter-select fltrt">
             <label for="filter_client_id"><?php echo Lang::txt('COM_MODULES_CLIENT');?></label>
             <select name="filter_client_id" id="filter_client_id" class="inputbox filter filter-submit">
-                <?php echo Html::select('options', \Components\Modules\Helpers\Modules::getClientOptions(), 'value', 'text', $this->filters['client_id']); ?>
+                <?php
+                $clientOptions = \Components\Modules\Helpers\Modules::getClientOptions();
+                echo Html::select(
+                    'options',
+                    $clientOptions,
+                    'value',
+                    'text',
+                    $this->filters['client_id']
+                );
+                ?>
             </select>
 
-            <label for="filter_state"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></label>
+            <?php $pubLabel = Lang::txt('JOPTION_SELECT_PUBLISHED'); ?>
+            <label for="filter_state"><?php echo $pubLabel; ?></label>
             <select name="filter_state" id="filter_state" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php echo Html::select('options', \Components\Modules\Helpers\Modules::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
+                <option value=""><?php echo $pubLabel; ?></option>
+                <?php
+                $stateOptions = \Components\Modules\Helpers\Modules::getStateOptions();
+                echo Html::select(
+                    'options',
+                    $stateOptions,
+                    'value',
+                    'text',
+                    $this->filters['state']
+                );
+                ?>
             </select>
 
-            <label for="filter_position"><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_POSITION');?></label>
+            <?php $posLabel = Lang::txt('COM_MODULES_OPTION_SELECT_POSITION'); ?>
+            <label for="filter_position"><?php echo $posLabel; ?></label>
             <select name="filter_position" id="filter_position" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_POSITION');?></option>
-                <?php echo Html::select('options', \Components\Modules\Helpers\Modules::getPositions($this->filters['client_id']), 'value', 'text', $this->filters['position']); ?>
+                <option value=""><?php echo $posLabel; ?></option>
+                <?php
+                $posOptions = \Components\Modules\Helpers\Modules::getPositions(
+                    $this->filters['client_id']
+                );
+                echo Html::select(
+                    'options',
+                    $posOptions,
+                    'value',
+                    'text',
+                    $this->filters['position']
+                );
+                ?>
             </select>
 
-            <label for="filter_module"><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_MODULE');?></label>
+            <?php $modLabel = Lang::txt('COM_MODULES_OPTION_SELECT_MODULE'); ?>
+            <label for="filter_module"><?php echo $modLabel; ?></label>
             <select name="filter_module" id="filter_module" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('COM_MODULES_OPTION_SELECT_MODULE');?></option>
-                <?php echo Html::select('options', \Components\Modules\Helpers\Modules::getModules($this->filters['client_id']), 'value', 'text', $this->filters['module']); ?>
+                <option value=""><?php echo $modLabel; ?></option>
+                <?php
+                $modOptions = \Components\Modules\Helpers\Modules::getModules(
+                    $this->filters['client_id']
+                );
+                echo Html::select(
+                    'options',
+                    $modOptions,
+                    'value',
+                    'text',
+                    $this->filters['module']
+                );
+                ?>
             </select>
 
-            <label for="filter_access"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></label>
+            <?php $accessLabel = Lang::txt('JOPTION_SELECT_ACCESS'); ?>
+            <label for="filter_access"><?php echo $accessLabel; ?></label>
             <select name="filter_access" id="filter_access" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+                <option value=""><?php echo $accessLabel; ?></option>
+                <?php
+                echo Html::select(
+                    'options',
+                    Html::access('assetgroups'),
+                    'value',
+                    'text',
+                    $this->filters['access']
+                );
+                ?>
             </select>
 
-            <label for="filter_language"><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></label>
+            <?php $langLabel = Lang::txt('JOPTION_SELECT_LANGUAGE'); ?>
+            <label for="filter_language"><?php echo $langLabel; ?></label>
             <select name="filter_language" id="filter_language" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-                <?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']); ?>
+                <option value=""><?php echo $langLabel; ?></option>
+                <?php
+                echo Html::select(
+                    'options',
+                    Html::contentlanguage('existing', true, true),
+                    'value',
+                    'text',
+                    $this->filters['language']
+                );
+                ?>
             </select>
         </div>
     </fieldset>
@@ -113,8 +194,16 @@ $saveOrder = $listOrder == 'ordering';
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JOPTION_CHECKALL');?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JOPTION_CHECKALL'); ?>
+                    </label>
                 </th>
                 <th scope="col" class="title">
                     <?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'title', $listDirn, $listOrder); ?>
@@ -178,7 +267,9 @@ $saveOrder = $listOrder == 'ordering';
             $ordering   = ($listOrder == 'ordering');
             $canCreate  = User::authorise('core.create', 'com_modules');
             $canEdit    = $path ? User::authorise('core.edit', 'com_modules') : false;
-            $canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out == User::get('id') || $item->checked_out == 0;
+            $canCheckin = User::authorise('core.manage', 'com_checkin')
+                || $item->checked_out == User::get('id')
+                || $item->checked_out == 0;
             $canChange  = User::authorise('core.edit.state', 'com_modules') && $canCheckin;
             ?>
             <tr class="row<?php echo $i % 2; ?>">
@@ -189,10 +280,18 @@ $saveOrder = $listOrder == 'ordering';
                 </td>
                 <td>
                     <?php if ($item->checked_out) : ?>
-                        <?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, 'modules.', $canCheckin); ?>
+                        <?php echo Html::grid(
+                            'checkedout',
+                            $i,
+                            $item->editor,
+                            $item->checked_out_time,
+                            'modules.',
+                            $canCheckin
+                        ); ?>
                     <?php endif; ?>
                     <?php if ($canEdit) : ?>
-                        <a href="<?php echo Route::url('index.php?option=com_modules&task=edit&id=' . (int) $item->id); ?>">
+                        <?php $editUrl = Route::url('index.php?option=com_modules&task=edit&id=' . (int) $item->id); ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <?php echo $this->escape($item->title); ?>
                         </a>
                     <?php else : ?>
@@ -222,16 +321,61 @@ $saveOrder = $listOrder == 'ordering';
                 <td class="priority-3 order">
                     <?php if ($canChange) : ?>
                         <?php if ($saveOrder) :?>
+                            <?php
+                            $prevMatch = (@$positions[$i - 1] == $item->position);
+                            $nextMatch = (@$positions[$i + 1] == $item->position);
+                            ?>
                             <?php if ($listDirn == 'asc') : ?>
-                                <span><?php echo $pagination->orderUpIcon($i, (@$positions[$i - 1] == $item->position), 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                <span><?php echo $pagination->orderDownIcon($i, $pagination->total, (@$positions[$i + 1] == $item->position), 'orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                <?php
+                                $upIcon = $pagination->orderUpIcon(
+                                    $i,
+                                    $prevMatch,
+                                    'orderup',
+                                    'JLIB_HTML_MOVE_UP',
+                                    $ordering
+                                );
+                                $downIcon = $pagination->orderDownIcon(
+                                    $i,
+                                    $pagination->total,
+                                    $nextMatch,
+                                    'orderdown',
+                                    'JLIB_HTML_MOVE_DOWN',
+                                    $ordering
+                                );
+                                ?>
+                                <span><?php echo $upIcon; ?></span>
+                                <span><?php echo $downIcon; ?></span>
                             <?php elseif ($listDirn == 'desc') : ?>
-                                <span><?php echo $pagination->orderUpIcon($i, (@$positions[$i - 1] == $item->position), 'orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                <span><?php echo $pagination->orderDownIcon($i, $pagination->total, (@$positions[$i + 1] == $item->position), 'orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                <?php
+                                $upIcon = $pagination->orderUpIcon(
+                                    $i,
+                                    $prevMatch,
+                                    'orderdown',
+                                    'JLIB_HTML_MOVE_UP',
+                                    $ordering
+                                );
+                                $downIcon = $pagination->orderDownIcon(
+                                    $i,
+                                    $pagination->total,
+                                    $nextMatch,
+                                    'orderup',
+                                    'JLIB_HTML_MOVE_DOWN',
+                                    $ordering
+                                );
+                                ?>
+                                <span><?php echo $upIcon; ?></span>
+                                <span><?php echo $downIcon; ?></span>
                             <?php endif; ?>
                         <?php endif; ?>
                         <?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
-                        <input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled; ?> class="text-area-order" />
+                        <input
+                            type="text"
+                            name="order[]"
+                            size="5"
+                            value="<?php echo $item->ordering; ?>"
+                            <?php echo $disabled; ?>
+                            class="text-area-order"
+                        />
                     <?php else : ?>
                         <?php echo $item->ordering; ?>
                     <?php endif; ?>
@@ -263,7 +407,11 @@ $saveOrder = $listOrder == 'ordering';
                     <?php elseif ($item->language == '*') :?>
                         <?php echo Lang::txt('JALL', 'language'); ?>
                     <?php else :?>
-                        <?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
+                        <?php
+                        echo $item->language_title
+                            ? $this->escape($item->language_title)
+                            : Lang::txt('JUNDEFINED');
+                        ?>
                     <?php endif;?>
                 </td>
                 <td class="priority-6 center">
@@ -278,7 +426,12 @@ $saveOrder = $listOrder == 'ordering';
     </table>
 
     <?php //Load the batch processing form.is user is allowed ?>
-    <?php if (User::authorise('core.create', 'com_modules') && User::authorise('core.edit', 'com_modules') && User::authorise('core.edit.state', 'com_modules')) : ?>
+    <?php
+    $canBatch = User::authorise('core.create', 'com_modules')
+        && User::authorise('core.edit', 'com_modules')
+        && User::authorise('core.edit.state', 'com_modules');
+    ?>
+    <?php if ($canBatch) : ?>
         <?php echo $this->loadTemplate('batch'); ?>
     <?php endif;?>
 

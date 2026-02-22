@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,8 @@ if ($canDo->get('core.edit')) {
 }
 Toolbar::cancel();
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <?php if (!$this->row->id) : ?>
         <p class="info"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MUST_CREATE_BEFORE_ADD'); ?></p>
     <?php endif; ?>
@@ -32,20 +31,35 @@ Toolbar::cancel();
 
         <div class="input-wrap">
             <label for="field-name"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NAME'); ?>:</label><br />
-            <input type="text" name="field[name]" id="field-name" value="<?php echo $this->escape($this->row->name); ?>" /></td>
+            <input
+                type="text"
+                name="field[name]"
+                id="field-name"
+                value="<?php echo $this->escape($this->row->name); ?>"
+            /></td>
         </div>
 
         <div class="input-wrap">
             <label for="field-private"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY'); ?>:</label><br />
+            <?php
+            $sel0 = ($this->row->private == 0) ? 'selected="selected"' : '';
+            $sel1 = ($this->row->private == 1) ? 'selected="selected"' : '';
+            $pubTxt = Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PUBLIC');
+            $privTxt = Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PRIVATE');
+            ?>
             <select name="field[private]" id="field-private">
-                <option value="0" <?php echo ($this->row->private == 0) ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PUBLIC'); ?></option>
-                <option value="1" <?php echo ($this->row->private == 1) ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_PRIVACY_PRIVATE'); ?></option>
+                <option value="0" <?php echo $sel0; ?>><?php echo $pubTxt; ?></option>
+                <option value="1" <?php echo $sel1; ?>><?php echo $privTxt; ?></option>
             </select>
         </div>
 
         <div class="input-wrap">
             <label for="field-description"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_DESC'); ?>:</label><br />
-            <textarea name="field[description]" id="field-description" rows="5"><?php echo $this->escape($this->row->description); ?></textarea>
+            <textarea
+                name="field[description]"
+                id="field-description"
+                rows="5"
+            ><?php echo $this->escape($this->row->description); ?></textarea>
         </div>
     </fieldset>
 

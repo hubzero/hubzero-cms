@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,14 +25,25 @@ $this->css();
 $this->js('autogen-story.js');
 ?>
 <?php if (count($this->enabledSources) > 0) : ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="autogen-form" data-formwatcher-message="<?php echo Lang::txt('COM_NEWSLETTER_WANRING_UNSAVED_CHANGES'); ?>">
+    <?php
+    $formAction = Route::url('index.php?option=' . $this->option);
+    $unsavedMsg = Lang::txt('COM_NEWSLETTER_WANRING_UNSAVED_CHANGES');
+    ?>
+    <form
+        action="<?php echo $formAction; ?>"
+        method="post"
+        name="adminForm"
+        id="autogen-form"
+        data-formwatcher-message="<?php echo $unsavedMsg; ?>"
+    >
         <div class="grid">
             <div class="col span6">
                 <fieldset class="adminform">
                     <legend><?php echo Lang::txt('COM_NEWSLETTER_STORY_SETTINGS'); ?>:</legend>
 
                     <div class="input-wrap">
-                        <label for="newsletter-contentSource required"><?php echo Lang::txt('COM_NEWSLETTER_STORY_SOURCE'); ?>:</label>
+                        <?php $sourceLabel = Lang::txt('COM_NEWSLETTER_STORY_SOURCE'); ?>
+                        <label for="newsletter-contentSource required"><?php echo $sourceLabel; ?>:</label>
                         <select id="contentSource" name="contentSource">
                             <option value='none'><?php echo Lang::txt('MAKE_A_SELECTION'); ?></option>
                         <?php foreach ($this->enabledSources as $source) : ?>
@@ -49,12 +58,14 @@ $this->js('autogen-story.js');
                     </div>
 
                     <div class="input-wrap">
-                        <label for="story-itemCount"><?php echo Lang::txt('COM_NEWSLETTER_STORY_ITEM_COUNT'); ?>:</label>
+                        <?php $itemCountLabel = Lang::txt('COM_NEWSLETTER_STORY_ITEM_COUNT'); ?>
+                        <label for="story-itemCount"><?php echo $itemCountLabel; ?>:</label>
                         <input type="text" name="itemCount" id="itemCount" value="5">
                     </div>
 
                     <div class="input-wrap">
-                        <label for="storyLayout"><?php echo Lang::txt('COM_NEWSLETTER_STORY_LAYOUT_TEMPLATE'); ?>:</label>
+                        <?php $layoutLabel = Lang::txt('COM_NEWSLETTER_STORY_LAYOUT_TEMPLATE'); ?>
+                        <label for="storyLayout"><?php echo $layoutLabel; ?>:</label>
                         <select id="storyLayout" name="layout">
                         <?php foreach ($this->layouts as $layout) : ?>
                             <option value="<?php echo $layout; ?>"><?php echo $layout; ?></option>

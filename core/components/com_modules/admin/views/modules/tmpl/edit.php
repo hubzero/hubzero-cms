@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -39,9 +37,24 @@ Html::behavior('combobox');
 
 $this->js();
 
-$hasContent = empty($this->item->get('module')) || $this->item->module == 'custom' || $this->item->module == 'mod_custom';
+$hasContent = empty($this->item->get('module'))
+    || $this->item->module == 'custom'
+    || $this->item->module == 'mod_custom';
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&task=edit&id=' . (int) $this->item->id
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -165,7 +178,11 @@ $hasContent = empty($this->item->get('module')) || $this->item->module == 'custo
                         </th>
                         <td>
                             <?php echo $this->form->getInput('client_id'); ?>
-                            <?php echo $this->item->client_id == 0 ? Lang::txt('JSITE') : Lang::txt('JADMINISTRATOR'); ?>
+                            <?php
+                            echo $this->item->client_id == 0
+                                ? Lang::txt('JSITE')
+                                : Lang::txt('JADMINISTRATOR');
+                            ?>
                         </td>
                     </tr>
                     <tr>
