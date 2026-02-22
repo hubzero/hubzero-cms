@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -32,7 +30,14 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $routeUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span8">
             <fieldset class="adminform">
@@ -48,17 +53,38 @@ $this->js();
                 <input type="hidden" name="fields[offering_id]" value="<?php echo $this->row->get('offering_id'); ?>" />
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape($this->row->get('title')); ?>" />
+                    <label for="field-title">
+                        <?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="required"
+                        value="<?php echo $this->escape($this->row->get('title')); ?>" />
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
                     <label for="field-url"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-                    <input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape($this->row->get('url')); ?>" />
+                    <input
+                        type="text"
+                        name="fields[url]"
+                        id="field-url"
+                        value="<?php echo $this->escape($this->row->get('url')); ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                 </div>
                 <div class="input-wrap">
                     <label for="field-content"><?php echo Lang::txt('COM_COURSES_FIELD_CONTENT'); ?>:</label><br />
-                    <?php echo $this->editor('fields[content]', $this->escape($this->row->content('raw')), 50, 30, 'field-content', array('class' => 'required')); ?>
+                    <?php
+                    echo $this->editor(
+                        'fields[content]',
+                        $this->escape($this->row->content('raw')),
+                        50,
+                        30,
+                        'field-content',
+                        array('class' => 'required')
+                    );
+                    ?>
                 </div>
             </fieldset>
         </div>
@@ -116,7 +142,20 @@ $this->js();
                 <?php if (!$this->row->get('id')) { ?>
                     <p><?php echo Lang::txt('COM_COURSES_UPLOAD_ADDED_LATER'); ?></p>
                 <?php } else { ?>
-                    <iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=pages&task=files&tmpl=component&listdir=' . $this->row->get('offering_id') . '&course=' . $this->course->get('id')); ?>"></iframe>
+                    <?php
+                        $routeUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=pages&task=files&tmpl=component&listdir='
+                            . $this->row->get('offering_id') . '&course=' . $this->course->get('id')
+                        );
+                    ?>
+                    <iframe
+                        width="100%"
+                        height="300"
+                        name="filelist"
+                        id="filelist"
+                        frameborder="0"
+                        src="<?php echo $routeUrl; ?>"></iframe>
                 <?php } ?>
             </fieldset>
         </div>

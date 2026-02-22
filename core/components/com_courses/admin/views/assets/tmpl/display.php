@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,7 +28,8 @@ Html::behavior('modal');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
@@ -44,14 +43,34 @@ $this->js();
                                     continue;
                                 }
                                 ?>
-                            <option value="<?php echo $this->escape(stripslashes($asset->id)); ?>"><?php echo $this->escape(stripslashes($asset->title)); ?> (<?php echo $this->escape(stripslashes($asset->type)); ?>)</option>
+                                <?php
+                                $optId = $this->escape(stripslashes($asset->id));
+                                $optTitle = $this->escape(stripslashes($asset->title));
+                                $optType = $this->escape(stripslashes($asset->type));
+                                ?>
+                            <option value="<?php echo $optId; ?>">
+                                <?php echo $optTitle; ?> (<?php echo $optType; ?>)
+                            </option>
                             <?php } ?>
                         <?php } ?>
                     </select>
                     <input type="submit" id="btn-attach" value="<?php echo Lang::txt('COM_COURSES_ATTACH_ASSET'); ?>" />
                 </th>
                 <th colspan="4" class="align-right">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=add&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_COURSES_CREATE_ASSET'); ?></a>
+                    <?php
+                    $url = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=add&scope=' . $this->filters['asset_scope']
+                        . '&scope_id=' . $this->filters['asset_scope_id']
+                        . '&course_id=' . $this->filters['course_id']
+                        . '&tmpl=' . $this->filters['tmpl']
+                    ); ?>
+                    <a
+                        href="<?php echo $url; ?>"
+                        class="edit-asset"
+                        <?php $txt = Lang::txt('COM_COURSES_CREATE_ASSET'); ?>
+                        rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo $txt; ?></a>
                 </th>
             </tr>
             <tr>
@@ -73,11 +92,25 @@ foreach ($this->rows as $row) {
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php echo $this->escape($row->id); ?>
-                    <input class="invisible" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                    <input
+                        class="invisible"
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
                 </td>
                 <td>
                 <?php if ($canDo->get('core.edit')) { ?>
-                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>">
+                    <?php
+                    $url = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&id=' . $row->id
+                        . '&scope=' . $this->filters['asset_scope']
+                        . '&scope_id=' . $this->filters['asset_scope_id']
+                        . '&course_id=' . $this->filters['course_id']
+                        . '&tmpl=' . $this->filters['tmpl']
+                    ); ?>
+                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo $url; ?>">
                         <?php echo $this->escape(stripslashes($row->title)); ?>
                     </a>
                 <?php } else { ?>
@@ -115,7 +148,18 @@ foreach ($this->rows as $row) {
                 </td>
                 <td>
                 <?php if ($canDo->get('core.edit')) { ?>
-                    <a class="state delete" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unlink&asset=' . $row->id . '&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl'] . '&' . Session::getFormToken() . '=1'); ?>">
+                    <?php
+                    $url = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=unlink&asset=' . $row->id
+                        . '&scope=' . $this->filters['asset_scope']
+                        . '&scope_id=' . $this->filters['asset_scope_id']
+                        . '&course_id=' . $this->filters['course_id']
+                        . '&tmpl=' . $this->filters['tmpl']
+                        . '&' . Session::getFormToken() . '=1'
+                    ); ?>
+                    <a class="state delete" href="<?php echo $url; ?>">
                         <span><?php echo Lang::txt('COM_COURSES_REMOVE'); ?></span>
                     </a>
                 <?php } ?>

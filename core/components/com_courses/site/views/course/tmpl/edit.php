@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,11 @@ $this->css('course.css')
 
     <div id="content-header-extra">
         <p>
-            <a class="prev btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>" title="<?php echo Lang::txt('JCANCEL'); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+            <?php $routeUrl = Route::url('index.php?option=' . $this->option); ?>
+            <a
+                class="prev btn"
+                href="<?php echo $routeUrl; ?>"
+                title="<?php echo Lang::txt('JCANCEL'); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
         </p>
     </div><!-- / #content-header-extra -->
 </header>
@@ -37,8 +39,23 @@ $this->css('course.css')
             <?php else : ?>
                 <div class="form-group">
                     <label class="course_alias_label" for="course_alias_field">
-                        <?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                        <input name="course[alias]" id="course_alias_field" type="text" size="35" class="form-control" value="<?php echo $this->escape($this->course->get('alias')); ?>" autocomplete="off" data-route="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=courseavailability&no_html=1'); ?>" />
+                        <?php $val = Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>
+                        <?php echo $val; ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                        <?php
+                            $routeUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=courseavailability&no_html=1'
+                            );
+                        ?>
+                        <input
+                            name="course[alias]"
+                            id="course_alias_field"
+                            type="text"
+                            size="35"
+                            class="form-control"
+                            value="<?php echo $this->escape($this->course->get('alias')); ?>"
+                            autocomplete="off"
+                            data-route="<?php echo $routeUrl; ?>" />
                         <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                     </label>
                 </div>
@@ -46,15 +63,27 @@ $this->css('course.css')
 
             <div class="form-group">
                 <label for="field-title">
-                    <?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                    <input type="text" name="course[title]" id="field-title" size="35" class="form-control" value="<?php echo $this->escape(stripslashes($this->course->get('title', ''))); ?>" />
+                    <?php $val = Lang::txt('COM_COURSES_FIELD_TITLE'); ?>
+                    <?php echo $val; ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    <input
+                        type="text"
+                        name="course[title]"
+                        id="field-title"
+                        size="35"
+                        class="form-control"
+                        value="<?php echo $this->escape(stripslashes($this->course->get('title', ''))); ?>" />
                 </label>
             </div>
 
             <div class="form-group">
                 <label for="field-blurb">
                     <?php echo Lang::txt('COM_COURSES_FIELD_BLURB'); ?>
-                    <textarea name="course[blurb]" id="field-blurb" class="form-control" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->course->get('blurb', ''))); ?></textarea>
+                    <textarea
+                        name="course[blurb]"
+                        id="field-blurb"
+                        class="form-control"
+                        cols="50"
+                        rows="3"><?php echo $this->escape(stripslashes($this->course->get('blurb', ''))); ?></textarea>
                     <span class="hint">
                         <?php echo Lang::txt('COM_COURSES_FIELD_BLURB_HINT'); ?>
                     </span>
@@ -66,11 +95,18 @@ $this->css('course.css')
                     <?php echo Lang::txt('COM_COURSES_FIELD_TAGS'); ?>
 
                     <?php
-                    $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->course->tags('string'))));
+                    $tf = Event::trigger('hubzero.onGetMultiEntry', array(
+                        array('tags', 'tags', 'actags', '', $this->course->tags('string'))
+                    ));
                     if (count($tf) > 0) {
                         echo implode("\n", $tf);
                     } else { ?>
-                        <input type="text" name="tags" id="actags" class="form-control" value="<?php echo $this->escape($this->couse->tags('string')); ?>" />
+                        <input
+                            type="text"
+                            name="tags"
+                            id="actags"
+                            class="form-control"
+                            value="<?php echo $this->escape($this->couse->tags('string')); ?>" />
                     <?php } ?>
 
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
@@ -79,7 +115,13 @@ $this->css('course.css')
 
             <div class="form-group form-check">
                 <label for="params-allow_forks" class="form-check-label">
-                    <input type="checkbox" class="option form-check-input" name="params[allow_forks]" id="params-allow_forks" checked="checked" value="1" />
+                    <input
+                        type="checkbox"
+                        class="option form-check-input"
+                        name="params[allow_forks]"
+                        id="params-allow_forks"
+                        checked="checked"
+                        value="1" />
                     <?php echo Lang::txt('COM_COURSES_ALLOW_FORKS'); ?>
                 </label>
                 <span class="hint"><?php echo Lang::txt('COM_COURSES_ALLOW_FORKS_HINT'); ?></span>

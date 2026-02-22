@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +23,14 @@ $this->css('form.css')
 <?php $link = Route::url($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb()); ?>
 
 <section class="main section courses-form">
-    <p class="distribution-link">Link to distribute: <a href="<?php echo $link ?>"><?php echo $link ?></a><span class="state <?php echo $this->dep->getState() ?>"><?php echo $this->dep->getState() ?></span></p>
+    <?php $depState = $this->dep->getState(); ?>
+    <p class="distribution-link">
+        Link to distribute:
+        <a href="<?php echo $link ?>"><?php echo $link ?></a>
+        <span class="state <?php echo $depState ?>">
+            <?php echo $depState ?>
+        </span>
+    </p>
     <form action="<?php echo Route::url($this->base); ?>" method="post" id="deployment">
         <?php require 'deployment_form.php'; ?>
         <fieldset>

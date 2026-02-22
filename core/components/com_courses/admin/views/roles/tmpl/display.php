@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,12 +25,20 @@ Toolbar::spacer();
 Toolbar::help('roles');
 
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+        <input
+            type="text"
+            name="search"
+            id="filter_search"
+            class="filter"
+            value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>"
+            placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
-        <input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
+        <?php $txt = Lang::txt('COM_COURSES_GO'); ?>
+        <input type="submit" name="filter_submit" id="filter_submit" value="<?php echo $txt; ?>" />
         <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
     </fieldset>
 
@@ -40,14 +46,66 @@ Toolbar::help('roles');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <?php $txt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $txt; ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COURSES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_COURSES_COL_TITLE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_COURSES_COL_OFFERING', 'offering_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COURSES_COL_TOTAL', 'total', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th
+                    scope="col"
+                    class="priority-4">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_COURSES_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
+                </th>
+                <th
+                    scope="col"
+                    class="priority-3">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_COURSES_COL_ALIAS',
+                        'alias',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_COURSES_COL_TITLE',
+                        'type',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_COURSES_COL_OFFERING',
+                        'offering_id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
+                </th>
+                <th
+                    scope="col"
+                    class="priority-3">
+                    <?php echo Html::grid(
+                        'sort',
+                        'COM_COURSES_COL_TOTAL',
+                        'total',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    ); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -73,7 +131,12 @@ Toolbar::help('roles');
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                        <input
+                            type="checkbox"
+                            name="id[]"
+                            id="cb<?php echo $i; ?>"
+                            value="<?php echo $row->id; ?>"
+                            class="checkbox-toggle" />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     <?php } ?>
                 </td>
@@ -82,7 +145,13 @@ Toolbar::help('roles');
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <?php
+                            $routeUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=edit&id=' . $row->id
+                            );
+                        ?>
+                        <a href="<?php echo $routeUrl; ?>">
                             <span><?php echo $this->escape(stripslashes($row->alias)); ?></span>
                         </a>
                     <?php } else { ?>
@@ -93,7 +162,13 @@ Toolbar::help('roles');
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <?php
+                            $routeUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=edit&id=' . $row->id
+                            );
+                        ?>
+                        <a href="<?php echo $routeUrl; ?>">
                             <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
                         </a>
                     <?php } else { ?>

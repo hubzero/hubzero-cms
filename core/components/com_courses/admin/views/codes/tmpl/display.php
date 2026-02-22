@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,20 @@ $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
 Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_COUPON_CODES'), 'courses.png');
 if ($canDo->get('core.create')) {
-    Toolbar::appendButton('Popup', 'refresh', 'COM_COURSES_GENERATE', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $this->section->get('id') . '&task=options&tmpl=component'), 500, 200);
+    $popupUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+        . '&section=' . $this->section->get('id')
+        . '&task=options&tmpl=component'
+    );
+    Toolbar::appendButton(
+        'Popup',
+        'refresh',
+        'COM_COURSES_GENERATE',
+        $popupUrl,
+        500,
+        200
+    );
 
     Toolbar::spacer();
     Toolbar::custom('export', 'export', 'export', 'COM_COURSES_EXPORT_CODES', false);
@@ -32,12 +43,19 @@ if ($canDo->get('core.delete')) {
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+                <input
+                    type="text"
+                    name="search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -61,13 +79,28 @@ Html::behavior('tooltip');
 
     <table class="adminlist">
         <caption>
-            (<a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
+            <?php
+                $routeUrl = Route::url(
+                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')
+                );
+                ?>
+            (<a href="<?php echo $routeUrl; ?>">
                 <?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
             </a>)
-            <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
+            <?php
+                $routeUrl = Route::url(
+                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')
+                );
+                ?>
+            <a href="<?php echo $routeUrl; ?>">
                 <?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
             </a>:
-            <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=sections&offering=' . $this->offering->get('id')); ?>">
+            <?php
+                $routeUrl = Route::url(
+                    'index.php?option=' . $this->option  . '&controller=sections&offering=' . $this->offering->get('id')
+                );
+                ?>
+            <a href="<?php echo $routeUrl; ?>">
                 <?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
             </a>:
             <?php echo $this->escape(stripslashes($this->section->get('title'))); ?>
@@ -75,8 +108,14 @@ Html::behavior('tooltip');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <?php $txt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $txt; ?></label>
                 </th>
                 <th scope="col" class="priority-5"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_COURSES_COL_CODE'); ?></th>
@@ -107,15 +146,28 @@ Html::behavior('tooltip');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('id'); ?>"
+                        class="checkbox-toggle" />
+                    <label
+                        for="cb<?php echo $i; ?>"
+                        class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
                 </td>
                 <td class="priority-5">
                     <?php echo $this->escape($row->get('id')); ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <?php
+                            $routeUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=edit&id=' . $row->get('id')
+                            );
+                        ?>
+                        <a href="<?php echo $routeUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->get('code'))); ?>
                         </a>
                     <?php } else { ?>
@@ -125,19 +177,48 @@ Html::behavior('tooltip');
                     <?php } ?>
                 </td>
                 <td class="priority-4">
-                    <time datetime="<?php echo $row->get('created'); ?>"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                    <?php $val = Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
+                    <time datetime="<?php echo $row->get('created'); ?>"><?php echo $val; ?></time>
                 </td>
                 <td>
-                    <?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? Date::of($row->get('expires'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
+                    <?php
+                        $expiresDisplay = ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00')
+                            ? Date::of($row->get('expires'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                            : Lang::txt('COM_COURSES_NEVER');
+                        echo $expiresDisplay;
+                    ?>
                 </td>
                 <?php if ($row->get('redeemed')) { ?>
                     <td>
-                        <span class="state <?php echo (($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') || $row->get('redeemed_by')) ? 'yes' : 'no'; ?>">
-                            <span><?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? '<time datetime="' . $row->get('redeemed') . '">' . Date::of($row->get('redeemed'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</time>' : Lang::txt('JNO'); ?></span>
+                        <?php
+                            $hasRedeemed = ($row->get('redeemed')
+                                && $row->get('redeemed') != '0000-00-00 00:00:00');
+                            $stateClass = ($hasRedeemed || $row->get('redeemed_by'))
+                                ? 'yes' : 'no';
+                        if ($hasRedeemed) {
+                            $redeemedDate = Date::of($row->get('redeemed'))
+                                ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                            $redeemedHtml = '<time datetime="'
+                                . $row->get('redeemed') . '">'
+                                . $redeemedDate . '</time>';
+                        } else {
+                            $redeemedHtml = Lang::txt('JNO');
+                        }
+                        ?>
+                        <span class="state <?php echo $stateClass; ?>">
+                            <span>
+                                <?php echo $redeemedHtml; ?>
+                            </span>
                         </span>
                     </td>
                     <td class="priority-3">
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=students&task=edit&section=' . $row->get('section_id') . '&id=' . $row->get('redeemed_by')); ?>">
+                        <?php
+                            $routeUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=students&task=edit&section='
+                                . $row->get('section_id') . '&id=' . $row->get('redeemed_by')
+                            );
+                        ?>
+                        <a href="<?php echo $routeUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->redeemer()->get('name'))); ?>
                         </a>
                     </td>

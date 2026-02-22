@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -54,7 +52,34 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                             <span class="icon-folder"><?php echo $folder_name; ?></span>
                         </td>
                         <td>
-                            <a class="icon-delete delete delete-folder" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;folder=<?php echo DS . $folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the folder "%s"?', $folder_name); ?>" data-files="<?php echo $num_files; ?>" data-notempty="<?php echo Lang::txt('There are %s files/folders in this folder. Please delete all files/folder first.', $num_files); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                            <?php
+                                $folderPath = DS . $folders[$folder_name];
+                                $delFolderHref = $base
+                                    . '/index.php?option=' . $this->option
+                                    . '&amp;task=deletefolder'
+                                    . '&amp;folder=' . $folderPath
+                                    . '&amp;listdir=' . $this->listdir
+                                    . '&amp;no_html=1';
+                                $confirmMsg = Lang::txt(
+                                    'Are you sure you want to delete'
+                                    . ' the folder "%s"?',
+                                    $folder_name
+                                );
+                                $notemptyMsg = Lang::txt(
+                                    'There are %s files/folders in'
+                                    . ' this folder. Please delete'
+                                    . ' all files/folder first.',
+                                    $num_files
+                                );
+                            ?>
+                            <a
+                                class="icon-delete delete delete-folder"
+                                href="<?php echo $delFolderHref; ?>"
+                                target="filer"
+                                data-confirm="<?php echo $confirmMsg; ?>"
+                                data-files="<?php echo $num_files; ?>"
+                                data-notempty="<?php echo $notemptyMsg; ?>"
+                                title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
                                 <?php echo Lang::txt('JACTION_DELETE'); ?>
                             </a>
                         </td>
@@ -80,13 +105,46 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                         </td>
                         <td>
                             <?php if (is_object($course)) : ?>
-                                <a href="#" class="icon-path filepath" data-path="<?php echo 'https://' . $_SERVER['HTTP_HOST'] . DS . 'courses' . DS . $course->get('cn') . DS . 'File:' . $docs[$doc_name]; ?>" title="<?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>">
+                                <a
+                                    href="#"
+                                    class="icon-path filepath"
+                                    <?php
+                                    $val = 'https://'
+                                        . $_SERVER['HTTP_HOST']
+                                        . DS
+                                        . 'courses'
+                                        . DS
+                                        . $course->get('cn')
+                                        . DS
+                                        . 'File:'
+                                        . $docs[$doc_name];
+                                    ?>
+                                    data-path="<?php echo $val; ?>"
+                                    title="<?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>">
                                     <?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>
                                 </a>
                             <?php endif; ?>
                         </td>
                         <td>
-                            <a class="icon-delete delete delete-file" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$doc_name]); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                            <?php
+                                $delFileHref = $base
+                                    . '/index.php?option=' . $this->option
+                                    . '&amp;task=deletefile'
+                                    . '&amp;file=' . $docs[$doc_name]
+                                    . '&amp;listdir=' . $this->listdir
+                                    . '&amp;no_html=1';
+                                $confirmMsg = Lang::txt(
+                                    'Are you sure you want to delete'
+                                    . ' the file "%s"?',
+                                    $docs[$doc_name]
+                                );
+                            ?>
+                            <a
+                                class="icon-delete delete delete-file"
+                                href="<?php echo $delFileHref; ?>"
+                                target="filer"
+                                data-confirm="<?php echo $confirmMsg; ?>"
+                                title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
                                 <?php echo Lang::txt('JACTION_DELETE'); ?>
                             </a>
                         </td>
@@ -105,13 +163,46 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                         </td>
                         <td>
                             <?php if (is_object($course)) : ?>
-                                <a href="#" class="icon-path filepath" data-path="<?php echo 'https://' . $_SERVER['HTTP_HOST'] . DS . 'courses' . DS . $course->get('cn') . DS . 'Image:' . $images[$image_name]; ?>" title="<?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>">
+                                <a
+                                    href="#"
+                                    class="icon-path filepath"
+                                    <?php
+                                    $val = 'https://'
+                                        . $_SERVER['HTTP_HOST']
+                                        . DS
+                                        . 'courses'
+                                        . DS
+                                        . $course->get('cn')
+                                        . DS
+                                        . 'Image:'
+                                        . $images[$image_name];
+                                    ?>
+                                    data-path="<?php echo $val; ?>"
+                                    title="<?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>">
                                     <?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>
                                 </a>
                             <?php endif; ?>
                         </td>
                         <td>
-                            <a class="icon-delete delete delete-file" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the folder "%s"?', $images[$image_name]); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                            <?php
+                                $delImgHref = $base
+                                    . '/index.php?option=' . $this->option
+                                    . '&amp;task=deletefile'
+                                    . '&amp;file=' . $images[$image_name]
+                                    . '&amp;listdir=' . $this->listdir
+                                    . '&amp;no_html=1';
+                                $confirmMsg = Lang::txt(
+                                    'Are you sure you want to delete'
+                                    . ' the folder "%s"?',
+                                    $images[$image_name]
+                                );
+                            ?>
+                            <a
+                                class="icon-delete delete delete-file"
+                                href="<?php echo $delImgHref; ?>"
+                                target="filer"
+                                data-confirm="<?php echo $confirmMsg; ?>"
+                                title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
                                 <?php echo Lang::txt('JACTION_DELETE'); ?>
                             </a>
                         </td>

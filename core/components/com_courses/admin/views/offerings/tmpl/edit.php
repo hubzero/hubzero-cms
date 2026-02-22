@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -37,7 +35,14 @@ $this->css();
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $routeUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -51,12 +56,24 @@ $this->css();
                 <input type="hidden" name="task" value="save" />
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+                    <label for="field-title">
+                        <?php $val = Lang::txt('COM_COURSES_FIELD_TITLE'); ?>
+                        <?php echo $val; ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="required"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-                    <input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+                    <input
+                        type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                 </div>
             </fieldset>
@@ -65,7 +82,10 @@ $this->css();
                 <legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_PUBLISHING'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                    <label for="field-state">
+                        <?php $val = Lang::txt('COM_COURSES_FIELD_STATE'); ?>
+                        <?php echo $val; ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
                     <select name="fields[state]" id="field-state">
                         <option value="0"<?php if ($this->row->get('state') == 0) {
                             echo ' selected="selected"';
@@ -85,14 +105,34 @@ $this->css();
                     <div class="col span6">
                         <div class="input-wrap" data-hint="YYYY-MM-DD HH:mm:ss">
                             <label for="publish_up"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS'); ?>:</label><br />
-                            <?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') && $this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), array('id' => 'publish_up')); ?>
+                            <?php
+                                $pubUp = ($this->row->get('publish_up')
+                                    && $this->row->get('publish_up') != '0000-00-00 00:00:00')
+                                    ? $this->row->get('publish_up') : '';
+                                echo Html::input(
+                                    'calendar',
+                                    'fields[publish_up]',
+                                    $pubUp,
+                                    array('id' => 'publish_up')
+                                );
+                                ?>
                             <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
                         </div>
                     </div>
                     <div class="col span6">
                         <div class="input-wrap" data-hint="YYYY-MM-DD HH:mm:ss">
                             <label for="publish_down"><?php echo Lang::txt('COM_COURSES_FIELD_ENDS'); ?>:</label><br />
-                            <?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->get('publish_down') && $this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), array('id' => 'publish_down')); ?>
+                            <?php
+                                $pubDown = ($this->row->get('publish_down')
+                                    && $this->row->get('publish_down') != '0000-00-00 00:00:00')
+                                    ? $this->row->get('publish_down') : '';
+                                echo Html::input(
+                                    'calendar',
+                                    'fields[publish_down]',
+                                    $pubDown,
+                                    array('id' => 'publish_down')
+                                );
+                                ?>
                             <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ENDS_HINT'); ?></span>
                         </div>
                     </div>
@@ -113,7 +153,9 @@ $this->css();
                     <?php if ($this->row->get('created')) { ?>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
-                            <td><time datetime="<?php echo $this->escape($this->row->get('created')); ?>"><?php echo $this->escape(Date::of($this->row->get('created'))->toLocal()); ?></time></td>
+                            <?php $timeVal = $this->escape($this->row->get('created')); ?>
+                            <?php $timeVal2 = $this->escape(Date::of($this->row->get('created'))->toLocal()); ?>
+                            <td><time datetime="<?php echo $timeVal; ?>"><?php echo $timeVal2; ?></time></td>
                         </tr>
                     <?php } ?>
                     <?php if ($this->row->get('created_by')) { ?>
@@ -135,9 +177,30 @@ $this->css();
                     $logo = $this->row->params('logo');
                     ?>
                     <div class="uploader-wrap">
-                        <div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=offering&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>" data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
+                        <?php
+                            $routeUrl = Route::url(
+                                'index.php?option=' . $this->option  . '&controller=logo&task=upload&type=offering&id='
+                                . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'
+                            );
+                        ?>
+                        <div
+                            id="ajax-uploader"
+                            data-action="<?php echo $routeUrl; ?>"
+                            data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
                             <noscript>
-                                <iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $logo . '&type=offering&id=' . $this->row->get('id')); ?>"></iframe>
+                                <?php
+                                    $routeUrl = Route::url(
+                                        'index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file='
+                                        . $logo . '&type=offering&id=' . $this->row->get('id')
+                                    );
+                                ?>
+                                <iframe
+                                    width="100%"
+                                    height="350"
+                                    name="filer"
+                                    id="filer"
+                                    frameborder="0"
+                                    src="<?php echo $routeUrl; ?>"></iframe>
                             </noscript>
                         </div>
                     </div>
@@ -163,23 +226,59 @@ $this->css();
                         }
                         ?>
                         <div id="img-container">
-                            <img id="img-display" src="<?php echo '..' . $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" />
-                            <input type="hidden" name="currentfile" id="currentfile" value="<?php echo $this->escape($logo); ?>" />
+                            <img
+                                id="img-display"
+                                src="<?php echo '..' . $path . DS . $pic; ?>"
+                                alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" />
+                            <input
+                                type="hidden"
+                                name="currentfile"
+                                id="currentfile"
+                                value="<?php echo $this->escape($logo); ?>" />
                         </div>
                         <table class="formed">
                             <tbody>
                                 <tr>
                                     <th><?php echo Lang::txt('COM_COURSES_FILE'); ?>:</th>
                                     <td>
-                                        <span id="img-name"><?php echo $pic && $pic != 'blank.png' ? $pic : Lang::txt('COM_COURSES_NONE'); ?></span>
+                                        <span id="img-name">
+                                            <?php
+                                                $picName = ($pic && $pic != 'blank.png')
+                                                    ? $pic
+                                                    : Lang::txt('COM_COURSES_NONE');
+                                                echo $picName;
+                                            ?>
+                                        </span>
                                     </td>
                                     <td>
-                                        <a id="img-delete" <?php echo $logo ? '' : 'class="hide"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=offering&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" data-defaultimg="'../core/components/com_courses/admin/assets/img/blank.png'">[ x ]</a>
+                                        <?php
+                                            $routeUrl = Route::url(
+                                                'index.php?option=' . $this->option
+                                                . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo
+                                                . '&type=offering&id=' . $this->row->get('id') . '&'
+                                                . Session::getFormToken() . '=1'
+                                            );
+                                        ?>
+                                        <?php
+                                            $defaultImg = "'../core/components"
+                                                . "/com_courses/admin/assets"
+                                                . "/img/blank.png'";
+                                        ?>
+                                        <a
+                                            id="img-delete"
+                                            <?php echo $logo ? '' : 'class="hide"'; ?>
+                                            href="<?php echo $routeUrl; ?>"
+                                            title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>"
+                                            data-defaultimg="<?php echo $defaultImg; ?>"
+                                        >
+                                            [ x ]
+                                        </a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><?php echo Lang::txt('COM_COURSES_PICTURE_SIZE'); ?>:</th>
-                                    <td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($fsize); ?></span></td>
+                                    <?php $val = \Hubzero\Utility\Number::formatBytes($fsize); ?>
+                                    <td><span id="img-size"><?php echo $val; ?></span></td>
                                     <td></td>
                                 </tr>
                                 <tr>
@@ -206,13 +305,32 @@ $this->css();
             <fieldset class="adminform offeringparams">
                 <legend><?php echo Lang::txt('COM_COURSES_FIELDSET_PARAMS'); ?></legend>
                 <div class="input-wrap">
-                    <label for="params-progress-calculation"><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION'); ?>:</label><br />
+                    <?php $txt = Lang::txt('COM_COURSES_PROGRESS_CALCULATION'); ?>
+                    <label for="params-progress-calculation"><?php echo $txt; ?>:</label><br />
+                    <?php
+                        $pc = $params->get('progress_calculation', '');
+                    ?>
                     <select name="params[progress_calculation]" id="params-progress-calculation">
-                        <option value=""<?php echo ($params->get('progress_calculation', '') == '') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_INHERIT'); ?></option>
-                        <option value="all"<?php echo ($params->get('progress_calculation', '') == 'all') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_ALL'); ?></option>
-                        <option value="graded"<?php echo ($params->get('progress_calculation', '') == 'graded') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_GRADED'); ?></option>
-                        <option value="videos"<?php echo ($params->get('progress_calculation', '') == 'videos') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_VIDEOS'); ?></option>
-                        <option value="manual"<?php echo ($params->get('progress_calculation', '') == 'manual') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_MANUAL'); ?></option>
+                        <?php $sel = ($pc == '') ? 'selected="selected"' : ''; ?>
+                        <option value=""<?php echo $sel; ?>>
+                            <?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_INHERIT'); ?>
+                        </option>
+                        <?php $sel = ($pc == 'all') ? 'selected="selected"' : ''; ?>
+                        <option value="all"<?php echo $sel; ?>>
+                            <?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_ALL'); ?>
+                        </option>
+                        <?php $sel = ($pc == 'graded') ? 'selected="selected"' : ''; ?>
+                        <option value="graded"<?php echo $sel; ?>>
+                            <?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_GRADED'); ?>
+                        </option>
+                        <?php $sel = ($pc == 'videos') ? 'selected="selected"' : ''; ?>
+                        <option value="videos"<?php echo $sel; ?>>
+                            <?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_VIDEOS'); ?>
+                        </option>
+                        <?php $sel = ($pc == 'manual') ? 'selected="selected"' : ''; ?>
+                        <option value="manual"<?php echo $sel; ?>>
+                            <?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_MANUAL'); ?>
+                        </option>
                     </select>
                 </div>
             </fieldset>
@@ -224,7 +342,8 @@ $this->css();
                 foreach ($plugins as $plugin) {
                     $param = new \Hubzero\Html\Parameter(
                         (is_object($data) ? $data->toString() : $data),
-                        PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
+                        PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name']
+                            . '.xml'
                     );
                     $out = $param->render('params', 'onOfferingEdit');
                     if (!$out) {
@@ -232,7 +351,8 @@ $this->css();
                     }
                     ?>
                         <fieldset class="adminform eventparams" id="params-<?php echo $plugin['name']; ?>">
-                            <legend><?php echo Lang::txt('COM_COURSES_FIELDSET_PARAMETERS', $plugin['title']); ?></legend>
+                            <?php $txt = Lang::txt('COM_COURSES_FIELDSET_PARAMETERS', $plugin['title']); ?>
+                            <legend><?php echo $txt; ?></legend>
                         <?php echo $out; ?>
                         </fieldset>
                         <?php

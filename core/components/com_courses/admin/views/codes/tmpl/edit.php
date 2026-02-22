@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,7 +28,14 @@ $this->js();
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $routeUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -43,7 +48,10 @@ $this->js();
                 <input type="hidden" name="task" value="save" />
 
                 <div class="input-wrap">
-                    <label for="field-section_id"><?php echo Lang::txt('COM_COURSES_FIELD_SECTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                    <label for="field-section_id">
+                        <?php $val = Lang::txt('COM_COURSES_FIELD_SECTION'); ?>
+                        <?php echo $val; ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
                     <select name="fields[section_id]" id="field-section_id">
                         <option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
                         <?php
@@ -57,13 +65,22 @@ $this->js();
                                 $j = 0;
                                 foreach ($course->offerings() as $i => $offering) {
                                     ?>
-                                    <optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($offering->get('title'))); ?>">
+                                    <?php $val = $this->escape(stripslashes($offering->get('title'))); ?>
+                                    <optgroup label="&nbsp; &nbsp; <?php echo $val; ?>">
                                     <?php
                                     foreach ($offering->sections() as $section) {
+                                        $val = $this->escape(
+                                            stripslashes($section->get('id'))
+                                        );
+                                        $selected = ($section->get('id') == $this->row->get('section_id'))
+                                            ? ' selected="selected"' : '';
+                                        $optLabel = $this->escape(
+                                            stripslashes($section->get('title'))
+                                        );
                                         ?>
-                                        <option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) {
-                                            echo ' selected="selected"';
-                                                       } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+                                        <option value="<?php echo $val; ?>"<?php echo $selected; ?>>
+                                            &nbsp; &nbsp; <?php echo $optLabel; ?>
+                                        </option>
                                         <?php
                                     }
                                     ?>
@@ -79,8 +96,16 @@ $this->js();
                     </select>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-code"><?php echo Lang::txt('COM_COURSES_FIELD_CODE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[code]" id="field-code" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('code'))); ?>" />
+                    <label for="field-code">
+                        <?php $val = Lang::txt('COM_COURSES_FIELD_CODE'); ?>
+                        <?php echo $val; ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[code]"
+                        id="field-code"
+                        class="required"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('code'))); ?>" />
                 </div>
             </fieldset>
 
@@ -89,13 +114,23 @@ $this->js();
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?>">
                     <label for="field-created"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS'); ?>:</label><br />
-                    <?php echo Html::input('calendar', 'fields[created]', $this->row->get('created'), array('id' => 'field-created')); ?>
+                    <?php echo Html::input(
+                        'calendar',
+                        'fields[created]',
+                        $this->row->get('created'),
+                        array('id' => 'field-created')
+                    ); ?>
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_STARTS_HINT'); ?></span>
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES_HINT'); ?>">
                     <label for="field-expires"><?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES'); ?>:</label><br />
-                    <?php echo Html::input('calendar', 'fields[expires]', $this->row->get('expires'), array('id' => 'field-expires')); ?>
+                    <?php echo Html::input(
+                        'calendar',
+                        'fields[expires]',
+                        $this->row->get('expires'),
+                        array('id' => 'field-expires')
+                    ); ?>
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES_HINT'); ?></span>
                 </div>
             </fieldset>
@@ -107,17 +142,31 @@ $this->js();
                     <tbody>
                     <?php if ($this->row->get('redeemed_by')) { ?>
                         <tr>
-                            <th><label for="field-redeemed"><?php echo Lang::txt('COM_COURSES_FIELD_REDEEMED'); ?>:</label></th>
+                            <?php $txt = Lang::txt('COM_COURSES_FIELD_REDEEMED'); ?>
+                            <th><label for="field-redeemed"><?php echo $txt; ?>:</label></th>
                             <td>
                                 <?php echo $this->escape(stripslashes($this->row->get('redeemed'))); ?>
-                                <input type="hidden" name="fields[redeemed]" id="field-redeemed" class="datetime-field" value="<?php echo $this->escape(stripslashes($this->row->get('redeemed'))); ?>" />
+                                <input
+                                    type="hidden"
+                                    name="fields[redeemed]"
+                                    id="field-redeemed"
+                                    class="datetime-field"
+                                    value="<?php echo $this->escape(stripslashes($this->row->get('redeemed'))); ?>" />
                             </td>
                         </tr>
                         <tr>
-                            <th><label for="field-redeemed_by"><?php echo Lang::txt('COM_COURSES_FIELD_REDEEMED_BY'); ?>:</label></th>
+                            <?php $txt = Lang::txt('COM_COURSES_FIELD_REDEEMED_BY'); ?>
+                            <th><label for="field-redeemed_by"><?php echo $txt; ?>:</label></th>
                             <td>
-                                <?php echo $this->escape(stripslashes($this->row->redeemer()->get('name'))) . ' (' . $this->escape(stripslashes($this->row->redeemer()->get('username'))) . ')'; ?>
-                                <input type="hidden" name="fields[redeemed_by]" id="field-redeemed_by" value="<?php echo $this->escape(stripslashes($this->row->get('redeemed_by'))); ?>" />
+                                <?php echo $this->escape(stripslashes($this->row->redeemer()->get('name'))) . ' ('
+                                        . $this->escape(stripslashes($this->row->redeemer()->get('username'))) . ')'
+                                ?>
+                                <input
+                                    type="hidden"
+                                    name="fields[redeemed_by]"
+                                    id="field-redeemed_by"
+                                    <?php $val = $this->escape(stripslashes($this->row->get('redeemed_by'))); ?>
+                                    value="<?php echo $val; ?>" />
                             </td>
                         </tr>
                     <?php } else { ?>
@@ -142,7 +191,9 @@ $this->js();
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
                             <td>
-                                <time datetime="<?php echo $this->escape($this->row->get('created')); ?>"><?php echo $this->escape(Date::of($this->row->get('created'))->toLocal()); ?></time>
+                                <?php $val = $this->escape(Date::of($this->row->get('created'))->toLocal()); ?>
+                                <?php $val = $this->escape($this->row->get('created')); ?>
+                                <time datetime="<?php echo $val; ?>"><?php echo $val; ?></time>
                             </td>
                         </tr>
                         <?php if ($this->row->get('created_by')) { ?>

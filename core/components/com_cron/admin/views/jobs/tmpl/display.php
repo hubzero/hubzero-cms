@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -206,8 +204,10 @@ $this->css('.toolbar-box li a span.icon-32-deactivate:before {
                 <td class="priority-2">
                     <span class="datetime">
                         <?php $nxt = ($row->started() ? $row->get('next_run') : $row->get('publish_up')); ?>
-                        <?php if ($nxt && $nxt != '0000-00-00 00:00:00') { ?>
-                            <time datetime="<?php echo $this->escape($nxt); ?>"><?php echo $this->escape($nxt); ?></time>
+                        <?php if ($nxt && $nxt != '0000-00-00 00:00:00') {
+                            $nxtEsc = $this->escape($nxt);
+                            ?>
+                            <time datetime="<?php echo $nxtEsc; ?>"><?php echo $nxtEsc; ?></time>
                         <?php } else { ?>
                             <?php echo $this->escape($nxt); ?>
                         <?php } ?>

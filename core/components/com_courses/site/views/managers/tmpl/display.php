@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,14 +19,17 @@ $offerings = $this->course->offerings();
     </dl>
 <?php } ?>
 <div id="course-managers">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" class="course-managers-form" id="hubForm">
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option); ?>
+    <form action="<?php echo $routeUrl; ?>" method="post" class="course-managers-form" id="hubForm">
         <fieldset>
             <div class="grid">
                 <div class="col span7">
                     <label for="field-usernames">
                         <?php echo Lang::txt('COM_COURSES_ADD_MANAGER_LABEL'); ?>
                         <?php
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'usernames', 'field-usernames', '', '')));
+                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(
+                            array('members', 'usernames', 'field-usernames', '', '')
+                        ));
                         if (count($mc) > 0) {
                             echo $mc[0];
                         } else { ?>
@@ -41,7 +42,8 @@ $offerings = $this->course->offerings();
                         <?php echo Lang::txt('Select role'); ?>
                         <select name="role" id="field-role">
                         <?php foreach ($roles as $role) { ?>
-                            <option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                            <?php $val = $this->escape(stripslashes($role->title)); ?>
+                            <option value="<?php echo $role->id; ?>"><?php echo $val; ?></option>
                         <?php } ?>
                         <?php
                         foreach ($offerings as $offering) {
@@ -50,9 +52,11 @@ $offerings = $this->course->offerings();
                                 continue;
                             }
                             ?>
-                            <optgroup label="<?php echo Lang::txt('COM_COURSES_OFFERING') . ': ' . $this->escape($offering->get('title')); ?>">
+                            <?php $txt = Lang::txt('COM_COURSES_OFFERING'); ?>
+                            <optgroup label="<?php echo $txt . ': ' . $this->escape($offering->get('title')); ?>">
                             <?php foreach ($oroles as $role) { ?>
-                                <option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                                <?php $val = $this->escape(stripslashes($role->title)); ?>
+                                <option value="<?php echo $role->id; ?>"><?php echo $val; ?></option>
                             <?php } ?>
                             </optgroup>
                         <?php } ?>
@@ -76,7 +80,8 @@ $offerings = $this->course->offerings();
         <?php echo Html::input('token'); ?>
     </form>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" class="course-managers-form" id="managersForm">
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option); ?>
+    <form action="<?php echo $routeUrl; ?>" method="post" class="course-managers-form" id="managersForm">
         <table class="paramlist admintable">
             <thead>
                 <tr>
@@ -107,21 +112,39 @@ if (count($managers) > 0) {
         ?>
                 <tr>
                     <td>
-                        <input type="hidden" name="entries[<?php echo $i; ?>][course_id]" value="<?php echo $manager->get('course_id'); ?>" />
-                        <input type="hidden" name="entries[<?php echo $i; ?>][offering_id]" value="<?php echo $manager->get('offering_id', 0); ?>" />
-                        <input type="hidden" name="entries[<?php echo $i; ?>][section_id]" value="<?php echo $manager->get('section_id', 0); ?>" />
-                        <input type="hidden" name="entries[<?php echo $i; ?>][user_id]" value="<?php echo $u->get('id'); ?>" />
-                        <input type="checkbox" name="entries[<?php echo $i; ?>][select]" value="<?php echo $u->get('id'); ?>" />
+                        <input
+                            type="hidden"
+                            name="entries[<?php echo $i; ?>][course_id]"
+                            value="<?php echo $manager->get('course_id'); ?>" />
+                        <input
+                            type="hidden"
+                            name="entries[<?php echo $i; ?>][offering_id]"
+                            value="<?php echo $manager->get('offering_id', 0); ?>" />
+                        <input
+                            type="hidden"
+                            name="entries[<?php echo $i; ?>][section_id]"
+                            value="<?php echo $manager->get('section_id', 0); ?>" />
+                        <input
+                            type="hidden"
+                            name="entries[<?php echo $i; ?>][user_id]"
+                            value="<?php echo $u->get('id'); ?>" />
+                        <input
+                            type="checkbox"
+                            name="entries[<?php echo $i; ?>][select]"
+                            value="<?php echo $u->get('id'); ?>" />
                     </td>
                     <td class="paramlist_key">
                         <a href="<?php echo Route::url('index.php?option=com_members&id=' . $u->get('id')); ?>">
-                    <?php echo $u->get('name') ? $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')' : Lang::txt('COM_COURSES_UNKNOWN'); ?>
+                    <?php echo $u->get('name') ? $this->escape($u->get('name')) . ' ('
+                            . $this->escape($u->get('username')) . ')' : Lang::txt('COM_COURSES_UNKNOWN')
+                    ?>
                         </a>
                     </td>
                     <td>
                         <select name="entries[<?php echo $i; ?>][role_id]">
                     <?php foreach ($roles as $role) { ?>
-                                <option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) {
+                                <?php $val = $role->id; ?>
+                                <option value="<?php echo $val; ?>"<?php if ($manager->get('role_id') == $role->id) {
                                     echo ' selected="selected"';
                                                } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
                     <?php } ?>
@@ -132,11 +155,17 @@ if (count($managers) > 0) {
                             continue;
                         }
                         ?>
-                                <optgroup label="<?php echo Lang::txt('COM_COURSES_OFFERING') . ': ' . $this->escape($offering->get('title')); ?>">
+                                <?php $txt = Lang::txt('COM_COURSES_OFFERING'); ?>
+                                <optgroup label="<?php echo $txt . ': ' . $this->escape($offering->get('title')); ?>">
                                 <?php foreach ($oroles as $role) { ?>
-                                    <option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) {
-                                        echo ' selected="selected"';
-                                                   } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                                    <?php
+                                    $selected = ($manager->get('role_id') == $role->id)
+                                        ? ' selected="selected"' : '';
+                                    $roleTitle = $this->escape(stripslashes($role->title));
+                                    ?>
+                                    <option value="<?php echo $role->id; ?>"<?php echo $selected; ?>>
+                                        <?php echo $roleTitle; ?>
+                                    </option>
                                 <?php } ?>
                                 </optgroup>
                     <?php } ?>

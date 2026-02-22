@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2024 The Regents of the University of California.
@@ -28,9 +26,20 @@ $this->css('duplicateAssets')
      ->js('duplicateAssets');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>&amp;task=dupassets" 
-    method="post" name="adminForm" id="item-form" class="editform form-validate" 
-    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+) . '&amp;task=dupassets';
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     
     <div class="grid">
         
@@ -40,7 +49,11 @@ $this->css('duplicateAssets')
                 
                 <!-- Ids that will be passed to form -->
                 <input type="hidden" name="assetGroupIdToDuplicate" value="<?php echo $this->row->get('id'); ?>" />
-                <input type="hidden" name="assetGroupParentIdToDuplicate" value="<?php echo $this->row->get('parent'); ?>" />
+                <input
+                    type="hidden"
+                    name="assetGroupParentIdToDuplicate"
+                    value="<?php echo $this->row->get('parent'); ?>"
+                />
                 <input type="hidden" name="unitIdToDuplicate" value="<?php echo $this->unit->get('id'); ?>" />
                 <input type="hidden" name="offeringIdToDuplicate" value="<?php echo $this->offering->get('id'); ?>" />
                 <input type="hidden" name="courseIdToDuplicate" value="<?php echo $this->course->get('id'); ?>" />
@@ -69,9 +82,20 @@ $this->css('duplicateAssets')
                     </select>
                 </div>
 
-                <!-- https://stage.stemedhub.org/administrator/index.php?option=com_courses&controller=assets&tmpl=component&scope=asset_group&scope_id=92&course_id=8 -->
+                <!--
+                https://stage.stemedhub.org/administrator/index.php
+                ?option=com_courses&controller=assets&tmpl=component
+                &scope=asset_group&scope_id=92&course_id=8
+                -->
                 <!-- SQL: select * from jos_courses_assets; -->
-                <p><strong><?php echo $this->escape($this->assetsCount); ?></strong> Assets That Will Be Copied from Current Asset Group <strong><?php echo $this->escape($this->row->get('id')); ?></strong> --> Asset Group Selected ABOVE.</p>
+                <?php $assetCount = $this->escape($this->assetsCount); ?>
+                <?php $groupId = $this->escape($this->row->get('id')); ?>
+                <p>
+                    <strong><?php echo $assetCount; ?></strong>
+                    Assets That Will Be Copied from Current Asset Group
+                    <strong><?php echo $groupId; ?></strong>
+                    --> Asset Group Selected ABOVE.
+                </p>
                 <table class="adminlist">
                     <thead style="background: black">
                         <tr>
@@ -115,6 +139,19 @@ $this->css('duplicateAssets')
         </div>
         
 
+        <?php
+        $courseId = $this->escape($this->course->get('id'));
+        $courseEditUrl = '/administrator/index.php?option=com_courses'
+            . '&controller=courses&task=edit&id=' . $courseId;
+        $offeringsUrl = '/administrator/index.php?option=com_courses'
+            . '&controller=offerings&course=' . $courseId;
+        $unitsUrl = '/administrator/index.php?option=com_courses'
+            . '&controller=units&offering='
+            . $this->escape($this->offering->get('id'));
+        $assetGroupsUrl = '/administrator/index.php?option=com_courses'
+            . '&controller=assetgroups&unit='
+            . $this->escape($this->unit->get('id'));
+        ?>
         <div class="col span5">
             <table class="meta">
                 <thead style="background: black">
@@ -124,9 +161,11 @@ $this->css('duplicateAssets')
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">Course Id (<a href='/administrator/index.php?option=com_courses&controller=courses'>All</a>)</th>
+                        <th scope="row">
+                            Course Id (<a href="/administrator/index.php?option=com_courses&controller=courses">All</a>)
+                        </th>
                         <td>
-                            <a href='/administrator/index.php?option=com_courses&controller=courses&task=edit&id=<?php echo $this->escape($this->course->get('id')); ?>'>
+                            <a href="<?php echo $courseEditUrl; ?>">
                                 <?php echo $this->escape($this->course->get('id')); ?>
                             </a>
                         </td>
@@ -151,7 +190,7 @@ $this->css('duplicateAssets')
                     <tr>
                         <th scope="row">Offering Id</th>
                         <td>
-                            <a href='/administrator/index.php?option=com_courses&controller=offerings&course=<?php echo $this->escape($this->course->get('id')); ?>'>
+                            <a href="<?php echo $offeringsUrl; ?>">
                                 <?php echo $this->escape($this->offering->get('id')); ?>
                             </a>
                         </td>
@@ -176,7 +215,7 @@ $this->css('duplicateAssets')
                     <tr>
                         <th scope="row">Unit Id</th>
                         <td>
-                            <a href='/administrator/index.php?option=com_courses&controller=units&offering=<?php echo $this->escape($this->offering->get('id')); ?>'>
+                            <a href="<?php echo $unitsUrl; ?>">
                                 <?php echo $this->escape($this->unit->get('id')); ?>
                             </a>
                         </td>
@@ -201,7 +240,7 @@ $this->css('duplicateAssets')
                     <tr>
                         <th scope="row">Asset Group Id</th>
                         <td>
-                            <a href='/administrator/index.php?option=com_courses&controller=assetgroups&unit=<?php echo $this->escape($this->unit->get('id')); ?>'>
+                            <a href="<?php echo $assetGroupsUrl; ?>">
                                 <?php echo $this->escape($this->row->get('id')); ?>
                             </a>
                         </td>
@@ -222,7 +261,13 @@ $this->css('duplicateAssets')
                     <?php if ($this->row->get('created')) { ?>
                         <tr>
                             <th scope="row">Created On</th>
-                            <td><time datetime="<?php echo $this->escape($this->row->get('created')); ?>"><?php echo $this->escape(Date::of($this->row->get('created'))->toLocal()); ?></time></td>
+                            <?php $created = $this->escape($this->row->get('created')); ?>
+                            <?php $createdLocal = $this->escape(Date::of($this->row->get('created'))->toLocal()); ?>
+                            <td>
+                                <time datetime="<?php echo $created; ?>">
+                                    <?php echo $createdLocal; ?>
+                                </time>
+                            </td>
                         </tr>
                     <?php } ?>
                     <?php if ($this->row->get('created_by')) { ?>

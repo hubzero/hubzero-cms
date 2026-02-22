@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,7 +31,14 @@ $this->js();
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $routeUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -61,9 +66,15 @@ $this->js();
                                 $j = 0;
                                 foreach ($course->offerings() as $i => $offering) {
                                     ?>
-                                    <option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) {
-                                        echo ' selected="selected"';
-                                                   } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+                                    <?php
+                                    $optId = $this->escape(stripslashes($offering->get('id')));
+                                    $selected = ($offering->get('id') == $this->row->get('offering_id'))
+                                        ? ' selected="selected"' : '';
+                                    $optLabel = $this->escape(stripslashes($offering->get('alias')));
+                                    ?>
+                                    <option value="<?php echo $optId; ?>"<?php echo $selected; ?>>
+                                        <?php echo $optLabel; ?>
+                                    </option>
                                     <?php
                                 }
                                 ?>
@@ -76,23 +87,53 @@ $this->js();
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-                    <input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+                    <input
+                        type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" class="title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+                    <label for="field-title">
+                        <?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="title"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
                 </div>
                 <div class="input-wrap">
-                    <label for="field-description"><?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION'); ?>:</label><br />
-                    <textarea name="fields[description]" id="field-description" cols="35" rows="20"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
+                    <?php $txt = Lang::txt('COM_COURSES_FIELD_DESCRIPTION'); ?>
+                    <label for="field-description"><?php echo $txt; ?>:</label><br />
+                    <textarea
+                        name="fields[description]"
+                        id="field-description"
+                        cols="35"
+                        rows="20"><?php echo $this->escape(stripslashes($this->row->get('description'))); ?></textarea>
                 </div>
             </fieldset>
 
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_ASSETS'); ?></span></legend>
                 <?php if ($this->row->get('id')) { ?>
-                    <iframe width="100%" height="400" name="assets" id="assets" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=assets&tmpl=component&scope=unit&scope_id=' . $this->row->get('id') . '&course_id=' . $this->offering->get('course_id')); ?>"></iframe>
+                    <?php
+                        $routeUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=assets&tmpl=component&scope=unit&scope_id=' . $this->row->get('id')
+                            . '&course_id=' . $this->offering->get('course_id')
+                        );
+                    ?>
+                    <iframe
+                        width="100%"
+                        height="400"
+                        name="assets"
+                        id="assets"
+                        frameborder="0"
+                        src="<?php echo $routeUrl; ?>"></iframe>
                 <?php } else { ?>
                     <p><?php echo Lang::txt('COM_COURSES_ENTRY_MUST_BE_SAVED_BEFORE_ASSETS'); ?></p>
                 <?php } ?>
@@ -112,7 +153,11 @@ $this->js();
                     <?php if ($this->row->get('created')) { ?>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
-                            <td><time datetime="<?php echo $this->escape($this->row->get('created')); ?>"><?php echo $this->escape(Date::of($this->row->get('created'))->toLocal()); ?></time></td>
+                            <?php $created = $this->escape($this->row->get('created')); ?>
+                            <?php $createdLocal = $this->escape(Date::of($this->row->get('created'))->toLocal()); ?>
+                            <td>
+                                <time datetime="<?php echo $created; ?>"><?php echo $createdLocal; ?></time>
+                            </td>
                         </tr>
                     <?php } ?>
                     <?php if ($this->row->get('created_by')) { ?>

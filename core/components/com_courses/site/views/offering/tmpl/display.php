@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,7 +32,10 @@ if (!$no_html && $tmpl != 'component') :
         </h2>
         <?php if ($src) { ?>
         <p class="course-identity">
-            <img src="<?php echo Route::url($src); ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+            <?php $routeUrl = Route::url($src); ?>
+            <img
+                src="<?php echo $routeUrl; ?>"
+                alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
         </p>
         <?php } ?>
         <p id="page_identity">
@@ -80,7 +81,12 @@ if (!$no_html && $tmpl != 'component') :
                 </div><!-- / .instructions -->
                 <div class="questions">
                     <p><strong><?php echo Lang::txt('COM_COURSES_WHERE_TO_LEARN_MORE'); ?></strong></p>
-                    <p><?php echo Lang::txt('COM_COURSES_WHERE_TO_LEARN_MORE_EXPLANATION', Route::url($this->course->link()), Route::url('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+                    <?php
+                        $routeUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=courses&task=browse'
+                        );
+                    ?>
+                    <p><?php echo $routeUrl; ?></p>
                 </div><!-- / .post-type -->
             </div><!-- / #collection-introduction -->
 <?php } else { ?>
@@ -99,15 +105,20 @@ if (!$no_html && $tmpl != 'component') :
                         }
 
                         // Do we have access?
-                        if (!$this->course->offering()->access('manage', 'section') && $plugin->get('default_access') == 'managers') {
+                        $isNotManager = !$this->course->offering()->access('manage', 'section');
+                        if ($isNotManager && $plugin->get('default_access') == 'managers') {
                             continue;
                         }
 
                         // Can we view this tab?
                         if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) {
                             ?>
-                            <li class="protected members-only course-<?php echo $plugin->get('name'); ?>-tab" data-title="<?php echo Lang::txt('COM_COURSES_RESTRICTED_PAGE'); ?>">
-                                <span class="<?php echo $plugin->get('name'); ?>" data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>">
+                            <li
+                                class="protected members-only course-<?php echo $plugin->get('name'); ?>-tab"
+                                data-title="<?php echo Lang::txt('COM_COURSES_RESTRICTED_PAGE'); ?>">
+                                <span
+                                    class="<?php echo $plugin->get('name'); ?>"
+                                    data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>">
                                     <?php echo $this->escape($plugin->get('title')); ?>
                                 </span>
                             </li>
@@ -115,8 +126,18 @@ if (!$no_html && $tmpl != 'component') :
                         } else {
                             $link = Route::url($this->course->offering()->link() . '&active=' . $plugin->get('name'));
                             ?>
-                            <li class="<?php echo ($active == $plugin->get('name')) ? 'active' : ''; ?> course-<?php echo $plugin->get('name'); ?>-tab">
-                                <a class="<?php echo $plugin->get('name'); ?>" data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>" data-title="<?php echo $this->escape($plugin->get('title')) . '&#xa;' . $this->escape($plugin->get('description')); ?>" href="<?php echo $link; ?>">
+                            <?php $val = ($active == $plugin->get('name')) ? 'active' : ''; ?>
+                            <li class="<?php echo $val; ?> course-<?php echo $plugin->get('name'); ?>-tab">
+                                <a
+                                    class="<?php echo $plugin->get('name'); ?>"
+                                    data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>"
+                                    <?php
+                                    $val = $this->escape($plugin->get('title'))
+                                        . '&#xa;'
+                                        . $this->escape($plugin->get('description'));
+                                    ?>
+                                    data-title="<?php echo $val; ?>"
+                                    href="<?php echo $link; ?>">
                                     <?php echo $this->escape($plugin->get('title')); ?>
                                 </a>
                                 <?php if ($meta_count = $plugin->get('meta_count')) { ?>
@@ -137,7 +158,8 @@ if (!$no_html && $tmpl != 'component') :
                 <div id="page_notifications">
                     <?php
                     foreach ($this->notifications as $notification) {
-                        echo '<p class="' . $this->escape($notification['type']) . '">' . $this->escape($notification['message']) . '</p>';
+                        echo '<p class="' . $this->escape($notification['type']) . '">'
+                            . $this->escape($notification['message']) . '</p>';
                     }
                     ?>
                 </div><!-- /#page_notifications -->

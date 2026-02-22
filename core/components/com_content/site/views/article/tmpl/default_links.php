@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -48,18 +46,30 @@ if ($urls && (!empty($urls->urla) || !empty($urls->urlb) || !empty($urls->urlc))
                     switch ($target) {
                         case 1:
                             // open in a new window
-                            echo '<a href="' . htmlspecialchars($link) . '" target="_blank" rel="noopener noreferrer">' . htmlspecialchars($label) . '</a>';
+                            echo '<a href="' . htmlspecialchars($link)
+                                . '" target="_blank" rel="noopener noreferrer">'
+                                . htmlspecialchars($label) . '</a>';
                             break;
 
                         case 2:
                             // open in a popup window
-                            $attribs = 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=600';
-                            echo '<a href="' . htmlspecialchars($link) . '" onclick="window.open(this.href, \'targetWindow\', \'' . $attribs . '\'); return false;">' . htmlspecialchars($label) . '</a>';
+                            $attribs = 'toolbar=no,location=no,status=no,'
+                                . 'menubar=no,scrollbars=yes,resizable=yes,'
+                                . 'width=600,height=600';
+                            echo '<a href="' . htmlspecialchars($link)
+                                . '" onclick="window.open(this.href,'
+                                . " 'targetWindow', '" . $attribs
+                                . "'); return false;\">"
+                                . htmlspecialchars($label) . '</a>';
                             break;
                         case 3:
                             // open in a modal window
                             Html::behavior('modal', 'a.modal'); ?>
-                            <a class="modal" href="<?php echo htmlspecialchars($link); ?>" rel="{handler: 'iframe', size: {x:600, y:600}}">
+                            <a
+                                class="modal"
+                                href="<?php echo htmlspecialchars($link); ?>"
+                                rel="{handler: 'iframe', size: {x:600, y:600}}"
+                            >
                                 <?php echo htmlspecialchars($label); ?>
                             </a>
                             <?php
@@ -67,7 +77,9 @@ if ($urls && (!empty($urls->urla) || !empty($urls->urlb) || !empty($urls->urlc))
 
                         default:
                             // open in parent window
-                            echo '<a href="' . htmlspecialchars($link) . '" rel="nofollow">' . htmlspecialchars($label) . ' </a>';
+                            echo '<a href="' . htmlspecialchars($link)
+                                . '" rel="nofollow">'
+                                . htmlspecialchars($label) . ' </a>';
                             break;
                     }
                     ?>

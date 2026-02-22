@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,9 @@ $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_
 
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
-Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_SECTIONS') . ': ' . $text, 'courses.png');
+$tbTitle = Lang::txt('COM_COURSES') . ': '
+    . Lang::txt('COM_COURSES_SECTIONS') . ': ' . $text;
+Toolbar::title($tbTitle, 'courses.png');
 if ($canDo->get('core.edit')) {
     Toolbar::save();
 }
@@ -37,17 +37,51 @@ $course_id = 0;
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$routeUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$validMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form
+    action="<?php echo $routeUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    enctype="multipart/form-data"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $validMsg; ?>">
 
     <nav role="navigation" class="sub-navigation">
         <div id="submenu-box">
             <div class="submenu-box">
                 <div class="submenu-pad">
                     <ul id="submenu" class="coursesection">
-                        <li><a href="#page-details" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-                        <li><a href="#page-managers" id="managers"><?php echo Lang::txt('COM_COURSES_FIELDSET_MANAGERS'); ?></a></li>
-                        <li><a href="#page-datetime" id="datetime"><?php echo Lang::txt('COM_COURSES_FIELDSET_DATES'); ?></a></li>
-                        <li><a href="#page-badge" id="badge"><?php echo Lang::txt('COM_COURSES_FIELDSET_REWARDS'); ?></a></li>
+                        <?php $txt = Lang::txt('JDETAILS'); ?>
+                        <li>
+                            <a href="#page-details" id="details" class="active">
+                                <?php echo $txt; ?>
+                            </a>
+                        </li>
+                        <?php $txt = Lang::txt('COM_COURSES_FIELDSET_MANAGERS'); ?>
+                        <li>
+                            <a href="#page-managers" id="managers">
+                                <?php echo $txt; ?>
+                            </a>
+                        </li>
+                        <?php $txt = Lang::txt('COM_COURSES_FIELDSET_DATES'); ?>
+                        <li>
+                            <a href="#page-datetime" id="datetime">
+                                <?php echo $txt; ?>
+                            </a>
+                        </li>
+                        <?php $txt = Lang::txt('COM_COURSES_FIELDSET_REWARDS'); ?>
+                        <li>
+                            <a href="#page-badge" id="badge">
+                                <?php echo $txt; ?>
+                            </a>
+                        </li>
                     </ul>
                     <div class="clr"></div>
                 </div>
@@ -63,33 +97,65 @@ $course_id = 0;
                     <fieldset class="adminform">
                         <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-                        <input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
-                        <input type="hidden" name="offering" value="<?php echo $this->row->get('offering_id'); ?>" />
-                        <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-                        <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+                        <?php $rowId = $this->row->get('id'); ?>
+                        <?php $offeringId = $this->row->get('offering_id'); ?>
+                        <input
+                            type="hidden"
+                            name="fields[id]"
+                            value="<?php echo $rowId; ?>" />
+                        <input
+                            type="hidden"
+                            name="offering"
+                            value="<?php echo $offeringId; ?>" />
+                        <input
+                            type="hidden"
+                            name="option"
+                            value="<?php echo $this->option; ?>" />
+                        <input
+                            type="hidden"
+                            name="controller"
+                            value="<?php echo $this->controller; ?>">
                         <input type="hidden" name="task" value="save" />
 
                         <div class="input-wrap">
-                            <label for="offering_id"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label><br />
+                            <?php $offeringTxt = Lang::txt('COM_COURSES_OFFERING'); ?>
+                            <label for="offering_id">
+                                <?php echo $offeringTxt; ?>:
+                            </label><br />
                             <select name="fields[offering_id]" id="offering_id">
-                                <option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
+                                <?php $selectTxt = Lang::txt('COM_COURSES_SELECT'); ?>
+                                <option value="-1">
+                                    <?php echo $selectTxt; ?>
+                                </option>
                                 <?php
                                     require_once Component::path('com_courses') . DS . 'models' . DS . 'courses.php';
                                     $model = \Components\Courses\Models\Courses::getInstance();
                                 if ($model->courses()->total() > 0) {
                                     foreach ($model->courses() as $course) {
+                                        $courseAlias = $this->escape(
+                                            stripslashes($course->get('alias'))
+                                        );
                                         ?>
-                                            <optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
+                                            <optgroup label="<?php echo $courseAlias; ?>">
                                             <?php
                                             $j = 0;
-                                            foreach ($course->offerings() as $i => $offering) {
+                                            foreach ($course->offerings() as $ii => $offering) {
                                                 if ($offering->get('id') == $this->row->get('offering_id')) {
                                                     $course_id = $offering->get('course_id');
                                                 }
+                                                $offeringVal = $this->escape(
+                                                    stripslashes($offering->get('id'))
+                                                );
+                                                $sel = ($offering->get('id') == $this->row->get('offering_id'))
+                                                    ? ' selected="selected"' : '';
+                                                $offeringAlias = $this->escape(
+                                                    stripslashes($offering->get('alias'))
+                                                );
                                                 ?>
-                                                <option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->row->get('offering_id')) {
-                                                    echo ' selected="selected"';
-                                                               } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+                                            <option
+                                                value="<?php echo $offeringVal; ?>"
+                                                <?php echo $sel; ?>
+                                            ><?php echo $offeringAlias; ?></option>
                                                 <?php
                                             }
                                             ?>
@@ -101,88 +167,223 @@ $course_id = 0;
                             </select>
                         </div>
 
-                        <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
-                            <label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-                            <input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
-                            <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
+                        <?php
+                        $aliasHint = Lang::txt('COM_COURSES_FIELD_ALIAS_HINT');
+                        $aliasTxt = Lang::txt('COM_COURSES_FIELD_ALIAS');
+                        $aliasVal = $this->escape(
+                            stripslashes($this->row->get('alias'))
+                        );
+                        ?>
+                        <div class="input-wrap" data-hint="<?php echo $aliasHint; ?>">
+                            <label for="field-alias">
+                                <?php echo $aliasTxt; ?>:
+                            </label><br />
+                            <input
+                                type="text"
+                                name="fields[alias]"
+                                id="field-alias"
+                                value="<?php echo $aliasVal; ?>" />
+                            <span class="hint"><?php echo $aliasHint; ?></span>
                         </div>
 
                         <div class="input-wrap">
-                            <label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                            <input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+                            <?php $titleTxt = Lang::txt('COM_COURSES_FIELD_TITLE'); ?>
+                            <?php $reqTxt = Lang::txt('JOPTION_REQUIRED'); ?>
+                            <label for="field-title">
+                                <?php echo $titleTxt; ?>:
+                                <span class="required"><?php echo $reqTxt; ?></span>
+                            </label><br />
+                            <?php
+                            $titleVal = $this->escape(
+                                stripslashes($this->row->get('title'))
+                            );
+                            ?>
+                            <input
+                                type="text"
+                                name="fields[title]"
+                                id="field-title"
+                                class="required"
+                                value="<?php echo $titleVal; ?>" />
                         </div>
 
                         <fieldset>
-                            <legend><?php echo Lang::txt('COM_COURSES_FIELD_DEFAULT_SECTION'); ?>:</legend>
+                            <?php $defTxt = Lang::txt('COM_COURSES_FIELD_DEFAULT_SECTION'); ?>
+                            <legend><?php echo $defTxt; ?>:</legend>
                             <div class="input-wrap">
-                                <label for="field-is_default-yes"><input type="radio" name="fields[is_default]" id="field-is_default-yes" value="1" <?php if ($this->row->get('is_default', 0) == 1) {
-                                    echo ' checked="checked"';
-                                                                                                                                                    } ?> /> <?php echo Lang::txt('JYES'); ?></label>
-                                <label for="field-is_default-no"><input type="radio" name="fields[is_default]" id="field-is_default-no" value="0" <?php if ($this->row->get('is_default', 0) == 0) {
-                                    echo ' checked="checked"';
-                                                                                                                                                  } ?> /> <?php echo Lang::txt('JNO'); ?></label>
+                                <?php
+                                $isDefault = $this->row->get('is_default', 0);
+                                $yesChecked = ($isDefault == 1) ? ' checked="checked"' : '';
+                                $noChecked = ($isDefault == 0) ? ' checked="checked"' : '';
+                                $yesTxt = Lang::txt('JYES');
+                                $noTxt = Lang::txt('JNO');
+                                ?>
+                                <label for="field-is_default-yes">
+                                    <input
+                                        type="radio"
+                                        name="fields[is_default]"
+                                        id="field-is_default-yes"
+                                        value="1"
+                                        <?php echo $yesChecked; ?> />
+                                    <?php echo $yesTxt; ?>
+                                </label>
+                                <label for="field-is_default-no">
+                                    <input
+                                        type="radio"
+                                        name="fields[is_default]"
+                                        id="field-is_default-no"
+                                        value="0"
+                                        <?php echo $noChecked; ?> />
+                                    <?php echo $noTxt; ?>
+                                </label>
                             </div>
                         </fieldset>
 
                         <div class="input-wrap">
-                            <label for="field-enrollment"><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLMENT'); ?>:</label><br />
+                            <?php $enrollTxt = Lang::txt('COM_COURSES_FIELD_ENROLLMENT'); ?>
+                            <label for="field-enrollment">
+                                <?php echo $enrollTxt; ?>:
+                            </label><br />
                             <select name="fields[enrollment]" id="field-enrollment">
-                                <option value="0"<?php if ($this->row->get('enrollment', $this->row->config('default_enrollment', 0)) == 0) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLMENT_OPEN'); ?></option>
-                                <option value="1"<?php if ($this->row->get('enrollment', $this->row->config('default_enrollment', 0)) == 1) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLMENT_RESTRICTED'); ?></option>
-                                <option value="2"<?php if ($this->row->get('enrollment', $this->row->config('default_enrollment', 0)) == 2) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLMENT_CLOSED'); ?></option>
+                                <?php
+                                $enrollVal = $this->row->get(
+                                    'enrollment',
+                                    $this->row->config('default_enrollment', 0)
+                                );
+                                $sel = ($enrollVal == 0) ? ' selected="selected"' : '';
+                                ?>
+                            <option
+                                value="0"
+                                <?php echo $sel; ?>
+                            ><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLMENT_OPEN'); ?></option>
+                                <?php
+                                $sel = ($enrollVal == 1) ? ' selected="selected"' : '';
+                                ?>
+                            <option
+                                value="1"
+                                <?php echo $sel; ?>
+                            ><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLMENT_RESTRICTED'); ?></option>
+                                <?php
+                                $sel = ($enrollVal == 2) ? ' selected="selected"' : '';
+                                ?>
+                            <option
+                                value="2"
+                                <?php echo $sel; ?>
+                            ><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLMENT_CLOSED'); ?></option>
                             </select>
                         </div>
 
                         <div class="input-wrap">
-                            <label for="field-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label><br />
+                            <?php $stateTxt = Lang::txt('COM_COURSES_FIELD_STATE'); ?>
+                            <label for="field-state">
+                                <?php echo $stateTxt; ?>:
+                            </label><br />
                             <select name="fields[state]" id="field-state">
-                                <option value="0"<?php if ($this->row->get('state') == 0) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
-                                <option value="3"<?php if ($this->row->get('state') == 3) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></option>
-                                <option value="1"<?php if ($this->row->get('state') == 1) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
-                                <option value="2"<?php if ($this->row->get('state') == 2) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
+                                <?php $sel = ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>
+                            <option value="0"<?php echo $sel; ?>>
+                                <?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?>
+                            </option>
+                                <?php $sel = ($this->row->get('state') == 3) ? ' selected="selected"' : ''; ?>
+                            <option value="3"<?php echo $sel; ?>>
+                                <?php echo Lang::txt('COM_COURSES_DRAFT'); ?>
+                            </option>
+                                <?php $sel = ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>
+                            <option value="1"<?php echo $sel; ?>>
+                                <?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?>
+                            </option>
+                                <?php $sel = ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>
+                            <option value="2"<?php echo $sel; ?>>
+                                <?php echo Lang::txt('COM_COURSES_TRASHED'); ?>
+                            </option>
                             </select>
                         </div>
                     </fieldset>
 
                     <fieldset class="adminform">
-                        <legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_PUBLISHING'); ?></span></legend>
+                        <?php $pubTxt = Lang::txt('COM_COURSES_FIELDSET_PUBLISHING'); ?>
+                        <legend><span><?php echo $pubTxt; ?></span></legend>
 
-                        <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?>">
-                            <label for="field-publish_up"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_UP'); ?>:</label><br />
-                            <?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->get('publish_up') && $this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), array('id' => 'field-publish_up')); ?>
-                            <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?></span>
+                        <?php $hintTxt = Lang::txt('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?>
+                        <div class="input-wrap" data-hint="<?php echo $hintTxt; ?>">
+                            <?php $pubUpTxt = Lang::txt('COM_COURSES_FIELD_PUBLISH_UP'); ?>
+                            <label for="field-publish_up">
+                                <?php echo $pubUpTxt; ?>:
+                            </label><br />
+                            <?php
+                                $pubUp = $this->row->get('publish_up');
+                                $dateVal = ($pubUp && $pubUp != '0000-00-00 00:00:00')
+                                    ? $pubUp : '';
+                                echo Html::input(
+                                    'calendar',
+                                    'fields[publish_up]',
+                                    $dateVal,
+                                    array('id' => 'field-publish_up')
+                                );
+                                ?>
+                            <?php $hintPubUp = Lang::txt('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?>
+                            <span class="hint"><?php echo $hintPubUp; ?></span>
                         </div>
 
-                        <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?>">
-                            <label for="field-start_date"><?php echo Lang::txt('COM_COURSES_FIELD_SECTION_STARTS'); ?>:</label><br />
-                            <?php echo Html::input('calendar', 'fields[start_date]', ($this->row->get('start_date') && $this->row->get('start_date') != '0000-00-00 00:00:00' ? $this->row->get('start_date') : ''), array('id' => 'field-start_date')); ?>
-                            <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?></span>
+                        <?php $hintTxt = Lang::txt('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?>
+                        <div class="input-wrap" data-hint="<?php echo $hintTxt; ?>">
+                            <?php $startTxt = Lang::txt('COM_COURSES_FIELD_SECTION_STARTS'); ?>
+                            <label for="field-start_date">
+                                <?php echo $startTxt; ?>:
+                            </label><br />
+                            <?php
+                                $startDate = $this->row->get('start_date');
+                                $dateVal = ($startDate && $startDate != '0000-00-00 00:00:00')
+                                    ? $startDate : '';
+                                echo Html::input(
+                                    'calendar',
+                                    'fields[start_date]',
+                                    $dateVal,
+                                    array('id' => 'field-start_date')
+                                );
+                                ?>
+                            <?php $hintStart = Lang::txt('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?>
+                            <span class="hint"><?php echo $hintStart; ?></span>
                         </div>
 
-                        <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_FINISHES_HINT'); ?>">
-                            <label for="field-end date"><?php echo Lang::txt('COM_COURSES_FIELD_FINISHES'); ?>:</label><br />
-                            <?php echo Html::input('calendar', 'fields[end_date]', ($this->row->get('end_date') && $this->row->get('end_date') != '0000-00-00 00:00:00' ? $this->row->get('end_date') : ''), array('id' => 'field-end_date')); ?>
-                            <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_FINISHES_HINT'); ?></span>
+                        <?php $finishHint = Lang::txt('COM_COURSES_FIELD_FINISHES_HINT'); ?>
+                        <?php $finishTxt = Lang::txt('COM_COURSES_FIELD_FINISHES'); ?>
+                        <div class="input-wrap" data-hint="<?php echo $finishHint; ?>">
+                            <label for="field-end date">
+                                <?php echo $finishTxt; ?>:
+                            </label><br />
+                            <?php
+                                $endDate = $this->row->get('end_date');
+                                $dateVal = ($endDate && $endDate != '0000-00-00 00:00:00')
+                                    ? $endDate : '';
+                                echo Html::input(
+                                    'calendar',
+                                    'fields[end_date]',
+                                    $dateVal,
+                                    array('id' => 'field-end_date')
+                                );
+                                ?>
+                            <?php $finishHintTxt = Lang::txt('COM_COURSES_FIELD_FINISHES_HINT'); ?>
+                            <span class="hint"><?php echo $finishHintTxt; ?></span>
                         </div>
 
-                        <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?>">
-                            <label for="field-publish_down"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-                            <?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->get('publish_down') && $this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), array('id' => 'field-publish_down')); ?>
-                            <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?></span>
+                        <?php $hintTxt = Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?>
+                        <div class="input-wrap" data-hint="<?php echo $hintTxt; ?>">
+                            <?php $pubDownTxt = Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN'); ?>
+                            <label for="field-publish_down">
+                                <?php echo $pubDownTxt; ?>:
+                            </label><br />
+                            <?php
+                                $pubDown = $this->row->get('publish_down');
+                                $dateVal = ($pubDown && $pubDown != '0000-00-00 00:00:00')
+                                    ? $pubDown : '';
+                                echo Html::input(
+                                    'calendar',
+                                    'fields[publish_down]',
+                                    $dateVal,
+                                    array('id' => 'field-publish_down')
+                                );
+                                ?>
+                            <?php $hintPubDown = Lang::txt('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?>
+                            <span class="hint"><?php echo $hintPubDown; ?></span>
                         </div>
                     </fieldset>
                 </div>
@@ -190,27 +391,38 @@ $course_id = 0;
                     <table class="meta">
                         <tbody>
                             <tr>
-                                <th><?php echo Lang::txt('COM_COURSES_FIELD_COURSE_ID'); ?></th>
-                                <td colspan="3"><?php echo $this->escape($course_id); ?></td>
+                                <?php $cidTxt = Lang::txt('COM_COURSES_FIELD_COURSE_ID'); ?>
+                                <th><?php echo $cidTxt; ?></th>
+                                <td colspan="3">
+                                    <?php echo $this->escape($course_id); ?>
+                                </td>
                             </tr>
                             <tr>
-                                <th><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING_ID'); ?></th>
-                                <td colspan="3"><?php echo $this->escape($this->row->get('offering_id')); ?></td>
+                                <?php $oidTxt = Lang::txt('COM_COURSES_FIELD_OFFERING_ID'); ?>
+                                <th><?php echo $oidTxt; ?></th>
+                                <td colspan="3">
+                                    <?php echo $this->escape($this->row->get('offering_id')); ?>
+                                </td>
                             </tr>
                             <tr>
-                                <th><?php echo Lang::txt('COM_COURSES_FIELD_SECTION_ID'); ?></th>
-                                <td colspan="3"><?php echo $this->escape($this->row->get('id')); ?></td>
+                                <?php $sidTxt = Lang::txt('COM_COURSES_FIELD_SECTION_ID'); ?>
+                                <th><?php echo $sidTxt; ?></th>
+                                <td colspan="3">
+                                    <?php echo $this->escape($this->row->get('id')); ?>
+                                </td>
                             </tr>
                             <?php if ($this->row->get('created')) { ?>
                                 <tr>
-                                    <th><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
+                                    <?php $createdTxt = Lang::txt('COM_COURSES_FIELD_CREATED'); ?>
+                                    <th><?php echo $createdTxt; ?></th>
                                     <td>
                                         <?php echo $this->escape($this->row->get('created')); ?>
                                     </td>
                                 </tr>
                                 <?php if ($this->row->get('created_by')) { ?>
                                     <tr>
-                                        <th><?php echo Lang::txt('COM_COURSES_FIELD_CREATOR'); ?></th>
+                                        <?php $creatorTxt = Lang::txt('COM_COURSES_FIELD_CREATOR'); ?>
+                                        <th><?php echo $creatorTxt; ?></th>
                                         <td><?php
                                             $creator = User::getInstance($this->row->get('created_by'));
                                             echo $this->escape(stripslashes($creator->get('name'))); ?>
@@ -222,16 +434,43 @@ $course_id = 0;
                     </table>
 
                     <fieldset class="adminform">
-                        <legend><span><?php echo Lang::txt('COM_COURSES_LOGO'); ?></span></legend>
+                        <?php $logoTxt = Lang::txt('COM_COURSES_LOGO'); ?>
+                        <legend><span><?php echo $logoTxt; ?></span></legend>
 
                         <?php
                         if ($this->row->exists()) {
                             $logo = $this->row->params('logo');
                             ?>
                             <div class="uploader-wrap">
-                                <div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=section&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>" data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
+                                <?php
+                                $uploadUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=logo&task=upload&type=section&id='
+                                    . $this->row->get('id') . '&no_html=1&'
+                                    . Session::getFormToken() . '=1'
+                                );
+                                $uploadTxt = Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP');
+                                ?>
+                            <div
+                                id="ajax-uploader"
+                                data-action="<?php echo $uploadUrl; ?>"
+                                data-instructions="<?php echo $uploadTxt; ?>">
                                     <noscript>
-                                        <iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $logo . '&type=section&id=' . $this->row->get('id')); ?>"></iframe>
+                                        <?php
+                                        $iframeSrc = Route::url(
+                                            'index.php?option=' . $this->option
+                                            . '&controller=logo&tmpl=component&file='
+                                            . $logo . '&type=section&id='
+                                            . $this->row->get('id')
+                                        );
+                                        ?>
+                                    <iframe
+                                        width="100%"
+                                        height="350"
+                                        name="filer"
+                                        id="filer"
+                                        frameborder="0"
+                                        src="<?php echo $iframeSrc; ?>"></iframe>
                                     </noscript>
                                 </div>
                             </div>
@@ -243,48 +482,99 @@ $course_id = 0;
                                     $path = $this->row->logo('path');
 
                                     $this_size = filesize(PATH_APP . $path . DS . $logo);
-                                    list($width, $height, $type, $attr) = getimagesize(PATH_APP . $path . DS . $logo);
+                                    list($width, $height, $type, $attr) = getimagesize(
+                                        PATH_APP . $path . DS . $logo
+                                    );
                                     $pic = $logo;
                                 } else {
                                     $pic  = 'blank.png';
                                     $path = '/core/components/com_courses/admin/assets/img';
                                 }
+                                $imgSrc = '..' . $path . DS . $pic;
+                                $logoAlt = Lang::txt('COM_COURSES_LOGO');
                                 ?>
                                 <div id="img-container">
-                                    <img id="img-display" src="<?php echo '..' . $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" />
-                                    <input type="hidden" name="currentfile" id="currentfile" value="<?php echo $this->escape($logo); ?>" />
+                                    <img
+                                        id="img-display"
+                                        src="<?php echo $imgSrc; ?>"
+                                        alt="<?php echo $logoAlt; ?>" />
+                                    <input
+                                        type="hidden"
+                                        name="currentfile"
+                                        id="currentfile"
+                                        value="<?php echo $this->escape($logo); ?>" />
                                 </div>
                                 <table class="formed">
                                     <tbody>
                                         <tr>
-                                            <th><?php echo Lang::txt('COM_COURSES_FILE'); ?>:</th>
+                                            <?php $fileTxt = Lang::txt('COM_COURSES_FILE'); ?>
+                                            <th><?php echo $fileTxt; ?>:</th>
                                             <td>
-                                                <span id="img-name"><?php echo $this->row->params('logo', Lang::txt('COM_COURSES_NONE')); ?></span>
+                                                <?php
+                                                $picName = $this->row->params(
+                                                    'logo',
+                                                    Lang::txt('COM_COURSES_NONE')
+                                                );
+                                                ?>
+                                                <span id="img-name">
+                                                    <?php echo $picName; ?>
+                                                </span>
                                             </td>
                                             <td>
-                                                <a id="img-delete" <?php echo $logo ? '' : 'class="hide"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=section&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" data-defaultimg="../core/components/com_courses/admin/assets/img/blank.png">[ x ]</a>
+                                                <?php
+                                                $delCls = $logo ? '' : 'class="hide" ';
+                                                $delUrl = Route::url(
+                                                    'index.php?option=' . $this->option
+                                                    . '&controller=logo&tmpl=component'
+                                                    . '&task=remove&currentfile=' . $logo
+                                                    . '&type=section&id='
+                                                    . $this->row->get('id') . '&'
+                                                    . Session::getFormToken() . '=1'
+                                                );
+                                                $delTitle = Lang::txt('COM_COURSES_DELETE');
+                                                $defImg = '../core/components/com_courses/admin/assets/img/blank.png';
+                                                ?>
+                                                <a
+                                                    id="img-delete"
+                                                    <?php echo $delCls; ?>
+                                                    href="<?php echo $delUrl; ?>"
+                                                    title="<?php echo $delTitle; ?>"
+                                                    data-defaultimg="<?php echo $defImg; ?>"
+                                                >[ x ]</a>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th><?php echo Lang::txt('COM_COURSES_PICTURE_SIZE'); ?>:</th>
-                                            <td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
+                                            <?php $sizeTxt = Lang::txt('COM_COURSES_PICTURE_SIZE'); ?>
+                                            <th><?php echo $sizeTxt; ?>:</th>
+                                            <td>
+                                                <span id="img-size">
+                                                    <?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?>
+                                                </span>
+                                            </td>
                                             <td></td>
                                         </tr>
                                         <tr>
-                                            <th><?php echo Lang::txt('COM_COURSES_PICTURE_WIDTH'); ?>:</th>
-                                            <td><span id="img-width"><?php echo $width; ?></span> px</td>
+                                            <?php $widthTxt = Lang::txt('COM_COURSES_PICTURE_WIDTH'); ?>
+                                            <th><?php echo $widthTxt; ?>:</th>
+                                            <td>
+                                                <span id="img-width"><?php echo $width; ?></span> px
+                                            </td>
                                             <td></td>
                                         </tr>
                                         <tr>
-                                            <th><?php echo Lang::txt('COM_COURSES_PICTURE_HEIGHT'); ?>:</th>
-                                            <td><span id="img-height"><?php echo $height; ?></span> px</td>
+                                            <?php $heightTxt = Lang::txt('COM_COURSES_PICTURE_HEIGHT'); ?>
+                                            <th><?php echo $heightTxt; ?>:</th>
+                                            <td>
+                                                <span id="img-height"><?php echo $height; ?></span> px
+                                            </td>
                                             <td></td>
                                         </tr>
                                     </tbody>
                                 </table>
                             <?php
                         } else {
-                            echo '<p class="warning">' . Lang::txt('COM_COURSES_UPLOAD_ADDED_LATER') . '</p>';
+                            $laterTxt = Lang::txt('COM_COURSES_UPLOAD_ADDED_LATER');
+                            echo '<p class="warning">' . $laterTxt . '</p>';
                         }
                         ?>
                     </fieldset>
@@ -292,23 +582,58 @@ $course_id = 0;
                     <?php $params = new \Hubzero\Config\Registry($this->row->get('params')); ?>
 
                     <fieldset class="adminform sectionparams">
-                        <legend><?php echo Lang::txt('COM_COURSES_FIELDSET_PARAMS'); ?></legend>
+                        <?php $paramsTxt = Lang::txt('COM_COURSES_FIELDSET_PARAMS'); ?>
+                        <legend><?php echo $paramsTxt; ?></legend>
                         <div class="input-wrap">
-                            <label for="params-progress-calculation"><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION'); ?>:</label><br />
-                            <select name="params[progress_calculation]" id="params-progress-calculation">
-                                <option value=""<?php echo ($params->get('progress_calculation', '') == '') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_INHERIT_FROM_OFFERING'); ?></option>
-                                <option value="all"<?php echo ($params->get('progress_calculation', '') == 'all') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_ALL'); ?></option>
-                                <option value="graded"<?php echo ($params->get('progress_calculation', '') == 'graded') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_GRADED'); ?></option>
-                                <option value="videos"<?php echo ($params->get('progress_calculation', '') == 'videos') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_VIDEOS'); ?></option>
-                                <option value="manual"<?php echo ($params->get('progress_calculation', '') == 'manual') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_MANUAL'); ?></option>
+                            <?php $pcTxt = Lang::txt('COM_COURSES_PROGRESS_CALCULATION'); ?>
+                            <label for="params-progress-calculation">
+                                <?php echo $pcTxt; ?>:
+                            </label><br />
+                            <?php $pc = $params->get('progress_calculation', ''); ?>
+                            <select
+                                name="params[progress_calculation]"
+                                id="params-progress-calculation">
+                                <?php $sel = ($pc == '') ? 'selected="selected"' : ''; ?>
+                                <option value=""<?php echo $sel; ?>>
+                                    <?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_INHERIT_FROM_OFFERING'); ?>
+                                </option>
+                                <?php $sel = ($pc == 'all') ? 'selected="selected"' : ''; ?>
+                                <option value="all"<?php echo $sel; ?>>
+                                    <?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_ALL'); ?>
+                                </option>
+                                <?php $sel = ($pc == 'graded') ? 'selected="selected"' : ''; ?>
+                                <option value="graded"<?php echo $sel; ?>>
+                                    <?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_GRADED'); ?>
+                                </option>
+                                <?php $sel = ($pc == 'videos') ? 'selected="selected"' : ''; ?>
+                                <option value="videos"<?php echo $sel; ?>>
+                                    <?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_VIDEOS'); ?>
+                                </option>
+                                <?php $sel = ($pc == 'manual') ? 'selected="selected"' : ''; ?>
+                                <option value="manual"<?php echo $sel; ?>>
+                                    <?php echo Lang::txt('COM_COURSES_PROGRESS_CALCULATION_MANUAL'); ?>
+                                </option>
                             </select>
                         </div>
                         <div class="input-wrap">
-                            <label for="params-progress-calculation"><?php echo Lang::txt('COM_COURSES_PREVIEW_MODE'); ?>:</label><br />
+                            <?php $prevTxt = Lang::txt('COM_COURSES_PREVIEW_MODE'); ?>
+                            <label for="params-progress-calculation">
+                                <?php echo $prevTxt; ?>:
+                            </label><br />
                             <select name="params[preview]" id="params-preview">
-                                <option value="0"<?php echo ($params->get('preview', '') == '0') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PREVIEW_NO'); ?></option>
-                                <option value="1"<?php echo ($params->get('preview', '') == '1') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PREVIEW_YES_FULL'); ?></option>
-                                <option value="2"<?php echo ($params->get('preview', '') == '2') ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_PREVIEW_YES_FIRST_UNIT'); ?></option>
+                                <?php $pv = $params->get('preview', ''); ?>
+                                <?php $sel = ($pv == '0') ? 'selected="selected"' : ''; ?>
+                                <option value="0"<?php echo $sel; ?>>
+                                    <?php echo Lang::txt('COM_COURSES_PREVIEW_NO'); ?>
+                                </option>
+                                <?php $sel = ($pv == '1') ? 'selected="selected"' : ''; ?>
+                                <option value="1"<?php echo $sel; ?>>
+                                    <?php echo Lang::txt('COM_COURSES_PREVIEW_YES_FULL'); ?>
+                                </option>
+                                <?php $sel = ($pv == '2') ? 'selected="selected"' : ''; ?>
+                                <option value="2"<?php echo $sel; ?>>
+                                    <?php echo Lang::txt('COM_COURSES_PREVIEW_YES_FIRST_UNIT'); ?>
+                                </option>
                             </select>
                         </div>
                     </fieldset>
@@ -320,15 +645,24 @@ $course_id = 0;
                         foreach ($plugins as $plugin) {
                             $param = new \Hubzero\Html\Parameter(
                                 (is_object($data) ? $data->toString() : $data),
-                                PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
+                                PATH_CORE . DS . 'plugins' . DS . 'courses'
+                                . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
                             );
                             $out = $param->render('params', 'onSectionEdit');
                             if (!$out) {
                                 continue;
                             }
                             ?>
-                                <fieldset class="adminform eventparams" id="params-<?php echo $plugin['name']; ?>">
-                                    <legend><?php echo Lang::txt('COM_COURSES_FIELDSET_PARAMETERS', $plugin['title']); ?></legend>
+                                <fieldset
+                                    class="adminform eventparams"
+                                    id="params-<?php echo $plugin['name']; ?>">
+                                <?php
+                                $paramTxt = Lang::txt(
+                                    'COM_COURSES_FIELDSET_PARAMETERS',
+                                    $plugin['title']
+                                );
+                                ?>
+                            <legend><?php echo $paramTxt; ?></legend>
                                     <div class="input-wrap">
                                     <?php echo $out; ?>
                                     </div>
@@ -343,11 +677,27 @@ $course_id = 0;
 
         <div id="page-managers" class="tab">
             <fieldset class="adminform">
-                <legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_MANAGERS'); ?></span></legend>
+                <?php $mgrTxt = Lang::txt('COM_COURSES_FIELDSET_MANAGERS'); ?>
+                <legend><span><?php echo $mgrTxt; ?></span></legend>
                 <?php if ($this->row->get('id')) { ?>
-                    <iframe width="100%" height="500" name="managers" id="managers" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=supervisors&tmpl=component&offering=' . $this->row->get('offering_id') . '&section=' . $this->row->get('id')); ?>"></iframe>
+                        <?php
+                        $mgrUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=supervisors&tmpl=component&offering='
+                            . $this->row->get('offering_id')
+                            . '&section=' . $this->row->get('id')
+                        );
+                        ?>
+                    <iframe
+                        width="100%"
+                        height="500"
+                        name="managers"
+                        id="managers"
+                        frameborder="0"
+                        src="<?php echo $mgrUrl; ?>"></iframe>
                 <?php } else { ?>
-                    <p class="warning"><?php echo Lang::txt('COM_COURSES_FIELDSET_MANAGERS_WARNING'); ?></p>
+                    <?php $warnTxt = Lang::txt('COM_COURSES_FIELDSET_MANAGERS_WARNING'); ?>
+                    <p class="warning"><?php echo $warnTxt; ?></p>
                 <?php } ?>
             </fieldset>
         </div>
@@ -356,7 +706,8 @@ $course_id = 0;
         <?php if ($this->offering->units()->total() > 0) { ?>
             <div class="col span12">
                 <?php if (!$this->row->exists() && !$this->row->get('is_default')) { ?>
-                <p class="info"><?php echo Lang::txt('COM_COURSES_SECTION_DATES_HELP'); ?></p>
+                    <?php $helpTxt = Lang::txt('COM_COURSES_SECTION_DATES_HELP'); ?>
+                <p class="info"><?php echo $helpTxt; ?></p>
                 <?php } ?>
 
                 <?php
@@ -368,71 +719,177 @@ $course_id = 0;
 
                     $i = 0;
                 foreach ($this->offering->units(array(), true) as $unit) {
-                    echo Html::sliders('panel', stripslashes($unit->get('title')), stripslashes($unit->get('alias')));
+                    $unitTitle = stripslashes($unit->get('title'));
+                    $unitAlias = stripslashes($unit->get('alias'));
+                    echo Html::sliders('panel', $unitTitle, $unitAlias);
+                    $unitDateId = $this->row->date('unit', $unit->get('id'))->get('id');
+                    $unitId = $unit->get('id');
                     ?>
-                            <input type="hidden" name="dates[<?php echo $i; ?>][id]" value="<?php echo $this->row->date('unit', $unit->get('id'))->get('id'); ?>" />
-                            <input type="hidden" name="dates[<?php echo $i; ?>][scope]" value="unit" />
-                            <input type="hidden" name="dates[<?php echo $i; ?>][scope_id]" value="<?php echo $unit->get('id'); ?>" />
+                            <input
+                                type="hidden"
+                                name="dates[<?php echo $i; ?>][id]"
+                                value="<?php echo $unitDateId; ?>" />
+                            <input
+                                type="hidden"
+                                name="dates[<?php echo $i; ?>][scope]"
+                                value="unit" />
+                            <input
+                                type="hidden"
+                                name="dates[<?php echo $i; ?>][scope_id]"
+                                value="<?php echo $unitId; ?>" />
 
-                            <table class="admintable section-dates" id="dates_<?php echo $i; ?>">
+                            <table
+                                class="admintable section-dates"
+                                id="dates_<?php echo $i; ?>">
                                 <tbody>
                                     <tr>
-                                        <th class="key"><label for="dates_<?php echo $i; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_FROM'); ?></label></th>
+                                    <?php $fromTxt = Lang::txt('COM_COURSES_FROM'); ?>
+                                        <th class="key">
+                                            <label for="dates_<?php echo $i; ?>_publish_up">
+                                            <?php echo $fromTxt; ?>
+                                            </label>
+                                        </th>
                                         <td>
-                                        <?php $tm = ($unit->get('publish_up') && $unit->get('publish_up') != $nullDate ? $unit->get('publish_up') : $this->row->date('unit', $unit->get('id'))->get('publish_up')); ?>
-                                            <input type="text" name="dates[<?php echo $i; ?>][publish_up]" id="dates_<?php echo $i; ?>_publish_up" class="datetime-field" value="<?php echo !$tm || $tm == $nullDate ? '' : Date::of($tm)->toLocal('Y-m-d H:i:s'); ?>" />
+                                        <?php
+                                        $unitPubUp = $unit->get('publish_up');
+                                        $unitDatePubUp = $this->row->date('unit', $unitId)->get('publish_up');
+                                        $tm = ($unitPubUp && $unitPubUp != $nullDate)
+                                            ? $unitPubUp : $unitDatePubUp;
+                                        $tmVal = (!$tm || $tm == $nullDate)
+                                            ? '' : Date::of($tm)->toLocal('Y-m-d H:i:s');
+                                        ?>
+                                            <input
+                                                type="text"
+                                                name="dates[<?php echo $i; ?>][publish_up]"
+                                                id="dates_<?php echo $i; ?>_publish_up"
+                                                class="datetime-field"
+                                                value="<?php echo $tmVal; ?>" />
                                         </td>
-                                        <th class="key"><label for="dates_<?php echo $i; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
+                                        <?php $toTxt = Lang::txt('COM_COURSES_TO'); ?>
+                                        <th class="key">
+                                            <label for="dates_<?php echo $i; ?>_publish_up">
+                                            <?php echo $toTxt; ?>
+                                            </label>
+                                        </th>
                                         <td>
-                                        <?php $tm = ($unit->get('publish_down') && $unit->get('publish_down') != $nullDate ? $unit->get('publish_down') : $this->row->date('unit', $unit->get('id'))->get('publish_down')); ?>
-                                            <input type="text" name="dates[<?php echo $i; ?>][publish_down]" id="dates_<?php echo $i; ?>_publish_down" class="datetime-field" value="<?php echo !$tm || $tm == $nullDate ? '' : Date::of($tm)->toLocal('Y-m-d H:i:s'); ?>" />
+                                            <?php
+                                            $unitPubDown = $unit->get('publish_down');
+                                            $unitDatePubDown = $this->row->date('unit', $unitId)->get('publish_down');
+                                            $tm = ($unitPubDown && $unitPubDown != $nullDate)
+                                            ? $unitPubDown : $unitDatePubDown;
+                                            $tmVal = (!$tm || $tm == $nullDate)
+                                            ? '' : Date::of($tm)->toLocal('Y-m-d H:i:s');
+                                            ?>
+                                            <input
+                                                type="text"
+                                                name="dates[<?php echo $i; ?>][publish_down]"
+                                                id="dates_<?php echo $i; ?>_publish_down"
+                                                class="datetime-field"
+                                                value="<?php echo $tmVal; ?>" />
                                         </td>
                                         <td>
-                                        <?php echo Lang::txt('COM_COURSES_SECTION_DATES_INHERITED'); ?>
+                                            <?php $inhTxt = Lang::txt('COM_COURSES_SECTION_DATES_INHERITED'); ?>
+                                            <?php echo $inhTxt; ?>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <table class="admintable section-dates" id="dates_<?php echo $i; ?>">
+                            <table
+                                class="admintable section-dates"
+                                id="dates_<?php echo $i; ?>">
                                 <tbody>
-                        <?php
-                        // Loop through the asset group types
-                        $z = 0;
-                        foreach ($unit->assetgroups() as $agt) {
-                            $agt->set('publish_up', $this->row->date('asset_group', $agt->get('id'))->get('publish_up'));
-                            $agt->set('publish_down', $this->row->date('asset_group', $agt->get('id'))->get('publish_down'));
+                            <?php
+                            // Loop through the asset group types
+                            $z = 0;
+                            foreach ($unit->assetgroups() as $agt) {
+                                $agtId = $agt->get('id');
+                                $agtPubUp = $this->row->date('asset_group', $agtId)->get('publish_up');
+                                $agtPubDown = $this->row->date('asset_group', $agtId)->get('publish_down');
+                                $agt->set('publish_up', $agtPubUp);
+                                $agt->set('publish_down', $agtPubDown);
 
-                            if ($agt->get('publish_up') == $nullDate) {
-                                $agt->set('publish_up', $unit->get('publish_up'));
-                            }
-                            if ($agt->get('publish_down') == $nullDate) {
-                                $agt->set('publish_down', $unit->get('publish_down'));
-                            }
-                            ?>
+                                if ($agt->get('publish_up') == $nullDate) {
+                                    $agt->set('publish_up', $unit->get('publish_up'));
+                                }
+                                if ($agt->get('publish_down') == $nullDate) {
+                                    $agt->set('publish_down', $unit->get('publish_down'));
+                                }
+                                $agtTitle = $this->escape(stripslashes($agt->get('title')));
+                                ?>
 
                                     <tr>
                                         <th class="key">
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp;
-                                        <?php echo $this->escape(stripslashes($agt->get('title'))); ?>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span class="treenode">&#8970;</span> &nbsp;
+                                            <?php echo $agtTitle; ?>
                                         </th>
-                                        <td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_FROM'); ?></label></th>
                                         <td>
-                                            <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][id]" value="<?php echo $this->row->date('asset_group', $agt->get('id'))->get('id'); ?>" />
-                                            <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][scope]" value="asset_group" />
-                                            <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][scope_id]" value="<?php echo $agt->get('id'); ?>" />
-                                            <input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up" class="datetime-field" value="<?php echo !$agt->get('publish_up') || $agt->get('publish_up') == $unit->get('publish_up') || $agt->get('publish_up') == $nullDate ? '' : Date::of($agt->get('publish_up'))->toLocal('Y-m-d H:i:s'); ?>" />
+                                            <?php $agtLabelUp = 'dates_' . $i . '_assetgroup_' . $z . '_publish_up'; ?>
+                                            <label for="<?php echo $agtLabelUp; ?>">
+                                                <?php echo Lang::txt('COM_COURSES_FROM'); ?>
+                                            </label>
+                                        </th>
+                                        <td>
+                                            <?php
+                                            $agtDateId = $this->row->date('asset_group', $agtId)->get('id');
+                                            $namePrefix = 'dates[' . $i . '][asset_group][' . $z . ']';
+                                            ?>
+                                            <input
+                                                type="hidden"
+                                                name="<?php echo $namePrefix; ?>[id]"
+                                                value="<?php echo $agtDateId; ?>" />
+                                            <input
+                                                type="hidden"
+                                                name="<?php echo $namePrefix; ?>[scope]"
+                                                value="asset_group" />
+                                            <input
+                                                type="hidden"
+                                                name="<?php echo $namePrefix; ?>[scope_id]"
+                                                value="<?php echo $agtId; ?>" />
+                                            <?php
+                                            $agtUp = $agt->get('publish_up');
+                                            $unitUp = $unit->get('publish_up');
+                                            $pubUpVal = (!$agtUp || $agtUp == $unitUp || $agtUp == $nullDate)
+                                                ? '' : Date::of($agtUp)->toLocal('Y-m-d H:i:s');
+                                            $fieldId = 'dates_' . $i . '_assetgroup_' . $z . '_publish_up';
+                                            ?>
+                                            <input
+                                                type="text"
+                                                name="<?php echo $namePrefix; ?>[publish_up]"
+                                                id="<?php echo $fieldId; ?>"
+                                                class="datetime-field"
+                                                value="<?php echo $pubUpVal; ?>" />
                                         </td>
-                                        <td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
                                         <td>
-                                            <input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_down" class="datetime-field" value="<?php echo !$agt->get('publish_down') || $agt->get('publish_down') == $unit->get('publish_down') || $agt->get('publish_down') == $nullDate ? '' : Date::of($agt->get('publish_down'))->toLocal('Y-m-d H:i:s'); ?>" />
+                                            <label for="<?php echo $agtLabelUp; ?>">
+                                                <?php echo Lang::txt('COM_COURSES_TO'); ?>
+                                            </label>
+                                        </th>
+                                        <td>
+                                            <?php
+                                            $agtDown = $agt->get('publish_down');
+                                            $unitDown = $unit->get('publish_down');
+                                            $pubDownVal = (!$agtDown || $agtDown == $unitDown || $agtDown == $nullDate)
+                                                ? '' : Date::of($agtDown)->toLocal('Y-m-d H:i:s');
+                                            $fieldId = 'dates_' . $i . '_assetgroup_' . $z . '_publish_down';
+                                            ?>
+                                            <input
+                                                type="text"
+                                                name="<?php echo $namePrefix; ?>[publish_down]"
+                                                id="<?php echo $fieldId; ?>"
+                                                class="datetime-field"
+                                                value="<?php echo $pubDownVal; ?>" />
                                         </td>
                                     </tr>
 
                                 <?php
                                 $j = 0;
                                 foreach ($agt->children() as $ag) {
-                                    $ag->set('publish_up', $this->row->date('asset_group', $ag->get('id'))->get('publish_up'));
-                                    $ag->set('publish_down', $this->row->date('asset_group', $ag->get('id'))->get('publish_down'));
+                                    $agId = $ag->get('id');
+                                    $agPubUp = $this->row->date('asset_group', $agId)->get('publish_up');
+                                    $agPubDown = $this->row->date('asset_group', $agId)->get('publish_down');
+                                    $ag->set('publish_up', $agPubUp);
+                                    $ag->set('publish_down', $agPubDown);
 
                                     if ($ag->get('publish_up') == $nullDate) {
                                         $ag->set('publish_up', $agt->get('publish_up'));
@@ -440,22 +897,80 @@ $course_id = 0;
                                     if ($ag->get('publish_down') == $nullDate) {
                                         $ag->set('publish_down', $agt->get('publish_down'));
                                     }
+                                    $agTitle = $this->escape(stripslashes($ag->get('title')));
+                                    $agNamePrefix = $namePrefix . '[asset_group][' . $j . ']';
+                                    $agDateId = $this->row->date('asset_group', $agId)->get('id');
                                     ?>
                                             <tr>
                                                 <th class="key">
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp;
-                                                    <?php echo $this->escape(stripslashes($ag->get('title'))); ?>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span class="treenode">&#8970;</span> &nbsp;
+                                                    <?php echo $agTitle; ?>
                                                 </th>
-                                                <td><label for="dates_<?php echo $i; ?>_<?php echo $j; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_FROM'); ?></label></th>
                                                 <td>
-                                                    <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][id]" value="<?php echo $this->row->date('asset_group', $ag->get('id'))->get('id'); ?>" />
-                                                    <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][scope]" value="asset_group" />
-                                                    <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][scope_id]" value="<?php echo $ag->get('id'); ?>" />
-                                                    <input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up" class="datetime-field" value="<?php echo !$ag->get('publish_up') || $ag->get('publish_up') == $agt->get('publish_up') || $ag->get('publish_up') == $nullDate ? '' : Date::of($ag->get('publish_up'))->toLocal('Y-m-d H:i:s'); ?>" />
+                                                    <?php
+                                                    $labelId = 'dates_' . $i . '_' . $j
+                                                        . '_assetgroup_' . $z
+                                                        . '_assetgroup_' . $j . '_publish_up';
+                                                    ?>
+                                                    <label for="<?php echo $labelId; ?>">
+                                                        <?php echo Lang::txt('COM_COURSES_FROM'); ?>
+                                                    </label>
+                                                </th>
+                                                <td>
+                                                    <input
+                                                        type="hidden"
+                                                        name="<?php echo $agNamePrefix; ?>[id]"
+                                                        value="<?php echo $agDateId; ?>" />
+                                                    <input
+                                                        type="hidden"
+                                                        name="<?php echo $agNamePrefix; ?>[scope]"
+                                                        value="asset_group" />
+                                                    <input
+                                                        type="hidden"
+                                                        name="<?php echo $agNamePrefix; ?>[scope_id]"
+                                                        value="<?php echo $agId; ?>" />
+                                                    <?php
+                                                    $agUp = $ag->get('publish_up');
+                                                    $agtUp = $agt->get('publish_up');
+                                                    $agUpVal = (!$agUp || $agUp == $agtUp || $agUp == $nullDate)
+                                                        ? '' : Date::of($agUp)->toLocal('Y-m-d H:i:s');
+                                                    $fieldId = 'dates_' . $i . '_assetgroup_' . $z
+                                                        . '_assetgroup_' . $j . '_publish_up';
+                                                    ?>
+                                                    <input
+                                                        type="text"
+                                                        name="<?php echo $agNamePrefix; ?>[publish_up]"
+                                                        id="<?php echo $fieldId; ?>"
+                                                        class="datetime-field"
+                                                        value="<?php echo $agUpVal; ?>" />
                                                 </td>
-                                                <td><label for="dates_<?php echo $i; ?>_<?php echo $j; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
                                                 <td>
-                                                    <input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_down" class="datetime-field" value="<?php echo !$ag->get('publish_down') || $ag->get('publish_down') == $agt->get('publish_down') || $ag->get('publish_down') == $nullDate ? '' : Date::of($ag->get('publish_down'))->toLocal('Y-m-d H:i:s'); ?>" />
+                                                    <?php
+                                                    $labelId = 'dates_' . $i . '_' . $j
+                                                        . '_assetgroup_' . $z
+                                                        . '_assetgroup_' . $j . '_publish_up';
+                                                    ?>
+                                                    <label for="<?php echo $labelId; ?>">
+                                                        <?php echo Lang::txt('COM_COURSES_TO'); ?>
+                                                    </label>
+                                                </th>
+                                                <td>
+                                                    <?php
+                                                    $agDown = $ag->get('publish_down');
+                                                    $agtDown = $agt->get('publish_down');
+                                                    $noDown = (!$agDown || $agDown == $agtDown || $agDown == $nullDate);
+                                                    $agDownVal = $noDown
+                                                        ? '' : Date::of($agDown)->toLocal('Y-m-d H:i:s');
+                                                    $fieldId = 'dates_' . $i . '_assetgroup_' . $z
+                                                        . '_assetgroup_' . $j . '_publish_down';
+                                                    ?>
+                                                    <input
+                                                        type="text"
+                                                        name="<?php echo $agNamePrefix; ?>[publish_down]"
+                                                        id="<?php echo $fieldId; ?>"
+                                                        class="datetime-field"
+                                                        value="<?php echo $agDownVal; ?>" />
                                                 </td>
                                             </tr>
 
@@ -464,8 +979,11 @@ $course_id = 0;
                                     if ($ag->assets()->total()) {
                                         $k = 0;
                                         foreach ($ag->assets() as $a) {
-                                            $a->set('publish_up', $this->row->date('asset', $a->get('id'))->get('publish_up'));
-                                            $a->set('publish_down', $this->row->date('asset', $a->get('id'))->get('publish_down'));
+                                            $aId = $a->get('id');
+                                            $aPubUp = $this->row->date('asset', $aId)->get('publish_up');
+                                            $aPubDown = $this->row->date('asset', $aId)->get('publish_down');
+                                            $a->set('publish_up', $aPubUp);
+                                            $a->set('publish_down', $aPubDown);
 
                                             if ($a->get('publish_up') == $nullDate) {
                                                 $a->set('publish_up', $ag->get('publish_up'));
@@ -473,22 +991,83 @@ $course_id = 0;
                                             if ($a->get('publish_down') == $nullDate) {
                                                 $a->set('publish_down', $ag->get('publish_down'));
                                             }
+                                            $aTitle = $this->escape(stripslashes($a->get('title')));
+                                            $aNamePrefix = $agNamePrefix . '[asset][' . $k . ']';
+                                            $aDateId = $this->row->date('asset', $aId)->get('id');
+                                            $aLabelId = 'dates_' . $i
+                                                . '_assetgroup_' . $z
+                                                . '_assetgroup_' . $j
+                                                . 'asset_' . $k . '_publish_up';
                                             ?>
+                                                    <?php
+                                                    $sp = str_repeat('&nbsp;', 15);
+                                                    ?>
                                                     <tr>
                                                         <th class="key">
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp;
-                                                            <?php echo $this->escape(stripslashes($a->get('title'))); ?>
+                                                            <?php echo $sp; ?>
+                                                            <span class="treenode">&#8970;</span> &nbsp;
+                                                            <?php echo $aTitle; ?>
                                                         </th>
-                                                        <td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_FROM'); ?></label></th>
                                                         <td>
-                                                            <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
-                                                            <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
-                                                            <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
-                                                            <input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo !$a->get('publish_up') || $a->get('publish_up') == $ag->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : Date::of($a->get('publish_up'))->toLocal('Y-m-d H:i:s'); ?>" />
+                                                            <label for="<?php echo $aLabelId; ?>">
+                                                                <?php echo Lang::txt('COM_COURSES_FROM'); ?>
+                                                            </label>
+                                                        </th>
+                                                        <td>
+                                                            <input
+                                                                type="hidden"
+                                                                name="<?php echo $aNamePrefix; ?>[id]"
+                                                                value="<?php echo $aDateId; ?>" />
+                                                            <input
+                                                                type="hidden"
+                                                                name="<?php echo $aNamePrefix; ?>[scope]"
+                                                                value="asset" />
+                                                            <input
+                                                                type="hidden"
+                                                                name="<?php echo $aNamePrefix; ?>[scope_id]"
+                                                                value="<?php echo $aId; ?>" />
+                                                            <?php
+                                                            $aUp = $a->get('publish_up');
+                                                            $agUp2 = $ag->get('publish_up');
+                                                            $aUpVal = (!$aUp || $aUp == $agUp2 || $aUp == $nullDate)
+                                                                ? '' : Date::of($aUp)->toLocal('Y-m-d H:i:s');
+                                                            $aFieldUpId = 'dates_' . $i
+                                                                . '_assetgroup_' . $z
+                                                                . '_assetgroup_' . $j
+                                                                . 'asset_' . $k . '_publish_up';
+                                                            ?>
+                                                            <input
+                                                                type="text"
+                                                                name="<?php echo $aNamePrefix; ?>[publish_up]"
+                                                                id="<?php echo $aFieldUpId; ?>"
+                                                                class="datetime-field"
+                                                                value="<?php echo $aUpVal; ?>" />
                                                         </td>
-                                                        <td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
                                                         <td>
-                                                            <input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo !$a->get('publish_down') || $a->get('publish_down') == $ag->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : Date::of($a->get('publish_down'))->toLocal('Y-m-d H:i:s'); ?>" />
+                                                            <label for="<?php echo $aLabelId; ?>">
+                                                                <?php echo Lang::txt('COM_COURSES_TO'); ?>
+                                                            </label>
+                                                        </th>
+                                                        <td>
+                                                            <?php
+                                                            $aDown = $a->get('publish_down');
+                                                            $agDown2 = $ag->get('publish_down');
+                                                            $noDown = (!$aDown
+                                                                || $aDown == $agDown2
+                                                                || $aDown == $nullDate);
+                                                            $aDownVal = $noDown
+                                                                ? '' : Date::of($aDown)->toLocal('Y-m-d H:i:s');
+                                                            $aFieldDownId = 'dates_' . $i
+                                                                . '_assetgroup_' . $z
+                                                                . '_assetgroup_' . $j
+                                                                . 'asset_' . $k . '_publish_down';
+                                                            ?>
+                                                            <input
+                                                                type="text"
+                                                                name="<?php echo $aNamePrefix; ?>[publish_down]"
+                                                                id="<?php echo $aFieldDownId; ?>"
+                                                                class="datetime-field"
+                                                                value="<?php echo $aDownVal; ?>" />
                                                         </td>
                                                     </tr>
 
@@ -501,8 +1080,11 @@ $course_id = 0;
                                 if ($agt->assets()->total()) {
                                     $k = 0;
                                     foreach ($agt->assets() as $a) {
-                                        $a->set('publish_up', $this->row->date('asset', $a->get('id'))->get('publish_up'));
-                                        $a->set('publish_down', $this->row->date('asset', $a->get('id'))->get('publish_down'));
+                                        $aId = $a->get('id');
+                                        $aPubUp = $this->row->date('asset', $aId)->get('publish_up');
+                                        $aPubDown = $this->row->date('asset', $aId)->get('publish_down');
+                                        $a->set('publish_up', $aPubUp);
+                                        $a->set('publish_down', $aPubDown);
 
                                         if ($a->get('publish_up') == $nullDate) {
                                             $a->set('publish_up', $agt->get('publish_up'));
@@ -510,22 +1092,77 @@ $course_id = 0;
                                         if ($a->get('publish_down') == $nullDate) {
                                             $a->set('publish_down', $agt->get('publish_down'));
                                         }
+                                        $aTitle = $this->escape(stripslashes($a->get('title')));
+                                        $aNamePrefix = $namePrefix . '[asset][' . $k . ']';
+                                        $aDateId = $this->row->date('asset', $aId)->get('id');
+                                        $aLabelId = 'dates_' . $i
+                                            . '_assetgroup_' . $z
+                                            . '_asset_' . $k . '_publish_up';
                                         ?>
                                                 <tr>
                                                     <th class="key">
-                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp;
-                                                        <?php echo $this->escape(stripslashes($a->get('title'))); ?>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <span class="treenode">&#8970;</span> &nbsp;
+                                                        <?php echo $aTitle; ?>
                                                     </th>
-                                                    <td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_FROM'); ?></label></th>
                                                     <td>
-                                                        <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
-                                                        <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
-                                                        <input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
-                                                        <input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo !$a->get('publish_up') || $a->get('publish_up') == $agt->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : Date::of($a->get('publish_up'))->toLocal('Y-m-d H:i:s'); ?>" />
+                                                        <label for="<?php echo $aLabelId; ?>">
+                                                            <?php echo Lang::txt('COM_COURSES_FROM'); ?>
+                                                        </label>
+                                                    </th>
+                                                    <td>
+                                                        <input
+                                                            type="hidden"
+                                                            name="<?php echo $aNamePrefix; ?>[id]"
+                                                            value="<?php echo $aDateId; ?>" />
+                                                        <input
+                                                            type="hidden"
+                                                            name="<?php echo $aNamePrefix; ?>[scope]"
+                                                            value="asset" />
+                                                        <input
+                                                            type="hidden"
+                                                            name="<?php echo $aNamePrefix; ?>[scope_id]"
+                                                            value="<?php echo $aId; ?>" />
+                                                        <?php
+                                                        $aUp = $a->get('publish_up');
+                                                        $agtUp2 = $agt->get('publish_up');
+                                                        $aUpVal = (!$aUp || $aUp == $agtUp2 || $aUp == $nullDate)
+                                                            ? '' : Date::of($aUp)->toLocal('Y-m-d H:i:s');
+                                                        $aFieldUpId = 'dates_' . $i
+                                                            . '_assetgroup_' . $z
+                                                            . '_asset_' . $k . '_publish_up';
+                                                        ?>
+                                                        <input
+                                                            type="text"
+                                                            name="<?php echo $aNamePrefix; ?>[publish_up]"
+                                                            id="<?php echo $aFieldUpId; ?>"
+                                                            class="datetime-field"
+                                                            value="<?php echo $aUpVal; ?>" />
                                                     </td>
-                                                    <td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
                                                     <td>
-                                                        <input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo !$a->get('publish_down') || $a->get('publish_down') == $agt->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : Date::of($a->get('publish_down'))->toLocal('Y-m-d H:i:s'); ?>" />
+                                                        <label for="<?php echo $aLabelId; ?>">
+                                                            <?php echo Lang::txt('COM_COURSES_TO'); ?>
+                                                        </label>
+                                                    </th>
+                                                    <td>
+                                                        <?php
+                                                        $aDown = $a->get('publish_down');
+                                                        $agtDown2 = $agt->get('publish_down');
+                                                        $noDown = (!$aDown
+                                                            || $aDown == $agtDown2
+                                                            || $aDown == $nullDate);
+                                                        $aDownVal = $noDown
+                                                            ? '' : Date::of($aDown)->toLocal('Y-m-d H:i:s');
+                                                        $aFieldDownId = 'dates_' . $i
+                                                            . '_assetgroup_' . $z
+                                                            . '_asset_' . $k . '_publish_down';
+                                                        ?>
+                                                        <input
+                                                            type="text"
+                                                            name="<?php echo $aNamePrefix; ?>[publish_down]"
+                                                            id="<?php echo $aFieldDownId; ?>"
+                                                            class="datetime-field"
+                                                            value="<?php echo $aDownVal; ?>" />
                                                     </td>
                                                 </tr>
 
@@ -534,43 +1171,92 @@ $course_id = 0;
                                     }
                                 }
                                 $z++;
-                        }
-                        if ($unit->assets()->total()) {
-                            $k = 0;
-                            foreach ($unit->assets() as $a) {
-                                $a->set('publish_up', $this->row->date('asset', $a->get('id'))->get('publish_up'));
-                                $a->set('publish_down', $this->row->date('asset', $a->get('id'))->get('publish_down'));
+                            }
+                            if ($unit->assets()->total()) {
+                                $k = 0;
+                                foreach ($unit->assets() as $a) {
+                                    $aId = $a->get('id');
+                                    $aPubUp = $this->row->date('asset', $aId)->get('publish_up');
+                                    $aPubDown = $this->row->date('asset', $aId)->get('publish_down');
+                                    $a->set('publish_up', $aPubUp);
+                                    $a->set('publish_down', $aPubDown);
 
-                                if ($a->get('publish_up') == $nullDate) {
-                                    $a->set('publish_up', $unit->get('publish_up'));
-                                }
-                                if ($a->get('publish_down') == $nullDate) {
-                                    $a->set('publish_down', $unit->get('publish_down'));
-                                }
-                                ?>
+                                    if ($a->get('publish_up') == $nullDate) {
+                                        $a->set('publish_up', $unit->get('publish_up'));
+                                    }
+                                    if ($a->get('publish_down') == $nullDate) {
+                                        $a->set('publish_down', $unit->get('publish_down'));
+                                    }
+                                    $aTitle = $this->escape(stripslashes($a->get('title')));
+                                    $aNamePrefix = 'dates[' . $i . '][asset][' . $k . ']';
+                                    $aDateId = $this->row->date('asset', $aId)->get('id');
+                                    $aLabelId = 'dates_' . $i . '_asset_' . $k . '_publish_up';
+                                    ?>
                                             <tr>
                                                 <th class="key">
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="treenode">&#8970;</span> &nbsp;
-                                                <?php echo $this->escape(stripslashes($a->get('title'))); ?>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span class="treenode">&#8970;</span> &nbsp;
+                                                    <?php echo $aTitle; ?>
                                                 </th>
-                                                <td><label for="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_FROM'); ?></label></th>
                                                 <td>
-                                                    <input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
-                                                    <input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
-                                                    <input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
-                                                    <input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo !$a->get('publish_up') || $a->get('publish_up') == $unit->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : Date::of($a->get('publish_up'))->toLocal('Y-m-d H:i:s'); ?>" />
+                                                    <label for="<?php echo $aLabelId; ?>">
+                                                        <?php echo Lang::txt('COM_COURSES_FROM'); ?>
+                                                    </label>
+                                                </th>
+                                                <td>
+                                                    <input
+                                                        type="hidden"
+                                                        name="<?php echo $aNamePrefix; ?>[id]"
+                                                        value="<?php echo $aDateId; ?>" />
+                                                    <input
+                                                        type="hidden"
+                                                        name="<?php echo $aNamePrefix; ?>[scope]"
+                                                        value="asset" />
+                                                    <input
+                                                        type="hidden"
+                                                        name="<?php echo $aNamePrefix; ?>[scope_id]"
+                                                        value="<?php echo $aId; ?>" />
+                                                    <?php
+                                                    $aUp = $a->get('publish_up');
+                                                    $unitUp2 = $unit->get('publish_up');
+                                                    $aUpVal = (!$aUp || $aUp == $unitUp2 || $aUp == $nullDate)
+                                                        ? '' : Date::of($aUp)->toLocal('Y-m-d H:i:s');
+                                                    $aFieldUpId = 'dates_' . $i . '_asset_' . $k . '_publish_up';
+                                                    ?>
+                                                    <input
+                                                        type="text"
+                                                        name="<?php echo $aNamePrefix; ?>[publish_up]"
+                                                        id="<?php echo $aFieldUpId; ?>"
+                                                        class="datetime-field"
+                                                        value="<?php echo $aUpVal; ?>" />
                                                 </td>
-                                                <td><label for="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo Lang::txt('COM_COURSES_TO'); ?></label></th>
                                                 <td>
-                                                    <input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo !$a->get('publish_down') || $a->get('publish_down') == $unit->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : Date::of($a->get('publish_down'))->toLocal('Y-m-d H:i:s'); ?>" />
+                                                    <label for="<?php echo $aLabelId; ?>">
+                                                        <?php echo Lang::txt('COM_COURSES_TO'); ?>
+                                                    </label>
+                                                </th>
+                                                <td>
+                                                    <?php
+                                                    $aDown = $a->get('publish_down');
+                                                    $unitDown2 = $unit->get('publish_down');
+                                                    $aDownVal = (!$aDown || $aDown == $unitDown2 || $aDown == $nullDate)
+                                                        ? '' : Date::of($aDown)->toLocal('Y-m-d H:i:s');
+                                                    $aFieldDownId = 'dates_' . $i . '_asset_' . $k . '_publish_down';
+                                                    ?>
+                                                    <input
+                                                        type="text"
+                                                        name="<?php echo $aNamePrefix; ?>[publish_down]"
+                                                        id="<?php echo $aFieldDownId; ?>"
+                                                        class="datetime-field"
+                                                        value="<?php echo $aDownVal; ?>" />
                                                 </td>
                                             </tr>
 
                                     <?php
                                     $k++;
+                                }
                             }
-                        }
-                        ?>
+                            ?>
                                 </tbody>
                             </table>
                         <?php
@@ -583,99 +1269,235 @@ $course_id = 0;
             </div>
             <div class="clr"></div>
         <?php } else { ?>
-            <p class="warning"><?php echo Lang::txt('COM_COURSES_NO_DATES_FOUND'); ?></p>
+            <?php $noDates = Lang::txt('COM_COURSES_NO_DATES_FOUND'); ?>
+            <p class="warning"><?php echo $noDates; ?></p>
         <?php } ?>
         </div>
         <div id="page-badge" class="tab">
             <?php $certificate = $this->course->certificate();
             if ($certificate->exists() && $certificate->hasFile()) { ?>
                 <fieldset class="adminform">
-                    <legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_CERTIFICATE'); ?></span></legend>
+                    <?php $certFieldTxt = Lang::txt('COM_COURSES_FIELDSET_CERTIFICATE'); ?>
+                    <legend><span><?php echo $certFieldTxt; ?></span></legend>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_CERTIFICATE_AVAILABLE_EXPLANATION'); ?>">
-                        <label for="params-certificate"><?php echo Lang::txt('COM_COURSES_CERTIFICATE_AVAILABLE'); ?>:</label><br />
+                    <?php $certHint = Lang::txt('COM_COURSES_CERTIFICATE_AVAILABLE_EXPLANATION'); ?>
+                    <div class="input-wrap" data-hint="<?php echo $certHint; ?>">
+                        <?php $certTxt = Lang::txt('COM_COURSES_CERTIFICATE_AVAILABLE'); ?>
+                        <label for="params-certificate">
+                            <?php echo $certTxt; ?>:
+                        </label><br />
                         <select name="params[certificate]" id="params-certificate">
-                            <option value="0"<?php echo ($params->get('certificate', 0) == 0) ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_CERTIFICATE_AVAILABLE_NO'); ?></option>
-                            <option value="1"<?php echo ($params->get('certificate', 0) == 1) ? 'selected="selected"' : '' ?>><?php echo Lang::txt('COM_COURSES_CERTIFICATE_AVAILABLE_YES'); ?></option>
+                            <?php $cert = $params->get('certificate', 0); ?>
+                            <?php $sel = ($cert == 0) ? 'selected="selected"' : ''; ?>
+                            <option value="0"<?php echo $sel; ?>>
+                                <?php echo Lang::txt('COM_COURSES_CERTIFICATE_AVAILABLE_NO'); ?>
+                            </option>
+                            <?php $sel = ($cert == 1) ? 'selected="selected"' : ''; ?>
+                            <option value="1"<?php echo $sel; ?>>
+                                <?php echo Lang::txt('COM_COURSES_CERTIFICATE_AVAILABLE_YES'); ?>
+                            </option>
                         </select>
-                        <span class="hint"><?php echo Lang::txt('COM_COURSES_CERTIFICATE_AVAILABLE_EXPLANATION'); ?></span>
+                        <span class="hint"><?php echo $certHint; ?></span>
                     </div>
                 </fieldset>
             <?php } else { ?>
-                <input type="hidden" name="params[certificate]" value="0" />
+                <input
+                    type="hidden"
+                    name="params[certificate]"
+                    value="0" />
             <?php } ?>
 
             <fieldset class="adminform">
-                <legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_BADGE'); ?></span></legend>
+                <?php $badgeTxt = Lang::txt('COM_COURSES_FIELDSET_BADGE'); ?>
+                <legend><span><?php echo $badgeTxt; ?></span></legend>
                 <?php if (!$this->badge->get('id') || !$this->badge->get('provider_badge_id')) : ?>
-                    <input type="hidden" name="badge[id]" value="<?php echo $this->badge->get('id'); ?>" />
+                    <?php $badgeId = $this->badge->get('id'); ?>
+                    <input
+                        type="hidden"
+                        name="badge[id]"
+                        value="<?php echo $badgeId; ?>" />
                     <table class="admintable">
                         <tbody>
                             <tr>
-                                <th class="key" width="250"><label for="badge-published"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_ENABLED'); ?>:</label></th>
-                                <td><input type="checkbox" name="badge[published]" id="badge-published" value="1" <?php echo ($this->badge->get('published')) ? 'checked="checked"' : '' ?> /></td>
+                                <?php $enabledTxt = Lang::txt('COM_COURSES_FIELD_BADGE_ENABLED'); ?>
+                                <th class="key" width="250">
+                                    <label for="badge-published">
+                                        <?php echo $enabledTxt; ?>:
+                                    </label>
+                                </th>
+                                <td>
+                                    <?php $pubChecked = ($this->badge->get('published')) ? 'checked="checked"' : ''; ?>
+                                    <input
+                                        type="checkbox"
+                                        name="badge[published]"
+                                        id="badge-published"
+                                        value="1"
+                                        <?php echo $pubChecked; ?> />
+                                </td>
                             </tr>
                             <tr class="badge-field-toggle">
-                                <th class="key"><label for="badge-image"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_IMAGE'); ?>:</label></th>
+                                <?php $imgTxt = Lang::txt('COM_COURSES_FIELD_BADGE_IMAGE'); ?>
+                                <th class="key">
+                                    <label for="badge-image">
+                                        <?php echo $imgTxt; ?>:
+                                    </label>
+                                </th>
                                 <td>
                                     <?php if ($this->badge->get('img_url')) : ?>
                                         <?php echo $this->escape(stripslashes($this->badge->get('img_url'))); ?>
-                                        <input type="file" name="badge_image" id="badge-image" />
+                                        <input
+                                            type="file"
+                                            name="badge_image"
+                                            id="badge-image" />
                                     <?php else : ?>
-                                        <input type="file" name="badge_image" id="badge-image" />
+                                        <input
+                                            type="file"
+                                            name="badge_image"
+                                            id="badge-image" />
                                     <?php endif; ?>
                                 </td>
                             </tr>
                             <tr class="badge-field-toggle">
-                                <th class="key"><label for="badge-provider"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_PROVIDER'); ?>:</label></th>
+                                <?php $provTxt = Lang::txt('COM_COURSES_FIELD_BADGE_PROVIDER'); ?>
+                                <th class="key">
+                                    <label for="badge-provider">
+                                        <?php echo $provTxt; ?>:
+                                    </label>
+                                </th>
                                 <td>
                                     <select name="badge[provider_name]" id="badge-provider">
-                                        <option value="passport"<?php if ($this->badge->get('provider_name', 'passport') == 'passport') {
-                                            echo ' selected="selected"';
-                                                                } ?>>Passport</option>
+                                        <?php
+                                        $sel = ($this->badge->get('provider_name', 'passport') == 'passport')
+                                        ? ' selected="selected"' : '';
+                                        ?>
+                                <option
+                                    value="passport"
+                                    <?php echo $sel; ?>
+                                >Passport</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr class="badge-field-toggle">
-                                <th class="key"><label for="badge-criteria"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?>:</label></th>
+                                <?php $critTxt = Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?>
+                                <th class="key">
+                                    <label for="badge-criteria">
+                                        <?php echo $critTxt; ?>:
+                                    </label>
+                                </th>
                                 <td>
                                     <?php
-                                        echo $this->editor('badge[criteria]', $this->escape(stripslashes($this->badge->get('criteria_text'))), 50, 10, 'badge-criteria');
+                                        $criteriaVal = $this->escape(
+                                            stripslashes($this->badge->get('criteria_text'))
+                                        );
+                                    echo $this->editor(
+                                        'badge[criteria]',
+                                        $criteriaVal,
+                                        50,
+                                        10,
+                                        'badge-criteria'
+                                    );
                                     ?>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 <?php else : ?>
-                    <input type="hidden" name="badge[id]" value="<?php echo $this->badge->get('id'); ?>" />
+                    <?php $badgeId = $this->badge->get('id'); ?>
+                    <input
+                        type="hidden"
+                        name="badge[id]"
+                        value="<?php echo $badgeId; ?>" />
                     <table class="admintable">
                         <tbody>
                             <tr>
-                                <th class="key" width="250"><label for="badge-published"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_ENABLED'); ?>:</label></th>
-                                <td><input type="checkbox" name="badge[published]" id="badge-published" value="1" <?php echo ($this->badge->get('published')) ? 'checked="checked"' : '' ?> /></td>
-                            </tr>
-                            <tr class="badge-field-toggle">
-                                <th class="key"><label for="badge-image"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_IMAGE'); ?>:</label></th>
+                                <?php $enabledTxt = Lang::txt('COM_COURSES_FIELD_BADGE_ENABLED'); ?>
+                                <th class="key" width="250">
+                                    <label for="badge-published">
+                                        <?php echo $enabledTxt; ?>:
+                                    </label>
+                                </th>
                                 <td>
-                                    <img src="<?php echo $this->badge->get('img_url'); ?>" width="125" />
-                                    <label for="badge-image" class="label clearfix">Image File</label>
-                                    <input type="file" name="badge_image" id="badge-image" />
-                                    <p class="note clearfix"><strong>NOTE:</strong> Selecting a new image file will overwrite the image above when you save your changes.</p>
+                                    <?php $pubChecked = ($this->badge->get('published')) ? 'checked="checked"' : ''; ?>
+                                    <input
+                                        type="checkbox"
+                                        name="badge[published]"
+                                        id="badge-published"
+                                        value="1"
+                                        <?php echo $pubChecked; ?> />
                                 </td>
                             </tr>
                             <tr class="badge-field-toggle">
-                                <th class="key"><label for="badge-provider"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_PROVIDER'); ?>:</label></th>
+                                <?php $imgTxt = Lang::txt('COM_COURSES_FIELD_BADGE_IMAGE'); ?>
+                                <th class="key">
+                                    <label for="badge-image">
+                                        <?php echo $imgTxt; ?>:
+                                    </label>
+                                </th>
                                 <td>
-                                    <?php echo $this->escape(stripslashes($this->badge->get('provider_name'))); ?>
+                                    <?php $imgUrl = $this->badge->get('img_url'); ?>
+                                    <img
+                                        src="<?php echo $imgUrl; ?>"
+                                        width="125" />
+                                    <label for="badge-image" class="label clearfix">
+                                        Image File
+                                    </label>
+                                    <input
+                                        type="file"
+                                        name="badge_image"
+                                        id="badge-image" />
+                                    <p class="note clearfix">
+                                        <strong>NOTE:</strong>
+                                        Selecting a new image file will overwrite
+                                        the image above when you save your changes.
+                                    </p>
                                 </td>
                             </tr>
                             <tr class="badge-field-toggle">
-                                <th class="key"><label for="badge-criteria"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?>:</label></th>
+                                <?php $provTxt = Lang::txt('COM_COURSES_FIELD_BADGE_PROVIDER'); ?>
+                                <th class="key">
+                                    <label for="badge-provider">
+                                        <?php echo $provTxt; ?>:
+                                    </label>
+                                </th>
                                 <td>
                                     <?php
-                                        echo $this->editor('badge[criteria]', $this->escape(stripslashes($this->badge->get('criteria_text'))), 35, 5, 'badge-criteria');
+                                    $provName = $this->escape(
+                                        stripslashes($this->badge->get('provider_name'))
+                                    );
+                                    echo $provName;
                                     ?>
-                                    <a rel="noopener" target="_blank" href="<?php echo Request::base(true); ?>/courses/badge/<?php echo $this->badge->get('id'); ?>/criteria"><?php echo Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?></a>
+                                </td>
+                            </tr>
+                            <tr class="badge-field-toggle">
+                                <?php $critTxt = Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA'); ?>
+                                <th class="key">
+                                    <label for="badge-criteria">
+                                        <?php echo $critTxt; ?>:
+                                    </label>
+                                </th>
+                                <td>
+                                    <?php
+                                        $criteriaVal = $this->escape(
+                                            stripslashes($this->badge->get('criteria_text'))
+                                        );
+                                    echo $this->editor(
+                                        'badge[criteria]',
+                                        $criteriaVal,
+                                        35,
+                                        5,
+                                        'badge-criteria'
+                                    );
+                                    ?>
+                                    <?php
+                                    $criteriaUrl = Request::base(true) . '/courses/badge/'
+                                    . $this->badge->get('id') . '/criteria';
+                                    $criteriaTxt = Lang::txt('COM_COURSES_FIELD_BADGE_CRITERIA');
+                                    ?>
+                            <a
+                                rel="noopener"
+                                target="_blank"
+                                href="<?php echo $criteriaUrl; ?>"
+                            ><?php echo $criteriaTxt; ?></a>
                                 </td>
                             </tr>
                         </tbody>

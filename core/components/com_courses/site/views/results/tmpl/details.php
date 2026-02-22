@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -41,7 +39,8 @@ $version = $record['summary']['version'];
         <?php $attempt = $resp->getAttemptNumber(); ?>
         <p>
             You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
-            This was your <strong><?php echo \Components\Courses\Helpers\Form::toOrdinal((int)$attempt) ?></strong> attempt.
+            <?php $val = \Components\Courses\Helpers\Form::toOrdinal((int)$attempt); ?>
+            This was your <strong><?php echo $val; ?></strong> attempt.
         </p>
         <form action="<?php echo Route::url($this->base . '&task=form.complete') ?>">
             <input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
@@ -51,18 +50,31 @@ $version = $record['summary']['version'];
                     View another completed attempt:
                     <select name="attempt">
                         <?php foreach ($completedAttempts as $completedAttempt) : ?>
-                            <option value="<?php echo $completedAttempt ?>"<?php echo ($completedAttempt == $attempt) ? ' selected="selected"' : ''; ?>><?php echo \Components\Courses\Helpers\Form::toOrdinal($completedAttempt) ?> attempt</option>
+                            <?php $selected = ($completedAttempt == $attempt) ? ' selected="selected"' : ''; ?>
+                            <?php $ordinal = \Components\Courses\Helpers\Form::toOrdinal($completedAttempt); ?>
+                            <option value="<?php echo $completedAttempt ?>"<?php echo $selected; ?>>
+                                <?php echo $ordinal ?> attempt
+                            </option>
                         <?php endforeach; ?>
                     </select>
                     <input class="btn btn-secondary" type="submit" value="GO" />
                 </p>
 
-                <?php $nextAttempt = (count($completedAttempts) < $dep->getAllowedAttempts()) ? (count($completedAttempts) + 1) : null; ?>
+                <?php
+                $hasMoreAttempts = count($completedAttempts) < $dep->getAllowedAttempts();
+                $nextAttempt = $hasMoreAttempts ? (count($completedAttempts) + 1) : null;
+                ?>
             <?php endif; ?>
 
             <?php if ($dep->getState() == 'active' && isset($nextAttempt)) : ?>
                 <p>
-                    <a class="btn btn-warning" href="<?php echo Route::url($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt=' . $nextAttempt) ?>">
+                    <?php
+                        $routeUrl = Route::url(
+                            $this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt='
+                            . $nextAttempt
+                        );
+                    ?>
+                    <a class="btn btn-warning" href="<?php echo $routeUrl; ?>">
                         Take your next attempt!
                     </a>
                 </p>
@@ -87,7 +99,9 @@ $version = $record['summary']['version'];
                                                                 }
                                                         ');
 
-                                echo '<div class="no-answer" id="question-' . $qid . '-marker">No answer provided</div>';
+                                echo '<div
+                                    class="no-answer"
+                                    id="question-' . $qid . '-marker">No answer provided</div>';
                                 continue 2;
                         elseif ($record['detail'][$qid]['correct_answer_id'] == $ans['id']) :
                                                        \Document::addstyleDeclaration('
@@ -96,7 +110,12 @@ $version = $record['summary']['version'];
                                                                         left: ' . $ans['left'] . 'px;
                                                                 }
                                                         ');
-                                                        echo '<div name="question-' . $qid . '" id="question-' . $qid . '-marker-correct" value="' . $ans['id'] . '" class="answer-marker correct" type="radio">&#10004;</div>';
+                                                        echo '<div
+                                                            name="question-' . $qid . '"
+                                                            id="question-' . $qid . '-marker-correct"
+                                                            value="' . $ans['id'] . '"
+                                                            class="answer-marker correct"
+                                                            type="radio">&#10004;</div>';
                         elseif ($record['detail'][$qid]['answer_id'] == $ans['id']) :
                                                       \Document::addstyleDeclaration('
                                                                 #question-' . $qid . '-marker-incorrect {
@@ -104,7 +123,12 @@ $version = $record['summary']['version'];
                                                                         left: ' . $ans['left'] . 'px;
                                                                 }
                                                         ');
-                                                        echo '<div name="question-' . $qid . '" id="question-' . $qid . '-marker-incorrect" value="' . $ans['id'] . '" class="answer-marker incorrect" type="radio">&#10008;</div>';
+                                                        echo '<div
+                                                            name="question-' . $qid . '"
+                                                            id="question-' . $qid . '-marker-incorrect"
+                                                            value="' . $ans['id'] . '"
+                                                            class="answer-marker incorrect"
+                                                            type="radio">&#10008;</div>';
                         endif;
                     endforeach;
                     ++$qidx;

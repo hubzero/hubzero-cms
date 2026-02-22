@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
@@ -19,18 +17,32 @@ defined('_HZEXEC_') or die();
         foreach ($this->values as $key => $val) :
             if (is_array($val)) :
                 foreach ($val as $k => $v) :
+                    $fieldId = 'hzform_' . $this->section . '_' . $key . '_' . $k;
+                    $fieldName = 'hzother[' . $this->section . '][' . $key . '][' . $k . ']';
                     ?>
                     <div class="input-wrap">
-                        <label for="hzform_<?php echo $this->section; ?>_<?php echo $key; ?>_<?php echo $k; ?>"><?php echo $key; ?></label>
-                        <input type="text" name="hzother[<?php echo $this->section; ?>][<?php echo $key; ?>][<?php echo $k; ?>]" id="hzform_<?php echo $this->section; ?>_<?php echo $key; ?>_<?php echo $k; ?>" value="<?php echo $this->escape($v); ?>" />
+                        <label for="<?php echo $fieldId; ?>"><?php echo $key; ?></label>
+                        <input
+                            type="text"
+                            name="<?php echo $fieldName; ?>"
+                            id="<?php echo $fieldId; ?>"
+                            value="<?php echo $this->escape($v); ?>"
+                        />
                     </div>
                     <?php
                 endforeach;
             else :
+                $fieldId = 'hzform_' . $this->section . '_' . $key;
+                $fieldName = 'hzother[' . $this->section . '][' . $key . ']';
                 ?>
                 <div class="input-wrap">
-                    <label for="hzform_<?php echo $this->section; ?>_<?php echo $key; ?>"><?php echo $key; ?></label>
-                    <input type="text" name="hzother[<?php echo $this->section; ?>][<?php echo $key; ?>]" id="hzform_<?php echo $this->section; ?>_<?php echo $key; ?>" value="<?php echo $this->escape($val); ?>" />
+                    <label for="<?php echo $fieldId; ?>"><?php echo $key; ?></label>
+                    <input
+                        type="text"
+                        name="<?php echo $fieldName; ?>"
+                        id="<?php echo $fieldId; ?>"
+                        value="<?php echo $this->escape($val); ?>"
+                    />
                 </div>
                 <?php
             endif;

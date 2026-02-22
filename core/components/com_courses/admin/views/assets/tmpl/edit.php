@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -37,7 +35,15 @@ if ($this->row->get('id')) {
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $routeUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>"
+    enctype="multipart/form-data"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
 <?php if ($this->tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
@@ -97,7 +103,8 @@ if ($this->row->get('id')) {
                                                  } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO'); ?></option>
                             <option value="embedded"<?php if ($this->row->get('subtype') == 'embedded') {
                                 echo ' selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_EMBEDDED'); ?></option>
+                                                    <  ? php $txt = Lang::txt('COM_COURSES_ASSET_TYPE_EMBEDDED'); ?>
+                                                    } ?>><?php echo $txt; ?></option>
                             <option value="file"<?php if ($this->row->get('subtype') == 'file') {
                                 echo ' selected="selected"';
                                                 } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_FILE'); ?></option>
@@ -109,7 +116,8 @@ if ($this->row->get('id')) {
                                                 } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_QUIZ'); ?></option>
                             <option value="homework"<?php if ($this->row->get('subtype') == 'homework') {
                                 echo ' selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_HOMEWORK'); ?></option>
+                                                    <  ? php $txt = Lang::txt('COM_COURSES_ASSET_TYPE_HOMEWORK'); ?>
+                                                    } ?>><?php echo $txt; ?></option>
                             <option value="note"<?php if ($this->row->get('subtype') == 'note') {
                                 echo ' selected="selected"';
                                                 } ?>><?php echo Lang::txt('COM_COURSES_ASSET_TYPE_NOTE'); ?></option>
@@ -136,19 +144,47 @@ if ($this->row->get('id')) {
                 </select>
             </div>
             <div class="input-wrap">
-                <label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>:  <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                <input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" />
+                <label for="field-title">
+                    <?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>:
+                    <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                </label>
+                <input
+                    type="text"
+                    name="fields[title]"
+                    id="field-title"
+                    class="required"
+                    value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" />
             </div>
             <div class="input-wrap">
                 <label for="field-url"><?php echo Lang::txt('COM_COURSES_FIELD_URL'); ?>:</label>
-                <input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->row->get('url'))); ?>" size="50" />
+                <input
+                    type="text"
+                    name="fields[url]"
+                    id="field-url"
+                    value="<?php echo $this->escape(stripslashes($this->row->get('url'))); ?>" size="50" />
             </div>
             <div class="input-wrap">
                 <label for="field-content"><?php echo Lang::txt('COM_COURSES_FIELD_CONTENT'); ?>:</label>
-                <textarea name="fields[content]" id="field-content" rows="4" cols="35"><?php echo $this->escape(stripslashes($this->row->get('content'))); ?></textarea>
+                <textarea
+                    name="fields[content]"
+                    id="field-content"
+                    rows="4"
+                    cols="35"><?php echo $this->escape(stripslashes($this->row->get('content'))); ?></textarea>
             </div>
 
-            <iframe width="100%" height="225" name="filelist" id="filelist" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=media&tmpl=component&listdir=' . $id . '&course=' . $this->escape($this->course_id)); ?>"></iframe>
+            <?php
+            $url = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=media&tmpl=component&listdir=' . $id
+                . '&course=' . $this->escape($this->course_id)
+            ); ?>
+            <iframe
+                width="100%"
+                height="225"
+                name="filelist"
+                id="filelist"
+                frameborder="0"
+                src="<?php echo $url; ?>"></iframe>
         </fieldset>
     </div>
 

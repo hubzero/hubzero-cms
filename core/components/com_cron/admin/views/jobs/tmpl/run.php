@@ -1,6 +1,6 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength, PSR1.Files.SideEffects
+// phpcs:disable PSR1.Files.SideEffects
 
 /**
  * @package    hubzero-cms
@@ -77,7 +77,8 @@ function prettyPrint($json)
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formUrl = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="adminForm">
 
     <table class="adminlist">
         <tbody>

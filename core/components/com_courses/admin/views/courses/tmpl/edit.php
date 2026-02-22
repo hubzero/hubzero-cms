@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,7 +33,14 @@ $this->css();
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $routeUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -62,10 +67,14 @@ $this->css();
                         $groups = \Hubzero\User\Group::find($filters);
                         if ($groups) {
                             foreach ($groups as $group) {
+                                $selected = ($group->gidNumber == $this->row->get('group_id'))
+                                    ? ' selected="selected"' : '';
+                                $groupDesc = $this->escape($group->description);
+                                $groupCn = $this->escape($group->cn);
                                 ?>
-                                <option value="<?php echo $group->gidNumber; ?>"<?php if ($group->gidNumber == $this->row->get('group_id')) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape($group->description); ?> (<?php echo $this->escape($group->cn); ?>)</option>
+                                <option value="<?php echo $group->gidNumber; ?>"<?php echo $selected; ?>>
+                                    <?php echo $groupDesc; ?> (<?php echo $groupCn; ?>)
+                                </option>
                                 <?php
                             }
                         }
@@ -74,44 +83,81 @@ $this->css();
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-                    <input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->row->get('alias')); ?>" />
+                    <input
+                        type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        value="<?php echo $this->escape($this->row->get('alias')); ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape($this->row->get('title')); ?>" />
+                    <label for="field-title">
+                        <?php $val = Lang::txt('COM_COURSES_FIELD_TITLE'); ?>
+                        <?php echo $val; ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="required"
+                        value="<?php echo $this->escape($this->row->get('title')); ?>" />
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_BLURB_HINT'); ?>">
                     <label for="field-blurb"><?php echo Lang::txt('COM_COURSES_FIELD_BLURB'); ?>:</label><br />
-                    <textarea name="fields[blurb]" id="field-blurb" cols="40" rows="3"><?php echo $this->escape($this->row->get('blurb')); ?></textarea>
+                    <textarea
+                        name="fields[blurb]"
+                        id="field-blurb"
+                        cols="40"
+                        rows="3"><?php echo $this->escape($this->row->get('blurb')); ?></textarea>
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_BLURB_HINT'); ?></span>
                 </div>
 
                 <div class="grid">
                     <div class="col span6">
                         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_LENGTH_HINT'); ?>">
-                            <label for="field-length"><?php echo Lang::txt('COM_COURSES_FIELD_LENGTH'); ?>:</label><br />
-                            <input type="text" name="fields[length]" id="field-length" value="<?php echo $this->escape($this->row->get('length')); ?>" />
+                            <?php $txt = Lang::txt('COM_COURSES_FIELD_LENGTH'); ?>
+                            <label for="field-length"><?php echo $txt; ?>:</label><br />
+                            <input
+                                type="text"
+                                name="fields[length]"
+                                id="field-length"
+                                value="<?php echo $this->escape($this->row->get('length')); ?>" />
                             <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_LENGTH_HINT'); ?></span>
                         </div>
                     </div>
                     <div class="col span6">
                         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_EFFORT_HINT'); ?>">
-                            <label for="field-effort"><?php echo Lang::txt('COM_COURSES_FIELD_EFFORT'); ?>:</label><br />
-                            <input type="text" name="fields[effort]" id="field-effort" value="<?php echo $this->escape($this->row->get('effort')); ?>" />
+                            <?php $txt = Lang::txt('COM_COURSES_FIELD_EFFORT'); ?>
+                            <label for="field-effort"><?php echo $txt; ?>:</label><br />
+                            <input
+                                type="text"
+                                name="fields[effort]"
+                                id="field-effort"
+                                value="<?php echo $this->escape($this->row->get('effort')); ?>" />
                             <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_EFFORT_HINT'); ?></span>
                         </div>
                     </div>
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION_HINT'); ?>">
-                    <label for="field-description"><?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION'); ?>:</label><br />
-                    <?php echo $this->editor('fields[description]', $this->escape($this->row->description('raw')), 40, 15, 'field-description'); ?>
+                    <?php $txt = Lang::txt('COM_COURSES_FIELD_DESCRIPTION'); ?>
+                    <label for="field-description"><?php echo $txt; ?>:</label><br />
+                    <?php echo $this->editor(
+                        'fields[description]',
+                        $this->escape($this->row->description('raw')),
+                        40,
+                        15,
+                        'field-description'
+                    ); ?>
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_DESCRIPTION_HINT'); ?></span>
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?>">
                     <label for="field-tags"><?php echo Lang::txt('COM_COURSES_FIELD_TAGS'); ?>:</label><br />
-                    <textarea name="tags" id="field-tags" cols="40" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+                    <textarea
+                        name="tags"
+                        id="field-tags"
+                        cols="40"
+                        rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
                 </div>
             </fieldset>
@@ -119,7 +165,13 @@ $this->css();
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_COURSES_FIELDSET_MANAGERS'); ?></span></legend>
                 <?php if ($this->row->get('id')) { ?>
-                    <iframe height="400" name="managers" id="managers" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=managers&tmpl=component&id=' . $this->row->get('id')); ?>"></iframe>
+                    <?php
+                        $routeUrl = Route::url(
+                            'index.php?option=' . $this->option  . '&controller=managers&tmpl=component&id='
+                            . $this->row->get('id')
+                        );
+                    ?>
+                    <iframe height="400" name="managers" id="managers" src="<?php echo $routeUrl; ?>"></iframe>
                 <?php } else { ?>
                     <p class="warning"><?php echo Lang::txt('COM_COURSES_FIELDSET_MANAGERS_WARNING'); ?></p>
                 <?php } ?>
@@ -135,7 +187,9 @@ $this->css();
                     <?php if ($this->row->get('created')) { ?>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_COURSES_FIELD_CREATED'); ?></th>
-                            <td><time datetime="<?php echo $this->escape($this->row->get('created')); ?>"><?php echo $this->escape(Date::of($this->row->get('created'))->toLocal()); ?></time></td>
+                            <?php $timeVal = $this->escape($this->row->get('created')); ?>
+                            <?php $timeVal2 = $this->escape(Date::of($this->row->get('created'))->toLocal()); ?>
+                            <td><time datetime="<?php echo $timeVal; ?>"><?php echo $timeVal2; ?></time></td>
                         </tr>
                     <?php } ?>
                     <?php if ($this->row->get('created_by')) { ?>
@@ -178,7 +232,8 @@ $this->css();
                 foreach ($plugins as $plugin) {
                     $param = new \Hubzero\Html\Parameter(
                         (is_object($data) ? $data->toString() : $data),
-                        PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
+                        PATH_CORE . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name']
+                            . '.xml'
                     );
                     $out = $param->render('params', 'onCourseEdit');
                     if (!$out) {
@@ -204,9 +259,24 @@ $this->css();
                     $file = end($pics);
                     ?>
                 <div class="uploader-wrap">
-                    <div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=course&id=' . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'); ?>" data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
+                    <?php
+                        $routeUrl = Route::url(
+                            'index.php?option=' . $this->option  . '&controller=logo&task=upload&type=course&id='
+                            . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1'
+                        );
+                    ?>
+                    <div
+                        id="ajax-uploader"
+                        data-action="<?php echo $routeUrl; ?>"
+                        data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
                         <noscript>
-                            <iframe height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $file . '&type=course&id=' . $this->row->get('id')); ?>"></iframe>
+                            <?php
+                                $routeUrl = Route::url(
+                                    'index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file='
+                                    . $file . '&type=course&id=' . $this->row->get('id')
+                                );
+                            ?>
+                            <iframe height="350" name="filer" id="filer" src="<?php echo $routeUrl; ?>"></iframe>
                         </noscript>
                     </div>
                 </div>
@@ -219,7 +289,8 @@ $this->css();
                     $path = '/core/components/com_courses/admin/assets/img';
 
                     if ($logo) {
-                        $pathl = substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->row->get('id');
+                        $pathl = substr(PATH_APP, strlen(PATH_ROOT)) . DS
+                            . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->row->get('id');
 
                         if (file_exists(PATH_ROOT . $pathl . DS . $logo)) {
                             $this_size = filesize(PATH_ROOT . $pathl . DS . $file);
@@ -232,23 +303,53 @@ $this->css();
                     }
                     ?>
                     <div id="img-container">
-                        <img id="img-display" src="<?php echo rtrim(Request::root(true), '/') . $path . '/' . $pic; ?>" alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" />
-                        <input type="hidden" name="currentfile" id="currentfile" value="<?php echo $this->escape($logo); ?>" />
+                        <img
+                            id="img-display"
+                            src="<?php echo rtrim(Request::root(true), '/') . $path . '/' . $pic; ?>"
+                            alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" />
+                        <input
+                            type="hidden"
+                            name="currentfile"
+                            id="currentfile"
+                            value="<?php echo $this->escape($logo); ?>" />
                     </div>
                     <table class="formed">
                         <tbody>
                             <tr>
                                 <th><?php echo Lang::txt('COM_COURSES_FILE'); ?>:</th>
                                 <td>
-                                    <span id="img-name"><?php echo $this->row->get('logo', Lang::txt('COM_COURSES_NONE')); ?></span>
+                                    <?php $txt = Lang::txt('COM_COURSES_NONE'); ?>
+                                    <span id="img-name"><?php echo $this->row->get('logo', $txt); ?></span>
                                 </td>
                                 <td>
-                                    <a id="img-delete" <?php echo $logo ? '' : 'class="hide"'; ?> href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=course&id=' . $this->row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>" data-defaultimg="<?php echo rtrim(Request::root(true), '/'); ?>/core/components/com_courses/admin/assets/img/blank.png">[ x ]</a>
+                                    <?php
+                                        $routeUrl = Route::url(
+                                            'index.php?option=' . $this->option
+                                            . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo
+                                            . '&type=course&id=' . $this->row->get('id') . '&'
+                                            . Session::getFormToken() . '=1'
+                                        );
+                                    ?>
+                                    <a
+                                        id="img-delete"
+                                        <?php echo $logo ? '' : 'class="hide"'; ?>
+                                        href="<?php echo $routeUrl; ?>"
+                                        title="<?php echo Lang::txt('COM_COURSES_DELETE'); ?>"
+                                        <?php $baseRoot = rtrim(Request::root(true), '/'); ?>
+                                        <?php
+                                            $defaultImg = $baseRoot
+                                                . '/core/components/com_courses'
+                                                . '/admin/assets/img/blank.png';
+                                        ?>
+                                        data-defaultimg="<?php echo $defaultImg; ?>">
+                                        [ x ]
+                                    </a>
                                 </td>
                             </tr>
                             <tr>
                                 <th><?php echo Lang::txt('COM_COURSES_PICTURE_SIZE'); ?>:</th>
-                                <td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($fsize); ?></span></td>
+                                <?php $val = \Hubzero\Utility\Number::formatBytes($fsize); ?>
+                                <td><span id="img-size"><?php echo $val; ?></span></td>
                                 <td></td>
                             </tr>
                             <tr>

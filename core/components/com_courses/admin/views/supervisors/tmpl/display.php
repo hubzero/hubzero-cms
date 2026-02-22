@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,8 @@ $this->js('managers.js');
     </dl>
 <?php } ?>
 <div id="groups">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post">
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+    <form action="<?php echo $routeUrl; ?>" method="post">
         <table>
             <tbody>
                 <tr>
@@ -37,7 +36,8 @@ $this->js('managers.js');
                     <td>
                         <select name="role">
                         <?php foreach ($roles as $role) { ?>
-                            <option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                            <?php $val = $this->escape(stripslashes($role->title)); ?>
+                            <option value="<?php echo $role->id; ?>"><?php echo $val; ?></option>
                         <?php } ?>
                         <?php
                         foreach ($offerings as $offering) {
@@ -46,9 +46,11 @@ $this->js('managers.js');
                                 continue;
                             }
                             ?>
-                            <optgroup label="<?php echo Lang::txt('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
+                            <?php $txt = Lang::txt('Offering:'); ?>
+                            <optgroup label="<?php echo $txt . ' ' . $this->escape($offering->get('title')); ?>">
                             <?php foreach ($oroles as $role) { ?>
-                                <option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                                <?php $val = $this->escape(stripslashes($role->title)); ?>
+                                <option value="<?php echo $role->id; ?>"><?php echo $val; ?></option>
                             <?php } ?>
                             </optgroup>
                         <?php } ?>
@@ -70,7 +72,8 @@ $this->js('managers.js');
 
         <?php echo Html::input('token'); ?>
     </form>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="adminForm">
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+    <form action="<?php echo $routeUrl; ?>" method="post" id="adminForm">
         <table class="paramlist admintable">
             <thead>
                 <tr>
@@ -82,7 +85,8 @@ $this->js('managers.js');
                         <input type="hidden" name="offering" value="<?php echo $this->model->get('id'); ?>" />
                         <input type="hidden" name="task" id="task" value="remove" />
 
-                        <input type="submit" name="action" value="<?php echo Lang::txt('COM_COURSES_REMOVE_USER'); ?>" />
+                        <?php $txt = Lang::txt('COM_COURSES_REMOVE_USER'); ?>
+                        <input type="submit" name="action" value="<?php echo $txt; ?>" />
                     </th>
                 </tr>
             </thead>
@@ -104,20 +108,45 @@ $this->js('managers.js');
             ?>
                 <tr>
                     <td>
-                        <input type="hidden" name="entries[<?php echo $i; ?>][id]" value="<?php echo $manager->get('id'); ?>" />
-                        <input type="hidden" name="entries[<?php echo $i; ?>][course_id]" value="<?php echo $this->model->get('course_id'); ?>" />
-                        <input type="hidden" name="entries[<?php echo $i; ?>][offering_id]" value="<?php echo $this->model->get('id'); ?>" />
-                        <input type="hidden" name="entries[<?php echo $i; ?>][section_id]" value="<?php echo $this->model->section()->get('id'); ?>" />
-                        <input type="hidden" name="entries[<?php echo $i; ?>][user_id]" value="<?php echo $u->get('id'); ?>" />
-                        <input type="checkbox" name="entries[<?php echo $i; ?>][select]" value="<?php echo $manager->get('id'); ?>" />
+                        <input
+                            type="hidden"
+                            name="entries[<?php echo $i; ?>][id]"
+                            value="<?php echo $manager->get('id'); ?>" />
+                        <input
+                            type="hidden"
+                            name="entries[<?php echo $i; ?>][course_id]"
+                            value="<?php echo $this->model->get('course_id'); ?>" />
+                        <input
+                            type="hidden"
+                            name="entries[<?php echo $i; ?>][offering_id]"
+                            value="<?php echo $this->model->get('id'); ?>" />
+                        <input
+                            type="hidden"
+                            name="entries[<?php echo $i; ?>][section_id]"
+                            value="<?php echo $this->model->section()->get('id'); ?>" />
+                        <input
+                            type="hidden"
+                            name="entries[<?php echo $i; ?>][user_id]"
+                            value="<?php echo $u->get('id'); ?>" />
+                        <input
+                            type="checkbox"
+                            name="entries[<?php echo $i; ?>][select]"
+                            value="<?php echo $manager->get('id'); ?>" />
                     </td>
                     <td class="paramlist_key">
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=members&task=edit&id=' . $u->get('id')); ?>" target="_parent">
+                        <?php
+                            $routeUrl = Route::url(
+                                'index.php?option=' . $this->option  . '&controller=members&task=edit&id='
+                                . $u->get('id')
+                            );
+                        ?>
+                        <a href="<?php echo $routeUrl; ?>" target="_parent">
                         <?php echo $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')'; ?>
                         </a>
                     </td>
                     <td class="paramlist_value">
-                        <a href="mailto:<?php echo $this->escape($u->get('email')); ?>"><?php echo $this->escape($u->get('email')); ?></a>
+                        <?php $val = $this->escape($u->get('email')); ?>
+                        <a href="mailto:<?php echo $val; ?>"><?php echo $this->escape($u->get('email')); ?></a>
                     </td>
                     <td>
                         <select name="entries[<?php echo $i; ?>][role_id]" class="entry-role">
@@ -133,9 +162,11 @@ $this->js('managers.js');
                             continue;
                         }
                         ?>
-                            <optgroup label="<?php echo Lang::txt('COM_COURSES_OFFERING') . ': ' . $this->escape($offering->get('title')); ?>">
+                            <?php $txt = Lang::txt('COM_COURSES_OFFERING'); ?>
+                            <optgroup label="<?php echo $txt . ': ' . $this->escape($offering->get('title')); ?>">
                         <?php foreach ($oroles as $role) { ?>
-                                <option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) {
+                                <?php $val = $role->id; ?>
+                                <option value="<?php echo $val; ?>"<?php if ($manager->get('role_id') == $role->id) {
                                     echo ' selected="selected"';
                                                } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
                         <?php } ?>

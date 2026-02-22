@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,13 +20,31 @@ $this->css('uploader')
     ->js('media.js');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form action="<?php echo $routeUrl; ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
     <fieldset>
         <legend>
-            <span><?php echo Lang::txt('COM_COURSES_FILES'); ?> - <?php echo DS . trim($this->config->get('uploadpath', '/site/courses'), DS) . DS . $this->course_id . DS . $this->listdir; ?> <?php echo $this->dirPath; ?></span>
+            <?php
+            $uploadPath = DS . trim($this->config->get('uploadpath', '/site/courses'), DS)
+                . DS . $this->course_id . DS . $this->listdir;
+            ?>
+            <span>
+                <?php echo Lang::txt('COM_COURSES_FILES'); ?> -
+                <?php echo $uploadPath; ?>
+                <?php echo $this->dirPath; ?>
+            </span>
         </legend>
         <div id="ajax-uploader-before">&nbsp;</div>
-        <div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=upload&course=' . $this->course_id . '&listdir=' . $this->listdir . '&no_html=1&' . Session::getFormToken() . '=1'); ?>" data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
+        <?php
+            $routeUrl = Route::url(
+                'index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=upload&course='
+                . $this->course_id . '&listdir=' . $this->listdir . '&no_html=1&' . Session::getFormToken() . '=1'
+            );
+            ?>
+        <div
+            id="ajax-uploader"
+            data-action="<?php echo $routeUrl; ?>"
+            data-instructions="<?php echo Lang::txt('COM_COURSES_UPLOAD_CLICK_OR_DROP'); ?>">
             <table>
                 <tbody>
                     <tr>
@@ -36,7 +52,12 @@ $this->css('uploader')
                             <input type="file" name="upload" id="upload" />
                         </td>
                         <td>
-                            <input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo Lang::txt('Unpack (.zip, .tar, etc)'); ?></label>
+                            <input
+                                type="checkbox"
+                                name="batch"
+                                id="batch"
+                                <?php $txt = Lang::txt('Unpack (.zip, .tar, etc)'); ?>
+                                value="1" /> <label for="batch"><?php echo $txt; ?></label>
                         </td>
                         <td>
                             <input type="submit" value="<?php echo Lang::txt('COM_COURSES_UPLOAD'); ?>" />
@@ -47,8 +68,21 @@ $this->css('uploader')
         </div>
 
         <div id="themanager" class="manager">
-            <iframe src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir . '&course=' . $this->course_id); ?>" name="imgManager" id="imgManager" width="98%" height="150"
-                data-dir="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=list&tmpl=component&course=' . $this->course_id); ?>"></iframe>
+            <?php
+                $routeUrl = Route::url(
+                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                    . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir
+                    . '&course=' . $this->course_id
+                );
+                ?>
+            <iframe src="<?php echo $routeUrl; ?>" name="imgManager" id="imgManager" width="98%" height="150"
+                <?php
+                    $routeUrl = Route::url(
+                        'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                        . '&task=list&tmpl=component&course=' . $this->course_id
+                    );
+                    ?>
+                data-dir="<?php echo $routeUrl; ?>"></iframe>
         </div>
 
         <input type="hidden" name="tmpl" value="component" />

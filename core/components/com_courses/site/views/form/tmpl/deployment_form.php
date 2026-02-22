@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,13 @@ $this->css('jquery.ui.css', 'system');
         <h3>Times</h3>
         <p>
             <label>
-                <span>Time limit:</span><input type="number" step="1" min="0" class="minutes" name="deployment[timeLimit]" value="<?php echo htmlentities(($val = $this->dep->getTimeLimit()) ? $val : '') ?>" /> minutes
+                <span>Time limit:</span><input
+                    type="number"
+                    step="1"
+                    min="0"
+                    class="minutes"
+                    name="deployment[timeLimit]"
+                    value="<?php echo htmlentities(($val = $this->dep->getTimeLimit()) ? $val : '') ?>" /> minutes
             </label>
             <?php if ($showErrors && $this->dep->hasErrors('timeLimit')) : ?>
             <ul class="error">
@@ -30,7 +34,14 @@ $this->css('jquery.ui.css', 'system');
         </p>
         <p>
             <label>
-                <span>Attempts:</span><input type="number" step="1" min="1" class="minutes" name="deployment[allowedAttempts]" value="<?php echo htmlentities(($val = $this->dep->getAllowedAttempts()) ? $val : '1') ?>" /> allowed attempts
+                <span>Attempts:</span><input
+                    type="number"
+                    step="1"
+                    min="1"
+                    class="minutes"
+                    name="deployment[allowedAttempts]"
+                    <?php $val = htmlentities(($val = $this->dep->getAllowedAttempts()) ? $val : '1'); ?>
+                    value="<?php echo $val; ?>" /> allowed attempts
             </label>
             <?php if ($showErrors && $this->dep->hasErrors('allowedAttempts')) : ?>
             <ul class="error">
@@ -40,7 +51,10 @@ $this->css('jquery.ui.css', 'system');
             </ul>
             <?php endif; ?>
         </p>
-        <p class="info">If this deployment is timed, a landing page will be shown before the form to prevent users from triggering the countdown before they are ready.</p>
+        <p class="info">
+            If this deployment is timed, a landing page will be shown before the form
+            to prevent users from triggering the countdown before they are ready.
+        </p>
     </fieldset>
     <fieldset>
         <?php
@@ -51,15 +65,29 @@ $this->css('jquery.ui.css', 'system');
             ?>
         <h3>Results</h3>
         <p>While the form is open, show users:<br />
-            <input type="radio" name="deployment[resultsOpen]" value="confirmation" <?php if ($resultPages['open'] == 'confirmation') {
-                echo 'checked="checked" ';
-                                                                                    } ?>/> only confirmation that their submission was accepted<br />
-            <input type="radio" name="deployment[resultsOpen]" value="score" <?php if ($resultPages['open'] == 'score' || !$resultPages['open']) {
-                echo 'checked="checked" ';
-                                                                             } ?>/> their score<br />
-            <input type="radio" name="deployment[resultsOpen]" value="details" <?php if ($resultPages['open'] == 'details') {
-                echo 'checked="checked" ';
-                                                                               } ?>/> a complete comparison of their answers to the correct answers<br />
+            <?php
+                $chkConf = ($resultPages['open'] == 'confirmation')
+                    ? ' checked="checked"' : '';
+                $chkScore = ($resultPages['open'] == 'score' || !$resultPages['open'])
+                    ? ' checked="checked"' : '';
+                $chkDetails = ($resultPages['open'] == 'details')
+                    ? ' checked="checked"' : '';
+            ?>
+            <input
+                type="radio"
+                name="deployment[resultsOpen]"
+                value="confirmation"<?php echo $chkConf; ?> />
+            only confirmation that their submission was accepted<br />
+            <input
+                type="radio"
+                name="deployment[resultsOpen]"
+                value="score"<?php echo $chkScore; ?> />
+            their score<br />
+            <input
+                type="radio"
+                name="deployment[resultsOpen]"
+                value="details"<?php echo $chkDetails; ?> />
+            a complete comparison of their answers to the correct answers<br />
             <?php if ($showErrors && $this->dep->hasErrors('resultsOpen')) : ?>
             <ul class="error">
                 <?php foreach ($this->dep->getErrors('resultsOpen') as $err) : ?>
@@ -69,15 +97,30 @@ $this->css('jquery.ui.css', 'system');
             <?php endif; ?>
         </p>
         <p>After the form is closed, show users:<br />
-            <input type="radio" name="deployment[resultsClosed]" value="confirmation" <?php if ($resultPages['closed'] == 'confirmation') {
-                echo 'checked="checked" ';
-                                                                                      } ?>/> only confirmation that their submission was accepted<br />
-            <input type="radio" name="deployment[resultsClosed]" value="score" <?php if ($resultPages['closed'] == 'score') {
-                echo 'checked="checked" ';
-                                                                               } ?>/> their score<br />
-            <input type="radio" name="deployment[resultsClosed]" value="details" <?php if ($resultPages['closed'] == 'details' || !$resultPages['closed']) {
-                echo 'checked="checked" ';
-                                                                                 } ?>/> a complete comparison of their answers to the correct answers<br />
+            <?php
+                $chkConf = ($resultPages['closed'] == 'confirmation')
+                    ? ' checked="checked"' : '';
+                $chkScore = ($resultPages['closed'] == 'score')
+                    ? ' checked="checked"' : '';
+                $chkDetails = ($resultPages['closed'] == 'details'
+                    || !$resultPages['closed'])
+                    ? ' checked="checked"' : '';
+                ?>
+            <input
+                type="radio"
+                name="deployment[resultsClosed]"
+                value="confirmation"<?php echo $chkConf; ?> />
+            only confirmation that their submission was accepted<br />
+            <input
+                type="radio"
+                name="deployment[resultsClosed]"
+                value="score"<?php echo $chkScore; ?> />
+            their score<br />
+            <input
+                type="radio"
+                name="deployment[resultsClosed]"
+                value="details"<?php echo $chkDetails; ?> />
+            a complete comparison of their answers to the correct answers<br />
             <?php if ($showErrors && $this->dep->hasErrors('resultsClosed')) : ?>
             <ul class="error">
                 <?php foreach ($this->dep->getErrors('resultsClosed') as $err) : ?>

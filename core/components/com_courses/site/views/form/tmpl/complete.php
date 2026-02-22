@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,8 @@ $timeLeft = max($realLimit * 60, 0);
 // First, see if they've already started the form
 if ($this->resp->getStartTime()) {
     // This is the time left since starting form
-    $timeLeft2 = max(($this->dep->getTimeLimit() * 60) - (strtotime(Date::of('now')) - strtotime($this->resp->getStartTime())), 0);
+    $elapsed = strtotime(Date::of('now')) - strtotime($this->resp->getStartTime());
+    $timeLeft2 = max(($this->dep->getTimeLimit() * 60) - $elapsed, 0);
 
     // Take individual time remaining...assuming it's less than actual time remaining
     if ($timeLeft2 < $timeLeft) {
@@ -68,7 +67,19 @@ if ($this->resp->getStartTime()) {
                                     left: ' . $ans['left'] . 'px;
                                 }'
                             );
-                            echo '<input name="question-' . $qid . '" id="question-' . $qid . '-' . $aidx . '" value="' . $ans['id'] . '" ' . ((isset($_POST['question-' . $qid]) && $_POST['question-' . $qid] == $ans['id']) || (!isset($_POST['question-' . $qid]) && isset($progress[$qid]) && $progress[$qid]['answer_id'] == $ans['id']) ? ' checked="checked" ' : '') . 'class="placeholder" type="radio" />';
+                            echo '<input
+                                name="question-' . $qid . '"
+                                id="question-' . $qid . '-' . $aidx . '"
+                                value="' . $ans['id'] . '"
+                                ' . (
+                                    (isset($_POST['question-' . $qid]) && $_POST['question-' . $qid] == $ans['id'])
+                                    || (!isset($_POST['question-' . $qid])
+                                        && isset($progress[$qid])
+                                        && $progress[$qid]['answer_id'] == $ans['id'])
+                                    ? '
+                                checked="checked"
+                                ' : '') . 'class="placeholder"
+                                type="radio" />';
                             if (isset($incomplete[$qid])) :
                                 $view->css(
                                     '#question-' . $qid . '-incomplete-marker {
@@ -76,7 +87,9 @@ if ($this->resp->getStartTime()) {
                                         left: ' . ($ans['left'] - 20) . 'px;
                                     }'
                                 );
-                                echo '<div class="incomplete-marker" id="question-' . $qid . '-incomplete-marker">*</div>';
+                                echo '<div
+                                    class="incomplete-marker"
+                                    id="question-' . $qid . '-incomplete-marker">*</div>';
                             endif;
                         endforeach;
                         ++$qidx;

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,8 @@ $params = $this->params;
 //$images = json_decode($this->item->images);
 //$urls = json_decode($this->item->urls);
 
-// This checks if the editor config options have ever been saved. If they haven't they will fall back to the original settings.
+// This checks if the editor config options have ever been saved.
+// If they haven't they will fall back to the original settings.
 $editoroptions = isset($params->show_publishing_options);
 if (!$editoroptions) :
     $params->show_urls_images_frontend = '0';
@@ -41,7 +40,22 @@ endif;
 
 <section class="main section">
     <div class="edit item-page<?php echo $this->pageclass_sfx; ?>">
-        <form action="<?php echo Route::url('index.php?option=com_content&a_id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="hubForm" class="full form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+        <?php
+        $formAction = Route::url(
+            'index.php?option=com_content&a_id=' . (int) $this->item->id
+        );
+        $invalidMsg = $this->escape(
+            Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')
+        );
+        ?>
+        <form
+            action="<?php echo $formAction; ?>"
+            method="post"
+            name="adminForm"
+            id="hubForm"
+            class="full form-validate"
+            data-invalid-msg="<?php echo $invalidMsg; ?>"
+        >
             <fieldset>
                 <legend><?php echo Lang::txt('JEDITOR'); ?></legend>
 

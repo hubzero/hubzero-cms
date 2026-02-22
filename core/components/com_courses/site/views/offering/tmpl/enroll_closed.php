@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,9 @@ $this->css('offering');
 
     <?php if ($logo = $this->course->logo('url')) { ?>
         <p class="course-identity">
-            <img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+            <img
+                src="<?php echo $logo; ?>"
+                alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
         </p>
     <?php } ?>
 
@@ -53,9 +53,15 @@ $this->css('offering');
             </div><!-- / .instructions -->
             <div class="questions">
                 <p><strong><?php echo Lang::txt('COM_COURSES_I_SHOULD_HAVE_ACCESS'); ?></strong></p>
-                <p><?php echo Lang::txt('COM_COURSES_I_SHOULD_HAVE_ACCESS_EXPLANATION', Route::url('index.php?option=com_support')); ?></p>
+                <?php $routeUrl = Route::url('index.php?option=com_support'); ?>
+                <p><?php echo $routeUrl; ?></p>
                 <p><strong><?php echo Lang::txt('COM_COURSES_WHERE_CAN_I_FIND_OTHER_COURSES'); ?></strong></p>
-                <p><?php echo Lang::txt('COM_COURSES_WHERE_CAN_I_FIND_OTHER_COURSES_EXPLANATIONS', Route::url('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+                <?php
+                    $routeUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=courses&task=browse'
+                    );
+                    ?>
+                <p><?php echo $routeUrl; ?></p>
             </div><!-- / .questions -->
         </div><!-- / #offering-introduction -->
     </div>

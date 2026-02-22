@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,26 +26,50 @@ $listDirn  = $this->escape($this->filters['direction']);
     <?php endif; ?>
 <?php else : ?>
     <form action="<?php echo htmlspecialchars(Request::current()); ?>" method="post" name="adminForm" id="adminForm">
-        <?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
+        <?php if (
+            $this->params->get('show_headings')
+            || $this->params->get('filter_field') != 'hide'
+            || $this->params->get('show_pagination_limit')
+) : ?>
             <fieldset>
-                <?php if ($this->params->get('filter_field') != 'hide') :?>
+                      <?php if ($this->params->get('filter_field') != 'hide') :?>
                     <div class="container data-entry">
-                        <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?>" />
+                        <input
+                            class="entry-search-submit"
+                            type="submit"
+                            value="<?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?>"
+                        />
                         <fieldset class="entry-search">
                             <legend><?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?></legend>
 
-                            <label class="filter-search-lbl" for="filter-search"><?php echo Lang::txt('COM_CONTENT_' . $this->params->get('filter_field') . '_FILTER_LABEL') . '&#160;'; ?>></label>
-                            <input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->filters['filter']); ?>" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
+                            <?php
+                            $filterLabel = Lang::txt(
+                                'COM_CONTENT_'
+                                . $this->params->get('filter_field')
+                                . '_FILTER_LABEL'
+                            ) . '&#160;';
+                            $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
+                            ?>
+                            <label class="filter-search-lbl" for="filter-search">
+                                <?php echo $filterLabel; ?>
+                            ></label>
+                            <input
+                                type="text"
+                                name="filter-search"
+                                id="filter-search"
+                                value="<?php echo $this->escape($this->filters['filter']); ?>"
+                                placeholder="<?php echo $searchPlaceholder; ?>"
+                            />
                         </fieldset>
                     </div><!-- / .container -->
-                <?php endif; ?>
+                      <?php endif; ?>
 
-                <?php if ($this->params->get('show_pagination_limit')) : ?>
+                      <?php if ($this->params->get('show_pagination_limit')) : ?>
                     <div class="display-limit">
-                        <?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-                        <?php echo $this->pagination->getLimitBox(); ?>
+                            <?php echo Lang::txt('JGLOBAL_DISPLAY_NUM'); ?>&#160;
+                            <?php echo $this->pagination->getLimitBox(); ?>
                     </div>
-                <?php endif; ?>
+                      <?php endif; ?>
 
                 <!-- @TODO add hidden inputs -->
                 <input type="hidden" name="filter_order" value="" />
@@ -67,11 +89,14 @@ $listDirn  = $this->escape($this->filters['direction']);
                         <?php if ($date = $this->params->get('list_show_date')) : ?>
                             <th class="list-date" id="tableOrdering2">
                                 <?php if ($date == "created") : ?>
-                                    <?php echo Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.created', $listDirn, $listOrder); ?>
+                                    <?php
+                                    $dateKey = 'COM_CONTENT_' . $date . '_DATE';
+                                    echo Html::grid('sort', $dateKey, 'a.created', $listDirn, $listOrder);
+                                    ?>
                                 <?php elseif ($date == "modified") : ?>
-                                    <?php echo Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.modified', $listDirn, $listOrder); ?>
+                                    <?php echo Html::grid('sort', $dateKey, 'a.modified', $listDirn, $listOrder); ?>
                                 <?php elseif ($date == "published") : ?>
-                                    <?php echo Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
+                                    <?php echo Html::grid('sort', $dateKey, 'a.publish_up', $listDirn, $listOrder); ?>
                                 <?php endif; ?>
                             </th>
                         <?php endif; ?>
@@ -100,7 +125,16 @@ $listDirn  = $this->escape($this->filters['direction']);
                 <?php endif; ?>
                     <?php if (in_array($article->access, $this->user->getAuthorisedViewLevels())) : ?>
                         <td class="list-title">
-                            <a href="<?php echo Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language)); ?>">
+                            <?php
+                            $articleUrl = Route::url(
+                                \Components\Content\Site\Helpers\Route::getArticleRoute(
+                                    $article->slug,
+                                    $article->catid,
+                                    $article->language
+                                )
+                            );
+                            ?>
+                            <a href="<?php echo $articleUrl; ?>">
                                 <?php echo $this->escape($article->title); ?></a>
 
                             <?php if ($article->params->get('access-edit')) : ?>
@@ -114,7 +148,12 @@ $listDirn  = $this->escape($this->filters['direction']);
 
                         <?php if ($this->params->get('list_show_date')) : ?>
                         <td class="list-date">
-                            <?php echo Date::of($article->displayDate)->toLocal($this->escape($this->params->get('date_format', Lang::txt('DATE_FORMAT_LC3')))); ?>
+                            <?php
+                            $dateFmt = $this->escape(
+                                $this->params->get('date_format', Lang::txt('DATE_FORMAT_LC3'))
+                            );
+                            echo Date::of($article->displayDate)->toLocal($dateFmt);
+                            ?>
                         </td>
                         <?php endif; ?>
 
@@ -125,7 +164,14 @@ $listDirn  = $this->escape($this->filters['direction']);
                                 <?php $author = ($article->created_by_alias ? $article->created_by_alias : $author);?>
 
                                 <?php if (!empty($article->contactid) &&  $this->params->get('link_author') == true) :?>
-                                    <?php echo '<a href="' . Route::url('index.php?option=com_contact&view=contact&id=' . $article->contactid) . '">' . $author . '</a>'; ?>
+                                    <?php
+                                    $contactUrl = Route::url(
+                                        'index.php?option=com_contact&view=contact&id='
+                                        . $article->contactid
+                                    );
+                                    echo '<a href="' . $contactUrl . '">'
+                                        . $author . '</a>';
+                                    ?>
                                 <?php else :?>
                                     <?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
                                 <?php endif; ?>
@@ -147,7 +193,13 @@ $listDirn  = $this->escape($this->filters['direction']);
                                 $active = $menu->getActive();
                                 $itemId = $active->id;
                                 $link = Route::url('index.php?option=com_users&view=login&Itemid=' . $itemId);
-                                $returnURL = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language));
+                                $returnURL = Route::url(
+                                    \Components\Content\Site\Helpers\Route::getArticleRoute(
+                                        $article->slug,
+                                        $article->catid,
+                                        $article->language
+                                    )
+                                );
                                 $fullURL = new Hubzero\Utility\Uri($link);
                                 $fullURL->setUriVar('return', base64_encode(urlencode($returnURL)));
                             ?>
@@ -169,7 +221,12 @@ $listDirn  = $this->escape($this->filters['direction']);
 
     <?php // Add pagination links ?>
     <?php if (!empty($this->items)) : ?>
-        <?php if (($this->params->def('show_pagination', 2) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+        <?php
+        $showPagination = ($this->params->def('show_pagination', 2) == 1
+            || ($this->params->get('show_pagination') == 2))
+            && ($this->pagination->get('pages.total') > 1);
+        ?>
+        <?php if ($showPagination) : ?>
             <div class="pagination">
                 <?php echo $this->pagination->render(); ?>
             </div>

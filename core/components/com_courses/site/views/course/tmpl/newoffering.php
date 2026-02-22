@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,8 @@ if (!$this->no_html) {
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-prev btn" href="<?php echo $this->course->link(); ?>"><?php echo Lang::txt('COM_COURSES_BACK'); ?></a>
+            <?php $txt = Lang::txt('COM_COURSES_BACK'); ?>
+            <a class="icon-prev btn" href="<?php echo $this->course->link(); ?>"><?php echo $txt; ?></a>
         </p>
     </div><!-- / #content-header-extra -->
 </header>
@@ -43,13 +42,24 @@ if (!$this->no_html) {
 
             <label for="field-alias">
                 <?php echo Lang::txt('COM_COURSES_FIELD_OFFERING_ALIAS'); ?>
-                <input name="offering[alias]" id="field-alias" type="text" size="35" value="<?php echo $this->escape($this->offering->get('alias')); ?>" />
+                <input
+                    name="offering[alias]"
+                    id="field-alias"
+                    type="text"
+                    size="35"
+                    value="<?php echo $this->escape($this->offering->get('alias')); ?>" />
                 <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_OFFERING_ALIAS_HINT'); ?></span>
             </label>
 
             <label for="field-title">
-                <?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-                <input type="text" name="offering[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->offering->get('title', ''))); ?>" />
+                <?php $txt = Lang::txt('JREQUIRED'); ?>
+                <?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?> <span class="required"><?php echo $txt; ?></span>
+                <input
+                    type="text"
+                    name="offering[title]"
+                    id="field-title"
+                    size="35"
+                    value="<?php echo $this->escape(stripslashes($this->offering->get('title', ''))); ?>" />
             </label>
         </fieldset>
         <div class="clear"></div>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,11 @@ defined('_HZEXEC_') or die();
 Html::addIncludePath(PATH_COMPONENT . '/helpers');
 
 ?>
-<?php if ($this->params->get('show_page_heading') or $this->params->get('show_category_title', 1) or $this->params->get('page_subheading')) : ?>
+<?php if (
+    $this->params->get('show_page_heading')
+    or $this->params->get('show_category_title', 1)
+    or $this->params->get('page_subheading')
+) : ?>
     <header id="content-header">
         <?php if ($this->params->get('show_page_heading')) : ?>
             <h2>
@@ -36,14 +38,27 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
 <section class="main section">
     <div class="blog<?php echo $this->pageclass_sfx; ?>">
 
-        <?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
+        <?php if (
+            $this->params->get('show_description', 1)
+            || $this->params->def('show_description_image', 1)
+) : ?>
             <div class="category-desc">
-                <?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
+                        <?php
+                        $catImage = $this->category->getParams()->get('image');
+                        ?>
+                        <?php if ($this->params->get('show_description_image') && $catImage) : ?>
                     <img src="<?php echo $this->category->getParams()->get('image'); ?>" alt="" />
-                <?php endif; ?>
-                <?php if ($this->params->get('show_description') && $this->category->description) : ?>
-                    <?php echo Html::content('prepare', $this->category->description, '', 'com_content.category'); ?>
-                <?php endif; ?>
+                        <?php endif; ?>
+                        <?php if ($this->params->get('show_description') && $this->category->description) : ?>
+                            <?php
+                            echo Html::content(
+                                'prepare',
+                                $this->category->description,
+                                '',
+                                'com_content.category'
+                            );
+                            ?>
+                        <?php endif; ?>
                 <div class="clr"></div>
             </div>
         <?php endif; ?>
@@ -58,7 +73,8 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
         <?php if (!empty($this->lead_items)) : ?>
             <div class="items-leading">
                 <?php foreach ($this->lead_items as &$item) : ?>
-                    <div class="leading-<?php echo $leadingcount; ?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
+                    <?php $unpub = $item->state == 0 ? ' system-unpublished' : null; ?>
+                    <div class="leading-<?php echo $leadingcount; ?><?php echo $unpub; ?>">
                         <?php
                         $this->item = &$item;
                         echo $this->loadTemplate('item');
@@ -84,7 +100,8 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
                 if ($rowcount == 1) : ?>
                     <div class="items-row cols-<?php echo (int) $this->columns; ?> <?php echo 'row-' . $row; ?>">
                 <?php endif; ?>
-                <div class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
+                <?php $unpub = $item->state == 0 ? ' system-unpublished' : null; ?>
+                <div class="item column-<?php echo $rowcount; ?><?php echo $unpub; ?>">
                     <?php
                         $this->item = &$item;
                         echo $this->loadTemplate('item');
@@ -113,7 +130,12 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
             </div>
         <?php endif; ?>
 
-        <?php if (($this->params->def('show_pagination', 1) == 1 || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+        <?php
+        $showPagination = ($this->params->def('show_pagination', 1) == 1
+            || ($this->params->get('show_pagination') == 2))
+            && ($this->pagination->get('pages.total') > 1);
+        ?>
+        <?php if ($showPagination) : ?>
             <div class="pagination">
                 <?php /*if ($this->params->def('show_pagination_results', 1)) : ?>
                     <p class="counter">

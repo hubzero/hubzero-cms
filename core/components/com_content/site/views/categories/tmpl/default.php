@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,12 +25,26 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
         <?php if ($this->params->get('show_base_description')) : ?>
             <?php //If there is a description in the menu parameters use that; ?>
                 <?php if ($this->params->get('categories_description')) : ?>
-                    <?php echo Html::content('prepare', $this->params->get('categories_description'), '', 'com_content.categories'); ?>
+                    <?php
+                    echo Html::content(
+                        'prepare',
+                        $this->params->get('categories_description'),
+                        '',
+                        'com_content.categories'
+                    );
+                    ?>
                 <?php  else : ?>
                     <?php //Otherwise get one from the database if it exists. ?>
                     <?php if ($this->parent->description) : ?>
                         <div class="category-desc">
-                            <?php echo Html::content('prepare', $this->parent->description, '', 'com_content.categories'); ?>
+                            <?php
+                            echo Html::content(
+                                'prepare',
+                                $this->parent->description,
+                                '',
+                                'com_content.categories'
+                            );
+                            ?>
                         </div>
                     <?php  endif; ?>
                 <?php  endif; ?>

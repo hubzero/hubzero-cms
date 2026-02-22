@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,11 +10,13 @@
 defined('_HZEXEC_') or die();
 ?>
 <div id="media">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+    <form action="<?php echo $routeUrl; ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
         <table class="formed">
             <thead>
                 <tr>
-                    <th><label for="image"><?php echo Lang::txt('COM_COURSES_UPLOAD'); ?> <?php echo Lang::txt('WILL_REPLACE_EXISTING_IMAGE'); ?></label></th>
+                    <th><label for="image"><?php echo Lang::txt('COM_COURSES_UPLOAD'); ?>
+                        <?php<?php echo Lang::txt('WILL_REPLACE_EXISTING_IMAGE'); ?></label></th>
                 </tr>
             </thead>
             <tbody>
@@ -55,7 +55,18 @@ if ($this->file && file_exists($this->path . DS . $this->file)) {
     list($width, $height, $type, $attr) = getimagesize($this->path . DS . $this->file);
     ?>
                 <tr>
-                    <td rowspan="6"><img src="<?php echo rtrim(Request::root(true), '/') . substr($this->path, strlen(PATH_ROOT)) . DS . $this->file; ?>" alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>" id="conimage" /></td>
+                    <?php
+                    $imgSrc = rtrim(Request::root(true), '/')
+                        . substr($this->path, strlen(PATH_ROOT))
+                        . DS . $this->file;
+                    ?>
+                    <td rowspan="6">
+                        <img
+                            src="<?php echo $imgSrc; ?>"
+                            alt="<?php echo Lang::txt('COM_COURSES_LOGO'); ?>"
+                            id="conimage"
+                        />
+                    </td>
                     <td><?php echo Lang::txt('COM_COURSES_FILE'); ?>:</td>
                     <td><?php echo $this->file; ?></td>
                 </tr>
@@ -73,7 +84,14 @@ if ($this->file && file_exists($this->path . DS . $this->file)) {
                 </tr>
                 <tr>
                     <td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-                    <td><a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&tmpl=component&task=remove&type=' . $this->type . '&file=' . $this->file . '&id=' . $this->id . '&' . Session::getFormToken() . '=1'); ?>">[ <?php echo Lang::txt('COM_COURSES_DELETE'); ?> ]</a></td>
+                    <?php
+                        $routeUrl = Route::url(
+                            'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                            . '&tmpl=component&task=remove&type=' . $this->type . '&file=' . $this->file . '&id='
+                            . $this->id . '&' . Session::getFormToken() . '=1'
+                        );
+                    ?>
+                    <td><a href="<?php echo $routeUrl; ?>">[ <?php echo Lang::txt('COM_COURSES_DELETE'); ?> ]</a></td>
                 </tr>
 <?php } else { ?>
                 <tr>

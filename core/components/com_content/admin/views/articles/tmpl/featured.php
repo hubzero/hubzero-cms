@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -55,29 +53,89 @@ $listOrder = $this->filters['sort'];
 $listDirn  = $this->filters['sort_Dir'];
 $canOrder  = User::authorise('core.edit.state', 'com_content.article');
 $saveOrder = $listOrder == 'fp.ordering';
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&task=featured'
+);
+$searchVal = $this->escape($this->filters['search']);
+$searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=featured');?>" method="post" name="adminForm" id="adminForm">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
     <fieldset id="filter-bar">
         <div class="filter-search fltlft">
-            <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-            <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
+            <label class="filter-search-lbl" for="filter_search">
+                <?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?>
+            </label>
+            <input
+                type="text"
+                name="filter_search"
+                id="filter_search"
+                class="filter"
+                value="<?php echo $searchVal; ?>"
+                placeholder="<?php echo $searchPlaceholder; ?>"
+            />
             <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
             <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
         </div>
         <div class="filter-select fltrt">
-            <select name="filter_published" class="inputbox" class="filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php echo Html::select('options', Html::grid('publishedOptions'), 'value', 'text', $this->filters['published'], true); ?>
+            <select
+                name="filter_published"
+                class="inputbox filter filter-submit"
+            >
+                <option value="">
+                    <?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?>
+                </option>
+                <?php
+                echo Html::select(
+                    'options',
+                    Html::grid('publishedOptions'),
+                    'value',
+                    'text',
+                    $this->filters['published'],
+                    true
+                );
+                ?>
             </select>
 
-            <select name="filter_access" class="inputbox" class="filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+            <select
+                name="filter_access"
+                class="inputbox filter filter-submit"
+            >
+                <option value="">
+                    <?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?>
+                </option>
+                <?php
+                echo Html::select(
+                    'options',
+                    Html::access('assetgroups'),
+                    'value',
+                    'text',
+                    $this->filters['access']
+                );
+                ?>
             </select>
 
-            <select name="filter_language" class="inputbox" class="filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></option>
-                <?php echo Html::select('options', Html::contentlanguage('existing', true, true), 'value', 'text', $this->filters['language']); ?>
+            <select
+                name="filter_language"
+                class="inputbox filter filter-submit"
+            >
+                <option value="">
+                    <?php echo Lang::txt('JOPTION_SELECT_LANGUAGE'); ?>
+                </option>
+                <?php
+                echo Html::select(
+                    'options',
+                    Html::contentlanguage('existing', true, true),
+                    'value',
+                    'text',
+                    $this->filters['language']
+                );
+                ?>
             </select>
         </div>
     </fieldset>
@@ -86,7 +144,13 @@ $saveOrder = $listOrder == 'fp.ordering';
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        value=""
+                        title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>"
+                        class="checkbox-toggle toggle-all"
+                    />
                 </th>
                 <th class="title">
                     <?php echo Html::grid('sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
@@ -112,10 +176,13 @@ $saveOrder = $listOrder == 'fp.ordering';
                 <th class="priority-5">
                     <?php echo Html::grid('sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
                 </th>
-                <!-- [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
+                <!--
+                [!] HUBZERO - (zooley) Removing hit counter as it
+                can contribute to performance issues.
                 <th width="5%">
                     <?php echo Html::grid('sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
-                </th> -->
+                </th>
+                -->
                 <th class="priority-6">
                     <?php echo Html::grid('sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
                 </th>
@@ -139,7 +206,9 @@ $saveOrder = $listOrder == 'fp.ordering';
             $assetId    = 'com_content.article.' . $item->id;
             $canCreate  = User::authorise('core.create', 'com_content.category.' . $item->catid);
             $canEdit    = User::authorise('core.edit', 'com_content.article.' . $item->id);
-            $canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out == User::get('id') || $item->checked_out == 0;
+            $canCheckin = User::authorise('core.manage', 'com_checkin')
+                || $item->checked_out == User::get('id')
+                || $item->checked_out == 0;
             $canChange  = User::authorise('core.edit.state', 'com_content.article.' . $item->id) && $canCheckin;
             ?>
             <tr class="row<?php echo $i % 2; ?>">
@@ -148,10 +217,25 @@ $saveOrder = $listOrder == 'fp.ordering';
                 </td>
                 <td>
                     <?php if ($item->checked_out) : ?>
-                        <?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, 'featured.', $canCheckin); ?>
+                        <?php
+                        echo Html::grid(
+                            'checkedout',
+                            $i,
+                            $item->editor,
+                            $item->checked_out_time,
+                            'featured.',
+                            $canCheckin
+                        );
+                        ?>
                     <?php endif; ?>
                     <?php if ($canEdit) : ?>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&return=featured&id=' . $item->id);?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&task=edit&return=featured&id=' . $item->id
+                        );
+                        ?>
+                    <a href="<?php echo $editUrl; ?>">
                         <?php echo $this->escape($item->title); ?></a>
                     <?php else : ?>
                         <?php echo $this->escape($item->title); ?>
@@ -160,7 +244,18 @@ $saveOrder = $listOrder == 'fp.ordering';
                         <?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?></p>
                 </td>
                 <td class="center">
-                    <?php echo Html::grid('published', $item->state, $i, 'articles.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+                    <?php
+                    echo Html::grid(
+                        'published',
+                        $item->state,
+                        $i,
+                        'articles.',
+                        $canChange,
+                        'cb',
+                        $item->publish_up,
+                        $item->publish_down
+                    );
+                    ?>
                 </td>
                 <td class="center priority-2">
                     <?php echo $this->escape($item->category_title); ?>
@@ -169,15 +264,56 @@ $saveOrder = $listOrder == 'fp.ordering';
                     <?php if ($canChange) : ?>
                         <?php if ($saveOrder) :?>
                             <?php if ($listDirn == 'asc') : ?>
-                                <span><?php echo $this->pagination->orderUpIcon($i, true, 'featured.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, true, 'featured.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                <?php
+                                $upIcon = $this->pagination->orderUpIcon(
+                                    $i,
+                                    true,
+                                    'featured.orderup',
+                                    'JLIB_HTML_MOVE_UP',
+                                    $ordering
+                                );
+                                $downIcon = $this->pagination->orderDownIcon(
+                                    $i,
+                                    $this->pagination->total,
+                                    true,
+                                    'featured.orderdown',
+                                    'JLIB_HTML_MOVE_DOWN',
+                                    $ordering
+                                );
+                                ?>
+                                <span><?php echo $upIcon; ?></span>
+                                <span><?php echo $downIcon; ?></span>
                             <?php elseif ($listDirn == 'desc') : ?>
-                                <span><?php echo $this->pagination->orderUpIcon($i, true, 'featured.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, true, 'featured.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                <?php
+                                $upIcon = $this->pagination->orderUpIcon(
+                                    $i,
+                                    true,
+                                    'featured.orderdown',
+                                    'JLIB_HTML_MOVE_UP',
+                                    $ordering
+                                );
+                                $downIcon = $this->pagination->orderDownIcon(
+                                    $i,
+                                    $this->pagination->total,
+                                    true,
+                                    'featured.orderup',
+                                    'JLIB_HTML_MOVE_DOWN',
+                                    $ordering
+                                );
+                                ?>
+                                <span><?php echo $upIcon; ?></span>
+                                <span><?php echo $downIcon; ?></span>
                             <?php endif; ?>
                         <?php endif; ?>
                         <?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
-                        <input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order" />
+                        <input
+                            type="text"
+                            name="order[]"
+                            size="5"
+                            value="<?php echo $item->ordering; ?>"
+                            <?php echo $disabled; ?>
+                            class="text-area-order"
+                        />
                     <?php else : ?>
                         <?php echo $item->ordering; ?>
                     <?php endif; ?>
@@ -188,7 +324,14 @@ $saveOrder = $listOrder == 'fp.ordering';
                 <td class="center priority-6">
                     <?php if ($item->created_by_alias) : ?>
                         <?php echo $this->escape($item->author_name); ?>
-                        <p class="smallsub"> <?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->created_by_alias)); ?></p>
+                        <p class="smallsub">
+                            <?php
+                            echo Lang::txt(
+                                'JGLOBAL_LIST_ALIAS',
+                                $this->escape($item->created_by_alias)
+                            );
+                            ?>
+                        </p>
                     <?php else : ?>
                         <?php echo $this->escape($item->author_name); ?>
                     <?php endif; ?>
@@ -196,15 +339,24 @@ $saveOrder = $listOrder == 'fp.ordering';
                 <td class="center nowrap priority-5">
                     <?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_LC4')); ?>
                 </td>
-                <?php /* [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
+                <?php
+                /*
+                [!] HUBZERO - (zooley) Removing hit counter as it
+                can contribute to performance issues.
                 <td class="center">
                     <?php echo (int) $item->hits; ?>
-                </td> */ ?>
+                </td>
+                */
+                ?>
                 <td class="center priority6">
                     <?php if ($item->language == '*') : ?>
                         <?php echo Lang::txt('JALL', 'language'); ?>
                     <?php else : ?>
-                        <?php echo $item->language_title ? $this->escape($item->language_title) : Lang::txt('JUNDEFINED'); ?>
+                        <?php
+                        echo $item->language_title
+                            ? $this->escape($item->language_title)
+                            : Lang::txt('JUNDEFINED');
+                        ?>
                     <?php endif; ?>
                 </td>
                 <td class="center priority-5">

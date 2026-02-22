@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,7 +26,12 @@ $canEdit = $this->item->params->get('access-edit');
 <?php endif; ?>
 
 <?php
-if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->paginationposition && $this->item->paginationrelative) {
+if (
+    !empty($this->item->pagination)
+    && $this->item->pagination
+    && !$this->item->paginationposition
+    && $this->item->paginationrelative
+) {
     echo $this->item->pagination;
 }
 ?>
@@ -81,9 +84,15 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
     <?php echo $this->item->event->beforeDisplayContent; ?>
 
     <div class="contentpaneopen">
-        <?php $useDefList = (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_parent_category'))
-        or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date'))
-        or ($params->get('show_hits'))); ?>
+        <?php $useDefList = (
+            ($params->get('show_author'))
+            or ($params->get('show_category'))
+            or ($params->get('show_parent_category'))
+            or ($params->get('show_create_date'))
+            or ($params->get('show_modify_date'))
+            or ($params->get('show_publish_date'))
+            or ($params->get('show_hits'))
+        ); ?>
 
         <?php if ($useDefList) : ?>
             <dl class="article-info">
@@ -93,7 +102,12 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
                 <dd class="parent-category-name">
                     <?php
                     $title = $this->escape($this->item->parent_title);
-                    $url = '<a href="' . Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->parent_slug)) . '">' . $title . '</a>';
+                    $catUrl = Route::url(
+                        \Components\Content\Site\Helpers\Route::getCategoryRoute(
+                            $this->item->parent_slug
+                        )
+                    );
+                    $url = '<a href="' . $catUrl . '">' . $title . '</a>';
                     ?>
                     <?php if ($params->get('link_parent_category') && $this->item->parent_slug) : ?>
                         <?php echo Lang::txt('COM_CONTENT_PARENT', $url); ?>
@@ -106,7 +120,12 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
                 <dd class="category-name">
                     <?php
                     $title = $this->escape($this->item->category_title);
-                    $url = '<a href="' . Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->catslug)) . '">' . $title . '</a>';
+                    $catUrl = Route::url(
+                        \Components\Content\Site\Helpers\Route::getCategoryRoute(
+                            $this->item->catslug
+                        )
+                    );
+                    $url = '<a href="' . $catUrl . '">' . $title . '</a>';
                     ?>
                     <?php if ($params->get('link_category') && $this->item->catslug) : ?>
                         <?php echo Lang::txt('COM_CONTENT_CATEGORY', $url); ?>
@@ -117,22 +136,35 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
             <?php endif; ?>
             <?php if ($params->get('show_create_date')) : ?>
                 <dd class="create">
-                    <?php echo Lang::txt('COM_CONTENT_CREATED_DATE_ON', Date::of($this->item->created)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
+                    <?php
+                    $dateStr = Date::of($this->item->created)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+                    echo Lang::txt('COM_CONTENT_CREATED_DATE_ON', $dateStr);
+                    ?>
                 </dd>
             <?php endif; ?>
             <?php if ($params->get('show_modify_date')) : ?>
                 <dd class="modified">
-                    <?php echo Lang::txt('COM_CONTENT_LAST_UPDATED', Date::of($this->item->modified)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
+                    <?php
+                    $dateStr = Date::of($this->item->modified)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+                    echo Lang::txt('COM_CONTENT_LAST_UPDATED', $dateStr);
+                    ?>
                 </dd>
             <?php endif; ?>
             <?php if ($params->get('show_publish_date')) : ?>
                 <dd class="published">
-                    <?php echo Lang::txt('COM_CONTENT_PUBLISHED_DATE_ON', Date::of($this->item->publish_up)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
+                    <?php
+                    $dateStr = Date::of($this->item->publish_up)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+                    echo Lang::txt('COM_CONTENT_PUBLISHED_DATE_ON', $dateStr);
+                    ?>
                 </dd>
             <?php endif; ?>
             <?php if ($params->get('show_author') && !empty($this->item->author)) : ?>
                 <dd class="createdby">
-                    <?php $author = $this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author; ?>
+                    <?php
+                    $author = $this->item->created_by_alias
+                        ? $this->item->created_by_alias
+                        : $this->item->author;
+                    ?>
                     <?php if (!empty($this->item->contactid) && $params->get('link_author') == true) : ?>
                         <?php
                         $needle = 'index.php?option=com_contact&view=contact&id=' . $this->item->contactid;
@@ -140,7 +172,9 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
                         $item = $menu->getItems('link', $needle, true);
                         $cntlink = !empty($item) ? $needle . '&Itemid=' . $item->id : $needle;
 
-                        echo Lang::txt('COM_CONTENT_WRITTEN_BY', '<a href="' . Route::url($cntlink) . '">' . $author . '</a>');
+                        $authorLink = '<a href="' . Route::url($cntlink) . '">'
+                            . $author . '</a>';
+                        echo Lang::txt('COM_CONTENT_WRITTEN_BY', $authorLink);
                         ?>
                     <?php else : ?>
                         <?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
@@ -170,18 +204,30 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
 
         <?php if ($params->get('access-view')) :?>
             <?php if (isset($images->image_fulltext) && !empty($images->image_fulltext)) : ?>
-                <?php $imgfloat = (empty($images->float_fulltext)) ? $params->get('float_fulltext') : $images->float_fulltext; ?>
+                <?php
+                $imgfloat = (empty($images->float_fulltext))
+                    ? $params->get('float_fulltext')
+                    : $images->float_fulltext;
+                ?>
                 <div class="img-fulltext-<?php echo htmlspecialchars($imgfloat); ?>">
                     <img
                         <?php if ($images->image_fulltext_caption) :
-                            echo 'class="caption" title="' . htmlspecialchars($images->image_fulltext_caption) . '"';
+                            echo 'class="caption" title="'
+                                . htmlspecialchars($images->image_fulltext_caption) . '"';
                         endif; ?>
-                        src="<?php echo htmlspecialchars($images->image_fulltext); ?>" alt="<?php echo htmlspecialchars($images->image_fulltext_alt); ?>"/>
+                        src="<?php echo htmlspecialchars($images->image_fulltext); ?>"
+                        alt="<?php echo htmlspecialchars($images->image_fulltext_alt); ?>"
+                    />
                 </div>
             <?php endif; ?>
 
             <?php
-            if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->paginationposition && !$this->item->paginationrelative) :
+            if (
+                !empty($this->item->pagination)
+                && $this->item->pagination
+                && !$this->item->paginationposition
+                && !$this->item->paginationrelative
+            ) :
                 echo $this->item->pagination;
             endif;
             ?>
@@ -189,13 +235,22 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
             <?php echo $this->item->text; ?>
 
             <?php
-            if (!empty($this->item->pagination) && $this->item->pagination && $this->item->paginationposition && !$this->item->paginationrelative) :
+            if (
+                !empty($this->item->pagination)
+                && $this->item->pagination
+                && $this->item->paginationposition
+                && !$this->item->paginationrelative
+            ) :
                 echo $this->item->pagination;
             endif;
             ?>
 
             <?php
-            if (isset($urls) && ((!empty($urls->urls_position) && ($urls->urls_position == '1')) || ($params->get('urls_position') == '1'))) :
+            if (
+                isset($urls)
+                && ((!empty($urls->urls_position) && ($urls->urls_position == '1'))
+                    || ($params->get('urls_position') == '1'))
+            ) :
                 echo $this->loadTemplate('links');
             endif;
             ?>
@@ -227,7 +282,12 @@ if (!empty($this->item->pagination) && $this->item->pagination && !$this->item->
             <?php endif; ?>
         <?php endif; ?>
         <?php
-        if (!empty($this->item->pagination) && $this->item->pagination && $this->item->paginationposition && $this->item->paginationrelative) :
+        if (
+            !empty($this->item->pagination)
+            && $this->item->pagination
+            && $this->item->paginationposition
+            && $this->item->paginationrelative
+        ) :
             echo $this->item->pagination;
         endif;
         ?>

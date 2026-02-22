@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,9 @@ $canDo = \Components\Content\Admin\Helpers\Permissions::getActions('article', $t
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
-$lang = ($this->task == 'edit' || $this->task == 'apply' ? 'COM_CONTENT_PAGE_EDIT_ARTICLE' : 'COM_CONTENT_PAGE_ADD_ARTICLE');
+$lang = ($this->task == 'edit' || $this->task == 'apply')
+    ? 'COM_CONTENT_PAGE_EDIT_ARTICLE'
+    : 'COM_CONTENT_PAGE_ADD_ARTICLE';
 Toolbar::title(Lang::txt($lang), 'content');
 if (
     $canDo->get('core.edit')
@@ -41,7 +41,8 @@ $this->js();
 
 $params = $this->item->attribs->toArray();
 
-// This checks if the config options have ever been saved. If they haven't they will fall back to the original settings.
+// This checks if the config options have ever been saved.
+// If they haven't they will fall back to the original settings.
 $editoroptions = isset($params['show_publishing_options']);
 
 if (!$editoroptions) :
@@ -68,11 +69,31 @@ $dateModified->setTimezone($userTZ);
 $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=edit&id=' . (int) $this->item->id
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
-                <legend><span><?php echo empty($this->item->id) ? Lang::txt('COM_CONTENT_NEW_ARTICLE') : Lang::txt('COM_CONTENT_EDIT_ARTICLE', $this->item->id); ?></span></legend>
+                <?php
+                $legendTxt = empty($this->item->id)
+                    ? Lang::txt('COM_CONTENT_NEW_ARTICLE')
+                    : Lang::txt('COM_CONTENT_EDIT_ARTICLE', $this->item->id);
+                ?>
+                <legend><span><?php echo $legendTxt; ?></span></legend>
 
                 <div class="form-group input-wrap">
                     <?php echo $this->form->getLabel('title'); ?>
@@ -101,7 +122,10 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                                 $selected = 'selected="selected"';
                             }
                             ?>
-                            <option value="<?php echo $category->id; ?>" <?php echo $selected;?>><?php echo $category->nestedTitle(); ?></option>
+                            <option
+                                value="<?php echo $category->id; ?>"
+                                <?php echo $selected; ?>
+                            ><?php echo $category->nestedTitle(); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -156,35 +180,69 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                 <tbody>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_ID_LABEL');?></th>
-                        <td><?php echo $this->item->get('id', 0);?>
-                            <input type="hidden" name="id" value="<?php echo $this->escape($this->item->get('id')); ?>" />
+                        <td>
+                            <?php echo $this->item->get('id', 0); ?>
+                            <input
+                                type="hidden"
+                                name="id"
+                                value="<?php echo $this->escape($this->item->get('id')); ?>"
+                            />
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_BY_LABEL'); ?></th>
+                        <th scope="row">
+                            <?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_BY_LABEL'); ?>
+                        </th>
                         <td>
-                            <?php echo $this->item->created_by ? User::getInstance($this->item->created_by)->get('name') : Lang::txt('JUNKNOWN'); ?>
-                            <input type="hidden" name="fields[created_by]" value="<?php echo $this->escape($this->item->created_by); ?>" />
-                        </td> 
+                            <?php
+                            echo $this->item->created_by
+                                ? User::getInstance($this->item->created_by)->get('name')
+                                : Lang::txt('JUNKNOWN');
+                            ?>
+                            <input
+                                type="hidden"
+                                name="fields[created_by]"
+                                value="<?php echo $this->escape($this->item->created_by); ?>"
+                            />
+                        </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_LABEL') . " " . $abbrTimeZoneString;?></th>
+                        <th scope="row">
+                            <?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_LABEL') . " " . $abbrTimeZoneString; ?>
+                        </th>
                         <td>
                             <time datetime="<?php echo $dateCreatedString; ?>"><?php echo $dateCreatedString; ?></time>
                         </td>
                     </tr>
                     <?php if ($this->item->get('modified_by', false)) : ?>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIER_LABEL'); ?></th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIER_LABEL'); ?>
+                            </th>
                             <td>
-                                <?php echo $this->item->modified_by ? User::getInstance($this->item->modified_by)->get('name') : Lang::txt('JUNKNOWN'); ?>
-                                <input type="hidden" name="fields[modified_by]" value="<?php echo $this->escape($this->item->modified_by); ?>" />
-                            </td> 
+                                <?php
+                                echo $this->item->modified_by
+                                    ? User::getInstance($this->item->modified_by)->get('name')
+                                    : Lang::txt('JUNKNOWN');
+                                ?>
+                                <input
+                                    type="hidden"
+                                    name="fields[modified_by]"
+                                    value="<?php echo $this->escape($this->item->modified_by); ?>"
+                                />
+                            </td>
                         </tr>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIED_LABEL') . " " . $abbrTimeZoneString;?></th>
+                            <th scope="row">
+                                <?php
+                                echo Lang::txt('COM_CONTENT_FIELD_MODIFIED_LABEL')
+                                    . " " . $abbrTimeZoneString;
+                                ?>
+                            </th>
                             <td>
-                                <time datetime="<?php echo $dateModifiedString; ?>"><?php echo $dateModifiedString; ?></time>
+                                <time datetime="<?php echo $dateModifiedString; ?>">
+                                    <?php echo $dateModifiedString; ?>
+                                </time>
                             </td>
                         </tr>
                     <?php endif; ?>
@@ -192,8 +250,18 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
             </table>
             <?php echo Html::sliders('start', 'content-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
             <?php // Do not show the publishing options if the edit form is configured not to. ?>
-            <?php if ($params['show_publishing_options'] || ($params['show_publishing_options'] = '' && !empty($editoroptions))) : ?>
-                <?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'), 'publishing-details');?>
+            <?php
+            $showPublishing = $params['show_publishing_options']
+                || ($params['show_publishing_options'] = '' && !empty($editoroptions));
+            ?>
+            <?php if ($showPublishing) : ?>
+                <?php
+                echo Html::sliders(
+                    'panel',
+                    Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'),
+                    'publishing-details'
+                );
+                ?>
                 <fieldset class="panelform">
                     <div class="form-group input-wrap">
                         <?php echo $this->form->getLabel('publish_up') . " " . $abbrTimeZoneString; ?>
@@ -223,12 +291,21 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
 
             <?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
             <?php foreach ($fieldSets as $name => $fieldSet) : ?>
-                <?php // If the parameter says to show the article options or if the parameters have never been set, we will
-                      // show the article options. ?>
+                <?php
+                // If the parameter says to show the article options
+                // or if the parameters have never been set,
+                // we will show the article options.
+                $showArticleOpts = $params['show_article_options']
+                    || ($params['show_article_options'] == ''
+                        && !empty($editoroptions));
+                ?>
 
-                <?php if ($params['show_article_options'] || (( $params['show_article_options'] == '' && !empty($editoroptions) ))) : ?>
-                    <?php // Go through all the fieldsets except the configuration and basic-limited, which are
-                          // handled separately below. ?>
+                <?php if ($showArticleOpts) : ?>
+                    <?php
+                    // Go through all the fieldsets except the
+                    // configuration and basic-limited, which are
+                    // handled separately below.
+                    ?>
 
                     <?php if ($name != 'editorConfig' && $name != 'basic-limited') : ?>
                         <?php echo Html::sliders('panel', Lang::txt($fieldSet->label), $name . '-options'); ?>
@@ -244,7 +321,10 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                             <?php endforeach; ?>
                         </fieldset>
                     <?php endif ?>
-                    <?php // If we are not showing the options we need to use the hidden fields so the values are not lost.  ?>
+                    <?php
+                    // If we are not showing the options we need to
+                    // use hidden fields so the values are not lost.
+                    ?>
                 <?php  elseif ($name == 'basic-limited') : ?>
                     <?php foreach ($this->form->getFieldset('basic-limited') as $field) : ?>
                         <?php  echo $field->input; ?>
@@ -265,7 +345,13 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
             // so that those fields always show to those with permissions
             ?>
             <?php if (User::authorise('core.admin')) : ?>
-                <?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_SLIDER_EDITOR_CONFIG'), 'configure-sliders'); ?>
+                <?php
+                echo Html::sliders(
+                    'panel',
+                    Lang::txt('COM_CONTENT_SLIDER_EDITOR_CONFIG'),
+                    'configure-sliders'
+                );
+                ?>
                 <fieldset class="panelform">
                     <?php foreach ($this->form->getFieldset('editorConfig') as $field) : ?>
                         <div class="form-group input-wrap">
@@ -279,7 +365,13 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
             <?php // The url and images fields only show if the configuration is set to allow them.  ?>
             <?php // This is for legacy reasons. ?>
             <?php if ($params['show_urls_images_backend']) : ?>
-                <?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_URLS_AND_IMAGES'), 'urls_and_images-options'); ?>
+                <?php
+                echo Html::sliders(
+                    'panel',
+                    Lang::txt('COM_CONTENT_FIELDSET_URLS_AND_IMAGES'),
+                    'urls_and_images-options'
+                );
+                ?>
                 <fieldset class="panelform">
                     <div class="form-group input-wrap">
                         <?php echo $this->form->getLabel('images'); ?>

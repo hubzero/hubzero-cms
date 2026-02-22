@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,11 +10,13 @@
 defined('_HZEXEC_') or die();
 ?>
 <p>
-    You have <strong><?php echo \Components\Courses\Helpers\Form::timeDiff($realLimit * 60) ?></strong> to complete this form.
+    <?php $val = \Components\Courses\Helpers\Form::timeDiff($realLimit * 60); ?>
+    You have <strong><?php echo $val; ?></strong> to complete this form.
     There are <strong><?php echo $this->pdf->getQuestionCount() ?></strong> questions.
     <?php if ($this->dep->getAllowedAttempts() > 1) : ?>
         You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
-        This is your <strong><?php echo \Components\Courses\Helpers\Form::toOrdinal((int)$this->resp->getAttemptNumber()) ?></strong> attempt.
+        <?php $val = \Components\Courses\Helpers\Form::toOrdinal((int)$this->resp->getAttemptNumber()); ?>
+        This is your <strong><?php echo $val; ?></strong> attempt.
     <?php endif; ?>
 </p>
 <?php if ($realLimit == $limit) : ?>
@@ -30,7 +30,9 @@ defined('_HZEXEC_') or die();
         <input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
         <input type="hidden" name="attempt" value="<?php echo (int)$this->resp->getAttemptNumber() ?>" />
         <input type="hidden" name="controller" value="form" />
-        <?php echo isset($_GET['tmpl']) ? '<input type="hidden" name="tmpl" value="' . str_replace('"', '&quot;', $_GET['tmpl']) . '" />' : '' ?>
+        <?php echo isset($_GET['tmpl']) ? '<input type="hidden" name="tmpl" value="'
+                . str_replace('"', '&quot;', $_GET['tmpl']) . '" />' : ''
+        ?>
         <button type="submit">Continue</button>
     </fieldset>
 </form>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,12 +25,19 @@ if ($canDo->get('core.delete')) {
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span4">
                 <label for="filter_search"><?php echo Lang::txt('COM_COURSES_SEARCH'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_STUDENTS_SEARCH_PLACEHOLDER'); ?>" />
+                <input
+                    type="text"
+                    name="search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('COM_COURSES_STUDENTS_SEARCH_PLACEHOLDER'); ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -51,11 +56,37 @@ Html::behavior('tooltip');
                         <optgroup label="<?php echo $this->escape(stripslashes($course->get('alias'))); ?>">
                             <?php
                             foreach ($course->offerings() as $offering) {
-                                $offerings[$offering->get('id')] = $course->get('alias') . ' : ' . $offering->get('alias');
+                                $offerings[$offering->get('id')] = $course->get('alias') . ' : '
+                                    . $offering->get('alias');
                                 ?>
-                            <option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->offering->get('id')) {
-                                echo ' selected="selected"';
-                                           } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+                                <?php $val = $this->escape(stripslashes($offering->get('id'))); ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php
+                                $selected = ($offering->get('id') == $this->offering->get('id'))
+                                ? ' selected="selected"' : '';
+                                $optLabel = $this->escape(stripslashes($offering->get('alias')));
+                                ?>
+                            <option value="<?php echo $val; ?>"<?php echo $selected; ?>>
+                                <?php echo $optLabel; ?>
+                            </option>
                                 <?php
                             }
                             ?>
@@ -74,9 +105,34 @@ Html::behavior('tooltip');
                         if ($this->offering->sections()->total() > 0) {
                             foreach ($this->offering->sections() as $section) {
                                 ?>
-                                <option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->filters['section_id']) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+                                <?php $val = $this->escape(stripslashes($section->get('id'))); ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php $val = $val; ?>
+                                <?php
+                                $selected = ($section->get('id') == $this->filters['section_id'])
+                                    ? ' selected="selected"' : '';
+                                $optLabel = $this->escape(stripslashes($section->get('title')));
+                                ?>
+                                <option value="<?php echo $val; ?>"<?php echo $selected; ?>>
+                                    <?php echo $optLabel; ?>
+                                </option>
                                 <?php
                             }
                         }
@@ -98,7 +154,12 @@ Html::behavior('tooltip');
                 <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=courses'); ?>">
                     <?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
                 </a>:
-                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id')); ?>">
+                <?php
+                    $routeUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id')
+                    );
+                ?>
+                <a href="<?php echo $routeUrl; ?>">
                     <?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
                 </a>
             </caption>
@@ -106,8 +167,14 @@ Html::behavior('tooltip');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <?php $txt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $txt; ?></label>
                 </th>
                 <th scope="col" class="priority-5"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_COURSES_COL_NAME'); ?></th>
@@ -144,15 +211,28 @@ Html::behavior('tooltip');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('id'); ?>"
+                        class="checkbox-toggle" />
+                    <label
+                        for="cb<?php echo $i; ?>"
+                        class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
                 </td>
                 <td class="priority-5">
                     <?php echo $this->escape($row->get('user_id')); ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')); ?>">
+                        <?php
+                            $routeUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')
+                            );
+                        ?>
+                        <a href="<?php echo $routeUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->get('name'))); ?>
                         </a>
                     <?php } else { ?>
@@ -163,7 +243,13 @@ Html::behavior('tooltip');
                 </td>
                 <td class="priority-4">
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')); ?>">
+                        <?php
+                            $routeUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')
+                            );
+                        ?>
+                        <a href="<?php echo $routeUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->get('email'))); ?>
                         </a>
                     <?php } else { ?>
@@ -174,11 +260,17 @@ Html::behavior('tooltip');
                 </td>
                 <?php if (!$this->filters['offering']) { ?>
                     <td>
-                        <?php echo (isset($offerings[$row->get('offering_id')])) ? $offerings[$row->get('offering_id')] : Lang::txt('COM_COURSES_UNKNOWN'); ?>
+                        <?php
+                            $offeringLabel = (isset($offerings[$row->get('offering_id')]))
+                                ? $offerings[$row->get('offering_id')]
+                                : Lang::txt('COM_COURSES_UNKNOWN');
+                            echo $offeringLabel;
+                        ?>
                     </td>
                 <?php } ?>
                 <td>
-                    <?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : Lang::txt('COM_COURSES_NONE'); ?>
+                    <?php $txt = Lang::txt('COM_COURSES_NONE'); ?>
+                    <?php echo ($section->exists()) ? $this->escape(stripslashes($section->get('title'))) : $txt; ?>
                 </td>
                 <td class="priority-3">
                     <span class="state <?php echo ($row->get('token')) ? 'publish' : 'unpublish'; ?>">
@@ -187,7 +279,8 @@ Html::behavior('tooltip');
                 </td>
                 <td class="priority-4">
                     <?php if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') { ?>
-                        <time datetime="<?php echo $row->get('enrolled'); ?>"><?php echo Date::of($row->get('enrolled'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                        <?php $val = Date::of($row->get('enrolled'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
+                        <time datetime="<?php echo $row->get('enrolled'); ?>"><?php echo $val; ?></time>
                     <?php } else { ?>
                         <?php echo Lang::txt('COM_COURSES_UNKNOWN'); ?>
                     <?php } ?>

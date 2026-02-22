@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,9 +25,12 @@ foreach ($modules as $module) {
     if ($params->get('automatic_title', '0') == '0') {
         echo Html::sliders('panel', $module->title, 'cpanel-panel-' . $module->name);
     } elseif (method_exists('mod' . $module->name . 'Helper', 'getTitle')) {
-        echo Html::sliders('panel', call_user_func_array(array('mod' . $module->name . 'Helper', 'getTitle'), array($params)), 'cpanel-panel-' . $module->name);
+        $helperClass = 'mod' . $module->name . 'Helper';
+        $panelTitle = call_user_func_array(array($helperClass, 'getTitle'), array($params));
+        echo Html::sliders('panel', $panelTitle, 'cpanel-panel-' . $module->name);
     } else {
-        echo Html::sliders('panel', Lang::txt('MOD_' . $module->name . '_TITLE'), 'cpanel-panel-' . $module->name);
+        $panelTitle = Lang::txt('MOD_' . $module->name . '_TITLE');
+        echo Html::sliders('panel', $panelTitle, 'cpanel-panel-' . $module->name);
     }
     echo $output;
 }

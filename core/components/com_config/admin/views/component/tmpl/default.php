@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -18,13 +16,29 @@ Html::behavior('formvalidation');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form
+    action="<?php echo $formAction; ?>"
+    id="component-form"
+    method="post"
+    name="adminForm"
+    autocomplete="off"
+    class="form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">
                 <button type="button" id="btn-apply"><?php echo Lang::txt('JAPPLY');?></button>
                 <button type="button" id="btn-save"><?php echo Lang::txt('JSAVE');?></button>
-                <button type="button" id="btn-cancel"<?php echo Request::getBool('refresh', 0) ? ' data-refresh="1"' : ''; ?>><?php echo Lang::txt('JCANCEL');?></button>
+                <?php
+                $refreshAttr = Request::getBool('refresh', 0) ? ' data-refresh="1"' : '';
+                $cancelLabel = Lang::txt('JCANCEL');
+                ?>
+                <button type="button" id="btn-cancel"<?php echo $refreshAttr; ?>><?php echo $cancelLabel; ?></button>
             </div>
 
             <?php echo Lang::txt($this->component->option . '_configuration'); ?>
@@ -58,7 +72,8 @@ $this->js();
                 <?php
         endforeach;
     else :
-            echo '<p class="warning">' . Lang::txt('COM_CONFIG_ERROR_COMPONENT_CONFIG_NOT_FOUND', $this->component->option) . '</p>';
+            $notFoundMsg = Lang::txt('COM_CONFIG_ERROR_COMPONENT_CONFIG_NOT_FOUND', $this->component->option);
+            echo '<p class="warning">' . $notFoundMsg . '</p>';
     endif;
 
         echo Html::tabs('end');

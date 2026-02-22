@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,11 @@ $class = ' class="first"';
     <ul class="categories">
         <?php foreach ($this->children[$this->category->id] as $id => $child) : ?>
             <?php
-            if ($this->params->get('show_empty_categories') || $child->getNumItems(true) || count($child->getChildren())) :
+            if (
+                $this->params->get('show_empty_categories')
+                || $child->getNumItems(true)
+                || count($child->getChildren())
+            ) :
                 if (!isset($this->children[$this->category->id][$id + 1])) :
                     $class = ' class="last"';
                 endif;
@@ -27,7 +29,12 @@ $class = ' class="first"';
             <li<?php echo $class; ?>>
                 <?php $class = ''; ?>
                 <span class="item-title">
-                    <a href="<?php echo Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($child->id)); ?>">
+                    <?php
+                    $catUrl = Route::url(
+                        \Components\Content\Site\Helpers\Route::getCategoryRoute($child->id)
+                    );
+                    ?>
+                    <a href="<?php echo $catUrl; ?>">
                         <?php echo $this->escape($child->title); ?>
                         <?php if ($this->params->get('show_cat_num_articles', 1)) : ?>
                             <span class="item-count tooltips" title="<?php echo Lang::txt('COM_CONTENT_NUM_ITEMS'); ?>">

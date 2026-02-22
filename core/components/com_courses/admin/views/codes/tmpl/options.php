@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,10 @@ defined('_HZEXEC_') or die();
 $tmpl = Request::getString('tmpl', '');
 
 if ($tmpl != 'component') {
-    Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_COUPON_CODE') . ': ' . Lang::txt('COM_COURSES_GENERATE'), 'course.png');
+    $title = Lang::txt('COM_COURSES') . ': '
+        . Lang::txt('COM_COURSES_COUPON_CODE') . ': '
+        . Lang::txt('COM_COURSES_GENERATE');
+    Toolbar::title($title, 'course.png');
     if ($canDo->get('core.edit')) {
         Toolbar::save();
     }
@@ -40,12 +41,27 @@ $nextDay   = date("d", mktime(0, 0, 0, $month + 1, $day, $year));
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo ($tmpl == 'component') ? 'component-form' : 'item-form'; ?>">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $routeUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="<?php echo ($tmpl == 'component') ? 'component-form' : 'item-form'; ?>">
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">
-                <button type="button" id="btn-generate" data-redirect="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&section=' . $this->section->get('id'), false); ?>"><?php echo Lang::txt('COM_COURSES_GENERATE');?></button>
+                <?php
+                    $routeUrl = Route::url(
+                        'index.php?option=' . $this->option  . '&controller=' . $this->controller . '&section='
+                        . $this->section->get('id'),
+                        false
+                    );
+                ?>
+                <button
+                    type="button"
+                    id="btn-generate"
+                    data-redirect="<?php echo $routeUrl; ?>"><?php echo Lang::txt('COM_COURSES_GENERATE');?></button>
                 <button type="button" id="btn-cancel"><?php echo Lang::txt('JCANCEL');?></button>
             </div>
 
@@ -66,14 +82,31 @@ $nextDay   = date("d", mktime(0, 0, 0, $month + 1, $day, $year));
             <table class="admintable">
                 <tbody>
                     <tr>
-                        <td class="key"><label for="field-num"><?php echo Lang::txt('COM_COURSES_FIELD_NUMBER_OF_CODES'); ?>:</label></td>
+                        <?php $txt = Lang::txt('COM_COURSES_FIELD_NUMBER_OF_CODES'); ?>
+                        <td class="key"><label for="field-num"><?php echo $txt; ?>:</label></td>
                         <td colspan="3"><input type="text" name="num" id="field-num" value="5" size="5" /></td>
                     </tr>
                     <tr>
-                        <td class="key"><label for="field-expires-year"><?php echo Lang::txt('COM_COURSES_FIELD_EXPIRES'); ?>:</label></td>
-                        <td>YYYY<input type="text" name="expires[year]" id="field-expires-year" value="<?php echo $nextYear; ?>" size="4" /></td>
-                        <td>MM<input type="text" name="expires[month]" id="field-expires-month" value="<?php echo $nextMonth; ?>" size="2" /></td>
-                        <td>DD<input type="text" name="expires[day]" id="field-expires-day" value="<?php echo $nextDay; ?>" size="2" /></td>
+                        <?php $txt = Lang::txt('COM_COURSES_FIELD_EXPIRES'); ?>
+                        <td class="key"><label for="field-expires-year"><?php echo $txt; ?>:</label></td>
+                        <td>YYYY<input
+                            type="text"
+                            name="expires[year]"
+                            id="field-expires-year"
+                            value="<?php echo $nextYear; ?>"
+                            size="4" /></td>
+                        <td>MM<input
+                            type="text"
+                            name="expires[month]"
+                            id="field-expires-month"
+                            value="<?php echo $nextMonth; ?>"
+                            size="2" /></td>
+                        <td>DD<input
+                            type="text"
+                            name="expires[day]"
+                            id="field-expires-day"
+                            value="<?php echo $nextDay; ?>"
+                            size="2" /></td>
                     </tr>
                 </tbody>
             </table>

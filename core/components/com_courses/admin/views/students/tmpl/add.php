@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -42,7 +40,14 @@ foreach ($roles as $role) {
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $routeUrl; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -52,7 +57,10 @@ foreach ($roles as $role) {
                 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
                 <input type="hidden" name="task" value="save" />
                 <input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
-                <input type="hidden" name="fields[role_id]" value="<?php echo $this->row->get('role_id', $role_id); ?>" />
+                <input
+                    type="hidden"
+                    name="fields[role_id]"
+                    value="<?php echo $this->row->get('role_id', $role_id); ?>" />
                 <input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
                 <input type="hidden" name="fields[student]" value="1" />
 
@@ -92,12 +100,20 @@ foreach ($roles as $role) {
                                 <?php
                                 foreach ($course->offerings() as $i => $offering) {
                                     foreach ($offering->sections() as $section) {
-                                        $data[$j++] = array($offering->get('id'), $section->get('id'), $section->get('title'));
+                                        $data[$j++] = array(
+                                            $offering->get('id'),
+                                            $section->get('id'),
+                                            $section->get('title')
+                                        );
                                     }
+                                    $val = $this->escape(stripslashes($offering->get('id')));
+                                    $selected = ($offering->get('id') == $this->offering->get('id'))
+                                        ? ' selected="selected"' : '';
+                                    $optLabel = $this->escape(stripslashes($offering->get('alias')));
                                     ?>
-                                    <option value="<?php echo $this->escape(stripslashes($offering->get('id'))); ?>"<?php if ($offering->get('id') == $this->offering->get('id')) {
-                                        echo ' selected="selected"';
-                                                   } ?>><?php echo $this->escape(stripslashes($offering->get('alias'))); ?></option>
+                                    <option value="<?php echo $val; ?>"<?php echo $selected; ?>>
+                                        <?php echo $optLabel; ?>
+                                    </option>
                                     <?php
                                 }
                                 ?>
@@ -113,15 +129,26 @@ foreach ($roles as $role) {
                     <select name="fields[section_id]" id="section_id">
                         <option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
                         <?php foreach ($this->offering->sections() as $k => $section) { ?>
-                            <option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) {
-                                echo ' selected="selected"';
-                                           } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+                            <?php
+                            $val = $this->escape(stripslashes($section->get('id')));
+                            $selected = ($section->get('id') == $this->row->get('section_id'))
+                                ? ' selected="selected"' : '';
+                            $optLabel = $this->escape(stripslashes($section->get('title')));
+                            ?>
+                            <option value="<?php echo $val; ?>"<?php echo $selected; ?>>
+                                <?php echo $optLabel; ?>
+                            </option>
                         <?php } ?>
                     </select>
                 </div>
                 <div class="input-wrap">
                     <label for="enrolled"><?php echo Lang::txt('COM_COURSES_FIELD_ENROLLED'); ?></label><br />
-                    <?php echo Html::input('calendar', 'fields[enrolled]', $this->row->get('enrolled'), array('id' => 'enrolled')); ?>
+                    <?php echo Html::input(
+                        'calendar',
+                        'fields[enrolled]',
+                        $this->row->get('enrolled'),
+                        array('id' => 'enrolled')
+                    ); ?>
                 </div>
             </fieldset>
         </div>

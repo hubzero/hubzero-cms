@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,12 +25,19 @@ Toolbar::spacer();
 Toolbar::help('pages');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('COM_COURSES_SEARCH'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+                <input
+                    type="text"
+                    name="search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -64,7 +69,13 @@ Toolbar::help('pages');
                     <?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
                 </a>:
                 <?php if ($this->offering->exists()) { ?>
-                <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
+                    <?php
+                    $routeUrl = Route::url(
+                        'index.php?option=' . $this->option  . '&controller=offerings&course='
+                        . $this->course->get('id')
+                    );
+                    ?>
+                <a href="<?php echo $routeUrl; ?>">
                     <?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
                 </a>:
                 <?php } ?>
@@ -76,8 +87,14 @@ Toolbar::help('pages');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <?php $txt = Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo $txt; ?></label>
                 </th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_COURSES_COL_ID'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_COURSES_COL_TITLE'); ?></th>
@@ -117,15 +134,28 @@ Toolbar::help('pages');
                 ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($page->get('id')); ?>" class="checkbox-toggle" />
-                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $this->escape($page->get('id')); ?></label>
+                        <input
+                            type="checkbox"
+                            name="id[]"
+                            id="cb<?php echo $i; ?>"
+                            value="<?php echo $this->escape($page->get('id')); ?>"
+                            class="checkbox-toggle" />
+                        <label
+                            for="cb<?php echo $i; ?>"
+                            class="sr-only visually-hidden"><?php echo $this->escape($page->get('id')); ?></label>
                     </td>
                     <td class="priority-3">
                         <?php echo $this->escape($page->get('id')); ?>
                     </td>
                     <td>
                         <?php if ($canDo->get('core.edit')) { ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $this->escape($page->get('id'))); ?>">
+                            <?php
+                                $routeUrl = Route::url(
+                                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                    . '&task=edit&id=' . $this->escape($page->get('id'))
+                                );
+                            ?>
+                            <a href="<?php echo $routeUrl; ?>">
                                 <?php echo $this->escape(stripslashes($page->get('title'))); ?>
                             </a>
                         <?php } else { ?>
@@ -137,25 +167,66 @@ Toolbar::help('pages');
                     <td class="priority-2">
                         <?php if ($canDo->get('core.edit.state')) { ?>
                             <?php if ($page->get('active') == 1) { ?>
-                            <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unpublish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">
+                                <?php
+                                $routeUrl = Route::url(
+                                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                    . '&task=unpublish&id=' . $page->get('id') . '&' . Session::getFormToken()
+                                    . '=1'
+                                );
+                                ?>
+                            <a
+                                class="jgrid"
+                                href="<?php echo $routeUrl; ?>"
+                                <?php $txt = Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>
+                                title="<?php echo $txt; ?>">
                                 <span class="state publish">
                                     <span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
                                 </span>
                             </a>
                             <?php } elseif ($page->get('active') == 2) { ?>
-                            <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+                                <?php
+                                $routeUrl = Route::url(
+                                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                    . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'
+                                );
+                                ?>
+                            <a
+                                class="jgrid"
+                                href="<?php echo $routeUrl; ?>"
+                                <?php $txt = Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>
+                                title="<?php echo $txt; ?>">
                                 <span class="state trash">
                                     <span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
                                 </span>
                             </a>
                             <?php } elseif ($page->get('active') == 3) { ?>
-                            <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+                                <?php
+                                $routeUrl = Route::url(
+                                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                    . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'
+                                );
+                                ?>
+                            <a
+                                class="jgrid"
+                                href="<?php echo $routeUrl; ?>"
+                                <?php $txt = Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>
+                                title="<?php echo $txt; ?>">
                                 <span class="state pending">
                                     <span class="text"><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></span>
                                 </span>
                             </a>
                             <?php } elseif ($page->get('active') == 0) { ?>
-                            <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+                                <?php
+                                $routeUrl = Route::url(
+                                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                    . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1'
+                                );
+                                ?>
+                            <a
+                                class="jgrid"
+                                href="<?php echo $routeUrl; ?>"
+                                <?php $txt = Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>
+                                title="<?php echo $txt; ?>">
                                 <span class="state unpublish">
                                     <span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>
                                 </span>
@@ -165,8 +236,25 @@ Toolbar::help('pages');
                     </td>
                     <td class="order">
                         <?php echo $page->get('ordering'); ?>
-                        <span><?php echo $pageNav->orderUpIcon($i, isset($rows[$i - 1]), 'orderup', 'COM_COURSES_MOVE_UP', true); ?></span>
-                        <span><?php echo $pageNav->orderDownIcon($i, $n, isset($rows[$i + 1]), 'orderdown', 'COM_COURSES_MOVE_DOWN', true); ?></span>
+                        <?php
+                        $orderUpIcon = $pageNav->orderUpIcon(
+                            $i,
+                            isset($rows[$i - 1]),
+                            'orderup',
+                            'COM_COURSES_MOVE_UP',
+                            true
+                        );
+                        $orderDownIcon = $pageNav->orderDownIcon(
+                            $i,
+                            $n,
+                            isset($rows[$i + 1]),
+                            'orderdown',
+                            'COM_COURSES_MOVE_DOWN',
+                            true
+                        );
+                        ?>
+                        <span><?php echo $orderUpIcon; ?></span>
+                        <span><?php echo $orderDownIcon; ?></span>
                     </td>
                 </tr>
                 <?php

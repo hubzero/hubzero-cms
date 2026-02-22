@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -79,7 +77,9 @@ switch ($this->action) {
         $title = Lang::txt('COM_COURSES_BADGE_VALIDATION');
         $body  = "<img class=\"badge-img\" src=\"" . $this->badge->get('img_url') . "\" width=\"125\" />\n";
         $body .= "<div class=\"badge-validation\">\n";
-        $body .= Lang::txt('COM_COURSES_BADGE_VALIDATION_TEXT', User::getInstance($user_id)->get('name'), Date::of($memberBadge->get('earned_on'))->format('M d, Y'));
+        $userName = User::getInstance($user_id)->get('name');
+        $earnedDate = Date::of($memberBadge->get('earned_on'))->format('M d, Y');
+        $body .= Lang::txt('COM_COURSES_BADGE_VALIDATION_TEXT', $userName, $earnedDate);
         $body .= "</div>\n";
         $body .= "<div class=\"badge-criteria\">\n";
         $body .= $criteria->get('text');

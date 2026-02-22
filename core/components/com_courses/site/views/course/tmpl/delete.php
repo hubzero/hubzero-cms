@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,14 @@ $this->css()
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li class="last"><a class="course" href="<?php echo Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias')); ?>"><?php echo Lang::txt('Back to Course'); ?></a></li>
+            <?php
+                $routeUrl = Route::url(
+                    'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias')
+                );
+                ?>
+            <li class="last"><a
+                class="course"
+                href="<?php echo $routeUrl; ?>"><?php echo Lang::txt('Back to Course'); ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header>
@@ -37,24 +42,45 @@ $this->css()
             <p>&nbsp;</p>
 
             <p><strong>Alternative to deleting</strong></p>
-            <p>You could set the course join policy to closed to restrict further membership activity and set the discoverability to hidden so the course is hidden to the world but still there later if you decide you want to use the course again.</p>
-            <p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&task=edit'); ?>">&raquo; Click here to edit course settings</a></p>
+            <p>
+                You could set the course join policy to closed to restrict
+                further membership activity and set the discoverability to
+                hidden so the course is hidden to the world but still there
+                later if you decide you want to use the course again.
+            </p>
+            <?php
+                $routeUrl = Route::url(
+                    'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&task=edit'
+                );
+                ?>
+            <p><a href="<?php echo $routeUrl; ?>">&raquo; Click here to edit course settings</a></p>
         </div>
         <fieldset>
             <h3><?php echo Lang::txt('COURSES_DELETE_HEADER'); ?></h3>
 
-            <p class="warning"><?php echo Lang::txt('COURSES_DELETE_WARNING', $this->course->get('description')) . '<br /><br />' . $this->log; ?></p>
+            <?php $txt = Lang::txt('COURSES_DELETE_WARNING', $this->course->get('description')); ?>
+            <p class="warning"><?php echo $txt . '<br /><br />' . $this->log; ?></p>
 
             <div class="form-group">
                 <label for="msg">
                     <?php echo Lang::txt('COURSES_DELETE_MESSAGE'); ?>
-                    <textarea name="msg" id="msg" rows="12" class="form-control" cols="50"><?php echo $this->escape($this->msg); ?></textarea>
+                    <textarea
+                        name="msg"
+                        id="msg"
+                        rows="12"
+                        class="form-control"
+                        cols="50"><?php echo $this->escape($this->msg); ?></textarea>
                 </label>
             </div>
 
             <div class="form-group form-check">
                 <label for="confirmdel" class="form-check-label">
-                    <input type="checkbox" class="option form-check-input" name="confirmdel" id="confirmdel" value="1" />
+                    <input
+                        type="checkbox"
+                        class="option form-check-input"
+                        name="confirmdel"
+                        id="confirmdel"
+                        value="1" />
                     <?php echo Lang::txt('COURSES_DELETE_CONFIRM'); ?>
                 </label>
             </div>

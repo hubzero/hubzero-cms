@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,11 @@ $this->css('course.css')
 
     <div id="content-header-extra">
         <p>
-            <a class="prev btn" href="<?php echo ($this->return) ? base64_decode($this->return) : Route::url('index.php?option=' . $this->option); ?>" title="<?php echo Lang::txt('JCANCEL'); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+            <?php $routeUrl = Route::url('index.php?option=' . $this->option); ?>
+            <a
+                class="prev btn"
+                href="<?php echo $routeUrl; ?>"
+                title="<?php echo Lang::txt('JCANCEL'); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
         </p>
     </div><!-- / #content-header-extra -->
 </header>
@@ -35,7 +37,14 @@ $this->css('course.css')
             <div class="form-group">
                 <label class="course_alias_label" for="course_alias_field">
                     <?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?></span>
-                    <input name="fields[alias]" id="course_alias_field" type="text" size="35" class="form-control" value="<?php echo $this->escape($this->course->get('alias') . '_fork'); ?>" autocomplete="off" />
+                    <input
+                        name="fields[alias]"
+                        id="course_alias_field"
+                        type="text"
+                        size="35"
+                        class="form-control"
+                        value="<?php echo $this->escape($this->course->get('alias') . '_fork'); ?>"
+                        autocomplete="off" />
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                 </label>
             </div>
@@ -43,7 +52,14 @@ $this->css('course.css')
             <div class="form-group">
                 <label for="field-title">
                     <?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?></span>
-                    <input type="text" name="fields[title]" id="field-title" size="35" class="form-control" value="<?php echo $this->escape(Lang::txt('COM_COURSES_FORK_TITLE', stripslashes($this->course->get('title')))); ?>" />
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        size="35"
+                        class="form-control"
+                        <?php $txt = Lang::txt('COM_COURSES_FORK_TITLE', stripslashes($this->course->get('title'))); ?>
+                        value="<?php echo $this->escape($txt); ?>" />
                 </label>
             </div>
         </fieldset>

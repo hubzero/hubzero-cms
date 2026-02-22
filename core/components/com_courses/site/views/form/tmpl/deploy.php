@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,7 +27,8 @@ $this->css('form.css')
                 <input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
             <?php endif; ?>
             <div class="navbar">
-                <div><a href="<?php echo Request::base(true); ?>/courses/form" id="cancel"><?php echo Lang::txt('JCANCEL'); ?></a></div>
+                <?php $txt = Lang::txt('JCANCEL'); ?>
+                <div><a href="<?php echo Request::base(true); ?>/courses/form" id="cancel"><?php echo $txt; ?></a></div>
                 <button id="submit" type="submit"><?php echo Lang::txt('COM_COURSES_CREATE_DEPLOYMENT'); ?></button>
             </div>
         </fieldset>

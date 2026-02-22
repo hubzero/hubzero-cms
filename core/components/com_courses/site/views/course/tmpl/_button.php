@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,9 +12,17 @@ defined('_HZEXEC_') or die();
     <div class="btn-group-wrap">
         <div class="btn-group dropdown">
             <?php if ($this->course->isManager()) { ?>
-                <a class="btn" href="<?php echo Route::url($this->offering->link('enter')); ?>"><?php echo $this->escape(stripslashes($this->offering->get('title'))); ?></a>
+                <?php $routeUrl = Route::url($this->offering->link('enter')); ?>
+                <a
+                    class="btn"
+                    <?php $val = $this->escape(stripslashes($this->offering->get('title'))); ?>
+                    href="<?php echo $routeUrl; ?>"><?php echo $val; ?></a>
             <?php } else { ?>
-                <a class="btn" href="<?php echo Route::url($this->offering->link('enter')); ?>"><?php echo $this->escape(stripslashes($this->section->get('title'))); ?></a>
+                <?php $routeUrl = Route::url($this->offering->link('enter')); ?>
+                <a
+                    class="btn"
+                    <?php $val = $this->escape(stripslashes($this->section->get('title'))); ?>
+                    href="<?php echo $routeUrl; ?>"><?php echo $val; ?></a>
             <?php } ?>
             <span class="btn dropdown-toggle"></span>
             <ul class="dropdown-menu">

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,7 +25,8 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
     <?php if (!empty($this->lead_items)) : ?>
         <div class="items-leading">
             <?php foreach ($this->lead_items as &$item) : ?>
-                <div class="leading-<?php echo $leadingcount; ?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
+                <?php $unpub = $item->state == 0 ? ' system-unpublished' : null; ?>
+                <div class="leading-<?php echo $leadingcount; ?><?php echo $unpub; ?>">
                     <?php
                     $this->item = &$item;
                     echo $this->loadTemplate('item');
@@ -53,7 +52,8 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
             if ($rowcount == 1) : ?>
                 <div class="items-row cols-<?php echo (int) $this->columns; ?> <?php echo 'row-' . $row; ?>">
             <?php endif; ?>
-            <div class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished"' : null; ?>">
+            <?php $unpub = $item->state == 0 ? ' system-unpublished"' : null; ?>
+            <div class="item column-<?php echo $rowcount; ?><?php echo $unpub; ?>">
                 <?php
                 $this->item = &$item;
                 echo $this->loadTemplate('item');
@@ -73,7 +73,12 @@ Html::addIncludePath(PATH_COMPONENT . '/helpers');
         </div>
     <?php endif; ?>
 
-    <?php if ($this->params->def('show_pagination', 2) == 1  || ($this->params->get('show_pagination') == 2 && $this->pagination->get('pages.total') > 1)) : ?>
+    <?php
+    $showPagination = $this->params->def('show_pagination', 2) == 1
+        || ($this->params->get('show_pagination') == 2
+            && $this->pagination->get('pages.total') > 1);
+    ?>
+    <?php if ($showPagination) : ?>
         <div class="pagination">
             <?php if ($this->params->def('show_pagination_results', 1)) : ?>
                 <p class="counter">

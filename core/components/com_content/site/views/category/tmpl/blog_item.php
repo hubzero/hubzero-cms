@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -28,7 +26,16 @@ Html::behavior('framework');
 <?php if ($params->get('show_title')) : ?>
     <h2>
         <?php if ($params->get('link_titles') && $params->get('access-view')) : ?>
-            <a href="<?php echo Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language)); ?>">
+            <?php
+            $articleUrl = Route::url(
+                \Components\Content\Site\Helpers\Route::getArticleRoute(
+                    $this->item->slug,
+                    $this->item->catid,
+                    $this->item->language
+                )
+            );
+            ?>
+            <a href="<?php echo $articleUrl; ?>">
             <?php echo $this->escape($this->item->title); ?></a>
         <?php else : ?>
             <?php echo $this->escape($this->item->title); ?>
@@ -64,14 +71,26 @@ Html::behavior('framework');
 
 <?php // to do not that elegant would be nice to group the params ?>
 
-<?php if (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date')) or ($params->get('show_parent_category')) or ($params->get('show_hits'))) : ?>
+<?php if (
+    ($params->get('show_author'))
+    or ($params->get('show_category'))
+    or ($params->get('show_create_date'))
+    or ($params->get('show_modify_date'))
+    or ($params->get('show_publish_date'))
+    or ($params->get('show_parent_category'))
+    or ($params->get('show_hits'))
+) : ?>
 <dl class="article-info">
     <dt class="article-info-term"><?php echo Lang::txt('COM_CONTENT_ARTICLE_INFO'); ?></dt>
 <?php endif; ?>
     <?php if ($params->get('show_parent_category') && $this->item->parent_id != 1) : ?>
         <dd class="parent-category-name">
             <?php $title = $this->escape($this->item->parent_title);
-                $url = '<a href="' . Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->parent_id)) . '">' . $title . '</a>'; ?>
+                $catUrl = Route::url(
+                    \Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->parent_id)
+                );
+            $url = '<a href="' . $catUrl . '">' . $title . '</a>';
+            ?>
             <?php if ($params->get('link_parent_category')) : ?>
                 <?php echo Lang::txt('COM_CONTENT_PARENT', $url); ?>
             <?php else : ?>
@@ -82,7 +101,11 @@ Html::behavior('framework');
     <?php if ($params->get('show_category')) : ?>
         <dd class="category-name">
             <?php $title = $this->escape($this->item->category_title);
-                    $url = '<a href="' . Route::url(\Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->catid)) . '">' . $title . '</a>'; ?>
+                    $catUrl = Route::url(
+                        \Components\Content\Site\Helpers\Route::getCategoryRoute($this->item->catid)
+                    );
+                    $url = '<a href="' . $catUrl . '">' . $title . '</a>';
+            ?>
             <?php if ($params->get('link_category')) : ?>
                 <?php echo Lang::txt('COM_CONTENT_CATEGORY', $url); ?>
             <?php else : ?>
@@ -92,17 +115,26 @@ Html::behavior('framework');
     <?php endif; ?>
     <?php if ($params->get('show_create_date')) : ?>
         <dd class="create">
-        <?php echo Lang::txt('COM_CONTENT_CREATED_DATE_ON', Date::of($this->item->created)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
+        <?php
+        $dateStr = Date::of($this->item->created)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+        echo Lang::txt('COM_CONTENT_CREATED_DATE_ON', $dateStr);
+        ?>
         </dd>
     <?php endif; ?>
     <?php if ($params->get('show_modify_date')) : ?>
         <dd class="modified">
-        <?php echo Lang::txt('COM_CONTENT_LAST_UPDATED', Date::of($this->item->modified)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
+        <?php
+        $dateStr = Date::of($this->item->modified)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+        echo Lang::txt('COM_CONTENT_LAST_UPDATED', $dateStr);
+        ?>
         </dd>
     <?php endif; ?>
     <?php if ($params->get('show_publish_date')) : ?>
         <dd class="published">
-        <?php echo Lang::txt('COM_CONTENT_PUBLISHED_DATE_ON', Date::of($this->item->publish_up)->toLocal(Lang::txt('DATE_FORMAT_LC2'))); ?>
+        <?php
+        $dateStr = Date::of($this->item->publish_up)->toLocal(Lang::txt('DATE_FORMAT_LC2'));
+        echo Lang::txt('COM_CONTENT_PUBLISHED_DATE_ON', $dateStr);
+        ?>
         </dd>
     <?php endif; ?>
     <?php if ($params->get('show_author') && !empty($this->item->author)) : ?>
@@ -111,7 +143,15 @@ Html::behavior('framework');
             <?php $author = ($this->item->created_by_alias ? $this->item->created_by_alias : $author);?>
 
                 <?php if (!empty($this->item->contactid) &&  $params->get('link_author') == true) :?>
-                    <?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', '<a href="' . Route::url('index.php?option=com_contact&view=contact&id=' . $this->item->contactid) . '">' . $author . '</a>'); ?>
+                    <?php
+                    $contactUrl = Route::url(
+                        'index.php?option=com_contact&view=contact&id='
+                        . $this->item->contactid
+                    );
+                    $authorLink = '<a href="' . $contactUrl . '">'
+                        . $author . '</a>';
+                    echo Lang::txt('COM_CONTENT_WRITTEN_BY', $authorLink);
+                    ?>
                 <?php else :?>
                     <?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
                 <?php endif; ?>
@@ -122,7 +162,15 @@ Html::behavior('framework');
             <?php echo Lang::txt('COM_CONTENT_ARTICLE_HITS', $this->item->hits); ?>
         </dd>
     <?php endif; ?>
-<?php if (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date')) or ($params->get('show_parent_category')) or ($params->get('show_hits'))) :?>
+<?php if (
+    ($params->get('show_author'))
+    or ($params->get('show_category'))
+    or ($params->get('show_create_date'))
+    or ($params->get('show_modify_date'))
+    or ($params->get('show_publish_date'))
+    or ($params->get('show_parent_category'))
+    or ($params->get('show_hits'))
+) : ?>
     </dl>
 <?php endif; ?>
 <?php  if (isset($images->image_intro) and !empty($images->image_intro)) : ?>
@@ -130,22 +178,39 @@ Html::behavior('framework');
     <div class="img-intro-<?php echo htmlspecialchars($imgfloat); ?>">
         <img
             <?php if ($images->image_intro_caption) :
-                echo 'class="caption"' . ' title="' . htmlspecialchars($images->image_intro_caption) . '"';
+                echo 'class="caption" title="'
+                    . htmlspecialchars($images->image_intro_caption) . '"';
             endif; ?>
-            src="<?php echo htmlspecialchars($images->image_intro); ?>" alt="<?php echo htmlspecialchars($images->image_intro_alt); ?>"/>
+            src="<?php echo htmlspecialchars($images->image_intro); ?>"
+            alt="<?php echo htmlspecialchars($images->image_intro_alt); ?>"
+        />
     </div>
 <?php endif; ?>
 <?php echo $this->item->introtext; ?>
 
 <?php if ($params->get('show_readmore') && $this->item->readmore) :
     if ($params->get('access-view')) :
-        $link = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language));
+        $link = Route::url(
+            \Components\Content\Site\Helpers\Route::getArticleRoute(
+                $this->item->slug,
+                $this->item->catid,
+                $this->item->language
+            )
+        );
     else :
         $menu = \App::get('menu');
         $active = $menu->getActive();
         $itemId = $active->id;
-        $link1 = Route::url('index.php?option=com_users&view=login&Itemid=' . $itemId);
-        $returnURL = Route::url(\Components\Content\Site\Helpers\Route::getArticleRoute($this->item->slug, $this->item->catid, $this->item->language));
+        $link1 = Route::url(
+            'index.php?option=com_users&view=login&Itemid=' . $itemId
+        );
+        $returnURL = Route::url(
+            \Components\Content\Site\Helpers\Route::getArticleRoute(
+                $this->item->slug,
+                $this->item->catid,
+                $this->item->language
+            )
+        );
         $link = new Hubzero\Utility\Uri($link1);
         $link->setUriVar('return', base64_encode(urlencode($returnURL)));
     endif;

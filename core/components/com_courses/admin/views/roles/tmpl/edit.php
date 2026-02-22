@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,7 +25,14 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<form
+    action="<?php echo $routeUrl; ?>"
+    method="post"
+    id="item-form"
+    name="adminForm"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
     <div class="grid">
         <div class="col span8">
             <fieldset class="adminform">
@@ -42,21 +47,40 @@ $this->js();
                         <?php foreach ($this->courses as $course) { ?>
                                 <optgroup label="<?php echo $course->get('alias'); ?>">
                             <?php foreach ($course->offerings() as $offering) { ?>
-                                    <option value="<?php echo $offering->get('id'); ?>"<?php if ($offering->get('id') == $this->row->offering_id) {
-                                        echo ' selected="selected"';
-                                                   } ?>><?php echo $this->escape(stripslashes($offering->get('title'))); ?></option>
+                                    <?php
+                                        $selected = ($offering->get('id') == $this->row->offering_id)
+                                            ? ' selected="selected"' : '';
+                                    ?>
+                                    <?php $optVal = $this->escape(stripslashes($offering->get('title'))); ?>
+                                    <option value="<?php echo $offering->get('id'); ?>"<?php echo $selected; ?>>
+                                        <?php echo $optVal; ?>
+                                    </option>
                             <?php } ?>
                                 </optgroup>
                         <?php } ?>
                     </select>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" class="required" size="50" value="<?php echo $this->escape($this->row->title); ?>" />
+                    <label for="field-title">
+                        <?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?>:
+                        <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="required"
+                        size="50"
+                        value="<?php echo $this->escape($this->row->title); ?>" />
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-                    <input type="text" name="fields[alias]" id="field-alias" size="50" value="<?php echo $this->escape($this->row->alias); ?>" />
+                    <input
+                        type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        size="50"
+                        value="<?php echo $this->escape($this->row->alias); ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                 </div>
 

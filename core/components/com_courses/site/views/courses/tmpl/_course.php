@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,18 +27,24 @@ switch ($this->count) {
             <div class="course-details">
                 <div class="course-identity">
                     <?php if ($logo = $this->course->logo('url')) { ?>
-                        <img src="<?php echo Route::url($logo); ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
+                        <?php $routeUrl = Route::url($logo); ?>
+                        <img
+                            src="<?php echo $routeUrl; ?>"
+                            alt="<?php echo $this->escape($this->course->get('title')); ?>" />
                     <?php } else { ?>
                         <span></span>
                     <?php } ?>
 
                     <?php if ($this->course->get('rating', 0) > 4) { ?>
                     <div>
-                        <strong><?php echo Lang::txt('COM_COURSES_TOP_RATED_COURSE'); ?></strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
+                        <strong>
+                            <?php echo Lang::txt('COM_COURSES_TOP_RATED_COURSE'); ?>
+                        </strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
                     </div>
                     <?php } elseif ($this->course->get('popularity', 0) > 7) { ?>
                     <div>
-                        <strong><?php echo Lang::txt('COM_COURSES_POPULAR_COURSE'); ?></strong> <span class="popularity">&#xf091;</span>
+                        <?php $txt = Lang::txt('COM_COURSES_POPULAR_COURSE'); ?>
+                        <strong><?php echo $txt; ?></strong> <span class="popularity">&#xf091;</span>
                     </div>
                     <?php } ?>
                 </div>

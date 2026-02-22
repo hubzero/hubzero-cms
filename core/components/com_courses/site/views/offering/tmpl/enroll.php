@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,9 @@ defined('_HZEXEC_') or die();
 
     <?php if ($logo = $this->course->logo('url')) { ?>
         <p class="course-identity">
-            <img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+            <img
+                src="<?php echo $logo; ?>"
+                alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
         </p>
     <?php } ?>
 

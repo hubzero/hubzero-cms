@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -45,7 +43,14 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
 </table>
 <!-- End Spacer -->
 
-<table id="course-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: #F3F3F3; border: 1px solid #DDDDDD;">
+<table
+    id="course-info"
+    width="650"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="border-collapse: collapse; background-color: #F3F3F3; border: 1px solid #DDDDDD;"
+>
     <tr>
         <td width="85" style="padding: 0 0 0 15px; opacity: 0.8">
             <?php $cap_path = rtrim(Request::root(), '/') . '/core/components/com_courses/site/assets/img/cap.png'; ?>
@@ -75,7 +80,14 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
 </table>
 <!-- End Spacer -->
 
-<table id="course-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: #EEEEEE;">
+<table
+    id="course-info"
+    width="650"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="border-collapse: collapse; background-color: #EEEEEE;"
+>
     <tr>
         <td width="315" style="background-color: #FFFFFF;">
             <table  width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #DDDDDD;">
@@ -86,15 +98,27 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
                         <span style="line-height: 40px; font-size:35px;"><?php echo $this->enrollments; ?></span>
                     </td>
                     <td height="30" width="60%" style="border-collapse: collapse;">
-                        <table  width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+                        <table
+                            width="100%" cellpadding="0" cellspacing="0"
+                            border="0" style="border-collapse: collapse;">
                             <tr style="border-collapse: collapse; background-color: rgb(229, 244, 235);">
-                                <td nowrap="nowrap" style="border-collapse: collapse; padding: 10px; border-bottom: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD;">
-                                    <span style="color: green; font-weight: bold; font-size: 15px;"><?php echo $this->passing; ?> passing</span>
+                                <td
+                                    nowrap="nowrap"
+                                    style="border-collapse: collapse; padding: 10px;
+                                        border-bottom: 1px solid #DDDDDD;
+                                        border-left: 1px solid #DDDDDD;">
+                                    <span style="color: green; font-weight: bold; font-size: 15px;">
+                                        <?php echo $this->passing; ?> passing
+                                    </span>
                                 </td>
                             </tr>
                             <tr style="border-collapse: collapse; background-color: rgb(252, 229, 229);">
-                                <td nowrap="nowrap" style="border-collapse: collapse; padding: 10px; border-left: 1px solid #DDDDDD;">
-                                    <span style="color: red; font-weight: bold; font-size: 15px;"><?php echo $this->failing; ?> failing</span>
+                                <td
+                                    nowrap="nowrap"
+                                    style="border-collapse: collapse; padding: 10px; border-left: 1px solid #DDDDDD;">
+                                    <span style="color: red; font-weight: bold; font-size: 15px;">
+                                        <?php echo $this->failing; ?> failing
+                                    </span>
                                 </td>
                             </tr>
                         </table>
@@ -106,12 +130,20 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
         <td width="315">
             <table  width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #DDDDDD;">
                 <tr style="border-collapse: collapse;">
-                    <td height="30" width="50%" style="border-collapse: collapse; padding: 10px; background-color: #FFFFFF;">
+                    <td
+                        height="30"
+                        width="50%"
+                        style="border-collapse: collapse; padding: 10px; background-color: #FFFFFF;">
                         <span style="">Discussion Topics</span>
                         <br />
                         <span style="line-height: 40px; font-size:35px;"><?php echo $this->posts_cnt; ?></span>
                     </td>
-                    <td height="30" width="50%" style="border-collapse: collapse; border-left: 1px solid #DDDDDD; padding: 10px; background-color:rgb(252, 243, 223); color: rgb(230, 158, 0)">
+                    <td
+                        height="30"
+                        width="50%"
+                        style="border-collapse: collapse; border-left: 1px solid #DDDDDD;
+                            padding: 10px; background-color:rgb(252, 243, 223);
+                            color: rgb(230, 158, 0)">
                         <span style="">New</span>
                         <br />
                         <span style="line-height: 40px; font-size:35px;"><?php echo $this->latest_cnt; ?></span>
@@ -132,31 +164,54 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
 </table>
 <!-- End Spacer -->
 
-<table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+<table
+    id="course-discussions" width="650" cellpadding="0"
+    cellspacing="0" border="0" style="border-collapse: collapse;"
+>
     <tr style="border-bottom: 1px solid #DDDDDD;">
         <td style="font-size: 13px; font-weight: bold; padding: 4px 0;">
             Latest Discussions
         </td>
         <td style="text-align: right;">
-            <a href="<?php echo $base . '/' . $this->offering->get('alias') . '/discussions'; ?>"><?php echo $base . '/' . $this->offering->get('alias') . '/discussions'; ?></a>
+            <?php $val = $base . '/' . $this->offering->get('alias') . '/discussions'; ?>
+            <?php $val = $base . '/' . $this->offering->get('alias') . '/discussions'; ?>
+            <a href="<?php echo $val; ?>"><?php echo $val; ?></a>
         </td>
     </tr>
 </table>
 <?php if (count($this->latest) > 0) : ?>
     <?php foreach ($this->latest as $post) : ?>
-        <table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+        <table
+    id="course-discussions" width="650" cellpadding="0"
+    cellspacing="0" border="0" style="border-collapse: collapse;"
+>
             <tr>
                 <td width="75" style="padding: 10px 0;">
-                    <img width="50" src="<?php echo Request::root() . User::getInstance($post->created_by)->picture(); ?>" />
+                    <img
+                        width="50"
+                        <?php
+                            $avatarSrc = Request::root()
+                                . User::getInstance($post->created_by)->picture();
+                        ?>
+                        src="<?php echo $avatarSrc; ?>" />
                 </td>
                 <td style="padding: 10px 0;">
-                    <div style="position: relative; border: 1px solid #CCCCCC; padding: 12px; -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;">
+                    <div style="position: relative; border: 1px solid #CCCCCC; padding: 12px;
+                        -webkit-border-radius: 7px; -moz-border-radius: 7px; border-radius: 7px;">
                         <div style="background: #FFFFFF; border: 1px solid #CCCCCC; width: 15px; height: 15px;
                             position: absolute; top: 50%; left: -10px; margin-top: -7px;
-                            transform:rotate(45deg); -ms-transform:rotate(45deg); -webkit-transform:rotate(45deg);"></div>
-                        <div style="background: #FFFFFF; width: 11px; height: 23px; position: absolute; top: 50%; left: -1px; margin-top: -10px;"></div>
+                            transform:rotate(45deg); -ms-transform:rotate(45deg);
+                            -webkit-transform:rotate(45deg);"></div>
+                        <div style="background: #FFFFFF; width: 11px; height: 23px;
+                            position: absolute; top: 50%; left: -1px; margin-top: -10px;"></div>
                         <div style="color: #AAAAAA; font-size: 11px; text-align:center;">
-                            <?php echo User::getInstance($post->created_by)->get('name'); ?> | created: <?php echo Date::of($post->created)->toLocal('M j, Y g:i:s a'); ?>
+                            <?php
+                                $postDate = Date::of($post->created)
+                                    ->toLocal('M j, Y g:i:s a');
+                                $posterName = User::getInstance($post->created_by)
+                                    ->get('name');
+                            ?>
+                            <?php echo $posterName; ?> | created: <?php echo $postDate; ?>
                         </div>
                         <div>
                             <?php echo $post->comment; ?>
@@ -172,7 +227,10 @@ $base = Request::root() . 'courses/' . $this->course->get('alias');
         </table>
     <?php endforeach; ?>
 <?php else : ?>
-    <table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+    <table
+    id="course-discussions" width="650" cellpadding="0"
+    cellspacing="0" border="0" style="border-collapse: collapse;"
+>
         <tr>
             <td style="padding: 10px 0;">
                 <div>

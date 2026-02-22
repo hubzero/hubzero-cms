@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,9 @@ $this->css('offering');
 
     <?php if ($logo = $this->course->logo('url')) { ?>
         <p class="course-identity">
-            <img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+            <img
+                src="<?php echo $logo; ?>"
+                alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
         </p>
     <?php } ?>
 
@@ -53,7 +53,8 @@ $this->css('offering');
         }
         ?>
 
-        <form action="<?php echo Route::url($this->course->offering()->link() . '&task=enroll'); ?>" method="post" id="hubForm">
+        <?php $routeUrl = Route::url($this->course->offering()->link() . '&task=enroll'); ?>
+        <form action="<?php echo $routeUrl; ?>" method="post" id="hubForm">
             <div class="explaination">
                 <h3><?php echo Lang::txt('COM_COURSES_CODE_NOT_WORKING'); ?></h3>
                 <p><?php echo Lang::txt('COM_COURSES_CODE_NOT_WORKING_EXPLANATION'); ?></p>
@@ -64,13 +65,23 @@ $this->css('offering');
                 <p class="warning"><?php echo Lang::txt('COM_COURSES_ENROLLMENT_RESTRICTED'); ?></p>
 
                 <label for="field-code">
-                    <?php echo Lang::txt('COM_COURSES_FIELD_COUPON_CODE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                    <?php $val = Lang::txt('COM_COURSES_FIELD_COUPON_CODE'); ?>
+                    <?php echo $val; ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
                     <input type="text" name="code" id="field-code" size="35" value="" />
                 </label>
             </fieldset>
             <div class="clear"></div>
 
-            <input type="hidden" name="offering" value="<?php echo $this->escape($this->course->offering()->get('alias') . ':' . $this->course->offering()->section()->get('alias')); ?>" />
+            <input
+                type="hidden"
+                name="offering"
+                <?php
+                $offeringVal = $this->escape(
+                    $this->course->offering()->get('alias')
+                    . ':' . $this->course->offering()->section()->get('alias')
+                );
+                ?>
+                value="<?php echo $offeringVal; ?>" />
             <input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
             <input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
