@@ -387,7 +387,7 @@ class Geocode
             }
 
             $gdb->setQuery("SELECT code FROM countries WHERE LOWER(name) = " . $gdb->quote(strtolower($name)));
-            $code = stripslashes($gdb->loadResult());
+            $code = stripslashes($gdb->loadResult() ?? '');
         }
         return $code;
     }
@@ -407,7 +407,7 @@ class Geocode
             }
 
             $gdb->setQuery("SELECT name FROM countries WHERE code = " . $gdb->quote($code));
-            $name = stripslashes($gdb->loadResult());
+            $name = stripslashes($gdb->loadResult() ?? '');
         }
         return $name;
     }

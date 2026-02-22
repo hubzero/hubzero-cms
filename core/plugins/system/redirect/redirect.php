@@ -30,7 +30,7 @@ class Redirect extends Plugin
 
         if (App::isSite()) {
             // Set the error handler for E_ERROR to be the class handleError method.
-            set_exception_handler(array('plgSystemRedirect', 'handleError'));
+            set_exception_handler(array(static::class, 'handleError'));
         }
     }
 
