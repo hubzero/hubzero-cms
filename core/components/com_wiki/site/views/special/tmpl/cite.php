@@ -53,10 +53,10 @@ $permalink = rtrim(Request::base(), '/') . '/'
 </p>
 </div>
 <div class="wiki-box highlight-box">
-    <h3>Bibliographic details for "<?php echo $this->escape(stripslashes($page->get('title', ''))); ?>"</h3>
+    <h3>Bibliographic details for "<?php echo $this->escape(stripslashes($page->get('title', '') ?? '')); ?>"</h3>
     <ul>
         <li>
-            Page name: <?php echo $this->escape(stripslashes($page->get('pagename', ''))); ?>
+            Page name: <?php echo $this->escape(stripslashes($page->get('pagename', '') ?? '')); ?>
         </li>
         <li>
             Author: <?php echo $this->escape(Config::get('sitename')); ?> contributors
@@ -65,7 +65,7 @@ $permalink = rtrim(Request::base(), '/') . '/'
             Publisher: <i><?php echo $this->escape(Config::get('sitename')); ?></i>
         </li>
         <li>
-            Date of last revision: <?php echo $this->escape(stripslashes($revision->get('created', ''))); ?>
+            Date of last revision: <?php echo $this->escape(stripslashes($revision->get('created', '') ?? '')); ?>
         </li>
         <li>
             Date retrieved: <?php echo $now; ?>
@@ -87,7 +87,7 @@ $permalink = rtrim(Request::base(), '/') . '/'
 </div>
 
 <?php
-$citeTitle = $this->escape(stripslashes($page->get('title', '')));
+$citeTitle = $this->escape(stripslashes($page->get('title', '') ?? ''));
 $citeSite = $this->escape(Config::get('sitename'));
 $citeRevCreated = $revision->get('created');
 $citeApaDate = Date::of($citeRevCreated)->format($apaFormat);

@@ -1651,7 +1651,7 @@ class Resources extends SiteController
         $author = '';
         foreach ($resource->authors()->ordered()->rows() as $con) {
             if ($con->get('role') != 'submitter') {
-                $author = trim($con->get('name'));
+                $author = trim($con->get('name') ?? '');
                 break;
             }
         }

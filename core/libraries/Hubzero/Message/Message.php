@@ -170,7 +170,7 @@ class Message extends Relational
         $UrlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|news:|file:)" .
             "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
 
-        $message = str_replace("\n", "\n ", stripslashes($this->get('message')));
+        $message = str_replace("\n", "\n ", stripslashes($this->get('message') ?? ''));
         $message = preg_replace_callback("/$UrlPtrn/", array($this,'autolink'), $message);
         $message = nl2br($message);
         $message = str_replace("\t", '&nbsp;&nbsp;&nbsp;&nbsp;', $message);

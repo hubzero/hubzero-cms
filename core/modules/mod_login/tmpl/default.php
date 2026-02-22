@@ -33,7 +33,8 @@ $primary     = Request::getWord('primary', false);
 $refl = array();
 $login_provider_html = "";
 foreach ($authenticators as $a) {
-    $refl[$a['name']] = new \ReflectionClass("plgAuthentication{$a['name']}");
+    $authClass = 'Plugins\\Authentication\\' . ucfirst($a['name']) . '\\' . ucfirst($a['name']);
+    $refl[$a['name']] = new \ReflectionClass($authClass);
     if ($refl[$a['name']]->hasMethod('onRenderOption')) {
         $html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(null, $returnQueryString);
         $login_provider_html .= is_array($html) ? implode("\n", $html) : $html;

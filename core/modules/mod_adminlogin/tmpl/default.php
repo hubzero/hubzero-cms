@@ -22,7 +22,8 @@ Html::behavior('keepalive');
             <div class="options">
                 <?php
                 foreach ($authenticators as $a) :
-                    $refl[$a['name']] = new \ReflectionClass("plgAuthentication{$a['name']}");
+                    $authClass = 'Plugins\\Authentication\\' . ucfirst($a['name']) . '\\' . ucfirst($a['name']);
+                    $refl[$a['name']] = new \ReflectionClass($authClass);
                     if ($refl[$a['name']]->hasMethod('onRenderOption')) :
                         $html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(null, $returnQueryString);
                         echo is_array($html) ? implode("\n", $html) : $html;
