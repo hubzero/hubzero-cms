@@ -423,9 +423,10 @@ class Behavior
             return;
         }
 
+        self::alpinejs();
         Asset::script('assets/hubzero-debug-timeline.js', true, true, false, true, true, true, false);
-        Asset::script('assets/inertia/hubzero-debug-panel.js', true, true, false, true, true, true, false);
-        Asset::stylesheet('assets/inertia-debug-panel.css', array('media' => 'all'), true);
+        Asset::script('assets/hubzero-debug-panel.js', true, true, false, true, true, true, false);
+        Asset::stylesheet('assets/hubzero-debug-panel.css', array('media' => 'all'), true);
 
         self::$loaded[__METHOD__] = true;
     }
@@ -504,6 +505,29 @@ class Behavior
         } else {
             throw new \UnexpectedValueException("Unrecognized version [$version] of Alpine.js requested");
         }
+
+        self::$loaded[__METHOD__] = true;
+    }
+
+    /**
+     * Add HTMX + Alpine.js together with standard companion defaults.
+     *
+     * This enables both libraries for views that pair HTMX transport
+     * with Alpine local interactivity.
+     *
+     * @return  void
+     */
+    public static function htmxalpine($htmxVersion = null, $alpineVersion = null, $debug = null)
+    {
+        if (isset(self::$loaded[__METHOD__])) {
+            return;
+        }
+
+        self::htmx($htmxVersion, $debug);
+        self::alpinejs($alpineVersion, $debug);
+        Asset::script('assets/htmx/hubzero-bootstrap.js', true, true, false, true, true, true, false);
+        Asset::script('assets/hubzero-debug-panel.js', true, true, false, true, true, true, false);
+        Asset::stylesheet('assets/hubzero-debug-panel.css', array('media' => 'all'), true);
 
         self::$loaded[__METHOD__] = true;
     }

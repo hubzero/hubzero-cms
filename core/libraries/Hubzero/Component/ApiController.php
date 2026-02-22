@@ -140,6 +140,16 @@ class ApiController implements ControllerInterface
     }
 
     /**
+     * API controllers intentionally do not participate in the HTMX protocol.
+     *
+     * @return  bool
+     */
+    protected function isHtmxRequest(): bool
+    {
+        return false;
+    }
+
+    /**
      * Constructor
      *
      * @param   array  $config  Optional configurations to be used

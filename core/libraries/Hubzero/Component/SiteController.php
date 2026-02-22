@@ -12,6 +12,7 @@ use Hubzero\Component\Exception\InvalidTaskException;
 use Hubzero\Component\Exception\InvalidControllerException;
 use Hubzero\Base\Obj;
 use Hubzero\Document\Assets;
+use Hubzero\Htmx\Htmx;
 use Hubzero\Inertia\Inertia;
 use ReflectionClass;
 use ReflectionMethod;

@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * @package    %=option=%
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\%=component_name+ucf=%\Site\Controllers;
+
+use Hubzero\Component\SiteController;
+use Hubzero\Htmx\Htmx;
+
+/**
+ * %=controller+ucf=% controller (HTMX scaffold).
+ */
+class %=controller+ucf=% extends SiteController
+{
+    /**
+     * Default task with full-page and HTMX fragment branches.
+     *
+     * @return  void
+     */
+    public function displayTask()
+    {
+        $records = array(
+            array('id' => 1, 'title' => 'First row'),
+            array('id' => 2, 'title' => 'Second row'),
+        );
+
+        if ($this->isHtmxRequest()) {
+            $this->renderFragment($records);
+            return;
+        }
+
+        $this->view->set('records', $records);
+        $this->view->set('routes', $this->routes());
+        $this->view->display();
+    }
+
+    /**
+     * Simple create action to demonstrate mutation flow.
+     *
+     * @return  void
+     */
+    public function createTask()
+    {
+        if (strtoupper((string) \Request::getMethod()) !== 'POST') {
+            $this->htmxRedirect(Htmx::actionUrl('%=option=%', 'display'));
+            return;
+        }
+
+        $this->htmxTrigger('%=component_name=%:created', array(
+            'ok' => true,
+        ));
+
+        if ($this->isHtmxRequest()) {
+            $this->renderFragment(array(
+                array('id' => 1, 'title' => 'New row from createTask'),
+            ));
+            return;
+        }
+
+        $this->htmxRedirect(Htmx::actionUrl('%=option=%', 'display'));
+    }
+
+    /**
+     * @param   array  $records
+     * @return  void
+     */
+    protected function renderFragment(array $records): void
+    {
+        $routes = $this->routes();
+        $tpl = dirname(__DIR__) . DS . 'views' . DS . '%=view=%' . DS . 'tmpl' . DS . 'fragment.php';
+
+        ob_start();
+        include $tpl;
+        $html = (string) ob_get_clean();
+
+        $this->htmxFragment($html);
+    }
+
+    /**
+     * @return  array
+     */
+    protected function routes(): array
+    {
+        return array(
+            'index'  => Htmx::actionUrl('%=option=%', 'display'),
+            'create' => Htmx::actionUrl('%=option=%', 'create'),
+        );
+    }
+}

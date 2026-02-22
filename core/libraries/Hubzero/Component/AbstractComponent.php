@@ -9,6 +9,8 @@
 namespace Hubzero\Component;
 
 use Hubzero\Config\Registry;
+use Hubzero\Htmx\HtmxService;
+use Hubzero\Htmx\HtmxServiceProvider;
 use Hubzero\Inertia\InertiaService;
 use Hubzero\Inertia\InertiaServiceProvider;
 
@@ -89,6 +91,7 @@ abstract class AbstractComponent
         }
 
         $this->init();
+        $this->bootHtmx();
         $this->bootInertia();
 
         $this->booted = true;
@@ -151,6 +154,41 @@ abstract class AbstractComponent
 
         $inertia->flush(true);
         $this->registerInertia($inertia);
+    }
+
+    /**
+     * Boot HTMX support for components that opt in via HtmxComponentInterface.
+     *
+     * @return  void
+     */
+    protected function bootHtmx(): void
+    {
+        if (!($this instanceof HtmxComponentInterface) || !$this->htmxEnabled()) {
+            return;
+        }
+
+        if (!class_exists('\\App')) {
+            return;
+        }
+
+        $app = \App::get('app');
+        if (!$app) {
+            return;
+        }
+
+        if (!$app->has('htmx')) {
+            $app->register(new HtmxServiceProvider($app));
+        }
+
+        $htmx = $app->get('htmx');
+        if (!$htmx instanceof HtmxService) {
+            $htmx = new HtmxService();
+            $app->set('htmx', $htmx);
+        }
+
+        $htmx->flush();
+        $htmx->varyOnRequest();
+        $this->registerHtmx($htmx);
     }
 
     /**

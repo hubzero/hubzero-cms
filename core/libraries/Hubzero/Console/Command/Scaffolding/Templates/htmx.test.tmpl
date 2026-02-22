@@ -1,0 +1,31 @@
+<?php
+
+/**
+ * @package    %=option=%
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\%=component_name+ucf=%\Tests;
+
+use Hubzero\Htmx\Tests\Concerns\InteractsWithHtmxResponses;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Baseline scaffolded HTMX fragment assertions.
+ */
+class Htmx%=view+ucf=%Test extends TestCase
+{
+    use InteractsWithHtmxResponses;
+
+    /**
+     * @return  void
+     */
+    public function testFragmentMarkupLooksLikeFragment(): void
+    {
+        $html = '<div id="%=component_name=%-%=view=%-panel"><p>fragment</p></div>';
+
+        $this->assertFragmentResponse($html);
+        $this->assertNoLayoutInFragment($html);
+    }
+}
