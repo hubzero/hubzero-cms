@@ -127,7 +127,7 @@ class Courses extends Obj
             return $this->_tbl->getCount($filters);
         }
 
-        if (!($this->_courses instanceof \Iterator) || $clear) {
+        if (!($this->_courses instanceof \Traversable) || $clear) {
             if (($results = $this->_tbl->getRecords($filters))) {
                 foreach ($results as $key => $result) {
                     $results[$key] = new Course($result);

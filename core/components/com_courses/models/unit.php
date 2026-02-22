@@ -216,7 +216,7 @@ class Unit extends Base
             $filters['section_id'] = (int) $this->get('section_id');
         }
 
-        if (!isset($this->assetgroups) || !($this->assetgroups instanceof \Iterator)) {
+        if (!isset($this->assetgroups) || !($this->assetgroups instanceof \Traversable)) {
             $tbl = new Tables\AssetGroup($this->_db);
             if (($results = $tbl->find(array('w' => $filters)))) {
                 $list = array();
@@ -283,7 +283,7 @@ class Unit extends Base
      */
     public function siblings(&$siblings)
     {
-        if ($siblings instanceof \Iterator) {
+        if ($siblings instanceof \Traversable) {
             $this->_siblings = $siblings;
         } else {
             $this->_siblings = new Iterator($siblings);
@@ -380,7 +380,7 @@ class Unit extends Base
      */
     public function assets($filters = array())
     {
-        if (!isset($this->_assets) || !($this->_assets instanceof \Iterator)) {
+        if (!isset($this->_assets) || !($this->_assets instanceof \Traversable)) {
             if (!isset($filters['asset_scope_id'])) {
                 $filters['asset_scope_id'] = (int) $this->get('id');
             }

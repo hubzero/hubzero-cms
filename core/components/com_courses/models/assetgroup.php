@@ -234,7 +234,7 @@ class Assetgroup extends Base
      */
     public function assets($filters = array())
     {
-        if (!($this->_assets instanceof \Iterator)) {
+        if (!($this->_assets instanceof \Traversable)) {
             if (!isset($filters['asset_scope_id'])) {
                 $filters['asset_scope_id'] = (int) $this->get('id');
             }
@@ -273,7 +273,7 @@ class Assetgroup extends Base
      */
     public function siblings(&$siblings)
     {
-        if (!($siblings instanceof \Iterator)) {
+        if (!($siblings instanceof \Traversable)) {
             $siblings = new Iterator($siblings);
         }
         $this->_siblings = $siblings;

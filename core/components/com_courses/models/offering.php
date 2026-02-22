@@ -331,7 +331,7 @@ class Offering extends Base
             return $tbl->count($filters);
         }
 
-        if (!($this->_sections instanceof \Iterator) || $clear) {
+        if (!($this->_sections instanceof \Traversable) || $clear) {
             $tbl = new Tables\Section($this->_db);
 
             if (($results = $tbl->find($filters))) {
@@ -404,7 +404,7 @@ class Offering extends Base
             return $tbl->count($filters);
         }
 
-        if (!($this->_units instanceof \Iterator) || $clear) {
+        if (!($this->_units instanceof \Traversable) || $clear) {
             $tbl = new Tables\Unit($this->_db);
 
             if (($results = $tbl->find($filters))) {
@@ -601,7 +601,7 @@ class Offering extends Base
      */
     public function assets($filters = array())
     {
-        if (!($this->_assets instanceof \Iterator)) {
+        if (!($this->_assets instanceof \Traversable)) {
             if (!isset($filters['asset_scope_id'])) {
                 $filters['asset_scope_id'] = (int) $this->get('id');
             }
