@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,7 +33,15 @@ $this->css()
                         echo Lang::txt('COM_RESOURCES_START_NEW_TYPE', $this->escape(stripslashes($name))); ?>
                     </a>
                 <?php } else { ?>
-                    <a class="icon-add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=1&type=' . $type->id); ?>">
+                    <?php
+                    $hrefUrl = Route::url(
+                        'index.php?option='
+                        . $this->option
+                        . '&task=draft&step=1&type='
+                        . $type->id
+                    );
+                    ?>
+                    <a class="icon-add btn" href="<?php echo $hrefUrl; ?>">
                         <?php
                         $name = $type->type;
                         if (substr($type->type, -1) == 's') {
@@ -61,9 +67,14 @@ $this->css()
                         continue;
                     }
                     ?>
-                    <option value="<?php echo $this->escape($type->alias); ?>"<?php if ($type->id == $this->filters['type']) {
+                    <option value="<?php echo $this->escape($type->alias); ?>"<?php
+                    if (
+                        $type->id
+                                ==
+                                $this->filters['type']
+                    ) {
                         echo ' selected="selected"';
-                                   } ?>><?php echo $this->escape(stripslashes($type->type)); ?></option>
+                    } ?>><?php echo $this->escape(stripslashes($type->type)); ?></option>
                 <?php } ?>
                 </select>
             </label>
@@ -71,7 +82,8 @@ $this->css()
             <input type="hidden" name="task" value="browsetags" />
         </fieldset>
 
-        <div id="tagbrowser" data-loader="<?php echo Request::base(true); ?>/core/components/com_resources/site/assets/img/loading.gif">
+        <div id="tagbrowser"
+             data-loader="<?php echo Request::base(true); ?>/core/components/com_resources/site/assets/img/loading.gif">
             <p class="info"><?php echo Lang::txt('COM_RESOURCES_TAGBROWSER_EXPLANATION'); ?></p>
 
             <div id="level-1">
@@ -94,13 +106,18 @@ $this->css()
             </div><!-- / #level-3 -->
 
             <input type="hidden" name="id" id="id" value="" />
-            <input type="hidden" name="pretype" id="pretype" value="<?php echo $this->escape($this->filters['type']); ?>" />
+            <input type="hidden"
+                   name="pretype"
+                   id="pretype"
+                   value="<?php echo $this->escape($this->filters['type']); ?>"
+                   />
             <input type="hidden" name="preinput" id="preinput" value="<?php echo $this->escape($this->tag); ?>" />
             <input type="hidden" name="preinput2" id="preinput2" value="<?php echo $this->escape($this->tag2); ?>" />
             <div class="clear"></div>
         </div><!-- / #tagbrowser -->
 
-        <p id="viewalltools"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&type=' . $this->filters['type']); ?>"><?php echo Lang::txt('COM_RESOURCES_VIEW_MORE'); ?></a></p>
+        <?php $val = Route::url('index.php?option=' . $this->option . '&type=' . $this->filters['type']); ?>
+        <p id="viewalltools"><a href="<?php echo $val; ?>"><?php echo Lang::txt('COM_RESOURCES_VIEW_MORE'); ?></a></p>
         <div class="clear"></div>
 
         <?php
@@ -116,7 +133,10 @@ $this->css()
             }
             ?>
             <p class="supported">
-                <?php echo Lang::txt('COM_RESOURCES_WHATS_THIS'); ?> <a href="<?php echo $link; ?>"><?php echo Lang::txt('COM_RESOURCES_ABOUT_TAG', $tag->get('raw_tag')); ?></a>
+                <?php echo Lang::txt('COM_RESOURCES_WHATS_THIS'); ?>
+                <a href="<?php echo $link; ?>"><?php
+                    echo Lang::txt('COM_RESOURCES_ABOUT_TAG', $tag->get('raw_tag'));
+                ?></a>
             </p>
             <?php
         }

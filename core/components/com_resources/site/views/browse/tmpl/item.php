@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -68,9 +66,15 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
 					');
                     ?>
                     <span class="rank">
-                        <span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->line->get('id'); ?>"><?php echo Lang::txt('COM_RESOURCES_THIS_HAS'); ?></span>
+                        <span class="rank-<?php echo $r; ?>"
+                              id="rank-<?php echo $this->line->get('id'); ?>"><?php
+                                echo
+                                Lang::txt('COM_RESOURCES_THIS_HAS');
+                                ?></span>
                     </span>
-                    <?php echo number_format($this->line->get('ranking'), 1) . ' ' . Lang::txt('COM_RESOURCES_RANKING'); ?>
+                    <?php
+                    echo number_format($this->line->get('ranking'), 1) .  ' ' .  Lang::txt('COM_RESOURCES_RANKING');
+                    ?>
                 </dt>
                 <dd>
                     <p><?php echo Lang::txt('COM_RESOURCES_RANKING_EXPLANATION'); ?></p>
@@ -80,9 +84,19 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
 
                         // Get statistics info
                         if ($this->line->isTool()) {
-                            $stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->line->id, $this->line->get('type'), $this->line->rating);
+                            $stats = new \Components\Resources\Helpers\Usage\Tools(
+                                $database,
+                                $this->line->id,
+                                $this->line->get('type'),
+                                $this->line->rating
+                            );
                         } else {
-                            $stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->line->id, $this->line->get('type'), $this->line->rating);
+                            $stats = new \Components\Resources\Helpers\Usage\Andmore(
+                                $database,
+                                $this->line->id,
+                                $this->line->get('type'),
+                                $this->line->rating
+                            );
                         }
                         echo $stats->display();
                         ?>
@@ -93,8 +107,11 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
     <?php } elseif ($params->get('show_rating')) { ?>
         <div class="metadata">
             <p class="rating">
-                <span title="<?php echo Lang::txt('COM_RESOURCES_OUT_OF_5_STARS', $this->line->get('rating')); ?>" class="avgrating <?php echo $this->line->rating; ?>">
-                    <span><?php echo Lang::txt('COM_RESOURCES_OUT_OF_5_STARS', $this->line->get('rating')); ?></span>&nbsp;
+                <span title="<?php echo Lang::txt('COM_RESOURCES_OUT_OF_5_STARS', $this->line->get('rating')); ?>"
+                      class="avgrating <?php echo $this->line->rating; ?>">
+                    <span><?php
+                        echo Lang::txt('COM_RESOURCES_OUT_OF_5_STARS', $this->line->get('rating'));
+                    ?></span>&nbsp;
                 </span>
             </p>
         </div>
@@ -135,7 +152,10 @@ $extras = Event::trigger('resources.onResourcesList', array($this->line));
             $content = trim($content);
         }
 
-        echo \Hubzero\Utility\Str::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))), 300);
+        echo \Hubzero\Utility\Str::truncate(
+            strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))),
+            300
+        );
         ?>
                 <?php
                 $tc = $this->line->tags('cloud');

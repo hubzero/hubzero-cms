@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +10,13 @@
 defined('_HZEXEC_') or die();
 
 Toolbar::title(Lang::txt('Solr Search: Overview'));
-Toolbar::custom('optimize', 'save', 'optimize', 'COM_SEARCH_SOLR_OPTIMIZE', false);
+Toolbar::custom(
+    'optimize',
+    'save',
+    'optimize',
+    'COM_SEARCH_SOLR_OPTIMIZE',
+    false
+);
 Toolbar::spacer();
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
@@ -25,8 +29,16 @@ $this->view('_submenu', 'shared')
     <div class="widget">
         <div class="inner">
             <div class="title"><div>Solr Status</div></div>
-            <div class="sub-title"><div class="sub-title-inner">Last Document Insert: <?php echo $this->lastInsert; ?></div></div>
-            <div class="sub-title"><div class="sub-title-inner">Mechanism: <?php echo ucfirst($this->mechanism); ?></div> </div>
+            <div class="sub-title">
+                <div class="sub-title-inner">
+                    Last Document Insert: <?php echo $this->lastInsert; ?>
+                </div>
+            </div>
+            <div class="sub-title">
+                <div class="sub-title-inner">
+                    Mechanism: <?php echo ucfirst($this->mechanism); ?>
+                </div>
+            </div>
             <div class="content">
                 <div class="content-inner">
                     <div class="status">
@@ -48,7 +60,8 @@ $this->view('_submenu', 'shared')
             </div><!-- /.content -->
         </div><!-- /.inner -->
     </div>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+    <?php $formUrl = Route::url('index.php?option=' . $this->option); ?>
+    <form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="adminForm">
         <input type="hidden" name="option" value="com_search" />
         <input type="hidden" name="controller" value="solr" />
         <input type="hidden" name="task" value="searchIndex" autocomplete="" />
@@ -64,12 +77,20 @@ $this->view('_submenu', 'shared')
                 </div>
                 <div class="sub-title">
                     <div class="sub-title-inner">
-                        <?php echo Lang::txt('COM_SEARCH_QUEUE_LAST_SERVICE') . ':' . Date::of($this->queueStats['modified'])->relative(); ?>
+                        <?php
+                            $lastService = Date::of($this->queueStats['modified'])->relative();
+                            echo Lang::txt('COM_SEARCH_QUEUE_LAST_SERVICE')
+                                . ':' . $lastService;
+                        ?>
                     </div>
                 </div>
                 <div class="sub-title">
                     <div class="sub-title-inner">
-                        <?php echo Lang::txt('COM_SEARCH_QUEUE_AVERAGE_SERVICE') . ':' . $this->queueStats['serviceTime'] . 'minutes'; ?>
+                        <?php
+                            echo Lang::txt('COM_SEARCH_QUEUE_AVERAGE_SERVICE')
+                                . ':' . $this->queueStats['serviceTime']
+                                . 'minutes';
+                        ?>
                     </div>
                 </div>
                 <div class="content">

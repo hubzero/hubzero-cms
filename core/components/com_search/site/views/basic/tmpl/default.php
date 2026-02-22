@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,17 +22,35 @@ $show_weight = array_key_exists('show_weight', $_GET);
 <section class="main section">
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-            <form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="container data-entry">
-                <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_SEARCH_SEARCH'); ?>" />
+            <?php $searchUrl = Route::url('index.php?option=com_search'); ?>
+            <form action="<?php echo $searchUrl; ?>" method="get" class="container data-entry">
+                <?php $submitLabel = Lang::txt('COM_SEARCH_SEARCH'); ?>
+                <input class="entry-search-submit" type="submit" value="<?php echo $submitLabel; ?>" />
                 <fieldset class="entry-search">
                     <legend><?php echo Lang::txt('COM_SEARCH_SITE'); ?></legend>
                     <label for="terms"><?php echo Lang::txt('COM_SEARCH_TERMS'); ?></label>
-                    <input type="text" name="terms" id="terms" value="<?php echo $this->escape($this->terms); ?>" placeholder="<?php echo Lang::txt('COM_SEARCH_TERMS_PLACEHOLDER'); ?>" />
+                    <?php $termsPlaceholder = Lang::txt('COM_SEARCH_TERMS_PLACEHOLDER'); ?>
+                    <input type="text"
+                        name="terms"
+                        id="terms"
+                        value="<?php echo $this->escape($this->terms); ?>"
+                        placeholder="<?php echo $termsPlaceholder; ?>"
+                    />
                 </fieldset>
             </form>
     <?php if ($this->results->valid()) : ?>
         <?php if (($ct = $this->results->get_custom_title())) : ?>
-            <p class="information">You are viewing <strong><?php echo $ct; ?></strong> matching your query. <a href="<?php echo Route::url('index.php?option=com_search&terms=' . urlencode($this->terms) . '&force-generic=1'); ?>">View all results.</a></p>
+            <?php
+                $genericUrl = Route::url(
+                    'index.php?option=com_search&terms='
+                    . urlencode($this->terms) . '&force-generic=1'
+                );
+            ?>
+            <p class="information">
+                You are viewing <strong><?php echo $ct; ?></strong>
+                matching your query.
+                <a href="<?php echo $genericUrl; ?>">View all results.</a>
+            </p>
         <?php endif; ?>
 
             <div class="container">
@@ -54,7 +70,12 @@ $show_weight = array_key_exists('show_weight', $_GET);
                 <?php if (($tags = $this->results->get_tags())) : ?>
                     <ol class="tags">
                         <?php foreach ($tags as $tag) : ?>
-                            <li><a class="tag" href="<?php echo Route::url($tag->get_link()); ?>"><?php echo $tag->get_title(); ?></a></li>
+                            <?php $tagUrl = Route::url($tag->get_link()); ?>
+                            <li>
+                                <a class="tag" href="<?php echo $tagUrl; ?>">
+                                    <?php echo $tag->get_title(); ?>
+                                </a>
+                            </li>
                         <?php endforeach; ?>
                     </ol>
                 <?php endif; ?>
@@ -66,8 +87,16 @@ $show_weight = array_key_exists('show_weight', $_GET);
                 <ol class="results">
                 <?php foreach ($this->results as $res) : ?>
                     <li>
-                        <?php $before = Event::trigger('search.onBeforeSearchRender' . ucfirst($res->get_plugin()), array($res)); ?>
-                        <p class="title"><a href="<?php echo $res->get_link(); ?>"><?php echo $res->get_highlighted_title(); ?></a></p>
+                        <?php
+                            $eventName = 'search.onBeforeSearchRender'
+                                . ucfirst($res->get_plugin());
+                            $before = Event::trigger($eventName, array($res));
+                        ?>
+                        <p class="title">
+                            <a href="<?php echo $res->get_link(); ?>">
+                                <?php echo $res->get_highlighted_title(); ?>
+                            </a>
+                        </p>
                         <div class="summary">
                             <?php if ($res->has_metadata()) : ?>
                                 <p class="details">
@@ -86,9 +115,17 @@ $show_weight = array_key_exists('show_weight', $_GET);
                                             Contributor(s):
                                             <?php foreach ($contributors as $idx => $contrib) : ?>
                                                 <?php if (isset($contrib_ids[$idx])) : ?>
-                                                <a href="<?php echo Route::url('index.php?option=com_members&id=' . $contrib_ids[$idx]); ?>"><?php echo $contrib; ?></a><?php if ($idx != $contrib_len - 1) {
+                                                    <?php
+                                                    $memberUrl = Route::url(
+                                                        'index.php?option=com_members&id='
+                                                        . $contrib_ids[$idx]
+                                                    );
+                                                    ?>
+                                                <a href="<?php echo $memberUrl; ?>">
+                                                    <?php echo $contrib; ?>
+                                                </a><?php if ($idx != $contrib_len - 1) {
                                                     echo ', ';
-                                                         } ?>
+                                                    } ?>
                                                 <?php else : ?>
                                                     <?php echo $contrib; ?>
                                                 <?php endif; ?>
@@ -140,21 +177,39 @@ $show_weight = array_key_exists('show_weight', $_GET);
                                     if (!$last_type) :
                                         ?>
                                         <li>
-                                            <h4><span class="expand"></span><?php echo $current_type == 'Questions' ? 'Answers' : $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
+                                            <?php
+                                                $typeLabel = $current_type == 'Questions'
+                                                    ? 'Answers' : $current_type;
+                                                $sectionCount = $ctypec[$child->get_section()];
+                                            ?>
+                                            <h4>
+                                                <span class="expand"></span>
+                                                <?php echo $typeLabel; ?>
+                                                <small>(<?php echo $sectionCount; ?>)</small>
+                                            </h4>
                                             <ul class="child-result">
                                     <?php elseif ($last_type != $current_type) : ?>
                                             </ul>
                                         </li>
                                         <li>
-                                            <h4><span class="expand"></span><?php echo $current_type; ?> <small>(<?php echo $ctypec[$child->get_section()]; ?>)</small></h4>
+                                            <?php $sectionCount = $ctypec[$child->get_section()]; ?>
+                                            <h4>
+                                                <span class="expand"></span>
+                                                <?php echo $current_type; ?>
+                                                <small>(<?php echo $sectionCount; ?>)</small>
+                                            </h4>
                                             <ul class="child-result">
                                             <?php
                                     endif;
                                         $last_type = $current_type;
                                     ?>
                                         <li class="<?php echo $idx & 1 ? 'odd' : 'even'; ?>">
-                                            <a href="<?php echo $child->get_link(); ?>"><?php echo $child->get_highlighted_title(); ?></a>
-                                            <p><?php echo $child->get_highlighted_excerpt(); ?></p>
+                                            <a href="<?php echo $child->get_link(); ?>">
+                                                <?php echo $child->get_highlighted_title(); ?>
+                                            </a>
+                                            <p>
+                                                <?php echo $child->get_highlighted_excerpt(); ?>
+                                            </p>
                                         </li>
                                 <?php endforeach; ?>
                                     </ul>
@@ -162,7 +217,11 @@ $show_weight = array_key_exists('show_weight', $_GET);
                             </ul>
                             <?php endif; ?>
                         <?php endif; ?>
-                        <p class="url"><a href="<?php echo $res->get_link(); ?>"><?php echo $res->get_link(); ?></a></p>
+                        <p class="url">
+                            <a href="<?php echo $res->get_link(); ?>">
+                                <?php echo $res->get_link(); ?>
+                            </a>
+                        </p>
                     </li>
                 <?php endforeach; ?>
                 </ol>
@@ -176,14 +235,20 @@ $show_weight = array_key_exists('show_weight', $_GET);
                     $pagination->setAdditionalUrlParam('terms', $this->terms);
                     echo $pagination->render();
                     ?>
-                    <input type="hidden" name="terms" value="<?php echo $this->escape($this->terms); ?>" />
+                    <input type="hidden"
+                        name="terms"
+                        value="<?php echo $this->escape($this->terms); ?>"
+                    />
                     <div class="clearfix"></div>
                 </form>
             </div><!-- / .container -->
     <?php elseif (($raw = $this->terms->get_raw())) : ?>
-        <p><?php echo Lang::txt('COM_SEARCH_RESULTS_NONE', $this->escape($raw)); ?></p>
+        <?php $noResultsMsg = Lang::txt('COM_SEARCH_RESULTS_NONE', $this->escape($raw)); ?>
+        <p><?php echo $noResultsMsg; ?></p>
         <?php
-            // raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
+            // raw terms were specified but no chunks were parsed out,
+            // meaning they were all stop words, so we can give a
+            // quasi-helpful explanation of why nothing turned up
         if (!$this->terms->any() || strlen($raw) <= 3) :
             ?>
             <p class="warning"><?php echo Lang::txt('COM_SEARCH_WARNING_SHORT_WORDS'); ?></p>
@@ -198,33 +263,99 @@ $show_weight = array_key_exists('show_weight', $_GET);
         <?php if ($this->results->get_total_count()) : ?>
             <ul class="sub-nav">
                 <li>
+                    <?php
+                        $filterAllUrl = Route::url(
+                            'index.php?option=com_search&terms='
+                            . $this->url_terms
+                        );
+                        $filterAllLabel = Lang::txt('COM_SEARCH_FILTER_ALL');
+                        $totalCount = $this->results->get_total_count();
+                    ?>
                     <?php if ($this->plugin) : ?>
-                        <a href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->url_terms); ?>"><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></a>
+                        <a href="<?php echo $filterAllUrl; ?>">
+                            <?php echo $filterAllLabel; ?>
+                            <span class="item-count">
+                                <?php echo $totalCount; ?>
+                            </span>
+                        </a>
                     <?php else : ?>
-                        <strong><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count"><?php echo $this->results->get_total_count(); ?></span></strong>
+                        <strong>
+                            <?php echo $filterAllLabel; ?>
+                            <span class="item-count">
+                                <?php echo $totalCount; ?>
+                            </span>
+                        </strong>
                     <?php endif; ?>
                 </li>
             <?php foreach ($this->results->get_result_counts() as $cat => $def) : ?>
                 <?php if ($def['count']) : ?>
                     <li>
                         <?php if ($this->plugin == $cat && !$this->section) : ?>
-                            <strong><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></strong>
+                            <strong>
+                                <?php echo $def['friendly_name']; ?>
+                                <span class="item-count">
+                                    <?php echo $def['count']; ?>
+                                </span>
+                            </strong>
                         <?php else : ?>
-                            <a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
+                            <?php
+                                $catUrl = Route::url(
+                                    'index.php?option=com_search&terms='
+                                    . $cat . ':' . $this->url_terms
+                                );
+                            ?>
+                            <a href="<?php echo $catUrl; ?>">
+                                <?php echo $def['friendly_name']; ?>
+                                <span class="item-count">
+                                    <?php echo $def['count']; ?>
+                                </span>
+                            </a>
                         <?php endif; ?>
                         <?php
                         $searchPluginName = ucfirst($def['plugin_name']);
-                        $fc_child_flag = 'Plugins\\Search\\' . $searchPluginName . '\\' . $searchPluginName . '::FIRST_CLASS_CHILDREN';
-                        if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1) :
+                        $fc_child_flag = 'Plugins\\Search\\'
+                            . $searchPluginName . '\\'
+                            . $searchPluginName
+                            . '::FIRST_CLASS_CHILDREN';
+                        $hasChildren = (!defined($fc_child_flag)
+                            || constant($fc_child_flag))
+                            && array_key_exists('sections', $def)
+                            && count($def['sections']) > 1;
+                        if ($hasChildren) :
                             ?>
                             <ul>
                             <?php foreach ($def['sections'] as $section_key => $sdef) : ?>
                                 <?php
-                                if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key) :
+                                $isActiveSection = $this->plugin
+                                    && $this->section
+                                    && $cat == $this->plugin
+                                    && $this->section == $section_key;
+                                if (!$isActiveSection) :
                                     ?>
-                                    <li><a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></a></li>
+                                    <?php
+                                        $sectionUrl = Route::url(
+                                            'index.php?option=com_search&terms='
+                                            . $cat . ':' . $section_key
+                                            . ':' . $this->url_terms
+                                        );
+                                    ?>
+                                    <li>
+                                        <a href="<?php echo $sectionUrl; ?>">
+                                            <?php echo $sdef['name']; ?>
+                                            <span class="item-count">
+                                                <?php echo $sdef['count']; ?>
+                                            </span>
+                                        </a>
+                                    </li>
                                 <?php else : ?>
-                                    <li><strong><?php echo $sdef['name']; ?> <span class="item-count"><?php echo $sdef['count']; ?></span></strong></li>
+                                    <li>
+                                        <strong>
+                                            <?php echo $sdef['name']; ?>
+                                            <span class="item-count">
+                                                <?php echo $sdef['count']; ?>
+                                            </span>
+                                        </strong>
+                                    </li>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                             </ul>

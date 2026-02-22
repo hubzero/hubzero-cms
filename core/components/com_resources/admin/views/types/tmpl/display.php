@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,26 +23,100 @@ if ($canDo->get('core.delete')) {
 }
 
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="category"><?php echo Lang::txt('COM_RESOURCES_FILTER_CATEGORY'); ?>:</label>
-        <?php echo \Components\Resources\Helpers\Html::selectType($this->cats, 'category', $this->filters['category'], 'category', Lang::txt('COM_RESOURCES_SELECT'), '', '', ''); ?>
+        <?php
+        echo \Components\Resources\Helpers\Html::selectType(
+            $this->cats,
+            'category',
+            $this->filters['category'],
+            'category',
+            Lang::txt('COM_RESOURCES_SELECT'),
+            '',
+            '',
+            ''
+        );
+        ?>
 
-        <input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
+        <input type="submit"
+               name="filter_submit"
+               id="filter_submit"
+               value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>"
+               />
     </fieldset>
 
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                           name="checkall-toggle"
+                           id="checkall-toggle"
+                           value=""
+                           class="checkbox-toggle toggle-all"
+                           />
+                    <label for="checkall-toggle"
+                           class="sr-only visually-hidden"><?php
+                            echo
+                            Lang::txt('JGLOBAL_CHECK_ALL');
+                            ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_TITLE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_CATEGORY', 'category', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-1"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"
+                    class="priority-4"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_TITLE',
+                        'type',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-3"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_ALIAS',
+                        'alias',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-2"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_CATEGORY',
+                        'category',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-1"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_PUBLISHED',
+                        'state',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -73,8 +145,21 @@ if ($canDo->get('core.delete')) {
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <?php if ($canDo->get('core.edit') && $row->id != 7 && $row->id != 1 && $row->id != 2 && $row->id != 3 && $row->id != 6 && $row->id != 31) { ?>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                    <?php if (
+                    $canDo->get('core.edit')
+                        && $row->id != 7
+                        && $row->id != 1
+                        && $row->id != 2
+                        && $row->id != 3
+                        && $row->id != 6
+                        && $row->id != 31
+) { ?>
+                        <input type="checkbox"
+                               name="id[]"
+                               id="cb<?php echo $i; ?>"
+                               value="<?php echo $row->id; ?>"
+                               class="checkbox-toggle"
+                               />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     <?php } ?>
                 </td>
@@ -83,7 +168,14 @@ if ($canDo->get('core.delete')) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id=' . $row->get('id')
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->get('type'))); ?>
                         </a>
                     <?php } else { ?>
@@ -107,7 +199,17 @@ if ($canDo->get('core.delete')) {
                     ?>
                 </td>
                 <td class="priority-1">
-                    <a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+                    <?php
+                    $stateUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=' . $task
+                        . '&id=' . $row->get('id')
+                        . '&' . Session::getFormToken() . '=1'
+                    );
+                    ?>
+                    <a class="state <?php echo $cls; ?>"
+                       href="<?php echo $stateUrl; ?>">
                         <span><?php echo $alt; ?></span>
                     </a>
                 </td>

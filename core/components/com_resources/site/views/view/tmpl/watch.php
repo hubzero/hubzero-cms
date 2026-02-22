@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -161,7 +159,11 @@ $presentation->subtitles = array_values($presentation->subtitles);
                 <select name="presentation" id="presentation">
                     <optgroup label="<?php echo $parent->title; ?>">
                         <?php foreach ($children as $c) : ?>
-                            <?php if (Date::toSql() > $c->publish_up || $user->get("usertype") == 'Administrator' || $user->get("usertype") == 'Super Administrator') : ?>
+                            <?php
+                            $isAdmin = $user->get("usertype") == 'Administrator'
+                                || $user->get("usertype") == 'Super Administrator';
+                            ?>
+                            <?php if (Date::toSql() > $c->publish_up || $isAdmin) : ?>
                                 <option <?php if ($c->title == $rr->title) {
                                     echo "selected";
                                         } ?> value="<?php echo $c->id; ?>"><?php echo $c->title; ?></option>
@@ -177,7 +179,11 @@ $presentation->subtitles = array_values($presentation->subtitles);
     <?php endif; ?>
 </div>
 
-<?php $presenationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
+<?php
+$isHd = isset($presentation->format)
+    && strtoupper($presentation->format) == 'HD';
+$presenationFormat = $isHd ? 'presentation-hd' : '';
+?>
 <div id="presenter-container" class="<?php echo $presenationFormat; ?>" data-id="<?php echo $this->resid; ?>">
     <div id="presenter-header">
         <div id="title"><?php echo $rr->title; ?></div>
@@ -193,17 +199,25 @@ $presentation->subtitles = array_values($presentation->subtitles);
                 <ul class="no-js">
                     <?php $counter = 0; ?>
                     <?php foreach ($presentation->slides as $slide) : ?>
-                        <li id="slide_<?php echo $counter; ?>" title="<?php echo $slide->title; ?>" time="<?php echo $slide->time; ?>">
+                        <li id="slide_<?php echo $counter; ?>"
+                            title="<?php echo $slide->title; ?>"
+                            time="<?php echo $slide->time; ?>">
                             <?php if ($slide->type == 'Image') : ?>
-                                <img src="<?php echo $content_url . DS . $slide->media; ?>" alt="<?php echo $slide->title; ?>" />
+                                <img src="<?php echo $content_url . DS . $slide->media; ?>"
+                                     alt="<?php echo $slide->title; ?>"
+                                     />
                             <?php else : ?>
                                 <video class="slidevideo" preload="metadata" muted>
                                     <?php foreach ($slide->media as $source) : ?>
                                         <source src="<?php echo $content_url . DS . $source->source; ?>" />
                                     <?php endforeach; ?>
-                                    <a href="<?php echo $content_url . DS . $slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
+                                    <a href="<?php echo $content_url . DS . $slide->media[0]->source; ?>"
+                                       class="flowplayer_slide"
+                                       id="flowplayer_slide_<?php echo $counter; ?>"></a>
                                 </video>
-                                <img src="<?php echo $content_url . DS . $slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
+                                <img src="<?php echo $content_url . DS . $slide->media[3]->source; ?>"
+                                     alt="<?php echo $slide->title; ?>"
+                                     class="imagereplacement">
                             <?php endif; ?>
                         </li>
                         <?php $counter++; ?>
@@ -214,8 +228,14 @@ $presentation->subtitles = array_values($presentation->subtitles);
                 <div id="progress-bar"></div>
                 <div id="control-buttons">
                     <div id="control-buttons-left" class="cf">
-                        <a id="previous" class="tooltips control" href="javascript:void(0);" title="Previous Slide">Previous</a>
-                        <a id="play-pause" class="tooltips control" href="javascript:void(0);" title="Play Presentation">Pause</a>
+                        <a id="previous"
+                           class="tooltips control"
+                           href="javascript:void(0);"
+                           title="Previous Slide">Previous</a>
+                        <a id="play-pause"
+                           class="tooltips control"
+                           href="javascript:void(0);"
+                           title="Play Presentation">Pause</a>
                         <a id="next" class="tooltips control" href="javascript:void(0);" title="Next Slide">Next</a>
                         <div id="media-progress"></div>
                     </div>
@@ -298,7 +318,8 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                         </div>
                                     </div>
                                     <div class="actions">
-                                        <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save">Save</button>
+                                        <button class="btn btn-info btn-secondary icon-save"
+                                                id="subtitle-settings-save">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -309,7 +330,10 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                 <div id="volume-bar"></div>
                             </div>
                         </a>
-                        <a id="settings" class="control" href="javascript:void(0);" title="Adjust Settings for Playback">
+                        <a id="settings"
+                           class="control"
+                           href="javascript:void(0);"
+                           title="Adjust Settings for Playback">
                             Settings
                             <div class="control-container settings-controls">
                                 <h3>Settings</h3>
@@ -330,7 +354,10 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                 </div>
                             </div>
                         </a>
-                        <a id="link" class="control" href="javascript:void(0);" title="Link to this Spot in Presentation">
+                        <a id="link"
+                           class="control"
+                           href="javascript:void(0);"
+                           title="Link to this Spot in Presentation">
                             Link
                             <div class="control-container link-controls">
                                 <h3>Link to Video <span>- at current position</span></h3>
@@ -342,12 +369,20 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                 </div>
                             </div>
                         </a>
-                        <a id="switch" class="tooltips control" href="javascript:void(0);" title="Switch Placement of Video and Slides">Switch</a>
+                        <a id="switch"
+                           class="tooltips control"
+                           href="javascript:void(0);"
+                           title="Switch Placement of Video and Slides">Switch</a>
                     </div>
                 </div>
             </div><!-- /#control-box -->
         </div><!-- /#left -->
-        <?php $cls = (isset($presentation->videoPosition) && $presentation->videoPosition == "left" && strtolower($presentation->type) == 'video') ? "move-left" : ""; ?>
+        <?php
+        $isLeftVideo = isset($presentation->videoPosition)
+            && $presentation->videoPosition == "left"
+            && strtolower($presentation->type) == 'video';
+        $cls = $isLeftVideo ? "move-left" : "";
+        ?>
         <div id="presenter-right">
             <div id="media" class="<?php echo $cls; ?>">
                 <?php if (strtolower($presentation->type) == 'video') : ?>
@@ -428,15 +463,22 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                     break;
                             }
                             ?>
-                            <source src="<?php echo $content_url . DS . $source->source; ?>" type="<?php echo $type; ?>" />
+                            <source src="<?php echo $content_url . DS . $source->source; ?>"
+                                    type="<?php echo $type; ?>"
+                                    />
                         <?php endforeach; ?>
-                        <a href="<?php echo $content_url . DS . $presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) {
-                            echo $presentation->duration;
-                                 } ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
+                        <a href="<?php echo $content_url . DS . $presentation->media[0]->source; ?>"
+                           id="flowplayer"
+                           duration="<?php if (isset($presentation->duration) && $presentation->duration) {
+                                echo $presentation->duration;
+                                     } ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
                     </audio>
 
                     <?php if (isset($presentation->placeholder) && $presentation->placeholder) : ?>
-                        <img src="<?php echo $content_url . DS . $presentation->placeholder; ?>" title="" id="placeholder" />
+                        <img src="<?php echo $content_url . DS . $presentation->placeholder; ?>"
+                             title=""
+                             id="placeholder"
+                             />
                     <?php endif; ?>
                 <?php endif; ?>
                 <div id="video-subtitles"></div>
@@ -451,8 +493,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
                             <li id="list_<?php echo $counter; ?>">
                                 <?php
                                     //use thumb if possible
-                                    $thumb = $content_folder . DS . is_array($slide->media) ? $slide->media[0] : $slide->media;
-                                if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_APP . DS . $content_folder . DS . $slide->thumb)) {
+                                    $thumb = $content_folder .  DS
+                                        .  is_array($slide->media) ? $slide->media[0] : $slide->media;
+                                if (
+                                    isset($slide->thumb)
+                                    && $slide->thumb
+                                    && file_exists(PATH_APP . DS . $content_folder . DS . $slide->thumb)
+                                ) {
                                     $thumb = $content_url . DS . $slide->thumb;
                                 }
                                 ?>

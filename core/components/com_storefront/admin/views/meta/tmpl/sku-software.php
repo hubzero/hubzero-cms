@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -48,23 +46,54 @@ defined('_HZEXEC_') or die();
             $globalDownloadLimit = $skuMeta['globalDownloadLimit'];
         }
 
-        echo $this->editor('fields[meta][eula]', $this->escape(stripslashes($eula)), 50, 10, 'eula', array('buttons' => false));
+        echo $this->editor(
+            'fields[meta][eula]',
+            $this->escape(stripslashes($eula)),
+            50,
+            10,
+            'eula',
+            array('buttons' => false)
+        );
         ?>
     </div>
 
     <div class="input-wrap">
-        <label for="field-download-file"><?php echo 'Download file'; ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-        <input type="text" name="fields[meta][downloadFile]" id="field-download-file" size="30" maxlength="100" value="<?php echo $downloadFile; ?>" />
+<?php $requiredTxt = Lang::txt('JOPTION_REQUIRED'); ?>
+        <label for="field-download-file">
+            <?php echo 'Download file'; ?>: <span class="required"><?php echo $requiredTxt; ?></span>
+        </label><br />
+        <input
+            type="text"
+            name="fields[meta][downloadFile]"
+            id="field-download-file"
+            size="30"
+            maxlength="100"
+            value="<?php echo $downloadFile; ?>"
+        />
     </div>
 
     <div class="input-wrap">
         <label for="field-globalDownloadLimit"><?php echo 'Total Downloads Limit'; ?>:</label><br />
-        <input type="text" name="fields[meta][globalDownloadLimit]" id="field-globalDownloadLimit" size="30" maxlength="100" value="<?php echo $globalDownloadLimit; ?>" />
+        <input
+            type="text"
+            name="fields[meta][globalDownloadLimit]"
+            id="field-globalDownloadLimit"
+            size="30"
+            maxlength="100"
+            value="<?php echo $globalDownloadLimit; ?>"
+        />
     </div>
 
     <div class="input-wrap">
         <label for="field-downloadLimit"><?php echo 'Downloads Limit per Single User'; ?>:</label><br />
-        <input type="text" name="fields[meta][downloadLimit]" id="field-downloadLimit" size="30" maxlength="100" value="<?php echo $downloadLimit; ?>" />
+        <input
+            type="text"
+            name="fields[meta][downloadLimit]"
+            id="field-downloadLimit"
+            size="30"
+            maxlength="100"
+            value="<?php echo $downloadLimit; ?>"
+        />
     </div>
 
 </fieldset>
@@ -87,16 +116,29 @@ defined('_HZEXEC_') or die();
         </select>
     </div>
 
-    <div class="input-wrap" data-hint="When 'Single Number' is selected from the 'Serial Number Management'">
+    <div class="input-wrap" data-hint="When 'Single Number' is selected from 'Serial Number Management'">
         <label for="field-serial"><?php echo 'Single Serial Number'; ?>:</label><br />
-        <input type="text" name="fields[meta][serial]" id="field-serial" size="30" maxlength="255" value="<?php echo $serial; ?>" />
+        <input
+            type="text"
+            name="fields[meta][serial]"
+            id="field-serial"
+            size="30"
+            maxlength="255"
+            value="<?php echo $serial; ?>"
+        />
     </div>
 
     <?php
     if ($serialManagement == "multiple") {
         ?>
         <p>
-            <a class="options-link" href="<?php echo 'index.php?option=' . $this->parent->option . '&controller=serials&sId=' . $this->parent->row->getId(); ?>">Manage multiple serial numbers</a>
+        <?php
+        $serialsUrl = 'index.php?option=' . $this->parent->option
+        . '&controller=serials&sId=' . $this->parent->row->getId();
+        ?>
+            <a class="options-link" href="<?php echo $serialsUrl; ?>">
+                Manage multiple serial numbers
+            </a>
         </p>
         <?php
     }

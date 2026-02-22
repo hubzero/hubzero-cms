@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -37,21 +35,50 @@ Toolbar::spacer();
 Toolbar::help('categories');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$ogEditUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=optiongroups&task=edit&ogId='
+    . $this->optionGroup->getId()
+);
+$editOgTitle = Lang::txt('Edit option group');
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th colspan="4">
-                     Options for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=optiongroups&task=edit&ogId=' . $this->optionGroup->getId()); ?>" title="<?php echo Lang::txt('Edit option group'); ?>"><?php echo $this->optionGroup->getName(); ?></a>
+                     Options for: <a
+                        href="<?php echo $ogEditUrl; ?>"
+                        title="<?php echo $editOgTitle; ?>"
+                    ><?php echo $this->optionGroup->getName(); ?></a>
                 </th>
             </tr>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    ><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+<?php
+$sortDir = @$this->filters['sort_Dir'];
+$sort = @$this->filters['sort'];
+?>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_TITLE', 'title', $sortDir, $sort); ?></th>
+<?php $stateSort = Html::grid('sort', 'COM_STOREFRONT_PUBLISHED', 'state', $sortDir, $sort); ?>
+                <th scope="col"><?php echo $stateSort; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -68,7 +95,6 @@ Toolbar::help('categories');
         </tfoot>
         <tbody>
 <?php
-// phpcs:disable Generic.Files.LineLength
 $k = 0;
 //for ($i=0, $n=count($this->rows); $i < $n; $i++)
 $i = 0;
@@ -96,12 +122,29 @@ foreach ($this->rows as $row) {
     ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->oId; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->oId; ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->oId; ?>"
+                        class="checkbox-toggle"
+                    />
+                    <label
+                        for="cb<?php echo $i; ?>"
+                        class="sr-only visually-hidden"
+                    ><?php echo $row->oId; ?></label>
                 </td>
                 <td>
                 <?php if ($canDo->get('core.edit')) { ?>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->oId); ?>" title="<?php echo Lang::txt('COM_STOREFRONT_EDIT_OPTION'); ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&id=' . $row->oId
+                    );
+                    $editTitle = Lang::txt('COM_STOREFRONT_EDIT_OPTION');
+                    ?>
+                    <a href="<?php echo $editUrl; ?>" title="<?php echo $editTitle; ?>">
                         <span><?php echo $this->escape(stripslashes($row->oName)); ?></span>
                     </a>
                 <?php } else { ?>
@@ -112,7 +155,19 @@ foreach ($this->rows as $row) {
                 </td>
                 <td>
                 <?php if ($canDo->get('core.edit.state')) { ?>
-                    <a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->oId) . '&ogId=' . $row->ogId; ?>" title="<?php echo Lang::txt('COM_STOREFRONT_SET_TASK', $task);?>">
+                    <?php
+                    $stateUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=' . $task . '&id=' . $row->oId
+                    ) . '&ogId=' . $row->ogId;
+                    $stateTitle = Lang::txt('COM_STOREFRONT_SET_TASK', $task);
+                    ?>
+                    <a
+                        class="state <?php echo $class; ?>"
+                        href="<?php echo $stateUrl; ?>"
+                        title="<?php echo $stateTitle; ?>"
+                    >
                         <span><?php echo $alt; ?></span>
                     </a>
                 <?php } else { ?>

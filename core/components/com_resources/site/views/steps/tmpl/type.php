@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,8 @@ $this->css('create.css')
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-main btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+            <?php $hrefUrl = Route::url('index.php?option=' . $this->option . '&task=new'); ?>
+            <a class="icon-main btn" href="<?php echo $hrefUrl; ?>">
                 <?php echo Lang::txt('Main page'); ?>
             </a>
         </p>
@@ -51,7 +50,12 @@ if ($this->types) {
             }
             $url = Route::url('index.php?option=com_tools&task=create');
         } else {
-            $url = Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->step . '&type=' . $type->id . ($this->group ? '&group=' . $this->group : ''));
+            $url = Route::url(
+                'index.php?option=' . $this->option
+                . '&task=draft&step=' . $this->step
+                . '&type=' . $type->id
+                . ($this->group ? '&group=' . $this->group : '')
+            );
         }
 
         $i++;
@@ -74,11 +78,22 @@ if ($this->types) {
             $cls = substr($type->alias, 0, -1);
         }
         // Need to do some decoding to ensure escaped characters aren't encoded twice.
-        $type->description = html_entity_decode(str_replace('&amp;', '&', strip_tags(stripslashes($type->description))));
+        $type->description = html_entity_decode(
+            str_replace(
+                '&amp;',
+                '&',
+                strip_tags(stripslashes($type->description))
+            )
+        );
         ?>
         <div class="col span-third <?php echo $clm; ?>">
             <div class="type-container <?php echo $cls; ?>">
-                <p class="type-button"><a class="btn icon-<?php echo $cls; ?>" href="<?php echo $url; ?>"><?php echo $this->escape(stripslashes($type->type)); ?></a></p>
+                <p class="type-button"><a
+                   class="btn icon-<?php echo $cls; ?>"
+                   href="<?php echo $url; ?>"><?php
+                    echo
+                    $this->escape(stripslashes($type->type));
+                    ?></a></p>
                 <p><?php echo $this->escape($type->description); ?></p>
             </div>
         </div><!-- / .col span-third <?php echo $clm; ?> -->
@@ -103,9 +118,21 @@ if ($this->types) {
 ?>
 
         <p class="info">
-            In order for <?php echo Config::get('sitename'); ?> to display your content, we must be given legal license to do so. At the very least, <?php echo Config::get('sitename'); ?> must be authorized to
-            hold, copy, distribute, and perform (play back) your material according to <a class="popup" href="<?php echo Request::base(true); ?>/legal/license">this agreement</a>.
-            You will retain any copyrights to the materials and decide how they should be licensed for end-user access. We encourage you to <a class="popup" href="<?php echo Request::base(true); ?>/legal/licensing">license your contributions</a>
+            <?php $siteName = Config::get('sitename'); ?>
+            <?php $baseUrl = Request::base(true); ?>
+            In order for <?php echo $siteName; ?> to display your content,
+            we must be given legal license to do so. At the very least,
+            <?php echo $siteName; ?> must be authorized to hold, copy,
+            distribute, and perform (play back) your material according to
+            <a class="popup"
+               href="<?php echo $baseUrl; ?>/legal/license"
+            >this agreement</a>.
+            You will retain any copyrights to the materials and decide
+            how they should be licensed for end-user access.
+            We encourage you to
+            <a class="popup"
+               href="<?php echo $baseUrl; ?>/legal/licensing"
+            >license your contributions</a>
             so that others can build upon them.
         </p>
 
@@ -122,7 +149,16 @@ if ($this->types) {
                 </div>
                 <div class="entry-content">
                     <h4 id="unknowntype">What if I want to contribute a type not listed here?</h4>
-                    <p>If you feel your contribution does not fit into any of our predefined types, please <a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>">contact us</a> with details of</p>
+                    <?php
+                    $supportUrl = Route::url(
+                        'index.php?option=com_support'
+                        . '&controller=tickets&task=new'
+                    );
+                    ?>
+                    <p>If you feel your contribution does not fit
+                    into any of our predefined types, please
+                    <a href="<?php echo $supportUrl; ?>">contact us</a>
+                    with details of</p>
                     <ol>
                         <li>what you wish to contribute, including a description and file types</li>
                         <li>how you believe it should be categorized</li>
@@ -131,24 +167,49 @@ if ($this->types) {
                 </div>
                 <div class="entry-content">
                     <h4 id="drafts">What if I don't have all the materials right now?</h4>
-                    <p>This is perfectly fine. When you start a new contribution, it remains in a "draft" state until you decide to submit it for publication. You may work on portions of it at your leisure and return to a step at any time.</p>
+                    <p>This is perfectly fine. When you start a new
+                    contribution, it remains in a "draft" state until you
+                    decide to submit it for publication. You may work on
+                    portions of it at your leisure and return to a step at
+                    any time.</p>
                     <p>You can find a list of your drafts through a variety of methods:</p>
                     <ul>
-                        <li>Go to the "contributions" tab under your <a href="<?php echo Route::url('index.php?option=com_members&task=myaccount'); ?>">account</a>.</li>
-                        <li>Add the "My Drafts" module to your personalized dashboard (found <a href="<?php echo Route::url('index.php?option=com_members&task=myaccount'); ?>">here</a>).</li>
-                        <li>Visit the <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">new contribution</a> page.</li>
+                        <?php $hrefUrl = Route::url('index.php?option=com_members&task=myaccount'); ?>
+                        <li>Go to the "contributions" tab under your
+                        <a href="<?php echo $hrefUrl; ?>">account</a>.
+                        </li>
+                        <li>Add the "My Drafts" module to your personalized
+                        dashboard (found
+                        <a href="<?php echo $hrefUrl; ?>">here</a>).
+                        </li>
+                        <?php $hrefUrl = Route::url('index.php?option=' . $this->option . '&task=new'); ?>
+                        <li>Visit the <a href="<?php echo $hrefUrl; ?>">new contribution</a> page.</li>
                     </ul>
                 </div>
                 <div class="entry-content">
                     <h4 id="submission">What happens after submission?</h4>
-                    <p>After submitting your contribution, it will be reviewed for completeness. If all appears satisfactory, the contribution will be approved and immediately appear in the <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">resources listing</a>.</p>
+                    <?php
+                    $browseUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&task=browse'
+                    );
+                    ?>
+                    <p>After submitting your contribution, it will be
+                    reviewed for completeness. If all appears satisfactory,
+                    the contribution will be approved and immediately
+                    appear in the
+                    <a href="<?php echo $browseUrl; ?>">resources
+                    listing</a>.</p>
                 </div>
                 <div class="entry-content">
                     <h4 id="retract">Ooops! I missed something and/or submitted too early!</h4>
                     <p>No worries! You can retract a submission by following these steps:</p>
                     <ul>
-                        <li>Visit the <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">new contribution</a> page.</li>
-                        <li>You should be presented with a list of your "drafts" and "pending" submissions. Find the (pending) contribution you wish to retract.</li>
+                        <?php $hrefUrl = Route::url('index.php?option=' . $this->option . '&task=new'); ?>
+                        <li>Visit the <a href="<?php echo $hrefUrl; ?>">new contribution</a> page.</li>
+                        <li>You should be presented with a list of your
+                        "drafts" and "pending" submissions. Find the
+                        (pending) contribution you wish to retract.</li>
                         <li>Click "retract".</li>
                     </ul>
                 </div>
@@ -157,7 +218,10 @@ if ($this->types) {
         </div><!-- /.subject -->
         <aside class="aside">
             <h3>Select a type</h3>
-            <p>Select one of the resource types listed to proceed to the next step. The type of resource chosen can affect what information you will need to provide in the following steps.</p>
+            <p>Select one of the resource types listed to proceed
+            to the next step. The type of resource chosen can affect
+            what information you will need to provide in the following
+            steps.</p>
         </aside><!-- /.aside -->
     </div>
 </section><!-- /.main section -->

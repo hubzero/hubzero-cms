@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,7 +47,14 @@ if ($mode != 'preview') {
                         <h2>
                             <?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
                             <?php if ($this->model->params->get('access-edit-resource')) { ?>
-                                <a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
+                                <?php
+                                $hrefUrl = Route::url(
+                                    'index.php?option=com_resources&task=draft&step=1&id='
+                                    . $this->model->id
+                                );
+                                ?>
+                                <a class="icon-edit edit btn"
+                                   href="<?php echo $hrefUrl; ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
                             <?php } ?>
                         </h2>
                         <input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
@@ -74,14 +79,28 @@ if ($mode != 'preview') {
                     if (!$this->model->access('view-all')) {
                         $ghtml = array();
                         foreach ($this->model->groups as $allowedgroup) {
-                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+                            $groupUrl = Route::url(
+                                'index.php?option=com_groups&cn='
+                                . $allowedgroup
+                            );
+                            $ghtml[] = '<a href="' . $groupUrl
+                                . '">' . $allowedgroup . '</a>';
                         }
                         ?>
                             <p class="warning">
                                 <?php if (User::isGuest()) : ?>
-                                    <?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())); ?>
+                                    <?php
+                                    $loginMsg = Lang::txt(
+                                        'COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN',
+                                        base64_encode(Request::path())
+                                    );
+                                    echo $loginMsg;
+                                    ?>
                                 <?php elseif ($this->get('group_owner')) : ?>
-                                    <?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+                                    <?php
+                                    echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP')
+                                        . ' ' . implode(', ', $ghtml);
+                                    ?>
                                 <?php else : ?>
                                     <?php echo Lang::txt('COM_RESOURCES_ALERTNOTAUTH'); ?>
                                 <?php endif; ?>
@@ -117,8 +136,14 @@ if ($mode != 'preview') {
                         $full  = '/site/stats/resource_impact/resource_impact_' . $this->model->id . '.gif';
                         if (file_exists(PATH_APP . $thumb)) {
                             $html .= '<br />';
-                            $html .= '<a id="member-stats-graph" title="' . $this->model->id . ' Impact Graph" href="' . Request::base(true) . $full . '" rel="lightbox">';
-                            $html .= '<img src="' . Request::base(true) . $thumb . '" alt="' . $this->model->id . ' Impact Graph"/>';
+                            $base = Request::base(true);
+                            $html .= '<a id="member-stats-graph" title="'
+                                . $this->model->id
+                                . ' Impact Graph" href="'
+                                . $base . $full . '" rel="lightbox">';
+                            $html .= '<img src="' . $base . $thumb
+                                . '" alt="' . $this->model->id
+                                . ' Impact Graph"/>';
                             $html .= '</a>';
                         }
 
@@ -133,17 +158,34 @@ if ($mode != 'preview') {
 
                         // Sort out supporting docs
                         $html .= $children && count($children) > 1
-                               ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
-                               : '';
+                            ? \Components\Resources\Helpers\Html::sortSupportingDocs(
+                                $this->model,
+                                $this->option,
+                                $children
+                            )
+                            : '';
 
                         echo $html;
 
                         $live_site = rtrim(Request::base(), '/');
                         ?>
+                        <?php
+                        $feedBase = $live_site . '/resources/'
+                            . $this->model->id . '/feed.rss?content=';
+                        ?>
                         <p>
-                            <a class="feed" id="resource-audio-feed" href="<?php echo $live_site . '/resources/' . $this->model->id . '/feed.rss?content=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
-                            <a class="feed" id="resource-video-feed" href="<?php echo $live_site . '/resources/' . $this->model->id . '/feed.rss?content=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
-                            <a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/' . $this->model->id . '/feed.rss?content=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
+                            <a class="feed"
+                               id="resource-audio-feed"
+                               href="<?php echo $feedBase . 'audio'; ?>"
+                            ><?php echo Lang::txt('Audio podcast'); ?></a><br />
+                            <a class="feed"
+                               id="resource-video-feed"
+                               href="<?php echo $feedBase . 'video'; ?>"
+                            ><?php echo Lang::txt('Video podcast'); ?></a><br />
+                            <a class="feed"
+                               id="resource-slides-feed"
+                               href="<?php echo $feedBase . 'slides'; ?>"
+                            ><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
                         </p>
                         <?php
                         if ($this->tab != 'play') {
@@ -259,11 +301,18 @@ if ($mode != 'preview') {
                         $html .= "\t\t" . '<tr class="' . $o . '">' . "\n";
                         $html .= "\t\t\t" . '<td>';
                         if ($child->standalone == 1) {
-                            $html .= '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $child->id) . '"';
+                            $childUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&id=' . $child->id
+                            );
+                            $html .= '<a href="' . $childUrl . '"';
                             if ($link_action == 1) {
                                 $html .= ' rel="noreferrer" target="_blank"';
                             } elseif ($link_action == 2) {
-                                $html .= ' onclick="popupWindow(\'' . $url . '\', \'' . $child->title . '\', 400, 400, \'auto\');"';
+                                $html .= ' onclick="popupWindow(\''
+                                    . $url . '\', \''
+                                    . $child->title
+                                    . '\', 400, 400, \'auto\');"';
                             }
                             $html .= '>' . $child->title . '</a>';
                         }
@@ -288,25 +337,68 @@ if ($mode != 'preview') {
 
                             foreach ($grandchildren as $grandchild) {
                                 $grandchild->set('title', $this->escape($grandchild->title));
-                                $grandchild->set('path', \Components\Resources\Helpers\Html::processPath($this->option, $grandchild, $child->id));
+                                $gcPath = \Components\Resources\Helpers\Html::processPath(
+                                    $this->option,
+                                    $grandchild,
+                                    $child->id
+                                );
+                                $grandchild->set('path', $gcPath);
 
                                 $alias = $grandchild->type->alias;
 
                                 switch ($alias) {
                                     case 'player':
                                     case 'quicktime':
-                                        $videoi .= (!$videoi) ? '<a href="' . $grandchild->path . '">' . Lang::txt('View') . '</a>' : '';
+                                        $videoi .= (!$videoi)
+                                            ? '<a href="' . $grandchild->path
+                                                . '">' . Lang::txt('View')
+                                                . '</a>'
+                                            : '';
                                         break;
                                     case 'breeze':
-                                        $breeze .= (!$breeze) ? '<a title="View Presentation - Flash Version" class="breeze flash" href="' . $grandchild->path . '&amp;no_html=1" title="' . $this->escape(stripslashes($grandchild->title)) . '">' . Lang::txt('View Flash') . '</a>' : '';
+                                        $gcTitle = $this->escape(
+                                            stripslashes($grandchild->title)
+                                        );
+                                        $breeze .= (!$breeze)
+                                            ? '<a title="View Presentation'
+                                                . ' - Flash Version"'
+                                                . ' class="breeze flash"'
+                                                . ' href="'
+                                                . $grandchild->path
+                                                . '&amp;no_html=1"'
+                                                . ' title="' . $gcTitle
+                                                . '">'
+                                                . Lang::txt('View Flash')
+                                                . '</a>'
+                                            : '';
                                         break;
                                     case 'hubpresenter':
-                                        $hubpresenter .= (!$hubpresenter) ? '<a title="View Presentation - HTML5 Version" class="hubpresenter html5" href="' . $grandchild->path . '" title="' . $this->escape(stripslashes($grandchild->title)) . '">' . Lang::txt('View HTML') . '</a>' : '';
+                                        $hubpresenter .= (!$hubpresenter)
+                                            ? '<a title="View Presentation'
+                                                . ' - HTML5 Version"'
+                                                . ' class="hubpresenter'
+                                                . ' html5" href="'
+                                                . $grandchild->path
+                                                . '" title="' . $gcTitle
+                                                . '">'
+                                                . Lang::txt('View HTML')
+                                                . '</a>'
+                                            : '';
                                         break;
                                     case 'elink':
                                     case 'youtube':
                                         if ($grandchild->get('logical_type') == 68) { // youtube
-                                            $youtube .= (!$youtube) ? '<a title="View Presentation - YouTube Version" class="youtube" href="' . $grandchild->path . '" title="' . $this->escape(stripslashes($grandchild->title)) . '">' . Lang::txt('View on YouTube') . '</a>' : '';
+                                            $youtube .= (!$youtube)
+                                                ? '<a title="View Presentation'
+                                                    . ' - YouTube Version"'
+                                                    . ' class="youtube"'
+                                                    . ' href="'
+                                                    . $grandchild->path
+                                                    . '" title="' . $gcTitle
+                                                    . '">'
+                                                    . Lang::txt('View on YouTube')
+                                                    . '</a>'
+                                                : '';
                                             break;
                                         }
                                         // no break - intentional fall through
@@ -315,9 +407,16 @@ if ($mode != 'preview') {
                                         if ($grandchild->get('logical_type') == 14) {
                                             $ext = Filesystem::extension($grandchild->path);
                                             $ext = (strpos($ext, '?') ? strstr($ext, '?', true) : $ext);
-                                            $pdf .= '<a href="' . $grandchild->path . '">' . Lang::txt('Notes') . ' (' . $ext . ')</a><br />' . "\n";
+                                            $pdf .= '<a href="'
+                                                . $grandchild->path . '">'
+                                                . Lang::txt('Notes')
+                                                . ' (' . $ext . ')</a>'
+                                                . '<br />' . "\n";
                                         } elseif ($grandchild->get('logical_type') == 51) {
-                                            $exercises .= '<a href="' . $grandchild->path . '">' . stripslashes($grandchild->title) . '</a><br />' . "\n";
+                                            $exercises .= '<a href="'
+                                                . $grandchild->path . '">'
+                                                . stripslashes($grandchild->title)
+                                                . '</a><br />' . "\n";
                                         } else {
                                             $grandchildParams  = $grandchild->params;
                                             $grandchildAttribs = $grandchild->attribs;
@@ -325,13 +424,32 @@ if ($mode != 'preview') {
                                             $width      = $grandchildAttribs->get('width', 640) + 20;
                                             $height     = $grandchildAttribs->get('height', 360) + 60;
 
+                                            $gcTitleStr = stripslashes(
+                                                $grandchild->title
+                                            );
                                             if ($linkAction == 1) {
-                                                $supp .= '<a rel="external" href="' . $grandchild->path . '">' . stripslashes($grandchild->title) . '</a><br />' . "\n";
+                                                $supp .= '<a rel="external"'
+                                                    . ' href="'
+                                                    . $grandchild->path
+                                                    . '">' . $gcTitleStr
+                                                    . '</a><br />' . "\n";
                                             } elseif ($linkAction == 2) {
-                                                $url = Route::url('index.php?option=com_resources&id=' . $child->id . '&resid=' . $grandchild->id . '&task=play');
-                                                $supp .= '<a class="play ' . $width . 'x' . $height . '" href="' . $url . '">' . stripslashes($grandchild->title) . '</a><br />' . "\n";
+                                                $url = Route::url(
+                                                    'index.php?option=com_resources&id='
+                                                    . $child->id . '&resid='
+                                                    . $grandchild->id
+                                                    . '&task=play'
+                                                );
+                                                $supp .= '<a class="play '
+                                                    . $width . 'x' . $height
+                                                    . '" href="' . $url
+                                                    . '">' . $gcTitleStr
+                                                    . '</a><br />' . "\n";
                                             } else {
-                                                $supp .= '<a href="' . $grandchild->path . '">' . stripslashes($grandchild->title) . '</a><br />' . "\n";
+                                                $supp .= '<a href="'
+                                                    . $grandchild->path
+                                                    . '">' . $gcTitleStr
+                                                    . '</a><br />' . "\n";
                                             }
                                         }
                                         break;
@@ -357,7 +475,10 @@ if ($mode != 'preview') {
                             if ($child->get('type') != 31 && $child->introtext) {
                                 $html .= "\t\t" . '<tr class="' . $o . '">' . "\n";
                                 $html .= "\t\t\t" . '<td colspan="6">';
-                                $html .= \Hubzero\Utility\Str::truncate(stripslashes($child->introtext), 200) . '<br /><br />';
+                                $html .= \Hubzero\Utility\Str::truncate(
+                                    stripslashes($child->introtext),
+                                    200
+                                ) . '<br /><br />';
                                 $html .= "\t\t\t" . '</td>' . "\n";
                                 $html .= "\t\t" . '</tr>' . "\n";
                             }

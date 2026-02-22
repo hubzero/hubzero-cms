@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -85,7 +83,8 @@ function doFileoptions()
                 //var dir = selection.options[selection.selectedIndex].value;
 
                 if (act == '1') {
-                    document.forms['adminForm'].elements['params[series_banner]'].value = '<?php echo $this->rconfig->get('uploadpath') . '/'; ?>' + filepath;
+                    var uploadPath = '<?php echo $this->rconfig->get('uploadpath') . '/'; ?>';
+                    document.forms['adminForm'].elements['params[series_banner]'].value = uploadPath + filepath;
                 } else if (act == '2') {
                     //if (filepath) {
                     //document.forms['adminForm'].elements['path'].value = '<?php echo $path; ?>' + filepath;
@@ -93,7 +92,9 @@ function doFileoptions()
                     //}
                 } else if (act == '3') {
                     var content = <?php echo $this->editor()->getContent('field-fulltxt'); ?>
-                    content = content + '<p><img class="contentimg" src="<?php echo $path; ?>' + filepath + '" alt="image" /></p>';
+                    content = content + '<p><img class="contentimg" src="<?php
+                        echo $path;
+                    ?>' + filepath + '" alt="image" /></p>';
                     <?php //echo $this->editor()->setContent('field-fulltxt', 'content'); ?>
                     setEditorContent('field-fulltxt', content);
                 } else if (act == '4') {

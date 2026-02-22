@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,7 +28,13 @@ $this->css('edit')
     ->js('editsearchable');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php
+    $formUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+    );
+    ?>
+<form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -39,11 +43,25 @@ $this->css('edit')
                 <!-- Name -->
                 <div class="input-wrap">
                     <label for="field-name"><?php echo Lang::txt('COM_SEARCH_FIELD_TITLE'); ?>:</label>
-                    <input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->searchComponent->title)); ?>" />
+                    <?php $titleVal = $this->escape(stripslashes($this->searchComponent->title)); ?>
+                    <input type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        size="30"
+                        maxlength="250"
+                        value="<?php echo $titleVal; ?>"
+                    />
                 </div> <!-- /.input-wrap -->
                 <div class="input-wrap">
                     <label for="field-name"><?php echo Lang::txt('COM_SEARCH_FIELD_CUSTOM'); ?>:</label>
-                    <input type="text" name="fields[custom]" id="field-custom" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->searchComponent->custom)); ?>" />
+                    <?php $customVal = $this->escape(stripslashes($this->searchComponent->custom)); ?>
+                    <input type="text"
+                        name="fields[custom]"
+                        id="field-custom"
+                        size="30"
+                        maxlength="250"
+                        value="<?php echo $customVal; ?>"
+                    />
                 </div> <!-- /.input-wrap -->
             </fieldset> <!-- /.adminform -->
         </div><!-- /.col span7 -->
@@ -63,7 +81,11 @@ $this->css('edit')
     <div class="grid">
         <div id="page-1" class="fb-editor col span7">
             <h3><?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTERS_LIST');?></h3>
-            <input type="hidden" name="filter-schema" value="<?php echo $this->escape(json_encode($this->filters)); ?>" />
+            <?php $filterSchema = $this->escape(json_encode($this->filters)); ?>
+            <input type="hidden"
+                name="filter-schema"
+                value="<?php echo $filterSchema; ?>"
+            />
             <div class="articles-container">
             </div>
         </div>
@@ -97,7 +119,10 @@ $this->css('edit')
         </div>
     </div>
     <?php echo Html::input('token'); ?>
-    <input type="hidden" name="id" value="<?php echo $this->searchComponent->id; ?>" />
+    <input type="hidden"
+        name="id"
+        value="<?php echo $this->searchComponent->id; ?>"
+    />
     <input type="hidden" name="option" value="com_search" />
     <input type="hidden" name="controller" value="searchable" />
     <input type="hidden" name="task" value="save" autocomplete="" />

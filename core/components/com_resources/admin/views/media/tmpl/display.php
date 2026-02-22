@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,8 @@ if ($this->getError()) {
 $this->js('media.js');
 
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
     <p><?php echo Lang::txt('COM_RESOURCES_MEDIA_PATH', str_replace(PATH_ROOT, 'ROOT', $this->path)); ?></p>
 
     <fieldset>
@@ -27,8 +26,30 @@ $this->js('media.js');
         </label>
 
         <div id="themanager" class="manager">
-            <iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir); ?>" name="imgManager" id="imgManager" width="98%" height="180"
-                data-dir="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component'); ?>"></iframe>
+            <?php
+            $srcUrl = Route::url(
+                'index.php?option='
+                . $this->option
+                . '&controller='
+                . $this->controller
+                . '&task=list&tmpl=component&listdir='
+                . $this->listdir
+                . '&subdir='
+                . $this->subdir
+            );
+            ?>
+            <?php
+            $dataDirUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=media&task=list&tmpl=component'
+            );
+            ?>
+            <iframe src="<?php echo $srcUrl; ?>"
+                    name="imgManager"
+                    id="imgManager"
+                    width="98%"
+                    height="180"
+                    data-dir="<?php echo $dataDirUrl; ?>"></iframe>
         </div>
     </fieldset>
 
@@ -41,15 +62,22 @@ $this->js('media.js');
                 </tr>
                 <tr>
                     <td> </td>
-                    <td><input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo Lang::txt('COM_RESOURCES_MEDIA_UPLOAD_UNPACK'); ?></label></td>
+                    <td><input type="checkbox" name="batch" id="batch" value="1" />
+                    <label for="batch"><?php
+                        echo Lang::txt('COM_RESOURCES_MEDIA_UPLOAD_UNPACK');
+                    ?></label></td>
                 </tr>
                 <tr>
-                    <td><label for="foldername"><?php echo Lang::txt('COM_RESOURCES_MEDIA_CREATE_DIRECTORY'); ?></label></td>
+                    <td><label for="foldername"><?php
+                        echo Lang::txt('COM_RESOURCES_MEDIA_CREATE_DIRECTORY');
+                    ?></label></td>
                     <td><input type="text" name="foldername" id="foldername" /></td>
                 </tr>
                 <tr>
                     <td> </td>
-                    <td><input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_MEDIA_ACTION_UPLOAD'); ?>" /></td>
+                    <td><input type="submit"
+                               value="<?php echo Lang::txt('COM_RESOURCES_MEDIA_ACTION_UPLOAD'); ?>"
+                               /></td>
                 </tr>
             </tbody>
         </table>

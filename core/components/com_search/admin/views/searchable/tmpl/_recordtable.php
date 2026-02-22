@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -63,11 +61,20 @@ $this->css('
                 </td>
                 <td>
                     <?php if (!in_array($document['id'], $this->blacklist)) : ?>
-                        <a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addToBlackList'
-                        . '&id=' . $document['id']
-                        . '&facet=' . $this->facet
-                        . '&limit=' . $this->pagination->limit
-                        . '&limitstart=' . $this->pagination->limitstart); ?>"><?php echo Lang::txt('COM_SEARCH_ADD_BLACKLIST'); ?></a>
+                        <?php
+                            $blacklistUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&task=addToBlackList'
+                                . '&id=' . $document['id']
+                                . '&facet=' . $this->facet
+                                . '&limit=' . $this->pagination->limit
+                                . '&limitstart=' . $this->pagination->limitstart
+                            );
+                            $blacklistLabel = Lang::txt('COM_SEARCH_ADD_BLACKLIST');
+                        ?>
+                        <a class="button" href="<?php echo $blacklistUrl; ?>">
+                            <?php echo $blacklistLabel; ?>
+                        </a>
                     <?php else : ?>
                         <span><?php echo Lang::txt('COM_SEARCH_MARKED_FOR_REMOVAL'); ?></span>
                     <?php endif; ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,8 @@ Toolbar::cancel();
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span8">
             <fieldset class="adminform">
@@ -46,17 +45,42 @@ Toolbar::cancel();
                         ?>
                         <tr>
                             <td>
-                                <input type="text" name="fields[<?php echo $i; ?>][subid]" maxlength="250" size="4" value="<?php echo $this->escape(stripslashes($row->subid)); ?>" />
-                                <input type="hidden" name="fields[<?php echo $i; ?>][ordering]" value="<?php echo $this->escape(stripslashes($row->ordering)); ?>" />
-                                <input type="hidden" name="fields[<?php echo $i; ?>][subtable]" value="<?php echo $this->escape(stripslashes($row->subtable)); ?>" />
-                                <input type="hidden" name="fields[<?php echo $i; ?>][authorid]" value="<?php echo $this->escape($this->authorid); ?>" />
-                                <input type="hidden" name="fields[<?php echo $i; ?>][id]" value="<?php echo $this->escape(stripslashes($row->id)); ?>" />
+                                <input type="text"
+                                       name="fields[<?php echo $i; ?>][subid]"
+                                       maxlength="250"
+                                       size="4"
+                                       value="<?php echo $this->escape(stripslashes($row->subid)); ?>"
+                                       />
+                                <input type="hidden"
+                                       name="fields[<?php echo $i; ?>][ordering]"
+                                       value="<?php echo $this->escape(stripslashes($row->ordering)); ?>"
+                                       />
+                                <input type="hidden"
+                                       name="fields[<?php echo $i; ?>][subtable]"
+                                       value="<?php echo $this->escape(stripslashes($row->subtable)); ?>"
+                                       />
+                                <input type="hidden"
+                                       name="fields[<?php echo $i; ?>][authorid]"
+                                       value="<?php echo $this->escape($this->authorid); ?>"
+                                       />
+                                <input type="hidden"
+                                       name="fields[<?php echo $i; ?>][id]"
+                                       value="<?php echo $this->escape(stripslashes($row->id)); ?>"
+                                       />
                             </td>
                             <td>
-                                <input type="text" name="fields[<?php echo $i; ?>][name]" maxlength="250" value="<?php echo $this->escape(stripslashes($row->name)); ?>" />
+                                <input type="text"
+                                       name="fields[<?php echo $i; ?>][name]"
+                                       maxlength="250"
+                                       value="<?php echo $this->escape(stripslashes($row->name)); ?>"
+                                       />
                             </td>
                             <td>
-                                <input type="text" name="fields[<?php echo $i; ?>][organization]" maxlength="250" value="<?php echo $this->escape(stripslashes($row->organization)); ?>" />
+                                <input type="text"
+                                       name="fields[<?php echo $i; ?>][organization]"
+                                       maxlength="250"
+                                       value="<?php echo $this->escape(stripslashes($row->organization)); ?>"
+                                       />
                             </td>
                             <td>
                                 <select name="fields[<?php echo $i; ?>][role]">
@@ -67,9 +91,16 @@ Toolbar::cancel();
                                     if ($this->roles) {
                                         foreach ($this->roles as $role) {
                                             ?>
-                                            <option value="<?php echo $this->escape($role->alias); ?>"<?php if ($row->role == $role->alias) {
+                                            <option value="<?php echo $this->escape($role->alias); ?>"<?php
+                                            if (
+                                                $row->role
+                                                        ==
+                                                        $role->alias
+                                            ) {
                                                 echo ' selected="selected"';
-                                                           }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                                            }?>><?php
+                                                echo $this->escape(stripslashes($role->title));
+?></option>
                                             <?php
                                         }
                                     }
@@ -91,7 +122,11 @@ Toolbar::cancel();
 
                 <div class="input-wrap">
                     <label for="field-authorid"><?php echo Lang::txt('COM_RESOURCES_FIELD_ID'); ?>:</label><br />
-                    <input type="text" name="authorid" id="field-authorid" value="<?php echo $this->escape($this->authorid); ?>" />
+                    <input type="text"
+                           name="authorid"
+                           id="field-authorid"
+                           value="<?php echo $this->escape($this->authorid); ?>"
+                           />
                 </div>
             </fieldset>
         </div>

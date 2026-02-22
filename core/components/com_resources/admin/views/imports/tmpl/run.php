@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,16 @@ $this->css('import');
     <p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=dorun'); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$actionUrl = Route::url(
+    'index.php?option='
+    . $this->option
+    . '&controller='
+    . $this->controller
+    . '&task=dorun'
+);
+?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
 
     <fieldset class="adminform">
         <table class="admintable">
@@ -42,30 +49,55 @@ $this->css('import');
                             <?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_START', '<span>5</span>'); ?>
                         </div>
                         <div class="countdown-actions">
-                            <button type="button" class="start"><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_BUTTON_START'); ?></button>
-                            <button type="button" class="stop"><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_BUTTON_STOP'); ?></button>
+                            <button type="button"
+                                    class="start"><?php
+                                    echo
+                                    Lang::txt('COM_RESOURCES_IMPORT_RUN_BUTTON_START');
+                                    ?></button>
+                            <button type="button"
+                                    class="stop"><?php
+                                    echo
+                                    Lang::txt('COM_RESOURCES_IMPORT_RUN_BUTTON_STOP');
+                                    ?></button>
 
-                            <button type="button" class="start-over"><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_BUTTON_RERUN'); ?></button>
+                            <button type="button"
+                                    class="start-over"><?php
+                                    echo
+                                    Lang::txt('COM_RESOURCES_IMPORT_RUN_BUTTON_RERUN');
+                                    ?></button>
                             <?php if ($this->dryRun) : ?>
-                                <button type="button" class="start-real"><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_BUTTON_REAL'); ?></button>
+                                <button type="button"
+                                        class="start-real"><?php
+                                        echo
+                                        Lang::txt('COM_RESOURCES_IMPORT_RUN_BUTTON_REAL');
+                                        ?></button>
                             <?php endif; ?>
                         </div>
 
                         <hr />
 
-                        <strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_PROGRESS'); ?><span class="progress-percentage">0%</span></strong>
+                        <strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_PROGRESS'); ?><span
+                            class="progress-percentage">0%</span></strong>
                         <div class="progress"></div>
 
                         <hr />
 
-                        <strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULTS'); ?><span class="results-stats"></span></strong>
+                        <strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULTS'); ?><span
+                            class="results-stats"></span></strong>
                         <div class="results">
-                            <span class="hint"><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULTS_WAITING'); ?></span>
+                            <span class="hint"><?php
+                                  echo
+                                  Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULTS_WAITING');
+                            ?></span>
                         </div>
                         <script id="resource-template" type="text/x-handlebars-template">
                             <h3 class="resource-title">
-                                {{#if record.errors}}<span class="has-errors"><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CONTAINSERRORS'); ?></span>{{/if}}
-                                {{#if record.notices}}<span class="has-notices"><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CONTAINSNOTICES'); ?></span>{{/if}}
+                                {{#if record.errors}}<span class="has-errors"><?php
+                                    echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CONTAINSERRORS');
+                                ?></span>{{/if}}
+                                {{#if record.notices}}<span class="has-notices"><?php
+                                    echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CONTAINSNOTICES');
+                                ?></span>{{/if}}
                                 {{{ record.resource.title }}}
                             </h3>
 
@@ -74,7 +106,9 @@ $this->css('import');
                                     {{#if record.errors}}
                                         <div class="col span12">
                                             <div class="errors">
-                                                <strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_ERRORMESSAGE'); ?></strong>
+                                                <strong><?php
+                                                    echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_ERRORMESSAGE');
+                                                ?></strong>
                                                 <ol>
                                                     {{#each record.errors}}
                                                         <li>{{this}}</li>
@@ -87,7 +121,9 @@ $this->css('import');
                                     {{#if record.notices}}
                                         <div class="col span12">
                                             <div class="notices">
-                                                <strong><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_NOTICEMESSAGE'); ?></strong>
+                                                <strong><?php
+                                                    echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_NOTICEMESSAGE');
+                                                ?></strong>
                                                 <ol>
                                                     {{#each record.notices}}
                                                         <li>{{{this}}}</li>
@@ -102,11 +138,15 @@ $this->css('import');
                                             {{{resource_data record}}}
                                         </div>
                                         <div class="col span5">
-                                            <h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CHILDREN'); ?></h4>
+                                            <h4><?php
+                                                echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CHILDREN');
+                                            ?></h4>
                                             {{{child_resource_data record.children}}}
                                             <hr />
 
-                                            <h4><?php echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CONTRIBUTORS'); ?></h4>
+                                            <h4><?php
+                                                echo Lang::txt('COM_RESOURCES_IMPORT_RUN_RESULT_CONTRIBUTORS');
+                                            ?></h4>
                                             <table>
                                                 {{#each raw.contributors}}
                                                     <tr>

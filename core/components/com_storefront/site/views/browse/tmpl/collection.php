@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -54,17 +52,21 @@ defined('_HZEXEC_') or die();
                 echo '">';
                 if ($product->imgName) {
                     echo '<div class="img" style="background-image: url(';
-                    $imgPath = trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $product->pId . DS;
+                    $imagesFolder = $this->config->get('imagesFolder', '/site/storefront/products');
+                    $imgPath = trim($imagesFolder, DS) . DS . $product->pId . DS;
                     echo "'/app/" . $imgPath . $product->imgName . "'";
                     echo ')"></div>';
                 } else {
                     echo '<div class="img" style="background-image: url(';
-                    $imgPath = dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__)))) . DS . 'assets' . DS . 'img' . DS;
+                    $baseDir = str_replace(PATH_ROOT, '', __DIR__);
+                    $imgPath = dirname(dirname(dirname($baseDir)))
+                        . DS . 'assets' . DS . 'img' . DS;
                     echo "'" . $imgPath . "noimage.png'";
                     echo ')"></div>';
                 }
                     echo '<a href="';
-                    echo Route::url('index.php?option=' . Request::getCmd('option')) . 'product/' . $productIdentificator;
+                    $baseUrl = Route::url('index.php?option=' . Request::getCmd('option'));
+                    echo $baseUrl . 'product/' . $productIdentificator;
                     echo '">';
                     echo '<div class="content">';
                     echo '<h3>' . $product->pName . '</h3>';

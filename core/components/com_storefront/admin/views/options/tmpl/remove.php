@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,14 @@ Toolbar::cancel();
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $this->task . '&step=2'); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=' . $this->task . '&step=2'
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
@@ -27,7 +32,8 @@ Toolbar::cancel();
                 <td>
                     <input type="checkbox" name="delete" value="delete"
                            id="field-delete">
-                    <label for="field-delete"><?php echo Lang::txt('I\'m positive. Go ahead and do the delete.'); ?></label>
+<?php $deleteLabel = Lang::txt('I\'m positive. Go ahead and do the delete.'); ?>
+                    <label for="field-delete"><?php echo $deleteLabel; ?></label>
                 </td>
             </tr>
             <tr>

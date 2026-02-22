@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -37,7 +35,8 @@ if ($this->row->standalone == 1) {
     }
     $this->row->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltxt);
     $this->row->fulltxt = trim($this->row->fulltxt);
-    $this->row->fulltxt = ($this->row->fulltxt) ? trim(stripslashes($this->row->fulltxt)) : trim(stripslashes($this->row->introtext));
+    $this->row->fulltxt = ($this->row->fulltxt) ? trim(stripslashes($this->row->fulltxt)) :
+    trim(stripslashes($this->row->introtext));
 }
 
 // Build the path for uploading files
@@ -60,7 +59,8 @@ $this->view('_edit_script')
     ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="item-form" class="editform">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -152,7 +152,12 @@ $this->view('_edit_script')
                         <td>
                             <?php echo $this->row->ranking; ?>/10
                             <?php if ($this->row->ranking != '0') { ?>
-                                <input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" data-task="resetranking" />
+                                <input type="button"
+                                       name="reset_ranking"
+                                       id="reset_ranking"
+                                       value="Reset ranking"
+                                       data-task="resetranking"
+                                       />
                             <?php } ?>
                         </td>
                     </tr>
@@ -161,8 +166,22 @@ $this->view('_edit_script')
                         <td>
                             <?php echo $this->row->rating . '/5.0 (' . $this->row->times_rated . ')'; ?>
                             <?php if ($this->row->rating != '0.0') { ?>
-                                <input type="button" name="reset_rating" id="reset_rating" value="Reset rating" data-task="resetrating" />
-                                <a class="btn btn-ratings" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ratings&id=' . $this->row->id . '&no_html=1'); ?>"><?php echo Lang::txt('COM_RESOURCES_VIEW'); ?></a>
+                                <input type="button"
+                                       name="reset_rating"
+                                       id="reset_rating"
+                                       value="Reset rating"
+                                       data-task="resetrating"
+                                       />
+                                <?php
+                                $hrefUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&task=ratings&id=' . $this->row->id
+                                    . '&no_html=1'
+                                );
+                                ?>
+                                <a class="btn btn-ratings"
+                                   href="<?php echo $hrefUrl; ?>"><?php echo Lang::txt('COM_RESOURCES_VIEW'); ?></a>
                             <?php } ?>
                         </td>
                     </tr>
@@ -172,7 +191,12 @@ $this->view('_edit_script')
                         <td>
                             <?php echo $this->row->hits; ?>
                             <?php if ($this->row->hits) { ?>
-                                <input type="button" name="reset_hits" id="reset_hits" value="Reset Hit Count" data-task="resethits" />
+                                <input type="button"
+                                       name="reset_hits"
+                                       id="reset_hits"
+                                       value="Reset Hit Count"
+                                       data-task="resethits"
+                                       />
                             <?php } ?>
                         </td>
                     </tr>
@@ -195,17 +219,93 @@ $this->view('_edit_script')
             echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PUBLISHING'), 'publish-page');
         ?>
             <div class="paramlist">
-                 <input type="hidden" name="fields[standalone]" id="field-standalone" value="<?php echo $this->row->standalone; ?>" />
+                 <input type="hidden"
+                        name="fields[standalone]"
+                        id="field-standalone"
+                        value="<?php echo $this->row->standalone; ?>"
+                        />
 
                 <div class="input-wrap">
                     <label for="field-published"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATUS'); ?>:</label><br />
                     <select name="fields[published]" id="field-published">
-                        <option value="2"<?php echo ($this->row->published == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL'); ?></option>
-                        <option value="5"<?php echo ($this->row->published == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_INTERNAL'); ?></option>
-                        <option value="3"<?php echo ($this->row->published == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_PENDING'); ?></option>
-                        <option value="0"<?php echo ($this->row->published == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php echo ($this->row->published == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="4"<?php echo ($this->row->published == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <option value="2"<?php
+                                echo
+                                ($this->row->published
+                                ==
+                                2)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
+?></option>
+                        <option value="5"<?php
+                                echo
+                                ($this->row->published
+                                ==
+                                5)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('COM_RESOURCES_DRAFT_INTERNAL');
+?></option>
+                        <option value="3"<?php
+                                echo
+                                ($this->row->published
+                                ==
+                                3)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('COM_RESOURCES_PENDING');
+?></option>
+                        <option value="0"<?php
+                                echo
+                                ($this->row->published
+                                ==
+                                0)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('JUNPUBLISHED');
+?></option>
+                        <option value="1"<?php
+                                echo
+                                ($this->row->published
+                                ==
+                                1)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('JPUBLISHED');
+?></option>
+                        <option value="4"<?php
+                                echo
+                                ($this->row->published
+                                ==
+                                4)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('JTRASHED');
+?></option>
                     </select>
                 </div>
                 <?php if ($this->row->standalone == 1) { ?>
@@ -224,15 +324,32 @@ $this->view('_edit_script')
                     </div>
                 <?php // if ($this->row->standalone == 1) { ?>
                     <div class="input-wrap">
-                        <label for="publish_up"><?php echo Lang::txt('COM_RESOURCES_FIELD_PUBLISH_UP'); ?>:</label><br />
-                        <?php $up = ($this->row->publish_up && $this->row->publish_up != '0000-00-00 00:00:00' ? Date::of($this->row->publish_up)->toLocal('Y-m-d H:i:s') : ''); ?>
+                        <label for="publish_up"><?php
+                               echo
+                               Lang::txt('COM_RESOURCES_FIELD_PUBLISH_UP');
+                        ?>:</label><br
+                               />
+                        <?php
+                        $up = ($this->row->publish_up
+                            && $this->row->publish_up != '0000-00-00 00:00:00'
+                            ? Date::of($this->row->publish_up)->toLocal('Y-m-d H:i:s')
+                            : '');
+                        ?>
                         <?php echo Html::input('calendar', 'fields[publish_up]', $up); ?>
                     </div>
                     <div class="input-wrap">
-                        <label for="publish_down"><?php echo Lang::txt('COM_RESOURCES_FIELD_PUBLISH_DOWN'); ?>:</label><br />
+                        <label for="publish_down"><?php
+                               echo
+                               Lang::txt('COM_RESOURCES_FIELD_PUBLISH_DOWN');
+                        ?>:</label><br
+                               />
                         <?php
                             $down = Lang::txt('COM_RESOURCES_NEVER');
-                        if ($this->row->publish_down && $this->row->publish_down != '0000-00-00 00:00:00' && $this->row->publish_down != Lang::txt('COM_RESOURCES_NEVER')) {
+                        if (
+                            $this->row->publish_down
+                            && $this->row->publish_down != '0000-00-00 00:00:00'
+                            && $this->row->publish_down != Lang::txt('COM_RESOURCES_NEVER')
+                        ) {
                             $down = Date::of($this->row->publish_down)->toLocal('Y-m-d H:i:s');
                         }
                         ?>
@@ -260,17 +377,36 @@ $this->view('_edit_script')
                 <div class="grid">
                     <div class="col span9">
                         <select name="fileoptions" id="fileoptions">
-                            <option value="2"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_MAIN'); ?></option>
+                            <option value="2"><?php
+                                    echo
+                                    Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_MAIN');
+                            ?></option>
                             <option value="3"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_IMG'); ?></option>
-                            <option value="4"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_LINKED'); ?></option>
+                            <option value="4"><?php
+                                    echo
+                                    Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_LINKED');
+                            ?></option>
                         </select>
                     </div>
                     <div class="col span3">
-                        <input type="button" value="<?php echo Lang::txt('COM_RESOURCES_APPLY'); ?>" onclick="doFileoptions();" />
+                        <input type="button"
+                               value="<?php echo Lang::txt('COM_RESOURCES_APPLY'); ?>"
+                               onclick="doFileoptions();"
+                               />
                     </div>
                 </div>
 
-                <iframe width="100%" height="400" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $path . DS . $dir_id); ?>"></iframe>
+                <?php
+                $srcUrl = Route::url(
+                    'index.php?option='
+                    . $this->option
+                    . '&controller=media&tmpl=component&listdir='
+                    . $path
+                    . DS
+                    . $dir_id
+                );
+                ?>
+                <iframe width="100%" height="400" name="filer" id="filer" src="<?php echo $srcUrl; ?>"></iframe>
                 <input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
             </div>
         <?php
@@ -279,7 +415,17 @@ $this->view('_edit_script')
             ?>
                 <textarea name="tags" id="tags" cols="35" rows="6"><?php echo $this->lists['tags']; ?></textarea>
                 <?php echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_BADGES'), 'badges-page'); ?>
-                <textarea name="badges" id="badges" cols="35" rows="6"><?php echo isset($this->lists['badges']) ? $this->lists['badges'] : ''; ?></textarea>
+                <textarea name="badges"
+                          id="badges"
+                          cols="35"
+                          rows="6"><?php
+                            echo
+                            isset($this->lists['badges'])
+                            ?
+                            $this->lists['badges']
+                            :
+                            '';
+                            ?></textarea>
                 <?php
                 echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
                 echo '<fieldset class="paramlist">' . $this->params->render() . '</fieldset>';
@@ -287,28 +433,48 @@ $this->view('_edit_script')
             echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
             ?>
                 <div class="input-wrap">
-                    <label for="param-link_action"><?php echo Lang::txt('COM_RESOURCES_FIELD_LINK_ACTION_HINT'); ?>:</label><br />
-                    <select name="params[link_action]" id="param-link_action">
-                        <option value="0"<?php if (!$this->params->get('link_action')) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DEFAULT'); ?></option>
-                        <option value="1"<?php if ($this->params->get('link_action') == 1) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW'); ?></option>
-                        <option value="2"<?php if ($this->params->get('link_action') == 2) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX'); ?></option>
-                        <option value="3"<?php if ($this->params->get('link_action') == 3) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD'); ?></option>
+                    <label for="param-link_action"><?php
+                           echo
+                           Lang::txt('COM_RESOURCES_FIELD_LINK_ACTION_HINT');
+                    ?>:</label><br
+                           />
+                    <?php
+                    $linkAction = $this->params->get('link_action');
+                    $sel0 = !$linkAction ? ' selected="selected"' : '';
+                    $sel1 = $linkAction == 1 ? ' selected="selected"' : '';
+                    $sel2 = $linkAction == 2 ? ' selected="selected"' : '';
+                    $sel3 = $linkAction == 3 ? ' selected="selected"' : '';
+                    ?>
+                    <select name="params[link_action]"
+                            id="param-link_action">
+                        <option value="0"<?php echo $sel0; ?>><?php
+                            echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DEFAULT');
+                        ?></option>
+                        <option value="1"<?php echo $sel1; ?>><?php
+                            echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW');
+                        ?></option>
+                        <option value="2"<?php echo $sel2; ?>><?php
+                            echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX');
+                        ?></option>
+                        <option value="3"<?php echo $sel3; ?>><?php
+                            echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD');
+                        ?></option>
                     </select>
                 </div>
                 <div class="input-wrap">
-                    <label for="param-restrict_direct_access"><?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_HINT'); ?>:</label><br />
-                    <select name="params[restrict_direct_access]" id="param-link_action">
-                        <option value="0"<?php if (!$this->params->get('restrict_direct_access')) {
+                    <label for="param-restrict_direct_access"><?php
+                           echo
+                           Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_HINT');
+                    ?>:</label><br
+                           />
+                    <?php $rda = $this->params->get('restrict_direct_access'); ?>
+                    <select name="params[restrict_direct_access]"
+                            id="param-link_action">
+                        <option value="0"<?php if (!$rda) {
                             echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT'); ?></option>
+                                         } ?>><?php
+                            echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT');
+?></option>
                         <option value="1"<?php if ($this->params->get('restrict_direct_access') == 1) {
                             echo ' selected="selected"';
                                          } ?>>

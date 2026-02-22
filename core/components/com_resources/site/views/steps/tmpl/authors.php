@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,8 @@ $this->css('create.css')
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
+            <?php $hrefUrl = Route::url('index.php?option=' . $this->option . '&task=draft'); ?>
+            <a class="icon-add add btn" href="<?php echo $hrefUrl; ?>">
                 <?php echo Lang::txt('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
             </a>
         </p>
@@ -42,7 +41,17 @@ $this->css('create.css')
         <p class="error"><?php echo $this->getError(); ?></p>
     <?php } ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm">
+    <?php
+    $actionUrl = Route::url(
+        'index.php?option='
+        . $this->option
+        . '&task=draft&step='
+        . $this->next_step
+        . '&id='
+        . $this->id
+    );
+    ?>
+    <form action="<?php echo $actionUrl; ?>" method="post" id="hubForm">
         <div class="explaination">
             <h4><?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_HEADER'); ?></h4>
             <p><?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_EXPLANATION'); ?></p>
@@ -54,16 +63,26 @@ $this->css('create.css')
             <div class="grid">
                 <div class="col span6">
                     <label for="group_owner">
-                        <?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_GROUP'); ?>: <span class="optional"><?php echo Lang::txt('COM_CONTRIBUTE_OPTIONAL'); ?></span>
+                        <?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_GROUP'); ?>:
+                        <span class="optional"><?php
+                            echo Lang::txt('COM_CONTRIBUTE_OPTIONAL');
+                        ?></span>
                         <select name="group_owner" id="group_owner">
                             <option value=""><?php echo Lang::txt('COM_CONTRIBUTE_SELECT_GROUP'); ?></option>
                             <?php
                             if ($this->groups && count($this->groups) > 0) {
                                 foreach ($this->groups as $group) {
                                     ?>
-                                <option value="<?php echo $this->escape($group->cn); ?>"<?php if ($this->row->group_owner->get('cn') == $group->cn) {
+                                <option value="<?php echo $this->escape($group->cn); ?>"<?php
+                                if (
+                                    $this->row->group_owner->get('cn')
+                                            ==
+                                            $group->cn
+                                ) {
                                     echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
+                                } ?>><?php
+                                    echo $this->escape(stripslashes($group->description));
+?></option>
                                     <?php
                                 }
                             }
@@ -73,7 +92,10 @@ $this->css('create.css')
                 </div>
                 <div class="col span6 omega">
                     <label for="access">
-                        <?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL'); ?>: <span class="optional"><?php echo Lang::txt('COM_CONTRIBUTE_OPTIONAL'); ?></span>
+                        <?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL'); ?>:
+                        <span class="optional"><?php
+                            echo Lang::txt('COM_CONTRIBUTE_OPTIONAL');
+                        ?></span>
                         <select name="access" id="access">
                             <option value="0"<?php if ($this->row->access == 0) {
                                 echo ' selected="selected"';
@@ -92,10 +114,15 @@ $this->css('create.css')
                 </div>
             </div>
             <p>
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION'); ?><br />
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION'); ?><br />
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION'); ?><br />
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE_EXPLANATION'); ?>
+                <?php $val = Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION'); ?>
+                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></strong> = <?php echo $val; ?><br />
+                <?php $val2 = Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION'); ?>
+                <?php $regLabel = Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?>
+                <strong><?php echo $regLabel; ?></strong> = <?php echo $val2; ?><br />
+                <?php $val = Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION'); ?>
+                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></strong> = <?php echo $val; ?><br />
+                <?php $val = Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE_EXPLANATION'); ?>
+                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></strong> = <?php echo $val; ?>
             </p>
         <?php } else { ?>
             <p class="information">
@@ -114,7 +141,20 @@ $this->css('create.css')
         <fieldset>
             <legend><?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_AUTHORS'); ?></legend>
             <div class="field-wrap">
-                <iframe width="100%" height="400" frameborder="0" name="authors" id="authors" scrolling="auto" src="/index.php?option=<?php echo $this->option; ?>&amp;controller=authors&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
+                <?php
+                $iframeSrc = '/index.php?option='
+                    . $this->option
+                    . '&amp;controller=authors&amp;id='
+                    . $this->id
+                    . '&amp;tmpl=component';
+                ?>
+                <iframe width="100%"
+                        height="400"
+                        frameborder="0"
+                        name="authors"
+                        id="authors"
+                        scrolling="auto"
+                        src="<?php echo $iframeSrc; ?>"></iframe>
             </div>
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

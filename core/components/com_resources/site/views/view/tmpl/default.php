@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,7 +47,13 @@ if ($mode != 'preview') {
                         <h2>
                             <?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
                             <?php if ($this->model->params->get('access-edit-resource')) { ?>
-                                <a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>">
+                                <?php
+                                $hrefUrl = Route::url(
+                                    'index.php?option=com_resources&task=draft&step=1&id='
+                                    . $this->model->id
+                                );
+                                ?>
+                                <a class="icon-edit edit btn" href="<?php echo $hrefUrl; ?>">
                                     <?php echo Lang::txt('COM_RESOURCES_EDIT'); ?>
                                 </a>
                             <?php } ?>
@@ -76,14 +80,23 @@ if ($mode != 'preview') {
                     if (!$this->model->access('view-all')) {
                         $ghtml = array();
                         foreach ($this->model->groups as $allowedgroup) {
-                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) .
+                            '">' . $allowedgroup . '</a>';
                         }
                         ?>
                             <p class="warning">
                                 <?php if (User::isGuest()) : ?>
-                                    <?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::current(true))); ?>
+                                    <?php
+                                    echo Lang::txt(
+                                        'COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN',
+                                        base64_encode(Request::current(true))
+                                    );
+                                    ?>
                                 <?php elseif ($this->get('group_owner')) : ?>
-                                    <?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+                                    <?php
+                                    echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') .  ' '
+                                        .  implode(', ', $ghtml);
+                                    ?>
                                 <?php else : ?>
                                     <?php echo Lang::txt('COM_RESOURCES_ALERTNOTAUTH'); ?>
                                 <?php endif; ?>
@@ -100,11 +113,17 @@ if ($mode != 'preview') {
                         // get launch button
                         $firstchild = $children->first();
 
-                        $html  = $this->tab != 'play' && is_object($firstchild) ? \Components\Resources\Helpers\Html::primaryChild($this->option, $this->model, $firstchild, '') : '';
+                        $html = $this->tab != 'play' && is_object($firstchild) ?
+                        \Components\Resources\Helpers\Html::primaryChild($this->option, $this->model, $firstchild, '') :
+                        '';
 
                         // Sort out supporting docs
                         $html .= $children && count($children) > 1
-                               ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
+                               ? \Components\Resources\Helpers\Html::sortSupportingDocs(
+                                   $this->model,
+                                   $this->option,
+                                   $children
+                               )
                                : '';
 
                         echo $html;

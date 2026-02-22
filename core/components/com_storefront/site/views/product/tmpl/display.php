@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,6 @@ defined('_HZEXEC_') or die();
 </header>
 
 <?php
-// phpcs:disable Generic.Files.LineLength
 if (!empty($this->notifications)) {
     $view = new \Hubzero\Component\View(array('name' => 'shared', 'layout' => 'notifications'));
     $view->notifications = $this->notifications;
@@ -38,10 +35,14 @@ if (!empty($this->notifications)) {
             <div class="col span6">
                 <div class="productImages">
                     <?php
-                    $imgPath = '/app/' . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->pId . DS;
+                    $imagesFolder = $this->config->get('imagesFolder', '/site/storefront/products');
+                    $imgPath = '/app/' . trim($imagesFolder, DS) . DS . $this->pId . DS;
 
-                    if (empty($this->product->images) || !is_file(PATH_ROOT . $imgPath . $this->product->images[0]->imgName)) {
-                        $imgPath = dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__)))) . DS . 'assets' . DS . 'img' . DS;
+                    $firstImg = $this->product->images[0]->imgName ?? '';
+                    if (empty($this->product->images) || !is_file(PATH_ROOT . $imgPath . $firstImg)) {
+                        $baseDir = str_replace(PATH_ROOT, '', __DIR__);
+                        $imgPath = dirname(dirname(dirname($baseDir)))
+                            . DS . 'assets' . DS . 'img' . DS;
                         $image = new \stdClass();
                         $image->imgName = 'noimage.png';
                         $this->product->images[0] = $image;
@@ -50,7 +51,9 @@ if (!empty($this->notifications)) {
                     if (!strstr($this->product->images[0]->imgName, 'noimage')) {
                         echo '<a href="' . $imgPath . $this->product->images[0]->imgName . '" rel="lightbox">';
                     }
-                    echo '<img src="' . $imgPath . $this->product->images[0]->imgName . '" alt="' . $this->escape($this->product->pName) . '" />';
+                    $imgSrc = $imgPath . $this->product->images[0]->imgName;
+                    $imgAlt = $this->escape($this->product->pName);
+                    echo '<img src="' . $imgSrc . '" alt="' . $imgAlt . '" />';
                     if (!strstr($this->product->images[0]->imgName, 'noimage')) {
                         echo '</a>';
                     }
@@ -66,7 +69,8 @@ if (!empty($this->notifications)) {
                 if ($price['high'] == $price['low']) {
                     $priceRange .=  '$' . number_format($price['high'], 2);
                 } else {
-                    $priceRange .= '$' . number_format($price['low'], 2) . ' &ndash; ' . '$' . number_format($price['high'], 2);
+                    $priceRange .= '$' . number_format($price['low'], 2)
+                        . ' &ndash; ' . '$' . number_format($price['high'], 2);
                 }
 
                 $out = false;
@@ -91,7 +95,10 @@ if (!empty($this->notifications)) {
                                 <ul class="product-options">
                                     <?php
                                     foreach ($info['options'] as $opt) {
-                                        echo '<li><input type="radio" name="og[' . $optionGroupId . ']" value="' . $opt->oId . '" id="option_' . $opt->oId . '">';
+                                        echo '<li><input type="radio"'
+                                            . ' name="og[' . $optionGroupId . ']"'
+                                            . ' value="' . $opt->oId . '"'
+                                            . ' id="option_' . $opt->oId . '">';
                                         echo '<label for="option_' . $opt->oId . '">' . $opt->oName . '</label></li>';
                                     }
                                     ?>

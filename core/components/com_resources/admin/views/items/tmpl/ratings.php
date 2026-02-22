@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -73,7 +71,8 @@ if ($this->getError()) { ?>
                             break;
                     }
 
-                    echo '<p class="avgrating' . $class . '"><span>Rating: ' . $row->rating . ' out of 5 stars</span></p>';
+                    echo '<p class="avgrating' . $class . '"><span>Rating: ' . $row->rating . ' out of 5
+                    stars</span></p>';
                     ?></td>
                 </tr>
                 <tr>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,21 +33,45 @@ Toolbar::spacer();
 Toolbar::help('categories');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option);
+$productEditUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=products&task=edit&id=' . $this->product->getId()
+);
+$editProductTitle = Lang::txt('Edit product');
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th colspan="4">
-                    SKUs for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=products&task=edit&id=' . $this->product->getId()); ?>" title="<?php echo Lang::txt('Edit product'); ?>"><?php echo $this->product->getName(); ?></a>
+                    SKUs for: <a
+                        href="<?php echo $productEditUrl; ?>"
+                        title="<?php echo $editProductTitle; ?>"
+                    ><?php echo $this->product->getName(); ?></a>
                 </th>
             </tr>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    ><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+<?php
+$sortDir = @$this->filters['sort_Dir'];
+$sort = @$this->filters['sort'];
+?>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_TITLE', 'title', $sortDir, $sort); ?></th>
+                <th scope="col"><?php echo Html::grid('sort', 'COM_STOREFRONT_STATE', 'state', $sortDir, $sort); ?></th>
                 <th scope="col">Restrictions</th>
             </tr>
         </thead>
@@ -67,7 +89,6 @@ Toolbar::help('categories');
         </tfoot>
         <tbody>
 <?php
-// phpcs:disable Generic.Files.LineLength
 $k = 0;
 $i = 0;
 
@@ -103,12 +124,29 @@ foreach ($this->rows as $row) {
     ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->sId; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->sId; ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->sId; ?>"
+                        class="checkbox-toggle"
+                    />
+                    <label
+                        for="cb<?php echo $i; ?>"
+                        class="sr-only visually-hidden"
+                    ><?php echo $row->sId; ?></label>
                 </td>
                 <td>
                 <?php if ($canDo->get('core.edit')) { ?>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->sId); ?>" title="<?php echo Lang::txt('COM_STOREFRONT_EDIT_SKU'); ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&id=' . $row->sId
+                    );
+                    $editTitle = Lang::txt('COM_STOREFRONT_EDIT_SKU');
+                    ?>
+                    <a href="<?php echo $editUrl; ?>" title="<?php echo $editTitle; ?>">
                         <span><?php echo $this->escape(stripslashes($row->sSku)); ?></span>
                     </a>
                 <?php } else { ?>
@@ -119,7 +157,19 @@ foreach ($this->rows as $row) {
                 </td>
                 <td>
                 <?php if ($canDo->get('core.edit.state')) { ?>
-                    <a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->sId) . '&pId=' . $row->pId; ?>" title="<?php echo Lang::txt('COM_STOREFRONT_SET_TASK', $task);?>">
+                    <?php
+                    $stateUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=' . $task . '&id=' . $row->sId
+                    ) . '&pId=' . $row->pId;
+                    $stateTitle = Lang::txt('COM_STOREFRONT_SET_TASK', $task);
+                    ?>
+                    <a
+                        class="state <?php echo $class; ?>"
+                        href="<?php echo $stateUrl; ?>"
+                        title="<?php echo $stateTitle; ?>"
+                    >
                         <span><?php echo $alt; ?></span>
                     </a>
                 <?php } else { ?>
@@ -130,7 +180,14 @@ foreach ($this->rows as $row) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit') && $row->sRestricted) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=restrictions&id=' . $row->sId); ?>" title="<?php echo Lang::txt('COM_STOREFRONT_VIEW_RESTRICTIONS'); ?>">
+                        <?php
+                        $restrictUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=restrictions&id=' . $row->sId
+                        );
+                        $restrictTitle = Lang::txt('COM_STOREFRONT_VIEW_RESTRICTIONS');
+                        ?>
+                        <a href="<?php echo $restrictUrl; ?>" title="<?php echo $restrictTitle; ?>">
                     <?php } ?>
                             <span><?php echo $row->sRestricted ? 'restricted' : ''; ?></span>
                     <?php if ($canDo->get('core.edit') && $row->sRestricted) { ?>

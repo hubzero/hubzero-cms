@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,8 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->row->fulltxt = ($this->row->fulltxt) ? stripslashes($this->row->fulltxt ? $this->row->fulltxt : "") : stripslashes($this->row->introtext ? $this->row->introtext : "");
+$this->row->fulltxt = ($this->row->fulltxt) ? stripslashes($this->row->fulltxt ? $this->row->fulltxt : "") :
+stripslashes($this->row->introtext ? $this->row->introtext : "");
 
 $type = $this->row->type;
 
@@ -39,7 +38,8 @@ $this->css('create.css')
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
+            <?php $hrefUrl = Route::url('index.php?option=' . $this->option . '&task=draft'); ?>
+            <a class="icon-add add btn" href="<?php echo $hrefUrl; ?>">
                 <?php echo Lang::txt('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
             </a>
         </p>
@@ -64,7 +64,19 @@ $this->css('create.css')
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php } ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn . '&id=' . $this->id); ?>" method="post" id="hubForm" accept-charset="utf-8">
+    <?php
+    $actionUrl = Route::url(
+        'index.php?option='
+        . $this->option
+        . '&task=draft&step='
+        . $this->next_step
+        . '&group='
+        . $this->group_cn
+        . '&id='
+        . $this->id
+    );
+    ?>
+    <form action="<?php echo $actionUrl; ?>" method="post" id="hubForm" accept-charset="utf-8">
         <div class="explaination">
             <p><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_EXPLANATION'); ?></p>
 
@@ -74,21 +86,40 @@ $this->css('create.css')
             <legend><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_ABOUT'); ?></legend>
 
             <label for="field-title">
-                <?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                <input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title ? $this->row->title : "")); ?>" />
+                <?php $val = Lang::txt('COM_CONTRIBUTE_COMPOSE_TITLE'); ?>
+                <?php echo $val; ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                <input type="text"
+                       name="fields[title]"
+                       id="field-title"
+                       maxlength="250"
+                       value="<?php echo $this->escape(stripslashes($this->row->title ? $this->row->title : "")); ?>"
+                       />
             </label>
 
             <label for="field-fulltxt">
                 <?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_ABSTRACT'); ?>:
                 <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                <?php echo $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->fulltxt)), 50, 20, 'field-fulltxt'); ?>
+                <?php
+                $fulltxt = $this->escape(stripslashes($this->row->fulltxt));
+                echo $this->editor('fields[fulltxt]', $fulltxt, 50, 20, 'field-fulltxt');
+                ?>
             </label>
 
             <fieldset>
                 <legend><?php echo Lang::txt('COM_CONTRIBUTE_MEDIA_MANAGER'); ?></legend>
                 <p><?php echo Lang::txt('COM_CONTRIBUTE_MEDIA_EXPLANATION'); ?></p>
                 <div class="field-wrap">
-                    <iframe width="100%" height="160" name="filer" id="filer" src="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;resource=<?php echo $this->row->id; ?>"></iframe>
+                    <?php
+                    $filerSrc = Request::base(true)
+                        . '/index.php?option=' . $this->option
+                        . '&amp;controller=media&amp;tmpl=component'
+                        . '&amp;resource=' . $this->row->id;
+                    ?>
+                    <iframe width="100%"
+                            height="160"
+                            name="filer"
+                            id="filer"
+                            src="<?php echo $filerSrc; ?>"></iframe>
                 </div>
             </fieldset>
         </fieldset><div class="clear"></div>

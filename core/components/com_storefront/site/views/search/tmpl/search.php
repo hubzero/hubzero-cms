@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,7 +31,13 @@ $this->css()
                 <input class="entry-search-submit" type="submit" value="Search">
                 <fieldset class="entry-search">
                     <label for="entry-search-field">Search</label>
-                    <input type="text" name="q" id="entry-search-field" value="<?php echo $this->search; ?>" placeholder="Search">
+                    <input
+                        type="text"
+                        name="q"
+                        id="entry-search-field"
+                        value="<?php echo $this->search; ?>"
+                        placeholder="Search"
+                    >
                 </fieldset>
             </div>
         </form>
@@ -55,12 +59,15 @@ $this->css()
                 echo '">';
                 if ($product->imgName) {
                     echo '<div class="img" style="background-image: url(';
-                    $imgPath = trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $product->pId . DS;
+                    $imagesFolder = $this->config->get('imagesFolder', '/site/storefront/products');
+                    $imgPath = trim($imagesFolder, DS) . DS . $product->pId . DS;
                     echo "'/app/" . $imgPath . $product->imgName . "'";
                     echo ')"></div>';
                 } else {
                     echo '<div class="img" style="background-image: url(';
-                    $imgPath = dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__)))) . DS . 'assets' . DS . 'img' . DS;
+                    $baseDir = str_replace(PATH_ROOT, '', __DIR__);
+                    $imgPath = dirname(dirname(dirname($baseDir)))
+                        . DS . 'assets' . DS . 'img' . DS;
                     echo "'" . $imgPath . "noimage.png'";
                     echo ')"></div>';
                 }

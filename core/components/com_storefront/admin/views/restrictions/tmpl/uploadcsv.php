@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +23,14 @@ Html::behavior('framework');
 <script type="text/javascript">
     function closeAndRefresh(pressbutton)
     {
-        window.parent.location='<?php echo Route::url("index.php?option=" . $this->option . "&controller=" . $this->controller . "&id=" . $this->sId); ?>';
+<?php
+$redirectUrl = Route::url(
+    "index.php?option=" . $this->option
+    . "&controller=" . $this->controller
+    . "&id=" . $this->sId
+);
+?>
+        window.parent.location='<?php echo $redirectUrl; ?>';
     }
 
     jQuery(document).ready(function($){
@@ -37,7 +42,8 @@ Html::behavior('framework');
     });
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="component-form">
     <?php if ($tmpl == 'component') { ?>
         <fieldset>
             <div class="configuration" >
@@ -58,7 +64,8 @@ Html::behavior('framework');
                 <?php
                 if (!empty($this->skipped)) {
                     ?>
-                <p><?php echo count($this->skipped); ?> duplicate user<?php echo count($this->skipped) == 1 ? '' : 's'; ?> skipped.</p>
+                    <?php $skippedCount = count($this->skipped); ?>
+                <p><?php echo $skippedCount; ?> duplicate user<?php echo $skippedCount == 1 ? '' : 's'; ?> skipped.</p>
                     <?php
                 }
                 ?>
@@ -66,7 +73,13 @@ Html::behavior('framework');
                 <?php
                 if (!empty($this->ignored)) {
                     ?>
-                    <p><?php echo count($this->ignored); ?> user<?php echo count($this->ignored) == 1 ? '' : 's'; ?> could not be found and <?php echo count($this->ignored) > 1 ? 'were' : 'was'; ?> ignored:<br>
+                    <?php
+                    $ignoredCount = count($this->ignored);
+                    $ignoredPlural = $ignoredCount == 1 ? '' : 's';
+                    $ignoredVerb = $ignoredCount > 1 ? 'were' : 'was';
+                    ?>
+                    <p><?php echo $ignoredCount; ?> user<?php echo $ignoredPlural; ?>
+                        could not be found and <?php echo $ignoredVerb; ?> ignored:<br>
 
                     <?php
                     $i = 0;

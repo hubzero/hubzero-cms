@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,9 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT') . ': ' . $text, 'storefront.png');
+$title = Lang::txt('COM_STOREFRONT') . ': '
+    . Lang::txt('COM_STOREFRONT_PRODUCT') . ': ' . $text;
+Toolbar::title($title, 'storefront.png');
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
     Toolbar::save();
@@ -54,35 +54,88 @@ if (empty($this->meta->qtyTxt)) {
     }
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
     <div class="col span7">
         <fieldset class="adminform">
             <legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
             <div class="input-wrap">
-                <label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                <input type="text" name="fields[pName]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
+<?php
+$titleLabel = Lang::txt('COM_STOREFRONT_TITLE');
+$requiredTxt = Lang::txt('JOPTION_REQUIRED');
+$nameValue = $this->escape(stripslashes($this->row->getName()));
+?>
+                <label for="field-title">
+                    <?php echo $titleLabel; ?>: <span class="required"><?php echo $requiredTxt; ?></span>
+                </label><br />
+                <input
+                    type="text"
+                    name="fields[pName]"
+                    id="field-title"
+                    size="30"
+                    maxlength="100"
+                    value="<?php echo $nameValue; ?>"
+                />
             </div>
 
             <div class="input-wrap">
+<?php $aliasValue = $this->escape(stripslashes($this->row->getAlias())); ?>
                 <label for="field-alais"><?php echo Lang::txt('Alias'); ?>:</label><br />
-                <input type="text" name="fields[pAlias]" id="field-alais" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getAlias())); ?>" />
+                <input
+                    type="text"
+                    name="fields[pAlias]"
+                    id="field-alais"
+                    size="30"
+                    maxlength="100"
+                    value="<?php echo $aliasValue; ?>"
+                />
             </div>
 
             <div class="input-wrap">
-                <label for="field-pTagline"><?php echo Lang::txt('COM_STOREFRONT_TAGLINE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                <input type="text" name="fields[pTagline]" id="field-pTagline" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getTagline())); ?>" />
+<?php $taglineValue = $this->escape(stripslashes($this->row->getTagline())); ?>
+                <label for="field-pTagline">
+                    <?php echo Lang::txt('COM_STOREFRONT_TAGLINE'); ?>:
+                    <span class="required"><?php echo $requiredTxt; ?></span>
+                </label><br />
+                <input
+                    type="text"
+                    name="fields[pTagline]"
+                    id="field-pTagline"
+                    size="30"
+                    maxlength="100"
+                    value="<?php echo $taglineValue; ?>"
+                />
             </div>
 
             <div class="input-wrap">
-                <label for="field-description"><?php echo Lang::txt('COM_STOREFRONT_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                <?php echo $this->editor('fields[pDescription]', $this->escape(stripslashes($this->row->getDescription())), 50, 10, 'field-description', array('buttons' => false)); ?>
+<?php $descValue = $this->escape(stripslashes($this->row->getDescription())); ?>
+                <label for="field-description">
+                    <?php echo Lang::txt('COM_STOREFRONT_DESCRIPTION'); ?>:
+                    <span class="required"><?php echo $requiredTxt; ?></span>
+                </label><br />
+                <?php echo $this->editor(
+                    'fields[pDescription]',
+                    $descValue,
+                    50,
+                    10,
+                    'field-description',
+                    array('buttons' => false)
+                ); ?>
             </div>
 
             <div class="input-wrap">
+<?php $featuresValue = $this->escape(stripslashes($this->row->getFeatures())); ?>
                 <label for="field-features"><?php echo Lang::txt('COM_STOREFRONT_FEATURES'); ?>:</label><br />
-                <?php echo $this->editor('fields[pFeatures]', $this->escape(stripslashes($this->row->getFeatures())), 50, 10, 'field-features', array('buttons' => false)); ?>
+                <?php echo $this->editor(
+                    'fields[pFeatures]',
+                    $featuresValue,
+                    50,
+                    10,
+                    'field-features',
+                    array('buttons' => false)
+                ); ?>
             </div>
         </fieldset>
     </div>
@@ -93,7 +146,12 @@ if (empty($this->meta->qtyTxt)) {
                 <th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
                 <td>
                     <?php echo $this->row->getId(); ?>
-                    <input type="hidden" name="fields[pId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
+                    <input
+                        type="hidden"
+                        name="fields[pId]"
+                        id="field-id"
+                        value="<?php echo $this->escape($this->row->getId()); ?>"
+                    />
                 </td>
             </tr>
             <?php if ($this->row->getTypeInfo() && $this->row->getTypeInfo()->name == 'Software Download') { ?>
@@ -138,7 +196,16 @@ if (empty($this->meta->qtyTxt)) {
             if ($this->metaNeeded) {
                 ?>
                 <p>
-                    <a class="options-link" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId()); ?>">Edit type-related options (save product first if you updated the type)</a></p>
+                <?php
+                $metaUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=meta&task=edit&id=' . $this->row->getId()
+                );
+                ?>
+                    <a class="options-link" href="<?php echo $metaUrl; ?>">
+                        Edit type-related options (save product first if you updated the type)
+                    </a>
+                </p>
                 <?php
             }
             ?>
@@ -157,7 +224,15 @@ if (empty($this->meta->qtyTxt)) {
 
             <div class="input-wrap">
                 <label for="field-qtytxt"><?php echo Lang::txt('COM_STOREFRONT_QTY_TXT'); ?>:</label>
-                <input type="text" name="fields[pQtyTxt]" id="field-qtytxt" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->meta->qtyTxt)); ?>" />
+<?php $qtyTxtValue = $this->escape(stripslashes($this->meta->qtyTxt)); ?>
+                <input
+                    type="text"
+                    name="fields[pQtyTxt]"
+                    id="field-qtytxt"
+                    size="30"
+                    maxlength="100"
+                    value="<?php echo $qtyTxtValue; ?>"
+                />
             </div>
         </fieldset>
 
@@ -177,13 +252,36 @@ if (empty($this->meta->qtyTxt)) {
             </div>
 
             <div class="input-wrap">
+<?php
+$publishUp = $this->row->getPublishTime()->publish_up;
+$publishUpVal = ($publishUp && $publishUp != '0000-00-00 00:00:00')
+    ? $this->escape(Date::of($publishUp)->toLocal('Y-m-d H:i:s'))
+    : '';
+?>
                 <label for="field-publish_up"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_UP'); ?>:</label><br />
-                <?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->getPublishTime()->publish_up && $this->row->getPublishTime()->publish_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_up)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
+                <?php echo Html::input(
+                    'calendar',
+                    'fields[publish_up]',
+                    $publishUpVal,
+                    array('id' => 'field-publish_up')
+                ); ?>
             </div>
 
             <div class="input-wrap">
-                <label for="field-publish_down"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-                <?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->getPublishTime()->publish_down && $this->row->getPublishTime()->publish_down != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_down)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
+<?php
+$publishDown = $this->row->getPublishTime()->publish_down;
+$publishDownVal = ($publishDown && $publishDown != '0000-00-00 00:00:00')
+    ? $this->escape(Date::of($publishDown)->toLocal('Y-m-d H:i:s'))
+    : '';
+?>
+<?php $publishDownLabel = Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_DOWN'); ?>
+                <label for="field-publish_down"><?php echo $publishDownLabel; ?>:</label><br />
+                <?php echo Html::input(
+                    'calendar',
+                    'fields[publish_down]',
+                    $publishDownVal,
+                    array('id' => 'field-publish_down')
+                ); ?>
             </div>
 
             <?php if ($this->config->get('productAccess')) { ?>
@@ -249,11 +347,17 @@ if (empty($this->meta->qtyTxt)) {
                             <?php
                             if ($cat->cActive || in_array($cat->cId, $collections)) {
                                 ?>
+                                <?php $inCollection = in_array($cat->cId, $collections); ?>
                                 <li>
-                                    <input type="checkbox" name="fields[collections][]" <?php if (in_array($cat->cId, $collections)) {
-                                        echo 'checked';
-                                                                                        } ?> value="<?php echo $cat->cId; ?>"
-                                           id="collection_<?php echo $cat->cId; ?>">
+                                    <input
+                                        type="checkbox"
+                                        name="fields[collections][]"
+                                        <?php if ($inCollection) {
+                                            echo 'checked';
+                                        } ?>
+                                        value="<?php echo $cat->cId; ?>"
+                                        id="collection_<?php echo $cat->cId; ?>"
+                                    >
                                     <label for="collection_<?php echo $cat->cId; ?>">
                                         <?php echo $cat->cName; ?>
                                     </label>
@@ -286,12 +390,17 @@ if (empty($this->meta->qtyTxt)) {
                             <?php
                             if ($og->ogActive || in_array($og->ogId, $this->productOptionGroups)) {
                                 ?>
+                                <?php $inGroup = in_array($og->ogId, $this->productOptionGroups); ?>
                                 <li>
-                                    <input type="checkbox"
-                                           name="fields[optionGroups][]" <?php if (in_array($og->ogId, $this->productOptionGroups)) {
-                                                echo 'checked';
-                                                                         } ?> value="<?php echo $og->ogId; ?>"
-                                           id="optionGroup_<?php echo $og->ogId; ?>">
+                                    <input
+                                        type="checkbox"
+                                        name="fields[optionGroups][]"
+                                        <?php if ($inGroup) {
+                                            echo 'checked';
+                                        } ?>
+                                        value="<?php echo $og->ogId; ?>"
+                                        id="optionGroup_<?php echo $og->ogId; ?>"
+                                    >
                                     <label for="optionGroup_<?php echo $og->ogId; ?>">
                                         <?php echo $og->ogName; ?>
                                     </label>
@@ -326,10 +435,28 @@ if (empty($this->meta->qtyTxt)) {
                     $img->imgId = null;
                 }
                 ?>
+                <?php
+                $uploadAction = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=images&task=upload&type=product&id='
+                    . $this->row->getId() . '&no_html=1&'
+                    . Session::getFormToken() . '=1'
+                );
+                $iframeSrc = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=images&tmpl=component&file=' . $file
+                    . '&type=product&id=' . $this->row->getId()
+                );
+                ?>
                 <div class="uploader-wrap">
-                    <div id="ajax-uploader" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&task=upload&type=product&id=' . $this->row->getId() . '&no_html=1&' . Session::getFormToken() . '=1'); ?>">
+                    <div id="ajax-uploader" data-action="<?php echo $uploadAction; ?>">
                         <noscript>
-                            <iframe height="350" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&file=' . $file . '&type=product&id=' . $this->row->getId()); ?>"></iframe>
+                            <iframe
+                                height="350"
+                                name="filer"
+                                id="filer"
+                                src="<?php echo $iframeSrc; ?>"
+                            ></iframe>
                         </noscript>
                     </div>
                 </div>
@@ -337,7 +464,8 @@ if (empty($this->meta->qtyTxt)) {
                 $width = 0;
                 $height = 0;
                 $this_size = 0;
-                $pathl = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->row->getId();
+                $imagesFolder = $this->config->get('imagesFolder', '/site/storefront/products');
+                $pathl = DS . trim($imagesFolder, DS) . DS . $this->row->getId();
 
                 if ($image && file_exists(PATH_APP . $pathl . DS . $file)) {
                     $this_size = filesize(PATH_APP . $pathl . DS . $file);
@@ -347,12 +475,24 @@ if (empty($this->meta->qtyTxt)) {
                 } else {
                     $image = false;
                     $pic = 'noimage.png';
-                    $path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img' . DS;
+                    $relDir = str_replace(PATH_ROOT, '', __DIR__);
+                    $path = dirname(dirname(dirname(dirname($relDir))))
+                        . '/site/assets/img' . DS;
                 }
                 ?>
                 <div id="img-container">
-                    <img id="img-display" src="<?php echo $path . DS . $pic; ?>" alt="<?php echo Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>" />
-                    <input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
+                <?php $imgAlt = Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE'); ?>
+                    <img
+                        id="img-display"
+                        src="<?php echo $path . DS . $pic; ?>"
+                        alt="<?php echo $imgAlt; ?>"
+                    />
+                    <input
+                        type="hidden"
+                        name="currentfile"
+                        id="currentfile"
+                        value="<?php echo $img->imgId; ?>"
+                    />
                 </div>
 
                 <table class="formed">
@@ -363,14 +503,26 @@ if (empty($this->meta->qtyTxt)) {
                             <span id="img-name"><?php echo $image; ?></span>
                         </td>
                         <td>
-                            <a id="img-delete <?php echo $image ? '' : 'hide'; ?>"
-                               href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&task=remove&type=product&id=' . $this->row->getId() . '&' . Session::getFormToken() . '=1'); ?>"
-                               title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
+                <?php
+                $deleteUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=images&tmpl=component&task=remove'
+                    . '&type=product&id=' . $this->row->getId()
+                    . '&' . Session::getFormToken() . '=1'
+                );
+                $hideClass = $image ? '' : 'hide';
+                ?>
+                            <a
+                                id="img-delete <?php echo $hideClass; ?>"
+                                href="<?php echo $deleteUrl; ?>"
+                                title="<?php echo Lang::txt('Delete'); ?>"
+                            >[ x ]</a>
                         </td>
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('COM_STOREFRONT_PICTURE_SIZE'); ?>:</th>
-                        <td><span id="img-size"><?php echo \Hubzero\Utility\Number::formatBytes($this_size); ?></span></td>
+                <?php $formattedSize = \Hubzero\Utility\Number::formatBytes($this_size); ?>
+                        <td><span id="img-size"><?php echo $formattedSize; ?></span></td>
                         <td></td>
                     </tr>
                     <tr>
@@ -386,7 +538,11 @@ if (empty($this->meta->qtyTxt)) {
                     </tbody>
                 </table>
 
-                <script type="text/javascript" src="<?php echo rtrim(Request::root(true), '/'); ?>/core/assets/js/jquery.fileuploader.js"></script>
+                <?php $rootPath = rtrim(Request::root(true), '/'); ?>
+                <script
+                    type="text/javascript"
+                    src="<?php echo $rootPath; ?>/core/assets/js/jquery.fileuploader.js"
+                ></script>
                 <script type="text/javascript">
                     String.prototype.nohtml = function () {
                         if (this.indexOf('?') == -1) {
@@ -402,11 +558,17 @@ if (empty($this->meta->qtyTxt)) {
                                 action: $("#ajax-uploader").attr("data-action"),
                                 multiple: true,
                                 debug: true,
-                                template: '<div class="qq-uploader">' +
-                                '<div class="qq-upload-button"><span><?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-                                '<div class="qq-upload-drop-area"><span><?php echo Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?></span></div>' +
-                                '<ul class="qq-upload-list"></ul>' +
-                                '</div>',
+                <?php $uploadTxt = Lang::txt('COM_STOREFRONT_UPLOAD_CLICK_OR_DROP'); ?>
+                                template:
+                                    '<div class="qq-uploader">' +
+                                    '<div class="qq-upload-button">' +
+                                    '<span><?php echo $uploadTxt; ?></span>' +
+                                    '</div>' +
+                                    '<div class="qq-upload-drop-area">' +
+                                    '<span><?php echo $uploadTxt; ?></span>' +
+                                    '</div>' +
+                                    '<ul class="qq-upload-list"></ul>' +
+                                    '</div>',
                                 onComplete: function(id, file, response) {
                                     if (response.success) {
                                         $('#img-display').attr('src', '..' + response.directory + '/' + response.file);
@@ -425,9 +587,15 @@ if (empty($this->meta->qtyTxt)) {
                             e.preventDefault();
                             var el = $(this);
                             var currentfileVal = $('#currentfile').val();
-                            $.getJSON(el.attr('href').nohtml(), {currentfile: currentfileVal}, function(response) {
+                            $.getJSON(
+                                el.attr('href').nohtml(),
+                                {currentfile: currentfileVal},
+                                function(response) {
                                 if (response.success) {
-                                    $('#img-display').attr('src', '<?php echo rtrim(Request::root(true), '/'); ?>/core/components/com_storefront/site/assets/img/noimage.png');
+                                    var noImg = '<?php echo $rootPath; ?>' +
+                                        '/core/components/com_storefront' +
+                                        '/site/assets/img/noimage.png';
+                                    $('#img-display').attr('src', noImg);
                                     $('#img-name').text('[ none ]');
                                     $('#img-size').text('0');
                                     $('#img-width').text('0');

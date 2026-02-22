@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2023 The Regents of the University of California.
@@ -52,7 +50,13 @@ $aclgroupIDs = array();
 
             ?>
     <li id="aclgroup_<?php echo $aclgroupname->group_id; ?>">
-        <a class="state trash" data-parent="aclgroup_<?php echo $aclgroupname->group_id; ?>" href="#" onclick="HUB.ResourcesACL.removeGroup('aclgroup_<?php echo $aclgroupname->group_id; ?>');return false;"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></a>
+            <?php $gid = $aclgroupname->group_id; ?>
+        <a class="state trash"
+           data-parent="aclgroup_<?php echo $gid; ?>"
+           href="#"
+           onclick="HUB.ResourcesACL.removeGroup('aclgroup_<?php echo $gid; ?>');return false;">
+            <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
+        </a>
             <?php echo $this->escape(stripslashes($name)); ?> (<?php echo $aclgroupname->group_id; ?>)
 
 
@@ -71,7 +75,10 @@ $aclgroupIDs = array();
 
 
 
-        <input type="hidden" name="<?php echo $aclgroupname->group_id; ?>_name" value="<?php echo $this->escape($name); ?>" />
+        <input type="hidden"
+               name="<?php echo $aclgroupname->group_id; ?>_name"
+               value="<?php echo $this->escape($name); ?>"
+               />
     </li>
             <?php
         }

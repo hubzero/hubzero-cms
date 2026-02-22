@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,7 +31,8 @@ switch ($this->level) {
             if ($tg == '') {
                 $html .= 'open';
             }
-            $html .= '" href="javascript:HUB.TagBrowser.nextLevel(\'' . $type->get('id') . '\',\'\',\'\',2,\'col1_all\',\'' . $id . '\');">[ All ]</a></li>';
+            $html .= '" href="javascript:HUB.TagBrowser.nextLevel(\'' .  $type->get('id')
+                .  '\',\'\',\'\',2,\'col1_all\',\'' .  $id .  '\');">[ All ]</a></li>';
         }
         $lis = '';
         $i = 0;
@@ -50,7 +49,9 @@ switch ($this->level) {
                 $d = $i;
             }
 
-            $li .= '" href="javascript:HUB.TagBrowser.nextLevel(\'' . $type->get('id') . '\',\'' . $tag->tag . '\',\'' . $tg2 . '\',2,\'col1_' . $tag->tag . '\',\'' . $id . '\');">' . stripslashes($tag->raw_tag) . ' (' . $tag->ucount . ')</a></li>';
+            $li .= '" href="javascript:HUB.TagBrowser.nextLevel(\'' .  $type->get('id') .  '\',\'' .  $tag->tag
+                .  '\',\'' .  $tg2 .  '\',2,\'col1_' .  $tag->tag .  '\',\'' .  $id .  '\');">'
+                .  stripslashes($tag->raw_tag) .  ' (' .  $tag->ucount .  ')</a></li>';
 
             if ($this->bits['supportedtag'] && $tag->tag == $this->bits['supportedtag']) {
                 $html .= $li;
@@ -62,7 +63,8 @@ switch ($this->level) {
             $tg = 'all';
         }
         $html .= $lis;
-        $html .= '</ul><input type="hidden" name="atg" id="atg" value="' . htmlentities($tg) . '" /><input type="hidden" name="d" id="d" value="' . $d . '" />';
+        $html .= '</ul><input type="hidden" name="atg" id="atg" value="' .  htmlentities($tg)
+            .  '" /><input type="hidden" name="d" id="d" value="' .  $d .  '" />';
         break;
 
     case 2:
@@ -84,7 +86,12 @@ switch ($this->level) {
             $sortbys['jobs'] = Lang::txt('COM_RESOURCES_SORT_BY') . ' ' . Lang::txt('COM_RESOURCES_JOBS');
         }
 
-        $html .= '<h3>' . Lang::txt('COM_RESOURCES') . ' ' . \Components\Resources\Helpers\Html::formSelect('sortby', $sortbys, $this->bits['sortby'], '" onchange="javascript:HUB.TagBrowser.changeSort();"') . '</h3>';
+        $html .= '<h3>' . Lang::txt('COM_RESOURCES') . ' ' . \Components\Resources\Helpers\Html::formSelect(
+            'sortby',
+            $sortbys,
+            $this->bits['sortby'],
+            '" onchange="javascript:HUB.TagBrowser.changeSort();"'
+        ) . '</h3>';
         $html .= '<ul id="ulitems">';
         if ($tools && count($tools) > 0) {
             foreach ($tools as $tool) {
@@ -102,7 +109,9 @@ switch ($this->level) {
                 if ($this->bits['supportedtag'] && ($this->bits['tag'] == $this->bits['supportedtag'] || $supported)) {
                     $html .= 'class="supported" ';
                 }
-                $html .= '><a id="col2_' . $tool->id . '" href="javascript:HUB.TagBrowser.nextLevel(\'' . $type->get('id') . '\',\'' . $tool->id . '\',\'\',3,\'col2_' . $tool->id . '\',\'\');">' . stripslashes($tool->title) . '</a></li>';
+                $html .= '><a id="col2_' .  $tool->id .  '" href="javascript:HUB.TagBrowser.nextLevel(\''
+                    .  $type->get('id') .  '\',\'' .  $tool->id .  '\',\'\',3,\'col2_' .  $tool->id .  '\',\'\');">'
+                    .  stripslashes($tool->title) .  '</a></li>';
             }
         } else {
             $html .= '<li><span>' . Lang::txt('COM_RESOURCES_NO_RESULTS') . '</span></li>';
@@ -114,12 +123,16 @@ switch ($this->level) {
                 $html .= '<div id="filteroptions">';
                 $html .= ' <div>' . Lang::txt('Show:');
                 foreach ($filters as $avalue => $alabel) {
-                    $html .= ' <label class="skill_' . $avalue . '"><input type="checkbox" class="option" name="filter" value="' . $avalue . '" onchange="javascript:HUB.TagBrowser.changeSort();" ';
+                    $html .= ' <label class="skill_' .  $avalue
+                        .  '"><input type="checkbox" class="option" name="filter" value="' .  $avalue
+                        .  '" onchange="javascript:HUB.TagBrowser.changeSort();" ';
                     $html .= in_array($avalue, $this->bits['filter']) ? 'checked="checked"' : '';
                     $html .= ' /> ' . $alabel . '</label>';
                 }
                 if ($params->get('audiencelink')) {
-                    $html .= ' <span>' . Lang::txt('COM_RESOURCES_WHATS_THIS') . ' <a href="' . $params->get('audiencelink') . '">' . Lang::txt('About audience levels') . ' &rsaquo;</a></span>';
+                    $html .= ' <span>' .  Lang::txt('COM_RESOURCES_WHATS_THIS') .  ' <a href="'
+                        .  $params->get('audiencelink') .  '">' .  Lang::txt('About audience levels')
+                        .  ' &rsaquo;</a></span>';
                 }
                 $html .= ' </div>';
                 $html .= '</div>';
@@ -142,9 +155,19 @@ switch ($this->level) {
         $statshtml = '';
         if ($params->get('show_ranking')) {
             if ($resource->isTool()) {
-                $stats = new \Components\Resources\Helpers\Usage\Tools($database, $resource->id, $resource->type, $resource->rating);
+                $stats = new \Components\Resources\Helpers\Usage\Tools(
+                    $database,
+                    $resource->id,
+                    $resource->type,
+                    $resource->rating
+                );
             } else {
-                $stats = new \Components\Resources\Helpers\Usage\Andmore($database, $resource->id, $resource->type, $resource->rating);
+                $stats = new \Components\Resources\Helpers\Usage\Andmore(
+                    $database,
+                    $resource->id,
+                    $resource->type,
+                    $resource->rating
+                );
             }
 
             $statshtml = $stats->display();
@@ -173,7 +196,8 @@ switch ($this->level) {
                 break;
         }
         $html .= '><a href="' . $sef . '">' . $this->escape(stripslashes($resource->title)) . '</a></h4>';
-        $html .= '<p>' . \Hubzero\Utility\Str::truncate(stripslashes($resource->introtext), 400) . ' &nbsp; <a href="' . $sef . '">' . Lang::txt('COM_RESOURCES_LEARN_MORE') . '</a></p>';
+        $html .= '<p>' .  \Hubzero\Utility\Str::truncate(stripslashes($resource->introtext), 400)
+            .  ' &nbsp; <a href="' .  $sef .  '">' .  Lang::txt('COM_RESOURCES_LEARN_MORE') .  '</a></p>';
 
         $usersgroups = array();
         if (!User::isGuest()) {
@@ -191,10 +215,12 @@ switch ($this->level) {
         if ($resource->access == 3 && !in_array($resource->group_owner, $usersgroups) && !$authorized) {
             $ghtml = array();
             foreach ($resource->groups as $allowedgroup) {
-                $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+                $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' .
+                $allowedgroup . '</a>';
             }
 
-            $html .= '<p class="warning">' . Lang::txt('You must be logged in and a member of one of the following groups to access the full resource:') . ' ' . implode(', ', $ghtml) . '</p>' . "\n";
+            $html .= '<p class="warning">' . Lang::txt('You must be logged in and a member of one of the following
+            groups to access the full resource:') . ' ' . implode(', ', $ghtml) . '</p>' . "\n";
         } else {
             $firstChild = $resource->children()
                 ->whereEquals('standalone', 0)

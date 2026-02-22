@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,7 +47,13 @@ if ($mode != 'preview') {
                         <h2>
                             <?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
                             <?php if ($this->model->params->get('access-edit-resource')) { ?>
-                                <a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>">
+                                <?php
+                                $hrefUrl = Route::url(
+                                    'index.php?option=com_resources&task=draft&step=1&id='
+                                    . $this->model->id
+                                );
+                                ?>
+                                <a class="icon-edit edit btn" href="<?php echo $hrefUrl; ?>">
                                     <?php echo Lang::txt('COM_RESOURCES_EDIT'); ?>
                                 </a>
                             <?php } ?>
@@ -76,14 +80,23 @@ if ($mode != 'preview') {
                     if (!$this->model->access('view-all')) {
                         $ghtml = array();
                         foreach ($this->model->groups as $allowedgroup) {
-                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) .
+                            '">' . $allowedgroup . '</a>';
                         }
                         ?>
                             <p class="warning">
                                 <?php if (User::isGuest()) : ?>
-                                    <?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())); ?>
+                                    <?php
+                                    echo Lang::txt(
+                                        'COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN',
+                                        base64_encode(Request::path())
+                                    );
+                                    ?>
                                 <?php elseif ($this->get('group_owner')) : ?>
-                                    <?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+                                    <?php
+                                    echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') .  ' '
+                                        .  implode(', ', $ghtml);
+                                    ?>
                                 <?php else : ?>
                                     <?php echo Lang::txt('COM_RESOURCES_ALERTNOTAUTH'); ?>
                                 <?php endif; ?>
@@ -104,10 +117,18 @@ if ($mode != 'preview') {
                         $maxhours = $params->get('windows_monthly_max_hours', '100');
 
                         if (floatval($totalhours) < floatval($maxhours)) {
-                            $lurl = Route::url('index.php?option=' . $this->option . '&task=plugin&trigger=invoke&appid=' . $this->model->path);
-                            $html = \Components\Resources\Helpers\Html::primaryButton('', $lurl, Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
-                            $html .= $this->tab != 'play' ? \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
-                            $html .= '<p class="info">Read the <a href="' . Route::url($this->model->link() . '&active=windowstools') . '">setup/instructions</a>.</p>';
+                            $lurl = Route::url('index.php?option=' . $this->option .
+                            '&task=plugin&trigger=invoke&appid=' . $this->model->path);
+                            $html = \Components\Resources\Helpers\Html::primaryButton(
+                                '',
+                                $lurl,
+                                Lang::txt('COM_RESOURCES_LAUNCH_TOOL')
+                            );
+                            $html .= $this->tab != 'play' ?
+                            \Components\Resources\Helpers\Html::license($this->model->params->get('license', '')) : '';
+                            $html .= '<p class="info">Read the <a href="'
+                                .  Route::url($this->model->link() . '&active=windowstools')
+                                .  '">setup/instructions</a>.</p>';
 
                             $this->js('
 								jQuery(document).ready(function($){
@@ -130,7 +151,8 @@ if ($mode != 'preview') {
 															msg.append(
 																\'<dl id="system-message">\' +
 																\'<dt class="warning">Warning</dt>\' +
-																\'<dd class="warning message"><ul><li>\' + returned.message + \'</li></ul></dd>\' +
+																\'<dd class="warning message"><ul><li>\' +
+																returned.message + \'</li></ul></dd>\' +
 																\'</dl>\'
 															);
 														}
@@ -142,7 +164,11 @@ if ($mode != 'preview') {
 								});
 							');
                         } else {
-                            $html  = \Components\Resources\Helpers\Html::primaryButton('', '', Lang::txt('COM_RESOURCES_LAUNCH_TOOL'));
+                            $html = \Components\Resources\Helpers\Html::primaryButton(
+                                '',
+                                '',
+                                Lang::txt('COM_RESOURCES_LAUNCH_TOOL')
+                            );
                             $html .= 'AppStream tool usage over limit. Please contact the system administrator.';
                             $html .= "<br/>" . $totalUsageFigure[0]->totalhours . "/" . $maxhours;
                         }

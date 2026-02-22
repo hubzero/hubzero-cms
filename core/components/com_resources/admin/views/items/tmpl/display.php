@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -44,33 +42,155 @@ Html::behavior('tooltip');
 $this->css();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>: </label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>" />
+                <input type="text"
+                       name="search"
+                       id="filter_search"
+                       class="filter"
+                       value="<?php echo $this->escape($this->filters['search']); ?>"
+                       placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>"
+                       />
 
-                <input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
+                <input type="submit"
+                       name="filter_submit"
+                       id="filter_submit"
+                       value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>"
+                       />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
             <div class="col span6">
                 <label for="filter-status"><?php echo Lang::txt('COM_RESOURCES_FILTER_STATUS'); ?>:</label>
                 <select name="status" id="filter-status" class="filter filter-submit">
-                    <option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_FILTER_STATUS_ALL'); ?></option>
-                    <option value="2"<?php echo ($this->filters['status'] == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL'); ?></option>
-                    <option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_INTERNAL'); ?></option>
-                    <option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_PENDING'); ?></option>
-                    <option value="0"<?php echo ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                    <option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                    <option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                    <option value="all"<?php
+                            echo
+                            ($this->filters['status']
+                            ==
+                            'all')
+                            ?
+                            ' selected="selected"'
+                            :
+                            '';
+                            ?>><?php
+                            echo
+                            Lang::txt('COM_RESOURCES_FILTER_STATUS_ALL');
+?></option>
+                    <option value="2"<?php
+                            echo
+                            ($this->filters['status']
+                            ==
+                            2)
+                            ?
+                            ' selected="selected"'
+                            :
+                            '';
+                            ?>><?php
+                            echo
+                            Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
+?></option>
+                    <option value="5"<?php
+                            echo
+                            ($this->filters['status']
+                            ==
+                            5)
+                            ?
+                            ' selected="selected"'
+                            :
+                            '';
+                            ?>><?php
+                            echo
+                            Lang::txt('COM_RESOURCES_DRAFT_INTERNAL');
+?></option>
+                    <option value="3"<?php
+                            echo
+                            ($this->filters['status']
+                            ==
+                            3)
+                            ?
+                            ' selected="selected"'
+                            :
+                            '';
+                            ?>><?php
+                            echo
+                            Lang::txt('COM_RESOURCES_PENDING');
+?></option>
+                    <option value="0"<?php
+                            echo
+                            ($this->filters['status']
+                            ==
+                            0
+                            &&
+                            $this->filters['status']
+                            !=
+                            'all')
+                            ?
+                            ' selected="selected"'
+                            :
+                            '';
+                            ?>><?php
+                            echo
+                            Lang::txt('JUNPUBLISHED');
+?></option>
+                    <option value="1"<?php
+                            echo
+                            ($this->filters['status']
+                            ==
+                            1)
+                            ?
+                            ' selected="selected"'
+                            :
+                            '';
+                            ?>><?php
+                            echo
+                            Lang::txt('JPUBLISHED');
+?></option>
+                    <option value="4"<?php
+                            echo
+                            ($this->filters['status']
+                            ==
+                            4)
+                            ?
+                            ' selected="selected"'
+                            :
+                            '';
+                            ?>><?php
+                            echo
+                            Lang::txt('JTRASHED');
+?></option>
                 </select>
 
                 <label for="filter-license"><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE'); ?>:</label>
                 <select name="license" id="filter-license" class="filter filter-submit">
-                    <option value="all"<?php echo ($this->filters['license'] == 'all') ? 'selected="selected"' : '';?>><?php echo Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL'); ?></option>
+                    <option value="all"<?php
+                            echo
+                            ($this->filters['license']
+                            ==
+                            'all')
+                            ?
+                            'selected="selected"'
+                            :
+                            '';?>><?php
+                            echo
+                            Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL');
+?></option>
                     <?php foreach ($this->licenses as $license) { ?>
-                        <option value="<?php echo $license->get('name'); ?>"<?php echo ($this->filters['license'] == $license->get('name')) ? 'selected="selected"' : ''; ?>><?php echo $license->get('title'); ?></option>
+                        <option value="<?php echo $license->get('name'); ?>"<?php
+                                echo
+                                ($this->filters['license']
+                                ==
+                                $license->get('name'))
+                                       ?
+                                       'selected="selected"'
+                                       :
+                                       '';
+                                        ?>><?php
+                                echo
+                                $license->get('title');
+?></option>
                     <?php } ?>
                 </select>
 
@@ -78,7 +198,19 @@ $this->css();
                 <select name="type" id="filter-type" class="filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_RESOURCES_FILTER_TYPE_ALL'); ?></option>
                     <?php foreach ($this->types as $type) { ?>
-                        <option value="<?php echo $type->id; ?>"<?php echo ($this->filters['type'] == $type->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($type->type); ?></option>
+                        <option value="<?php echo $type->id; ?>"<?php
+                                echo
+                                ($this->filters['type']
+                                ==
+                                $type->id)
+                                       ?
+                                       ' selected="selected"'
+                                       :
+                                       '';
+                                        ?>><?php
+                                echo
+                                $this->escape($type->type);
+?></option>
                     <?php } ?>
                 </select>
             </div>
@@ -89,17 +221,104 @@ $this->css();
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                           name="checkall-toggle"
+                           id="checkall-toggle"
+                           value=""
+                           class="checkbox-toggle toggle-all"
+                           />
+                    <label for="checkall-toggle"
+                           class="sr-only visually-hidden"><?php
+                            echo
+                            Lang::txt('JGLOBAL_CHECK_ALL');
+                            ?></label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_STATUS', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_MODIFIED', 'modified', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_LICENSE', 'license', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_CHILDREN', 'children', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"
+                    class="priority-5"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_TITLE',
+                        'title',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-3"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_STATUS',
+                        'published',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-3"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_ACCESS',
+                        'access',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-4"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_MODIFIED',
+                        'modified',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-5"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_LICENSE',
+                        'license',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-2"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_TYPE',
+                        'type',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_CHILDREN',
+                        'children',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_RESOURCES_COL_TAGS'); ?></th>
             </tr>
         </thead>
@@ -121,7 +340,8 @@ $this->css();
             $license = $row->get('license', $row->params->get('license'));
 
             // Build some publishing info
-            $info  = Lang::txt('COM_RESOURCES_CREATED') . ': ' . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
+            $info  = Lang::txt('COM_RESOURCES_CREATED') .  ': '
+                .  Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) .  '<br />';
             $info .= Lang::txt('COM_RESOURCES_CREATED_BY') . ': ' . $this->escape($row->created_by) . '<br />';
 
             // Get the published status
@@ -137,7 +357,11 @@ $this->css();
                         $alt   = Lang::txt('COM_RESOURCES_PENDING');
                         $class = 'pending';
                         $task  = 'unpublish';
-                    } elseif ($now <= $row->publish_down || !$row->publish_down || $row->publish_down == '0000-00-00 00:00:00') {
+                    } elseif (
+                        $now <= $row->publish_down
+                        || !$row->publish_down
+                        || $row->publish_down == '0000-00-00 00:00:00'
+                    ) {
                         $alt   = Lang::txt('JPUBLISHED');
                         $class = 'published';
                         $task  = 'unpublish';
@@ -147,7 +371,8 @@ $this->css();
                         $task  = 'unpublish';
                     }
 
-                    $info .= Lang::txt('JPUBLISHED') . ': ' . Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
+                    $info .= Lang::txt('JPUBLISHED') .  ': '
+                        .  Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) .  '<br />';
                     break;
                 case 2:
                     $alt   = Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
@@ -208,17 +433,24 @@ $this->css();
             $tags = count($row->tags());
 
             // See if it's checked out or not
-            if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) { // && $row->checked_out != User::get('id'))
+            // Note: originally also checked $row->checked_out != User::get('id')
+            if (
+                $row->checked_out
+                || ($row->checked_out_time
+                    && $row->checked_out_time != '0000-00-00 00:00:00')
+            ) {
                 $date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
                 $time = Date::of($row->checked_out_time)->toLocal('H:i');
 
                 $editor = User::getInstance($row->checked_out);
 
-                $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($editor->get('name')) . '<br />' . $date . '<br />' . $time . '">';
+                $checked  = '<span class="editlinktip hasTip" title="' .  Lang::txt('JLIB_HTML_CHECKED_OUT') .  '::'
+                    .  $this->escape($editor->get('name')) .  '<br />' .  $date .  '<br />' .  $time .  '">';
                 $checked .= '<span class="checkedout"></span>' . '</span>';
 
                 $info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
-                         ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
+                         ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' .
+                         Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
                          : '';
 
                 if ($editor) {
@@ -236,17 +468,52 @@ $this->css();
                     <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . $filterstring); ?>" title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
+                    <?php
+                    $hrefUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&id=' . $row->id
+                        . $filterstring
+                    );
+                    ?>
+                    <a class="editlinktip hasTip"
+                       href="<?php echo $hrefUrl; ?>"
+                       title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
                         <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
                     </a>
                 </td>
                 <td class="priority-3">
-                    <a class="state <?php echo $class; ?> hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . $filterstring . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo $alt; ?> :: <?php echo Lang::txt('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+                    <?php
+                    $stateUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=' . $task . '&id=' . $row->id
+                        . $filterstring . '&'
+                        . Session::getFormToken() . '=1'
+                    );
+                    $stateTitle = $alt . ' :: '
+                        . Lang::txt('COM_RESOURCES_SET_TASK_TO', $task);
+                    ?>
+                    <a class="state <?php echo $class; ?> hasTip"
+                       href="<?php echo $stateUrl; ?>"
+                       title="<?php echo $stateTitle; ?>">
                         <span><?php echo $alt; ?></span>
                     </a>
                 </td>
                 <td class="priority-3">
-                    <a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . $filterstring . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_CHANGE_ACCESS'); ?>">
+                    <?php
+                    $accessUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=' . $task_access
+                        . '&id=' . $row->id . $filterstring
+                        . '&' . Session::getFormToken() . '=1'
+                    );
+                    $accessTitle = Lang::txt('COM_RESOURCES_CHANGE_ACCESS');
+                    ?>
+                    <a class="access <?php echo $color_access; ?>"
+                       href="<?php echo $accessUrl; ?>"
+                       title="<?php echo $accessTitle; ?>">
                         <span><?php echo $this->escape(Lang::txt($row->groupname)); ?></span>
                     </a>
                 </td>
@@ -254,8 +521,15 @@ $this->css();
                     <?php if (!$row->modified || $row->modified == '0000-00-00 00:00:00') { ?>
                         <?php echo Lang::txt('COM_RESOURCES_NOT_MODIFIED'); ?>
                     <?php } else { ?>
-                        <time datetime="<?php echo ($row->modified && $row->modified != '0000-00-00 00:00:00') ? $row->modified : $row->created; ?>">
-                            <?php echo Date::of($row->modified && $row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
+                        <?php
+                        $hasModified = $row->modified
+                            && $row->modified != '0000-00-00 00:00:00';
+                        $dateVal = $hasModified ? $row->modified : $row->created;
+                        $dateFmt = Date::of($dateVal)
+                            ->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                        ?>
+                        <time datetime="<?php echo $dateVal; ?>">
+                            <?php echo $dateFmt; ?>
                         </time>
                     <?php } ?>
                 </td>
@@ -267,22 +541,58 @@ $this->css();
                 </td>
                 <td>
                     <?php if ($row->children()->total() > 0) { ?>
-                        <a class="glyph menulist" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $row->id); ?>">
+                        <?php
+                        $hrefUrl = Route::url(
+                            'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&task=children&pid='
+                            . $row->id
+                        );
+                        ?>
+                        <a class="glyph menulist" href="<?php echo $hrefUrl; ?>">
                             <span><?php echo $row->children()->total(); ?></span>
                         </a>
                     <?php } else { ?>
-                        <a class="state add" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addchild&pid=' . $row->id); ?>">
+                        <?php
+                        $hrefUrl = Route::url(
+                            'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&task=addchild&pid='
+                            . $row->id
+                        );
+                        ?>
+                        <a class="state add" href="<?php echo $hrefUrl; ?>">
                             <span><?php echo Lang::txt('COM_RESOURCES_ADD'); ?></span>
                         </a>
                     <?php } ?>
                 </td>
                 <td>
                     <?php if ($tags > 0) { ?>
-                        <a class="glyph tag" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=tags&id=' . $row->id); ?>">
+                        <?php
+                        $hrefUrl = Route::url(
+                            'index.php?option='
+                            . $this->option
+                            . '&controller=tags&id='
+                            . $row->id
+                        );
+                        ?>
+                        <a class="glyph tag" href="<?php echo $hrefUrl; ?>">
                             <span><?php echo $tags; ?></span>
                         </a>
                     <?php } else { ?>
-                        <a class="state add" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=tags&id=' . $row->id); ?>">
+                        <?php
+                        $hrefUrl = Route::url(
+                            'index.php?option='
+                            . $this->option
+                            . '&controller=tags&id='
+                            . $row->id
+                        );
+                        ?>
+                        <a class="state add" href="<?php echo $hrefUrl; ?>">
                             <span><?php echo Lang::txt('COM_RESOURCES_ADD'); ?></span>
                         </a>
                     <?php } ?>

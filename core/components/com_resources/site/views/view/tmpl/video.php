@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -38,7 +36,11 @@ $this->css('
 
 <div id="video-container" class="paused">
     <?php if (count($presentation->media) > 0) : ?>
-        <video webkit-playsinline playsinline controls="controls" id="video-player" data-mediaid="<?php echo $this->resource->id; ?>">
+        <video webkit-playsinline
+               playsinline
+               controls="controls"
+               id="video-player"
+               data-mediaid="<?php echo $this->resource->id; ?>">
             <?php foreach ($presentation->media as $video) : ?>
                 <?php
                 switch ($video->type) {
@@ -59,7 +61,10 @@ $this->css('
                     //video source
                     $source = $video->source;
 
-                if (preg_match('/^(.*?)(\/+)(app\/+site\/+resources)(\/+)([12]\d\d\d)(\/+)(0\d|1[012])(\/+)(\d{5})\/*(.*)$/m', $source, $matches)) {
+                $pattern = '/^(.*?)(\/+)(app\/+site\/+resources)'
+                    . '(\/+)([12]\d\d\d)(\/+)(0\d|1[012])'
+                    . '(\/+)(\d{5})\/*(.*)$/m';
+                if (preg_match($pattern, $source, $matches)) {
                     $url = '/resources/' . $matches[9] . '/download/' . $matches[10];
                 } else {
                     $url = $source;
@@ -102,7 +107,10 @@ $this->css('
         <div id="progress-bar"></div>
         <div id="control-buttons">
             <div id="control-buttons-left" class="cf">
-                <a id="play-pause" class="tooltips control paused" href="javascript:void(0);" title="Play Presentation">Pause</a>
+                <a id="play-pause"
+                   class="tooltips control paused"
+                   href="javascript:void(0);"
+                   title="Play Presentation">Pause</a>
                 <div id="media-progress"></div>
             </div>
             <div id="control-buttons-right" class="cf">
@@ -184,7 +192,8 @@ $this->css('
                                 </div>
                             </div>
                             <div class="actions">
-                                <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save">Save</button>
+                                <button class="btn btn-info btn-secondary icon-save"
+                                        id="subtitle-settings-save">Save</button>
                             </div>
                         </div>
                     </div>
@@ -195,7 +204,10 @@ $this->css('
                         <div id="volume-bar"></div>
                     </div>
                 </a>
-                <a id="settings" class="tooltips control" href="javascript:void(0);" title="Adjust Settings for Playback">
+                <a id="settings"
+                   class="tooltips control"
+                   href="javascript:void(0);"
+                   title="Adjust Settings for Playback">
                     Settings
                     <div class="control-container settings-controls">
                         <h3>Settings</h3>
@@ -226,7 +238,10 @@ $this->css('
                         </div> -->
                     </div>
                 </a>
-                <a id="link" class="tooltips control" href="javascript:void(0);" title="Link to this Spot in Presentation">
+                <a id="link"
+                   class="tooltips control"
+                   href="javascript:void(0);"
+                   title="Link to this Spot in Presentation">
                     Link
                     <div class="control-container link-controls">
                         <h3>Link to Video <span>- at current position</span></h3>
@@ -238,7 +253,8 @@ $this->css('
                         </div>
                     </div>
                 </a>
-                <!-- <a id="full-screen" class="tooltips control" href="javascript:void(0);" title="View Video Fullscreen">Fullscreen</a> -->
+                <!-- <a id="full-screen" class="tooltips control" href="javascript:void(0);"
+                    title="View Video Fullscreen">Fullscreen</a> -->
             </div>
         </div>
     </div><!-- /#control-box -->

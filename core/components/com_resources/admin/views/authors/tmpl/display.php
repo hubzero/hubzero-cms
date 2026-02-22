@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,10 +22,16 @@ if ($canDo->get('core.edit')) {
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>" />
+        <input type="text"
+               name="search"
+               id="filter_search"
+               value="<?php echo $this->escape($this->filters['search']); ?>"
+               placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>"
+               />
 
         <input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
     </fieldset>
@@ -36,14 +40,52 @@ if ($canDo->get('core.edit')) {
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                           name="checkall-toggle"
+                           id="checkall-toggle"
+                           value=""
+                           class="checkbox-toggle toggle-all"
+                           />
+                    <label for="checkall-toggle"
+                           class="sr-only visually-hidden"><?php
+                            echo
+                            Lang::txt('JGLOBAL_CHECK_ALL');
+                            ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ID', 'authorid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"
+                    class="priority-4"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_ID',
+                        'authorid',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_NAME',
+                        'name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_COL_MEMBER'); ?></th>
                 <?php /* Temporarily removed until query can be rewritten
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_RESOURCES', 'resources', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> */ ?>
+                <th scope="col"
+                    class="priority-3"><?php
+                    echo
+                    Html::grid('sort',
+                    'COM_RESOURCES_COL_RESOURCES',
+                    'resources',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']);
+                    ?></th>
+                    */
+                ?>
             </tr>
         </thead>
         <tfoot>
@@ -77,8 +119,17 @@ if ($canDo->get('core.edit')) {
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->authorid; ?>" class="checkbox-toggle" />
-                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->authorid; ?></label>
+                        <input type="checkbox"
+                               name="id[]"
+                               id="cb<?php echo $i; ?>"
+                               value="<?php echo $row->authorid; ?>"
+                               class="checkbox-toggle"
+                               />
+                        <label for="cb<?php echo $i; ?>"
+                               class="sr-only visually-hidden"><?php
+                                echo
+                                $row->authorid;
+                                ?></label>
                     <?php } ?>
                 </td>
                 <td class="priority-4">
@@ -86,18 +137,34 @@ if ($canDo->get('core.edit')) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->authorid); ?>">
-                            <span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : Lang::txt('COM_RESOURCES_UNKNOWN'); ?></span>
+                        <?php
+                        $hrefUrl = Route::url(
+                            'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&task=edit&id='
+                            . $row->authorid
+                        );
+                        ?>
+                        <a href="<?php echo $hrefUrl; ?>">
+                            <?php
+                            $authorName = $row->name
+                                ? $this->escape(stripslashes($row->name))
+                                : Lang::txt('COM_RESOURCES_UNKNOWN');
+                            ?>
+                            <span><?php echo $authorName; ?></span>
                         </a>
                     <?php } else { ?>
                         <span>
-                            <span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : Lang::txt('COM_RESOURCES_UNKNOWN'); ?></span>
+                            <span><?php echo $authorName; ?></span>
                         </span>
                     <?php } ?>
                 </td>
                 <td class="priority-2">
                     <?php if ($row->authorid > 0) { ?>
-                        <a class="state <?php echo $scls; ?>" href="<?php echo Route::url('index.php?option=com_members&task=edit&id=' . $row->authorid); ?>">
+                        <?php $hrefUrl = Route::url('index.php?option=com_members&task=edit&id=' . $row->authorid); ?>
+                        <a class="state <?php echo $scls; ?>" href="<?php echo $hrefUrl; ?>">
                             <span><?php echo $stickyAlt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -106,10 +173,15 @@ if ($canDo->get('core.edit')) {
                         </span>
                     <?php } ?>
                 </td>
-                <?php /* Temporarily removed until query can be rewritten
+                <?php
+                /* Temporarily removed until query can be rewritten
                 <td class="priority-3">
-                    <?php echo Lang::txt('COM_RESOURCES_AUTHORS_NUM_RESOURCES', $this->escape(stripslashes($row->resources))); ?>
-                </td> */ ?>
+                    <?php echo Lang::txt(
+                        'COM_RESOURCES_AUTHORS_NUM_RESOURCES',
+                        $this->escape(stripslashes($row->resources))
+                    ); ?>
+                </td> */
+                ?>
             </tr>
             <?php
             $k = 1 - $k;

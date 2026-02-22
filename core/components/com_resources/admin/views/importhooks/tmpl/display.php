@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,18 +17,56 @@ Toolbar::editList();
 Toolbar::deleteList();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset>
         <table class="adminlist">
             <thead>
                 <tr>
                     <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                           name="checkall-toggle"
+                           id="checkall-toggle"
+                           value=""
+                           class="checkbox-toggle toggle-all"
+                           />
+                    <label for="checkall-toggle"
+                           class="sr-only visually-hidden"><?php
+                            echo
+                            Lang::txt('JGLOBAL_CHECK_ALL');
+                            ?></label>
                 </th>
-                    <th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                    <th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                    <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_FILE', 'file', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                    <th scope="col"><?php
+                        echo
+                        Html::grid(
+                            'sort',
+                            'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_NAME',
+                            'name',
+                            @$this->filters['sort_Dir'],
+                            @$this->filters['sort']
+                        );
+                        ?></th>
+                    <th scope="col"><?php
+                        echo
+                        Html::grid(
+                            'sort',
+                            'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_TYPE',
+                            'type',
+                            @$this->filters['sort_Dir'],
+                            @$this->filters['sort']
+                        );
+                        ?></th>
+                    <th scope="col"
+                        class="priority-2"><?php
+                        echo
+                        Html::grid(
+                            'sort',
+                            'COM_RESOURCES_IMPORTHOOK_DISPLAY_FIELD_FILE',
+                            'file',
+                            @$this->filters['sort_Dir'],
+                            @$this->filters['sort']
+                        );
+                        ?></th>
                 </tr>
             </thead>
             <tfoot>
@@ -46,11 +82,27 @@ Toolbar::deleteList();
                     <?php foreach ($this->hooks as $i => $hook) : ?>
                         <tr>
                             <td>
-                                <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $hook->get('id'); ?>" class="checkbox-toggle" />
-                                <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $hook->get('id'); ?></label>
+                                <input type="checkbox"
+                                       name="id[]"
+                                       id="cb<?php echo $i; ?>"
+                                       value="<?php echo $hook->get('id'); ?>"
+                                       class="checkbox-toggle"
+                                       />
+                                <label for="cb<?php echo $i; ?>"
+                                       class="sr-only visually-hidden"><?php
+                                        echo
+                                        $hook->get('id');
+                                        ?></label>
                             </td>
                             <td>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $hook->get('id')); ?>">
+                                <?php
+                                $editUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&task=edit&id=' . $hook->get('id')
+                                );
+                                ?>
+                                <a href="<?php echo $editUrl; ?>">
                                     <?php echo $this->escape($hook->get('name')); ?>
                                 </a><br />
                                 <span class="hint">
@@ -75,7 +127,16 @@ Toolbar::deleteList();
                             </td>
                             <td class="priority-2">
                                 <?php echo $hook->get('file'); ?> &mdash;
-                                <a rel="noopener" target="_blank" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raw&id=' . $hook->get('id')); ?>">
+                                <?php
+                                $rawUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&task=raw&id=' . $hook->get('id')
+                                );
+                                ?>
+                                <a rel="noopener"
+                                   target="_blank"
+                                   href="<?php echo $rawUrl; ?>">
                                     <?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_DISPLAY_FILE_VIEWRAW'); ?>
                                 </a>
                             </td>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,7 +10,8 @@ $id = str_replace('resource-', '', $this->result['id']);
 $extras = Event::trigger('resources.onResourcesList', array($id));
 ?>
 
-<div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>" id="<?php echo $this->result['id']; ?>">
+<div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>"
+     id="<?php echo $this->result['id']; ?>">
     <div class="result-body">
         <!-- Cateogory : mandatory -->
         <span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>
@@ -26,8 +25,20 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
                     <?php if (isset($this->result['_childDocuments_'])) : ?>
                         <?php foreach ($this->result['_childDocuments_'] as $index => $badge) : ?>
                             <?php if (isset($badge['badge_b']) && $badge['badge_b']) : ?>
-                                <?php $description = !empty($badge['description']) ? $badge['description'] : $badge['title'][0];?>
-                                <a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . $description); ?>" data-tag="<?php echo $description; ?>">
+                                <?php
+                                $description = !empty($badge['description'])
+                                    ? $badge['description']
+                                    : $badge['title'][0];
+                                ?>
+                                <?php
+                                $hrefUrl = Route::url(
+                                    'index.php?option=com_search&terms='
+                                    . $this->terms
+                                    . '&tags='
+                                    . $description
+                                );
+                                ?>
+                                <a class="tag" href="<?php echo $hrefUrl; ?>" data-tag="<?php echo $description; ?>">
                                     <?php echo $badge['title'][0]; ?>
                                 </a>
                                 <?php unset($this->result['_childDocuments_'][$index]); ?>
@@ -39,7 +50,14 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
         </div>
 
         <!-- Title : mandatory -->
-        <h3 class="result-title"><a href="<?php echo $this->result['url']; ?>"><b><!-- highlight portion --></b><?php echo $this->result['title']; ?></a></h3>
+        <h3 class="result-title"><a
+            href="<?php echo $this->result['url']; ?>"><b><!--
+            highlight
+            portion
+            --></b><?php
+            echo
+            $this->result['title'];
+            ?></a></h3>
 
         <div class="result-extras">
             <?php if (!empty($extras)) : ?>
@@ -48,21 +66,28 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
 
             <?php if (isset($this->result['date'])) : ?>
                 <?php $date = new \Hubzero\Utility\Date($this->result['date']); ?>
-                <span class="result-timestamp"><time datetime="<?php echo $this->result['date']; ?>"><?php echo $date->toLocal('Y-m-d h:mA'); ?></time></span>
+                <span class="result-timestamp"><time
+                      datetime="<?php echo $this->result['date']; ?>"><?php
+                        echo
+                        $date->toLocal('Y-m-d h:mA');
+                        ?></time></span>
             <?php endif; ?>
             <span class="result-citation">
                 <?php
                 $fullCitation = '';
                 $fullCitation .= !empty($this->result['authorString']) ? $this->result['authorString'] : '';
-                $year = !empty($this->result['yearofpublication_s']) ? Date::of($this->result['yearofpublication_s'])->year : '';
+                $year = !empty($this->result['yearofpublication_s']) ?
+                Date::of($this->result['yearofpublication_s'])->year : '';
                 $fullCitation .= !empty($year) ? ' (' . $year . '). ' : '. ';
                 $title = !empty($this->result['title']) ? $this->result['title'] : '';
                 $title = in_array(substr(trim($title), -1), array('.', '?', '!')) ? $title : $title . '.';
                 $fullCitation .= $title . ' ';
                 $journalTitle = !empty($this->result['journaltitle_s']) ? $this->result['journaltitle_s'] : '';
-                $journalTitle = in_array(substr(trim($journalTitle), -1), array('.', '?', '!')) || empty($journalTitle) ? $journalTitle : $journalTitle . '.';
+                $journalTitle = in_array(substr(trim($journalTitle), -1), array('.', '?', '!')) || empty($journalTitle)
+                ? $journalTitle : $journalTitle . '.';
                 $fullCitation .= '<em>' . $journalTitle . '</em> ';
-                $fullCitation .= !empty($this->result['volumeno_s']) ? '<em>' . $this->result['volumeno_s']  . '</em>' : '';
+                $fullCitation .= !empty($this->result['volumeno_s']) ? '<em>' .  $this->result['volumeno_s']
+                    .  '</em>' : '';
                 $issueNumber = '';
                 if (!empty($this->result['issuenomonth_s'])) {
                     $issueNumber = $this->result['issuenomonth_s'];
@@ -74,7 +99,8 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
                     $issueNumber = '(' . $issueNumber . ').';
                 }
                 $fullCitation .= $issueNumber;
-                $fullCitation .= !empty($this->result['pagenumbers_s']) ? ' pp. ' . $this->result['pagenumbers_s'] . '.' : '';
+                $fullCitation .= !empty($this->result['pagenumbers_s']) ? ' pp. ' .  $this->result['pagenumbers_s']
+                    .  '.' : '';
 
                 echo $fullCitation;
                 ?>
@@ -95,8 +121,20 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
                     <?php foreach ($this->result['_childDocuments_'] as $tag) : ?>
                         <?php if (!empty($tag['title'][0])) : ?>
                         <li>
-                            <?php $description = !empty($tag['description']) ? $tag['description'] : $tag['title'][0]; ?>
-                            <a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . $description); ?>" data-tag="<?php echo $description; ?>">
+                            <?php
+                            $description = !empty($tag['description'])
+                                ? $tag['description']
+                                : $tag['title'][0];
+                            ?>
+                            <?php
+                            $hrefUrl = Route::url(
+                                'index.php?option=com_search&terms='
+                                . $this->terms
+                                . '&tags='
+                                . $description
+                            );
+                            ?>
+                            <a class="tag" href="<?php echo $hrefUrl; ?>" data-tag="<?php echo $description; ?>">
                                 <?php echo $tag['title'][0]; ?>
                             </a>
                         </li>
@@ -110,7 +148,8 @@ $extras = Event::trigger('resources.onResourcesList', array($id));
                 <ul class="tags">
                     <?php foreach ($this->result['tags'] as $tag) : ?>
                         <li>
-                            <a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $tag); ?>">
+                            <?php $hrefUrl = Route::url('index.php?option=com_search&terms=' . $tag); ?>
+                            <a class="tag" href="<?php echo $hrefUrl; ?>">
                                 <?php echo $tag; ?>
                             </a>
                         </li>

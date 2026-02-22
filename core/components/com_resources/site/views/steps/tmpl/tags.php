@@ -1,7 +1,6 @@
 <?php
 
 // phpcs:disable PSR1.Files.SideEffects
-// phpcs:disable Generic.Files.LineLength
 
 /**
  * @package    hubzero-cms
@@ -17,7 +16,19 @@ include_once Component::path('com_resources') . DS . 'helpers' . DS . 'recommend
 if (!function_exists('stem')) {
     function stem($str)
     {
-        return preg_replace('/^(?:a[bdcfglnpst]?|ant[ei]?|be|co[mlnr]?|de|di[as]?|e[nmxf]|extra|hemi|hyper|hypo|over|peri|post|pr[eo]|re|semi|su[bcfgprs]|sy[nm]|trans|ultra|un|under)+/', '', preg_replace('/(?:e[dr]|ing|e?s|or|ator|able|ible|acious|ary|ate|ation|cy|eer|or|escent|fic|fy|iferous|ile?|ism|ist|ity|ive|ise|ize|oid|ose|osis|ous|tude)+$/', '', $str));
+        $suffixPattern = '/(?:e[dr]|ing|e?s|or|ator|able|ible|acious'
+            . '|ary|ate|ation|cy|eer|or|escent|fic|fy|iferous'
+            . '|ile?|ism|ist|ity|ive|ise|ize|oid|ose|osis'
+            . '|ous|tude)+$/';
+        $prefixPattern = '/^(?:a[bdcfglnpst]?|ant[ei]?|be'
+            . '|co[mlnr]?|de|di[as]?|e[nmxf]|extra|hemi'
+            . '|hyper|hypo|over|peri|post|pr[eo]|re|semi'
+            . '|su[bcfgprs]|sy[nm]|trans|ultra|un|under)+/';
+        return preg_replace(
+            $prefixPattern,
+            '',
+            preg_replace($suffixPattern, '', $str)
+        );
     }
 }
 
@@ -30,7 +41,8 @@ $this->css('create.css')
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
+            <?php $hrefUrl = Route::url('index.php?option=' . $this->option . '&task=draft'); ?>
+            <a class="icon-add add btn" href="<?php echo $hrefUrl; ?>">
                 <?php echo Lang::txt('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
             </a>
         </p>
@@ -56,8 +68,12 @@ $this->css('create.css')
             $props = $fa_props[$fa['label']];
             $multiple = !is_null($props['multiple_depth']) && $props['multiple_depth'] <= $depth;
             echo '<div class="fa' . ($depth === 1 ? ' top-level' : '') . '">';
-            echo '<input class="option" class="' . ($multiple ? 'checkbox' : 'radio') . '" type="' . ($multiple ? 'checkbox' : 'radio') . '" ' . (isset($existing[strtolower($fa['raw_tag'])]) ? 'checked="checked" ' : '' ) . 'id="tagfa-' . $idx . '-' . $fa['tag'] . '" name="tagfa-' . $idx . ($parent ? '-' . $parent : '') . '[]" value="' . $fa['tag'] . '"';
-            echo ' /><label for="tagfa-' . $idx . '-' . $fa['tag'] . '"' . ($fa['description'] ? ' title="' . htmlentities($fa['description']) . '" class="tooltips"' : '') . '>' . $fa['raw_tag'] . '</label>';
+            echo '<input class="option" class="' . ($multiple ? 'checkbox' : 'radio') . '" type="' . ($multiple ?
+            'checkbox' : 'radio') . '" ' . (isset($existing[strtolower($fa['raw_tag'])]) ? 'checked="checked" ' : '' ) .
+            'id="tagfa-' . $idx . '-' . $fa['tag'] . '" name="tagfa-' . $idx . ($parent ? '-' . $parent : '') . '[]"
+            value="' . $fa['tag'] . '"';
+            echo ' /><label for="tagfa-' . $idx . '-' . $fa['tag'] . '"' . ($fa['description'] ? ' title="' .
+            htmlentities($fa['description']) . '" class="tooltips"' : '') . '>' . $fa['raw_tag'] . '</label>';
             if ($fa['children']) {
                 echo fa_controls($idx, $fa['children'], $fa_props, $existing, $fa['tag'], $depth + 1);
             }
@@ -68,7 +84,17 @@ $this->css('create.css')
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm">
+    <?php
+    $actionUrl = Route::url(
+        'index.php?option='
+        . $this->option
+        . '&task=draft&step='
+        . $this->next_step
+        . '&id='
+        . $this->id
+    );
+    ?>
+    <form action="<?php echo $actionUrl; ?>" method="post" id="hubForm">
         <div class="explaination">
             <h4><?php echo Lang::txt('COM_CONTRIBUTE_TAGS_WHAT_ARE_TAGS'); ?></h4>
             <p><?php echo Lang::txt('COM_CONTRIBUTE_TAGS_EXPLANATION'); ?></p>
@@ -89,7 +115,12 @@ $this->css('create.css')
                 foreach ($this->fas as $label => $fas) :
                     ?>
                         <fieldset>
-                            <legend><?php echo 'Select ' . $label . ': ' . ($fa_props[$label]['mandatory_depth'] ? '<span class="required">required</span>' : ''); ?></legend>
+                            <?php
+                            $reqSpan = $fa_props[$label]['mandatory_depth']
+                                ? '<span class="required">required</span>'
+                                : '';
+                            ?>
+                            <legend><?php echo 'Select ' . $label . ': ' . $reqSpan; ?></legend>
                         <?php fa_controls(++$idx, $fas, $fa_props, $fa_existing); ?>
                         </fieldset>
                     <?php
@@ -99,14 +130,20 @@ $this->css('create.css')
             <label>
                 <?php echo Lang::txt('COM_CONTRIBUTE_TAGS_ASSIGNED'); ?>:
                 <?php
-                $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags','',$recommended->getExistingTagsValueList())));
+                $tf = Event::trigger(
+                    'hubzero.onGetMultiEntry',
+                    array(array('tags', 'tags', 'actags','',$recommended->getExistingTagsValueList()))
+                );
 
                 if (count($tf) > 0) {
                     echo $tf[0];
                 } else {
-                    echo '<textarea name="tags" id="tags-men" rows="6" cols="35">' . $recommended->getExistingTagsValueList() . '</textarea>' . "\n";
+                    echo '<textarea name="tags" id="tags-men" rows="6" cols="35">' .
+                    $recommended->getExistingTagsValueList() . '</textarea>' . "\n";
                 }
-                //echo '<input type="text" name="tags" rel="tags,multi," id="actags" class="autocomplete " value="'.$recommended->getExistingTagsValueList().'" autocomplete="off" />';
+                //echo '<input type="text" name="tags" rel="tags,multi," id="actags"'
+                //    . ' class="autocomplete " value="' . $recommended->getExistingTagsValueList() . '"'
+                //    . ' autocomplete="off" />';
                 ?>
             </label>
             <p><?php echo Lang::txt('COM_CONTRIBUTE_TAGS_NEW_EXPLANATION'); ?></p>

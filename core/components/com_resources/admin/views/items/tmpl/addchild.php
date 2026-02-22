@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +14,8 @@ Toolbar::cancel();
 
 Request::setVar('hidemainmenu', 1);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="item-form">
     <h3><?php echo stripslashes($this->parent->title); ?></h3>
 
     <fieldset class="adminform">
@@ -54,5 +53,9 @@ Request::setVar('hidemainmenu', 1);
         <?php echo Html::input('token'); ?>
     </fieldset>
 
-    <p class="align-center"><input type="submit" name="Submit" value="<?php echo Lang::txt('COM_RESOURCES_NEXT'); ?>" /></p>
+    <p class="align-center"><input
+       type="submit"
+       name="Submit"
+       value="<?php echo Lang::txt('COM_RESOURCES_NEXT'); ?>"
+       /></p>
 </form>

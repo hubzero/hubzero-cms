@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,9 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_OPTION') . ': ' . $text, 'storefront.png');
+$title = Lang::txt('COM_STOREFRONT') . ': '
+    . Lang::txt('COM_STOREFRONT_OPTION') . ': ' . $text;
+Toolbar::title($title, 'storefront.png');
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
     Toolbar::save();
@@ -29,15 +29,44 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[oName]" id="field-title" class="required" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
+<?php
+$titleLabel = Lang::txt('COM_STOREFRONT_TITLE');
+$requiredTxt = Lang::txt('JOPTION_REQUIRED');
+$nameValue = $this->escape(stripslashes($this->row->getName()));
+?>
+                    <label for="field-title">
+                        <?php echo $titleLabel; ?>: <span class="required"><?php echo $requiredTxt; ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[oName]"
+                        id="field-title"
+                        class="required"
+                        size="30"
+                        maxlength="100"
+                        value="<?php echo $nameValue; ?>"
+                    />
                 </div>
 
             </fieldset>
@@ -50,14 +79,24 @@ $this->js();
                         <th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
                         <td>
                             <?php echo $this->row->getId(); ?>
-                            <input type="hidden" name="fields[oId]" id="field-oid" value="<?php echo $this->escape($this->row->getId()); ?>" />
+                            <input
+                                type="hidden"
+                                name="fields[oId]"
+                                id="field-oid"
+                                value="<?php echo $this->escape($this->row->getId()); ?>"
+                            />
                         </td>
                     </tr>
                     <tr>
                         <th class="key"><?php echo Lang::txt('COM_STOREFRONT_OPTION_GROUP'); ?>:</th>
                         <td>
                             <?php echo $this->ogInfo->ogName; ?>
-                            <input type="hidden" name="fields[ogId]" id="field-ogid" value="<?php echo $this->escape($this->ogInfo->ogId); ?>" />
+                            <input
+                                type="hidden"
+                                name="fields[ogId]"
+                                id="field-ogid"
+                                value="<?php echo $this->escape($this->ogInfo->ogId); ?>"
+                            />
                         </td>
                     </tr>
                 </tbody>

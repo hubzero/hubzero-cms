@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,24 +23,72 @@ if ($canDo->get('core.delete')) {
 }
 
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>" />
+        <input type="text"
+               name="search"
+               id="filter_search"
+               value="<?php echo $this->escape($this->filters['search']); ?>"
+               placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>"
+               />
 
-        <input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />
+        <input type="submit"
+               name="filter_submit"
+               id="filter_submit"
+               value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>"
+               />
     </fieldset>
 
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                           name="checkall-toggle"
+                           id="checkall-toggle"
+                           value=""
+                           class="checkbox-toggle toggle-all"
+                           />
+                    <label for="checkall-toggle"
+                           class="sr-only visually-hidden"><?php
+                            echo
+                            Lang::txt('JGLOBAL_CHECK_ALL');
+                            ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_COL_TITLE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"
+                    class="priority-4"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-3"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_ALIAS',
+                        'alias',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_COL_TITLE',
+                        'type',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_COL_TYPES'); ?></th>
             </tr>
         </thead>
@@ -60,7 +106,12 @@ if ($canDo->get('core.delete')) {
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                        <input type="checkbox"
+                               name="id[]"
+                               id="cb<?php echo $i; ?>"
+                               value="<?php echo $row->id; ?>"
+                               class="checkbox-toggle"
+                               />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     <?php } ?>
                 </td>
@@ -69,7 +120,17 @@ if ($canDo->get('core.delete')) {
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <?php
+                        $hrefUrl = Route::url(
+                            'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&task=edit&id='
+                            . $row->id
+                        );
+                        ?>
+                        <a href="<?php echo $hrefUrl; ?>">
                             <span><?php echo $this->escape($row->alias); ?></span>
                         </a>
                     <?php } else { ?>
@@ -80,7 +141,17 @@ if ($canDo->get('core.delete')) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <?php
+                        $hrefUrl = Route::url(
+                            'index.php?option='
+                            . $this->option
+                            . '&controller='
+                            . $this->controller
+                            . '&task=edit&id='
+                            . $row->id
+                        );
+                        ?>
+                        <a href="<?php echo $hrefUrl; ?>">
                             <span><?php echo $this->escape($row->title); ?></span>
                         </a>
                     <?php } else { ?>

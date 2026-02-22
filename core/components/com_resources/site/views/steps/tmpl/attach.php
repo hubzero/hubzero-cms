@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,8 @@ $this->css('create.css')
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
+            <?php $hrefUrl = Route::url('index.php?option=' . $this->option . '&task=draft'); ?>
+            <a class="icon-add add btn" href="<?php echo $hrefUrl; ?>">
                 <?php echo Lang::txt('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
             </a>
         </p>
@@ -45,14 +44,28 @@ $this->css('create.css')
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn . '&id=' . $this->id); ?>" method="post" id="hubForm">
+    <?php
+    $actionUrl = Route::url(
+        'index.php?option='
+        . $this->option
+        . '&task=draft&step='
+        . $this->next_step
+        . '&group='
+        . $this->group_cn
+        . '&id='
+        . $this->id
+    );
+    ?>
+    <form action="<?php echo $actionUrl; ?>" method="post" id="hubForm">
         <div class="explaination">
             <h4><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_WHAT_ARE_ATTACHMENTS'); ?></h4>
             <p><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_EXPLANATION'); ?></p>
             <h4><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS'); ?></h4>
             <p>
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION'); ?><br />
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION'); ?>
+                <?php $val = Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION'); ?>
+                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></strong> = <?php echo $val; ?><br />
+                <?php $val = Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION'); ?>
+                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></strong> = <?php echo $val; ?>
             </p>
         </div>
         <fieldset>
@@ -73,7 +86,17 @@ $this->css('create.css')
                             ?>
                         <?php endif; ?>
                     </div>
-                    <iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;controller=attachments&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
+                    <?php
+                    $attachSrc = 'index.php?option=' . $this->option
+                        . '&amp;controller=attachments&amp;id='
+                        . $this->id . '&amp;tmpl=component';
+                    ?>
+                    <iframe width="100%"
+                            height="500"
+                            frameborder="0"
+                            name="attaches"
+                            id="attaches"
+                            src="<?php echo $attachSrc; ?>"></iframe>
                 </div><!-- / .asset-uploader -->
             </div><!-- / .field-wrap -->
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,19 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 Toolbar::title(Lang::txt('COM_STOREFRONT') . ': SKU\'s whitelisted users', 'storefront');
 
-Toolbar::appendButton('Popup', 'new', 'Add Users', \Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&id=' . $this->sku->getId()), 570, 170);
+$popupUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&tmpl=component&task=new&id=' . $this->sku->getId()
+);
+Toolbar::appendButton(
+    'Popup',
+    'new',
+    'Add Users',
+    $popupUrl,
+    570,
+    170
+);
 if ($canDo->get('core.delete')) {
     Toolbar::deleteList();
 }
@@ -40,21 +50,45 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
     }
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th colspan="5">
-                    Whitelisted users for: <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=skus&task=edit&id=' . $this->sku->getId()); ?>" title="<?php echo Lang::txt('Edit SKU'); ?>"><?php echo $this->sku->getName(); ?></a>
+<?php
+$skuEditUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=skus&task=edit&id=' . $this->sku->getId()
+);
+$editSkuTitle = Lang::txt('Edit SKU');
+?>
+                    Whitelisted users for: <a
+                        href="<?php echo $skuEditUrl; ?>"
+                        title="<?php echo $editSkuTitle; ?>"
+                    ><?php echo $this->sku->getName(); ?></a>
                 </th>
             </tr>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    ><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'ID', 'uId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'Name', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+<?php
+$sortDir = @$this->filters['sort_Dir'];
+$sort = @$this->filters['sort'];
+?>
+                <th scope="col"><?php echo Html::grid('sort', 'ID', 'uId', $sortDir, $sort); ?></th>
+                <th scope="col"><?php echo Html::grid('sort', 'Name', 'name', $sortDir, $sort); ?></th>
                 <th scope="col">Email</th>
             </tr>
         </thead>
@@ -85,8 +119,17 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->id; ?>"
+                        class="checkbox-toggle"
+                    />
+                    <label
+                        for="cb<?php echo $i; ?>"
+                        class="sr-only visually-hidden"
+                    ><?php echo $row->id; ?></label>
                 </td>
                 <td>
                     <span>
@@ -95,7 +138,11 @@ Behavior::modal('a.specialPop', array('onHide' => '\\function() { refreshMe(); }
                 </td>
                 <td>
                     <span>
-                        <?php echo $this->escape(stripslashes($row->name)) . ' (' . $this->escape(stripslashes($row->username)) . ')'; ?>
+            <?php
+            $displayName = $this->escape(stripslashes($row->name))
+            . ' (' . $this->escape(stripslashes($row->username)) . ')';
+            ?>
+                        <?php echo $displayName; ?>
                     </span>
                 </td>
                 <td>

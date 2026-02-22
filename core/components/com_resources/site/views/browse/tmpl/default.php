@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,17 +32,29 @@ $this->css()
     </div><!-- / #content-header -->
 </header><!-- / #content-header -->
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+<form action="<?php echo $actionUrl; ?>" id="resourcesform" method="get">
     <section class="main section">
         <div class="section-inner hz-layout-with-aside">
             <div class="subject">
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_RESOURCES_SEARCH'); ?>" />
+                    <input class="entry-search-submit"
+                           type="submit"
+                           value="<?php echo Lang::txt('COM_RESOURCES_SEARCH'); ?>"
+                           />
                     <fieldset class="entry-search">
                         <legend><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE'); ?></legend>
                         <label for="entry-search-field"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?>" />
-                        <input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+                        <input type="text"
+                               name="search"
+                               id="entry-search-field"
+                               value="<?php echo $this->escape($this->filters['search']); ?>"
+                               placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?>"
+                               />
+                        <input type="hidden"
+                               name="sortby"
+                               value="<?php echo $this->escape($this->filters['sortby']); ?>"
+                               />
                         <input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
                     </fieldset>
                     <?php if ($this->filters['tag']) { ?>
@@ -52,18 +62,30 @@ $this->css()
                             <ol class="tags">
                             <?php
                             $url  = 'index.php?option=' . $this->option . '&task=browse';
-                            $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-                            $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-                            $url .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
+                            $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) :
+                            '');
+                            $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) :
+                            '');
+                            $url .= ($this->filters['type']
+                                ? '&type=' . $this->escape($this->filters['type'])
+                                : '');
 
                             $rt = new \Components\Resources\Helpers\Tags(0);
                             $tags = $rt->parseTopTags($this->filters['tag']);
                             foreach ($tags as $tag) {
+                                $remainingTags = $rt->parseTopTags(
+                                    $this->filters['tag'],
+                                    $tag
+                                );
+                                $tagUrl = Route::url(
+                                    $url . '&tag=' . implode(',', $remainingTags)
+                                );
                                 ?>
                                 <li>
-                                    <a class="tag" href="<?php echo Route::url($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
+                                    <a class="tag" href="<?php echo $tagUrl; ?>">
                                         <?php echo $this->escape(stripslashes($tag)); ?>
-                                        <span class="remove" title="<?php echo Lang::txt('COM_RESOURCES_REMOVE_TAG'); ?>">x</a>
+                                        <span class="remove"
+                                              title="<?php echo Lang::txt('COM_RESOURCES_REMOVE_TAG'); ?>">x</a>
                                     </a>
                                 </li>
                                 <?php
@@ -99,22 +121,44 @@ $this->css()
                 <?php } ?>
 
                 <div class="container">
-                    <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
+                    <nav class="entries-filters"
+                         aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
                         <?php
                         $qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
                         $qs .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
                         $qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
                         ?>
+                        <?php
+                        $browseBase = 'index.php?option=' . $this->option . '&task=browse';
+                        $titleUrl = Route::url($browseBase . '&sortby=title' . $qs);
+                        $dateUrl = Route::url($browseBase . '&sortby=date' . $qs);
+                        $rankUrl = Route::url($browseBase . '&sortby=ranking' . $qs);
+                        $titleCls = ($this->filters['sortby'] == 'title') ? ' class="active"' : '';
+                        $dateCls = ($this->filters['sortby'] == 'date') ? ' class="active"' : '';
+                        $rankCls = ($this->filters['sortby'] == 'ranking') ? ' class="active"' : '';
+                        ?>
                         <ul class="entries-menu order-options">
                             <li>
-                                <a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_TITLE'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_TITLE'); ?></a>
+                                <a<?php echo $titleCls; ?>
+                                   href="<?php echo $titleUrl; ?>"
+                                   title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_TITLE'); ?>"><?php
+                                       echo Lang::txt('COM_RESOURCES_SORT_TITLE');
+                                    ?></a>
                             </li>
                             <li>
-                                <a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_PUBLISHED'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
+                                <a<?php echo $dateCls; ?>
+                                   href="<?php echo $dateUrl; ?>"
+                                   title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_PUBLISHED'); ?>"><?php
+                                       echo Lang::txt('COM_RESOURCES_SORT_PUBLISHED');
+                                    ?></a>
                             </li>
                             <?php if ($this->config->get('show_ranking')) { ?>
                                 <li>
-                                    <a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_RANKING'); ?>"><?php echo Lang::txt('COM_RESOURCES_SORT_RANKING'); ?></a>
+                                    <a<?php echo $rankCls; ?>
+                                       href="<?php echo $rankUrl; ?>"
+                                       title="<?php echo Lang::txt('COM_RESOURCES_SORT_BY_RANKING'); ?>"><?php
+                                           echo Lang::txt('COM_RESOURCES_SORT_RANKING');
+                                        ?></a>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -122,9 +166,24 @@ $this->css()
                         <?php if (count($this->types) > 0) { ?>
                             <ul class="entries-menu filter-options">
                                 <li>
-                                    <label for="filter-type" class="sr-only visibliy-hidden"><?php echo Lang::txt('COM_RESOURCES_TYPE'); ?></label>
+                                    <label for="filter-type"
+                                           class="sr-only visibliy-hidden"><?php
+                                            echo
+                                            Lang::txt('COM_RESOURCES_TYPE');
+                                            ?></label>
                                     <select name="type" id="filter-type">
-                                        <option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_ALL_TYPES'); ?></option>
+                                        <option value=""
+                                                <?php
+                                                echo
+                                                (!$this->filters['type'])
+                                                ?
+                                                ' selected="selected"'
+                                                :
+                                                '';
+                                                ?>><?php
+                                                echo
+                                                Lang::txt('COM_RESOURCES_ALL_TYPES');
+?></option>
                                         <?php foreach ($this->types as $item) { ?>
                                             <?php
                                             if (!$item->state) {
@@ -134,7 +193,19 @@ $this->css()
                                                 continue;
                                             }
                                             ?>
-                                            <option value="<?php echo $item->id; ?>"<?php echo ($this->filters['type'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->type)); ?></option>
+                                            <option value="<?php echo $item->id; ?>"<?php
+                                                    echo
+                                                    ($this->filters['type']
+                                                    ==
+                                                    $item->id)
+                                                           ?
+                                                           ' selected="selected"'
+                                                           :
+                                                           '';
+                                                            ?>><?php
+                                                    echo
+                                                    $this->escape(stripslashes($item->type));
+?></option>
                                         <?php } ?>
                                     </select>
                                 </li>

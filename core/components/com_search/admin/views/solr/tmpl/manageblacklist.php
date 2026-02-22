@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -38,8 +36,17 @@ $this->view('_submenu', 'shared')
                     <?php foreach (array_keys($header[0]) as $key) : ?>
                         <?php if ($key == 'created_by') : ?>
                             <td>
-                                <a href="<?php echo Route::url('index.php?option=com_members&controller=members&search_field=uidNumber&search=' . $entry->$key);?>">
-                                    <?php echo User::getInstance($entry->$key)->name; ?>
+                                <?php
+                                    $memberUrl = Route::url(
+                                        'index.php?option=com_members'
+                                        . '&controller=members'
+                                        . '&search_field=uidNumber'
+                                        . '&search=' . $entry->$key
+                                    );
+                                    $memberName = User::getInstance($entry->$key)->name;
+                                ?>
+                                <a href="<?php echo $memberUrl;?>">
+                                    <?php echo $memberName; ?>
                                 </a>
                             </td>
                         <?php else : ?>
@@ -47,7 +54,17 @@ $this->view('_submenu', 'shared')
                         <?php endif; ?>
                     <?php endforeach; ?>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=removeBlacklistEntry&entryID=' . $entry->get('id')); ?>" class="button">Remove entry</a>
+                        <?php
+                            $removeUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=removeBlacklistEntry'
+                                . '&entryID=' . $entry->get('id')
+                            );
+                        ?>
+                        <a href="<?php echo $removeUrl; ?>" class="button">
+                            Remove entry
+                        </a>
                     </td>
                 </tr>
             <?php endforeach; ?>

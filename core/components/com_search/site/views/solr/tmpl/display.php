@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -32,16 +30,30 @@ endif;
     <h2><?php echo Lang::txt('COM_SEARCH_SEARCH'); ?></h2>
 </header><!-- / #content-header -->
 
-<form action="<?php echo Route::url('index.php?option=com_search'); ?>" method="get" class="container" id="solr">
+<?php $formUrl = Route::url('index.php?option=com_search'); ?>
+<form action="<?php echo $formUrl; ?>" method="get" class="container" id="solr">
     <section class="options section">
         <div class="section-inner data-entry">
         <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('Search'); ?>" />
         <fieldset class="entry-search">
             <legend><?php echo Lang::txt('COM_SEARCH_SITE'); ?></legend>
             <label for="terms"><?php echo Lang::txt('COM_SEARCH_TERMS'); ?></label>
-            <input type="text" name="terms" id="terms" value="<?php echo htmlspecialchars($terms); ?>" placeholder="<?php echo Lang::txt('COM_SEARCH_ENTER_PROMPT'); ?>" />
-            <input type="hidden" name="section" value="<?php echo $this->escape($this->section); ?>" />
-            <input type="hidden" name="type" value="<?php echo !empty($this->type) ? $this->type : ''; ?>" />
+            <?php $searchPrompt = Lang::txt('COM_SEARCH_ENTER_PROMPT'); ?>
+            <input type="text"
+                name="terms"
+                id="terms"
+                value="<?php echo htmlspecialchars($terms); ?>"
+                placeholder="<?php echo $searchPrompt; ?>"
+            />
+            <input type="hidden"
+                name="section"
+                value="<?php echo $this->escape($this->section); ?>"
+            />
+            <?php $typeVal = !empty($this->type) ? $this->type : ''; ?>
+            <input type="hidden"
+                name="type"
+                value="<?php echo $typeVal; ?>"
+            />
         </fieldset>
         <?php
         if ($tagSearchEnabled) {
@@ -86,7 +98,15 @@ endif;
                         <h3><?php echo Lang::txt('COM_SEARCH_DIDYOUMEAN'); ?></h3>
                         <?php foreach ($this->spellSuggestions as $suggestion) { ?>
                             <?php foreach ($suggestion->getWords() as $word) { ?>
-                                <a href="<?php echo Route::url('search?terms=' . $word['word'] . '&section=content'); ?>"><?php echo $word['word']; ?></a>
+                                <?php
+                                    $wordUrl = Route::url(
+                                        'search?terms=' . $word['word']
+                                        . '&section=content'
+                                    );
+                                ?>
+                                <a href="<?php echo $wordUrl; ?>">
+                                    <?php echo $word['word']; ?>
+                                </a>
                             <?php } ?>
                         <?php } ?>
                     <?php } else { ?>
@@ -99,23 +119,51 @@ endif;
                 <nav class="aside">
                     <div class="container facet">
                         <h3>Category</h3>
+                        <?php
+                            $allUrl = Route::url(
+                                'index.php?option=com_search&terms='
+                                . $this->terms
+                            );
+                            $activeClass = ($this->type == '')
+                                ? 'class="active"' : '';
+                        ?>
                         <?php if ($this->type == '') : ?>
                             <ul>
                                 <li>
-                                    <a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>"><?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?> <span class="item-count">
-                                        <?php echo $this->total; ?></span>
+                                    <a <?php echo $activeClass; ?>
+                                        href="<?php echo $allUrl; ?>"
+                                    >
+                                        <?php echo Lang::txt('COM_SEARCH_FILTER_ALL'); ?>
+                                        <span class="item-count">
+                                            <?php echo $this->total; ?>
+                                        </span>
                                     </a>
                                 </li>
                                 <?php foreach ($this->facets as $facet) : ?>
-                                    <?php echo $facet->formatWithCounts($this->facetCounts, $this->type, $this->terms, $this->childTermsString); ?>
+                                    <?php echo $facet->formatWithCounts(
+                                        $this->facetCounts,
+                                        $this->type,
+                                        $this->terms,
+                                        $this->childTermsString
+                                    ); ?>
                                 <?php endforeach; ?>
                             </ul>
                         <?php else : ?>
                             <ul>
                                 <li>
-                                    <a <?php echo ($this->type == '') ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms); ?>"><?php echo Lang::txt('COM_SEARCH_ALL_COMPONENTS'); ?></a>
+                                    <a <?php echo $activeClass; ?>
+                                        href="<?php echo $allUrl; ?>"
+                                    >
+                                        <?php echo Lang::txt('COM_SEARCH_ALL_COMPONENTS'); ?>
+                                    </a>
                                 </li>
-                                <?php echo $this->searchComponent->formatWithCounts($this->facetCounts, $this->type, $this->terms, $this->childTermsString, $this->filters);?>
+                                <?php echo $this->searchComponent->formatWithCounts(
+                                    $this->facetCounts,
+                                    $this->type,
+                                    $this->terms,
+                                    $this->childTermsString,
+                                    $this->filters
+                                );?>
                             </ul>
                         <?php endif; ?>
                     </div><!-- / .container -->
@@ -126,22 +174,31 @@ endif;
                             <?php foreach ($this->results as $result) : ?>
                                 <?php
                                 if (is_array($result)) {
-                                    $hubType = isset($result['hubtype']) ? strtolower($result['hubtype']) : '';
+                                    $hubType = isset($result['hubtype'])
+                                        ? strtolower($result['hubtype'])
+                                        : '';
                                 } else {
-                                    $hubType = isset($result->result['hubtype']) ? strtolower($result->result['hubtype']) : '';
+                                    $hubType = isset($result->result['hubtype'])
+                                        ? strtolower($result->result['hubtype'])
+                                        : '';
                                 }
 
-                                    $templateOverride = '';
+                                $templateOverride = '';
                                 if (!empty($this->viewOverrides[$hubType])) {
-                                    $overrideView = new \Hubzero\View\View($this->viewOverrides[$hubType]);
+                                    $overrideView = new \Hubzero\View\View(
+                                        $this->viewOverrides[$hubType]
+                                    );
                                     $overrideView->set('result', $result)
                                         ->set('terms', $this->terms)
                                         ->set('tagSearch', $tagSearchEnabled)
                                         ->display();
                                 } else {
+                                    $resultData = is_array($result)
+                                        ? $result
+                                        : $result->result;
                                     $this->setLayout('_result')
                                         ->setName('solr')
-                                        ->set('result', is_array($result) ? $result : $result->result)
+                                        ->set('result', $resultData)
                                         ->set('terms', $terms)
                                         ->set('tagSearch', $tagSearchEnabled)
                                         ->display();

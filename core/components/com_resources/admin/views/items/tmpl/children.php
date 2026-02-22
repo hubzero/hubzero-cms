@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,20 +47,42 @@ if ($this->filters['parent_id'] > 0) {
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <?php if ($this->filters['parent_id'] > 0) { ?>
                 <tr>
                     <th colspan="9">
-                        <?php echo '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->filters['parent_id']) . '">' . $this->escape(stripslashes($this->parent->title)) . '</a>'; ?>
+                        <?php
+                        $parentUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id='
+                            . $this->filters['parent_id']
+                        );
+                        $parentTitle = $this->escape(
+                            stripslashes($this->parent->title)
+                        );
+                        echo '<a href="' . $parentUrl . '">'
+                            . $parentTitle . '</a>';
+                        ?>
                     </th>
                 </tr>
             <?php } ?>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                           name="checkall-toggle"
+                           id="checkall-toggle"
+                           value=""
+                           class="checkbox-toggle toggle-all"
+                           />
+                    <label for="checkall-toggle"
+                           class="sr-only visually-hidden"><?php
+                            echo
+                            Lang::txt('JGLOBAL_CHECK_ALL');
+                            ?></label>
                 </th>
                 <th><?php echo Lang::txt('COM_RESOURCES_COL_ID'); ?></th>
                 <th><?php echo Lang::txt('COM_RESOURCES_COL_TITLE'); ?></th>
@@ -105,7 +125,11 @@ if ($this->filters['parent_id'] > 0) {
                         $alt   = Lang::txt('COM_RESOURCES_PENDING');
                         $class = 'pending';
                         $task  = 'unpublish';
-                    } elseif ($now <= $row->publish_down || !$row->publish_down || $row->publish_down == '0000-00-00 00:00:00') {
+                    } elseif (
+                        $now <= $row->publish_down
+                        || !$row->publish_down
+                        || $row->publish_down == '0000-00-00 00:00:00'
+                    ) {
                         $alt   = Lang::txt('JPUBLISHED');
                         $class = 'published';
                         $task  = 'unpublish';
@@ -115,7 +139,10 @@ if ($this->filters['parent_id'] > 0) {
                         $task  = 'unpublish';
                     }
 
-                    $info .= Lang::txt('JPUBLISHED') . ': ' . Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
+                    $dateFmt = Lang::txt('DATE_FORMAT_HZ1');
+                    $info .= Lang::txt('JPUBLISHED') . ': '
+                        . Date::of($row->publish_up)->toLocal($dateFmt)
+                        . '<br />';
                     break;
                 case 2:
                     $alt   = Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
@@ -180,16 +207,28 @@ if ($this->filters['parent_id'] > 0) {
             }
 
             // See if it's checked out or not
-            if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) { // && $row->checked_out != User::get('id'))
-                $date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
-                $time = Date::of($row->checked_out_time)->toLocal('H:i');
+            $isCheckedOut = $row->checked_out
+                || ($row->checked_out_time
+                    && $row->checked_out_time != '0000-00-00 00:00:00');
+            if ($isCheckedOut) {
+                $coTime = Date::of($row->checked_out_time);
+                $date = $coTime->toLocal(Lang::txt('DATE_FORMAT_LC1'));
+                $time = $coTime->toLocal('H:i');
 
-                $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->editor) . '<br />' . $date . '<br />' . $time . '">';
-                $checked .= '<span class="checkedout"></span>' . '</span>';
+                $checked = '<span class="editlinktip hasTip"'
+                    . ' title="'
+                    . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::'
+                    . $this->escape($row->editor)
+                    . '<br />' . $date . '<br />' . $time
+                    . '">';
+                $checked .= '<span class="checkedout"></span>'
+                    . '</span>';
 
-                $info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
-                         ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
-                         : '';
+                $info .= ($row->checked_out_time
+                    && $row->checked_out_time != '0000-00-00 00:00:00')
+                    ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': '
+                        . $coTime->toLocal($dateFmt) . '<br />'
+                    : '';
                 if ($row->editor) {
                     $info .= Lang::txt('COM_RESOURCES_CHECKED_OUT_BY') . ': ' . $this->escape($row->editor);
                 }
@@ -205,36 +244,91 @@ if ($this->filters['parent_id'] > 0) {
                     <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <?php if ((($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) { ?>
-                        <span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
-                            <?php echo $this->escape(stripslashes($row->title)); ?>
+                    <?php
+                    $notEditable = ($isCheckedOut
+                        && $row->checked_out != User::get('id'))
+                        || !$canDo->get('core.edit');
+                    $pubInfo = Lang::txt('COM_RESOURCES_PUBLISH_INFO');
+                    $rowTitle = $this->escape(
+                        stripslashes($row->title)
+                    );
+                    $pathInfo = ($row->standalone != 1
+                        && $row->path != '')
+                        ? '<br /><small>' . $row->path . '</small>'
+                        : '';
+                    ?>
+                    <?php if ($notEditable) { ?>
+                        <span class="editlinktip hasTip"
+                              title="<?php echo $pubInfo; ?>::<?php echo $info; ?>">
+                            <?php echo $rowTitle; ?>
                         </span>
-                        <?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>' : ''; ?>
+                        <?php echo $pathInfo; ?>
                     <?php } else { ?>
-                        <a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&pid=' . $this->filters['parent_id']); ?>" title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
-                            <?php echo $this->escape(stripslashes($row->title)); ?>
+                        <?php
+                        $hrefUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id=' . $row->id
+                            . '&pid=' . $this->filters['parent_id']
+                        );
+                        ?>
+                        <a class="editlinktip hasTip"
+                           href="<?php echo $hrefUrl; ?>"
+                           title="<?php echo $pubInfo; ?>::<?php echo $info; ?>">
+                            <?php echo $rowTitle; ?>
                         </a>
-                        <?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>' : ''; ?>
+                        <?php echo $pathInfo; ?>
                     <?php } ?>
                 </td>
                 <td>
-                    <?php if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00') || !$canDo->get('core.edit.state')) { ?>
+                    <?php if ($isCheckedOut || !$canDo->get('core.edit.state')) { ?>
                         <span class="state <?php echo $class;?>">
                             <span><?php echo $alt; ?></span>
                         </span>
                     <?php } else { ?>
-                        <a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+                        <?php
+                        $stateUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=' . $task
+                            . '&id=' . $row->id
+                            . '&pid=' . $this->filters['parent_id']
+                            . '&' . Session::getFormToken() . '=1'
+                        );
+                        $stateTitle = Lang::txt(
+                            'COM_RESOURCES_SET_TASK_TO',
+                            $task
+                        );
+                        ?>
+                        <a class="state <?php echo $class; ?>"
+                           href="<?php echo $stateUrl; ?>"
+                           title="<?php echo $stateTitle; ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } ?>
                 </td>
                 <td>
-                    <?php if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00') || !$canDo->get('core.edit.state')) { ?>
+                    <?php if ($isCheckedOut || !$canDo->get('core.edit.state')) { ?>
                         <span class="access <?php echo $color_access; ?>">
                             <span><?php echo Lang::txt($row->groupname); ?></span>
                         </span>
                     <?php } else { ?>
-                        <a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_CHANGE_ACCESS'); ?>">
+                        <?php
+                        $accessUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=' . $task_access
+                            . '&id=' . $row->id
+                            . '&pid=' . $this->filters['parent_id']
+                            . '&' . Session::getFormToken() . '=1'
+                        );
+                        $changeAccess = Lang::txt(
+                            'COM_RESOURCES_CHANGE_ACCESS'
+                        );
+                        ?>
+                        <a class="access <?php echo $color_access; ?>"
+                           href="<?php echo $accessUrl; ?>"
+                           title="<?php echo $changeAccess; ?>">
                             <span><?php echo Lang::txt($row->groupname); ?></span>
                         </a>
                     <?php } ?>
@@ -244,10 +338,26 @@ if ($this->filters['parent_id'] > 0) {
                 </td>
                 <?php if ($this->filters['parent_id'] > 0) { ?>
                     <td>
-                        <?php echo $pageNav->orderUpIcon($i, isset($orderings[$i - 1]) ? ($row->associative_ordering != $orderings[$i - 1]) : true); ?>
+                        <?php
+                        $canOrderUp = isset($orderings[$i - 1])
+                            ? ($row->associative_ordering
+                                != $orderings[$i - 1])
+                            : true;
+                        echo $pageNav->orderUpIcon($i, $canOrderUp);
+                        ?>
                     </td>
                     <td>
-                        <?php echo $pageNav->orderDownIcon($i, $pageNav->total, isset($ordering[$i + 1]) ? ($row->associative_ordering != $orderings[$i + 1]) : true); ?>
+                        <?php
+                        $canOrderDown = isset($ordering[$i + 1])
+                            ? ($row->associative_ordering
+                                != $orderings[$i + 1])
+                            : true;
+                        echo $pageNav->orderDownIcon(
+                            $i,
+                            $pageNav->total,
+                            $canOrderDown
+                        );
+                        ?>
                     </td>
                     <td>
                         <?php echo $row->associative_ordering; ?>

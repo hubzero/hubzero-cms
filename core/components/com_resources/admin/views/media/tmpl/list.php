@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,8 @@ defined('_HZEXEC_') or die();
 $this->js('media.js');
 ?>
 <div id="attachments">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="filelist" name="filelist">
+    <?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+    <form action="<?php echo $actionUrl; ?>" method="post" id="filelist" name="filelist">
         <?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
             <p><?php echo Lang::txt('COM_RESOURCES_NO_FILES_FOUND'); ?></p>
         <?php } else { ?>
@@ -60,7 +59,29 @@ $this->js('media.js');
                             <?php //echo $folderName; ?>
                         </td>
                         <td>
-                            <a class="delete-folder state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&delFolder=' . DS . $folders[$folderName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $subdir . '&' . Session::getFormToken() . '=1'); ?>" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the folder "%s"?', $folderName); ?>" data-files="<?php echo $numFiles; ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                            <?php
+                            $data_confirmTxt = Lang::txt(
+                                'Are you sure you want to delete the folder "%s"?',
+                                $folderName
+                            );
+                            ?>
+                            <a class="delete-folder state trash"
+                               <?php
+                                $delFolderUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&task=deletefolder&delFolder='
+                                    . DS . $folders[$folderName]
+                                    . '&listdir=' . $this->listdir
+                                    . '&tmpl=component&subdir=' . $subdir
+                                    . '&' . Session::getFormToken() . '=1'
+                                );
+                                ?>
+                               href="<?php echo $delFolderUrl; ?>"
+                               target="filer"
+                               data-confirm="<?php echo $data_confirmTxt; ?>"
+                               data-files="<?php echo $numFiles; ?>"
+                               title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
                                 <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                             </a>
                         </td>
@@ -76,13 +97,38 @@ $this->js('media.js');
                     ?>
                     <tr>
                         <td>
-                            <input type="radio" name="slctdfile" value="<?php echo $this->escape($this->listdir . $subdird . $docs[$docName]); ?>" />
+                            <input type="radio"
+                                   name="slctdfile"
+                                   value="<?php echo $this->escape($this->listdir . $subdird . $docs[$docName]); ?>"
+                                   />
                         </td>
                         <td width="100%">
                             <?php echo $docs[$docName]; ?>
                         </td>
                         <td>
-                            <a class="delete-file state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir=' . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&' . Session::getFormToken() . '=1'); ?>" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName]); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                            <?php
+                            $data_confirmTxt = Lang::txt(
+                                'Are you sure you want to delete the file "%s"?',
+                                $docs[$docName]
+                            );
+                            ?>
+                            <a class="delete-file state trash"
+                               <?php
+                                $delFileUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&task=deletefile&delFile='
+                                    . $docs[$docName]
+                                    . '&listdir=' . $this->listdir
+                                    . '&tmpl=component&subdir='
+                                    . $this->subdir
+                                    . '&' . Session::getFormToken() . '=1'
+                                );
+                                ?>
+                               href="<?php echo $delFileUrl; ?>"
+                               target="filer"
+                               data-confirm="<?php echo $data_confirmTxt; ?>"
+                               title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
                                 <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                             </a>
                         </td>

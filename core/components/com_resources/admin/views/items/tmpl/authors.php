@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,7 +31,12 @@ $authIDs = array();
 </select>
     </div>
     <div class="col span3">
-<input type="button" name="addel" id="addel" onclick="HUB.Resources.addAuthor();" value="<?php echo Lang::txt('Add'); ?>" />
+<input type="button"
+       name="addel"
+       id="addel"
+       onclick="HUB.Resources.addAuthor();"
+       value="<?php echo Lang::txt('Add'); ?>"
+       />
     </div>
 </div>
 
@@ -53,13 +56,28 @@ $authIDs = array();
 
             $authIDs[] = $authname->authorid;
 
-            $org = ($authname->organization) ? $this->escape($authname->organization) : $this->attribs->get($authname->authorid, '');
+            $org = ($authname->organization) ? $this->escape($authname->organization) :
+            $this->attribs->get($authname->authorid, '');
             ?>
         <li id="author_<?php echo $authname->authorid; ?>">
             <span class="handle"><?php echo Lang::txt('COM_RESOURCES_AUTHOR_DRAG'); ?></span>
-            <a class="state trash" data-parent="author_<?php echo $authname->authorid; ?>" href="#" onclick="HUB.Resources.removeAuthor('author_<?php echo $authname->authorid; ?>');return false;"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></a>
+            <?php $aid = $authname->authorid; ?>
+            <a class="state trash"
+               data-parent="author_<?php echo $aid; ?>"
+               href="#"
+               onclick="HUB.Resources.removeAuthor('author_<?php echo $aid; ?>');return false;">
+                <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
+            </a>
             <?php echo $this->escape(stripslashes($name)); ?> (<?php echo $authname->authorid; ?>)
-            <br /><?php echo Lang::txt('COM_RESOURCES_AUTHOR_AFFILIATION'); ?>: <input type="text" name="<?php echo $authname->authorid; ?>_organization" value="<?php echo $org; ?>" />
+            <br /><?php
+                echo
+                Lang::txt('COM_RESOURCES_AUTHOR_AFFILIATION');
+            ?>:
+                <input
+                type="text"
+                name="<?php echo $authname->authorid; ?>_organization"
+                value="<?php echo $org; ?>"
+                />
 
             <select name="<?php echo $authname->authorid; ?>_role">
                 <option value=""<?php if ($authname->role == '') {
@@ -69,15 +87,23 @@ $authIDs = array();
                 if ($this->roles) {
                     foreach ($this->roles as $role) {
                         ?>
-                            <option value="<?php echo $this->escape($role->alias); ?>"<?php if ($authname->role == $role->alias) {
+                            <option value="<?php echo $this->escape($role->alias); ?>"<?php
+                            if (
+                                $authname->role
+                                        ==
+                                        $role->alias
+                            ) {
                                 echo ' selected="selected"';
-                                           }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                            }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
                         <?php
                     }
                 }
                 ?>
             </select>
-            <input type="hidden" name="<?php echo $authname->authorid; ?>_name" value="<?php echo $this->escape($name); ?>" />
+            <input type="hidden"
+                   name="<?php echo $authname->authorid; ?>_name"
+                   value="<?php echo $this->escape($name); ?>"
+                   />
         </li>
             <?php
         }

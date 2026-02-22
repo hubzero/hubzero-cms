@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,8 @@ Html::behavior('framework');
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="component-form">
     <fieldset>
         <div class="configuration" >
             <?php echo Lang::txt('Add new users') ?>
@@ -31,7 +30,10 @@ Html::behavior('framework');
 
             echo '<p><strong>' . $this->matched . '</strong> user(s) added.</p>';
             if (count($this->noUserMatch) > 0) {
-                echo '<p><strong>' . count($this->noUserMatch) . '</strong> user(s) could not be added (no matching users):<br>';
+                $noMatchCount = count($this->noUserMatch);
+                echo '<p><strong>' . $noMatchCount
+                    . '</strong> user(s) could not be added'
+                    . ' (no matching users):<br>';
             }
 
             $i = 0;

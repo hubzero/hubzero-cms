@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +23,9 @@ Html::behavior('framework');
 <script type="text/javascript">
     function closeAndRefresh(pressbutton)
     {
-        window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&sId=<?php echo $this->sId; ?>';
+        window.parent.location='index.php?option=<?php echo $this->option; ?>' +
+            '&controller=<?php echo $this->controller; ?>' +
+            '&sId=<?php echo $this->sId; ?>';
     }
 
     jQuery(document).ready(function($){
@@ -37,7 +37,8 @@ Html::behavior('framework');
     });
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="component-form">
     <?php if ($tmpl == 'component') { ?>
         <fieldset>
             <div class="configuration" >
@@ -53,14 +54,23 @@ Html::behavior('framework');
     <?php } else { ?>
         <div class="col span12">
             <div class="current">
-                <p><?php echo $this->inserted; ?> serial number<?php echo $this->inserted == 1 ? '' : 's'; ?> inserted.</p>
+        <?php $insertedPlural = $this->inserted == 1 ? '' : 's'; ?>
+                <p><?php echo $this->inserted; ?> serial number<?php echo $insertedPlural; ?> inserted.</p>
 
                 <?php if (!empty($this->skipped)) { ?>
-                    <p><?php echo count($this->skipped); ?> duplicate serial number<?php echo count($this->skipped) == 1 ? '' : 's'; ?> skipped.</p>
+                    <?php $skippedCount = count($this->skipped); ?>
+                    <?php $skippedPlural = $skippedCount == 1 ? '' : 's'; ?>
+                    <p><?php echo $skippedCount; ?> duplicate serial number<?php echo $skippedPlural; ?> skipped.</p>
                 <?php } ?>
 
                 <?php if (!empty($this->ignored)) { ?>
-                    <p><?php echo count($this->ignored); ?> serial number<?php echo count($this->ignored) == 1 ? '' : 's'; ?> <?php echo count($this->ignored) > 1 ? 'were' : 'was'; ?> ignored:</p>
+                    <?php
+                    $ignoredCount = count($this->ignored);
+                    $ignoredPlural = $ignoredCount == 1 ? '' : 's';
+                    $ignoredVerb = $ignoredCount > 1 ? 'were' : 'was';
+                    ?>
+                    <p><?php echo $ignoredCount; ?> serial number<?php echo $ignoredPlural; ?>
+                        <?php echo $ignoredVerb; ?> ignored:</p>
                     <ul>
                         <?php
                         foreach ($this->ignored as $ignore) {

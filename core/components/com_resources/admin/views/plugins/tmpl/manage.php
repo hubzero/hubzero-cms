@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,8 @@ if ($this->html) {
 } else {
     Toolbar::cancel();
     ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+    <?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+    <form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="item-form">
         <p class="warning"><?php echo Lang::txt('COM_RESOURCES_ERROR_PLUGIN_NO_INTERFACE'); ?></p>
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

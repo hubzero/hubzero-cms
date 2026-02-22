@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -40,7 +38,12 @@ $active_key = Request::get('tab_active_key', null) ? Request::get('tab_active_ke
         }
         ?>
         <li id="sm-<?php echo $name; ?>"<?php echo $active ? ' class="active"' : ''; ?>>
-            <a class="tab" data-rel="<?php echo $name; ?>" href="<?php echo Route::url($url); ?>"><span><?php echo $cat[$name]; ?></span></a>
+            <a class="tab"
+               data-rel="<?php echo $name; ?>"
+               href="<?php echo Route::url($url); ?>"><span><?php
+                echo
+                $cat[$name];
+                ?></span></a>
         </li>
         <?php
     }

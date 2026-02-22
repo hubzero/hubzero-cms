@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,8 @@ $this->css('create.css');
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
+            <?php $hrefUrl = Route::url('index.php?option=' . $this->option . '&task=draft'); ?>
+            <a class="icon-add btn" href="<?php echo $hrefUrl; ?>">
                 <?php echo Lang::txt('New submission'); ?>
             </a>
         </p>
@@ -41,7 +40,8 @@ $this->css('create.css');
         <p class="warning"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php } ?>
 
-    <form name="hubForm" id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=discard&step=2&id=' . $this->row->id); ?>" class="contrib">
+    <?php $actionUrl = Route::url('index.php?option=' . $this->option . '&task=discard&step=2&id=' . $this->row->id); ?>
+    <form name="hubForm" id="hubForm" method="post" action="<?php echo $actionUrl; ?>" class="contrib">
         <div class="explaination">
             <p class="warning"><?php echo Lang::txt('COM_CONTRIBUTE_DELETE_WARNING'); ?><p>
         </div>
@@ -56,7 +56,12 @@ $this->css('create.css');
             <p><strong><?php echo $this->escape(stripslashes($this->row->title)); ?></strong><br />
             <?php echo $this->escape(stripslashes($this->row->typetitle)); ?></p>
 
-            <label><input type="checkbox" name="confirm" value="confirmed" class="option" /> <?php echo Lang::txt('COM_CONTRIBUTE_DELETE_CONFIRM'); ?></label>
+            <label><input type="checkbox"
+                          name="confirm"
+                          value="confirmed"
+                          class="option" /> <?php
+                            echo Lang::txt('COM_CONTRIBUTE_DELETE_CONFIRM');
+                            ?></label>
         </fieldset><div class="clear"></div>
 
         <div class="submit">

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -40,7 +38,12 @@ function submitbutton(pressbutton)
         alert('<?php echo Lang::txt('COM_STOREFRONT_ERROR_MISSING_INFORMATION'); ?>');
     } else {
         submitform(pressbutton);
-        window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&sId=<?php echo $this->sId; ?>'", 700);
+        var loc = 'index.php?option=<?php echo $this->option; ?>'
+            + '&controller=<?php echo $this->controller; ?>'
+            + '&sId=<?php echo $this->sId; ?>';
+        window.top.setTimeout(
+            "window.parent.location='" + loc + "'", 700
+        );
     }
 }
 
@@ -55,13 +58,18 @@ jQuery(document).ready(function($){
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="component-form">
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration" >
             <div class="fltrt configuration-options">
-                <button type="button" onclick="submitbutton('addserials');"><?php echo Lang::txt('Save');?></button>
-                <button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('Cancel');?></button>
+                <button type="button" onclick="submitbutton('addserials');">
+                    <?php echo Lang::txt('Save');?>
+                </button>
+                <button type="button" onclick="window.parent.$.fancybox.close();">
+                    <?php echo Lang::txt('Cancel');?>
+                </button>
             </div>
             <?php echo Lang::txt('Add new serial numbers') ?>
         </div>
@@ -78,8 +86,20 @@ jQuery(document).ready(function($){
             <table class="admintable">
                 <tbody>
                     <tr>
-                        <td class="key"><label for="field-serials"><?php echo Lang::txt('Serial numbers (comma-separated)'); ?>:</label></td>
-                        <td><input type="text" name="serials" class="input-users" id="field-serials" value="" size="50" /></td>
+<?php $serialsLabel = Lang::txt('Serial numbers (comma-separated)'); ?>
+                        <td class="key">
+                            <label for="field-serials"><?php echo $serialsLabel; ?>:</label>
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                name="serials"
+                                class="input-users"
+                                id="field-serials"
+                                value=""
+                                size="50"
+                            />
+                        </td>
                     </tr>
                 </tbody>
             </table>

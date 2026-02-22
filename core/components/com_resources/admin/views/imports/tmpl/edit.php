@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,8 @@ $this->css('import');
 $this->js('import');
 
 // set title
-$title  = ($this->import->get('id')) ? Lang::txt('COM_RESOURCES_IMPORT_TITLE_EDIT') : Lang::txt('COM_RESOURCES_IMPORT_TITLE_ADD');
+$title = ($this->import->get('id')) ? Lang::txt('COM_RESOURCES_IMPORT_TITLE_EDIT') :
+Lang::txt('COM_RESOURCES_IMPORT_TITLE_ADD');
 
 Toolbar::title(Lang::txt($title), 'import');
 Toolbar::save();
@@ -26,7 +25,8 @@ Toolbar::cancel();
     <p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
     <div class="grid">
         <div class="col span8">
             <fieldset class="adminform">
@@ -34,24 +34,47 @@ Toolbar::cancel();
 
                 <div class="input-wrap">
                     <label for="field-name"><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_NAME'); ?></label>
-                    <input type="text" name="import[name]" id="field-name" value="<?php echo $this->escape($this->import->get('name')); ?>" />
+                    <input type="text"
+                           name="import[name]"
+                           id="field-name"
+                           value="<?php echo $this->escape($this->import->get('name')); ?>"
+                           />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-notes"><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_NOTES'); ?></label><br />
-                    <textarea name="import[notes]" id="field-notes" rows="5"><?php echo $this->escape($this->import->get('notes')); ?></textarea>
+                    <label for="field-notes"><?php
+                           echo
+                           Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_NOTES');
+                    ?></label><br
+                           />
+                    <textarea name="import[notes]"
+                              id="field-notes"
+                              rows="5"><?php
+                                echo
+                                $this->escape($this->import->get('notes'));
+                                ?></textarea>
                 </div>
             </fieldset>
 
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELDSET_DATA'); ?></span></legend>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_HINT', $this->import->fileSpacePath()); ?>">
+                <?php
+                $data_hintTxt = Lang::txt(
+                    'COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_HINT',
+                    $this->import->fileSpacePath()
+                );
+                ?>
+                <div class="input-wrap"
+                     data-hint="<?php echo $data_hintTxt; ?>">
                     <label for="field-importfile">
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE'); ?>
                     </label><br />
                     <select name="import[file]" id="field-importfile">
-                        <option value=""><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_OPTION_NULL'); ?></option>
+                        <option value=""><?php
+                                echo
+                                Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_OPTION_NULL');
+                        ?></option>
                         <?php if (isset($this->files)) : ?>
                             <?php foreach ($this->files as $file) : ?>
                                 <?php
@@ -63,11 +86,17 @@ Toolbar::cancel();
                         <?php endif; ?>
                     </select>
                     <span class="hint">
-                        <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_HINT', $this->import->fileSpacePath()); ?>
+                        <?php
+                        echo Lang::txt(
+                            'COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_FILE_HINT',
+                            $this->import->fileSpacePath()
+                        );
+                        ?>
                     </span>
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_MODE_HINT'); ?>">
+                <div class="input-wrap"
+                     data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_MODE_HINT'); ?>">
                     <label for="field-importmode">
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_MODE'); ?>
                     </label><br />
@@ -75,9 +104,13 @@ Toolbar::cancel();
                         <option value="UPDATE">
                             <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_MODE_UPDATE'); ?>
                         </option>
-                        <option <?php if ($this->import->get('mode') == Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_MODE_PATCH')) {
-                            echo 'selected="selected"';
-                                } ?> value="PATCH">
+                        <?php
+                        $patchKey = 'COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_MODE_PATCH';
+                        $patchSel = ($this->import->get('mode') == Lang::txt($patchKey))
+                            ? ' selected="selected"'
+                            : '';
+                        ?>
+                        <option<?php echo $patchSel; ?> value="PATCH">
                             <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_DATA_MODE_PATCH'); ?>
                         </option>
                     </select>
@@ -99,7 +132,8 @@ Toolbar::cancel();
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELDSET_HOOKS'); ?></span></legend>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>">
+                <div class="input-wrap"
+                     data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>">
                     <label for="field-name">
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_POSTPARSEHOOK'); ?>
                     </label><br />
@@ -108,13 +142,20 @@ Toolbar::cancel();
                             <?php foreach ($hooks->postparse as $hook) : ?>
                                 <?php $importHook = $this->hooks->seek($hook); ?>
                                 <?php if (!empty($importHook)) : ?>
-                                <option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
+                                <option selected="selected"
+                                        value="<?php echo $importHook->get('id'); ?>"><?php
+                                        echo
+                                        $importHook->get('name');
+                                        ?></option>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         <?php endif; ?>
 
                         <?php foreach ($this->hooks as $hook) : ?>
-                            <?php if ($hook->get('type') != 'postparse' || in_array($hook->get('id'), $hooks->postparse)) {
+                            <?php if (
+                            $hook->get('type') != 'postparse'
+                                || in_array($hook->get('id'), $hooks->postparse)
+) {
                                 continue;
                             } ?>
                             <option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
@@ -130,7 +171,8 @@ Toolbar::cancel();
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>
                     </span>
                 </div>
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>">
+                <div class="input-wrap"
+                     data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>">
                     <label for="field-hookpostmap">
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_POSTMAPHOOK'); ?>
                     </label>
@@ -138,7 +180,11 @@ Toolbar::cancel();
                         <?php foreach ($hooks->postmap as $hook) : ?>
                             <?php $importHook = $this->hooks->seek($hook); ?>
                             <?php if (!empty($importHook)) : ?>
-                            <option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
+                            <option selected="selected"
+                                    value="<?php echo $importHook->get('id'); ?>"><?php
+                                    echo
+                                    $importHook->get('name');
+                                    ?></option>
                             <?php endif; ?>
                         <?php endforeach; ?>
 
@@ -159,7 +205,8 @@ Toolbar::cancel();
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>
                     </span>
                 </div>
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>">
+                <div class="input-wrap"
+                     data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>">
                     <label for="field-hookpostconvert">
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_POSTCONVERTHOOK'); ?>
                     </label>
@@ -167,11 +214,18 @@ Toolbar::cancel();
                         <?php foreach ($hooks->postconvert as $hook) : ?>
                             <?php $importHook = $this->hooks->seek($hook); ?>
                             <?php if (!empty($importHook)) : ?>
-                            <option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
+                            <option selected="selected"
+                                    value="<?php echo $importHook->get('id'); ?>"><?php
+                                    echo
+                                    $importHook->get('name');
+                                    ?></option>
                             <?php endif; ?>
                         <?php endforeach; ?>
                         <?php foreach ($this->hooks as $hook) : ?>
-                            <?php if ($hook->get('type') != 'postconvert' || in_array($hook->get('id'), $hooks->postconvert)) {
+                            <?php if (
+                            $hook->get('type') != 'postconvert'
+                                || in_array($hook->get('id'), $hooks->postconvert)
+) {
                                 continue;
                             } ?>
                             <option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
@@ -191,38 +245,143 @@ Toolbar::cancel();
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELDSET_PARAMS'); ?></span></legend>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_STATUS_HINT'); ?>">
+                <div class="input-wrap"
+                     data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_STATUS_HINT'); ?>">
                     <label for="param-status">
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_STATUS'); ?>
                     </label>
                     <select name="params[status]" id="param-status">
-                        <option value="2"<?php echo ($this->params->get('status', 1) == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL'); ?></option>
-                        <option value="5"<?php echo ($this->params->get('status', 1) == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_INTERNAL'); ?></option>
-                        <option value="3"<?php echo ($this->params->get('status', 1) == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_PENDING'); ?></option>
-                        <option value="0"<?php echo ($this->params->get('status', 1) == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php echo ($this->params->get('status', 1) == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="4"<?php echo ($this->params->get('status', 1) == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <option value="2"<?php
+                                echo
+                                ($this->params->get(
+                                    'status',
+                                    1
+                                )
+                                ==
+                                2)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
+?></option>
+                        <option value="5"<?php
+                                echo
+                                ($this->params->get(
+                                    'status',
+                                    1
+                                )
+                                ==
+                                5)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('COM_RESOURCES_DRAFT_INTERNAL');
+?></option>
+                        <option value="3"<?php
+                                echo
+                                ($this->params->get(
+                                    'status',
+                                    1
+                                )
+                                ==
+                                3)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('COM_RESOURCES_PENDING');
+?></option>
+                        <option value="0"<?php
+                                echo
+                                ($this->params->get(
+                                    'status',
+                                    1
+                                )
+                                ==
+                                0)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('JUNPUBLISHED');
+?></option>
+                        <option value="1"<?php
+                                echo
+                                ($this->params->get(
+                                    'status',
+                                    1
+                                )
+                                ==
+                                1)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('JPUBLISHED');
+?></option>
+                        <option value="4"<?php
+                                echo
+                                ($this->params->get(
+                                    'status',
+                                    1
+                                )
+                                ==
+                                4)
+                                ?
+                                ' selected="selected"'
+                                :
+                                '';
+                                ?>><?php
+                                echo
+                                Lang::txt('JTRASHED');
+?></option>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_STATUS_HINT'); ?></span>
                 </div>
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_ACCESS_HINT'); ?>">
+                <div class="input-wrap"
+                     data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_ACCESS_HINT'); ?>">
                     <label>
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_ACCESS'); ?>
                     </label>
                     <?php
                         $rconfig = Component::params('com_resources');
-                        echo \Components\Resources\Helpers\Html::selectAccess($rconfig->get('accesses'), $this->params->get('access', 0), 'params[access]');
-                    ?>
+                        echo \Components\Resources\Helpers\Html::selectAccess(
+                            $rconfig->get('accesses'),
+                            $this->params->get('access', 0),
+                            'params[access]'
+                        );
+                        ?>
                     <span class="hint"><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_ACCESS_HINT'); ?></span>
                 </div>
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_GROUP_HINT'); ?>">
+                <div class="input-wrap"
+                     data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_GROUP_HINT'); ?>">
                     <label for="import-group">
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_GROUP'); ?>
                     </label>
-                    <?php echo \Components\Resources\Helpers\Html::selectGroup($this->groups, $this->params->get('group', ''), 'params[group]', 'import-group'); ?>
+                    <?php
+                    echo \Components\Resources\Helpers\Html::selectGroup(
+                        $this->groups,
+                        $this->params->get('group', ''),
+                        'params[group]',
+                        'import-group'
+                    );
+                    ?>
                     <span class="hint"><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_GROUP_HINT'); ?></span>
                 </div>
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_MATCHTITLE_HINT'); ?>">
+                <div class="input-wrap"
+                     data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_MATCHTITLE_HINT'); ?>">
                     <label for="param-titlematch">
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_MATCHTITLE'); ?>
                     </label>
@@ -232,9 +391,13 @@ Toolbar::cancel();
                             echo 'selected="selected"';
                                           } ?>><?php echo Lang::txt('JYes'); ?></option>
                     </select>
-                    <span class="hint"><?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_MATCHTITLE_HINT'); ?></span>
+                    <span class="hint"><?php
+                          echo
+                          Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_MATCHTITLE_HINT');
+                    ?></span>
                 </div>
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_CHECKREQUIRED_HINT'); ?>">
+                <div class="input-wrap"
+                     data-hint="<?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_CHECKREQUIRED_HINT'); ?>">
                     <label for="param-requiredfields">
                         <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_CHECKREQUIRED'); ?>
                     </label>

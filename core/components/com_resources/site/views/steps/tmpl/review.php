@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,8 @@ $this->css('create.css')
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
+            <?php $hrefUrl = Route::url('index.php?option=' . $this->option . '&task=draft'); ?>
+            <a class="icon-add add btn" href="<?php echo $hrefUrl; ?>">
                 <?php echo Lang::txt('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
             </a>
         </p>
@@ -47,7 +46,8 @@ $this->css('create.css')
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task); ?>" method="post" id="hubForm">
+    <?php $actionUrl = Route::url('index.php?option=' . $this->option . '&task=' . $this->task); ?>
+    <form action="<?php echo $actionUrl; ?>" method="post" id="hubForm">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
         <input type="hidden" name="task" value="<?php echo $this->task; ?>" />
@@ -57,7 +57,11 @@ $this->css('create.css')
 <?php if ($this->progress['submitted'] == 1) { ?>
         <div class="explaination">
             <p class="help">
-                <?php echo Lang::txt('COM_CONTRIBUTE_PASSED_REVIEW'); ?> <a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->id); ?>"><?php echo Lang::txt('COM_CONTRIBUTE_VIEW_HERE'); ?></a>
+                <?php
+                $viewUrl = Route::url('index.php?option=com_resources&id=' . $this->id);
+                echo Lang::txt('COM_CONTRIBUTE_PASSED_REVIEW');
+                ?>
+                <a href="<?php echo $viewUrl; ?>"><?php echo Lang::txt('COM_CONTRIBUTE_VIEW_HERE'); ?></a>
             </p>
         </div>
         <fieldset>
@@ -78,7 +82,8 @@ $this->css('create.css')
                         echo ' selected="selected"';
                                           } ?>><?php echo Lang::txt('Custom'); ?></option>
                         <?php
-                        $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
+                        $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text))
+                        . '" />';
                         $c = $this->escape(nl2br($license->text));
                     }
                 }
@@ -87,19 +92,26 @@ $this->css('create.css')
                     <option value="custom"><?php echo Lang::txt('COM_CONTRIBUTE_CUSTOM_LICENSE'); ?></option>
                     <?php
                     $c = $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE'));
-                    $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
+                    $l[] = '<input type="hidden" id="license-custom" value="' .
+                    $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
                 }
                 foreach ($this->licenses as $license) {
                     if (substr($license->name, 0, 6) == 'custom') {
                         continue;
                     } else {
                         ?>
-                    <option value="<?php echo $this->escape($license->name); ?>"<?php if ($params->get('license') == $license->name) {
+                    <option value="<?php echo $this->escape($license->name); ?>"<?php
+                    if (
+                        $params->get('license')
+                                ==
+                                $license->name
+                    ) {
                         echo ' selected="selected"';
-                                   } ?>><?php echo $this->escape($license->title); ?></option>
+                    } ?>><?php echo $this->escape($license->title); ?></option>
                         <?php
                     }
-                    $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
+                    $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' .
+                    $this->escape(nl2br($license->text)) . '" />';
                     if ($params->get('license') == $license->name) {
                         $preview = nl2br($this->escape($license->text));
                     }
@@ -110,7 +122,14 @@ $this->css('create.css')
                 <?php echo implode("\n", $l); ?>
             </label>
             <?php if ($this->config->get('cc_license_custom')) { ?>
-            <textarea name="license-text" id="license-text" cols="35" rows="10" class="hide"><?php echo $c; ?></textarea>
+            <textarea name="license-text"
+                      id="license-text"
+                      cols="35"
+                      rows="10"
+                      class="hide"><?php
+                        echo
+                        $c;
+                        ?></textarea>
             <?php } ?>
 
             <input type="hidden" name="published" value="1" />
@@ -127,7 +146,8 @@ $this->css('create.css')
             <p>
                 <?php echo Lang::txt(
                     'COM_CONTRIBUTE_WHAT_HAPPENS_AFTER_SUBMIT_ANSWER',
-                    '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . Lang::txt('resources') . '</a>',
+                    '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . Lang::txt('resources') .
+                    '</a>',
                     '<a href="' . Route::url('index.php?option=com_whatsnew') . '">' . Lang::txt('What\'s New') . '</a>'
                 ); ?>
             </p>
@@ -135,7 +155,8 @@ $this->css('create.css')
             <p>
                 <?php echo Lang::txt(
                     'COM_CONTRIBUTE_WHAT_HAPPENS_AFTER_SUBMIT_AUTOAPPROVED_ANSWER',
-                    '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . Lang::txt('resources') . '</a>',
+                    '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . Lang::txt('resources') .
+                    '</a>',
                     '<a href="' . Route::url('index.php?option=com_whatsnew') . '">' . Lang::txt('What\'s New') . '</a>'
                 ); ?>
             </p>
@@ -158,7 +179,8 @@ $this->css('create.css')
                 <?php echo Lang::txt(
                     'COM_CONTRIBUTE_AUTHORIZATION_MUST_ATTRIBUTE',
                     Config::get('sitename'),
-                    '<a class="popup 760x560" href="' . Request::base(true) . '/legal/license">' . Lang::txt('COM_CONTRIBUTE_THE_FULL_LICENSE') . '</a>'
+                    '<a class="popup 760x560" href="' . Request::base(true) . '/legal/license">' .
+                    Lang::txt('COM_CONTRIBUTE_THE_FULL_LICENSE') . '</a>'
                 ); ?>
             </label>
     <?php if ($this->config->get('cc_license')) { ?>
@@ -177,7 +199,8 @@ $this->css('create.css')
                             echo ' selected="selected"';
                                               } ?>><?php echo Lang::txt('Custom'); ?></option>
                     <?php
-                    $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
+                    $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) .
+                    '" />';
                     $c = $this->escape(nl2br($license->text));
                 }
             }
@@ -186,19 +209,26 @@ $this->css('create.css')
                         <option value="custom"><?php echo Lang::txt('COM_CONTRIBUTE_CUSTOM_LICENSE'); ?></option>
                     <?php
                     $c = $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE'));
-                    $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
+                    $l[] = '<input type="hidden" id="license-custom" value="' .
+                    $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
             }
             foreach ($this->licenses as $license) {
                 if (substr($license->name, 0, 6) == 'custom') {
                     continue;
                 } else {
                     ?>
-                        <option value="<?php echo $this->escape($license->name); ?>"<?php if ($params->get('license') == $license->name) {
+                        <option value="<?php echo $this->escape($license->name); ?>"<?php
+                        if (
+                            $params->get('license')
+                                    ==
+                                    $license->name
+                        ) {
                             echo ' selected="selected"';
-                                       } ?>><?php echo $this->escape($license->title); ?></option>
+                        } ?>><?php echo $this->escape($license->title); ?></option>
                     <?php
                 }
-                $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
+                $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' .
+                $this->escape(nl2br($license->text)) . '" />';
                 if ($params->get('license') == $license->name) {
                     $preview = nl2br($this->escape($license->text));
                 }
@@ -209,7 +239,14 @@ $this->css('create.css')
                 <?php echo implode("\n", $l); ?>
             </label>
         <?php if ($this->config->get('cc_license_custom')) { ?>
-            <textarea name="license-text" id="license-text" cols="35" rows="10" class="hide"><?php echo $c; ?></textarea>
+            <textarea name="license-text"
+                      id="license-text"
+                      cols="35"
+                      rows="10"
+                      class="hide"><?php
+                        echo
+                        $c;
+                        ?></textarea>
         <?php } ?>
     <?php } ?>
 
@@ -222,7 +259,8 @@ $this->css('create.css')
 
     <h1 id="preview-header"><?php echo Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW'); ?></h1>
     <div id="preview-pane">
-        <iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" src="<?php echo Route::url('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview'); ?>"></iframe>
+        <?php $val = Route::url('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview'); ?>
+        <iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" src="<?php echo $val; ?>"></iframe>
     </div>
 <?php } ?>
 </section><!-- / .main section -->

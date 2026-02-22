@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -10,10 +8,16 @@
 
 ?>
 
-<div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>" id="<?php echo $this->result['id']; ?>">
+<?php $accessLevel = isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>
+<div class="result <?php echo $accessLevel; ?>" id="<?php echo $this->result['id']; ?>">
 <div class="result-body">
     <!-- Title : mandatory -->
-    <h3 class="result-title"><a href="<?php echo $this->result['url']; ?>"><b><!-- highlight portion --></b><?php echo $this->result['title']; ?></a></h3>
+    <h3 class="result-title">
+        <a href="<?php echo $this->result['url']; ?>">
+            <b><!-- highlight portion --></b>
+            <?php echo $this->result['title']; ?>
+        </a>
+    </h3>
 
     <div class="result-extras">
         <!-- Cateogory : mandatory -->
@@ -21,7 +25,11 @@
 
         <?php if (isset($this->result['date'])) : ?>
             <?php $date = new \Hubzero\Utility\Date($this->result['date']); ?>
-            <span class="result-timestamp"><time datetime="<?php echo $this->result['date']; ?>"><?php echo $date->toLocal('Y-m-d h:mA'); ?></time></span>
+            <span class="result-timestamp">
+                <time datetime="<?php echo $this->result['date']; ?>">
+                    <?php echo $date->toLocal('Y-m-d h:mA'); ?>
+                </time>
+            </span>
         <?php endif; ?>
 
         <?php if (isset($this->result['author'])) : ?>
@@ -51,13 +59,24 @@
         <div class="result-tags">
             <ul class="tags">
                 <?php
-                    $baseTagUrl = Route::url('index.php?option=com_search&terms=' . $this->terms);
+                    $baseTagUrl = Route::url(
+                        'index.php?option=com_search&terms='
+                        . $this->terms
+                    );
                 ?>
                 <?php foreach ($this->result['_childDocuments_'] as $tag) : ?>
                     <?php if (!empty($tag['title'][0])) : ?>
                     <li>
-                        <?php $description = !empty($tag['description']) ? $tag['description'] : $tag['title'][0];?>
-                        <a class="tag" href="<?php echo $baseTagUrl . '&tags=' . $description;?>" data-tag="<?php echo $description;?>">
+                        <?php
+                            $description = !empty($tag['description'])
+                                ? $tag['description']
+                                : $tag['title'][0];
+                            $tagHref = $baseTagUrl . '&tags=' . $description;
+                        ?>
+                        <a class="tag"
+                            href="<?php echo $tagHref;?>"
+                            data-tag="<?php echo $description;?>"
+                        >
                             <?php echo $tag['title'][0]; ?>
                         </a>
                     </li>
@@ -70,14 +89,27 @@
         <div class="result-tags">
             <ul class="tags">
                 <?php foreach ($this->result['tags'] as $tag) : ?>
-                    <li><a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $tag); ?>"><?php echo $tag; ?></a></li>
+                    <?php
+                        $tagUrl = Route::url(
+                            'index.php?option=com_search&terms=' . $tag
+                        );
+                    ?>
+                    <li>
+                        <a class="tag" href="<?php echo $tagUrl; ?>">
+                            <?php echo $tag; ?>
+                        </a>
+                    </li>
                 <?php endforeach; ?>
             </ul>
         </div>
     <?php endif; ?>
     <!-- Result URL -->
     <?php if (isset($this->result['url'])) : ?>
-    <div class="result-url"><a href="<?php echo $this->result['url']; ?>"><?php echo $this->result['url']; ?></a></div>
+    <div class="result-url">
+        <a href="<?php echo $this->result['url']; ?>">
+            <?php echo $this->result['url']; ?>
+        </a>
+    </div>
     <?php endif; ?>
 </div> <!-- End Result Body -->
 </div> <!-- End Result -->

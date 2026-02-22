@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,20 +28,72 @@ Toolbar::help('import');
 $this->css('import');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="adminForm">
 
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                           name="checkall-toggle"
+                           id="checkall-toggle"
+                           value=""
+                           class="checkbox-toggle toggle-all"
+                           />
+                    <label for="checkall-toggle"
+                           class="sr-only visually-hidden"><?php
+                            echo
+                            Lang::txt('JGLOBAL_CHECK_ALL');
+                            ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS', 'count', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED', 'created_at', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN', 'ran_at', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
+                <th scope="col"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME',
+                        'name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS',
+                        'count',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-4"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED',
+                        'created_at',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-3"><?php
+                    echo
+                    Html::grid(
+                        'sort',
+                        'COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN',
+                        'ran_at',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"
+                    class="priority-2"><?php
+                    echo
+                    Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_RUNCOUNT');
+                    ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -60,13 +110,29 @@ $this->css('import');
                     <tr>
                         <td>
                             <?php if ($canDo->get('core.create')) : ?>
-                                <input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $import->get('id'); ?>" class="checkbox-toggle" />
-                                <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $import->get('id'); ?></label>
+                                <input type="checkbox"
+                                       name="id[]"
+                                       id="cb<?php echo $i;?>"
+                                       value="<?php echo $import->get('id'); ?>"
+                                       class="checkbox-toggle"
+                                       />
+                                <label for="cb<?php echo $i; ?>"
+                                       class="sr-only visually-hidden"><?php
+                                        echo
+                                        $import->get('id');
+                                        ?></label>
                             <?php endif; ?>
                         </td>
                         <td>
                             <?php if ($canDo->get('core.create')) : ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $import->get('id')); ?>">
+                                <?php
+                                $editUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&task=edit&id=' . $import->get('id')
+                                );
+                                ?>
+                                <a href="<?php echo $editUrl; ?>">
                                     <?php echo $this->escape($import->get('name')); ?>
                                 </a>
                             <?php else : ?>

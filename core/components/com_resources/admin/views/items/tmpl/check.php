@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,18 +15,43 @@ $this->css('audit.css');
 
 Html::behavior('tooltip');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=check'); ?>" method="post" name="adminForm" id="item-form">
+<?php
+$actionUrl = Route::url(
+    'index.php?option='
+    . $this->option
+    . '&controller='
+    . $this->controller
+    . '&task=check'
+);
+?>
+<form action="<?php echo $actionUrl; ?>" method="post" name="adminForm" id="item-form">
     <?php foreach ($this->tests as $key => $test) { ?>
         <div class="test">
             <div class="test-overview grid">
                 <div class="test-chart col span6">
                     <h3 class="test-header">
-                        <span class="test-title"><?php echo $this->escape($test['name']); ?></span> <span class="test-total"><?php echo Lang::txt('COM_RESOURCES_NUM_TOTAL', '<strong>' . $test['total'] . '</strong>'); ?></span>
+                        <span class="test-title"><?php
+                              echo
+                              $this->escape($test['name']);
+                        ?></span>
+                        <?php
+                        $totalTxt = Lang::txt(
+                            'COM_RESOURCES_NUM_TOTAL',
+                            '<strong>' . $test['total'] . '</strong>'
+                        );
+                        ?>
+                        <span class="test-total"><?php echo $totalTxt; ?></span>
                     </h3>
                     <div class="bars">
                         <?php
-                        $passed = $test['total'] <= 0 ? 0 : round(($test['totals']['passed'] / $test['total']) * 100, 2);
-                        $failed = $test['total'] <= 0 ? 0 : round(($test['totals']['failed'] / $test['total']) * 100, 2);
+                        $passed = $test['total'] <= 0 ? 0 : round(
+                            ($test['totals']['passed'] / $test['total']) * 100,
+                            2
+                        );
+                        $failed = $test['total'] <= 0 ? 0 : round(
+                            ($test['totals']['failed'] / $test['total']) * 100,
+                            2
+                        );
                         $passed = $passed + $failed;
 
                         $this->css('
@@ -42,14 +65,43 @@ Html::behavior('tooltip');
                         <span class="bar failed failed<?php echo $key; ?>"></span>
                     </div>
                 </div>
+                <?php
+                $baseCheckUrl = 'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=check&test=' . $key;
+                $failedUrl = Route::url($baseCheckUrl . '&status=failed');
+                $passedUrl = Route::url($baseCheckUrl . '&status=passed');
+                $skippedUrl = Route::url($baseCheckUrl . '&status=skipped');
+                $failedTitle = Lang::txt('COM_RESOURCES_NUM_FAILED_TITLE');
+                $passedTitle = Lang::txt('COM_RESOURCES_NUM_PASSED_TITLE');
+                $skippedTitle = Lang::txt('COM_RESOURCES_NUM_SKIPPED_TITLE');
+                $failedCount = Lang::txt(
+                    'COM_RESOURCES_NUM_FAILED',
+                    $test['totals']['failed']
+                );
+                $passedCount = Lang::txt(
+                    'COM_RESOURCES_NUM_FAILED',
+                    $test['totals']['passed']
+                );
+                $skippedCount = Lang::txt(
+                    'COM_RESOURCES_NUM_FAILED',
+                    $test['totals']['skipped']
+                );
+                ?>
                 <div class="test-key col span2">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=check&status=failed&test=' . $key); ?>" class="test-value failed hasTip" title="<?php echo Lang::txt('COM_RESOURCES_NUM_FAILED_TITLE'); ?>"><?php echo Lang::txt('COM_RESOURCES_NUM_FAILED', $test['totals']['failed']); ?></a>
+                    <a href="<?php echo $failedUrl; ?>"
+                       class="test-value failed hasTip"
+                       title="<?php echo $failedTitle; ?>"><?php echo $failedCount; ?></a>
                 </div>
                 <div class="test-key col span2">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=check&status=passed&test=' . $key); ?>" class="test-value passed hasTip" title="<?php echo Lang::txt('COM_RESOURCES_NUM_PASSED_TITLE'); ?>"><?php echo Lang::txt('COM_RESOURCES_NUM_FAILED', $test['totals']['passed']); ?></a>
+                    <a href="<?php echo $passedUrl; ?>"
+                       class="test-value passed hasTip"
+                       title="<?php echo $passedTitle; ?>"><?php echo $passedCount; ?></a>
                 </div>
                 <div class="test-key col span2">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=check&status=skipped&test=' . $key); ?>" class="test-value skipped hasTip" title="<?php echo Lang::txt('COM_RESOURCES_NUM_SKIPPED_TITLE'); ?>"><?php echo Lang::txt('COM_RESOURCES_NUM_FAILED', $test['totals']['skipped']); ?></a>
+                    <a href="<?php echo $skippedUrl; ?>"
+                       class="test-value skipped hasTip"
+                       title="<?php echo $skippedTitle; ?>"><?php echo $skippedCount; ?></a>
                 </div>
             </div>
             <?php if ($this->test == $key && $this->status) { ?>
@@ -100,7 +152,14 @@ Html::behavior('tooltip');
                                         ?>
                                     </td>
                                     <td>
-                                        <a href="<?php echo Route::url('index.php?option=com_resources&task=edit&id=' . $result->get('scope_id')); ?>">
+                                        <?php
+                                        $editUrl = Route::url(
+                                            'index.php?option=com_resources'
+                                            . '&task=edit&id='
+                                            . $result->get('scope_id')
+                                        );
+                                        ?>
+                                        <a href="<?php echo $editUrl; ?>">
                                             <?php
                                             if ($notes = $result->get('notes')) {
                                                 $notes = json_decode($notes);
@@ -112,7 +171,10 @@ Html::behavior('tooltip');
                                         </a>
                                     </td>
                                     <td>
-                                        <?php echo '<span class="test-status ' . $result->status() . '">' . $result->status() . '</span>'; ?>
+                                        <?php
+                                        echo '<span class="test-status ' .  $result->status() .  '">'
+                                            .  $result->status() .  '</span>';
+                                        ?>
                                     </td>
                                 </tr>
                             <?php } ?>

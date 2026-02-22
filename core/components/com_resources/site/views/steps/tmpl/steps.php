@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -65,7 +63,15 @@ $this->group_cn = (isset($this->group_cn) ? $this->group_cn : Request::getString
                     <?php echo $this->resource->type()->get('type', Lang::txt('COM_CONTRIBUTE_NONE')); ?>
                 </td>
                 <td>
-                    <?php echo $this->resource->get('title') ? $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->resource->get('title')), 150)) : Lang::txt('COM_CONTRIBUTE_NONE'); ?>
+                    <?php
+                    if ($this->resource->get('title')) {
+                        $titleStr = stripslashes($this->resource->get('title'));
+                        $titleStr = \Hubzero\Utility\Str::truncate($titleStr, 150);
+                        echo $this->escape($titleStr);
+                    } else {
+                        echo Lang::txt('COM_CONTRIBUTE_NONE');
+                    }
+                    ?>
                 </td>
                 <td>
                     <?php echo Lang::txt('%s attachment(s)', $attachments); ?>
@@ -84,7 +90,15 @@ $this->group_cn = (isset($this->group_cn) ? $this->group_cn : Request::getString
                 <?php if ($this->step == 'discard') { ?>
                     <strong><?php echo Lang::txt('JCANCEL'); ?></strong>
                 <?php } else { ?>
-                    <a class="icon-delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=discard&id=' . $this->id); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+                    <?php
+                    $hrefUrl = Route::url(
+                        'index.php?option='
+                        . $this->option
+                        . '&task=discard&id='
+                        . $this->id
+                    );
+                    ?>
+                    <a class="icon-delete" href="<?php echo $hrefUrl; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
                 <?php } ?>
                 </td>
             <?php } ?>
@@ -95,7 +109,14 @@ $this->group_cn = (isset($this->group_cn) ? $this->group_cn : Request::getString
 
 <ol id="steps">
     <li id="start">
-        <a href="<?php echo ($this->progress['submitted'] == 1) ? Route::url('index.php?option=com_resources&id=' . $this->id) : Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+        <?php
+        if ($this->progress['submitted'] == 1) {
+            $startUrl = Route::url('index.php?option=com_resources&id=' . $this->id);
+        } else {
+            $startUrl = Route::url('index.php?option=' . $this->option . '&task=new');
+        }
+        ?>
+        <a href="<?php echo $startUrl; ?>">
             <?php echo Lang::txt('COM_CONTRIBUTE_START'); ?>
         </a>
     </li>
@@ -113,11 +134,19 @@ $this->group_cn = (isset($this->group_cn) ? $this->group_cn : Request::getString
         $html .= '>';
         if ($this->step == $i) {
             $html .= '<strong>' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$i])) . '</strong>';
-        } elseif ((isset($this->progress[$this->steps[$i]]) && $this->progress[$this->steps[$i]] == 1) || $this->step > $i) {
-            $html .= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $i . '&id=' . $this->id . '&group=' . $this->group_cn) . '">' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$i])) . '</a>';
+        } elseif (
+            (isset($this->progress[$this->steps[$i]])
+            && $this->progress[$this->steps[$i]] == 1)
+            || $this->step > $i
+        ) {
+            $html .= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $i . '&id=' .
+            $this->id . '&group=' . $this->group_cn) . '">' . Lang::txt('COM_CONTRIBUTE_STEP_' .
+            strtoupper($this->steps[$i])) . '</a>';
         } else {
             if ($this->progress['submitted'] == 1) {
-                $html .= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $i . '&id=' . $this->id) . '">' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$i])) . '</a>';
+                $html .= '<a href="'
+                    .  Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $i . '&id=' . $this->id)
+                    .  '">' .  Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$i])) .  '</a>';
             } else {
                 $html .= '<span>' . $this->steps[$i] . '</span>';
             }

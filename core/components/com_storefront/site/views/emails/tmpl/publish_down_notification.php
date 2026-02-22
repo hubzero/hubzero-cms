@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,7 +25,6 @@ Publish down notifications
 --------------------------
 
 <?php
-// phpcs:disable Generic.Files.LineLength
 
 if ($skusCount + $productsCount == 1) {
     echo 'One item in the storefront is set to be published down soon:';
@@ -60,7 +57,6 @@ if (!empty($this->products)) {
 ?>
 
 <?php
-// phpcs:disable Generic.Files.LineLength
 if (!empty($this->skus)) {
     ?>
 =======================

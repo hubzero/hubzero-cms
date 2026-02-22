@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -43,7 +41,8 @@ $this->css('introduction.css', 'system')
         </div>
         <div class="col span3 omega">
             <p>
-                <a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=resources&page=index'); ?>">
+                <?php $hrefUrl = Route::url('index.php?option=com_help&component=resources&page=index'); ?>
+                <a class="popup" href="<?php echo $hrefUrl; ?>">
                     <?php echo Lang::txt('COM_RESOURCES_NEED_HELP'); ?>
                 </a>
             </p>
@@ -60,7 +59,8 @@ $this->css('introduction.css', 'system')
         <div class="col span9 omega">
             <div class="grid">
                 <div class="col span-half">
-                    <form action="<?php echo Route::url('index.php?option=com_resources&task=browse'); ?>" method="get" class="search">
+                    <?php $actionUrl = Route::url('index.php?option=com_resources&task=browse'); ?>
+                    <form action="<?php echo $actionUrl; ?>" method="get" class="search">
                         <fieldset>
                             <p class="hz-v-align">
                                 <label for="rsearch"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
@@ -74,7 +74,8 @@ $this->css('introduction.css', 'system')
                 </div><!-- / .col span-half -->
                 <div class="col span-half omega">
                     <div class="browse">
-                        <p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_RESOURCES_BROWSE_LIST'); ?></a></p>
+                        <?php $val = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+                        <p><a href="<?php echo $val; ?>"><?php echo Lang::txt('COM_RESOURCES_BROWSE_LIST'); ?></a></p>
                     </div><!-- / .browse -->
                 </div><!-- / .col span-half -->
             </div><!-- / .grid -->
@@ -123,12 +124,21 @@ if ($this->categories) {
                     $cls = rtrim($category->alias, 's');
                 }
                 // Need to do some decoding to ensure escaped characters aren't encoded twice.
-                $category->description = html_entity_decode(strip_tags(stripslashes($this->escape($category->description))));
+                $category->description =
+                html_entity_decode(strip_tags(stripslashes($this->escape($category->description))));
                 ?>
                 <div class="col span-third <?php echo $clm; ?>">
                     <div class="resource-type <?php echo $cls; ?>">
                         <h3>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
+                            <?php
+                            $hrefUrl = Route::url(
+                                'index.php?option='
+                                . $this->option
+                                . '&type='
+                                . $category->alias
+                            );
+                            ?>
+                            <a href="<?php echo $hrefUrl; ?>">
                                 <?php echo $this->escape(strip_tags(stripslashes($category->type))); ?>
                             </a>
                         </h3>
@@ -136,8 +146,19 @@ if ($this->categories) {
                             <?php echo $category->description; ?>
                         </p>
                         <p>
-                            <a class="read-more" href="<?php echo Route::url('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
-                                <?php echo Lang::txt('COM_RESOURCES_BROWSE_CATEGORY', $this->escape(stripslashes($category->type))); ?>
+                            <?php
+                            $hrefUrl = Route::url(
+                                'index.php?option='
+                                . $this->option
+                                . '&type='
+                                . $category->alias
+                            );
+                            ?>
+                            <a class="read-more" href="<?php echo $hrefUrl; ?>">
+                                <?php
+                                $catType = $this->escape(stripslashes($category->type));
+                                echo Lang::txt('COM_RESOURCES_BROWSE_CATEGORY', $catType);
+                                ?>
                             </a>
                         </p>
                     </div>

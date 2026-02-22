@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,9 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT_META') . ': ' . $text, 'storefront');
+$title = Lang::txt('COM_STOREFRONT') . ': '
+    . Lang::txt('COM_STOREFRONT_PRODUCT_META') . ': ' . $text;
+Toolbar::title($title, 'storefront');
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
     Toolbar::save();
@@ -38,7 +38,8 @@ if (empty($this->meta->globalDownloadLimit)) {
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
     <div class="col span7">
         <fieldset class="adminform">
@@ -57,13 +58,27 @@ if (empty($this->meta->globalDownloadLimit)) {
             </div>
 
             <div class="input-wrap">
-                <label for="eula"><?php echo 'EULA (if required, can be overridden on a SKU level)' ?>: </label><br />
-                <?php echo $this->editor('fields[eula]', $this->escape(stripslashes($this->meta->eula)), 50, 10, 'eula', array('buttons' => false)); ?>
+                <label for="eula"><?php echo 'EULA (if required, can be overridden on a SKU level)'; ?>: </label><br />
+                <?php echo $this->editor(
+                    'fields[eula]',
+                    $this->escape(stripslashes($this->meta->eula)),
+                    50,
+                    10,
+                    'eula',
+                    array('buttons' => false)
+                ); ?>
             </div>
 
             <div class="input-wrap">
                 <label for="field-globalDownloadLimit"><?php echo 'Total Downloads Limit'; ?>:</label><br />
-                <input type="text" name="fields[globalDownloadLimit]" id="field-globalDownloadLimit" size="30" maxlength="100" value="<?php echo $this->meta->globalDownloadLimit; ?>" />
+                <input
+                    type="text"
+                    name="fields[globalDownloadLimit]"
+                    id="field-globalDownloadLimit"
+                    size="30"
+                    maxlength="100"
+                    value="<?php echo $this->meta->globalDownloadLimit; ?>"
+                />
             </div>
         </fieldset>
     </div>
@@ -72,11 +87,23 @@ if (empty($this->meta->globalDownloadLimit)) {
         <table class="meta">
             <tbody>
             <tr>
-                <th class="key"><?php echo Lang::txt('COM_STOREFRONT_PRODUCT') . ' ' . Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
+<?php $productIdLabel = Lang::txt('COM_STOREFRONT_PRODUCT') . ' ' . Lang::txt('COM_STOREFRONT_ID'); ?>
+                <th class="key"><?php echo $productIdLabel; ?>:</th>
                 <td>
                     <?php echo $this->row->getId(); ?>
-                    <input type="hidden" name="fields[pId]" id="field-id" value="<?php echo $this->escape($this->row->getId()); ?>" />
-                    <input type="hidden" name="id" id="id" value="<?php echo $this->escape($this->row->getId()); ?>" />
+<?php $rowId = $this->escape($this->row->getId()); ?>
+                    <input
+                        type="hidden"
+                        name="fields[pId]"
+                        id="field-id"
+                        value="<?php echo $rowId; ?>"
+                    />
+                    <input
+                        type="hidden"
+                        name="id"
+                        id="id"
+                        value="<?php echo $rowId; ?>"
+                    />
                 </td>
             </tr>
             <tr>

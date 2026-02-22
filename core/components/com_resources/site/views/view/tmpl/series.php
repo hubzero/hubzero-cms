@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -49,7 +47,15 @@ if ($mode != 'preview') {
                     <h2>
                         <?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
                         <?php if ($this->model->params->get('access-edit-resource')) { ?>
-                            <a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
+                            <?php
+                            $hrefUrl = Route::url(
+                                'index.php?option=com_resources'
+                                . '&task=draft&step=1&id='
+                                . $this->model->id
+                            );
+                            ?>
+                            <a class="icon-edit edit btn"
+                               href="<?php echo $hrefUrl; ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
                         <?php } ?>
                     </h2>
                     <input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
@@ -73,14 +79,27 @@ if ($mode != 'preview') {
                 if (!$this->model->access('view-all')) {
                     $ghtml = array();
                     foreach ($this->model->groups as $allowedgroup) {
-                        $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+                        $groupUrl = Route::url(
+                            'index.php?option=com_groups&cn='
+                            . $allowedgroup
+                        );
+                        $ghtml[] = '<a href="' . $groupUrl
+                            . '">' . $allowedgroup . '</a>';
                     }
                     ?>
                         <p class="warning">
                             <?php if (User::isGuest()) : ?>
-                                <?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())); ?>
+                                <?php
+                                echo Lang::txt(
+                                    'COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN',
+                                    base64_encode(Request::path())
+                                );
+                                ?>
                             <?php elseif ($this->get('group_owner')) : ?>
-                                <?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+                                <?php
+                                echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') .  ' '
+                                    .  implode(', ', $ghtml);
+                                ?>
                             <?php else : ?>
                                 <?php echo Lang::txt('COM_RESOURCES_ALERTNOTAUTH'); ?>
                             <?php endif; ?>
@@ -166,15 +185,29 @@ if ($mode != 'preview') {
 
                     if ($notes || $audio || $video) {
                         ?>
+                        <?php
+                        $feedBase = $live_site . '/resources/'
+                            . $this->model->id
+                            . '/feed.rss?content=';
+                        ?>
                         <p>
                         <?php if ($audio) { ?>
-                            <a class="feed" id="resource-audio-feed" href="<?php echo $live_site . '/resources/' . $this->model->id . '/feed.rss?content=audio'; ?>"><?php echo Lang::txt('COM_RESOURCES_AUDIO_PODCAST'); ?></a><br />
+                            <a class="feed"
+                               id="resource-audio-feed"
+                               href="<?php echo $feedBase . 'audio'; ?>"
+                            ><?php echo Lang::txt('COM_RESOURCES_AUDIO_PODCAST'); ?></a><br />
                         <?php } ?>
                         <?php if ($video) { ?>
-                            <a class="feed" id="resource-video-feed" href="<?php echo $live_site . '/resources/' . $this->model->id . '/feed.rss?content=video'; ?>"><?php echo Lang::txt('COM_RESOURCES_VIDEO_PODCAST'); ?></a><br />
+                            <a class="feed"
+                               id="resource-video-feed"
+                               href="<?php echo $feedBase . 'video'; ?>"
+                            ><?php echo Lang::txt('COM_RESOURCES_VIDEO_PODCAST'); ?></a><br />
                         <?php } ?>
                         <?php if ($notes) { ?>
-                            <a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/' . $this->model->id . '/feed.rss?content=slides'; ?>"><?php echo Lang::txt('COM_RESOURCES_SLIDES_PODCAST'); ?></a>
+                            <a class="feed"
+                               id="resource-slides-feed"
+                               href="<?php echo $feedBase . 'slides'; ?>"
+                            ><?php echo Lang::txt('COM_RESOURCES_SLIDES_PODCAST'); ?></a>
                         <?php } ?>
                         </p>
                         <?php
@@ -324,7 +357,14 @@ if ($mode != 'preview') {
                     <fieldset class="controls">
                         <label for="sortby">
                             <?php echo Lang::txt('COM_RESOURCES_SORT_BY'); ?>:
-                            <?php echo \Components\Resources\Helpers\Html::formSelect('sortby', $sortbys, $filters['sortby'], ''); ?>
+                            <?php
+                            echo \Components\Resources\Helpers\Html::formSelect(
+                                'sortby',
+                                $sortbys,
+                                $filters['sortby'],
+                                ''
+                            );
+                            ?>
                         </label>
                         <p class="submit">
                             <input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_GO'); ?>" />

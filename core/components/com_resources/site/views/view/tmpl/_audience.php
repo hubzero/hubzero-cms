@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -95,7 +93,12 @@ if ($this->audience && !$this->audience->isNew()) { ?>
                     <?php } ?>
                     </tbody>
                 </table>
-                <p class="learnmore"><a href="<?php echo $this->audiencelink; ?>"><?php echo Lang::txt('Learn more'); ?> &rsaquo;</a></p>
+                <p class="learnmore"><a
+                   href="<?php echo $this->audiencelink; ?>"><?php
+                    echo
+                    Lang::txt('Learn more');
+                    ?>
+                   &rsaquo;</a></p>
             </div>
         <?php } ?>
     </div>

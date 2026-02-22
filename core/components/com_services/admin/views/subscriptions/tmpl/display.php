@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +23,8 @@ $this->css();
 $this->css('admin.subscriptions.css');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter-status"><?php echo Lang::txt('COM_SERVICES_FILTER_BY'); ?>:</label>
         <select name="filter_status" id="filter-status" class="filter filter-submit">
@@ -47,14 +46,28 @@ $this->css('admin.subscriptions.css');
     <table class="adminlist">
         <thead>
             <tr>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_ID_CODE', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php $sortDir = @$this->filters['sort_Dir']; ?>
+                <?php $sort = @$this->filters['sort']; ?>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_SERVICES_COL_ID_CODE', 'id', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_SERVICES_COL_STATUS', 'status', $sortDir, $sort); ?>
+                </th>
                 <th scope="col"><?php echo Lang::txt('COM_SERVICES_COL_SERVICE'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_SERVICES_COL_PENDING'); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_USER', 'uid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_ADDED', 'added', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_LAST_UPDATED', 'updated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_EXPIRES', 'expires', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_SERVICES_COL_USER', 'uid', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_SERVICES_COL_ADDED', 'added', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_SERVICES_COL_LAST_UPDATED', 'updated', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_SERVICES_COL_EXPIRES', 'expires', $sortDir, $sort); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -81,26 +94,44 @@ $this->css('admin.subscriptions.css');
             }
 
             $status = '';
-            $pending = Lang::txt('COM_SERVICES_FOR_UNITS', $row->currency . ' ' . $row->pendingpayment, $row->pendingunits);
+            $pendingAmount = $row->currency . ' ' . $row->pendingpayment;
+            $pending = Lang::txt('COM_SERVICES_FOR_UNITS', $pendingAmount, $row->pendingunits);
 
-            $expires = (intval($row->expires) <> 0) ? Date::of($row->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
+            $dateFmt = Lang::txt('DATE_FORMAT_HZ1');
+            $na = Lang::txt('COM_SERVICES_NOT_APPLICABLE');
+            $expires = (intval($row->expires) <> 0)
+                ? Date::of($row->expires)->toLocal($dateFmt) : $na;
 
             switch ($row->status) {
                 case '1':
-                    $status = ($row->expires > $now) ? '<span class="service-active">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span  class="service-expired">' . strtolower(Lang::txt('COM_SERVICES_EXPIRED')) . '</span>';
+                    $activeLabel = strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE'));
+                    $expiredLabel = strtolower(Lang::txt('COM_SERVICES_EXPIRED'));
+                    $status = ($row->expires > $now)
+                        ? '<span class="service-active">' . $activeLabel . '</span>'
+                        : '<span  class="service-expired">' . $expiredLabel . '</span>';
                     break;
                 case '0':
-                    $status = '<span class="service-pending">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING')) . '</span>';
+                    $pendingLabel = strtolower(Lang::txt('COM_SERVICES_STATE_PENDING'));
+                    $status = '<span class="service-pending">' . $pendingLabel . '</span>';
                     break;
                 case '2':
-                    $status = '<span class="service-cancelled">' . strtolower(Lang::txt('COM_SERVICES_STATE_CANCELED')) . '</span>';
+                    $cancelLabel = strtolower(Lang::txt('COM_SERVICES_STATE_CANCELED'));
+                    $status = '<span class="service-cancelled">' . $cancelLabel . '</span>';
                     $pending .= $row->pendingpayment ? ' (' . Lang::txt('COM_SERVICES_REFUND') . ')' : '';
                     break;
             }
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&id=' . $row->id
+                    );
+                    ?>
+                    <?php $detailsTitle = Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>
+                    <a href="<?php echo $editUrl; ?>" title="<?php echo $detailsTitle; ?>">
                         <?php echo $row->id . ' -- ' . $row->code; ?>
                     </a>
                 </td>
@@ -108,12 +139,15 @@ $this->css('admin.subscriptions.css');
                     <?php echo $status; ?>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>">
+                    <a href="<?php echo $editUrl; ?>" title="<?php echo $detailsTitle; ?>">
                         <span><?php echo $this->escape($row->category) . ' -- ' . $this->escape($row->title); ?></span>
                     </a>
                 </td>
                 <td>
-                    <?php echo $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0)  ? '<span class="service-pending">' . $pending . '</span>' : $pending; ?>
+                    <?php
+                    $hasPending = $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0);
+                    echo $hasPending ? '<span class="service-pending">' . $pending . '</span>' : $pending;
+                    ?>
                 </td>
                 <td>
                     <?php echo $name . ' (' . $login . ')'; ?>
@@ -122,7 +156,11 @@ $this->css('admin.subscriptions.css');
                     <?php echo Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
                 </td>
                 <td>
-                    <?php echo $row->updated ? Date::of($row->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NEVER'); ?>
+                    <?php
+                    echo $row->updated
+                        ? Date::of($row->updated)->toLocal($dateFmt)
+                        : Lang::txt('COM_SERVICES_NEVER');
+                    ?>
                 </td>
                 <td>
                     <?php echo $expires; ?>

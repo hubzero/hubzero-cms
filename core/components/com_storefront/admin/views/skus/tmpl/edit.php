@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,11 +16,16 @@ $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('C
 $skuMeta = $this->row->getMeta();
 
 $inventoryNotificationThreshold = '';
-if (isset($skuMeta['inventoryNotificationThreshold']) && !empty($skuMeta['inventoryNotificationThreshold'])) {
+if (
+    isset($skuMeta['inventoryNotificationThreshold'])
+    && !empty($skuMeta['inventoryNotificationThreshold'])
+) {
     $inventoryNotificationThreshold = $skuMeta['inventoryNotificationThreshold'];
 }
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_SKU') . ': ' . $text, 'storefront');
+$title = Lang::txt('COM_STOREFRONT') . ': '
+    . Lang::txt('COM_STOREFRONT_SKU') . ': ' . $text;
+Toolbar::title($title, 'storefront');
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
     Toolbar::save();
@@ -63,20 +66,46 @@ $this->css();
     }
 </script>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<?php $formAction = Route::url('index.php?option=' . $this->option); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[sSku]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getName())); ?>" />
+<?php
+$titleLabel = Lang::txt('COM_STOREFRONT_TITLE');
+$requiredTxt = Lang::txt('JOPTION_REQUIRED');
+$nameValue = $this->escape(stripslashes($this->row->getName()));
+$priceValue = $this->escape(stripslashes($this->row->getPrice()));
+?>
+                    <label for="field-title">
+                        <?php echo $titleLabel; ?>: <span class="required"><?php echo $requiredTxt; ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[sSku]"
+                        id="field-title"
+                        size="30"
+                        maxlength="100"
+                        value="<?php echo $nameValue; ?>"
+                    />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_STOREFRONT_PRICE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[sPrice]" id="field-title" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getPrice())); ?>" />
+                    <label for="field-title">
+                        <?php echo Lang::txt('COM_STOREFRONT_PRICE'); ?>:
+                        <span class="required"><?php echo $requiredTxt; ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[sPrice]"
+                        id="field-title"
+                        size="30"
+                        maxlength="100"
+                        value="<?php echo $priceValue; ?>"
+                    />
                 </div>
 
                 <?php
@@ -96,12 +125,22 @@ $this->css();
                 <legend><span><?php echo Lang::txt('Checkout options'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-checkoutNotes"><?php echo Lang::txt('Checkout notes/comments message'); ?>:</label><br />
-                    <input type="text" name="fields[checkoutNotes]" id="field-checkoutNotes" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->getCheckoutNotes())); ?>" />
+<?php $checkoutLabel = Lang::txt('Checkout notes/comments message'); ?>
+                    <label for="field-checkoutNotes"><?php echo $checkoutLabel; ?>:</label><br />
+<?php $checkoutNotesVal = $this->escape(stripslashes($this->row->getCheckoutNotes())); ?>
+                    <input
+                        type="text"
+                        name="fields[checkoutNotes]"
+                        id="field-checkoutNotes"
+                        size="30"
+                        maxlength="100"
+                        value="<?php echo $checkoutNotesVal; ?>"
+                    />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-checkoutNotesRequired"><?php echo Lang::txt('Checkout notes/comments required'); ?>:</label>
+<?php $checkoutReqLabel = Lang::txt('Checkout notes/comments required'); ?>
+                    <label for="field-checkoutNotesRequired"><?php echo $checkoutReqLabel; ?>:</label>
                     <select name="fields[checkoutNotesRequired]" id="field-checkoutNotesRequired">
                         <option value="0"<?php if ($this->row->getCheckoutNotesRequired() == 0) {
                             echo ' selected="selected"';
@@ -124,7 +163,10 @@ $this->css();
                     foreach ($this->allOptions as $optionGroup) {
                         ?>
                         <div class="input-wrap">
-                            <label for="field-options-<?php echo $optionGroup->ogId; ?>"><?php echo $optionGroup->ogName; ?>:<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                            <label for="field-options-<?php echo $optionGroup->ogId; ?>">
+                                <?php echo $optionGroup->ogName; ?>:
+                                <span class="required"><?php echo $requiredTxt; ?></span>
+                            </label><br />
 
                             <?php
                             // First check if there are any options to display
@@ -145,9 +187,16 @@ $this->css();
                                     foreach ($optionGroup->options as $option) {
                                         if ($option->oActive || in_array($option->oId, $this->options)) {
                                             ?>
-                                            <option value="<?php echo $option->oId; ?>"<?php if (in_array($option->oId, $this->options)) {
-                                                echo ' selected="selected"';
-                                                           } ?>><?php echo $option->oName ?></option>
+                                            <?php
+                                            $optSelected = in_array($option->oId, $this->options)
+                                            ? ' selected="selected"' : '';
+                                            $optVal = $option->oId;
+                                            $optName = $option->oName;
+                                            ?>
+                                            <option
+                                                value="<?php echo $optVal; ?>"
+                                                <?php echo $optSelected; ?>
+                                            ><?php echo $optName; ?></option>
                                             <?php
                                         }
                                     }
@@ -156,7 +205,20 @@ $this->css();
                                 <?php
                             } else {
                                 ?>
-                                <p class="warning">There are currently no available options for this option group. Please go to the <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=options&task=display&id=' . $optionGroup->ogId); ?>" title="<?php echo Lang::txt('Edit option group'); ?>"><?php echo $optionGroup->ogName; ?> options administration</a> and make sure to create new or enable existing options.</p>
+                                <?php
+                                $ogAdminUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=options&task=display&id=' . $optionGroup->ogId
+                                );
+                                $editOgTitle = Lang::txt('Edit option group');
+                                ?>
+                                <p class="warning">
+                                    There are currently no available options for this option group.
+                                    Please go to the
+                                    <a href="<?php echo $ogAdminUrl; ?>" title="<?php echo $editOgTitle; ?>">
+                                        <?php echo $optionGroup->ogName; ?> options administration</a>
+                                    and make sure to create new or enable existing options.
+                                </p>
                                 <?php
                             }
                             ?>
@@ -189,14 +251,24 @@ $this->css();
                     <th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
                     <td>
                         <?php echo $this->row->getId(); ?>
-                        <input type="hidden" name="fields[sId]" id="field-sid" value="<?php echo $this->escape($this->row->getId()); ?>" />
+                        <input
+                            type="hidden"
+                            name="fields[sId]"
+                            id="field-sid"
+                            value="<?php echo $this->escape($this->row->getId()); ?>"
+                        />
                     </td>
                 </tr>
                 <tr>
                     <th class="key"><?php echo Lang::txt('COM_STOREFRONT_PRODUCT'); ?>:</th>
                     <td>
                         <?php echo $this->pInfo->pName; ?>
-                        <input type="hidden" name="pId" id="pid" value="<?php echo $this->escape($this->pInfo->pId); ?>" />
+                        <input
+                            type="hidden"
+                            name="pId"
+                            id="pid"
+                            value="<?php echo $this->escape($this->pInfo->pId); ?>"
+                        />
                     </td>
                 </tr>
                 <?php
@@ -223,7 +295,8 @@ $this->css();
                     <td>
                         <?php
                         $directUrl = Request::root();
-                        $directUrl .= 'storefront/product/' . (!empty($this->pInfo->pAlias) ? $this->pInfo->pAlias : $this->pInfo->pId);
+                        $productSlug = !empty($this->pInfo->pAlias) ? $this->pInfo->pAlias : $this->pInfo->pId;
+                        $directUrl .= 'storefront/product/' . $productSlug;
                         if (!empty($this->options)) {
                             $directUrl .= '/';
                             $i = 0;
@@ -260,13 +333,18 @@ $this->css();
 
                 <?php
                 $showInventoryOptions = true;
-                if ($this->pInfo->ptModel == 'software' && isset($skuMeta['serialManagement']) && $skuMeta['serialManagement'] == 'multiple') {
+                if (
+                    $this->pInfo->ptModel == 'software'
+                    && isset($skuMeta['serialManagement'])
+                    && $skuMeta['serialManagement'] == 'multiple'
+                ) {
                     $showInventoryOptions = false;
                 }
                 if ($showInventoryOptions) {
                     ?>
 
-                    <div class="input-wrap" data-hint="<?php echo 'Should the inventory level be kept tracked? If yes set the inventory.'; ?>">
+                    <?php $trackHint = 'Should the inventory level be kept tracked? If yes set the inventory.'; ?>
+                    <div class="input-wrap" data-hint="<?php echo $trackHint; ?>">
                         <label for="field-sTrackInventory"><?php echo 'Track Inventory'; ?>:</label>
                         <select name="fields[sTrackInventory]" id="field-sTrackInventory">
                             <option value="0"<?php if ($this->row->getTrackInventory() == 0) {
@@ -278,18 +356,41 @@ $this->css();
                         </select>
                     </div>
 
-                    <div class="input-wrap" data-hint="<?php echo 'Number of items available for sale in the inventory. Non-negative integer.'; ?>">
+                    <?php
+                    $inventoryHint = 'Number of items available for sale in the inventory. Non-negative integer.';
+                    ?>
+                    <div class="input-wrap" data-hint="<?php echo $inventoryHint; ?>">
                         <label for="field-inventory"><?php echo 'Inventory'; ?>:</label>
-                        <input type="text" name="fields[sInventory]" id="field-inventory" size="30" maxlength="10" value="<?php echo $this->row->getInventoryLevel(); ?>" />
+                        <input
+                            type="text"
+                            name="fields[sInventory]"
+                            id="field-inventory"
+                            size="30"
+                            maxlength="10"
+                            value="<?php echo $this->row->getInventoryLevel(); ?>"
+                        />
                     </div>
 
                     <?php
                 }
                 ?>
 
-                <div class="input-wrap" data-hint="<?php echo 'Inventory threshold: when reached or below an email notification is sent to the admin on each inventory change'; ?>">
-                    <label for="field-inventory-notification-threshold"><?php echo 'Inventory notification threshold'; ?>:</label>
-                    <input type="text" name="fields[meta][inventoryNotificationThreshold]" id="field-inventory-notification-threshold" size="30" maxlength="10" value="<?php echo $inventoryNotificationThreshold; ?>" />
+<?php
+$invThresholdHint = 'Inventory threshold: when reached or below an email notification'
+    . ' is sent to the admin on each inventory change';
+?>
+                <div class="input-wrap" data-hint="<?php echo $invThresholdHint; ?>">
+                    <label for="field-inventory-notification-threshold">
+                        <?php echo 'Inventory notification threshold'; ?>:
+                    </label>
+                    <input
+                        type="text"
+                        name="fields[meta][inventoryNotificationThreshold]"
+                        id="field-inventory-notification-threshold"
+                        size="30"
+                        maxlength="10"
+                        value="<?php echo $inventoryNotificationThreshold; ?>"
+                    />
                 </div>
             </fieldset>
 
@@ -309,13 +410,37 @@ $this->css();
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-publish_up"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_UP'); ?>:</label><br />
-                    <?php echo Html::input('calendar', 'fields[publish_up]', ($this->row->getPublishTime()->publish_up && $this->row->getPublishTime()->publish_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_up)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_up')); ?>
+<?php
+$publishUp = $this->row->getPublishTime()->publish_up;
+$publishUpVal = ($publishUp && $publishUp != '0000-00-00 00:00:00')
+    ? $this->escape(Date::of($publishUp)->toLocal('Y-m-d H:i:s'))
+    : '';
+?>
+<?php $publishUpLabel = Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_UP'); ?>
+                    <label for="field-publish_up"><?php echo $publishUpLabel; ?>:</label><br />
+                    <?php echo Html::input(
+                        'calendar',
+                        'fields[publish_up]',
+                        $publishUpVal,
+                        array('id' => 'field-publish_up')
+                    ); ?>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-publish_down"><?php echo Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-                    <?php echo Html::input('calendar', 'fields[publish_down]', ($this->row->getPublishTime()->publish_down && $this->row->getPublishTime()->publish_down != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->row->getPublishTime()->publish_down)->toLocal('Y-m-d H:i:s')) : ''), array('id' => 'field-publish_down')); ?>
+<?php
+$publishDown = $this->row->getPublishTime()->publish_down;
+$publishDownVal = ($publishDown && $publishDown != '0000-00-00 00:00:00')
+    ? $this->escape(Date::of($publishDown)->toLocal('Y-m-d H:i:s'))
+    : '';
+?>
+<?php $publishDownLabel = Lang::txt('COM_STOREFRONT_FIELD_PUBLISH_DOWN'); ?>
+                    <label for="field-publish_down"><?php echo $publishDownLabel; ?>:</label><br />
+                    <?php echo Html::input(
+                        'calendar',
+                        'fields[publish_down]',
+                        $publishDownVal,
+                        array('id' => 'field-publish_down')
+                    ); ?>
                 </div>
             </fieldset>
 
@@ -338,7 +463,14 @@ $this->css();
                 if ($this->row->getRestricted()) {
                     ?>
                     <p>
-                        <a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=restrictions&id=' . $this->row->getId(); ?>">Manage restrictions</a></p>
+                    <?php
+                    $restrictUrl = 'index.php?option=' . $this->option
+                    . '&controller=restrictions&id=' . $this->row->getId();
+                    ?>
+                    <a class="options-link" href="<?php echo $restrictUrl; ?>">
+                        Manage restrictions
+                    </a>
+                </p>
                     <?php
                 }
                 ?>
@@ -348,11 +480,18 @@ $this->css();
                 <legend><span><?php echo Lang::txt('Whitelist'); ?></span></legend>
 
                 <div class="input-wrap">
-                    Whitelisting grants users access to the SKU despite any other existing access controls or restrictions
+                    Whitelisting grants users access to the SKU despite any other
+                    existing access controls or restrictions
                 </div>
 
                 <p>
-                    <a class="options-link" href="<?php echo 'index.php?option=' . $this->option . '&controller=whitelist&id=' . $this->row->getId(); ?>">Manage whitelist</a>
+<?php
+$whitelistUrl = 'index.php?option=' . $this->option
+    . '&controller=whitelist&id=' . $this->row->getId();
+?>
+                    <a class="options-link" href="<?php echo $whitelistUrl; ?>">
+                        Manage whitelist
+                    </a>
                 </p>
 
             </fieldset>

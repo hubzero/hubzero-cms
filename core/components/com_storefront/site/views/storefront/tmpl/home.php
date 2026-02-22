@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -52,7 +50,12 @@ $this->css()
                 echo '">';
                 if (isset($category->imgName) && $category->imgName) {
                     echo '<div class="img" style="background-image: url(';
-                    $imgPath = '/app/' . trim($this->config->get('collectionsImagesFolder', '/site/storefront/collections'), DS) . DS . $category->cId . DS;
+                    $collectionsFolder = $this->config->get(
+                        'collectionsImagesFolder',
+                        '/site/storefront/collections'
+                    );
+                    $imgPath = '/app/' . trim($collectionsFolder, DS)
+                        . DS . $category->cId . DS;
                     echo "'" . $imgPath . $category->imgName . "'";
                     echo ')"></div>';
                 }

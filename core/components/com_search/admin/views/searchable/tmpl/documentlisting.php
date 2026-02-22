@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,10 +28,22 @@ Submenu::addEntry(
     'index.php?option=' . $this->option . '&task=manageBlacklist'
 );
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+    $formUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+    );
+    ?>
+<form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="filter" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" placeholder="<?php echo Lang::txt('COM_SEARCH_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+        <?php $filterPlaceholder = Lang::txt('COM_SEARCH_FILTER_SEARCH_PLACEHOLDER'); ?>
+        <input type="text"
+            name="filter"
+            id="filter_search"
+            value="<?php echo $this->escape($this->filter); ?>"
+            placeholder="<?php echo $filterPlaceholder; ?>"
+        />
         <input type="submit" value="<?php echo Lang::txt('COM_SEARCH_GO'); ?>" />
     </fieldset>
 
