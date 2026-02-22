@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -44,13 +42,26 @@ if ($this->config->get('launcher_layout', 0)) {
                 <div class="col span8">
                 <?php if ($this->publication->params->get('show_authors') && $this->publication->_authors) { ?>
                     <div id="authorslist">
-                        <?php echo \Components\Publications\Helpers\Html::showContributors($this->publication->_authors, true, false, false, false, $this->publication->params->get('format_authors', 0)); ?>
+                        <?php
+                        $formatAuthors = $this->publication->params->get('format_authors', 0);
+                        echo \Components\Publications\Helpers\Html::showContributors(
+                            $this->publication->_authors,
+                            true,
+                            false,
+                            false,
+                            false,
+                            $formatAuthors
+                        );
+                        ?>
                     </div><!-- / #authorslist -->
                 <?php } ?>
 
                 <p class="ataglance">
                     <?php
-                        $abstractSnippet = \Hubzero\Utility\Str::truncate(stripslashes(strip_tags($this->publication->abstract)), 250);
+                        $abstractSnippet = \Hubzero\Utility\Str::truncate(
+                            stripslashes(strip_tags($this->publication->abstract)),
+                            250
+                        );
                         echo $this->publication->abstract ?  $abstractSnippet : '';
                     ?>
                 </p>
@@ -63,8 +74,11 @@ if ($this->config->get('launcher_layout', 0)) {
             <div class="col span4 omega launcharea">
                 <?php if ($this->publication->version->get('downloadDisabled')) : ?>
                         <p>
-                            <?php echo Lang::txt('COM_PUBLICATIONS_DOWNLOAD_DATASET_DISABLED'); echo Lang::txt('COM_PUBLICATIONS_PLEASE')?>
-                            <a href="/support/ticket/new" target="_blank"><?php echo Lang::txt('COM_PUBLICATIONS_SUBMIT_TICKET');?></a>
+                            <?php $langTxt = Lang::txt('COM_PUBLICATIONS_DOWNLOAD_DATASET_DISABLED'); ?>
+                            <?php $langTxt2 = Lang::txt('COM_PUBLICATIONS_PLEASE'); ?>
+                            <?php echo $langTxt; echo Lang::txt('COM_PUBLICATIONS_PLEASE')?>
+                            <?php $langTxt = Lang::txt('COM_PUBLICATIONS_SUBMIT_TICKET'); ?>
+                            <a href="/support/ticket/new" target="_blank"><?php echo $langTxt;?></a>
                             <?php echo Lang::txt('COM_PUBLICATIONS_TO_INQUIRE_DATASET_STATUS'); ?>
                         </p>
                 <?php else : ?>
@@ -123,14 +137,36 @@ if ($this->config->get('launcher_layout', 0)) {
                 $from = '';
                 if (
                     $ancestor->version->get('state') == 1 &&
-                    (!$ancestor->version->get('published_up') || $ancestor->version->get('published_up') == '0000-00-00 00:00:00' || ($ancestor->version->get('published_up') != '0000-00-00 00:00:00' && $ancestor->version->get('published_up') <= Date::toSql())) &&
-                    (!$ancestor->version->get('published_down') || $ancestor->version->get('published_down') == '0000-00-00 00:00:00' || ($ancestor->version->get('published_down') != '0000-00-00 00:00:00' && $ancestor->version->get('published_down') > Date::toSql()))
+                    (
+                        !$ancestor->version->get('published_up') ||
+                        $ancestor->version->get('published_up') == '0000-00-00 00:00:00' ||
+                        (
+                            $ancestor->version->get('published_up') != '0000-00-00 00:00:00' &&
+                            $ancestor->version->get('published_up') <= Date::toSql()
+                        )
+                    ) &&
+                    (
+                        !$ancestor->version->get('published_down') ||
+                        $ancestor->version->get('published_down') == '0000-00-00 00:00:00' ||
+                        (
+                            $ancestor->version->get('published_down') != '0000-00-00 00:00:00' &&
+                            $ancestor->version->get('published_down') > Date::toSql()
+                        )
+                    )
                 ) {
-                    $from = '<a href="' . Route::url('index.php?option=com_publications&id=' . $ancestor->get('id') . '&v=' . $ancestor->version->get('version_number')) . '">' . $this->escape($ancestor->version->get('title')) . '</a>';
+                    $ancestorUrl = Route::url(
+                        'index.php?option=com_publications&id='
+                        . $ancestor->get('id') . '&v='
+                        . $ancestor->version->get('version_number')
+                    );
+                    $ancestorTitle = $this->escape($ancestor->version->get('title'));
+                    $from = '<a href="' . $ancestorUrl . '">' . $ancestorTitle . '</a>';
                 } else {
-                    $from = $this->escape($ancestor->version->get('title')) . ' <span class="publication-status">' . Lang::txt('(unpublished)') . '</span>';
+                    $from = $this->escape($ancestor->version->get('title')) . ' <span class="publication-status">'
+                        . Lang::txt('(unpublished)') . '</span>';
                 }
-                $from .= ' <span class="publication-version"><abbr title="' . Lang::txt('Version') . '">v</abbr> ' . $this->escape($ancestor->version->get('version_label')) . '</span>';
+                $from .= ' <span class="publication-version"><abbr title="' . Lang::txt('Version') . '">v</abbr> '
+                    . $this->escape($ancestor->version->get('version_label')) . '</span>';
 
                 echo '<p class="icon-fork fork-source">' . Lang::txt('Forked from: %s', $from) . '</p>';
             }
@@ -177,7 +213,13 @@ if ($this->publication->access('view-all')) {
                     $this->version
                 );
 
-                echo \Components\Publications\Helpers\Html::sections($this->sections, $this->cats, $this->tab, 'hide', 'main');
+                echo \Components\Publications\Helpers\Html::sections(
+                    $this->sections,
+                    $this->cats,
+                    $this->tab,
+                    'hide',
+                    'main'
+                );
 
                 // Add footer notice
                 if ($this->tab == 'about') {

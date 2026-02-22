@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -52,19 +50,31 @@ $this->view('_title')
         <form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
             <div class="explaination">
                 <h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_TITLE_ROLES'); ?></h4>
-                <p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_OWNERS')); ?></span> <?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
+                <?php
+                $langTxt1 = Lang::txt('COM_PROJECTS_LABEL_OWNERS');
+                $langTxt2 = Lang::txt('COM_PROJECTS_CAN');
+                ?>
+                <p><span class="italic prominent"><?php echo ucfirst($langTxt1); ?></span> <?php echo $langTxt2; ?>:</p>
                 <ul>
                     <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_ONE'); ?></li>
                     <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_TWO'); ?></li>
                     <li><strong><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_THREE'); ?></strong></li>
                 </ul>
-                <p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_COLLABORATORS')); ?></span> <?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
+                <?php
+                $langTxt3 = Lang::txt('COM_PROJECTS_LABEL_COLLABORATORS');
+                $langTxt4 = Lang::txt('COM_PROJECTS_CAN');
+                ?>
+                <p><span class="italic prominent"><?php echo ucfirst($langTxt3); ?></span> <?php echo $langTxt4; ?>:</p>
                 <ul>
                     <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_ONE'); ?></li>
                     <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_TWO'); ?></li>
                     <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_THREE'); ?></li>
                 </ul>
-                <p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_REVIEWER')); ?></span> <?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
+                <?php
+                $langTxt5 = Lang::txt('COM_PROJECTS_LABEL_REVIEWER');
+                $langTxt6 = Lang::txt('COM_PROJECTS_CAN');
+                ?>
+                <p><span class="italic prominent"><?php echo ucfirst($langTxt5); ?></span> <?php echo $langTxt6; ?>:</p>
                 <ul>
                     <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_REVIEWER_CAN_ONE'); ?></li>
                 </ul>
@@ -91,7 +101,12 @@ $this->view('_title')
             </fieldset>
             <div class="clear"></div>
             <div class="submitarea">
-                <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn btn-success" id="gonext" />
+                <input
+                    type="submit"
+                    value="<?php echo Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>"
+                    class="btn btn-success"
+                    id="gonext"
+                />
             </div>
         </form>
     </div>

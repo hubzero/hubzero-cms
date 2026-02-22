@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,13 +15,18 @@ defined('_HZEXEC_') or die();
         <div class="col span4">
             <ul class="bundle-info">
                 <li><?php echo Lang::txt('COM_PUBLICATIONS_BUNDLE_CONTENT'); ?></li>
-                <li><span class="bundle-size"><?php echo Hubzero\Utility\Number::formatBytes($this->bundle->getSize()); ?></span></li>
+                <?php $val = Hubzero\Utility\Number::formatBytes($this->bundle->getSize()); ?>
+                <li><span class="bundle-size"><?php echo $val; ?></span></li>
             </ul>
         </div>
         <div class="col span8 omega">
             <div class="bundle-checksum">
                 <span class="bundle-checksum-value">md5:<?php echo $this->bundle->getMd5(); ?></span>
-                <span class="bundle-checksum-help icon-help tooltips" title="<?php echo Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM'); ?></span>
+                <?php $checksumTxt = Lang::txt('COM_PUBLICATIONS_BUNDLE_CHECKSUM'); ?>
+                <span
+                    class="bundle-checksum-help icon-help tooltips"
+                    title="<?php echo $checksumTxt; ?>"
+                ><?php echo $checksumTxt; ?></span>
             </div>
         </div>
     </div>

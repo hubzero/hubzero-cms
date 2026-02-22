@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -48,7 +46,11 @@ $this->view('_title')
     ?>
     <div class="clear"></div>
     <div class="setup-wrap">
-        <form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" enctype="multipart/form-data">
+        <form
+            id="hubForm"
+            method="post"
+            action="<?php echo Route::url('index.php?option=' . $this->option); ?>"
+            enctype="multipart/form-data">
             <div class="explaination">
                 <h4><?php echo Lang::txt('COM_PROJECTS_HOWTO_TITLE_NAME_PROJECT'); ?></h4>
                 <p><?php echo Lang::txt('COM_PROJECTS_HOWTO_NAME_PROJECT'); ?></p>
@@ -70,25 +72,66 @@ $this->view('_title')
 
                 <div class="form-group">
                     <label for="field-title">
-                        <?php echo Lang::txt('COM_PROJECTS_TITLE'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                        <?php
+                        $langTxt1 = Lang::txt('COM_PROJECTS_TITLE');
+                        ?>
+                        <?php echo $langTxt1; ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
                         <span class="verification"></span>
-                        <input name="title" maxlength="250" id="field-title" type="text" value="<?php echo $this->escape($this->model->get('title')); ?>" class="form-control verifyme" />
+                        <input
+                            name="title"
+                            maxlength="250"
+                            id="field-title"
+                            type="text"
+                            value="<?php echo $this->escape($this->model->get('title')); ?>"
+                            class="form-control verifyme"
+                        />
                     </label>
                     <p class="hint"><?php echo Lang::txt('COM_PROJECTS_HINTS_TITLE'); ?></p>
                 </div>
 
                 <div class="form-group">
                     <label for="field-alias">
-                        <?php echo Lang::txt('COM_PROJECTS_ALIAS_NAME'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                        <?php
+                        $langTxt2 = Lang::txt('COM_PROJECTS_ALIAS_NAME');
+                        ?>
+                        <?php echo $langTxt2; ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
                         <span class="verification"></span>
-                        <input name="name" maxlength="30" id="field-alias" type="text" value="<?php echo $this->model->get('alias'); ?>" <?php echo $this->model->get('id') ? ' disabled="disabled"' : ''; ?> class="form-control verifyme" data-verify="<?php echo Route::url('index.php?option=com_projects&task=verify&no_html=1&ajax=1&text='); ?>" data-suggest="<?php echo Route::url('index.php?option=com_projects&task=suggestalias&no_html=1&ajax=1&text='); ?>" />
+                        <?php
+                        $verifyUrl = Route::url(
+                            'index.php?option=com_projects'
+                            . '&task=verify&no_html=1&ajax=1&text='
+                        );
+                        $suggestUrl = Route::url(
+                            'index.php?option=com_projects'
+                            . '&task=suggestalias&no_html=1&ajax=1&text='
+                        );
+                        $disabledAttr = $this->model->get('id')
+                            ? ' disabled="disabled"' : '';
+                        ?>
+                        <input
+                            name="name"
+                            maxlength="30"
+                            id="field-alias"
+                            type="text"
+                            value="<?php echo $this->model->get('alias'); ?>"
+                            <?php echo $disabledAttr; ?>
+                            class="form-control verifyme"
+                            data-verify="<?php echo $verifyUrl; ?>"
+                            data-suggest="<?php echo $suggestUrl; ?>"
+                        />
                     </label>
                     <p class="hint"><?php echo Lang::txt('COM_PROJECTS_HINTS_NAME'); ?></p>
                 </div>
 
                 <div id="moveon" class="nogo">
                     <p class="submitarea">
-                        <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn disabled" disabled="disabled" />
+                        <?php $saveContinueTxt = Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>
+                        <input
+                            type="submit"
+                            value="<?php echo $saveContinueTxt; ?>"
+                            class="btn disabled"
+                            disabled="disabled"
+                        />
                     </p>
                 </div>
 
@@ -96,8 +139,24 @@ $this->view('_title')
                     <h2><?php echo Lang::txt('COM_PROJECTS_DESCRIBE_PROJECT'); ?></h2>
                     <p class="question"><?php echo Lang::txt('COM_PROJECTS_QUESTION_DESCRIBE_NOW_OR_LATER'); ?></p> 
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=save&id=' . $this->model->get('id')); ?>" id="next_desc" class="btn btn-success"><?php echo Lang::txt('COM_PROJECTS_QUESTION_DESCRIBE_YES'); ?></a>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=save&id=' . $this->model->get('id')); ?>" id="next_step" class="btn"><?php echo Lang::txt('COM_PROJECTS_QUESTION_DESCRIBE_NO'); ?></a>
+                        <?php
+                        $saveUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&task=save&id=' . $this->model->get('id')
+                        );
+                        $descYes = Lang::txt('COM_PROJECTS_QUESTION_DESCRIBE_YES');
+                        $descNo = Lang::txt('COM_PROJECTS_QUESTION_DESCRIBE_NO');
+                        ?>
+                        <a
+                            href="<?php echo $saveUrl; ?>"
+                            id="next_desc"
+                            class="btn btn-success"
+                        ><?php echo $descYes; ?></a>
+                        <a
+                            href="<?php echo $saveUrl; ?>"
+                            id="next_step"
+                            class="btn"
+                        ><?php echo $descNo; ?></a>
                     </p>
                 </div>
             </fieldset>
@@ -113,8 +172,18 @@ $this->view('_title')
 
                     <div class="form-group">
                         <label for="field-about">
-                            <?php echo Lang::txt('COM_PROJECTS_ABOUT'); ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
-                            <?php echo $this->editor('about', $this->escape($this->model->about('raw')), 35, 25, 'field-about', array('class' => 'form-control minimal no-footer')); ?>
+                            <?php
+                            $langTxt9 = Lang::txt('COM_PROJECTS_ABOUT');
+                            ?>
+                            <?php echo $langTxt9; ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
+                            <?php echo $this->editor(
+                                'about',
+                                $this->escape($this->model->about('raw')),
+                                35,
+                                25,
+                                'field-about',
+                                array('class' => 'form-control minimal no-footer')
+                            ); ?>
                         </label>
                     </div>
                 </fieldset>
@@ -122,15 +191,36 @@ $this->view('_title')
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_PROJECTS_SETTING_APPEAR_IN_SEARCH'); ?></legend>
 
+                    <?php
+                    $accessVal = $this->model->get('access');
+                    $langTxt10 = Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE');
+                    $checkedPrivate = $accessVal == 5 ? 'checked="checked"' : '';
+                    ?>
                     <div class="form-group form-check">
                         <label>
-                            <input class="option" name="access" type="radio" value="5" <?php echo $this->model->get('access') == 5 ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?>
+                            <input
+                                class="option"
+                                name="access"
+                                type="radio"
+                                value="5"
+                                <?php echo $checkedPrivate; ?>
+                            /> <?php echo $langTxt10; ?>
                         </label>
                     </div>
 
+                    <?php
+                    $langTxt11 = Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC');
+                    $checkedPublic = $accessVal != 5 ? 'checked="checked"' : '';
+                    ?>
                     <div class="form-group form-check">
                         <label>
-                            <input class="option" name="access" type="radio" value="1" <?php echo $this->model->get('access') != 5 ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?>
+                            <input
+                                class="option"
+                                name="access"
+                                type="radio"
+                                value="1"
+                                <?php echo $checkedPublic; ?>
+                            /> <?php echo $langTxt11; ?>
                         </label>
                     </div>
                 </fieldset>
@@ -158,7 +248,13 @@ $this->view('_title')
                 <?php endif; ?>
 
                 <div class="submitarea">
-                    <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn btn-success" id="gonext" />
+                    <?php $saveContinueTxt2 = Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>
+                    <input
+                        type="submit"
+                        value="<?php echo $saveContinueTxt2; ?>"
+                        class="btn btn-success"
+                        id="gonext"
+                    />
                 </div>
             </div>
         </form>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,8 +14,19 @@ $class = $this->item->assigned && $this->item->active ? ' assigned' : ' unassign
 
 <div class="handlertype-<?php echo $this->handler->get('_name') . $class; ?>">
     <h3><?php echo $this->configs->label; ?></h3>
+    <?php
+    $handlerUrl = Route::url(
+        'index.php?option=com_projects&alias='
+        . $this->publication->project_alias
+        . '&active=publications&pid=' . $this->publication->id
+    ) . '?vid=' . $this->publication->version_id
+        . '&amp;action=handler&amp;h=' . $this->handler->get('_name')
+        . '&amp;p=' . $this->props;
+    $handlerLabel = ($this->item->assigned && $this->item->active)
+        ? Lang::txt('COM_PUBLICATIONS_HANDLER_VIEW_MANAGE')
+        : Lang::txt('COM_PUBLICATIONS_HANDLER_ACTIVATE');
+    ?>
     <p class="manage-handler">
-        <a href="<?php echo Route::url('index.php?option=com_projects&alias='
-                . $this->publication->project_alias . '&active=publications&pid=' . $this->publication->id) . '?vid=' . $this->publication->version_id . '&amp;action=handler&amp;h=' . $this->handler->get('_name') . '&amp;p=' . $this->props; ?>" class="showinbox box-expanded"><?php echo ($this->item->assigned && $this->item->active) ? Lang::txt('COM_PUBLICATIONS_HANDLER_VIEW_MANAGE') : Lang::txt('COM_PUBLICATIONS_HANDLER_ACTIVATE'); ?></a>
+        <a href="<?php echo $handlerUrl; ?>" class="showinbox box-expanded"><?php echo $handlerLabel; ?></a>
     </p>
 </div>

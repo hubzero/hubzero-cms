@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -24,7 +22,9 @@ $supli  = array();
 
 // Archival package?
 if (file_exists($archive) && $publication->base == 'databases') {
-    $supli[] = ' <li class="archival-package"><a href="' . Route::url($publication->link('serve') . '&render=archive') . '" title="' . Lang::txt('COM_PUBLICATIONS_DOWNLOAD_ARCHIVE_PACKAGE') . '">' . Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE') . '</a></li>' . "\n";
+    $supli[] = ' <li class="archival-package"><a href="' . Route::url($publication->link('serve') . '&render=archive')
+        . '" title="' . Lang::txt('COM_PUBLICATIONS_DOWNLOAD_ARCHIVE_PACKAGE') . '">'
+            . Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE') . '</a></li>' . "\n";
     $docs++;
 }
 
@@ -40,7 +40,9 @@ if ($children) {
         $params = new \Hubzero\Config\Registry($child->params);
 
         $serveas  = $params->get('serveas');
-        $ftype    = $child->type == 'file' ? \Components\Projects\Helpers\Html::getFileExtension($child->path) : 'supporting';
+        $ftype    = $child->type == 'file'
+            ? \Components\Projects\Helpers\Html
+            ::getFileExtension($child->path) : 'supporting';
         $class    = $params->get('class', $ftype);
         $doctitle = $params->get('title', $child->title);
 
@@ -66,7 +68,8 @@ if ($children) {
         }
 
         if (in_array($doctitle, $toShow)) {
-            $supli[] = ' <li><a class="' . $class . '" href="' . $url . '" title="' . $child->title . '"' . $extra . '>' . $doctitle . '</a></li>' . "\n";
+            $supli[] = ' <li><a class="' . $class . '" href="' . $url . '" title="' . $child->title . '"' . $extra
+                . '>' . $doctitle . '</a></li>' . "\n";
         }
     }
 }
@@ -82,13 +85,15 @@ for ($i = 0; $i < count($supli); $i++) {
 
 // View more link?
 if ($docs > 0 && $otherdocs > 0) {
-    $supln .= ' <li class="otherdocs"><a href="' . Route::url($publication->link() . '&active=supportingdocs&v=' . $publication->get('version_number'))
+    $supln .= ' <li class="otherdocs"><a href="'
+        . Route::url($publication->link() . '&active=supportingdocs&v=' . $publication->get('version_number'))
         . '" title="' . Lang::txt('View All') . ' ' . $docs . ' ' . Lang::txt('Supporting Documents') . ' ">'
         . $otherdocs . ' ' . Lang::txt('more') . ' &rsaquo;</a></li>' . "\n";
 }
 
 if (!$sdocs && $docs > 0) {
-    $html .= "\t\t" . '<p class="viewalldocs"><a href="' . Route::url($publication->link() . '&active=supportingdocs&v=' . $publication->get('version_number')) . '">'
+    $html .= "\t\t" . '<p class="viewalldocs"><a href="'
+        . Route::url($publication->link() . '&active=supportingdocs&v=' . $publication->get('version_number')) . '">'
         . Lang::txt('COM_PUBLICATIONS_IN_DEVELOPMENT_DOCS_AVAIL') . '</a></p>' . "\n";
 }
 

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -70,7 +68,11 @@ if ($comment) {
 <table class="tbl-message" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tbody>
         <tr>
-            <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
+            <td
+                align="left"
+                valign="bottom"
+                style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;"
+            >
             <?php echo $this->subject; ?>
             </td>
         </tr>
@@ -88,32 +90,72 @@ if ($comment) {
 </table>
 <!-- End Spacer -->
 
-<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
+<table
+    id="project-info"
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="border-collapse: collapse; line-height: 1.6em;"
+>
     <tbody>
         <tr>
-            <td class="mobilehide" style="font-size: 2.5em; font-weight: bold; text-align: center; padding: 0 30px 8px 0; vertical-align: top;" align="center" valing="top">
+            <td
+                class="mobilehide"
+                style="font-size: 2.5em; font-weight: bold; text-align: center;
+                    padding: 0 30px 8px 0; vertical-align: top;"
+                align="center"
+                valing="top"
+            >
             </td>
             <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
-                <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
+                <table
+                    width="100%"
+                    style="border-collapse: collapse; font-size: 0.9em;"
+                    cellpadding="0"
+                    cellspacing="0"
+                    border="0"
+                >
                     <tbody>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Publication:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->publication->get('title'); ?> v. <?php echo $this->publication->get('version_label'); ?>(#<?php echo $this->publication->get('id'); ?>)</td>
+                            <th
+                                style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right"
+                            >Publication:
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
+                                <?php echo $this->publication->get('title'); ?>
+                                v. <?php echo $this->publication->get('version_label'); ?>
+                                (#<?php echo $this->publication->get('id'); ?>)
+                            </td>
                         </tr>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+                            <th
+                                style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right"
+                            >Link:
+                            <td
+                                style="text-align: left; padding: 0 0.5em;"
+                                width="100%"
+                                align="left"
+                            ><a href="<?php echo $link; ?>"><?php echo $link; ?></a>
                         </tr>
                     </tbody>
                 </table>
 
-                <table width="100%" style="margin: 18px 0 0 0; border-top: 2px solid #e9e9e9; border-collapse: collapse; font-size: 1em;">
+                <table
+                    width="100%"
+                    style="margin: 18px 0 0 0; border-top: 2px solid #e9e9e9;
+                        border-collapse: collapse; font-size: 1em;"
+                >
                     <tbody>
                         <tr>
                             <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?>
+                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">
+                                    <?php echo $comment; ?>
                                 <?php if (!empty($this->permissionURL) && !empty($this->permissionTxt)) {?>
-                                    <a href="<?php echo $this->permissionURL; ?>"><?php echo $this->permissionTxt; ?></a>
+                                                                        <a href="<?php echo $this->permissionURL; ?>">
+                                        <?php echo $this->permissionTxt; ?>
+                                        </a>
                                 <?php } ?>
                                 </div>
                             </td>

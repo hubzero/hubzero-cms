@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,17 +28,31 @@ if (
     <div class="form-group">
         <div class="form-group form-check">
             <label for="grant_info" class="form-check-label">
-                <input class="option form-check-input" name="grant_info" id="grant_info-no" type="radio" value="0" <?php if (!$hasGrantInfo) {
-                    echo 'checked="checked"';
-                                                                                                                   } ?> />
+                <input
+                    class="option form-check-input"
+                    name="grant_info"
+                    id="grant_info-no"
+                    type="radio"
+                    value="0"
+                    <?php if (!$hasGrantInfo) {
+                        echo 'checked="checked"';
+                    } ?>
+                />
                 <?php echo Lang::txt('JNO'); ?>
             </label>
         </div>
         <div class="form-group form-check">
             <label for="grant_info" class="form-check-label">
-                <input class="option form-check-input" name="grant_info" id="grant_info-yes" type="radio" value="1" <?php if ($hasGrantInfo) {
-                    echo 'checked="checked"';
-                                                                                                                    } ?> />
+                <input
+                    class="option form-check-input"
+                    name="grant_info"
+                    id="grant_info-yes"
+                    type="radio"
+                    value="1"
+                    <?php if ($hasGrantInfo) {
+                        echo 'checked="checked"';
+                    } ?>
+                />
                 <?php echo Lang::txt('JYES'); ?>
             </label>
         </div>
@@ -63,9 +75,27 @@ if (
             <label for="param-grant_title" class="terms-label">
                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
                 <?php if ($approved) :  ?>
-                    <span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get('grant_title', 'N/A'))); ?></span>
+                    <?php
+                    $grantTitleVal = htmlentities(html_entity_decode(
+                        $this->model->params->get('grant_title', 'N/A')
+                    ));
+                    ?>
+                    <span class="prominent"><?php echo $grantTitleVal; ?></span>
                 <?php else : ?>
-                    <input name="params[grant_title]" id="param-grant_title" class="form-control" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get('grant_title') == null ? '' : $this->model->params->get('grant_title'))); ?>" class="long" />
+                    <?php
+                    $grantTitleInput = $this->model->params->get('grant_title');
+                    $grantTitleInput = htmlentities(html_entity_decode(
+                        $grantTitleInput == null ? '' : $grantTitleInput
+                    ));
+                    ?>
+                    <input
+                        name="params[grant_title]"
+                        id="param-grant_title"
+                        class="form-control"
+                        maxlength="250"
+                        type="text"
+                        value="<?php echo $grantTitleInput; ?>"
+                    />
                 <?php endif ?>
             </label>
         </div>
@@ -74,9 +104,27 @@ if (
             <label for="param-grant_PI" class="terms-label">
                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
                 <?php if ($approved) : ?>
-                    <span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get('grant_PI', 'N/A'))); ?></span>
+                    <?php
+                    $grantPiVal = htmlentities(html_entity_decode(
+                        $this->model->params->get('grant_PI', 'N/A')
+                    ));
+                    ?>
+                    <span class="prominent"><?php echo $grantPiVal; ?></span>
                 <?php else : ?>
-                    <input name="params[grant_PI]" id="param-grant_PI"class="form-control"  maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get('grant_PI') == null ? '' : $this->model->params->get('grant_PI'))); ?>" class="long"  />
+                    <?php
+                    $grantPiInput = $this->model->params->get('grant_PI');
+                    $grantPiInput = htmlentities(html_entity_decode(
+                        $grantPiInput == null ? '' : $grantPiInput
+                    ));
+                    ?>
+                    <input
+                        name="params[grant_PI]"
+                        id="param-grant_PI"
+                        class="form-control"
+                        maxlength="250"
+                        type="text"
+                        value="<?php echo $grantPiInput; ?>"
+                    />
                 <?php endif; ?>
             </label>
         </div>
@@ -85,9 +133,27 @@ if (
             <label for="param-grant_agency" class="terms-label">
                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:
                 <?php if ($approved) : ?>
-                    <span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get('award_number', 'N/A'))); ?></span>
+                    <?php
+                    $awardNumVal = htmlentities(html_entity_decode(
+                        $this->model->params->get('award_number', 'N/A')
+                    ));
+                    ?>
+                    <span class="prominent"><?php echo $awardNumVal; ?></span>
                 <?php else : ?>
-                    <input name="params[award_number]" id="param-award_number" class="form-control" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get('award_number') == null ? '' : $this->model->params->get('award_number'))); ?>" class="long" />
+                    <?php
+                    $awardNumInput = $this->model->params->get('award_number');
+                    $awardNumInput = htmlentities(html_entity_decode(
+                        $awardNumInput == null ? '' : $awardNumInput
+                    ));
+                    ?>
+                    <input
+                        name="params[award_number]"
+                        id="param-award_number"
+                        class="form-control"
+                        maxlength="250"
+                        type="text"
+                        value="<?php echo $awardNumInput; ?>"
+                    />
                 <?php endif ?>
             </label>
         </div>
@@ -96,9 +162,27 @@ if (
             <label for="param-grant_agency" class="terms-label">
                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
                 <?php if ($approved) : ?>
-                    <span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get('grant_agency', 'N/A'))); ?></span>
+                    <?php
+                    $agencyVal = htmlentities(html_entity_decode(
+                        $this->model->params->get('grant_agency', 'N/A')
+                    ));
+                    ?>
+                    <span class="prominent"><?php echo $agencyVal; ?></span>
                 <?php else : ?>
-                    <input name="params[grant_agency]" id="param-grant_agency" class="form-control" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get('grant_agency') == null ? '' : $this->model->params->get('grant_agency'))); ?>" class="long" />
+                    <?php
+                    $agencyInput = $this->model->params->get('grant_agency');
+                    $agencyInput = htmlentities(html_entity_decode(
+                        $agencyInput == null ? '' : $agencyInput
+                    ));
+                    ?>
+                    <input
+                        name="params[grant_agency]"
+                        id="param-grant_agency"
+                        class="form-control"
+                        maxlength="250"
+                        type="text"
+                        value="<?php echo $agencyInput; ?>"
+                    />
                 <?php endif ?>
             </label>
         </div>
@@ -107,9 +191,26 @@ if (
             <label for="param-grant_budget" class="terms-label">
                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
                 <?php if ($approved) : ?>
-                    <span class="prominent"><?php echo htmlentities(html_entity_decode($this->model->params->get('grant_budget', 'N/A'))); ?></span>
+                    <?php
+                    $budgetVal = htmlentities(html_entity_decode(
+                        $this->model->params->get('grant_budget', 'N/A')
+                    ));
+                    ?>
+                    <span class="prominent"><?php echo $budgetVal; ?></span>
                 <?php else : ?>
-                    <input name="params[grant_budget]" id="param-grant_budget" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->model->params->get('grant_budget') == null ? '' : $this->model->params->get('grant_budget'))); ?>" class="long"  />
+                    <?php
+                    $budgetInput = $this->model->params->get('grant_budget');
+                    $budgetInput = htmlentities(html_entity_decode(
+                        $budgetInput == null ? '' : $budgetInput
+                    ));
+                    ?>
+                    <input
+                        name="params[grant_budget]"
+                        id="param-grant_budget"
+                        maxlength="250"
+                        type="text"
+                        value="<?php echo $budgetInput; ?>"
+                    />
                 <?php endif; ?>
             </label>
         </div>
@@ -118,10 +219,21 @@ if (
             <div class="form-group">
                 <div class="form-group form-check">
                     <label for="param-grant_status" class="form-check-label">
-                        <input class="option form-check-input" name="params[grant_status]" id="param-grant_status" type="checkbox" value="0" <?php if ($this->model->params->get('grant_status') == 2) {
-                            echo 'checked="checked"';
-                                                                                                                                             } ?> />
-                        <?php echo $this->model->params->get('grant_status') == 2 ? Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_RESUBMIT_FOR_APPROVAL') : Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_NOTIFY_ADMIN'); ?>
+                        <input
+                            class="option form-check-input"
+                            name="params[grant_status]"
+                            id="param-grant_status"
+                            type="checkbox"
+                            value="0"
+                            <?php if ($this->model->params->get('grant_status') == 2) {
+                                echo 'checked="checked"';
+                            } ?>
+                        />
+                        <?php
+                        $langTxt1 = Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_RESUBMIT_FOR_APPROVAL');
+                        $langTxt2 = Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_NOTIFY_ADMIN');
+                        ?>
+                        <?php echo $this->model->params->get('grant_status') == 2 ? $langTxt1 : $langTxt2; ?>
                     </label>
                 </div>
             </div>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,7 +25,8 @@ endif;
     <div class="curation-history">
         <div class="pubtitle">
             <p>
-                <?php echo \Hubzero\Utility\Str::truncate($this->pub->title, 65); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->pub->version_label; ?>
+                <?php echo \Hubzero\Utility\Str::truncate($this->pub->title, 65); ?> |
+                    <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->pub->version_label; ?>
             </p>
         </div>
         <?php if ($history) : ?>
@@ -45,7 +44,9 @@ endif;
                     ?>
                     <div class="history-block <?php echo $trClass; ?> grid">
                         <div class="changelog-time col span3">
-                            <time datetime="<?php echo Date::of($event->created)->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($event->created)->toLocal('M d, Y H:iA'); ?></time>
+                            <?php $val = Date::of($event->created)->format('Y-m-d\TH:i:s\Z'); ?>
+                            <?php $val2 = Date::of($event->created)->toLocal('M d, Y H:iA'); ?>
+                            <time datetime="<?php echo $val; ?>"><?php echo $val2; ?></time>
                             <span class="block"><?php echo $this->escape($author); ?></span>
                             <span class="block">(
                             <?php echo ($event->curator)
@@ -59,7 +60,8 @@ endif;
                             </div>
                             <?php if ($event->comment) : ?>
                                 <div class="changelog-comment">
-                                    <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT') . ' <span class="italic">' . $event->comment . '</span>'; ?>
+                                    <?php $langTxt = Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT'); ?>
+                                    <?php echo $langTxt . ' <span class="italic">' . $event->comment . '</span>'; ?>
                                 </div>
                             <?php endif; ?>
                         </div>

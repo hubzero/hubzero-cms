@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -29,22 +27,65 @@ Html::behavior('keepalive');
 $this->js('activity.js');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('COM_PROJECTS_ERROR_MISSING_CONTENT')); ?>">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(
+    Lang::txt('COM_PROJECTS_ERROR_MISSING_CONTENT')
+);
+?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PROJECTS_FIELD_ANONYMOUS_HINT'); ?>">
-                    <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) {
-                        echo ' checked="checked"';
-                                                                                                                 } ?> />
+                <?php $anonHint = Lang::txt('COM_PROJECTS_FIELD_ANONYMOUS_HINT'); ?>
+                <div class="input-wrap" data-hint="<?php echo $anonHint; ?>">
+                    <input
+                        class="option"
+                        type="checkbox"
+                        name="fields[anonymous]"
+                        id="field-anonymous"
+                        value="1"
+                        <?php if ($this->row->get('anonymous')) {
+                            echo 'checked="checked"';
+                        } ?>
+                    />
                     <label for="field-anonymous"><?php echo Lang::txt('COM_PROJECTS_FIELD_ANONYMOUS'); ?></label>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-description"><?php echo Lang::txt('COM_PROJECTS_FIELD_DESCRIPTION'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <?php echo $this->editor('fields[description]', $this->escape($this->row->log->get('description')), 50, 15, 'field-description', array('class' => 'required minimal no-footer', 'buttons' => false)); ?>
+                    <label for="field-description"><?php
+                        echo Lang::txt('COM_PROJECTS_FIELD_DESCRIPTION');
+                    ?> <span class="required"><?php
+                        echo Lang::txt('JOPTION_REQUIRED');
+?></span></label><br />
+                    <?php
+                    $descValue = $this->escape(
+                        $this->row->log->get('description')
+                    );
+                    echo $this->editor(
+                        'fields[description]',
+                        $descValue,
+                        50,
+                        15,
+                        'field-description',
+                        array(
+                            'class' => 'required minimal no-footer',
+                            'buttons' => false,
+                        )
+                    );
+                    ?>
                 </div>
             </fieldset>
         </div>

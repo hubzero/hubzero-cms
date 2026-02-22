@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,12 +10,23 @@
 defined('_HZEXEC_') or die();
 
 $this->css();
+
+$browseUrl = Route::url('index.php?option=com_poll');
+$voteAction = Route::url('index.php?option=com_poll&task=vote');
+$resultsUrl = Route::url(
+    'index.php?option=com_poll&view=poll&id='
+    . $this->poll->id . ':' . $this->poll->alias
+);
 ?>
 <header id="content-header" class="full">
     <h2><?php echo Lang::txt('COM_POLL') . ': ' . Lang::txt('COM_POLL_LATEST'); ?></h2>
 
     <div id="content-header-extra">
-        <p><a class="icon-browse btn" href="<?php echo Route::url('index.php?option=com_poll'); ?>"><?php echo Lang::txt('COM_POLL_BROWSE'); ?></a></p>
+        <p>
+            <a class="icon-browse btn" href="<?php echo $browseUrl; ?>">
+                <?php echo Lang::txt('COM_POLL_BROWSE'); ?>
+            </a>
+        </p>
     </div><!-- / #content-header-extra -->
 </header>
 
@@ -27,20 +36,38 @@ $this->css();
             <div class="details">
                 <h3><?php echo stripslashes($this->poll->title); ?></h3>
 
-                <form id="pollform" method="post" action="<?php echo Route::url('index.php?option=com_poll&task=vote'); ?>">
+                <form
+                    id="pollform"
+                    method="post"
+                    action="<?php echo $voteAction; ?>"
+                >
                     <fieldset>
                         <ul class="poll-options">
                             <?php foreach ($this->options as $option) { ?>
                                 <li>
-                                    <input type="radio" name="voteid" id="voteid<?php echo $option->id; ?>" value="<?php echo $option->id; ?>" alt="<?php echo $option->id; ?>" />
-                                    <label for="voteid<?php echo $option->id; ?>"><?php echo $option->text; ?></label>
+                                    <input
+                                        type="radio"
+                                        name="voteid"
+                                        id="voteid<?php echo $option->id; ?>"
+                                        value="<?php echo $option->id; ?>"
+                                        alt="<?php echo $option->id; ?>"
+                                    />
+                                    <label for="voteid<?php echo $option->id; ?>">
+                                        <?php echo $option->text; ?>
+                                    </label>
                                 </li>
                             <?php } ?>
                         </ul>
                         <p>
-                            <input type="submit" name="task_button" value="<?php echo Lang::txt('COM_POLL_VOTE'); ?>" />
+                            <input
+                                type="submit"
+                                name="task_button"
+                                value="<?php echo Lang::txt('COM_POLL_VOTE'); ?>"
+                            />
                              &nbsp;
-                            <a href="<?php echo Route::url('index.php?option=com_poll&view=poll&id=' . $this->poll->id . ':' . $this->poll->alias); ?>"><?php echo Lang::txt('COM_POLL_RESULTS'); ?></a>
+                            <a href="<?php echo $resultsUrl; ?>">
+                                <?php echo Lang::txt('COM_POLL_RESULTS'); ?>
+                            </a>
                         </p>
 
                         <input type="hidden" name="option" value="com_poll" />

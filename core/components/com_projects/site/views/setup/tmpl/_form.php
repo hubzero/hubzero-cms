@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -21,7 +19,11 @@ defined('_HZEXEC_') or die();
 <input type="hidden" name="active" value="<?php echo $this->section; ?>" />
 <input type="hidden" name="access" value="<?php echo $this->model->get('access'); ?>" />
 <input type="hidden" name="step" id="step" value="<?php echo $this->step; ?>" />
-<input type="hidden" name="gid" value="<?php echo $this->model->get('owned_by_group') ? $this->model->get('owned_by_group') : 0; ?>" />
+<input
+    type="hidden"
+    name="gid"
+    value="<?php echo $this->model->get('owned_by_group') ? $this->model->get('owned_by_group') : 0; ?>"
+/>
 
 <?php echo Html::input('token'); ?>
 <?php echo Html::input('honeypot');

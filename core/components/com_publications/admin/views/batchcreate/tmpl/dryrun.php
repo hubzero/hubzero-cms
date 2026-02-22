@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,8 @@ defined('_HZEXEC_') or die();
 $i = 1;
 $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 ?>
-<p id="recordcount"><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_NUMBER_RECORDS'); ?>: <?php echo count($this->items); ?></p>
+<?php $recordLabel = Lang::txt('COM_PUBLICATIONS_BATCH_NUMBER_RECORDS'); ?>
+<p id="recordcount"><?php echo $recordLabel; ?>: <?php echo count($this->items); ?></p>
 <ul class="pubitems" id="resultlist">
 <?php foreach ($this->items as $item) { ?>
     <li<?php if (count($item['errors']) > 0) {
@@ -81,9 +80,21 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
                                         echo ' class="missing"';
                                        } ?>>
                                         <td><?php echo $authorRecord['author']->user_id; ?></td>
-                                        <td><?php echo $authorRecord['error'] ? ' <span class="block prominent">' . $authorRecord['error'] . '</span>' : ''; ?><?php echo $authorRecord['author']->name; ?></td>
+                                        <td>
+                                            <?php if ($authorRecord['error']) : ?>
+                                                <span class="block prominent">
+                                                    <?php echo $authorRecord['error']; ?>
+                                                </span>
+                                            <?php endif; ?>
+                                            <?php echo $authorRecord['author']->name; ?>
+                                        </td>
                                         <td><?php echo $authorRecord['author']->organization; ?></td>
-                                        <td><?php echo $authorRecord['owner'] ? Lang::txt('JYES') : Lang::txt('JNO'); ?></td>
+                                        <?php
+                                        $ownerLabel = $authorRecord['owner']
+                                            ? Lang::txt('JYES')
+                                            : Lang::txt('JNO');
+                                        ?>
+                                        <td><?php echo $ownerLabel; ?></td>
                                     </tr>
                                 <?php } ?>
                             <?php } ?>
@@ -111,7 +122,12 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
                                        } ?>>
                                         <td><?php echo $filerecord['type']; ?></td>
                                         <td><?php echo $filerecord['subtype']; ?></td>
-                                        <td><?php echo $filerecord['error'] ? ' <span class="block prominent">' . $filerecord['error'] . '</span>' : ''; ?><?php echo $filerecord['attachment']->path; ?></td>
+                                        <td>
+                                            <?php if ($filerecord['error']) : ?>
+                                                <span class="block prominent"><?php echo $filerecord['error']; ?></span>
+                                            <?php endif; ?>
+                                            <?php echo $filerecord['attachment']->path; ?>
+                                        </td>
                                         <td><?php echo $filerecord['attachment']->title; ?></td>
                                     </tr>
                                 <?php } ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,12 +9,19 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$isReviewer = (isset($this->filters['reviewer']) && in_array($this->filters['reviewer'], array('sponsored', 'sensitive')));
+$isReviewer = isset($this->filters['reviewer']) && in_array(
+    $this->filters['reviewer'],
+    array('sponsored', 'sensitive')
+);
 
 $src = Route::url($this->row->picture('master'));
+$truncTitle = $this->escape(Hubzero\Utility\Str::truncate($this->row->get('title'), 60));
 
+$collabLabel = Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR');
 $role = $this->row->access('member')
-    ? ($this->row->access('manager') ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR'))
+    ? ($this->row->access('manager')
+        ? Lang::txt('COM_PROJECTS_LABEL_OWNER')
+        : $collabLabel)
     : '';
 
 $role = $this->row->access('readonly') && !$this->row->isArchived()
@@ -51,9 +56,11 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
             (!$this->row->inSetup() && $this->row->access('view'))
                     || ($this->row->inSetup() && $this->row->access('owner'))
 ) : ?>
-                <a class="project-title" rel="<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($this->row->link()); ?>">
-                                            <?php echo $this->escape(Hubzero\Utility\Str::truncate($this->row->get('title'), 60)); ?>
-                </a>
+                <a
+                    class="project-title"
+                    rel="<?php echo $this->row->get('id'); ?>"
+                    href="<?php echo Route::url($this->row->link()); ?>"
+                ><?php echo $truncTitle; ?></a>
             <?php else : ?>
                 <span class="project-title">
                     <?php echo $this->escape(Hubzero\Utility\Str::truncate($this->row->get('title'), 60)); ?>
@@ -115,9 +122,25 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
             <?php endif;*/ ?>
 
             <?php if ($this->row->groupOwner()) : ?>
-                <span class="project-owner owner-group icon-group tooltips" title="<?php echo $this->escape(Lang::txt('This project is owned by the %s group', $this->row->groupOwner('description'))); ?>">
-                    <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->row->groupOwner('cn')); ?>">
-                        <?php echo $this->escape(Hubzero\Utility\Str::truncate($this->row->groupOwner('description'), 25)); ?>
+                <?php
+                $spanTitle = $this->escape(
+                    Lang::txt('This project is owned by the %s group', $this->row->groupOwner('description'))
+                );
+                ?>
+                <span
+                    class="project-owner owner-group icon-group tooltips"
+                    title="<?php echo $spanTitle; ?>">
+                    <?php
+                    $routeUrl2 = Route::url('index.php?option=com_groups&cn=' . $this->row->groupOwner('cn'));
+                    ?>
+                    <a href="<?php echo $routeUrl2; ?>">
+                        <?php
+                        $groupDesc = Hubzero\Utility\Str::truncate(
+                            $this->row->groupOwner('description'),
+                            25
+                        );
+                        echo $this->escape($groupDesc);
+                        ?>
                     </a>
                 </span>
             <?php else : ?>
@@ -129,10 +152,22 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                     $name = $owner->get('name');
                 endif;
                 ?>
-                <span class="project-owner owner-user icon-user tooltips" title="<?php echo $this->escape(Lang::txt('This project is owned by %s', $name)); ?>">
+                <?php
+                $ownerTitle = $this->escape(
+                    Lang::txt('This project is owned by %s', $name)
+                );
+                ?>
+                <span
+                    class="project-owner owner-user icon-user tooltips"
+                    title="<?php echo $ownerTitle; ?>">
                     <?php
                     if ($owner->get('id') && in_array($owner->get('access'), User::getAuthorisedViewLevels())) :
-                        $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $owner->get('id')) . '">' . $this->escape($name) . '</a>';
+                        $name = '<a href="'
+                            . Route::url('index.php?option=com_members&id='
+                            . $owner->get('id'))
+                            . '">'
+                            . $this->escape($name)
+                            . '</a>';
                     endif;
 
                     echo $name;
@@ -173,7 +208,9 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                         endif;
 
                         if ($params->get('export_data') == 'yes') :
-                            $info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_EXPORT_CONTROLLED') . '</span>';
+                            $info .= '<span class="block">'
+                                . Lang::txt('COM_PROJECTS_SETUP_EXPORT_CONTROLLED')
+                                . '</span>';
                         endif;
 
                         if ($params->get('irb_data') == 'yes') :
@@ -181,7 +218,9 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                         endif;
 
                         if ($params->get('restricted_data') == 'maybe' && $params->get('followup') == 'yes') :
-                            $info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_FOLLOW_UP_NECESSARY') . '</span>';
+                            $info .= '<span class="block">'
+                                . Lang::txt('COM_PROJECTS_SETUP_FOLLOW_UP_NECESSARY')
+                                . '</span>';
                         endif;
 
                         echo $info;
@@ -190,15 +229,25 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                             <div class="col span6">
                                 <?php
                                 if ($this->row->isActive()) :
-                                    echo '<span class="project-status active">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span>';
+                                    echo '<span class="project-status active">'
+                                        . Lang::txt('COM_PROJECTS_ACTIVE')
+                                        . '</span>';
                                 elseif ($this->row->inSetup()) :
-                                    echo '<span class="project-status setup">' . Lang::txt('COM_PROJECTS_STATUS_SETUP') . '</span> ';
+                                    echo '<span class="project-status setup">'
+                                        . Lang::txt('COM_PROJECTS_STATUS_SETUP')
+                                        . '</span> ';
                                 elseif ($this->row->isInactive()) :
-                                    echo '<span class="project-status inactive">' . Lang::txt('COM_PROJECTS_STATUS_INACTIVE') . '</span> ';
+                                    echo '<span class="project-status inactive">'
+                                        . Lang::txt('COM_PROJECTS_STATUS_INACTIVE')
+                                        . '</span> ';
                                 elseif ($this->row->isArchived()) :
-                                    echo '<span class="project-status archived">' . Lang::txt('COM_PROJECTS_STATUS_ARCHIVED') . '</span> ';
+                                    echo '<span class="project-status archived">'
+                                        . Lang::txt('COM_PROJECTS_STATUS_ARCHIVED')
+                                        . '</span> ';
                                 elseif ($this->row->isPending()) :
-                                    echo '<span class="project-status pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING') . '</span>';
+                                    echo '<span class="project-status pending">'
+                                        . Lang::txt('COM_PROJECTS_STATUS_PENDING')
+                                        . '</span>';
                                 endif;
                                 ?>
                             </div>
@@ -207,18 +256,36 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                 $commentCount = 0;
 
                                 if ($this->row->get('admin_notes')) :
-                                    $commentCount = \Components\Projects\Helpers\Html::getAdminNoteCount($this->row->get('admin_notes'), 'sensitive');
-                                    echo \Components\Projects\Helpers\Html::getLastAdminNote($this->row->get('admin_notes'), 'sensitive');
+                                    $notes = $this->row->get('admin_notes');
+                                    $commentCount = \Components\Projects\Helpers\Html
+                                        ::getAdminNoteCount($notes, 'sensitive');
+                                    echo \Components\Projects\Helpers\Html
+                                        ::getLastAdminNote($notes, 'sensitive');
                                 endif;
 
                                 ?>
+                                <?php
+                                $processUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&task=process&id=' . $this->row->get('id')
+                                    . '&reviewer=' . $this->filters['reviewer']
+                                );
+                                $commentsTxt = $commentCount . ' '
+                                    . Lang::txt('COM_PROJECTS_COMMENTS');
+                                ?>
                                 <span class="block">
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option .  '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']); ?>" class="showinbox"><?php echo $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS'); ?></a>
+                                    <a
+                                        href="<?php echo $processUrl; ?>"
+                                        class="showinbox"
+                                    ><?php echo $commentsTxt; ?></a>
                                 </span>
 
                                 <?php if ($this->row->isPending()) : ?>
                                     <span class="manage">
-                                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']); ?>" class="showinbox"><?php echo Lang::txt('COM_PROJECTS_APPROVE'); ?></a>
+                                        <a
+                                            href="<?php echo $processUrl; ?>"
+                                            class="showinbox"
+                                        ><?php echo Lang::txt('COM_PROJECTS_APPROVE'); ?></a>
                                     </span>
                                 <?php endif; ?>
                             </div>
@@ -232,7 +299,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                             <tbody>
                                 <?php foreach (array('title', 'PI', 'agency', 'budget') as $key) : ?>
                                     <tr>
-                                        <th scope="row"><?php echo Lang::txt('COM_PROJECTS_GRANT_' . strtoupper($key)); ?></th>
+                                        <th scope="row">
+                                            <?php echo Lang::txt('COM_PROJECTS_GRANT_' . strtoupper($key)); ?></th>
                                         <td><?php echo $this->escape($params->get('grant_' . $key)); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -241,16 +309,35 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                     <td>
                                         <?php
                                         if (!$params->get('grant_approval') && $params->get('grant_status', 0) == 0) :
-                                            echo '<span class="project-grant-status pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';
+                                            echo '<span class="project-grant-status pending">'
+                                                . Lang::txt('COM_PROJECTS_STATUS_PENDING_SPS')
+                                                . '</span>';
                                         elseif ($params->get('grant_approval') || $params->get('grant_status') == 1) :
-                                            echo '<span class="project-grant-status active">' . Lang::txt('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';
+                                            echo '<span class="project-grant-status active">'
+                                                . Lang::txt('COM_PROJECTS_APPROVAL_CODE')
+                                                . ': '
+                                                . $params->get('grant_approval', '(N/A)')
+                                                . '</span>';
                                         elseif ($params->get('grant_status') == '2') :
-                                            echo '<span class="project-grant-status rejected">' . Lang::txt('COM_PROJECTS_STATUS_SPS_REJECTED') . '</span>';
+                                            echo '<span class="project-grant-status rejected">'
+                                                . Lang::txt('COM_PROJECTS_STATUS_SPS_REJECTED')
+                                                . '</span>';
                                         endif;
                                         ?>
 
+                                        <?php
+                                        $manageUrl = Route::url(
+                                            'index.php?option=' . $this->option
+                                            . '&task=process&id=' . $this->row->get('id')
+                                        )
+                                            . '?reviewer=' . $this->filters['reviewer']
+                                            . '&filterby=' . $this->filters['filterby'];
+                                        ?>
                                         <span class="manage">
-                                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id')) . '?reviewer=' . $this->filters['reviewer'] . '&filterby=' . $this->filters['filterby']; ?>" class="showinbox"><?php echo Lang::txt('COM_PROJECTS_MANAGE'); ?></a>
+                                            <a
+                                                href="<?php echo $manageUrl; ?>"
+                                                class="showinbox"
+                                            ><?php echo Lang::txt('COM_PROJECTS_MANAGE'); ?></a>
                                         </span>
                                     </td>
                                 </tr>

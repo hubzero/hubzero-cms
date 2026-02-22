@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -40,14 +38,25 @@ $notes = \Components\Projects\Helpers\Html::getAdminNotes($this->model->get('adm
 <h3><?php echo $title ?></h3>
 <?php } ?>
 <?php
-// phpcs:disable Generic.Files.LineLength
 // Display error  message
 if ($this->getError()) {
     echo '<p class="error">' . $this->getError() . '</p>';
 } ?>
 
 <?php if ($this->model->exists()) { ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&task=process') . '?reviewer=' . $this->reviewer; ?>" method="post" id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" >
+    <?php
+    $formAction = Route::url(
+        'index.php?option=' . $this->option
+        . '&id=' . $this->model->get('id')
+        . '&task=process'
+    ) . '?reviewer=' . $this->reviewer;
+    $formId = $this->ajax ? 'hubForm-ajax' : 'plg-form';
+    ?>
+    <form
+        action="<?php echo $formAction; ?>"
+        method="post"
+        id="<?php echo $formId; ?>"
+    >
 
     <fieldset>
         <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
@@ -63,8 +72,10 @@ if ($this->getError()) {
         <div class="pthumb"><img src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="" /></div>
         <div class="pinfo">
             <p class="info_title">
-            <?php echo $this->model->get('title'); ?> (<span class="aliasname"><?php echo $this->model->get('alias'); ?></span>)</p>
-            <p class="info_title"><span class="italic"><?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->model->creator('name'); ?></span></p>
+            <?php echo $this->model->get('title'); ?>
+                (<span class="aliasname"><?php echo $this->model->get('alias'); ?></span>)</p>
+            <p class="info_title"><span class="italic">
+                <?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->model->creator('name'); ?></span></p>
         </div>
     </div>
 
@@ -75,33 +86,61 @@ if ($this->getError()) {
             <tr>
                 <td>
                     <label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
-                     <input name="grant_title" maxlength="250" type="text" value="<?php echo $this->params->get('grant_title'); ?>"  />
+                     <input
+                         name="grant_title"
+                         maxlength="250"
+                         type="text"
+                         value="<?php echo $this->params->get('grant_title'); ?>"
+                     />
                     </label>
                 </td>
                 <td class="tdmini"></td>
                 <td>
                     <label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
-                     <input name="grant_PI" maxlength="250" type="text" value="<?php echo $this->params->get('grant_PI'); ?>"  />
+                     <input
+                         name="grant_PI"
+                         maxlength="250"
+                         type="text"
+                         value="<?php echo $this->params->get('grant_PI'); ?>"
+                     />
                     </label>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
-                     <input name="grant_agency" maxlength="250" type="text" value="<?php echo $this->params->get('grant_agency'); ?>"  />
+                     <?php $grantAgency = $this->params->get('grant_agency'); ?>
+                     <input
+                         name="grant_agency"
+                         maxlength="250"
+                         type="text"
+                         value="<?php echo $grantAgency; ?>"
+                     />
                     </label>
                 </td>
                 <td class="tdmini"></td>
                 <td>
                     <label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
-                     <input name="grant_budget" maxlength="250" type="text" value="<?php echo $this->params->get('grant_budget'); ?>"  />
+                     <?php $grantBudget = $this->params->get('grant_budget'); ?>
+                     <input
+                         name="grant_budget"
+                         maxlength="250"
+                         type="text"
+                         value="<?php echo $grantBudget; ?>"
+                     />
                     </label>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:
-                     <input name="award_number" maxlength="250" type="text" value="<?php echo $this->params->get('award_number'); ?>"  />
+                     <?php $awardNumber = $this->params->get('award_number'); ?>
+                     <input
+                         name="award_number"
+                         maxlength="250"
+                         type="text"
+                         value="<?php echo $awardNumber; ?>"
+                     />
                     </label>
                 </td>
             </tr>
@@ -114,7 +153,14 @@ if ($this->getError()) {
                                                        } ?>"><?php echo $approved
                         ? ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE_APPROVED'))
                         : Lang::txt('COM_PROJECTS_APPROVAL_CODE_PROVIDE'); ?>:
-                     <input name="grant_approval" id="grant_approval" maxlength="250" type="text" value="<?php echo $this->params->get('grant_approval'); ?>"  />
+                     <?php $grantApproval = $this->params->get('grant_approval'); ?>
+                     <input
+                         name="grant_approval"
+                         id="grant_approval"
+                         maxlength="250"
+                         type="text"
+                         value="<?php echo $grantApproval; ?>"
+                     />
                     <?php if (!$approved) { ?>
                      <p class="hint mini"><?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_HINT'); ?></p>
                     <?php } ?>
@@ -126,10 +172,24 @@ if ($this->getError()) {
                 <td>
                     <?php if (!$approved) { ?>
                     <label for="rejected" class="dark">
-                         <input class="option" name="rejected" id="rejected" type="checkbox" value="1" <?php if ($this->params->get('grant_status') == 2) {
-                                echo 'checked="checked"';
-                                                                                                       } ?> />
-                        <?php echo $this->params->get('grant_status') == 2 ? Lang::txt('COM_PROJECTS_SPS_REJECTED_KEEP') : Lang::txt('COM_PROJECTS_SPS_REJECT'); ?>
+                         <?php
+                            $grantStatus = $this->params->get('grant_status');
+                            $rejectedChecked = $grantStatus == 2
+                             ? 'checked="checked"' : '';
+                            ?>
+                         <input
+                             class="option"
+                             name="rejected"
+                             id="rejected"
+                             type="checkbox"
+                             value="1"
+                             <?php echo $rejectedChecked; ?>
+                         />
+                        <?php
+                        $langTxt3 = Lang::txt('COM_PROJECTS_SPS_REJECTED_KEEP');
+                        $langTxt4 = Lang::txt('COM_PROJECTS_SPS_REJECT');
+                        ?>
+                        <?php echo $this->params->get('grant_status') == 2 ? $langTxt3 : $langTxt4; ?>
                     </label>
                     <?php } ?>
                 </td>
@@ -139,17 +199,22 @@ if ($this->getError()) {
     <?php } ?>
     <?php if ($this->model->isPending() && $this->reviewer == 'sensitive') { ?>
      <div>
-        <label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?php echo ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')); ?></label>
+        <label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" />
+            <?php echo ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')); ?></label>
      </div>
     <?php } ?>
 
     <div id="newadmincomment">
-        <h4><?php echo ucfirst(Lang::txt('COM_PROJECTS_ADD_ADMIN_COMMENT')); ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span></h4>
+        <?php
+        $langTxt6 = Lang::txt('COM_PROJECTS_ADD_ADMIN_COMMENT');
+        ?>
+        <h4><?php echo ucfirst($langTxt6); ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span></h4>
         <label>
             <textarea name="comment" rows="4" cols="40"></textarea>
         </label>
         <?php if ($this->reviewer == 'sponsored' && !$approved) { ?>
-         <label><input class="option" name="notify" type="checkbox" value="1" /> <?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWERS_ADD_ACTIVITY')); ?></label>
+         <label><input class="option" name="notify" type="checkbox" value="1" />
+             <?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWERS_ADD_ACTIVITY')); ?></label>
         <?php } ?>
     </div>
     <p class="submitarea">
@@ -157,7 +222,11 @@ if ($this->getError()) {
         <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
     </p>
     <div id="admincommentbox">
-    <h4><?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS')); ?> <span class="hint"> <?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS_LATEST_FIRST')); ?></span></h4>
+    <?php
+    $langTxt8 = Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS_LATEST_FIRST');
+    $langTxt9 = Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS');
+    ?>
+    <h4><?php echo ucfirst($langTxt9); ?> <span class="hint"> <?php echo ucfirst($langTxt8); ?></span></h4>
     <?php if ($notes) { ?>
         <?php echo $notes; ?>
     <?php } else {  ?>

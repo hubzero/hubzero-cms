@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -53,7 +51,13 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 <table class="tbl-message" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tbody>
         <tr>
-            <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center; font-size: 1.5em;" colspan="2">
+            <td
+                align="left"
+                valign="bottom"
+                style="border-collapse: collapse; color: #666; line-height: 1;
+                    padding: 5px; text-align: center; font-size: 1.5em;"
+                colspan="2"
+            >
                 <?php echo $this->subject; ?>
             </td>
         </tr>
@@ -71,19 +75,50 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 </table>
 <!-- End Spacer -->
 
-<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em; background-color: #fff7eb;">
+<table
+    id="project-info"
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="border-collapse: collapse; line-height: 1.6em; background-color: #fff7eb;"
+>
     <tbody>
         <tr>
-            <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9; border-bottom: 2px solid #e9e9e9;">
-                <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
+            <td
+                width="100%"
+                style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9; border-bottom: 2px solid #e9e9e9;"
+            >
+                <table
+                    width="100%"
+                    style="border-collapse: collapse; font-size: 0.9em;"
+                    cellpadding="0"
+                    cellspacing="0"
+                    border="0"
+                >
                     <tbody>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Project:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->project->get('title') . ' (' . $this->project->get('alias') . ')'; ?></td>
+                            <th
+                                style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right"
+                            >Project:</th>
+                            <td
+                                style="text-align: left; padding: 0 0.5em;"
+                                width="100%"
+                                align="left"
+                            ><?php echo $this->project->get('title')
+                                . ' (' . $this->project->get('alias') . ')'; ?></td>
                         </tr>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+                            <th
+                                style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right"
+                            >Link:</th>
+                            <td
+                                style="text-align: left; padding: 0 0.5em;"
+                                width="100%"
+                                align="left"
+                            ><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -102,15 +137,32 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 </table>
 <!-- End Spacer -->
 
-<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
+<table
+    id="project-info"
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="border-collapse: collapse; line-height: 1.6em;"
+>
     <tbody>
         <tr>
             <td width="100%" style="padding: 18px 8px 8px 8px;">
-                <table width="100%" style="border-collapse: collapse; font-size: 1.2em;" cellpadding="0" cellspacing="0" border="0">
+                <table
+                    width="100%"
+                    style="border-collapse: collapse; font-size: 1.2em;"
+                    cellpadding="0"
+                    cellspacing="0"
+                    border="0"
+                >
                     <tbody>
                         <?php if (empty($this->activities)) { ?>
                             <tr>
-                                <td style="text-align: center; padding: 0 1em;" width="100%" align="left">There has been no activity in this project.</td>
+                                <td
+                                    style="text-align: center; padding: 0 1em;"
+                                    width="100%"
+                                    align="left"
+                                >There has been no activity in this project.</td>
                             </tr>
                         <?php } else { ?>
                             <?php
@@ -118,7 +170,9 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
                                 $content = $a->log->get('description');
 
                                 $isHtml = false;
-                                if (preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content)) {
+                                $htmlPattern = '/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>'
+                                    . '|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is';
+                                if (preg_match($htmlPattern, $content)) {
                                     $isHtml = true;
                                 }
 
@@ -131,25 +185,64 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
                                 $creator = User::getInstance($a->log->get('created_by'));
                                 $name = $creator->get('name');
                                 ?>
+                                <?php
+                                $dateStr = Date::of($a->created)->toLocal(
+                                    Lang::txt('DATE_FORMAT_HZ1')
+                                );
+                                $timeStr = Date::of($a->created)->toLocal(
+                                    Lang::txt('TIME_FORMAT_HZ1')
+                                );
+                                $thStyle = 'text-align: right; padding: 1em 0 0 0;'
+                                    . ' white-space: nowrap; color: #999999;'
+                                    . ' font-weight: normal;';
+                                $tdStyle = 'text-align: left; padding: 1em 3em 0 3em;';
+                                $colon = $content ? ':' : '';
+                                ?>
                                 <tr>
-                                    <th style="text-align: right; padding: 1em 0 0 0; white-space: nowrap; color: #999999; font-weight: normal;" align="right"><?php echo Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?> &#64; <?php echo Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></th>
-                                    <td style="text-align: left; ?>; padding: 1em 3em 0 3em;" width="100%" align="left"><span style="color: #8a7460;"><?php echo $name; ?></span> <?php echo $a->action; ?><?php if ($content) {
-                                        ?>:<?php
-                                                                                                                                                      } ?></td>
+                                    <th
+                                        style="<?php echo $thStyle; ?>"
+                                        align="right"
+                                    ><?php echo $dateStr; ?>
+                                    &#64; <?php echo $timeStr; ?></th>
+                                    <td
+                                        style="<?php echo $tdStyle; ?>"
+                                        width="100%"
+                                        align="left"
+                                    ><span style="color: #8a7460;"><?php
+                                        echo $name;
+                                    ?></span> <?php
+                                        echo $a->action . $colon;
+?></td>
                                 </tr>
                                 <?php if ($content) { ?>
                                     <tr>
                                         <th></th>
-                                        <td style="text-align: <?php echo count($this->activities) > 0 ? 'left' : 'center'; ?>; padding: 0.5em 3em; color: #000000;" width="100%" align="left"><?php echo $content; ?></td>
+                                        <?php
+                                        $contentAlign = count($this->activities) > 0
+                                            ? 'left' : 'center';
+                                        $contentStyle = 'text-align: ' . $contentAlign
+                                            . '; padding: 0.5em 3em; color: #000000;';
+                                        ?>
+                                        <td
+                                            style="<?php echo $contentStyle; ?>"
+                                            width="100%"
+                                            align="left"
+                                        ><?php echo $content; ?></td>
                                     </tr>
                                 <?php } ?>
+                                <?php
+                                $sepStyle = 'text-align: center; padding: 0.5em 1em;';
+                                if (count($this->activities) > 0) {
+                                    $sepStyle .= ' border-bottom: 1px solid #e9e9e9;';
+                                }
+                                ?>
                                 <tr>
-                                    <th style="text-align: center; padding: 0.5em 1em; <?php if (count($this->activities) > 0) {
-                                        echo 'border-bottom: 1px solid #e9e9e9;';
-                                                                                       } ?>"></th>
-                                    <td style="text-align: center; padding: 0.5em 1em; <?php if (count($this->activities) > 0) {
-                                        echo 'border-bottom: 1px solid #e9e9e9;';
-                                                                                       } ?>" width="100%" align="left"></td>
+                                    <th style="<?php echo $sepStyle; ?>"></th>
+                                    <td
+                                        style="<?php echo $sepStyle; ?>"
+                                        width="100%"
+                                        align="left"
+                                    ></td>
                                 </tr>
                                 <?php
                             }
@@ -178,8 +271,16 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
         <tr>
             <td align="left" valign="bottom">
                 <span>
-                    This email was sent to you on behalf of <?php echo $base; ?> because you are subscribed
-                    to watch this project. To unsubscribe, please go to the <a href="<?php echo $link; ?>">project feed</a> and adjust feed notification settings. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.
+                    This email was sent to you on behalf of
+                    <?php echo $base; ?> because you are subscribed
+                    to watch this project. To unsubscribe, please go to the
+                    <a href="<?php echo $link; ?>">project feed</a>
+                    and adjust feed notification settings.
+                    Visit our
+                    <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a>
+                    and
+                    <a href="<?php echo Request::base(); ?>/support">Support Center</a>
+                    if you have any questions.
                 </span>
             </td>
         </tr>

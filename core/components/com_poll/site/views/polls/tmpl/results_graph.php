@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -42,7 +40,9 @@ $votes = 0;
 							');
                             ?>
                             <div class="graph">
-                                <strong class="bar <?php echo $vote->class . ' option' . $vote->id; ?>"><span><?php echo $this->escape($vote->percent); ?>%</span></strong>
+                                <strong class="bar <?php echo $vote->class . ' option' . $vote->id; ?>">
+                                    <span><?php echo $this->escape($vote->percent); ?>%</span>
+                                </strong>
                             </div>
                         </td>
                         <td>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,12 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Publications\Helpers\Permissions::getActions('type');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPES'), 'publications');
+$label = Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');
+$label2 = Lang::txt('COM_PUBLICATIONS_MASTER_TYPES');
+Toolbar::title(
+    $label . ': ' . $label2,
+    'publications'
+);
 if ($canDo->get('core.create')) {
     Toolbar::addNew();
 }
@@ -27,19 +30,46 @@ if ($canDo->get('core.delete')) {
 Toolbar::divider();
 Toolbar::help('types');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
     <table class="adminlist">
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                                        <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                        </label>
                 </th>
-                <th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $sDir = @$this->filters['sort_Dir'];
+                $sCol = @$this->filters['sort'];
+                $idSort = Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', $sDir, $sCol);
+                $nameSort = Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'type', $sDir, $sCol);
+                $contSort = Html::grid(
+                    'sort',
+                    Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'),
+                    'contributable',
+                    $sDir,
+                    $sCol
+                );
+                $ordSort = Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', $sDir, $sCol);
+                ?>
+                <th class="priority-3"><?php echo $idSort; ?></th>
+                <th><?php echo $nameSort; ?></th>
                 <th class="priority-4"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?></th>
-                <th class="priority-3"><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th><?php echo Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ORDER'), 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th class="priority-3"><?php echo $contSort; ?></th>
+                <th><?php echo $ordSort; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -74,14 +104,27 @@ Toolbar::help('types');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->id; ?>"
+                        class="checkbox-toggle"
+                    />
                     <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                 </td>
                 <td class="priority-3">
                     <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&id=' . $row->id
+                    );
+                    ?>
+                    <a href="<?php echo $editUrl; ?>">
                         <span><?php echo $this->escape($row->type); ?></span>
                     </a>
                 </td>

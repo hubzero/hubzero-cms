@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -19,7 +17,8 @@ if (!empty($this->launcherLayout) && $this->publication->main == 1 && $this->pub
             echo '<li class="meta-' . $section['name'] . '">';
 
             if ($section['name'] != 'usage') {
-                echo '<a href="' . Route::url($this->publication->link() . '&active=' . $section['name']) . '" title="' . Lang::txt('COM_PUBLICATIONS_META_TITLE_' . strtoupper($section['name'])) . '">';
+                echo '<a href="' . Route::url($this->publication->link() . '&active=' . $section['name'])
+                    . '" title="' . Lang::txt('COM_PUBLICATIONS_META_TITLE_' . strtoupper($section['name'])) . '">';
             }
 
             echo '<span class="icon"></span><span class="label">' . $section['count'] . '</span>';
@@ -49,7 +48,10 @@ foreach ($this->sections as $section) {
     $data .= (!empty($section['metadata'])) ? $section['metadata'] : '';
 }
 
-if ($this->params->get('show_ranking') || $this->params->get('show_audience') || $this->params->get('supportedtag') || $data) {
+$showRanking = $this->params->get('show_ranking');
+$showAudience = $this->params->get('show_audience');
+$supportedTag = $this->params->get('supportedtag');
+if ($showRanking || $showAudience || $supportedTag || $data) {
     ?>
 <div class="metadata">
     <?php
@@ -66,11 +68,21 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
         ?>
         <dl class="rankinfo">
             <dt class="ranking">
-                <span class="rank"><span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->publication->id; ?>">This publication has a</span></span> <?php echo number_format($rank, 1); ?> Ranking
+                <span class="rank"><span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->publication->id; ?>
+                    ">This publication has a</span></span> <?php echo number_format($rank, 1); ?> Ranking
             </dt>
             <dd>
                 <p>
-                    Ranking is calculated from a formula comprised of <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews'); ?>">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>
+                    <?php
+                    $reviewsUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&id=' . $this->publication->id
+                        . '&active=reviews'
+                    );
+                    ?>
+                    Ranking is calculated from a formula comprised of
+                    <a href="<?php echo $reviewsUrl; ?>">user reviews</a>
+                    and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>
                 </p>
                 <div></div>
             </dd>
@@ -118,7 +130,8 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
         <p>
             <?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE'); ?>
             [<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' .
-                    $this->publication->id . '&v=' . $this->lastPubRelease->version_number); ?>"><?php echo $this->lastPubRelease->version_label; ?></a>]
+                    $this->publication->id . '&v=' . $this->lastPubRelease->version_number); ?>">
+                        <?php echo $this->lastPubRelease->version_label; ?></a>]
             <?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE_INFO'); ?>
         </p>
     <?php }

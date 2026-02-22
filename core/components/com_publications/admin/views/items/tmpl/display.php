@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -36,28 +34,56 @@ $this->js();
     <p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
 <?php } ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    name="adminForm"
+>
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>: </label>
-                <input type="text" name="search" id="filter_search"class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+                <input
+                    type="text"
+                    name="search"
+                    id="filter_search"class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>"
+                />
 
-                <input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_GO'); ?>" />
+                <input
+                    type="submit"
+                    name="filter_submit"
+                    id="filter_submit"
+                    value="<?php echo Lang::txt('COM_PUBLICATIONS_GO'); ?>"
+                />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
             <div class="col span6">
                 <label for="status"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?>:</label>
                 <select name="status" id="status" class="filter filter-submit">
-                    <option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_ALL_STATUS'); ?></option>
-                    <option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT'); ?></option>
-                    <option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PENDING'); ?></option>
-                    <option value="0"<?php echo ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></option>
-                    <option value="10"<?php echo ($this->filters['status'] == 10) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING'); ?></option>
-                    <option value="7"<?php echo ($this->filters['status'] == 7) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_WIP'); ?></option>
-                    <option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></option>
-                    <option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_READY'); ?></option>
-                    <option value="2"<?php echo ($this->filters['status'] == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
+                    <option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_PUBLICATIONS_ALL_STATUS'); ?></option>
+                    <option value="3"<?php echo ($this->filters['status'] == 3) ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT'); ?></option>
+                    <option value="5"<?php echo ($this->filters['status'] == 5) ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PENDING'); ?></option>
+                    <?php
+                    $unSel = ($this->filters['status'] == 0 && $this->filters['status'] != 'all')
+                        ? ' selected="selected"' : '';
+                    $unpubTxt = Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED');
+                    ?>
+                    <option value="0"<?php echo $unSel; ?>><?php echo $unpubTxt; ?></option>
+                    <option value="10"<?php echo ($this->filters['status'] == 10) ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING'); ?></option>
+                    <option value="7"<?php echo ($this->filters['status'] == 7) ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_PUBLICATIONS_VERSION_WIP'); ?></option>
+                    <option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></option>
+                    <option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_PUBLICATIONS_VERSION_READY'); ?></option>
+                    <option value="2"<?php echo ($this->filters['status'] == 2) ? ' selected="selected"' : ''; ?>>
+                        <?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
                 </select>
 
                 <label for="category"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>:</label>
@@ -79,11 +105,38 @@ $this->js();
         <thead>
             <tr>
                 <th></th>
-                <th class="priority-3"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-                <th><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+                <?php
+                $sortHeader = Html::grid(
+                    'sort',
+                    'COM_PUBLICATIONS_FIELD_ID',
+                    'id',
+                    @$this->filters['sortdir'],
+                    @$this->filters['sortby']
+                );
+                ?>
+                <th class="priority-3"><?php echo $sortHeader; ?></th>
+                <?php
+                $sortHeader = Html::grid(
+                    'sort',
+                    'COM_PUBLICATIONS_FIELD_TITLE',
+                    'title',
+                    @$this->filters['sortdir'],
+                    @$this->filters['sortby']
+                );
+                ?>
+                <th><?php echo $sortHeader; ?></th>
                 <th class="priority-4"><?php echo Lang::txt('@v.'); ?></th>
                 <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?></th>
-                <th class="priority-2"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_PROJECT', 'project', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+                <?php
+                $sortHeader = Html::grid(
+                    'sort',
+                    'COM_PUBLICATIONS_FIELD_PROJECT',
+                    'project',
+                    @$this->filters['sortdir'],
+                    @$this->filters['sortby']
+                );
+                ?>
+                <th class="priority-2"><?php echo $sortHeader; ?></th>
                 <th class="priority-4"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RELEASES'); ?></th>
                 <th class="priority-4" colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE_CAT'); ?></th>
                 <th class="priority-5"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LAST_MODIFIED'); ?></th>
@@ -129,7 +182,9 @@ $this->js();
 
                 $checker = User::getInstance($row->checked_out);
 
-                $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($checker->get('name', $row->checked_out)) . '<br />' . $date . '<br />' . $time . '">';
+                $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::'
+                    . $this->escape($checker->get('name', $row->checked_out)) . '<br />' . $date . '<br />' . $time
+                        . '">';
                 $checked .= '<span class="checkedout">' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '</span>';
                 $checked .= '</span>';
 
@@ -159,7 +214,18 @@ $this->js();
                     <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . $filterstring); ?>" title="<?php echo Lang::txt('COM_PUBLICATIONS_PUBLISH_INFO');?>::<?php echo $info; ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=edit&id=' . $row->id . $filterstring
+                    );
+                    $pubInfo = Lang::txt('COM_PUBLICATIONS_PUBLISH_INFO');
+                    ?>
+                    <a class="editlinktip hasTip"
+                        href="<?php echo $editUrl; ?>"
+                        title="<?php echo $pubInfo; ?>::<?php echo $info; ?>"
+                    >
                         <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
                     </a><?php if ($checkedInfo) {
                         echo $checkedInfo;
@@ -172,10 +238,18 @@ $this->js();
                     <span class="<?php echo $class; ?> hasTip" title="<?php echo $status; ?>">&nbsp;</span>
                 </td>
                 <td class="priority-2">
-                    <a href="<?php echo Route::url('index.php?option=com_projects&task=edit&id=' . $row->project_id); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->project_title, 50);  ?></a>
+                    <a href="<?php echo Route::url('index.php?option=com_projects&task=edit&id=' . $row->project_id); ?>
+                        "><?php echo \Hubzero\Utility\Str::truncate($row->project_title, 50);  ?></a>
                 </td>
                 <td class="priority-4">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&id=' . $row->id . $filterstring); ?>"><?php echo $this->escape($row->versions); ?></a>
+                    <?php
+                    $versUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=versions&id=' . $row->id . $filterstring
+                    );
+                    ?>
+                    <a href="<?php echo $versUrl; ?>"><?php echo $this->escape($row->versions); ?></a>
                 </td>
                 <td class="priority-4">
                     <?php echo $this->escape($row->base); ?>

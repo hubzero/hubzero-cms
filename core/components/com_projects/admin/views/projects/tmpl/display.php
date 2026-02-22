@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -43,40 +41,110 @@ if (substr($base, -13) == 'administrator') {
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$routeUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+?>
+<form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>" />
+                <?php $searchPlaceholder = Lang::txt('COM_PROJECTS_SEARCH'); ?>
+                <input
+                    type="text"
+                    name="search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo $searchPlaceholder; ?>"
+                />
 
-                <input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PROJECTS_GO'); ?>" />
+                <input
+                    type="submit"
+                    name="filter_submit"
+                    id="filter_submit"
+                    value="<?php echo Lang::txt('COM_PROJECTS_GO'); ?>"
+                />
             </div>
             <div class="col span6">
                 <label for="filter-filterby"><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS'); ?>:</label>
                 <select name="filterby" id="filter-filterby" class="filter filter-submit">
-                    <option value=""<?php echo ($this->filters['filterby'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ALL'); ?></option>
-                    <option value="active"<?php echo ($this->filters['filterby'] == 'active') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ACTIVE'); ?></option>
-                    <option value="archived"<?php echo ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS_ARCHIVED'); ?></option>
+                    <?php
+                    $filterby = $this->filters['filterby'];
+                    $allSel = ($filterby == '') ? ' selected="selected"' : '';
+                    $activeSel = ($filterby == 'active') ? ' selected="selected"' : '';
+                    $archSel = ($filterby == 'archived') ? ' selected="selected"' : '';
+                    $allTxt = Lang::txt('COM_PROJECTS_FILTER_STATUS_ALL');
+                    $activeTxt = Lang::txt('COM_PROJECTS_FILTER_STATUS_ACTIVE');
+                    $archTxt = Lang::txt('COM_PROJECTS_FILTER_STATUS_ARCHIVED');
+                    ?>
+                    <option value=""<?php echo $allSel; ?>><?php echo $allTxt; ?></option>
+                    <option value="active"<?php echo $activeSel; ?>><?php echo $activeTxt; ?></option>
+                    <option value="archived"<?php echo $archSel; ?>><?php echo $archTxt; ?></option>
                 </select>
 
-                <?php /*<label for="filter-private"><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY'); ?>:</label>
-                <select name="private" id="filter-private" class="filter filter-submit">
-                    <option value="-1"<?php echo ($this->filters['private'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_ALL'); ?></option>
-                    <option value="1"<?php echo ($this->filters['private'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_PRIVATE'); ?></option>
-                    <option value="0"<?php echo ($this->filters['private'] == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_PUBLIC'); ?></option>
-                </select>*/ ?>
+                <?php
+                /*
+                <label for="filter-private">
+                    <?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY'); ?>:
+                </label>
+                <select name="private" id="filter-private"
+                    class="filter filter-submit">
+                    <?php
+                    $priv = $this->filters['private'];
+                    $privAllSel = ($priv == '')
+                        ? ' selected="selected"' : '';
+                    $privPriSel = ($priv == 1)
+                        ? ' selected="selected"' : '';
+                    $privPubSel = ($priv == 0)
+                        ? ' selected="selected"' : '';
+                    ?>
+                    <option value="-1"<?php echo $privAllSel; ?>>
+                        <?php echo Lang::txt(
+                            'COM_PROJECTS_FILTER_PRIVACY_ALL'
+                        ); ?>
+                    </option>
+                    <option value="1"<?php echo $privPriSel; ?>>
+                        <?php echo Lang::txt(
+                            'COM_PROJECTS_FILTER_PRIVACY_PRIVATE'
+                        ); ?>
+                    </option>
+                    <option value="0"<?php echo $privPubSel; ?>>
+                        <?php echo Lang::txt(
+                            'COM_PROJECTS_FILTER_PRIVACY_PUBLIC'
+                        ); ?>
+                    </option>
+                </select>
+                */ ?>
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                    <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+                    <?php echo Html::select(
+                        'options',
+                        Html::access('assetgroups'),
+                        'value',
+                        'text',
+                        $this->filters['access']
+                    ); ?>
                 </select>
 
                 <label for="filter-quota"><?php echo Lang::txt('COM_PROJECTS_FILTER_QUOTA'); ?>:</label>
                 <select name="quota" id="filter-quota" class="filter filter-submit">
-                    <option value="all"<?php echo ($this->filters['quota'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_ALL'); ?></option>
-                    <option value="regular"<?php echo ($this->filters['quota'] == 'regular') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_REGULAR'); ?></option>
-                    <option value="premium"<?php echo ($this->filters['quota'] == 'premium') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_QUOTA_PREMIUM'); ?></option>
+                    <?php
+                    $quota = $this->filters['quota'];
+                    $quotaAllSel = ($quota == 'all') ? ' selected="selected"' : '';
+                    $quotaRegSel = ($quota == 'regular') ? ' selected="selected"' : '';
+                    $quotaPreSel = ($quota == 'premium') ? ' selected="selected"' : '';
+                    $quotaAllTxt = Lang::txt('COM_PROJECTS_QUOTA_ALL');
+                    $quotaRegTxt = Lang::txt('COM_PROJECTS_QUOTA_REGULAR');
+                    $quotaPreTxt = Lang::txt('COM_PROJECTS_QUOTA_PREMIUM');
+                    ?>
+                    <option value="all"<?php echo $quotaAllSel; ?>><?php echo $quotaAllTxt; ?></option>
+                    <option value="regular"<?php echo $quotaRegSel; ?>><?php echo $quotaRegTxt; ?></option>
+                    <option value="premium"<?php echo $quotaPreSel; ?>><?php echo $quotaPreTxt; ?></option>
                 </select>
             </div>
         </div>
@@ -86,17 +154,42 @@ if (substr($base, -13) == 'administrator') {
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    ><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th class="priority-5" scope="col"><?php echo Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+                <?php
+                $sDir = @$this->filters['sortdir'];
+                $sBy = @$this->filters['sortby'];
+                ?>
+                <th class="priority-5" scope="col"><?php
+                    echo Html::grid('sort', 'ID', 'id', $sDir, $sBy);
+                ?></th>
                 <th class="priority-5" scope="col"> </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-                <th class="priority-3" scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_OWNER', 'owner', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-                <th class="priority-4" scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_FEATURED', 'featured', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+                <th scope="col"><?php
+                    echo Html::grid('sort', 'COM_PROJECTS_TITLE', 'title', $sDir, $sBy);
+                ?></th>
+                <th class="priority-3" scope="col"><?php
+                    echo Html::grid('sort', 'COM_PROJECTS_OWNER', 'owner', $sDir, $sBy);
+                ?></th>
+                <th class="priority-4" scope="col"><?php
+                    echo Html::grid('sort', 'COM_PROJECTS_FEATURED', 'featured', $sDir, $sBy);
+                ?></th>
                 <th class="priority-3" scope="col"><?php echo Lang::txt('COM_PROJECTS_TEAM'); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_STATUS', 'status', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
-                <th class="priority-4" scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_PRIVACY', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby']); ?></th>
+                <th scope="col"><?php
+                    echo Html::grid('sort', 'COM_PROJECTS_STATUS', 'status', $sDir, $sBy);
+                ?></th>
+                <th class="priority-4" scope="col"><?php
+                    echo Html::grid('sort', 'COM_PROJECTS_PRIVACY', 'privacy', $sDir, $sBy);
+                ?></th>
                 <th class="priority-4"><?php echo Lang::txt('COM_PROJECTS_QUOTA'); ?></th>
                 <th class="priority-3"><?php echo Lang::txt('COM_PROJECTS_ACTIVITY'); ?></th>
             </tr>
@@ -123,16 +216,28 @@ if (substr($base, -13) == 'administrator') {
                     $row = $this->rows[$i];
 
                     if ($row->owned_by_group && !$row->groupcn) {
-                        $row->groupname = '<span class="italic pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP') . '</span>';
+                        $row->groupname = '<span class="italic pale">'
+                            . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP')
+                            . '</span>';
                     }
-                    $owner = ($row->owned_by_group) ? $row->groupname . '<br /><span class="block prominent">' . $row->groupcn . '</span>' : $row->authorname;
-                    $owner = $owner ? $owner : '<span class="unknown" class="smallsub">' . Lang::txt('(unknown)') . '</span>';
+                    $owner = ($row->owned_by_group) ? $row->groupname
+                        . '<br /><span class="block prominent">'
+                        . $row->groupcn
+                        . '</span>' : $row->authorname;
+                    $owner = $owner ? $owner : '<span class="unknown" class="smallsub">'
+                        . Lang::txt('(unknown)')
+                        . '</span>';
                     $ownerclass = ($row->owned_by_group) ? 'group' : 'user';
 
                     // Determine status
                     $status = '';
                     if ($row->state == 1 && $row->setup_stage >= $setup_complete) {
-                        $status = '<span class="active">' . Lang::txt('Active') . '</span> ' . Lang::txt('since') . ' ' . Date::of($row->created)->toLocal('M d, Y');
+                        $status = '<span class="active">'
+                            . Lang::txt('Active')
+                            . '</span> '
+                            . Lang::txt('since')
+                            . ' '
+                            . Date::of($row->created)->toLocal('M d, Y');
                     } elseif ($row->state == 2) {
                         $status  = '<span class="deleted">' . Lang::txt('Deleted') . '</span> ';
                     } elseif ($row->setup_stage < $setup_complete) {
@@ -170,10 +275,24 @@ if (substr($base, -13) == 'administrator') {
                             <?php echo $row->id; ?>
                         </td>
                         <td class="priority-5">
-                            <img src="<?php echo rtrim($base, '/') . '/projects/' . $row->alias . '/media'; ?>" width="30" height="30" alt="<?php echo $this->escape($row->alias); ?>" />
+                            <?php $imgSrc = rtrim($base, '/') . '/projects/' . $row->alias . '/media'; ?>
+                            <img
+                                src="<?php echo $imgSrc; ?>"
+                                width="30"
+                                height="30"
+                                alt="<?php echo $this->escape($row->alias); ?>"
+                            />
                         </td>
                         <td>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring); ?>"><?php echo $this->escape($row->title); ?></a><br />
+                            <?php
+                            $routeUrl11 = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=edit&id[]=' . $row->id
+                                . $filterstring
+                            );
+                            ?>
+                            <a href="<?php echo $routeUrl11; ?>"><?php echo $this->escape($row->title); ?></a><br />
                             <strong><?php echo $this->escape($row->alias); ?></strong>
                             <?php if ($tags) { ?>
                                 <span class="project-tags block">
@@ -187,24 +306,56 @@ if (substr($base, -13) == 'administrator') {
                         <td class="priority-4">
                             <?php if ($row->featured) : ?>
                                 <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unfeature&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>">
+                                    <?php
+                                    $routeUrl12 = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&controller=' . $this->controller
+                                        . '&task=unfeature&id=' . $row->id
+                                        . '&' . Session::getFormToken() . '=1'
+                                    );
+                                    ?>
+                                    <a href="<?php echo $routeUrl12; ?>">
                                 <?php endif; ?>
-                                <span class="state default"><span class="text"><?php echo Lang::txt('JYES'); ?></span></span>
+                                <?php $langTxt1 = Lang::txt('JYES'); ?>
+                                <span class="state default"><span class="text"><?php echo $langTxt1; ?></span></span>
                                 <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
                                     </a>
                                 <?php endif; ?>
                             <?php else : ?>
                                 <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=feature&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>">
+                                    <?php
+                                    $routeUrl13 = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&controller=' . $this->controller
+                                        . '&task=feature&id=' . $row->id
+                                        . '&' . Session::getFormToken() . '=1'
+                                    );
+                                    ?>
+                                    <a href="<?php echo $routeUrl13; ?>">
                                 <?php endif; ?>
-                                <span class="state notdefault"><span class="text"><?php echo Lang::txt('JNO'); ?></span></span>
+                                <?php $langTxt1 = Lang::txt('JNO'); ?>
+                                <span class="state notdefault"><span class="text"><?php echo $langTxt1; ?></span></span>
                                 <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
                                     </a>
                                 <?php endif; ?>
                             <?php endif; ?>
                         </td>
                         <td class="priority-3">
-                            <a class="state <?php echo ($row->owned_by_group && $row->sync_group) ? 'synced' : 'not-synced'; ?> team hasTip" title="<?php echo ($row->owned_by_group && $row->sync_group) ? Lang::txt('This team is synced with a group.') : Lang::txt('This team is comprised of selected individuals.'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=team&project=' . $row->id); ?>">
+                            <?php
+                            $isSynced = ($row->owned_by_group && $row->sync_group);
+                            $syncCls = $isSynced ? 'synced' : 'not-synced';
+                            $syncTitle = $isSynced
+                                ? Lang::txt('This team is synced with a group.')
+                                : Lang::txt('This team is comprised of selected individuals.');
+                            $teamUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=team&project=' . $row->id
+                            );
+                            ?>
+                            <a class="state <?php echo $syncCls; ?> team hasTip"
+                                title="<?php echo $syncTitle; ?>"
+                                href="<?php echo $teamUrl; ?>"
+                            >
                                 <span><?php echo Lang::txt('COM_PROJECTS_TEAM'); ?></span>
                             </a>
                         </td>
@@ -212,11 +363,28 @@ if (substr($base, -13) == 'administrator') {
                             <?php echo $status; ?>
                         </td>
                         <td class="priority-4">
-                            <?php /*if (User::authorise('core.edit.state', $this->option)) { ?>
-                                <a class="privacy <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_TOGGLE_PRIVACY'); ?>">
-                                    <span><?php echo Lang::txt('COM_PROJECTS_FLAG_' . strtoupper($cls)); ?></span>
+                            <?php
+                            /*
+                            if (User::authorise('core.edit.state', $this->option)) {
+                                $privUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&task=' . $task
+                                    . '&id=' . $row->id
+                                    . '&' . Session::getFormToken() . '=1'
+                                );
+                                $privTitle = Lang::txt('COM_PROJECTS_TOGGLE_PRIVACY');
+                                $flagTxt = Lang::txt(
+                                    'COM_PROJECTS_FLAG_' . strtoupper($cls)
+                                );
+                                ?>
+                                <a class="privacy <?php echo $cls; ?>"
+                                    href="<?php echo $privUrl; ?>"
+                                    title="<?php echo $privTitle; ?>">
+                                    <span><?php echo $flagTxt; ?></span>
                                 </a>
-                            <?php } else {*/ ?>
+                            <?php
+                            } else {
+                            */ ?>
                                 <span class="privacy <?php echo $cls; ?>">
                                     <span><?php echo $this->escape($access->title); ?></span>
                                 </span>
@@ -226,7 +394,18 @@ if (substr($base, -13) == 'administrator') {
                             <?php echo $quota . 'GB'; ?>
                         </td>
                         <td class="priority-3">
-                            <a class="state activity hasTip" title="<?php echo Lang::txt('COM_PROJECTS_ACTIVITY_TITLE'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=activity&project=' . $row->id); ?>">
+                            <?php
+                            $routeUrl19 = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=activity&project=' . $row->id
+                            );
+                            $langTxt20 = Lang::txt('COM_PROJECTS_ACTIVITY_TITLE');
+                            ?>
+                            <a
+                                class="state activity hasTip"
+                                title="<?php echo $langTxt20; ?>"
+                                href="<?php echo $routeUrl19; ?>"
+                            >
                                 <span><?php echo Lang::txt('COM_PROJECTS_ACTIVITY'); ?></span>
                             </a>
                         </td>

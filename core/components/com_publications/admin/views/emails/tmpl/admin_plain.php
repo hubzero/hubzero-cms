@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,9 +15,11 @@ $pubLink = $base . '/publications/' . $this->model->get('id') . '/' . $this->mod
 
 $message  = $this->subject . "\n";
 $message .= '-------------------------------' . "\n";
-$message .= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' "' . $this->model->title . '" (id #' . $this->model->id . ')' . "\n";
+$message .= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' "' . $this->model->title . '" (id #' . $this->model->id
+    . ')' . "\n";
 $message .= Lang::txt('COM_PUBLICATIONS_EMAIL_URL') . ': ' . $pubLink . "\n";
-$message .= Lang::txt('COM_PUBLICATIONS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias');
+$message .= Lang::txt('COM_PUBLICATIONS_PROJECT') . ': ' . $this->project->get('title') . ' ('
+    . $this->project->get('alias');
 
 if ($this->project->isProvisioned()) {
     $message .= ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED');

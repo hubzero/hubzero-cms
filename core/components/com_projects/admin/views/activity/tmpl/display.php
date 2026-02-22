@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-Toolbar::title(Lang::txt('COM_PROJECTS') . ': ' . Lang::txt('COM_PROJECTS_ACTIVITY'), 'projects');
+$activityTitle = Lang::txt('COM_PROJECTS') . ': '
+    . Lang::txt('COM_PROJECTS_ACTIVITY');
+Toolbar::title($activityTitle, 'projects');
 if (User::authorise('core.delete', $this->option . '.component')) {
     Toolbar::deleteList('COM_PROJECTS_ACTIVITY_DELETE', 'delete');
     Toolbar::spacer();
@@ -20,21 +20,55 @@ Toolbar::help('activity');
 
 Html::behavior('tooltip');
 Html::behavior('modal');
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$searchVal = $this->escape($this->filters['search']);
+$searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span4">
-                <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC'); ?>" />
+                <label
+                    class="filter-search-lbl"
+                    for="filter_search"
+                ><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
+                <input
+                    type="text"
+                    name="filter_search"
+                    id="filter_search"
+                    class="filter"
+                    value="<?php echo $searchVal; ?>"
+                    placeholder="<?php echo $searchPlaceholder; ?>"
+                />
 
-                <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-                <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+                <button type="submit"><?php
+                    echo Lang::txt('JSEARCH_FILTER_SUBMIT');
+                ?></button>
+                <button type="button" class="filter-clear"><?php
+                    echo Lang::txt('JSEARCH_FILTER_CLEAR');
+                ?></button>
             </div>
             <div class="col span8">
-                <label for="filter_action"><?php echo Lang::txt('COM_PROJECTS_FILTER_ACTION'); ?>:</label>
-                <select name="action" class="inputbox filter filter-submit" id="filter_action">
-                    <option value=""><?php echo Lang::txt('COM_PROJECTS_FILTER_ACTION'); ?></option>
+                <label for="filter_action"><?php
+                    echo Lang::txt('COM_PROJECTS_FILTER_ACTION');
+                ?>:</label>
+                <select
+                    name="action"
+                    class="inputbox filter filter-submit"
+                    id="filter_action"
+                >
+                    <option value=""><?php
+                        echo Lang::txt('COM_PROJECTS_FILTER_ACTION');
+                    ?></option>
                     <option value="created"<?php if ($this->filters['action'] == 'created') {
                         echo ' selected="selected"';
                                            } ?>>created</option>
@@ -64,19 +98,37 @@ Html::behavior('modal');
                                            } ?>>emailed</option>
                 </select>
 
-                <label for="filter_filter"><?php echo Lang::txt('COM_PROJECTS_FILTER_FILTER'); ?>:</label>
-                <select name="filter" class="inputbox filter filter-submit" id="filter_filter">
-                    <option value=""><?php echo Lang::txt('COM_PROJECTS_FILTER_FILTER'); ?></option>
+                <label for="filter_filter"><?php
+                    echo Lang::txt('COM_PROJECTS_FILTER_FILTER');
+                ?>:</label>
+                <select
+                    name="filter"
+                    class="inputbox filter filter-submit"
+                    id="filter_filter"
+                >
+                    <option value=""><?php
+                        echo Lang::txt('COM_PROJECTS_FILTER_FILTER');
+                    ?></option>
                     <option value="starred"<?php if ($this->filters['filter'] == 'starred') {
                         echo ' selected="selected"';
-                                           } ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_STARRED'); ?></option>
+                                           } ?>><?php
+                        echo Lang::txt('COM_PROJECTS_FILTER_STARRED');
+?></option>
                 </select>
 
-                <label for="filter_state"><?php echo Lang::txt('COM_PROJECTS_FIELD_STATE'); ?>:</label>
-                <select name="state" id="filter_state" class="inputbox filter filter-submit">
+                <label for="filter_state"><?php
+                    echo Lang::txt('COM_PROJECTS_FIELD_STATE');
+                ?>:</label>
+                <select
+                    name="state"
+                    id="filter_state"
+                    class="inputbox filter filter-submit"
+                >
                     <option value="-1"<?php if ($this->filters['state'] == '-1') {
                         echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_PROJECTS_ALL_STATES'); ?></option>
+                                      } ?>><?php
+                        echo Lang::txt('COM_PROJECTS_ALL_STATES');
+?></option>
                     <option value="0"<?php if ($this->filters['state'] === 0) {
                         echo ' selected="selected"';
                                      } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
@@ -92,24 +144,96 @@ Html::behavior('modal');
     </fieldset>
     <table class="adminlist">
         <thead>
-        <?php if ($this->filters['project']) { ?>
+        <?php
+        if ($this->filters['project']) {
+            $projectsUrl = Route::url(
+                'index.php?option=' . $this->option
+            );
+            $projectAlias = $this->escape(
+                stripslashes($this->project->get('alias'))
+            );
+            $projectTitle = $this->escape(
+                stripslashes($this->project->get('title'))
+            );
+            ?>
             <tr>
-                <th colspan="8"><a href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_PROJECTS'); ?></a> > (<?php echo $this->escape(stripslashes($this->project->get('alias'))); ?>) <?php echo $this->escape(stripslashes($this->project->get('title'))); ?></th>
+                <th colspan="8">
+                    <a href="<?php echo $projectsUrl; ?>"><?php
+                        echo Lang::txt('COM_PROJECTS');
+                    ?></a>
+                    &gt; (<?php echo $projectAlias; ?>)
+                    <?php echo $projectTitle; ?>
+                </th>
             </tr>
         <?php } ?>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    ><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col" class="priority-6"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_CREATED_BY', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_ACTION', 'action', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_ACTIVITY_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT'); ?></th>
-                <th scope="col" class="priority-2"><?php echo Lang::txt('COM_PROJECTS_ACTIVITY_STATE'); ?></th>
-                <th scope="col" class="priority-2"><?php echo Lang::txt('COM_PROJECTS_ACTIVITY_STARRED'); ?></th>
+                <th scope="col" class="priority-6"><?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_PROJECTS_ACTIVITY_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col" class="priority-4"><?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_PROJECTS_ACTIVITY_CREATED',
+                        'created',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col" class="priority-3"><?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_PROJECTS_ACTIVITY_CREATED_BY',
+                        'created_by',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col" class="priority-3"><?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_PROJECTS_ACTIVITY_ACTION',
+                        'action',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col"><?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_PROJECTS_ACTIVITY_DESCRIPTION',
+                        'description',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?></th>
+                <th scope="col" class="priority-2"><?php
+                    echo Lang::txt('COM_PROJECTS_ACTIVITY_PROJECT');
+                ?></th>
+                <th scope="col" class="priority-2"><?php
+                    echo Lang::txt('COM_PROJECTS_ACTIVITY_STATE');
+                ?></th>
+                <th scope="col" class="priority-2"><?php
+                    echo Lang::txt('COM_PROJECTS_ACTIVITY_STARRED');
+                ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -142,11 +266,61 @@ Html::behavior('modal');
                     $cls = 'unpublish';
                     break;
             }
+
+            $editUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=edit&id=' . $row->get('id')
+            );
+            $desc = $this->escape(
+                Hubzero\Utility\Str::truncate(
+                    strip_tags($row->log->get('description')),
+                    100
+                )
+            );
+            $projectEditUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=projects&task=edit&id='
+                . $row->get('scope_id')
+            );
+            $stateUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=' . $task
+                . '&id=' . $row->get('id')
+                . '&' . Session::getFormToken() . '=1'
+            );
+            $stateTitle = Lang::txt('COM_FORUM_SET_TO', $task);
+            $unstarUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=unstar&id=' . $row->get('id')
+                . '&' . Session::getFormToken() . '=1'
+            );
+            $starUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=star&id=' . $row->get('id')
+                . '&' . Session::getFormToken() . '=1'
+            );
+            $canEditState = User::authorise(
+                'core.edit.state',
+                $this->option . '.component'
+            );
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
+                    <input
+                        type="checkbox"
+                        name="id[]"
+                        id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->id; ?>"
+                        class="checkbox-toggle"
+                    />
+                    <label
+                        for="cb<?php echo $i; ?>"
+                        class="sr-only visually-hidden"
+                    ><?php echo $row->id; ?></label>
                 </td>
                 <td class="priority-6">
                     <?php
@@ -160,8 +334,15 @@ Html::behavior('modal');
                 </td>
                 <td class="priority-3">
                     <?php
-                    $creator = User::getInstance($row->log->get('created_by'));
-                    echo $this->escape(stripslashes($creator->get('name', Lang::txt('COM_PROJECTS_UNKNOWN'))));
+                    $creator = User::getInstance(
+                        $row->log->get('created_by')
+                    );
+                    echo $this->escape(stripslashes(
+                        $creator->get(
+                            'name',
+                            Lang::txt('COM_PROJECTS_UNKNOWN')
+                        )
+                    ));
                     ?>
                 </td>
                 <td class="priority-3">
@@ -169,23 +350,29 @@ Html::behavior('modal');
                 </td>
                 <td>
                     <?php if (strpos($row->log->get('scope'), '.comment')) : ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-                            <?php echo $this->escape(Hubzero\Utility\Str::truncate(strip_tags($row->log->get('description')), 100)); ?>
+                        <a href="<?php echo $editUrl; ?>">
+                            <?php echo $desc; ?>
                         </a>
                     <?php else : ?>
-                        <?php echo $this->escape(Hubzero\Utility\Str::truncate(strip_tags($row->log->get('description')), 100)); ?>
+                        <?php echo $desc; ?>
                     <?php endif; ?>
                 </td>
                 <td class="priority-2">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=projects&task=edit&id=' . $row->get('scope_id')); ?>">
+                    <a href="<?php echo $projectEditUrl; ?>">
                         <?php
-                        $model = new \Components\Projects\Models\Project($row->get('scope_id'));
+                        $model = new \Components\Projects\Models\Project(
+                            $row->get('scope_id')
+                        );
                         echo $this->escape($model->get('alias')); ?>
                     </a>
                 </td>
                 <td class="priority-2">
-                    <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
-                        <a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $task); ?>">
+                    <?php if ($canEditState) : ?>
+                        <a
+                            class="state <?php echo $cls; ?>"
+                            href="<?php echo $stateUrl; ?>"
+                            title="<?php echo $stateTitle; ?>"
+                        >
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php else : ?>
@@ -196,19 +383,27 @@ Html::behavior('modal');
                 </td>
                 <td class="priority-2">
                     <?php if ($row->get('starred')) : ?>
-                        <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unstar&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+                        <?php if ($canEditState) : ?>
+                            <a href="<?php echo $unstarUrl; ?>">
                         <?php endif; ?>
-                        <span class="state default"><span class="text"><?php echo Lang::txt('JYES'); ?></span></span>
-                        <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
+                        <span class="state default">
+                            <span class="text"><?php
+                                echo Lang::txt('JYES');
+                            ?></span>
+                        </span>
+                        <?php if ($canEditState) : ?>
                             </a>
                         <?php endif; ?>
                     <?php else : ?>
-                        <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=star&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>">
+                        <?php if ($canEditState) : ?>
+                            <a href="<?php echo $starUrl; ?>">
                         <?php endif; ?>
-                        <span class="state notdefault"><span class="text"><?php echo Lang::txt('JNO'); ?></span></span>
-                        <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
+                        <span class="state notdefault">
+                            <span class="text"><?php
+                                echo Lang::txt('JNO');
+                            ?></span>
+                        </span>
+                        <?php if ($canEditState) : ?>
                             </a>
                         <?php endif; ?>
                     <?php endif; ?>
@@ -227,7 +422,15 @@ Html::behavior('modal');
     <input type="hidden" name="task" value="" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />
 
-    <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+    <input
+        type="hidden"
+        name="filter_order"
+        value="<?php echo $this->escape($this->filters['sort']); ?>"
+    />
+    <input
+        type="hidden"
+        name="filter_order_Dir"
+        value="<?php echo $this->escape($this->filters['sort_Dir']); ?>"
+    />
     <?php echo Html::input('token'); ?>
 </form>

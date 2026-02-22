@@ -188,7 +188,6 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
 
         <input type="hidden" name="section" value="<?php //echo $this->filters['section']; ?>" />
         <?php
-        // phpcs:ignore Generic.Files.LineLength.TooLong -- Commented out code
         // $returnUrl = base64_encode(Route::url(
         //     $base . '&active=outline&unit='
         //     . $this->filters['section'] . '&b=' . $this->category->alias

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,12 @@ $this->css('introduction.css', 'system')
 
     <nav id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_BROWSE') . ' ' . Lang::txt('COM_PUBLICATIONS_PUBLICATIONS'); ?></a></li>
+            <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&task=browse'); ?>
+            <?php
+            $langTxt2 = Lang::txt('COM_PUBLICATIONS_BROWSE') . ' '
+                . Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');
+            ?>
+            <li><a class="btn icon-browse" href="<?php echo $routeUrl; ?>"><?php echo $langTxt2; ?></a></li>
         </ul>
     </nav><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -68,7 +71,9 @@ $this->css('introduction.css', 'system')
             <div class="col span4 omega">
                 <h3><?php echo Lang::txt('COM_PUBLICATIONS_WHO_CAN_SUBMIT'); ?></h3>
                 <p><?php echo Lang::txt('COM_PUBLICATIONS_WHO_CAN_SUBMIT_ANYONE'); ?></p>
-                <p><a href="<?php echo Route::url('index.php?option=com_publications&task=submit'); ?>" class="btn"><?php echo Lang::txt('COM_PUBLICATIONS_START_PUBLISHING'); ?> &raquo;</a></p>
+                <?php $routeUrl = Route::url('index.php?option=com_publications&task=submit'); ?>
+                <?php $langTxt2 = Lang::txt('COM_PUBLICATIONS_START_PUBLISHING'); ?>
+                <p><a href="<?php echo $routeUrl; ?>" class="btn"><?php echo $langTxt2; ?> &raquo;</a></p>
             </div>
         <?php } ?>
     </div>

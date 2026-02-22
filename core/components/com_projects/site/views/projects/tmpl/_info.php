@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,17 @@ $config = $this->model->config();
 </div>
 
 <?php if ($this->model->access('manager') || ($this->model->access('content') && $config->get('edit_description'))) { ?>
-    <p class="editing"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&alias=' . $this->model->get('alias') . '&active=info'); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT'); ?></a></p>
+    <?php
+    $routeUrl = Route::url(
+        'index
+    . php?option='
+        . $this->option
+        . '&task=edit&alias='
+        . $this->model->get('alias')
+        . '&active=info'
+    );
+    ?>
+    <p class="editing"><a href="<?php echo $routeUrl; ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_PROJECT'); ?></a></p>
 <?php } ?>
 
 <div id="basic_info">
@@ -35,13 +43,41 @@ $config = $this->model->config();
                     <td rowspan="5" class="grantinfo">
                         <h4><?php echo Lang::txt('COM_PROJECTS_INFO_GRANTINFO'); ?></h4>
                         <p>
-                            <span class="block"><span class="faded"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:</span> <?php echo $this->model->params->get('grant_title'); ?></span>
-                            <span class="block"><span class="faded"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:</span> <?php echo $this->model->params->get('grant_PI', 'N/A'); ?></span>
-                            <span class="block"><span class="faded"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:</span> <?php echo $this->model->params->get('award_number', 'N/A'); ?></span>
-                            <span class="block"><span class="faded"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:</span> <?php echo $this->model->params->get('grant_agency', 'N/A'); ?></span>
-                            <span class="block"><span class="faded"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:</span> <?php echo $this->model->params->get('grant_budget', 'N/A'); ?></span>
+                            <?php
+                            $grantTitleLbl = Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE');
+                            $grantPiLbl = Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI');
+                            $awardNumLbl = Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER');
+                            $agencyLbl = Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY');
+                            $budgetLbl = Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET');
+                            ?>
+                            <span class="block"><span class="faded"><?php
+                                echo $grantTitleLbl;
+                            ?>:</span> <?php echo $this->model->params->get('grant_title'); ?></span>
+                            <span class="block"><span class="faded"><?php
+                                echo $grantPiLbl;
+                            ?>:</span> <?php echo $this->model->params->get('grant_PI', 'N/A'); ?></span>
+                            <span class="block"><span class="faded"><?php
+                                echo $awardNumLbl;
+                            ?>:</span> <?php echo $this->model->params->get('award_number', 'N/A'); ?></span>
+                            <span class="block"><span class="faded"><?php
+                                echo $agencyLbl;
+                            ?>:</span> <?php echo $this->model->params->get('grant_agency', 'N/A'); ?></span>
+                            <span class="block"><span class="faded"><?php
+                                echo $budgetLbl;
+                            ?>:</span> <?php echo $this->model->params->get('grant_budget', 'N/A'); ?></span>
                             <?php if ($this->model->access('manager')) { ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&alias=' . $this->model->get('alias') . '&active=settings'); ?>"><?php echo Lang::txt('COM_PROJECTS_EDIT_THIS'); ?></a>
+                                <?php
+                                $routeUrl7 = Route::url(
+                                    'index
+    . php?option='
+                                    . $this->option
+                                    . '&task=edit&alias='
+                                    . $this->model->get('alias')
+                                    . '&active=settings'
+                                );
+                                $langTxt8 = Lang::txt('COM_PROJECTS_EDIT_THIS');
+                                ?>
+                                <a href="<?php echo $routeUrl7; ?>"><?php echo $langTxt8; ?></a>
                             <?php } ?>
                         </p>
                     </td>
@@ -54,7 +90,15 @@ $config = $this->model->config();
             <tr>
                 <th class="htd"><?php echo Lang::txt('COM_PROJECTS_ACCESS'); ?></th>
                 <td><?php echo $privacy; ?> <?php if ($this->model->isPublic()) {
-                    ?><span class="mini faded">[<a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1'); ?>"><?php echo Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE'); ?></a>]</span><?php
+                    $previewUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&alias=' . $this->model->get('alias')
+                        . '&preview=1'
+                    );
+                    $previewTxt = Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE');
+                    ?><span class="mini faded">[<a href="<?php
+                        echo $previewUrl;
+?>"><?php echo $previewTxt; ?></a>]</span><?php
                     } ?></td>
             </tr>
             <tr>
@@ -63,7 +107,11 @@ $config = $this->model->config();
             </tr>
             <tr>
                 <th class="htd"><?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></th>
-                <td><?php echo $this->model->groupOwner() ? $this->model->groupOwner('description') : $this->model->owner('name'); ?></td>
+                <td><?php
+                    echo $this->model->groupOwner()
+                        ? $this->model->groupOwner('description')
+                        : $this->model->owner('name');
+                ?></td>
             </tr>
 
             <?php

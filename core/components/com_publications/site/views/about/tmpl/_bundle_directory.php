@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,7 +13,8 @@ $directory = $this->directory;
 ?>
 <li>
     <span class="item-icon">
-        <span class="item-extension _<?php echo Filesystem::extension($directory['name']) == 'zip' ? 'zip' : 'dir'; ?>"></span>
+        <?php $val = Filesystem::extension($directory['name']) == 'zip' ? 'zip' : 'dir'; ?>
+        <span class="item-extension _<?php echo $val; ?>"></span>
     </span>
     <span class="item-title"><?php echo $this->escape($directory['name']); ?></span>
     <?php if (isset($directory['contents']) && $directory['contents']) : ?>

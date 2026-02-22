@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,10 +16,23 @@ $privacyTxt = !$this->model->isPublic()
 if (!$this->model->isPublic()) {
     $privacy = '<span class="private">' . ucfirst($privacyTxt) . '</span>';
 } else {
-    $privacy = '<a href="' . Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1') . '" title="' . Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">' . ucfirst($privacyTxt) . '</a>';
+    $privacy = '<a href="'
+        . Route::url('index.php?option='
+        . $this->option
+        . '&alias='
+        . $this->model->get('alias')
+        . '&preview=1')
+        . '" title="'
+        . Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE')
+        . '">'
+        . ucfirst($privacyTxt)
+        . '</a>';
 }
 
-$start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
+$start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span class="h-privacy">'
+    . $privacy
+    . '</span> '
+    . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
 ?>
 <header class="content-header<?php if (!$this->showPic) {
     echo ' nopic';
@@ -33,11 +44,33 @@ $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span cl
             $thumbClass = ' no-picture';
         }
         ?>
-        <div class="pthumb<?php echo $thumbClass; ?>"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>" title="<?php echo Lang::txt('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&controller=media&media=thumb'); ?>" alt="<?php echo $this->escape($this->model->get('title')); ?>" /></a></div>
+        <?php
+        $projectUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&alias=' . $this->model->get('alias')
+        );
+        $thumbUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&alias=' . $this->model->get('alias')
+            . '&controller=media&media=thumb'
+        );
+        $updatesTxt = Lang::txt('COM_PROJECTS_VIEW_UPDATES');
+        $titleAlt = $this->escape($this->model->get('title'));
+        ?>
+        <div class="pthumb<?php echo $thumbClass; ?>">
+            <a
+                href="<?php echo $projectUrl; ?>"
+                title="<?php echo $updatesTxt; ?>"
+            ><img
+                src="<?php echo $thumbUrl; ?>"
+                alt="<?php echo $titleAlt; ?>"
+            /></a>
+        </div>
     <?php } ?>
     <div class="ptitle">
     <h2>
-        <a href="<?php echo Route::url($this->model->link()); ?>"><?php echo \Hubzero\Utility\Str::truncate($this->escape($this->model->get('title')), 50); ?></a>
+        <a href="<?php echo Route::url($this->model->link()); ?>">
+            <?php echo \Hubzero\Utility\Str::truncate($this->escape($this->model->get('title')), 50); ?></a>
     </h2>
     <?php // Member options
     if (!empty($this->showOptions)) {
@@ -52,7 +85,14 @@ $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span cl
         echo ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
         echo ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
         if ($cn = $this->model->groupOwner('cn')) {
-            echo ' ' . Lang::txt('COM_PROJECTS_GROUP') . ' <a href="' . Route::url('index.php?option=com_groups&cn=' . $cn) . '">' . $cn . '</a>';
+            echo ' '
+                . Lang::txt('COM_PROJECTS_GROUP')
+                . ' <a href="'
+                . Route::url('index.php?option=com_groups&cn='
+                . $cn)
+                . '">'
+                . $cn
+                . '</a>';
         } else {
             echo Lang::txt('COM_PROJECTS_UNKNOWN') . ' ' . Lang::txt('COM_PROJECTS_GROUP');
         }

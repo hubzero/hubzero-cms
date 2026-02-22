@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,9 +28,22 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+$formAction = Route::url('index.php?option=com_plugins');
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+$extId = $this->item->extension_id;
+$folderVal = $this->escape($this->item->folder);
+$elementVal = $this->escape($this->item->element);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=com_plugins'); ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -96,14 +107,19 @@ $this->js();
                             <?php echo $this->form->getInput('name'); ?>
                         </td>
                     </tr>
-                    <?php if ($this->item->extension_id) : ?>
+                    <?php if ($extId) : ?>
                         <tr>
                             <th>
                                 <?php echo Lang::txt('JGLOBAL_FIELD_ID_LABEL'); ?>
                             </th>
                             <td>
-                                <?php echo $this->escape($this->item->extension_id); ?>
-                                <input type="hidden" name="fields[extension_id]" id="field_extension_id" value="<?php echo $this->item->extension_id; ?>" />
+                                <?php echo $this->escape($extId); ?>
+                                <input
+                                    type="hidden"
+                                    name="fields[extension_id]"
+                                    id="field_extension_id"
+                                    value="<?php echo $extId; ?>"
+                                />
                             </td>
                         </tr>
                     <?php endif; ?>
@@ -112,8 +128,13 @@ $this->js();
                             <?php echo Lang::txt('COM_PLUGINS_FIELD_FOLDER_LABEL'); ?>
                         </th>
                         <td>
-                            <?php echo $this->escape($this->item->folder); ?>
-                            <input type="hidden" name="fields[folder]" id="field_folder" value="<?php echo $this->escape($this->item->folder); ?>" />
+                            <?php echo $folderVal; ?>
+                            <input
+                                type="hidden"
+                                name="fields[folder]"
+                                id="field_folder"
+                                value="<?php echo $folderVal; ?>"
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -121,8 +142,13 @@ $this->js();
                             <?php echo Lang::txt('COM_PLUGINS_FIELD_ELEMENT_LABEL'); ?>
                         </th>
                         <td>
-                            <?php echo $this->escape($this->item->element); ?>
-                            <input type="hidden" name="fields[element]" id="field_element" value="<?php echo $this->escape($this->item->element); ?>" />
+                            <?php echo $elementVal; ?>
+                            <input
+                                type="hidden"
+                                name="fields[element]"
+                                id="field_element"
+                                value="<?php echo $elementVal; ?>"
+                            />
                         </td>
                     </tr>
                     <tr>
@@ -135,17 +161,29 @@ $this->js();
                                     <?php echo Lang::txt($text); ?>
                                 <?php endif; ?>
                             <?php else : ?>
-                                <p class="error"><?php echo Lang::txt('COM_PLUGINS_XML_ERR'); ?></p>
+                                <p class="error">
+                                    <?php echo Lang::txt('COM_PLUGINS_XML_ERR'); ?>
+                                </p>
                             <?php endif; ?>
                         </td>
                     </tr>
-                    <?php if ($this->item->modified && $this->item->modified != '0000-00-00 00:00:00') : ?>
+                    <?php
+                    $hasModified = $this->item->modified
+                        && $this->item->modified != '0000-00-00 00:00:00';
+                    if ($hasModified) :
+                        $modifiedEsc = $this->escape($this->item->modified);
+                        $modifiedLocal = $this->escape(
+                            Date::of($this->item->modified)->toLocal()
+                        );
+                        ?>
                         <tr>
                             <th>
                                 <?php echo Lang::txt('JGLOBAL_FIELD_MODIFIED_LABEL'); ?>
                             </th>
                             <td>
-                                <time datetime="<?php echo $this->escape($this->item->modified); ?>"><?php echo $this->escape(Date::of($this->item->modified)->toLocal()); ?></time>
+                                <time datetime="<?php echo $modifiedEsc; ?>">
+                                    <?php echo $modifiedLocal; ?>
+                                </time>
                             </td>
                         </tr>
                     <?php endif; ?>
@@ -156,8 +194,16 @@ $this->js();
                             </th>
                             <td>
                                 <?php
-                                $modifier = User::getInstance($this->item->modified_by);
-                                echo $this->escape($modifier->get('name', Lang::txt('COM_PLUGINS_UNKNOWN')) . ' (' . $this->item->modified_by . ')');
+                                $modifier = User::getInstance(
+                                    $this->item->modified_by
+                                );
+                                $modName = $modifier->get(
+                                    'name',
+                                    Lang::txt('COM_PLUGINS_UNKNOWN')
+                                );
+                                echo $this->escape(
+                                    $modName . ' (' . $this->item->modified_by . ')'
+                                );
                                 ?>
                             </td>
                         </tr>
@@ -166,7 +212,7 @@ $this->js();
             </table>
         </div>
         <div class="col span5">
-            <?php echo Html::sliders('start', 'plugin-sliders-' . $this->item->extension_id); ?>
+            <?php echo Html::sliders('start', 'plugin-sliders-' . $extId); ?>
 
                 <?php echo $this->loadTemplate('options'); ?>
 
@@ -178,7 +224,7 @@ $this->js();
 
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-    <input type="hidden" name="id" value="<?php echo (int) $this->item->extension_id; ?>" />
+    <input type="hidden" name="id" value="<?php echo (int) $extId; ?>" />
     <input type="hidden" name="task" value="" />
     <?php echo Html::input('token'); ?>
     <input type="hidden" name="component" value="<?php echo Request::getCmd('component', ''); ?>" />

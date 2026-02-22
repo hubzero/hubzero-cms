@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -12,10 +10,12 @@
 defined('_HZEXEC_') or die();
 
 $html  = '<select name="mastertypeid" id="mastertypeid">' . "\n";
-$html .= "\t" . '<option value="0" selected="selected">' . Lang::txt('COM_PUBLICATIONS_SELECT_MASTER_TYPE') . '</option>';
+$label = Lang::txt('COM_PUBLICATIONS_SELECT_MASTER_TYPE');
+$html .= "\t" . '<option value="0" selected="selected">' . $label . '</option>';
 foreach ($this->mastertypes as $mastertype) {
     $html .= "\t" . '<option value="' . $mastertype->id . '"';
-    $html .= '>' . \Hubzero\Utility\Str::truncate($mastertype->type, 60) . ' (' . $mastertype->alias . ')</option>' . "\n";
+    $text = \Hubzero\Utility\Str::truncate($mastertype->type, 60);
+    $html .= '>' . $text . ' (' . $mastertype->alias . ')</option>' . "\n";
 }
 $html .= '</select>' . "\n";
 echo $html;

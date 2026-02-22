@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,29 +23,66 @@ $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=licenses'); ?>" method="post" id="item-form" name="adminForm">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=licenses'); ?>"
+    method="post"
+    id="item-form"
+    name="adminForm"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[title]" id="field-title" maxlength="100" value="<?php echo $this->escape($this->row->title); ?>" />
+                                        <label for="field-title">
+                        <?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'); ?>: <span class="required">
+                        <?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+                        </span>
+                        </label>
+                    <input
+                        type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        maxlength="100"
+                        value="<?php echo $this->escape($this->row->title); ?>"
+                    />
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_NAME_HINT'); ?>">
-                    <label for="field-name"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[name]" id="field-name" maxlength="100" value="<?php echo $this->escape($this->row->name); ?>" />
+                                        <label for="field-name">
+                        <?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NAME'); ?>: <span class="required">
+                        <?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+                        </span>
+                        </label>
+                    <input
+                        type="text"
+                        name="fields[name]"
+                        id="field-name"
+                        maxlength="100"
+                        value="<?php echo $this->escape($this->row->name); ?>"
+                    />
                     <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_NAME_HINT'); ?></span>
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_URL_HINT'); ?>">
                     <label for="field-url"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL'); ?>:</label>
-                    <input type="text" name="fields[url]" id="field-url" maxlength="100" value="<?php echo $this->escape($this->row->url); ?>" />
+                    <input
+                        type="text"
+                        name="fields[url]"
+                        id="field-url"
+                        maxlength="100"
+                        value="<?php echo $this->escape($this->row->url); ?>"
+                    />
                     <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_URL_HINT'); ?></span>
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_DESC_HINT'); ?>">
-                    <label for="field-info"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ABOUT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <textarea name="fields[info]" id="field-info" cols="40" rows="5"><?php echo $this->row->info; ?></textarea>
+                                        <label for="field-info">
+                        <?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ABOUT'); ?>: <span class="required">
+                        <?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+                        </span>
+                        </label>
+                                        <textarea name="fields[info]" id="field-info" cols="40" rows="5">
+                        <?php echo $this->row->info; ?>
+                        </textarea>
                     <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_DESC_HINT'); ?></span>
                 </div>
                 <div class="input-wrap">
@@ -56,7 +91,12 @@ $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
                 </div>
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ICON_HINT'); ?>">
                     <label for="field-icon"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ICON'); ?>:</label>
-                    <input type="text" name="fields[icon]" id="field-icon" value="<?php echo $this->escape($this->row->icon); ?>" />
+                    <input
+                        type="text"
+                        name="fields[icon]"
+                        id="field-icon"
+                        value="<?php echo $this->escape($this->row->icon); ?>"
+                    />
                     <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ICON_HINT'); ?></span>
                 </div>
 
@@ -76,7 +116,9 @@ $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DEFAULT'); ?></th>
-                        <td><?php echo $this->row->isMain() ? Lang::txt('COM_PUBLICATIONS_LICENSE_YES') : Lang::txt('COM_PUBLICATIONS_LICENSE_NO'); ?></td>
+                        <td><
+                            ?php echo $this->row->isMain() ? Lang:
+                            :txt('COM_PUBLICATIONS_LICENSE_YES') : Lang::txt('COM_PUBLICATIONS_LICENSE_NO'); ?></td>
                     </tr>
                 <?php if ($this->row->id) { ?>
                     <tr>
@@ -93,13 +135,28 @@ $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></legend>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_ACTIVE_EXPLAIN'); ?>">
+                    <?php $langTxt = Lang::txt('COM_PUBLICATIONS_LICENSE_ACTIVE_EXPLAIN'); ?>
+                    <div class="input-wrap" data-hint="<?php echo $langTxt; ?>">
                         <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_LICENSE_ACTIVE_EXPLAIN'); ?></span>
 
-                        <input class="option" name="fields[active]" id="field-active1" type="radio" value="1" <?php echo $this->row->active == 1 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[active]"
+                            id="field-active1"
+                            type="radio"
+                            value="1"
+                            <?php echo $this->row->active == 1 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-active1"><?php echo Lang::txt('JYES'); ?></label>
                         <br />
-                        <input class="option" name="fields[active]" id="field-active0" type="radio" value="0" <?php echo $this->row->active == 0 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[active]"
+                            id="field-active0"
+                            type="radio"
+                            value="0"
+                            <?php echo $this->row->active == 0 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-active0"><?php echo Lang::txt('JNO'); ?></label>
                     </div>
                 </fieldset>
@@ -107,13 +164,28 @@ $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CUSTOMIZABLE'); ?></legend>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CUSTOMIZABLE_HINT'); ?>">
+                    <?php $langTxt = Lang::txt('COM_PUBLICATIONS_FIELD_CUSTOMIZABLE_HINT'); ?>
+                    <div class="input-wrap" data-hint="<?php echo $langTxt; ?>">
                         <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CUSTOMIZABLE_HINT'); ?></span>
 
-                        <input class="option" name="fields[customizable]" id="field-customizable1" type="radio" value="1" <?php echo $this->row->customizable == 1 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[customizable]"
+                            id="field-customizable1"
+                            type="radio"
+                            value="1"
+                            <?php echo $this->row->customizable == 1 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-customizable1"><?php echo Lang::txt('JYES'); ?></label>
                         <br />
-                        <input class="option" name="fields[customizable]" id="field-customizable0" type="radio" value="0" <?php echo $this->row->customizable == 0 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[customizable]"
+                            id="field-customizable0"
+                            type="radio"
+                            value="0"
+                            <?php echo $this->row->customizable == 0 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-customizable0"><?php echo Lang::txt('JNO'); ?></label>
                     </div>
                 </fieldset>
@@ -121,13 +193,29 @@ $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
                 <fieldset>
                     <legend><?php echo Lang::txt('Agreement required'); ?></legend>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('Do we require publication authors to agree to license terms?'); ?>">
-                        <span class="hint"><?php echo Lang::txt('Do we require publication authors to agree to license terms?'); ?></span>
+                    <?php $langTxt = Lang::txt('Do we require publication authors to agree to license terms?'); ?>
+                    <div class="input-wrap" data-hint="<?php echo $langTxt; ?>">
+                        <?php $langTxt = Lang::txt('Do we require publication authors to agree to license terms?'); ?>
+                        <span class="hint"><?php echo $langTxt; ?></span>
 
-                        <input class="option" name="fields[agreement]" id="field-agreement1" type="radio" value="1" <?php echo $this->row->agreement == 1 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[agreement]"
+                            id="field-agreement1"
+                            type="radio"
+                            value="1"
+                            <?php echo $this->row->agreement == 1 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-agreement1"><?php echo Lang::txt('JYES'); ?></label>
                         <br />
-                        <input class="option" name="fields[agreement]" id="field-agreement0" type="radio" value="0" <?php echo $this->row->agreement == 0 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[agreement]"
+                            id="field-agreement0"
+                            type="radio"
+                            value="0"
+                            <?php echo $this->row->agreement == 0 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-agreement0"><?php echo Lang::txt('JNO'); ?></label>
                     </div>
                 </fieldset>
@@ -135,13 +223,29 @@ $text = preg_replace("/\r\n/", "\r", trim($this->row->text));
                 <fieldset>
                     <legend><?php echo Lang::txt('Allow Derivatives'); ?></legend>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('Are derivatives allowed under the terms of this license?'); ?>">
-                        <span class="hint"><?php echo Lang::txt('Are derivatives allowed under the terms of this license?'); ?></span>
+                    <?php $langTxt = Lang::txt('Are derivatives allowed under the terms of this license?'); ?>
+                    <div class="input-wrap" data-hint="<?php echo $langTxt; ?>">
+                        <?php $langTxt = Lang::txt('Are derivatives allowed under the terms of this license?'); ?>
+                        <span class="hint"><?php echo $langTxt; ?></span>
 
-                        <input class="option" name="fields[derivatives]" id="field-derivatives1" type="radio" value="1" <?php echo $this->row->derivatives == 1 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[derivatives]"
+                            id="field-derivatives1"
+                            type="radio"
+                            value="1"
+                            <?php echo $this->row->derivatives == 1 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-derivatives1"><?php echo Lang::txt('JYES'); ?></label>
                         <br />
-                        <input class="option" name="fields[derivatives]" id="field-derivatives0" type="radio" value="0" <?php echo $this->row->derivatives == 0 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[derivatives]"
+                            id="field-derivatives0"
+                            type="radio"
+                            value="0"
+                            <?php echo $this->row->derivatives == 0 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-derivatives0"><?php echo Lang::txt('JNO'); ?></label>
                     </div>
                 </fieldset>

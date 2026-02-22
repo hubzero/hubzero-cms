@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,13 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js('curation.js');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ORDER'), 'publications');
+$label = Lang::txt('COM_PUBLICATIONS_PUBLICATION');
+$label2 = Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
+$label3 = Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ORDER');
+Toolbar::title(
+    $label . ' ' . $label2 . ' - ' . $this->row->type . ': ' . $label3,
+    'publications'
+);
 Toolbar::save('saveblockorder');
 Toolbar::cancel();
 
@@ -31,9 +35,24 @@ foreach ($this->blocks as $b) {
 
 ?>
 
-<p class="backto"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
+<?php
+$backUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=edit&id=' . $this->row->id
+);
+$backLabel = Lang::txt('COM_PUBLICATIONS_MTYPE_BACK')
+    . ' ' . $this->row->type
+    . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
+?>
+<p class="backto"><a href="<?php echo $backUrl; ?>"><?php echo $backLabel; ?></a></p>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    id="item-form"
+    name="adminForm"
+>
     <fieldset class="adminform">
         <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_EDIT_BLOCK_ORDER'); ?></span></legend>
 

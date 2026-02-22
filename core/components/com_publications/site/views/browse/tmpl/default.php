@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,11 @@ $this->css()
     <h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header -->
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"
+    id="resourcesform"
+    method="get"
+>
     <section class="main section">
         <div class="section-inner hz-layout-with-aside">
             <div class="subject">
@@ -29,8 +31,18 @@ $this->css()
                     <fieldset class="entry-search">
                         <legend><?php echo Lang::txt('Search'); ?></legend>
                         <label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>" />
-                        <input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+                        <input
+                            type="text"
+                            name="search"
+                            id="entry-search-field"
+                            value="<?php echo $this->escape($this->filters['search']); ?>"
+                            placeholder="<?php echo Lang::txt('Enter keyword or phrase'); ?>"
+                        />
+                        <input
+                            type="hidden"
+                            name="sortby"
+                            value="<?php echo $this->escape($this->filters['sortby']); ?>"
+                        />
                         <input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
                     </fieldset>
                     <?php if ($this->filters['tag']) { ?>
@@ -38,16 +50,26 @@ $this->css()
                             <ol class="tags">
                             <?php
                             $url  = 'index.php?option=' . $this->option . '&task=browse';
-                            $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-                            $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-                            $url .= ($this->filters['category']   ? '&category=' . $this->escape($this->filters['category'])     : '');
+                            $url .= ($this->filters['search']
+                                ? '&search=' . $this->escape($this->filters['search'])
+                                : '');
+                            $url .= ($this->filters['sortby']
+                                ? '&sortby=' . $this->escape($this->filters['sortby'])
+                                : '');
+                            $url .= ($this->filters['category']
+                                ? '&category=' . $this->escape($this->filters['category'])
+                                : '');
 
                             $rt = new \Components\Publications\Helpers\Tags($database);
                             $tags = $rt->parseTopTags($this->filters['tag']);
                             foreach ($tags as $tag) {
                                 ?>
                                 <li>
-                                    <a href="<?php echo Route::url($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
+                                    <?php
+                                    $remainingTags = implode(',', $rt->parseTopTags($this->filters['tag'], $tag));
+                                    $tagUrl = Route::url($url . '&tag=' . $remainingTags);
+                                    ?>
+                                    <a href="<?php echo $tagUrl; ?>">
                                         <?php echo $this->escape(stripslashes($tag)); ?>
                                         <span class="remove">x</a>
                                     </a>
@@ -62,13 +84,17 @@ $this->css()
 
                 <?php if (isset($this->filters['tag_ignored']) && count($this->filters['tag_ignored']) > 0) { ?>
                     <div class="warning">
-                        <p><?php echo Lang::txt('Searching only allows up to 5 tags. The following tags were ignored:'); ?></p>
+                        <p><
+                            ?php echo Lang
+                            ::txt('Searching only allows up to 5 tags. The following tags were ignored:'); ?></p>
                         <ol class="tags">
                         <?php
                         $url  = 'index.php?option=' . $this->option . '&task=browse';
                         $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
                         $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-                        $url .= ($this->filters['type']   ? '&category=' . $this->escape($this->filters['category'])     : '');
+                        $url .= ($this->filters['type']
+                            ? '&category=' . $this->escape($this->filters['category'])
+                            : '');
 
                         foreach ($this->filters['tag_ignored'] as $tag) {
                             ?>
@@ -85,17 +111,45 @@ $this->css()
                 <?php } ?>
 
                 <div class="container">
-                    <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
+                    <?php $langTxt = Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>
+                    <nav class="entries-filters" aria-label="<?php echo $langTxt; ?>">
                         <?php
                         $qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-                        $qs .= ($this->filters['category']   ? '&category=' . $this->escape($this->filters['category'])     : '');
+                        $qs .= ($this->filters['category']
+                            ? '&category=' . $this->escape($this->filters['category'])
+                            : '');
                         $qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
                         ?>
+                        <?php
+                        $browseBase = 'index.php?option=' . $this->option . '&task=browse&sortby=';
+                        $titleUrl = Route::url($browseBase . 'title' . $qs);
+                        $dateUrl = Route::url($browseBase . 'date' . $qs);
+                        $titleCls = ($this->filters['sortby'] == 'title') ? ' class="active"' : '';
+                        $dateCls = ($this->filters['sortby'] == 'date') ? ' class="active"' : '';
+                        ?>
                         <ul class="entries-menu order-options">
-                            <li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('Sort by title'); ?>">&darr; <?php echo Lang::txt('Title'); ?></a></li>
-                            <li><a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="<?php echo Lang::txt('Sort by date published'); ?>">&darr; <?php echo Lang::txt('Published'); ?></a></li>
-                            <?php if ($this->config->get('show_ranking')) { ?>
-                            <li><a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo Lang::txt('Sort by ranking'); ?>">&darr; <?php echo Lang::txt('Ranking'); ?></a></li>
+                            <li>
+                                <a<?php echo $titleCls; ?>
+                                    href="<?php echo $titleUrl; ?>"
+                                    title="<?php echo Lang::txt('Sort by title'); ?>"
+                                >&darr; <?php echo Lang::txt('Title'); ?></a>
+                            </li>
+                            <li>
+                                <a<?php echo $dateCls; ?>
+                                    href="<?php echo $dateUrl; ?>"
+                                    title="<?php echo Lang::txt('Sort by date published'); ?>"
+                                >&darr; <?php echo Lang::txt('Published'); ?></a>
+                            </li>
+                            <?php if ($this->config->get('show_ranking')) {
+                                $rankUrl = Route::url($browseBase . 'ranking' . $qs);
+                                $rankCls = ($this->filters['sortby'] == 'ranking') ? ' class="active"' : '';
+                                ?>
+                            <li>
+                                <a<?php echo $rankCls; ?>
+                                    href="<?php echo $rankUrl; ?>"
+                                    title="<?php echo Lang::txt('Sort by ranking'); ?>"
+                                >&darr; <?php echo Lang::txt('Ranking'); ?></a>
+                            </li>
                             <?php } ?>
                         </ul>
                         <?php if (count($this->categories) > 0) { ?>
@@ -103,9 +157,18 @@ $this->css()
                                 <li>
                                     <label for="filter-type"><?php echo Lang::txt('Category'); ?></label>
                                     <select name="category" id="filter-type">
-                                        <option value="" <?php echo (!$this->filters['category']) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('All Categories'); ?></option>
+                                        <?php $langTxt1 = Lang::txt('All Categories'); ?>
+                                        <?php $val2 = (!$this->filters['category']) ? ' selected="selected"' : ''; ?>
+                                        <option value="" <?php echo $val2; ?>><?php echo $langTxt1; ?></option>
                                         <?php foreach ($this->categories as $item) { ?>
-                                            <option value="<?php echo $item->id; ?>"<?php echo ($this->filters['category'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->name)); ?></option>
+                                            <?php
+                                            $catSel = ($this->filters['category'] == $item->id)
+                                                ? ' selected="selected"' : '';
+                                            $catName = $this->escape(stripslashes($item->name));
+                                            ?>
+                                            <option value="<?php echo $item->id; ?>"<?php echo $catSel; ?>>
+                                                <?php echo $catName; ?>
+                                            </option>
                                         <?php } ?>
                                     </select>
                                 </li>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -35,7 +33,12 @@ if ($result) {
 ?>
 <div id="project-wrap">
     <section class="main section">
-        <form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>">
+        <form
+            method="post"
+            action="<?php echo Route::url(
+                'index.php?option=' . $this->option
+                . '&alias=' . $this->model->get('alias')
+            ); ?>">
             <fieldset >
                 <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
                 <input type="hidden" name="task" value="reinstate" />
@@ -53,18 +56,35 @@ if ($result) {
                 ?>
 
                 <p class="warning">
-                    <?php echo $suspended == 2 ? Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT') : Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_ADMIN'); ?> <?php if (!$this->model->access('manager') && $suspended == 2) {
-                        ?><?php echo Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_NO_MANAGER'); ?><?php
+                    <?php
+                    echo $suspended == 2
+                        ? Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT')
+                        : Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_ADMIN');
+                    ?> <?php if (!$this->model->access('manager') && $suspended == 2) {
+    ?><?php echo Lang::txt('COM_PROJECTS_CANCEL_SUSPENDED_PROJECT_NO_MANAGER'); ?><?php
                     } ?>
                 </p>
 
                 <?php if ($this->model->access('manager') && $suspended == 2) { ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_CANCEL_WANT_TO_REINSTATE'); ?></h4>
                     <p>
-                        <span><input type="submit" class="confirm" value="<?php echo Lang::txt('COM_PROJECTS_CANCEL_YES_REINSTATE'); ?>" /></span>
+                        <?php
+                        $langTxt3 = Lang::txt('COM_PROJECTS_CANCEL_YES_REINSTATE');
+                        ?>
+                        <span><input type="submit" class="confirm" value="<?php echo $langTxt3; ?>" /></span>
                     </p>
                     <p>
-                        <?php echo ucfirst(Lang::txt('COM_PROJECTS_CANCEL_PERMANENTLY')); ?>, <?php echo Lang::txt('COM_PROJECTS_CANCEL_YOU_CAN_ALSO'); ?> <a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo Lang::txt('COM_PROJECTS_CANCEL_CONTACT_ADMIN'); ?></a>
+                        <?php
+                        $supportUrl = Route::url(
+                            'index.php?option=com_support'
+                            . '&controller=tickets&task=new'
+                        );
+                        echo ucfirst(Lang::txt('COM_PROJECTS_CANCEL_PERMANENTLY'));
+                        ?>, <?php
+                        echo Lang::txt('COM_PROJECTS_CANCEL_YOU_CAN_ALSO');
+?> <a href="<?php echo $supportUrl; ?>"><?php
+                            echo Lang::txt('COM_PROJECTS_CANCEL_CONTACT_ADMIN');
+?></a>
                     </p>
                 <?php } ?>
             </fieldset>

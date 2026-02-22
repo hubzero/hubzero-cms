@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,14 +11,42 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') . ' - ' . Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': #' . $this->pub->id . ' - ' . Lang::txt('COM_PUBLICATIONS_VERSIONS'), 'publications');
+$label = Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER');
+$label2 = Lang::txt('COM_PUBLICATIONS_PUBLICATION');
+$label3 = Lang::txt('COM_PUBLICATIONS_VERSIONS');
+Toolbar::title(
+    $label . ' - ' . $label2 . ': #' . $this->pub->id . ' - ' . $label3,
+    'publications'
+);
 Toolbar::spacer();
 Toolbar::cancel();
 
 ?>
-<p class="crumbs"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo Lang::txt('COM_PUBLICATIONS_VERSIONS'); ?></p>
+<?php
+$mgrUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$editUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=edit&id[]=' . $this->pub->id
+);
+$mgrLabel = Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER');
+$pubLabel = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id;
+$versLabel = Lang::txt('COM_PUBLICATIONS_VERSIONS');
+?>
+<p class="crumbs">
+    <a href="<?php echo $mgrUrl; ?>"><?php echo $mgrLabel; ?></a> &raquo;
+    <a href="<?php echo $editUrl; ?>"><?php echo $pubLabel; ?></a>
+    &raquo; <?php echo $versLabel; ?>
+</p>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    name="adminForm"
+>
     <table class="adminlist">
         <thead>
             <tr>
@@ -62,7 +88,16 @@ Toolbar::cancel();
                     ?>
                 </td>
                 <td><?php echo $doi_notice; ?></td>
-                <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id . '&version=' . $v->version_number); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MANAGE_VERSION'); ?></a></td>
+                <?php
+                $vEditUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=edit&id[]=' . $this->pub->id
+                    . '&version=' . $v->version_number
+                );
+                $manageTxt = Lang::txt('COM_PUBLICATIONS_MANAGE_VERSION');
+                ?>
+                <td><a href="<?php echo $vEditUrl; ?>"><?php echo $manageTxt; ?></a></td>
             </tr>
             <?php
         endforeach;

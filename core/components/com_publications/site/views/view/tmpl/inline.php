@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -72,15 +70,24 @@ if (!User::isGuest()) {
     $token = base64_encode($crypter->encrypt($session_id));
 }
 
-$downloadUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' . $this->aid . '&render=download&token=' . $token);
+$downloadUrl = Route::url(
+    'index.php?option=com_publications&id=' . $this->publication->id
+    . '&task=serve&aid=' . $this->aid
+    . '&render=download&token=' . $token
+);
 
-$viewUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' . $this->aid . '&render=download&disposition=inline&token=' . $token);
+$viewUrl = Route::url(
+    'index.php?option=com_publications&id=' . $this->publication->id
+    . '&task=serve&aid=' . $this->aid
+    . '&render=download&disposition=inline&token=' . $token
+);
 
 ?>
 <div class="sample">
-    <p><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->publication->title . '</strong>'; ?> <?php if ($this->primary->role != 1) {
-        echo '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->primary->path . '</strong>';
-       } ?></p>
+    <p><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': <strong>' . $this->publication->title . '</strong>'; ?>
+        <?php if ($this->primary->role != 1) {
+            echo '&nbsp;&nbsp; Supporting Doc: <strong>' . $this->primary->path . '</strong>';
+        } ?></p>
 </div>
 
 <?php
@@ -89,11 +96,14 @@ if ($this->type == 'image') {
     echo '<img ' . $attributes . ' src="' . $this->url . '" alt="Image" />' . "\n";
 } elseif (in_array(strtolower($this->ext), $docs) && $this->googleView) {
     // View via Google
-    echo '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . $downloadUrl) . '&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>' . "\n";
+    echo '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer
+        ?url=' . urlencode(Request::base() . $downloadUrl) . '&amp;embedded=true#
+        :0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>' . "\n";
 } else // View in html5-browser
 {
     ?>
-    <p class="direct-download">Publication doesn't load in your browser or shows partial file? <a href="<?php echo Request::base() . $downloadUrl; ?>">Download file</a></p>
+    <p class="direct-download">Publication doesn't load in your browser or shows partial file? <a href="
+        <?php echo Request::base() . $downloadUrl; ?>">Download file</a></p>
     <?php if (strtolower($this->ext) == 'wmv') { ?>
         <object type="video/x-ms-wmv"
               data="<?php echo $this->url; ?>" width="100%" height="<?php echo $height; ?>">

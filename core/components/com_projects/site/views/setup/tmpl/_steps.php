@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,17 @@ defined('_HZEXEC_') or die();
     endif;
     ?>">
         <?php if ($this->model->get('setup_stage') > 0 && $this->step != 0) : ?>
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=setup&section=describe'); ?>">
+            <?php
+            $routeUrl = Route::url(
+                'index
+    . php?option='
+                . $this->option
+                . '&alias='
+                . $this->model->get('alias')
+                . '&task=setup&section=describe'
+            );
+            ?>
+            <a href="<?php echo $routeUrl; ?>">
                 <?php echo Lang::txt('COM_PROJECTS_DESCRIBE_PROJECT'); ?>
             </a>
         <?php else : ?>
@@ -37,7 +45,17 @@ defined('_HZEXEC_') or die();
     endif;
     ?>">
         <?php if ($this->model->get('setup_stage') >= 1 && $this->step != 1) : ?>
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=setup&section=team'); ?>">
+            <?php
+            $routeUrl2 = Route::url(
+                'index
+    . php?option='
+                . $this->option
+                . '&alias='
+                . $this->model->get('alias')
+                . '&task=setup&section=team'
+            );
+            ?>
+            <a href="<?php echo $routeUrl2; ?>">
                 <?php echo Lang::txt('COM_PROJECTS_ADD_TEAM'); ?>
             </a>
         <?php else : ?>

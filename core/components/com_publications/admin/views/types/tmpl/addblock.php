@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,13 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js('curation.js');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'), 'publications');
+$label = Lang::txt('COM_PUBLICATIONS_PUBLICATION');
+$label2 = Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
+$label3 = Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK');
+Toolbar::title(
+    $label . ' ' . $label2 . ' - ' . $this->row->type . ': ' . $label3,
+    'publications'
+);
 Toolbar::save('saveblock');
 Toolbar::cancel();
 
@@ -34,8 +38,23 @@ foreach ($blocks as $blockId => $block) {
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
-    <p><a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    id="item-form"
+    name="adminForm"
+>
+    <?php
+    $backUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+        . '&task=edit&id=' . $this->row->id
+    );
+    $backLabel = Lang::txt('COM_PUBLICATIONS_MTYPE_BACK')
+        . ' ' . $this->row->type
+        . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
+    ?>
+    <p><a class="button" href="<?php echo $backUrl; ?>"><?php echo $backLabel; ?></a></p>
 
     <fieldset class="adminform">
         <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'); ?></span></legend>

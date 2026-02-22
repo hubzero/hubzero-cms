@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,15 +12,36 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js('curation.js');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_REMOVE_BLOCK'), 'publications');
+$label = Lang::txt('COM_PUBLICATIONS_PUBLICATION');
+$label2 = Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
+$label3 = Lang::txt('COM_PUBLICATIONS_FIELD_CURATION_REMOVE_BLOCK');
+Toolbar::title(
+    $label . ' ' . $label2 . ' - ' . $this->row->type . ': ' . $label3,
+    'publications'
+);
 
 $manifest  = $this->curation->_manifest;
 $blocks    = $manifest->blocks;
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
-    <p><a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    id="item-form"
+    name="adminForm"
+>
+    <?php
+    $backUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+        . '&task=edit&id=' . $this->row->id
+    );
+    $backLabel = Lang::txt('COM_PUBLICATIONS_MTYPE_BACK')
+        . ' ' . $this->row->type
+        . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
+    ?>
+    <p><a class="button" href="<?php echo $backUrl; ?>"><?php echo $backLabel; ?></a></p>
 
     <?php if ($this->getError()) { ?>
         <p class="error"><?php echo $this->getError(); ?></p>
@@ -38,7 +57,10 @@ $blocks    = $manifest->blocks;
 
         <div class="input-wrap">
             <p class="warning">
-                <?php echo Lang::txt('COM_PUBLICATIONS_BLOCK_REMOVAL_WARNING', $this->escape(stripslashes($blocks->{$this->blockid}->name))); ?>
+                <?php
+                $blockName = $this->escape(stripslashes($blocks->{$this->blockid}->name));
+                echo Lang::txt('COM_PUBLICATIONS_BLOCK_REMOVAL_WARNING', $blockName);
+                ?>
             </p>
 
             <label for="confirmdel">
@@ -47,8 +69,22 @@ $blocks    = $manifest->blocks;
             </label>
 
             <p class="submit">
-                <input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_DELETE'); ?>" />
-                <a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>">
+                <input
+                    class="btn btn-danger"
+                    type="submit"
+                    value="<?php echo Lang::txt('COM_PUBLICATIONS_DELETE'); ?>"
+                />
+                <?php
+                $cancelUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=edit&id=' . $this->row->id
+                );
+                ?>
+                <a
+                    class="btn btn-secondary"
+                    href="<?php echo $cancelUrl; ?>"
+                >
                     <?php echo Lang::txt('JCANCEL'); ?>
                 </a>
             </p>

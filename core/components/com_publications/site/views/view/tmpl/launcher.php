@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -15,9 +13,14 @@ $this->css()
     ->css('jquery.fancybox.css', 'system')
     ->js();
 
+$imageUrl = Route::url(
+    'index.php?option=com_publications&id='
+    . $this->publication->id . '&v='
+    . $this->publication->version_number
+) . '/Image:master';
 $this->css('
 	.launcher-image .imager {
-		background-image: url("' . Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&v=' . $this->publication->version_number) . '/Image:master");
+		background-image: url("' . $imageUrl . '");
 	}
 ');
 
@@ -66,7 +69,8 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
                 // Display mini abstract
                 if ($this->publication->abstract) {
                     ?>
-                    <p class="ataglance"><?php echo \Hubzero\Utility\Str::truncate(stripslashes($this->publication->abstract), 250); ?></p>
+                    <?php $val = \Hubzero\Utility\Str::truncate(stripslashes($this->publication->abstract), 250); ?>
+                    <p class="ataglance"><?php echo $val; ?></p>
                     <?php
                 }
                 ?>

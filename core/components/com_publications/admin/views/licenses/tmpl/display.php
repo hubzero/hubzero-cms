@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,7 +11,12 @@ defined('_HZEXEC_') or die();
 
 $canDo = \Components\Publications\Helpers\Permissions::getActions('license');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_LICENSES'), 'publications');
+$label = Lang::txt('COM_PUBLICATIONS_PUBLICATIONS');
+$label2 = Lang::txt('COM_PUBLICATIONS_LICENSES');
+Toolbar::title(
+    $label . ': ' . $label2,
+    'publications'
+);
 if ($canDo->get('core.create')) {
     Toolbar::addNew();
 }
@@ -31,27 +34,96 @@ if ($canDo->get('core.delete')) {
 
 $this->css();
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PUBLICATIONS_SEARCH'); ?>" />
+        <input
+            type="text"
+            name="search"
+            id="filter_search"
+            value="<?php echo $this->escape($this->filters['search']); ?>"
+            placeholder="<?php echo Lang::txt('COM_PUBLICATIONS_SEARCH'); ?>"
+        />
 
-        <input type="submit" name="filter_submit" id="filter_submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_GO'); ?>" />
+        <input
+            type="submit"
+            name="filter_submit"
+            id="filter_submit"
+            value="<?php echo Lang::txt('COM_PUBLICATIONS_GO'); ?>"
+        />
     </fieldset>
 
     <table class="adminlist">
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                                        <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                        </label>
                 </th>
-                <th class="priority-4"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th class="priority-3"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th class="priority-2"><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_STATUS', 'active', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $sortHeader = Html::grid(
+                    'sort',
+                    'COM_PUBLICATIONS_FIELD_ID',
+                    'id',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th class="priority-4"><?php echo $sortHeader; ?></th>
+                <?php
+                $sortHeader = Html::grid(
+                    'sort',
+                    'COM_PUBLICATIONS_FIELD_NAME',
+                    'name',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th class="priority-3"><?php echo $sortHeader; ?></th>
+                <?php
+                $sortHeader = Html::grid(
+                    'sort',
+                    'COM_PUBLICATIONS_FIELD_TITLE',
+                    'title',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th><?php echo $sortHeader; ?></th>
+                <?php
+                $sortHeader = Html::grid(
+                    'sort',
+                    'COM_PUBLICATIONS_FIELD_STATUS',
+                    'active',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th class="priority-2"><?php echo $sortHeader; ?></th>
                 <th class="priority-2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DEFAULT'); ?></th>
-                <th><?php echo Html::grid('sort', 'COM_PUBLICATIONS_FIELD_ORDER', 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $sortHeader = Html::grid(
+                    'sort',
+                    'COM_PUBLICATIONS_FIELD_ORDER',
+                    'ordering',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th><?php echo $sortHeader; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -71,19 +143,32 @@ $this->css();
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
                     <td>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                        <input
+                            type="checkbox"
+                            name="id[]"
+                            id="cb<?php echo $i; ?>"
+                            value="<?php echo $row->id; ?>"
+                            class="checkbox-toggle"
+                        />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     </td>
                     <td class="priority-4">
                         <?php echo $row->id; ?>
                     </td>
                     <td class="priority-3">
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id=' . $row->id
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <span><?php echo $this->escape($row->name); ?></span>
                         </a>
                     </td>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <a href="<?php echo $editUrl; ?>">
                             <span><?php echo $this->escape($row->title); ?></span>
                         </a>
                     </td>
@@ -105,10 +190,21 @@ $this->css();
                                 <?php echo $this->rows->pagination->orderUpIcon($i, isset($orderings[$i - 1])); ?>
                             </span>
                             <span>
-                                <?php echo $this->rows->pagination->orderDownIcon($i, $this->rows->pagination->total, isset($orderings[$i + 1])); ?>
+                                <?php echo $this->rows->pagination->orderDownIcon(
+                                    $i,
+                                    $this->rows->pagination->total,
+                                    isset($orderings[$i + 1])
+                                ); ?>
                             </span>
                         <?php } ?>
-                        <input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" disabled="disabled" class="text-area-order" />
+                        <input
+                            type="text"
+                            name="order[]"
+                            size="5"
+                            value="<?php echo $row->ordering; ?>"
+                            disabled="disabled"
+                            class="text-area-order"
+                        />
                     </td>
                 </tr>
                 <?php

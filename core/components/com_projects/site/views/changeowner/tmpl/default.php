@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +24,13 @@ defined('_HZEXEC_') or die();
 
         <p class="warning"><?php echo Lang::txt('COM_PROJECTS_INFO_OWNER_DELETED'); ?></p>
 
-        <form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>" id="hubForm">
+        <form
+            method="post"
+            action="<?php echo Route::url(
+                'index.php?option=' . $this->option
+                . '&alias=' . $this->model->get('alias')
+            ); ?>"
+            id="hubForm">
             <fieldset>
                 <legend><?php echo Lang::txt('COM_PROJECTS_OWNER_DELETED_OPTIONS'); ?></legend>
 
@@ -36,7 +40,14 @@ defined('_HZEXEC_') or die();
 
                 <div class="form-group form-check">
                     <label for="keep1" class="form-check-label">
-                        <input class="option form-check-input" name="keep" type="radio" id="keep1" value="1" checked="checked" />
+                        <input
+                            class="option form-check-input"
+                            name="keep"
+                            type="radio"
+                            id="keep1"
+                            value="1"
+                            checked="checked"
+                        />
                         <?php echo Lang::txt('COM_PROJECTS_OWNER_KEEP_PROJECT'); ?>
                     </label>
                 </div>

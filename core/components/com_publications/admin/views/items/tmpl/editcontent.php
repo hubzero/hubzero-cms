@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +14,12 @@ $this->css();
 $tmpl = Request::getCmd('tmpl', '');
 
 if ($tmpl != 'component') {
-    Toolbar::title(Lang::txt('COM_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_FOR_PUB') . ' #' . $this->pub->get('id') . ' (v.' . $this->pub->get('version_label') . ')', 'publications');
+    $label = Lang::txt('COM_PUBLICATIONS');
+    $label2 = Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_FOR_PUB');
+    Toolbar::title(
+        $label . ': ' . $label2 . ' #' . $this->pub->get('id') . ' (v.' . $this->pub->get('version_label') . ')',
+        'publications'
+    );
     Toolbar::save('savecontent');
     Toolbar::cancel();
 }
@@ -27,17 +30,44 @@ if ($tmpl != 'component') {
     <p class="error"><?php echo $this->getError(); ?></p>
     <?php return;
 } ?>
-<p class="crumbs"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->get('id') . '&version=' . $this->pub->get('version_number')); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->get('id'); ?></a> &raquo; <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO'); ?></p>
+<?php
+$mgrUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$editUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=edit&id[]=' . $this->pub->get('id')
+    . '&version=' . $this->pub->get('version_number')
+);
+$mgrLabel = Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER');
+$pubLabel = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->get('id');
+$contentLabel = Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO');
+?>
+<p class="crumbs">
+    <a href="<?php echo $mgrUrl; ?>"><?php echo $mgrLabel; ?></a> &raquo;
+    <a href="<?php echo $editUrl; ?>"><?php echo $pubLabel; ?></a>
+    &raquo; <?php echo $contentLabel; ?>
+</p>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+>
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">
                 <?php if (!$this->getError()) { ?>
-                    <button type="button" onclick="submitbutton('savecontent');"><?php echo Lang::txt('JSAVE');?></button>
+                                        <button type="button" onclick="submitbutton('savecontent');">
+                        <?php echo Lang::txt('JSAVE');?>
+                        </button>
                 <?php } ?>
-                <button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo Lang::txt('Cancel');?></button>
+                <button type="button" onclick="window.parent.document.getElementById('sbox-window').close();">
+                    <?php echo Lang::txt('Cancel');?></button>
             </div>
 
             <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT') ?>
@@ -93,7 +123,12 @@ if ($tmpl != 'component') {
                     <?php if (count($attachments) > 1 && $multiZip) { ?>
                     <div class="input-wrap">
                         <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE_NAME'); ?>:</label>
-                        <input type="text" name="params[element<?php echo $this->elementId; ?>bundlename]" maxlength="250" value="<?php echo $bundleName; ?>" />
+                        <input
+                            type="text"
+                            name="params[element<?php echo $this->elementId; ?>bundlename]"
+                            maxlength="250"
+                            value="<?php echo $bundleName; ?>"
+                        />
                     </div>
                     <?php } ?>
                     <?php if ($attachments) { ?>
@@ -101,7 +136,12 @@ if ($tmpl != 'component') {
                             <div class="input-wrap withdivider">
                                 <p>[<?php echo $attach->type; ?>] <?php echo $attach->path; ?></p>
                                 <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_TITLE'); ?>:</label>
-                                <input type="text" name="attachments[<?php echo $attach->id; ?>][title]" maxlength="250" value="<?php echo $attach->title; ?>" />
+                                <input
+                                    type="text"
+                                    name="attachments[<?php echo $attach->id; ?>][title]"
+                                    maxlength="250"
+                                    value="<?php echo $attach->title; ?>"
+                                />
                             </div>
                         <?php } ?>
                     <?php } else { ?>
@@ -128,7 +168,9 @@ if ($tmpl != 'component') {
                     <tr>
                         <td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE'); ?></td>
                         <td>
-                            <?php echo $element->params->role == 1 ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_PRIMARY') : Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_SECOND'); ?>
+                            <?php echo $element->params->role == 1
+                                ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_PRIMARY')
+                                : Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_SECOND'); ?>
                         </td>
                     </tr>
                 </tbody>

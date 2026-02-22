@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -11,7 +9,9 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-$text = $this->publication->version->get('license_text') ? $this->publication->version->get('license_text') : $this->publication->license()->text;
+$text = $this->publication->version->get('license_text')
+    ? $this->publication->version->get('license_text')
+    : $this->publication->license()->text;
 $text = preg_replace("/\r\n/", "\r", trim($text));
 
 ?>

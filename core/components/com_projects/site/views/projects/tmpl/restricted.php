@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,9 +21,24 @@ $this->project->about = $this->escape($this->project->about);
 $title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . $this->project->title : $this->title;
 ?>
 <header id="content-header">
-    <h2><?php echo $title; ?> <?php if ($this->gid && is_object($this->group)) {
-        ?> <?php echo Lang::txt('COM_PROJECTS_FOR') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_GROUP')); ?> <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo \Hubzero\Utility\Str::truncate($this->group->get('description'), 50); ?></a><?php
-        } ?></h2>
+    <h2><?php echo $title; ?>
+    <?php if ($this->gid && is_object($this->group)) {
+        $forGroup = Lang::txt('COM_PROJECTS_FOR') . ' '
+            . ucfirst(Lang::txt('COM_PROJECTS_GROUP'));
+        $groupUrl = Route::url(
+            'index.php?option=com_groups&cn='
+            . $this->group->get('cn')
+        );
+        $groupDesc = \Hubzero\Utility\Str::truncate(
+            $this->group->get('description'),
+            50
+        );
+        ?>
+        <?php echo $forGroup; ?>
+        <a href="<?php echo $groupUrl; ?>"><?php
+            echo $groupDesc;
+        ?></a>
+    <?php } ?></h2>
 </header><!-- / #content-header -->
 
 <section class="main section" id="setup">
@@ -59,17 +72,31 @@ $title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . 
                 <h2><?php echo Lang::txt('COM_PROJECTS_SETUP_BEFORE_WE_START'); ?></h2>
                 <h4 class="setup-h"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI'); ?></span></h4>
                 <label class="terms-label dark">
-                    <input class="option restricted-answer" name="restricted" id="f-restricted-no" type="radio" value="no" checked="checked" />
+                    <input
+                        class="option restricted-answer"
+                        name="restricted"
+                        id="f-restricted-no"
+                        type="radio"
+                        value="no"
+                        checked="checked"
+                    />
                     <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_NO'); ?>
                 </label>
                 <label class="terms-label dark">
-                    <input class="option restricted-answer" name="restricted" id="f-restricted-yes" type="radio" value="yes"/>
+                    <input
+                        class="option restricted-answer"
+                        name="restricted"
+                        id="f-restricted-yes"
+                        type="radio"
+                        value="yes"
+                    />
                     <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_YES_NOT_SURE'); ?>
                 </label>
                 <div id="f-restricted-explain" class="cautionaction">
                     <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_EXPLAIN'); ?>
                 </div>
-                <p class="submitarea"><input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_CONTINUE'); ?>" class="btn" id="btn-preform" /></p>
+                <p class="submitarea"><input type="submit" value="
+                    <?php echo Lang::txt('COM_PROJECTS_CONTINUE'); ?>" class="btn" id="btn-preform" /></p>
             </fieldset>
         </form>
     </div>

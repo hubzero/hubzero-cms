@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -43,7 +41,12 @@ function submitbutton(pressbutton)
     } else {
         submitform(pressbutton);
     }
-    window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&project=<?php echo $this->model->get('id'); ?>'", 700);
+    var redirectUrl = 'index.php?option=<?php echo $this->option; ?>'
+        + '&controller=<?php echo $this->controller; ?>'
+        + '&project=<?php echo $this->model->get('id'); ?>';
+    window.top.setTimeout(
+        "window.parent.location='" + redirectUrl + "'", 700
+    );
 }
 
 jQuery(document).ready(function($){
@@ -57,13 +60,22 @@ jQuery(document).ready(function($){
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="component-form">
+<?php
+$routeUrl = Route::url('index.php?option=' . $this->option);
+?>
+<form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="component-form">
     <?php if ($tmpl == 'component') { ?>
         <fieldset>
             <div class="configuration" >
                 <div class="fltrt configuration-options">
-                    <button type="button" onclick="submitbutton('addusers');"><?php echo Lang::txt('COM_PROJECTS_SAVE'); ?></button>
-                    <button type="button" onclick="window.parent.$.fancybox.close();"><?php echo Lang::txt('JCANCEL'); ?></button>
+                    <button
+                        type="button"
+                        onclick="submitbutton('addusers');"
+                    ><?php echo Lang::txt('COM_PROJECTS_SAVE'); ?></button>
+                    <button
+                        type="button"
+                        onclick="window.parent.$.fancybox.close();"
+                    ><?php echo Lang::txt('JCANCEL'); ?></button>
                 </div>
                 <?php echo Lang::txt('COM_PROJECTS') ?>
             </div>
@@ -105,7 +117,10 @@ jQuery(document).ready(function($){
 
                 <div class="input-wrap">
                     <input class="option" name="role" id="role_collaborator" type="radio" value="0" checked="checked" />
-                    <label for="role_collaborator"><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR'); ?></label>
+                    <?php
+                    $langTxt2 = Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR');
+                    ?>
+                    <label for="role_collaborator"><?php echo $langTxt2; ?></label>
                 </div>
 
                 <div class="input-wrap">

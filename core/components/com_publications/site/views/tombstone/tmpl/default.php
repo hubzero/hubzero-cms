@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,17 @@ $this->css()
 </div>
 <div class="tombstone-section">
     <h3><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_RETRACTION_DESCRIPTION'); ?></h3>
-    <p><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_IDENTIFIER'); ?><a target="_blank" rel="external" href="<?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->record->doi;?>"><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->record->doi;?></a><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_REASON') . lcfirst($this->record->unpublished_reason) . "."; ?></p>
+    <?php
+    $doiUrl = Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->record->doi;
+    $reason = Lang::txt('COM_PUBLICATIONS_TOMBSTONE_REASON')
+        . lcfirst($this->record->unpublished_reason) . ".";
+    $idLabel = Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_IDENTIFIER');
+    ?>
+    <p>
+        <?php echo $idLabel; ?>
+        <a target="_blank" rel="external" href="<?php echo $doiUrl; ?>"><?php echo $doiUrl; ?></a>
+        <?php echo $reason; ?>
+    </p>
     <p><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_CONTACT_PURR'); ?></p>
 </div>
 

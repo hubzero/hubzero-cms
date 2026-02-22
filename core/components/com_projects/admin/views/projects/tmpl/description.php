@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -80,7 +78,16 @@ $this->css('formbuilder.css')
      ->js('vendor.js')
      ->js('formbuilder.js');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<?php
+$routeUrl = Route::url(
+    'index
+    . php?option='
+    . $this->option
+    . '&controller='
+    . $this->controller
+);
+?>
+<form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="item-form">
     <div class="fb-main"><?php echo Lang::txt('COM_MEMBERS_PROFILE'); ?></div>
 
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

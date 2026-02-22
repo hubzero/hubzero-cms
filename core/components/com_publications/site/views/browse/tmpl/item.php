@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -39,7 +37,8 @@ if (($this->line->category && !intval($this->filters['category']))) :
 endif;
 
 if ($this->authors && $this->params->get('show_authors')) :
-    $info[] = Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS') . ': ' . \Components\Publications\Helpers\Html::showContributors($this->authors, false, true);
+    $info[] = Lang::txt('COM_PUBLICATIONS_CONTRIBUTORS') . ': '
+        . \Components\Publications\Helpers\Html::showContributors($this->authors, false, true);
 endif;
 
 if ($this->line->doi) :
@@ -55,11 +54,13 @@ $extras = Event::trigger('publications.onPublicationsList', array($this->line));
 ?>
 <li class="<?php echo implode(' ', $cls); ?>">
     <div class="pub-thumb<?php echo $moreClasses; ?>">
-        <img src="<?php echo Route::url($this->line->link('thumb')); ?>" alt="<?php echo $this->escape($this->line->title); ?>" />
+        <?php $routeUrl = Route::url($this->line->link('thumb')); ?>
+        <img src="<?php echo $routeUrl; ?>" alt="<?php echo $this->escape($this->line->title); ?>" />
     </div>
     <div class="pub-details">
         <p class="title">
-            <a href="<?php echo Route::url($this->line->link()); ?>"><?php echo $this->escape($this->line->title); ?></a>
+            <?php $routeUrl = Route::url($this->line->link()); ?>
+            <a href="<?php echo $routeUrl; ?>"><?php echo $this->escape($this->line->title); ?></a>
         </p>
 
         <?php if (!empty($extras)) : ?>
@@ -82,7 +83,8 @@ $extras = Event::trigger('publications.onPublicationsList', array($this->line));
                 <dl class="rankinfo">
                     <dt class="ranking">
                         <span class="rank">
-                            <span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->line->get('id'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_THIS_HAS'); ?></span>
+                            <span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->line->get('id'); ?>">
+                                <?php echo Lang::txt('COM_PUBLICATIONS_THIS_HAS'); ?></span>
                         </span><?php echo number_format($ranking, 1) . ' ' . Lang::txt('COM_PUBLICATIONS_RANKING'); ?>
                     </dt>
                     <dd>
@@ -135,7 +137,9 @@ $extras = Event::trigger('publications.onPublicationsList', array($this->line));
             endif;
             ?>
             <div class="metadata">
-                <p class="rating"><span title="<?php echo Lang::txt('COM_PUBLICATIONS_OUT_OF_5_STARS', $this->line->get('master_rating')); ?>" class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('COM_PUBLICATIONS_OUT_OF_5_STARS', $this->line->get('master_rating')); ?></span>&nbsp;</span></p>
+                <?php $ratingTxt = Lang::txt('COM_PUBLICATIONS_OUT_OF_5_STARS', $this->line->get('master_rating')); ?>
+                <p class="rating"><span title="<?php echo $ratingTxt; ?>" class="avgrating<?php echo $class; ?>
+                    "><span><?php echo $ratingTxt; ?></span>&nbsp;</span></p>
             </div>
             <?php
         endif;

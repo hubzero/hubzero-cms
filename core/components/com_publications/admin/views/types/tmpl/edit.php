@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,12 @@ $this->css()
 $canDo = \Components\Publications\Helpers\Permissions::getActions('type');
 
 $text = ($this->task == 'edit' ? Lang::txt('JACTION_EDIT') : Lang::txt('JACTION_CREATE'));
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ': ' . $text, 'publications');
+$label = Lang::txt('COM_PUBLICATIONS_PUBLICATION');
+$label2 = Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
+Toolbar::title(
+    $label . ' ' . $label2 . ': ' . $text,
+    'publications'
+);
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
     Toolbar::save();
@@ -55,23 +58,51 @@ $required = array('content', 'description', 'authors');
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    id="item-form"
+    name="adminForm"
+>
     <div class="grid">
         <div class="col span6">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_INFO'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-type"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NAME'); ?>:<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[type]" id="field-type" maxlength="100" value="<?php echo $this->escape($this->row->type); ?>" />
+                    <?php $reqTxt = Lang::txt('JOPTION_REQUIRED'); ?>
+                    <label for="field-type">
+                        <?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NAME'); ?>:
+                        <span class="required"><?php echo $reqTxt; ?></span>
+                    </label>
+                    <input
+                        type="text"
+                        name="fields[type]"
+                        id="field-type"
+                        maxlength="100"
+                        value="<?php echo $this->escape($this->row->type); ?>"
+                    />
                 </div>
                 <div class="input-wrap">
                     <label for="field-alias"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
-                    <input type="text" name="fields[alias]" id="field-alias" maxlength="100" value="<?php echo $this->escape($this->row->alias); ?>" />
+                    <input
+                        type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        maxlength="100"
+                        value="<?php echo $this->escape($this->row->alias); ?>"
+                    />
                 </div>
                 <div class="input-wrap">
-                    <label for="field-description"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
-                    <input type="text" name="fields[description]" id="field-description" maxlength="255" value="<?php echo $this->escape($this->row->description); ?>" />
+                    <?php $langTxt = Lang::txt('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>
+                    <label for="field-description"><?php echo $langTxt; ?>:</label>
+                    <input
+                        type="text"
+                        name="fields[description]"
+                        id="field-description"
+                        maxlength="255"
+                        value="<?php echo $this->escape($this->row->description); ?>"
+                    />
                 </div>
             </fieldset>
 
@@ -82,28 +113,89 @@ $required = array('content', 'description', 'authors');
                     <tbody>
                         <?php
                         foreach ($panels as $panel => $val) {
+                            $inputName = 'params[show_' . $panel . ']';
+                            $chk0 = ($params->get('show_' . $panel, $val) == 0)
+                                ? ' checked="checked"' : '';
+                            $chk1 = ($params->get('show_' . $panel, $val) == 1)
+                                ? ' checked="checked"' : '';
+                            $chk2 = ($params->get('show_' . $panel, $val) == 2)
+                                ? ' checked="checked"' : '';
+                            $dis = in_array($panel, $required)
+                                ? ' disabled="disabled"' : '';
+                            $hideLabel = Lang::txt('COM_PUBLICATIONS_HIDE');
+                            $showLabel = Lang::txt('COM_PUBLICATIONS_SHOW');
+                            $reqLabel = Lang::txt(
+                                'COM_PUBLICATIONS_SHOW_AND_REQUIRE'
+                            );
                             ?>
                             <tr>
                                 <th><?php echo ucfirst($panel); ?>:</th>
-                                <td><label><input type="radio" name="params[show_<?php echo $panel; ?>]" value="0"<?php echo ($params->get('show_' . $panel, $val) == 0) ? ' checked="checked"' : ''; ?> <?php if (in_array($panel, $required)) {
-                                    echo ' disabled="disabled"';
-                                                                                 } ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_HIDE'); ?></label></td>
-                                <td><label><input type="radio" name="params[show_<?php echo $panel; ?>]" value="1"<?php echo ($params->get('show_' . $panel, $val) == 1) ? ' checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_SHOW'); ?></label></td>
-                                <td><label><input type="radio" name="params[show_<?php echo $panel; ?>]" value="2"<?php echo ($params->get('show_' . $panel, $val) == 2) ? ' checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_SHOW_AND_REQUIRE'); ?></label></td>
+                                <td><label>
+                                    <input type="radio"
+                                        name="<?php echo $inputName; ?>"
+                                        value="0"<?php echo $chk0 . $dis; ?>
+                                    /> <?php echo $hideLabel; ?>
+                                </label></td>
+                                <td><label>
+                                    <input type="radio"
+                                        name="<?php echo $inputName; ?>"
+                                        value="1"<?php echo $chk1; ?>
+                                    /> <?php echo $showLabel; ?>
+                                </label></td>
+                                <td><label>
+                                    <input type="radio"
+                                        name="<?php echo $inputName; ?>"
+                                        value="2"<?php echo $chk2; ?>
+                                    /> <?php echo $reqLabel; ?>
+                                </label></td>
                             </tr>
                             <?php
                         }
                         ?>
+                        <?php
+                        $metaChk0 = ($params->get('show_metadata', 0) == 0)
+                            ? ' checked="checked"' : '';
+                        $metaChk1 = ($params->get('show_metadata', 0) == 1)
+                            ? ' checked="checked"' : '';
+                        $subChk0 = ($params->get('show_submitter', 0) == 0)
+                            ? ' checked="checked"' : '';
+                        $subChk1 = ($params->get('show_submitter', 0) == 1)
+                            ? ' checked="checked"' : '';
+                        $metaLabel = Lang::txt('COM_PUBLICATIONS_FIELD_METADATA');
+                        $subLabel = Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTER');
+                        $hideLabel = Lang::txt('COM_PUBLICATIONS_HIDE');
+                        $showLabel = Lang::txt('COM_PUBLICATIONS_SHOW');
+                        ?>
                         <tr>
-                            <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_METADATA'); ?>:</th>
-                            <td><label><input type="radio" name="params[show_metadata]" value="0"<?php echo ($params->get('show_metadata', 0) == 0) ? ' checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_HIDE'); ?></label></td>
-                            <td><label><input type="radio" name="params[show_metadata]" value="1"<?php echo ($params->get('show_metadata', 0) == 1) ? ' checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_SHOW'); ?></label></td>
+                            <th><?php echo $metaLabel; ?>:</th>
+                            <td><label>
+                                <input type="radio"
+                                    name="params[show_metadata]"
+                                    value="0"<?php echo $metaChk0; ?>
+                                /> <?php echo $hideLabel; ?>
+                            </label></td>
+                            <td><label>
+                                <input type="radio"
+                                    name="params[show_metadata]"
+                                    value="1"<?php echo $metaChk1; ?>
+                                /> <?php echo $showLabel; ?>
+                            </label></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTER'); ?>:</th>
-                            <td><label><input type="radio" name="params[show_submitter]" value="0"<?php echo ($params->get('show_submitter', 0) == 0) ? ' checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_HIDE'); ?></label></td>
-                            <td><label><input type="radio" name="params[show_submitter]" value="1"<?php echo ($params->get('show_submitter', 0) == 1) ? ' checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PUBLICATIONS_SHOW'); ?></label></td>
+                            <th><?php echo $subLabel; ?>:</th>
+                            <td><label>
+                                <input type="radio"
+                                    name="params[show_submitter]"
+                                    value="0"<?php echo $subChk0; ?>
+                                /> <?php echo $hideLabel; ?>
+                            </label></td>
+                            <td><label>
+                                <input type="radio"
+                                    name="params[show_submitter]"
+                                    value="1"<?php echo $subChk1; ?>
+                                /> <?php echo $showLabel; ?>
+                            </label></td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -140,10 +232,24 @@ $required = array('content', 'description', 'authors');
                     <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE'); ?>">
                         <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE'); ?></span>
 
-                        <input class="option" name="fields[contributable]" id="field-contributable1" type="radio" value="1" <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[contributable]"
+                            id="field-contributable1"
+                            type="radio"
+                            value="1"
+                            <?php echo $this->row->contributable == 1 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-contributable1"><?php echo Lang::txt('JYES'); ?></label>
                         <br />
-                        <input class="option" name="fields[contributable]" id="field-contributable0" type="radio" value="0" <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[contributable]"
+                            id="field-contributable0"
+                            type="radio"
+                            value="0"
+                            <?php echo $this->row->contributable == 0 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-contributable0"><?php echo Lang::txt('JNO'); ?></label>
                     </div>
                 </fieldset>
@@ -151,13 +257,29 @@ $required = array('content', 'description', 'authors');
                 <fieldset>
                     <legend><?php echo Lang::txt('Supporting'); ?></legend>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE_SUPPORT'); ?>">
-                        <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE_SUPPORT'); ?></span>
+                    <?php $langTxt = Lang::txt('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE_SUPPORT'); ?>
+                    <div class="input-wrap" data-hint="<?php echo $langTxt; ?>">
+                        <?php $langTxt = Lang::txt('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE_SUPPORT'); ?>
+                        <span class="hint"><?php echo $langTxt; ?></span>
 
-                        <input class="option" name="fields[supporting]" id="field-supporting1" type="radio" value="1" <?php echo $this->row->supporting == 1 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[supporting]"
+                            id="field-supporting1"
+                            type="radio"
+                            value="1"
+                            <?php echo $this->row->supporting == 1 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-supporting1"><?php echo Lang::txt('JYES'); ?></label>
                         <br />
-                        <input class="option" name="fields[supporting]" id="field-supporting0" type="radio" value="0" <?php echo $this->row->supporting == 0 ? 'checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="fields[supporting]"
+                            id="field-supporting0"
+                            type="radio"
+                            value="0"
+                            <?php echo $this->row->supporting == 0 ? 'checked="checked"' : ''; ?>
+                        />
                         <label for="field-supporting0"><?php echo Lang::txt('JNO'); ?></label>
 
                         <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_OFFER_CHOICE_NOTICE'); ?></span>
@@ -170,13 +292,34 @@ $required = array('content', 'description', 'authors');
                     <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_DOI_QUESTION'); ?>">
                         <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_DOI_QUESTION'); ?></span>
 
-                        <input class="option" name="params[issue_doi]" id="field-issue_doi1" type="radio" value="1" <?php echo ($params->get('issue_doi', 1) == 1) ? ' checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="params[issue_doi]"
+                            id="field-issue_doi1"
+                            type="radio"
+                            value="1"
+                            <?php echo ($params->get('issue_doi', 1) == 1) ? ' checked="checked"' : ''; ?>
+                        />
                         <label for="field-issue_doi1"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></label>
                         <br />
-                        <input class="option" name="params[issue_doi]" id="field-issue_doi2" type="radio" value="2" <?php echo ($params->get('issue_doi', 1) == 2) ? ' checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="params[issue_doi]"
+                            id="field-issue_doi2"
+                            type="radio"
+                            value="2"
+                            <?php echo ($params->get('issue_doi', 1) == 2) ? ' checked="checked"' : ''; ?>
+                        />
                         <label for="field-issue_doi2"><?php echo Lang::txt('JOPTION_OPTIONAL'); ?></label>
                         <br />
-                        <input class="option" name="params[issue_doi]" id="field-issue_doi0" type="radio" value="0" <?php echo ($params->get('issue_doi', 1) == 0) ? ' checked="checked"' : ''; ?> />
+                        <input
+                            class="option"
+                            name="params[issue_doi]"
+                            id="field-issue_doi0"
+                            type="radio"
+                            value="0"
+                            <?php echo ($params->get('issue_doi', 1) == 0) ? ' checked="checked"' : ''; ?>
+                        />
                         <label for="field-issue_doi0"><?php echo Lang::txt('COM_PUBLICATIONS_NA'); ?></label>
                     </div>
                 </fieldset>
@@ -184,10 +327,12 @@ $required = array('content', 'description', 'authors');
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_CHOOSE_CAT'); ?>">
                     <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_CHOOSE_CAT'); ?></span>
 
-                    <label for="field-default_category"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_DEFAULT_CAT'); ?></label>
+                    <?php $langTxt = Lang::txt('COM_PUBLICATIONS_MTYPE_DEFAULT_CAT'); ?>
+                    <label for="field-default_category"><?php echo $langTxt; ?></label>
                     <select name="params[default_category]" id="field-default_category">
                     <?php foreach ($this->cats as $cat) { ?>
-                        <option value="<?php echo $cat->id; ?>" <?php echo ($params->get('default_category', 1) == $cat->id) ? ' selected="selected"' : ''; ?>><?php echo $cat->name; ?></option>
+                        <?php $val = ($params->get('default_category', 1) == $cat->id) ? ' selected="selected"' : ''; ?>
+                        <option value="<?php echo $cat->id; ?>" <?php echo $val; ?>><?php echo $cat->name; ?></option>
                     <?php } ?>
                     </select>
                 </div>

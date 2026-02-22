@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -90,19 +88,38 @@ endif;
                         <h3><?php echo Lang::txt('COM_PROJECTS_TIPS'); ?></h3>
                         <?php if ($this->section == 'team') : ?>
                             <h4><?php echo Lang::txt('PLG_PROJECTS_TEAM_HOWTO_ROLES_TIPS'); ?></h4>
-                            <p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_OWNERS')); ?> </span><?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
+                            <?php
+                            $ownersLabel = ucfirst(Lang::txt('COM_PROJECTS_LABEL_OWNERS'));
+                            $canLabel = Lang::txt('COM_PROJECTS_CAN');
+                            ?>
+                            <p><span class="italic prominent"><?php
+                                echo $ownersLabel;
+                            ?> </span><?php echo $canLabel; ?>:</p>
                             <ul>
                                 <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_ONE'); ?></li>
                                 <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_TWO'); ?></li>
-                                <li><strong><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_THREE'); ?></strong></li>
+                                <?php
+                                $langTxt3 = Lang::txt('COM_PROJECTS_HOWTO_ROLES_MANAGER_CAN_THREE');
+                                ?>
+                                <li><strong><?php echo $langTxt3; ?></strong></li>
                             </ul>
-                            <p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_COLLABORATORS')); ?> </span><?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
+                            <?php
+                            $collabLabel = ucfirst(Lang::txt('COM_PROJECTS_LABEL_COLLABORATORS'));
+                            ?>
+                            <p><span class="italic prominent"><?php
+                                echo $collabLabel;
+                            ?> </span><?php echo $canLabel; ?>:</p>
                             <ul>
                                 <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_ONE'); ?></li>
                                 <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_TWO'); ?></li>
                                 <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_COLLABORATOR_CAN_THREE'); ?></li>
                             </ul>
-                            <p><span class="italic prominent"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LABEL_REVIEWER')); ?> </span><?php echo Lang::txt('COM_PROJECTS_CAN'); ?>:</p>
+                            <?php
+                            $reviewerLabel = ucfirst(Lang::txt('COM_PROJECTS_LABEL_REVIEWER'));
+                            ?>
+                            <p><span class="italic prominent"><?php
+                                echo $reviewerLabel;
+                            ?> </span><?php echo $canLabel; ?>:</p>
                             <ul>
                                 <li><?php echo Lang::txt('COM_PROJECTS_HOWTO_ROLES_REVIEWER_CAN_ONE'); ?></li>
                             </ul>
@@ -122,13 +139,31 @@ endif;
                                 <?php echo Lang::txt('COM_PROJECTS_CANCEL_PROJECT_NEED'); ?>
                             </p>
                             <p>
-                                <a class="btn btn-danger" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=delete'); ?>" id="delproject"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+                                <?php
+                                $routeUrl8 = Route::url(
+                                    'index.php?option='
+                                    . $this->option
+                                    . '&alias='
+                                    . $this->model->get('alias')
+                                    . '&task=delete'
+                                );
+                                $langTxt9 = Lang::txt('JACTION_DELETE');
+                                ?>
+                                <a
+                                    class="btn btn-danger"
+                                    href="<?php echo $routeUrl8; ?>"
+                                    id="delproject"
+                                ><?php echo $langTxt9; ?></a>
                             </p>
                         <?php endif; ?>
                     </div>
                 </div><!-- / .col span3 -->
                 <div id="edit-project" class="col span9 omega">
-                    <form id="hubForm" class="full" method="post" action="<?php echo Route::url($this->model->link() . '&task=save'); ?>">
+                    <form
+                        id="hubForm"
+                        class="full"
+                        method="post"
+                        action="<?php echo Route::url($this->model->link() . '&task=save'); ?>">
                         <input type="hidden" id="pid" name="id" value="<?php echo $this->model->get('id'); ?>" />
                         <input type="hidden" name="task" value="save" />
                         <input type="hidden" name="active" value="<?php echo $this->section; ?>" />

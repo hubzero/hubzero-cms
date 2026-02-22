@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,12 @@ $this->publication->attachments();
 $this->publication->license();
 
 $data = array();
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->publication->metadata == null ? '' : $this->publication->metadata, $matches, PREG_SET_ORDER);
+preg_match_all(
+    "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
+    $this->publication->metadata == null ? '' : $this->publication->metadata,
+    $matches,
+    PREG_SET_ORDER
+);
 if (count($matches) > 0) {
     foreach ($matches as $match) {
         $data[$match[1]] = $match[2];
@@ -86,8 +89,13 @@ if ($listAll) {
         );
         $licFile = $path . DS . 'LICENSE.txt';
         if (file_exists($licFile)) {
-            $licenseUrl = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&task=license' . '&v=' . $this->publication->version_id);
-            $append = '<li><a href="' . $licenseUrl . '" class="license-terms play" rel="external">' . Lang::txt('COM_PUBLICATIONS_LICENSE_TERMS') . '</a></li>';
+            $licenseUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&id=' . $this->publication->id
+                . '&task=license&v=' . $this->publication->version_id
+            );
+            $append = '<li><a href="' . $licenseUrl . '" class="license-terms play" rel="external">'
+                . Lang::txt('COM_PUBLICATIONS_LICENSE_TERMS') . '</a></li>';
         }
 
         // Archival path
@@ -96,7 +104,8 @@ if ($listAll) {
 
         $showArchive = isset($this->publication->_curationModel->_manifest->params->show_archival)
                 ? $this->publication->_curationModel->_manifest->params->show_archival :  0;
-        $archiveBase = 'index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&v=' . $this->publication->version_number;
+        $archiveBase = 'index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&v='
+            . $this->publication->version_number;
         $archiveUrl = Route::url($archiveBase . '&render=archive');
         $showArchive = ($showArchive && file_exists($archPath)) ? true : false;
 
@@ -112,7 +121,8 @@ if ($listAll) {
             <?php echo $listLabel ? $listLabel : Lang::txt('COM_PUBLICATIONS_CONTENT_LIST'); ?>
             <?php if ($showArchive && $authorized) : ?>
                     <span class="browsebundle">
-                        (<a class="showBundle" href="<?php echo Route::url($archiveBase . '&render=showcontents&tmpl=component'); ?>">
+                        <?php $routeUrl = Route::url($archiveBase . '&render=showcontents&tmpl=component'); ?>
+                        (<a class="showBundle" href="<?php echo $routeUrl; ?>">
                             <?php echo Lang::txt('COM_PUBLICATIONS_BROWSE_ARCHIVE_PACKAGE'); ?>
                         </a>)
                     </span>
@@ -162,13 +172,18 @@ if ($this->publication->params->get('show_metadata')) {
         // Build our citation object
         $cite = new stdClass();
         $cite->title     = $this->publication->title;
-        $cite->year      = $this->publication->published_up && $this->publication->published_up != '0000-00-00 00:00:00' ? Date::of($this->publication->published_up)->toLocal('Y') : Date::of('now')->toLocal('Y');
+        $hasPublishedUp = $this->publication->published_up
+            && $this->publication->published_up != '0000-00-00 00:00:00';
+        $cite->year      = $hasPublishedUp
+            ? Date::of($this->publication->published_up)->toLocal('Y')
+            : Date::of('now')->toLocal('Y');
 
         $cite->location  = '';
         $cite->date      = '';
 
         $cite->doi       = $this->publication->doi ? $this->publication->doi : '';
-        $cite->url       = $cite->doi ? trim($this->config->get('doi_resolve', 'https://doi.org/'), '/') . '/' . $cite->doi : null;
+        $cite->url       = $cite->doi ? trim($this->config->get('doi_resolve', 'https://doi.org/'), '/') . '/'
+            . $cite->doi : null;
         $cite->type      = '';
         $cite->pages     = '';
         $cite->author    = $this->publication->getUnlinkedContributors();

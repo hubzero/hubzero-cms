@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,20 +25,48 @@ $this->css('theme' . $theme . '.css');
 <div id="project-wrap" class="theme publicview">
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_PROJECTS_ALL_PROJECTS'); ?></a></li>
+            <?php
+            $routeUrl = Route::url('index.php?option=' . $this->option . '&task=browse');
+            $langTxt2 = Lang::txt('COM_PROJECTS_ALL_PROJECTS');
+            ?>
+            <li><a class="btn icon-browse" href="<?php echo $routeUrl; ?>"><?php echo $langTxt2; ?></a></li>
             <?php if (User::authorise('core.create', $this->option)) { ?>
-                <li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?></a></li>
+                <?php
+                $routeUrl3 = Route::url('index.php?option=' . $this->option . '&task=start');
+                $langTxt4 = Lang::txt('COM_PROJECTS_START_NEW');
+                ?>
+                <li><a class="btn icon-add" href="<?php echo $routeUrl3; ?>"><?php echo $langTxt4; ?></a></li>
             <?php } ?>
         </ul>
     </div><!-- / #content-header-extra -->
 
     <?php if ($this->model->access('member') && !$this->reviewer) { // Public preview for authorized users ?>
         <div id="project-preview">
-            <p><?php echo Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW'); ?> <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_PAGE'); ?></a></span></p>
+            <?php
+            $returnUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&alias=' . $this->model->get('alias')
+            );
+            ?>
+            <p><?php echo Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW'); ?>
+            <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?>
+            <a href="<?php echo $returnUrl; ?>"><?php
+                echo Lang::txt('COM_PROJECTS_PROJECT_PAGE');
+            ?></a></span></p>
         </div>
     <?php } elseif ($this->reviewer) { ?>
         <div id="project-preview">
-            <p><?php echo Lang::txt('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW'); ?> <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $this->reviewer); ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_LIST'); ?></a></span></p>
+            <?php
+            $browseUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&task=browse&reviewer=' . $this->reviewer
+            );
+            ?>
+            <p><?php echo Lang::txt('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW'); ?>
+            <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?>
+            <a href="<?php echo $browseUrl; ?>"><?php
+                echo Lang::txt('COM_PROJECTS_PROJECT_LIST');
+            ?></a></span></p>
         </div>
     <?php } ?>
 
@@ -66,15 +92,29 @@ $this->css('theme' . $theme . '.css');
     <section class="main section">
         <div class="project-inner-wrap grid">
             <?php $member = $this->model->member(); ?>
-            <?php $link = Route::url('index.php?option=com_projects&task=requestaccess&alias=' . $this->model->get('alias') . '&' . Session::getFormToken() . '=1'); ?>
+            <?php
+            $routeUrl13 = Route::url(
+                'index
+    . php?option=com_projects&task=requestaccess&alias='
+                . $this->model->get('alias')
+                . '&'
+                . Session::getFormToken()
+                . '=1'
+            );
+            ?>
+            <?php $link = $routeUrl13; ?>
             <?php if ($this->model->allowMembershipRequest()) : ?>
                 <?php if (!$member || $member->status == 2) : ?>
                     <div class="btn-container tooltips span4">
-                        <a href="<?php echo $link;?>" class="tooltips btn btn-success"><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');?></a>
+                        <?php
+                        $langTxt14 = Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');
+                        ?>
+                        <a href="<?php echo $link;?>" class="tooltips btn btn-success"><?php echo $langTxt14;?></a>
                     </div>
                 <?php elseif ($member->get('status') == 3) : ?>
                     <div class="btn-container tooltips span4" title="Membership Request Pending">
-                        <a href="<?php echo $link; ?>" class="tooltips btn btn-success" disabled><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');?></a>
+                        <a href="<?php echo $link; ?>" class="tooltips btn btn-success" disabled>
+                            <?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');?></a>
                     </div>
                 <?php elseif ($member->get('status') == 4) : ?>
                     <?php
@@ -85,7 +125,10 @@ $this->css('theme' . $theme . '.css');
                     ?>
 
                     <div class="btn-container tooltips span4" title="<?php echo $denyMessage;?>">
-                        <a href="<?php echo $link; ?>" class="btn btn-success" disabled><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');?></a>
+                        <?php
+                        $langTxt16 = Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');
+                        ?>
+                        <a href="<?php echo $link; ?>" class="btn btn-success" disabled><?php echo $langTxt16;?></a>
                     </div>
                 <?php endif; ?>
             <?php endif; ?>
@@ -96,7 +139,11 @@ $this->css('theme' . $theme . '.css');
                                     require_once($componentPath . DS . "helpers" . DS . "converter.php");
                                     $val = \Component\Redirect\Helpers\Converter::convert($val);
                             } else {
-                                    $val = preg_replace('#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is', "<a href='$1' rel='nofollow'>$2</a>", $val);
+                                    $val = preg_replace(
+                                        '#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is',
+                                        "<a href='$1' rel='nofollow'>$2</a>",
+                                        $val
+                                    );
                             }
                             ?>
                 <div class="public-list-header">

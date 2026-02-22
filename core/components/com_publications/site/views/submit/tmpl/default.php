@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,7 +28,14 @@ $this->css()
 <?php if ($this->pid && !empty($this->project) && $this->project->get('created_by_user') == User::get('id')) { ?>
     <p class="contrib-options">
         <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEED_A_PROJECT'); ?>
-        <a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->project->get('alias') . '&action=activate'); ?>">
+        <?php
+        $routeUrl = Route::url(
+            'index.php?option=com_projects'
+            . '&alias=' . $this->project->get('alias') . ''
+            . '&action=activate'
+        );
+        ?>
+        <a href="<?php echo $routeUrl; ?>">
         <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LEARN_MORE'); ?> &raquo;</a>
     </p>
 <?php } ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,14 +15,24 @@ $this->css()
 $html  = '';
 
 $wishlist = Component::isEnabled('com_wishlist');
+$suggestTxt = Lang::txt('COM_PROJECTS_FEATURES_SUGGEST_FEATURE');
+$seeTxt = Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS');
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?></a></li>
-            <li><a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_PROJECTS_BROWSE_PUBLIC_PROJECTS'); ?></a></li>
+            <?php
+            $routeUrl = Route::url('index.php?option=' . $this->option . '&task=start');
+            $langTxt2 = Lang::txt('COM_PROJECTS_START_NEW');
+            ?>
+            <li><a class="btn icon-add" href="<?php echo $routeUrl; ?>"><?php echo $langTxt2; ?></a></li>
+            <?php
+            $routeUrl3 = Route::url('index.php?option=' . $this->option . '&task=browse');
+            $langTxt4 = Lang::txt('COM_PROJECTS_BROWSE_PUBLIC_PROJECTS');
+            ?>
+            <li><a class="btn icon-browse" href="<?php echo $routeUrl3; ?>"><?php echo $langTxt4; ?></a></li>
         </ul>
     </div>
 </header>
@@ -53,8 +61,16 @@ $wishlist = Component::isEnabled('com_wishlist');
                 <?php if ($wishlist && $this->config->get('suggest_feature', 1)) { ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_FEATURES_WANT_FEATURE'); ?></h4>
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&task=add&category=general&id=1') . '/?tag=projects,projects:microblog,com_projects'; ?>" class="btn btn-success"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SUGGEST_FEATURE'); ?></a>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&category=general&id=1') . '/?tags=projects,projects:microblog,com_projects'; ?>" class="btn"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS'); ?></a>
+                        <?php
+                        $suggestUrl = Route::url(
+                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                        ) . '/?tag=projects,projects:microblog,com_projects';
+                        $seeUrl = Route::url(
+                            'index.php?option=com_wishlist&category=general&id=1'
+                        ) . '/?tags=projects,projects:microblog,com_projects';
+                        ?>
+                        <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
+                        <a href="<?php echo $seeUrl; ?>" class="btn"><?php echo $seeTxt; ?></a>
                     </p>
                 <?php } ?>
             </div><!-- / .col -->
@@ -75,8 +91,16 @@ $wishlist = Component::isEnabled('com_wishlist');
                 <?php if ($wishlist && $this->config->get('suggest_feature', 1)) { ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_FEATURES_WANT_FEATURE'); ?></h4>
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&task=add&category=general&id=1') . '/?tag=projects,projects:todo,com_projects'; ?>" class="btn btn-success"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SUGGEST_FEATURE'); ?></a>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&category=general&id=1') . '/?tags=projects,projects:todo,com_projects'; ?>" class="btn"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS'); ?></a>
+                        <?php
+                        $suggestUrl = Route::url(
+                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                        ) . '/?tag=projects,projects:todo,com_projects';
+                        $seeUrl = Route::url(
+                            'index.php?option=com_wishlist&category=general&id=1'
+                        ) . '/?tags=projects,projects:todo,com_projects';
+                        ?>
+                        <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
+                        <a href="<?php echo $seeUrl; ?>" class="btn"><?php echo $seeTxt; ?></a>
                     </p>
                 <?php } ?>
             </div><!-- / .col -->
@@ -96,8 +120,16 @@ $wishlist = Component::isEnabled('com_wishlist');
                 <?php if ($wishlist && $this->config->get('suggest_feature', 1)) { ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_FEATURES_WANT_FEATURE'); ?></h4>
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&task=add&category=general&id=1') . '/?tag=projects,projects:notes,com_projects'; ?>" class="btn btn-success"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SUGGEST_FEATURE'); ?></a>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&category=general&id=1') . '/?tags=projects,projects:notes,com_projects'; ?>" class="btn"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS'); ?></a>
+                        <?php
+                        $suggestUrl = Route::url(
+                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                        ) . '/?tag=projects,projects:notes,com_projects';
+                        $seeUrl = Route::url(
+                            'index.php?option=com_wishlist&category=general&id=1'
+                        ) . '/?tags=projects,projects:notes,com_projects';
+                        ?>
+                        <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
+                        <a href="<?php echo $seeUrl; ?>" class="btn"><?php echo $seeTxt; ?></a>
                     </p>
                 <?php } ?>
             </div><!-- / .col -->
@@ -117,8 +149,16 @@ $wishlist = Component::isEnabled('com_wishlist');
                 <?php if ($wishlist && $this->config->get('suggest_feature', 1)) { ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_FEATURES_WANT_FEATURE'); ?></h4>
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&task=add&category=general&id=1') . '/?tag=projects,projects:team,com_projects'; ?>" class="btn btn-success"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SUGGEST_FEATURE'); ?></a>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&category=general&id=1') . '/?tags=projects,projects:team,com_projects'; ?>" class="btn"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS'); ?></a>
+                        <?php
+                        $suggestUrl = Route::url(
+                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                        ) . '/?tag=projects,projects:team,com_projects';
+                        $seeUrl = Route::url(
+                            'index.php?option=com_wishlist&category=general&id=1'
+                        ) . '/?tags=projects,projects:team,com_projects';
+                        ?>
+                        <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
+                        <a href="<?php echo $seeUrl; ?>" class="btn"><?php echo $seeTxt; ?></a>
                     </p>
                 <?php } ?>
             </div><!-- / .col -->
@@ -134,12 +174,27 @@ $wishlist = Component::isEnabled('com_wishlist');
                 <p class="ima">&nbsp;</p>
             </div><!-- / .col -->
             <div class="col span6 about">
-                <p class="f-about"><?php echo Lang::txt('COM_PROJECTS_FEATURES_FILES_ABOUT_START'); ?> <a href="http://git-scm.com/" rel="external"><?php echo Lang::txt('COM_PROJECTS_FEATURES_FILES_ABOUT_GIT'); ?></a> <?php echo Lang::txt('COM_PROJECTS_FEATURES_FILES_ABOUT_END'); ?></p>
+                <?php
+                $filesStart = Lang::txt('COM_PROJECTS_FEATURES_FILES_ABOUT_START');
+                $filesGit = Lang::txt('COM_PROJECTS_FEATURES_FILES_ABOUT_GIT');
+                $filesEnd = Lang::txt('COM_PROJECTS_FEATURES_FILES_ABOUT_END');
+                ?>
+                <p class="f-about"><?php echo $filesStart; ?>
+                    <a href="http://git-scm.com/" rel="external"><?php echo $filesGit; ?></a>
+                    <?php echo $filesEnd; ?></p>
                 <?php if ($wishlist && $this->config->get('suggest_feature', 1)) { ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_FEATURES_WANT_FEATURE'); ?></h4>
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&task=add&category=general&id=1') . '/?tag=projects,projects:files,com_projects'; ?>" class="btn btn-success"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SUGGEST_FEATURE'); ?></a>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&category=general&id=1') . '/?tags=projects,projects:files,com_projects'; ?>" class="btn"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS'); ?></a>
+                        <?php
+                        $suggestUrl = Route::url(
+                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                        ) . '/?tag=projects,projects:files,com_projects';
+                        $seeUrl = Route::url(
+                            'index.php?option=com_wishlist&category=general&id=1'
+                        ) . '/?tags=projects,projects:files,com_projects';
+                        ?>
+                        <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
+                        <a href="<?php echo $seeUrl; ?>" class="btn"><?php echo $seeTxt; ?></a>
                     </p>
                 <?php } ?>
             </div><!-- / .col -->
@@ -162,12 +217,24 @@ $wishlist = Component::isEnabled('com_wishlist');
                 <p class="ima">&nbsp;</p>
             </div><!-- / .col -->
             <div class="col span6 about">
-                <p class="f-about"><?php echo $this->publishing ? Lang::txt('COM_PROJECTS_FEATURES_PUBLICATIONS_ABOUT') : Lang::txt('COM_PROJECTS_FEATURES_PUBLICATIONS_ABOUT_WIP'); ?> </p>
+                <?php
+                $langTxt28 = Lang::txt('COM_PROJECTS_FEATURES_PUBLICATIONS_ABOUT_WIP');
+                $langTxt29 = Lang::txt('COM_PROJECTS_FEATURES_PUBLICATIONS_ABOUT');
+                ?>
+                <p class="f-about"><?php echo $this->publishing ? $langTxt29 : $langTxt28; ?> </p>
                 <?php if ($wishlist && $this->config->get('suggest_feature', 1)) { ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_FEATURES_WANT_FEATURE'); ?></h4>
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&task=add&category=general&id=1') . '/?tag=projects,projects:publications,com_projects'; ?>" class="btn btn-success"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SUGGEST_FEATURE'); ?></a>
-                        <a href="<?php echo Route::url('index.php?option=com_wishlist&category=general&id=1') . '/?tags=projects,projects:publications,com_projects'; ?>" class="btn"><?php echo Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS'); ?></a>
+                        <?php
+                        $suggestUrl = Route::url(
+                            'index.php?option=com_wishlist&task=add&category=general&id=1'
+                        ) . '/?tag=projects,projects:publications,com_projects';
+                        $seeUrl = Route::url(
+                            'index.php?option=com_wishlist&category=general&id=1'
+                        ) . '/?tags=projects,projects:publications,com_projects';
+                        ?>
+                        <a href="<?php echo $suggestUrl; ?>" class="btn btn-success"><?php echo $suggestTxt; ?></a>
+                        <a href="<?php echo $seeUrl; ?>" class="btn"><?php echo $seeTxt; ?></a>
                     </p>
                 <?php } ?>
             </div><!-- / .col -->

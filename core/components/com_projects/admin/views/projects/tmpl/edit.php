@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,7 +24,14 @@ $service = 'google';
 $cEnabled = $p_params->get('enable_' . $service, 0);
 $connected = $this->params->get($service . '_token');
 
-Toolbar::title(Lang::txt('Projects') . ': ' . stripslashes($this->model->get('title')) . ' (' . $this->model->get('alias') . ', #' . $this->model->get('id') . ')', 'projects');
+Toolbar::title(Lang::txt('Projects')
+    . ': '
+    . stripslashes($this->model->get('title'))
+    . ' ('
+    . $this->model->get('alias')
+    . ', #'
+    . $this->model->get('id')
+    . ')', 'projects');
 
 if (User::authorise('core.edit', $this->option)) {
     Toolbar::apply();
@@ -39,7 +44,12 @@ Toolbar::cancel();
 $status = '';
 
 if ($this->model->isActive()) {
-    $status   = '<span class="active">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span> ' . Lang::txt('COM_PROJECTS_SINCE') . ' ' . Date::of($this->model->get('created'))->toLocal();
+    $status   = '<span class="active">'
+        . Lang::txt('COM_PROJECTS_ACTIVE')
+        . '</span> '
+        . Lang::txt('COM_PROJECTS_SINCE')
+        . ' '
+        . Date::of($this->model->get('created'))->toLocal();
 } elseif ($this->model->isDeleted()) {
     $status  = '<span class="deleted">' . Lang::txt('COM_PROJECTS_DELETED') . '</span> ';
 } elseif ($this->model->inSetup()) {
@@ -58,10 +68,22 @@ if ($this->model->isActive()) {
 
 $sysgroup = $this->config->get('group_prefix', 'pr-') . $this->model->get('alias');
 $quota    = $this->params->get('quota');
-$quota    = $quota ? $quota : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
+$quota    = $quota
+    ? $quota
+    : \Components\Projects\Helpers\Html::convertSize(
+        floatval($this->config->get('defaultQuota', '1')),
+        'GB',
+        'b'
+    );
 
 $pubQuota = $this->params->get('pubQuota');
-$pubQuota = $pubQuota ? $pubQuota : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
+$pubQuota = $pubQuota
+    ? $pubQuota
+    : \Components\Projects\Helpers\Html::convertSize(
+        floatval($this->config->get('pubQuota', '1')),
+        'GB',
+        'b'
+    );
 
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
@@ -77,15 +99,33 @@ if ($this->model->groupOwner()) {
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
 
     <nav role="navigation" class="sub-navigation">
         <div id="submenu-box">
             <div class="submenu-box">
                 <div class="submenu-pad">
                     <ul id="submenu" class="coursesection">
-                        <li><a href="#page-details" onclick="return false;" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-                        <li><a href="#page-images" onclick="return false;" id="images"><?php echo Lang::txt('COM_PROJECTS_IMAGE'); ?></a></li>
+                        <li><a href="#page-details" onclick="return false;" id="details" class="active">
+                            <?php echo Lang::txt('JDETAILS'); ?></a></li>
+                        <?php
+                        $langTxt4 = Lang::txt('COM_PROJECTS_IMAGE');
+                        ?>
+                        <li><a href="#page-images" onclick="return false;" id="images"><?php echo $langTxt4; ?></a></li>
                     </ul>
                     <div class="clr"></div>
                 </div>
@@ -103,13 +143,31 @@ if ($this->model->groupOwner()) {
                 <legend><span><?php echo Lang::txt('COM_PROJECTS_BASIC_INFO'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="title"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="title" id="title" size="60" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>" />
+                    <label for="title"><?php echo Lang::txt('COM_PROJECTS_TITLE'); ?>
+                        : <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+                    <input
+                        type="text"
+                        name="title"
+                        id="title"
+                        size="60"
+                        maxlength="250"
+                        class="required"
+                        value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>"
+                    />
                 </div>
 
                 <div class="input-wrap">
                     <label for="alias"><?php echo Lang::txt('COM_PROJECTS_ALIAS'); ?>:</label>
-                    <input type="text" name="alias" id="alias" size="60" maxlength="250" value="<?php echo $this->escape($this->model->get('alias')); ?>" readonly="readonly" disabled="disabled" />
+                    <input
+                        type="text"
+                        name="alias"
+                        id="alias"
+                        size="60"
+                        maxlength="250"
+                        value="<?php echo $this->escape($this->model->get('alias')); ?>"
+                        readonly="readonly"
+                        disabled="disabled"
+                    />
                 </div>
 
                 <div class="input-wrap">
@@ -120,7 +178,10 @@ if ($this->model->groupOwner()) {
                 <div class="input-wrap">
                     <label for="tags"><?php echo Lang::txt('COM_PROJECTS_TAGS'); ?>:</label>
                     <?php
-                    $tf = Event::trigger('hubzero.onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)));
+                    $tf = Event::trigger(
+                        'hubzero.onGetMultiEntry',
+                        array(array('tags', 'tags', 'actags', '', $this->tags))
+                    );
 
                     if (count($tf) > 0) {
                         echo $tf[0];
@@ -142,7 +203,8 @@ if ($this->model->groupOwner()) {
                                 }
                                 $selected = $type->id == $this->model->get('type') ? ' selected="selected"' : '';
                                 ?>
-                                <option value="<?php echo $type->id; ?>" <?php echo $selected; ?>><?php echo $type->type ?></option>
+                                <option value="<?php echo $type->id; ?>
+                                    " <?php echo $selected; ?>><?php echo $type->type ?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -152,12 +214,20 @@ if ($this->model->groupOwner()) {
                     <label for="owned_by_user">
                         <?php echo Lang::txt('COM_PROJECTS_OWNER_LEAD'); ?>:
                         <select name="owned_by_user" class="block">
-                            <?php foreach ($this->model->team($filters = array('status' => 1), true) as $member) {  ?>
-                                <option value="<?php echo $member->userid; ?>" <?php if ($member->userid == $this->model->get('owned_by_user')) {
-                                    echo 'selected="selected"';
-                                               } ?>><?php echo $member->fullname; ?> <?php if ($member->userid == $this->model->get('owned_by_user')) {
-                                               echo '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')';
-                                               } ?></option>
+                            <?php
+                            $ownerId = $this->model->get('owned_by_user');
+                            $teamFilters = array('status' => 1);
+                            foreach ($this->model->team($teamFilters, true) as $member) {
+                                $isOwner = ($member->userid == $ownerId);
+                                $sel = $isOwner ? ' selected="selected"' : '';
+                                $ownerSuffix = $isOwner
+                                    ? ' (' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')'
+                                    : '';
+                                ?>
+                                <option
+                                    value="<?php echo $member->userid; ?>"
+                                    <?php echo $sel; ?>
+                                ><?php echo $member->fullname . $ownerSuffix; ?></option>
                             <?php } ?>
                         </select>
                     </label>
@@ -178,9 +248,13 @@ if ($this->model->groupOwner()) {
                                         continue;
                                     }
                                     $used[] = $g->gidNumber; ?>
-                                    <option value="<?php echo $g->gidNumber; ?>" <?php if ($g->gidNumber == $this->model->get('owned_by_group')) {
-                                        echo 'selected="selected"';
-                                                   } ?>><?php echo \Hubzero\Utility\Str::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
+                                    <option value="<?php echo $g->gidNumber; ?>
+                                        " <?php if ($g->gidNumber == $this->model->get('owned_by_group')) {
+                                            echo 'selected="selected"';
+                                          } ?>><?php echo \Hubzero\Utility\Str::truncate($g->description, 30)
+                                                       . ' ('
+                                                       . $g->cn
+                                                       . ')'; ?></option>
                                 <?php } ?>
                             </select>
                         </label>
@@ -197,31 +271,67 @@ if ($this->model->groupOwner()) {
                 <legend><?php echo Lang::txt('COM_PROJECTS_PARAMETERS'); ?></legend>
 
                 <div class="input-wrap">
-                    <?php /*<label><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
+                    <?php
+                    /*
+                    <label><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
                     <select name="private">
-                        <option value="-1" <?php if ($this->model->get('private') < 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_OPEN'); ?></option>
-                        <option value="0" <?php if ($this->model->get('private') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
-                        <option value="1" <?php if (!$this->model->isPublic()) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVATE'); ?></option>
-                    </select>*/ ?>
+                        <option value="-1"
+                            <?php if ($this->model->get('private') < 0) {
+                                echo ' selected="selected"';
+                            } ?>
+                        ><?php echo Lang::txt('COM_PROJECTS_OPEN'); ?></option>
+                        <option value="0"
+                            <?php if ($this->model->get('private') == 0) {
+                                echo ' selected="selected"';
+                            } ?>
+                        ><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
+                        <option value="1"
+                            <?php if (!$this->model->isPublic()) {
+                                echo ' selected="selected"';
+                            } ?>
+                        ><?php echo Lang::txt('COM_PROJECTS_PRIVATE'); ?></option>
+                    </select>
+                    */ ?>
                     <label for="field-access"><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
                     <select name="access" id="field-access">
-                        <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->model->get('access')); ?>
+                        <?php echo Html::select(
+                            'options',
+                            Html::access('assetgroups'),
+                            'value',
+                            'text',
+                            $this->model->get('access')
+                        ); ?>
                     </select>
                 </div>
 
                 <div class="input-wrap">
                     <input type="hidden" name="params[team_public]" value="0" />
-                    <input type="checkbox" class="option" name="params[team_public]" id="param-team_public" value="1" <?php if ($this->params->get('team_public')) {
-                        echo ' checked="checked"';
-                                                                                                                      } ?> />
+                    <input
+                        type="checkbox"
+                        class="option"
+                        name="params[team_public]"
+                        id="param-team_public"
+                        value="1"
+                        <?php if ($this->params->get('team_public')) {
+                            echo ' checked="checked"';
+                        } ?> />
                     <label for="param-team_public"><?php echo Lang::txt('COM_PROJECTS_TEAM_PUBLIC'); ?></label>
                 </div>
                 <div class="input-wrap">
                     <input type="hidden" name="params[publications_public]" value="0" />
-                    <input type="checkbox" class="option" name="params[publications_public]" id="param-publications_public" value="1" <?php if ($this->params->get('publications_public')) {
-                        echo ' checked="checked"';
-                                                                                                                                      } ?> />
-                    <label for="param-publications_public"><?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS_PUBLIC'); ?></label>
+                    <input
+                        type="checkbox"
+                        class="option"
+                        name="params[publications_public]"
+                        id="param-publications_public"
+                        value="1"
+                        <?php if ($this->params->get('publications_public')) {
+                            echo ' checked="checked"';
+                        } ?> />
+                    <?php
+                    $langTxt10 = Lang::txt('COM_PROJECTS_PUBLICATIONS_PUBLIC');
+                    ?>
+                    <label for="param-publications_public"><?php echo $langTxt10; ?></label>
                 </div>
                 <div class="input-wrap">
                     <label for="param-layout"><?php echo Lang::txt('COM_PROJECTS_LAYOUT'); ?>:</label>
@@ -260,24 +370,84 @@ if ($this->model->groupOwner()) {
 
                 <?php if ($this->config->get('grantinfo', 0)) { ?>
                     <div class="input-wrap">
-                        <label for="param-grant_title"><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_TITLE'); ?>:</label>
-                        <input name="params[grant_title]" id="param-grant_title" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get('grant_title', ''))); ?>" class="long" />
+                        <?php
+                        $langTxt11 = Lang::txt('COM_PROJECTS_TERMS_GRANT_TITLE');
+                        ?>
+                        <label for="param-grant_title"><?php echo $langTxt11; ?>:</label>
+                        <?php
+                        $grantTitleVal = $this->escape(
+                            html_entity_decode($this->params->get('grant_title', ''))
+                        );
+                        ?>
+                        <input
+                            name="params[grant_title]"
+                            id="param-grant_title"
+                            maxlength="250"
+                            type="text"
+                            value="<?php echo $grantTitleVal; ?>"
+                            class="long"
+                        />
                     </div>
                     <div class="input-wrap">
                         <label for="param-grant_PI"><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_PI'); ?>:</label>
-                        <input name="params[grant_PI]" id="param-grant_PI" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get('grant_PI', ''))); ?>" class="long" />
+                        <?php $grantPiVal = $this->escape(html_entity_decode($this->params->get('grant_PI', ''))); ?>
+                        <input
+                            name="params[grant_PI]"
+                            id="param-grant_PI"
+                            maxlength="250"
+                            type="text"
+                            value="<?php echo $grantPiVal; ?>"
+                            class="long"
+                        />
                     </div>
                     <div class="input-wrap">
-                        <label for="param-award_number"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:</label>
-                        <input name="params[award_number]" id="param-award_number" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get('award_number', ''))); ?>" class="long" />
+                        <?php
+                        $langTxt12 = Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER');
+                        ?>
+                        <label for="param-award_number"><?php echo $langTxt12; ?>:</label>
+                        <?php
+                        $awardNumVal = $this->escape(
+                            html_entity_decode($this->params->get('award_number', ''))
+                        );
+                        ?>
+                        <input
+                            name="params[award_number]"
+                            id="param-award_number"
+                            maxlength="250"
+                            type="text"
+                            value="<?php echo $awardNumVal; ?>"
+                            class="long"
+                        />
                     </div>
                     <div class="input-wrap">
-                        <label for="param-grant_agency"><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_AGENCY'); ?>:</label>
-                        <input name="params[grant_agency]" id="param-grant_agency" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get('grant_agency', ''))); ?>" class="long" />
+                        <?php
+                        $langTxt13 = Lang::txt('COM_PROJECTS_TERMS_GRANT_AGENCY');
+                        ?>
+                        <label for="param-grant_agency"><?php echo $langTxt13; ?>:</label>
+                        <?php $agencyVal = $this->escape(html_entity_decode($this->params->get('grant_agency', ''))); ?>
+                        <input
+                            name="params[grant_agency]"
+                            id="param-grant_agency"
+                            maxlength="250"
+                            type="text"
+                            value="<?php echo $agencyVal; ?>"
+                            class="long"
+                        />
                     </div>
                     <div class="input-wrap">
-                        <label for="param-grant_budget"><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_BUDGET'); ?>:</label>
-                        <input name="params[grant_budget]" id="param-grant_budget" maxlength="250" type="text" value="<?php echo $this->escape(html_entity_decode($this->params->get('grant_budget', ''))); ?>" class="long" />
+                        <?php
+                        $langTxt14 = Lang::txt('COM_PROJECTS_TERMS_GRANT_BUDGET');
+                        ?>
+                        <label for="param-grant_budget"><?php echo $langTxt14; ?>:</label>
+                        <?php $budgetVal = $this->escape(html_entity_decode($this->params->get('grant_budget', ''))); ?>
+                        <input
+                            name="params[grant_budget]"
+                            id="param-grant_budget"
+                            maxlength="250"
+                            type="text"
+                            value="<?php echo $budgetVal; ?>"
+                            class="long"
+                        />
                     </div>
                     <div class="input-wrap">
                         <label><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_APPROVAL_CODE'); ?>:</label>
@@ -294,13 +464,35 @@ if ($this->model->groupOwner()) {
                     <legend><?php echo Lang::txt('COM_PROJECTS_FILES'); ?></legend>
 
                     <div class="input-wrap">
-                        <label for="param-quota"><?php echo Lang::txt('Files Quota'); ?>: <?php echo ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES') . ')'; ?></label>
-                        <input name="params[quota]" id="param-quota" maxlength="100" type="text" value="<?php echo \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2); ?>" class="short" />
+                        <?php
+                        $langTxt8 = Lang::txt('COM_PROJECTS_FILES_GBYTES');
+                        $langTxt9 = Lang::txt('Files Quota');
+                        ?>
+                        <label for="param-quota"><?php echo $langTxt9; ?>: <?php echo ' (' . $langTxt8 . ')'; ?></label>
+                        <?php $quotaGB = \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2); ?>
+                        <input
+                            name="params[quota]"
+                            id="param-quota"
+                            maxlength="100"
+                            type="text"
+                            value="<?php echo $quotaGB; ?>"
+                            class="short"
+                        />
                     </div>
 
                     <div class="input-wrap">
-                        <label for="param-pubQuota"><?php echo Lang::txt('Publications Quota'); ?>: <?php echo ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES') . ')'; ?></label>
-                        <input name="params[pubQuota]" id="param-pubQuota" maxlength="100" type="text" value="<?php echo \Components\Projects\Helpers\Html::convertSize($pubQuota, 'b', 'GB', 2); ?>" class="short" />
+                        <label for="param-pubQuota"><?php echo Lang::txt('Publications Quota'); ?>: <?php echo ' ('
+                            . Lang::txt('COM_PROJECTS_FILES_GBYTES')
+                            . ')'; ?></label>
+                        <?php $pubQuotaGB = \Components\Projects\Helpers\Html::convertSize($pubQuota, 'b', 'GB', 2); ?>
+                        <input
+                            name="params[pubQuota]"
+                            id="param-pubQuota"
+                            maxlength="100"
+                            type="text"
+                            value="<?php echo $pubQuotaGB; ?>"
+                            class="short"
+                        />
                     </div>
 
                     <?php if ($this->diskusage) { ?>
@@ -310,14 +502,37 @@ if ($this->model->groupOwner()) {
                     <?php } ?>
 
                     <div class="input-wrap">
-                        <?php echo Lang::txt('Maintenance options:'); ?> &nbsp; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=gitgc&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('git gc --aggressive'); ?></a> [<?php echo Lang::txt('Takes minutes to run'); ?>]
+                        <?php
+                        $gitgcUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=gitgc&id=' . $this->model->get('id')
+                        );
+                        $gitgcTxt = Lang::txt('git gc --aggressive');
+                        $minutesTxt = Lang::txt('Takes minutes to run');
+                        ?>
+                        <?php echo Lang::txt('Maintenance options:'); ?>
+                        &nbsp;
+                        <a href="<?php echo $gitgcUrl; ?>"><?php echo $gitgcTxt; ?></a>
+                        [<?php echo $minutesTxt; ?>]
                     </div>
 
                     <?php if ($cEnabled) { ?>
                         <div class="input-wrap">
-                            <?php echo Lang::txt('COM_PROJECTS_CONNECTIONS'); ?>: <strong><?php echo $connected ? $service : 'not connected'; ?></strong> &nbsp;
+                            <?php echo Lang::txt('COM_PROJECTS_CONNECTIONS'); ?>
+                                : <strong><?php echo $connected ? $service : 'not connected'; ?></strong> &nbsp;
                             <?php if ($connected) { ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fixsync&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('download sync log'); ?></a> &nbsp; [<?php echo Lang::txt('Also fixes stalled sync'); ?>]
+                                <?php
+                                $syncUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&controller=' . $this->controller
+                                    . '&task=fixsync&id=' . $this->model->get('id')
+                                );
+                                $syncTxt = Lang::txt('download sync log');
+                                $fixTxt = Lang::txt('Also fixes stalled sync');
+                                ?>
+                                <a href="<?php echo $syncUrl; ?>"><?php echo $syncTxt; ?></a>
+                                &nbsp; [<?php echo $fixTxt; ?>]
                             <?php } ?>
                         </div>
                     <?php } ?>
@@ -329,7 +544,14 @@ if ($this->model->groupOwner()) {
                 <tbody>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_PROJECTS_CREATED'); ?>:</th>
-                        <td><?php echo $this->model->get('created'); ?> <?php echo Lang::txt('COM_PROJECTS_BY') . ' ' . $this->model->creator('name') . ' (' . $this->model->creator('username') . ')'; ?></td>
+                        <td><?php echo $this->model->get('created'); ?>
+                            <?php
+                            $byTxt = Lang::txt('COM_PROJECTS_BY');
+                            $creatorName = $this->model->creator('name');
+                            $creatorUser = $this->model->creator('username');
+                            echo $byTxt . ' ' . $creatorName . ' (' . $creatorUser . ')';
+                            ?>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_PROJECTS_STATUS'); ?></th>
@@ -351,7 +573,8 @@ if ($this->model->groupOwner()) {
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_PROJECTS_TODOS'); ?>:</th>
                         <td><?php echo $this->counts['todo']; ?> <?php if ($this->counts['todos_completed'] > 0) {
-                            ?>( +<?php echo $this->counts['todos_completed']; ?> <?php echo Lang::txt('COM_PROJECTS_TODOS_COMPLETED'); ?>)<?php
+                            $langTxt28 = Lang::txt('COM_PROJECTS_TODOS_COMPLETED');
+                            ?>( +<?php echo $this->counts['todos_completed']; ?> <?php echo $langTxt28; ?>)<?php
                             } ?></td>
                     </tr>
                 <?php endif; ?>
@@ -373,7 +596,18 @@ if ($this->model->groupOwner()) {
                             $activity = preg_replace('/said/', "posted an update", $this->last_activity->description);
                             $activity = preg_replace('/&#58;/', "", $activity);
                             ?>
-                            <?php echo $this->last_activity->created; ?> (<?php echo \Components\Projects\Helpers\Html::timeAgo($this->last_activity->created) . ' ' . Lang::txt('COM_PROJECTS_AGO'); ?>) <br /> <span class="actor"><?php echo $this->last_activity->creator->name; ?></span> <?php echo $activity; ?>
+                            <?php
+                            $timeAgo = \Components\Projects\Helpers\Html::timeAgo(
+                                $this->last_activity->created
+                            );
+                            $agoTxt = Lang::txt('COM_PROJECTS_AGO');
+                            $actorName = $this->last_activity->creator->name;
+                            ?>
+                            <?php echo $this->last_activity->created; ?>
+                            (<?php echo $timeAgo . ' ' . $agoTxt; ?>)
+                            <br />
+                            <span class="actor"><?php echo $actorName; ?></span>
+                            <?php echo $activity; ?>
                             <?php } else {
                                 echo Lang::txt('COM_PROJECTS_NA');
                             }?>
@@ -393,20 +627,63 @@ if ($this->model->groupOwner()) {
                 <div class="input-wrap">
                     <?php echo Lang::txt('COM_PROJECTS_OPTIONS'); ?>:<br />
 
+                    <?php
+                    $msgTxt = Lang::txt('COM_PROJECTS_OPTION_SEND_MESSAGE');
+                    ?>
                     <input type="hidden" name="admin_action" value="" />
-                    <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" /> <span class="breaker"> | </span>
+                    <input
+                        type="submit"
+                        value="<?php echo $msgTxt; ?>"
+                        class="btn"
+                        id="do-message"
+                    />
+                    <span class="breaker"> | </span>
                     <?php if ($this->model->isActive()) { ?>
-                        <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_SUSPEND'); ?>" class="btn" id="do-suspend" />
+                        <?php $suspendTxt = Lang::txt('COM_PROJECTS_OPTION_SUSPEND'); ?>
+                        <input
+                            type="submit"
+                            value="<?php echo $suspendTxt; ?>"
+                            class="btn"
+                            id="do-suspend"
+                        />
                     <?php } elseif ($this->model->isInactive() || $this->model->isDeleted()) { ?>
-                        <input type="submit" value="<?php echo $this->suspended ? Lang::txt('COM_PROJECTS_OPTION_REINSTATE') : Lang::txt('COM_PROJECTS_OPTION_ACTIVATE'); ?>" class="btn" id="do-reinstate" />
+                        <?php
+                        $reinstateTxt = Lang::txt('COM_PROJECTS_OPTION_REINSTATE');
+                        $activateTxt = Lang::txt('COM_PROJECTS_OPTION_ACTIVATE');
+                        $reinstateVal = $this->suspended ? $reinstateTxt : $activateTxt;
+                        ?>
+                        <input
+                            type="submit"
+                            value="<?php echo $reinstateVal; ?>"
+                            class="btn"
+                            id="do-reinstate"
+                        />
                     <?php } ?>
                     <?php if (!$this->model->isDeleted()) { ?>
-                        <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_DELETE'); ?>" class="btn" id="do-delete" />
+                        <?php $deleteTxt = Lang::txt('COM_PROJECTS_OPTION_DELETE'); ?>
+                        <input
+                            type="submit"
+                            value="<?php echo $deleteTxt; ?>"
+                            class="btn"
+                            id="do-delete"
+                        />
                     <?php } ?>
                     <?php if ($this->model->isArchived()) { ?>
-                        <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_UNARCHIVE'); ?>" class="btn" id="do-unarchive" />
+                        <?php $unarchTxt = Lang::txt('COM_PROJECTS_OPTION_UNARCHIVE'); ?>
+                        <input
+                            type="submit"
+                            value="<?php echo $unarchTxt; ?>"
+                            class="btn"
+                            id="do-unarchive"
+                        />
                     <?php } else { ?>
-                        <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_OPTION_ARCHIVE'); ?>" class="btn" id="do-archive" />
+                        <?php $archTxt = Lang::txt('COM_PROJECTS_OPTION_ARCHIVE'); ?>
+                        <input
+                            type="submit"
+                            value="<?php echo $archTxt; ?>"
+                            class="btn"
+                            id="do-archive"
+                        />
                     <?php } ?>
                 </div>
             </fieldset>
@@ -446,7 +723,10 @@ if ($this->model->groupOwner()) {
                         <label for="field-role"><?php echo Lang::txt('COM_PROJECTS_ADD_MEMBER_ROLE'); ?></label>
                         <select name="role" id="field-role">
                             <option value="1"><?php echo Lang::txt('COM_PROJECTS_ADD_MEMBER_ROLE_MANAGER'); ?></option>
-                            <option value="0"><?php echo Lang::txt('COM_PROJECTS_ADD_MEMBER_ROLE_COLLABORATOR'); ?></option>
+                            <?php
+                            $langTxt32 = Lang::txt('COM_PROJECTS_ADD_MEMBER_ROLE_COLLABORATOR');
+                            ?>
+                            <option value="0"><?php echo $langTxt32; ?></option>
                         </select>
                     </div>
                 </fieldset>
@@ -454,7 +734,19 @@ if ($this->model->groupOwner()) {
         </div>
     </div>
 
-    <p class="notice"><a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id=' . $this->model->get('id')); ?>"><?php echo Lang::txt('COM_PROJECTS_ERASE_PROJECT'); ?></a> <?php echo Lang::txt('COM_PROJECTS_ERASE_NOTICE'); ?></p>
+    <?php
+    $eraseUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+        . '&task=erase&id=' . $this->model->get('id')
+    );
+    $eraseTxt = Lang::txt('COM_PROJECTS_ERASE_PROJECT');
+    $eraseNotice = Lang::txt('COM_PROJECTS_ERASE_NOTICE');
+    ?>
+    <p class="notice">
+        <a class="button" href="<?php echo $eraseUrl; ?>"><?php echo $eraseTxt; ?></a>
+        <?php echo $eraseNotice; ?>
+    </p>
 
         </div>
         <div id="page-images" class="tab">
@@ -471,7 +763,8 @@ if ($this->model->groupOwner()) {
                         $size = filesize($path);
                     }
                     ?>
-                    <p><img src="<?php echo $this->model->picture('thumb'); ?>" width="50" alt="<?php echo Lang::txt('COM_PROJECTS_IMAGE_THUMB'); ?>" /></p>
+                    <p><img src="<?php echo $this->model->picture('thumb'); ?>
+                        " width="50" alt="<?php echo Lang::txt('COM_PROJECTS_IMAGE_THUMB'); ?>" /></p>
                     <table>
                         <tbody>
                             <tr>
@@ -501,7 +794,8 @@ if ($this->model->groupOwner()) {
                         $size = filesize($path);
                     }
                     ?>
-                    <p><img src="<?php echo $this->model->picture('master'); ?>" width="200" alt="<?php echo Lang::txt('COM_PROJECTS_IMAGE_MASTER'); ?>" /></p>
+                    <p><img src="<?php echo $this->model->picture('master'); ?>
+                        " width="200" alt="<?php echo Lang::txt('COM_PROJECTS_IMAGE_MASTER'); ?>" /></p>
                     <table>
                         <tbody>
                             <tr>
@@ -531,7 +825,8 @@ if ($this->model->groupOwner()) {
                         $size = filesize($path);
                     }
                     ?>
-                    <p><img src="<?php echo $this->model->picture('original'); ?>" alt="<?php echo Lang::txt('COM_PROJECTS_IMAGE_ORIGINAL'); ?>" /></p>
+                    <?php $langTxt1 = Lang::txt('COM_PROJECTS_IMAGE_ORIGINAL'); ?>
+                    <p><img src="<?php echo $this->model->picture('original'); ?>" alt="<?php echo $langTxt1; ?>" /></p>
                     <table>
                         <tbody>
                             <tr>

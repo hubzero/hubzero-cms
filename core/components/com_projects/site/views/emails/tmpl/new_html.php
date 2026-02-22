@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,20 +31,52 @@ $comment = '';
 
 if ($this->project->config()->get('restricted_data', 0)) {
     $comment .= '<ul style="' . $ulStyle . '">';
-    $comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->project->params->get('hipaa_data') . '</li>';
-    $comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->project->params->get('ferpa_data') . '</li>';
-    $comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->project->params->get('export_data') . '</li>';
+    $comment .= '<li>'
+        . Lang::txt('COM_PROJECTS_EMAIL_HIPAA')
+        . ': '
+        . $this->project->params->get('hipaa_data')
+        . '</li>';
+    $comment .= '<li>'
+        . Lang::txt('COM_PROJECTS_EMAIL_FERPA')
+        . ': '
+        . $this->project->params->get('ferpa_data')
+        . '</li>';
+    $comment .= '<li>'
+        . Lang::txt('COM_PROJECTS_EMAIL_EXPORT')
+        . ': '
+        . $this->project->params->get('export_data')
+        . '</li>';
     if ($this->project->params->get('followup')) {
-        $comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->project->params->get('followup') . '</li>';
+        $comment .= '<li>'
+            . Lang::txt('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED')
+            . ': '
+            . $this->project->params->get('followup')
+            . '</li>';
     }
     $comment .= '</ul>';
 }
 if ($this->project->config()->get('grantinfo', 0)) {
     $comment .= '<ul style="' . $ulStyle . '">';
-    $comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->project->params->get('grant_title') . '</li>';
-    $comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->project->params->get('grant_PI') . '</li>';
-    $comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY') . ': ' . $this->project->params->get('grant_agency') . '</li>';
-    $comment .= '<li>' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET') . ': ' . $this->project->params->get('grant_budget') . '</li>';
+    $comment .= '<li>'
+        . Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE')
+        . ': '
+        . $this->project->params->get('grant_title')
+        . '</li>';
+    $comment .= '<li>'
+        . Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI')
+        . ': '
+        . $this->project->params->get('grant_PI')
+        . '</li>';
+    $comment .= '<li>'
+        . Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY')
+        . ': '
+        . $this->project->params->get('grant_agency')
+        . '</li>';
+    $comment .= '<li>'
+        . Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET')
+        . ': '
+        . $this->project->params->get('grant_budget')
+        . '</li>';
     $comment .= '</ul>';
 }
 
@@ -102,7 +132,11 @@ $owner   = $this->project->groupOwner()
 <table class="tbl-message" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tbody>
         <tr>
-            <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
+            <td
+                align="left"
+                valign="bottom"
+                style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;"
+            >
             <?php echo $subtitle; ?>
             </td>
         </tr>
@@ -120,38 +154,102 @@ $owner   = $this->project->groupOwner()
 </table>
 <!-- End Spacer -->
 
-<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
+<table
+    id="project-info"
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="border-collapse: collapse; line-height: 1.6em;"
+>
     <tbody>
         <tr>
-            <td class="mobilehide" style="font-size: 2.5em; font-weight: bold; text-align: center; padding: 0 30px 8px 0; vertical-align: top;" align="center" valing="top">
+            <td
+                class="mobilehide"
+                style="font-size: 2.5em; font-weight: bold; text-align: center;
+                    padding: 0 30px 8px 0; vertical-align: top;"
+                align="center"
+                valing="top"
+            >
             </td>
             <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
-                <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
+                <table
+                    width="100%"
+                    style="border-collapse: collapse; font-size: 0.9em;"
+                    cellpadding="0"
+                    cellspacing="0"
+                    border="0"
+                >
                     <tbody>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Project:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->project->get('title') . '(' . $this->project->get('alias') . ')'; ?></td>
+                            <th
+                                style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right"
+                            >Project:</th>
+                            <td
+                                style="text-align: left; padding: 0 0.5em;"
+                                width="100%"
+                                align="left"
+                            ><?php echo $this->project->get('title') . '(' . $this->project->get('alias') . ')'; ?></td>
                         </tr>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">@ <?php echo $this->project->created('time'); ?> on <?php echo $this->project->created('date'); ?></td>
+                            <th
+                                style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right"
+                            >Created:</th>
+                            <td
+                                style="text-align: left; padding: 0 0.5em;"
+                                width="100%"
+                                align="left"
+                            >@ <?php echo $this->project->created('time'); ?>
+                            on <?php echo $this->project->created('date'); ?></td>
                         </tr>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Owner:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->project->groupOwner() ? $this->project->groupOwner('cn') . ' ' . Lang::txt('COM_PROJECTS_GROUP') : $this->project->owner('name'); ?></td>
+                            <th
+                                style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right"
+                            >Owner:</th>
+                            <td
+                                style="text-align: left; padding: 0 0.5em;"
+                                width="100%"
+                                align="left"
+                            ><?php
+                            echo $this->project->groupOwner()
+                                ? $this->project->groupOwner('cn') . ' '
+                                    . Lang::txt('COM_PROJECTS_GROUP')
+                                : $this->project->owner('name');
+                            ?></td>
                         </tr>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?php echo $link; ?>"><?php echo $projectUrl; ?></a></td>
+                            <th
+                                style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right"
+                            >Link:</th>
+                            <td
+                                style="text-align: left; padding: 0 0.5em;"
+                                width="100%"
+                                align="left"
+                            ><a href="<?php echo $link; ?>"><?php echo $projectUrl; ?></a></td>
                         </tr>
                     </tbody>
                 </table>
 
-                <table width="100%" style="margin: 18px 0 0 0; border-top: 2px solid #e9e9e9; border-collapse: collapse; font-size: 1em;">
+                <table
+                    width="100%"
+                    style="margin: 18px 0 0 0; border-top: 2px solid #e9e9e9;
+                        border-collapse: collapse; font-size: 1em;"
+                >
                     <tbody>
                         <tr>
-                            <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?></div>
+                            <td
+                                style="text-align: left; padding: 0 0.5em;"
+                                cellpadding="0"
+                                cellspacing="0"
+                                border="0"
+                            >
+                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">
+                                    <?php echo $comment; ?>
+                                </div>
                             </td>
                         </tr>
                     </tbody>

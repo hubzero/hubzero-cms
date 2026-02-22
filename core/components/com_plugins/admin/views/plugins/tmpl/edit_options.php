@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,13 @@ defined('_HZEXEC_') or die();
 $fieldSets = $this->form->getFieldsets('params');
 
 if (!count($fieldSets)) :
-    ?><div class="input-wrap"><p class="warning"><?php echo Lang::txt('COM_PLUGINS_OPTIONS_NOT_FOUND'); ?></p></div><?php
+    ?>
+    <div class="input-wrap">
+        <p class="warning">
+            <?php echo Lang::txt('COM_PLUGINS_OPTIONS_NOT_FOUND'); ?>
+        </p>
+    </div>
+    <?php
 else :
     foreach ($fieldSets as $name => $fieldSet) :
         $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_PLUGINS_' . $name . '_FIELDSET_LABEL';

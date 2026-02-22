@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,13 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js('curation.js');
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE') . ' - ' . $this->row->type . ': ' . Lang::txt('COM_PUBLICATIONS_MTYPE_ADVANCED'), 'publications');
+$label = Lang::txt('COM_PUBLICATIONS_PUBLICATION');
+$label2 = Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
+$label3 = Lang::txt('COM_PUBLICATIONS_MTYPE_ADVANCED');
+Toolbar::title(
+    $label . ' ' . $label2 . ' - ' . $this->row->type . ': ' . $label3,
+    'publications'
+);
 Toolbar::save('saveadvanced');
 Toolbar::cancel();
 
@@ -26,8 +30,23 @@ $blocks    = $manifest->blocks;
 $blockSelection = array('active' => array());
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=saveadvanced'); ?>" method="post" id="item-form" name="adminForm">
-    <p><a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_BACK') . ' ' . $this->row->type . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE'); ?></a></p>
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=saveadvanced'
+);
+$backUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=edit&id=' . $this->row->id
+);
+$backLabel = Lang::txt('COM_PUBLICATIONS_MTYPE_BACK')
+    . ' ' . $this->row->type
+    . ' ' . Lang::txt('COM_PUBLICATIONS_MASTER_TYPE');
+?>
+<form action="<?php echo $formAction; ?>" method="post" id="item-form" name="adminForm">
+    <p><a class="button" href="<?php echo $backUrl; ?>"><?php echo $backLabel; ?></a></p>
 
     <fieldset class="adminform">
         <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING'); ?></span></legend>
@@ -41,7 +60,8 @@ $blockSelection = array('active' => array());
         <p class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING_HINT'); ?></p>
 
         <div class="input-wrap">
-            <textarea cols="50" rows="30" name="curation"><?php echo json_encode($manifest, JSON_PRETTY_PRINT); ?></textarea>
+            <?php $val = json_encode($manifest, JSON_PRETTY_PRINT); ?>
+            <textarea cols="50" rows="30" name="curation"><?php echo $val; ?></textarea>
         </div>
     </fieldset>
     <?php echo Html::input('token'); ?>

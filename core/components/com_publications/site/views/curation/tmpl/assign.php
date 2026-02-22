@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -17,7 +15,13 @@ if (!$this->ajax) {
 }
 ?>
 <div id="abox-content" class="curation-wrap">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=curation'); ?>" method="post" id="hubForm-ajax" name="curation-form" class="curation-history">
+    <form
+        action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=curation'); ?>"
+        method="post"
+        id="hubForm-ajax"
+        name="curation-form"
+        class="curation-history"
+    >
         <fieldset>
             <legend><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN_VIEW'); ?></legend>
 
@@ -36,12 +40,17 @@ if (!$this->ajax) {
                     <?php
                     $selected = $this->pub->curator() ? $this->pub->curator('name') : '';
 
-                    $mc = Event::trigger('hubzero.onGetSingleEntryWithSelect', array(array('members', 'owner', 'owner', '', $selected, '', 'owner')));
+                    $mc = Event::trigger(
+                        'hubzero.onGetSingleEntryWithSelect',
+                        array(array('members', 'owner', 'owner', '', $selected, '', 'owner'))
+                    );
                     $mc = implode("\n", $mc);
                     $ms = trim($mc);
 
                     if (!$mc) :
-                        $ms = '<input type="text" name="owner" id="owner" value="" class="form-control" size="35" maxlength="200" />';
+                        $ms = '<input type="text" name="owner" id="owner"'
+                            . ' value="" class="form-control"'
+                            . ' size="35" maxlength="200" />';
                     endif;
 
                     echo $ms;
@@ -58,9 +67,15 @@ if (!$this->ajax) {
             <input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_PUBLICATIONS_SAVE'); ?>" />
 
             <?php if ($this->ajax) : ?>
-                <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                <input
+                    type="reset"
+                    id="cancel-action"
+                    class="btn btn-cancel"
+                    value="<?php echo Lang::txt('JCANCEL'); ?>"
+                />
             <?php else : ?>
-                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=curation'); ?>" class="btn btn-cancel">
+                <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=curation'); ?>
+                <a href="<?php echo $routeUrl; ?>" class="btn btn-cancel">
                     <?php echo Lang::txt('JCANCEL'); ?>
                 </a>
             <?php endif; ?>

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,7 +12,13 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 
 $message  = $this->subject . "\n";
 $message .= '===============================' . "\n";
-$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') . ')' . "\n";
+$message .= Lang::txt('COM_PROJECTS_PROJECT')
+    . ': '
+    . $this->project->get('title')
+    . ' ('
+    . $this->project->get('alias')
+    . ')'
+    . "\n";
 $message .= Lang::txt('COM_PROJECTS_EMAIL_URL') . ': ' . $link . "\n";
 $message .= '===============================' . "\n\n";
 
@@ -32,7 +36,10 @@ if (empty($this->activities)) {
         $creator = User::getInstance($a->log->get('created_by'));
         $name = $creator->get('name');
 
-        $message .= Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ' &#64 ' .  Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . "\n";
+        $message .= Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+            . ' &#64 '
+            .  Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1'))
+            . "\n";
         $message .= $name;
         $message .= ' ' . $a->action;
         $message .= $body ? ':' : '';

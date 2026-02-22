@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,13 +21,16 @@ $rows = $this->model->entries('list', $this->filters);
 
     <nav id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_PROJECTS_BROWSE_PUBLIC_PROJECTS'); ?></a></li>
+            <?php
+            $routeUrl = Route::url('index.php?option=' . $this->option . '&task=browse');
+            $langTxt2 = Lang::txt('COM_PROJECTS_BROWSE_PUBLIC_PROJECTS');
+            ?>
+            <li><a class="btn icon-browse" href="<?php echo $routeUrl; ?>"><?php echo $langTxt2; ?></a></li>
         </ul>
     </nav><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
 <?php
-// phpcs:disable Generic.Files.LineLength
     // Display status message
     $this->view('_statusmsg', 'projects')
          ->set('error', $this->getError())
@@ -44,7 +45,16 @@ $rows = $this->model->entries('list', $this->filters);
                 <h3><?php echo Lang::txt('COM_PROJECTS_INTRO_COLLABORATION_MADE_EASY'); ?></h3>
                 <p><?php echo Lang::txt('COM_PROJECTS_INTRO_COLLABORATION_HOW'); ?></p>
                 <?php if (User::authorise('core.create', $this->option)) : ?>
-                    <p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>" id="projects-intro-start" class="btn icon-next"><?php echo Lang::txt('COM_PROJECTS_START_PROJECT'); ?></a></p>
+                    <?php
+                    $startUrl = Route::url(
+                        'index.php?option=' . $this->option . '&task=start'
+                    );
+                    ?>
+                    <p><a
+                        href="<?php echo $startUrl; ?>"
+                        id="projects-intro-start"
+                        class="btn icon-next"
+                    ><?php echo Lang::txt('COM_PROJECTS_START_PROJECT'); ?></a></p>
                 <?php endif; ?>
             </div>
             <div class="col span4 omega">
@@ -57,7 +67,16 @@ $rows = $this->model->entries('list', $this->filters);
                         <li><?php echo Lang::txt('COM_PROJECTS_INTRO_GET_PUBLISHING'); ?></li>
                     <?php endif; ?>
                 </ul>
-                <p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=features'); ?>" id="projects-intro-features" class="btn"><?php echo Lang::txt('COM_PROJECTS_LEARN_MORE'); ?></a></p>
+                <?php
+                $featuresUrl = Route::url(
+                    'index.php?option=' . $this->option . '&task=features'
+                );
+                ?>
+                <p><a
+                    href="<?php echo $featuresUrl; ?>"
+                    id="projects-intro-features"
+                    class="btn"
+                ><?php echo Lang::txt('COM_PROJECTS_LEARN_MORE'); ?></a></p>
             </div>
         </div>
     </div>
@@ -79,7 +98,22 @@ $rows = $this->model->entries('list', $this->filters);
                 ?>
             <?php else : ?>
                 <div class="noresults">
-                    <?php echo (User::isGuest()) ? Lang::txt('COM_PROJECTS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=intro&action=login') . '" id="projects-intro-login">' . Lang::txt('COM_PROJECTS_LOGIN') . '</a> ' . Lang::txt('COM_PROJECTS_TO_VIEW_YOUR_PROJECTS') : Lang::txt('COM_PROJECTS_YOU_DONT_HAVE_PROJECTS'); ?>
+                    <?php
+                    if (User::isGuest()) {
+                        $loginUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&task=intro&action=login'
+                        );
+                        echo Lang::txt('COM_PROJECTS_PLEASE')
+                            . ' <a href="' . $loginUrl
+                            . '" id="projects-intro-login">'
+                            . Lang::txt('COM_PROJECTS_LOGIN')
+                            . '</a> '
+                            . Lang::txt('COM_PROJECTS_TO_VIEW_YOUR_PROJECTS');
+                    } else {
+                        echo Lang::txt('COM_PROJECTS_YOU_DONT_HAVE_PROJECTS');
+                    }
+                    ?>
                 </div>
             <?php endif; ?>
         </div>

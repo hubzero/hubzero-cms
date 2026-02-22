@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -33,7 +31,13 @@
                 if ($option->get('text') != '') {
                     ?>
                     <tr>
-                        <td><input type="radio" name="poll" value="<?php echo $this->escape($option->get('text')); ?>"></td>
+                        <td>
+                            <input
+                                type="radio"
+                                name="poll"
+                                value="<?php echo $this->escape($option->get('text')); ?>"
+                            >
+                        </td>
                         <td class="poll"><?php echo $this->escape($option->get('text')); ?></td>
                     </tr>
                     <?php

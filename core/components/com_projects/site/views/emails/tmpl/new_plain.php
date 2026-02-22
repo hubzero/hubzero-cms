@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -23,7 +21,13 @@ $browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
 $message  = $this->project->owner('name') . ' ' . Lang::txt('COM_PROJECTS_EMAIL_STARTED_NEW_PROJECT');
 $message .= ' "' . $this->project->get('title') . '"' . "\n";
 $message .= '-------------------------------' . "\n";
-$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias') . ')' . "\n";
+$message .= Lang::txt('COM_PROJECTS_PROJECT')
+    . ': '
+    . $this->project->get('title')
+    . ' ('
+    . $this->project->get('alias')
+    . ')'
+    . "\n";
 $message .= ucfirst(Lang::txt('COM_PROJECTS_CREATED')) . ' '
          . Date::of($this->project->get('created'))->format('M d, Y') . ' '
          . Lang::txt('COM_PROJECTS_BY') . ' ';
@@ -46,15 +50,24 @@ if ($this->project->config()->get('restricted_data', 0)) {
     $message .= Lang::txt('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->project->params->get('ferpa_data') . "\n";
     $message .= Lang::txt('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->project->params->get('export_data') . "\n";
     if ($this->project->params->get('followup')) {
-        $message .= Lang::txt('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->project->params->get('followup') . "\n";
+        $message .= Lang::txt('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED')
+            . ': '
+            . $this->project->params->get('followup')
+            . "\n";
     }
     $message .= '-------------------------------' . "\n\n";
 }
 if ($this->project->config()->get('grantinfo', 0)) {
     $message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->project->params->get('grant_title') . "\n";
     $message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->project->params->get('grant_PI') . "\n";
-    $message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY') . ': ' . $this->project->params->get('grant_agency') . "\n";
-    $message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET') . ': ' . $this->project->params->get('grant_budget') . "\n";
+    $message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY')
+        . ': '
+        . $this->project->params->get('grant_agency')
+        . "\n";
+    $message .= Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET')
+        . ': '
+        . $this->project->params->get('grant_budget')
+        . "\n";
 }
 $message .= '-------------------------------' . "\n\n";
 

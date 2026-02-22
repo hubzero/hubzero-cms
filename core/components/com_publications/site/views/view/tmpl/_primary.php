@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -27,14 +25,23 @@ if ($this->disabled) : ?>
             <ul class="dropdown-menu">
                 <?php foreach ($this->options as $option) : ?>
                     <li>
-                        <a <?php echo $option->class ? 'class="' . $option->class . '"' : ''; ?> <?php echo isset($option->attrs) ? $option->attrs : ''; ?> href="<?php echo $option->href; ?>"><?php echo $option->title; ?></a>
+                        <?php $optClass = $option->class ? 'class="' . $option->class . '"' : ''; ?>
+                        <?php $optAttrs = isset($option->attrs) ? $option->attrs : ''; ?>
+                        <a <?php echo $optClass; ?>
+                            <?php echo $optAttrs; ?>
+                            href="<?php echo $option->href; ?>"
+                        ><?php echo $option->title; ?></a>
                     </li>
                 <?php endforeach; ?>
             </ul>
         </div>
         <?php
         if ($this->showDoc && !empty($this->ftpDoc)) :?>     
-            <p class="ftpDoc"><a href="<?php echo $this->ftpDoc;?>" target="_blank"><?php echo Lang::txt('Download Guide');?></a></p>
+                        <p class="ftpDoc">
+                <a href="<?php echo $this->ftpDoc;?>" target="_blank">
+                <?php echo Lang::txt('Download Guide');?>
+                </a>
+                </p>
         <?php endif; ?>
     <?php else : ?>
         <p id="primary-document">

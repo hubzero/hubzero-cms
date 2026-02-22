@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -45,29 +43,74 @@ $counts = $this->model->get('counts');
                     $tab['name'] = trim($tab['alias']);
                 }
                 $gopanel = $tab['name'] == 'assets' ? 'files' : $tab['name'];
-                $active = (($tab['name'] == $this->active) || ($tab['name'] == 'assets' && (isset($tab['submenu']) && $tab['submenu'] == 'Assets')))
+                $active = (($tab['name'] == $this->active)
+                    || ($tab['name'] == 'assets'
+                    && (isset($tab['submenu'])
+                    && $tab['submenu'] == 'Assets')));
+                $tabUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&alias=' . $this->model->get('alias')
+                    . '&active=' . $gopanel
+                );
+                $tabTitleAttr = ucfirst(Lang::txt('COM_PROJECTS_PROJECT'))
+                    . ' ' . ucfirst($tab['title']);
                 ?>
                 <li<?php if ($active) {
                     echo ' class="active"';
                    } ?> id="tab-<?php echo $tab['name']; ?>">
-                    <a class="tab-<?php echo $tab['name']; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=' . $gopanel); ?>/" title="<?php echo ucfirst(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . ucfirst($tab['title']); ?>">
+                    <a
+                        class="tab-<?php echo $tab['name']; ?>"
+                        href="<?php echo $tabUrl; ?>/"
+                        title="<?php echo $tabTitleAttr; ?>"
+                    >
                         <span class="label"><?php echo $tab['title']; ?></span>
-                        <?php if ($tab['name'] != 'feed' && isset($counts[$tab['name']]) && $counts[$tab['name']] != 0) { ?>
-                            <span class="mini" id="c-<?php echo $tab['name']; ?>"><span id="c-<?php echo $tab['name']; ?>-num"><?php echo $counts[$tab['name']]; ?></span></span>
+                        <?php if (
+                        $tab['name'] != 'feed'
+                            && isset($counts[$tab['name']])
+                            && $counts[$tab['name']] != 0
+) { ?>
+                            <span class="mini"
+                                id="c-<?php echo $tab['name']; ?>"
+                            ><span
+                                id="c-<?php echo $tab['name']; ?>-num"
+                            ><?php echo $counts[$tab['name']]; ?></span></span>
                         <?php } elseif ($tab['name'] == 'feed') { ?>
-                            <span id="c-new" class="mini highlight <?php if (empty($counts['new'])) {
-                                echo 'hidden';
-                                                                   } ?>"><span id="c-new-num"><?php echo empty($counts['new']) ? 0 : $counts['new']; ?></span></span>
+                            <?php
+                            $hiddenCls = empty($counts['new']) ? 'hidden' : '';
+                            $newCount = empty($counts['new']) ? 0 : $counts['new'];
+                            ?>
+                            <span
+                                id="c-new"
+                                class="mini highlight <?php echo $hiddenCls; ?>"
+                            ><span id="c-new-num"><?php echo $newCount; ?></span></span>
                         <?php } ?>
                     </a>
                     <?php if ($tab['name'] == 'assets') { ?>
                         <div id="asset-selection" class="submenu-wrap">
                             <?php foreach ($assetTabs as $aTab) { ?>
                                 <p>
-                                    <a class="<?php echo $aTab['name']; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=' . $aTab['name']); ?>/" title="<?php echo ucfirst(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . ucfirst($aTab['title']); ?>" id="tab-<?php echo $aTab['name']; ?>">
+                                    <?php
+                                    $aTabUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                        . '&alias=' . $this->model->get('alias')
+                                        . '&active=' . $aTab['name']
+                                    );
+                                    $aTabTitle = ucfirst(Lang::txt('COM_PROJECTS_PROJECT'))
+                                        . ' ' . ucfirst($aTab['title']);
+                                    ?>
+                                    <a
+                                        class="<?php echo $aTab['name']; ?>"
+                                        href="<?php echo $aTabUrl; ?>/"
+                                        title="<?php echo $aTabTitle; ?>"
+                                        id="tab-<?php echo $aTab['name']; ?>"
+                                    >
                                         <span class="label"><?php echo $aTab['title']; ?></span>
                                         <?php if (isset($counts[$aTab['name']]) && $counts[$aTab['name']] != 0) { ?>
-                                            <span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $counts[$aTab['name']]; ?></span></span>
+                                            <span class="mini"
+                                                id="c-<?php echo $aTab['name']; ?>"
+                                            ><span
+                                                id="c-<?php echo $aTab['name']; ?>-num"
+                                            ><?php echo $counts[$aTab['name']]; ?></span></span>
                                         <?php } ?>
                                     </a>
                                 </p>
@@ -79,7 +122,19 @@ $counts = $this->model->get('counts');
         </ul>
     <?php } else {  ?>
         <?php if (isset($this->guest) && $this->guest) { ?>
-            <p><?php echo Lang::txt('COM_PROJECTS_ARE_YOU_MEMBER'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&task=view') . '?action=login'; ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_LOGIN')) . '</a> ' . Lang::txt('COM_PROJECTS_LOGIN_TO_PRIVATE_AREA'); ?></p>
+            <?php
+            $loginUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&alias=' . $this->model->get('alias')
+                . '&task=view'
+            ) . '?action=login';
+            $loginTxt = ucfirst(Lang::txt('COM_PROJECTS_LOGIN'));
+            $privateTxt = Lang::txt('COM_PROJECTS_LOGIN_TO_PRIVATE_AREA');
+            ?>
+            <p><?php echo Lang::txt('COM_PROJECTS_ARE_YOU_MEMBER'); ?>
+                <a href="<?php echo $loginUrl; ?>"><?php
+                    echo $loginTxt;
+                ?></a> <?php echo $privateTxt; ?></p>
         <?php } ?>
     <?php } ?>
 </div>

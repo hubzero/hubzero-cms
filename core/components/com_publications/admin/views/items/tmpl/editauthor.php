@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,12 +11,19 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-$pageTitle = ($this->author->id) ? Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR_INFO') : Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR');
+$pageTitle = ($this->author->id)
+    ? Lang
+    ::txt('COM_PUBLICATIONS_EDIT_AUTHOR_INFO') : Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR');
 
 $tmpl = Request::getCmd('tmpl', '');
 
 if ($tmpl != 'component') {
-    Toolbar::title(Lang::txt('COM_PUBLICATIONS') . ': ' . $pageTitle . ' ' . Lang::txt('COM_PUBLICATIONS_FOR_PUB') . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')', 'publications');
+    $label = Lang::txt('COM_PUBLICATIONS');
+    $label2 = Lang::txt('COM_PUBLICATIONS_FOR_PUB');
+    Toolbar::title(
+        $label . ': ' . $pageTitle . ' ' . $label2 . ' #' . $this->pub->id . ' (v.' . $this->row->version_label . ')',
+        'publications'
+    );
     Toolbar::save('saveauthor');
     Toolbar::cancel();
 }
@@ -41,15 +46,34 @@ $lastname  = $this->author->lastName ? htmlspecialchars($this->author->lastName)
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<p class="crumbs"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?> &raquo; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo $pageTitle; ?></p>
+<?php
+$editUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=edit&id[]=' . $this->pub->id
+);
+$pubLabel = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id;
+$mgrLabel = Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER');
+?>
+<p class="crumbs">
+    <?php echo $mgrLabel; ?> &raquo;
+    <a href="<?php echo $editUrl; ?>"><?php echo $pubLabel; ?></a>
+    &raquo; <?php echo $pageTitle; ?>
+</p>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form
+    action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+>
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">
                 <button type="button" onclick="submitbutton('addusers');"><?php echo Lang::txt('JSAVE');?></button>
-                <button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo Lang::txt('Cancel');?></button>
+                <button type="button" onclick="window.parent.document.getElementById('sbox-window').close();">
+                    <?php echo Lang::txt('Cancel');?></button>
             </div>
 
             <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR') ?>
@@ -90,34 +114,62 @@ $lastname  = $this->author->lastName ? htmlspecialchars($this->author->lastName)
                     </td>
                 </tr>
                 <tr>
-                    <td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_FIRST_AND_MIDDLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
+                    <?php $nameLabel = Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_FIRST_AND_MIDDLE'); ?>
+                    <?php $reqTxt = Lang::txt('JOPTION_REQUIRED'); ?>
+                    <td class="key">
+                        <label><?php echo $nameLabel; ?>: <span class="required"><?php echo $reqTxt; ?></span></label>
+                    </td>
                     <td>
                         <input type="text" name="firstName" value="<?php echo $firstname; ?>" size="25" />
                     </td>
                 </tr>
                 <tr>
-                    <td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_LAST'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label></td>
+                                        <td class="key">
+                        <label>
+                        <?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_LAST'); ?>: <span class="required">
+                        <?php echo Lang::txt('JOPTION_REQUIRED'); ?>
+                        </span>
+                        </label>
+                        </td>
                     <td>
                         <input type="text" name="lastName" value="<?php echo $lastname; ?>" size="25" />
                     </td>
                 </tr>
                 <tr>
-                    <td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>:</label></td>
+                    <?php $langTxt = Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>
+                    <td class="key"><label><?php echo $langTxt; ?>:</label></td>
                     <td>
-                        <input type="text" name="organization" value="<?php echo $this->escape($this->author->organization); ?>" size="25" />
+                        <input
+                            type="text"
+                            name="organization"
+                            value="<?php echo $this->escape($this->author->organization); ?>"
+                            size="25"
+                        />
                     </td>
                 </tr>
                 <tr>
                     <td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORCID'); ?>:</label></td>
                     <td>
-                        <input type="text" name="orcid" placeholder="####-####-####-####" value="<?php echo $this->escape($this->author->orcid); ?>" size="25" />
+                        <input
+                            type="text"
+                            name="orcid"
+                            placeholder="####-####-####-####"
+                            value="<?php echo $this->escape($this->author->orcid); ?>"
+                            size="25"
+                        />
                         <p><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORCID_ID_DESC'); ?></p>
                     </td>
                 </tr>
                 <tr>
-                    <td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_CREDIT'); ?>:</label></td>
+                    <?php $langTxt = Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_CREDIT'); ?>
+                    <td class="key"><label><?php echo $langTxt; ?>:</label></td>
                     <td>
-                        <input type="text" name="credit" value="<?php echo $this->escape($this->author->credit); ?>" size="25" />
+                        <input
+                            type="text"
+                            name="credit"
+                            value="<?php echo $this->escape($this->author->credit); ?>"
+                            size="25"
+                        />
                     </td>
                 </tr>
             </tbody>

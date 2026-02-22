@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -40,33 +38,104 @@ $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 $canOrder  = User::authorise('core.edit.state', 'com_plugins');
 $saveOrder = $listOrder == 'ordering';
+
+$formAction = Route::url('index.php?option=com_plugins');
+$filterLabel = Lang::txt('JSEARCH_FILTER_LABEL');
+$searchVal = $this->escape($this->filters['search']);
+$searchPlaceholder = Lang::txt('COM_PLUGINS_SEARCH_IN_TITLE');
+$stateOptions = Html::select(
+    'options',
+    \Components\Plugins\Helpers\Plugins::stateOptions(),
+    'value',
+    'text',
+    $this->filters['state'],
+    true
+);
+$folderOptions = Html::select(
+    'options',
+    \Components\Plugins\Helpers\Plugins::folderOptions(),
+    'value',
+    'text',
+    $this->filters['folder']
+);
+$accessOptions = Html::select(
+    'options',
+    Html::access('assetgroups'),
+    'value',
+    'text',
+    $this->filters['access']
+);
+$checkAllTitle = Lang::txt('JGLOBAL_CHECK_ALL');
+$checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
 ?>
-<form action="<?php echo Route::url('index.php?option=com_plugins'); ?>" method="post" name="adminForm" id="adminForm">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm"
+>
     <fieldset id="filter-bar">
         <div class="filter-search fltlft">
-            <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-            <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PLUGINS_SEARCH_IN_TITLE'); ?>" />
-            <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
-            <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+            <label class="filter-search-lbl" for="filter_search">
+                <?php echo $filterLabel; ?>
+            </label>
+            <input
+                type="text"
+                name="filter_search"
+                id="filter_search"
+                class="filter"
+                value="<?php echo $searchVal; ?>"
+                placeholder="<?php echo $searchPlaceholder; ?>"
+            />
+            <button type="submit">
+                <?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?>
+            </button>
+            <button type="button" class="filter-clear">
+                <?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?>
+            </button>
         </div>
 
         <div class="filter-select fltrt">
-            <label for="filter_state"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></label>
-            <select name="filter_state" id="filter_state" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                <?php echo Html::select('options', \Components\Plugins\Helpers\Plugins::stateOptions(), 'value', 'text', $this->filters['state'], true);?>
+            <label for="filter_state">
+                <?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?>
+            </label>
+            <select
+                name="filter_state"
+                id="filter_state"
+                class="inputbox filter filter-submit"
+            >
+                <option value="">
+                    <?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?>
+                </option>
+                <?php echo $stateOptions; ?>
             </select>
 
-            <label for="filter_folder"><?php echo Lang::txt('COM_PLUGINS_OPTION_FOLDER'); ?></label>
-            <select name="filter_folder" id="filter_folder" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('COM_PLUGINS_OPTION_FOLDER');?></option>
-                <?php echo Html::select('options', \Components\Plugins\Helpers\Plugins::folderOptions(), 'value', 'text', $this->filters['folder']);?>
+            <label for="filter_folder">
+                <?php echo Lang::txt('COM_PLUGINS_OPTION_FOLDER'); ?>
+            </label>
+            <select
+                name="filter_folder"
+                id="filter_folder"
+                class="inputbox filter filter-submit"
+            >
+                <option value="">
+                    <?php echo Lang::txt('COM_PLUGINS_OPTION_FOLDER'); ?>
+                </option>
+                <?php echo $folderOptions; ?>
             </select>
 
-            <label for="filter_access"><?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?></label>
-            <select name="filter_access" id="filter_access" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+            <label for="filter_access">
+                <?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?>
+            </label>
+            <select
+                name="filter_access"
+                id="filter_access"
+                class="inputbox filter filter-submit"
+            >
+                <option value="">
+                    <?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?>
+                </option>
+                <?php echo $accessOptions; ?>
             </select>
         </div>
     </fieldset>
@@ -75,8 +144,20 @@ $saveOrder = $listOrder == 'ordering';
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input
+                        type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        title="<?php echo $checkAllTitle; ?>"
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label
+                        for="checkall-toggle"
+                        class="sr-only visually-hidden"
+                    >
+                        <?php echo $checkAllLabel; ?>
+                    </label>
                 </th>
                 <th scope="col" class="title">
                     <?php echo Html::grid('sort', 'COM_PLUGINS_NAME_HEADING', 'name', $listDirn, $listOrder); ?>
@@ -124,9 +205,68 @@ $saveOrder = $listOrder == 'ordering';
                 endif;
 
                 $ordering   = ($listOrder == 'ordering');
-                $canEdit    = $path ? User::authorise('core.edit', 'com_plugins') : false;
-                $canCheckin = User::authorise('core.manage', 'com_checkin') || $item->checked_out == User::get('id') || $item->checked_out == 0;
-                $canChange  = User::authorise('core.edit.state', 'com_plugins') && $canCheckin;
+                $canEdit    = $path
+                    ? User::authorise('core.edit', 'com_plugins')
+                    : false;
+                $canCheckin = User::authorise('core.manage', 'com_checkin')
+                    || $item->checked_out == User::get('id')
+                    || $item->checked_out == 0;
+                $canChange  = User::authorise('core.edit.state', 'com_plugins')
+                    && $canCheckin;
+
+                $editUrl = Route::url(
+                    'index.php?option=com_plugins&task=edit&id='
+                    . (int) $item->extension_id
+                    . '&' . Session::getFormToken() . '=1'
+                );
+
+                $checkedoutHtml = Html::grid(
+                    'checkedout',
+                    $i,
+                    $item->editor,
+                    $item->checked_out_time,
+                    '',
+                    $canCheckin
+                );
+
+                $prevFolder = @$folders[$i - 1];
+                $nextFolder = @$folders[$i + 1];
+                $matchPrev = ($prevFolder == $item->folder);
+                $matchNext = ($nextFolder == $item->folder);
+                $paginationTotal = $this->items->pagination->total;
+
+                $orderUpAsc = $this->items->pagination->orderUpIcon(
+                    $i,
+                    $matchPrev,
+                    'orderup',
+                    'JLIB_HTML_MOVE_UP',
+                    $ordering
+                );
+                $orderDownAsc = $this->items->pagination->orderDownIcon(
+                    $i,
+                    $paginationTotal,
+                    $matchNext,
+                    'orderdown',
+                    'JLIB_HTML_MOVE_DOWN',
+                    $ordering
+                );
+                $orderUpDesc = $this->items->pagination->orderUpIcon(
+                    $i,
+                    $matchPrev,
+                    'orderdown',
+                    'JLIB_HTML_MOVE_UP',
+                    $ordering
+                );
+                $orderDownDesc = $this->items->pagination->orderDownIcon(
+                    $i,
+                    $paginationTotal,
+                    $matchNext,
+                    'orderup',
+                    'JLIB_HTML_MOVE_DOWN',
+                    $ordering
+                );
+
+                $disabled = $saveOrder ? '' : 'disabled="disabled"';
                 ?>
                 <tr class="row<?php echo ($i % 2) . (!$path ? 'missing' : ''); ?>">
                     <td class="center">
@@ -136,16 +276,18 @@ $saveOrder = $listOrder == 'ordering';
                     </td>
                     <td>
                         <?php if ($item->checked_out) : ?>
-                            <?php echo Html::grid('checkedout', $i, $item->editor, $item->checked_out_time, '', $canCheckin); ?>
+                            <?php echo $checkedoutHtml; ?>
                         <?php endif; ?>
                         <?php if ($canEdit) : ?>
-                            <a href="<?php echo Route::url('index.php?option=com_plugins&task=edit&id=' . (int) $item->extension_id . '&' . Session::getFormToken() . '=1'); ?>">
+                            <a href="<?php echo $editUrl; ?>">
                                 <?php echo Lang::txt($item->name); ?>
                             </a>
                         <?php else : ?>
                             <?php echo Lang::txt($item->name); ?>
                             <?php if (!$path) : ?>
-                                <p class="smallsub"><?php echo Lang::txt('COM_PLUGINS_ERROR_MISSING_FILES'); ?></p>
+                                <p class="smallsub">
+                                    <?php echo Lang::txt('COM_PLUGINS_ERROR_MISSING_FILES'); ?>
+                                </p>
                             <?php endif; ?>
                         <?php endif; ?>
                     </td>
@@ -156,16 +298,28 @@ $saveOrder = $listOrder == 'ordering';
                         <?php if ($canChange) : ?>
                             <?php if ($saveOrder) :?>
                                 <?php if ($listDirn == 'asc') : ?>
-                                    <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1] == $item->folder), 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                    <span><?php echo $this->items->pagination->orderDownIcon($i, $this->items->pagination->total, (@$folders[$i + 1] == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                    <span><?php echo $orderUpAsc; ?></span>
+                                    <span><?php echo $orderDownAsc; ?></span>
                                 <?php elseif ($listDirn == 'desc') : ?>
-                                    <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1] == $item->folder), 'orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                    <span><?php echo $this->items->pagination->orderDownIcon($i, $this->items->pagination->total, (@$folders[$i + 1] == $item->folder), 'orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                    <span><?php echo $orderUpDesc; ?></span>
+                                    <span><?php echo $orderDownDesc; ?></span>
                                 <?php endif; ?>
                             <?php endif; ?>
-                            <?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
-                            <input type="text" name="order[]" id="order<?php echo $i; ?>" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled ?> class="text-area-order" />
-                            <label for="order<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $item->ordering; ?></label>
+                            <input
+                                type="text"
+                                name="order[]"
+                                id="order<?php echo $i; ?>"
+                                size="5"
+                                value="<?php echo $item->ordering; ?>"
+                                <?php echo $disabled ?>
+                                class="text-area-order"
+                            />
+                            <label
+                                for="order<?php echo $i; ?>"
+                                class="sr-only visually-hidden"
+                            >
+                                <?php echo $item->ordering; ?>
+                            </label>
                         <?php else : ?>
                             <?php echo $item->ordering; ?>
                         <?php endif; ?>

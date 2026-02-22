@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,8 +29,12 @@ if ($this->authNames != null) {
         $html .= "\t" . '<li id="author_' . $authname->id . '" class="pick reorder">'
             . '<span class="ordernum">' . $i . '</span>. ' . $name . ' (' . $userid . ')';
         $html .= $org ? ' - <span class="org">' . $org . '</span>' : '';
-        $html .= ' <a class="editauthor" href="' . Route::url('index.php?option=' . $option . '&controller=items&task=editauthor&author=' . $authname->id) . '" >' . Lang::txt('COM_PUBLICATIONS_EDIT') . '</a> ';
-        $html .= ' <a class="editauthor" href="' . Route::url('index.php?option=' . $option . '&controller=items&task=deleteauthor&aid=' . $authname->id) . '"  > ' . Lang::txt('COM_PUBLICATIONS_DELETE') . '</a> ';
+        $html .= ' <a class="editauthor" href="'
+            . Route::url('index.php?option=' . $option . '&controller=items&task=editauthor&author=' . $authname->id)
+                . '" >' . Lang::txt('COM_PUBLICATIONS_EDIT') . '</a> ';
+        $html .= ' <a class="editauthor" href="'
+            . Route::url('index.php?option=' . $option . '&controller=items&task=deleteauthor&aid=' . $authname->id)
+                . '"  > ' . Lang::txt('COM_PUBLICATIONS_DELETE') . '</a> ';
         if ($credit) {
             $html .= '<br />' . Lang::txt('COM_PUBLICATIONS_CREDIT') . ': ' . $credit;
         }
@@ -46,7 +48,8 @@ if ($this->authNames != null) {
 if (count($this->authNames) > 1) {
     $html .= '<input type="hidden" value="" name="list" id="neworder" />';
     $html .= '<p class="tip">' . Lang::txt('COM_PUBLICATIONS_AUTHORS_REORDER_TIP') . '</p>';
-    $html .= '<input type="button" onclick="submitbutton(\'saveorder\');" class="btn" value="Save Order" id="saveorder" />';
+    $html .= '<input type="button" onclick="submitbutton(\'saveorder\');"'
+        . ' class="btn" value="Save Order" id="saveorder" />';
 }
 
 echo $html;

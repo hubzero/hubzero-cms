@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -74,7 +72,12 @@ if ($this->contributors) {
             $link .= '<sup>' . $k . '</sup>';
         }
         if ($contributor->orcid) {
-            $orcid = '<a href="https://orcid.org/' . $contributor->orcid . '" target="blank" title="' . $name . '\'s ORCID page"><img alt="ORCID logo" src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png" width="16" height="16" /></a>';
+            $orcidUrl = 'https://orcid.org/' . $contributor->orcid;
+            $orcidImg = 'https://info.orcid.org/wp-content/uploads/2019/11/orcid_16x16.png';
+            $orcid = '<a href="' . $orcidUrl . '" target="blank"'
+                . ' title="' . $name . '\'s ORCID page">'
+                . '<img alt="ORCID logo" src="' . $orcidImg . '"'
+                . ' width="16" height="16" /></a>';
             $link_s .= $orcid;
             $link .= $orcid;
         }

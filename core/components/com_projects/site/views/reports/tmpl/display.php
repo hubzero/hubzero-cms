@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -67,7 +65,11 @@ $this->js('flot/jquery.flot.min.js', 'system')
         <?php else : ?>
             <table class="stats-wrap">
                 <tr class="stats-general">
-                    <th scope="row" class="stats-h icon-cogs" rowspan="2"><span><?php echo Lang::txt('Overview'); ?></span></th>
+                    <th
+                        scope="row"
+                        class="stats-h icon-cogs"
+                        rowspan="2"
+                    ><span><?php echo Lang::txt('Overview'); ?></span></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -115,7 +117,8 @@ $this->js('flot/jquery.flot.min.js', 'system')
 
                                     // Detect Safari browser (interactivity doesn't work somehow)
                                     var safari = false;
-                                    if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1)
+                                    if (navigator.userAgent.indexOf('Safari') != -1
+                                        && navigator.userAgent.indexOf('Chrome') == -1)
                                     {
                                         safari = true;
                                     }
@@ -151,13 +154,17 @@ $this->js('flot/jquery.flot.min.js', 'system')
                                                 {
                                                     if (k == 0)
                                                     {
-                                                        showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
+                                                        var xPos = graphx +
+                                                            points[k].xaxis.p2c(points[k].data[m][0]) - 15;
+                                                        showTooltip(xPos,
                                                             graphy + points[k].yaxis.p2c(points[k].data[m][1]) + 10,
                                                             points[k].data[m][1], append)
                                                     }
                                                     else
                                                     {
-                                                        showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
+                                                        var xPos = graphx +
+                                                            points[k].xaxis.p2c(points[k].data[m][0]) - 15;
+                                                        showTooltip(xPos,
                                                             graphy + points[k].yaxis.p2c(points[k].data[m][1]) - 45,
                                                             points[k].data[m][1], append)
                                                     }
@@ -201,13 +208,15 @@ $this->js('flot/jquery.flot.min.js', 'system')
                             </li>
                             <?php if ($this->config->get('grantinfo', 0)) : ?>
                                 <li>
-                                    <span class="stats-num-small"><?php echo $this->stats['general']['sponsored']; ?></span>
+                                    <span class="stats-num-small">
+                                        <?php echo $this->stats['general']['sponsored']; ?></span>
                                     <?php echo Lang::txt('grant-sponsored projects'); ?>
                                 </li>
                             <?php endif; ?>
                             <?php if ($this->config->get('restricted_data', 0)) : ?>
                                 <li>
-                                    <span class="stats-num-small"><?php echo $this->stats['general']['sensitive']; ?></span>
+                                    <span class="stats-num-small">
+                                        <?php echo $this->stats['general']['sensitive']; ?></span>
                                     <?php echo Lang::txt('projects with sensitive data'); ?>
                                 </li>
                             <?php endif; ?>
@@ -218,7 +227,11 @@ $this->js('flot/jquery.flot.min.js', 'system')
 
             <table class="stats-wrap">
                 <tr class="stats-activity">
-                    <th scope="row" class="stats-h icon-bar-chart" rowspan="2"><span><?php echo Lang::txt('Activity'); ?></span></th>
+                    <th
+                        scope="row"
+                        class="stats-h icon-bar-chart"
+                        rowspan="2"
+                    ><span><?php echo Lang::txt('Activity'); ?></span></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -241,7 +254,10 @@ $this->js('flot/jquery.flot.min.js', 'system')
                     </td>
                     <td>
                         <span class="stats-num"><?php echo $this->stats['activity']['average']; ?></span>
-                        <span class="stats-label"><?php echo Lang::txt('average activity records per project'); ?></span>
+                        <?php
+                        $langTxt1 = Lang::txt('average activity records per project');
+                        ?>
+                        <span class="stats-label"><?php echo $langTxt1; ?></span>
                     </td>
                     <td>
                         <span class="stats-num"><?php echo $this->stats['activity']['usage']; ?></span>
@@ -299,9 +315,18 @@ $this->js('flot/jquery.flot.min.js', 'system')
                                     $project = new \Components\Projects\Models\Project($topProject->scope_id);
                                     ?>
                                     <li>
-                                        <span class="stats-ima-small"><img src="<?php echo $project->picture('thumb'); ?>" alt="" /></span>
+                                        <span class="stats-ima-small"><img src="
+                                            <?php echo $project->picture('thumb'); ?>" alt="" /></span>
                                         <?php if (!$project->get('private')) : ?>
-                                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $project->get('alias')); ?>">
+                                            <?php
+                                            $routeUrl2 = Route::url(
+                                                'index.php?option='
+                                                . $this->option
+                                                . '&task=view&alias='
+                                                . $project->get('alias')
+                                            );
+                                            ?>
+                                            <a href="<?php echo $routeUrl2; ?>">
                                         <?php endif; ?>
                                         <?php echo $project->get('title'); ?>
                                         <?php if (!$project->get('private')) : ?>
@@ -311,7 +336,10 @@ $this->js('flot/jquery.flot.min.js', 'system')
                                 <?php endforeach; ?>
                             </ul>
                         <?php else : ?>
-                            <p class="noresults"><?php echo Lang::txt('Detailed information currently unavailable'); ?></p>
+                            <?php
+                            $langTxt3 = Lang::txt('Detailed information currently unavailable');
+                            ?>
+                            <p class="noresults"><?php echo $langTxt3; ?></p>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -319,7 +347,11 @@ $this->js('flot/jquery.flot.min.js', 'system')
 
             <table class="stats-wrap">
                 <tr class="stats-team">
-                    <th scope="row" class="stats-h icon-group" rowspan="2"><span><?php echo Lang::txt('Team'); ?></span></th>
+                    <th
+                        scope="row"
+                        class="stats-h icon-group"
+                        rowspan="2"
+                    ><span><?php echo Lang::txt('Team'); ?></span></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -397,11 +429,31 @@ $this->js('flot/jquery.flot.min.js', 'system')
                             <ul>
                                 <?php foreach ($this->stats['topTeamProjects'] as $topProject) : ?>
                                     <li>
-                                        <span class="stats-ima-small"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $topProject->alias . '&task=media'); ?>" alt="" /></span>
+                                        <?php
+                                        $mediaUrl = Route::url(
+                                            'index.php?option=' . $this->option
+                                            . '&alias=' . $topProject->alias
+                                            . '&task=media'
+                                        );
+                                        ?>
+                                        <span class="stats-ima-small"><img
+                                            src="<?php echo $mediaUrl; ?>"
+                                            alt="" /></span>
                                         <?php if (!$topProject->private) : ?>
-                                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $topProject->alias); ?>">
+                                            <?php
+                                            $routeUrl5 = Route::url(
+                                                'index.php?option=' . $this->option
+                                                . '&task=view&alias='
+                                                . $topProject->alias
+                                            );
+                                            ?>
+                                            <a href="<?php echo $routeUrl5; ?>">
                                         <?php endif; ?>
-                                        <?php echo $topProject->title . ' (' . $topProject->team . ' ' . Lang::txt('members') . ')'; ?>
+                                        <?php
+                                        echo $topProject->title
+                                            . ' (' . $topProject->team
+                                            . ' ' . Lang::txt('members') . ')';
+                                        ?>
                                         <?php if (!$topProject->private) : ?>
                                             </a>
                                         <?php endif; ?>
@@ -411,12 +463,16 @@ $this->js('flot/jquery.flot.min.js', 'system')
                             <span class="block">&nbsp;</span>
                             <ul>
                                 <li>
-                                    <span class="stats-num-small"><?php echo $this->stats['team']['multiusers']; ?></span>
+                                    <span class="stats-num-small">
+                                        <?php echo $this->stats['team']['multiusers']; ?></span>
                                     <?php echo Lang::txt('unique users with multiple projects'); ?>
                                 </li>
                             </ul>
                         <?php else : ?>
-                            <p class="noresults"><?php echo Lang::txt('Detailed information currently unavailable'); ?></p>
+                            <?php
+                            $langTxt7 = Lang::txt('Detailed information currently unavailable');
+                            ?>
+                            <p class="noresults"><?php echo $langTxt7; ?></p>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -500,7 +556,8 @@ $this->js('flot/jquery.flot.min.js', 'system')
                     <td class="stats-more">
                         <ul>
                             <li>
-                                <span class="stats-num-small-unfloat"><?php echo $this->stats['files']['diskspace']; ?></span>
+                                <span class="stats-num-small-unfloat">
+                                    <?php echo $this->stats['files']['diskspace']; ?></span>
                                 <?php echo Lang::txt('total used disk space'); ?>
                             </li>
                         </ul>
@@ -511,7 +568,11 @@ $this->js('flot/jquery.flot.min.js', 'system')
             <?php if ($this->publishing) : ?>
                 <table class="stats-wrap">
                     <tr class="stats-publications">
-                        <th scope="row" class="stats-h icon-success-sign" rowspan="2"><span><?php echo Lang::txt('Publications'); ?></span></th>
+                        <th
+                            scope="row"
+                            class="stats-h icon-success-sign"
+                            rowspan="2"
+                        ><span><?php echo Lang::txt('Publications'); ?></span></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -527,7 +588,10 @@ $this->js('flot/jquery.flot.min.js', 'system')
                         </td>
                         <td>
                             <span class="stats-num"><?php echo $this->stats['pub']['average']; ?></span>
-                            <span class="stats-label"><?php echo Lang::txt('average publications per project'); ?></span>
+                            <?php
+                            $langTxt8 = Lang::txt('average publications per project');
+                            ?>
+                            <span class="stats-label"><?php echo $langTxt8; ?></span>
                         </td>
                         <td>
                             <span class="stats-num"><?php echo $this->stats['pub']['usage']; ?></span>
@@ -580,15 +644,22 @@ $this->js('flot/jquery.flot.min.js', 'system')
                         <td class="stats-more">
                             <ul>
                                 <li>
-                                    <span class="stats-num-small-unfloat"><?php echo $this->stats['pub']['released']; ?></span>
+                                    <span class="stats-num-small-unfloat">
+                                        <?php echo $this->stats['pub']['released']; ?></span>
                                     <?php echo Lang::txt('publicly released publications'); ?>
                                 </li>
                                 <li>
-                                    <span class="stats-num-small-unfloat"><?php echo $this->stats['pub']['versions']; ?></span>
+                                    <span class="stats-num-small-unfloat">
+                                        <?php echo $this->stats['pub']['versions']; ?></span>
                                     <?php echo Lang::txt('total publication versions'); ?>
                                 </li>
                                 <li>
-                                    <span class="stats-num-small-unfloat"><?php echo $this->stats['files']['pubspace'] ? $this->stats['files']['pubspace'] : 'N/A'; ?></span>
+                                    <?php
+                                    $pubspace = $this->stats['files']['pubspace']
+                                        ? $this->stats['files']['pubspace']
+                                        : 'N/A';
+                                    ?>
+                                    <span class="stats-num-small-unfloat"><?php echo $pubspace; ?></span>
                                     <?php echo Lang::txt('allocated to published files'); ?>
                                 </li>
                             </ul>

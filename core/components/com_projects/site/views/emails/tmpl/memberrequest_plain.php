@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -20,7 +18,11 @@ $link = rtrim($base, DS) . DS . trim($sef, DS);
 
 $message  = Lang::txt('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS') . "\n";
 $message .= '-------------------------------' . "\n";
-$message .= Lang::txt('COM_PROJECTS_PROJECT') . ': ' . $this->project->get('title') . ' (' . $this->project->get('alias');
+$message .= Lang::txt('COM_PROJECTS_PROJECT')
+    . ': '
+    . $this->project->get('title')
+    . ' ('
+    . $this->project->get('alias');
 
 if ($this->project->isProvisioned()) {
     $message .= ' - ' . Lang::txt('COM_PROJECTS_PROVISIONED');
