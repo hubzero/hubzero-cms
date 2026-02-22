@@ -213,6 +213,14 @@ class Pages extends SiteController
             return;
         }
 
+        // Output raw text early to avoid unnecessary parsing and event triggers
+        if (Request::getWord('format') == 'raw') {
+            ob_clean();
+            header('Content-type: text/plain');
+            echo $revision->get('pagetext');
+            exit();
+        }
+
         // Parse the text
         if (intval($this->book->config('cache', 1))) {
             // Caching
@@ -242,14 +250,6 @@ class Pages extends SiteController
         $event->afterDisplayContent = trim(implode("\n", $results));
 
         $this->page->set('event', $event);
-
-        // Output view
-        if (Request::getWord('format') == 'raw') {
-            ob_clean();
-            header('Content-type: text/plain');
-            echo $revision->get('pagetext');
-            exit();
-        }
 
         $this->view
             ->set('page', $this->page)

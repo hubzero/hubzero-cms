@@ -144,6 +144,27 @@ class WikiParser
     private $mLastSection;
 
     /**
+     * Maximum depth for recursive includes
+     *
+     * @var integer
+     */
+    private $includeMaxDepth = 10;
+
+    /**
+     * Current include depth
+     *
+     * @var integer
+     */
+    private $includeDepth = 0;
+
+    /**
+     * Pages already included in the current chain (circular reference guard)
+     *
+     * @var array
+     */
+    private $includeStack = array();
+
+    /**
      * Constructor
      *
      * @param      array $config Configuration options
@@ -1414,31 +1435,39 @@ class WikiParser
                 return "'''Includes not allowed.'''";
             }
 
-            /*$scope = ($this->get('scope')) ? $this->get('scope') . DS . 'wiki' : $this->get('path');
-            if (strstr($matches[3], '/'))
-            {
-                $bits = explode('/', $matches[3]);
-                $pagename = array_pop($bits);
-                $s = trim(implode('/', $bits));
-                $scope .= DS . trim($s, DS);
-            }
-            else
-            {*/
-                $pagename = $matches[3];
-            //}
+            $pagename = $matches[3];
 
             // Don't include this page (infinite loop!)
-            if ($pagename == $this->get('pagename')) { //&& $scope == $this->get('scope'))
+            if ($pagename == $this->get('pagename')) {
+                return '';
+            }
+
+            // Guard against excessive nesting depth
+            if ($this->includeDepth >= $this->includeMaxDepth) {
+                return '';
+            }
+
+            // Guard against circular includes
+            if (in_array($pagename, $this->includeStack)) {
                 return '';
             }
 
             // Load the page
             $p = \Components\Wiki\Models\Page::oneByPath($pagename, $this->get('domain'), $this->get('domain_id'));
             if ($p->get('id')) {
+                // Track depth and visited pages
+                $this->includeDepth++;
+                $this->includeStack[] = $pagename;
+
                 // Parse any nested includes
-                return $this->includes(
+                $result = $this->includes(
                     $p->version->get('pagetext')
                 );
+
+                $this->includeDepth--;
+                array_pop($this->includeStack);
+
+                return $result;
             }
         }
         return '';

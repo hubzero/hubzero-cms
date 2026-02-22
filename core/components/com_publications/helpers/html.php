@@ -222,7 +222,7 @@ class Html
 
         $k = 0;
         foreach ($sections as $section) {
-            if ($section['html'] != '') {
+            if ($section['html'] != '' && isset($cats[$k])) {
                 $cls  = ($c) ? $c . ' ' : '';
                 if (key($cats[$k]) != $active) {
                     $cls .= ($h) ? $h . ' ' : '';
