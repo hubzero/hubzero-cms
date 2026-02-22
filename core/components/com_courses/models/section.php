@@ -405,7 +405,7 @@ class Section extends Base
             return $tbl->count($filters);
         }
 
-        if (!($this->_dates instanceof Iterator) || $clear) {
+        if (!($this->_dates instanceof \Traversable) || $clear) {
             $tbl = new Tables\SectionDate($this->_db);
 
             if (($results = $tbl->find($filters))) {
@@ -625,7 +625,7 @@ class Section extends Base
             return $tbl->count($filters);
         }
 
-        if (!($this->_codes instanceof Iterator) || $clear) {
+        if (!($this->_codes instanceof \Traversable) || $clear) {
             $tbl = new Tables\SectionCode($this->_db);
 
             if (($results = $tbl->find($filters))) {
