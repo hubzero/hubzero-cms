@@ -9,6 +9,8 @@
 namespace Hubzero\Component;
 
 use Hubzero\Config\Registry;
+use Hubzero\Inertia\InertiaService;
+use Hubzero\Inertia\InertiaServiceProvider;
 
 /**
  * Abstract base class for component entry points.
@@ -87,6 +89,7 @@ abstract class AbstractComponent
         }
 
         $this->init();
+        $this->bootInertia();
 
         $this->booted = true;
     }
@@ -114,6 +117,40 @@ abstract class AbstractComponent
      */
     protected function init(): void
     {
+    }
+
+    /**
+     * Boot Inertia support for components that opt in via InertiaComponentInterface.
+     *
+     * @return  void
+     */
+    protected function bootInertia(): void
+    {
+        if (!($this instanceof InertiaComponentInterface) || !$this->inertiaEnabled()) {
+            return;
+        }
+
+        if (!class_exists('\\App')) {
+            return;
+        }
+
+        $app = \App::get('app');
+        if (!$app) {
+            return;
+        }
+
+        if (!$app->has('inertia')) {
+            $app->register(new InertiaServiceProvider($app));
+        }
+
+        $inertia = $app->get('inertia');
+        if (!$inertia instanceof InertiaService) {
+            $inertia = new InertiaService();
+            $app->set('inertia', $inertia);
+        }
+
+        $inertia->flush(true);
+        $this->registerInertia($inertia);
     }
 
     /**

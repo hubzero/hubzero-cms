@@ -130,6 +130,16 @@ class ApiController implements ControllerInterface
     public $notRateLimited = array('all');
 
     /**
+     * API controllers intentionally do not participate in the Inertia protocol.
+     *
+     * @return  bool
+     */
+    protected function isInertiaRequest(): bool
+    {
+        return false;
+    }
+
+    /**
      * Constructor
      *
      * @param   array  $config  Optional configurations to be used

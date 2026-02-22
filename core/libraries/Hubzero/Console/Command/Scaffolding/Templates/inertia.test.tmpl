@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @package    %=option=%
+ * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
+ * @license    http://opensource.org/licenses/MIT MIT
+ */
+
+namespace Components\%=component_name+ucf=%\Tests;
+
+use Hubzero\Inertia\Tests\Concerns\InteractsWithInertiaResponses;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Baseline scaffolded Inertia assertions.
+ */
+class Inertia%=view+ucf=%Test extends TestCase
+{
+    use InteractsWithInertiaResponses;
+
+    /**
+     * @return  void
+     */
+    public function testPageEnvelopeLooksValid(): void
+    {
+        $page = array(
+            'component' => '%=component_name+ucf=%/%=view+ucf=%',
+            'props' => array('title' => 'Demo'),
+            'url' => '/%=component_name=%',
+            'version' => 'dev'
+        );
+
+        $this->assertInertiaPageShape($page);
+        $this->assertInertiaComponent($page, '%=component_name+ucf=%/%=view+ucf=%');
+        $this->assertSame('Demo', $this->assertInertiaProp($page, 'title'));
+    }
+}
+

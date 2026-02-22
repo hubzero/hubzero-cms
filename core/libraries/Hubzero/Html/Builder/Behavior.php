@@ -411,6 +411,26 @@ class Behavior
     }
 
     /**
+     * Add Inertia companion javascript support.
+     *
+     * This helper loads Hubzero's shared debug timeline utility.
+     *
+     * @return  void
+     */
+    public static function inertia()
+    {
+        if (isset(self::$loaded[__METHOD__])) {
+            return;
+        }
+
+        Asset::script('assets/hubzero-debug-timeline.js', true, true, false, true, true, true, false);
+        Asset::script('assets/inertia/hubzero-debug-panel.js', true, true, false, true, true, true, false);
+        Asset::stylesheet('assets/inertia-debug-panel.css', array('media' => 'all'), true);
+
+        self::$loaded[__METHOD__] = true;
+    }
+
+    /**
 
      * Add htmx javascript support
 
@@ -444,6 +464,8 @@ class Behavior
         } else {
             throw new \UnexpectedValueException("Unrecognized version [$version] of htmx requested");
         }
+
+        Asset::script('assets/hubzero-debug-timeline.js', true, true, false, true, true, true, false);
 
         self::$loaded[__METHOD__] = true;
     }
