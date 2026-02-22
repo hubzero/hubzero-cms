@@ -6,14 +6,17 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
 $this->css('introduction', 'system')
      ->css('intro')
      ->css();
+
+$docsUrl = Route::url('index.php?option=com_developer&controller=api&task=docs');
+$appsUrl = Route::url('index.php?option=com_developer&controller=applications');
+$authAppsUrl = Route::url('index.php?option=com_developer&controller=applications#authorized');
+$newAppUrl = Route::url('index.php?option=com_developer&controller=applications&task=new');
 ?>
 
 <header id="content-header">
@@ -21,7 +24,10 @@ $this->css('introduction', 'system')
 
     <div id="content-header-extra">
         <p>
-            <a class="btn icon-code" href="<?php echo Route::url('index.php?option=com_developer'); ?>">
+            <a
+                class="btn icon-code"
+                href="<?php echo Route::url('index.php?option=com_developer'); ?>"
+            >
                 <?php echo Lang::txt('COM_DEVELOPER'); ?>
             </a>
         </p>
@@ -37,7 +43,7 @@ $this->css('introduction', 'system')
             </div>
             <div class="col span4 hasOnlyButton omega">
                 <p>
-                    <a class="btn icon-docs" href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs'); ?>">
+                    <a class="btn icon-docs" href="<?php echo $docsUrl; ?>">
                         <?php echo Lang::txt('COM_DEVELOPER_API_LINK_DOCUMENTATION'); ?>
                     </a>
                 </p>
@@ -53,19 +59,43 @@ $this->css('introduction', 'system')
                 <h2><?php echo Lang::txt('COM_DEVELOPER_API_APPLICATIONS'); ?></h2>
             </div>
             <div class="col span3">
-                <h3><a href="<?php echo Route::url('index.php?option=com_developer&controller=applications'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_MY_APPLICATIONS'); ?></a></h3>
+                <h3>
+                    <a href="<?php echo $appsUrl; ?>">
+                        <?php echo Lang::txt('COM_DEVELOPER_API_MY_APPLICATIONS'); ?>
+                    </a>
+                </h3>
                 <p><?php echo Lang::txt('COM_DEVELOPER_API_MY_APPLICATIONS_DESC'); ?></p>
-                <p><a href="<?php echo Route::url('index.php?option=com_developer&controller=applications'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_MANAGE'); ?></a></p>
+                <p>
+                    <a href="<?php echo $appsUrl; ?>">
+                        <?php echo Lang::txt('COM_DEVELOPER_API_MANAGE'); ?>
+                    </a>
+                </p>
             </div>
             <div class="col span3">
-                <h3><a href="<?php echo Route::url('index.php?option=com_developer&controller=applications#authorized'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_AUTHORIZED_APPLICATIONS'); ?></a></h3>
+                <h3>
+                    <a href="<?php echo $authAppsUrl; ?>">
+                        <?php echo Lang::txt('COM_DEVELOPER_API_AUTHORIZED_APPLICATIONS'); ?>
+                    </a>
+                </h3>
                 <p><?php echo Lang::txt('COM_DEVELOPER_API_AUTHORIZED_APPLICATIONS_DESC'); ?></p>
-                <p><a href="<?php echo Route::url('index.php?option=com_developer&controller=applications#authorized'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_MANAGE'); ?></a></p>
+                <p>
+                    <a href="<?php echo $authAppsUrl; ?>">
+                        <?php echo Lang::txt('COM_DEVELOPER_API_MANAGE'); ?>
+                    </a>
+                </p>
             </div>
             <div class="col span3 omega">
-                <h3><a href="<?php echo Route::url('index.php?option=com_developer&controller=applications&task=new'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_NEW_APPLICATION'); ?></a></h3>
+                <h3>
+                    <a href="<?php echo $newAppUrl; ?>">
+                        <?php echo Lang::txt('COM_DEVELOPER_API_NEW_APPLICATION'); ?>
+                    </a>
+                </h3>
                 <p><?php echo Lang::txt('COM_DEVELOPER_API_NEW_APPLICATION_DESC'); ?></p>
-                <p><a href="<?php echo Route::url('index.php?option=com_developer&controller=applications&task=new'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_CREATE'); ?></a></p>
+                <p>
+                    <a href="<?php echo $newAppUrl; ?>">
+                        <?php echo Lang::txt('COM_DEVELOPER_API_CREATE'); ?>
+                    </a>
+                </p>
             </div>
         </div>
         <?php /*<div class="grid">
@@ -73,19 +103,41 @@ $this->css('introduction', 'system')
                 <h2><?php echo Lang::txt('COM_DEVELOPER_API_LEARN'); ?></h2>
             </div>
             <div class="col span3">
-                <h3><a href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_DOCS'); ?></a></h3>
+                <h3><a href="<?php echo $docsUrl; ?>">
+                    <?php echo Lang::txt('COM_DEVELOPER_API_DOCS'); ?>
+                </a></h3>
                 <p><?php echo Lang::txt('COM_DEVELOPER_API_DOCS_DESC'); ?></p>
-                <p><a href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=docs'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_MANAGE'); ?></a></p>
+                <p><a href="<?php echo $docsUrl; ?>">
+                    <?php echo Lang::txt('COM_DEVELOPER_API_MANAGE'); ?>
+                </a></p>
             </div>
             <div class="col span3">
-                <h3><a href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=console'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_CONSOLE'); ?></a></h3>
+                <?php
+                $consoleUrl = Route::url(
+                    'index.php?option=com_developer&controller=api&task=console'
+                );
+                ?>
+                <h3><a href="<?php echo $consoleUrl; ?>">
+                    <?php echo Lang::txt('COM_DEVELOPER_API_CONSOLE'); ?>
+                </a></h3>
                 <p><?php echo Lang::txt('COM_DEVELOPER_API_CONSOLE_DESC'); ?></p>
-                <p><a href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=console'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_MANAGE'); ?></a></p>
+                <p><a href="<?php echo $consoleUrl; ?>">
+                    <?php echo Lang::txt('COM_DEVELOPER_API_MANAGE'); ?>
+                </a></p>
             </div>
             <div class="col span3 omega">
-                <h3><a href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=status'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_STATUS'); ?></a></h3>
+                <?php
+                $statusUrl = Route::url(
+                    'index.php?option=com_developer&controller=api&task=status'
+                );
+                ?>
+                <h3><a href="<?php echo $statusUrl; ?>">
+                    <?php echo Lang::txt('COM_DEVELOPER_API_STATUS'); ?>
+                </a></h3>
                 <p><?php echo Lang::txt('COM_DEVELOPER_API_STATUS_DESC'); ?></p>
-                <p><a href="<?php echo Route::url('index.php?option=com_developer&controller=api&task=status'); ?>"><?php echo Lang::txt('COM_DEVELOPER_API_CREATE'); ?></a></p>
+                <p><a href="<?php echo $statusUrl; ?>">
+                    <?php echo Lang::txt('COM_DEVELOPER_API_CREATE'); ?>
+                </a></p>
             </div>
         </div>*/ ?>
     </div>

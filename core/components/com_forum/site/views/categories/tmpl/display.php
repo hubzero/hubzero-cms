@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength, PSR1.Files.SideEffects
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -13,23 +11,12 @@ defined('_HZEXEC_') or die();
 $this->css()
      ->js();
 
-if (!function_exists('sortDir')) {
-    /**
-     * Filters directory
-     *
-     * @param   array   $filters
-     * @param   string  $current
-     * @param   string  $dir
-     * @return  string
-     */
-    function sortDir($filters, $current, $dir = 'DESC')
-    {
-        if ($filters['sortby'] == $current && $filters['sort_Dir'] == $dir) {
-            $dir = ($dir == 'ASC' ? 'DESC' : 'ASC');
-        }
-        return strtolower($dir);
+$sortDir = function ($filters, $current, $dir = 'DESC') {
+    if ($filters['sortby'] == $current && $filters['sort_Dir'] == $dir) {
+        $dir = ($dir == 'ASC' ? 'DESC' : 'ASC');
     }
-}
+    return strtolower($dir);
+};
 
 $this->category->set('section_alias', $this->filters['section']);
 ?>
@@ -85,7 +72,7 @@ $this->category->set('section_alias', $this->filters['section']);
                                 : 'icon-arrow-down';
                             $createdUrl = Route::url($this->category->link(
                                 'here',
-                                '&sortby=created&sortdir=' . sortDir($this->filters, 'created')
+                                '&sortby=created&sortdir=' . $sortDir($this->filters, 'created')
                             ));
                             ?>
                             <li>
@@ -103,7 +90,7 @@ $this->category->set('section_alias', $this->filters['section']);
                                 : 'icon-arrow-down';
                             $activityUrl = Route::url($this->category->link(
                                 'here',
-                                '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity')
+                                '&sortby=activity&sortdir=' . $sortDir($this->filters, 'activity')
                             ));
                             ?>
                             <li>
@@ -121,7 +108,7 @@ $this->category->set('section_alias', $this->filters['section']);
                                 : 'icon-arrow-down';
                             $repliesUrl = Route::url($this->category->link(
                                 'here',
-                                '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies')
+                                '&sortby=replies&sortdir=' . $sortDir($this->filters, 'replies')
                             ));
                             ?>
                             <li>
@@ -139,7 +126,7 @@ $this->category->set('section_alias', $this->filters['section']);
                                 : 'icon-arrow-up';
                             $titleUrl = Route::url($this->category->link(
                                 'here',
-                                '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC')
+                                '&sortby=title&sortdir=' . $sortDir($this->filters, 'title', 'ASC')
                             ));
                             ?>
                             <li>

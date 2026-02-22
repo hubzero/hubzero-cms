@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -16,7 +14,10 @@ array_walk($this->posts, function ($val, $idx) use (&$posts) {
     $posts += count($val);
 });
 ?>
-You have <?php echo $posts; ?> new post<?php echo ($posts > 1) ? 's' : ''; ?> across <?php echo $groups; ?> of your groups
+<?php
+$postLabel = ($posts > 1) ? 'posts' : 'post';
+echo "You have {$posts} new {$postLabel} across {$groups} of your groups";
+?>
 
 =======================
 <?php foreach ($this->posts as $group => $posts) : ?>

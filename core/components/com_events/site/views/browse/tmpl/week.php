@@ -9,9 +9,21 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 $this->css();
+
+$addUrl = Route::url('index.php?option=' . $this->option . '&task=add');
+$yearUrl = Route::url('index.php?option=' . $this->option . '&year=' . $this->year);
+$monthUrl = Route::url(
+    'index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month
+);
+$weekUrl = Route::url(
+    'index.php?option=' . $this->option . '&year=' . $this->year
+    . '&month=' . $this->month . '&day=' . $this->day . '&task=week'
+);
+$dayUrl = Route::url(
+    'index.php?option=' . $this->option . '&year=' . $this->year
+    . '&month=' . $this->month . '&day=' . $this->day
+);
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -19,7 +31,11 @@ $this->css();
     <?php if ($this->authorized) { ?>
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li class="last"><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=add'); ?>"><?php echo Lang::txt('EVENTS_ADD_EVENT'); ?></a></li>
+            <li class="last">
+                <a class="icon-add add btn" href="<?php echo $addUrl; ?>">
+                    <?php echo Lang::txt('EVENTS_ADD_EVENT'); ?>
+                </a>
+            </li>
         </ul>
     </div><!-- / #content-header-extra -->
     <?php } ?>
@@ -29,16 +45,24 @@ $this->css();
     <ul class="sub-menu">
         <li<?php if ($this->task == 'year') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_YEAR'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $yearUrl; ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_YEAR'); ?></span></a>
+        </li>
         <li<?php if ($this->task == 'month') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_MONTH'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $monthUrl; ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_MONTH'); ?></span></a>
+        </li>
         <li<?php if ($this->task == 'week') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_WEEK'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $weekUrl; ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_WEEK'); ?></span></a>
+        </li>
         <li<?php if ($this->task == 'day') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_DAY'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $dayUrl; ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_DAY'); ?></span></a>
+        </li>
     </ul>
 </nav>
 
@@ -63,7 +87,13 @@ $this->css();
             ?>
                 <li<?php echo $cls; ?>>
                     <dl class="event-details">
-                        <dt><?php echo Date::of($rows['week']['year'] . '-' . $rows['week']['month'] . '-' . $rows['week']['day'] . ' 00:00:00', date('T'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></dt>
+                        <?php
+                        $dateStr = $rows['week']['year'] . '-'
+                            . $rows['week']['month'] . '-'
+                            . $rows['week']['day'] . ' 00:00:00';
+                        $dateFmt = Lang::txt('DATE_FORMAT_HZ1');
+                        ?>
+                        <dt><?php echo Date::of($dateStr, date('T'))->toLocal($dateFmt); ?></dt>
                     </dl>
                     <div class="ewrap">
                 <?php
@@ -76,7 +106,9 @@ $this->css();
                         $event_up->month = sprintf( "%02d", $event_up->month);
                         $event_up->year  = sprintf( "%4d",  $event_up->year);*/
 
-                        //$checkprint = new \Components\Events\Helpers\EventsRepeat($row, $rows['week']['year'], $rows['week']['month'], $rows['week']['day']);
+                        //$checkprint = new \Components\Events\Helpers\EventsRepeat(
+                        //    $row, $rows['week']['year'], $rows['week']['month'], $rows['week']['day']
+                        //);
                         //if ($checkprint->viewable == true) {
                             $view = $this->view('item')
                                      ->set('option', $this->option)
@@ -86,7 +118,9 @@ $this->css();
                                      ->set('categories', $this->categories)
                                      ->set('showdate', 0);
                             $e[] = $view->loadTemplate();
-                            //$e[] = \Components\Events\Helpers\Html::eventRow($row, $event_up, $this->option, $this->fields, $categories, 0);
+                            //$e[] = \Components\Events\Helpers\Html::eventRow(
+                            //    $row, $event_up, $this->option, $this->fields, $categories, 0
+                            //);
                             $countprint++;
                         //}
                     }
@@ -108,11 +142,20 @@ $this->css();
         ?>
         </ul>
     <?php } else { ?>
-        <p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' <strong>' . \Components\Events\Helpers\Html::getDateFormat($this->year, $this->month, '', 3) . '</strong>'; ?></p>
+        <?php
+        $noEventTxt = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR');
+        $dateFormatted = \Components\Events\Helpers\Html::getDateFormat(
+            $this->year,
+            $this->month,
+            '',
+            3
+        );
+        ?>
+        <p class="warning"><?php echo $noEventTxt . ' <strong>' . $dateFormatted . '</strong>'; ?></p>
     <?php } ?>
         </div><!-- / .subject -->
         <div class="aside">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'); ?>" method="get" id="event-categories">
+            <form action="<?php echo $weekUrl; ?>" method="get" id="event-categories">
                 <fieldset>
                     <label for="event-cateogry"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></label>
                     <div class="hz-input-combo">
@@ -121,10 +164,11 @@ $this->css();
                         <?php
                         if ($this->categories) {
                             foreach ($this->categories as $id => $title) {
+                                $sel = ($this->category == $id) ? ' selected="selected"' : '';
                                 ?>
-                                <option value="<?php echo $id; ?>"<?php if ($this->category == $id) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo stripslashes($title); ?></option>
+                                <option value="<?php echo $id; ?>"<?php echo $sel; ?>>
+                                    <?php echo stripslashes($title); ?>
+                                </option>
                                 <?php
                             }
                         }
@@ -157,20 +201,26 @@ $this->css();
                     $this_datetime = new DateTime($this->year . '-' . '01-01');
                     //get a DateTime for the first day of the year and check if there's an event earlier
                     if ($this_datetime > $first_event_time) {
-                        $prev = Route::url('index.php?option=' . $this->option . '&' . $prev_year->toDateURL($this->task));
+                        $prev = Route::url(
+                            'index.php?option=' . $this->option . '&' . $prev_year->toDateURL($this->task)
+                        );
                         $prev_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
                     } else {
                         $prev = "javascript:void(0);";
-                        $prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
+                        $prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR')
+                            . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
                     }
                     //get a DateTime for the first day of the next year and see if there's an event after
                     $this_datetime->add(new DateInterval("P1Y"));
                     if ($this_datetime <= $last_event_time) {
-                        $next = Route::url('index.php?option=' . $this->option . '&' . $next_year->toDateURL($this->task));
+                        $next = Route::url(
+                            'index.php?option=' . $this->option . '&' . $next_year->toDateURL($this->task)
+                        );
                         $next_text = Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
                     } else {
                         $next = "javascript:void(0);";
-                        $next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
+                        $next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR')
+                            . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
                     }
 
                     ?>
@@ -204,9 +254,17 @@ $this->css();
                     $prev_week->addDays(-7);
                     $next_week = clone($this_date);
                     $next_week->addDays(+7);
+                    $prevWeekUrl = Route::url(
+                        'index.php?option=' . $this->option . '&' . $prev_week->toDateURL($this->task)
+                    );
+                    $nextWeekUrl = Route::url(
+                        'index.php?option=' . $this->option . '&' . $next_week->toDateURL($this->task)
+                    );
+                    $prevWeekTxt = Lang::txt('EVENTS_CAL_LANG_PREVIOUSWEEK');
+                    $nextWeekTxt = Lang::txt('EVENTS_CAL_LANG_NEXTWEEK');
                     ?>
-                    <a class="prv" href="<?php echo Route::url('index.php?option=' . $this->option . '&' . $prev_week->toDateURL($this->task)); ?>" title="<?php echo Lang::txt('EVENTS_CAL_LANG_PREVIOUSWEEK'); ?>">&lsaquo;</a>
-                    <a class="nxt" href="<?php echo Route::url('index.php?option=' . $this->option . '&' . $next_week->toDateURL($this->task)); ?>" title="<?php echo Lang::txt('EVENTS_CAL_LANG_NEXTWEEK'); ?>">&rsaquo;</a>
+                    <a class="prv" href="<?php echo $prevWeekUrl; ?>" title="<?php echo $prevWeekTxt; ?>">&lsaquo;</a>
+                    <a class="nxt" href="<?php echo $nextWeekUrl; ?>" title="<?php echo $nextWeekTxt; ?>">&rsaquo;</a>
                     <?php echo $this->startdate . ' to ' . $this->enddate; ?>
                 </p>
             </div><!-- / .calendarwrap -->

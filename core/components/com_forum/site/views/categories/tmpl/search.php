@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -18,7 +16,13 @@ $this->css()
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-folder categories btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
+            <?php
+            $allCatUrl = Route::url(
+                'index.php?option=' . $this->option
+            );
+            ?>
+            <a class="icon-folder categories btn"
+                href="<?php echo $allCatUrl; ?>">
                 <?php echo Lang::txt('COM_FORUM_ALL_CATEGORIES'); ?>
             </a>
         </p>
@@ -28,21 +32,54 @@ $this->css()
 <section class="main section">
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
+            <?php
+            $searchAction = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=categories&task=search'
+            );
+            ?>
+            <form action="<?php echo $searchAction; ?>" method="get">
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_FORUM_SEARCH'); ?>" />
+                    <?php $searchTxt = Lang::txt('COM_FORUM_SEARCH'); ?>
+                    <input class="entry-search-submit"
+                        type="submit"
+                        value="<?php echo $searchTxt; ?>" />
                     <fieldset class="entry-search">
-                        <legend><span><?php echo Lang::txt('COM_FORUM_SEARCH_LEGEND'); ?></span></legend>
+                        <legend>
+                            <span>
+                                <?php echo Lang::txt('COM_FORUM_SEARCH_LEGEND'); ?>
+                            </span>
+                        </legend>
 
-                        <label for="entry-search-field"><?php echo Lang::txt('COM_FORUM_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_FORUM_SEARCH_PLACEHOLDER'); ?>" />
+                        <label for="entry-search-field">
+                            <?php echo Lang::txt('COM_FORUM_SEARCH_LABEL'); ?>
+                        </label>
+                        <?php
+                        $searchVal = $this->escape($this->filters['search']);
+                        $searchPlaceholder = Lang::txt(
+                            'COM_FORUM_SEARCH_PLACEHOLDER'
+                        );
+                        ?>
+                        <input type="text"
+                            name="q"
+                            id="entry-search-field"
+                            value="<?php echo $searchVal; ?>"
+                            placeholder="<?php echo $searchPlaceholder; ?>" />
                     </fieldset>
                 </div><!-- / .container -->
 
                 <div class="container">
                     <table class="entries">
                         <caption>
-                            <?php echo Lang::txt('COM_FORUM_SEARCH_FOR', $this->escape($this->filters['search'])); ?>
+                            <?php
+                            $searchTerm = $this->escape(
+                                $this->filters['search']
+                            );
+                            echo Lang::txt(
+                                'COM_FORUM_SEARCH_FOR',
+                                $searchTerm
+                            );
+                            ?>
                         </caption>
                         <tbody>
                             <?php
@@ -52,14 +89,28 @@ $this->css()
 
                             if ($this->filters['search'] && $rows->count() > 0) {
                                 foreach ($rows as $row) {
-                                    $title = $this->escape(stripslashes($row->get('title')));
-                                    $title = preg_replace('#' . $this->filters['search'] . '#i', "<span class=\"highlight\">\\0</span>", $title);
+                                    $title = $this->escape(
+                                        stripslashes($row->get('title'))
+                                    );
+                                    $title = preg_replace(
+                                        '#' . $this->filters['search'] . '#i',
+                                        "<span class=\"highlight\">\\0</span>",
+                                        $title
+                                    );
 
                                     $name = Lang::txt('JANONYMOUS');
                                     if (!$row->get('anonymous')) {
-                                        $name = $this->escape(stripslashes($row->creator->get('name')));
-                                        if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                            $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
+                                        $name = $this->escape(
+                                            stripslashes($row->creator->get('name'))
+                                        );
+                                        $viewLevels = User::getAuthorisedViewLevels();
+                                        $creatorAccess = $row->creator->get('access');
+                                        if (in_array($creatorAccess, $viewLevels)) {
+                                            $creatorUrl = Route::url(
+                                                $row->creator->link()
+                                            );
+                                            $name = '<a href="' . $creatorUrl . '">'
+                                                . $name . '</a>';
                                         }
                                     }
                                     $cls = array();
@@ -77,12 +128,15 @@ $this->css()
                                     $catalias = $row->get('category_id');
                                     $section  = Lang::txt('COM_FORUM_UNKNOWN');
                                     $secalias = '';
-                                    if (isset($this->categories[$row->get('category_id')])) {
-                                        $category = $this->categories[$row->get('category_id')];
-                                        $secalias = $category->get('section_id');
-                                        if (isset($this->sections[$category->get('section_id')])) {
-                                            $section  = $this->sections[$category->get('section_id')]->get('title');
-                                            $secalias = $this->sections[$category->get('section_id')]->get('alias');
+                                    $catId = $row->get('category_id');
+                                    if (isset($this->categories[$catId])) {
+                                        $category = $this->categories[$catId];
+                                        $secId = $category->get('section_id');
+                                        $secalias = $secId;
+                                        if (isset($this->sections[$secId])) {
+                                            $secObj = $this->sections[$secId];
+                                            $section  = $secObj->get('title');
+                                            $secalias = $secObj->get('alias');
                                         }
                                         $catalias = $category->get('alias');
                                         $category = $category->get('title');
@@ -92,45 +146,90 @@ $this->css()
                                         echo ' class="' . implode(' ', $cls) . '"';
                                        } ?>>
                                         <th class="priority-5" scope="row">
-                                            <span class="entry-identifier <?php echo $icn; ?>"><?php echo $this->escape($row->get('id')); ?></span>
+                                            <?php $rowId = $this->escape($row->get('id')); ?>
+                                            <span class="entry-identifier <?php echo $icn; ?>">
+                                                <?php echo $rowId; ?>
+                                            </span>
                                         </th>
                                         <td>
-                                            <a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $secalias . '&category=' . $catalias . '&thread=' . $row->get('thread') . '&q=' . $this->filters['search']); ?>">
+                                            <?php
+                                            $threadUrl = Route::url(
+                                                'index.php?option=' . $this->option
+                                                . '&section=' . $secalias
+                                                . '&category=' . $catalias
+                                                . '&thread=' . $row->get('thread')
+                                                . '&q=' . $this->filters['search']
+                                            );
+                                            ?>
+                                            <a class="entry-title"
+                                                href="<?php echo $threadUrl; ?>">
                                                 <span><?php echo $title; ?></span>
                                             </a>
                                             <span class="entry-details">
                                                 <span class="entry-date">
                                                     <?php echo $row->created('date'); ?>
                                                 </span>
-                                                <?php echo Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
+                                                <?php
+                                                $authorSpan = '<span class="entry-author">'
+                                                    . $name . '</span>';
+                                                echo Lang::txt(
+                                                    'COM_FORUM_BY_USER',
+                                                    $authorSpan
+                                                );
+                                                ?>
                                             </span>
                                         </td>
                                         <td class="priority-4">
-                                            <span><?php echo Lang::txt('COM_FORUM_SECTION'); ?></span>
+                                            <span>
+                                                <?php echo Lang::txt('COM_FORUM_SECTION'); ?>
+                                            </span>
                                             <span class="entry-details section-name">
-                                                <?php echo $this->escape(\Hubzero\Utility\Str::truncate($section, 100, array('exact' => true))); ?>
+                                                <?php
+                                                echo $this->escape(
+                                                    \Hubzero\Utility\Str::truncate(
+                                                        $section,
+                                                        100,
+                                                        array('exact' => true)
+                                                    )
+                                                );
+                                                ?>
                                             </span>
                                         </td>
                                         <td class="priority-3">
-                                            <span><?php echo Lang::txt('COM_FORUM_CATEGORY'); ?></span>
+                                            <span>
+                                                <?php echo Lang::txt('COM_FORUM_CATEGORY'); ?>
+                                            </span>
                                             <span class="entry-details category-name">
-                                                <?php echo $this->escape(\Hubzero\Utility\Str::truncate($category, 100, array('exact' => true))); ?>
+                                                <?php
+                                                echo $this->escape(
+                                                    \Hubzero\Utility\Str::truncate(
+                                                        $category,
+                                                        100,
+                                                        array('exact' => true)
+                                                    )
+                                                );
+                                                ?>
                                             </span>
                                         </td>
                                     </tr>
                                 <?php } ?>
                             <?php } else { ?>
                                 <tr>
-                                    <td><?php echo Lang::txt('COM_FORUM_CATEGORY_EMPTY'); ?></td>
+                                    <td>
+                                        <?php echo Lang::txt('COM_FORUM_CATEGORY_EMPTY'); ?>
+                                    </td>
                                 </tr>
                             <?php } ?>
                         </tbody>
                     </table>
                     <?php
                         $pageNav = $rows->pagination;
-                        $pageNav->setAdditionalUrlParam('q', $this->filters['search']);
+                        $pageNav->setAdditionalUrlParam(
+                            'q',
+                            $this->filters['search']
+                        );
                         echo $pageNav;
-                    ?>
+                        ?>
                     <div class="clearfix"></div>
                 </div><!-- / .container -->
             </form>
@@ -138,12 +237,26 @@ $this->css()
         <aside class="aside">
             <?php if ($this->config->get('access-create-thread')) { ?>
                 <div class="container">
-                    <h3><?php echo Lang::txt('COM_FORUM_CREATE_YOUR_OWN'); ?></h3>
+                    <h3>
+                        <?php echo Lang::txt('COM_FORUM_CREATE_YOUR_OWN'); ?>
+                    </h3>
                     <p>
-                        <?php echo Lang::txt('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
+                        <?php
+                        echo Lang::txt(
+                            'COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'
+                        );
+                        ?>
                     </p>
                     <p>
-                        <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_FORUM_NEW_DISCUSSION'); ?></a>
+                        <?php
+                        $newUrl = Route::url(
+                            'index.php?option=' . $this->option
+                        );
+                        ?>
+                        <a class="icon-add add btn"
+                            href="<?php echo $newUrl; ?>">
+                            <?php echo Lang::txt('COM_FORUM_NEW_DISCUSSION'); ?>
+                        </a>
                     </p>
                 </div><!-- / .container -->
             <?php } ?>

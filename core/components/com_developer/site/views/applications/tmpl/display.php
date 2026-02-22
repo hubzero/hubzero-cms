@@ -6,14 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
 $this->css('applications')
      ->css()
      ->js();
+
+$newAppUrl = Route::url('index.php?option=com_developer&controller=applications&task=new');
 ?>
 
 <header id="content-header">
@@ -21,7 +21,7 @@ $this->css('applications')
 
     <div id="content-header-extra">
         <p>
-            <a class="btn icon-add" href="<?php echo Route::url('index.php?option=com_developer&controller=applications&task=new'); ?>">
+            <a class="btn icon-add" href="<?php echo $newAppUrl; ?>">
                 <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_NEW'); ?>
             </a>
         </p>
@@ -46,12 +46,16 @@ $this->css('applications')
                                 <dd><?php echo $application->created('time'); ?></dd>
                                 <dd><?php echo $application->users(); ?> active users</dd>
                             </dl>
-                            <p><?php echo $this->escape(\Hubzero\Utility\Str::truncate($application->get('description'), 500)); ?></p>
+                            <?php
+                            $truncated = \Hubzero\Utility\Str::truncate($application->get('description'), 500);
+                            $desc = $this->escape($truncated);
+                            ?>
+                            <p><?php echo $desc; ?></p>
                         </li>
                     <?php endforeach; ?>
                 <?php else : ?>
                     <li class="empty">
-                        <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATIONS_MINE_NONE', Route::url('index.php?option=com_developer&controller=applications&task=new')); ?>
+                        <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATIONS_MINE_NONE', $newAppUrl); ?>
                     </li>
                 <?php endif; ?>
             </ul>
@@ -69,13 +73,31 @@ $this->css('applications')
                             <h4>
                                 <?php echo $this->escape($application->get('name')) ?>
                             </h4>
-                            <a class="btn btn-secondary revoke confirm" data-txt-confirm="<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATIONS_AUTHORIZED_REVOKE_ACCESS_CONFIRM'); ?>" href="<?php echo Route::url($application->link('revoke') . '&token=' . $token->get('id')); ?>">
+                            <?php
+                            $revokeConfirm = Lang::txt(
+                                'COM_DEVELOPER_API_APPLICATIONS_AUTHORIZED_REVOKE_ACCESS_CONFIRM'
+                            );
+                            $revokeUrl = Route::url(
+                                $application->link('revoke') . '&token=' . $token->get('id')
+                            );
+                            ?>
+                            <a
+                                class="btn btn-secondary revoke confirm"
+                                data-txt-confirm="<?php echo $revokeConfirm; ?>"
+                                href="<?php echo $revokeUrl; ?>"
+                            >
                                 <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATIONS_AUTHORIZED_REVOKE_ACCESS'); ?>
                             </a>
                             <dl class="meta">
-                                <dd><?php echo Lang::txt('Authorization Date: %s', $token->created('m/d/Y @ g:ia')); ?></dd>
+                                <dd>
+                                    <?php echo Lang::txt('Authorization Date: %s', $token->created('m/d/Y @ g:ia')); ?>
+                                </dd>
                             </dl>
-                            <p><?php echo $this->escape(\Hubzero\Utility\Str::truncate($application->get('description'), 500)); ?></p>
+                            <?php
+                            $truncated = \Hubzero\Utility\Str::truncate($application->get('description'), 500);
+                            $desc = $this->escape($truncated);
+                            ?>
+                            <p><?php echo $desc; ?></p>
                         </li>
                     <?php endforeach; ?>
                 <?php else : ?>

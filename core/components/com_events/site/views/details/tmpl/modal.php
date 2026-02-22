@@ -9,41 +9,68 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 ?>
 <div id="event" class="modal">
-<?php if ($this->row) { ?>
+<?php if ($this->row) {
+    $editUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&task=edit&id=' . $this->row->id
+    );
+    $deleteUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&task=delete&id=' . $this->row->id
+    );
+    $editTxt = Lang::txt('JACTION_EDIT');
+    $deleteTxt = Lang::txt('JACTION_DELETE');
+    $detailsUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&task=details&id=' . $this->row->id
+        . '&no_html=1'
+    );
+    ?>
     <h2 class="entry-title">
         <?php echo $this->escape(stripslashes($this->row->title)); ?>
         <?php if ($this->authorized || $this->row->created_by == User::get('id')) { ?>
-            <a class="edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
-                <?php echo strtolower(Lang::txt('JACTION_EDIT')); ?>
+            <a class="edit"
+               href="<?php echo $editUrl; ?>"
+               title="<?php echo $editTxt; ?>">
+                <?php echo strtolower($editTxt); ?>
             </a>
-            <a class="delete" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
-                <?php echo strtolower(Lang::txt('JACTION_DELETE')); ?>
+            <a class="delete"
+               href="<?php echo $deleteUrl; ?>"
+               title="<?php echo $deleteTxt; ?>">
+                <?php echo strtolower($deleteTxt); ?>
             </a>
         <?php } ?>
     </h2>
 
-    <?php if ($this->pages || ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00')) { ?>
+    <?php
+    $hasRegisterby = $this->row->registerby
+        && $this->row->registerby != '0000-00-00 00:00:00';
+    if ($this->pages || $hasRegisterby) {
+        ?>
         <div id="sub-sub-menu">
             <ul>
                 <li<?php if ($this->page->alias == '') {
                     echo ' class="active"';
                    } ?>>
-                    <a class="tab" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1'); ?>">
+                    <a class="tab" href="<?php echo $detailsUrl; ?>">
                         <span><?php echo Lang::txt('EVENTS_OVERVIEW'); ?></span>
                     </a>
                 </li>
             <?php
             if ($this->pages) {
                 foreach ($this->pages as $p) {
+                    $pageUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&task=details&id=' . $this->row->id
+                        . '&no_html=1&page=' . $p->alias
+                    );
                     ?>
                 <li<?php if ($this->page->alias == $p->alias) {
                     echo ' class="active"';
                    } ?>>
-                    <a class="tab" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page=' . $p->alias); ?>">
+                    <a class="tab" href="<?php echo $pageUrl; ?>">
                         <span><?php echo trim(stripslashes($p->title)); ?></span>
                     </a>
                 </li>
@@ -51,11 +78,17 @@ defined('_HZEXEC_') or die();
                 }
             }
             ?>
-            <?php if ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00') { ?>
+            <?php if ($hasRegisterby) {
+                $regUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&task=details&id=' . $this->row->id
+                    . '&no_html=1&page=register'
+                );
+                ?>
                 <li<?php if ($this->page->alias == 'register') {
                     echo ' class="active"';
                    } ?>>
-                    <a class="tab" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page=register'); ?>">
+                    <a class="tab" href="<?php echo $regUrl; ?>">
                         <span><?php echo Lang::txt('EVENTS_REGISTER'); ?></span>
                     </a>
                 </li>
@@ -66,9 +99,12 @@ defined('_HZEXEC_') or die();
     <?php } ?>
 
     <div class="entry-details">
-    <?php if ($this->page->alias != '') { ?>
-        <?php echo (trim($this->page->pagetext)) ? stripslashes($this->page->pagetext) : '<p class="warning">' . Lang::txt('EVENTS_NO_INFO_AVAILABLE') . '</p>'; ?>
-    <?php } else { ?>
+    <?php if ($this->page->alias != '') {
+        $noInfoTxt = Lang::txt('EVENTS_NO_INFO_AVAILABLE');
+        echo (trim($this->page->pagetext))
+            ? stripslashes($this->page->pagetext)
+            : '<p class="warning">' . $noInfoTxt . '</p>';
+    } else { ?>
         <div class="col span6">
             <div class="container">
                 <h3><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?></h3>
@@ -117,29 +153,58 @@ defined('_HZEXEC_') or die();
                 //$ts[0] = intval($ts[0]);
                 if (intval($ts[0]) > 12) {
                     $ts[0] = ($ts[0] - 12);
-                    $ts[0] = (substr($ts[0], 0, 1) == '0') ? substr($ts[0], 1) : $ts[0];
+                    $ts[0] = (substr($ts[0], 0, 1) == '0')
+                        ? substr($ts[0], 1) : $ts[0];
                     $this->row->start_time = implode(':', $ts);
                     $this->row->start_time .= ' <abbr title="Post Meridian">am</abbr>';
                 } else {
-                    $this->row->start_time = (substr($this->row->start_time, 0, 1) == '0') ? substr($this->row->start_time, 1) : $this->row->start_time;
-                    $this->row->start_time .= (intval($ts[0]) == 12) ? ' <small>' . Lang::txt('EVENTS_NOON') . '</small>' : ' <abbr title="Ante Meridian">am</abbr>';
+                    $st = $this->row->start_time;
+                    $this->row->start_time = (substr($st, 0, 1) == '0')
+                        ? substr($st, 1) : $st;
+                    $noonTxt = Lang::txt('EVENTS_NOON');
+                    if (intval($ts[0]) == 12) {
+                        $this->row->start_time .= ' <small>'
+                            . $noonTxt . '</small>';
+                    } else {
+                        $this->row->start_time .= ' <abbr title="Ante Meridian">am</abbr>';
+                    }
                 }
                 $te = explode(':', $this->row->stop_time);
                 //$te[0] = intval($te[0]);
                 if (intval($te[0]) > 12) {
                     $te[0] = ($te[0] - 12);
-                    $te[0] = (substr($te[0], 0, 1) == '0') ? substr($te[0], 1) : $te[0];
+                    $te[0] = (substr($te[0], 0, 1) == '0')
+                        ? substr($te[0], 1) : $te[0];
                     $this->row->stop_time = implode(':', $te);
                     $this->row->stop_time .= ' <abbr title="Post Meridian">pm</abbr>';
                 } else {
-                    $this->row->stop_time = (substr($this->row->stop_time, 0, 1) == '0') ? substr($this->row->stop_time, 1) : $this->row->stop_time;
-                    $this->row->stop_time .= (intval($te[0]) == 12) ? ' <small>' . Lang::txt('EVENTS_NOON') . '</small>' : ' <abbr title="Ante Meridian">pm</abbr>';
+                    $et = $this->row->stop_time;
+                    $this->row->stop_time = (substr($et, 0, 1) == '0')
+                        ? substr($et, 1) : $et;
+                    $noonTxt = Lang::txt('EVENTS_NOON');
+                    if (intval($te[0]) == 12) {
+                        $this->row->stop_time .= ' <small>'
+                            . $noonTxt . '</small>';
+                    } else {
+                        $this->row->stop_time .= ' <abbr title="Ante Meridian">pm</abbr>';
+                    }
                 }
                 if ($this->row->start_date == $this->row->stop_date) {
-                    echo $this->row->start_date . ',<br />' . $this->row->start_time . '&nbsp;-&nbsp;' . $this->row->stop_time . '<br />';
+                    echo $this->row->start_date . ',<br />'
+                        . $this->row->start_time
+                        . '&nbsp;-&nbsp;'
+                        . $this->row->stop_time . '<br />';
                 } else {
-                    echo Lang::txt('EVENTS_CAL_LANG_FROM') . ' ' . $this->row->start_date . '&nbsp;-&nbsp;' . $this->row->start_time . '<br />' .
-                        Lang::txt('EVENTS_CAL_LANG_TO') . ' ' . $this->row->stop_date . '&nbsp;-&nbsp;' . $this->row->stop_time . '<br />';
+                    $fromTxt = Lang::txt('EVENTS_CAL_LANG_FROM');
+                    $toTxt = Lang::txt('EVENTS_CAL_LANG_TO');
+                    echo $fromTxt . ' '
+                        . $this->row->start_date
+                        . '&nbsp;-&nbsp;'
+                        . $this->row->start_time . '<br />'
+                        . $toTxt . ' '
+                        . $this->row->stop_date
+                        . '&nbsp;-&nbsp;'
+                        . $this->row->stop_time . '<br />';
                 }
                 ?>
                 </p>
@@ -157,8 +222,12 @@ defined('_HZEXEC_') or die();
             <?php if (trim($this->row->extra_info)) { ?>
                 <div class="container">
                     <h3><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_EXTRA'); ?></h3>
+                    <?php
+                    $extraUrl = stripslashes($this->row->extra_info);
+                    $extraEsc = $this->escape($extraUrl);
+                    ?>
                     <p class="entry-link">
-                        <a href="<?php echo stripslashes($this->row->extra_info); ?>"><?php echo $this->escape(stripslashes($this->row->extra_info)); ?></a>
+                        <a href="<?php echo $extraUrl; ?>"><?php echo $extraEsc; ?></a>
                     </p>
                 </div>
             <?php } ?>

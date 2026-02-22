@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -24,7 +22,8 @@ $active = isset($this->active) ? $this->active : Request::getCmd('active');
 
     <div id="content-header-extra">
         <p>
-            <a class="btn icon-browse" href="<?php echo Route::url('index.php?option=com_developer&controller=applications'); ?>">
+            <?php $appsUrl = Route::url('index.php?option=com_developer&controller=applications'); ?>
+            <a class="btn icon-browse" href="<?php echo $appsUrl; ?>">
                 <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATIONS_ALL'); ?>
             </a>
         </p>

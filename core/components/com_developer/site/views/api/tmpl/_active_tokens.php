@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -19,8 +17,10 @@ if (empty($this->tokens)) {
 <div class="doc-section" id="active-session-tokens">
     <h3 class="endpoint-header collapsed">Active Session Tokens</h3>
     <div class="endpoint-content collapsed">
-        <p class="information"><strong>You are currently authenticated!</strong> Below are your active session tokens that you
-            can use to make API requests.</p>
+        <p class="information">
+            <strong>You are currently authenticated!</strong>
+            Below are your active session tokens that you can use to make API requests.
+        </p>
 
         <div class="tokens-list">
             <?php foreach ($this->tokens as $token) : ?>
@@ -35,7 +35,8 @@ if (empty($this->tokens)) {
 
         <h4>Using Your Token</h4>
         <p>Include this token in the Authorization header of your API requests:</p>
-        <pre><code class="http">Authorization: Bearer <?php echo htmlspecialchars($this->tokens->first()->access_token); ?></code></pre>
+        <?php $firstToken = htmlspecialchars($this->tokens->first()->access_token); ?>
+        <pre><code class="http">Authorization: Bearer <?php echo $firstToken; ?></code></pre>
     </div>
 </div>
 

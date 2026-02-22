@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -37,8 +35,12 @@ $activeVersion = Request::getString('version', reset($versions));
     <div id="content-header-extra">
         <ul>
             <li>
-                <a class="btn icon-cog"
-                    href="<?php echo Route::url('index.php?option=com_developer&controller=api&version=' . $activeVersion); ?>">
+                <?php
+                $homeUrl = Route::url(
+                    'index.php?option=com_developer&controller=api&version=' . $activeVersion
+                );
+                ?>
+                <a class="btn icon-cog" href="<?php echo $homeUrl; ?>">
                     <?php echo Lang::txt('COM_DEVELOPER_API_HOME'); ?>
                 </a>
             </li>

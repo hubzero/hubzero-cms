@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -31,9 +29,16 @@ if ($canDo->get('core.delete')) {
 }
 Toolbar::spacer();
 Toolbar::help('thread');
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
@@ -43,11 +48,18 @@ Toolbar::help('thread');
                     <?php foreach ($this->sections as $group => $sections) { ?>
                         <optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
                             <?php foreach ($sections as $section) { ?>
-                                <optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
+                                <?php $sectionTitle = $this->escape(stripslashes($section->title)); ?>
+                                <optgroup label="&nbsp; &nbsp; <?php echo $sectionTitle; ?>">
                                     <?php foreach ($section->categories as $category) { ?>
-                                        <option value="<?php echo $category->id; ?>"<?php if ($this->filters['category_id'] == $category->id) {
-                                            echo ' selected="selected"';
-                                                       } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
+                                        <?php
+                                        $selected = ($this->filters['category_id'] == $category->id)
+                                            ? ' selected="selected"'
+                                            : '';
+                                        $catTitle = $this->escape(stripslashes($category->title));
+                                        ?>
+                                        <option value="<?php echo $category->id; ?>"<?php echo $selected; ?>>
+                                            &nbsp; &nbsp; <?php echo $catTitle; ?>
+                                        </option>
                                     <?php } ?>
                                 </optgroup>
                             <?php } ?>
@@ -75,7 +87,13 @@ Toolbar::help('thread');
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">
                     <option value="-1"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                    <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+                    <?php echo Html::select(
+                        'options',
+                        Html::access('assetgroups'),
+                        'value',
+                        'text',
+                        $this->filters['access']
+                    ); ?>
                 </select>
             </div>
         </div>
@@ -83,20 +101,43 @@ Toolbar::help('thread');
 
     <table class="adminlist">
         <?php if (is_object($this->thread)) { ?>
-            <caption><?php echo Lang::txt('COM_FORUM_THREAD') . ': ' . $this->escape(stripslashes($this->thread->title)); ?></caption>
+            <?php $threadTitle = $this->escape(stripslashes($this->thread->title)); ?>
+            <caption><?php echo Lang::txt('COM_FORUM_THREAD') . ': ' . $threadTitle; ?></caption>
         <?php } ?>
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_FORUM_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_FORUM_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $sortDir = @$this->filters['sort_Dir'];
+                $sort = @$this->filters['sort'];
+                ?>
+                <th scope="col" class="priority-5">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_ID', 'id', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_TITLE', 'title', $sortDir, $sort); ?>
+                </th>
+                <th scope="col">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_STATE', 'state', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-5">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_CREATOR', 'created_by', $sortDir, $sort); ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?php echo Html::grid('sort', 'COM_FORUM_COL_CREATED', 'created', $sortDir, $sort); ?>
+                </th>
             </tr>
         </thead>
         <tfoot>
@@ -133,20 +174,45 @@ Toolbar::help('thread');
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
                     <td>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                        <input type="checkbox"
+                            name="id[]"
+                            id="cb<?php echo $i; ?>"
+                            value="<?php echo $row->get('id'); ?>"
+                            class="checkbox-toggle" />
+                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                            <?php echo $row->get('id'); ?>
+                        </label>
                     </td>
                     <td class="priority-5">
                         <?php echo $row->get('id'); ?>
                     </td>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&thread=' . $this->filters['thread']); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller='
+                            . $this->controller . '&task=edit&id=' . $row->id
+                            . '&thread=' . $this->filters['thread']
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                         </a>
                     </td>
                     <td>
                         <?php if ($canDo->get('core.edit.state')) { ?>
-                            <a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $task); ?>">
+                            <?php
+                            $stateUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller='
+                                . $this->controller . '&category_id='
+                                . $this->filters['category_id'] . '&task=' . $task
+                                . '&id=' . $row->get('id') . '&'
+                                . Session::getFormToken() . '=1'
+                            );
+                            $stateTitle = Lang::txt('COM_FORUM_SET_TO', $task);
+                            ?>
+                            <a class="state <?php echo $cls; ?>"
+                                href="<?php echo $stateUrl; ?>"
+                                title="<?php echo $stateTitle; ?>">
                                 <span><?php echo $alt; ?></span>
                             </a>
                         <?php } else { ?>
@@ -157,7 +223,11 @@ Toolbar::help('thread');
                     </td>
                     <td class="priority-3">
                         <span class="scope">
-                            <span><?php echo $this->escape($row->get('scope')); ?> <?php echo ($row->get('scope_id')) ? '(' . $this->escape($row->get('scope_id')) . ')' : ''; ?></span>
+                            <?php
+                            $scopeId = $row->get('scope_id');
+                            $scopeSuffix = $scopeId ? '(' . $this->escape($scopeId) . ')' : '';
+                            ?>
+                            <span><?php echo $this->escape($row->get('scope')); ?> <?php echo $scopeSuffix; ?></span>
                         </span>
                     </td>
                     <td class="priority-5">
@@ -167,7 +237,9 @@ Toolbar::help('thread');
                     </td>
                     <td class="priority-4">
                         <span class="created">
-                            <time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>
+                            <time datetime="<?php echo $row->get('created'); ?>">
+                                <?php echo $row->get('created'); ?>
+                            </time>
                         </span>
                     </td>
                 </tr>

@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -15,6 +13,10 @@ defined('_HZEXEC_') or die();
 $this->css('introduction', 'system')
      ->css('intro')
      ->css();
+
+$apiUrl = Route::url('index.php?option=com_developer&controller=api');
+$toolsUrl = Route::url('index.php?option=com_tools');
+$linkClass = 'btn btn-info icon-go opposite section-link-home';
 ?>
 
 <header id="content-header">
@@ -27,7 +29,10 @@ $this->css('introduction', 'system')
             <div class="col span8">
                 <h3><?php echo Lang::txt('COM_DEVELOPER_API_DEVELOPMENT'); ?></h3>
                 <?php echo Lang::txt('COM_DEVELOPER_API_DEVELOPMENT_DESC'); ?>
-                <a href="<?php echo Route::url('index.php?option=com_developer&controller=api'); ?>" class="btn btn-info icon-go opposite section-link-home">
+                <a
+                    href="<?php echo $apiUrl; ?>"
+                    class="<?php echo $linkClass; ?>"
+                >
                     <?php echo Lang::txt('COM_DEVELOPER_API_DEVELOPMENT_HOME'); ?>
                 </a>
             </div>
@@ -48,7 +53,11 @@ $this->css('introduction', 'system')
             <div class="col span8 omega">
                 <h3><?php echo Lang::txt('COM_DEVELOPER_WEB_DEVELOPMENT'); ?></h3>
                 <?php echo Lang::txt('COM_DEVELOPER_WEB_DEVELOPMENT_DESC'); ?>
-                <a href="<?php echo Route::url('index.php?option=com_developer&controller=web'); ?>" class="btn btn-info icon-go opposite section-link-home">
+                <?php $webUrl = Route::url('index.php?option=com_developer&controller=web'); ?>
+                <a
+                    href="<?php echo $webUrl; ?>"
+                    class="<?php echo $linkClass; ?>"
+                >
                     <?php echo Lang::txt('COM_DEVELOPER_WEB_DEVELOPMENT_HOME'); ?>
                 </a>
             </div>
@@ -66,7 +75,10 @@ $this->css('introduction', 'system')
             <div class="col span8 omega">
                 <h3><?php echo Lang::txt('COM_DEVELOPER_TOOL_DEVELOPMENT'); ?></h3>
                 <?php echo Lang::txt('COM_DEVELOPER_TOOL_DEVELOPMENT_DESC'); ?>
-                <a href="<?php echo Route::url('index.php?option=com_tools'); ?>" class="btn btn-info icon-go opposite section-link-home">
+                <a
+                    href="<?php echo $toolsUrl; ?>"
+                    class="<?php echo $linkClass; ?>"
+                >
                     <?php echo Lang::txt('COM_DEVELOPER_TOOL_DEVELOPMENT_HOME'); ?>
                 </a>
             </div>

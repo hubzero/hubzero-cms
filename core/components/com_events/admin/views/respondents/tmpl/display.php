@@ -9,20 +9,35 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
-Toolbar::title(Lang::txt('COM_EVENTS') . ': ' . Lang::txt('COM_EVENTS_RESPONDANTS'), 'user.png');
-Toolbar::custom('download', 'upload', 'COM_EVENTS_DOWNLOAD_CSV', 'COM_EVENTS_DOWNLOAD_CSV', false, false);
+Toolbar::title(
+    Lang::txt('COM_EVENTS') . ': ' . Lang::txt('COM_EVENTS_RESPONDANTS'),
+    'user.png'
+);
+Toolbar::custom(
+    'download',
+    'upload',
+    'COM_EVENTS_DOWNLOAD_CSV',
+    'COM_EVENTS_DOWNLOAD_CSV',
+    false,
+    false
+);
 Toolbar::deleteList('', 'remove', 'COM_EVENTS_DELETE');
 Toolbar::cancel();
+
+$formAction = Route::url('index.php?option=' . $this->option);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <h2><?php echo stripslashes($this->event->title); ?></h2>
 
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" />
+        <input type="text"
+            name="search"
+            id="filter_search"
+            class="filter"
+            value="<?php echo $this->escape($this->filters['search']); ?>"
+        />
 
         <input type="submit" value="<?php echo Lang::txt('COM_EVENTS_GO'); ?>" />
     </fieldset>
@@ -31,13 +46,60 @@ Toolbar::cancel();
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_EVENTS_RESPONDANT_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_EVENTS_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_EVENTS_RESPONDANT_REGISTERED', 'registered', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_EVENTS_SPECIAL_NEEDS', 'special', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col">
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_EVENTS_RESPONDANT_NAME',
+                        'name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?>
+                </th>
+                <th scope="col">
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_EVENTS_EMAIL',
+                        'email',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?>
+                </th>
+                <th scope="col">
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_EVENTS_RESPONDANT_REGISTERED',
+                        'registered',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?>
+                </th>
+                <th scope="col">
+                    <?php
+                    echo Html::grid(
+                        'sort',
+                        'COM_EVENTS_SPECIAL_NEEDS',
+                        'special',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort']
+                    );
+                    ?>
+                </th>
                 <th scope="col"><?php echo Lang::txt('COM_EVENTS_COMMENT'); ?></th>
             </tr>
         </thead>
@@ -53,14 +115,27 @@ Toolbar::cancel();
             $k = 0;
             $i = 0;
             foreach ($this->rows as $row) {
+                $respUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&task=respondent&id=' . $row->id
+                    . '&event_id=' . $this->event->id
+                );
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
                     <td>
-                        <input type="checkbox" name="rid[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
-                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
+                        <input type="checkbox"
+                            name="rid[]"
+                            id="cb<?php echo $i;?>"
+                            value="<?php echo $row->id; ?>"
+                            class="checkbox-toggle"
+                        />
+                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                            <?php echo $row->id; ?>
+                        </label>
                     </td>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=respondent&id=' . $row->id . '&event_id=' . $this->event->id); ?>">
+                        <a href="<?php echo $respUrl; ?>">
                             <?php echo $this->escape(stripslashes($row->last_name . ', ' . $row->first_name)); ?>
                         </a>
                     </td>
@@ -75,7 +150,11 @@ Toolbar::cancel();
                     <td>
                         <?php
                         if (!empty($row->dietary_needs)) {
-                            echo Lang::txt('COM_EVENTS_RESPONDANT_DIETARY_NEEDS', $this->escape($row->dietary_needs)) . '<br />';
+                            $dietaryTxt = Lang::txt(
+                                'COM_EVENTS_RESPONDANT_DIETARY_NEEDS',
+                                $this->escape($row->dietary_needs)
+                            );
+                            echo $dietaryTxt . '<br />';
                         }
                         if ($row->disability_needs) {
                             echo Lang::txt('COM_EVENTS_RESPONDANT_DISABILITY_REQUESTED');

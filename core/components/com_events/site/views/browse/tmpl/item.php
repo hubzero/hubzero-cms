@@ -9,8 +9,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 // Check to see if the timezone is set by the event.
 // $this->row->time_zone is the event timezone
 if (!isset($this->row->time_zone) || $this->row->time_zone == '') {
@@ -30,7 +28,11 @@ if (!isset($this->row->time_zone) || $this->row->time_zone == '') {
     }
 } else {
     // else use the one provided by the event
-    $timezone = timezone_name_from_abbr('', intval($this->row->time_zone) * 3600, -1);
+    $timezone = timezone_name_from_abbr(
+        '',
+        intval($this->row->time_zone) * 3600,
+        -1
+    );
 }
 
 // If not timezone is found or cannot be ascertained from above
@@ -56,9 +58,19 @@ $this->row->content = str_replace('<br />', '', $this->row->content);
 if (!empty($this->fields)) {
     for ($i = 0, $n = count($this->fields); $i < $n; $i++) {
         // explore the text and pull out all matches
-        array_push($this->fields[$i], \Components\Events\Site\Controllers\Events::parseTag($this->row->content, $this->fields[$i][0]));
+        array_push(
+            $this->fields[$i],
+            \Components\Events\Site\Controllers\Events::parseTag(
+                $this->row->content,
+                $this->fields[$i][0]
+            )
+        );
         // clean the original text of any matches
-        $this->row->content = str_replace('<ef:' . $this->fields[$i][0] . '>' . end($this->fields[$i]) . '</ef:' . $this->fields[$i][0] . '>', '', $this->row->content);
+        $this->row->content = str_replace(
+            '<ef:' . $this->fields[$i][0] . '>' . end($this->fields[$i]) . '</ef:' . $this->fields[$i][0] . '>',
+            '',
+            $this->row->content
+        );
     }
     $this->row->content = trim($this->row->content);
 }
@@ -75,36 +87,54 @@ if (strtotime($stop_date) - strtotime($current_date) < 0) {
 }
 
 $html .= "\t\t" . '<dl class="event-details">' . "\n";
+
+$dateFormat = Lang::txt('DATE_FORMAT_HZ1');
+$upDate = Date::of($this->row->publish_up, $timezone);
+$downDate = Date::of($this->row->publish_down, $timezone);
+$startFmt = $upDate->format('g:i A T', true);
+$endFmt = $downDate->format('g:i A T', true);
+$toLower = strtolower(Lang::txt('EVENTS_CAL_LANG_TO'));
+
 if ($start_date == $stop_date) {
     if ($this->showdate) {
-        $html .= "\t\t\t" . '<dt>' . Date::of($this->row->publish_up, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</dt>' . "\n";
+        $html .= "\t\t\t" . '<dt>' . $upDate->toLocal($dateFormat) . '</dt>' . "\n";
     }
-    $html .= "\t\t\t" . '<dd class="starttime">' . Date::of($this->row->publish_up, $timezone)->format('g:i A T', true) . '&nbsp;' . '</dd>' . "\n";
-    $html .= "\t\t\t" . '<dd class="endtime">' . strtolower(Lang::txt('EVENTS_CAL_LANG_TO')) . ' ' . Date::of($this->row->publish_down, $timezone)->format('g:i A T', true) . '&nbsp;' . '</dd>' . "\n";
+    $html .= "\t\t\t" . '<dd class="starttime">' . $startFmt . '&nbsp;' . '</dd>' . "\n";
+    $html .= "\t\t\t" . '<dd class="endtime">' . $toLower . ' ' . $endFmt . '&nbsp;' . '</dd>' . "\n";
 } else {
     if ($this->showdate) {
-        $html .= "\t\t\t" . '<dt class="starttime">' . Date::of($this->row->publish_up, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</dt>' . "\n";
+        $html .= "\t\t\t" . '<dt class="starttime">' . $upDate->toLocal($dateFormat) . '</dt>' . "\n";
     }
-    $html .= "\t\t\t" . '<dd class="starttime">' . Date::of($this->row->publish_up, $timezone)->format('g:i A T', true) . '&nbsp;' . '</dd>' . "\n";
+    $html .= "\t\t\t" . '<dd class="starttime">' . $startFmt . '&nbsp;' . '</dd>' . "\n";
     if ($this->showdate) {
-        $html .= "\t\t\t" . '<dt class="endtime">' . strtolower(Lang::txt('EVENTS_CAL_LANG_TO')) . ' ' . Date::of($this->row->publish_down, $timezone)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '</dt>' . "\n";
+        $html .= "\t\t\t" . '<dt class="endtime">' . $toLower . ' ' . $downDate->toLocal($dateFormat) . '</dt>' . "\n";
     }
-    $html .= "\t\t\t" . '<dd class="endtime">' . Date::of($this->row->publish_down, $timezone)->format('g:i A T', true) . '&nbsp;' . '</dd>' . "\n";
+    $html .= "\t\t\t" . '<dd class="endtime">' . $endFmt . '&nbsp;' . '</dd>' . "\n";
 }
 $html .= "\t\t" . '</dl><div class="ewrap">' . "\n";
-$html .= "\t\t" . '<p class="title"><a href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id) . '">' . $this->escape(stripslashes($this->row->title)) . '</a></p>' . "\n";
+$detailUrl = Route::url(
+    'index.php?option=' . $this->option . '&task=details&id=' . $this->row->id
+);
+$titleEsc = $this->escape(stripslashes($this->row->title));
+$html .= "\t\t" . '<p class="title"><a href="' . $detailUrl . '">' . $titleEsc . '</a></p>' . "\n";
 if (isset($this->categories[$this->row->catid])) {
-    $html .= "\t\t" . '<p class="category"><strong>Category:</strong> ' . stripslashes($this->categories[$this->row->catid]) . '</p>' . "\n";
+    $catName = stripslashes($this->categories[$this->row->catid]);
+    $html .= "\t\t" . '<p class="category"><strong>Category:</strong> ' . $catName . '</p>' . "\n";
 }
 $info = '';
 foreach ($this->fields as $field) {
     if ($field[4] == 1 && end($field) != '') {
-        $info .= "\t\t" . '<p class="' . $field[0] . '"><strong>' . $field[1] . ':</strong> ' . end($field) . '</p>' . "\n";
+        $info .= "\t\t" . '<p class="' . $field[0] . '">'
+            . '<strong>' . $field[1] . ':</strong> ' . end($field) . '</p>' . "\n";
     }
 }
 $html .= $info;
 if (!$info) {
-    $html .= "\t\t" . '<p class="description">' . \Hubzero\Utility\Str::truncate(strip_tags($this->row->content), 300) . '</p>' . "\n";
+    $truncated = \Hubzero\Utility\Str::truncate(
+        strip_tags($this->row->content),
+        300
+    );
+    $html .= "\t\t" . '<p class="description">' . $truncated . '</p>' . "\n";
 }
 $html .= "\t" . '</div></li>' . "\n";
 

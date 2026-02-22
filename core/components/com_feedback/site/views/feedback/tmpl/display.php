@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -26,10 +24,27 @@ $this->css('introduction.css', 'system')
         </div>
         <div class="col span4 omega">
             <h3><?php echo Lang::txt('COM_FEEDBACK_PARTICIPATE'); ?></h3>
+            <?php
+            $answersUrl = Route::url('index.php?option=com_answers');
+            $forumUrl = Route::url('index.php?option=com_forum');
+            $groupsUrl = Route::url('index.php?option=com_groups');
+            ?>
             <ul>
-                <li><a href="<?php echo Route::url('index.php?option=com_answers'); ?>"><?php echo Lang::txt('COM_FEEDBACK_LINK_ANSWERS'); ?></a></li>
-                <li><a href="<?php echo Route::url('index.php?option=com_forum'); ?>"><?php echo Lang::txt('COM_FEEDBACK_LINK_FORUM'); ?></a></li>
-                <li><a href="<?php echo Route::url('index.php?option=com_groups'); ?>"><?php echo Lang::txt('COM_FEEDBACK_LINK_GROUPS'); ?></a></li>
+                <li>
+                    <a href="<?php echo $answersUrl; ?>">
+                        <?php echo Lang::txt('COM_FEEDBACK_LINK_ANSWERS'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $forumUrl; ?>">
+                        <?php echo Lang::txt('COM_FEEDBACK_LINK_FORUM'); ?>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $groupsUrl; ?>">
+                        <?php echo Lang::txt('COM_FEEDBACK_LINK_GROUPS'); ?>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -42,18 +57,38 @@ $this->css('introduction.css', 'system')
         </div><!-- / .col span3 -->
         <div class="col span9 omega">
             <div class="grid">
+                <?php
+                $storyUrl = Route::url('index.php?option=' . $this->option . '&task=success_story');
+                $troubleUrl = Route::url('index.php?option=com_support&controller=tickets&task=new');
+                ?>
                 <div class="col span6">
                     <div class="story">
-                        <h3><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=success_story'); ?>"><?php echo Lang::txt('COM_FEEDBACK_STORY_HEADER'); ?></a></h3>
+                        <h3>
+                            <a href="<?php echo $storyUrl; ?>">
+                                <?php echo Lang::txt('COM_FEEDBACK_STORY_HEADER'); ?>
+                            </a>
+                        </h3>
                         <p><?php echo Lang::txt('COM_FEEDBACK_STORY_OTHER_OPTIONS'); ?></p>
-                        <p><a class="more btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=success_story'); ?>"><?php echo Lang::txt('COM_FEEDBACK_STORY_BUTTON'); ?></a></p>
+                        <p>
+                            <a class="more btn" href="<?php echo $storyUrl; ?>">
+                                <?php echo Lang::txt('COM_FEEDBACK_STORY_BUTTON'); ?>
+                            </a>
+                        </p>
                     </div>
                 </div><!-- / .col span6 -->
                 <div class="col span6 omega">
                     <div class="report">
-                        <h3><a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo Lang::txt('COM_FEEDBACK_TROUBLE_HEADER'); ?></a></h3>
+                        <h3>
+                            <a href="<?php echo $troubleUrl; ?>">
+                                <?php echo Lang::txt('COM_FEEDBACK_TROUBLE_HEADER'); ?>
+                            </a>
+                        </h3>
                         <p><?php echo Lang::txt('COM_FEEDBACK_TROUBLE_INTRO'); ?></p>
-                        <p><a class="more btn" href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo Lang::txt('COM_FEEDBACK_TROUBLE_BUTTON'); ?></a></p>
+                        <p>
+                            <a class="more btn" href="<?php echo $troubleUrl; ?>">
+                                <?php echo Lang::txt('COM_FEEDBACK_TROUBLE_BUTTON'); ?>
+                            </a>
+                        </p>
                     </div>
                 </div><!-- / .col span6 omega -->
             </div><!-- / .grid -->
@@ -61,19 +96,37 @@ $this->css('introduction.css', 'system')
                 <div class="grid">
                     <div class="col span6">
                     <?php if ($this->wishlist) { ?>
+                        <?php $wishlistUrl = Route::url('index.php?option=com_wishlist'); ?>
                         <div class="wish">
-                            <h3><a href="<?php echo Route::url('index.php?option=com_wishlist'); ?>"><?php echo Lang::txt('COM_FEEDBACK_WISHLIST_HEADER'); ?></a></h3>
+                            <h3>
+                                <a href="<?php echo $wishlistUrl; ?>">
+                                    <?php echo Lang::txt('COM_FEEDBACK_WISHLIST_HEADER'); ?>
+                                </a>
+                            </h3>
                             <p><?php echo Lang::txt('COM_FEEDBACK_WISHLIST_DESCRIPTION'); ?></p>
-                            <p><a class="more btn" href="<?php echo Route::url('index.php?option=com_wishlist'); ?>"><?php echo Lang::txt('COM_FEEDBACK_WISHLIST_BUTTON'); ?></a></p>
+                            <p>
+                                <a class="more btn" href="<?php echo $wishlistUrl; ?>">
+                                    <?php echo Lang::txt('COM_FEEDBACK_WISHLIST_BUTTON'); ?>
+                                </a>
+                            </p>
                         </div>
                     <?php } ?>
                     </div><!-- / .col span6 -->
                     <div class="col span6 omega">
                     <?php if ($this->poll) { ?>
+                        <?php $pollUrl = Route::url('index.php?option=' . $this->option . '&task=poll'); ?>
                         <div class="poll">
-                            <h3><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo Lang::txt('COM_FEEDBACK_POLL_HEADER'); ?></a></h3>
+                            <h3>
+                                <a href="<?php echo $pollUrl; ?>">
+                                    <?php echo Lang::txt('COM_FEEDBACK_POLL_HEADER'); ?>
+                                </a>
+                            </h3>
                             <p><?php echo Lang::txt('COM_FEEDBACK_POLL_DESCRIPTION'); ?></p>
-                            <p><a class="more btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=poll'); ?>"><?php echo Lang::txt('COM_FEEDBACK_POLL_BUTTON'); ?></a></p>
+                            <p>
+                                <a class="more btn" href="<?php echo $pollUrl; ?>">
+                                    <?php echo Lang::txt('COM_FEEDBACK_POLL_BUTTON'); ?>
+                                </a>
+                            </p>
                         </div>
                     <?php } ?>
                     </div><!-- / .col span6 omega -->

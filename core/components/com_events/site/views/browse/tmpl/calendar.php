@@ -9,8 +9,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 $database = App::get('db');
 
 $gid = User::get('gid', 0);
@@ -61,28 +59,38 @@ $this_datetime = new DateTime($this->year . '-' . $this->month . '-01');
 
 //check for events before the first of this month
 if ($this_datetime > $first_event_time) {
-    $prev = Route::url('index.php?option=' . $this->option . '&' . $prev_month->toDateURL($this->task));
+    $prev = Route::url(
+        'index.php?option=' . $this->option . '&' . $prev_month->toDateURL($this->task)
+    );
     $prev_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSMONTH');
 } else {
     $prev = "javascript:void(0);";
-    $prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSMONTH');
+    $prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR')
+        . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSMONTH');
 }
 //get a DateTime for one month after currently viewed and disable URL if required
 $this_datetime->add(new DateInterval("P1M"));
 if ($this_datetime <= $last_event_time) {
-    $next = Route::url('index.php?option=' . $this->option . '&' . $next_month->toDateURL($this->task));
+    $next = Route::url(
+        'index.php?option=' . $this->option . '&' . $next_month->toDateURL($this->task)
+    );
     $next_text = Lang::txt('EVENTS_CAL_LANG_NEXTMONTH');
 } else {
     $next = "javascript:void(0);";
-    $next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTMONTH');
+    $next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR')
+        . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTMONTH');
 }
 
 $content  = '<table class="ecalendar">' . "\n";
 $content .= ' <caption>';
 if ($this->shownav) {
-    $content .= '<a class="prv" href="' . $prev . '" title="' . $prev_text . '">&lsaquo;</a> <a class="nxt" href="' . $next . '" title="' . $next_text . '">&rsaquo;</a> ';
+    $content .= '<a class="prv" href="' . $prev . '"'
+        . ' title="' . $prev_text . '">&lsaquo;</a>'
+        . ' <a class="nxt" href="' . $next . '"'
+        . ' title="' . $next_text . '">&rsaquo;</a> ';
 }
-$content .= \Components\Events\Helpers\Html::getMonthName($cal_month) . '</caption>' . "\n";
+$monthName = \Components\Events\Helpers\Html::getMonthName($cal_month);
+$content .= $monthName . '</caption>' . "\n";
 $content .= ' <thead>' . "\n";
 $content .= '  <tr>' . "\n";
 for ($i = 0; $i < 7; $i++) {
@@ -159,7 +167,13 @@ for ($d = 1; $d <= $lastDayOfMonth; $d++) {
     $content .= '   <td';
     $content .= ($class) ? ' class="' . $class . '">' : '>';
     if ($hasevents) {
-        $content .= '<a class="mod_events_daylink" href="' . Route::url('index.php?option=' . $this->option . '&year=' . $cal_year . '&month=' . $cal_month . '&day=' . $do) . '">' . $d . '</a>';
+        $dayUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&year=' . $cal_year
+            . '&month=' . $cal_month
+            . '&day=' . $do
+        );
+        $content .= '<a class="mod_events_daylink" href="' . $dayUrl . '">' . $d . '</a>';
     } else {
         $content .= $d;
     }

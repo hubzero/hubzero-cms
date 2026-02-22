@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -29,9 +27,24 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+$formAction = Route::url('index.php?option=' . $this->option);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+$nameLabel = Lang::txt('COM_DEVELOPER_FIELD_NAME');
+$descLabel = Lang::txt('COM_DEVELOPER_FIELD_DESCRIPTION');
+$requiredLabel = Lang::txt('JOPTION_REQUIRED');
+$redirectLabel = Lang::txt('COM_DEVELOPER_FIELD_REDIRECT_URI');
+$redirectHint = Lang::txt('COM_DEVELOPER_FIELD_REDIRECT_URI_HINT');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form
+    action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <?php if ($this->getErrors()) { ?>
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php } ?>
@@ -41,55 +54,118 @@ $this->js();
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-name"><?php echo Lang::txt('COM_DEVELOPER_FIELD_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[name]" id="field-name" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->row->get('name'))); ?>" />
+                    <label for="field-name">
+                        <?php echo $nameLabel; ?>:
+                        <span class="required"><?php echo $requiredLabel; ?></span>
+                    </label><br />
+                    <input
+                        type="text"
+                        name="fields[name]"
+                        id="field-name"
+                        maxlength="250"
+                        class="required"
+                        value="<?php echo $this->escape(stripslashes($this->row->get('name'))); ?>"
+                    />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-description"><?php echo Lang::txt('COM_DEVELOPER_FIELD_DESCRIPTION'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <textarea name="fields[description]" id="field-description" class="required" rows="10"><?php echo $this->escape($this->row->get('description')); ?></textarea>
+                    <label for="field-description">
+                        <?php echo $descLabel; ?>:
+                        <span class="required"><?php echo $requiredLabel; ?></span>
+                    </label>
+                    <textarea
+                        name="fields[description]"
+                        id="field-description"
+                        class="required"
+                        rows="10"
+                    ><?php echo $this->escape($this->row->get('description')); ?></textarea>
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_DEVELOPER_FIELD_REDIRECT_URI_HINT'); ?>">
-                    <label for="field-redirect_uri"><?php echo Lang::txt('COM_DEVELOPER_FIELD_REDIRECT_URI'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                <div class="input-wrap" data-hint="<?php echo $redirectHint; ?>">
+                    <label for="field-redirect_uri">
+                        <?php echo $redirectLabel; ?>:
+                        <span class="required"><?php echo $requiredLabel; ?></span>
+                    </label><br />
                     <?php
                         $uris = explode(' ', $this->row->get('redirect_uri'));
                         $uris = implode(PHP_EOL, $uris);
                     ?>
-                    <textarea name="fields[redirect_uri]" id="field-redirect_uri" class="required" rows="3"><?php echo $this->escape($uris); ?></textarea>
+                    <textarea
+                        name="fields[redirect_uri]"
+                        id="field-redirect_uri"
+                        class="required"
+                        rows="3"
+                    ><?php echo $this->escape($uris); ?></textarea>
                 </div>
             </fieldset>
         </div>
         <div class="col span5">
             <?php if ($this->row->get('id')) : ?>
+                <?php
+                $creatorName = $this->escape(
+                    stripslashes($this->row->creator->get('name', 'System User'))
+                );
+                $createdByVal = $this->escape($this->row->get('created_by'));
+                $createdVal = $this->escape($this->row->get('created'));
+                $clientIdVal = $this->escape($this->row->get('client_id'));
+                $clientSecretVal = $this->escape($this->row->get('client_secret'));
+                ?>
                 <table class="meta">
                     <tbody>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED'); ?>:
+                            </th>
                             <td>
-                                <?php echo $this->escape(stripslashes($this->row->creator->get('name', 'System User'))); ?>
-                                <input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->row->get('created_by')); ?>" />
+                                <?php echo $creatorName; ?>
+                                <input
+                                    type="hidden"
+                                    name="fields[created_by]"
+                                    id="field-created_by"
+                                    value="<?php echo $createdByVal; ?>"
+                                />
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED_BY'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_DEVELOPER_FIELD_CREATED_BY'); ?>:
+                            </th>
                             <td>
                                 <?php echo Date::of($this->row->get('created'))->toLocal(); ?>
-                                <input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
+                                <input
+                                    type="hidden"
+                                    name="fields[created]"
+                                    id="field-created"
+                                    value="<?php echo $createdVal; ?>"
+                                />
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CLIENT_ID'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_DEVELOPER_FIELD_CLIENT_ID'); ?>:
+                            </th>
                             <td>
                                 <?php echo $this->escape(stripslashes($this->row->get('client_id'))); ?>
-                                <input type="hidden" name="fields[client_id]" id="field-client_id" value="<?php echo $this->escape($this->row->get('client_id')); ?>" />
+                                <input
+                                    type="hidden"
+                                    name="fields[client_id]"
+                                    id="field-client_id"
+                                    value="<?php echo $clientIdVal; ?>"
+                                />
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_DEVELOPER_FIELD_CLIENT_SECRET'); ?>:</th>
+                            <th scope="row">
+                                <?php echo Lang::txt('COM_DEVELOPER_FIELD_CLIENT_SECRET'); ?>:
+                            </th>
                             <td>
                                 <?php echo $this->escape(stripslashes($this->row->get('client_secret'))); ?>
-                                <input type="hidden" name="fields[client_secret]" id="field-client_secret" value="<?php echo $this->escape($this->row->get('client_secret')); ?>" />
+                                <input
+                                    type="hidden"
+                                    name="fields[client_secret]"
+                                    id="field-client_secret"
+                                    value="<?php echo $clientSecretVal; ?>"
+                                />
                             </td>
                         </tr>
                     </tbody>
@@ -99,7 +175,9 @@ $this->js();
                     <legend><span><?php echo Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
 
                     <div class="input-wrap">
-                        <label for="field-state"><?php echo Lang::txt('COM_DEVELOPER_FIELD_STATE'); ?>:</label><br />
+                        <label for="field-state">
+                            <?php echo Lang::txt('COM_DEVELOPER_FIELD_STATE'); ?>:
+                        </label><br />
                         <select name="fields[state]" id="field-state">
                             <option value="0"<?php if ($this->row->get('state') == 0) {
                                 echo ' selected="selected"';
@@ -117,8 +195,13 @@ $this->js();
                 <fieldset class="adminform">
                     <legend><span><?php echo Lang::txt('COM_DEVELOPER_FIELDSET_TEAM'); ?></span></legend>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_DEVELOPER_FIELD_ADD_TEAM_HINT'); ?>">
-                        <label for="acmembers"><?php echo Lang::txt('COM_DEVELOPER_FIELD_ADD_TEAM'); ?>:</label><br />
+                    <?php
+                    $teamHint = Lang::txt('COM_DEVELOPER_FIELD_ADD_TEAM_HINT');
+                    ?>
+                    <div class="input-wrap" data-hint="<?php echo $teamHint; ?>">
+                        <label for="acmembers">
+                            <?php echo Lang::txt('COM_DEVELOPER_FIELD_ADD_TEAM'); ?>:
+                        </label><br />
                         <?php
                         // get team and format for autocompletor
                         $currentTeam = array();
@@ -129,7 +212,11 @@ $this->js();
                         }
 
                         // output member autocompletor
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'team', 'acmembers', '', implode(', ', $currentTeam))));
+                        $teamList = implode(', ', $currentTeam);
+                        $mc = Event::trigger(
+                            'hubzero.onGetMultiEntry',
+                            array(array('members', 'team', 'acmembers', '', $teamList))
+                        );
                         if (count($mc) > 0) {
                             echo $mc[0];
                         } else { ?>

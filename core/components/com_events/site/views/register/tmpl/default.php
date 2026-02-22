@@ -9,12 +9,50 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 $params = new \Hubzero\Config\Registry($this->event->params);
 
 $this->css()
      ->js();
+
+$addUrl = Route::url(
+    'index.php?option=' . $this->option . '&task=add'
+);
+$yearUrl = Route::url(
+    'index.php?option=' . $this->option . '&year=' . $this->year
+);
+$monthUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&year=' . $this->year . '&month=' . $this->month
+);
+$weekUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&year=' . $this->year . '&month=' . $this->month
+    . '&day=' . $this->day . '&task=week'
+);
+$dayUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&year=' . $this->year . '&month=' . $this->month
+    . '&day=' . $this->day
+);
+
+$detailsUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&task=details&id=' . $this->event->id
+);
+$registerUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&task=details&id=' . $this->event->id
+    . '&page=register'
+);
+$overviewTxt = Lang::txt('EVENTS_OVERVIEW');
+$registerTxt = Lang::txt('EVENTS_REGISTER');
+$reqTxt = Lang::txt('COM_EVENTS_REQUIRED');
+
+// Helper to get register field values
+$regVal = function ($key) {
+    return (isset($this->register[$key]))
+        ? $this->register[$key] : '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -22,7 +60,11 @@ $this->css()
     <?php if ($this->authorized) { ?>
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li class="last"><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=add'); ?>"><?php echo Lang::txt('EVENTS_ADD_EVENT'); ?></a></li>
+            <li class="last">
+                <a class="icon-add add btn" href="<?php echo $addUrl; ?>">
+                    <?php echo Lang::txt('EVENTS_ADD_EVENT'); ?>
+                </a>
+            </li>
         </ul>
     </div><!-- / #content-header-extra -->
     <?php } ?>
@@ -32,16 +74,32 @@ $this->css()
     <ul class="sub-menu">
         <li<?php if ($this->task == 'year') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_YEAR'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $yearUrl; ?>">
+                <span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_YEAR'); ?></span>
+            </a>
+        </li>
         <li<?php if ($this->task == 'month') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_MONTH'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $monthUrl; ?>">
+                <span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_MONTH'); ?></span>
+            </a>
+        </li>
         <li<?php if ($this->task == 'week') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_WEEK'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $weekUrl; ?>">
+                <span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_WEEK'); ?></span>
+            </a>
+        </li>
         <li<?php if ($this->task == 'day') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_DAY'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $dayUrl; ?>">
+                <span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_DAY'); ?></span>
+            </a>
+        </li>
     </ul>
 </nav>
 
@@ -54,21 +112,33 @@ $this->css()
     if ($this->page->alias == '') {
         $html .= ' class="active"';
     }
-        $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id) . '"><span>' . Lang::txt('EVENTS_OVERVIEW') . '</span></a></li>' . "\n";
+        $html .= '><a class="tab" href="' . $detailsUrl . '">'
+            . '<span>' . $overviewTxt . '</span>'
+            . '</a></li>' . "\n";
     if ($this->pages) {
         foreach ($this->pages as $p) {
+            $pageUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&task=details&id=' . $this->event->id
+                . '&page=' . $p->alias
+            );
             $html .= "\t" . '<li';
             if ($this->page->alias == $p->alias) {
                 $html .= ' class="active"';
             }
-            $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id . '&page=' . $p->alias) . '"><span>' . trim(stripslashes($p->title)) . '</span></a></li>' . "\n";
+            $pageTitle = trim(stripslashes($p->title));
+            $html .= '><a class="tab" href="' . $pageUrl . '">'
+                . '<span>' . $pageTitle . '</span>'
+                . '</a></li>' . "\n";
         }
     }
         $html .= "\t" . '<li';
     if ($this->page->alias == 'register') {
         $html .= ' class="active"';
     }
-        $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id . '&page=register') . '"><span>' . Lang::txt('EVENTS_REGISTER') . '</span></a></li>' . "\n";
+        $html .= '><a class="tab" href="' . $registerUrl . '">'
+            . '<span>' . $registerTxt . '</span>'
+            . '</a></li>' . "\n";
         $html .= '</ul>' . "\n";
         $html .= '<div class="clear"></div>' . "\n";
         $html .= '</div>' . "\n";
@@ -86,7 +156,10 @@ $this->css()
             if (trim($this->event->contact_info)) {
                 echo stripslashes($this->event->contact_info);
             } else {
-                echo '<p>' . Lang::txt('COM_EVENTS_REGISTER_EXPLAINATION_NO_EXPLAINATION') . '</p>' . "\n";
+                $noExplTxt = Lang::txt(
+                    'COM_EVENTS_REGISTER_EXPLAINATION_NO_EXPLAINATION'
+                );
+                echo '<p>' . $noExplTxt . '</p>' . "\n";
             }
             ?>
         </div>
@@ -94,25 +167,47 @@ $this->css()
             <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_NAME'); ?></legend>
             <div class="grid">
                 <div class="col span6">
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_FIRST_NAME'); ?> <span class="required"><?php echo Lang::txt('COM_EVENTS_REQUIRED'); ?></span>
-                    <input type="text" name="register[firstname]" value="<?php echo (isset($this->register['firstname'])) ? $this->register['firstname'] : ''; ?>" /></label>
+                    <?php $fnLabel = Lang::txt('COM_EVENTS_REGISTER_FIELD_FIRST_NAME'); ?>
+                    <label>
+                        <?php echo $fnLabel; ?>
+                        <span class="required"><?php echo $reqTxt; ?></span>
+                        <input type="text"
+                               name="register[firstname]"
+                               value="<?php echo $regVal('firstname'); ?>" />
+                    </label>
                 </div>
                 <div class="col span6 omega">
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_LAST_NAME'); ?> <span class="required"><?php echo Lang::txt('COM_EVENTS_REQUIRED'); ?></span>
-                    <input type="text" name="register[lastname]" value="<?php echo (isset($this->register['lastname'])) ? $this->register['lastname'] : ''; ?>" /></label>
+                    <?php $lnLabel = Lang::txt('COM_EVENTS_REGISTER_FIELD_LAST_NAME'); ?>
+                    <label>
+                        <?php echo $lnLabel; ?>
+                        <span class="required"><?php echo $reqTxt; ?></span>
+                        <input type="text"
+                               name="register[lastname]"
+                               value="<?php echo $regVal('lastname'); ?>" />
+                    </label>
                 </div>
             </div>
             <div class="grid">
                 <div class="col span6">
                 <?php if ($params->get('show_affiliation')) { ?>
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_AFFILIATION'); ?> <span class="required"><?php echo Lang::txt('COM_EVENTS_REQUIRED'); ?></span>
-                    <input type="text" name="register[affiliation]" value="<?php echo (isset($this->register['affiliation'])) ? $this->register['affiliation'] : ''; ?>" /></label>
+                    <?php $affLabel = Lang::txt('COM_EVENTS_REGISTER_FIELD_AFFILIATION'); ?>
+                    <label>
+                        <?php echo $affLabel; ?>
+                        <span class="required"><?php echo $reqTxt; ?></span>
+                        <input type="text"
+                               name="register[affiliation]"
+                               value="<?php echo $regVal('affiliation'); ?>" />
+                    </label>
                 <?php } ?>
                 </div>
                 <div class="col span6 omega">
                 <?php if ($params->get('show_title')) { ?>
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_TITLE'); ?>
-                    <input type="text" name="register[title]" value="<?php echo (isset($this->register['title'])) ? $this->register['title'] : ''; ?>" /></label>
+                    <label>
+                        <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_TITLE'); ?>
+                        <input type="text"
+                               name="register[title]"
+                               value="<?php echo $regVal('title'); ?>" />
+                    </label>
                 <?php } ?>
                 </div>
             </div>
@@ -121,6 +216,16 @@ $this->css()
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="task" value="process" />
         </fieldset>
+    <?php
+    $cityLabel    = Lang::txt('COM_EVENTS_REGISTER_FIELD_CITY');
+    $stateLabel   = Lang::txt('COM_EVENTS_REGISTER_FIELD_STATE');
+    $zipLabel     = Lang::txt('COM_EVENTS_REGISTER_FIELD_ZIP');
+    $countryLabel = Lang::txt('COM_EVENTS_REGISTER_FIELD_COUNTRY');
+    $phoneLabel   = Lang::txt('COM_EVENTS_REGISTER_FIELD_PHONE');
+    $faxLabel     = Lang::txt('COM_EVENTS_REGISTER_FIELD_FAX');
+    $emailLabel   = Lang::txt('COM_EVENTS_REGISTER_FIELD_EMAIL');
+    $websiteLabel = Lang::txt('COM_EVENTS_REGISTER_FIELD_WEBSITE');
+    ?>
     <?php if (
     $params->get('show_address')
             || $params->get('show_telephone')
@@ -133,50 +238,83 @@ $this->css()
                                                           <?php if ($params->get('show_address')) { ?>
             <div class="grid">
                 <div class="col span6">
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_CITY'); ?>
-                    <input type="text" name="register[city]" value="<?php echo (isset($this->register['city'])) ? $this->register['city'] : ''; ?>" /></label>
+                    <label>
+                                                                <?php echo $cityLabel; ?>
+                        <input type="text"
+                               name="register[city]"
+                               value="<?php echo $regVal('city'); ?>" />
+                    </label>
                 </div>
                 <div class="col span6 omega">
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_STATE'); ?>
-                    <input type="text" name="register[state]" value="<?php echo (isset($this->register['state'])) ? $this->register['state'] : ''; ?>" /></label>
+                    <label>
+                                                                <?php echo $stateLabel; ?>
+                        <input type="text"
+                               name="register[state]"
+                               value="<?php echo $regVal('state'); ?>" />
+                    </label>
                 </div>
             </div>
             <div class="grid">
                 <div class="col span6">
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_ZIP'); ?>
-                    <input type="text" name="register[postalcode]" value="<?php echo (isset($this->register['postalcode'])) ? $this->register['postalcode'] : ''; ?>" /></label>
+                    <label>
+                                                                <?php echo $zipLabel; ?>
+                        <input type="text"
+                               name="register[postalcode]"
+                               value="<?php echo $regVal('postalcode'); ?>" />
+                    </label>
                 </div>
                 <div class="col span6 omega">
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_COUNTRY'); ?>
-                    <input type="text" name="register[country]" value="<?php echo (isset($this->register['country'])) ? $this->register['country'] : ''; ?>" /></label>
+                    <label>
+                                                                <?php echo $countryLabel; ?>
+                        <input type="text"
+                               name="register[country]"
+                               value="<?php echo $regVal('country'); ?>" />
+                    </label>
                 </div>
             </div>
                                                           <?php } ?>
             <div class="grid">
                 <div class="col span6">
                                                           <?php if ($params->get('show_telephone')) { ?>
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_PHONE'); ?>
-                    <input type="text" name="register[telephone]" value="<?php echo (isset($this->register['telephone'])) ? $this->register['telephone'] : ''; ?>" /></label>
+                    <label>
+                                                                <?php echo $phoneLabel; ?>
+                        <input type="text"
+                               name="register[telephone]"
+                               value="<?php echo $regVal('telephone'); ?>" />
+                    </label>
                                                           <?php } ?>
                 </div>
                 <div class="col span6 omega">
                                                           <?php if ($params->get('show_fax')) { ?>
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_FAX'); ?>
-                    <input type="text" name="register[fax]" value="<?php echo (isset($this->register['fax'])) ? $this->register['fax'] : ''; ?>" /></label>
+                    <label>
+                                                                <?php echo $faxLabel; ?>
+                        <input type="text"
+                               name="register[fax]"
+                               value="<?php echo $regVal('fax'); ?>" />
+                    </label>
                                                           <?php } ?>
                 </div>
             </div>
             <div class="grid">
                 <div class="col span6">
                                                           <?php if ($params->get('show_email')) { ?>
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_EMAIL'); ?> <span class="required"><?php echo Lang::txt('COM_EVENTS_REQUIRED'); ?></span>
-                    <input type="text" name="register[email]" value="<?php echo (isset($this->register['email'])) ? $this->register['email'] : ''; ?>" /></label>
+                    <label>
+                                                                <?php echo $emailLabel; ?>
+                        <span class="required"><?php echo $reqTxt; ?></span>
+                        <input type="text"
+                               name="register[email]"
+                               value="<?php echo $regVal('email'); ?>" />
+                    </label>
                                                           <?php } ?>
                 </div>
                 <div class="col span6 omega">
                                                           <?php if ($params->get('show_website')) { ?>
-                    <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_WEBSITE'); ?>
-                    <input type="text" name="register[website]" value="<?php echo (isset($this->register['website'])) ? $this->register['website'] : ''; ?>" /></label>
+                    <label>
+                                                                <?php echo $websiteLabel; ?>
+                        <input type="text"
+                               name="register[website]"
+                               value="<?php echo $regVal('website'); ?>" />
+                    </label>
                                                           <?php } ?>
                 </div>
             </div>
@@ -195,35 +333,87 @@ $this->css()
             <label>
                 <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION'); ?>
                 <select name="register[position]">
-                    <option value="" selected="selected"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NULL'); ?></option>
-                    <option value="university"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNIVERSITY'); ?></option>
-                    <option value="precollege"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_PRECOLLEGE'); ?></option>
-                    <option value="nationallab"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NATIONALLAB'); ?></option>
-                    <option value="industry"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_INDUSTRY'); ?></option>
-                    <option value="government"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_GOVERNMENT'); ?></option>
-                    <option value="military"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_MILITARY'); ?></option>
-                    <option value="unemployed"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNEMPLOYED'); ?></option>
+                    <?php
+                    $posOpts = array(
+                        ''            => 'COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NULL',
+                        'university'  => 'COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNIVERSITY',
+                        'precollege'  => 'COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_PRECOLLEGE',
+                        'nationallab' => 'COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NATIONALLAB',
+                        'industry'    => 'COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_INDUSTRY',
+                        'government'  => 'COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_GOVERNMENT',
+                        'military'    => 'COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_MILITARY',
+                        'unemployed'  => 'COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNEMPLOYED',
+                    );
+                    foreach ($posOpts as $val => $langKey) {
+                        $sel = ($val === '') ? ' selected="selected"' : '';
+                        ?>
+                    <option value="<?php echo $val; ?>"<?php echo $sel; ?>>
+                        <?php echo Lang::txt($langKey); ?>
+                    </option>
+                        <?php
+                    }
+                    ?>
                 </select>
-                <input name="register[position_other]" type="text" value="<?php echo (isset($this->register['position_other'])) ? $this->register['position_other'] : ''; ?>" />
+                <input name="register[position_other]"
+                       type="text"
+                       value="<?php echo $regVal('position_other'); ?>" />
             </label>
             <?php } ?>
 
             <?php if ($params->get('show_degree')) { ?>
             <fieldset>
                 <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE'); ?>:</legend>
-                <label><input type="radio" class="option" name="register[degree]" value="bachelors" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'bachelors') ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_BACHELORS'); ?></label>
-                <label><input type="radio" class="option" name="register[degree]" value="masters" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'masters') ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_MASTERS'); ?></label>
-                <label><input type="radio" class="option" name="register[degree]" value="doctoral" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'doctoral') ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_DOCTORAL'); ?></label>
-                <label><input type="radio" class="option" name="register[degree]" value="none of the above" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'none of the above') ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_NULL'); ?></label>
+                <?php
+                $degreeOpts = array(
+                    'bachelors'        => 'COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_BACHELORS',
+                    'masters'          => 'COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_MASTERS',
+                    'doctoral'         => 'COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_DOCTORAL',
+                    'none of the above' => 'COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_NULL',
+                );
+                foreach ($degreeOpts as $val => $langKey) {
+                    $chk = (isset($this->register['degree'])
+                        && $this->register['degree'] == $val)
+                        ? 'checked="checked"' : '';
+                    ?>
+                <label>
+                    <input type="radio"
+                           class="option"
+                           name="register[degree]"
+                           value="<?php echo $val; ?>"
+                           <?php echo $chk; ?> />
+                    <?php echo Lang::txt($langKey); ?>
+                </label>
+                    <?php
+                }
+                ?>
             </fieldset>
             <?php } ?>
 
             <?php if ($params->get('show_gender')) { ?>
             <fieldset>
                 <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_GENDER'); ?>:</legend>
-                <label><input type="radio" name="register[sex]" value="male" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'male') ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_MALE'); ?></label>
-                <label><input type="radio" name="register[sex]" value="female" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'female') ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_FEMALE'); ?></label>
-                <label><input type="radio" name="register[sex]" value="refused" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'refused') ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_NULL'); ?></label>
+                <?php
+                $genderOpts = array(
+                    'male'    => 'COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_MALE',
+                    'female'  => 'COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_FEMALE',
+                    'refused' => 'COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_NULL',
+                );
+                foreach ($genderOpts as $val => $langKey) {
+                    $chk = (isset($this->register['sex'])
+                        && $this->register['sex'] == $val)
+                        ? 'checked="checked"' : '';
+                    ?>
+                <label>
+                    <input type="radio"
+                           name="register[sex]"
+                           value="<?php echo $val; ?>"
+                           class="option"
+                           <?php echo $chk; ?> />
+                    <?php echo Lang::txt($langKey); ?>
+                </label>
+                    <?php
+                }
+                ?>
             </fieldset>
             <?php } ?>
 
@@ -231,15 +421,46 @@ $this->css()
             <fieldset>
                 <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE'); ?>:</legend>
                 <p class="hint"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_HINT'); ?></p>
-                <label><input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican" value="nativeamerican" /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_AMERICAN'); ?></label>
-                <label class="indent"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_AFFILIATIONS'); ?>:
-                <input name="race[nativetribe]" id="racenativetribe" type="text" value="" /></label>
-                <label><input type="checkbox" class="option" name="race[asian]" id="raceasian" /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_ASIAN'); ?></label>
-                <label><input type="checkbox" class="option" name="race[black]" id="raceblack" /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_BLACK'); ?></label>
-                <label><input type="checkbox" class="option" name="race[hawaiian]" id="racehawaiian" /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_HAWAIIAN'); ?></label>
-                <label><input type="checkbox" class="option" name="race[white]" id="racewhite" /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_WHITE'); ?></label>
-                <label><input type="checkbox" class="option" name="race[hispanic]" id="racehispanic" /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_HISPANIC'); ?></label>
-                <label><input type="checkbox" class="option" name="race[refused]" id="racerefused" /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_NULL'); ?></label>
+                <?php
+                $raceAmTxt = Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_AMERICAN');
+                ?>
+                <label>
+                    <input type="checkbox"
+                           class="option"
+                           name="race[nativeamerican]"
+                           id="racenativeamerican"
+                           value="nativeamerican" />
+                    <?php echo $raceAmTxt; ?>
+                </label>
+                <?php $affTxt = Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_AFFILIATIONS'); ?>
+                <label class="indent">
+                    <?php echo $affTxt; ?>:
+                    <input name="race[nativetribe]"
+                           id="racenativetribe"
+                           type="text"
+                           value="" />
+                </label>
+                <?php
+                $raceOpts = array(
+                    'asian'    => array('raceasian',    'COM_EVENTS_REGISTER_FIELD_RACE_OPTION_ASIAN'),
+                    'black'    => array('raceblack',    'COM_EVENTS_REGISTER_FIELD_RACE_OPTION_BLACK'),
+                    'hawaiian' => array('racehawaiian', 'COM_EVENTS_REGISTER_FIELD_RACE_OPTION_HAWAIIAN'),
+                    'white'    => array('racewhite',    'COM_EVENTS_REGISTER_FIELD_RACE_OPTION_WHITE'),
+                    'hispanic' => array('racehispanic', 'COM_EVENTS_REGISTER_FIELD_RACE_OPTION_HISPANIC'),
+                    'refused'  => array('racerefused',  'COM_EVENTS_REGISTER_FIELD_RACE_OPTION_NULL'),
+                );
+                foreach ($raceOpts as $name => $info) {
+                    ?>
+                <label>
+                    <input type="checkbox"
+                           class="option"
+                           name="race[<?php echo $name; ?>]"
+                           id="<?php echo $info[0]; ?>" />
+                    <?php echo Lang::txt($info[1]); ?>
+                </label>
+                    <?php
+                }
+                ?>
             </fieldset>
             <?php } ?>
         </fieldset>
@@ -252,11 +473,21 @@ $this->css()
             <fieldset>
                 <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_ARRIVAL'); ?></legend>
 
-                <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_ARRIVAL_DAY'); ?>
-                <input type="text" name="arrival[day]" value="<?php echo (isset($this->arrival['day'])) ? $this->arrival['day'] : ''; ?>" /></label>
+                <label>
+                    <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_ARRIVAL_DAY'); ?>
+                    <?php $arrDay = (isset($this->arrival['day'])) ? $this->arrival['day'] : ''; ?>
+                    <input type="text"
+                           name="arrival[day]"
+                           value="<?php echo $arrDay; ?>" />
+                </label>
 
-                <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_ARRIVAL_TIME'); ?>
-                <input type="text" name="arrival[time]" value="<?php echo (isset($this->arrival['time'])) ? $this->arrival['time'] : ''; ?>" /></label>
+                <label>
+                    <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_ARRIVAL_TIME'); ?>
+                    <?php $arrTime = (isset($this->arrival['time'])) ? $this->arrival['time'] : ''; ?>
+                    <input type="text"
+                           name="arrival[time]"
+                           value="<?php echo $arrTime; ?>" />
+                </label>
             </fieldset>
             <?php } ?>
 
@@ -264,11 +495,21 @@ $this->css()
             <fieldset>
                 <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_DEPARTURE'); ?></legend>
 
-                <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEPARTURE_DAY'); ?>
-                <input type="text" name="departure[day]" value="<?php echo (isset($this->departure['day'])) ? $this->departure['day'] : ''; ?>" /></label>
+                <label>
+                    <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEPARTURE_DAY'); ?>
+                    <?php $depDay = (isset($this->departure['day'])) ? $this->departure['day'] : ''; ?>
+                    <input type="text"
+                           name="departure[day]"
+                           value="<?php echo $depDay; ?>" />
+                </label>
 
-                <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEPARTURE_TIME'); ?>
-                <input type="text" name="departure[time]" value="<?php echo (isset($this->departure['time'])) ? $this->departure['time'] : ''; ?>" /></label>
+                <label>
+                    <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEPARTURE_TIME'); ?>
+                    <?php $depTime = (isset($this->departure['time'])) ? $this->departure['time'] : ''; ?>
+                    <input type="text"
+                           name="departure[time]"
+                           value="<?php echo $depTime; ?>" />
+                </label>
             </fieldset>
             <?php } ?>
         </fieldset>
@@ -276,12 +517,28 @@ $this->css()
     <?php if ($params->get('show_disability') || $params->get('show_dietary')) { ?>
         <fieldset>
             <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_DISABILITY'); ?></legend>
-            <?php if ($params->get('show_disability')) { ?>
-            <label><input type="checkbox" class="option" name="disability" value="yes" /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DISABILTIY'); ?></label>
+            <?php if ($params->get('show_disability')) {
+                $disTxt = Lang::txt('COM_EVENTS_REGISTER_FIELD_DISABILTIY');
+                ?>
+            <label>
+                <input type="checkbox"
+                       class="option"
+                       name="disability"
+                       value="yes" />
+                <?php echo $disTxt; ?>
+            </label>
             <?php } ?>
 
-            <?php if ($params->get('show_dietary')) { ?>
-            <label><input type="checkbox" class="option" name="dietary[needs]" value="yes" /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DIETARY'); ?></label>
+            <?php if ($params->get('show_dietary')) {
+                $dietTxt = Lang::txt('COM_EVENTS_REGISTER_FIELD_DIETARY');
+                ?>
+            <label>
+                <input type="checkbox"
+                       class="option"
+                       name="dietary[needs]"
+                       value="yes" />
+                <?php echo $dietTxt; ?>
+            </label>
             <label class="indent">
                 <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DIETARY_DETAILS'); ?>
                 <input type="text" name="dietary[specific]" />
@@ -289,11 +546,20 @@ $this->css()
             <?php } ?>
         </fieldset>
     <?php } ?>
-    <?php if ($params->get('show_dinner')) { ?>
+    <?php if ($params->get('show_dinner')) {
+        $dinnerTxt = Lang::txt('COM_EVENTS_REGISTER_FIELD_DINNER');
+        ?>
         <fieldset>
             <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_DINNER'); ?></legend>
 
-            <label for="filed-dinner"><input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" /> <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DINNER'); ?></label>
+            <label for="filed-dinner">
+                <input type="checkbox"
+                       class="option"
+                       name="dinner"
+                       id="filed-dinner"
+                       value="yes" />
+                <?php echo $dinnerTxt; ?>
+            </label>
         </fieldset>
     <?php } ?>
 
@@ -321,6 +587,8 @@ $this->css()
         </fieldset>
         <?php } ?>
         <div class="clear"></div>
-        <p class="submit"><input type="submit" value="<?php echo Lang::txt('EVENTS_SUBMIT'); ?>" /></p>
+        <p class="submit">
+            <input type="submit" value="<?php echo Lang::txt('EVENTS_SUBMIT'); ?>" />
+        </p>
     </form>
 </section><!-- / .main section -->

@@ -9,15 +9,17 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 $sef = Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id);
 
 $message  = Lang::txt('EVENTS_CAL_LANG_ACT_ADDED_BY', $this->user->get('name'), $this->user->get('username'));
 $message .= '' . "\n";
 $message .= '' . "\n";
-$message .= Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE') . ': ' . html_entity_decode(strip_tags(stripslashes($this->row->title))) . "\n\n";
-$message .= Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION') . ': ' . html_entity_decode(strip_tags(stripslashes($this->row->content))) . "\n\n";
+$titleTxt = Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE');
+$descTxt = Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION');
+$titleVal = html_entity_decode(strip_tags(stripslashes($this->row->title)));
+$descVal = html_entity_decode(strip_tags(stripslashes($this->row->content)));
+$message .= $titleTxt . ': ' . $titleVal . "\n\n";
+$message .= $descTxt . ': ' . $descVal . "\n\n";
 $message .= '' . "\n";
 $message .= Request::base() . ltrim($sef, '/') . "\n";
 

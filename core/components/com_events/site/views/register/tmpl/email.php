@@ -9,17 +9,18 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 $message = Lang::txt('EVENTS_REGISTRATION_CONFIRMATION') . "\n\n";
 
 $message .= "----------------------------------------\n";
 $message .= $this->eventTitle . "\n";
 $message .= "----------------------------------------\n\n";
-$message .= Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME') . ': ' . $this->eventStart . "\n";
-$message .= Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME') . ': ' . $this->eventEnd . "\n\n";
+$startTimeTxt = Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME');
+$endTimeTxt = Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME');
+$message .= $startTimeTxt . ': ' . $this->eventStart . "\n";
+$message .= $endTimeTxt . ': ' . $this->eventEnd . "\n\n";
 
-$message .= Lang::txt('COM_EVENTS_NAME') . ': ' . $this->register['firstname'] . ' ' . $this->register['lastname'] . "\n";
+$message .= Lang::txt('COM_EVENTS_NAME') . ': '
+    . $this->register['firstname'] . ' ' . $this->register['lastname'] . "\n";
 
 if ($this->params->get('show_title') && !empty($this->register['title'])) {
     $message .= Lang::txt('COM_EVENTS_TITLE') . ': ' . $this->register['title'] . "\n";
@@ -62,9 +63,14 @@ if ($this->params->get('show_address')) {
     $message .= "\n";
 }
 
-if ($this->params->get('show_position') && (!empty($this->register['position']) || !empty($this->register['position_other']))) {
+if (
+    $this->params->get('show_position')
+    && (!empty($this->register['position']) || !empty($this->register['position_other']))
+) {
     $message .= Lang::txt('COM_EVENTS_POSITION') . ': ';
-    $message .= ($this->register['position']) ? ucfirst($this->register['position']) : $this->register['position_other'];
+    $message .= ($this->register['position'])
+        ? ucfirst($this->register['position'])
+        : $this->register['position_other'];
     $message .= "\n\n";
 }
 
@@ -112,13 +118,21 @@ if ($this->params->get('show_dietary')) {
     $message .= "\n\n";
 }
 
-if ($this->params->get('show_arrival') && $this->arrival && (!empty($this->arrival['day']) || !empty($this->arrival['time']))) {
+if (
+    $this->params->get('show_arrival')
+    && $this->arrival
+    && (!empty($this->arrival['day']) || !empty($this->arrival['time']))
+) {
     $message .= Lang::txt('COM_EVENTS_ARRIVAL') . "\n";
     $message .= Lang::txt('COM_EVENTS_ARRIVAL_DAY', $this->arrival['day']) . "\n";
     $message .= Lang::txt('COM_EVENTS_ARRIVAL_TIME', $this->arrival['time']) . "\n\n";
 }
 
-if ($this->params->get('show_departure') && $this->departure && (!empty($this->departure['day']) || !empty($this->departure['time']))) {
+if (
+    $this->params->get('show_departure')
+    && $this->departure
+    && (!empty($this->departure['day']) || !empty($this->departure['time']))
+) {
     $message .= Lang::txt('COM_EVENTS_DEPARTURE') . "\n";
     $message .= Lang::txt('COM_EVENTS_DEPARTURE_DAY', $this->departure['day']) . "\n";
     $message .= Lang::txt('COM_EVENTS_DEPARTURE_TIME', $this->departure['time']) . "\n\n";

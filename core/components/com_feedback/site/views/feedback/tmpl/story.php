@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -34,7 +32,18 @@ $this->css()
         <?php if ($this->getError()) { ?>
             <p class="error"><?php echo Lang::txt('COM_FEEDBACK_ERROR_MISSING_FIELDS'); ?></p>
         <?php } ?>
-        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=story'); ?>" method="post" id="hubForm" enctype="multipart/form-data">
+        <?php
+        $formAction = Route::url(
+            'index.php?option=' . $this->option
+            . '&controller=' . $this->controller . '&task=story'
+        );
+        ?>
+        <form
+            action="<?php echo $formAction; ?>"
+            method="post"
+            id="hubForm"
+            enctype="multipart/form-data"
+        >
             <div class="explaination">
                 <p><?php echo Lang::txt('COM_FEEDBACK_STORY_OTHER_OPTIONS'); ?></p>
             </div>
@@ -47,21 +56,49 @@ $this->css()
 
                 <?php echo Html::input('token'); ?>
 
+                <?php $reqLabel = Lang::txt('JREQUIRED'); ?>
                 <label for="field-fullname">
-                    <?php echo Lang::txt('COM_FEEDBACK_NAME'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-                    <input type="text" name="fields[fullname]" id="field-fullname" value="<?php echo $this->escape($this->row->fullname); ?>" size="30" />
+                    <?php echo Lang::txt('COM_FEEDBACK_NAME'); ?>
+                    <span class="required"><?php echo $reqLabel; ?></span>
+                    <?php $fullnameVal = $this->escape($this->row->fullname); ?>
+                    <input
+                        type="text"
+                        name="fields[fullname]"
+                        id="field-fullname"
+                        value="<?php echo $fullnameVal; ?>"
+                        size="30"
+                    />
                 </label>
 
                 <label for="field-org">
-                    <?php echo Lang::txt('COM_FEEDBACK_ORGANIZATION'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-                    <input type="text" name="fields[org]" id="field-org" value="<?php echo $this->escape($this->row->org); ?>" size="30" />
+                    <?php echo Lang::txt('COM_FEEDBACK_ORGANIZATION'); ?>
+                    <span class="required"><?php echo $reqLabel; ?></span>
+                    <input
+                        type="text"
+                        name="fields[org]"
+                        id="field-org"
+                        value="<?php echo $this->escape($this->row->org); ?>"
+                        size="30"
+                    />
                 </label>
                 <fieldset>
                     <legend>
                         <?php echo Lang::txt('COM_FEEDBACK_PICTURES'); ?>
                     </legend>
                     <div class="field-wrap">
-                        <div id="ajax-uploader" data-instructions="<?php echo Lang::txt('COM_FEEDBACK_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=uploadimage&no_html=1'); ?>">
+                        <?php
+                        $uploadInstructions = Lang::txt('COM_FEEDBACK_CLICK_OR_DROP_FILE');
+                        $uploadAction = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=uploadimage&no_html=1'
+                        );
+                        ?>
+                        <div
+                            id="ajax-uploader"
+                            data-instructions="<?php echo $uploadInstructions; ?>"
+                            data-action="<?php echo $uploadAction; ?>"
+                        >
                             <noscript>
                                 <label for="upload">
                                     <input type="file" name="files[]" id="field-files" multiple="multiple" />
@@ -70,31 +107,64 @@ $this->css()
                         </div>
                     </div>
                 </fieldset>
-                <label<?php echo ($this->getError() && $this->row->quote == '') ? ' class="fieldWithErrors"' : ''; ?> for="field-quote">
+                <?php
+                $labelClass = ($this->getError() && $this->row->quote == '')
+                    ? ' class="fieldWithErrors"' : '';
+                ?>
+                <label<?php echo $labelClass; ?> for="field-quote">
                     <?php echo Lang::txt('COM_FEEDBACK_STORY_DESCRIPTION'); ?>
-                    <textarea name="fields[quote]" id="field-quote" rows="40" cols="15"><?php echo $this->escape($this->row->quote); ?></textarea>
+                    <textarea
+                        name="fields[quote]"
+                        id="field-quote"
+                        rows="40"
+                        cols="15"
+                    ><?php echo $this->escape($this->row->quote); ?></textarea>
                 </label>
                 <?php if ($this->getError() && $this->row->quote == '') { ?>
                     <p class="error"><?php echo Lang::txt('COM_FEEDBACK_STORY_MISSING_DESCRIPTION'); ?></p>
                 <?php } ?>
 
                 <label for="field-publish_ok">
-                    <input type="checkbox" name="fields[publish_ok]" id="field-publish_ok" value="1" class="option"<?php if ($this->row->publish_ok) {
-                        echo ' checked="checked"';
-                                                                                                                   } ?> />
-                    <?php echo Lang::txt('COM_FEEDBACK_STORY_AUTHORIZE_QUOTE', Config::get('sitename'), Config::get('sitename')); ?>
+                    <?php $publishChecked = $this->row->publish_ok ? ' checked="checked"' : ''; ?>
+                    <input
+                        type="checkbox"
+                        name="fields[publish_ok]"
+                        id="field-publish_ok"
+                        value="1"
+                        class="option"
+                        <?php echo $publishChecked; ?>
+                    />
+                    <?php
+                    $sitename = Config::get('sitename');
+                    echo Lang::txt(
+                        'COM_FEEDBACK_STORY_AUTHORIZE_QUOTE',
+                        $sitename,
+                        $sitename
+                    );
+                    ?>
                 </label>
 
                 <label for="field-contact_ok">
-                    <input type="checkbox" name="fields[contact_ok]" id="field-contact_ok" value="1" class="option"<?php if ($this->row->contact_ok) {
-                        echo ' checked="checked"';
-                                                                                                                   } ?> />
-                    <?php echo Lang::txt('COM_FEEDBACK_STORY_AUTHORIZE_CONTACT', Config::get('sitename')); ?>
+                    <?php $contactChecked = $this->row->contact_ok ? ' checked="checked"' : ''; ?>
+                    <input
+                        type="checkbox"
+                        name="fields[contact_ok]"
+                        id="field-contact_ok"
+                        value="1"
+                        class="option"
+                        <?php echo $contactChecked; ?>
+                    />
+                    <?php echo Lang::txt('COM_FEEDBACK_STORY_AUTHORIZE_CONTACT', $sitename); ?>
                 </label>
             </fieldset><div class="clear"></div>
 
             <p class="submit">
-                <input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_FEEDBACK_SUBMIT'); ?>" />
+                <input
+                    class="btn btn-success"
+                    type="submit"
+                    name="submit"
+                    value="<?php echo Lang::txt('COM_FEEDBACK_SUBMIT'); ?>"
+                />
 
                 <a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>

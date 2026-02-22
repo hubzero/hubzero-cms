@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -22,7 +20,8 @@ $base = rtrim(Request::base(true), '/');
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add btn add" href="<?php echo Route::url('index.php?option=com_feedback&task=success_story'); ?>">
+            <?php $addStoryUrl = Route::url('index.php?option=com_feedback&task=success_story'); ?>
+            <a class="icon-add btn add" href="<?php echo $addStoryUrl; ?>">
                 <?php echo Lang::txt('COM_FEEDBACK_ADD_YOUR_STORY'); ?>
             </a>
         </p>
@@ -43,22 +42,28 @@ $base = rtrim(Request::base(true), '/');
                                 }
                                 $quote->set('org', str_replace('<br>', '<br />', $quote->get('org')));
                                 $user = $quote->user;
-                                echo '<img src="' . $user->picture() . '" alt="' . $this->escape($user->get('name')) . '" width="50" height="50" /><br />';
+                                $userName = $this->escape($user->get('name'));
+                                echo '<img src="' . $user->picture()
+                                    . '" alt="' . $userName
+                                    . '" width="50" height="50" /><br />';
                                 ?>
                                 <cite><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></cite>
                                 <br /><?php echo $this->escape(stripslashes($quote->get('org'))); ?>
                             </p>
                         </div>
                         <div class="col span10 omega">
+                        <?php $fullnameEsc = $this->escape(stripslashes($quote->get('fullname'))); ?>
                         <?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
                             <div class="breadcrumbs">
                                 <p>
-                                    <a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs"><?php echo Lang::txt('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
+                                    <a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs">
+                                        <?php echo Lang::txt('MOD_QUOTES_NOTABLE_QUOTES'); ?>
+                                    </a>
                                     &rsaquo;
-                                    <strong><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></strong>
+                                    <strong><?php echo $fullnameEsc; ?></strong>
                                 </p>
                             </div>
-                            <blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
+                            <blockquote cite="<?php echo $fullnameEsc; ?>">
                                 <p>
                                     <?php echo $this->escape(stripslashes($quote->get('quote'))); ?>
                                 </p>
@@ -66,25 +71,31 @@ $base = rtrim(Request::base(true), '/');
                         <?php } else { ?>
                             <?php if ($quote->get('short_quote') != $quote->get('quote')) { ?>
                                 <div class="quote-short" id="<?php echo $quote->get('id'); ?>-short">
-                                    <blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
+                                    <blockquote cite="<?php echo $fullnameEsc; ?>">
                                         <p>
                                             <?php
                                             $content = rtrim(stripslashes($quote->get('short_quote')), '.');
                                             echo $this->escape(strip_tags($content)); ?>
                                             &#8230;
-                                            <a href="#" id="<?php echo $quote->id; ?>" class="show-more" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname')))); ?>">
+                                            <?php $moreTitle = Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $fullnameEsc); ?>
+                                            <a
+                                                href="#"
+                                                id="<?php echo $quote->id; ?>"
+                                                class="show-more"
+                                                title="<?php echo $moreTitle; ?>"
+                                            >
                                                 <?php echo Lang::txt('COM_FEEDBACK_MORE'); ?>
                                             </a>
                                         </p>
                                     </blockquote>
                                 </div>
                                 <div class="quote-long hide" id="<?php echo $quote->id; ?>-long">
-                                    <blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
+                                    <blockquote cite="<?php echo $fullnameEsc; ?>">
                                         <?php echo stripslashes($quote->get('quote')); ?>
                                     </blockquote>
                                 </div>
                             <?php } else { ?>
-                                <blockquote cite="<?php echo $this->escape(stripslashes($quote->get('fullname'))); ?>">
+                                <blockquote cite="<?php echo $fullnameEsc; ?>">
                                     <?php echo stripslashes($quote->get('short_quote')); ?>
                                 </blockquote>
                             <?php } ?>

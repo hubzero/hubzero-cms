@@ -9,9 +9,10 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
-Toolbar::title(Lang::txt('COM_EVENTS') . ': ' . Lang::txt('COM_EVENTS_RESPONDANT'), 'user');
+Toolbar::title(
+    Lang::txt('COM_EVENTS') . ': ' . Lang::txt('COM_EVENTS_RESPONDANT'),
+    'user'
+);
 //Toolbar::cancel();
 
 $resp = $this->resp;
@@ -44,19 +45,40 @@ $resp = $this->resp;
         <?php if (!empty($resp->title)) : ?>
             <tr>
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_TITLE'); ?></th>
-                <td><?php echo $this->escape($resp->title) . (empty($resp->position_description) ? '' : ' - ' . $this->escape($resp->position_description)); ?></td>
+                <td>
+                    <?php
+                    $posDesc = empty($resp->position_description)
+                        ? ''
+                        : ' - ' . $this->escape($resp->position_description);
+                    echo $this->escape($resp->title) . $posDesc;
+                    ?>
+                </td>
             </tr>
         <?php endif; ?>
         <?php if (!empty($resp->city) || !empty($resp->state) || !empty($resp->zip) || !empty($resp->country)) : ?>
             <tr>
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_LOCATION'); ?></th>
-                <td><?php echo $this->escape($resp->city) . ' ' . $this->escape($resp->state) . ' ' . $this->escape($resp->country) . ' ' . $this->escape($resp->zip); ?></td>
+                <td>
+                    <?php
+                    echo $this->escape($resp->city)
+                        . ' ' . $this->escape($resp->state)
+                        . ' ' . $this->escape($resp->country)
+                        . ' ' . $this->escape($resp->zip);
+                    ?>
+                </td>
             </tr>
         <?php endif; ?>
         <?php if (!empty($resp->telephone) || !empty($resp->fax)) : ?>
             <tr>
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_TELEPHONE'); ?></th>
-                <td><?php echo $this->escape($resp->telephone) . (empty($resp->fax) ? '' : ' ' . $this->escape($resp->fax) . ' (' . Lang::txt('COM_EVENTS_FAX') . ')'); ?></td>
+                <td>
+                    <?php
+                    $faxInfo = empty($resp->fax)
+                        ? ''
+                        : ' ' . $this->escape($resp->fax) . ' (' . Lang::txt('COM_EVENTS_FAX') . ')';
+                    echo $this->escape($resp->telephone) . $faxInfo;
+                    ?>
+                </td>
             </tr>
         <?php endif; ?>
         <?php if (!empty($resp->website)) : ?>
@@ -74,7 +96,10 @@ $resp = $this->resp;
                     <?php
                     $r = array();
                     foreach ($races as $race) {
-                        $r[] = $this->escape($race . ($race->tribal_affiliation ? ' (' . $race->tribal_affiliation . ')' : ''));
+                        $tribal = $race->tribal_affiliation
+                            ? ' (' . $race->tribal_affiliation . ')'
+                            : '';
+                        $r[] = $this->escape($race . $tribal);
                     }
                     echo implode(', ', $r);
                     ?>
@@ -84,7 +109,13 @@ $resp = $this->resp;
         <?php if (!empty($resp->gender)) : ?>
             <tr>
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_GENDER'); ?></th>
-                <td><?php echo $resp->gender == 'm' ? Lang::txt('COM_EVENTS_RESPONDANT_MALE') : Lang::txt('COM_EVENTS_RESPONDANT_FEMALE'); ?></td>
+                <td>
+                    <?php
+                    echo $resp->gender == 'm'
+                        ? Lang::txt('COM_EVENTS_RESPONDANT_MALE')
+                        : Lang::txt('COM_EVENTS_RESPONDANT_FEMALE');
+                    ?>
+                </td>
             </tr>
         <?php endif; ?>
         <?php if (!empty($resp->arrival)) : ?>
@@ -101,7 +132,13 @@ $resp = $this->resp;
         <?php endif; ?>
             <tr>
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_DISABILITY_CONTACT_REQUESTED'); ?></th>
-                <td><?php echo $resp->disability_needs ? Lang::txt('COM_EVENTS_RESPONDANT_YES') : Lang::txt('COM_EVENTS_RESPONDANT_NO'); ?></td>
+                <td>
+                    <?php
+                    echo $resp->disability_needs
+                        ? Lang::txt('COM_EVENTS_RESPONDANT_YES')
+                        : Lang::txt('COM_EVENTS_RESPONDANT_NO');
+                    ?>
+                </td>
             </tr>
         <?php if (!empty($resp->dietary_needs)) : ?>
             <tr>
@@ -111,7 +148,13 @@ $resp = $this->resp;
         <?php endif; ?>
         <tr>
             <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_ATTENDING_DINNER'); ?></th>
-            <td><?php echo $resp->attending_dinner ? Lang::txt('COM_EVENTS_RESPONDANT_YES') : Lang::txt('COM_EVENTS_RESPONDANT_NO'); ?></td>
+            <td>
+                <?php
+                echo $resp->attending_dinner
+                    ? Lang::txt('COM_EVENTS_RESPONDANT_YES')
+                    : Lang::txt('COM_EVENTS_RESPONDANT_NO');
+                ?>
+            </td>
         </tr>
         <?php if (!empty($resp->abstract)) : ?>
             <tr>

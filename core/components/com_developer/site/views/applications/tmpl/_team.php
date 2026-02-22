@@ -6,8 +6,6 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// phpcs:disable Generic.Files.LineLength.TooLong
-
 // No direct access
 defined('_HZEXEC_') or die();
 ?>
@@ -19,12 +17,28 @@ defined('_HZEXEC_') or die();
             $me      = ($profile->get('uidNumber') == User::get('id')) ? true : false;
         ?>
         <li <?php echo ($me) ? 'class="me"' : ''; ?>>
-            <a href="<?php echo $profile->link(); ?>" class="tooltips" title="<?php echo $profile->get('name'); ?> <?php echo ($me) ? '(You)' : ''; ?>">
+            <?php
+            $profileName = $profile->get('name');
+            $titleText = $profileName . ' ' . (($me) ? '(You)' : '');
+            ?>
+            <a
+                href="<?php echo $profile->link(); ?>"
+                class="tooltips"
+                title="<?php echo $titleText; ?>"
+            >
                 <img src="<?php echo $profile->picture(0, true); ?>" alt="" />
-                <span><?php echo $profile->get('name'); ?></span>
+                <span><?php echo $profileName; ?></span>
             </a>
             <?php if (!$me) : ?>
-                <a class="btn btn-danger btn-secondary remove confirm" data-txt-confirm="<?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_MEMBER_REMOVE_CONFIRM'); ?>" href="<?php echo Route::url($member->link('remove')); ?>">
+                <?php
+                $removeConfirm = Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_MEMBER_REMOVE_CONFIRM');
+                $removeUrl = Route::url($member->link('remove'));
+                ?>
+                <a
+                    class="btn btn-danger btn-secondary remove confirm"
+                    data-txt-confirm="<?php echo $removeConfirm; ?>"
+                    href="<?php echo $removeUrl; ?>"
+                >
                     <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_MEMBER_REMOVE'); ?>
                 </a>
             <?php endif; ?>

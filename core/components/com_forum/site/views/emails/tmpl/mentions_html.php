@@ -1,6 +1,4 @@
 <?php
-// phpcs:disable Generic.Files.LineLength
-
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -21,7 +19,8 @@ $postAuthor = $this->postAuthor;
 </table>
 <!-- End Spacer -->
 
-<table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+<table id="course-discussions" width="650" cellpadding="0" cellspacing="0" border="0"
+    style="border-collapse: collapse;">
     <tr>
         <td style="font-size: 16px; padding: 10px 0;">
             <?php echo $postAuthor; ?> mentioned you on a forum thread with the following post:

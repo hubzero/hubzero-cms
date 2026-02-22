@@ -9,10 +9,41 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 $this->css()
      ->js();
+
+$addUrl = Route::url(
+    'index.php?option=' . $this->option . '&task=add'
+);
+$yearUrl = Route::url(
+    'index.php?option=' . $this->option . '&year=' . $this->year
+);
+$monthUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&year=' . $this->year . '&month=' . $this->month
+);
+$weekUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&year=' . $this->year . '&month=' . $this->month
+    . '&day=' . $this->day . '&task=week'
+);
+$dayUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&year=' . $this->year . '&month=' . $this->month
+    . '&day=' . $this->day
+);
+
+$detailsUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&task=details&id=' . $this->event->id
+);
+$registerUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&task=details&id=' . $this->event->id
+    . '&page=register'
+);
+$overviewTxt = Lang::txt('EVENTS_OVERVIEW');
+$registerTxt = Lang::txt('EVENTS_REGISTER');
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -20,7 +51,11 @@ $this->css()
     <?php if ($this->authorized) { ?>
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li class="last"><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=add'); ?>"><?php echo Lang::txt('EVENTS_ADD_EVENT'); ?></a></li>
+            <li class="last">
+                <a class="icon-add add btn" href="<?php echo $addUrl; ?>">
+                    <?php echo Lang::txt('EVENTS_ADD_EVENT'); ?>
+                </a>
+            </li>
         </ul>
     </div><!-- / #content-header-extra -->
     <?php } ?>
@@ -30,16 +65,32 @@ $this->css()
     <ul class="sub-menu">
         <li<?php if ($this->task == 'year') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_YEAR'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $yearUrl; ?>">
+                <span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_YEAR'); ?></span>
+            </a>
+        </li>
         <li<?php if ($this->task == 'month') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_MONTH'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $monthUrl; ?>">
+                <span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_MONTH'); ?></span>
+            </a>
+        </li>
         <li<?php if ($this->task == 'week') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_WEEK'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $weekUrl; ?>">
+                <span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_WEEK'); ?></span>
+            </a>
+        </li>
         <li<?php if ($this->task == 'day') {
             echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_DAY'); ?></span></a></li>
+           } ?>>
+            <a href="<?php echo $dayUrl; ?>">
+                <span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_DAY'); ?></span>
+            </a>
+        </li>
     </ul>
 </nav>
 
@@ -52,21 +103,33 @@ $this->css()
     if ($this->page->alias == '') {
         $html .= ' class="active"';
     }
-        $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id) . '"><span>' . Lang::txt('EVENTS_OVERVIEW') . '</span></a></li>' . "\n";
+        $html .= '><a class="tab" href="' . $detailsUrl . '">'
+            . '<span>' . $overviewTxt . '</span>'
+            . '</a></li>' . "\n";
     if ($this->pages) {
         foreach ($this->pages as $p) {
+            $pageUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&task=details&id=' . $this->event->id
+                . '&page=' . $p->alias
+            );
             $html .= "\t" . '<li';
             if ($this->page->alias == $p->alias) {
                 $html .= ' class="active"';
             }
-            $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id . '&page=' . $p->alias) . '"><span>' . trim(stripslashes($p->title)) . '</span></a></li>' . "\n";
+            $pageTitle = trim(stripslashes($p->title));
+            $html .= '><a class="tab" href="' . $pageUrl . '">'
+                . '<span>' . $pageTitle . '</span>'
+                . '</a></li>' . "\n";
         }
     }
         $html .= "\t" . '<li';
     if ($this->page->alias == 'register') {
         $html .= ' class="active"';
     }
-        $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id . '&page=register') . '"><span>' . Lang::txt('EVENTS_REGISTER') . '</span></a></li>' . "\n";
+        $html .= '><a class="tab" href="' . $registerUrl . '">'
+            . '<span>' . $registerTxt . '</span>'
+            . '</a></li>' . "\n";
         $html .= '</ul>' . "\n";
         $html .= '<div class="clear"></div>' . "\n";
         $html .= '</div>' . "\n";
@@ -92,6 +155,8 @@ $this->css()
             <input type="hidden" name="task" value="register" />
         </fieldset>
         <div class="clear"></div>
-        <p class="submit"><input type="submit" value="<?php echo Lang::txt('EVENTS_SUBMIT'); ?>" /></p>
+        <p class="submit">
+            <input type="submit" value="<?php echo Lang::txt('EVENTS_SUBMIT'); ?>" />
+        </p>
     </form>
 </section><!-- / .main section -->

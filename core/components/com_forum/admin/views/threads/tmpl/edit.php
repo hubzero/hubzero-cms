@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -30,9 +28,20 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>" enctype="multipart/form-data">
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+    enctype="multipart/form-data">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -42,35 +51,62 @@ $this->js();
                     <div class="col span6">
                         <div class="input-wrap">
                             <label for="field-scope"><?php echo Lang::txt('COM_FORUM_FIELD_SCOPE'); ?>:</label><br />
-                            <input type="text" name="fields[scope]" id="field-scope" maxlength="150" value="<?php echo $this->escape($this->row->get('scope')); ?>" />
+                            <?php $scopeVal = $this->escape($this->row->get('scope')); ?>
+                            <input type="text"
+                                name="fields[scope]"
+                                id="field-scope"
+                                maxlength="150"
+                                value="<?php echo $scopeVal; ?>" />
                         </div>
                     </div>
                     <div class="col span6">
                         <div class="input-wrap">
-                            <label for="field-scope_id"><?php echo Lang::txt('COM_FORUM_FIELD_SCOPE_ID'); ?>:</label><br />
-                            <input type="text" name="fields[scope_id]" id="field-scope_id" maxlength="11" value="<?php echo $this->escape($this->row->get('scope_id')); ?>" />
+                            <?php $scopeIdLabel = Lang::txt('COM_FORUM_FIELD_SCOPE_ID'); ?>
+                            <label for="field-scope_id"><?php echo $scopeIdLabel; ?>:</label><br />
+                            <?php $scopeIdVal = $this->escape($this->row->get('scope_id')); ?>
+                            <input type="text"
+                                name="fields[scope_id]"
+                                id="field-scope_id"
+                                maxlength="11"
+                                value="<?php echo $scopeIdVal; ?>" />
                         </div>
                     </div>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-object_id"><?php echo Lang::txt('COM_FORUM_FIELD_OBJECT_ID'); ?>:</label><br />
-                    <input type="text" name="fields[object_id]" id="field-object_id" maxlength="11" value="<?php echo $this->escape($this->row->get('object_id')); ?>" />
+                    <?php $objectIdVal = $this->escape($this->row->get('object_id')); ?>
+                    <input type="text"
+                        name="fields[object_id]"
+                        id="field-object_id"
+                        maxlength="11"
+                        value="<?php echo $objectIdVal; ?>" />
                 </div>
 
                 <?php if (!$this->row->get('parent')) { ?>
                     <div class="input-wrap">
-                        <label for="field-category_id"><?php echo Lang::txt('COM_FORUM_FIELD_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                        <?php $catLabel = Lang::txt('COM_FORUM_FIELD_CATEGORY'); ?>
+                        <?php $requiredTxt = Lang::txt('JOPTION_REQUIRED'); ?>
+                        <label for="field-category_id">
+                            <?php echo $catLabel; ?>: <span class="required"><?php echo $requiredTxt; ?></span>
+                        </label><br />
                         <select name="fields[category_id]" id="field-category_id">
                             <option value="-1"><?php echo Lang::txt('COM_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
                             <?php foreach ($this->sections as $group => $sections) { ?>
                                 <optgroup label="<?php echo $this->escape(stripslashes($group)); ?>">
                                     <?php foreach ($sections as $section) { ?>
-                                        <optgroup label="&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->title)); ?>">
+                                        <?php $sectionTitle = $this->escape(stripslashes($section->title)); ?>
+                                        <optgroup label="&nbsp; &nbsp; <?php echo $sectionTitle; ?>">
                                             <?php foreach ($section->categories as $category) { ?>
-                                                <option value="<?php echo $category->id; ?>"<?php if ($this->row->category_id == $category->id) {
-                                                    echo ' selected="selected"';
-                                                               } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($category->title)); ?></option>
+                                                <?php
+                                                $selected = ($this->row->category_id == $category->id)
+                                                    ? ' selected="selected"'
+                                                    : '';
+                                                $catTitle = $this->escape(stripslashes($category->title));
+                                                ?>
+                                                <option value="<?php echo $category->id; ?>"<?php echo $selected; ?>>
+                                                    &nbsp; &nbsp; <?php echo $catTitle; ?>
+                                                </option>
                                             <?php } ?>
                                         </optgroup>
                                     <?php } ?>
@@ -94,10 +130,14 @@ $this->js();
                                 if ($post->get('id') == $this->row->get('id')) {
                                     continue;
                                 }
+                                $selected = ($this->row->get('parent') == $post->get('id'))
+                                    ? ' selected="selected"'
+                                    : '';
+                                $postTitle = $this->escape(stripslashes($post->get('title')));
                                 ?>
-                                <option value="<?php echo $post->id; ?>"<?php if ($this->row->get('parent') == $post->get('id')) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape(stripslashes($post->get('title'))); ?></option>
+                                <option value="<?php echo $post->id; ?>"<?php echo $selected; ?>>
+                                    <?php echo $postTitle; ?>
+                                </option>
                                 <?php
                             }
                             ?>
@@ -107,18 +147,35 @@ $this->js();
 
                 <div class="input-wrap">
                     <label for="field-title"><?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?>:</label><br />
-                    <input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+                    <?php $titleVal = $this->escape(stripslashes($this->row->get('title'))); ?>
+                    <input type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        size="30"
+                        maxlength="250"
+                        value="<?php echo $titleVal; ?>" />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-comment"><?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <textarea name="fields[comment]" id="field-comment" cols="35" rows="10" class="required"><?php echo $this->escape($this->row->get('comment')); ?></textarea>
+                    <?php $commentLabel = Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?>
+                    <?php $requiredTxt = isset($requiredTxt) ? $requiredTxt : Lang::txt('JOPTION_REQUIRED'); ?>
+                    <label for="field-comment">
+                        <?php echo $commentLabel; ?> <span class="required"><?php echo $requiredTxt; ?></span>
+                    </label><br />
+                    <textarea name="fields[comment]"
+                        id="field-comment"
+                        cols="35"
+                        rows="10"
+                        class="required"><?php echo $this->escape($this->row->get('comment')); ?></textarea>
                 </div>
 
                 <?php if (!$this->row->get('parent')) { ?>
                     <div class="input-wrap">
                         <label for="field-tags"><?php echo Lang::txt('COM_FORUM_FIELD_TAGS'); ?></label><br />
-                        <textarea name="tags" id="field-tags" cols="35" rows="5"><?php echo $this->escape($this->row->tags('string')); ?></textarea>
+                        <textarea name="tags"
+                            id="field-tags"
+                            cols="35"
+                            rows="5"><?php echo $this->escape($this->row->tags('string')); ?></textarea>
                     </div>
                 <?php } ?>
             </fieldset>
@@ -137,7 +194,19 @@ $this->js();
                     </div>
                 <?php endforeach;*/ ?>
                 <?php if ($this->row->get('id')) { ?>
-                    <iframe width="100%" height="200" name="media" id="media" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=media&tmpl=component&id=' . $this->row->get('id') . '&t=' . Date::toUnix()); ?>"></iframe>
+                    <?php
+                    $mediaSrc = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=media&tmpl=component&id='
+                        . $this->row->get('id') . '&t=' . Date::toUnix()
+                    );
+                    ?>
+                    <iframe width="100%"
+                        height="200"
+                        name="media"
+                        id="media"
+                        frameborder="0"
+                        src="<?php echo $mediaSrc; ?>"></iframe>
                 <?php } ?>
 
                 <div class="input-wrap">
@@ -146,7 +215,8 @@ $this->js();
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-attach-descritpion"><?php echo Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?></label><br />
+                    <?php $descLabel = Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?>
+                    <label for="field-attach-descritpion"><?php echo $descLabel; ?></label><br />
                     <input type="text" name="description" id="field-attach-descritpion" value="" />
                 </div>
             </fieldset>
@@ -171,14 +241,20 @@ $this->js();
                             <?php
                             echo $this->escape($this->row->creator->get('name'));
                             ?>
-                            <input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->get('created_by'); ?>" />
+                            <input type="hidden"
+                                name="fields[created_by]"
+                                id="field-created_by"
+                                value="<?php echo $this->row->get('created_by'); ?>" />
                         </td>
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('COM_FORUM_FIELD_CREATED'); ?>:</th>
                         <td>
                             <?php echo $this->row->get('created', Date::of('now')->toSql()); ?>
-                            <input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->get('created'); ?>" />
+                            <input type="hidden"
+                                name="fields[created]"
+                                id="field-created"
+                                value="<?php echo $this->row->get('created'); ?>" />
                         </td>
                     </tr>
                     <?php if ($this->row->get('modified_by')) { ?>
@@ -188,14 +264,20 @@ $this->js();
                                 <?php
                                 echo $this->escape($this->row->modifier->get('name'));
                                 ?>
-                                <input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->row->get('modified_by'); ?>" />
+                                <input type="hidden"
+                                    name="fields[modified_by]"
+                                    id="field-modified_by"
+                                    value="<?php echo $this->row->get('modified_by'); ?>" />
                             </td>
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_FORUM_FIELD_MODIFIED'); ?>:</th>
                             <td>
                                 <?php echo $this->row->get('modified'); ?>
-                                <input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->row->get('modified'); ?>" />
+                                <input type="hidden"
+                                    name="fields[modified]"
+                                    id="field-modified"
+                                    value="<?php echo $this->row->get('modified'); ?>" />
                             </td>
                         </tr>
                     <?php } ?>
@@ -206,17 +288,23 @@ $this->js();
                 <legend><span><?php echo Lang::txt('JGLOBAL_FIELDSET_PUBLISHING'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->row->get('anonymous')) {
-                        echo ' checked="checked"';
-                                                                                                                 } ?> />
+                    <?php $anonChecked = $this->row->get('anonymous') ? ' checked="checked"' : ''; ?>
+                    <input class="option"
+                        type="checkbox"
+                        name="fields[anonymous]"
+                        id="field-anonymous"
+                        value="1"<?php echo $anonChecked; ?> />
                     <label for="field-anonymous"><?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?></label>
                 </div>
 
                 <?php if (!$this->row->get('parent')) { ?>
                     <div class="input-wrap">
-                        <input class="option" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->row->get('sticky')) {
-                            echo ' checked="checked"';
-                                                                                                               } ?> />
+                        <?php $stickyChecked = $this->row->get('sticky') ? ' checked="checked"' : ''; ?>
+                        <input class="option"
+                            type="checkbox"
+                            name="fields[sticky]"
+                            id="field-sticky"
+                            value="1"<?php echo $stickyChecked; ?> />
                         <label for="field-sticky"><?php echo Lang::txt('COM_FORUM_FIELD_STICKY'); ?></label>
                     </div>
                 <?php } ?>
@@ -224,16 +312,25 @@ $this->js();
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_FORUM_FIELD_STATE'); ?>:</label><br />
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <?php $sel0 = ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>
+                        <?php $sel1 = ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>
+                        <?php $sel2 = ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>
+                        <option value="0"<?php echo $sel0; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+                        <option value="1"<?php echo $sel1; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                        <option value="2"<?php echo $sel2; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
                     </select>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-access"><?php echo Lang::txt('COM_FORUM_FIELD_ACCESS'); ?>:</label><br />
                     <select name="fields[access]" id="field-access">
-                        <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->row->get('access')); ?>
+                        <?php echo Html::select(
+                            'options',
+                            Html::access('assetgroups'),
+                            'value',
+                            'text',
+                            $this->row->get('access')
+                        ); ?>
                     </select>
                 </div>
             </fieldset>

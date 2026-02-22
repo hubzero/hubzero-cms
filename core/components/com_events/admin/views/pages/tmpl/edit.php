@@ -9,8 +9,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 $text = ($this->task == 'edit' ? Lang::txt('COM_EVENTS_EDIT') : Lang::txt('COM_EVENTS_NEW'));
 
 Toolbar::title(Lang::txt('COM_EVENTS_PAGE') . ': ' . $text, 'event');
@@ -21,34 +19,83 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js('edit.js');
+
+$formAction = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller
+);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+$eventEditUrl = Route::url(
+    'index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id
+);
+$titleValue = $this->escape(
+    stripslashes($this->page->title == null ? '' : $this->page->title)
+);
+$aliasValue = $this->escape(
+    stripslashes($this->page->alias == null ? '' : $this->page->alias)
+);
+$pagetextValue = $this->escape(
+    stripslashes($this->page->pagetext == null ? '' : $this->page->pagetext)
+);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    id="item-form"
+    class="editform form-validate"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_EVENTS_PAGE'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id); ?>">
+                    <a href="<?php echo $eventEditUrl; ?>">
                         <?php echo $this->escape(stripslashes($this->event->title)); ?>
                     </a>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_EVENTS_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->page->title == null ? '' : $this->page->title)); ?>" />
+                    <?php $reqTxt = Lang::txt('JOPTION_REQUIRED'); ?>
+                    <label for="field-title">
+                        <?php echo Lang::txt('COM_EVENTS_TITLE'); ?>:
+                        <span class="required"><?php echo $reqTxt; ?></span>
+                    </label>
+                    <input type="text"
+                        name="fields[title]"
+                        id="field-title"
+                        class="required"
+                        value="<?php echo $titleValue; ?>"
+                    />
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_EVENTS_ALIAS_HINT'); ?>">
+                <?php $aliasHint = Lang::txt('COM_EVENTS_ALIAS_HINT'); ?>
+                <div class="input-wrap" data-hint="<?php echo $aliasHint; ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_EVENTS_ALIAS'); ?>:</label>
-                    <input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->page->alias == null ? '' : $this->page->alias)); ?>" />
-                    <span class="hint"><?php echo Lang::txt('COM_EVENTS_ALIAS_HINT'); ?></span>
+                    <input type="text"
+                        name="fields[alias]"
+                        id="field-alias"
+                        value="<?php echo $aliasValue; ?>"
+                    />
+                    <span class="hint"><?php echo $aliasHint; ?></span>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-pagetext"><?php echo Lang::txt('COM_EVENTS_PAGE_TEXT'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <?php echo $this->editor('fields[pagetext]', $this->escape(stripslashes($this->page->pagetext == null ? '' : $this->page->pagetext)), 40, 20, 'field-pagetext', array('class' => 'required')); ?>
+                    <label for="field-pagetext">
+                        <?php echo Lang::txt('COM_EVENTS_PAGE_TEXT'); ?>:
+                        <span class="required"><?php echo $reqTxt; ?></span>
+                    </label>
+                    <?php
+                    echo $this->editor(
+                        'fields[pagetext]',
+                        $pagetextValue,
+                        40,
+                        20,
+                        'field-pagetext',
+                        array('class' => 'required')
+                    );
+                    ?>
                 </div>
             </fieldset>
         </div>

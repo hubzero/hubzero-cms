@@ -9,13 +9,25 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 Toolbar::title(Lang::txt('COM_EVENTS_MANAGER'), 'event');
 Toolbar::preferences('com_events', '550');
 Toolbar::spacer();
-Toolbar::custom('addpage', 'new', 'COM_EVENTS_PAGES_ADD', 'COM_EVENTS_PAGES_ADD', true, false);
-Toolbar::custom('respondents', 'user', 'COM_EVENTS_VIEW_RESPONDENTS', 'COM_EVENTS_VIEW_RESPONDENTS', true, false);
+Toolbar::custom(
+    'addpage',
+    'new',
+    'COM_EVENTS_PAGES_ADD',
+    'COM_EVENTS_PAGES_ADD',
+    true,
+    false
+);
+Toolbar::custom(
+    'respondents',
+    'user',
+    'COM_EVENTS_VIEW_RESPONDENTS',
+    'COM_EVENTS_VIEW_RESPONDENTS',
+    true,
+    false
+);
 Toolbar::spacer();
 Toolbar::publishList();
 Toolbar::unpublishList();
@@ -30,10 +42,20 @@ Toolbar::help('events');
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option);
+$searchPlaceholder = Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER');
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER'); ?>" />
+        <input type="text"
+            name="search"
+            id="filter_search"
+            class="filter"
+            value="<?php echo $this->escape($this->filters['search']); ?>"
+            placeholder="<?php echo $searchPlaceholder; ?>"
+        />
 
         <?php echo $this->clist; ?>
         <?php echo $this->glist; ?>
@@ -46,8 +68,15 @@ Html::behavior('tooltip');
             <tr>
                 <th scope="col" class="priority-5"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ID'); ?></th>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox"
+                        name="checkall-toggle"
+                        id="checkall-toggle"
+                        value=""
+                        class="checkbox-toggle toggle-all"
+                    />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
                 <th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
@@ -88,17 +117,30 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                     <?php if ($row->checked_out && $row->checked_out != User::get('id')) { ?>
                         &nbsp;
                     <?php } else { ?>
-                        <input type="checkbox" id="cb<?php echo $i; ?>" name="id[]" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                        <input type="checkbox"
+                            id="cb<?php echo $i; ?>"
+                            name="id[]"
+                            value="<?php echo $row->id; ?>"
+                            class="checkbox-toggle"
+                        />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     <?php } ?>
                 </td>
                 <td>
                     <?php if ($row->checked_out && $row->checked_out != User::get('id')) { ?>
-                        <span class="checkedout hasTip" title="Checked out::<?php echo $this->escape(stripslashes($row->editor ? $row->editor : '')); ?>">
+                        <?php $editorName = $this->escape(stripslashes($row->editor ? $row->editor : '')); ?>
+                        <span class="checkedout hasTip" title="Checked out::<?php echo $editorName; ?>">
                             <?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
                         </span>
                     <?php } else { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option
+                            . '&controller=' . $this->controller
+                            . '&task=edit&id=' . $row->id
+                        );
+                        ?>
+                        <a href="<?php echo $editUrl; ?>">
                             <?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
                         </a>
                     <?php } ?>
@@ -114,7 +156,11 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                     $alt = Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED');
                     if ($now <= $row->publish_up && $row->state == "1") {
                         $alt = Lang::txt('COM_EVENTS_EVENT_PENDING');
-                    } elseif (($now <= $row->publish_down || !$row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
+                    } elseif (
+                        ($now <= $row->publish_down || !$row->publish_down
+                            || $row->publish_down == "0000-00-00 00:00:00")
+                        && $row->state == "1"
+                    ) {
                         $alt = Lang::txt('COM_EVENTS_EVENT_PUBLISHED');
                     } elseif ($now > $row->publish_down && $row->state == "1") {
                         $alt = Lang::txt('COM_EVENTS_EVENT_EXPIRED');
@@ -125,16 +171,22 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                     $times = '';
                     if (isset($row->publish_up)) {
                         if (!$row->publish_up || $row->publish_up == '0000-00-00 00:00:00') {
-                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_ALWAYS') . '<br />';
+                            $fromTxt = Lang::txt('COM_EVENTS_CAL_LANG_FROM');
+                            $alwaysTxt = Lang::txt('COM_EVENTS_CAL_LANG_ALWAYS');
+                            $times .= $fromTxt . ' : ' . $alwaysTxt . '<br />';
                         } else {
-                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_up)) . '<br />';
+                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM')
+                                . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_up)) . '<br />';
                         }
                     }
                     if (isset($row->publish_down)) {
                         if (!$row->publish_down || $row->publish_down == '0000-00-00 00:00:00') {
-                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_TO') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_NEVER') . '<br />';
+                            $toTxt = Lang::txt('COM_EVENTS_CAL_LANG_TO');
+                            $neverTxt = Lang::txt('COM_EVENTS_CAL_LANG_NEVER');
+                            $times .= $toTxt . ' : ' . $neverTxt . '<br />';
                         } else {
-                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';
+                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM')
+                                . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';
                         }
                     }
 
@@ -142,7 +194,16 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
 
                     if ($times) {
                         ?>
-                        <a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo Lang::txt('COM_EVENTS_EVENT_PUBLISH_INFO');?>::<?php echo $times; ?>">
+                        <?php
+                        $stateClass = $row->state ? 'publish' : 'unpublish';
+                        $stateAction = $row->state ? 'unpublish' : 'publish';
+                        $pubInfoTxt = Lang::txt('COM_EVENTS_EVENT_PUBLISH_INFO');
+                        ?>
+                        <a class="state <?php echo $stateClass; ?> hasTip"
+                            href="javascript:void(0);"
+                            onclick="return listItemTask('cb<?php echo $i; ?>','<?php echo $stateAction; ?>')"
+                            title="<?php echo $pubInfoTxt; ?>::<?php echo $times; ?>"
+                        >
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } ?>
@@ -155,7 +216,8 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                         <?php
                             $group = \Hubzero\User\Group::getInstance($row->scope_id);
                         if (is_object($group)) {
-                            echo Lang::txt('COM_EVENTS_EVENT_GROUP', Route::url('index.php?option=com_events&group_id=' . $group->get('gidNumber')), $group->get('description'));
+                            $groupUrl = Route::url('index.php?option=com_events&group_id=' . $group->get('gidNumber'));
+                            echo Lang::txt('COM_EVENTS_EVENT_GROUP', $groupUrl, $group->get('description'));
                         } else {
                             echo Lang::txt('COM_EVENTS_EVENT_GROUP_NOT_FOUND', $row->scope_id);
                         }
@@ -167,7 +229,12 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                     <?php endif; ?>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&event_id=' . $row->id); ?>">
+                    <?php
+                    $pagesUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=pages&event_id=' . $row->id
+                    );
+                    ?>
+                    <a href="<?php echo $pagesUrl; ?>">
                         <?php echo Lang::txt('COM_EVENTS_EVENT_NUMBER_OF_PAGES', $pages); ?>
                     </a>
                 </td>

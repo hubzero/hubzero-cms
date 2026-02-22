@@ -9,8 +9,6 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
-// phpcs:disable Generic.Files.LineLength
-
 $text = ($this->task == 'edit') ? Lang::txt('COM_EVENTS_EDIT') : Lang::txt('COM_EVENTS_NEW');
 
 Toolbar::title(Lang::txt('COM_EVENTS_EVENT') . ': ' . $text, 'event.png');
@@ -24,60 +22,145 @@ $xprofilem = User::getInstance($this->row->modified_by);
 $userm = is_object($xprofilem) ? $xprofilem->get('name') : '';
 $userc = is_object($xprofilec) ? $xprofilec->get('name') : '';
 
-$params = new \Hubzero\Html\Parameter($this->row->params, Component::path($this->option) . DS . 'events.xml');
+$params = new \Hubzero\Html\Parameter(
+    $this->row->params,
+    Component::path($this->option) . DS . 'events.xml'
+);
 
 $this->js('events.js');
+
+$formAction = Route::url('index.php?option=' . $this->option);
+$invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?php echo $formAction; ?>"
+    method="post"
+    name="adminForm"
+    class="editform form-validate"
+    id="item-form"
+    data-invalid-msg="<?php echo $invalidMsg; ?>"
+>
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_EVENTS_EVENT'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="title" id="field-title" class="required" maxlength="250" value="<?php echo $this->escape(html_entity_decode(stripslashes($this->row->title))); ?>" /></td>
+                    <?php
+                    $titleLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE');
+                    $reqLabel = Lang::txt('JOPTION_REQUIRED');
+                    $titleValue = $this->escape(html_entity_decode(stripslashes($this->row->title)));
+                    ?>
+                    <label for="field-title">
+                        <?php echo $titleLabel; ?>: <span class="required"><?php echo $reqLabel; ?></span>
+                    </label><br />
+                    <input type="text"
+                        name="title"
+                        id="field-title"
+                        class="required"
+                        maxlength="250"
+                        value="<?php echo $titleValue; ?>"
+                    /></td>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="catid"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?>:<span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <?php echo \Components\Events\Helpers\Html::buildCategorySelect($this->row->catid, '', 0, $this->option);?></td>
+                    <?php
+                    $catLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY');
+                    ?>
+                    <label for="catid">
+                        <?php echo $catLabel; ?>:<span class="required"><?php echo $reqLabel; ?></span>
+                    </label><br />
+                    <?php
+                    echo \Components\Events\Helpers\Html::buildCategorySelect(
+                        $this->row->catid,
+                        '',
+                        0,
+                        $this->option
+                    );
+                    ?></td>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-econtent"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ACTIVITY'); ?>:</label><br />
-                    <?php echo $this->editor('econtent', $this->row->content, '45', '10', 'field-econtent'); ?></td>
+                    <?php $actLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ACTIVITY'); ?>
+                    <label for="field-econtent"><?php echo $actLabel; ?>:</label><br />
+                    <?php
+                    echo $this->editor(
+                        'econtent',
+                        $this->row->content,
+                        '45',
+                        '10',
+                        'field-econtent'
+                    );
+                    ?></td>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-adresse_info"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ADRESSE'); ?>:</label><br />
-                    <input type="text" name="adresse_info" id="field-adresse_info" maxlength="120" value="<?php echo $this->escape(stripslashes($this->row->adresse_info)); ?>" /></td>
+                    <?php
+                    $addrLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ADRESSE');
+                    $addrValue = $this->escape(stripslashes($this->row->adresse_info));
+                    ?>
+                    <label for="field-adresse_info"><?php echo $addrLabel; ?>:</label><br />
+                    <input type="text"
+                        name="adresse_info"
+                        id="field-adresse_info"
+                        maxlength="120"
+                        value="<?php echo $addrValue; ?>"
+                    /></td>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-contact_info"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CONTACT'); ?>:</label><br />
-                    <input type="text" name="contact_info" id="field-contact_info" maxlength="120" value="<?php echo $this->escape(stripslashes($this->row->contact_info)); ?>" /></td>
+                    <?php
+                    $contactLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CONTACT');
+                    $contactValue = $this->escape(stripslashes($this->row->contact_info));
+                    ?>
+                    <label for="field-contact_info"><?php echo $contactLabel; ?>:</label><br />
+                    <input type="text"
+                        name="contact_info"
+                        id="field-contact_info"
+                        maxlength="120"
+                        value="<?php echo $contactValue; ?>"
+                    /></td>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-extra_info"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_EXTRA'); ?>:</label><br />
-                    <input type="text" name="extra_info" id="field-extra_info" maxlength="240" value="<?php echo $this->escape(stripslashes($this->row->extra_info)); ?>" /></td>
+                    <?php
+                    $extraLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_EXTRA');
+                    $extraValue = $this->escape(stripslashes($this->row->extra_info));
+                    ?>
+                    <label for="field-extra_info"><?php echo $extraLabel; ?>:</label><br />
+                    <input type="text"
+                        name="extra_info"
+                        id="field-extra_info"
+                        maxlength="240"
+                        value="<?php echo $extraValue; ?>"
+                    /></td>
                 </div>
                     <?php
                     foreach ($this->fields as $field) {
+                        $reqSpan = ($field[3])
+                            ? '<span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>'
+                            : '';
                         ?>
                         <div class="input-wrap">
-                            <label for="field-<?php echo $field[0]; ?>"><?php echo $field[1]; ?>: <?php echo ($field[3]) ? '<span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : ''; ?></label><br />
+                            <label for="field-<?php echo $field[0]; ?>">
+                                <?php echo $field[1]; ?>: <?php echo $reqSpan; ?>
+                            </label><br />
                             <?php
                             if ($field[2] == 'checkbox') {
-                                echo '<input type="checkbox" name="fields[' . $field[0] . ']" id="field-' . $field[0] . '" value="1" class="required"';
+                                echo '<input type="checkbox"'
+                                    . ' name="fields[' . $field[0] . ']"'
+                                    . ' id="field-' . $field[0] . '"'
+                                    . ' value="1" class="required"';
                                 if (stripslashes(end($field)) == 1) {
                                     echo ' checked="checked"';
                                 }
                                 echo ' />';
                             } else {
-                                echo '<input type="text" name="fields[' . $field[0] . ']" id="field-' . $field[0] . '" class="required" maxlength="255" value="' . $this->escape(end($field)) . '" />';
+                                echo '<input type="text"'
+                                    . ' name="fields[' . $field[0] . ']"'
+                                    . ' id="field-' . $field[0] . '"'
+                                    . ' class="required" maxlength="255"'
+                                    . ' value="' . $this->escape(end($field)) . '" />';
                             }
                             ?>
                         </div>
@@ -85,37 +168,76 @@ $this->js('events.js');
                     }
                     ?>
                 <div class="input-wrap">
-                    <label for="field-tags"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TAGS'); ?>:</label><br />
-                    <input type="text" name="tags" id="field-tags" value="<?php echo (isset($this->tags)) ? $this->escape($this->tags) : ''; ?>" />
+                    <?php
+                    $tagsLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TAGS');
+                    $tagsValue = (isset($this->tags)) ? $this->escape($this->tags) : '';
+                    ?>
+                    <label for="field-tags"><?php echo $tagsLabel; ?>:</label><br />
+                    <input type="text"
+                        name="tags"
+                        id="field-tags"
+                        value="<?php echo $tagsValue; ?>"
+                    />
                 </div>
             </fieldset>
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_EVENTS_PUBLISHING'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-publish_up"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STARTDATE'); ?></label><br />
-                    <?php echo Html::input('calendar', 'publish_up', $this->row->publish_up, array('id' => 'field-publish_up')); ?>
+                    <?php $startLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STARTDATE'); ?>
+                    <label for="field-publish_up"><?php echo $startLabel; ?></label><br />
+                    <?php
+                    echo Html::input(
+                        'calendar',
+                        'publish_up',
+                        $this->row->publish_up,
+                        array('id' => 'field-publish_up')
+                    );
+                    ?>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-publish_down"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ENDDATE'); ?></label><br />
-                    <?php echo Html::input('calendar', 'publish_down', $this->row->publish_down, array('id' => 'field-publish_down')); ?>
+                    <?php $endLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ENDDATE'); ?>
+                    <label for="field-publish_down"><?php echo $endLabel; ?></label><br />
+                    <?php
+                    echo Html::input(
+                        'calendar',
+                        'publish_down',
+                        $this->row->publish_down,
+                        array('id' => 'field-publish_down')
+                    );
+                    ?>
                 </div>
 
                 <div class="input-wrap">
                     <label for="time_zone"><?php echo Lang::txt('COM_EVENTS_CAL_TIME_ZONE'); ?></label>
-                    <?php echo \Components\Events\Helpers\Html::buildTimeZoneSelect($this->row->time_zone, ''); ?>
+                    <?php
+                    echo \Components\Events\Helpers\Html::buildTimeZoneSelect(
+                        $this->row->time_zone,
+                        ''
+                    );
+                    ?>
                 </div>
             </fieldset>
 
             <?php if ($this->row->scope == 'group') : ?>
                 <fieldset class="adminform">
-                    <legend><span><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE'); ?></span></legend>
+                    <?php $recurLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE'); ?>
+                    <legend><span><?php echo $recurLabel; ?></span></legend>
 
                     <div class="input-wrap">
-                        <label for="field-repeating_rule"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE'); ?></label><br />
-                        <input type="text" name="repeating_rule" value="<?php echo stripslashes($this->row->repeating_rule); ?>" />
-                        <span class="block-hint"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE_HINT', 'http://www.kanzaki.com/docs/ical/rrule.html'); ?></span>
+                        <label for="field-repeating_rule"><?php echo $recurLabel; ?></label><br />
+                        <input type="text"
+                            name="repeating_rule"
+                            value="<?php echo stripslashes($this->row->repeating_rule); ?>"
+                        />
+                        <?php
+                        $recurHint = Lang::txt(
+                            'COM_EVENTS_CAL_LANG_EVENT_RECURRENCE_HINT',
+                            'http://www.kanzaki.com/docs/ical/rrule.html'
+                        );
+                        ?>
+                        <span class="block-hint"><?php echo $recurHint; ?></span>
                     </div>
                 </fieldset>
             <?php endif; ?>
@@ -125,19 +247,36 @@ $this->js('events.js');
 
                 <div class="input-wrap">
                     <label for="field-registerby"><?php echo Lang::txt('COM_EVENTS_REGISTER_BY'); ?>:</label><br />
-                    <?php echo Html::input('calendar', 'registerby', $this->row->registerby, array('id' => 'field-registerby')); ?>
+                    <?php
+                    echo Html::input(
+                        'calendar',
+                        'registerby',
+                        $this->row->registerby,
+                        array('id' => 'field-registerby')
+                    );
+                    ?>
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_EVENTS_EMAIL_HINT'); ?>">
+                <?php $emailHint = Lang::txt('COM_EVENTS_EMAIL_HINT'); ?>
+                <div class="input-wrap" data-hint="<?php echo $emailHint; ?>">
                     <label for="field-email"><?php echo Lang::txt('COM_EVENTS_EMAIL'); ?>:</label><br />
-                    <input type="text" name="email" id="field-email" value="<?php echo $this->escape($this->row->email); ?>" />
-                    <span class="hint"><?php echo Lang::txt('COM_EVENTS_EMAIL_HINT'); ?></span>
+                    <input type="text"
+                        name="email"
+                        id="field-email"
+                        value="<?php echo $this->escape($this->row->email); ?>"
+                    />
+                    <span class="hint"><?php echo $emailHint; ?></span>
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_EVENTS_RESTRICTED_HINT'); ?>">
+                <?php $restrictedHint = Lang::txt('COM_EVENTS_RESTRICTED_HINT'); ?>
+                <div class="input-wrap" data-hint="<?php echo $restrictedHint; ?>">
                     <label for="field-restricted"><?php echo Lang::txt('COM_EVENTS_RESTRICTED'); ?>:</label><br />
-                    <input type="text" name="restricted" id="field-restricted" value="<?php echo $this->escape($this->row->restricted); ?>" />
-                    <span class="hint"><?php echo Lang::txt('COM_EVENTS_RESTRICTED_HINT'); ?></span>
+                    <input type="text"
+                        name="restricted"
+                        id="field-restricted"
+                        value="<?php echo $this->escape($this->row->restricted); ?>"
+                    />
+                    <span class="hint"><?php echo $restrictedHint; ?></span>
                 </div>
             </fieldset>
         </div>
@@ -146,16 +285,50 @@ $this->js('events.js');
                 <tbody>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_STATE'); ?></th>
-                        <td><?php echo $this->row->state > 0 ? Lang::txt('COM_EVENTS_EVENT_PUBLISHED') : ($this->row->state < 0 ? Lang::txt('COM_EVENTS_EVENT_ARCHIVED') : Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED')); ?></td>
+                        <td>
+                            <?php
+                            if ($this->row->state > 0) {
+                                echo Lang::txt('COM_EVENTS_EVENT_PUBLISHED');
+                            } elseif ($this->row->state < 0) {
+                                echo Lang::txt('COM_EVENTS_EVENT_ARCHIVED');
+                            } else {
+                                echo Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED');
+                            }
+                            ?>
+                        </td>
                     </tr>
                     <tr>
-                        <th scope="row"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED'); ?></th>
-                        <td><?php echo $this->row->created ? Date::of($this->row->created)->toLocal('F d, Y @ g:ia') . '</td></tr><tr><th>' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED_BY') . '</th><td>' . $userc : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NEWEVENT'); ?></td>
+                        <?php $createdLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED'); ?>
+                        <th scope="row"><?php echo $createdLabel; ?></th>
+                        <td>
+                        <?php if ($this->row->created) { ?>
+                            <?php echo Date::of($this->row->created)->toLocal('F d, Y @ g:ia'); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CREATED_BY'); ?></th>
+                        <td><?php echo $userc; ?>
+                        <?php } else { ?>
+                            <?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NEWEVENT'); ?>
+                        <?php } ?>
+                        </td>
                     </tr>
                 <?php if ($this->row->modified && $this->row->modified != '0000-00-00 00:00:00') { ?>
                     <tr>
-                        <th scope="row"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED'); ?></th>
-                        <td><?php echo $this->row->modified ? Date::of($this->row->modified)->toLocal('F d, Y @ g:ia') . '</td></tr><tr><th>' . Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY') . '</th><td>' . $userm : Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED'); ?></td>
+                        <?php $modLabel = Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED'); ?>
+                        <th scope="row"><?php echo $modLabel; ?></th>
+                        <td>
+                        <?php if ($this->row->modified) { ?>
+                            <?php echo Date::of($this->row->modified)->toLocal('F d, Y @ g:ia'); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_MODIFIED_BY'); ?></th>
+                        <td><?php echo $userm; ?>
+                        <?php } else { ?>
+                            <?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_NOTMODIFIED'); ?>
+                        <?php } ?>
+                        </td>
                     </tr>
                 <?php } ?>
                 </tbody>

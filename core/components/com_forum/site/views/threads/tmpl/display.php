@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:disable Generic.Files.LineLength
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -25,7 +23,9 @@ $now = Date::of('now')->toSql();
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-comments comments btn" href="<?php echo Route::url($this->category->link()); ?>">
+            <?php $categoryUrl = Route::url($this->category->link()); ?>
+            <a class="icon-comments comments btn"
+                href="<?php echo $categoryUrl; ?>">
                 <?php echo Lang::txt('COM_FORUM_ALL_DISCUSSIONS'); ?>
             </a>
         </p>
@@ -35,8 +35,15 @@ $now = Date::of('now')->toSql();
 <section class="main section">
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-            <h3 class="thread-title<?php echo ($this->thread->get('closed')) ? ' closed' : ''; ?>">
-                <?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
+            <?php
+            $threadClosed = $this->thread->get('closed') ? ' closed' : '';
+            ?>
+            <h3 class="thread-title<?php echo $threadClosed; ?>">
+                <?php
+                echo $this->escape(
+                    stripslashes($this->thread->get('title'))
+                );
+                ?>
             </h3>
 
             <?php
@@ -73,17 +80,29 @@ $now = Date::of('now')->toSql();
                 ?>
                 <ol class="comments">
                     <li>
-                        <p><?php echo Lang::txt('COM_FORUM_NO_REPLIES_FOUND'); ?></p>
+                        <p>
+                            <?php echo Lang::txt('COM_FORUM_NO_REPLIES_FOUND'); ?>
+                        </p>
                     </li>
                 </ol>
                 <?php
             }
             ?>
-            <form action="<?php echo Route::url($this->thread->link()); ?>" method="get">
+            <?php $threadUrl = Route::url($this->thread->link()); ?>
+            <form action="<?php echo $threadUrl; ?>" method="get">
                 <?php
-                $pageNav->setAdditionalUrlParam('section', $this->filters['section']);
-                $pageNav->setAdditionalUrlParam('category', $this->category->get('alias'));
-                $pageNav->setAdditionalUrlParam('thread', $this->thread->get('id'));
+                $pageNav->setAdditionalUrlParam(
+                    'section',
+                    $this->filters['section']
+                );
+                $pageNav->setAdditionalUrlParam(
+                    'category',
+                    $this->category->get('alias')
+                );
+                $pageNav->setAdditionalUrlParam(
+                    'thread',
+                    $this->thread->get('id')
+                );
 
                 echo $pageNav;
                 ?>
@@ -93,34 +112,68 @@ $now = Date::of('now')->toSql();
                 <h3 class="post-comment-title">
                     <?php echo Lang::txt('COM_FORUM_ADD_COMMENT'); ?>
                 </h3>
-                <form action="<?php echo Route::url($this->thread->link()); ?>" method="post" id="commentform" enctype="multipart/form-data">
+                <form action="<?php echo $threadUrl; ?>"
+                    method="post"
+                    id="commentform"
+                    enctype="multipart/form-data">
                     <p class="comment-member-photo">
                         <?php
                         $anon = (!User::isGuest() ? 0 : 1);
+                        $photoTxt = Lang::txt('COM_FORUM_USER_PHOTO');
                         ?>
-                        <img src="<?php echo User::picture($anon); ?>" alt="<?php echo Lang::txt('COM_FORUM_USER_PHOTO'); ?>" />
+                        <img src="<?php echo User::picture($anon); ?>"
+                            alt="<?php echo $photoTxt; ?>" />
                     </p>
 
                     <fieldset>
                         <?php if (User::isGuest()) { ?>
-                            <p class="warning"><?php echo Lang::txt('COM_FORUM_LOGIN_COMMENT_NOTICE'); ?></p>
+                            <p class="warning">
+                                <?php echo Lang::txt('COM_FORUM_LOGIN_COMMENT_NOTICE'); ?>
+                            </p>
                         <?php } elseif ($this->config->get('access-create-post')) { ?>
                             <p class="comment-title">
                                 <strong>
-                                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(stripslashes(User::get('name'))); ?></a>
+                                    <?php
+                                    $memberUrl = Route::url(
+                                        'index.php?option=com_members&id='
+                                        . User::get('id')
+                                    );
+                                    $memberName = $this->escape(
+                                        stripslashes(User::get('name'))
+                                    );
+                                    ?>
+                                    <a href="<?php echo $memberUrl; ?>">
+                                        <?php echo $memberName; ?>
+                                    </a>
                                 </strong>
                                 <span class="permalink">
-                                    <span class="comment-date-at"><?php echo Lang::txt('COM_FORUM_AT'); ?></span>
-                                    <span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
-                                    <span class="comment-date-on"><?php echo Lang::txt('COM_FORUM_ON'); ?></span>
-                                    <span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+                                    <span class="comment-date-at">
+                                        <?php echo Lang::txt('COM_FORUM_AT'); ?>
+                                    </span>
+                                    <span class="time">
+                                        <?php $timeFmt = Lang::txt('TIME_FORMAT_HZ1'); ?>
+                                        <time datetime="<?php echo $now; ?>">
+                                            <?php echo Date::toLocal($timeFmt); ?>
+                                        </time>
+                                    </span>
+                                    <span class="comment-date-on">
+                                        <?php echo Lang::txt('COM_FORUM_ON'); ?>
+                                    </span>
+                                    <span class="date">
+                                        <?php $dateFmt = Lang::txt('DATE_FORMAT_HZ1'); ?>
+                                        <time datetime="<?php echo $now; ?>">
+                                            <?php echo Date::toLocal($dateFmt); ?>
+                                        </time>
+                                    </span>
                                 </span>
                             </p>
 
                             <label for="fieldcomment" id="addNewPostArea">
                                 <div>
                                     <?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?>
-                                    <span class="note" style='float:right'>Use an @ sign to mention users in the post</span>
+                                    <span class="note" style='float:right'>
+                                        Use an @ sign to mention users in the post
+                                    </span>
                                 </div>
                                 <?php echo $this->editor(
                                     'fields[comment]',
@@ -133,9 +186,14 @@ $now = Date::of('now')->toSql();
                                             'mentions' => array(
                                                 array(
                                                     'minChars' => 0,
-                                                    'feed' =>  '/api/members/mentions/list?search={encodedQuery}',
-                                                    'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
-                                                    'outputTemplate' => '<a href="/members/{id}" data-user-id="{id}" target="_blank">@{username}</a>&nbsp;&nbsp;',
+                                                    'feed' => '/api/members/mentions/list?search={encodedQuery}',
+                                                    'itemTemplate' => '<li data-id="{id}">'
+                                                        . '<img class="photo" src="{picture}" />'
+                                                        . '<strong class="username">{username}</strong>'
+                                                        . '<span class="fullname">{name}</span></li>',
+                                                    'outputTemplate' => '<a href="/members/{id}"'
+                                                        . ' data-user-id="{id}" target="_blank">'
+                                                        . '@{username}</a>&nbsp;&nbsp;',
                                                 )
                                             )
                                         )
@@ -145,60 +203,101 @@ $now = Date::of('now')->toSql();
                             <label>
                                 <?php echo Lang::txt('COM_FORUM_FIELD_YOUR_TAGS'); ?>
                                 <?php
-                                    echo $this->autocompleter('tags', 'tags', $this->escape($this->thread->tags('string')), 'actags');
+                                    echo $this->autocompleter(
+                                        'tags',
+                                        'tags',
+                                        $this->escape($this->thread->tags('string')),
+                                        'actags'
+                                    );
                                 ?>
                             </label>
 
                             <fieldset>
-                                <legend><?php echo Lang::txt('COM_FORUM_LEGEND_ATTACHMENTS'); ?></legend>
+                                <legend>
+                                    <?php echo Lang::txt('COM_FORUM_LEGEND_ATTACHMENTS'); ?>
+                                </legend>
                                 <div class="grid">
                                     <div class="col span6">
                                         <label for="upload">
                                             <?php echo Lang::txt('COM_FORUM_FIELD_FILE'); ?>:
-                                            <input type="file" name="upload" id="upload" />
+                                            <input type="file"
+                                                name="upload"
+                                                id="upload" />
                                         </label>
                                     </div>
                                     <div class="col span6 omega">
                                         <label for="field-description">
                                             <?php echo Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?>:
-                                            <input type="text" name="description" id="field-description" value="" />
+                                            <input type="text"
+                                                name="description"
+                                                id="field-description"
+                                                value="" />
                                         </label>
                                     </div>
                                 </div>
                             </fieldset>
 
                             <?php if ($this->config->get('allow_anonymous')) { ?>
-                                <label for="field-anonymous" id="comment-anonymous-label">
-                                    <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
+                                <label for="field-anonymous"
+                                    id="comment-anonymous-label">
+                                    <input class="option"
+                                        type="checkbox"
+                                        name="fields[anonymous]"
+                                        id="field-anonymous"
+                                        value="1" />
                                     <?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
                                 </label>
                             <?php } ?>
 
                             <p class="submit">
-                                <input type="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
+                                <input type="submit"
+                                    value="<?php echo Lang::txt('JSUBMIT'); ?>" />
                             </p>
                         <?php } else { ?>
-                            <p class="warning"><?php echo Lang::txt('COM_FORUM_PERMISSION_DENIED'); ?></p>
+                            <p class="warning">
+                                <?php echo Lang::txt('COM_FORUM_PERMISSION_DENIED'); ?>
+                            </p>
                         <?php } ?>
 
                         <div class="sidenote">
                             <p>
-                                <strong><?php echo Lang::txt('COM_FORUM_KEEP_POLITE'); ?></strong>
+                                <strong>
+                                    <?php echo Lang::txt('COM_FORUM_KEEP_POLITE'); ?>
+                                </strong>
                             </p>
                         </div>
                     </fieldset>
-                    <input type="hidden" name="fields[category_id]" value="<?php echo $this->thread->get('category_id'); ?>" />
-                    <input type="hidden" name="fields[parent]" value="<?php echo $this->thread->get('id'); ?>" />
+                    <?php $threadCatId = $this->thread->get('category_id'); ?>
+                    <input type="hidden"
+                        name="fields[category_id]"
+                        value="<?php echo $threadCatId; ?>" />
+                    <?php $threadId = $this->thread->get('id'); ?>
+                    <input type="hidden"
+                        name="fields[parent]"
+                        value="<?php echo $threadId; ?>" />
                     <input type="hidden" name="fields[state]" value="1" />
-                    <input type="hidden" name="fields[access]" value="<?php echo $this->thread->get('access', 0); ?>" />
+                    <?php $threadAccess = $this->thread->get('access', 0); ?>
+                    <input type="hidden"
+                        name="fields[access]"
+                        value="<?php echo $threadAccess; ?>" />
                     <input type="hidden" name="fields[id]" value="" />
                     <input type="hidden" name="fields[scope]" value="site" />
                     <input type="hidden" name="fields[scope_id]" value="0" />
-                    <input type="hidden" name="fields[thread]" value="<?php echo $this->thread->get('id'); ?>" />
-                    <input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->thread->get('scope_sub_id'); ?>" />
-                    <input type="hidden" name="fields[object_id]" value="<?php echo $this->thread->get('object_id'); ?>" />
+                    <input type="hidden"
+                        name="fields[thread]"
+                        value="<?php echo $threadId; ?>" />
+                    <?php $threadScopeSubId = $this->thread->get('scope_sub_id'); ?>
+                    <input type="hidden"
+                        name="fields[scope_sub_id]"
+                        value="<?php echo $threadScopeSubId; ?>" />
+                    <?php $threadObjectId = $this->thread->get('object_id'); ?>
+                    <input type="hidden"
+                        name="fields[object_id]"
+                        value="<?php echo $threadObjectId; ?>" />
 
-                    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+                    <input type="hidden"
+                        name="option"
+                        value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="controller" value="threads" />
                     <input type="hidden" name="task" value="save" />
 
@@ -225,16 +324,26 @@ $now = Date::of('now')->toSql();
 
             if ($participants->count() > 0) { ?>
                 <div class="container">
-                    <h3><?php echo Lang::txt('COM_FORUM_PARTICIPANTS'); ?></h3>
+                    <h3>
+                        <?php echo Lang::txt('COM_FORUM_PARTICIPANTS'); ?>
+                    </h3>
                     <ul>
                         <?php
                         $anon = false;
                         foreach ($participants as $participant) {
                             if (!$participant->get('anonymous')) {
+                                $pUrl = Route::url(
+                                    'index.php?option=com_members&id='
+                                    . $participant->get('created_by')
+                                );
+                                $pName = $this->escape(
+                                    stripslashes($participant->get('name'))
+                                );
                                 ?>
                                 <li>
-                                    <a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->get('created_by')); ?>">
-                                        <?php echo $this->escape(stripslashes($participant->get('name'))); ?>
+                                    <a class="member"
+                                        href="<?php echo $pUrl; ?>">
+                                        <?php echo $pName; ?>
                                     </a>
                                 </li>
                                 <?php
@@ -263,24 +372,39 @@ $now = Date::of('now')->toSql();
 
             if ($attachments->count() > 0) { ?>
                 <div class="container">
-                    <h3><?php echo Lang::txt('COM_FORUM_ATTACHMENTS'); ?></h3>
+                    <h3>
+                        <?php echo Lang::txt('COM_FORUM_ATTACHMENTS'); ?>
+                    </h3>
                     <ul class="attachments">
                         <?php
                         foreach ($attachments as $attachment) {
                             if ($attachment->get('status') != 2) {
                                 $cls = 'file';
-                                $title = trim($attachment->get('description', $attachment->get('filename')));
+                                $title = trim(
+                                    $attachment->get(
+                                        'description',
+                                        $attachment->get('filename')
+                                    )
+                                );
                                 $title = ($title ? $title : $attachment->get('filename'));
 
                                 // trims long titles
-                                $title = (strlen($title) > 25) ? substr($title, 0, 22) . '...' : $title;
+                                $title = (strlen($title) > 25)
+                                    ? substr($title, 0, 22) . '...'
+                                    : $title;
 
                                 if ($attachment->isImage()) {
                                     $cls = 'img';
                                 }
+                                $attUrl = Route::url(
+                                    $this->thread->link()
+                                    . '&post=' . $attachment->get('post_id')
+                                    . '&file=' . $attachment->get('filename')
+                                );
                                 ?>
                             <li>
-                                <a class="<?php echo $cls; ?> attachment" href="<?php echo Route::url($this->thread->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename')); ?>">
+                                <a class="<?php echo $cls; ?> attachment"
+                                    href="<?php echo $attUrl; ?>">
                                     <?php echo $this->escape(stripslashes($title)); ?>
                                 </a>
                             </li>
@@ -294,4 +418,3 @@ $now = Date::of('now')->toSql();
         </aside><!-- / .aside -->
     </div>
 </section><!-- / .below section -->
-
