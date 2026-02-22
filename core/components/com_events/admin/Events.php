@@ -27,7 +27,7 @@ class Events extends AbstractComponent
         }
 
         require_once dirname(__DIR__) . DS . 'models' . DS . 'tags.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'date.php';
+        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'EventsDate.php';
         require_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
         require_once dirname(__DIR__) . DS . 'tables' . DS . 'event.php';
         require_once dirname(__DIR__) . DS . 'tables' . DS . 'config.php';

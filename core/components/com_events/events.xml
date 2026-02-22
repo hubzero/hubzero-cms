@@ -9,7 +9,7 @@
 	<description></description>
 	<files>
 		<filename>controllers/events.php</filename>
-		<filename>helpers/date.php</filename>
+		<filename>helpers/EventsDate.php</filename>
 		<filename>router.php</filename>
 		<filename>events.php</filename>
 		<filename>helpers/html.php</filename>

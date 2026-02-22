@@ -106,7 +106,8 @@ if (!$form_redirect && !in_array($current, array('/register/update', '/members/u
             // There are third party plugins, so show them on the registration form
             $provider_html = "";
             foreach ($authenticators as $a) {
-                $refl = new ReflectionClass('plgauthentication' . $a['name']);
+                $authClass = 'Plugins\\Authentication\\' . ucfirst($a['name']) . '\\' . ucfirst($a['name']);
+                $refl = new \ReflectionClass($authClass);
                 if ($refl->hasMethod('onRenderOption')) {
                     $html = $refl->getMethod('onRenderOption')->invoke(null);
                     $provider_html .= is_array($html) ? implode("\n", $html) : $html;

@@ -991,7 +991,7 @@ class Projects extends AdminController
         }
 
         // Git helper
-        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'githelper.php';
+        require_once dirname(dirname(__DIR__)) . DS . 'helpers' . DS . 'Git.php';
         $gitHelper = new Helpers\Git($path);
 
         $commitMsg = '';

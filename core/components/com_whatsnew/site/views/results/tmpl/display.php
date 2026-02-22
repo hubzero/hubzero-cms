@@ -188,7 +188,7 @@ foreach ($this->cats as $cat) {
                         $func = 'plgWhatsnew' . ucfirst($row->section == null ? '' : $row->section) . 'Out';
                         // Check if a method exist (using JPlugin style)
                         $catName = ucfirst($this->cats[$k]['category']);
-                    $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
+                        $obj = 'Plugins\\Whatsnew\\' . $catName . '\\' . $catName;
 
                         if (function_exists($func)) {
                             $html .= $func($row, $this->period);

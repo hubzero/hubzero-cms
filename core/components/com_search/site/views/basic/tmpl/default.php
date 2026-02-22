@@ -213,7 +213,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                             <a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?php echo $def['friendly_name']; ?> <span class="item-count"><?php echo $def['count']; ?></span></a>
                         <?php endif; ?>
                         <?php
-                        $fc_child_flag = 'plgsearch' . $def['plugin_name'] . '::FIRST_CLASS_CHILDREN';
+                        $searchPluginName = ucfirst($def['plugin_name']);
+                        $fc_child_flag = 'Plugins\\Search\\' . $searchPluginName . '\\' . $searchPluginName . '::FIRST_CLASS_CHILDREN';
                         if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1) :
                             ?>
                             <ul>

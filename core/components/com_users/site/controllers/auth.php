@@ -548,7 +548,8 @@ class Auth extends SiteController
         Plugin::import('authentication', $hzad->authenticator);
         $plugin       = Plugin::byType('authentication', $hzad->authenticator);
         $pparams      = new Registry($plugin->params);
-        $refl         = new \ReflectionClass("plgAuthentication{$plugin->name}");
+        $authClass    = 'Plugins\\Authentication\\' . ucfirst($plugin->name) . '\\' . ucfirst($plugin->name);
+        $refl         = new \ReflectionClass($authClass);
         $defaultName = $refl->hasMethod('onGetLinkDescription')
             ? $refl->getMethod('onGetLinkDescription')->invoke(null)
             : ucfirst($plugin->name);

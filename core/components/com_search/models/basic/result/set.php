@@ -352,7 +352,8 @@ class Set extends Obj implements Iterator
                 }
 
                 if (Plugin::isEnabled('search', $plugin->name)) {
-                    $refl = new ReflectionClass("plgSearch$plugin->name");
+                    $pluginName = ucfirst($plugin->name);
+                    $refl = new ReflectionClass('Plugins\\Search\\' . $pluginName . '\\' . $pluginName);
                     if ($refl->hasMethod('onSearchCustom')) {
                         $this->current_plugin = $plugin->name;
                         $method = $refl->getMethod('onSearchCustom');
@@ -376,7 +377,8 @@ class Set extends Obj implements Iterator
                 continue;
             }
 
-            $refl = new ReflectionClass("plgSearch$plugin->name");
+            $pluginName = ucfirst($plugin->name);
+            $refl = new ReflectionClass('Plugins\\Search\\' . $pluginName . '\\' . $pluginName);
             $this->current_plugin = $plugin->name;
             $weighters[$plugin->name] = array();
 
@@ -417,7 +419,8 @@ class Set extends Obj implements Iterator
                 continue;
             }
 
-            $class = "plgSearch$plugin->name";
+            $pluginName = ucfirst($plugin->name);
+            $class = 'Plugins\\Search\\' . $pluginName . '\\' . $pluginName;
             $refl = new ReflectionClass($class);
             if ($refl->hasMethod('onSearchWeightAll')) {
                 $weighters['all'][] = array($plugin->name, $refl->getMethod('onSearchWeightAll'));
