@@ -273,7 +273,7 @@ class Assetgroup extends Base
      */
     public function siblings(&$siblings)
     {
-        if (!($siblings instanceof Iterator)) {
+        if (!($siblings instanceof \Iterator)) {
             $siblings = new Iterator($siblings);
         }
         $this->_siblings = $siblings;

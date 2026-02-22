@@ -102,7 +102,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
             <?php
             if ($rows) {
                 foreach ($rows as $row) {
-                    $creatorName = $row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
+                    $creatorName = $row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? '';
                     $name = $this->escape(stripslashes($creatorName));
                     if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) {
                         $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
@@ -115,7 +115,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                             </time>
                         </td>
                         <td>
-                            <?php $linkText = trim($row->title) ?: trim($row->pagename ?? '') ?: Lang::txt('COM_WIKI_UNTITLED'); ?>
+                            <?php $linkText = trim($row->title ?? '') ?: trim($row->pagename ?? '') ?: Lang::txt('COM_WIKI_UNTITLED'); ?>
                             <a href="<?php echo Route::url($row->link()); ?>">
                                 <?php echo $this->escape(stripslashes($linkText)); ?>
                             </a>
@@ -125,7 +125,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         </td>
                         <td>
                             <span><?php
-                                echo $this->escape(stripslashes($row->version->get('summary', '')));
+                                echo $this->escape(stripslashes($row->version->get('summary', '') ?? ''));
                             ?></span>
                         </td>
                     </tr>

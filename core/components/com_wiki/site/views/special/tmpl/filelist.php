@@ -109,7 +109,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         $fsize = \Hubzero\Utility\Number::formatBytes(filesize($filePath));
                     }
 
-                    $creatorName = $row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
+                    $creatorName = $row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? '';
                     $name = $this->escape(stripslashes($creatorName));
                     if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) {
                         $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
@@ -117,7 +117,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                     $pathPrefix = $row->get('path') ? $row->get('path') . '/' : '';
                     $filePagename = $pathPrefix . $row->get('pagename') . '/File:' . $row->get('filename');
                     $fileUrl = Route::url($this->page->link('base') . '&pagename=' . $filePagename);
-                    $fileAlt = $this->escape(stripslashes($row->get('filename')));
+                    $fileAlt = $this->escape(stripslashes($row->get('filename') ?? ''));
                     ?>
                     <tr>
                         <td>
@@ -145,7 +145,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                             <?php echo $name; ?>
                         </td>
                         <td>
-                            <span><?php echo $this->escape(stripslashes($row->get('description', ''))); ?></span>
+                            <span><?php echo $this->escape(stripslashes($row->get('description', '') ?? '')); ?></span>
                         </td>
                     </tr>
                     <?php

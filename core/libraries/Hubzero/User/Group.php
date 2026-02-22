@@ -1424,7 +1424,7 @@ class Group extends Obj
 
             case 'raw':
             default:
-                $content = stripslashes($this->get($type . '_desc'));
+                $content = stripslashes($this->get($type . '_desc') ?? '');
                 $content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
                 break;
         }

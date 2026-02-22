@@ -608,7 +608,7 @@ class Field extends Relational
                 $validate = htmlspecialchars($field->get('validate'), ENT_COMPAT);
                 $f .= ' validate="' . $validate . '"';
             }
-            $f .= ' default="' . htmlspecialchars($field->get('default_value', ''), ENT_COMPAT) . '"';
+            $f .= ' default="' . htmlspecialchars((string) $field->get('default_value', ''), ENT_COMPAT) . '"';
             $f .= ($field->get('option_blank') ? ' option_blank="1"' : '');
             $f .= ($field->get('option_other') ? ' option_other="1"' : '');
             $f .= (!is_null($field->get('min')) ? ' min="' . (int) $field->get('min') . '"' : '');

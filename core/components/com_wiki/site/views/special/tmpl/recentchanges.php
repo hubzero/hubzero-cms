@@ -72,7 +72,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
             <?php
             if ($rows) {
                 foreach ($rows as $row) {
-                    $vCreatorName = $row->version->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'));
+                    $vCreatorName = $row->version->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? '';
                     $name = $this->escape(stripslashes($vCreatorName));
                     if (in_array($row->version->creator->get('access'), User::getAuthorisedViewLevels())) {
                         $name = '<a href="' . Route::url($row->version->creator->link()) . '">' . $name . '</a>';
@@ -108,7 +108,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         </td>
                         <td>
                             <a href="<?php echo Route::url($row->link()); ?>">
-                                <?php echo $this->escape(stripslashes($row->title)); ?>
+                                <?php echo $this->escape(stripslashes($row->title ?? '')); ?>
                             </a>
                         </td>
                         <td>
@@ -116,7 +116,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         </td>
                         <td>
                             <span><?php
-                                echo $this->escape(stripslashes($row->version->get('summary', '')));
+                                echo $this->escape(stripslashes($row->version->get('summary', '') ?? ''));
                             ?></span>
                         </td>
                     </tr>

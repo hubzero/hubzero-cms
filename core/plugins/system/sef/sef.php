@@ -32,7 +32,7 @@ class Sef extends Plugin
         $buffer = App::get('response')->getContent();
 
         $regex  = '#href="index.php\?([^"]*)#m';
-        $buffer = preg_replace_callback($regex, array('plgSystemSef', 'route'), $buffer);
+        $buffer = preg_replace_callback($regex, array(static::class, 'route'), $buffer);
         $this->checkBuffer($buffer);
 
         $protocols = '[a-zA-Z0-9]+:';
