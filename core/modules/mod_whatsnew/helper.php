@@ -176,7 +176,7 @@ class Helper extends Module
         if ($results) {
             foreach ($results as $result) {
                 if (
-                    ($result instanceof \Iterator && $result->count() > 0)
+                    ($result instanceof \Countable && $result->count() > 0)
                     || (is_array($result) && !empty($result))
                 ) {
                     $rows = $result;
