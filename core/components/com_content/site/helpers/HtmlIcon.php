@@ -46,16 +46,16 @@ class HtmlIcon
 
         if (class_exists('\Components\Mailto\Site\Helpers\Mailto')) {
 
-            $base     = Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
+            $base     = \Hubzero\Utility\Uri::getInstance()->toString(array('scheme', 'host', 'port'));
             $template = App::get('template')->template;
-            $articleRoute = Components\Content\Site\Helpers\Route::getArticleRoute(
+            $articleRoute = \Components\Content\Site\Helpers\Route::getArticleRoute(
                 $article->slug,
                 $article->catid,
                 $article->language
             );
             $link     = $base . Route::url($articleRoute, false);
             $url      = 'index.php?option=com_mailto&tmpl=component&template=' . $template
-                . '&link=' . Components\Mailto\Site\Helpers\Mailto::addLink($link);
+                . '&link=' . \Components\Mailto\Site\Helpers\Mailto::addLink($link);
 
             $status = 'width=400,height=350,menubar=yes,resizable=yes';
 
@@ -63,7 +63,7 @@ class HtmlIcon
             $attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
 
             $output = '<a class="icon-email" href="' . Route::url($url) . '" '
-                . Hubzero\Utility\Arr::toString($attribs) . '>' . Lang::txt('JGLOBAL_EMAIL') . '</a>';
+                . \Hubzero\Utility\Arr::toString($attribs) . '>' . Lang::txt('JGLOBAL_EMAIL') . '</a>';
         }
 
         return $output;
@@ -155,7 +155,7 @@ class HtmlIcon
     // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public static function print_popup($article, $params, $attribs = array())
     {
-        $url  = Components\Content\Site\Helpers\Route::getArticleRoute(
+        $url  = \Components\Content\Site\Helpers\Route::getArticleRoute(
             $article->slug,
             $article->catid,
             $article->language
@@ -172,7 +172,7 @@ class HtmlIcon
         $attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
         $attribs['rel']     = 'nofollow';
 
-        return '<a href="' . Route::url($url) . '" ' . Hubzero\Utility\Arr::toString($attribs)
+        return '<a href="' . Route::url($url) . '" ' . \Hubzero\Utility\Arr::toString($attribs)
             . '>' . $text . '</a>';
     }
 
