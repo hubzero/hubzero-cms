@@ -22,8 +22,6 @@ class Whatsnew extends AbstractComponent
      */
     protected function execute(): void
     {
-        // Include files
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'period.php';
         require_once __DIR__ . DS . 'controllers' . DS . 'results.php';
 
         // Instantiate controller

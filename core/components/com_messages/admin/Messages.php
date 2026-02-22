@@ -28,10 +28,6 @@ class Messages extends AbstractComponent
             return;
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'message.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'cfg.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
-
         $controllerName = \Request::getCmd('controller', 'messages');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'messages';

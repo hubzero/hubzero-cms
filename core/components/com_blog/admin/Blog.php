@@ -27,11 +27,6 @@ class Blog extends AbstractComponent
             return;
         }
 
-        // Include scripts
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
-        require_once __DIR__ . DS . 'helpers' . DS . 'permissions.php';
-        require_once __DIR__ . DS . 'helpers' . DS . 'html.php';
-
         $scope = \Request::getCmd('scope', 'site');
         $controllerName = \Request::getCmd('controller', 'entries');
 

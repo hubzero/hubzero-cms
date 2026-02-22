@@ -28,11 +28,6 @@ class Wiki extends AbstractComponent
             return;
         }
 
-        // Include scripts
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'parser.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'book.php';
-
         // Initiate controller
         $controllerName = \Request::getCmd('controller', 'pages');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

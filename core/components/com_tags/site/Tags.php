@@ -22,8 +22,6 @@ class Tags extends AbstractComponent
      */
     protected function execute(): void
     {
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'cloud.php';
-
         $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'tags'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'tags';

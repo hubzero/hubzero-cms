@@ -22,8 +22,6 @@ class Support extends AbstractComponent
      */
     protected function execute(): void
     {
-        include_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
-
         $controllerName = Request::getCmd('controller', Request::getCmd('view', 'index'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'index';

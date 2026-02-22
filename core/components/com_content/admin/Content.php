@@ -28,9 +28,6 @@ class Content extends AbstractComponent
             return;
         }
 
-        require_once dirname(__DIR__) . '/models/article.php';
-        require_once __DIR__ . '/helpers/permissions.php';
-
         $task = Request::getCmd('task');
         if (strpos($task, '.') !== false) {
             $splitTask = explode('.', $task);

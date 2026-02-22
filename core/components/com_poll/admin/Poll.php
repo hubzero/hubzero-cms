@@ -27,8 +27,6 @@ class Poll extends AbstractComponent
             \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'poll.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
         require_once __DIR__ . DS . 'controllers' . DS . 'polls.php';
 
         // Create the controller

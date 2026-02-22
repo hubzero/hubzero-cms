@@ -22,7 +22,6 @@ class Kb extends AbstractComponent
      */
     protected function execute(): void
     {
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
         require_once __DIR__ . DS . 'controllers' . DS . 'articles.php';
 
         // Instantiate controller

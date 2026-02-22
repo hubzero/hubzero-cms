@@ -27,10 +27,6 @@ class Courses extends AbstractComponent
             return;
         }
 
-        // Include scripts
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'log.php';
-
         $controllerName = \Request::getCmd('controller', 'courses');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'courses';

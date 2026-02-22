@@ -27,11 +27,6 @@ class Tools extends AbstractComponent
             return;
         }
 
-        // Include scripts
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'tool.php';
-
         $controllerName = \Request::getCmd('controller', 'pipeline');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'pipeline';

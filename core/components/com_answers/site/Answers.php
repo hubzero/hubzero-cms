@@ -22,9 +22,6 @@ class Answers extends AbstractComponent
      */
     protected function execute(): void
     {
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php';
-
         $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'questions'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'questions';

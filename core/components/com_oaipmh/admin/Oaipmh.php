@@ -27,7 +27,6 @@ class Oaipmh extends AbstractComponent
             return;
         }
 
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
         require_once __DIR__ . DS . 'controllers' . DS . 'config.php';
 
         $task = \Request::getCmd('task');

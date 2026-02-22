@@ -27,10 +27,6 @@ class Publications extends AbstractComponent
             return;
         }
 
-        // Include scripts
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'publication.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-
         // get controller name
         $controllerName = \Request::getCmd('controller', 'items');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

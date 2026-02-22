@@ -27,10 +27,6 @@ class Answers extends AbstractComponent
             return;
         }
 
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'economy.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'question.php';
-
         $controllerName = \Request::getCmd('controller', 'questions');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'questions';

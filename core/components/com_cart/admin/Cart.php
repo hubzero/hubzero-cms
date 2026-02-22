@@ -28,8 +28,6 @@ class Cart extends AbstractComponent
             \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        require_once __DIR__ . DS . 'helpers' . DS . 'permissions.php';
-
         $scope = \Request::getCmd('scope', 'site');
         $controllerName = \Request::getCmd('controller', 'downloads');
 

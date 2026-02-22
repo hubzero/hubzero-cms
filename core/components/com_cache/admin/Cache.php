@@ -28,8 +28,6 @@ class Cache extends AbstractComponent
             return;
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'manager.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
         require_once __DIR__ . DS . 'controllers' . DS . 'cleanser.php';
 
         // Instantiate controller

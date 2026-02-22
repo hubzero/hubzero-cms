@@ -27,9 +27,6 @@ class Forum extends AbstractComponent
             return;
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'manager.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-
         $controllerName = \Request::getCmd('controller', 'sections');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'sections';

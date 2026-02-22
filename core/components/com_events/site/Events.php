@@ -22,15 +22,6 @@ class Events extends AbstractComponent
      */
     protected function execute(): void
     {
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'EventsDate.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'tags.php';
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'event.php';
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'config.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'page.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'respondent.php';
-
         $controllerName = \Request::getCmd('controller', 'events');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'events';

@@ -28,7 +28,6 @@ class Checkin extends AbstractComponent
             return;
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'inspector.php';
         require_once __DIR__ . DS . 'controllers' . DS . 'checkin.php';
 
         // Instantiate controller

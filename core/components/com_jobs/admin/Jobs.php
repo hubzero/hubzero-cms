@@ -27,21 +27,6 @@ class Jobs extends AbstractComponent
             return;
         }
 
-        // Include scripts
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'admin.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'application.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'category.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'employer.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'job.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'prefs.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'resume.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'seeker.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'shortlist.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'stats.php';
-        include_once dirname(__DIR__) . DS . 'tables' . DS . 'type.php';
-        include_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-        include_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
-
         $controllerName = \Request::getCmd('controller', 'jobs');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'jobs';

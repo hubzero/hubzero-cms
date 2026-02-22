@@ -51,9 +51,6 @@ class Menus extends AbstractComponent
             $controllerName == 'items'
         );
 
-        require_once dirname(__DIR__) . '/helpers/menus.php';
-        require_once dirname(__DIR__) . '/models/menu.php';
-
         require_once __DIR__ . '/controllers/' . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 

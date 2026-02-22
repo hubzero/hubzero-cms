@@ -26,11 +26,6 @@ class Kb extends AbstractComponent
             \App::abort(403, \Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        // Include scripts
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'archive.php';
-        require_once __DIR__ . DS . 'helpers' . DS . 'html.php';
-        require_once __DIR__ . DS . 'helpers' . DS . 'permissions.php';
-
         $controllerName = \Request::getCmd('controller', 'articles');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'articles';

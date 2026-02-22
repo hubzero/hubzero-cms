@@ -27,10 +27,6 @@ class Feedback extends AbstractComponent
             return;
         }
 
-        // Include scripts
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'quote.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-
         $controllerName = 'quotes';
         require_once __DIR__ . DS . 'controllers' . DS . $controllerName . '.php';
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));

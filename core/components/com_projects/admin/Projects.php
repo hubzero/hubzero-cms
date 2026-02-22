@@ -27,10 +27,6 @@ class Projects extends AbstractComponent
             return;
         }
 
-        // Include scripts
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'project.php';
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'database.php';
-
         $controllerName = \Request::getCmd('controller', 'projects');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'projects';

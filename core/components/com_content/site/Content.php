@@ -22,12 +22,6 @@ class Content extends AbstractComponent
      */
     protected function execute(): void
     {
-        // Include dependencies
-        require_once dirname(__DIR__) . '/models/article.php';
-        require_once __DIR__ . '/helpers/route.php';
-        require_once __DIR__ . '/helpers/query.php';
-        require_once __DIR__ . '/controllers/articles.php';
-
         $task = \Request::getCmd('task');
         if ($task) {
             if (strstr($task, '.')) {

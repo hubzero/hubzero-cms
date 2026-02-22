@@ -30,18 +30,6 @@ class Resources extends AbstractComponent
             return;
         }
 
-        // Include models
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'entry.php';
-
-        // Include helpers
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'tags.php';
-
-        // Include importer
-        require_once dirname(__DIR__) . DS . 'import' . DS . 'importer.php';
-
         // Get controller name
         $controllerName = \Request::getCmd('controller', 'items');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

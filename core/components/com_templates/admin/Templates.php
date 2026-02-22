@@ -27,9 +27,6 @@ class Templates extends AbstractComponent
             \App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'template.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
-
         // Include controller
         $controllerName = \Request::getCmd('controller', 'styles');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

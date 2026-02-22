@@ -27,25 +27,6 @@ class Groups extends AbstractComponent
             return;
         }
 
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'group.php';
-
-        // Include tables
-        require_once dirname(__DIR__) . DS . 'tables' . DS . 'reason.php';
-
-        // include models
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'tags.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'log' . DS . 'archive.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'page' . DS . 'archive.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'module' . DS . 'archive.php';
-
-        // Include Helpers
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'gitlab.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'view.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'pages.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'document.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'template.php';
-
         // build controller path
         $controllerName = \Request::getCmd('controller', 'manage');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

@@ -27,16 +27,6 @@ class Newsletter extends AbstractComponent
             return;
         }
 
-        // Include models
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'newsletter.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'mailinglist.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'mailing.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'campaign.php';
-
-        // Include helpers
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-
         // Instantiate controller
         $controllerName = \Request::getCmd('controller', 'newsletters');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

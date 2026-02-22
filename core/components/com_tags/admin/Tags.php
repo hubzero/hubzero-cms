@@ -26,9 +26,6 @@ class Tags extends AbstractComponent
             \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'cloud.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-
         $controllerName = \Request::getCmd('controller', 'entries');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'entries';

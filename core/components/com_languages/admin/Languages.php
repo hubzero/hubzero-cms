@@ -31,8 +31,6 @@ class Languages extends AbstractComponent
             return;
         }
 
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'utilities.php';
-
         $controllerName = \Request::getCmd('controller', 'installed');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             App::abort(404, Lang::txt('Controller not found.'));

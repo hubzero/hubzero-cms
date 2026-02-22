@@ -29,10 +29,6 @@ class Storefront extends AbstractComponent
             return;
         }
 
-        // Include scripts
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'Archive.php';
-        require_once __DIR__ . DS . 'helpers' . DS . 'permissions.php';
-
         $scope = \Request::getCmd('scope', 'site');
         $controllerName = \Request::getCmd('controller', 'products');
 

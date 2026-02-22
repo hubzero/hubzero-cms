@@ -22,12 +22,6 @@ class Storefront extends AbstractComponent
      */
     protected function execute(): void
     {
-        // require base component controller
-        require_once __DIR__ . DS . 'controllers' . DS . 'component.php';
-
-        // require models
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'Warehouse.php';
-
         //build controller path and name
         $controllerName = \Request::getCmd('controller', '');
 

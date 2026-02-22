@@ -26,10 +26,6 @@ class System extends AbstractComponent
             \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        // Include scripts
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'html.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-
         $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'info'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'info';

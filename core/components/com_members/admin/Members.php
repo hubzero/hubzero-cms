@@ -33,8 +33,6 @@ class Members extends AbstractComponent
         }
 
         // Build sub-menu
-        require_once __DIR__ . DS . 'helpers' . DS . 'members.php';
-
         \Components\Members\Admin\Helpers\MembersHelper::addSubmenu($controllerName);
 
         // Instantiate controller

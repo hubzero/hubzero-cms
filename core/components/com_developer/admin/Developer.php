@@ -28,9 +28,6 @@ class Developer extends AbstractComponent
             return;
         }
 
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'application.php';
-
         // Make extra sure that controller exists
         $controllerName = \Request::getCmd('controller', 'applications');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {

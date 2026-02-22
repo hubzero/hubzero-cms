@@ -27,10 +27,6 @@ class Billboards extends AbstractComponent
             return;
         }
 
-        // Include needed models and controller
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'billboard.php';
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'collection.php';
-
         $controllerName = \Request::getCmd('controller', 'billboards');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'billboards';

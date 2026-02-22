@@ -41,8 +41,6 @@ class Cron extends AbstractComponent
             );
         }
 
-        require_once dirname(__DIR__) . DS . 'models' . DS . 'job.php';
-        require_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
         require_once __DIR__ . DS . 'controllers' . DS . 'jobs.php';
 
         $controller = new Controllers\Jobs();

@@ -22,8 +22,6 @@ class Feedback extends AbstractComponent
      */
     protected function execute(): void
     {
-        include_once dirname(__DIR__) . DS . 'models' . DS . 'quote.php';
-
         $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'feedback'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'feedback';

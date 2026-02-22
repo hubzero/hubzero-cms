@@ -28,10 +28,6 @@ class Wishlist extends AbstractComponent
             return;
         }
 
-        // Include scripts
-        include_once dirname(__DIR__) . DS . 'models' . DS . 'wishlist.php';
-        include_once dirname(__DIR__) . DS . 'helpers' . DS . 'permissions.php';
-
         $controllerName = \Request::getCmd('controller', 'lists');
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'lists';

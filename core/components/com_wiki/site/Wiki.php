@@ -22,10 +22,6 @@ class Wiki extends AbstractComponent
      */
     protected function execute(): void
     {
-        include_once dirname(__DIR__) . DS . 'models' . DS . 'book.php';
-        include_once dirname(__DIR__) . DS . 'helpers' . DS . 'editor.php';
-        include_once dirname(__DIR__) . DS . 'helpers' . DS . 'parser.php';
-
         $controllerName = \Request::getCmd('controller', \Request::getCmd('view', 'pages'));
         if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php')) {
             $controllerName = 'pages';

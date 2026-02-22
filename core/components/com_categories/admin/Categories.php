@@ -29,10 +29,6 @@ class Categories extends AbstractComponent
             return;
         }
 
-        // Load needed files
-        require_once dirname(__DIR__) . '/models/category.php';
-        require_once __DIR__ . '/helpers/categories.php';
-
         // Determine task
         $task = Request::getCmd('task');
         if (strpos($task, '.') !== false) {
