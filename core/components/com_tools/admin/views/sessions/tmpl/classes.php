@@ -24,13 +24,16 @@ Toolbar::help('sessionclasses');
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
                 <th class="priority-3"><?php echo Lang::txt('COM_TOOLS_SESSION_CLASS_ID'); ?></th>
                 <th><?php echo Lang::txt('COM_TOOLS_SESSION_CLASS_ALIAS'); ?></th>
@@ -56,19 +59,26 @@ Toolbar::help('sessionclasses');
         $k = 0;
         for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
             $row = &$this->rows[$i];
+            $editUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=edit&id=' . $row->id
+            );
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $row->id; ?></label>
                 </td>
                 <td class="priority-3">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                    <a href="<?php echo $editUrl; ?>">
                         <?php echo $this->escape($row->id); ?>
                     </a>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                    <a href="<?php echo $editUrl; ?>">
                         <?php echo $this->escape($row->alias); ?>
                     </a>
                 </td>

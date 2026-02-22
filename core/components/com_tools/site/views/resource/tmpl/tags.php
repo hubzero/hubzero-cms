@@ -25,9 +25,9 @@ $showwarning = ($this->version == 'current' or !$this->status['published']) ? 0 
             foreach ($this->fats as $key => $value) {
                 ?>
                 <label>
-                    <input class="option" type="radio" name="tagfa" value="<?php echo $value; ?>"<?php if ($this->tagfa == $value) {
-                        echo ' checked="checked "';
-                                                                           } ?> />
+                    <?php $chkTagfa = ($this->tagfa == $value) ? ' checked="checked "' : ''; ?>
+                    <input class="option" type="radio" name="tagfa"
+                        value="<?php echo $value; ?>"<?php echo $chkTagfa; ?> />
                     <?php echo $key; ?>
                 </label>
                 <?php

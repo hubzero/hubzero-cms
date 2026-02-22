@@ -12,13 +12,18 @@ defined('_HZEXEC_') or die();
 <fieldset class="condition-set">
     <p class="operator">
         <button class="remove" alt="<?php echo Lang::txt('COM_SUPPORT_QUERY_REMOVE'); ?>">&times;</button>
-        <?php echo Lang::txt(
-            'COM_SUPPORT_QUERY_MATCH',
-            '<select id="match' . rand() . '">
-			<option value="AND"' . (strtolower($this->condition->operator) == 'and' ? ' selected="selected"' : '' ) . '>' . Lang::txt('COM_SUPPORT_QUERY_ALL') . '</option>
-			<option value="OR"' . (strtolower($this->condition->operator) == 'or' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_SUPPORT_QUERY_ANY') . '</option>
-		</select>'
-        ); ?>
+        <?php
+        $randId = rand();
+        $andSelected = (strtolower($this->condition->operator) == 'and')
+            ? ' selected="selected"' : '';
+        $orSelected = (strtolower($this->condition->operator) == 'or')
+            ? ' selected="selected"' : '';
+        $selectHtml = '<select id="match' . $randId . '">'
+            . '<option value="AND"' . $andSelected . '>' . Lang::txt('COM_SUPPORT_QUERY_ALL') . '</option>'
+            . '<option value="OR"' . $orSelected . '>' . Lang::txt('COM_SUPPORT_QUERY_ANY') . '</option>'
+            . '</select>';
+        echo Lang::txt('COM_SUPPORT_QUERY_MATCH', $selectHtml);
+        ?>
     </p>
     <div class="querycntnr">
         <div class="querystmts querycntnr">
@@ -28,7 +33,9 @@ if ($this->condition->expressions) {
         $operators = $this->conditions->{$expression->fldval}->operators;
         $values    = $this->conditions->{$expression->fldval}->values;
         ?>
-        <p class="conditions"><button class="remove" alt="<?php echo Lang::txt('COM_SUPPORT_QUERY_REMOVE'); ?>">&times;</button> <select class="fld">
+        <p class="conditions">
+            <button class="remove" alt="<?php echo Lang::txt('COM_SUPPORT_QUERY_REMOVE'); ?>">&times;</button>
+            <select class="fld">
                 <option value="open"<?php if ($expression->fldval == 'open') {
                     echo ' selected="selected"';
                                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
@@ -50,7 +57,11 @@ if ($this->condition->expressions) {
                 <option value="report"<?php if ($expression->fldval == 'report') {
                     echo ' selected="selected"';
                                       } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
-                <?php /*<option value="resolved"<?php if ($expression->fldval == 'resolved') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
+                <?php /*
+                <option value="resolved"<?php if ($expression->fldval == 'resolved') {
+                    echo ' selected="selected"';
+                                        } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>
+                */ ?>
                 <option value="severity"<?php if ($expression->fldval == 'severity') {
                     echo ' selected="selected"';
                                         } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
@@ -103,7 +114,11 @@ if ($this->condition->expressions) {
                 $expression->val = User::get('username');
             }
             ?>
-            <input type="text" class="val" value="<?php echo $this->escape(stripslashes($expression->val)); ?>" />
+            <input
+                type="text"
+                class="val"
+                value="<?php echo $this->escape(stripslashes($expression->val)); ?>"
+            />
             <?php
         }
         ?>

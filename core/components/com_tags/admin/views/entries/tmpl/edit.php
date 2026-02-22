@@ -33,16 +33,24 @@ $this->js()
     ->js('tagLogsFetcher');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<?php
+$editFormAction  = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$invalidMsg      = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
+?>
+<form action="<?php echo $editFormAction; ?>" method="post" name="adminForm" id="item-form"
+    class="editform form-validate" data-invalid-msg="<?php echo $invalidMsg; ?>">
     <div class="grid">
     <div class="col span7">
         <fieldset class="adminform">
             <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
-            <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_ADMIN_HINT'); ?>">
-<!--                <input type="checkbox" name="fields[admin]" id="field-admin" value="1" <?php if ($this->tag->get('admin') == 1) {
-    echo 'checked="checked"';
-                                                                                           } ?> />
+            <?php $adminHint = Lang::txt('COM_TAGS_FIELD_ADMIN_HINT'); ?>
+            <div class="input-wrap" data-hint="<?php echo $adminHint; ?>">
+<!--
+    <input type="checkbox" name="fields[admin]" id="field-admin" value="1"
+        <?php if ($this->tag->get('admin') == 1) {
+            echo 'checked="checked"';
+        } ?> />
 -->
                 <label for="field-admin"><?php echo Lang::txt('COM_TAGS_FIELD_TYPE'); ?>:</label><br />
                 <select name="fields[admin]" id="field-admin">
@@ -58,26 +66,50 @@ $this->js()
                 </select>
             </div>
 
-            <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_TAG_HINT'); ?>">
-                <label for="field-raw_tag"><?php echo Lang::txt('COM_TAGS_FIELD_RAW_TAG'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                <input type="text" name="fields[raw_tag]" id="field-raw_tag" class="required" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->tag->get('raw_tag', ''))); ?>" />
+            <?php $tagHint = Lang::txt('COM_TAGS_FIELD_TAG_HINT'); ?>
+            <div class="input-wrap" data-hint="<?php echo $tagHint; ?>">
+                <label for="field-raw_tag">
+                    <?php echo Lang::txt('COM_TAGS_FIELD_RAW_TAG'); ?>:
+                    <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                </label><br />
+                <?php $rawTagVal = $this->escape(stripslashes($this->tag->get('raw_tag', ''))); ?>
+                <input type="text" name="fields[raw_tag]" id="field-raw_tag"
+                    class="required" size="30" maxlength="250" value="<?php echo $rawTagVal; ?>" />
                 <span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_TAG_HINT'); ?></span>
             </div>
 
             <div class="input-wrap">
                 <label for="field-tag"><?php echo Lang::txt('COM_TAGS_FIELD_TAG'); ?>:</label><br />
-                <input type="text" disabled="disabled" class="disabled" name="fields[tag]" id="field-tag" placeholder="<?php echo Lang::txt('COM_TAGS_FIELD_TAG_PLACEHOLDER'); ?>" maxlength="250" value="<?php echo $this->escape($this->tag->get('tag')); ?>" />
+                <?php
+                $tagPlaceholder = Lang::txt('COM_TAGS_FIELD_TAG_PLACEHOLDER');
+                $tagValue       = $this->escape($this->tag->get('tag'));
+                ?>
+                <input type="text" disabled="disabled" class="disabled"
+                    name="fields[tag]" id="field-tag"
+                    placeholder="<?php echo $tagPlaceholder; ?>"
+                    maxlength="250" value="<?php echo $tagValue; ?>" />
             </div>
 
-            <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TAGS_FIELD_ALIAS_HINT'); ?>">
+            <?php $aliasHint = Lang::txt('COM_TAGS_FIELD_ALIAS_HINT'); ?>
+            <div class="input-wrap" data-hint="<?php echo $aliasHint; ?>">
                 <label for="field-substitutions"><?php echo Lang::txt('COM_TAGS_FIELD_ALIAS'); ?>:</label><br />
-                <textarea name="fields[substitutions]" id="field-substitutions" cols="50" rows="5"><?php echo $this->escape($this->tag->substitutes); ?></textarea>
+                <textarea name="fields[substitutions]" id="field-substitutions"
+                    cols="50" rows="5"><?php echo $this->escape($this->tag->substitutes); ?></textarea>
                 <span class="hint"><?php echo Lang::txt('COM_TAGS_FIELD_ALIAS_HINT'); ?></span>
             </div>
 
             <div class="input-wrap">
                 <label for="field-description"><?php echo Lang::txt('COM_TAGS_FIELD_DESCRIPTION'); ?>:</label><br />
-                <?php echo $this->editor('fields[description]', stripslashes($this->tag->get('description', '')), 50, 4, 'field-description', array('class' => 'minimal', 'buttons' => false)); ?>
+                <?php
+                echo $this->editor(
+                    'fields[description]',
+                    stripslashes($this->tag->get('description', '')),
+                    50,
+                    4,
+                    'field-description',
+                    array('class' => 'minimal', 'buttons' => false)
+                );
+                ?>
             </div>
         </fieldset>
     </div>
@@ -114,7 +146,11 @@ $this->js()
                 <tr>
                     <th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_CREATED'); ?>:</th>
                     <td>
-                        <?php echo ($this->tag->created() && $this->tag->created() != '0000-00-00 00:00:00') ? $this->tag->created() : Lang::txt('COM_TAGS_UNKNOWN'); ?>
+                        <?php
+                        $created = $this->tag->created();
+                        echo ($created && $created != '0000-00-00 00:00:00')
+                            ? $created : Lang::txt('COM_TAGS_UNKNOWN');
+                        ?>
                     </td>
                 </tr>
                 <?php if ($this->tag->get('id') && $this->tag->wasModified()) { ?>
@@ -134,7 +170,11 @@ $this->js()
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_TAGS_FIELD_MODIFIED'); ?>:</th>
                         <td>
-                            <?php echo ($this->tag->modified() && $this->tag->modified() != '0000-00-00 00:00:00') ? $this->tag->modified() : Lang::txt('COM_TAGS_UNKNOWN'); ?>
+                            <?php
+                            $modified = $this->tag->modified();
+                            echo ($modified && $modified != '0000-00-00 00:00:00')
+                                ? $modified : Lang::txt('COM_TAGS_UNKNOWN');
+                            ?>
                         </td>
                     </tr>
                 <?php } ?>

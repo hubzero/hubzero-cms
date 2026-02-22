@@ -23,11 +23,11 @@ $showwarning = ($this->version == 'current' or !$this->status['published']) ? 0 
             <legend><?php echo Lang::txt('COM_TOOLS_TAGS_SELECT_FOCUS_AREA'); ?>:</legend>
             <?php
             foreach ($this->fats as $key => $value) {
+                $chkTagfa = ($this->tagfa == $value) ? ' checked="checked "' : '';
                 ?>
                 <label>
-                    <input class="option" type="radio" name="tagfa" value="<?php echo $value; ?>"<?php if ($this->tagfa == $value) {
-                        echo ' checked="checked "';
-                                                                           } ?> />
+                    <input class="option" type="radio" name="tagfa"
+                        value="<?php echo $value; ?>"<?php echo $chkTagfa; ?> />
                     <?php echo $key; ?>
                 </label>
                 <?php
@@ -46,7 +46,8 @@ $showwarning = ($this->version == 'current' or !$this->status['published']) ? 0 
             if (count($tf) > 0) {
                 echo $tf[0];
             } else {
-                echo '<textarea name="tags" id="tags-men" rows="6" cols="35">' . $this->tags . '</textarea>';
+                echo '<textarea name="tags" id="tags-men" rows="6" cols="35">'
+                    . $this->tags . '</textarea>';
             }
             ?>
         </label>

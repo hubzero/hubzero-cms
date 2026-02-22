@@ -19,6 +19,22 @@ $params->merge($rparams);
 // Get attributes
 $attribs = $this->resource->attribs;
 
+$statusUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=pipeline&task=status&app=' . $this->resource->alias
+);
+$newUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=pipeline&task=create'
+);
+$formAction = Route::url('index.php?option=' . $this->option);
+$prevLabel = '&lt; ' . ucfirst(Lang::txt('COM_TOOLS_PREVIOUS'));
+$finalizeLabel = ucfirst(Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE')) . ' &gt;';
+$previewSrc = Route::url(
+    'index.php?option=com_resources&id=' . $this->resource->id
+    . '&tmpl=component&mode=preview&rev=' . $this->version
+);
+
 $this->css('resource.css')
      ->css('resources', 'com_resources')
      ->js('resource.js');
@@ -28,8 +44,12 @@ $this->css('resource.css')
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="icon-status status btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->resource->alias); ?>"><?php echo Lang::txt('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-            <li class="last"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>" class="icon-add add btn"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+            <li><a class="icon-status status btn" href="<?php echo $statusUrl; ?>"><?php
+                echo Lang::txt('COM_TOOLS_TOOL_STATUS');
+            ?></a></li>
+            <li class="last"><a href="<?php echo $newUrl; ?>" class="icon-add add btn"><?php
+                echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL');
+            ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -49,7 +69,7 @@ $this->css('resource.css')
 </section>
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
+    <form action="<?php echo $formAction; ?>" method="post" id="hubForm">
         <input type="hidden" name="app" value="<?php echo $this->resource->alias; ?>" />
         <input type="hidden" name="rid" value="<?php echo $this->resource->id; ?>" />
 
@@ -57,20 +77,25 @@ $this->css('resource.css')
         <input type="hidden" name="controller" value="pipeline" />
         <input type="hidden" name="task" value="status" />
 
-        <input type="hidden" name="msg" value="<?php echo Lang::txt('COM_TOOLS_NOTICE_RES_UPDATED'); ?>" />
+        <input type="hidden" name="msg"
+            value="<?php echo Lang::txt('COM_TOOLS_NOTICE_RES_UPDATED'); ?>" />
         <input type="hidden" name="step" value="6" />
         <input type="hidden" name="editversion" value="<?php echo $this->version; ?>" />
         <input type="hidden" name="toolname" value="<?php echo $this->resource->alias; ?>" />
 
         <div class="steps-nav">
-            <span class="step-prev"><input type="button" value="&lt; <?php echo ucfirst(Lang::txt('COM_TOOLS_PREVIOUS')); ?>" class="btn returntoedit" /></span>
-            <span class="step-next"><input type="submit" value="<?php echo ucfirst(Lang::txt('COM_TOOLS_CONTRIBTOOL_STEP_FINALIZE')); ?> &gt;" /></span>
+            <span class="step-prev"><input type="button"
+                value="<?php echo $prevLabel; ?>"
+                class="btn returntoedit" /></span>
+            <span class="step-next"><input type="submit"
+                value="<?php echo $finalizeLabel; ?>" /></span>
         </div>
         <div class="clear"></div>
     </form>
 
     <h1 id="preview-header"><?php echo Lang::txt('COM_TOOLS_Preview'); ?></h1>
     <div id="preview-pane">
-        <iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" src="<?php echo Route::url('index.php?option=com_resources&id=' . $this->resource->id . '&tmpl=component&mode=preview&rev=' . $this->version); ?>"></iframe>
+        <iframe id="preview-frame" name="preview-frame" width="100%"
+            frameborder="0" src="<?php echo $previewSrc; ?>"></iframe>
     </div>
 </section>

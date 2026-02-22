@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -43,6 +42,45 @@ if ($declared) {
 $output  = Event::trigger('tools.onToolSessionView', array($this->app, $this->output, $readOnly));
 $plugins = Event::trigger('tools.onToolSessionIdentify');
 
+$keepUrl = Route::url('index.php?option=com_members&task=myaccount');
+$stopUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&app=' . $this->toolname
+    . '&task=stop&sess=' . $this->app->sess
+    . '&return=' . $this->rtrn
+);
+$unshareUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&app=' . $this->toolname
+    . '&task=unshare&sess=' . $this->app->sess
+    . '&return=' . $this->rtrn
+);
+$optionsUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&app=' . $this->toolname
+    . '&task=session&sess=' . $this->app->sess
+);
+$appOptionsAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&app=' . $this->toolname
+    . '&task=session&sess=' . $this->app->sess
+);
+$shareFormAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&app=' . $this->toolname
+    . '&task=session&sess=' . $this->app->sess
+);
+$reinvokeAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&app=' . $this->toolname
+    . '&task=reinvoke&sess=' . $this->app->sess
+);
+$shareReturn = base64_encode(Route::url(
+    'index.php?option=' . $this->option
+    . '&app=' . $this->toolname
+    . '&task=session&sess=' . $this->app->sess
+));
+
 $this->css('tools.css')
      ->js('sessions.js');
 ?>
@@ -60,36 +98,51 @@ if (!$this->app->sess) {
         </p>
     <?php endif; ?>
 
-    <?php echo implode("\n", Event::trigger('tools.onToolSessionViewBefore', array($this->app, $this->output, $readOnly))); ?>
+    <?php echo implode("\n", Event::trigger(
+        'tools.onToolSessionViewBefore',
+        array($this->app, $this->output, $readOnly)
+    )); ?>
 
     <div id="app-wrap" style="width: <?php echo $this->output->width; ?>px;">
         <div id="app-header">
-            <h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) :
-                ?>editable<?php
-                                                                     endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->app->caption; ?></h2>
+            <?php
+            $h2Class = 'session-title item:name id:' . $this->app->sess;
+            if (is_object($this->app->owns)) {
+                $h2Class .= ' editable';
+            }
+            ?>
+            <h2
+                id="session-title"
+                class="<?php echo $h2Class; ?>"
+                rel="<?php echo $this->app->sess; ?>"><?php echo $this->app->caption; ?></h2>
             <?php if ($this->app->sess) { ?>
                 <ul class="app-toolbar" id="session-options">
                     <li>
-                        <a id="app-btn-keep" class="keep" href="<?php echo Route::url('index.php?option=com_members&task=myaccount'); ?>">
+                        <a id="app-btn-keep" class="keep" href="<?php echo $keepUrl; ?>">
                             <span><?php echo Lang::txt('COM_TOOLS_KEEP_FOR_LATER'); ?></span>
                         </a>
                     </li>
                     <?php if ($this->app->owns) { ?>
                         <li>
-                            <a id="app-btn-close" class="terminate sessiontips" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=stop&sess=' . $this->app->sess . '&return=' . $this->rtrn); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>">
+                            <a id="app-btn-close" class="terminate sessiontips"
+                                href="<?php echo $stopUrl; ?>"
+                                title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>">
                                 <span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
                             </a>
                         </li>
                     <?php } else { ?>
                         <li>
-                            <a id="app-btn-close" class="terminate sessiontips" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess . '&return=' . $this->rtrn); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>">
+                            <a id="app-btn-close" class="terminate sessiontips"
+                                href="<?php echo $unshareUrl; ?>"
+                                title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>">
                                 <span><?php echo Lang::txt('COM_TOOLS_STOP_SHARING'); ?></span>
                             </a>
                         </li>
                     <?php } ?>
                     <?php if (count($plugins) > 1) { ?>
                         <li>
-                            <a id="app-btn-options" class="options" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess); ?>">
+                            <a id="app-btn-options" class="options"
+                                href="<?php echo $optionsUrl; ?>">
                                 <span><?php echo Lang::txt('COM_TOOLS_SESSION_OPTIONS'); ?></span>
                             </a>
                         </li>
@@ -99,7 +152,7 @@ if (!$this->app->sess) {
         </div><!-- #app-header -->
         <?php if (count($plugins) > 1) { ?>
             <div id="app-options">
-                <form method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess); ?>">
+                <form method="get" action="<?php echo $appOptionsAction; ?>">
                     <fieldset>
                         <?php
                         $viewer = ($declared ? $declared : null); //Session::get('tool_viewer'));
@@ -107,7 +160,9 @@ if (!$this->app->sess) {
                             $viewer = $this->output->rendered;
                         }
                         ?>
-                        <?php echo $viewer ? Lang::txt('COM_TOOLS_SESSION_USING_VIEWER', Lang::txt('PLG_TOOLS_' . $viewer . '_TITLE')) : Lang::txt('COM_TOOLS_UNKNOWN_VIEWER'); ?>
+                        <?php echo $viewer
+                            ? Lang::txt('COM_TOOLS_SESSION_USING_VIEWER', Lang::txt('PLG_TOOLS_' . $viewer . '_TITLE'))
+                            : Lang::txt('COM_TOOLS_UNKNOWN_VIEWER'); ?>
 
                         <span class="input-wrap">
                             <label for="app-viewer">
@@ -118,16 +173,18 @@ if (!$this->app->sess) {
                                     if ($viewer == $plugin->name) {
                                         continue;
                                     }
+                                    $selPlugin = ($viewer == $plugin->name)
+                                        ? ' selected="selected"' : '';
                                     ?>
-                                    <option value="<?php echo $plugin->name; ?>"<?php if ($viewer == $plugin->name) {
-                                        echo ' selected="selected"';
-                                                   } ?>><?php echo $plugin->title; ?></option>
+                                    <option value="<?php echo $plugin->name; ?>"<?php
+                                        echo $selPlugin; ?>><?php echo $plugin->title; ?></option>
                                 <?php } ?>
                             </select>
                         </span>
 
                         <span class="input-wrap">
-                            <input type="checkbox" name="preferred" id="app-viewer-preferred" value="1" />
+                            <input type="checkbox" name="preferred"
+                                id="app-viewer-preferred" value="1" />
                             <label for="app-viewer-preferred">
                                 <?php echo Lang::txt('Use for future sessions.'); ?>
                             </label>
@@ -141,16 +198,20 @@ if (!$this->app->sess) {
                 </form>
             </div>
         <?php } ?>
-        <div id="app-content" tabindex="1" class="<?php if ($readOnly) {
-            echo 'view-only';
-                                                  } ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px">
+        <?php
+        $contentClass = $readOnly ? 'view-only' : '';
+        $contentStyle = 'width: ' . $this->output->width . 'px; height: ' . $this->output->height . 'px';
+        ?>
+        <div id="app-content" tabindex="1" class="<?php echo $contentClass; ?>" style="<?php echo $contentStyle; ?>">
             <noscript>
                 <p class="warning">
                     <?php echo Lang::txt('COM_TOOLS_ERROR_NOSCRIPT'); ?>
                 </p>
             </noscript>
-            <input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
-            <input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->escape($this->output->height); ?>" />
+            <input type="hidden" id="app-orig-width" name="apporigwidth"
+                value="<?php echo $this->escape($this->output->width); ?>" />
+            <input type="hidden" id="app-orig-height" name="apporigheight"
+                value="<?php echo $this->escape($this->output->height); ?>" />
             <?php
             $output = implode("\n", $output);
             if (!trim($output)) {
@@ -193,23 +254,38 @@ if (!$this->app->sess) {
                             <?php } ?>
                         </p>
                         <p>
-                            <?php echo $this->zone->get('description', Lang::txt('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone')))); ?>
+                            <?php echo $this->zone->get(
+                                'description',
+                                Lang::txt(
+                                    'COM_TOOLS_POWERED_BY_MIRROR',
+                                    $this->zone->get('title', $this->zone->get('zone'))
+                                )
+                            ); ?>
                         </p>
                     </div><!-- / .col span6 -->
                     <div class="col span6 omega">
-                        <form name="share" id="app-zone" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=reinvoke&sess=' . $this->app->sess); ?>">
+                        <form name="share" id="app-zone" method="post"
+                            action="<?php echo $reinvokeAction; ?>">
                             <p><?php echo Lang::txt('COM_TOOLS_ZONE_WARNING_CHANGE'); ?></p>
                             <p><label for="field-zone">
                                 <?php echo Lang::txt('COM_TOOLS_ZONE_RELAUNCH'); ?>
                                 <select name="zone" id="field-zone">
                                     <option value=""><?php echo Lang::txt('COM_TOOLS_SELECT'); ?></option>
                                     <?php
-                                    foreach ($this->middleware->zones('list', array('state' => 'up', 'id' => $this->middleware->get('allowed'))) as $zone) {
+                                    $zoneList = $this->middleware->zones(
+                                        'list',
+                                        array('state' => 'up', 'id' => $this->middleware->get('allowed'))
+                                    );
+                                    foreach ($zoneList as $zone) {
                                         if ($zone->get('id') == $this->zone->get('id')) {
                                             continue;
                                         }
+                                        $zoneTitle = $this->escape(
+                                            $zone->get('title', $zone->get('zone'))
+                                        );
                                         ?>
-                                    <option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('title', $zone->get('zone'))); ?></option>
+                                    <option value="<?php echo $zone->get('id'); ?>"><?php
+                                        echo $zoneTitle; ?></option>
                                     <?php } ?>
                                 </select>
                             </label>
@@ -221,22 +297,29 @@ if (!$this->app->sess) {
         <?php } ?>
     </div><!-- #app-wrap -->
 
-    <?php echo implode("\n", Event::trigger('tools.onToolSessionViewAfter', array($this->app, $this->output, $readOnly))); ?>
+    <?php echo implode("\n", Event::trigger(
+        'tools.onToolSessionViewAfter',
+        array($this->app, $this->output, $readOnly)
+    )); ?>
 
     <?php
     // Are we on an iPad?
     $isiPad = (bool) strpos($_SERVER['HTTP_USER_AGENT'], 'iPad');
 
     if ($isiPad && $this->config->get('launch_ipad', 0) && $this->config->get('launch_ipad_app')) {
+        $ipadHref = $this->config->get('launch_ipad_app')
+            . '://tools/session/' . $this->app->sess;
         ?>
-        <p class="tablet-app"><a class="btn icon-tablet" href="<?php echo $this->config->get('launch_ipad_app'); ?>://tools/session/<?php echo $this->app->sess; ?>"><?php echo Lang::txt('Launch in iPad app'); ?></a></p>
+        <p class="tablet-app"><a class="btn icon-tablet" href="<?php echo $ipadHref; ?>"><?php
+            echo Lang::txt('Launch in iPad app'); ?></a></p>
         <?php
     }
     ?>
 
     <div class="clear share-divider"></div>
     <?php if ($this->config->get('shareable', 0)) { ?>
-    <form name="share" id="app-share" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess); ?>">
+    <form name="share" id="app-share" method="post"
+        action="<?php echo $shareFormAction; ?>">
         <div class="grid">
         <?php if (is_object($this->app->owns)) : ?>
             <div class="col span8">
@@ -250,22 +333,34 @@ if (!$this->app->sess) {
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_TOOLS_SHARE_SESSION'); ?></legend>
 
-                    <input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
-                    <input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
+                    <input type="hidden" name="option"
+                        value="<?php echo $this->escape($this->option); ?>" />
+                    <input type="hidden" name="controller"
+                        value="<?php echo $this->escape($this->controller); ?>" />
                     <input type="hidden" name="task" value="share" />
-                    <input type="hidden" name="sess" value="<?php echo $this->escape($this->app->sess); ?>" />
-                    <input type="hidden" name="app" value="<?php echo $this->escape($this->toolname); ?>" />
-                    <input type="hidden" name="return" value="<?php echo base64_encode(Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess)); ?>" />
+                    <input type="hidden" name="sess"
+                        value="<?php echo $this->escape($this->app->sess); ?>" />
+                    <input type="hidden" name="app"
+                        value="<?php echo $this->escape($this->toolname); ?>" />
+                    <input type="hidden" name="return"
+                        value="<?php echo $shareReturn; ?>" />
 
                     <label for="field-username">
                         <?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_WITH'); ?>
                         <?php
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'username', 'acmembers')));
+                        $mc = Event::trigger(
+                            'hubzero.onGetMultiEntry',
+                            array(array('members', 'username', 'acmembers'))
+                        );
                         if (count($mc) > 0) {
-                            echo '<span class="hint">' . Lang::txt('COM_TOOLS_SHARE_SESSION_HINT_AUTOCOMPLETE') . '</span>' . $mc[0];
+                            echo '<span class="hint">'
+                                . Lang::txt('COM_TOOLS_SHARE_SESSION_HINT_AUTOCOMPLETE')
+                                . '</span>' . $mc[0];
                         } else { ?>
-                            <span class="hint"><?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_HINT'); ?></span>
-                            <input type="text" name="username" id="field-username" value="" />
+                            <span class="hint"><?php
+                                echo Lang::txt('COM_TOOLS_SHARE_SESSION_HINT'); ?></span>
+                            <input type="text" name="username"
+                                id="field-username" value="" />
                         <?php } ?>
                     </label>
                     <label for="group">
@@ -274,7 +369,8 @@ if (!$this->app->sess) {
                             <option value=""><?php echo Lang::txt('- Select Group &mdash;'); ?></option>
                             <?php if (!empty($this->mygroups)) {
                                 foreach ($this->mygroups as $group) : ?>
-                                <option value="<?php echo $group->gidNumber; ?>"><?php echo $group->description; ?></option>
+                                <option value="<?php echo $group->gidNumber; ?>"><?php
+                                    echo $group->description; ?></option>
                                 <?php endforeach;
                             } ?>
                         </select>
@@ -282,7 +378,8 @@ if (!$this->app->sess) {
 
                     <?php if (0) : /* https://hubzero.org/support/ticket/9826 */ ?>
                     <label for="field-readonly" id="readonly-label">
-                        <input class="option" type="checkbox" name="readonly" id="readonly" value="Yes" />
+                        <input class="option" type="checkbox" name="readonly"
+                            id="readonly" value="Yes" />
                         <?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_READ_ONLY'); ?>
                     </label>
                     <?php endif; ?>
@@ -290,13 +387,16 @@ if (!$this->app->sess) {
                     <div>&nbsp;</div>
 
                     <label for="confirm-share" id="confirm-share-label">
-                        <input class="option" type="checkbox" value="Yes" name="confirm" id="confirm-share">
+                        <input class="option" type="checkbox" value="Yes"
+                            name="confirm" id="confirm-share">
                         <?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_CONFIRM'); ?>
                     </label>
                     <div>&nbsp;</div>
 
                     <p class="submit">
-                        <input type="submit" value="<?php echo Lang::txt('COM_TOOLS_SHARE'); ?>" id="share-btn" />
+                        <input type="submit"
+                            value="<?php echo Lang::txt('COM_TOOLS_SHARE'); ?>"
+                            id="share-btn" />
                     </p>
 
                     <div class="sidenote">
@@ -332,30 +432,51 @@ if (!$this->app->sess) {
                             if ($row->viewuser != User::get('username')) {
                                 $user = User::getInstance($row->viewuser);
 
-                                $id = ($user->get('id') < 0) ? 'n' . -$user->get('id') : $user->get('id');
+                                $id = ($user->get('id') < 0)
+                                    ? 'n' . -$user->get('id')
+                                    : $user->get('id');
 
                                 // User picture
                                 $p = $user->picture();
+                                $memberUrl = Route::url(
+                                    'index.php?option=com_members&id=' . $id
+                                );
+                                $removeUrl = Route::url(
+                                    'index.php?option=' . $this->option
+                                    . '&app=' . $this->toolname
+                                    . '&task=unshare&sess=' . $this->app->sess
+                                    . '&username=' . $row->viewuser
+                                    . '&return=' . $this->rtrn
+                                );
+                                $userName = $this->escape(stripslashes($user->get('name')));
+                                $userLogin = $this->escape(stripslashes($user->get('username')));
                                 ?>
                         <tr>
                             <th class="entry-img">
-                                <img width="40" height="40" src="<?php echo $p; ?>" alt="<?php echo $this->escape(stripslashes($user->get('name'))); ?>" />
+                                <img width="40" height="40" src="<?php echo $p; ?>"
+                                    alt="<?php echo $userName; ?>" />
                             </th>
                             <td>
-                                <a class="entry-title" href="<?php echo Route::url('index.php?option=com_members&id=' . $id); ?>">
-                                    <?php echo $this->escape(stripslashes($user->get('name'))); ?>
+                                <a class="entry-title" href="<?php echo $memberUrl; ?>">
+                                    <?php echo $userName; ?>
                                 </a><br />
                                 <span class="entry-details">
-                                    <span class="username"><?php echo $this->escape(stripslashes($user->get('username'))); ?></span>
+                                    <span class="username"><?php echo $userLogin; ?></span>
                                 </span>
                             </td>
                             <td class="entry-actions">
                                 <?php if (is_object($this->app->owns)) : ?>
                                     <?php if (strtolower($row->readonly) == 'yes') : ?>
-                                        <span class="readonly"><?php echo Lang::txt('COM_TOOLS_SESSION_READ_ONLY'); ?></span>
+                                        <span class="readonly"><?php
+                                            echo Lang::txt('COM_TOOLS_SESSION_READ_ONLY');
+                                        ?></span>
                                     <?php endif; ?>
-                                    <a class="entry-remove" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess . '&username=' . $row->viewuser . '&return=' . $this->rtrn); ?>" title="<?php echo Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?>">
-                                        <span><?php echo Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?></span>
+                                    <a class="entry-remove"
+                                        href="<?php echo $removeUrl; ?>"
+                                        title="<?php echo Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?>">
+                                        <span><?php
+                                            echo Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER');
+                                        ?></span>
                                     </a>
                                 <?php endif; ?>
                             </td>
@@ -374,7 +495,15 @@ if (!$this->app->sess) {
 <?php } ?>
 
 <?php if ($this->config->get('access-manage-session')) { ?>
-    <p id="app-manager"><?php echo Lang::txt('COM_TOOLS_SESSION_ADMIN_INFO', $this->app->username, $this->app->ip, $this->app->sess); ?></p>
+    <?php
+    $adminInfo = Lang::txt(
+        'COM_TOOLS_SESSION_ADMIN_INFO',
+        $this->app->username,
+        $this->app->ip,
+        $this->app->sess
+    );
+    ?>
+    <p id="app-manager"><?php echo $adminInfo; ?></p>
 <?php } ?>
 
     <?php

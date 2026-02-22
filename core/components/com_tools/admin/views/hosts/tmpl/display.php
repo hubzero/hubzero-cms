@@ -19,20 +19,61 @@ Toolbar::help('hosts');
 $this->css();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$sortName = Html::grid('sort', 'COM_TOOLS_COL_NAME', 'hostname', @$this->filters['sort_Dir'], @$this->filters['sort']);
+$sortServiceHost = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_SERVICE_HOST',
+    'service_host',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortProvisions = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_PROVISIONS',
+    'provisions',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortStatus = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_STATUS',
+    'status',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortUses = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_USES',
+    'uses',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortZone = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_ZONE',
+    'zone_id',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_NAME', 'hostname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_SERVICE_HOST', 'service_host', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_PROVISIONS', 'provisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_USES', 'uses', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ZONE', 'zone_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo $sortName; ?></th>
+                <th scope="col"><?php echo $sortServiceHost; ?></th>
+                <th scope="col"><?php echo $sortProvisions; ?></th>
+                <th scope="col" class="priority-2"><?php echo $sortStatus; ?></th>
+                <th scope="col" class="priority-3"><?php echo $sortUses; ?></th>
+                <th scope="col" class="priority-4"><?php echo $sortZone; ?></th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_TOOLS_COL_BROKEN_CONTAINERS'); ?></th>
             </tr>
         </thead>
@@ -63,14 +104,27 @@ if ($this->rows) {
             $r = $this->hosttypes[$k];
             $list[$r->name] = (int)$r->value & (int)$row->provisions;
         }
+        $editUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
+            . '&task=edit&hostname=' . $row->hostname
+        );
+        $statusCls = ($row->status == 'up') ? 'publish' : 'unpublish';
+        $statusUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
+            . '&task=status&hostname=' . $row->hostname
+        );
         ?>
             <tr>
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->hostname; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->hostname; ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?php echo $i;?>"
+                        value="<?php echo $row->hostname; ?>" class="checkbox-toggle" />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $row->hostname; ?></label>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&hostname=' . $row->hostname); ?>">
+                    <a href="<?php echo $editUrl; ?>">
                         <span><?php echo $this->escape($row->hostname); ?></span>
                     </a>
                 </td>
@@ -83,8 +137,15 @@ if ($this->rows) {
                     if ($value != '0') {
                         echo '<strong>';
                     }
+                    $activeCls = ($value != '0') ? 'active' : 'inactive';
+                    $toggleUrl = Route::url(
+                        'index.php?option=' . $this->option
+                        . '&controller=' . $this->controller
+                        . '&task=toggle&hostname=' . $row->hostname
+                        . '&item=' . $key
+                    );
                     ?>
-                    <a class="<?php echo ($value != '0') ? 'active' : 'inactive'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle&hostname=' . $row->hostname . '&item=' . $key); ?>">
+                    <a class="<?php echo $activeCls; ?>" href="<?php echo $toggleUrl; ?>">
                         <span><?php echo $this->escape($key); ?></span>
                     </a>
                         <?php
@@ -96,7 +157,7 @@ if ($this->rows) {
                 ?>
                 </td>
                 <td class="priority-2">
-                    <a class="state <?php echo ($row->status == 'up') ? 'publish' : 'unpublish'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&hostname=' . $row->hostname); ?>">
+                    <a class="state <?php echo $statusCls; ?>" href="<?php echo $statusUrl; ?>">
                         <span><?php echo $this->escape($row->status); ?></span>
                     </a>
                 </td>
@@ -108,7 +169,10 @@ if ($this->rows) {
                 </td>
                 <td class="priority-3">
                     <?php
-                        $db->setQuery("SELECT count(*) FROM `display` WHERE `status`='broken' AND `hostname`=" . $db->quote($row->hostname));
+                        $db->setQuery(
+                            "SELECT count(*) FROM `display` WHERE `status`='broken' AND `hostname`="
+                            . $db->quote($row->hostname)
+                        );
                         echo $db->loadResult();
                     ?>
                 </td>

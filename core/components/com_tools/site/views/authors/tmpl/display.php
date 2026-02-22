@@ -12,8 +12,11 @@ defined('_HZEXEC_') or die();
 $this->css('component.css');
 
 if ($this->version == 'dev') {
+    $authorsFormAction = 'index.php?option=' . $this->option
+        . '&amp;controller=' . $this->controller;
     ?>
-    <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" id="authors-form" method="post" enctype="multipart/form-data">
+    <form action="<?php echo $authorsFormAction; ?>" id="authors-form"
+        method="post" enctype="multipart/form-data">
         <fieldset>
         <?php if ($this->getError()) { ?>
             <p class="error">
@@ -25,25 +28,35 @@ if ($this->version == 'dev') {
                     <label for="acmembers">
                         <?php echo Lang::txt('COM_TOOLS_AUTHORS_ENTER_LOGINS'); ?>
                         <?php
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', array(array('members', 'new_authors', 'acmembers')));
+                        $mc = Event::trigger(
+                            'hubzero.onGetMultiEntry',
+                            array(array('members', 'new_authors', 'acmembers'))
+                        );
                         if (count($mc) > 0) {
                             echo $mc[0];
                         } else {
-                            ?> <span class="hint"><?php echo Lang::txt('COM_TOOLS_ADD_AUTHORS_INSTRUCTIONS'); ?></span>
+                            ?>
+                            <span class="hint">
+                                <?php echo Lang::txt('COM_TOOLS_ADD_AUTHORS_INSTRUCTIONS'); ?>
+                            </span>
                         <input type="text" name="new_authors" id="acmembers" value="" />
                         <?php } ?>
                     </label>
                 </div>
                 <div class="col span3">
                     <label>
-                        <span id="new-authors-role-label"><?php echo Lang::txt('COM_TOOLS_AUTHORS_ROLE'); ?></span><br />
+                        <span id="new-authors-role-label">
+                            <?php echo Lang::txt('COM_TOOLS_AUTHORS_ROLE'); ?>
+                        </span><br />
                         <select name="role" id="new-authors-role">
                             <option value=""><?php echo Lang::txt('COM_TOOLS_AUTHOR'); ?></option>
                             <?php
                             if ($this->roles) {
                                 foreach ($this->roles as $role) {
+                                    $roleAlias = $this->escape($role->alias);
+                                    $roleTitle = $this->escape($role->title);
                                     ?>
-                                <option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape($role->title); ?></option>
+                                <option value="<?php echo $roleAlias; ?>"><?php echo $roleTitle; ?></option>
                                     <?php
                                 }
                             }
@@ -75,8 +88,12 @@ if ($this->version == 'dev') {
 if ($this->contributors) {
     $i = 0;
     $n = count($this->contributors);
+    $listFormAction = 'index.php?option=' . $this->option
+        . '&amp;controller=' . $this->controller
+        . '&amp;task=update&amp;tmpl=component';
     ?>
-    <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;tmpl=component" id="authors-list" method="post" enctype="multipart/form-data">
+    <form action="<?php echo $listFormAction; ?>" id="authors-list"
+        method="post" enctype="multipart/form-data">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
         <input type="hidden" name="tmpl" value="component" />
@@ -109,24 +126,34 @@ if ($this->contributors) {
                 } else {
                     $name  = stripslashes($contributor->name);
                 }
+                $authorid  = isset($contributor->authorid) ? $contributor->authorid : '';
+                $orgVal    = $this->escape(stripslashes($contributor->organization));
+                $orgHolder = Lang::txt('COM_TOOLS_AUTHOR_ORGANIZATION');
                 ?>
                 <tr>
                     <td width="100%">
                         <?php echo $this->escape($name); ?><br />
-                        <input type="text" name="authors[<?php echo isset($contributor->authorid) ? $contributor->authorid : "";  ?>][organization]" size="35" value="<?php echo $this->escape(stripslashes($contributor->organization)); ?>" placeholder="<?php echo Lang::txt('COM_TOOLS_AUTHOR_ORGANIZATION'); ?>" />
+                        <input type="text"
+                            name="authors[<?php echo $authorid; ?>][organization]"
+                            size="35" value="<?php echo $orgVal; ?>"
+                            placeholder="<?php echo $orgHolder; ?>" />
                     </td>
                     <td>
-                        <select name="authors[<?php echo isset($contributor->authorid) ? $contributor->authorid : "";  ?>][role]" id="role-<?php echo isset($contributor->authorid) ? $contributor->authorid : "";  ?>">
+                        <select name="authors[<?php echo $authorid; ?>][role]"
+                            id="role-<?php echo $authorid; ?>">
                             <option value=""<?php if ($contributor->role == '') {
                                 echo ' selected="selected"';
                                             }?>><?php echo Lang::txt('COM_TOOLS_AUTHOR'); ?></option>
                             <?php
                             if ($this->roles) {
                                 foreach ($this->roles as $role) {
+                                    $rAlias = $this->escape($role->alias);
+                                    $rTitle = $this->escape(stripslashes($role->title));
+                                    $rSel = ($contributor->role == $role->alias)
+                                        ? ' selected="selected"' : '';
                                     ?>
-                                    <option value="<?php echo $this->escape($role->alias); ?>"<?php if ($contributor->role == $role->alias) {
-                                        echo ' selected="selected"';
-                                                   }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                                    <option value="<?php echo $rAlias; ?>"<?php echo $rSel; ?>>
+                                        <?php echo $rTitle; ?></option>
                                     <?php
                                 }
                             }
@@ -136,21 +163,39 @@ if ($this->contributors) {
                     <td class="u"><?php
                     if ($this->version == 'dev') {
                         if ($i > 0 || ($i + 0 > 0)) {
-                            echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->id . '&amp;id=' . $contributor->authorid . '&amp;task=reorder&amp;move=up" class="order up" title="' . Lang::txt('COM_TOOLS_MOVE_UP') . '"><span>' . Lang::txt('COM_TOOLS_MOVE_UP') . '</span></a>';
+                            $upUrl = 'index.php?option=' . $this->option
+                                . '&amp;controller=' . $this->controller
+                                . '&amp;tmpl=component&amp;pid=' . $this->id
+                                . '&amp;id=' . $contributor->authorid
+                                . '&amp;task=reorder&amp;move=up';
+                            $upTxt = Lang::txt('COM_TOOLS_MOVE_UP');
+                            echo '<a href="' . $upUrl . '" class="order up" title="'
+                                . $upTxt . '"><span>' . $upTxt . '</span></a>';
                         } else {
                             echo '&nbsp;';
                         }
                         ?></td>
                             <td class="d"><?php
                             if ($i < $n - 1 || $i + 0 < $n - 1) {
-                                echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->id . '&amp;id=' . $contributor->authorid . '&amp;task=reorder&amp;move=down" class="order down" title="' . Lang::txt('COM_TOOLS_MOVE_DOWN') . '"><span>' . Lang::txt('COM_TOOLS_MOVE_DOWN') . '</span></a>';
+                                $downUrl = 'index.php?option=' . $this->option
+                                    . '&amp;controller=' . $this->controller
+                                    . '&amp;tmpl=component&amp;pid=' . $this->id
+                                    . '&amp;id=' . $contributor->authorid
+                                    . '&amp;task=reorder&amp;move=down';
+                                $downTxt = Lang::txt('COM_TOOLS_MOVE_DOWN');
+                                echo '<a href="' . $downUrl . '" class="order down" title="'
+                                    . $downTxt . '"><span>' . $downTxt . '</span></a>';
                             } else {
                                 echo '&nbsp;';
                             }
                     }
                     ?></td>
                     <td class="t">
-                        <a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo isset($contributor->authorid) ? $contributor->authorid : "";  ?>&amp;pid=<?php echo $this->id; ?>" title="<?php echo Lang::txt('COM_TOOLS_DELETE'); ?>">
+                        <a class="icon-delete delete"
+                            href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php
+                                echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php
+                                echo $authorid; ?>&amp;pid=<?php echo $this->id; ?>"
+                            title="<?php echo Lang::txt('COM_TOOLS_DELETE'); ?>">
                             <span><?php echo Lang::txt('COM_TOOLS_DELETE'); ?></span>
                         </a>
                     </td>

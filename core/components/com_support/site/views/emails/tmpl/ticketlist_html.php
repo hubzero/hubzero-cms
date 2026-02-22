@@ -58,16 +58,29 @@ $site = rtrim(Request::base(), '/');
     </table>
     <!-- End Spacer -->
 
-    <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid #fff; background: #fff; font-size: 0.9em; line-height: 1.6em;">
+    <?php
+    $tblInfoStyle = 'border-collapse: collapse; border: 1px solid #fff;'
+        . ' background: #fff; font-size: 0.9em; line-height: 1.6em;';
+    $thBase = 'text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap;';
+    $thBorder = $thBase . ' border-left: 1px solid #fff;';
+    ?>
+    <table
+        id="ticket-info"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        border="0"
+        style="<?php echo $tblInfoStyle; ?>"
+    >
         <thead>
             <tr>
-                <th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap;" align="left">Number</th>
-                <th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap; border-left: 1px solid #fff;" align="left">Issue</th>
-                <th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap; border-left: 1px solid #fff;" align="left">Created</th>
-                <th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap; border-left: 1px solid #fff;" align="left">Creator</th>
-                <th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap; border-left: 1px solid #fff;" align="left">Assigned</th>
-                <th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap; border-left: 1px solid #fff;" align="left">Severity</th>
-                <th style="text-align: left; padding: 0.7em; font-weight: bold; white-space: nowrap; border-left: 1px solid #fff;" align="left">Status</th>
+                <th style="<?php echo $thBase; ?>" align="left">Number</th>
+                <th style="<?php echo $thBorder; ?>" align="left">Issue</th>
+                <th style="<?php echo $thBorder; ?>" align="left">Created</th>
+                <th style="<?php echo $thBorder; ?>" align="left">Creator</th>
+                <th style="<?php echo $thBorder; ?>" align="left">Assigned</th>
+                <th style="<?php echo $thBorder; ?>" align="left">Severity</th>
+                <th style="<?php echo $thBorder; ?>" align="left">Status</th>
             </tr>
         </thead>
         <tbody>
@@ -93,15 +106,41 @@ $site = rtrim(Request::base(), '/');
                 }
                 $link = $site . '/' . trim($sef, '/');
                 $link = str_replace('/administrator', '', $link);
+
+                $sev     = $ticket->severity;
+                $trStyle = 'background: ' . $bgcolor[$sev] . '; border: 1px solid ' . $bdcolor[$sev] . ';';
+                $tdStyle = 'text-align: left; padding: 0.7em;';
+                $tdBdr   = 'text-align: left; padding: 0.7em; border-left: 1px solid ' . $bdcolor[$sev] . ';';
+                $tdNws   = 'text-align: left; padding: 0.7em; white-space: nowrap;'
+                    . ' border-left: 1px solid ' . $bdcolor[$sev] . ';';
+
+                $creatorName  = $ticket->name ? $this->escape($ticket->name) : 'Unknown';
+                $creatorLogin = $ticket->login ? '(' . $this->escape($ticket->login) . ')' : '';
+                $ownerName    = $ticket->owner ? $this->escape($ticket->owner_name) : '--';
+                $ownerLogin   = $ticket->owner ? '(' . $this->escape($ticket->owner) . ')' : '';
                 ?>
-                <tr style="background: <?php echo $bgcolor[$ticket->severity]; ?>; border: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>">
-                    <td style="text-align: left; padding: 0.7em;" valign="top" align="left"><a href="<?php echo $link; ?>">#<?php echo $ticket->id; ?></a></td>
-                    <td style="text-align: left; padding: 0.7em; border-left: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>;" align="left"><?php echo $this->escape($ticket->summary); ?></td>
-                    <td style="text-align: left; padding: 0.7em; white-space: nowrap; border-left: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>;" align="left"><?php echo $this->escape($ticket->created); ?></td>
-                    <td style="text-align: left; padding: 0.7em; white-space: nowrap; border-left: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>;" align="left"><?php echo $ticket->name ? $this->escape($ticket->name) : 'Unknown'; ?> <?php echo $ticket->login ? '(' . $this->escape($ticket->login) . ')' : ''; ?></td>
-                    <td style="text-align: left; padding: 0.7em; white-space: nowrap; border-left: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>;" align="left"><?php echo $ticket->owner ? $this->escape($ticket->owner_name) : '--'; ?> <?php echo $ticket->owner ? '(' . $this->escape($ticket->owner) . ')' : ''; ?></td>
-                    <td style="text-align: left; padding: 0.7em; white-space: nowrap; border-left: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>;" align="left"><?php echo $this->escape($ticket->severity); ?></td>
-                    <td style="text-align: left; padding: 0.7em; white-space: nowrap; border-left: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>;" align="left"><?php echo $this->escape($ticket->status_title); ?></td>
+                <tr style="<?php echo $trStyle; ?>">
+                    <td style="<?php echo $tdStyle; ?>" valign="top" align="left">
+                        <a href="<?php echo $link; ?>">#<?php echo $ticket->id; ?></a>
+                    </td>
+                    <td style="<?php echo $tdBdr; ?>" align="left">
+                        <?php echo $this->escape($ticket->summary); ?>
+                    </td>
+                    <td style="<?php echo $tdNws; ?>" align="left">
+                        <?php echo $this->escape($ticket->created); ?>
+                    </td>
+                    <td style="<?php echo $tdNws; ?>" align="left">
+                        <?php echo $creatorName; ?> <?php echo $creatorLogin; ?>
+                    </td>
+                    <td style="<?php echo $tdNws; ?>" align="left">
+                        <?php echo $ownerName; ?> <?php echo $ownerLogin; ?>
+                    </td>
+                    <td style="<?php echo $tdNws; ?>" align="left">
+                        <?php echo $this->escape($ticket->severity); ?>
+                    </td>
+                    <td style="<?php echo $tdNws; ?>" align="left">
+                        <?php echo $this->escape($ticket->status_title); ?>
+                    </td>
                 </tr>
                 <?php
             }

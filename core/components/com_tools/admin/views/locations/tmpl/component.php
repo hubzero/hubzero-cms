@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package    hubzero-cms
  * @copyright  Copyright (c) 2005-2020 The Regents of the University of California.
@@ -14,26 +13,83 @@ Html::behavior('modal');
 
 $this->js('locations.js');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$addUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=add&zone=' . $this->filters['zone']
+    . '&tmpl=' . $this->filters['tmpl']
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
 
     <table class="adminlist">
         <thead>
             <tr>
                 <th colspan="<?php echo !$this->filters['zone'] ? 9 : 8; ?>" class="align-right">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=add&zone=' . $this->filters['zone'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="button edit-asset" rel="{type: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_TOOLS_ADD_LOCATION'); ?></a>
+                    <a href="<?php echo $addUrl; ?>"
+                        class="button edit-asset"
+                        rel="{type: 'iframe', size: {x: 570, y: 550}}">
+                        <?php echo Lang::txt('COM_TOOLS_ADD_LOCATION'); ?></a>
                 </th>
             </tr>
             <tr>
                 <th scope="col"><?php echo Lang::txt('COM_TOOLS_COL_ID'); ?></th>
             <?php if (!$this->filters['zone']) { ?>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ZONE', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <?php
+                $zoneSort = Html::grid(
+                    'sort',
+                    'COM_TOOLS_COL_ZONE',
+                    'zone',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                );
+                ?>
+                <th scope="col"><?php echo $zoneSort; ?></th>
             <?php } ?>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_IP_FROM', 'ipFROM', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_IP_TO', 'ipTO', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_CONTINENT', 'continent', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_COUNTRY', 'countrySHORT', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_REGION', 'ipREGION', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_CITY', 'ipCITY', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo Html::grid(
+                    'sort',
+                    'COM_TOOLS_COL_IP_FROM',
+                    'ipFROM',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?></th>
+                <th scope="col"><?php echo Html::grid(
+                    'sort',
+                    'COM_TOOLS_COL_IP_TO',
+                    'ipTO',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?></th>
+                <th scope="col"><?php echo Html::grid(
+                    'sort',
+                    'COM_TOOLS_COL_CONTINENT',
+                    'continent',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?></th>
+                <th scope="col"><?php echo Html::grid(
+                    'sort',
+                    'COM_TOOLS_COL_COUNTRY',
+                    'countrySHORT',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?></th>
+                <th scope="col"><?php echo Html::grid(
+                    'sort',
+                    'COM_TOOLS_COL_REGION',
+                    'ipREGION',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?></th>
+                <th scope="col"><?php echo Html::grid(
+                    'sort',
+                    'COM_TOOLS_COL_CITY',
+                    'ipCITY',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort']
+                ); ?></th>
                 <th scope="col">X</th>
             </tr>
         </thead>
@@ -43,55 +99,76 @@ $this->js('locations.js');
 $i = 0;
 $k = 0;
 foreach ($this->rows as $row) {
+    $editUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+        . '&task=edit&id=' . $row->get('id')
+        . '&tmpl=' . $this->filters['tmpl']
+    );
+    $removeUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+        . '&task=remove&id=' . $row->get('id')
+        . '&tmpl=' . $this->filters['tmpl']
+        . '&' . Session::getFormToken() . '=1'
+    );
     ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php echo $this->escape($row->get('id')); ?>
-                    <input class="hide" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+                    <input class="hide" type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
                 </td>
             <?php if (!$this->filters['zone']) { ?>
                 <td>
-                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
+                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                        href="<?php echo $editUrl; ?>">
                         <span><?php echo $this->escape(stripslashes($row->get('zone'))); ?></span>
                     </a>
                 </td>
             <?php } ?>
                 <td>
                     <?php if ($row->get('ipFROM') != 0000000000) : ?>
-                        <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
+                        <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                            href="<?php echo $editUrl; ?>">
                             <?php echo $this->escape(stripslashes(long2ip($row->get('ipFROM')))); ?>
                         </a>
                     <?php endif; ?>
                 </td>
                 <td>
                     <?php if ($row->get('ipTO') != 0000000000) : ?>
-                        <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
+                        <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                            href="<?php echo $editUrl; ?>">
                             <?php echo $this->escape(stripslashes(long2ip($row->get('ipTO')))); ?>
                         </a>
                     <?php endif; ?>
                 </td>
                 <td>
-                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
+                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                        href="<?php echo $editUrl; ?>">
                         <?php echo $this->escape(stripslashes($row->get('continent'))); ?>
                     </a>
                 </td>
                 <td>
-                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
+                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                        href="<?php echo $editUrl; ?>">
                         <span><?php echo $this->escape(stripslashes($row->get('countrySHORT'))); ?></span>
                     </a>
                 </td>
                 <td>
-                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
+                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                        href="<?php echo $editUrl; ?>">
                         <span><?php echo $this->escape(stripslashes($row->get('ipREGION'))); ?></span>
                     </a>
                 </td>
                 <td>
-                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl']); ?>">
+                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                        href="<?php echo $editUrl; ?>">
                         <span><?php echo $this->escape(stripslashes($row->get('ipCITY'))); ?></span>
                     </a>
                 </td>
                 <td>
-                    <a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $row->get('id') . '&tmpl=' . $this->filters['tmpl'] . '&' . Session::getFormToken() . '=1'); ?>">
+                    <a class="state trash" href="<?php echo $removeUrl; ?>">
                         <span><?php echo Lang::txt('[ x ]'); ?></span>
                     </a>
                 </td>

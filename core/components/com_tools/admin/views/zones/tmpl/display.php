@@ -18,20 +18,70 @@ Toolbar::spacer();
 Toolbar::help('zones');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$sortZone = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_ZONE',
+    'zone',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortType = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_TYPE',
+    'type',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortState = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_STATE',
+    'state',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortDefault = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_DEFAULT',
+    'is_default',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortMaster = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_MASTER',
+    'master',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortSshKey = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_SSH_KEY',
+    'ssh_key_path',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle"
+                        value="" class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ZONE', 'zone', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_DEFAULT', 'is_default', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_MASTER', 'master', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_TOOLS_COL_SSH_KEY', 'ssh_key_path', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo $sortZone; ?></th>
+                <th scope="col" class="priority-2"><?php echo $sortType; ?></th>
+                <th scope="col"><?php echo $sortState; ?></th>
+                <th scope="col"><?php echo $sortDefault; ?></th>
+                <th scope="col" class="priority-4"><?php echo $sortMaster; ?></th>
+                <th scope="col" class="priority-5"><?php echo $sortSshKey; ?></th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_TOOLS_COL_LOCATIONS'); ?></th>
             </tr>
         </thead>
@@ -55,14 +105,36 @@ Toolbar::help('zones');
 if ($this->rows) {
     $i = 0;
     foreach ($this->rows as $row) {
+        $editUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
+            . '&task=edit&id=' . $row->get('id')
+        );
+        $stateClass = ($row->get('state') == 'up') ? 'publish' : 'unpublish';
+        $stateToggle = ($row->get('state') == 'up') ? 'down' : 'up';
+        $stateUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&controller=' . $this->controller
+            . '&task=state&id=' . $row->get('id')
+            . '&state=' . $stateToggle
+            . '&' . Session::getFormToken() . '=1'
+        );
+        $defaultClass = ($row->get('is_default')) ? 'default' : 'notdefault';
+        $locUrl = Route::url(
+            'index.php?option=' . $this->option
+            . '&controller=locations&zone=' . $row->get('id')
+            . '&tmpl=index'
+        );
         ?>
             <tr>
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
+                        value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                        <?php echo $row->get('id'); ?></label>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                    <a href="<?php echo $editUrl; ?>">
                         <span><?php echo $this->escape(stripslashes($row->get('zone'))); ?></span>
                     </a>
                 </td>
@@ -70,12 +142,12 @@ if ($this->rows) {
                     <?php echo $this->escape(stripslashes($row->get('type'))); ?>
                 </td>
                 <td>
-                    <a class="state <?php echo ($row->get('state') == 'up') ? 'publish' : 'unpublish'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=state&id=' . $row->get('id') . '&state=' . ($row->get('state') == 'up' ? 'down' : 'up') . '&' . Session::getFormToken() . '=1'); ?>">
+                    <a class="state <?php echo $stateClass; ?>" href="<?php echo $stateUrl; ?>">
                         <span><?php echo $this->escape(stripslashes($row->get('state'))); ?></span>
                     </a>
                 </td>
                 <td>
-                    <a class="state <?php echo ($row->get('is_default')) ? 'default' : 'notdefault'; ?>">
+                    <a class="state <?php echo $defaultClass; ?>">
                         <span><?php echo $this->escape(stripslashes($row->get('is_default'))); ?></span>
                     </a>
                 </td>
@@ -86,7 +158,7 @@ if ($this->rows) {
                     <?php echo $this->escape(stripslashes($row->get('ssh_key_path'))); ?>
                 </td>
                 <td class="priority-3">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=locations&zone=' . $row->get('id') . '&tmpl=index'); ?>">
+                    <a href="<?php echo $locUrl; ?>">
                         <span><?php echo $row->locations('count'); ?></span>
                     </a>
                 </td>
@@ -103,7 +175,8 @@ if ($this->rows) {
     <input type="hidden" name="task" value="" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
+    <input type="hidden" name="filter_order_Dir"
+        value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 
     <?php echo Html::input('token'); ?>
 </form>

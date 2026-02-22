@@ -64,8 +64,11 @@ $editUrl = function ($id) {
                 $sortCol = @$this->filters['sort'];
                 ?>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle"
+                        value="" class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>
+                    </label>
                 </th>
                 <th scope="col" class="priority-5">
                     <?php echo Html::grid('sort', 'COM_TAGS_COL_ID', 'id', $sortDir, $sortCol); ?>
@@ -141,7 +144,7 @@ $editUrl = function ($id) {
                 <?php } ?>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo $rowEditUrl; ?>">
                             <?php echo $this->escape($row->get('tbl')); ?>
                         </a>
                     <?php } else { ?>
@@ -152,7 +155,7 @@ $editUrl = function ($id) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?php echo $rowEditUrl; ?>">
                             <?php echo $this->escape($row->get('objectid')); ?>
                         </a>
                     <?php } else { ?>
@@ -162,11 +165,23 @@ $editUrl = function ($id) {
                     <?php } ?>
                 </td>
                 <td class="priority-3">
-                    <time datetime="<?php echo $row->get('taggedon'); ?>"><?php echo ($row->get('taggedon') && $row->get('taggedon') != '0000-00-00 00:00:00') ? $row->get('taggedon') : Lang::txt('COM_TAGS_UNKNOWN'); ?></time>
+                    <?php $taggedon = $row->get('taggedon'); ?>
+                    <time datetime="<?php echo $taggedon; ?>">
+                        <?php
+                        echo ($taggedon && $taggedon != '0000-00-00 00:00:00')
+                            ? $taggedon : Lang::txt('COM_TAGS_UNKNOWN');
+                        ?>
+                    </time>
                 </td>
                 <td class="priority-4">
                     <?php if ($row->get('taggerid')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->get('taggerid')); ?>">
+                        <?php
+                        $memberEditUrl = Route::url(
+                            'index.php?option=com_members&controller=members&task=edit&id='
+                            . $row->get('taggerid')
+                        );
+                        ?>
+                        <a href="<?php echo $memberEditUrl; ?>">
                             <?php echo $row->creator->get('name', Lang::txt('COM_TAGS_UNKNOWN')); ?>
                         </a>
                     <?php } else { ?>

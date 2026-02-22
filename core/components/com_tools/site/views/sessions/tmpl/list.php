@@ -9,7 +9,15 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$newSession = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=invoke&app=' . $this->app->toolname . '&version=' . $this->app->version), 'server');
+$newSession = Request::getString(
+    'REQUEST_URI',
+    Route::url(
+        'index.php?option=' . $this->option
+        . '&task=invoke&app=' . $this->app->toolname
+        . '&version=' . $this->app->version
+    ),
+    'server'
+);
 if (strstr($newSession, '?')) {
     $newSession .= '&amp;newinstance=1';
 } else {
@@ -48,10 +56,28 @@ if (strstr($newSession, '?')) {
             $cls = 'even';
             foreach ($this->sessions as $session) {
                 $cls = ($cls == 'odd') ? 'even' : 'odd';
+                $sessionUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&task=session&app=' . $session->appname
+                    . '&sess=' . $session->sessnum
+                );
+                $stopUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&task=stop&app=' . $session->appname
+                    . '&sess=' . $session->sessnum
+                );
+                $unshareUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&task=unshare&app=' . $session->appname
+                    . '&sess=' . $session->sessnum
+                );
+                $ownerTxt = Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER')
+                    . ': ' . $session->username;
                 ?>
             <tr class="<?php echo $cls; ?>">
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=session&app=' . $session->appname . '&sess=' . $session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_RESUME_TITLE'); ?>">
+                    <a href="<?php echo $sessionUrl; ?>"
+                        title="<?php echo Lang::txt('COM_TOOLS_RESUME_TITLE'); ?>">
                         <?php echo $session->sessname; ?>
                     </a>
                 </td>
@@ -63,16 +89,18 @@ if (strstr($newSession, '?')) {
                 </td>
                 <?php if (User::get('username') == $session->username) { ?>
                 <td>
-                    <a class="closetool" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=stop&app=' . $session->appname . '&sess=' . $session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_TITLE'); ?>">
+                    <a class="closetool" href="<?php echo $stopUrl; ?>"
+                        title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_TITLE'); ?>">
                         <?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>
                     </a>
                 </td>
                 <?php } else { ?>
                 <td>
-                    <a class="disconnect" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=unshare&app=' . $session->appname . '&sess=' . $session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_DISCONNECT_TITLE'); ?>">
+                    <a class="disconnect" href="<?php echo $unshareUrl; ?>"
+                        title="<?php echo Lang::txt('COM_TOOLS_DISCONNECT_TITLE'); ?>">
                         <?php echo Lang::txt('COM_TOOLS_DISCONNECT'); ?>
                     </a>
-                    <span class="owner"><?php echo Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username; ?></span>
+                    <span class="owner"><?php echo $ownerTxt; ?></span>
                 </td>
                 <?php } ?>
             </tr>

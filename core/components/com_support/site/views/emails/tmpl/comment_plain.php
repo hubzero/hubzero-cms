@@ -29,26 +29,49 @@ if ($this->delimiter) {
 $message .= '----------------------------' . "\n";
 
 if (!$this->config->get('email_terse')) {
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET')) . ': ' . $this->ticket->get('id') . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_SUMMARY')) . ': ' . $this->ticket->get('summary') . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED')) . ': ' . $this->ticket->get('created') . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')) . ': ' . $this->ticket->submitter->get('name') . ($this->ticket->get('login') ? ' (' . $this->ticket->get('login') . ')' : '') . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_STATUS')) . ': ' . $this->ticket->status->get('title') . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_TAGS')) . ': ' . $this->ticket->tags('string') . "\n";
+    $ticketId      = $this->ticket->get('id');
+    $ticketSummary = $this->ticket->get('summary');
+    $ticketCreated = $this->ticket->get('created');
+    $submitterName = $this->ticket->submitter->get('name');
+    $ticketLogin   = $this->ticket->get('login');
+    $statusTitle   = $this->ticket->status->get('title');
+    $ticketTags    = $this->ticket->tags('string');
+
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET')) . ': ' . $ticketId . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_SUMMARY')) . ': ' . $ticketSummary . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED')) . ': ' . $ticketCreated . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')) . ': '
+        . $submitterName . ($ticketLogin ? ' (' . $ticketLogin . ')' : '') . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_STATUS')) . ': ' . $statusTitle . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_TAGS')) . ': ' . $ticketTags . "\n";
     $message .= '----------------------------' . "\n\n";
     if ($this->comment->isPrivate()) {
         $message .= '!! ' . Lang::txt('COM_SUPPORT_COMMENT_PRIVATE') . " !!\n";
     }
-    $message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_POSTED', $this->ticket->get('id')) . ': ' . $this->comment->creator->get('name') . '(' . $this->comment->creator->get('username') . ")\n";
-    $message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_CREATED') . ': ' . $this->comment->get('created') . "\n\n";
+    $commentPosted  = Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_POSTED', $ticketId);
+    $creatorName    = $this->comment->creator->get('name');
+    $creatorLogin   = $this->comment->creator->get('username');
+    $commentCreated = $this->comment->get('created');
+    $message .= $commentPosted . ': ' . $creatorName . '(' . $creatorLogin . ")\n";
+    $message .= Lang::txt('COM_SUPPORT_TICKET_EMAIL_COMMENT_CREATED') . ': ' . $commentCreated . "\n\n";
     if ($this->comment->changelog()->lists()) {
         foreach ($this->comment->changelog()->lists() as $type => $log) {
             if (is_array($log) && count($log) > 0) {
                 foreach ($log as $items) {
                     if ($type == 'changes') {
-                        $message .= ' * ' . Lang::txt('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items->field, $items->before, $items->after) . "\n";
+                        $message .= ' * ' . Lang::txt(
+                            'COM_SUPPORT_CHANGELOG_BEFORE_AFTER',
+                            $items->field,
+                            $items->before,
+                            $items->after
+                        ) . "\n";
                     } elseif ($type == 'notifications') {
-                        $message  .= ' * ' . Lang::txt('COM_SUPPORT_CHANGELOG_NOTIFIED', $items->role, $items->name, $items->address) . "\n";
+                        $message  .= ' * ' . Lang::txt(
+                            'COM_SUPPORT_CHANGELOG_NOTIFIED',
+                            $items->role,
+                            $items->name,
+                            $items->address
+                        ) . "\n";
                     }
                 }
                 $message .= "\n";

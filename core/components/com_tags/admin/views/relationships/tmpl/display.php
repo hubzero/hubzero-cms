@@ -21,7 +21,8 @@ $this->css('tag_graph.css');
 $this->js('d3.js', 'system')
     ->js('tag_graph.js');
 ?>
-<form id="tag-sel" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
+<?php $tagSelAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form id="tag-sel" action="<?php echo $tagSelAction; ?>" method="get">
     <fieldset class="adminform">
         <legend><span><?php echo Lang::txt('COM_TAGS_FIND_TAG'); ?></span></legend>
         <table class="admintable">
@@ -35,13 +36,26 @@ $this->js('d3.js', 'system')
             <tbody>
                 <tr>
                     <th class="key"><label><?php echo Lang::txt('COM_TAGS_TAG'); ?>:</label></th>
-                    <td><input type="text" id="center-node" class="tag-entry" value="<?php echo $this->get('preload'); ?>" /></td>
+                    <td>
+                        <input type="text" id="center-node" class="tag-entry"
+                            value="<?php echo $this->get('preload'); ?>" />
+                    </td>
                     <td><?php echo Lang::txt('COM_TAGS_TAG_RELATIONSHIP'); ?></td>
                 </tr>
                 <tr>
                     <th class="key"><?php echo Lang::txt('COM_TAGS_SHOW_RELATIONSHIPS'); ?>:</th>
-                    <td><label><input type="radio" name="relationship" id="hierarchical" checked="checked" /> <?php echo Lang::txt('COM_TAGS_RELATIONSHIP_HIERARCHICAL'); ?></label></td>
-                    <td><label><input type="radio" name="relationship" id="implicit" /> <?php echo Lang::txt('COM_TAGS_RELATIONSHIP_IMPLICIT'); ?></label></td>
+                    <td>
+                        <label>
+                            <input type="radio" name="relationship" id="hierarchical" checked="checked" />
+                            <?php echo Lang::txt('COM_TAGS_RELATIONSHIP_HIERARCHICAL'); ?>
+                        </label>
+                    </td>
+                    <td>
+                        <label>
+                            <input type="radio" name="relationship" id="implicit" />
+                            <?php echo Lang::txt('COM_TAGS_RELATIONSHIP_IMPLICIT'); ?>
+                        </label>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -55,7 +69,8 @@ $this->js('d3.js', 'system')
 
 <div id="metadata-cont">
     <div class="col span12">
-        <form id="metadata" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post">
+        <?php $metadataAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+        <form id="metadata" action="<?php echo $metadataAction; ?>" method="post">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_TAGS_RELATIONSHIP_METADATA'); ?></span></legend>
                 <table class="admintable">
@@ -97,7 +112,8 @@ $this->js('d3.js', 'system')
     <div class="clr"></div>
 </div>
 
-<form name="adminForm" method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>">
+<?php $adminFormAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
+<form name="adminForm" method="get" action="<?php echo $adminFormAction; ?>">
     <input type="hidden" value="<?php echo $this->option; ?>" name="option" />
     <input type="hidden" value="<?php echo $this->controller; ?>" name="controller" />
     <input type="hidden" value="" name="task" />

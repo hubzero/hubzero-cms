@@ -15,12 +15,24 @@ $this->js();
 $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$addZoneUrl = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=addZone&version=' . $this->version
+    . '&tmpl=component'
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th colspan="4" class="align-right">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addZone&version=' . $this->version . '&tmpl=component'); ?>" class="button edit-asset" rel="{type: 'iframe', size: {x: 570, y: 550}}"><?php echo Lang::txt('COM_TOOLS_ADD_ZONE'); ?></a>
+                    <a href="<?php echo $addZoneUrl; ?>"
+                        class="button edit-asset"
+                        rel="{type: 'iframe', size: {x: 570, y: 550}}">
+                        <?php echo Lang::txt('COM_TOOLS_ADD_ZONE'); ?></a>
                 </th>
             </tr>
             <tr>
@@ -39,10 +51,24 @@ foreach ($this->rows as $row) {
     // Grab the zone name
     $zone = new \Components\Tools\Tables\Zones($mwdb);
     $zone->load($row->zone_id);
+    $editZoneUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+        . '&task=editZone&id=' . $row->id
+        . '&tmpl=component'
+    );
+    $removeZoneUrl = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+        . '&task=removeZone&id=' . $row->id
+        . '&version=' . $this->version
+        . '&tmpl=component&' . Session::getFormToken() . '=1'
+    );
     ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editZone&id=' . $row->id . '&tmpl=component'); ?>">
+                    <a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"
+                        href="<?php echo $editZoneUrl; ?>">
                         <?php echo $this->escape(stripslashes($zone->title)); ?>
                     </a>
                 </td>
@@ -53,7 +79,7 @@ foreach ($this->rows as $row) {
                     <span><?php echo $this->escape(stripslashes($row->publish_down)); ?></span>
                 </td>
                 <td>
-                    <a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=removeZone&id=' . $row->id . '&version=' . $this->version . '&tmpl=component&' . Session::getFormToken() . '=1'); ?>">
+                    <a class="state trash" href="<?php echo $removeZoneUrl; ?>">
                         <span><?php echo Lang::txt('X'); ?></span>
                     </a>
                 </td>

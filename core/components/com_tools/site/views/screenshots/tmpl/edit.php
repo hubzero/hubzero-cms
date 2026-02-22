@@ -28,7 +28,8 @@ $title = (count($this->shot) > 0 && isset($this->shot[0]->title)) ? $this->shot[
             />
         </div>
         <?php $formAction = Route::url('index.php?option=' . $this->option); ?>
-        <form action="<?php echo $formAction; ?>" name="hubForm" id="ss-pop-form" method="post" enctype="multipart/form-data">
+        <form action="<?php echo $formAction; ?>" name="hubForm" id="ss-pop-form"
+            method="post" enctype="multipart/form-data">
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
             <input type="hidden" name="tmpl" value="component" />

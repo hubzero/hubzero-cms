@@ -9,6 +9,17 @@
 // No direct access.
 defined('_HZEXEC_') or die();
 
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=storage'
+);
+$filelistSrc = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+    . '&task=filelist&tmpl=component'
+);
+
 $this->css('storage.css');
 ?>
 <header id="content-header">
@@ -30,7 +41,7 @@ $this->css('storage.css');
         <p class="error"><?php echo $this->getError(); ?></p>
     <?php } ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=storage'); ?>" method="post" id="hubForm">
+    <form action="<?php echo $formAction; ?>" method="post" id="hubForm">
         <div class="explaination">
             <p class="help">
                 <strong><?php echo Lang::txt('COM_TOOLS_STORAGE_WHAT_DOES_PURGE_DO'); ?></strong><br />
@@ -44,11 +55,16 @@ $this->css('storage.css');
                     <label>
                         <?php echo Lang::txt('COM_TOOLS_STORAGE_CLEAN_UP_DISCK_SPACE'); ?>
                         <select name="degree">
-                            <option value="default"><?php echo Lang::txt('COM_TOOLS_STORAGE_OPT_MINIMALLY'); ?></option>
-                            <option value="olderthan1"><?php echo Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_DAY'); ?></option>
-                            <option value="olderthan7"><?php echo Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_WEEK'); ?></option>
-                            <option value="olderthan30"><?php echo Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_MONTH'); ?></option>
-                            <option value="all"><?php echo Lang::txt('COM_TOOLS_STORAGE_OPT_ALL'); ?></option>
+                            <option value="default"><?php
+                                echo Lang::txt('COM_TOOLS_STORAGE_OPT_MINIMALLY'); ?></option>
+                            <option value="olderthan1"><?php
+                                echo Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_DAY'); ?></option>
+                            <option value="olderthan7"><?php
+                                echo Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_WEEK'); ?></option>
+                            <option value="olderthan30"><?php
+                                echo Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_MONTH'); ?></option>
+                            <option value="all"><?php
+                                echo Lang::txt('COM_TOOLS_STORAGE_OPT_ALL'); ?></option>
                         </select>
                     </label>
                 </div>
@@ -65,7 +81,8 @@ $this->css('storage.css');
             <legend><?php echo Lang::txt('COM_TOOLS_STORAGE_MANUAL'); ?></legend>
             <div class="filebrowser field-wrap">
                 <?php echo Lang::txt('COM_TOOLS_STORAGE_BROWSE_STORAGE'); ?>
-                <iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component'); ?>" name="filer" id="filer" width="98%" height="500" border="0" frameborder="0"></iframe>
+                <iframe src="<?php echo $filelistSrc; ?>" name="filer" id="filer"
+                    width="98%" height="500" border="0" frameborder="0"></iframe>
             </div>
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

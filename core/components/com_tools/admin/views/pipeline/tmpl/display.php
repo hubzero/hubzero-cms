@@ -19,12 +19,66 @@ $this->css();
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$sortId = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_ID',
+    'id',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortName = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_NAME',
+    'toolname',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortTitle = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_TITLE',
+    'title',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortState = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_STATE',
+    'state',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortRegistered = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_REGISTERED',
+    'registered',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortStateChanged = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_STATECHANGED',
+    'state_changed',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+$sortVersions = Html::grid(
+    'sort',
+    'COM_TOOLS_COL_VERSIONS',
+    'versions',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TOOLS_SEARCH_PLACEHOLDER'); ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?php echo $this->escape($this->filters['search']); ?>"
+                    placeholder="<?php echo Lang::txt('COM_TOOLS_SEARCH_PLACEHOLDER'); ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_TOOLS_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -74,13 +128,13 @@ Html::behavior('tooltip');
         <thead>
             <tr>
                 <th scope="col"></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_NAME', 'toolname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_REGISTERED', 'registered', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATECHANGED', 'state_changed', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_VERSIONS', 'versions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-5"><?php echo $sortId; ?></th>
+                <th scope="col"><?php echo $sortName; ?></th>
+                <th scope="col" class="priority-4"><?php echo $sortTitle; ?></th>
+                <th scope="col"><?php echo $sortState; ?></th>
+                <th scope="col" class="priority-3"><?php echo $sortRegistered; ?></th>
+                <th scope="col" class="priority-3"><?php echo $sortStateChanged; ?></th>
+                <th scope="col"><?php echo $sortVersions; ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -138,27 +192,40 @@ Html::behavior('tooltip');
                     $state = 'unknown';
                     break;
             }
+            $editUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=' . $this->controller
+                . '&task=edit&id=' . $row['id']
+            );
+            $versionsUrl = Route::url(
+                'index.php?option=' . $this->option
+                . '&controller=versions&id=' . $row['id']
+            );
+            $stateLabel = $this->escape(
+                Lang::txt(strtoupper($this->option) . '_' . strtoupper($state))
+            );
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="radio" name="id" id="cb<?php echo $i; ?>" value="<?php echo $row['id'] ?>" class="checkbox-toggle" />
+                    <input type="radio" name="id" id="cb<?php echo $i; ?>"
+                        value="<?php echo $row['id'] ?>" class="checkbox-toggle" />
                 </td>
                 <td class="priority-5">
                     <?php echo $this->escape($row['id']); ?>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row['id']); ?>">
+                    <a href="<?php echo $editUrl; ?>">
                         <?php echo $this->escape(stripslashes($row['toolname'])); ?>
                     </a>
                 </td>
                 <td class="priority-4">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row['id']); ?>">
+                    <a href="<?php echo $editUrl; ?>">
                         <?php echo $this->escape(stripslashes($row['title'])); ?>
                     </a>
                 </td>
                 <td>
-                    <span class="state <?php echo $state; ?> hasTip" title="<?php echo $this->escape(Lang::txt(strtoupper($this->option) . '_' . strtoupper($state))); ?>">
-                        <span><?php echo $this->escape(Lang::txt(strtoupper($this->option) . '_' . strtoupper($state))); ?></span>
+                    <span class="state <?php echo $state; ?> hasTip" title="<?php echo $stateLabel; ?>">
+                        <span><?php echo $stateLabel; ?></span>
                     </span>
                 </td>
                 <td class="priority-3">
@@ -168,7 +235,7 @@ Html::behavior('tooltip');
                     <time><?php echo $this->escape($row['state_changed']); ?></time>
                 </td>
                 <td>
-                    <a class="glyph menulist" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=versions&id=' . $row['id']); ?>">
+                    <a class="glyph menulist" href="<?php echo $versionsUrl; ?>">
                         <span><?php echo $this->escape($row['versions']); ?></span>
                     </a>
                 </td>

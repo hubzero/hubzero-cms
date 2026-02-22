@@ -10,11 +10,21 @@
 defined('_HZEXEC_') or die();
 ?>
 <div id="media">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+    <?php
+    $formAction = Route::url(
+        'index.php?option=' . $this->option
+        . '&controller=' . $this->controller
+    );
+    ?>
+    <form action="<?php echo $formAction; ?>" method="post"
+        enctype="multipart/form-data" name="filelist" id="filelist">
         <table class="formed">
             <thead>
                 <tr>
-                    <th><label for="image"><?php echo Lang::txt('COM_TOOLS_UPLOAD'); ?> <?php echo Lang::txt('COM_TOOLS_WILL_REPLACE_EXISTING_IMAGE'); ?></label></th>
+                    <th><label for="image">
+                        <?php echo Lang::txt('COM_TOOLS_UPLOAD'); ?>
+                        <?php echo Lang::txt('COM_TOOLS_WILL_REPLACE_EXISTING_IMAGE'); ?>
+                    </label></th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +50,9 @@ defined('_HZEXEC_') or die();
         <table class="formed">
             <thead>
                 <tr>
-                    <th colspan="4"><label for="image"><?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?></label></th>
+                    <th colspan="4">
+                        <label for="image"><?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?></label>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -53,10 +65,19 @@ defined('_HZEXEC_') or die();
             if ($file && file_exists($path . DS . $file)) {
                 $this_size = filesize($path . DS . $file);
                 list($width, $height, $type, $attr) = getimagesize($path . DS . $file);
+                $imgSrc = substr($path, strlen(PATH_ROOT)) . '/' . $file;
+                $imgAlt = Lang::txt('COM_TOOLS_FIELDSET_IMAGE');
+                $removeUrl = Route::url(
+                    'index.php?option=' . $this->option
+                    . '&controller=' . $this->controller
+                    . '&tmpl=component&task=removefile&id=' . $this->zone->get('id')
+                    . '&' . Session::getFormToken() . '=1'
+                );
                 ?>
                 <tr>
                     <td rowspan="6">
-                        <img src="<?php echo substr($path, strlen(PATH_ROOT)) . '/' . $file; ?>" alt="<?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?>" id="conimage" />
+                        <img src="<?php echo $imgSrc; ?>"
+                            alt="<?php echo $imgAlt; ?>" id="conimage" />
                     </td>
                     <th><?php echo Lang::txt('COM_TOOLS_IMAGE_FILE'); ?>:</th>
                     <td><?php echo $file; ?></td>
@@ -75,7 +96,8 @@ defined('_HZEXEC_') or die();
                 </tr>
                 <tr>
                     <td><input type="hidden" name="currentfile" value="<?php echo $file; ?>" /></td>
-                    <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=removefile&id=' . $this->zone->get('id') . '&' . Session::getFormToken() . '=1'); ?>">[ <?php echo Lang::txt('JDELETE'); ?> ]</a></td>
+                    <td><a href="<?php echo $removeUrl; ?>">
+                        [ <?php echo Lang::txt('JDELETE'); ?> ]</a></td>
                 </tr>
             <?php } else { ?>
                 <tr>

@@ -15,15 +15,27 @@ Toolbar::addNew();
 Toolbar::deleteList();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$sortToolname = Html::grid(
+    'sort',
+    'COM_TOOLS_HANDLERS_TOOLNAME',
+    'tool.title',
+    @$this->filters['sort_Dir'],
+    @$this->filters['sort']
+);
+?>
+<form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle" class="sr-only visually-hidden">
+                        <?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_HANDLERS_TOOLNAME', 'tool.title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?php echo $sortToolname; ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_TOOLS_HANDLERS_PROMPT'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_TOOLS_HANDLERS_RULES'); ?></th>
             </tr>
@@ -41,11 +53,20 @@ Toolbar::deleteList();
                 <?php foreach ($this->rows as $row) : ?>
                     <tr>
                         <td>
-                            <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                            <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                            <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
+                                value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
+                            <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
+                                <?php echo $row->get('id'); ?></label>
                         </td>
                         <td>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                . '&controller=' . $this->controller
+                                . '&task=edit&id=' . $row->get('id')
+                            );
+                            ?>
+                            <a href="<?php echo $editUrl; ?>">
                                 <span><?php echo $this->escape(stripslashes($row->tool->title)); ?></span>
                             </a>
                         </td>

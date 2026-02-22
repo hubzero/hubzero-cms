@@ -32,20 +32,33 @@ if (!$this->config->get('email_terse')) {
     if ($this->delimiter) {
         $message .= $this->delimiter . "\n";
         $message .= Lang::txt('COM_SUPPORT_EMAIL_REPLY_ABOVE') . "\n";
-        $message .= 'Message from ' . rtrim(Request::base(), '/') . '/support / Ticket #' . $this->ticket->get('id') . "\n";
+        $ticketId   = $this->ticket->get('id');
+        $message .= 'Message from ' . rtrim(Request::base(), '/') . '/support / Ticket #' . $ticketId . "\n";
     }
+    $ticketId      = $this->ticket->get('id');
+    $ticketSummary = $this->ticket->get('summary');
+    $ticketCreated = $this->ticket->get('created');
+    $submitterName = $this->ticket->submitter->get('name');
+    $ticketLogin   = $this->ticket->get('login');
+    $ticketIp      = $this->ticket->get('ip');
+    $ticketHost    = $this->ticket->get('hostname');
+    $cookiesLabel  = $this->ticket->get('cookies')
+        ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED')
+        : Lang::txt('COM_SUPPORT_COOKIES_DISABLED');
+
     $message .= '----------------------------' . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET')) . ': ' . $this->ticket->get('id') . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_SUMMARY')) . ': ' . $this->ticket->get('summary') . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED')) . ': ' . $this->ticket->get('created') . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')) . ': ' . $this->ticket->submitter->get('name') . ($this->ticket->get('login') ? ' (' . $this->ticket->get('login') . ')' : '') . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET')) . ': ' . $ticketId . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_SUMMARY')) . ': ' . $ticketSummary . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED')) . ': ' . $ticketCreated . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')) . ': '
+        . $submitterName . ($ticketLogin ? ' (' . $ticketLogin . ')' : '') . "\n";
     $message .= strtoupper(Lang::txt('COM_SUPPORT_TICKET_DETAILS_USERTYPE')) . ': ' . $usertype . "\n";
     $message .= strtoupper(Lang::txt('COM_SUPPORT_EMAIL')) . ': ' . $this->ticket->get('email') . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_IP_HOSTNAME')) . ': ' . $this->ticket->get('ip') . ' (' . $this->ticket->get('hostname') . ')' . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_IP_HOSTNAME')) . ': ' . $ticketIp . ' (' . $ticketHost . ')' . "\n";
     $message .= strtoupper(Lang::txt('COM_SUPPORT_OS')) . ': ' . $this->ticket->get('os') . "\n";
     $message .= strtoupper(Lang::txt('COM_SUPPORT_BROWSER')) . ': ' . $this->ticket->get('browser') . "\n";
     $message .= strtoupper(Lang::txt('COM_SUPPORT_UAS')) . ': ' . $this->ticket->get('uas') . "\n";
-    $message .= strtoupper(Lang::txt('COM_SUPPORT_COOKIES')) . ': ' . ($this->ticket->get('cookies') ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED') : Lang::txt('COM_SUPPORT_COOKIES_DISABLED')) . "\n";
+    $message .= strtoupper(Lang::txt('COM_SUPPORT_COOKIES')) . ': ' . $cookiesLabel . "\n";
     $message .= strtoupper(Lang::txt('COM_SUPPORT_REFERRER')) . ': ' . $this->ticket->get('referrer') . "\n";
     $message .= '----------------------------' . "\n\n";
     $message .= $this->ticket->get('report');

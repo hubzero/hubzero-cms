@@ -20,12 +20,20 @@ if (!$this->allowupload) { ?>
     </p>
 <?php } ?>
 
-<?php $this->allowupload = true; ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
+<?php
+$formAction = Route::url(
+    'index.php?option=' . $this->option
+    . '&controller=' . $this->controller
+);
+$this->allowupload = true;
+?>
+    <form action="<?php echo $formAction; ?>" name="hubForm" id="attachments-form"
+        method="post" enctype="multipart/form-data">
         <fieldset>
             <label for="upload">
                 <input type="file" class="option" name="upload" id="upload" />
-                <input type="submit" class="option" value="<?php echo strtolower(Lang::txt('COM_TOOLS_UPLOAD')); ?>" />
+                <input type="submit" class="option"
+                    value="<?php echo strtolower(Lang::txt('COM_TOOLS_UPLOAD')); ?>" />
             </label>
 
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -93,19 +101,32 @@ if ($this->children) {
             $liclass = ' class="ftitle ' . $type;
         }
 
+        $dlUrl = Route::url('index.php?option=com_resources&task=download&id=' . $child->id);
+        $fileAttribs = \Components\Tools\Helpers\Html::getFileAttribs($url, $base);
+
         $out .= ' <tr>';
         $out .= '  <td width="100%">';
         if ($this->allowupload) {
-            $out .= '<span' . $liclass . ' item:name id:' . $child->id . '" data-id="' . $child->id . '">' . $this->escape($child->title) . '</span><br /><span class="caption">(<a href="' . Route::url('index.php?option=com_resources&task=download&id=' . $child->id) . '" title="' . $child->title . '">' . \Components\Tools\Helpers\Html::getFileAttribs($url, $base) . '</a>)</span>';
+            $out .= '<span' . $liclass . ' item:name id:' . $child->id . '" data-id="'
+                . $child->id . '">' . $this->escape($child->title) . '</span><br />'
+                . '<span class="caption">(<a href="' . $dlUrl . '" title="'
+                . $child->title . '">' . $fileAttribs . '</a>)</span>';
         } else {
-            $out .= '<span><a href="' . Route::url('index.php?option=com_resources&task=download&id=' . $child->id) . '">' . $this->escape($child->title) . '</a></span>';
+            $out .= '<span><a href="' . $dlUrl . '">'
+                . $this->escape($child->title) . '</a></span>';
         }
         $out .= '</td>';
         if ($this->allowupload) {
             $out .= '  <td class="d">';
 
             if ($i > 0 || ($i + 0 > 0)) {
-                $out .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->resource->id . '&amp;id=' . $child->id . '&amp;task=reorder&amp;move=up" class="order up" title="' . Lang::txt('COM_TOOLS_MOVE_UP') . '"><span>' . Lang::txt('COM_TOOLS_MOVE_UP') . '</span></a>';
+                $upUrl = $base . '/index.php?option=' . $this->option
+                    . '&amp;controller=' . $this->controller
+                    . '&amp;tmpl=component&amp;pid=' . $this->resource->id
+                    . '&amp;id=' . $child->id . '&amp;task=reorder&amp;move=up';
+                $upTxt = Lang::txt('COM_TOOLS_MOVE_UP');
+                $out .= '<a href="' . $upUrl . '" class="order up" title="' . $upTxt . '">'
+                    . '<span>' . $upTxt . '</span></a>';
             } else {
                 $out .= '&nbsp;';
             }
@@ -114,12 +135,24 @@ if ($this->children) {
             $out .= '  <td class="u">';
 
             if ($i < $n - 1 || $i + 0 < $n - 1) {
-                $out .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->resource->id . '&amp;id=' . $child->id . '&amp;task=reorder&amp;move=down" class="order down" title="' . Lang::txt('COM_TOOLS_MOVE_DOWN') . '"><span>' . Lang::txt('COM_TOOLS_MOVE_DOWN') . '</span></a>';
+                $downUrl = $base . '/index.php?option=' . $this->option
+                    . '&amp;controller=' . $this->controller
+                    . '&amp;tmpl=component&amp;pid=' . $this->resource->id
+                    . '&amp;id=' . $child->id . '&amp;task=reorder&amp;move=down';
+                $downTxt = Lang::txt('COM_TOOLS_MOVE_DOWN');
+                $out .= '<a href="' . $downUrl . '" class="order down" title="' . $downTxt . '">'
+                    . '<span>' . $downTxt . '</span></a>';
             } else {
                 $out .= '&nbsp;';
             }
             $out .= '</td>';
-            $out .= '  <td class="t"><a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=delete&amp;tmpl=component&amp;id=' . $child->id . '&amp;pid=' . $this->resource->id . '" class="icon-delete delete"><span> ' . Lang::txt('COM_TOOLS_DELETE') . '</span></a></td>';
+            $delUrl = $base . '/index.php?option=' . $this->option
+                . '&amp;controller=' . $this->controller
+                . '&amp;task=delete&amp;tmpl=component&amp;id=' . $child->id
+                . '&amp;pid=' . $this->resource->id;
+            $delTxt = Lang::txt('COM_TOOLS_DELETE');
+            $out .= '  <td class="t"><a href="' . $delUrl . '" class="icon-delete delete">'
+                . '<span> ' . $delTxt . '</span></a></td>';
         }
         $out .= ' </tr>';
 
