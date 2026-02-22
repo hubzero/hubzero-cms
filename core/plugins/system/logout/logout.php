@@ -28,7 +28,7 @@ class Logout extends Plugin
 
         $this->loadLanguage();
 
-        $hash = App::hash('plgSystemLogout');
+        $hash = App::hash(static::class);
 
         if (App::isSite() && Request::getString($hash, null, 'cookie')) {
             // Destroy the cookie
@@ -37,7 +37,7 @@ class Logout extends Plugin
             setcookie($hash, false, time() - 86400, $cookie_path, $cookie_domain);
 
             // Set the error handler for E_ALL to be the class handleError method.
-            set_exception_handler(array('plgSystemLogout', 'handleError'));
+            set_exception_handler(array(static::class, 'handleError'));
         }
     }
 
@@ -52,7 +52,7 @@ class Logout extends Plugin
     {
         if (App::isSite()) {
             // Create the cookie
-            $hash = App::hash('plgSystemLogout');
+            $hash = App::hash(static::class);
 
             $cookie_domain = Config::get('config.cookie_domain', '');
             $cookie_path   = Config::get('config.cookie_path', '/');

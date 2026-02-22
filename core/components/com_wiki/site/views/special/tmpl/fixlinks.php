@@ -65,7 +65,7 @@ $rows = $this->book->pages($filters)
                         </td>
                         <td>
                             <a href="<?php echo Route::url($row->link()); ?>">
-                                <?php echo $this->escape(stripslashes($row->title)); ?>
+                                <?php echo $this->escape(stripslashes($row->title ?? '')); ?>
                             </a>
                         </td>
                     </tr>

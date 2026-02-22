@@ -103,31 +103,33 @@ foreach ($profiles as $profile) {
  * @param  string  $v
  * @return string
  */
-function renderIfJson($v)
-{
-    if (strstr($v == null ? '' : $v, '{')) {
-        $v = json_decode((string)$v, true);
+if (!function_exists('renderIfJson')) :
+    function renderIfJson($v)
+    {
+        if (strstr($v == null ? '' : $v, '{')) {
+            $v = json_decode((string)$v, true);
 
-        if (!$v || json_last_error() !== JSON_ERROR_NONE) {
-            return $v;
-        }
-
-        $o = array();
-        $o[] = '<table>';
-        $o[] = '<tbody>';
-        foreach ($v as $nm => $vl) {
-            if (!trim($vl)) {
-                continue;
+            if (!$v || json_last_error() !== JSON_ERROR_NONE) {
+                return $v;
             }
-            $o[] = '<tr><th>' . $nm . ':</th><td>' . $vl . '</td></tr>';
-        }
-        $o[] = '</tbody>';
-        $o[] = '</table>';
 
-        $v = implode("\n", $o);
+            $o = array();
+            $o[] = '<table>';
+            $o[] = '<tbody>';
+            foreach ($v as $nm => $vl) {
+                if (!trim($vl)) {
+                    continue;
+                }
+                $o[] = '<tr><th>' . $nm . ':</th><td>' . $vl . '</td></tr>';
+            }
+            $o[] = '</tbody>';
+            $o[] = '</table>';
+
+            $v = implode("\n", $o);
+        }
+        return $v;
     }
-    return $v;
-}
+endif;
 
 // Legacy access values for profile fields
 $legacy = array(

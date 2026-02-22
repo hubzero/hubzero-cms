@@ -242,7 +242,8 @@ foreach ($this->results as $category) {
             $f();
         }
         // Check if a method exist (using old Plugin style)
-        $obj = 'plgMembers' . ucfirst($this->cats[$k]['category']);
+        $catName = ucfirst($this->cats[$k]['category']);
+        $obj = 'Plugins\\Members\\' . $catName . '\\' . $catName;
         if (method_exists($obj, 'documents')) {
             $html .= call_user_func(array($obj, 'documents'));
         }
@@ -277,7 +278,8 @@ foreach ($this->results as $category) {
             $html .= $func();
         }
         // Check if a method exist (using old Plugin style)
-        $obj = 'plgMembers' . ucfirst($this->cats[$k]['category']);
+        $catName = ucfirst($this->cats[$k]['category']);
+        $obj = 'Plugins\\Members\\' . $catName . '\\' . $catName;
         if (method_exists($obj, 'before')) {
             $html .= call_user_func(array($obj,'before'));
         }
@@ -292,7 +294,7 @@ foreach ($this->results as $category) {
             $func = 'plgMembers' . ($row->section ? ucfirst($row->section) : '') . 'Out';
             // Check if a method exist (using old Plugin style)
             $catName = ucfirst($this->cats[$k]['category']);
-            $obj = 'plgMembers' . $catName;
+            $obj = 'Plugins\\Members\\' . $catName . '\\' . $catName;
 
             if (function_exists($func)) {
                 $html .= $func($row);

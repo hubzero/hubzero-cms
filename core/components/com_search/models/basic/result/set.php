@@ -353,7 +353,8 @@ class Set extends Obj implements Iterator
                 }
 
                 if (Plugin::isEnabled('search', $plugin->name)) {
-                    $refl = new ReflectionClass("plgSearch$plugin->name");
+                    $pluginName = ucfirst($plugin->name);
+                    $refl = new ReflectionClass('Plugins\\Search\\' . $pluginName . '\\' . $pluginName);
                     if ($refl->hasMethod('onSearchCustom')) {
                         $this->current_plugin = $plugin->name;
                         $method = $refl->getMethod('onSearchCustom');
@@ -377,7 +378,8 @@ class Set extends Obj implements Iterator
                 continue;
             }
 
-            $refl = new ReflectionClass("plgSearch$plugin->name");
+            $pluginName = ucfirst($plugin->name);
+            $refl = new ReflectionClass('Plugins\\Search\\' . $pluginName . '\\' . $pluginName);
             $this->current_plugin = $plugin->name;
             $weighters[$plugin->name] = array();
 
@@ -418,7 +420,8 @@ class Set extends Obj implements Iterator
                 continue;
             }
 
-            $class = "plgSearch$plugin->name";
+            $pluginName = ucfirst($plugin->name);
+            $class = 'Plugins\\Search\\' . $pluginName . '\\' . $pluginName;
             $refl = new ReflectionClass($class);
             if ($refl->hasMethod('onSearchWeightAll')) {
                 $weighters['all'][] = array($plugin->name, $refl->getMethod('onSearchWeightAll'));
@@ -442,7 +445,8 @@ class Set extends Obj implements Iterator
         @list($term_plugin, $term_section) = $this->terms->get_section();
         $flat_results = $this->processed_results;
         foreach ($flat_results as $res) {
-            $fc_child_flag = 'plgSearch' . $res->get_plugin() . '::FIRST_CLASS_CHILDREN';
+            $pluginName = ucfirst($res->get_plugin());
+            $fc_child_flag = 'Plugins\\Search\\' . $pluginName . '\\' . $pluginName . '::FIRST_CLASS_CHILDREN';
             if (!defined($fc_child_flag) || constant($fc_child_flag)) {
                 foreach ($res->get_children() as $child) {
                     $flat_results[] = $child;
